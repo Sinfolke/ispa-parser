@@ -17,7 +17,18 @@
         - V\s*%d version (the version of parser for case rules are not compatible with the newer versions)
           !! May not be added
       - additional features
-        - --ciu compile if upgraded
+        - --ciu compile if upgraded (implement some mechanisms so therefore the rules will be recompiled if were changed to make the output be upgraded. Need when the parser is the part of some project with a cmake)
+   - Arguments processer to ART (argument tree).
+     example:
+     struct ART {
+       std::forward_list<std::string> in;
+       std::unordered_map<std::string, std::string> flags;
+       struct {
+         book ciu = false;
+       } addition;
+     };
+  - parse each file
+            
  5. Compile the parser writing the code on C++ by own
  6. Create rules to walk on parser tree if need some optimisations or else before the compilation
  7. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
