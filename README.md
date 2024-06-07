@@ -11,9 +11,8 @@
     - arguments parser
       - file input
       - flags (see ```concepts/argp```)
-   - Arguments processer to ART - argument tree (see ```concepts/art```)
-  - parse each file
-            
+    - Arguments processer to ART - argument tree (see ```concepts/art```)
+    - parse each file      
  5. Compile the parser writing the code on C++ by own
  6. Create rules to walk on parser tree if need some optimisations or else before the compilation
  7. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
