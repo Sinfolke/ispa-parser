@@ -1,0 +1,45 @@
+
+use end_of_rule: [ END, STRICT_END ];
+use parralel_parsing;
+
+// TOKEN PARSER
+
+active_tokens ['a', 'b', 'c', 'd', 'e', 'f']
+
+                  ^
+// RULE PARSER  (watches)
+
+spacemode mixed; // make spaces and newlines to be automatically skipped unless required to match
+END: [;\n];
+STRICT_END: ';';
+ID: 
+    $data = $1;
+
+    &value([0-9]* [a-zA-Z_] [a-zA-Z0-9_]*)
+;
+
+
+
+import: 
+    $data = %2;
+    'import' STRING END
+;
+use: 
+    $object<string> data = {  %2.name: %2.value };
+    for (int i = 0; i < $1>%2.size(); i++):
+        data[$1>%2[i].name] = $1>%2[i].value;
+
+
+    'use' #USE (',' #USE)*
+
+    #USE:
+        ID (':' [^,]+ | STRING)?
+
+        data:
+            name: %1,
+            value: %2,
+;
+
+
+
+

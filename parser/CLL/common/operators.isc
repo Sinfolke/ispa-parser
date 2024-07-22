@@ -1,0 +1,6 @@
+operators:
+    '+' | '-' | '*' | '/' | '%' | 
+    // bitwise
+    // they should be used carefully.
+    '&' | '|' | '^' | '<<' | '>>'
+;

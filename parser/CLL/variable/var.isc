@@ -1,0 +1,7 @@
+
+assignment_operator:
+    operators? '='
+;
+var: 
+    cll_type ID assignment_operator ANY_DATA | ID;
+;

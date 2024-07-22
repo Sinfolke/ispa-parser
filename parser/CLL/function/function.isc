@@ -1,0 +1,27 @@
+/*
+    Functions are not considered a full part of the CLL.
+    They are declared globally.
+*/
+
+function: ;
+private function_body(&in_parenthes):
+    '(' in_parenthes ')'
+;
+private function_parenthes_part(&match_rule):
+    match_rule?
+    $if (matched(%0)):
+        (',' match_rule)*
+function_body[call] = function_body(function_arguments);
+function_body[decl] = function_body(function_parameters);
+function_arguments = function_parenthes_part(ANY_DATA);
+function_parameters = function_parenthes_part(ID);
+
+function_parameters:
+    
+cll_function_call:
+    ID function_body[call];
+;
+
+@if ALL_PUBLIC
+public function_body(1);
+@endif

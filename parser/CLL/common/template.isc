@@ -1,0 +1,37 @@
+// cll_template[typename, int, bool, str, arr, obj, any_type, all];
+cll_template[typename]:
+    cll_support_types
+    (',' cll_support_types)*
+;
+cll_template[int]:
+    NUMBER
+    (',' NUMBER);
+;
+cll_template[bool]:
+    BOOL
+    (',' BOOL);
+;
+cll_template[str]:
+    STRING
+    (',' STRING);
+;
+cll_template[arr]:
+    ARRAY
+    (',' ARRAY);
+;
+cll_template[obj]:
+    OBJECT
+    (',' OBJECT);
+;
+cll_template[any_type]:
+    ANY_DATA
+    (',' ANY_DATA);
+;
+cll_template[all]:
+    $arr<string> vals;
+    $while (true) {
+    $ if (^0 == ',')
+    $   vals.push("");
+    $ else vals[vals.size() - 1] += ^0;
+    $}
+;

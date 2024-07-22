@@ -1,0 +1,329 @@
+
+Cll should begin with '$' 
+
+By the current syntax the CLL can be inserted above the actual rule even without the $
+the rule can be surrounded by the $: and $:, or ${ and $}, or only $:. 
+
+!!! The actual syntax will be choosen later, for now above are only candidates
+
+myrule:
+    // cll
+    // rule
+
+    // cll
+    $int a = NUMBER(%1);
+    $int b = NUMBER(%2);
+    
+    if (a < b):
+        dblog("a < b");
+    elif a > b:
+        dblog("a > b");
+    else:
+        dblog("a == b");
+    // rule
+    ([0-9]+ '/' [0-9]+) ('s' | 'ms' | 'mu' | "n")
+
+variables:
+    variables must be declared with specific type. But the type can be any.
+    This is because the parser can be compiled to C and C++. Therefore the result code
+    will be more optimisated. Also it is required when you do some kind of bitwise operators.
+    long long a;
+    unsigned short b;
+    // all C++ types are there...
+
+
+    !!! In future such wide types may be reduced since theoritically the compiler can optimise this itself.
+     But the type also affect the internal structure of parser since you also can restrict the type to one specific data type.
+     Therefore there are some common types:
+
+    var                 // any type
+    num                 // number
+    bool                // boolean
+    str                 // string
+    array<T=var>        // array. By default accept 'var' type unless you specify yours
+    obj<T1=var, T2=var> // object, binding value by key. Both key and value are any type by default unless you specify them.
+    
+    these types may also have some methods to let you interact with. 
+    The 'var' type have methods depends what kind of data is there.
+    !!! The compiler may throw error when you try to call method of incorrect type
+    !!! Another behaviour may be is runtime error
+
+    here is example of use (located in the dataTypes of this parser):
+
+    OBJECT:
+        $object<any> data = {  %2: %4 };
+        $array<string> keys = $2>%2;
+        %array<any> values = $2>%4;
+
+        for (int i = 0; i < keys.size(); i++):
+            data[keys[i]] = values[i];
+
+        '{'
+            ( ID ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
+        '}'
+    ;
+    Keep in mind if you assign to the variable a result of a rule the type is "obj<string, var>".
+    By default result of object has following keys:
+    num start - the start position in text
+    num end - the end position in text
+    num len - the length in text the rule taken
+    num line - the line.
+    num name - the name of token
+    var data - the data of object you saved.
+    Therefore if you assign some variable a result of a rule to access the data block you would need to access .data property.
+    You also may access the other properties.
+
+
+    the method itself always returns a new copy of object with the changes
+    if you want to apply to the array you must put before the call ':=' 
+    :=my_array.find('a')
+    the example above equivalent
+    my_array = my_array.fid('a')
+    Keep in mind it is considered assignment operator. If before there has been an another one you'll got an error.
+    For such cases it must be surrounded to the braces.
+    If the result cannot be assigned to the type of variable an error will be thrown.
+    example:
+    $str a = "Hello"
+    $str b = "World"
+    $var c = "abcde"
+    $b += (:=a.substr(a.find('e'), a.find('o') - 1));
+    $:=c.find('c');
+    $dblog(a);  // ell
+    $dblog(b);  // Worldell
+    $dblog(c);  // 2
+    $:=a.find('e'); // error: assigning number to str
+
+    methods:
+        // type str is almost same as arr<char>
+        str:
+            // find string/character at specific position
+            num find(char c)
+            num find(str s)
+
+            // get the amount of characters in the string. The begin and end lets you set begin and end positions to count. end=0 means until end of string
+            num size(begin=0, end=0)
+            // slice the string by specific positions
+            str substr(num begin, num end=0)
+            // remove specific characters from the begin to end position
+            str rem(num begin, num end)
+            // insert a string/character to the certain position in string
+            str insert(num begin, char c)
+            str insert(num begin, str c)
+        arr<T>:
+            // find specific element in the array. Checks by '==' operator. Returns id
+            num find(T el)
+
+            // get the amount of elements in the array. The begin and end lets you set begin and end positions to count
+            num size(begin=0, end=0)
+            // slice the array by the begin and end position. Returns new array
+            arr<T> substr(num begin, num end=0)
+            // remove specific elements from the array with the begin and end positions
+            arr<T> rem(num begin, num end)
+            // insert a some elements to the position in array
+            arr<T> insert(num begin, ...array<T> elements>)
+        obj<KEY, VAL>:
+            // find specific element in the array. Checks by '==' operator. Returns id
+            num find(T el)
+
+            // get the amount of keys in the object. The begin and end lets you set begin and end positions to count
+            num size(begin=0, end=0)
+            // remove certain key
+            obj<KEY, VAL> rem(KEY key)
+            // remove all keys by the value
+            obj<KEY, VAL> remv(VAL val)
+            
+            // insert all keys and values to the object.
+            // each position of key in keys equivalent to the value at same position in values array
+            // if the values has lower size than keys the remaining keys are left empty
+            // if the values has higher size than keys the remaining values are missing
+            obj<KEY, VAL> insert(array<KEY> keys, array<VALUE> values)
+    Operators:
+        +=, -=, *=, /=, %=, >>=, <<=, &=, |=, ^=
+        ++i - increase to the current value. Therefore if read the value is already increased.
+            var i = 2;
+            var a = ++i; // a = 3, i = 3;
+        i++ - save previous value of the object, increase the value of i and return previous;
+            var i = 2;
+            var a = i++; // a = 2; i = 3;
+Access of the parsed data:
+    altough it is not fully related to CLL, here will be covered the CLL part. 
+    The part related to parsing is in another documentation <reference>
+    % - means access the value by certain index. Index beginds from 1;
+    $ - means access the value by index of group. Index also begins from 1;
+    ^ - means access the value by the current offset. Index beginds from 0;
+
+    Imagine some rule:
+    'a' 'b' ( 'c' [0-9]+ ( '+' [a-z]+ )? )
+    %1 - access 'a'
+    %3 - access 'c'
+    $1 - access entire value in group 1;
+    $1>%1 - access first value in first group ('c')
+    $1>$1>%1 - access '+' 
+    $2>%1 - access '+'
+
+    The ^ is not used in such access but instead right during parsing.
+    It can access current parsed symbol, or symbol with offset before or after, or a sequence of symbols.
+
+    Imagine we parse a String: "Hello+World" and are at position where the plus (5)
+    $var current_parsing_char = ^0 // '+'
+    $var before_at_one_parsing_char = ^-1; // 'o'
+    $var next_at_one_parsing_char = ^+1; // 'W'
+    $var sequence_of_3_chars_before = ^3- // array<char> {^0, ^-1, ^-2, ^-3} - is equal '+oll'
+    $var sequence_of_3_chars_next = ^3+ // array<char> {^0, ^+1, ^+2, ^+3} - is equal '+Wor'
+preprocessor:
+    There is some preprocessor. Some features are going to be implementet and some may be.
+    Since below we'll have a lot of features related to language separation, the language name is equivalent to the language
+    name set in compile arguments. Is in arguments it must be lowercase.
+    c - C, cpp - C++, ccpp - C and C++, js - JavaScript, ts - TypeScript, tjs - TypeScript and JavaScript, java - Java, 
+    php etc.
+    
+    The c and cpp are still language specific. Therefore c won't accept C++, and cpp won't accept C.
+    However the ccpp will. Same with the js and ts, tjs allows both of them.
+    However in such cases the language you use must be the lower (which support both of them).
+    So in ccpp use C, in tjs use JavaScript.
+
+    The features are going to be implemented:
+        language separation. Sometimes you may need to act with specific features or api on certain language.
+        If the current language is not required by reqleng or is prohibited by prhlang 
+        then the compilation will be terminated with error message. The message is optional.
+        by @ you can insert some variable. For the two next directives possible variables:
+            @lang - the language user specified
+
+        @reqlang [lang] message? - the languages parser supports (@reqlang ccpp java ts "Please use other rules for @lang: https//...)
+        @prhlang [lang] message? - the prohibited languages      (@prhlang ccpp java ts )
+        @for [lang] ':'- the specific code for the language. Must be follwed by the colon and the code you put at least
+            on space higher than the directive. There you write the regular code.
+            For cases you have to do something with variables of the CLL language, you surround CLL code via '$'. An example:
+            somerule:
+                $array<str> props = { "Line", "Column", "Number_Of_Message"};
+                $array<num> vals = { 49, 0, 20 };
+                @for c:
+                    #include <stdio.h>
+                    // if the type would be 'var' you would have to handle as 
+                    // struct ISC_CLL_VAR {ble, char, bool, int };
+                    //     // have an exact type a user specified
+                    //     enum t { str, num, arr, obj, null, long_dou
+                    //     t exact_type = null;
+                    //     // a type as common in CLL (str, num, arr, obj, null)
+                    //     t type = null;
+                    //     void* data;
+                    // } 
+                    for (int i = 0; i < $vals.size()$; ++i) {
+                        printf("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+                @for cpp:
+                    // if the type would be 'var' you would have to handle as std::any
+                    #include <iostream> 
+                    for (int i = 0; i < $vals.size()$; ++i) {
+                        std::cout << $props[i]$ << " :" << $vals[i]$;
+                    }
+                @for tjs:
+                    // here type std::any 
+                    for (let i = 0; i < $vals.size()$; ++i) {
+                        console.log("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+                @for java:
+                    for (let i = 0; i < $vals.size()$; ++i) {
+                        System.out.println("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+            ;
+            (may not read)
+                To let you know how it is internally replaced
+                lit<SIZE>TEXT_WITH_SPECIFIC_SIZE
+                for example:
+                lit<41>std::cout << "Hello, world" << std::endl;
+                or
+                lit<29>console.log("Hello, world!");
+                when multiline meeted it is inserted right with that:
+                lit<5>12
+                34
+                but these are internal things.
+            (continue here)
+        For those below there may be inserted following variables:
+            @lang - the language you compile on
+            @mainrule - the name of main rule
+            @rule - the path to rule where the error has occurred (including nested rules)
+        @err message
+            output an error message
+        @warn message
+            output a warning
+    @err 
+        output a COMPILE TIME ERROR. You also can output a warning using @warn, a message using @msg.
+
+functions:
+    !!! for now i only think whether they should be added. The language most of time do not need it.
+    !!! But below you see the syntax they will have if added
+
+    fn name1(var a, number b, int c):
+        // code
+    fn name2(var p0) {
+
+    }
+    fn void name3(var p0) {}
+    functions unlike a code you insert must be declared outside rules and therefore does not need to specify $ before.
+    The only keyword 'fn' enough.
+    !!! this keyword still does not cancell you will unable to make a rule with such name. But likely will not be readable.
+
+    If function may also have some return type (3rd example). It is recognised if before '(' there are several identifiers.
+    Then the last one considered name and other types
+    in the code you just call it passing some parameters returning arguments
+
+    functions also may support parralelism (at least buildin)
+    fn int NUMBER(int a):
+        return a;
+
+    fn NUMBER(string a):
+        @Cpp
+            for (int i = 0; i < $a.size()$; i++) {
+                if ($a$[i] == '.' || $a$[i] == ',')
+                    // it is double
+                    return stod($a$);
+            }
+            return stoi($a$);
+        @ts
+            return NUMBER($a$);
+        // other languages here...
+        @none
+            @err "Function NUMBER does not support this language"
+    somerule:
+        $var n1 = 10;
+        $var n2 = 20;
+        $var n1_str = NUMBER(n1);
+        $var n2_str = NUMBER(n2);
+    ;
+    above you can see a lot of new things. Lets explain
+Condition operators:
+    &&, 'and' - and operators
+    ||, 'or' - or operators
+    '(' ')' - open and close group
+    !, 'not' - negative operators
+    >, <, >=, <=, ==, != - comparasion operators
+    +, -, *, / - aritchmetic operators
+
+    the 'and' and 'or' are considered higher priority than the '&&' and '||'.
+    Therefore the last will be executed first before the first one. An example:
+    a && b or c || d
+    first_result or second_result
+           final_result    
+    inside condition you can use variable methods and reassign it:
+    var a = "h";
+    var c, i;
+    for (; (c = a[i]) != '\0'; i++) {
+
+    }
+build in functions:
+    while to declare a function by user may not be added, there are buildin functions likely will be added.
+    Actually this is set of common functions you may find in every programming language. When compiled it just calls a correspond function on a target language
+    Functions with [debug] are added only to the debug version and to the isc debugger
+    NUMBER(num) - string to number
+    STRING(str) - number to string
+    [debug] dblog(str) - output a debug message to console. (see dblog.sample)
+    log(str) - output a regular message to console with no other modifications
+    [debug] varlist(void) - output all variables to console with their values.
+                    Keep in mind parser will lack of perfomance when generated in output.
+                    However the isc buildin debugger is very good in this
+    varlistnd(void) - like the varlist but will still run even without debugger
+    
+    CMD(str)   - execute certain command in the system environment
+    runterr(str, int=1) - throw the runtime error (is log(RED message RESET) + exit(code));
+    exit(int)  - exit the program with the return code

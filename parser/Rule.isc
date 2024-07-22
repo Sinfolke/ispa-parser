@@ -1,0 +1,98 @@
+/*
+    A rule to match token and rule definions. They have same syntax but the token begins with
+    the capslock and rules otherwise.
+
+*/
+Rule: 
+    $name = %1;
+    $rule = %3;
+    $nested_rules = %4;
+    $bool kind = (name[0] >= 'A' && name[0] <= 'Z') ? 'token' : 'rule';
+
+    // later add match of CLL here
+
+    ID ':' (#rule)* #nested_rule* STRICT_END
+    data:
+        name: name,
+        kind: kind,
+        rule: rule,
+        nestedRules: nested_rules 
+    ;
+    #rule: 
+        $bool is_id = matched($2);
+        $bool is_nested = matched($2>%1);
+        $var val = is_id ? $2>%2 : $1;
+        $char qualifier = matched(%3) ? %3.data : '';
+
+        // TODO: add CLL recognition
+        ( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?
+
+        data: 
+            is_id: is_id,
+            is_nested: is_nested,
+            val: val,
+            qualifier: qualifier
+        ;
+    ;
+    #op:
+        $data = $1;
+        ( '|' | '&|' )
+    ;
+    #qualifier:
+        data = $1;
+        ('?' | '+' | '*')
+    ;
+    #group:
+        $var name=$0>%1;
+        $r=%4;
+
+        ('&' ID )? '(' rule* ')'
+
+        data: 
+            variable: name,
+            val: r
+        ;
+    ;
+    #csequence:     // Character Sequence
+        '[' &not '^'? &data ( #symbol | #diapason )* ']'
+        data:
+            type: 'csequence'
+            not: matched(not)
+            val: data
+        ;
+        #symbol:
+            $data = $1;
+            ('\\'   |   '\]' |  [^\]]) 
+        ;
+        #escape:
+            $data = $1;
+            // some escape chars like \s, \d
+            '\\' \s0 (.)
+        ;
+        #diapason:
+            ( &from (symbol) \s0 '-' \s0 &to (symbol))
+            data: [from, to];
+        ;
+    ;
+    #data_block:
+        [\r\n]+ 'data' ':' &data ( ANY_DATA | #inclosed_map ) ';'
+        #inclosed_map:
+            &data(key+)
+        ;
+        #key:
+            [\n\r]+ &name ID ':' &data (ANY_DATA)
+            data:
+                name: name
+                val: data
+            ;
+        ;
+    #nested_rule: 
+        [\r\n]+ '#' &data ( Rule )
+    ;
+    #hex:
+        '0x' [1-9A-Fa-f]+
+        data: %2;
+    #bin:
+        '0b' [01]+
+        data: %2;
+;

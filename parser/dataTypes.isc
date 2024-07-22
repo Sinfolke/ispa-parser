@@ -1,0 +1,56 @@
+STRING:
+    $quote = %1
+    $data = $1
+
+    ( ["'] ) ( "\\${quote}" | [^ quote ] )* quote
+;
+NUMBER:
+    $char sign = %0;
+    $string main = $1;
+    $number main_n = std::to_number(main);
+    $char point = $2>%1;
+    $string dec = $2>%1;
+    $number dec_n = std::to_number(dec);
+
+    // $1 and or $2 or only $2 
+    [+-] ( [0-9]+ ) |& ([.,] [0-9]+)?
+
+    data:
+        sign: sign,
+        main: main,
+        main_n: main_n,
+        dec: dec,
+        dec_n: dec_n,
+        full: main + point + dec;
+;
+BOOLEAN:
+    &d('true' | 'false')
+    data:
+        val: d == 'true' ? 1 : 0,
+        lit: d
+    ;
+;
+ARRAY: 
+    $array<any> data;
+    $data.push(%2);
+    $data.concat(%4);
+
+    '[' ( ANY_DATA (',' ANY_DATA )* )? ']'
+
+OBJECT:
+    $object<any> data = {  %2: %4 };
+    $array<string> keys = $2>%2;
+    $array<any> values = $2>%4;
+
+    $for (int i = 0; i < keys.size(); i++):
+    $    data[keys[i]] = values[i];
+
+    '{'
+        ( ID ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
+    '}'
+ANY_DATA: 
+    $data = %1;
+
+    BOOLEAN | NUMBER | STRING | ARRAY | OBJECT
+;
+

@@ -1,0 +1,1 @@
+This is an output of the rule: ../../parser/parser.isc

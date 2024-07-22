@@ -1,0 +1,14 @@
+/*
+    CLL (COMMON LOGIC LANGUAGE) is the programming language.
+    Might need it when you have to create a complex rule or to process data before render output.  
+    see cll.doc for documentation
+*/
+
+import template.isc;
+import variable/*.isc;
+import function/*.isc;
+
+cll_begin: '\n' '$' cll;
+cll:
+
+;

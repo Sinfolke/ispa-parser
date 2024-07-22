@@ -1,0 +1,3 @@
+method_call:
+    ':='? ID '.' CLL_FUNCTION_CALL
+;

@@ -1,0 +1,22 @@
+/*
+    rule to match out the type of variable in isc
+*/
+
+
+
+cll_csupport_types: 
+    // integral types
+    ('unsigned' ('char' | 'short' | 'int' | 'long' | 'long long'))
+        |
+    // floating types
+    ('float' | 'double')
+        |
+    // custom C++ containers (not decided whether to add)
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template[all]
+;
+cll_type:
+    cll_csupport_types
+        |
+    // the abstract types
+    ( 'var' | 'num' | 'bool' | 'str' | ('arr' | 'obj' cll_template[typename]) )
+;
