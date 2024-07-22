@@ -125,10 +125,10 @@ Parser::Tree Parser::Parser::expr(const Token* const in) {
 
 
 
-    $array<object<string>> data;
-    $array<string> COP = $1>%1;
-    $array<string> LEFT = $1>%2;
-    $array<string> OP = $1>%3;
-    $array<string> RIGHT = $1>%4;
+    // $array<object<string>> data;
+    // $array<string> COP = $1>%1;
+    // $array<string> LEFT = $1>%2;
+    // $array<string> OP = $1>%3;
+    // $array<string> RIGHT = $1>%4;
     return Tree();
 }
