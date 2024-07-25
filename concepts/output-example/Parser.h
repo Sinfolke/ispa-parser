@@ -74,7 +74,7 @@ namespace Parser { // according to name
         Tree parse();
 
         // Rule methods
-        Tree expr(const Token* _in);
+        Rule_result expr(const Token* _in);
     };
 
 

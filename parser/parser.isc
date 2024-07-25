@@ -1,17 +1,11 @@
 
-use end_of_rule: [ END, STRICT_END ];
+use end_of_rule: [ END, STRICT_END, NEWLINE ];
 use parralel_parsing;
 
-// TOKEN PARSER
-
-active_tokens ['a', 'b', 'c', 'd', 'e', 'f']
-
-                  ^
-// RULE PARSER  (watches)
-
 spacemode mixed; // make spaces and newlines to be automatically skipped unless required to match
-END: [;\n];
-STRICT_END: ';';
+END: [;\n];         // lets you do not add a semicolon
+STRICT_END: ';';    // forces to add a semicolon (usually for rules, tokens and datablocks)
+NEWLINE: [\n];      // to be ended as a newline. Usually for properties in datablock
 ID: 
     $data = $1;
 
@@ -21,8 +15,50 @@ ID:
 
 
 import: 
-    $data = %2;
-    'import' STRING END
+    // import core/core.isc // single file import with exact extensin
+    // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
+    // import [language/cpp] expr ID template preprocessor/directive/define // import from folder several files same time
+    //      [another syntax of same action] import language/cpp [expr, ID, template, preprocessor/directive/define]
+    // import language/cpp/data { INTLIT, BOOLLIT, STRLIT} // import some certain rules from the file
+    // import language/cpp/data { INTLIT = INT, BOOLLIT = BOOL, STRLIT } // import certain rules from the file changing their incoming name in the current project
+    // import [language/cpp] expr ID data { INTLIT = INT, BOOLIT = BOOL, STRLIT }, core/core.isc;
+
+
+    'import' #file | #general_dir | #rulespecific (',' #file | #general_dir | #rulespecific)*
+    data: %2 + matched(%3) ? %3.join() : "";
+
+    #path:
+        [^*"<>|:?\.]+
+        data: %1;
+    ;
+    #ext:
+        ('.' ID)*
+        data: %2;
+    ;
+    #file:
+        path ext*
+        data:
+            path: %1
+            ext: %2[%2.size()]
+            fullext: %2
+            fullpath: %1 + %2.join()
+        ;
+    ;
+    #general_dir:
+        '[' path ']' file+
+        data:
+            path: %1,
+            files: %2
+        ;
+    ;
+    #rulespecific:
+        file '{' (ID ('=' ID)? )+  '}'
+        data:
+            path: %1
+            tokens: $1>%1
+            tokens_current_name: $2>%2
+        ;
+    ;
 ;
 use: 
     $object<string> data = {  %2.name: %2.value };

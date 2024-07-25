@@ -1,0 +1,16 @@
+/*
+    This defines the expression.
+*/
+
+expr:
+    '('? 
+        ( '(' #variable_value ')' ) | #compare | #logical
+    $if(matched(%1)) match(')');
+    
+    #variable_value:
+        ID ( (operator | assignment_operator) (assignment_val) )?
+    #compare:
+        expr COMPARE_OP expr
+    #logical:
+        expr LOGICAL_OP expr
+;

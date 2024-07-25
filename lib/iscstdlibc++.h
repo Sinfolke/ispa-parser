@@ -1,7 +1,7 @@
-//!ISC_LIB_MANAGER C++ 1.0 ISC-parser Standard-library Versions iscstdlibcpp{VER}-{SUBVER}.h!\\
+//!ISC_LIB_MANAGER C++ 1.1 ISC-parser Standard-library Versions iscstdlibcpp{VER}-{SUBVER}.h!\\
 
 /**
- * C++ isc std lib 1.0 for ISC 
+ * C++ isc std lib 1.1
 */
 #include <map>
 #include <vector>
@@ -10,6 +10,7 @@
 #include <any>
 #include <string_view>
 #include <stdexcept>
+#include <cctype>
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
@@ -30,11 +31,11 @@
 #endif
 
 #define _ISC_STD_LIB_VER 1 // version of the library
-#define _ISC_STD_LIB_SUBVER 0 // the subversion of the library
+#define _ISC_STD_LIB_SUBVER 1 // the subversion of the library
 // this defines the minimum version the parser should be generated for to be compatible with the current version of library
 // for example if the update did only change the way some classes work but not their structure, it is compatible with the downer version.
 // therefore you'll be able to use the newer library even if parser is generated for downer one and vise versa.
-#define _ISC_STD_LIB_BACKDOWN 0
+#define _ISC_STD_LIB_BACKDOWN 1
 #define _ISC_STD_LIB_BACKDOWN_SUBVER 0
 #define _ISC_GITHUB "https://github.com/Sinfolke/ISC-parser"
 #define ISC_STD_LIBMARK \
@@ -61,6 +62,10 @@ namespace {
  * 
 */
 namespace ISC_STD {
+/**
+ * @brief An error thrown when you're trying to access some features required with tokens only
+ * 
+ */
 class Tokenisator_No_Tokens_exception : public std::exception {
     public:
     const char* what() const noexcept override {
@@ -169,6 +174,7 @@ struct _return_base {
         if (startpos == std::string::npos)
             throw return_base_exception("line");
         std::size_t count = 0;
+        std::size_t escaptions = 0;
         for (std::size_t i = startpos; i >= 0; --i) {
             if (*(str.data() - i) == '\n') count++;
         }
@@ -211,49 +217,49 @@ struct _return : public _return_base {
         name = other.name;
     }
 };
-template<class _RETURN_TOKEN, class _RETURN_RULE, int SIZE>
+template<class _RETURN_TOKEN, class _RETURN_RULE>
 class Member {
     public:
     enum Type {
         STRING, RETURN_TOKEN, RETURN_RULE, NONE
     };
-    class mempart {
-        public:
-        Type type;
-        char _data[biggest_sz<_RETURN_TOKEN, _RETURN_RULE, string_part>()]; // likely would be a sizeof(string_part) here
-        auto& operator=(const string_part& mem) {
-            type = Type::STRING;
-            new (&_data) string_part(mem.view().data(), mem.view().length());
-            return *this;
-        }
-        auto& operator=(const _RETURN_TOKEN& mem) {
-            type = Type::RETURN_TOKEN;
-            std::memcpy(_data, mem, sizeof(_RETURN_TOKEN));
-            return *this;
-        }
-        auto& operator=(const _RETURN_RULE&  mem) {
-            type = Type::RETURN_RULE;
-            std::memcpy(_data, mem, sizeof(_RETURN_RULE));
-            return *this;
-        }
-    };
+    Type type;
+    char _data[biggest_sz<_RETURN_TOKEN, _RETURN_RULE, string_part>()]; // likely would be a sizeof(string_part) here
+    auto& operator=(const string_part& mem) {
+        type = Type::STRING;
+        new (&_data) string_part(mem.view().data(), mem.view().length());
+        return *this;
+    }
+    auto& operator=(const _RETURN_TOKEN& mem) {
+        type = Type::RETURN_TOKEN;
+        std::memcpy(_data, mem, sizeof(_RETURN_TOKEN));
+        return *this;
+    }
+    auto& operator=(const _RETURN_RULE&  mem) {
+        type = Type::RETURN_RULE;
+        std::memcpy(_data, mem, sizeof(_RETURN_RULE));
+        return *this;
+    }
+};
+template<class _RETURN_TOKEN, class _RETURN_RULE, int SIZE>
+class Members {
     private:
-        mempart data[SIZE];
+        Member<_RETURN_TOKEN, _RETURN_RULE> data[SIZE];
         int _size = 0;
     public:
-    Member(const _return<_RETURN_TOKEN>*& ret) {
+    Members(const _return<_RETURN_TOKEN>*& ret) {
         data[0] = { Type::RETURN_TOKEN, ret };
         ++_size;
     }
-    Member(const _return<_RETURN_RULE>*& ret) {
+    Members(const _return<_RETURN_RULE>*& ret) {
         data[0] = { Type::RETURN_RULE, ret };
         ++_size;
     }
-    Member(const string_part*& str) {
+    Members(const string_part*& str) {
         data[0] = { Type::STRING, str };
         ++_size;
     }
-    Member() {}
+    Members() {}
     void push(const _return<_RETURN_TOKEN>* ret) {
         if (_size >= SIZE)
             throw Member_exception("push(Token)", "the member array is full");
@@ -281,7 +287,7 @@ class Member {
         return _size;
     }
     template<class MEM_RETURN_TOKEN, class MEM_RETURN_RULE, int MEM_SIZE>
-    Member<_RETURN_TOKEN, _RETURN_RULE, SIZE>& operator=(const Member<MEM_RETURN_TOKEN, MEM_RETURN_RULE, MEM_SIZE>& mem) {
+    Members<_RETURN_TOKEN, _RETURN_RULE, SIZE>& operator=(const Members<MEM_RETURN_TOKEN, MEM_RETURN_RULE, MEM_SIZE>& mem) {
         if (mem.size() > SIZE)
             throw Member_exception("operator=()", "the member you assign overflow this group");
         for (int i = 0; i < mem.size(); ++i)
@@ -290,7 +296,7 @@ class Member {
         return *this;
     }
     template<class MEM_RETURN_TOKEN, class MEM_RETURN_RULE, int MEM_SIZE>
-    Member<_RETURN_TOKEN, _RETURN_RULE, SIZE>& operator+=(const Member<MEM_RETURN_TOKEN, MEM_RETURN_RULE, MEM_SIZE>& mem) {
+    Members<_RETURN_TOKEN, _RETURN_RULE, SIZE>& operator+=(const Members<MEM_RETURN_TOKEN, MEM_RETURN_RULE, MEM_SIZE>& mem) {
         if (mem.size() + size() > SIZE)
             throw Member_exception("operator+=()", "the member you add overflow this group");
         for (int i = 0; i < mem.size(); ++i) {
@@ -317,10 +323,10 @@ class Member {
 
     class iterator {
     private:
-        mempart* ptr;
+        Member<_RETURN_TOKEN, _RETURN_RULE> * ptr;
 
     public:
-        explicit iterator(mempart* p) : ptr(p) {}
+        explicit iterator(Member<_RETURN_TOKEN, _RETURN_RULE>* p) : ptr(p) {}
 
         // Iterator dereference operator
         int& operator*() {
@@ -357,9 +363,9 @@ class Member {
 template<class RETURN_TOKEN, class RETURN_RULE, int SIZE>
 class Group {
     private:
-        Member<RETURN_TOKEN, RETURN_RULE, SIZE> member;
+        Members<RETURN_TOKEN, RETURN_RULE, SIZE> member;
     public:
-        using iterator = typename Member<RETURN_TOKEN, RETURN_RULE, SIZE>::iterator;
+        using iterator = typename Members<RETURN_TOKEN, RETURN_RULE, SIZE>::iterator;
         /**
          * @brief Get the source of the group
          * 
@@ -368,7 +374,7 @@ class Group {
          */
         std::string full(char*& txt) {
             std::string o;
-            for (const Member::mempart data : member) {
+            for (const Member data : member) {
                 std::string_view view;
                 if (data.type == Type::NONE)
                     continue;
@@ -491,6 +497,13 @@ protected:
     std::size_t getCurrentPos(const char*const& txt) {
         return _in - txt;
     }
+    void skipSpaces(const char* in) {
+        while(std::isspace(*in)) ++in;
+    }
+    const char* skipSpacesForCopy(const char* const in) {
+        auto _in = in;
+        return skipSpaces(_in);
+    }
 public:
     TokenFlow<TOKEN_T> tokens;
     // Constructors
@@ -591,6 +604,10 @@ private:
     TokenFlow<TOKEN_T> tokens;
 
 public:
+    /**
+     * @brief Your parsed Tree. The Tree is std::vector. 
+     * 
+     */
     Tree<RULE_T> tree;
 
     // Constructors
@@ -632,8 +649,12 @@ public:
         tokens = Tokenisator().makeTokenFlow(in);
         return parse();
     }
-    // must be implemented by the instance for now
-    //Tree<RULE_T> parse();
+    /**
+     * @brief Parser the tokens and get the tree
+     * 
+     * @return Tree<RULE_T> 
+     */
+    Tree<RULE_T> parse();
 };
 
 

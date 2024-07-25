@@ -41,15 +41,16 @@ if (build_stable)
 endif()
 add_compile_definitions("BUILD_V" ${build_v})
 add_executable(main ${SOURCES})
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set_target_properties(main PROPERTIES OUTPUT_NAME isc)
 set_target_properties(main PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-
-add_custom_command(
-    OUTPUT isc_marker
-    COMMAND my_executable --flag1 value1 --flag2 value2
-    DEPENDS my_executable
-    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-    COMMENT "Running my_executable with flags"
-)
+set_target_properties(main PROPERTIES CXX_STANDARD_REQUIRED 20)
+set_target_properties(main PROPERTIES CXX_STANDARD 20)
+# add_custom_command(
+#     OUTPUT isc_marker
+#     COMMAND my_executable --flag1 value1 --flag2 value2
+#     DEPENDS my_executable
+#     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+#     COMMENT "Running my_executable with flags"
+# )

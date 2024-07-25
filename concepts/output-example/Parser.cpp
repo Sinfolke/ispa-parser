@@ -1,6 +1,5 @@
 // Tokenisator class definitions
 #include "Parser.h"
-
 Parser::TokenFlow Parser::Tokenisator::makeTokenFlow() {
     // Implement the tokenization logic here
     return {};
@@ -21,13 +20,12 @@ Parser::Token_result Parser::Tokenisator::NUMBER(const char* const in) {
         current[0] = string_part(pos, 1);
         ++pos;
     }
-
+    skipSpaces(pos);
     if (c >= '0' && c <= '9') {
         const char* const start = pos;
         do ++pos; while ((c = *pos) >= '0' && c <= '9');
         current[1] = string_part(start, pos);
     } else return {};
-
     result.result = true;
     result.newpos = in;
     result.token = Token(getCurrentPos(in), in, pos, Tokens::NUMBER);
@@ -43,7 +41,7 @@ Parser::Token_result Parser::Tokenisator::OP(const char* const in) {
     Group<1> current; // that was the max size groups could have
     Groups groups = {}; // unused here
     current.push();
-
+    skipSpaces(pos);
     if ((c = *pos) == '+' || c == '-' || c == '/' || c == '*') {
         current[0] = string_part(pos, 1);
         ++pos;
@@ -58,14 +56,13 @@ Parser::Token_result Parser::Tokenisator::COP(const char* const in) {
     // matched sequence: [ "12", "-", "5", "<", "4", "*", "100" ]
     // groups: [ /* here is first group */    [ 0x4, 0x5, 0x6, 0x7 ] 
     //          (pointers to location of matched elements | a token result | a rule result ] )
-    int current_pos = getCurrentPos(in);
     int c = 0;
     const char* pos = in;
     Token_result result;
     Group<1> current; // that was the max size groups could have
     Groups groups = {}; // unused here
     current.push();
-
+    skipSpaces(pos);
     if ((c = *pos) == '>' || c == '<') {
         if (*(pos + 1) == '=') {
             current[0] = string_part(pos, 2);
@@ -101,8 +98,7 @@ Parser::Tree Parser::Parser::parse() {
 // Rule methods
 
 
-Parser::Tree Parser::Parser::expr(const Token* const in) {
-    int current_pos = getCurrentPos(in);
+Parser::Rule_result Parser::Parser::expr(const Token* const in) {
     Token token;
     const Token* pos = in;
     Rule_result result;
@@ -111,24 +107,26 @@ Parser::Tree Parser::Parser::expr(const Token* const in) {
 
 
     // on top declaration of user defined variables
-    std::deque<std::unordered_map<std::string, std::string>> data;
+    std::deque<std::map<std::string, std::any>> data;
     std::deque<std::string> COP;
     std::deque<std::string> LEFT;
     std::deque<std::string> OP;
     std::deque<std::string> RIGHT;
 
     // do matching... NUMBER OP NUMBER (COP NUMBER OP NUMBER)?
-
-    if ((token = *pos).name == Tokens::NUMBER) {
-        current.push()
+    //     data[0] = { left: %1, op: %2, right: %3, COP: "" };
+    if (pos->name != Tokens::NUMBER || (pos + 1)->name != Tokens::OP || (pos + 2)->name != Tokens::NUMBER) {
+        return {};
     }
-
-
-
-    // $array<object<string>> data;
-    // $array<string> COP = $1>%1;
-    // $array<string> LEFT = $1>%2;
-    // $array<string> OP = $1>%3;
-    // $array<string> RIGHT = $1>%4;
-    return Tree();
+    data.push_back( { {  "left", *pos }, { "op", *(pos + 1) }, { "right", *(pos + 2) }, { "COP", "" } } );
+    pos += 3;
+    if (pos->name == Tokens::COP && (pos + 1)->name == Tokens::NUMBER && (pos + 2)->name == Tokens::OP && (pos + 3)->name == Tokens::NUMBER) {
+        // data[1] = { left: $1>%1, op: $1>%2, right: $1>%3, COP: $1>4 }
+        data.push_back( { {  "left", *pos }, { "op", *(pos + 1) }, { "right", *(pos + 2) }, { "COP", *(pos + 3) } } );
+        pos += 4;
+    }
+    result.newpos = pos - in;
+    result.result = true;
+    result.token = data;
+    return result;
 }

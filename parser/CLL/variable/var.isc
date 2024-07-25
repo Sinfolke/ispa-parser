@@ -1,7 +1,9 @@
 
-assignment_operator:
-    operators? '='
-;
+
 var: 
-    cll_type ID assignment_operator ANY_DATA | ID;
+    cll_type ID assignment_operator cll_expr;
+;
+asisgnment_val: 
+    ANY_DATA | ID | cll_function_call
+    data: %1;
 ;

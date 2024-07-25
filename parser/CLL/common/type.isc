@@ -3,7 +3,6 @@
 */
 
 
-
 cll_csupport_types: 
     // integral types
     ('unsigned' ('char' | 'short' | 'int' | 'long' | 'long long'))
@@ -12,7 +11,7 @@ cll_csupport_types:
     ('float' | 'double')
         |
     // custom C++ containers (not decided whether to add)
-    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template[all]
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template(cll_template_content[typename])
 ;
 cll_type:
     cll_csupport_types

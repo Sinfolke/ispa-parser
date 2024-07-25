@@ -1,6 +1,15 @@
-operators:
+OP:
     '+' | '-' | '*' | '/' | '%' | 
     // bitwise
-    // they should be used carefully.
     '&' | '|' | '^' | '<<' | '>>'
+;
+ASSIGNMENT_OP:
+    OP? '='
+;
+COMPARE_OP:
+    '==' | '!=' | '>' | '<' | '>=' | '<='
+;
+
+LOGICAL_OP:
+    '||' | '&&' | 'and' | 'or'
 ;

@@ -4,9 +4,9 @@
     see cll.doc for documentation
 */
 
-import template.isc;
-import variable/*.isc;
-import function/*.isc;
+import common/*;
+import variable/*;
+import function/*;
 
 cll_begin: '\n' '$' cll;
 cll:
