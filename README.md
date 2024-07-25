@@ -27,5 +27,6 @@
     - added expr implementation (not full proper)
     - remove out old implementation
     - better documentation (cll.doc)
-    - some other less significant changes to rules, fixes of bugs
+    - some other  less significant changes to rules, fixes of bugs
   - some little beginning of args processer implementation (src/args)
+  - concepts/output-example/expr.isc removed out old implementation
