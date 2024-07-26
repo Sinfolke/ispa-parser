@@ -1,7 +1,4 @@
-#if defined(DEBUG) && DEBUG != 1
-    #undef DEBUG
-    #define DEBUG 1
-#endif
+
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
