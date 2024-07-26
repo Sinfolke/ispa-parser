@@ -8,6 +8,7 @@ else()
 endif()
 if (ADMIN)
     include_directories("C:/cclang/cstlibs")
+    add_compile_definions("NO_HEAD")
 else()
     # this is for other users who wants to build my project
     # links with libraries on the lib folder
