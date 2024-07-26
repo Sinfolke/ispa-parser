@@ -14,9 +14,14 @@
 #include <cpuf/color>
 #include <cpuf/dlib>
 #include <cpuf/let>
-#include <cpuf/stdop>
 
+
+#ifndef NO_HEAD
 #include "head.h"
+#endif
+#undef NO_HEAD
+
+
 #include "err.h"
 #include "debug.h"
 #include "devinfolog.h"
