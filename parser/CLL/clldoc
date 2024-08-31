@@ -1,24 +1,20 @@
 
 Cll should begin with '$' 
-
-!!! The actual syntax will be choosen later, for now above are only candidates
-
 myrule:
-    // cll
     // rule
+    ([0-9]+ '/' [0-9]+) ('s' | 'ms' | 'mu' | "n")
 
     // cll
     $int a = NUMBER(%1);
     $int b = NUMBER(%2);
-    $
+
     $if (a < b):
     $    dblog("a < b");
     $elif a > b:
     $    dblog("a > b");
     $else:
     $    dblog("a == b");
-    // rule
-    ([0-9]+ '/' [0-9]+) ('s' | 'ms' | 'mu' | "n")
+
 
 variables:
     variables must be declared with specific type. The type can be also dynamic.
@@ -57,6 +53,11 @@ variables:
             ( ID ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
         '}'
     ;
+    You may access global variables or functions if that required.
+    For that you should declare it as:
+    global my_var;
+    
+
     Operators:
         The operators variable does have.
         + add (string and number)
@@ -80,7 +81,7 @@ variables:
     num name - the name of token
     var data - the data of object you saved.
     Therefore if you assign some variable a result of a rule to access the data block you would need to access .data property.
-    You also may access the other properties. Usually they shouldn't be reassigned.
+    You also may access the other properties and usually wouldn't override them
 
 
     the method itself always returns a new copy of object with the changes
@@ -172,6 +173,28 @@ Access of the parsed data:
     $var sequence_of_3_chars_before = ^3- // array<char> { ^-1, ^-2, ^-3} - is equal 'oll'
     $var sequence_of_3_chars_next = ^3+ // array<char> {^+1, ^+2, ^+3} - is equal 'Wor'
     As you could see the sequence does not include the current character.
+
+    You can also reference an element by the actual rule.
+    Note this is a readability concern and will be nice in little rules.
+    You should enclose the element within the rule with '<' and '>' parentheses.
+    For example:
+    'bool' [a-zA-Z0-9]+ '=' '0' | '1';
+    data:
+        type: <'bool'>
+        name: <[a-zA-Z0-9]+>
+        value: <'0' | '1'>
+    while it may be slower to re-write every pattern, it nicely breaks down it's components,
+    and may highly increase the readability.
+Control flow and loops:
+    You can do conditional checks and loops. Your cll and the parsing logic can be mixed
+    Just like:
+    var i = 0;
+    $for (; i < 10; i++):
+        i // here you'd match a sequence of 0-10 characters
+        if (!matched(%1)):
+            i = null;
+    $if (i == null)
+        dblog("no pattern matched");
 preprocessor:
     You may also have a preprocessor. Typical preprocessor has macros and the conditions to check them
     Since below we'll have a lot of features related to language separation, the language name is equivalent to the language
@@ -278,49 +301,34 @@ functions:
             return NUMBER($a$);
         // other languages here...
         @none
-            @err "Function NUMBER does not @lang"
+            @err "Function NUMBER does not exists for @lang"
     somerule:
         $var n1 = 10;
         $var n2 = 20;
         $var n1_str = NUMBER(n1);
         $var n2_str = NUMBER(n2);
     ;
-Condition operators:
-    &&, 'and' - and operators
-    ||, 'or' - or operators
-    '(' ')' - open and close group
-    !, 'not' - negative operators
-    >, <, >=, <=, ==, != - comparasion operators
-    +, -, *, / - aritchmetic operators
 
-    the 'and' and 'or' are considered higher priority than the '&&' and '||'.
-    Therefore the last will be executed first before the first one. An example:
-    a && b or c || d
-    first_result or second_result
-           final_result    
-    inside condition you can use variable methods and reassign it:
-    var a = "h";
-    var c, i;
-    for (; (c = a[i]) != '\0'; i++) {
-
-    }
 build in functions:
     Actually this is set of common functions you may find in every programming language. 
     When compiled it just calls a correspond function on a target language.
     There are also functions to help you debug your code.
     Functions with [debug] are added only to the debug version and to the isc debugger
 
-    NUMBER(num) - string to number
-    STRING(str) - number to string
-    matched(obj<str, var>) - whether certain element is matched. 
+    NUMBER(num): num - string to number
+    STRING(str): str - number to string
+    matched(reference): bool - whether certain element is matched. 
                 This function is internal and it's parameter is not surrounded to any of type.
                 You can only pass a reference (%0, $0) or a variable assigned that reference.
                 However the variable itself is considered a str type
-    match(str) - request to match something while you're in cll.
+    match(str): str - request to match something while you're in cll.
                  it can parse the runtime string and match the rule, but
                  usually you would put a constant value and it would be inlined
                  with the compile-time matching. Otherwise may very slow down performance
-    typeof(var) - get current type of the dynamic variable
+    skipup(regex): str - skip characters with matching pattern within cll
+                    usually like match would inline your constant request for perfomance, 
+                    but can match a runtime value as well
+    typeof(var): str - get current type of the dynamic variable
     [debug] dblog(str) - output a debug message to console. (see dblog.sample)
     log(str) - output a regular message to console with no other modifications
     [debug] varlist(void) - output all variables to console with their values.
@@ -330,3 +338,22 @@ build in functions:
     CMD(str)   - execute certain command in the system environment
     runterr(str, int=1) - throw the runtime error (is log(RED message RESET) + exit(code));
     exit(int)  - exit the program with the return code
+    You can access other functions OF YOUR TARGET LANGUAGE. Just like:
+    
+    global std::cout here cout; 
+Condition operators:
+    &&, 'and' - and operators
+    ||, 'or' - or operators
+    '(' ')' - open and close group
+    !, 'not' - negative operators
+    >, <, >=, <=, ==, != - comparasion operators
+    +, -, *, / - aritchmetic operators
+
+    the '&&' and '||' are considered higher priority than the 'and' and 'or'.
+    Therefore the last will be executed first before the first one. An example:
+    a and b || c and d
+    first_result or second_result
+           final_result    
+    inside condition you can use variable methods and reassign it:
+    var a = "h";
+    var c, i;

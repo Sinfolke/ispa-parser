@@ -1,0 +1,5 @@
+// using cond instead of if
+// however possibly it'll be allowed to do such rules as they do not argue with cll anyways
+cll_if: 
+    (\s*) 'if' expr (cll_block | cll_spaced_block( %1.size() ))
+;

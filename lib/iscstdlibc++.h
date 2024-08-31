@@ -2,6 +2,9 @@
 
 /**
  * C++ isc std lib 1.1
+ * It contains standard declarations and every C++ generated parser would link toward it
+ * It is for case you'd use two ISC independed parsers in one same project.
+ * However it won't cancell that parser does not rely on any library
 */
 #include <map>
 #include <vector>
@@ -30,8 +33,12 @@
 #define TOSTRING(x) STRINGIFY(x)
 #endif
 
+/*
+    Library version is not being updated with each change for now and remains 1.0
+*/
+
 #define _ISC_STD_LIB_VER 1 // version of the library
-#define _ISC_STD_LIB_SUBVER 1 // the subversion of the library
+#define _ISC_STD_LIB_SUBVER 0 // the subversion of the library
 // this defines the minimum version the parser should be generated for to be compatible with the current version of library
 // for example if the update did only change the way some classes work but not their structure, it is compatible with the downer version.
 // therefore you'll be able to use the newer library even if parser is generated for downer one and vise versa.

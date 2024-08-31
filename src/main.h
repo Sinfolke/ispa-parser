@@ -1,7 +1,3 @@
-#if defined(DEBUG) && DEBUG != 1
-    #undef DEBUG
-    #define DEBUG 1
-#endif
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
@@ -14,10 +10,12 @@
 #include <cpuf/color>
 #include <cpuf/dlib>
 #include <cpuf/let>
-#include <cpuf/stdop>
 
 #include "head.h"
 #include "err.h"
 #include "debug.h"
 #include "devinfolog.h"
+
+#include "args/defarg.h"
+#include "args/argf.h"
 #include "args/table.h"

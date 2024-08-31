@@ -1,2 +1,0 @@
-preproc_begin: '\n' '@' preproc;
-preproc: ; // write here preproc rule 

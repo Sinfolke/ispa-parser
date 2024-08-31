@@ -38,7 +38,7 @@ function_decl:
     $    is_declaration_only = false;
     $    skipup('\n');
     $    while (true):
-    $       var current_spaces_amount = skipup(" ").size();
+    $       var current_spaces_amount = skipup("\s*").size();
     $       if (current_spaces_amount > spaces):
     $           function_value += skipup('\n');
     $       else break;

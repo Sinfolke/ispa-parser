@@ -2,7 +2,7 @@
 use end_of_rule: [ END, STRICT_END, NEWLINE ];
 use parralel_parsing;
 
-spacemode mixed; // make spaces and newlines to be automatically skipped unless required to match
+spacemode mixed; // make spaces and newlines to be automatically skipped unless rule specify directly
 END: [;\n];         // lets you do not add a semicolon
 STRICT_END: ';';    // forces to add a semicolon (usually for rules, tokens and datablocks)
 NEWLINE: [\n];      // to be ended as a newline. Usually for properties in datablock
@@ -15,7 +15,7 @@ ID:
 
 
 import: 
-    // import core/core.isc // single file import with exact extensin
+    // import core/core.isc // single file import with exact extension
     // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
     // import [language/cpp] expr ID template preprocessor/directive/define // import from folder several files same time
     //      [another syntax of same action] import language/cpp [expr, ID, template, preprocessor/directive/define]

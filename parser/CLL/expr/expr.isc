@@ -2,15 +2,54 @@
     This defines the expression.
 */
 
+/*
+    What patterns we have:
+    fun(a, b, c)
+    =a.find('abc');
+    a && b
+    a == 4 && b
+    a == 4 && b == 4
+    a == 4 and b == 4 && c != 4 and d != 4
+    (a = 4) == 4 and (b = 4) == 4 && (c = 4) == 4 and (d = 4) == 4
+    !(a = 4) == 4 and !(b = 4) == 4 && !(c = 4) == 4 and !(d = 4) == 4
+    (! applied to (a = 4) and (b = 4))
+    !(a = 4) == fun(abc) and !(b = 4) == (=a.find(abc)) && !(c = 4) == 4 and !(d = 4) == 4
+
+
+    an expression must contain one of
+        a data type
+        a comparasion
+            side must contain one of
+                    a data type
+                    an ID (variable), 
+                    a function call
+                    a method call
+                    expr
+        a function call
+        a method call 
+        a method call with no copy
+*/
+// TODO: add data blocks for AST
 expr:
     '('? 
-        ( '(' #variable_value ')' ) | #compare | #logical
+        ANY_DATA | #compare | #logical* | cll_function_call | cll_method_call | #parenthesed
     $if(matched(%1)) match(')');
     
     #variable_value:
         ID ( (operator | assignment_operator) (assignment_val) )?
     #compare:
-        expr COMPARE_OP expr
+        #side | expr COMPARE_OP #side | expr
+
+        #side:
+            ANY_DATA | ID | cll_function_call | method_call
     #logical:
         expr LOGICAL_OP expr
+    #parenthesed:
+        '(' #variable_assignment | copy_method_call | cll_ternary ')'
+
+        #variable_assignment:
+            ID assignment_operator assignment_val
+        ;
+    #NOT:
+        '!' | 'not'
 ;

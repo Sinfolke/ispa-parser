@@ -13,3 +13,11 @@ COMPARE_OP:
 LOGICAL_OP:
     '||' | '&&' | 'and' | 'or'
 ;
+LOGICAL_NOT:
+    '!' | 'not'
+LOGICAL_AND:
+    '&&' | 'and'
+LOGICAL_OR:
+    '||' | 'or'
+LOGICAL_ANDR:
+    '|&' | ( 'and' \s* 'or' )

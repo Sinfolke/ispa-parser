@@ -1,3 +1,8 @@
+// TODO: add data block
+
 method_call:
-    ':='? ID '.' CLL_FUNCTION_CALL
+    ID '.' cll_function_call
+;
+copiable_method_call:
+    '=' method_call
 ;

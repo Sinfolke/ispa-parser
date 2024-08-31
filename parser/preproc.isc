@@ -1,0 +1,20 @@
+preproc_all: preproc_begin preproc;
+preproc_begin: '\n' '@';
+preproc:
+    #lang_specific | #cond | #define | #set | #clear | #rem
+
+    #lang_specific:
+        'for' ID
+    #cond: 
+        'if' (expr)
+    #endif:
+        'endif'
+    #define:
+        'define' ID &value( [^\n\r]* )
+    #set: 
+        'set' ID &value( [^\n\r]* )
+    #clear:
+        'clear' ID
+    #rem:
+        'rem' ID
+;
