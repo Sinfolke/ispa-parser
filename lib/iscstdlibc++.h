@@ -27,7 +27,7 @@
 #endif
 #ifndef TOSTRING
 /**
- * @brief Converts a number within macro to a string literal
+ * @brief Converts to a string literal non-quoted value
  * 
  */
 #define TOSTRING(x) STRINGIFY(x)
@@ -39,9 +39,8 @@
 
 #define _ISC_STD_LIB_VER 1 // version of the library
 #define _ISC_STD_LIB_SUBVER 0 // the subversion of the library
-// this defines the minimum version the parser should be generated for to be compatible with the current version of library
+// this defines the minimum version of an output to have a compatibility with the library version
 // for example if the update did only change the way some classes work but not their structure, it is compatible with the downer version.
-// therefore you'll be able to use the newer library even if parser is generated for downer one and vise versa.
 #define _ISC_STD_LIB_BACKDOWN 1
 #define _ISC_STD_LIB_BACKDOWN_SUBVER 0
 #define _ISC_GITHUB "https://github.com/Sinfolke/ISC-parser"
@@ -73,10 +72,10 @@ namespace ISC_STD {
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 
  */
-class Tokenisator_No_Tokens_exception : public std::exception {
+class Tokenizator_No_Tokens_exception : public std::exception {
     public:
     const char* what() const noexcept override {
-        return ISC_STD_LIBMARK "Tokenisator_No_Tokens_exception: the tokenisator has no tokens but some operation required them";
+        return ISC_STD_LIBMARK "Tokenizator_No_Tokens_exception: the tokenizator has no tokens but some operation required them";
     }
 };
 class return_base_exception : public std::exception {
@@ -490,7 +489,7 @@ template<class RULE_T>
 using Tree = std::vector<_return<RULE_T>>;
 
 template<class TOKEN_T>
-class Tokenisator_base {
+class Tokenizator_base {
 private:
     const char* _in = nullptr;
 protected:
@@ -514,23 +513,23 @@ protected:
 public:
     TokenFlow<TOKEN_T> tokens;
     // Constructors
-    explicit Tokenisator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
-    explicit Tokenisator_base(char*& in) : _in(in) {}
-    explicit Tokenisator_base(const char*& in) : _in(const_cast<char*>(in)) {}
-    explicit Tokenisator_base() {}
+    explicit Tokenizator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
+    explicit Tokenizator_base(char*& in) : _in(in) {}
+    explicit Tokenizator_base(const char*& in) : _in(const_cast<char*>(in)) {}
+    explicit Tokenizator_base() {}
 
     bool hasInput() {
         return _in != nullptr;
     }
-    Tokenisator_base& setinput(const std::string& in) {
+    Tokenizator_base& setinput(const std::string& in) {
         _in = in.c_str();
         return *this;
     }
-    Tokenisator_base& setinput(char*& in) {
+    Tokenizator_base& setinput(char*& in) {
         _in = in;
         return *this;
     }
-    Tokenisator_base& setinput(const char*& in) {
+    Tokenizator_base& setinput(const char*& in) {
         _in = in;
         return *this;
     }
@@ -538,7 +537,7 @@ public:
     bool hasTokenFlow() {
         return tokens.size() > 0;
     }
-    Tokenisator_base& clearTokenFlow() {
+    Tokenizator_base& clearTokenFlow() {
         tokens.clear();
     }
     // Tokenization methods
@@ -556,27 +555,27 @@ public:
     // }
 
     
-    Tokenisator_base& push(const TokenFlow<TOKEN_T>& input_tokens) {
+    Tokenizator_base& push(const TokenFlow<TOKEN_T>& input_tokens) {
         tokens.append_range(input_tokens);
         return *this;
     }
-    Tokenisator_base& push(const _return<TOKEN_T>& input_token) {
+    Tokenizator_base& push(const _return<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
         return *this;
     }
-    Tokenisator_base& push(const Tokenisator_base& tokenisator) {
-        if (tokenisator.hasTokenFlow())
-            tokens.push_back(tokenisator.tokens);
+    Tokenizator_base& push(const Tokenizator_base& tokenizator) {
+        if (tokenizator.hasTokenFlow())
+            tokens.push_back(tokenizator.tokens);
         else {
-            throw Tokenisator_No_Tokens_exception();
+            throw Tokenizator_No_Tokens_exception();
         }
         return *this;
     }
-    Tokenisator_base& pop() {
+    Tokenizator_base& pop() {
         tokens.pop_back();
         return *this;
     }
-    Tokenisator_base& pop(const std::size_t& n) {
+    Tokenizator_base& pop(const std::size_t& n) {
         if (n > tokens.size()) {
             //throw std::length_error("(ISC-parser) pop(): the number of elements to pop is higher actual size");
             tokens.clear();
@@ -591,16 +590,16 @@ public:
     // Token_result COP(const char* const in);
     // Token_result END(const char* const in);
 
-    Tokenisator_base& operator=(const Tokenisator_base& tokenisator) {
-        tokens = tokenisator.tokens;
-        _in = tokenisator._in;
+    Tokenizator_base& operator=(const Tokenizator_base& tokenizator) {
+        tokens = tokenizator.tokens;
+        _in = tokenizator._in;
         return *this;
     }
-    bool operator==(const Tokenisator_base& tokenisator) {
-        return tokens == tokenisator.tokens;
+    bool operator==(const Tokenizator_base& tokenizator) {
+        return tokens == tokenizator.tokens;
     }
-    bool operator!=(const Tokenisator_base& tokenisator) {
-        return tokens != tokenisator.tokens;
+    bool operator!=(const Tokenizator_base& tokenizator) {
+        return tokens != tokenizator.tokens;
     }
 };
 
@@ -619,41 +618,41 @@ public:
 
     // Constructors
     Parser_base() {}
-    Parser_base(const Tokenisator_base<TOKEN_T>& tokenisator) {
-        if (tokenisator.hasTokenFlow()) {
-            tokens = tokenisator.tokens;
-        } else if (tokenisator.hasInput()) {
-            tokens = tokenisator.makeTokenFlow();
+    Parser_base(const Tokenizator_base<TOKEN_T>& tokenizator) {
+        if (tokenizator.hasTokenFlow()) {
+            tokens = tokenizator.tokens;
+        } else if (tokenizator.hasInput()) {
+            tokens = tokenizator.makeTokenFlow();
         } else {
-            throw Tokenisator_No_Tokens_exception();
+            throw Tokenizator_No_Tokens_exception();
         }
     }
     Parser_base(const std::string& in) {
-        auto r = Tokenisator().makeTokenFlow(in);
+        auto r = Tokenizator().makeTokenFlow(in);
         tokens = r;
     }
     Parser_base(const char* const in) {
-        auto r = Tokenisator().makeTokenFlow(in);
+        auto r = Tokenizator().makeTokenFlow(in);
         tokens = r;
     }
 
     // Parsing methods
-    Tree<RULE_T> parse(const Tokenisator_base<TOKEN_T>& tokenisator) {
-        if (tokenisator.hasTokenFlow()) {
-            tokens = tokenisator.tokens;
-        } else if (tokenisator.hasInput()) {
-            tokens = tokenisator.makeTokenFlow();
+    Tree<RULE_T> parse(const Tokenizator_base<TOKEN_T>& tokenizator) {
+        if (tokenizator.hasTokenFlow()) {
+            tokens = tokenizator.tokens;
+        } else if (tokenizator.hasInput()) {
+            tokens = tokenizator.makeTokenFlow();
         } else {
-            throw Tokenisator_No_Tokens_exception();
+            throw Tokenizator_No_Tokens_exception();
         }
         return parse();
     }
     Tree<RULE_T> parse(const std::string& in) {
-        tokens = Tokenisator().makeTokenFlow(in);
+        tokens = Tokenizator().makeTokenFlow(in);
         return parse();
     }
     Tree<RULE_T> parse(const char* const in) {
-        tokens = Tokenisator().makeTokenFlow(in);
+        tokens = Tokenizator().makeTokenFlow(in);
         return parse();
     }
     /**

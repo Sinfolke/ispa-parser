@@ -8,6 +8,7 @@ else()
 endif()
 if (ADMIN)
     include_directories("C:/cclang/cstlibs")
+    add_compile_definitions("NO_HEAD")
 else()
     # this is for other users who wants to build my project
     # links with libraries on the lib folder
@@ -47,10 +48,3 @@ set_target_properties(main PROPERTIES OUTPUT_NAME isc)
 set_target_properties(main PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set_target_properties(main PROPERTIES CXX_STANDARD_REQUIRED 20)
 set_target_properties(main PROPERTIES CXX_STANDARD 20)
-# add_custom_command(
-#     OUTPUT isc_marker
-#     COMMAND my_executable --flag1 value1 --flag2 value2
-#     DEPENDS my_executable
-#     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-#     COMMENT "Running my_executable with flags"
-# )

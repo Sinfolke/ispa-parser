@@ -1,12 +1,12 @@
-// Tokenisator class definitions
+// Tokenizator class definitions
 #include "Parser.h"
-Parser::TokenFlow Parser::Tokenisator::makeTokenFlow() {
+Parser::TokenFlow Parser::Tokenizator::makeTokenFlow() {
     // Implement the tokenization logic here
     return {};
 }
 
 // Token methods
-Parser::Token_result Parser::Tokenisator::NUMBER(const char* const in) {
+Parser::Token_result Parser::Tokenizator::NUMBER(const char* const in) {
     // matched sequence: [ "12", "-", "5", "<", "4", "*", "100" ]
     // groups sequence: [ /* here is first group */    [ 0x4, 0x5, 0x6, 0x7 ] - pointers to location of matched elements ]
     int c = 0;
@@ -32,7 +32,7 @@ Parser::Token_result Parser::Tokenisator::NUMBER(const char* const in) {
     return result;
 }
 
-Parser::Token_result Parser::Tokenisator::OP(const char* const in) {
+Parser::Token_result Parser::Tokenizator::OP(const char* const in) {
     // matched sequence: [ "12", "-", "5", "<", "4", "*", "100" ]
     // groups sequence: [ /* here is first group */    [ 0x4, 0x5, 0x6, 0x7 ] - pointers to location of matched elements ]
     int c = 0;
@@ -52,7 +52,7 @@ Parser::Token_result Parser::Tokenisator::OP(const char* const in) {
     result.token = Token(getCurrentPos(in), in, pos, Tokens::OP, current[0]); // the data section fill up later
     return result;
 }
-Parser::Token_result Parser::Tokenisator::COP(const char* const in) {
+Parser::Token_result Parser::Tokenizator::COP(const char* const in) {
     // matched sequence: [ "12", "-", "5", "<", "4", "*", "100" ]
     // groups: [ /* here is first group */    [ 0x4, 0x5, 0x6, 0x7 ] 
     //          (pointers to location of matched elements | a token result | a rule result ] )
@@ -77,7 +77,7 @@ Parser::Token_result Parser::Tokenisator::COP(const char* const in) {
     result.token = Token(getCurrentPos(in), pos, in, Tokens::NUMBER, current[0]); // the data section fill up later
     return result;
 }
-Parser::Token_result Parser::Tokenisator::END(const char* const in) {
+Parser::Token_result Parser::Tokenizator::END(const char* const in) {
     Token_result result;
     Group<1> current; // that was the max size groups could have
     Groups groups = {}; // unused here

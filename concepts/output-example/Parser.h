@@ -1,4 +1,3 @@
-// unless other settings specified it merges it's internal library to the Parser.h and Parser.cpp files
 
 /*
     The ISC generated parser 
@@ -6,11 +5,24 @@
     This generated parser links with iscstdlibc++ with the version >=1.0
 
 */
+/*
+    The parser does rely onto iscstdlibc++, as it would avoid dublications,
+    especially when a multiple ISC parsers are used onto same project.
+
+    There are following goods in the separation:
+        no dublication,
+        easy change of library,
+        break out onto partitions
+    But you would need to add into include directory the library.
+
+    The parser may be independent (e.g the library can be located on the current dir). 
+    This is good when distributing as just "parser" to other users.
+    A parser shouldn't generally by independent when it is a part of project and often better to add into include dir
+*/
 #pragma once
 
 #ifndef ISC_OUT_PARSER
 #define ISC_OUT_PARSER
-
 #include <iscstdlibc++.h>
 // here it checks according to the backward version
 #if _ISC_STD_LIB_VER < 0 // skip subver check
@@ -18,9 +30,6 @@
 #elif (_ISC_STD_LIB_VER > 1 || _ISC_STD_LIB_SUBVER > 0) && _(_ISC_STD_LIB_BACKDOWN > 1 || _ISC_STD_LIB_BACKDOWN_SUBVER > 0)
 #error  "This parser is generated for the version 1.0 but your newer library is not compatible with it. Generally you would regenerate the parser for the newer library. However if not possible you should backward your library version"
 #endif
-
-#include <map>
-#include <unordered_map>
 
 namespace Parser { // according to name
 
@@ -53,12 +62,10 @@ namespace Parser { // according to name
     using Rule_result = ISC_STD::match_result<Rules>;
     // a sequence of elements
 
-    //?? whether to add template<int SIZE> using Members = ISC_STD::Member<Tokens, Rules, SIZE>;
-
     template<int SIZE> using Group = ISC_STD::Group<Tokens, Rules, SIZE>;
 
-    /* TOKENISATOR FOR THIS PARSER */
-    class Tokenisator : public ISC_STD::Tokenisator_base<Tokens> {
+    /* Tokenizator FOR THIS PARSER */
+    class Tokenizator : public ISC_STD::Tokenizator_base<Tokens> {
         public:
         TokenFlow makeTokenFlow();
         // Token methods

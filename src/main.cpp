@@ -1,7 +1,6 @@
 #include "main.h"
-#include <cpuf/let>
+#include <stdlib.h>
 int main(int argc, char** argv) {
-    devinfolog();
-    let a = "Hello, world!";
-    std::cout << a << "\nC++ version: " << CXX_STR << std::endl;
+    dprintf("0x0000000000000000");
+    return 0x0000000000000000 << (unsigned short) (0x0A00000 & 0xdead000000000000ull);
 }
