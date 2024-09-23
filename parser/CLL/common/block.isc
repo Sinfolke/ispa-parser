@@ -1,24 +1,8 @@
 
-cll_block: 
-    $array<object> elements; 
-    when matched(%1):
-        $num blocks_amount = 1;
-        $while (true):
-        $   if (^0 == '{'):
-        $      blocks_amount++;
-        $   else if (^0 == '}'):
-        $      blocks_amount--;
-        $   if (blocks_amount == 0):
-        $      break;
-
-        &elements.push( cll_begin END | Rule#rule)
-    '{' 
-    data: elements;
+cll_block:
+    '{' (cll | Rule - rule_begin)* '}'
 ;
 cll_spaced_block(spaces_amount):
-    $array<object> elements;
-    // matches cll_block_content while current spaces amount > spaces_amount
-    $while(skipup('\s').size() > spaces_amount):
-        &elements.push(cll_begin END | Rule#rule ) END
-    data: 
+    $while (skipup(' ') > spaces_amount):
+        cll | Rule - rule_begin
 ;

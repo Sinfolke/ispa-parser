@@ -8,8 +8,7 @@ import common/*;
 import variable/*;
 import function/*;
 
-cll_begin: '\n' '$' cll;
 cll:
     // copiable_method_call does not require braces here
-    (var | cond | expr | copiable_method_call)+ 
+    &cll_begin('\n' '$') (var | cond | expr | copiable_method_call)+ 
 ;

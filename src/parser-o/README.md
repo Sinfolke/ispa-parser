@@ -1,1 +1,1 @@
-This is an output of the rule: ../../parser/parser.isc
+This is an output of the parser rule

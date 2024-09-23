@@ -14,7 +14,7 @@ ID:
 
 
 
-import: 
+Import: 
     // import core/core.isc // single file import with exact extension
     // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
     // import [language/cpp] expr ID template preprocessor/directive/define // import from folder several files same time

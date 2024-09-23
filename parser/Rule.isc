@@ -10,8 +10,7 @@ Rule:
     $bool kind = (name[0] >= 'A' && name[0] <= 'Z') ? 'token' : 'rule';
 
     // later add match of CLL here
-
-    ID ':' (#rule)* #nested_rule* STRICT_END
+    &rule_begin(ID ':') (#rule)* #nested_rule* STRICT_END
     data:
         name: name,
         kind: kind,
@@ -19,17 +18,19 @@ Rule:
         nestedRules: nested_rules 
     ;
     #rule: 
-        $bool is_id = matched($2);
-        $bool is_nested = matched($2>%1);
-        $var val = is_id ? $2>%2 : $1;
+        $bool is_id = matched($3);
+        $bool is_nested = matched($3>%1);
+        $bool is_cll = !matched($1);
+        $var val = is_id ? $3>%2 : $2;
         $char qualifier = matched(%3) ? %3.data : '';
 
         // TODO: add CLL recognition
-        ( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?
+        (( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?) | cll
 
         data: 
             is_id: is_id,
             is_nested: is_nested,
+            is_cll: is_cll,
             val: val,
             qualifier: qualifier
         ;

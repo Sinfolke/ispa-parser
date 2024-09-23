@@ -24,12 +24,6 @@
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - update up iscstdlibc++.h:
-      some fixes and remove of old implementation
-  - update parser/CLL
-    - added expr implementation (not full proper)
-    - remove out old implementation
-    - better documentation (cll.doc)
-    - some other  less significant changes to rules, fixes of bugs
-  - some little beginning of args processer implementation (src/args)
-  - concepts/output-example/expr.isc removed out old implementation
+  - some little updates to iscstdlibc++
+  - futher implementations of writing parser
+  - progress of making argument parser
