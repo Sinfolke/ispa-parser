@@ -5,35 +5,42 @@
             END RULES
     ###########################
 */
-
-Tokenisator::Token_result END(const char* in) {
+#define TOKEN(x) Parser::Token_result Parser::Tokenisator::x (const char* in)
+#define Rule(x) Parser::Rule_result Parser::Parser::x (const char* in)
+#define TO(t, x) std::any_cast<x>()
+#define TOKEN_SUCCESS(in, pos, name) return { \
+    true, { \
+        getCurrentPos(in), in, pos, Parser::Tokens::name \
+    } \
+};
+#define TOKEN_SUCCESSD(in, pos, name, data) return { \
+    true, { \
+        getCurrentPos(in), in, pos, Parser::Tokens::name, data \
+    } \
+};
+#define RULE_SUCCESS(in, pos, name) return { \
+    true, { \
+        getCurrentPos(in), in, pos, Parser::Parser::name \
+    } \
+};
+#define RULE_SUCCESSD(in, pos, name, data) return { \
+    true, { \
+        getCurrentPos(in), in, pos, Parser::Parser::name, data \
+    } \
+};
+TOKEN(END) {
     if (*in == ';' or *in == '\n')
-        return { true, 
-                 in + 1, 
-            { 
-                getCurrentPos(in - 1), in, 1, Tokens::END
-            }  
-        };
+        TOKEN_SUCCESS(in, in + 1, END);
     return {};
 }
-Tokenisator::Token_result STRICT_END(const char* in) {
+TOKEN(STRICT_END) {
     if (*in == ';')
-        return { true, 
-                 in + 1, 
-            { 
-                getCurrentPos(in - 1), in, 1, Tokens::END
-            }  
-        };
+        TOKEN_SUCCESS(in, in + 1, STRICT_END);
     return {};
 }
-Tokenisator::Token_result NEWLINE(const char* in) {
+TOKEN(NEWLINE) {
     if (*in == '\n')
-        return { true, 
-                 in + 1, 
-            { 
-                getCurrentPos(in - 1), in, 1, Tokens::END
-            }  
-        };
+        TOKEN_SUCCESS(in, in + 1, NEWLINE);
     return {};
 }
 // <not implemented> use parralel_parsing;
@@ -43,7 +50,7 @@ Tokenisator::Token_result NEWLINE(const char* in) {
             FILE RULES
     ###########################
 */
-Tokenisator::Token_result ID(const char* in) {
+Rule(id) {
     int c = 0;
     const char* pos = in;
     Token_result result;
@@ -78,17 +85,14 @@ Tokenisator::Token_result ID(const char* in) {
     current.push(_local_start, pos);
     // construct result as valid
     // extract full string from the first group
-    result.result = true;
-    result.newpos = pos;
-    result.token = Token(getCurrentPos(in), in, pos, Tokens::ID, current.full());
-    return result;
+    RULE_SUCCESSD(in, pos, id, current.fill());
 }
-static Import_path (const char* in) {    
+Rule(Import_path) {    
     auto pos = in;
+    //! <pattern> csequence
     while (
         not 
         (
-            *pos == '^' ||
             *pos == '"' ||
             *pos == '<' ||
             *pos == '>' ||
@@ -98,9 +102,43 @@ static Import_path (const char* in) {
             *pos == '.' ||
         )
     ) ++pos;
-    if (pos == in) return {};
-    return { getCurrentPos(in), in, pos, Tokens::Priv_Import_path, string_part(in, pos) };
+    if (pos == in) return {}; // zero match
+    RULE_SUCCESSD(in, pos, Priv_Import_path, string_part(in, pos));
 };
+Rule(Import_ext) {    
+    auto pos = in;
+    std::vector<Rule_result> data;
+    while(true) {
+        if (*pos == '.') {
+            ++pos;
+            auto match_res = id(pos);
+            if (match_res.result) {
+                data.push_back(match_res);
+                pos += match_res.token.length();
+                continue;
+            }
+        }
+        break;
+    }
+    if (pos == in) return {}; // zero match
+    RULE_SUCCESSD(in, pos, Priv_Import_ext, data);
+};
+Rule(Import_file) {
+    auto path_res = Import_path(in);
+    if (!path_res.result) return {};
+    auto pos = in + path_res.token.length();
+    auto ext_res = Import_ext(pos);
+    if (!ext_res.result) return {};
+    pos += ext_res.token.length();
+    // is is just a pain
+    std::unordered_map<const char*, std::any> data = {
+        { "path", path_res },
+        { "ext", TO(std::vector<Rule_result>, ext_res.token.data).back() },
+        { "fullext", ext_res },
+        { "fullpath", std::string( TO(std::string_part, path_res.token.data )) + std::string(ISC_STD::join( TO(std::string_part, ext_res.token.data ) )) }
+    };
+    RULE_SUCCESSD(in, pos, Priv_Import_file, data);
+}
 import: 
     // import core/core.isc // single file import with exact extension
     // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
@@ -163,6 +201,7 @@ use:
             value: %2,
 ;
 
-
+#undef TOKEN
+#undef RULE
 
 

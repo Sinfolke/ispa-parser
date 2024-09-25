@@ -24,7 +24,6 @@ Rule:
         $var val = is_id ? $3>%2 : $2;
         $char qualifier = matched(%3) ? %3.data : '';
 
-        // TODO: add CLL recognition
         (( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?) | cll
 
         data: 

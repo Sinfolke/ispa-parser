@@ -68,6 +68,16 @@ namespace {
  * 
 */
 namespace ISC_STD {
+template<typename T>
+std::string join(const std::vector<T>& elements, const std::string& delimiter = "") {
+    std::string str;
+    for (size_t i = 0; i < elements.size() - 1; ++i) {
+        str += elements[i];
+        str += delimiter;
+    }
+    str += elements.back();
+    return str;
+}
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 
@@ -162,6 +172,7 @@ class string_part {
     }
 };
 struct _return_base {
+public:
     std::size_t startpos;
     std::string_view str; // char* start, long long len
 
@@ -191,10 +202,15 @@ struct _return_base {
      * 
      * @return long long 
      */
-    long long endpos() const {
+    std::size_t endpos() const {
         if (startpos == std::string::npos)
             throw return_base_exception("endpos");
         return startpos + str.length();
+    }
+    std::size_t length() const {
+        if (startpos == std::string::npos)
+            throw return_base_exception("length");
+        return str.length();
     }
     bool empty() const noexcept {
         return startpos == std::string::npos || str.empty();
@@ -217,10 +233,10 @@ struct _return : public _return_base {
     _return(const RETURN_T& name) : _return_base(), name(name) {}
     _return(const RETURN_T& name, std::any data) : _return_base(), name(name), data(data) {}
     const RETURN_T name = RETURN_T::NONE;
-    std::any data = {};
+    std::any data;
     _return<RETURN_T> operator=(_return<RETURN_T> const& other) {
-        _return_base.operator=(other);
-        name = other.name;
+        startpos = other.startpos;
+        return *this;
     }
 };
 template<class _RETURN_TOKEN, class _RETURN_RULE>
@@ -392,14 +408,18 @@ class Group {
             }
             return o;
         }
-    void push(const _return<RETURN_TOKEN>* ret) {
-        member.push(str);
-    }
-    void push(const _return<RETURN_RULE>* ret) {
-       member.push(str);
+    template<class RETURN_T>
+    void push(const _return<RETURN_T>* ret) {
+        member.push(ret);
     }
     void push(const string_part& str) {
         member.push(str);
+    }
+    void push(const char* start, const char* end) {
+        member.push(string_part(start, end));
+    }
+    void push(const char* start, std::size_t len) {
+        member.push(string_part(start, end));
     }
     void push() {
         member.push();
@@ -479,7 +499,6 @@ class Groups {
 template<class RESULT_T>
 struct match_result {
     bool result = false;
-    const char* newpos = nullptr;
     _return<RESULT_T> token;
 };
 
@@ -584,11 +603,6 @@ public:
         }
         return *this;
     }
-    // // Token methods
-    // Token_result NUMBER(const char* const in);
-    // Token_result OP(const char* const in);
-    // Token_result COP(const char* const in);
-    // Token_result END(const char* const in);
 
     Tokenizator_base& operator=(const Tokenizator_base& tokenizator) {
         tokens = tokenizator.tokens;

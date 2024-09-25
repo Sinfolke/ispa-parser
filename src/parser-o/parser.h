@@ -10,6 +10,7 @@
 #ifndef ISC_OUT_PARSER
 #define ISC_OUT_PARSER
 #include <iscstdlibc++.h>
+#include <unordered_map>
 // here it checks according to the backward version
 #if _ISC_STD_LIB_VER < 0 // skip subver check
 #error  "Your library version is too old. Please, update your library."
@@ -29,7 +30,7 @@ namespace Parser { // according to name
         END, ID, Priv_Import_path
     };
     /**
-     * @brief List of all rule names including auto generated names
+     * @brief List of all Rule names including auto generated names
      */
     enum class Rules {
         _0,
@@ -49,24 +50,30 @@ namespace Parser { // according to name
     // a sequence of elements
 
     template<int SIZE> using Group = ISC_STD::Group<Tokens, Rules, SIZE>;
-
+    #define TOKEN(x) Token_result x (const char* in);
+    #define Rule(x) Rule_result x (const char* in);
     /* Tokenizator FOR THIS PARSER */
     class Tokenisator : public ISC_STD::Tokenisator_base<Tokens> {
         public:
         TokenFlow makeTokenFlow();
         // Token methods
-        Token_result END(const char* in);
+        TOKEN(END);
+        TOKEN(STRICT_END);
+        TOKEN(NEWLINE);
     };
 
     /* PARSER */
     class Parser : ISC_STD::Parser_base<Tokens, Rules> {
+    private:
+        Rule(Import_path);
     public:
         Tree parse();
 
         // Rule methods
-        Rule_result expr(const Token* _in);
+        Rule(id);
     };
-
+    #undef TOKEN
+    #undef Rule
 
 }
 
