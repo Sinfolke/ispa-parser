@@ -37,7 +37,8 @@ static volatile auto b0x7 = "   COMPILER: " DEVINFO_COMPILER_STR "\n";
 // undefined errors 
 //static volatile auto b0xA = "   Build version: " #BUILD_VER "\n";
 static volatile auto b0xD = "   Build architecture: " DEVINFO_ARCH_KIND_STR " (" DEVINFO_ARCH_STR ")\n";
-static volatile auto b0xC = "   Build on " __DATE__ ", " BUILD_OFC_STR
+static volatile auto b0xC = "   Build platform: " DEVINFO_OS " (" DEVINFO_OS_STR ")\n";
+static volatile auto b0xE = "   Build on " __DATE__ ", " BUILD_OFC_STR
 #ifdef DEBUG
     BUILD_STABLE_STR ", Debug "
 #else

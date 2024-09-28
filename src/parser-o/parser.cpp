@@ -1,5 +1,5 @@
 #include "parser.h"
-
+// no extra tokens here to simplify parsing
 /*
     ###########################
             END RULES
@@ -7,7 +7,7 @@
 */
 #define TOKEN(x) Parser::Token_result Parser::Tokenisator::x (const char* in)
 #define Rule(x) Parser::Rule_result Parser::Parser::x (const char* in)
-#define TO(t, x) std::any_cast<x>()
+#define TO(t, x) std::any_cast<t>(x)
 #define TOKEN_SUCCESS(in, pos, name) return { \
     true, { \
         getCurrentPos(in), in, pos, Parser::Tokens::name \
@@ -50,6 +50,7 @@ TOKEN(NEWLINE) {
             FILE RULES
     ###########################
 */
+#include "dataTypes.cpp"
 Rule(id) {
     int c = 0;
     const char* pos = in;
@@ -117,6 +118,7 @@ Rule(Import_ext) {
                 pos += match_res.token.length();
                 continue;
             }
+            --pos; // dot is skipped
         }
         break;
     }
@@ -130,61 +132,122 @@ Rule(Import_file) {
     auto ext_res = Import_ext(pos);
     if (!ext_res.result) return {};
     pos += ext_res.token.length();
-    // is is just a pain
+    // join
+    std::string joined;
+    for (auto obj : ext_res) {
+        joined += TO(std::string, obj.data);
+    }
     std::unordered_map<const char*, std::any> data = {
         { "path", path_res },
         { "ext", TO(std::vector<Rule_result>, ext_res.token.data).back() },
         { "fullext", ext_res },
-        { "fullpath", std::string( TO(std::string_part, path_res.token.data )) + std::string(ISC_STD::join( TO(std::string_part, ext_res.token.data ) )) }
+        { "fullpath", std::string( TO(std::string_part, path_res.token.data )) + joined }
     };
     RULE_SUCCESSD(in, pos, Priv_Import_file, data);
 }
-import: 
-    // import core/core.isc // single file import with exact extension
-    // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
-    // import [language/cpp] expr ID template preprocessor/directive/define // import from folder several files same time
-    //      [another syntax of same action] import language/cpp [expr, ID, template, preprocessor/directive/define]
-    // import language/cpp/data { INTLIT, BOOLLIT, STRLIT} // import some certain rules from the file
-    // import language/cpp/data { INTLIT = INT, BOOLLIT = BOOL, STRLIT } // import certain rules from the file changing their incoming name in the current project
-    // import [language/cpp] expr ID data { INTLIT = INT, BOOLIT = BOOL, STRLIT }, core/core.isc;
+Rule(Import_general_dir) {
+    auto pos = in;
+    if (*pos != '[')
+        return {};
+    
+    auto path_res = Import_path(++pos);
+    if (!path_res.result) return {};
+    pos += path_res.token.length();
 
-
-    'import' #file | #general_dir | #rulespecific (',' #file | #general_dir | #rulespecific)*
-    data: %2 + matched(%3) ? %3.join() : "";
-
-    #path:
-        [^*"<>|:?\.]+
-        data: %1;
-    ;
-    #ext:
-        ('.' ID)*
-        data: %2;
-    ;
-    #file:
-        path ext*
-        data:
-            path: %1
-            ext: %2[%2.size()]
-            fullext: %2
-            fullpath: %1 + %2.join()
-        ;
-    ;
-    #general_dir:
-        '[' path ']' file+
-        data:
-            path: %1,
-            files: %2
-        ;
-    ;
-    #rulespecific:
-        file '{' (ID ('=' ID)? )+  '}'
-        data:
-            path: %1
-            tokens: $1>%1
-            tokens_current_name: $2>%2
-        ;
-    ;
-;
+    if (*pos != ']')
+        return {};
+    
+    auto _local_start = ++pos;
+    std::vector<Rule> files;
+    while(true) {
+        auto file_res = Import_file(pos);
+        if (!file_res.result)
+            break;
+        pos += file_res.token.length();
+        files.push_back(file_res.token);
+    }
+    if (pos == _local_start)
+        return {}; // zero match
+    std::unordered_map<const char*, std::any> data {
+        { "path", path_res.token },
+        { "files", files }
+    };
+    RULE_SUCCESSD(in, pos, Priv_Import_general_dir, files);
+}
+Rule(Import_rule_specific) {
+    auto pos = in;
+    auto file_res = Import_file(pos);
+    if (!file_res.result)
+        return {};
+    pos += file_res.token.length();
+    if (*pos != '{')
+        return {};
+    auto _local_start = ++pos;
+    std::vector<Token> tokens;
+    std::vector<Token> tokens_current_name;
+    while (true) {
+        auto id_res = id(pos);
+        if (!id_res.result)
+            break;
+        tokens.push_back(id_res.token);
+        pos += id_res.token.length();
+        if (*pos == '=') {
+            ++pos;
+            auto id2_res = id(pos);
+            if (!id2_res.result)
+                break;
+            tokens_current_name.push_back(id2_res.token);
+        }
+    }
+    if (_local_start == pos)
+        return {}; // zero match
+    std::unordered_map<const char*, std::any> data {
+        { "path", file_res.token },
+        { "tokens", tokens },
+        { "tokens_current_name", tokens_current_name }
+    }
+    RULE_SUCCESSD(in, pos, Priv_Import_rule_specific, data);
+}
+Rule(Import) {
+    if (strncmp(in, "import", sizeof("import") - 1))
+        return {};
+    auto pos = in + sizeof("import") - 1;
+    auto first_rule_res = Import_file(pos);
+    if (!first_rule_res.result) {
+        first_rule_res = Import_general_dir(pos);
+        if (!first_rule_res.result) {
+            first_rule_res = Import_rule_specific(pos);
+            if (!first_rule_res.result)
+                return {};
+        }
+    }
+    pos += first_rule_res.token.length();
+    std::vector<Token> additional_paths;
+    while (*pos == ',') {
+        ++pos;
+        auto result = Import_file(pos);
+        if (!result.result) {
+            result = Import_general_dir(pos);
+            if (!result.result) {
+                result = Import_rule_specific(pos);
+                if (!result.result)
+                    break;
+            }
+        }
+        pos += result.token.length();
+        additional_paths.push_back(result.token);
+    }
+    using obj_type = std::unordered_map<const char*, std::any>;
+    std::vector<obj_type> data = {
+        first_rule_res.token
+    };
+    // push remaining arguments inlining the array
+    data.insert(data.end(), additional_paths.begin(), additional_paths.end());
+    for (const obj : additional_paths) {
+        data.push_back( TO(obj_type, obj.data ) );
+    }
+    RULE_SUCCESSD(in, pos, Import, data);
+}
 use: 
     $object<string> data = {  %2.name: %2.value };
     for (int i = 0; i < $1>%2.size(); i++):

@@ -35,7 +35,7 @@ ARRAY:
     $data.push(%2);
     $data.concat(%4);
 
-    '[' ( ANY_DATA (',' ANY_DATA )* )? ']'
+    '[' ( (ANY_DATA ',')* )? ']'
 
 OBJECT:
     $object<any> data = {  %2: %4 };

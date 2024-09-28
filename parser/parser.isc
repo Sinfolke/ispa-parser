@@ -25,7 +25,7 @@ Import:
 
 
     'import' #file | #general_dir | #rulespecific (',' #file | #general_dir | #rulespecific)*
-    data: %2 + matched(%3) ? %3.join() : "";
+    data: [%2, ...%4];
 
     #path:
         [^*"<>|:?\.]+
@@ -47,8 +47,8 @@ Import:
     #general_dir:
         '[' path ']' file+
         data:
-            path: %1,
-            files: %2
+            path: %2,
+            files: %4
         ;
     ;
     #rulespecific:
