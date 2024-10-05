@@ -1,0 +1,314 @@
+/*
+    This is the library to do tests
+ */
+
+#ifndef CPUF_WORKTIME
+#define CPUF_WORKTIME 
+#pragma once
+#include <iostream>
+#include <chrono>
+#include <string>
+#include <iomanip>
+#include <functional>
+#include <cmath>
+struct TEST_TIME_PROP {
+    std::size_t count = 0;
+    bool output = true;
+    int it = 10000;
+};
+// Define a struct for returning test time results
+struct TEST_TIME {
+    struct Meangful_t {
+        int id;
+        int id_it;
+        const char* name;
+        const char* it_name;
+        double val;
+        double it_val;
+        
+    };
+    double sec;
+    double millisec;
+    double microsec;
+    double nanosec;
+    double sec_it;
+    double millisec_it;
+    double microsec_it;
+    double nanosec_it;
+    /**
+     * @brief Get how much time it is faster/slower than the input TEST_TIME. Returns the same structure but with substracted elements. Therefore if element is lower zero it is faster, if higher then slower.
+     * 
+     */
+    TEST_TIME getDifference(const TEST_TIME& time) {
+        TEST_TIME current = *this;
+        current.sec -= time.sec;
+        current.millisec -= time.millisec;
+        current.microsec -= time.microsec;
+        current.nanosec -= time.nanosec;
+
+        current.sec_it -= time.sec_it;
+        current.millisec -= time.millisec_it;
+        current.microsec_it -= time.microsec_it;
+        current.nanosec_it -= time.nanosec_it;
+        return current;
+    }
+    /**
+     * @brief like the getDifference, if the element is lower zero it is slower, if higher then faster
+     * 
+     */
+    TEST_TIME getDifferenceQuickler(const TEST_TIME& time) {
+        TEST_TIME current = getDifference(time);
+        current.sec *= -1;
+        current.millisec *= -1;
+        current.microsec *= -1;
+        current.nanosec *= -1;
+
+        current.sec_it *= -1;
+        current.millisec *= -1;
+        current.microsec_it *= -1;
+        current.nanosec_it *= -1;
+        return current;
+    }
+    /**
+     * @brief Get difference between two meangful objects
+     * 
+     * @return Meangfuli_t 
+     */
+    static Meangful_t getDifferenceMeangful(Meangful_t A, Meangful_t B) {
+        // convert to the meangful of A if missmatch
+        swapTimeunit(A, B);
+        A.val -= B.val;
+        A.it_val -= B.it_val;
+        return A;
+    }
+    static Meangful_t getDifferenceQuicklerMeangful(Meangful_t A, const Meangful_t& B) {
+        A = getDifferenceMeangful(A,B);
+        A.val *= -1;
+        A.it_val *= -1;
+        return A;
+    }
+    Meangful_t getLowestMeangful() {
+        return getLowestMeangful(*this);
+    }
+    Meangful_t getMoreLowestMeangful() {
+        return getMoreLowestMeangful(*this);
+    }
+    /**
+     * @brief Get lowest time unit which has meangful values (>= 1). Names are "seconds", "milliseconds", "microseconds", "nanoseconds";     * 
+     */
+    Meangful_t getLowestMeangful(const TEST_TIME& time) {
+        auto itm = getLowestMeangfulIt(time);
+        if (time.sec >= 1) {
+            return {0, itm.id, "seconds", itm.name, time.sec, itm.val};
+        } else if (time.millisec >= 1) {
+            return {1, itm.id, "milliseconds", itm.name, time.millisec, itm.val};
+        } else if (time.microsec >= 1) {
+            return {2, itm.id, "microseconds", itm.name, time.microsec, itm.val};
+        } else {
+            return {3, itm.id, "nanoseconds", itm.name, time.nanosec, itm.val};
+        }
+    };
+    /**
+     * @brief Get lowest at one than getLowestMeangful
+     * 
+     */
+    Meangful_t getMoreLowestMeangful(const TEST_TIME& time) {
+        auto itm = getMoreLowestMeangfulIt(time);
+        if (time.sec >= 1) {
+            return {0, itm.id, "milliseconds", itm.name, time.millisec, itm.val};
+        } else if (time.millisec >= 1) {
+            return {1, itm.id, "microseconds", itm.name, time.microsec, itm.val};
+        } else {
+            return {2, itm.id, "nanoseconds", itm.name, time.nanosec, itm.val};
+        }
+    };
+    static void outTimeDifference(TEST_TIME result1, TEST_TIME result2) {
+        std::cout << "PRINTING: " << std::endl;
+        auto r1_meangful = result1.getLowestMeangful();
+        auto r1_meangful2 = result1.getMoreLowestMeangful();
+        auto r2_meangful = result2.getLowestMeangful();
+        auto r2_meangful2 = result2.getMoreLowestMeangful();
+        swapTimeunit(r1_meangful, r2_meangful);
+        swapTimeunit(r1_meangful2, r2_meangful2);
+
+        const auto unit1 = TEST_TIME::getDifferenceQuicklerMeangful(r1_meangful, r2_meangful);
+        const auto unit2 = TEST_TIME::getDifferenceQuicklerMeangful(r1_meangful2, r2_meangful2);
+        std::cout << "Time difference: " << unit1.val  << " " << unit1.name;
+                if (unit1.id != 3) 
+                    std::cout << " (" << unit2.val << " " << unit2.name << ")";
+        std::cout << ", " << unit1.it_val << " " << unit1.it_name;
+                if (unit1.id_it != 3)
+                    std::cout << "(" << unit2.it_val << " " << unit2.it_name << ") / it" << std::endl;
+    }
+    void outTimeDifference(TEST_TIME result2) {
+        outTimeDifference(*this, result2);
+    }
+    static void swapTimeunit(Meangful_t A, Meangful_t& B) {
+        if (A.id > B.id) { // B has bigger unit than A
+            do {
+                B.val/=1000;
+                B.id++;
+            } while (A.id > B.id);
+        } else if (A.id < B.id) { // A has bigger unit than B
+            do {
+                B.val*=1000;
+                B.id--;
+            } while (A.id < B.id);
+        }
+        if (A.id_it > B.id_it) { // B iteration unit is bigger than A iteration unit
+            do {
+                B.it_val/=1000;
+                B.id_it++;
+            } while (A.id_it > B.id_it);
+        } else if (A.id_it < B.id_it) { // A iteration unit is bigger than B iteration unit
+            do {
+                B.it_val*=1000;
+                B.id_it--;
+            } while (A.id_it < B.id_it);
+        }
+        B.it_name = nameById(B.id_it);
+    }
+    private:
+    static const char* nameById(const int id) {
+        switch (id) {
+            case 0:
+                return "seconds";
+            case 1:
+                return "milliseconds";
+            case 2:
+                return "microseconds";
+            default:
+                return "nanoseconds";
+        }
+    }
+    struct Meangfuli_t {
+        int id;
+        const char* name;
+        const double val;
+        
+    };
+    Meangfuli_t getLowestMeangfulIt() {
+        return getLowestMeangfulIt(*this);
+    }
+    Meangfuli_t getMoreLowestMeangfulIt() {
+        return getMoreLowestMeangfulIt(*this);
+    }
+    /**
+     * @brief Get lowest time unit which has meangful values (>= 1). Names are "seconds", "milliseconds", "microseconds", "nanoseconds";     * 
+     */
+    Meangfuli_t getLowestMeangfulIt(const TEST_TIME& time) {
+        if (time.sec_it >= 1) {
+            return {0, "seconds", time.sec_it};
+        } else if (time.millisec_it >= 1) {
+            return {1, "milliseconds", time.millisec_it};
+        } else if (time.microsec_it >= 1) {
+            return {2, "microseconds", time.microsec_it};
+        } else {
+            return {3, "nanoseconds", time.nanosec_it};
+        }
+    };
+    /**
+     * @brief Get lowest at one than getLowestMeangful
+     * 
+     */
+    Meangfuli_t getMoreLowestMeangfulIt(const TEST_TIME& time) {
+        if (time.sec_it >= 1) {
+            return {0, "milliseconds", time.millisec_it};
+        } else if (time.millisec_it >= 1) {
+            return {1, "microseconds", time.microsec_it};
+        } else {
+            return {2, "nanoseconds", time.nanosec_it};
+        }
+    };
+
+};
+static std::chrono::high_resolution_clock::time_point __savedtime;
+// Define a function type for functions with no parameters and void return type
+typedef std::function<void()> EXECTEST_T;
+
+// Function for testing execution time of a function
+struct TEST_TIME test_time(const EXECTEST_T& test, TEST_TIME_PROP props) {
+    auto output = props.output;
+    auto it = props.it;
+    auto count = props.count;
+    // Measure time for the first segment
+    auto start = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < it; ++i) {
+        test();
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Output the results
+    const std::chrono::duration<double, std::nano> duration = end - start;
+    const double ns = duration.count();
+    const double us = round(ns / 1000); // 1000, 3
+    const double ms = round(ns / 1000000); // 1000^2, 6
+    const double sec = round(ns / 1000000000); // 1000^3, 9
+    const double it_ns = ns / it;
+    const double it_ms = ms / it;
+    const double it_us = us / it;
+    const double it_sec = sec / it;
+
+    if (output) {
+        std::cout << std::fixed << std::setprecision(2);
+        std::string total_name1;
+        std::string total_name2;
+        double* total_t1;
+        double* total_t2;
+        double* it_t;
+        if (sec >= 1) {
+            total_name1 = "seconds";
+            total_name2 = "milliseconds";
+            total_t1 = const_cast<double*>(&sec);
+            total_t2 = const_cast<double*>(&ms);
+            it_t = const_cast<double*>(&it_ms);
+        } else if (ms >= 1) {
+            total_name1 = "milliseconds";
+            total_name2 = "macroseconds";
+            total_t1 = const_cast<double*>(&ms);
+            total_t2 = const_cast<double*>(&us);
+            it_t = const_cast<double*>(&it_us);
+        } else {
+            total_name1 = "macroseconds";
+            total_name2 = "nanoseconds";
+            total_t1 = const_cast<double*>(&us);
+            total_t2 = const_cast<double*>(&ms);
+            it_t = const_cast<double*>(&it_ns);
+        }
+        std::cout << "Time taken";
+            if (count)
+                std::cout << " for unit " << count;
+            std::cout << ": " << *total_t1 << " " << total_name1  <<
+            "( " << *total_t2 << " " << total_name2 << " ), "
+            << *it_t << " " << total_name2 << " /it (it=" << it << ")" << std::endl;
+    }
+    return {
+        sec,
+        ms,
+        us,
+        ns,
+        it_sec,
+        it_ms,
+        it_us,
+        it_ns
+    };
+}
+std::chrono::high_resolution_clock::time_point currentTime() noexcept {
+    return std::chrono::high_resolution_clock::now();
+}
+std::chrono::high_resolution_clock::time_point saveTime() noexcept {
+    __savedtime = currentTime();
+    return __savedtime;
+}
+
+auto getDuration() noexcept {
+    const auto newtime = currentTime();
+    const auto result = newtime - __savedtime;
+    __savedtime = newtime;
+    return result;
+}
+auto updateTime() noexcept {
+    __savedtime=currentTime();
+}
+
+#endif // #define CPUF_WORKTIME

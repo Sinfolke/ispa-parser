@@ -1,0 +1,7 @@
+#ifndef __cplusplus
+    #error "This header is only for C++."
+#endif
+#pragma once
+
+#include "./devinfo.h"
+#include "./cdevinfo"

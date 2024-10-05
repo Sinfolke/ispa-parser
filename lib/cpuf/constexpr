@@ -1,0 +1,66 @@
+#ifndef __cplusplus
+    #error "This header is only for C++."
+#endif
+#pragma once
+#include <type_traits>
+#include <string>
+
+template <int x>
+constexpr double __CPUF_INTERNAL_ROOT__() {
+    static_assert(x >= 0, "Extracting root from a negative integer");
+    if (x <= 1) return x;
+    double guess = x / 2; // Initial guess, can be improved for better performance
+    double prev_guess = 0;
+    while (guess != prev_guess) {
+        prev_guess = guess;
+        guess = (guess + x / guess) / 2; // Newton's method for square root
+    }
+    return guess;
+}
+
+template<typename T, std::enable_if_t<std::is_integral<T>::value || std::is_floating_point<T>::value, int> = 0>
+constexpr T POWER(const T& x, int n) {
+    T r = x;
+    while (n-- > 1)
+        r *= x;
+    return r;
+}
+
+template<typename T, std::enable_if_t<std::is_integral<T>::value || std::is_floating_point<T>::value, int> = 0>
+constexpr T ABS(T x) {
+    return x < 0 ? -x : x;
+}
+
+#define ROOT(x) __CPUF_INTERNAL_ROOT__<x>()
+
+/**
+ * @brief The compile time strcmp
+ * 
+ * @param lhs The first string
+ * @param rhs The second string
+ * @return constexpr const int Result of comparasion
+ */
+constexpr const int STRCMP( char const* lhs, char const* rhs )
+{
+    return (('\0' == lhs[0]) && ('\0' == rhs[0])) ? 0
+        :  (lhs[0] != rhs[0]) ? (lhs[0] - rhs[0])
+        : STRCMP( lhs+1, rhs+1 );
+}
+/**
+ * @brief The compile time strncmp
+ * 
+ * @param lhs The first string
+ * @param rhs The second string
+ * @param n The number of symbols to compare
+ * @return constexpr const int Result of comparasion
+ */
+constexpr const int STRNCMP( char const* lhs, char const* rhs, int n )
+{
+    for (int i = 0; i < n; i++) {
+        if (lhs[i] == rhs[i]) {
+            if (lhs[i] == '\0')
+                return 0;
+        } else return lhs[i] - rhs[i];
+    }
+    return 0;
+}
