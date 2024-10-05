@@ -139,39 +139,32 @@ function(get_include_paths result_handler)
     set(INCL_FLAGS "")
     set(arg 0)
     set(next_begin 0)
-
-    # Iterate through the flags to find include paths (-I or /I)
     foreach(i RANGE 0 "${len}")
         if ("${i}" STREQUAL "${next_begin}")
-
             # Extract the current character
             string(SUBSTRING "${flags}" "${i}" 1 c)
-            
-            # Check if it's a possible flag marker (- or /)
-            if("${c}" STREQUAL "-") # maybe add later: OR "${c}" STREQUAL "/"
-                set(arg 1)
-            elseif("${c}" STREQUAL "I" AND "${arg}")
-                # We found an include flag (-I or /I), now extract the path
-                set(arg 0)
-                math(EXPR i "${i} + 1")
-                string(SUBSTRING "${flags}" "${i}" 1 c)
-                if("${c}" STREQUAL "\"")
-                    # If the path is enclosed in quotes, handle it
+            if (NOT ${c} STREQUAL " ")
+                if("${c}" STREQUAL "-") # maybe add later: OR "${c}" STREQUAL "/" for cl.exe compiler
+                    set(arg 1)
+                elseif("${c}" STREQUAL "I" AND "${arg}")
+                    set(arg 0)
                     math(EXPR i "${i} + 1")
-                    parseString("${flags}" "${i}" "${len}" end_pos)
-                else()
-                    # Otherwise, parse until the next space
-                    parseUntilSpace("${flags}" "${i}" "${len}" end_pos)
-                endif()
-                message("Got end_pos: ${end_pos}")
-                if("${end_pos}" STREQUAL "-1")
-                    return()
-                endif()
+                    string(SUBSTRING "${flags}" "${i}" 1 c)
+                    if("${c}" STREQUAL "\"")
+                        math(EXPR i "${i} + 1")
+                        parseString("${flags}" "${i}" "${len}" end_pos)
+                    else()
+                        parseUntilSpace("${flags}" "${i}" "${len}" end_pos)
+                    endif()
+                    if("${end_pos}" STREQUAL "-1")
+                        return()
+                    endif()
 
-                # Extract the include path
-                string(SUBSTRING "${flags}" "${i}" "${end_pos}" str)
-                list(APPEND INCL_FLAGS "${str}")
-                math(EXPR next_begin "${i} + ${end_pos}")
+                    # Extract the include path
+                    string(SUBSTRING "${flags}" "${i}" "${end_pos}" str)
+                    list(APPEND INCL_FLAGS "${str}")
+                    math(EXPR next_begin "${i} + ${end_pos} + 1")
+                endif()
             endif()
             math(EXPR next_begin "${next_begin} + 1")
         endif()
@@ -180,39 +173,42 @@ function(get_include_paths result_handler)
     set(${result_handler} "${INCL_FLAGS}" PARENT_SCOPE)
 endfunction()
 
+function(trim_spaces str result_handler)
+    string(REGEX REPLACE "^[ \t]+" "" str "${str}")
+    string(REGEX REPLACE "[ \t]+$" "" str "${str}")
+    set(${result_handler} "${str}" PARENT_SCOPE)
+endfunction()
 
 function(find_file include_paths file result_handler)
     foreach(sub_dir IN LISTS include_paths)
-        # Check if the specific file exists in the subdirectory
+        trim_spaces("${sub_dir}" sub_dir)
         set(PATH "${sub_dir}/${file}")
-        message("PATH: ${PATH}")
-        if(EXISTS(PATH) AND NOT IS_DIRECTORY(PATH))
-            message("FOUND ${file} in ${sub_dir}")
-            set(${result_handler} "${sub_dir}" PARENT_SCOPE)  # Use PARENT_SCOPE to modify outside variable
+        if(EXISTS "${PATH}" AND NOT IS_DIRECTORY("${PATH}"))
+            set(${result_handler} "${sub_dir}" PARENT_SCOPE)
             return()
         endif()
     endforeach()
     set(${result_handler} "" PARENT_SCOPE)
 endfunction()
 
-function(find_dir include_paths dir result_handler)
-    message(STATUS "dir: ${dir}")
+function(find_dir include_paths file result_handler)
     foreach(sub_dir IN LISTS include_paths)
-        # Check if the specific directory exists in the subdirectory
-        if(EXISTS("${sub_dir}/${dir}") AND IS_DIRECTORY("${sub_dir}/${dir}"))
-            message("FOUND ${dir} in ${sub_dir}")
-            set(${result_handler} "${sub_dir}" PARENT_SCOPE)  # Use PARENT_SCOPE to modify outside variable
+        trim_spaces("${sub_dir}" sub_dir)
+        set(PATH "${sub_dir}/${file}")
+        # Why IS_DIRECTORY returns false for dirs ????
+        if(EXISTS "${PATH}")
+            set(${result_handler} "${sub_dir}" PARENT_SCOPE)
             return()
         endif()
     endforeach()
     set(${result_handler} "" PARENT_SCOPE)
 endfunction()
-# Does not matter whether it is a file or dir
+
 function(find_in_fs include_paths unit result_handler)
     foreach(sub_dir IN LISTS include_paths)
-        # Check if the specific file or directory exists in the subdirectory
-        if(EXISTS "${sub_dir}/${unit}")
-            set(${result_handler} "${sub_dir}" PARENT_SCOPE)  # Use PARENT_SCOPE to modify outside variable
+        set(PATH "${sub_dir}/${unit}")
+        if(EXISTS "${PATH}")
+            set(${result_handler} "${sub_dir}" PARENT_SCOPE)
             return()
         endif()
     endforeach()
