@@ -66,9 +66,9 @@ use:
         data[$1>%2[i].name] = $1>%2[i].value;
 
 
-    'use' #USE (',' #USE)*
+    'use' #unit (',' #unit)*
 
-    #USE:
+    #unit:
         id (':' [^,]+ | STRING)?
 
         data:

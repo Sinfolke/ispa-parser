@@ -1,10 +1,6 @@
 #include "parser.h"
 // no extra tokens here to simplify parsing
-/*
-    ###########################
-            END RULES
-    ###########################
-*/
+
 #define TOKEN(x) Parser::Token_result Parser::Tokenisator::x (const char* in)
 #define Rule(x) Parser::Rule_result Parser::Parser::x (const char* in)
 #define TO(t, x) std::any_cast<t>(x)
@@ -28,21 +24,6 @@
         getCurrentPos(in), in, pos, Parser::Parser::name, data \
     } \
 };
-TOKEN(END) {
-    if (*in == ';' or *in == '\n')
-        TOKEN_SUCCESS(in, in + 1, END);
-    return {};
-}
-TOKEN(STRICT_END) {
-    if (*in == ';')
-        TOKEN_SUCCESS(in, in + 1, STRICT_END);
-    return {};
-}
-TOKEN(NEWLINE) {
-    if (*in == '\n')
-        TOKEN_SUCCESS(in, in + 1, NEWLINE);
-    return {};
-}
 // <not implemented> use parralel_parsing;
 // spacemode mixed;
 /*
@@ -50,7 +31,10 @@ TOKEN(NEWLINE) {
             FILE RULES
     ###########################
 */
+#include "end.cpp"
 #include "dataTypes.cpp"
+#include "Rule.cpp"
+
 Rule(id) {
     int c = 0;
     const char* pos = in;
@@ -248,23 +232,59 @@ Rule(Import) {
     }
     RULE_SUCCESSD(in, pos, Import, data);
 }
-use: 
-    $object<string> data = {  %2.name: %2.value };
-    for (int i = 0; i < $1>%2.size(); i++):
-        data[$1>%2[i].name] = $1>%2[i].value;
-
-
-    'use' #USE (',' #USE)*
-
-    #USE:
-        ID (':' [^,]+ | STRING)?
-
-        data:
-            name: %1,
-            value: %2,
-;
+Rule(use) {
+    auto pos = in;
+    std::unordered_map<const char*, std::string> data();
+    if (strncmp(pos, "use", 3)) {
+        return {};
+    }
+    pos += 3;
+    auto use_unit_res = use_unit(pos);
+    if (not use_unit_res.result)
+        return {};
+    pos += use_unit_res.token.length();
+    std::vector<Rule> use_unit_results_2(5); // generally no over 5 elements will be found & avoid extra allocations optimization
+    while(*pos == ',') {
+        auto use_unit_res = use_unit(pos + 1);
+        if (not use_unit_res.result)
+            break;
+        pos += use_unit_res.token.length() + 1;
+        use_unit_results_2.push_back(use_unit_res.token);
+    }
+    auto token = TO (std::unordered_map<const char*, const char*>, use_unit_res.token.data);
+    data[token["name"]] = token["value"];
+    for (int i = 0; i < use_unti_results_2.size(); ++i) {
+        token = TO (std::unordered_map<const char*, const char*>, use_unit_results_2[i].data);
+        data[token["name"]] = token["value"];
+    }
+    RULE_SUCCESSD(in, pos, use, data);
+}
+Rule(use_unit) {
+    auto pos = in;
+    auto id_res = id(pos);
+    if (!id_res)
+        return {};
+    pos += id_res.token.length();
+    std::string str;
+    if (*pos == ':') {
+        auto string_res = string(++pos); // std::string
+        if (string_res.result) {
+            str = TO(std::string, string_res.token.data);
+        } else {
+            while(*pos != ',') str += *pos;
+        }
+    }
+    std::unordered_map<const char*, std::string> data {
+        { "name", TO(std::string, id.token.data) },
+        { "value", str }
+    };
+    RULE_SUCCESSD(in, pos, use, data);
+}
 
 #undef TOKEN
-#undef RULE
-
-
+#undef Rule
+#undef TO(t, x)
+#undef TOKEN_SUCCESS(in, pos, name)
+#undef TOKEN_SUCCESSD(in, pos, name, data)
+#undef RULE_SUCCESS(in, pos, name)
+#undef RULE_SUCCESSD(in, pos, name, data)
