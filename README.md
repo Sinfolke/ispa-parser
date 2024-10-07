@@ -24,6 +24,5 @@
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - some little updates to iscstdlibc++
-  - futher implementations of writing parser
-  - progress of making argument parser
+  - updated cmake building script
+  - more converted rules to c++
