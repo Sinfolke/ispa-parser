@@ -105,8 +105,8 @@ class Args {
                             } elif (command == listener_cmd::STOP_PARSING) {
                                 break;
                             } elif (command == listener_cmd::CONTINUE_PARSING_AT) {
-                                if (command.arg == NULL) {
-                                    runterr("");
+                                if (command == listener_cmd::ABORT) {
+                                    runterr("Aborted parsing");
                                 }
                             }
                         }
@@ -143,4 +143,4 @@ class Args {
         ND std::vector<const char*> unnamed(void) {
             return _unnamed;
         };
-}
+};

@@ -43,4 +43,4 @@ void runterr(int LINE, const char* FUNC, const char* FILE, const char* msg, ...)
     putchar('\n');
     exit(1);
 }
-#define runterr(msg, ...) runterr(__LINE__, __FUNCTION__, __FILE__, msg, __VA_ARGS__)
+#define runterr(...) runterr(__LINE__, __FUNCTION__, __FILE__, __VA_ARGS__)
