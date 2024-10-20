@@ -27,7 +27,7 @@ show_help() {
     echo "    -common                    Generate common release files (without target-specific optimizations)"
     echo "    -gen <generator>           Use a specific build generator (supported make, ninja and Visual Studio). Note the string must be one that you'd pass to cmake -G option"
     echo "    -compiler <compiler>       Specify the compiler to use"
-    echo "    -job-no-save-limit         By default for compilation used all jobs - 1 to avoid system crashes. Use to disable"
+    echo "    -job-no-safe-limit         By default for compilation used all jobs - 1 to avoid system crashes. Use to disable"
     echo "    -job <num>                 Specify the number of jobs to use (inaffected by -job-no-save-limit)"
     echo "    -intel                     Generate release files using Intel C++"
     echo "    -amd                       Generate release files using AMD C++"
@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]]; do
             compiler="$2"
             shift
             ;;
-        -job-no-save-limit)
+        -job-no-safe-limit)
             # disables use of one less than maximum jobs to avoid compilation crashes
             # sometimes being needed
             jobs=$(nproc)

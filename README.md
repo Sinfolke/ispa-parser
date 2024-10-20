@@ -24,5 +24,5 @@
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - updated cmake building script
-  - more converted rules to c++
+  - Improvements to build system
+  - Some error handling mechanisms
