@@ -129,11 +129,8 @@ endfunction()
 
 # Function to check if a specific include path is present
 function(get_include_paths result_handler)
-    # Get the CFLAGS and CXXFLAGS environment variables
-    set(CFLAGS "$ENV{CFLAGS}")
-    set(CXXFLAGS "$ENV{CXXFLAGS}")
     # Combine CFLAGS and CXXFLAGS into a single string
-    set(flags "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} ${CFLAGS} ${CXXFLAGS}")
+    set(flags "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} $ENV{CFLAGS} $ENV{CXXFLAGS}")
     
     string(LENGTH "${flags}" len)
     set(INCL_FLAGS "")

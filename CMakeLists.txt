@@ -8,7 +8,6 @@ if (INCL_PATHS)
 find_dir(${INCL_PATHS} "cpuf" cpuf_path)
 #find_file(${INCL_PATHS} tinyformat.h tinyformat_path)
 endif()
-
 if (cpuf_path)
     message(STATUS "Found cpuf library in ${cpuf_path}")
 else()
