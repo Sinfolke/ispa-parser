@@ -1,31 +1,49 @@
 {
-    "version": 3,
-    "cmakeMinimumRequired": {
+  "version": 3,
+  "cmakeMinimumRequired": {
       "major": 3,
-      "minor": 19,
-      "patch": 0
-    },
-    "configurePresets": [
+      "minor": 28,
+      "patch": 3
+  },
+  "configurePresets": [
       {
-        "name": "ram-cache",
+        "name": "debug",
+        "hidden": false,
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/build",
+        "cacheVariables": {
+            "CMAKE_C_COMPILER": "clang",
+            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_FLAGS": "-Og",
+            "CMAKE_CXX_FLAGS": "-Og"
+        }
+      },
+      {
+        "name": "ram-debug",
         "hidden": false,
         "generator": "Ninja",
         "binaryDir": "/mnt/cmake_cache",
         "cacheVariables": {
-          "CMAKE_C_COMPILER": "icx",
-          "CMAKE_CXX_COMPILER": "icpx",
-          "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "./build",
-          "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "./build",
-          "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "./build"
+            "CMAKE_C_COMPILER": "clang",
+            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_FLAGS": "-Og",
+            "CMAKE_CXX_FLAGS": "-Og",
+            "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
+            "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/lib",
+            "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/archive"
+        }
+      },
+      {
+        "name": "all-ram-debug",
+        "hidden": false,
+        "generator": "Ninja",
+        "binaryDir": "/mnt/cmake_cache",
+        "cacheVariables": {
+            "CMAKE_C_COMPILER": "clang",
+            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_FLAGS": "-Og",
+            "CMAKE_CXX_FLAGS": "-Og"
         }
       }
-    ],
-    "buildPresets": [
-      {
-        "name": "ram-cache-build",
-        "hidden": false,
-        "configurePreset": "ram-cache"
-      }
-    ]
-  }
-  
+  ]
+}
