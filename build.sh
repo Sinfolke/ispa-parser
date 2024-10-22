@@ -3,8 +3,9 @@
 # This script is used to generate release-only files
 
 # CONFIGURATIONS
-TEST_DIR="build-agent"
-TEST_PATH="$TEST_DIR/compiler-test.cpp"
+SCRIPT_DIR="scripts"
+TEST_DIR="$SCRIPT_DIR/compiler-test"
+COMPILER_TEST_FILE="$TEST_DIR/compiler-test.cpp"
 
 # ARGUMENT PARSER
 compiler=0
@@ -15,23 +16,9 @@ proc_specific=0
 jobs=0
 generator_cmd=0
 
-# get whether it is windows
-#./build-agent/os.sh
-
-show_help() {
-    echo "Usage [OPTIONS] compiler flags"
-    echo "First pass in options, then everything rest is compiler arguments"
-    echo "Note if you pass in compiler flags the flags '-common', '-intel' and '-amd' won't affect them"
-    echo "Options:"
-    echo "    -help                      Show this help message"
-    echo "    -common                    Generate common release files (without target-specific optimizations)"
-    echo "    -gen <generator>           Use a specific build generator (supported make, ninja and Visual Studio). Note the string must be one that you'd pass to cmake -G option"
-    echo "    -compiler <compiler>       Specify the compiler to use"
-    echo "    -job-no-safe-limit         By default for compilation used all jobs - 1 to avoid system crashes. Use to disable"
-    echo "    -job <num>                 Specify the number of jobs to use (inaffected by -job-no-save-limit)"
-    echo "    -intel                     Generate release files using Intel C++"
-    echo "    -amd                       Generate release files using AMD C++"
-}
+source $SCRIPT_DIR/os.sh        # get whether run under Windows
+source $SCRIPT_DIR/cpu.sh       # get machine cpu it runs on
+source $SCRIPT_DIR/fun.sh       # common functions
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -help)
@@ -60,7 +47,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         -job-no-safe-limit)
             # disables use of one less than maximum jobs to avoid compilation crashes
-            # sometimes being needed
             jobs=$(nproc)
         -job)
             has_next_arg
@@ -80,12 +66,24 @@ while [[ $# -gt 0 ]]; do
 done
 if [[ $compiler == 0 ]]; then 
     if [[ $proc_specific == "intel" ]];
-        compiler=icpx
+        find_compiler icpx compiler
     elif [[ $proc_specific == "amd" ]];
-        compiler=amdclang++
+        find_compiler amdclang++ compiler
     else
-        find_compiler $compiler compiler
+        # try to find intel compiler or amd on approaritate cpu
+        if $intel_cpu; then
+            output=$( { find_compiler icpx compiler; } 2>&1 )
+        else
+            output=$( { find_compiler amdclang++ compiler; } 2>&1 )
+        fi
+        if $?; then
+            # non of compilers found or working correctly
+            find_compiler 0 compiler
+        fi
     fi
+    # if $compiler is filled try to find that compiler and abort on fail
+    # otherwise find any possible compiler and use it
+    find_compiler $compiler compiler
 fi
 if [[ $# -lt 2 ]]; then
     flags="$*"

@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISC)
-include(fn.cmake)
-include(conf.cmake)
+
+
+include(cmake/fn)
+include(cmake/conf)
+
+
 # Get CFLAGS and CXXFLAGS from the environment
 get_include_paths(INCL_PATHS)
+message("${INCL_PATHS}")
 if (INCL_PATHS)
 find_dir(${INCL_PATHS} "cpuf" cpuf_path)
 #find_file(${INCL_PATHS} tinyformat.h tinyformat_path)
@@ -14,7 +19,7 @@ else()
     mkdir(${CMAKE_CURRENT_SOURCE_DIR}/include)               # make sure lib folder exists
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) # add lib folder to include paths
     if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/include/cpuf")
-        download_repository(https://github.com/Sinfolke/cpuf cpuf main ${CMAKE_CURRENT_SOURCE_DIR}/include)
+        #download_repository(https://github.com/Sinfolke/cpuf cpuf main ${CMAKE_CURRENT_SOURCE_DIR}/include)
     endif()
 endif()
 # if (tinyformat_path)
