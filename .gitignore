@@ -50,3 +50,5 @@ ZERO_CHECK.vcxproj.filters
 CMakeFiles
 build
 !.build
+
+doc

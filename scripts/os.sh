@@ -1,8 +1,8 @@
-WINDOWS=1
+WINDOWS=false
 if [[ "$OSTYPE" == "darwin"* or "$OSTYPE" == "cygwin"]]; then
     echo "Warning: you're running in $OSTYPE. Generally you should compile with sh.exe provided by git"
-    WINDOWS=0
+    WINDOWS=true
 elif [[ "$OSTYPE" == "msys" ]]; then
     # either msys or git compatibility mode
-    WINDOWS=0
+    WINDOWS=true
 fi

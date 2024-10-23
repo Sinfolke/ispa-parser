@@ -3,11 +3,11 @@ local skip_spaces_poth(str, pos, ret) {
     for i in $(seq $pos $((${#str} - 1))); do
         if [[ $i != " " ]]
             ret=$i
-            return 0
+            return true
         fi
     fi
     ret=-1
-    return 1
+    return false
 }
 parseStr(str, begin, ret) {
     local escaptions=0
@@ -22,11 +22,11 @@ parseStr(str, begin, ret) {
         elif [[ $c == "\"" && $escaptions == 0 || $((escaptions % 2)) == 0 ]]; then
             # all escaptions are even so a close quote found
             $ret=$i
-            return 0
+            return true
         fi
     done
     $ret=-1
-    return 1
+    return false
 }
 get_include_options() {
     declare -A include_options
@@ -67,7 +67,7 @@ get_include_options() {
                     parseStr $flags $((i + 1)) str_end
                     if $str_end != 0; then
                         # failed to parse string
-                        echo "Warning: your options in CC/CXX are not completely valid"
+                        echo "Warning: your options in CC/CXX are invalid"
                         # quit till next argument
                         begin=0
                         continue

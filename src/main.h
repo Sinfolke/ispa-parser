@@ -1,8 +1,7 @@
 
-#define __SOURCE_ROOT__ __FILE__
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <cstdlib>

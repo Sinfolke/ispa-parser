@@ -1,5 +1,4 @@
-#include <unordered_map>
-#include <stdexcept>
+
 class Arg;
 enum class listener_cmd {
     SUCCESS = 0,
@@ -65,8 +64,8 @@ class Args {
             argc--;
             argv++;
 #endif
-            this->argc = argc - 1;
-            this->argv = argv + 1;
+            this->argc = argc;
+            this->argv = argv;
 
         }
         void on(const char* prefix, listenerf func) {
