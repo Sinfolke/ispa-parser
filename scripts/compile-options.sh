@@ -2,9 +2,9 @@
 
 if [[ $compiler == 0 ]]; then 
     local comp=0
-    if [[ $proc_specific == "intel" ]];
+    if [[ $proc_specific == "intel" ]]; then
         comp=icpx
-    elif [[ $proc_specific == "amd" ]];
+    elif [[ $proc_specific == "amd" ]]; then
         comp=amdclang++
     fi
     find_compiler $comp compiler

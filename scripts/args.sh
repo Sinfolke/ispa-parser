@@ -71,10 +71,12 @@ while [[ $# -gt 0 ]]; do
         -job-no-safe-limit)
             # disables use of one less than maximum jobs to avoid compilation crashes
             jobs=$(nproc)
+            ;;
         -job)
             has_next_arg
             jobs=$1
             to_next
+            ;;
         -intel)
             proc_specific="intel"
             ;;

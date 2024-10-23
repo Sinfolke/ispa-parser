@@ -1,6 +1,6 @@
 // get cpu vendor on current machine
 #ifdef _WIN32
-#include <intrin.h>  // wndows __cpuidex
+#include <intrin.h>  // windows __cpuidex
 #else
 #include <cpuid.h>   // linux __get_cpuid
 #endif
@@ -26,6 +26,9 @@ void get_cpu_vendor(char* vendor) {
 int main() {
     char brand[13];
     get_cpu_vendor(brand);
-    printf("%s\n", brand);
-    return 0;
+    if (strstr(brand, "Intel"))
+        return 0;
+    else if (strstr(brand, "AMD"))
+        return 1;
+    return 2;
 }

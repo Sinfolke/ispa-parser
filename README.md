@@ -25,4 +25,8 @@
 
 ### Latest commit changes
   - Improvements to build system
-  - Some error handling mechanisms
+  - Error handling improvements
+TODO!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!must fix an error "No suitable C++ compiler found" on every input!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

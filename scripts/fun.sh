@@ -1,6 +1,37 @@
 
+test_compiler_exists() {
+    # ARGS
+    local compiler=$1
+    local handler=$2
 
-find_compiler(compiler handler) {
+
+    if [[ "$handler" == 0 ]]; then
+        $compiler > /dev/null 2>&1
+        if [[ $? == 0 ]]; then
+            $handler="$compiler"
+        fi
+    fi
+}
+
+test_compiler() {
+    # ARGS
+    local compiler=$1
+
+    output=("$compiler $TEST_PATH > /dev/null 2>&1 ")
+    if [[ $? != 0 ]]; then
+    echo "Compiler $compiler failed to compile test file"
+    echo "Output: "
+    echo "$output"
+    exit 1
+    fi
+}
+
+find_compiler() {
+    # arguments
+    local compiler=$1
+    local handler=$2
+
+
     local comp=0
     if [[ $compiler != 0 ]]; then
         test_compiler_exists $compiler comp
@@ -26,48 +57,6 @@ find_compiler(compiler handler) {
         test_compiler_exists g++     comp
         if [[ $comp == 0 ]]; then
             echo "No suitable C++ compiler found"
-            exit 1
-        fi
-    fi
-    test_compiler $comp
-    $handler=$comp
-}
-test_compiler_exists(compiler, handler) {
-    if [[ "$handler" == 0 ]]; then
-        $compiler > /dev/null 2>&1
-        if [[ $? == 0 ]]; $handler="$compiler"
-    fi
-}
-
-test_compiler(compiler) {
-    output=($compiler $TEST_PATH > /dev/null 2>&1 )
-    if [[ $? != 0]]; then
-    echo "Compiler $compiler failed to compile test file"
-    echo "Output: "
-    echo "$output"
-    exit 1
-    fi
-}
-
-find_generator(generator handler) {
-    local gen=0
-    if [[ $generator != 0 ]]; then
-        $generator > /dev/null 2>&1
-        if [[ $? != 0 ]]; then
-            echo "Generator $generator is not found"
-            exit 1
-        fi
-        gen=$generator
-    else
-        # perform check for processor-specific compiler
-
-        test_generator_exists ninja gen
-        test_generator_exists make gen
-        if $WINDOWS; then
-            test_generator_exists msbuild 
-        fi
-        if [[ $gen == 0 ]]; then
-            echo "No suitable generator found"
             exit 1
         fi
     fi

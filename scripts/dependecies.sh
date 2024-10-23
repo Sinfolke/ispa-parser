@@ -1,15 +1,25 @@
 # script to download required dependecies
-local skip_spaces_poth(str, pos, ret) {
+skip_spaces_poth() {
+    # ARGS
+    local str=$1
+    local pos=$2
+    local ret=$3
+
     for i in $(seq $pos $((${#str} - 1))); do
-        if [[ $i != " " ]]
+        if [[ $i != " " ]]; then
             ret=$i
             return true
         fi
-    fi
+    done
     ret=-1
     return false
 }
-parseStr(str, begin, ret) {
+parseStr() {
+    #ARGS
+    local str=$1
+    local pos=$2
+    local ret=$3
+
     local escaptions=0
     local str_end=-1
     local c=0
