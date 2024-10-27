@@ -1,22 +1,22 @@
 ## GET COMPILER
 
 if [[ $compiler == 0 ]]; then 
-    local comp=0
+    comp=0
     if [[ $proc_specific == "intel" ]]; then
         comp=icpx
     elif [[ $proc_specific == "amd" ]]; then
         comp=amdclang++
     fi
-    find_compiler $comp compiler
+    find_compiler $comp
 else
     # A custom compiler specified, try to find and test
     # otherwise find any possible compiler and use it
-    find_compiler $compiler compiler
+    find_compiler $compiler
 fi
 
 ## GET COMPILATION FLAGS
 
-if [[ $# -lt 2 ]]; then
+if [[ $# > 0 ]]; then
     flags="$*"
 else
     # set to default

@@ -21,7 +21,7 @@ has_next_arg() {
     fi
 }
 to_next() {
-    i=$(( i + ${#1} + 1)
+    i=$(( i + ${#1} + 1))
     shift
 }
 
@@ -37,53 +37,53 @@ build_immediately=true
 i=0
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -help)
+        (-help)
             show_help
             exit 1
             ;;
-        -common)
+        (-common)
             # Generate common release files
             common=1
             ;;
-        -configure)
+        (-configure)
             build_immediately=false
             ;;
-        -gen)
+        (-gen)
             has_next_arg
-            c="${$2:0:1}"
+            c="${2:0:1}"  # Corrected line
             if [[ $c == '"' ]]; then
                 begin=$(( i + ${#1} + 1 ))
                 parseStr "$*" $begin generator
-                countSpaces $generator to_shift
+                countSpaces "$generator" to_shift
                 shift $(( to_shift ))
-                i=(( i + ${#$generator} ))
+                i=$(( i + ${#generator} ))  # Corrected variable increment syntax
                 shift
             else
                 generator="$2"
-                to_next
+                shift  # Ensure you shift for the next argument
             fi
             ;;
-        -compiler)
+        (-compiler)
             has_next_arg
             compiler="$2"
-            to_next
+            shift  # Ensure you shift for the next argument
             ;;
-        -job-no-safe-limit)
+        (-job-no-safe-limit)
             # disables use of one less than maximum jobs to avoid compilation crashes
             jobs=$(nproc)
             ;;
-        -job)
+        (-job)
             has_next_arg
-            jobs=$1
-            to_next
+            jobs="$2"  # Store the argument as jobs
+            shift  # Ensure you shift for the next argument
             ;;
-        -intel)
+        (-intel)
             proc_specific="intel"
             ;;
-        -amd)
+        (-amd)
             proc_specific="amd"
             ;;
-        *)
+        (*)
             echo "Unknown argument: $1"
             exit 1
             ;;

@@ -72,7 +72,7 @@ get_include_options() {
                 # get new position where no spaces
                 skip_spaces_poth "$flags" $i i
                 c="${flags:$i:1}"
-                if [[ $c == "\"" ]]
+                if [[ $c == "\"" ]]; then
                     # parse string
                     parseStr $flags $((i + 1)) str_end
                     if $str_end != 0; then

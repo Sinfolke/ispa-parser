@@ -10,7 +10,8 @@ TEST_DIR="$SCRIPT_DIR/compiler-test"
 COMPILER_TEST_FILE="$TEST_DIR/compiler-test.cpp"
 
 # INCLUDES
-source $SCRIPT_DIR/fun.sh         # common functions
+source $SCRIPT_DIR/find_compiler.sh
+source $SCRIPT_DIR/find_generator.sh 
 source $SCRIPT_DIR/os.sh          # get whether run under Windows
 source $SCRIPT_DIR/cpu.sh         # get cpu vendor
 source $SCRIPT_DIR/dependecies.sh # find/download required dependecies
@@ -21,13 +22,20 @@ source $SCRIPT_DIR/args.sh
 # GET COMPILE OPTIONS
 source $SCRIPT_DIR/compile-options.sh
 
+# GET COMPILER
+find_compiler $compiler
+
 # GET GENERATOR
+find_generator $generator
 
 # configure cmake
-echo "Compile flags: $flags"
-cmake -B build -G $generator \
-    -DCMAKE_CXX_COMPILER=$compiler \
-    -DCMAKE_CXX_FLAGS=$flags \
+echo "Using compiler: $compiler"
+echo "Using generator: $generator"
+echo "Using compile options: $flags"
+
+cmake -B build -G "$generator" \
+    -DCMAKE_CXX_COMPILER="$compiler" \
+    -DCMAKE_CXX_FLAGS="$flags" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PROJECT_NAME="ISC"
 if [[ $? != 0 ]]; then
@@ -35,14 +43,16 @@ if [[ $? != 0 ]]; then
     exit 1
 fi
 if $build_immediately; then
-
     ## Get generator command
     if [[ $generator == *Makefiles* ]]; then
         generator_cmd="make"
     elif [[ $generator == Ninja ]]; then
         generator_cmd="ninja"
-    elif [[ $generator == *Visual Studio* ]]; then
+    elif [[ $generator == *"Visual Studio"* ]]; then
         generator_cmd="vs"
+    else 
+        echo "Undefined generator"
+        exit 1
     fi
 
     ## GET JOBS AMOUNT
@@ -55,7 +65,8 @@ if $build_immediately; then
         fi
     fi
 
-    if [[ $generator_cmd == "vs"]]; then
+    ## RUN BUILD
+    if [[ $generator_cmd == "vs" ]]; then
         # generate with msbuild
         cd build
         msbuild ISC.sln
@@ -65,7 +76,7 @@ if $build_immediately; then
     fi
 
     ## CHECK RESULT
-    if [[ $?!= 0 ]]; then
+    if [[ $? != 0 ]]; then
         echo "Compilation failed. Building terminated"
         exit 1
     fi

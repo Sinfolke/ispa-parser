@@ -24,11 +24,11 @@ void get_cpu_vendor(char* vendor) {
 }
 
 int main() {
-    char brand[13];
-    get_cpu_vendor(brand);
-    if (strstr(brand, "Intel"))
+    char vendor[13];
+    get_cpu_vendor(vendor);
+    if (strstr(vendor, "Intel"))
         return 0;
-    else if (strstr(brand, "AMD"))
+    else if (strstr(vendor, "AMD"))
         return 1;
     return 2;
 }
