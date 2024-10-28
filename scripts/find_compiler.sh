@@ -10,10 +10,10 @@ test_compiler_exists() {
     fi
 }
 check_is_llvm_based() {
-    if [[ $compiler == "g++" ]]; then
-        llvm_based=(false)
+    if [[ $compiler == "g++" || $compiler == "gcc" ]]; then
+        llvm_based=1
     else
-        llvm_based=(true)
+        llvm_based=0
     fi
 }
 test_compiler() {
@@ -32,7 +32,6 @@ test_compiler() {
 find_compiler() {
     # arguments
     local name=$1
-
     if [[ $compiler != 0 ]]; then
         local comp=$compiler
         compiler=0 
@@ -43,25 +42,52 @@ find_compiler() {
         fi
     else
         # perform check for processor-specific compiler
-        if [[ -z $intel_cpu ]]; then
-            if $intel_cpu; then
-                echo "Searching icpx"
-                test_compiler_exists icpx
+        local type=$2
+        if [[ $type == "cxx" ]]; then
+            
+            if [[ -z $intel_cpu ]]; then
+                if $intel_cpu; then
+                    test_compiler_exists icpx
+                else
+                    test_compiler_exists amdclang++
+                fi
             else
+                # unknown target cpu, perform linear check
+                test_compiler_exists icpx
                 test_compiler_exists amdclang++
             fi
-        else
-            # unknown target cpu, perform linear check
-            test_compiler_exists icpx
-            test_compiler_exists amdclang++
-        fi
 
-        test_compiler_exists clang++
-        test_compiler_exists g++
-        if [[ $compiler == 0 ]]; then
-            echo "No suitable C++ compiler found"
+            test_compiler_exists clang++
+            test_compiler_exists g++
+            if [[ $compiler == 0 ]]; then
+                echo "No suitable C++ compiler found"
+                exit 1
+            fi
+        elif [[ $type == "c" ]]; then
+
+            if [[ -z $intel_cpu ]]; then
+                if $intel_cpu; then
+                    test_compiler_exists icx
+                else
+                    test_compiler_exists amdclang
+                fi
+            else
+                # unknown target cpu, perform linear check
+                test_compiler_exists icx
+                test_compiler_exists amdclang
+            fi
+
+            test_compiler_exists clang
+            test_compiler_exists gcc
+            if [[ $compiler == 0 ]]; then
+                echo "No suitable C++ compiler found"
+                exit 1
+            fi
+        else
+            echo "type '$type' is abnormal"
             exit 1
         fi
     fi
     test_compiler $compiler
+    check_is_llvm_based
 }

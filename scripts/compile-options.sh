@@ -1,19 +1,3 @@
-## GET COMPILER
-
-if [[ $compiler == 0 ]]; then 
-    comp=0
-    if [[ $proc_specific == "intel" ]]; then
-        comp=icpx
-    elif [[ $proc_specific == "amd" ]]; then
-        comp=amdclang++
-    fi
-    find_compiler $comp
-else
-    # A custom compiler specified, try to find and test
-    # otherwise find any possible compiler and use it
-    find_compiler $compiler
-fi
-
 ## GET COMPILATION FLAGS
 
 if [[ $# > 0 ]]; then
@@ -35,7 +19,13 @@ else
     else
         flags="-O2 -flto -s"
         if [[ !$common ]]; then
-            flags="$flags -march=native -mtune=native"
+            if [[ $intel_cpu ]]; then
+                flags="$flags -xHost"
+            else
+                flags="$flags -march=native"
+            fi
+            flags="$flags -mtune=native"
         fi
     fi
+
 fi
