@@ -7,6 +7,7 @@ show_help() {
     echo "    -help                      Show this help message"
     echo "    -common                    Generate common release files (without target-specific optimizations)"
     echo "    -configure                 Only configure cmake without building"
+    echo "    -package <name>            Package release into a specific archive"
     echo "    -gen <generator>           Use a specific build generator (supported make, ninja and Visual Studio). Note the string must be one that you'd pass to cmake -G option"
     echo "    -compiler <compiler>       Specify the compiler to use"
     echo "    -job-no-safe-limit         By default for compilation used all jobs - 1 to avoid system crashes. Use to disable"
@@ -30,6 +31,7 @@ compiler=0
 flags=0
 generator=0
 common=0
+package=0
 proc_specific=0
 jobs=0
 generator_cmd=0
@@ -47,6 +49,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         (-configure)
             build_immediately=false
+            ;;
+        (-package)
+            has_next_arg
+            package=$2
+            shift
             ;;
         (-gen)
             has_next_arg

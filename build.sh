@@ -93,4 +93,21 @@ if $build_immediately; then
         echo "Compilation failed. Building terminated"
         exit 1
     fi
+
+    if [[ $package ]]; then
+        # package source code into archive
+        if [[ $package==*.zip ]]; then
+            # windows arhive, use zip command 
+            zip -r $package ./build/bin ./release-scripts/*.bat
+        else
+            tar -czvf $package ./build/bin ./release-scripts/*.sh
+        fi
+
+        if [[ ! $? ]]; then
+            echo "Failed to create package"
+            exit 1
+        fi
+    fi
+elif $package; then
+    echo "Warning: option -package ignored due option -configure"
 fi
