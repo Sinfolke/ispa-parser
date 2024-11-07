@@ -6,7 +6,7 @@ include(cmake/conf)
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-if (CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
 else()
     # RELEASE
@@ -22,5 +22,5 @@ set(CMAKE_CXX_EXTENSIONS ON)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 set_target_properties(main PROPERTIES OUTPUT_NAME isc)
 #set_target_properties(main PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(main PROPERTIES CXX_STANDARD_REQUIRED 20)
-set_target_properties(main PROPERTIES CXX_STANDARD 20)
+set_target_properties(main PROPERTIES CXX_STANDARD_REQUIRED 17)
+set_target_properties(main PROPERTIES CXX_STANDARD 17)

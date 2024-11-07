@@ -15,7 +15,8 @@
             "CMAKE_C_COMPILER": "zapcc",
             "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
-            "CMAKE_CXX_FLAGS": "-Og"
+            "CMAKE_CXX_FLAGS": "-Og",
+            "CMAKE_BUILD_TYPE": "Debug"
         }
       },
       {
@@ -28,6 +29,7 @@
             "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
             "CMAKE_CXX_FLAGS": "-Og",
+            "CMAKE_BUILD_TYPE": "Debug",
             "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
             "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/lib",
             "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/archive"
@@ -42,7 +44,8 @@
             "CMAKE_C_COMPILER": "zapcc",
             "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
-            "CMAKE_CXX_FLAGS": "-Og"
+            "CMAKE_CXX_FLAGS": "-Og",
+            "CMAKE_BUILD_TYPE": "Debug"
         }
       }
   ]
