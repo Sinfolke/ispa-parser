@@ -2,6 +2,6 @@
 int main(int argc, char** argv) {
     std::set_terminate(terminate_handler);
 
-    printf("No code\n");
+    throw Error("No code!");
     return EXIT_FAILURE;
 }

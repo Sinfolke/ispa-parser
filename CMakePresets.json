@@ -12,8 +12,8 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/build",
         "cacheVariables": {
-            "CMAKE_C_COMPILER": "clang",
-            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_COMPILER": "zapcc",
+            "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
             "CMAKE_CXX_FLAGS": "-Og"
         }
@@ -24,8 +24,8 @@
         "generator": "Ninja",
         "binaryDir": "/mnt/cmake_cache",
         "cacheVariables": {
-            "CMAKE_C_COMPILER": "clang",
-            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_COMPILER": "zapcc",
+            "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
             "CMAKE_CXX_FLAGS": "-Og",
             "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
@@ -39,8 +39,8 @@
         "generator": "Ninja",
         "binaryDir": "/mnt/cmake_cache",
         "cacheVariables": {
-            "CMAKE_C_COMPILER": "clang",
-            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_C_COMPILER": "zapcc",
+            "CMAKE_CXX_COMPILER": "zapcc++",
             "CMAKE_C_FLAGS": "-Og",
             "CMAKE_CXX_FLAGS": "-Og"
         }

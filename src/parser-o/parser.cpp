@@ -34,6 +34,7 @@
 #include "end.cpp"
 #include "dataTypes.cpp"
 #include "Rule.cpp"
+#include "CLL/common/block.cpp"
 
 Rule(id) {
     int c = 0;

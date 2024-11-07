@@ -1,47 +1,19 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISC)
 
-
 include(cmake/fn)
 include(cmake/conf)
 
 
-# Get CFLAGS and CXXFLAGS from the environment
-get_include_paths(INCL_PATHS)
-if (INCL_PATHS)
-find_dir(${INCL_PATHS} "cpuf" cpuf_path)
-#find_file(${INCL_PATHS} tinyformat.h tinyformat_path)
-endif()
-if (cpuf_path)
-    message(STATUS "Found cpuf library in ${cpuf_path}")
-else()
-    mkdir(${CMAKE_CURRENT_SOURCE_DIR}/include)               # make sure lib folder exists
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) # add lib folder to include paths
-    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/include/cpuf")
-        #download_repository(https://github.com/Sinfolke/cpuf cpuf main ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    endif()
-endif()
-# if (tinyformat_path)
-#     message(STATUS "Found tinyformat library in ${tinyformat_path}")
-# else()
-#     if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/include/tinyformat.h")
-#         download_file("https://raw.githubusercontent.com/c42f/tinyformat/master" tinyformat "${CMAKE_CURRENT_SOURCE_DIR}/include/tinyformat.h")
-#     endif()
-# endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/bin)
 if (CMAKE_BUILD_TYPE STREQUAL "DEBUG")
     add_compile_definitions(DEBUG)
+else()
+    # RELEASE
+    # -fno-semantic-interposition
+    add_compile_options("-fomit-frame-pointer -ffast-math -fno-protect-parens -fstack-arrays")
 endif()
 
-if (build_ofc)
-    add_compile_definitions("BUILD_OFC")
-endif()
-
-if (build_stable)
-    add_compile_definitions("BUILD_STABLE")
-endif()
 add_compile_definitions(BUILD_V="${build_v}")
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_executable(main ${SOURCES})
