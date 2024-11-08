@@ -1,8 +1,12 @@
-
+// TODO: possibly to merge into a single block rule
 cll_block:
     '{' (cll | Rule - rule_begin)* '}'
+
+    // data is just a token
+    data: $2;
 ;
 cll_spaced_block(spaces_amount):
     $while (skipup(' ') > spaces_amount):
         cll | Rule - rule_begin
+    data: $1; // here data is also just a token
 ;
