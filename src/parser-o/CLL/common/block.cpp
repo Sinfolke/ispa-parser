@@ -13,7 +13,7 @@ Rule(cll_block) {
         res = Rule(pos);
 
         if (!res.result)
-            return {}
+            return {};
     }
     pos += cll_res.token.length();
     if (*pos != '}')

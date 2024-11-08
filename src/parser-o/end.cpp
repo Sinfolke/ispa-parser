@@ -1,15 +1,15 @@
-TOKEN(END) {
+Rule(end) {
     if (*in == ';' or *in == '\n')
-        TOKEN_SUCCESS(in, in + 1, END);
+        RULE_SUCCESS(in, in + 1, end);
     return {};
 }
-TOKEN(STRICT_END) {
+Rule(strict_end) {
     if (*in == ';')
-        TOKEN_SUCCESS(in, in + 1, STRICT_END);
+        RULE_SUCCESS(in, in + 1, strcit_end);
     return {};
 }
-TOKEN(NEWLINE) {
+Rule(newline) {
     if (*in == '\n')
-        TOKEN_SUCCESS(in, in + 1, NEWLINE);
+        RULE_SUCCESS(in, in + 1, newline);
     return {};
 }
