@@ -52,4 +52,9 @@ expr:
         ;
     #NOT:
         '!' | 'not'
+
+    // the data block is simply the rule itself
+    data:
+        $2
+    ;
 ;

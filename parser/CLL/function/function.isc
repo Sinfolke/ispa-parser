@@ -1,11 +1,10 @@
 /*
-    Functions are not considered a full part of the CLL.
-    They are declared globally.
+    Functions are not considered a full part of the CLL because they are declared globally.
 */
 
 private function_body(in_parenthes):
     '(' in_parenthes ')'
-    $data = in_parenthes;
+    $data: $1;
 ;
 private function_in_parentheses(match_rule):
     match_rule?
@@ -19,6 +18,10 @@ function_arguments = function_parenthes_part(ANY_DATA);
 function_parameters = function_parenthes_part(ID);
 cll_function_call:
     ID function_body[call];
+    data:
+        name: $1
+        body: $2
+    ;
 ;
 
 function_decl: 
