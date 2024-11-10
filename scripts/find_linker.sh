@@ -35,20 +35,52 @@ find_llvm_ld() {
         if [[ $intel_cpu ]]; then
             # Intel C++ is better to use with it's own linker else errors might occur
             lld_check ~/intel/oneapi/compiler/latest/bin/compiler/ld.lld # installed by apt
-            lld_check /opt/intel/oneapi/compiler/latest/bin/compiler/ld.lld # installed via shell installer
+            lld_check /opt/intel/oneapi/compiler/latest/bin/compiler/ld.lld # installed via online installer
         fi
-        lld_from_installed lld-13
-        lld_from_installed lld-14
-        lld_from_installed lld-15
+        # general-purpose linker
+        lld_from_installed lld
+
+        # version specific
         lld_from_installed lld-17
+        lld_from_installed lld-15
+        lld_from_installed lld-14
+        lld_from_installed lld-13
+
+
         # .. rest
 
 
     fi
     if [[ $path == 0 ]]; then
-        echo "Could not find lld. You're using llvm-based compiler which often require lld instead of gnu ld"
+        echo "Warning: You're using llvm-based compiler but lld is not found"
+        lld_path=0
+    else
+        lld_path=$path
+    fi
+    unset path
+}
+find_ld() {
+    ld=0
+    if [[ $llvm_based ]]; then
+        find_llvm_ld
+        if [[ $lld_path != 0 ]]; then
+            ld=$lld_path
+            return
+        fi
+    fi
+
+    # not found llvm linker or gnu compiler is used
+
+    /usr/bin/ld --version > /dev/null
+
+    if [[ $? ]]; then
+        if [[ $llvm_based ]]; then
+            echo "Neither GNU nor LLVM linker was found"
+        else
+            echo "Could not find gnu linker"
+        fi
         exit 1
     fi
-    lld_path=$path
-    unset path
+    
+    ld=/usr/bin/ld  # gnu linker found
 }

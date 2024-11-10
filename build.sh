@@ -12,7 +12,7 @@ COMPILER_TEST_FILE="$TEST_DIR/compiler-test.cpp"
 # INCLUDES
 source $SCRIPT_DIR/find_compiler.sh
 source $SCRIPT_DIR/find_generator.sh 
-source $SCRIPT_DIR/find_llvm_ld.sh
+source $SCRIPT_DIR/find_linker.sh
 source $SCRIPT_DIR/os.sh          # get whether run under Windows
 source $SCRIPT_DIR/cpu.sh         # get cpu vendor
 source $SCRIPT_DIR/dependecies.sh # find/download required dependecies
@@ -24,11 +24,13 @@ source $SCRIPT_DIR/args.sh
 source $SCRIPT_DIR/compile-options.sh
 
 # GET COMPILER
-find_compiler $compiler cxx
-cxx_compiler=$compiler
-compiler=0
-
-
+if [[ -z $c_compiler ]]; then
+    find_c_compiler 0
+fi
+if [[ -z $cxx_compiler ]]; then
+    find_cxx_compiler 0
+fi
+find_ld
 # GET GENERATOR
 find_generator $generator
 
@@ -36,14 +38,8 @@ find_generator $generator
 echo "Using C compiler: $c_compiler"
 echo "Using CXX compiler: $cxx_compiler"
 echo "Using generator: $generator"
+echo "Using linker: $ld"
 echo "Using compile options: $flags"
-if [[ $llvm_based ]]; then
-    find_llvm_ld
-    # set to use the linker
-    flags="$flags -fuse-ld=\"$lld_path\""
-
-    echo "Found llvm linker: $lld_path"
-fi
 cmake -B build -G "$generator" \
     -DCMAKE_C_COMPILER="$c_compiler" \
     -DCMAKE_CXX_COMPILER="$cxx_compiler" \
