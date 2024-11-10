@@ -11,4 +11,6 @@ import function/*;
 cll:
     // copiable_method_call does not require braces here
     &cll_begin('\n' '$') (var | cond | expr | copiable_method_call)+ 
+
+    data: $2;
 ;

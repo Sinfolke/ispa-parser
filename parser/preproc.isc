@@ -17,4 +17,6 @@ preproc:
         'clear' ID
     #rem:
         'rem' ID
+    
+    data: $1;
 ;
