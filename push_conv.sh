@@ -12,5 +12,5 @@ value=$((value + 1))
 
 
 
-./push "Progress of converting parser rules to C++ [$value]"
+./push.sh "Progress of converting parser rules to C++ [$value]"
 echo "$value" > "$file"

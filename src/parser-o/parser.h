@@ -11,6 +11,7 @@
 #define ISC_OUT_PARSER
 #include <iscstdlibc++.h>
 #include <unordered_map>
+#include <cctype>
 // here it checks according to the backward version
 #if _ISC_STD_LIB_VER < 0 // skip subver check
 #error  "Your library version is too old. Please, update your library."

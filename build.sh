@@ -53,16 +53,6 @@ if [[ $? != 0 ]]; then
 fi
 if $build_immediately; then
     ## Get generator command
-    if [[ $generator == *Makefiles* ]]; then
-        generator_cmd="make"
-    elif [[ $generator == Ninja ]]; then
-        generator_cmd="ninja"
-    elif [[ $generator == *"Visual Studio"* ]]; then
-        generator_cmd="vs"
-    else 
-        echo "Undefined generator"
-        exit 1
-    fi
 
     ## GET JOBS AMOUNT
     if [[ $jobs == 0 ]]; then
@@ -74,22 +64,14 @@ if $build_immediately; then
         fi
     fi
 
-    ## RUN BUILD
-    cd build
-    if [[ $generator_cmd == "vs" ]]; then
-        # generate with msbuild
-        msbuild ISC.sln
-    else
-        # generate with a normal generator
-        $generator_cmd -j$jobs
-    fi
+    cmake --build Build -j $jobs
 
     ## CHECK RESULT
     if [[ $? != 0 ]]; then
         echo "Compilation failed. Building terminated"
         exit 1
     fi
-
+    ## PACKAGE RELEASE FILES
     if [[ $package ]]; then
         # package source code into archive
         if [[ $package==*.zip ]]; then
