@@ -4,7 +4,7 @@ if [[ ! -e "$MOD_DIR/cpuid" ]]; then
     find_c_compiler 0
 
     # Compile the source file
-    output=$("$c_compiler" -o "$MOD_DIR/cpuid" "$MOD_DIR/cpuid.cpp" 2>&1)
+    output=$("$c_compiler" -o "$MOD_DIR/cpuid" "$MOD_DIR/cpuid.c" 2>&1)
     if [[ $? -ne 0 ]]; then
         echo "Failed to compile cpuid:"
         echo "$output"
