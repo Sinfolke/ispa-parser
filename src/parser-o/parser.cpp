@@ -1,8 +1,8 @@
 #include "parser.h"
 // no extra tokens here to simplify parsing
 
-#define TOKEN(x, ...) Parser::Token_result Parser::Tokenisator::x (const char* in __VA_ARGS__)
-#define Rule(x, ...) Parser::Rule_result Parser::Parser::x (const char* in __VA_ARGS__)
+#define TOKEN(x, ...) Parser::Token_result Parser::Tokenisator::x (const char* in, ##__VA_ARGS__)
+#define Rule(x, ...) Parser::Rule_result Parser::Parser::x (const char* in, ##__VA_ARGS__)
 #define TO(t, x) std::any_cast<t>(x)
 #define TOKEN_SUCCESS(in, pos, name) return { \
     true, { \

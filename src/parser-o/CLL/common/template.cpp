@@ -55,17 +55,36 @@ Rule(cll_template_content_any_data) {
     if (!result) return {};
     RULE_SUCCESSD(in, pos, cll_template_content_typename, data);
 }
-cll_template_content[all]:
-    $arr<string> vals;
-    $while (true) {
-    $ if (^0 == ',')
-    $   vals.push("");
-    $ else vals[vals.size() - 1] += ^0;
-    $}
-    $data=vals;
-;
-cll_template(content = cll_template_content[typename]):
-    '<' content
-    (',' content)* '>'
-    data: %2.concat(%4);
-;
+Rule(cll_template_content_all) {
+    std::vector<std::string> vals;
+    auto pos = in;
+    for (;; pos++) {
+        if (*pos == '<') {
+            vals.push_back("");
+        } else {
+            vals[vals.size() - 1] += *pos;
+        }
+    }
+}
+Rule(cll_template, cll_template_content_param1_t content) {
+    auto pos = in;
+    if (*pos != '<')
+        return {};
+    auto content_res = content();
+    if (!content.res)
+        return {};
+    pos += content_res.token.length();
+    std::vector<Token> data = { content_res.token };
+    while(*pos == ',') {
+        ++pos;
+        content_res = content();
+        if (!content_res.result)
+            break;
+        pos += content_res.token.length();
+        // add data here
+        data.push_back(content_res.token);
+    }
+    if (*pos != '>')
+        return {};
+    RULE_SUCCESSD(in, pos, cll_template, data);
+}
