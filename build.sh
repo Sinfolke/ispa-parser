@@ -64,7 +64,7 @@ if $build_immediately; then
         fi
     fi
 
-    cmake --build Build -j $jobs
+    cmake --build build -j $jobs
 
     ## CHECK RESULT
     if [[ $? != 0 ]]; then

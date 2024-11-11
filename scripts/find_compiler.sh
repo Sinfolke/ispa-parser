@@ -64,6 +64,7 @@ find_c_compiler() {
     test_compiler $comp
     check_is_llvm_based $comp
     c_compiler=$comp
+    compiler=0
 }
 
 find_cxx_compiler() {
@@ -101,4 +102,5 @@ find_cxx_compiler() {
     test_compiler $comp
     check_is_llvm_based $comp
     cxx_compiler=$comp
+    compiler=0
 }

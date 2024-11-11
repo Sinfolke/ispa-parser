@@ -11,7 +11,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
     # RELEASE
     # -fno-semantic-interposition
-    add_compile_options("-fomit-frame-pointer -ffast-math -fno-protect-parens -fstack-arrays")
+    add_compile_options(-fomit-frame-pointer -ffast-math -fno-protect-parens)
 endif()
 
 add_compile_definitions(BUILD_V="${build_v}")

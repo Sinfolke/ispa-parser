@@ -35,6 +35,9 @@
 #include "dataTypes.cpp"
 #include "Rule.cpp"
 #include "CLL/common/block.cpp"
+#include "CLL/common/operator.cpp"
+#include "CLL/common/template.cpp"
+
 
 Rule(id) {
     int c = 0;

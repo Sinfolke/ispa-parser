@@ -87,7 +87,7 @@ Rule:
             ;
         ;
     #nested_rule: 
-        [\r\n]+ '#' Rule
+        [\r\n]+ '#' \s0 Rule
         data: %3
     ;
     #hex:
