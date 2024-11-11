@@ -80,15 +80,16 @@ Rule:
             &data(key+)
         ;
         #key:
-            [\n\r]+ &name ID ':' &data (ANY_DATA)
+            [\n\r]+ &name id ':' &data (ANY_DATA)
             data:
                 name: name
                 val: data
             ;
         ;
+    ;
     #nested_rule: 
         [\r\n]+ '#' \s0 Rule
-        data: %3
+        data: %4
     ;
     #hex:
         '0x' [1-9A-Fa-f]+

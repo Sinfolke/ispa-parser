@@ -35,7 +35,7 @@
 #include "dataTypes.cpp"
 #include "Rule.cpp"
 #include "CLL/common/block.cpp"
-#include "CLL/common/operator.cpp"
+#include "CLL/common/operators.cpp"
 #include "CLL/common/template.cpp"
 
 
@@ -74,7 +74,7 @@ Rule(id) {
     current.push(_local_start, pos);
     // construct result as valid
     // extract full string from the first group
-    RULE_SUCCESSD(in, pos, id, current.fill());
+    RULE_SUCCESSD(in, pos, id, current.full());
 }
 Rule(Import_path) {    
     auto pos = in;
