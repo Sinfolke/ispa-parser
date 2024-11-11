@@ -15,6 +15,7 @@ Rule(Rule) {
     }
     auto strict_end_result = STRICT_END();
 }
+//#data_block
 Rule(data_block) {
     auto pos = in;
     while(*pos == '\n' || *pos == '\r')
@@ -45,7 +46,7 @@ Rule(data_block) {
 
     RULE_SUCCESSD(in, pos, data_block, data_res.token);
 }
-
+// #data_block #inclosed_map
 Rule(Rule_data_block_inclosed_map) {
     auto pos = in;
     std::vector<Rule> keys;
@@ -58,9 +59,10 @@ Rule(Rule_data_block_inclosed_map) {
     }
     if (pos == in)
         return {};
-    
+    RULE_SUCCESSD(in, pos, Rule_data_block_inclosed_map, keys);
 
 }
+// #data_block #key
 Rule(Rule_data_block_key) {
     auto pos = in;
     while ( *pos == '\n' || *pos == '\r')
@@ -74,8 +76,22 @@ Rule(Rule_data_block_key) {
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
-    name = TO(std::string, id.token.data);
+    //name = TO(std::string, id.token.data);
+    if (*pos != ':')
+        return {};
+    
+    auto any_data_res = any_data(pos);
+
+    if (!any_data_res.result)
+        return {};
+    
+    std::unordered_map<std::string, std::any> data {
+        { "name", id_res.token },
+        { "val", "" any_data_res.token }
+    };
+    RULE_SUCCESSD(in, pos, Rule_data_block_key, data);
 }
+//#nested_rule
 Rule(Rule_nested_rule) {
     auto pos = in;
     while(*pos == '\n' || *pos == '\r')
@@ -95,7 +111,7 @@ Rule(Rule_nested_rule) {
     
     RULE_SUCCESSD(in, pos, Rule_nested_rule, Rule_res.token);
 }
-
+//#hex
 Rule(Rule_hex) {
     if (!(*in == '0' && *(in+1) == 'x')) {
         return {};
@@ -112,6 +128,7 @@ Rule(Rule_hex) {
     return {};
 
 }
+//#bin
 Rule(Rule_bin) {
     if (!(*in == '0' && *(in+1) == 'b')) {
         return {};
