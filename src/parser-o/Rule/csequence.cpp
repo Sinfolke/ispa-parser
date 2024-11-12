@@ -41,25 +41,25 @@ Rule(Rule_csequence_symbol)
     RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
 
 }
+Rule(Rule_csequence_diapason) {
+    auto symbol_res = Rule_csequence_symbol(in);
+    if (!symbol_res)
+        return {};
+    
+    auto pos = in + symbol_res.token.length();
+    // NO SPACE
 
-    #csequence:     // Character Sequence
-        '[' &not '^'? &dt ( #symbol | #diapason )* ']'
-        data:
-            type: 'csequence'
-            not: matched(not)
-            val: data
-        ;
-        #symbol:
-            $data = $1;
-            ('\\'   |   '\]' |  [^\]]) 
-        ;
-        #escape:
-            $data = $1;
-            // some escape chars like \s, \d
-            '\\' \s0 (.)
-        ;
-        #diapason:
-            ( &from (symbol) \s0 '-' \s0 &to (symbol))
-            data: [from, to];
-        ;
-    ;
+    if (*pos != '-')
+        return {};
+    
+    // NOSPACE
+
+    auto symbol2_res = Rule_csequence_symbol(pos);
+
+    if (!symbol2_res)
+        return {};
+    
+    std::vector<Rule> data { symbol_res.token, symbol2_res.token };
+
+    RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
+}

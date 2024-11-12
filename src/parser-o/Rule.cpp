@@ -15,7 +15,7 @@ Rule(Rule) {
     }
     auto strict_end_result = STRICT_END();
 }
-
+#include "Rule/csequence.cpp"
 #include "Rule/data_block.cpp"
 #include "Rule/nested_rule.cpp"
 #include "Rule/hex.cpp"
