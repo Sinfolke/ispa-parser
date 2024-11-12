@@ -1,4 +1,4 @@
-#include "main.h"
+#include <main.h>
 int main(int argc, char** argv) {
     std::set_terminate(terminate_handler);
 
