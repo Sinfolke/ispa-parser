@@ -54,11 +54,10 @@ Rule:
         ;
     ;
     #csequence:     // Character Sequence
-        '[' &not '^'? &data ( #symbol | #diapason )* ']'
+        '[' '^'? &dt ( #symbol | #diapason )* ']'
         data:
-            type: 'csequence'
-            not: matched(not)
-            val: data
+            not: matched(%2)
+            val: dt
         ;
         #symbol:
             $data = $1;
