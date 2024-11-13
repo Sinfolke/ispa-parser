@@ -1,3 +1,6 @@
+#include <parser.h>
+#include <parser_defs.h>
+
 Rule(op) {
     if (
         *in == '+' || *in == '-' || *in == '*' || *in == '/' || 

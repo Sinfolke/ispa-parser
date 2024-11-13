@@ -1,3 +1,6 @@
+#include <parser.h>
+#include <parser_defs.h>
+
 Rule(Rule_csequence) {
     auto pos = in;
     if (*pos != '[')

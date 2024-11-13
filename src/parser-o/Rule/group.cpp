@@ -1,3 +1,6 @@
+#include <parser.h>
+#include <parser_defs.h>
+
 Rule(Rule_group) {
     auto pos = in;
     std::string name;

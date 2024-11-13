@@ -1,3 +1,6 @@
+#include <parser.h>
+#include <parser_defs.h>
+
 using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
 
 static std::tuple<bool, int, std::any> cll_template_content(const char* in, cll_template_content_param1_t p1) {

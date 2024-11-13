@@ -9,7 +9,8 @@ public:
     std::string message;
     size_t line;
     template<typename ...Args>
-    Error(const char* fun, const char* file, size_t line, const char* format, Args&&... args);
+    Error(const char* fun, const char* file, size_t line, const char* format, Args&&... args)
+        : fun(fun), file(getRelativePath(file)), line(line), message( sprintf(format, ...args) ) {}
     void print();
 };
 class UBase : std::exception {

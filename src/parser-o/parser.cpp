@@ -1,29 +1,5 @@
-#include "parser.h"
-// no extra tokens here to simplify parsing
-
-#define TOKEN(x, ...) Parser::Token_result Parser::Tokenisator::x (const char* in, ##__VA_ARGS__)
-#define Rule(x, ...) Parser::Rule_result Parser::Parser::x (const char* in, ##__VA_ARGS__)
-#define TO(t, x) std::any_cast<t>(x)
-#define TOKEN_SUCCESS(in, pos, name) return { \
-    true, { \
-        getCurrentPos(in), in, pos, Parser::Tokens::name \
-    } \
-};
-#define TOKEN_SUCCESSD(in, pos, name, data) return { \
-    true, { \
-        getCurrentPos(in), in, pos, Parser::Tokens::name, data \
-    } \
-};
-#define RULE_SUCCESS(in, pos, name) return { \
-    true, { \
-        getCurrentPos(in), in, pos, Parser::Parser::name \
-    } \
-};
-#define RULE_SUCCESSD(in, pos, name, data) return { \
-    true, { \
-        getCurrentPos(in), in, pos, Parser::Parser::name, data \
-    } \
-};
+#include <parser.h>
+#include <parser_defs.h>
 // <not implemented> use parralel_parsing;
 // spacemode mixed;
 /*
@@ -31,13 +7,6 @@
             FILE RULES
     ###########################
 */
-#include "end.cpp"
-#include "dataTypes.cpp"
-#include "Rule.cpp"
-#include "CLL/common/block.cpp"
-#include "CLL/common/operators.cpp"
-#include "CLL/common/template.cpp"
-
 
 Rule(id) {
     int c = 0;
@@ -284,11 +253,3 @@ Rule(use_unit) {
     };
     RULE_SUCCESSD(in, pos, use, data);
 }
-
-#undef TOKEN
-#undef Rule
-#undef TO(t, x)
-#undef TOKEN_SUCCESS(in, pos, name)
-#undef TOKEN_SUCCESSD(in, pos, name, data)
-#undef RULE_SUCCESS(in, pos, name)
-#undef RULE_SUCCESSD(in, pos, name, data)

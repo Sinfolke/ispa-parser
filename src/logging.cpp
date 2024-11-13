@@ -1,4 +1,5 @@
 #include <logging.h>
+#undef Error
 // get relative path from full path ommitting source code location differences
 static constexpr const char* getRelativePath(const char* full) {
     const char* root = __SOURCE_ROOT__;
@@ -16,9 +17,6 @@ static constexpr const char* getRelativePath(const char* full) {
 
     return full;
 }
-Error::Error(const char* fun, const char* file, size_t line, const char* format, Args&&... args)
-    : fun(fun), file(getRelativePath(file)), line(line), message( sprintf(format, ...args) ) {}
-
 Error::what() const override {
     return message.c_str();
 }

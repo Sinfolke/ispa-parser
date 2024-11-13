@@ -1,3 +1,5 @@
+#include <parser.h>
+#include <parser_defs.h>
 Rule(Rule) {
     auto pos = in;
     auto id_res = id(pos);
@@ -15,8 +17,3 @@ Rule(Rule) {
     }
     auto strict_end_result = STRICT_END();
 }
-#include "Rule/csequence.cpp"
-#include "Rule/data_block.cpp"
-#include "Rule/nested_rule.cpp"
-#include "Rule/hex.cpp"
-#include "Rule/bin.cpp"
