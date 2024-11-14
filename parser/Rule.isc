@@ -21,8 +21,8 @@ Rule:
         $bool is_id = matched($3);
         $bool is_nested = matched($3>%1);
         $bool is_cll = !matched($1);
-        $var val = is_id ? $3>%2 : $2;
-        $char qualifier = matched(%3) ? %3.data : '';
+        $var val = is_id ? $3>%2 : ( is_cll ? %1 : $2 );
+        $char qualifier = %3;
 
         (( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?) | cll
 
