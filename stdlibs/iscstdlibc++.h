@@ -3,7 +3,7 @@
 /**
  * C++ isc std lib 1.1
  * It contains standard declarations and every C++ generated parser would link toward it
- * It is for case you'd use two ISC independed parsers in one same project.
+ * It is for case you'd use two ISC parsers in one same project.
  * However it won't cancell that parser does not rely on any library
 */
 #include <map>
