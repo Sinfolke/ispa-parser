@@ -5,7 +5,8 @@
 
 cll_csupport_types: 
     // integral types
-    ('unsigned' ('char' | 'short' | 'int' | 'long' | 'long long'))
+    bool is_unsigned = matched($1>%1);
+    ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
         |
     // floating types
     ('float' | 'double')

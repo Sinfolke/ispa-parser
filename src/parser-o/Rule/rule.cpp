@@ -46,21 +46,3 @@ Rule(Rule_rule) {
     RULE_SUCCESSD(in, pos, Rule_rule, data);
     
 }
-
-    #rule: 
-        $bool is_id = matched($3);
-        $bool is_nested = matched($3>%1);
-        $bool is_cll = !matched($1);
-        $var val = is_id ? $3>%2 : $2;
-        $char qualifier = matched(%3) ? %3.data : '';
-
-        (( group | csequence | STRING | hex | bin | ( '#'? ID ) ) qualifier?) | cll
-
-        data: 
-            is_id: is_id,
-            is_nested: is_nested,
-            is_cll: is_cll,
-            val: val,
-            qualifier: qualifier
-        ;
-    ;
