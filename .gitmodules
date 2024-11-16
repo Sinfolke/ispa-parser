@@ -1,0 +1,3 @@
+[submodule "include/cpuf"]
+	path = include/cpuf
+	url = https://github.com/Sinfolke/cpuf

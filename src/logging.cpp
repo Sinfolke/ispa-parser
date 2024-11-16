@@ -1,20 +1,20 @@
-#include <logging.h>
+#include <main.h> // also includes <logging.h>
 #undef Error
-Error::what() const {
+const char* Error::what() const {
     return message.c_str();
 }
-Error::print() {
+void Error::print() {
     cpuf::perror("[%s:%d] at function %s: %s", file, line, fun, message);
     exit(2);
 }
 const char* UBase::what() const {
     return message.c_str();
 }
-UError::print() {
+void UError::print() {
     cpuf::perror("%$Error%$: %$", color::red, color::reset, message);
     exit(1);
 }
-UWarning::print() {
+void UWarning::print() {
     cpuf::printf("%$Error%$: %$", color::yellow, color::reset, message);
 }
 

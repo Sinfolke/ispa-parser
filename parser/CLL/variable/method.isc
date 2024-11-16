@@ -4,8 +4,8 @@ method_call:
     ID '.' cll_function_call
 
     data:
-        object: $1
-        call: $2
+        object: %1
+        call: %3
     ; 
 ;
 copiable_method_call:
