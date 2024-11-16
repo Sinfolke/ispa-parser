@@ -1,6 +1,11 @@
-#set(build_v 0.1.0)
-#if (EXISTS ".admin" build_ofc)
-#set(build_stable 0 PARENT_SCOPE)
 # Set the source directory variable
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp)
+
+# Installation script
+install(TARGETS MyApp
+    DESTINATION bin
+)
+install(TARGETS MyLibrary
+    LIBRARY DESTINATION lib
+)

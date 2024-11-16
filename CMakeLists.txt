@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISC)
 
-include(cmake/fn)
 include(cmake/conf)
 
 

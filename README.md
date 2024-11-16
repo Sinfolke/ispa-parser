@@ -3,7 +3,8 @@
   something you may find here may not be actually implemented for now,
   It helps to have strict plans and quicks up implementation when you have it's details
 ### What is this
- ISC (Independent Self-closed Parser) is the parser which generates code that doesn't rely on any library. The output are some files you may link to your project. The output interface is not complex and inside your code you simply instance the class, paste in the input and get a ready tree. You also don't usually need to interact with the parser during parsing process as usually everything may be done in the ISC interface. Example of output see in ```concepts/output-example```
+ ISC (Independent Self-closed Parser) is the parser which generates code that doesn't rely on any library. The output are some files you may link to your project. The output interface is not complex and inside your code you simply instance the class, paste in the input and get a ready tree. You also don't usually need to interact with the parser during parsing process as usually everything may be done in the ISC interface.
+ Example of output see in ```concepts/output-example```
 ### How to implement project
  The language of parser is C++
  1. Make sure the syntax definion is done

@@ -1,7 +1,7 @@
 
 
-var: 
-    cll_type ID assignment_operator expr;
+cll_var: 
+    cll_type ID assignment_op expr
 
     data:
         type: $1
@@ -9,8 +9,4 @@ var:
         operator: $3
         value: $4
     ;
-;
-asisgnment_val: 
-    ANY_DATA | ID | cll_function_call
-    data: %1;
 ;
