@@ -1,4 +1,4 @@
-
+#pragma once
 class Arg;
 enum class listener_cmd {
     SUCCESS = 0,

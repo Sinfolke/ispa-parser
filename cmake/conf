@@ -3,9 +3,10 @@ set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp)
 
 # Installation script
-install(TARGETS MyApp
-    DESTINATION bin
-)
-install(TARGETS MyLibrary
-    LIBRARY DESTINATION lib
-)
+
+# install(TARGETS ISC
+#     DESTINATION bin
+# )
+# install(TARGETS ISC
+#     LIBRARY DESTINATION lib
+# )

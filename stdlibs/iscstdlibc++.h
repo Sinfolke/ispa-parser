@@ -14,6 +14,7 @@
 #include <string_view>
 #include <stdexcept>
 #include <cctype>
+#include <cstring>
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
