@@ -5,8 +5,10 @@
 */
 
 import common/*;
+import condition/*
+import expr/*
+import function/*
 import variable/*;
-import function/*;
 
 cll:
     // copiable_method_call does not require braces here
