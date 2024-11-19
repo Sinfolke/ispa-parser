@@ -5,7 +5,7 @@
 # This script is used to generate release-only files !!!
 
 echo "Running script build-auto.sh means it will try to auto-define best compiler for you and apply host optimizations"
-echo "If you experience problems use build.sh with manually set env vars to what you needed"
+echo "If you experience problems use build.sh with manually set env vars to what you're needed"
 echo
 
 # CONFIGURATIONS

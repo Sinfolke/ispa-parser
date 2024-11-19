@@ -32,29 +32,46 @@
 // TODO: add data blocks for AST
 expr:
     '('? 
-        ANY_DATA | #compare | #logical* | cll_function_call | cll_method_call | #parenthesed
+        (ANY_DATA | #compare | #logical* | cll_function_call | cll_method_call | #parenthesed)
     $if(matched(%1)) match(')');
-    
+
+    data: $1;
+
     #variable_value:
         ID ( (operator | assignment_operator) (assignment_val) )?
+        data:
+            name: %1
+            val: $2
+        ;
+    ;
     #compare:
         #side | expr COMPARE_OP #side | expr
 
         #side:
             ANY_DATA | ID | cll_function_call | method_call
+        data:
+            right: %1
+            op: %2
+            left: %3
+        ;
+    ;
     #logical:
         expr LOGICAL_OP expr
+        data:
+            left: %1
+            op: %2
+            right: %3
+        ;
+    ;
     #parenthesed:
         '(' #variable_assignment | copy_method_call | cll_ternary ')'
 
         #variable_assignment:
             ID assignment_operator assignment_val
         ;
+        data: %1
+    ;
     #NOT:
         '!' | 'not'
-
-    // the data block is simply the rule itself
-    data:
-        $2
     ;
 ;

@@ -2,4 +2,3 @@
     expr/expr.isc
     variable/method.isc
     variable/var.isc
-- implement preprocessor in preproc/preproc.isc
