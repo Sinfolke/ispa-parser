@@ -4,8 +4,14 @@
 struct stack_trace_t {
     void* caller;
     void* func;
-    Dl_info getCallerInfo();
-    Dl_info getFuncInfo();
+    const char* getCallerName();
+    const char* getFuncName();
+#ifdef _WIN32
+    static void initSymbolHandler();
+    static void cleanupSymbolHandler();
+    private:
+        static std::string getSymbolName(void* addr);
+#endif
 };
 extern std::vector<stack_trace_t> call_trace;
 void __attribute__((no_instrument_function))
