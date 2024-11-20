@@ -20,5 +20,6 @@
 #include <cpuf/constexpr>
 
 #include <logging.h>
+#include <init.h>
 
 #include "args.h"

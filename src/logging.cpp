@@ -1,10 +1,17 @@
 #include <main.h> // also includes <logging.h>
+#include <tracer.h>
 #undef Error
 const char* Error::what() const {
     return message.c_str();
 }
 void Error::print() {
-    cpuf::perror("[%s:%d] at function %s: %s", file, line, fun, message);
+    for (size_t i = 0; i < call_trace.size() - 1; ++i) {
+        stack_trace_t e = call_trace[i];
+        const char* func_name = e.getFuncInfo();
+        cpuf::perror("%$ --> ", func_name);
+    }
+    cpuf::perror("%$", call_trace.back().getFuncInfo());
+    cpuf::perror("[%s:%d]: %s", file, line, message);
     exit(2);
 }
 const char* UBase::what() const {

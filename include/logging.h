@@ -4,15 +4,15 @@
 #endif
 #include <stdexcept>
 #include <relativePath.h>
+#include <tracer.h>
 class Error : public std::exception {
 public:
-    const char* fun;
     const char* file;
     std::string message;
     size_t line;
     template<typename ...Args>
-    Error(const char* fun, const char* file, size_t line, const char* format, Args&&... args)
-        : fun(fun), file(getRelativePath(file)), line(line), message( sprintf(format, args...) ) {}
+    Error(const char* file, size_t line, const char* format, Args&&... args)
+        : file(getRelativePath(file)), line(line), message( sprintf(format, args...) ) {}
     void print();
 };
 class UBase : std::exception {
@@ -41,4 +41,4 @@ public:
     needed to auto-print into console if not handled with try-catch block
 */
 void terminate_handler();
-#define Error(format, ...) Error(__FUNCTION__, __FILE__, __LINE__, format, __VA_ARGS__)
+#define Error(format, ...) Error(__FILE__, __LINE__, format, __VA_ARGS__)

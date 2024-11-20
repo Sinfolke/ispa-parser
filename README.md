@@ -17,8 +17,9 @@
     - parse each file      
  5. Compile the parser writing the code on C++ by own
  6. Create rules to walk on parser tree if need some optimisations or else before the compilation
- 7. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
- 8. After all done i can adjust parser rule syntax and do bootstrap
+ 7. Implement core library. The parser without optimizations can be converted using "on" calls
+ 8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
+ 9. After all done i can adjust parser rule syntax and do bootstrap
 ### 
 ### Parser syntax
   
