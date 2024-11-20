@@ -41,7 +41,8 @@ expr:
         ID ( (operator | assignment_operator) (assignment_val) )?
         data:
             name: %1
-            val: $2
+            op: $2
+            val: $3
         ;
     ;
     #compare:
@@ -49,6 +50,8 @@ expr:
 
         #side:
             ANY_DATA | ID | cll_function_call | method_call
+            data: %1;
+        ;
         data:
             right: %1
             op: %2
@@ -68,6 +71,11 @@ expr:
 
         #variable_assignment:
             ID assignment_operator assignment_val
+            data: 
+                name: %1
+                operator: %2
+                val: %3
+            ;
         ;
         data: %1
     ;

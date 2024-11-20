@@ -28,7 +28,7 @@ Rule(expr) {
         }
     }
     pos += res.token.length();
-    if (matched grp && *pos != ')')
+    if (matched_grp && *pos != ')')
         return {};
 
     std::unordered_map<const char*, std::any> data {};
