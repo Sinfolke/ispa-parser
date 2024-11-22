@@ -3,8 +3,8 @@
 #error "__SOURCE_ROOT__ not defined. It was intended to define root directory of source code what is done via CMAKE"
 #endif
 #include <stdexcept>
-#include <relativePath.h>
-#include <tracer.h>
+#include <debug/relativePath.h>
+#include <debug/tracer.h>
 class Error : public std::exception {
 public:
     const char* file;
@@ -15,6 +15,7 @@ public:
         : file(getRelativePath(file)), line(line), message( sprintf(format, args...) ) {}
     void print();
 };
+// base user error class
 class UBase : std::exception {
 public:
     const std::string message;
@@ -41,4 +42,4 @@ public:
     needed to auto-print into console if not handled with try-catch block
 */
 void terminate_handler();
-#define Error(format, ...) Error(__FILE__, __LINE__, format, __VA_ARGS__)
+#define Error(format, ...) Error(__FILE__, __LINE__, format, ##__VA_ARGS__)

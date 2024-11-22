@@ -1,5 +1,5 @@
-#include <parser.h>
-#include <parser_defs.h>
+#include <parser/parser.h>
+#include <parser/parser_defs.h>
 //#bin
 Rule(Rule_bin) {
     if (!(*in == '0' && *(in+1) == 'b')) {

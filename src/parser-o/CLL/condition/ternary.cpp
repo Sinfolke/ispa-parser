@@ -1,6 +1,6 @@
 
-#include <parser.h>
-#include <parser_defs.h>
+#include <parser/parser.h>
+#include <parser/parser_defs.h>
 
 Rule(cll_ternary) {
     auto pos = in;

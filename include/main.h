@@ -19,7 +19,7 @@
 #include <cpuf/printf>
 #include <cpuf/constexpr>
 
-#include <logging.h>
+#include <debug/logging.h>
 #include <init.h>
 
-#include "args.h"
+#include <args/args.h>

@@ -1,4 +1,4 @@
-#include <tracer.h>
 #include <exception>
-#include <logging.h>
+#include <debug/logging.h>
+#include <debug/tracer.h>
 void init(void);

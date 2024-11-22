@@ -1,4 +1,11 @@
+
+#ifdef ENABLE_TRACER
+#ifdef _WIN32
+#include <windows.h>
+#include <dbghelp.h>
+#else
 #include <dlfcn.h>
+#endif
 #include <stdio.h>
 #include <vector>
 struct stack_trace_t {
@@ -19,3 +26,4 @@ __cyg_profile_func_enter(void *func, void *caller);
 
 void __attribute__((no_instrument_function))
 __cyg_profile_func_exit(void *func, void *caller);
+#endif

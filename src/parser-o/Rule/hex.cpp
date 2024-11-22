@@ -1,5 +1,5 @@
-#include <parser.h>
-#include <parser_defs.h>
+#include <parser/parser.h>
+#include <parser/parser_defs.h>
 //#hex
 Rule(Rule_hex) {
     if (!(*in == '0' && *(in+1) == 'x')) {

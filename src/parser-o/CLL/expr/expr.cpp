@@ -1,16 +1,16 @@
-#include <parser.h>
-#include <parser_defs.h>
+#include <parser/parser.h>
+#include <parser/parser_defs.h>
 
 Rule(expr) {
     auto pos = in;
-    bool matched_grp = false
+    bool matched_grp = false;
     if (*pos == '(')
         matched_grp = true;
 
     
     auto res = any_data(pos);
     if (!any_data_res.result) {
-        res = expr_compare(pos)
+        res = expr_compare(pos);
         if (!res.result) {
             res = expr_logical(pos);
             if (!res.result) {

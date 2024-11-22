@@ -13,7 +13,14 @@ else()
     add_compile_options(-fomit-frame-pointer -ffast-math -fno-protect-parens)
 endif()
 
+if (NOT DEFINED ${DISABLE_TRACER})
+    # enable call tracer 
+    add_compile_definitions(ENABLE_TRACER)
+    add_compile_options("-g -finstrument-functions")
+endif()
+
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(ISC PRIVATE include external)
 add_executable(main ${SOURCES})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
