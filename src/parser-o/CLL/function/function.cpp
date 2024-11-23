@@ -92,3 +92,67 @@ Rule(cll_function_call) {
     };
     RULE_SUCCESSD(in, pos, cll_function_call, data);
 }
+Rule(function_decl) {
+    bool is_declaration_only = true;
+    bool is_typed = false;
+    size_t spaces;
+    std::string fun_name;
+    std::vector<std::string> fun_type;
+
+    auto pos = in;
+    // skip spaces!
+    //spaces = skipup(' ');
+
+    if (strncmp(pos, "fn", 2))
+        return {};
+    
+    pos += 2;
+    auto id_res = id(pos);
+    if (!id_res.result)
+        return {};
+    pos += id_res.token.length();
+
+    auto functon_body_res = function_body_decl(pos);
+    if (!function_body_res.result)
+        return {};
+    
+    auto val = function_value(pos);
+    if (!val.result)
+        return {};
+    pos += val.token.length;
+    //auto strict_end_res = strict_end(pos);
+
+    std::unordered_map<const char*, std::any> data {
+        { "is_declaration_only", is_declaration_only },
+        { "is_typed", is_typed },
+        { "name", fun_name },
+        { "type", fun_type },
+        { "value", val.token }
+    };
+    RULE_SUCCESSD(in, pos, function_decl, data);
+}
+Rule(function_value, int spaces) {
+    bool is_declaration_only = false;
+    std::vector<Rule> val;
+    while(true) {
+        //skipup("\n");
+        int current_spaces_amount; // = skipup(" ")
+        if (current_spaces_amount >= spaces) {
+            auto res = var(pos);
+            if (!res) {
+                res = cond(pos);
+                if (!res) {
+                    res = expr(pos);
+                    if (!res) {
+                        res = copiable_method_call(pos);
+                        if (!res)
+                            break;
+                    }
+                }
+            }
+            pos += res.token.length();
+            val.push_back(res.token);
+        } else break;
+    }
+    RULE_SUCCESSD(in, pos, function_value, val);
+}

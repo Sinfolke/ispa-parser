@@ -3,7 +3,7 @@ project(ISC)
 
 include(cmake/conf)
 
-add_executable(ISC ${SOURCES})
+add_executable(isc ${SOURCES})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

@@ -19,44 +19,42 @@ cll_function_call:
         body: $2
     ;
 ;
-
 function_decl: 
-    $bool is_declaration_only;
-    $bool is_typed;
+    $bool is_declaration_only = true;
+    $bool is_typed = false;
     $size_t spaces = %1.size();
     $str fun_name;
     $str function_value;
     $arr<str> fun_type;
 
-
-    \s* 'fn' (ID+) function_body[decl] 
-
-
-    // get the function value if exists
-    $if (not matched(STRICT_END)):
-    $    is_declaration_only = false;
-    $    skipup('\n');
-    $    while (true):
-    $       var current_spaces_amount = skipup("\s*").size();
-    $       if (current_spaces_amount > spaces):
-    $           function_value += skipup('\n');
-    $       else break;
-    $else:
-    $   is_declaration_only = true;
+            
     // get the function type if exists
     $if ($1>%1.size() > 1):
     $   is_typed = true;
     $   fun_type = $1>%1;
     $   fun_name = fun_type.pop();
-    $else:
-    $   is_typed = false;
 
-    STRICT_END?
-    
+    \s* 'fn' (ID+) function_body[decl] $val(#function_value)?
+
     data:
         is_declaration_only: is_declaration_only
         is_typed = is_typed
         name: fun_name
         type: fun_type
-        value: fun_value
+        value: val
+
+
+    #function_value(spaces):
+        // get the function value if exists
+        $is_declaration_only = false;
+        $arr val;
+        $while (true):
+        $   skipup('\n');
+        $   var current_spaces_amount = skipup("\s*").size();
+        $   if (current_spaces_amount >= spaces)
+                // match any cll rule here
+                &val.push(var | cond | expr | copiable_method_call)+ 
+        
+        data: val;
+    ;
 ;
