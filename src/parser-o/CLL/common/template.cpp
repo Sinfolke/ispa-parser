@@ -1,9 +1,7 @@
 #include <parser/parser.h>
 #include <parser/parser_defs.h>
 
-using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
-
-static std::tuple<bool, int, std::any> cll_template_content(const char* in, cll_template_content_param1_t p1) {
+static std::tuple<bool, int, std::any> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
     // cll_type
     auto p1_1_res = p1(in);
     if (!p1_1_res.result)
@@ -69,7 +67,7 @@ Rule(cll_template_content_all) {
         }
     }
 }
-Rule(cll_template, cll_template_content_param1_t content) {
+Rule(cll_template, Parser::cll_template_content_param1_t content) {
     auto pos = in;
     if (*pos != '<')
         return {};

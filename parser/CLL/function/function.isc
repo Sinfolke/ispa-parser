@@ -7,6 +7,10 @@ private function_body(in_parenthes):
     $data: $1;
 ;
 private function_in_parentheses(match_rule):
+    match_rule?
+    $if (matched(%0)):
+        (',' match_rule)*
+    data: [%1, %3];
 ;
 function_body[call] = function_body(function_arguments);
 function_body[decl] = function_body(function_parameters);
