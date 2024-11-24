@@ -43,15 +43,17 @@
     }
 # endif
 std::vector<stack_trace_t> call_trace {};
-void __attribute__((no_instrument_function))
-__cyg_profile_func_enter(void *func, void *caller) {
-    stack_trace_t stack(func, caller);
-    call_trace.push_back(stack);
-}
+extern "C" {
+    void __attribute__((no_instrument_function))
+    __cyg_profile_func_enter(void *func, void *caller) {
+        stack_trace_t stack(func, caller);
+        call_trace.push_back(stack);
+    }
 
-void __attribute__((no_instrument_function))
-__cyg_profile_func_exit(void *func, void *caller) {
-    call_trace.pop_back();
+    void __attribute__((no_instrument_function))
+    __cyg_profile_func_exit(void *func, void *caller) {
+        call_trace.pop_back();
+    }
 }
 
 #endif // ENABLE_TRACER

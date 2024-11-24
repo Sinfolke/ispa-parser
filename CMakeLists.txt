@@ -31,13 +31,19 @@ if (NOT DISABLE_TRACER)
 endif()
 
 add_compile_options("-O${O_LEVEL}")
+add_compile_options("-stdlib=libc++")
+
 add_compile_definitions("O_LEVEL=${O_LEVEL}")
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(isc PRIVATE include external)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
+target_compile_options(isc PRIVATE -finstrument-functions)
+
 include_directories(include stdlibs)
 set_target_properties(isc PROPERTIES OUTPUT_NAME isc)
 #set_target_properties(isc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)  # Disable GNU extensions
 set_target_properties(isc PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(isc PROPERTIES CXX_STANDARD 17)
+set_target_properties(isc PROPERTIES CXX_EXTENSIONS ON)

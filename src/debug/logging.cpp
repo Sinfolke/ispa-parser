@@ -8,12 +8,13 @@ const char* Error::what() const noexcept {
 }
 void Error::print() {
 #ifdef ENABLE_TRACER
+    cpuf::perror("Call trace:\n")
     for (size_t i = 0; i < call_trace.size() - 1; ++i) {
         stack_trace_t e = call_trace[i];
         const char* func_name = e.getFuncInfo();
-        cpuf::perror("%$ --> ", func_name);
+        cpuf::perror("\t%$ --> ", func_name);
     }
-    cpuf::perror("%$", call_trace.back().getFuncInfo());
+    cpuf::perror("\t%$\n", call_trace.back().getFuncInfo());
 #endif
     cpuf::perror("[%s:%d]: %s", file, line, message);
     exit(2);
@@ -38,9 +39,9 @@ void terminate_handler() {
         if (std::current_exception()) {
             std::rethrow_exception(std::current_exception());
         }
-    } catch (const Error& e) {
+    } catch (Error& e) {
         e.print();
-    } catch (const UBase& e) {
+    } catch (UBase& e) {
         e.print();
     } catch (const std::exception& e) {
         printf("Unknown std::exception: %s\n", e.what());

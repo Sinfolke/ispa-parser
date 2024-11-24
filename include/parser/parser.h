@@ -89,6 +89,14 @@ namespace Parser { // according to name
         Rule(Rule_hex);
         Rule(Rule_bin);
 
+        Rule(expr_variable_value);
+        Rule(expr_compare);
+        Rule(expr_compare_side);
+        Rule(expr_logical);
+        Rule(expr_parenthesed);
+        Rule(expr_parenthesed_variable_assignment)
+        Rule(expr_not);
+
         size_t getCurrentPos(const char* pos);
         const char* text;
     public:
@@ -139,14 +147,6 @@ namespace Parser { // according to name
         Rule(cll_ternary);
 
         Rule(expr);
-        Rule(expr_variable_value);
-        Rule(expr_compare);
-        Rule(expr_compare_side);
-        Rule(expr_logical);
-        Rule(expr_parenthesed);
-        Rule(expr_parenthesed_variable_assignment)
-        Rule(expr_not);
-
 
         Rule(function_body_call);
         Rule(function_body_decl);

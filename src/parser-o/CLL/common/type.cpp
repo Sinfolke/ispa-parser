@@ -1,4 +1,4 @@
-#include <parser/>
+#include <parser/parser.h>
 #include <parser/parser_defs.h>
 Rule(cll_csupport_types)
 {

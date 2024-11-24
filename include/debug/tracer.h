@@ -22,9 +22,11 @@ struct stack_trace_t {
     stack_trace_t(void* func, void* caller) : func(func), caller(caller) {}
 };
 extern std::vector<stack_trace_t> call_trace;
-void __attribute__((no_instrument_function))
-__cyg_profile_func_enter(void *func, void *caller);
+extern "C" {
+    void __attribute__((no_instrument_function))
+        __cyg_profile_func_enter(void *func, void *caller);
 
-void __attribute__((no_instrument_function))
-__cyg_profile_func_exit(void *func, void *caller);
+    void __attribute__((no_instrument_function))
+    __cyg_profile_func_exit(void *func, void *caller);
+}
 #endif
