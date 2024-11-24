@@ -42,10 +42,8 @@ namespace Parser { // according to name
     /* TYPE DECLARATIONS FOR THIS PARSER  */
     //?? whether to add using Member = ISC_STD::Member<Tokens, Rules, 1>;
 
-    using string_part =  ISC_STD::string_part;
     using Token = ISC_STD::_return<Tokens>;
     using Rule = ISC_STD::_return<Rules>;
-    using Groups = ISC_STD::Groups<Tokens, Rules>;
     using TokenFlow = ISC_STD::TokenFlow<Tokens>;
     using Tree = ISC_STD::TokenFlow<Rules>;
     using Token_result = ISC_STD::match_result<Tokens>;
@@ -56,7 +54,7 @@ namespace Parser { // according to name
     #define TOKEN(x) Token_result x (const char* in);
     #define Rule(x) Rule_result x (const char* in);
     /* Tokenizator FOR THIS PARSER */
-    class Tokenisator : public ISC_STD::Tokenisator_base<Tokens> {
+    class Tokenisator : public ISC_STD::Tokenizator_base<Tokens> {
         public:
         TokenFlow makeTokenFlow();
         // Token methods
@@ -66,13 +64,19 @@ namespace Parser { // according to name
     };
 
     /* PARSER */
-    class Parser : ISC_STD::Parser_base<Tokens, Rules> {
+    class Parser /*: ISC_STD::Parser_base<Tokens, Rules>*/ {
     private:
         Rule(Import_path);
+        size_t getCurrentPos(const char* pos);
+        const char* text;
     public:
         Tree parse();
 
         // Rule methods
+        Rule(end);
+        Rule(strict_end);
+        Rule(newline);
+        Rule()
         Rule(id);
     };
     #undef TOKEN

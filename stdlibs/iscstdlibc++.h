@@ -87,6 +87,14 @@ namespace ISC_STD {
         str += vec.back();
         return str;
     }
+    size_t skipup(const char*& in, const char* text) {
+        size_t counter = 0;
+        while(!strncmp(in, text, strlen(text))) {
+            in += strlen(text);
+            counter += strlen(text);
+        }
+        return counter;
+    }
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 
@@ -199,6 +207,12 @@ struct _return : public _return_base {
     }
 };
 
+
+template<class RESULT_T>
+struct match_result {
+    bool result = false;
+    _return<RESULT_T> token;
+};
 
 template<class TOKEN_T>
 using TokenFlow = std::vector<_return<TOKEN_T>>;
@@ -320,7 +334,7 @@ template<class TOKEN_T, class RULE_T>
 class Parser_base {
 private:
     TokenFlow<TOKEN_T> tokens;
-
+    size_t getCurrentPos() {};
 public:
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 

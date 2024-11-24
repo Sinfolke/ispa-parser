@@ -306,9 +306,3 @@ class Groups {
             return groups.begin();
         }
 };
-
-template<class RESULT_T>
-struct match_result {
-    bool result = false;
-    _return<RESULT_T> token;
-};

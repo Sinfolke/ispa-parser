@@ -14,6 +14,7 @@ public:
     Error(const char* file, size_t line, const char* format, Args&&... args)
         : file(getRelativePath(file)), line(line), message( sprintf(format, args...) ) {}
     void print();
+    const char* what() const noexcept override;
 };
 // base user error class
 class UBase : std::exception {
@@ -28,6 +29,7 @@ public:
 
 
     void print();
+    const char* what() const noexcept override;
 };
 class UError : public UBase {
 public:

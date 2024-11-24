@@ -51,7 +51,7 @@
         __attribute__((optimize("-fno-" opt)))
 
 #else
-    #warning "Optimization control unsupported. Output executable is about to be less optimized. Use GCC or Clang to get a more optimized executable."
+    #warning "Optimization control unsupported. Output executable is about to be less optimized. Use GCC or Clang to get it faster"
     #define ENABLE_OPTIMIZATION
     #define DISABLE_OPTIMIZATION
     #define ENABLE_O(opt)

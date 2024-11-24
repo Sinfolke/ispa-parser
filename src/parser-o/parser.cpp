@@ -7,18 +7,17 @@
             FILE RULES
     ###########################
 */
-
+size_t Parser::Parser::getCurrentPos(const char* pos) {
+    return text - pos;
+}
 Rule(id) {
     int c = 0;
     const char* pos = in;
-    Token_result result;
-    Group<3> current;
-    auto _local_start = pos;
+    std::string val;
     while (*pos >= '0' and *pos <= '9') {
-        ++pos;
+        val += *pos++;
     }
-    current.push(_local_start, pos);
-    skipSpaces(pos);
+    ISC_STD::skipup(pos, " ");
     if (
         not 
         (
@@ -29,21 +28,19 @@ Rule(id) {
     ) {
         return {};
     }
-    current.push(pos++, 1);
-    _local_start = pos;
-    skipSpaces(pos);
+    val += *pos++;
+    ISC_STD::skipup(pos, "");
     while (
         *pos >= 'a' and *pos <= 'f' || 
         *pos >= 'A' and *pos <= 'F' || 
         *pos >= '0' and *pos <= '9' || 
         *pos == '_'
     ) {
-        ++pos;
+        val += *pos++;
     }
-    current.push(_local_start, pos);
     // construct result as valid
     // extract full string from the first group
-    RULE_SUCCESSD(in, pos, id, current.full());
+    RULE_SUCCESSD(in, pos, id, val);
 }
 Rule(Import_path) {    
     auto pos = in;

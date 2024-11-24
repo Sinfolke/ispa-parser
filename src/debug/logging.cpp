@@ -1,7 +1,9 @@
 #include <debug/logging.h> // also includes <logging.h>
 #include <debug/tracer.h>
+#include <cpuf/printf>
+#include <cpuf/color>
 #undef Error
-const char* Error::what() const {
+const char* Error::what() const noexcept {
     return message.c_str();
 }
 void Error::print() {
@@ -16,7 +18,7 @@ void Error::print() {
     cpuf::perror("[%s:%d]: %s", file, line, message);
     exit(2);
 }
-const char* UBase::what() const {
+const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {

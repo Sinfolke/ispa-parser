@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <vector>
 struct stack_trace_t {
-    void* caller;
     void* func;
+    void* caller;
     const char* getCallerName();
     const char* getFuncName();
 #ifdef _WIN32
@@ -19,6 +19,7 @@ struct stack_trace_t {
     private:
         static std::string getSymbolName(void* addr);
 #endif
+    stack_trace_t(void* func, void* caller) : func(func), caller(caller) {}
 };
 extern std::vector<stack_trace_t> call_trace;
 void __attribute__((no_instrument_function))

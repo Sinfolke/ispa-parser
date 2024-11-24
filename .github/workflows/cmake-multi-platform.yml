@@ -36,10 +36,10 @@ jobs:
             c_compiler: cl
 
     steps:
-      - name: Checkout code
+      - name: Checkout code with submodules
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true  # Ensures submodules are initialized and updated
           fetch-depth: 1
 
       - name: Set reusable strings
