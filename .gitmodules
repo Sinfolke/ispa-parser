@@ -1,7 +1,3 @@
 [submodule "external/cpuf"]
 	path = external/cpuf
 	url = https://github.com/Sinfolke/cpuf
-[submodule "mod/parser"]
-	path = mod/parser
-	url = https://github.com/Sinfolke/ISC-parser.git
-	branch = parser
