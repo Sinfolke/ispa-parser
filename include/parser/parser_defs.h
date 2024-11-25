@@ -1,7 +1,3 @@
-#include <unordered_map>
-#include <cctype>
-#include <vector>
-#include <cstring>
 #define TOKEN(x, ...) Parser::Token_result Parser::Tokenisator::x (const char* in, ##__VA_ARGS__)
 #define Rule(x, ...) Parser::Rule_result Parser::Parser::x (const char* in, ##__VA_ARGS__)
 #define TO(t, x) std::any_cast<t>(x)
