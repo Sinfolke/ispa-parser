@@ -113,7 +113,7 @@ Rule(object) {
     std::vector<std::any> values;
 
     if (*pos != '{')
-    return {};
+        return {};
     ++pos;
     auto id_res = id(pos);
     if (not id_res.result)

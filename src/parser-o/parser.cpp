@@ -276,8 +276,8 @@ Rule(use_unit) {
             }
         }
     }
-    std::unordered_map<const char*, std::string> data {
-        { "name", TO(std::string, id.token.data) },
+    std::unordered_map<const char*, std::any> data {
+        { "name", id.token },
         { "value", str }
     };
     RULE_SUCCESSD(in, pos, use, data);
