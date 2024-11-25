@@ -1,4 +1,4 @@
-
+#pragma once
 #ifdef ENABLE_TRACER
 #ifdef _WIN32
 #include <windows.h>

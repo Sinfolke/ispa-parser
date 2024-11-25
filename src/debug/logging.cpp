@@ -1,4 +1,4 @@
-#include <debug/logging.h> // also includes <logging.h>
+#include <debug/logging.h>
 #include <debug/tracer.h>
 #include <cpuf/printf>
 #include <cpuf/color>
@@ -8,7 +8,7 @@ const char* Error::what() const noexcept {
 }
 void Error::print() {
 #ifdef ENABLE_TRACER
-    cpuf::perror("Call trace:\n")
+    cpuf::perror("Call trace:\n");
     for (size_t i = 0; i < call_trace.size() - 1; ++i) {
         stack_trace_t e = call_trace[i];
         const char* func_name = e.getFuncInfo();

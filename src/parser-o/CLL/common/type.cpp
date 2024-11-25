@@ -1,5 +1,6 @@
 #include <parser/parser.h>
 #include <parser/parser_defs.h>
+
 Rule(cll_csupport_types)
 {
     auto pos = in;
@@ -88,5 +89,41 @@ Rule(cll_csupport_types)
 }
 Rule(cll_type)
 {
-
+    auto pos = in;
+    auto res = cll_csupport_types(pos);
+    if (!res) {
+        res = cll_type_abstract(pos);
+        if (!res)
+            return {};
+    }
+    RULE_SUCCESSD(in, pos, cll_type, res);
+}
+Rule(cll_type_abstract) 
+{
+    auto pos = in;
+    std::string type;
+    Parser::Rule templ;
+    if (
+        !strncmp(pos, "var", 3) || !strncmp(pos, "num", 3) ||
+        !strncmp(pos, "str", 3)
+    ) {
+        type.append(pos, 3);
+        pos += 3;
+    
+    } else if (!strncmp(pos, "bool", 4)) {
+        type.append(pos, 4);
+        pos += 4;
+    } else if (!strncmp(pos, "arr", 3) || !strncmp(pos, "obj", 3)) {
+        auto cll_template_res = cll_template_typename(pos);
+        if (!cll_template_res.result)
+        {
+            return {};
+        }
+        templ = cll_template_res.token;
+    } else return {};
+    std::unordered_map<const char*, std::any> data {
+        { "type", type },
+        { "template", templ }
+    };
+    RULE_SUCCESSD(in, pos, cll_type_abstract, data);
 }

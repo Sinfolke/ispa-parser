@@ -14,6 +14,7 @@ Rule(id) {
     int c = 0;
     const char* pos = in;
     std::string val;
+    ISC_STD::skipup(pos, " ");
     while (*pos >= '0' and *pos <= '9') {
         val += *pos++;
     }
@@ -29,7 +30,7 @@ Rule(id) {
         return {};
     }
     val += *pos++;
-    ISC_STD::skipup(pos, "");
+    ISC_STD::skipup(pos, " ");
     while (
         *pos >= 'a' and *pos <= 'f' || 
         *pos >= 'A' and *pos <= 'F' || 
@@ -44,7 +45,7 @@ Rule(id) {
 }
 Rule(Import_path) {    
     auto pos = in;
-    //! <pattern> csequence
+    ISC_STD::skipup(pos, " ");
     while (
         not 
         (
@@ -63,9 +64,11 @@ Rule(Import_path) {
 Rule(Import_ext) {    
     auto pos = in;
     std::vector<Rule_result> data;
+    ISC_STD::skipup(pos, " ");
     while(true) {
         if (*pos == '.') {
             ++pos;
+            ISC_STD::skipup(pos, " ");
             auto match_res = id(pos);
             if (match_res.result) {
                 data.push_back(match_res);
@@ -80,9 +83,12 @@ Rule(Import_ext) {
     RULE_SUCCESSD(in, pos, Priv_Import_ext, data);
 };
 Rule(Import_file) {
-    auto path_res = Import_path(in);
+    auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    auto path_res = Import_path(pos);
     if (!path_res.result) return {};
-    auto pos = in + path_res.token.length();
+    pos += path_res.token.length();
+    ISC_STD::skipup(pos, " ");
     auto ext_res = Import_ext(pos);
     if (!ext_res.result) return {};
     pos += ext_res.token.length();
@@ -101,21 +107,25 @@ Rule(Import_file) {
 }
 Rule(Import_general_dir) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     if (*pos != '[')
         return {};
-    
-    auto path_res = Import_path(++pos);
+    pos++;
+    ISC_STD::skipup(pos, " ");
+    auto path_res = Import_path(pos);
     if (!path_res.result) return {};
     pos += path_res.token.length();
-
+    ISC_STD::skipup(pos, " ");
     if (*pos != ']')
         return {};
     
     auto _local_start = ++pos;
     std::vector<Rule> files;
     while(true) {
+        int v = ISC_STD::skipup(pos, " ");
         auto file_res = Import_file(pos);
         if (!file_res.result)
+            pos -= v; //! to not include spaces into result token length
             break;
         pos += file_res.token.length();
         files.push_back(file_res.token);
@@ -130,23 +140,30 @@ Rule(Import_general_dir) {
 }
 Rule(Import_rule_specific) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto file_res = Import_file(pos);
     if (!file_res.result)
         return {};
     pos += file_res.token.length();
+    ISC_STD::skipup(pos, " ");
     if (*pos != '{')
         return {};
-    auto _local_start = ++pos;
+    pos++;
+    ISC_STD::skipup(pos, " ");
+    auto _local_start = pos;
     std::vector<Token> tokens;
     std::vector<Token> tokens_current_name;
     while (true) {
+        ISC_STD::skipup(pos, " ");
         auto id_res = id(pos);
         if (!id_res.result)
             break;
         tokens.push_back(id_res.token);
         pos += id_res.token.length();
+        ISC_STD::skipup(pos, " ");
         if (*pos == '=') {
             ++pos;
+            ISC_STD::skipup(pos, " ");
             auto id2_res = id(pos);
             if (!id2_res.result)
                 break;
@@ -163,9 +180,12 @@ Rule(Import_rule_specific) {
     RULE_SUCCESSD(in, pos, Priv_Import_rule_specific, data);
 }
 Rule(Import) {
-    if (strncmp(in, "import", sizeof("import") - 1))
+    auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    if (strncmp(pos, "import", sizeof("import") - 1))
         return {};
-    auto pos = in + sizeof("import") - 1;
+    pos += sizeof("import") - 1;
+    ISC_STD::skipup(pos, " ");
     auto first_rule_res = Import_file(pos);
     if (!first_rule_res.result) {
         first_rule_res = Import_general_dir(pos);
@@ -176,9 +196,11 @@ Rule(Import) {
         }
     }
     pos += first_rule_res.token.length();
+    ISC_STD::skipup(pos, " ");
     std::vector<Token> additional_paths;
     while (*pos == ',') {
         ++pos;
+        ISC_STD::skipup(pos, "");
         auto result = Import_file(pos);
         if (!result.result) {
             result = Import_general_dir(pos);
@@ -197,7 +219,7 @@ Rule(Import) {
     };
     // push remaining arguments inlining the array
     data.insert(data.end(), additional_paths.begin(), additional_paths.end());
-    for (const obj : additional_paths) {
+    for (const auto obj : additional_paths) {
         data.push_back( TO(obj_type, obj.data ) );
     }
     RULE_SUCCESSD(in, pos, Import, data);

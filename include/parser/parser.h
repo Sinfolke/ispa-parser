@@ -89,6 +89,8 @@ namespace Parser { // according to name
         Rule(Rule_hex);
         Rule(Rule_bin);
 
+        Rule(cll_type_abstract)
+
         Rule(expr_variable_value);
         Rule(expr_compare);
         Rule(expr_compare_side);

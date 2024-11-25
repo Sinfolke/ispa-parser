@@ -31,12 +31,10 @@ if (NOT DISABLE_TRACER)
 endif()
 
 add_compile_options("-O${O_LEVEL}")
-add_compile_options("-stdlib=libc++")
-
 add_compile_definitions("O_LEVEL=${O_LEVEL}")
+add_compile_definitions("__USE_TIME64")
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(isc PRIVATE include external)
-target_compile_options(isc PRIVATE -finstrument-functions)
 
 include_directories(include stdlibs)
 set_target_properties(isc PROPERTIES OUTPUT_NAME isc)

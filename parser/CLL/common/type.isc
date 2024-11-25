@@ -22,10 +22,15 @@ cll_csupport_types:
 cll_type:
     cll_csupport_types
         |
+    #abstract
+
+    data: %1;
+    
+    #abstract:
     // the abstract types
-    ( 'var' | 'num' | 'bool' | 'str' | ('arr' | 'obj' cll_template[typename]) )
+    ( 'var' | 'num' | 'bool' | 'str' | 'arr' cll_template[typename] | 'obj' cll_template[typename] )
     data:
-        type: $1 
-        template: $2
+        type: %1
+        template: %2
     ;
 ;
