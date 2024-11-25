@@ -200,7 +200,7 @@ Rule(Import) {
     std::vector<Token> additional_paths;
     while (*pos == ',') {
         ++pos;
-        ISC_STD::skipup(pos, "");
+        ISC_STD::skipup(pos, " ");
         auto result = Import_file(pos);
         if (!result.result) {
             result = Import_general_dir(pos);
@@ -227,16 +227,21 @@ Rule(Import) {
 Rule(use) {
     auto pos = in;
     std::unordered_map<const char*, std::string> data();
+    ISC_STD::skipup(pos, " ");
     if (strncmp(pos, "use", 3)) {
         return {};
     }
     pos += 3;
+    ISC_STD::skipup(pos, " ");
     auto use_unit_res = use_unit(pos);
     if (not use_unit_res.result)
         return {};
     pos += use_unit_res.token.length();
+    ISC_STD::skipup(pos, " ");
     std::vector<Rule> use_unit_results_2(5); // generally no over 5 elements will be found & avoid extra allocations optimization
+    ISC_STD::skipup(pos, " ");
     while(*pos == ',') {
+        ISC_STD::skipup(pos, " ");
         auto use_unit_res = use_unit(pos + 1);
         if (not use_unit_res.result)
             break;
@@ -257,13 +262,18 @@ Rule(use_unit) {
     if (!id_res)
         return {};
     pos += id_res.token.length();
+    ISC_STD::skipup(pos, " ");
     std::string str;
     if (*pos == ':') {
+        ISC_STD::skipup(pos, " ");
         auto string_res = string(++pos); // std::string
         if (string_res.result) {
             str = TO(std::string, string_res.token.data);
         } else {
-            while(*pos != ',') str += *pos;
+            while(*pos != ',')
+            {
+                if (*pos != ' ') str += *pos;
+            }
         }
     }
     std::unordered_map<const char*, std::string> data {

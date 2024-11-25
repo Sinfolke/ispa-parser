@@ -9,7 +9,7 @@ NEWLINE: [\n];      // to be ended as a newline. Usually for properties in datab
 id: 
     $data = $1;
 
-    &value([0-9]* [a-zA-Z_] [a-zA-Z0-9_]*)
+    ([0-9]* [a-zA-Z_] [a-zA-Z0-9_]*)
 ;
 
 
