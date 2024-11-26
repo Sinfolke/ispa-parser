@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.28.3)
 project(ISC)
 
 include(cmake/conf)
-add_executable(isc ${SOURCES})
+add_subdirectory(mod/parser)
 
+add_executable(isc ${SOURCES})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
