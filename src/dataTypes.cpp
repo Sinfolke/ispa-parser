@@ -5,11 +5,13 @@ Rule(string) {
     const char* pos = in;
     char quote;
     std::string data;
+    ISC_STD::skipup(pos, " ");
     if (not (*pos == '"' || *pos == '\'') )
         return {};
     quote = *pos++;
     // Capture the string content
     while (*pos != quote) {
+        ISC_STD::skipup(pos, " ");
         if (*pos == '\\') {
             data += *pos++; // Skip escape character
         }
