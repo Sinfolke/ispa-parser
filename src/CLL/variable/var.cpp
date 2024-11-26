@@ -1,5 +1,4 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 Rule(cll_var) {
     auto pos = in;
     auto cll_type_res = cll_type(pos);

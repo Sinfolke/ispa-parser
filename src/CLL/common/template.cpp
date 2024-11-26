@@ -1,5 +1,4 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 
 static std::tuple<bool, int, std::any> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
     // cll_type

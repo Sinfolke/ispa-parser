@@ -1,6 +1,6 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+export module Parser.end;
 
+#include <parser_defs.h>
 Rule(end) {
     if (*in == ';' or *in == '\n')
         RULE_SUCCESS(in, in + 1, end);

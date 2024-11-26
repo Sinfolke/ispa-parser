@@ -1,6 +1,7 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
 // STRING Rule
+export module Parser.dataTypes;
+
+#include <parser_defs.h>
 Rule(string) {
     const char* pos = in;
     char quote;

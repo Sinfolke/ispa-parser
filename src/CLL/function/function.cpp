@@ -1,8 +1,7 @@
 // not gonna try declare these helper functions instead copy-paste their content as more quick solution
 // static void function_body(void);
 // static void function_in_parentheses(void);
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 
 Rule(function_body_call) {
     auto pos = in;

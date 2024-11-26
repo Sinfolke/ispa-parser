@@ -1,5 +1,4 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 
 Rule(expr_variable_value) {
     auto pos = in;

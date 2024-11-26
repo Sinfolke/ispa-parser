@@ -1,5 +1,4 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 //#nested_rule
 Rule(Rule_nested_rule) {
     auto pos = in;

@@ -1,5 +1,6 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+export module Parser:Rule;
+
+#include <parser_defs.h>
 Rule(Rule) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");

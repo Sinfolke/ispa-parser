@@ -1,5 +1,4 @@
-#include <parser/parser.h>
-#include <parser/parser_defs.h>
+#include <parser_defs.h>
 
 Rule(Rule_qualifier) {
     auto pos = in;
