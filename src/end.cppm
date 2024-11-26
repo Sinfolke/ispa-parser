@@ -1,6 +1,6 @@
 export module Parser.end;
-
 #include <parser_defs.h>
+
 Rule(end) {
     if (*in == ';' or *in == '\n')
         RULE_SUCCESS(in, in + 1, end);
@@ -8,7 +8,7 @@ Rule(end) {
 }
 Rule(strict_end) {
     if (*in == ';')
-        RULE_SUCCESS(in, in + 1, strcit_end);
+        RULE_SUCCESS(in, in + 1, strict_end);
     return {};
 }
 Rule(newline) {

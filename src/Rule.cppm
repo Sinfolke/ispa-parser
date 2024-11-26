@@ -1,5 +1,13 @@
-export module Parser:Rule;
-
+export module Parser.Rule;
+export import Parser.Rule.bin;
+export import Parser.Rule.csequence;
+export import Parser.Rule.data_block;
+export import Parser.Rule.group;
+export import Parser.Rule.hex;
+export import Parser.Rule.nested_rule;
+export import Parser.Rule.op;
+export import Parser.Rule.qualifier;
+export import Parser.Rule.rule;
 #include <parser_defs.h>
 Rule(Rule) {
     auto pos = in;

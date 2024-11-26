@@ -87,11 +87,19 @@ namespace ISC_STD {
         str += vec.back();
         return str;
     }
+    /**
+     * @brief Skip a specific amount of symbols
+     * 
+     * @param in 
+     * @param text 
+     * @return size_t 
+     */
     size_t skipup(const char*& in, const char* text) {
         size_t counter = 0;
-        while(!strncmp(in, text, strlen(text))) {
-            in += strlen(text);
-            counter += strlen(text);
+        len = strnlen(text);
+        while(!strncmp(in, text, len)) {
+            in += len;
+            counter++;
         }
         return counter;
     }
