@@ -2,11 +2,14 @@
 #include <parser_defs.h>
 //#hex
 Rule(Rule_hex) {
-    if (!(*in == '0' && *(in+1) == 'x')) {
+    auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    if (strncmp(pos, "0x", 2)) {
         return {};
     }
-    auto begin = in + 2;
-    auto pos = begin;
+    ISC_STD::skipup(pos, " ");
+    pos += 2;
+    auto begin = pos;
     while (isdigit(*pos) || isupper(*pos) || islower(*pos)) {
         ++pos;
     }

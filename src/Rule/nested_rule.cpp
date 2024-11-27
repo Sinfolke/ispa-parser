@@ -3,11 +3,13 @@
 //#nested_rule
 Rule(Rule_nested_rule) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    auto begin = pos;
     while(*pos == '\n' || *pos == '\r')
         pos ++;
-    if (in == pos)
+    if (begin == pos)
         return {};
-    
+    ISC_STD::skipup(pos, " ");
     if (*pos != '#')
         return {};
     pos++;
