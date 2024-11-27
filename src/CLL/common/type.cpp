@@ -1,4 +1,4 @@
-export module Parser.cll.type;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(cll_csupport_types)

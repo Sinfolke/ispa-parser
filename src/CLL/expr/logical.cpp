@@ -1,4 +1,4 @@
-export module Parser.cll.logical;
+#include <parser.h>
 #include <parser_defs.h>
 Rule(expr_logical) {
     auto pos = in;

@@ -1,14 +1,13 @@
-export module Parser.Rule.bin;
+#include <parser.h>
 #include <parser_defs.h>
-
-//#bin
-Rule(Rule_bin) {
-    if (!(*in == '0' && *(in+1) == 'b')) {
+//#hex
+Rule(Rule_hex) {
+    if (!(*in == '0' && *(in+1) == 'x')) {
         return {};
     }
     auto begin = in + 2;
     auto pos = begin;
-    while (*pos == '0' || *pos == '1') {
+    while (isdigit(*pos) || isupper(*pos) || islower(*pos)) {
         ++pos;
     }
     if (begin == pos) 

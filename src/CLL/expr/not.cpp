@@ -1,4 +1,4 @@
-export module Parser.cll.not;
+#include <parser.h>
 #include <parser_defs.h>
 Rule(expr_not) {
     if (*pos == '!' || !strncmp(in, "not", sizeof("not") - 1))

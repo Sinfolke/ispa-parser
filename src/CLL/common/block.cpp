@@ -1,4 +1,4 @@
-export module Parser.cll.block;
+#include <parser.h>
 #include <parser_defs.h>
 Rule(cll_block) {
     auto pos = in;

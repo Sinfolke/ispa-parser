@@ -1,5 +1,5 @@
 
-export module Parser.cll.ternary;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(cll_ternary) {

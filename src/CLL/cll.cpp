@@ -1,25 +1,4 @@
-export module parser.cll;
-
-export import parser.cll.block;
-export import parser.cll.operators;
-export import parser.cll.template;
-export import parser.cll.type;
-
-export import parser.cll.if;
-export import parser.cll.ternary;
-
-export import parser.cll.compare;
-export import parser.cll.expr;
-export import parser.cll.logical;
-export import parser.cll.not;
-export import parser.cll.parenthesed;
-export import parser.cll.variable_value;
-
-export import parser.cll.function;
-
-export import parser.cll.method;
-export import parser.cll.var;
-
+#include <parser.h>
 #include <parser_defs.h>
 Rule(cll) {
     auto pos = in;

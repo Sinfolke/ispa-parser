@@ -1,13 +1,17 @@
-export module Parser.Rule.hex;
+#include <parser.h>
 #include <parser_defs.h>
-//#hex
-Rule(Rule_hex) {
-    if (!(*in == '0' && *(in+1) == 'x')) {
+
+//#bin
+Rule(Rule_bin) {
+    auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    if (!(*pos == '0' && *(pos+1) == 'b')) {
         return {};
     }
     auto begin = in + 2;
     auto pos = begin;
-    while (isdigit(*pos) || isupper(*pos) || islower(*pos)) {
+    ISC_STD::skipup(pos, " ");
+    while (*pos == '0' || *pos == '1') {
         ++pos;
     }
     if (begin == pos) 

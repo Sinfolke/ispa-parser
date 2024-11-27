@@ -1,7 +1,7 @@
 // not gonna try declare these helper functions instead copy-paste their content as more quick solution
 // static void function_body(void);
 // static void function_in_parentheses(void);
-export module Parser.cll.function;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(function_body_call) {

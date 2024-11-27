@@ -1,4 +1,4 @@
-export module Parser.cll.if;
+#include <parser.h>
 #include <parser_defs.h>
 Rule(cll_if) {
     auto pos = in;

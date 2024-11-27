@@ -1,4 +1,4 @@
-export module Parser.Rule.group;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(Rule_group) {

@@ -1,5 +1,4 @@
-
-export module Parser.cll.template;
+#include <parser.h>
 #include <parser_defs.h>
 
 static std::tuple<bool, int, std::any> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {

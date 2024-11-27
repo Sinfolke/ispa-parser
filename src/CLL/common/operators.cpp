@@ -1,4 +1,4 @@
-export module Parser.cll.operators;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(op) {

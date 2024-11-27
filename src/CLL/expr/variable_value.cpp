@@ -1,4 +1,4 @@
-export module Parser.cll.variable_value;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(expr_variable_value) {

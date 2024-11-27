@@ -1,22 +1,24 @@
-export module Parser.Rule.data_block;
+#include <parser.h>
 #include <parser_defs.h>
 //#data_block
 Rule(data_block) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
+    auto start = pos;
     while(*pos == '\n' || *pos == '\r')
         pos ++;
-    if (in == pos)
+    if (start == pos)
         return {};
     
-    
+    ISC_STD::skipup(pos, " ");
     if (strncmp(pos, "data", 4))
         return {};
     pos += 4;
-
+    ISC_STD::skipup(pos, " ");
     if (*pos!= ':')
         return {};
     pos++;
-
+    ISC_STD::skipup(pos, " ");
     auto data = ANY_DATA(pos);
     if (!data.result) {
         data = rule_data_block_inclosed_map(pos);
@@ -25,7 +27,7 @@ Rule(data_block) {
     }
 
     pos += data.token.length();
-
+    ISC_STD::skipup(pos, " ");
     if (*pos!= ';')
         return {};
 
@@ -36,6 +38,7 @@ Rule(Rule_data_block_inclosed_map) {
     auto pos = in;
     std::vector<Rule> keys;
     while (true) {
+        ISC_STD::skipup(pos, " ");
         auto key_res = rule_data_block_key(pos);
         if (!key_res.result)
             break;

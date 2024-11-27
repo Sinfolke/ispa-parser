@@ -96,7 +96,7 @@ namespace ISC_STD {
      */
     size_t skipup(const char*& in, const char* text) {
         size_t counter = 0;
-        len = strnlen(text);
+        size_t len = strlen(text);
         while(!strncmp(in, text, len)) {
             in += len;
             counter++;

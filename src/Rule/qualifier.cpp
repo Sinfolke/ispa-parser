@@ -1,4 +1,4 @@
-export module Parser.Rule.qualifier;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(Rule_qualifier) {

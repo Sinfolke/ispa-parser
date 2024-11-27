@@ -1,4 +1,4 @@
-export module Parser.cll.parenthesed;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(expr_parenthesed) {

@@ -1,4 +1,4 @@
-export module Parser.cll.method;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(method_call) {

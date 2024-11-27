@@ -1,15 +1,18 @@
-export module Parser.Rule.csequence;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(Rule_csequence) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     if (*pos != '[')
         return {};
     bool not = false;
+    ISC_STD::skipup(pos, " ");
     if (*pos == '^')
         not = true;
     std::vector<Rule> dt;
     while(true) {
+        ISC_STD::skipup(pos, " ");
         auto res = Rule_csequence_symbol(pos);
         if (!res) {
             res = Rule_csequence_diapason(pos);
@@ -19,6 +22,7 @@ Rule(Rule_csequence) {
         pos += res.token.length();
         dt.push_back(res);
     }
+    ISC_STD::skipup(pos, " ");
     if (*pos!= ']')
         return {};
     

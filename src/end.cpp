@@ -1,4 +1,4 @@
-export module Parser.end;
+#include <parser.h>
 #include <parser_defs.h>
 
 Rule(end) {
