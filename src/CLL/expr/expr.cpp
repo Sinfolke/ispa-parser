@@ -9,7 +9,7 @@ Rule(expr) {
 
     
     auto res = any_data(pos);
-    if (!any_data_res.result) {
+    if (!res.result) {
         res = expr_compare(pos);
         if (!res.result) {
             res = expr_logical(pos);

@@ -1,17 +1,17 @@
 #include <parser.h>
 #include <parser_defs.h>
 
-static std::tuple<bool, int, std::any> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
+static std::tuple<bool, int, std::vector<std::any>> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
     // cll_type
     auto p1_1_res = p1(in);
     if (!p1_1_res.result)
         return {0, 0, 0};
     auto pos = in + p1_1_res.token.length();
-    std::vector<cll_template_content_param1_t> cll_p1_seq;
+    std::vector<std::any> cll_p1_seq;
     while(*pos == ',') {
-        auto p1_2_res = p1();
+        auto p1_2_res = p1(pos);
         if (!p1_2_res.result)
-            return {0, 0, 0};
+            return std::tie(0, 0, 0);
         pos += p1_2_res.token.length();
         cll_p1_seq.push_back(p1_2_res.token);
     }
@@ -19,7 +19,7 @@ static std::tuple<bool, int, std::any> cll_template_content(const char* in, Pars
         p1_1_res.token,
         cll_p1_seq
     };
-    return { true, pos, data };
+    return std::tie(true, pos, data);
 }
 Rule(cll_template_content_typename) {
     auto [result, pos, data] = cll_template_content(in, cll_type);
@@ -67,18 +67,19 @@ Rule(cll_template_content_all) {
         }
     }
 }
-Rule(cll_template, Parser::cll_template_content_param1_t content) {
+Rule(cll_template, cll_template_content_param1_t content) {
     auto pos = in;
     if (*pos != '<')
         return {};
-    auto content_res = content();
-    if (!content.res)
+    auto content_res = content(pos);
+    if (!content_res.result)
         return {};
     pos += content_res.token.length();
-    std::vector<Token> data = { content_res.token };
+    std::vector<std::any> data;
+    data.push_back(content_res.token);
     while(*pos == ',') {
         ++pos;
-        content_res = content();
+        content_res = content(pos);
         if (!content_res.result)
             break;
         pos += content_res.token.length();

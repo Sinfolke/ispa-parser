@@ -342,7 +342,6 @@ template<class TOKEN_T, class RULE_T>
 class Parser_base {
 private:
     TokenFlow<TOKEN_T> tokens;
-    size_t getCurrentPos() {};
 public:
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 
@@ -362,11 +361,11 @@ public:
         }
     }
     Parser_base(const std::string& in) {
-        auto r = Tokenizator().makeTokenFlow(in);
+        auto r = Tokenizator_base<TOKEN_T>().makeTokenFlow(in);
         tokens = r;
     }
     Parser_base(const char* const in) {
-        auto r = Tokenizator().makeTokenFlow(in);
+        auto r = Tokenizator_base<TOKEN_T>().makeTokenFlow(in);
         tokens = r;
     }
 
@@ -382,11 +381,11 @@ public:
         return parse();
     }
     Tree<RULE_T> parse(const std::string& in) {
-        tokens = Tokenizator().makeTokenFlow(in);
+        tokens = Tokenizator_base<TOKEN_T>().makeTokenFlow(in);
         return parse();
     }
     Tree<RULE_T> parse(const char* const in) {
-        tokens = Tokenizator().makeTokenFlow(in);
+        tokens = Tokenizator_base<TOKEN_T>().makeTokenFlow(in);
         return parse();
     }
     /**

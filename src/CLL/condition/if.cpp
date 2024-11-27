@@ -13,7 +13,7 @@ Rule(cll_if) {
     
     auto expr_res = expr(pos);
     if (!expr_res.result)
-        return {}
+        return {};
     
     auto res = cll_block(pos);
     if (!res.result) {

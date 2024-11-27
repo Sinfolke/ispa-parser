@@ -1,4 +1,4 @@
-
+#pragma once
 #include <unordered_map>
 #include <cctype>
 #include <vector>
@@ -7,7 +7,7 @@
 #include <iscstdlibc++.h>
 namespace Parser {
     enum class Rules {
-    
+    NONE,
     Import_path,
     Import_ext,
     Import_file,
@@ -97,10 +97,12 @@ namespace Parser {
     cll_var,
 
     cll
-
     };
-    using Rule_result = ISC_STD::_return<Rules>;
-    export class Parser {
+    using Rule = ISC_STD::_return<Rules>;
+    using Rule_result = ISC_STD::match_result<Rules>;
+    using Tree = ISC_STD::Tree<Rule>;
+    using cll_template_content_param1_t = Parser::Rule_result (*)(const char*);
+    class Parser {
         private:
             const char* text;
             std::size_t getCurrentPos(const char* pos) {
@@ -138,9 +140,6 @@ namespace Parser {
             Rule(expr_parenthesed);
             Rule(expr_parenthesed_variable_assignment)
             Rule(expr_not);
-
-            size_t getCurrentPos(const char* pos);
-            const char* text;
         public:
             Tree parse();
 

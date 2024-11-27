@@ -9,10 +9,10 @@ Rule(expr_parenthesed) {
 
     auto res = expr_parenthesed_variable_assignment(pos);
     if (!res.result) {
-        res = copy_method_call(pos);
+        res = copiable_method_call(pos);
         if (!res.result) {
             res = cll_ternary(pos);
-            if (!res)
+            if (!res.result)
                 return {};
         }
     }
