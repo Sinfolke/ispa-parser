@@ -11,10 +11,10 @@ void Error::print() {
     cpuf::perror("Call trace:\n");
     for (size_t i = 0; i < call_trace.size() - 1; ++i) {
         stack_trace_t e = call_trace[i];
-        const char* func_name = e.getFuncInfo();
+        const char* func_name = e.getFuncName();
         cpuf::perror("\t%$ --> ", func_name);
     }
-    cpuf::perror("\t%$\n", call_trace.back().getFuncInfo());
+    cpuf::perror("\t%$\n", call_trace.back().getFuncName());
 #endif
     cpuf::perror("[%s:%d]: %s", file, line, message);
     exit(2);

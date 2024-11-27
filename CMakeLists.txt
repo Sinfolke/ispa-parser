@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28.3)
 project(ISC)
 
 include(cmake/conf)
-add_subdirectory(mod/parser)
+add_subdirectory(mod/parser)    # include parser
 
 add_executable(isc ${SOURCES})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -34,7 +34,7 @@ add_compile_options("-O${O_LEVEL}")
 add_compile_definitions("O_LEVEL=${O_LEVEL}")
 add_compile_definitions("__USE_TIME64")
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
-target_include_directories(isc PRIVATE include external)
+target_include_directories(isc PRIVATE include external parser/mod/include)
 
 include_directories(include stdlibs)
 set_target_properties(isc PROPERTIES OUTPUT_NAME isc)
