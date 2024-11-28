@@ -5,8 +5,7 @@ Rule(op) {
     if (
         *in == '+' || *in == '-' || *in == '*' || *in == '/' || 
         *in == '%' || *in == '&' || *in == '|' || *in == '^' || 
-        *in == '<<' || *in == '>>' || *in == '|' | *in == '&' || *in == '^' || 
-        *in == '<<' || *in == '>>'
+        !strncmp(in, "<<", 2) || !strncmp(in, ">>", 2) || *in == '|' | *in == '&' || *in == '^'
     ) {
         return RULE_SUCCESSD(in, in + 1, op, *in);
     }
@@ -26,7 +25,7 @@ Rule(logical_not) {
         *in == '!'
     ) {
         RULE_SUCCESS(in, in + 1, compare_op);
-    } else if (( *in == 'n' && *(in + 1) == 'o' && *(in + 2) == 't' )) {
+    } else if ( !strncmp(in, "not", 3)) {
         RULE_SUCCESS(in, in + 3, compare_op);
     } else return {};
 }
@@ -49,14 +48,14 @@ Rule(logical_or) {
 }
 Rule(logical_andr) {
     if ( 
-        *in == '|' && *(in + 1) == "&"
+        strncmp(in, "|&", 2)
     ) {
         RULE_SUCCESS(in, in + 2, compare_op);
     } else if () {
-        if ( !( *in == 'a' && *(in + 1) == 'n' && *(in + 2) == 'd' ) )
+        if (!strncmp(in, "and", 3))
             return {};
-        // TODO: skip spaces
-        if ( !( *in == 'o' && *(in + 1) == 'r' ) )
+        ISC_STD::skipup(pos, " ");
+        if (strncmp(in, "or", 3))
             return {};
         RULE_SUCCESS(in, in + 3, compare_op);
     } else return {};

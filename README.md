@@ -5,12 +5,13 @@ Implementation:
 1. Write base rules
 2. Make skip of spaces in between rules
     done for:
-     Rule
      parser
      end
      dataTypes
      Rule, Rule/*
-     
+     Cll/common/block
+     Cll/common/operators
+     Cll/common/template
 3. Fix errors in iscstdlibc++
 4. Fix errors in parser.h
 5. fix errors in rules if exists
