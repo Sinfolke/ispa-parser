@@ -9,12 +9,8 @@ Implementation:
      parser
      end
      dataTypes
-     Rule/bin
-     Rule/csequence
-     Rule/data_block
-     Rule/group
-     Rule/hex
-     Rule/nested_rule
+     Rule, Rule/*
+     
 3. Fix errors in iscstdlibc++
 4. Fix errors in parser.h
 5. fix errors in rules if exists
