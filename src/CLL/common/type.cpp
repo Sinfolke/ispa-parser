@@ -6,12 +6,13 @@ Rule(cll_csupport_types)
     auto pos = in;
     bool is_unsigned = false;
     std::string val;
+    ISC_STD::skipup(pos, " ");
     if (!strncmp(pos, "unsigned", sizeof("unsigned") - 1))
     {
         is_unsigned = true;
         pos += sizeof("unsigned") - 1;
     }
-
+    ISC_STD::skipup(pos, " ");
     if (!strncmp(pos, "char", sizeof("char") - 1))
     {
         val = "char";
@@ -84,12 +85,14 @@ Rule(cll_csupport_types)
             val = "forward_list";
             pos += sizeof("forward_list") - 1;
         } else return {};
+        ISC_STD::skipup(pos, " ");
         auto template_res = cll_template(cll_template_content_typename);
     }
 }
 Rule(cll_type)
 {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto res = cll_csupport_types(pos);
     if (!res) {
         res = cll_type_abstract(pos);
@@ -101,6 +104,7 @@ Rule(cll_type)
 Rule(cll_type_abstract) 
 {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     std::string type;
     Parser::Rule templ;
     if (
@@ -114,6 +118,7 @@ Rule(cll_type_abstract)
         type.append(pos, 4);
         pos += 4;
     } else if (!strncmp(pos, "arr", 3) || !strncmp(pos, "obj", 3)) {
+        ISC_STD::skipup(pos, " ");
         auto cll_template_res = cll_template_typename(pos);
         if (!cll_template_res.result)
         {
