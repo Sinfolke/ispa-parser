@@ -3,9 +3,12 @@
 
 Rule(expr_variable_value) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ")
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
+    pos += id_res.token.length();
+    ISC_STD::skipup(pos, " ");
     std::unorederd_map<const char*, std::any> data;
     data["name"] = id_res.token;
     auto res = _operator(pos);
@@ -16,6 +19,7 @@ Rule(expr_variable_value) {
     }
     data["op"] = res.token;
     // found
+    ISC_STD::skipup(pos, " ");
     auto assignment_val_res = assingment_val(pos);
     if (!assignment_val_res.result)
         goto no;

@@ -3,21 +3,23 @@
 
 Rule(method_call) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     
     pos += id_res.token.length();
-
+    ISC_STD::skipup(pos, " ");
     if (*pos != '.')
         return {};
     pos++;
-
+    ISC_STD::skipup(pos, " ");
     auto cll_function_call_res = cll_function_call(pos);
 
     if (!cll_function_call_res.result)
         return {};
     
+    pos += cll_function_call_res.token.length();
     std::unordered_map<const char*, std::any> data {
         { "object", id_res.token },
         { "call", cll_function_call_res.token }
@@ -31,7 +33,7 @@ Rule(copiable_method_call) {
     if (*pos != '=')
         return {};
     pos++;
-
+    ISC_STD::skipup(pos, " ");
     auto method_call_res = method_call(pos);
 
     if (!method_call_res.result)

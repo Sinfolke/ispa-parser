@@ -3,17 +3,19 @@
 
 Rule(expr_compare) {
     auto pos = in;
-    auto left = expr_compare_size(pos);
+    ISC_STD::skipup(pos, " ");
+    auto left = expr_compare_side(pos);
     if (!left.result) {
         left = expr(pos);
         if (!left.result)
             return {};
     }
+    ISC_STD::skipup(pos, " ");
     auto compare_op_res = compare_op(pos);
     if (!compare_op_res.result)
         return {};
-    
-    auto right = expr_compare_size(pos);
+    ISC_STD::skipup(pos, " ");
+    auto right = expr_compare_side(pos);
     if (!right.result) {
         right = expr(pos);
         if (!right.result)
@@ -29,6 +31,7 @@ Rule(expr_compare) {
 }
 Rule(expr_compare_side) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto res = any_data(pos);
     if (!res) {
         res = id(pos);

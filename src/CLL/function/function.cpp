@@ -6,13 +6,15 @@
 
 Rule(function_body_call) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     if (*pos != '(')
         return {};
+    ISC_STD::skipup(pos, " ");
     auto function_arguments_res = function_arguments(pos);
     if (!function_arguments_res.result)
         return {};
     pos += function_arguments_res.token.length();
-
+    ISC_STD::skipup(pos, " ");
     if (*pos != ')')
         return {};
     
@@ -20,13 +22,15 @@ Rule(function_body_call) {
 }
 Rule(function_body_decl) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     if (*pos != '(')
         return {};
+    ISC_STD::skipup(pos, " ");
     auto function_parameters_res = function_parameters(pos);
     if (!function_parameters_res.result)
         return {};
     pos += function_parameters_res.token.length();
-
+    ISC_STD::skipup(pos, " ");
     if (*pos != ')')
         return {};
     
@@ -34,17 +38,28 @@ Rule(function_body_decl) {
 }
 Rule(function_arguments) {
     auto pos = in;
-    auto any_data_res = any_data(pos);
+    ISC_STD::skipup(pos, " ");
+    auto res = any_data(pos);
+    if (!res.result) {
+        res = id(pos);
+        if (!res.result)
+            return {};
+    }
     std::vector<Rule> _3 {};
-    if (any_data_res.result) {
+    if (res.result) {
         pos += any_data_res.token.length();
         while (*pos == ',') {
             pos++;
-            auto any_data2_res = any_data(pos);
-            if (!any_data2_res)
-                break;
+            ISC_STD::skipup(pos, " ");
+            auto res2 = any_data(pos);
+            if (!res2) {
+                res2 = id(pos);
+                if (!res2.result)
+                    return {};
+            }
             pos += any_data2_res.token.length();
             _3.push_back(any_data2_res.token);
+            ISC_STD::skipup(pos, " ");
         }
     }
     
@@ -56,20 +71,23 @@ Rule(function_arguments) {
 }
 Rule(function_parameters) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
     std::vector<Rule> _3 {};
-    if (id_res.result) {
-        pos += id_res.token.length();
-        while (*pos == ',') {
-            pos++;
-            auto id2_res = id(pos);
-            if (!id2_res)
-                break;
-            pos += id2_res.token.length();
-            _3.push_back(id2_res.token);
-        }
-    }
-    
+    if (!id_res.result)
+        return {};
+    pos += id_res.token.length();
+    ISC_STD::skipup(pos, " ");
+    while (*pos == ',') {
+        ISC_STD::skipup(pos, " ");
+        pos++;
+        auto id2_res = id(pos);
+        if (!id2_res)
+            break;
+        pos += id2_res.token.length();
+        _3.push_back(id2_res.token);
+        ISC_STD::skipup(pos, " ");
+    }    
     std::vector<Rule> data {
         id_res.token,
         _3
@@ -78,10 +96,12 @@ Rule(function_parameters) {
 }
 Rule(cll_function_call) {
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
+    ISC_STD::skipup(pos, " ");
     auto function_body_call_res = function_body_call(pos);
     if (!function_body_call_res.result)
         return {};
@@ -100,26 +120,28 @@ Rule(function_decl) {
     std::vector<std::string> fun_type;
 
     auto pos = in;
+    ISC_STD::skipup(pos, " ");
     // skip spaces!
     //spaces = skipup(' ');
 
     if (strncmp(pos, "fn", 2))
         return {};
-    
     pos += 2;
+    ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
 
+    ISC_STD::skipup(pos, " ");
     auto functon_body_res = function_body_decl(pos);
     if (!function_body_res.result)
         return {};
-    
+    pos += functon_body_res.token.length();
+    ISC_STD::skipup(pos, " ");
     auto val = function_value(pos);
-    if (!val.result)
-        return {};
-    pos += val.token.length;
+    if (val.result)
+        pos += val.token.length;
     //auto strict_end_res = strict_end(pos);
 
     std::unordered_map<const char*, std::any> data {
@@ -134,6 +156,8 @@ Rule(function_decl) {
 Rule(function_value, int spaces) {
     bool is_declaration_only = false;
     std::vector<Rule> val;
+    auto pos = in;
+    ISC_STD::skipup(pos, " ");
     while(true) {
         //skipup("\n");
         int current_spaces_amount; // = skipup(" ")

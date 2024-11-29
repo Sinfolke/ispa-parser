@@ -4,10 +4,11 @@
 Rule(expr) {
     auto pos = in;
     bool matched_grp = false;
+    ISC_STD::skipup(pos, " ");
     if (*pos == '(')
         matched_grp = true;
 
-    
+    ISC_STD::skipup(pos, " ");
     auto res = any_data(pos);
     if (!res.result) {
         res = expr_compare(pos);
@@ -28,6 +29,7 @@ Rule(expr) {
         }
     }
     pos += res.token.length();
+    ISC_STD::skipup(pos, " ");
     if (matched_grp && *pos != ')')
         return {};
 

@@ -7,15 +7,15 @@ private function_body(in_parenthes):
     $data: $1;
 ;
 private function_in_parentheses(match_rule):
-    match_rule?
+    match_rule | ID?
     $if (matched(%0)):
-        (',' match_rule)*
+        (',' match_rule | ID)*
     data: [%1, %3];
 ;
 function_body[call] = function_body(function_arguments);
 function_body[decl] = function_body(function_parameters);
 function_arguments = function_in_parentheses(ANY_DATA);
-function_parameters = function_in_parentheses(ID);
+function_parameters = function_in_parentheses(NOTHING);
 cll_function_call:
     ID function_body[call];
     data:
