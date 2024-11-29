@@ -166,6 +166,7 @@ namespace Parser {
             Rule(assignment_op);
             Rule(compare_op);
             Rule(logical_op);
+            Rule(logical_not);
             Rule(logical_and);
             Rule(logical_or);
             Rule(logical_andr);

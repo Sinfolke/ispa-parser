@@ -12,7 +12,7 @@ Rule(cll_block) {
         if (rule_begin_res.result)
             return {};
     }
-    pos += cll_res.token.length();
+    pos += res.token.length();
     ISC_STD::skipup(pos, " ");
     if (*pos != '}')
         return {};

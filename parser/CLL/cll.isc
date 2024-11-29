@@ -12,7 +12,7 @@ import variable/*;
 
 cll:
     // copiable_method_call does not require braces here
-    &cll_begin('\n' '$') ((var | cond | expr | copiable_method_call) END )+ 
+    &cll_begin('\n' '$') ((cll_var | cll_cond | expr | copiable_method_call) END )+ 
 
     data: $2;
 ;

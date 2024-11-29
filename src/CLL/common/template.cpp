@@ -7,14 +7,14 @@ static std::tuple<bool, int, std::vector<std::any>> cll_template_content(const c
     ISC_STD::skipup(pos, " ");
     auto p1_1_res = p1(in);
     if (!p1_1_res.result)
-        return {0, 0, 0};
+        return std::make_tuple(0, 0, {0});
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while(*pos == ',') {
         ISC_STD::skipup(pos, " ");
         auto p1_2_res = p1(pos);
         if (!p1_2_res.result)
-            return std::tie(0, 0, 0);
+            return std::make_tuple(0, 0, {0});
         pos += p1_2_res.token.length();
         cll_p1_seq.push_back(p1_2_res.token);
     }
@@ -22,7 +22,8 @@ static std::tuple<bool, int, std::vector<std::any>> cll_template_content(const c
         p1_1_res.token,
         cll_p1_seq
     };
-    return std::tie(true, pos, data);
+    return std::make_tuple(true, pos, data);
+
 }
 Rule(cll_template_content_typename) {
     auto [result, pos, data] = cll_template_content(in, cll_type);

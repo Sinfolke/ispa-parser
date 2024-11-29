@@ -10,9 +10,9 @@ Rule(cll) {
         return {};
     pos++;
     // skip spaces
-    auto res = var(pos);
+    auto res = cll_var(pos);
     if (!res) {
-        res = cond(pos);
+        res = cll_cond(pos);
         if (!res) {
             res = expr;
             if (!res) {

@@ -16,7 +16,7 @@ Rule(cll_var) {
     
     pos += id_res.token.length();
     ISC_STD::skipup(pos, " ");
-    auto assignment_op_res = assingment_op(pos);
+    auto assignment_op_res = assignment_op(pos);
     if (!assignment_op_res.result)
         return {};
     

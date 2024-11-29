@@ -15,11 +15,11 @@
 }
 #define RULE_SUCCESS(in, pos, name) return { \
     true, { \
-        getCurrentPos(in), in, pos, ::Parser::Parser::name \
+        getCurrentPos(in), in, pos, ::Parser::Rules::name \
     } \
 }
 #define RULE_SUCCESSD(in, pos, name, data) return { \
     true, { \
-        getCurrentPos(in), in, pos, ::Parser::Parser::name, data \
+        getCurrentPos(in), in, pos, ::Parser::Rules::name, data \
     } \
 }
