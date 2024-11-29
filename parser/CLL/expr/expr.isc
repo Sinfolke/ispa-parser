@@ -38,7 +38,7 @@ expr:
     data: $1;
 
     #variable_value:
-        ID ( (operator | assignment_operator) (assignment_val) )?
+        ID ( ASSIGNMENT_OP (expr) )?
         data:
             name: %1
             op: $2

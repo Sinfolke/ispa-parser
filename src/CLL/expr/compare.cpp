@@ -22,24 +22,24 @@ Rule(expr_compare) {
             return {};
     }
 
-    std::unordered_map<const char*, std::any> result {
+    std::unordered_map<const char*, std::any> data {
         { "left", left.token },
         { "op", compare_op_res.token },
         { "right", right.token }
     };
-    RULE_SUCCESSD(in, pos, expr_compare, data)
+    RULE_SUCCESSD(in, pos, expr_compare, data);
 }
 Rule(expr_compare_side) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto res = any_data(pos);
-    if (!res) {
+    if (!res.result) {
         res = id(pos);
-        if (!res) {
+        if (!res.result) {
             res = cll_function_call(pos);
-            if (!res) {
+            if (!res.result) {
                 res = method_call(pos);
-                if (!res)
+                if (!res.result)
                     return {};
             }
         }

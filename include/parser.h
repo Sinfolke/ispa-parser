@@ -73,7 +73,7 @@ namespace Parser {
     cll_template_obj,
     cll_template_any_data,
     cll_template_all,
-    cll_template_content_param1_t,
+    cll_template,
 
     cll_csupport_types,
     cll_type,

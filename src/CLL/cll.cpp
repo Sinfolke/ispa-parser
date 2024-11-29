@@ -11,13 +11,13 @@ Rule(cll) {
     pos++;
     // skip spaces
     auto res = cll_var(pos);
-    if (!res) {
-        res = cll_cond(pos);
-        if (!res) {
-            res = expr;
-            if (!res) {
+    if (!res.result) {
+        res = cll_if(pos);
+        if (!res.result) {
+            res = expr(pos);
+            if (!res.result) {
                 res = copiable_method_call(pos);
-                if (!res)
+                if (!res.result)
                     return {};
             }
         }

@@ -17,7 +17,7 @@ Rule(expr) {
             if (!res.result) {
                 res = cll_function_call(pos);
                 if (!res.result) {
-                    res = cll_method_call(pos);
+                    res = method_call(pos);
                     if (!res.result) {
                         res = expr_parenthesed(pos);
                         if (!res.result)

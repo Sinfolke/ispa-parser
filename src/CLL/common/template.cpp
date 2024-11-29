@@ -1,20 +1,20 @@
 #include <parser.h>
 #include <parser_defs.h>
 
-static std::tuple<bool, int, std::vector<std::any>> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
+static std::tuple<bool, const char*, std::vector<std::any>> cll_template_content(const char* in, Parser::cll_template_content_param1_t p1) {
     // cll_type
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto p1_1_res = p1(in);
     if (!p1_1_res.result)
-        return std::make_tuple(0, 0, {0});
+        return std::make_tuple(false, nullptr, std::vector<std::any>{});
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while(*pos == ',') {
         ISC_STD::skipup(pos, " ");
         auto p1_2_res = p1(pos);
         if (!p1_2_res.result)
-            return std::make_tuple(0, 0, {0});
+            return std::make_tuple(false, nullptr, std::vector<std::any>{});
         pos += p1_2_res.token.length();
         cll_p1_seq.push_back(p1_2_res.token);
     }

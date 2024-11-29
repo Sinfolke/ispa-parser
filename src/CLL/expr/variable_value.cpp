@@ -3,28 +3,28 @@
 
 Rule(expr_variable_value) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ")
+    ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
     ISC_STD::skipup(pos, " ");
-    std::unorederd_map<const char*, std::any> data;
+    std::unordered_map<const char*, std::any> data;
     data["name"] = id_res.token;
-    auto res = _operator(pos);
+    auto res = op(pos);
     if (!res.result) {
-        res = assignment_operator(pos);
+        res = assignment_op(pos);
         if (!res.result)
             goto no;
     }
     data["op"] = res.token;
     // found
     ISC_STD::skipup(pos, " ");
-    auto assignment_val_res = assingment_val(pos);
-    if (!assignment_val_res.result)
+    auto expr_res = expr(pos);
+    if (!expr_res.result)
         goto no;
     
-    data["val"] = assingment_val_res.token;
+    data["val"] = expr_res.token;
     no:
-    RULE_SUCCESSD(in, pos, variable_value, data);
+    RULE_SUCCESSD(in, pos, expr_variable_value, data);
 }

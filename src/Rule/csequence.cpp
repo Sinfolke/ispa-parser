@@ -6,42 +6,46 @@ Rule(Rule_csequence) {
     ISC_STD::skipup(pos, " ");
     if (*pos != '[')
         return {};
-    bool not = false;
+    bool _not = false;
     ISC_STD::skipup(pos, " ");
     if (*pos == '^')
-        not = true;
-    std::vector<Rule> dt;
+        _not = true;
+    std::vector<::Parser::Rule> dt;
     while(true) {
         ISC_STD::skipup(pos, " ");
         auto res = Rule_csequence_symbol(pos);
-        if (!res) {
+        if (!res.result) {
             res = Rule_csequence_diapason(pos);
-            if (!res)
+            if (!res.result)
                 break;
         }
         pos += res.token.length();
-        dt.push_back(res);
+        dt.push_back(res.token);
     }
     ISC_STD::skipup(pos, " ");
     if (*pos!= ']')
         return {};
     
     std::unordered_map<const char*, std::any> data {
-        "not": not,
-        "val": data
+        { "not", _not },
+        { "val", data }
     };
-    RULE_SUCCESSD(in, pos, csequence, data);
+    RULE_SUCCESSD(in, pos, Rule_csequence, data);
 }
 
 Rule(Rule_csequence_symbol)
 {
     std::string data;
-    if (*in == '\\' *in != ']')
+    auto pos = in;
+    if (*in == '\\' || *in != ']')
+    {
         data = *in;
-    else if (!strncmp(in, "\\]", 2))
+        pos++;
+    } else if (!strncmp(in, "\\]", 2))
     {
         data = *in;
         data += *in + 1;
+        pos += 2;
     } else 
         return {};
     
@@ -50,7 +54,7 @@ Rule(Rule_csequence_symbol)
 }
 Rule(Rule_csequence_diapason) {
     auto symbol_res = Rule_csequence_symbol(in);
-    if (!symbol_res)
+    if (!symbol_res.result)
         return {};
     
     auto pos = in + symbol_res.token.length();
@@ -63,10 +67,12 @@ Rule(Rule_csequence_diapason) {
 
     auto symbol2_res = Rule_csequence_symbol(pos);
 
-    if (!symbol2_res)
+    if (!symbol2_res.result)
         return {};
     
-    std::vector<Rule> data { symbol_res.token, symbol2_res.token };
+    std::vector<Rule> data;
+    data.push_back(symbol_res.token);
+    data.push_back(symbol2_res.token);
 
     RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
 }
