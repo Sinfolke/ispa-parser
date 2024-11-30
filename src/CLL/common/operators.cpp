@@ -5,20 +5,22 @@ Rule(op) {
     if (
         *in == '+' || *in == '-' || *in == '*' || *in == '/' || 
         *in == '%' || *in == '&' || *in == '|' || *in == '^' || 
-        !strncmp(in, "<<", 2) || !strncmp(in, ">>", 2) || *in == '|' | *in == '&' || *in == '^'
+         *in == '|' | *in == '&' || *in == '^'
     ) {
-        return RULE_SUCCESSD(in, in + 1, op, *in);
+        RULE_SUCCESSD(in, in + 1, op, *in);
+    } else if (!strncmp(in, "<<", 2) || !strncmp(in, ">>", 2)) {
+        RULE_SUCCESSD(in, in + 2, op, *in);
     }
     return {};
 }
 Rule(assignment_op) {
     auto op_res = op(in);
-    if (!op.result)
+    if (!op_res.result)
         return {};
-    auto pos = in + op.token.length();
+    auto pos = in + op_res.token.length();
     if (*pos!= '=')
-    return {};
-    return RULE_SUCCESSD(in, pos, assignment_op, op.token);
+        return {};
+    RULE_SUCCESSD(in, pos, assignment_op, op_res.token);
 }
 Rule(logical_not) {
     if ( 
@@ -31,7 +33,7 @@ Rule(logical_not) {
 }
 Rule(logical_and) {
     if ( 
-        *in == '&' && *(in + 1) == "&"
+        !strncmp(in, "&&", 2)
     ) {
         RULE_SUCCESS(in, in + 2, compare_op);
     } else if (( *in == 'a' && *(in + 1) == 'n' && *(in + 2) == 'd' )) {
@@ -40,8 +42,7 @@ Rule(logical_and) {
 }
 Rule(logical_or) {
     if ( 
-        (*in == '|' && *(in + 1) == "|") ||
-        (*in == 'o' && *(in + 1) == "r")
+        !strncmp(in, "||", 2) || !strncmp(in, "or", 2)
     ) {
         RULE_SUCCESS(in, in + 2, compare_op);
     } else return {};
@@ -51,12 +52,15 @@ Rule(logical_andr) {
         strncmp(in, "|&", 2)
     ) {
         RULE_SUCCESS(in, in + 2, compare_op);
-    } else if () {
-        if (!strncmp(in, "and", 3))
+    } else {
+        auto pos = in;
+        if (!strncmp(pos, "and", 3))
             return {};
+        pos += 3;
         ISC_STD::skipup(pos, " ");
-        if (strncmp(in, "or", 3))
+        if (strncmp(in, "or", 2))
             return {};
-        RULE_SUCCESS(in, in + 3, compare_op);
-    } else return {};
+        pos += 2;
+        RULE_SUCCESS(in, pos, compare_op);
+    }
 }

@@ -6,7 +6,7 @@ Rule(Rule_op) {
     std::string value;
     ISC_STD::skipup(pos, " ");
     if (*pos == '|')
-        value == '|';
+        value = '|';
     else if (*pos == '&' && *pos == '|')
         value = "&|";
     else

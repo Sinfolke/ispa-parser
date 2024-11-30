@@ -9,7 +9,7 @@ Rule(Rule_bin) {
         return {};
     }
     auto begin = in + 2;
-    auto pos = begin;
+    pos = begin;
     ISC_STD::skipup(pos, " ");
     while (*pos == '0' || *pos == '1') {
         ++pos;
@@ -17,7 +17,5 @@ Rule(Rule_bin) {
     if (begin == pos) 
         return {};
     
-    RULE_SUCCESSDD(in, pos, Rule_hex, std::string_view(begin, pos - begin));
-    return {};
-
+    RULE_SUCCESSD(in, pos, Rule_hex, std::string_view(begin, pos - begin));
 }

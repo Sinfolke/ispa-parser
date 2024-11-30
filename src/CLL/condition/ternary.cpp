@@ -28,7 +28,7 @@ Rule(cll_ternary) {
     if (expr_res3.result)
         return {};
     
-    std::unordered_map<const char*, std::string> data {
+    std::unordered_map<const char*, std::any> data {
         { "cond", expr_res.token },
         { "first", expr_res2.token },
         { "second", expr_res3.token }

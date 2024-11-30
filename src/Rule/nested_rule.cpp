@@ -15,6 +15,7 @@ Rule(Rule_nested_rule) {
     pos++;
 
     // NO SPACE!!
+#undef Rule
     auto Rule_res = Rule(pos);
 
     if (!Rule_res.result)

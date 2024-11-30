@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <iscstdlibc++.h>
 namespace Parser {
+    class Parser;
     enum class Rules {
     NONE,
     Import_path,
@@ -101,7 +102,7 @@ namespace Parser {
     using Rule = ISC_STD::_return<Rules>;
     using Rule_result = ISC_STD::match_result<Rules>;
     using Tree = ISC_STD::Tree<Rule>;
-    using cll_template_content_param1_t = Parser::Rule_result (*)(const char*);
+    using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
     class Parser {
         private:
             const char* text;
@@ -161,7 +162,7 @@ namespace Parser {
             Rule(any_data);
 
             Rule(cll_block);
-            Rule(cll_spaced_block);
+            Rule(cll_spaced_block, int spaces);
             Rule(op);
             Rule(assignment_op);
             Rule(compare_op);
