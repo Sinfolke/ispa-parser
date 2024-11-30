@@ -61,7 +61,7 @@ Rule(cll_template_bool) {
     RULE_SUCCESSD(in, pos, cll_template_bool, data);
 }
 
-Rule(cll_template_string) {
+Rule(cll_template_str) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto p1_1_res = string(in); // Inline content logic for string
@@ -78,10 +78,10 @@ Rule(cll_template_string) {
         cll_p1_seq.push_back(p1_2_res.token);
     }
     std::vector<std::any> data = { p1_1_res.token, cll_p1_seq };
-    RULE_SUCCESSD(in, pos, cll_template_string, data);
+    RULE_SUCCESSD(in, pos, cll_template_str, data);
 }
 
-Rule(cll_template_array) {
+Rule(cll_template_arr) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto p1_1_res = array(in); // Inline content logic for array
@@ -98,10 +98,10 @@ Rule(cll_template_array) {
         cll_p1_seq.push_back(p1_2_res.token);
     }
     std::vector<std::any> data = { p1_1_res.token, cll_p1_seq };
-    RULE_SUCCESSD(in, pos, cll_template_array, data);
+    RULE_SUCCESSD(in, pos, cll_template_arr, data);
 }
 
-Rule(cll_template_object) {
+Rule(cll_template_obj) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto p1_1_res = object(in); // Inline content logic for object
@@ -118,7 +118,7 @@ Rule(cll_template_object) {
         cll_p1_seq.push_back(p1_2_res.token);
     }
     std::vector<std::any> data = { p1_1_res.token, cll_p1_seq };
-    RULE_SUCCESSD(in, pos, cll_template_object, data);
+    RULE_SUCCESSD(in, pos, cll_template_obj, data);
 }
 
 Rule(cll_template_any_data) {
@@ -141,32 +141,32 @@ Rule(cll_template_any_data) {
     RULE_SUCCESSD(in, pos, cll_template_any_data, data);
 }
 
-Rule(cll_template, cll_template_content_param1_t content) {
-    auto pos = in;
-    ISC_STD::skipup(pos, " ");
-    if (*pos != '<')
-        return {};
-    pos++;
-    ISC_STD::skipup(pos, " ");
-    auto content_res = content(pos);
-    if (!content_res.result)
-        return {};
-    pos += content_res.token.length();
-    std::vector<std::any> data;
-    data.push_back(content_res.token);
-    while(*pos == ',') {
-        ++pos;
-        ISC_STD::skipup(pos, " ");
-        content_res = content(pos);
-        if (!content_res.result)
-            break;
-        pos += content_res.token.length();
-        // add data here
-        data.push_back(content_res.token);
-        ISC_STD::skipup(pos, " ");
-    }
-    ISC_STD::skipup(pos, " ");
-    if (*pos != '>')
-        return {};
-    RULE_SUCCESSD(in, pos, cll_template, data);
-}
+// Rule(cll_template, cll_template_content_param1_t content) {
+//     auto pos = in;
+//     ISC_STD::skipup(pos, " ");
+//     if (*pos != '<')
+//         return {};
+//     pos++;
+//     ISC_STD::skipup(pos, " ");
+//     auto content_res = content(pos);
+//     if (!content_res.result)
+//         return {};
+//     pos += content_res.token.length();
+//     std::vector<std::any> data;
+//     data.push_back(content_res.token);
+//     while(*pos == ',') {
+//         ++pos;
+//         ISC_STD::skipup(pos, " ");
+//         content_res = content(pos);
+//         if (!content_res.result)
+//             break;
+//         pos += content_res.token.length();
+//         // add data here
+//         data.push_back(content_res.token);
+//         ISC_STD::skipup(pos, " ");
+//     }
+//     ISC_STD::skipup(pos, " ");
+//     if (*pos != '>')
+//         return {};
+//     RULE_SUCCESSD(in, pos, cll_template, data);
+// }

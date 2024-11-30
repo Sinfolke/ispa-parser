@@ -8,7 +8,7 @@ Rule(Rule) {
         return {};
     pos += id_res.token.length();
     ISC_STD::skipup(pos, " ");
-    std::vector<Rule> rule_results {};
+    std::vector<::Parser::Rule> rule_results {};
     Rule_result Rule_rule_res;
     while ((Rule_rule_res = Rule_rule(pos)).result) {
         // do something
@@ -16,8 +16,8 @@ Rule(Rule) {
         pos += Rule_rule_res.token.length();
         ISC_STD::skipup(pos, " ");
     }
-    std::vector<Rule> nested_rule_results {};
-    Rule_result Rule_nested_rule_res;
+    std::vector<::Parser::Rule> nested_rule_results {};
+    ::Parser::Rule_result Rule_nested_rule_res;
     while ((Rule_nested_rule_res = Rule_rule(pos)).result) {
         // do something
         nested_rule_results.push_back(Rule_nested_rule_res.token);
@@ -25,7 +25,7 @@ Rule(Rule) {
         ISC_STD::skipup(pos, " ");
     }
     ISC_STD::skipup(pos, " ");
-    auto strict_end_result = STRICT_END();
+    auto strict_end_result = strict_end(pos);
 
     auto id_res_data = TO(std::string, id_res.token.data);
     const char* kind = (id_res_data[0] >= 'A' && id_res_data[0] <= 'Z') ? "token" : "rule";
@@ -35,4 +35,5 @@ Rule(Rule) {
         { "rule", rule_results },
         { "nestedRules", nested_rule_results }
     };
+    RULE_SUCCESSD(in, pos, Rule, data);
 }

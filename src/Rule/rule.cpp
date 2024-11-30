@@ -5,28 +5,28 @@ Rule(Rule_rule) {
     auto res = Rule_group(pos);
     bool is_cll=false, is_id=false, is_nested=false;
     ISC_STD::skipup(pos, " ");
-    if (!res) {
+    if (!res.result) {
         res = Rule_csequence(pos);
-        if (!res) {
+        if (!res.result) {
             res = string(pos);
-            if (!res) {
+            if (!res.result) {
                 res = Rule_hex(pos);
-                if (!res) {
+                if (!res.result) {
                     res = Rule_bin(pos);
-                    if (!res) {
+                    if (!res.result) {
                         is_id = true;
                         if (*pos == '#') {
                             is_nested = true;
                         }
                         pos++;
                         ISC_STD::skipup(pos, " ");
-                        res = Rule_id(pos);
-                        if (!res) {
-                            id_id=false;
+                        res = id(pos);
+                        if (!res.result) {
+                            is_id=false;
                             is_nested=false;
                             is_cll=true;
                             res = cll(pos);
-                            if (!cll)
+                            if (!res.result)
                                 return {};
                             
                         }
@@ -38,17 +38,18 @@ Rule(Rule_rule) {
     }
     ISC_STD::skipup(pos, " ");
     auto qualifier_res = Rule_qualifier(pos);
-    Rule qualifier;
+    
+    ::Parser::Rule qualifier;
     if (qualifier_res.result)
         qualifier = qualifier_res.token;
 
-    std::unordered_map<const char*, std::string> val {
+    std::unordered_map<const char*, std::any> val {
         { "is_id", is_id },
         { "is_nested", is_nested },
         { "is_cll", is_cll },
         { "val", res.token },
         { "qualifier", qualifier }
     };
-    RULE_SUCCESSD(in, pos, Rule_rule, data);
+    RULE_SUCCESSD(in, pos, Rule_rule, val);
     
 }

@@ -12,7 +12,7 @@ Rule(Rule_group) {
         if (id_res.result)
             name = TO(std::string, id_res.token);
         else
-            return {}
+            return {};
         
         pos += id_res.token.length();
         ISC_STD::skipup(pos, " ");
@@ -21,7 +21,7 @@ Rule(Rule_group) {
         return {};
     pos++;
     ISC_STD::skipup(pos, " ");
-    std::vector<Rule> r;
+    std::vector<::Parser::Rule> r;
     while(true)
     {
         ISC_STD::skipup(pos, " ");
@@ -29,16 +29,16 @@ Rule(Rule_group) {
         if (!rule_res.result)
             break;
 
-        pos += rule_res.result.length();
+        pos += rule_res.token.length();
         r.push_back(rule_res.token);
     }
     ISC_STD::skipup(pos, " ");
     if (!pos != ')')
         return {};
     pos++;
-    std::unordered_map<const char*, std::string> data {
+    std::unordered_map<const char*, std::any> data {
         { "variable", name },
-        { "val", r };
+        { "val", r }
     };
-    RULE_SUCCESSD(in, pos, Rule_group, )
+    RULE_SUCCESSD(in, pos, Rule_group, data);
 }

@@ -3,11 +3,11 @@
 
 Rule(expr_parenthesed) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ")
+    ISC_STD::skipup(pos, " ");
     if (*pos != '(')
         return {};
     pos++;
-    ISC_STD::skipup(pos, " ")
+    ISC_STD::skipup(pos, " ");
     auto res = expr_parenthesed_variable_assignment(pos);
     if (!res.result) {
         res = copiable_method_call(pos);
@@ -18,9 +18,11 @@ Rule(expr_parenthesed) {
         }
     }
     pos += res.token.length();
-    ISC_STD::skipup(pos, " ")
+    ISC_STD::skipup(pos, " ");
     if (*pos != ')')
         return {};
+
+    RULE_SUCCESSD(in, pos, expr_parenthesed, res);
 }
 Rule(expr_parenthesed_variable_assignment) {
     auto pos = in;
@@ -30,13 +32,13 @@ Rule(expr_parenthesed_variable_assignment) {
         return {};
     pos += id_res.token.length();
     ISC_STD::skipup(pos, " ");
-    auto assignment_operator_res = assignment_operator(pos);
+    auto assignment_operator_res = assignment_op(pos);
     if (!assignment_operator_res.result)
         return {};
     
     pos += assignment_operator_res.token.length();
     ISC_STD::skipup(pos, " ");
-    auto assignment_val_res = assignment_val(pos);
+    auto assignment_val_res = expr(pos);
     if (!assignment_val_res.result)
         return {};
     
@@ -45,7 +47,7 @@ Rule(expr_parenthesed_variable_assignment) {
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
         { "operator", assignment_operator_res.token },
-        { "val", assingment_val_res.token }
+        { "val", assignment_val_res.token }
     };
 
     RULE_SUCCESSD(in, pos, expr_parenthesed_variable_assignment, data);

@@ -1,7 +1,7 @@
 #include <parser.h>
 #include <parser_defs.h>
 //#data_block
-Rule(data_block) {
+Rule(Rule_data_block) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto start = pos;
@@ -19,9 +19,9 @@ Rule(data_block) {
         return {};
     pos++;
     ISC_STD::skipup(pos, " ");
-    auto data = ANY_DATA(pos);
+    auto data = any_data(pos);
     if (!data.result) {
-        data = rule_data_block_inclosed_map(pos);
+        data = Rule_data_block_inclosed_map(pos);
         if (!data.result)
             return {};
     }
@@ -31,12 +31,12 @@ Rule(data_block) {
     if (*pos!= ';')
         return {};
 
-    RULE_SUCCESSD(in, pos, data_block, data_res.token);
+    RULE_SUCCESSD(in, pos, Rule_data_block, data.token);
 }
 // #data_block #inclosed_map
 Rule(Rule_data_block_inclosed_map) {
     auto pos = in;
-    std::vector<Rule> keys;
+    std::vector<::Parser::Rule> keys;
     while (true) {
         ISC_STD::skipup(pos, " ");
         auto key_res = rule_data_block_key(pos);
@@ -75,7 +75,7 @@ Rule(Rule_data_block_key) {
     
     std::unordered_map<std::string, std::any> data {
         { "name", id_res.token },
-        { "val", "" any_data_res.token }
+        { "val", any_data_res.token }
     };
     RULE_SUCCESSD(in, pos, Rule_data_block_key, data);
 }

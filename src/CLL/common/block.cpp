@@ -32,7 +32,7 @@ Rule(cll_spaced_block, int spaces_amount) {
             if (rule_begin_res.result)
                 return {};
         }
-        pos += cll_res.token.length();
+        pos += res.token.length();
         results.push_back(res.token);
     }
     if (!done)

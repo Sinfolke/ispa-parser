@@ -45,26 +45,26 @@ Rule(function_arguments) {
         if (!res.result)
             return {};
     }
-    std::vector<Rule> _3 {};
+    std::vector<::Parser::Rule> _3 {};
     if (res.result) {
-        pos += any_data_res.token.length();
+        pos += res.token.length();
         while (*pos == ',') {
             pos++;
             ISC_STD::skipup(pos, " ");
             auto res2 = any_data(pos);
-            if (!res2) {
+            if (!res2.result) {
                 res2 = id(pos);
                 if (!res2.result)
                     return {};
             }
-            pos += any_data2_res.token.length();
-            _3.push_back(any_data2_res.token);
+            pos += res2.token.length();
+            _3.push_back(res2.token);
             ISC_STD::skipup(pos, " ");
         }
     }
     
-    std::vector<Rule> data {
-        any_data_res.token,
+    std::vector<std::any> data {
+        res.token,
         _3
     };
     RULE_SUCCESSD(in, pos, function_arguments, data);
@@ -73,7 +73,7 @@ Rule(function_parameters) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
-    std::vector<Rule> _3 {};
+    std::vector<::Parser::Rule> _3 {};
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
@@ -82,13 +82,13 @@ Rule(function_parameters) {
         ISC_STD::skipup(pos, " ");
         pos++;
         auto id2_res = id(pos);
-        if (!id2_res)
+        if (!id2_res.result)
             break;
         pos += id2_res.token.length();
         _3.push_back(id2_res.token);
         ISC_STD::skipup(pos, " ");
     }    
-    std::vector<Rule> data {
+    std::vector<std::any> data {
         id_res.token,
         _3
     };
@@ -120,9 +120,7 @@ Rule(function_decl) {
     std::vector<std::string> fun_type;
 
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
-    // skip spaces!
-    //spaces = skipup(' ');
+    spaces = ISC_STD::skipup(pos, " ");
 
     if (strncmp(pos, "fn", 2))
         return {};
@@ -134,14 +132,14 @@ Rule(function_decl) {
     pos += id_res.token.length();
 
     ISC_STD::skipup(pos, " ");
-    auto functon_body_res = function_body_decl(pos);
+    auto function_body_res = function_body_decl(pos);
     if (!function_body_res.result)
         return {};
-    pos += functon_body_res.token.length();
+    pos += function_body_res.token.length();
     ISC_STD::skipup(pos, " ");
-    auto val = function_value(pos);
+    auto val = function_value(pos, spaces);
     if (val.result)
-        pos += val.token.length;
+        pos += val.token.length();
     //auto strict_end_res = strict_end(pos);
 
     std::unordered_map<const char*, std::any> data {
@@ -155,21 +153,21 @@ Rule(function_decl) {
 }
 Rule(function_value, int spaces) {
     bool is_declaration_only = false;
-    std::vector<Rule> val;
+    std::vector<::Parser::Rule> val;
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     while(true) {
         //skipup("\n");
         int current_spaces_amount; // = skipup(" ")
         if (current_spaces_amount >= spaces) {
-            auto res = var(pos);
-            if (!res) {
-                res = cond(pos);
-                if (!res) {
+            auto res = cll_var(pos);
+            if (!res.result) {
+                res = cll_if(pos);
+                if (!res.result) {
                     res = expr(pos);
-                    if (!res) {
+                    if (!res.result) {
                         res = copiable_method_call(pos);
-                        if (!res)
+                        if (!res.result)
                             break;
                     }
                 }

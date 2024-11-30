@@ -14,4 +14,11 @@ Rule(expr_logical) {
     auto expr2_res = expr(pos);
     if (!expr2_res.result)
         return {};
+    
+    std::unordered_map<const char*, std::any> data {
+        { "left", expr_res.token },
+        { "op", logical_op_res.token },
+        { "right", expr2_res.token }
+    };
+    RULE_SUCCESSD(in, pos, expr_logical, data);
 }

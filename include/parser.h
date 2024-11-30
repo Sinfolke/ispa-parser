@@ -91,7 +91,8 @@ namespace Parser {
     function_parameters,
     cll_function_call,
     function_decl,
-
+    function_value,
+    
     method_call,
     copiable_method_call,
 
@@ -128,6 +129,7 @@ namespace Parser {
             Rule(Rule_csequence_diapason);
             Rule(Rule_data_block);
             Rule(Rule_data_block_key);
+            Rule(Rule_data_block_inclosed_map);
             Rule(Rule_nested_rule);
             Rule(Rule_hex);
             Rule(Rule_bin);
@@ -197,7 +199,7 @@ namespace Parser {
             Rule(function_parameters);
             Rule(cll_function_call);
             Rule(function_decl);
-
+            Rule(function_value, int spaces);
             Rule(method_call);
             Rule(copiable_method_call);
 
