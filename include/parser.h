@@ -27,6 +27,7 @@ namespace Parser {
     Rule_csequence_diapason,
     Rule_data_block,
     Rule_data_block_key,
+    Rule_data_block_inclosed_map,
     Rule_nested_rule,
     Rule_hex,
     Rule_bin,

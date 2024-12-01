@@ -14,17 +14,15 @@ Rule(expr_variable_value) {
     auto res = op(pos);
     if (!res.result) {
         res = assignment_op(pos);
-        if (!res.result)
-            goto no;
     }
-    data["op"] = res.token;
-    // found
-    ISC_STD::skipup(pos, " ");
-    auto expr_res = expr(pos);
-    if (!expr_res.result)
-        goto no;
-    
-    data["val"] = expr_res.token;
-    no:
+
+    if (res.result) {
+        data["op"] = res.token;
+        // found
+        ISC_STD::skipup(pos, " ");
+        auto expr_res = expr(pos);
+        if (expr_res.result)
+            data["val"] = expr_res.token;
+    }
     RULE_SUCCESSD(in, pos, expr_variable_value, data);
 }

@@ -39,7 +39,7 @@ Rule(Rule_data_block_inclosed_map) {
     std::vector<::Parser::Rule> keys;
     while (true) {
         ISC_STD::skipup(pos, " ");
-        auto key_res = rule_data_block_key(pos);
+        auto key_res = Rule_data_block_key(pos);
         if (!key_res.result)
             break;
         pos += key_res.token.length();

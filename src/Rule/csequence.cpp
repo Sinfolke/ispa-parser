@@ -70,7 +70,7 @@ Rule(Rule_csequence_diapason) {
     if (!symbol2_res.result)
         return {};
     
-    std::vector<Rule> data;
+    std::vector<::Parser::Rule> data;
     data.push_back(symbol_res.token);
     data.push_back(symbol2_res.token);
 

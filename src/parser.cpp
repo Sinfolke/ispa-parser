@@ -36,6 +36,7 @@ Rule(id) {
 Rule(Import_path) {    
     auto pos = in;
     ISC_STD::skipup(pos, " ");
+    std::string v;
     while (
         not 
         (
@@ -45,15 +46,15 @@ Rule(Import_path) {
             *pos == '|' ||
             *pos == ':' ||
             *pos == '?' ||
-            *pos == '.' ||
+            *pos == '.'
         )
-    ) ++pos;
+    ) v += *pos++;
     if (pos == in) return {}; // zero match
-    RULE_SUCCESSD(in, pos, Priv_Import_path, string_part(in, pos));
+    RULE_SUCCESSD(in, pos, Import_path, v);
 };
 Rule(Import_ext) {    
     auto pos = in;
-    std::vector<Rule_result> data;
+    std::vector<::Parser::Rule> data;
     ISC_STD::skipup(pos, " ");
     while(true) {
         if (*pos == '.') {
@@ -61,7 +62,7 @@ Rule(Import_ext) {
             ISC_STD::skipup(pos, " ");
             auto match_res = id(pos);
             if (match_res.result) {
-                data.push_back(match_res);
+                data.push_back(match_res.token);
                 pos += match_res.token.length();
                 continue;
             }
@@ -70,7 +71,7 @@ Rule(Import_ext) {
         break;
     }
     if (pos == in) return {}; // zero match
-    RULE_SUCCESSD(in, pos, Priv_Import_ext, data);
+    RULE_SUCCESSD(in, pos, Import_ext, data);
 };
 Rule(Import_file) {
     auto pos = in;
@@ -84,16 +85,16 @@ Rule(Import_file) {
     pos += ext_res.token.length();
     // join
     std::string joined;
-    for (auto obj : ext_res) {
+    for (auto obj : TO(std::vector<::Parser::Rule>, ext_res.token.data)) {
         joined += TO(std::string, obj.data);
     }
     std::unordered_map<const char*, std::any> data = {
         { "path", path_res },
         { "ext", TO(std::vector<Rule_result>, ext_res.token.data).back() },
         { "fullext", ext_res },
-        { "fullpath", std::string( TO(std::string_part, path_res.token.data )) + joined }
+        { "fullpath", std::string( TO(std::string, path_res.token.data )) + joined }
     };
-    RULE_SUCCESSD(in, pos, Priv_Import_file, data);
+    RULE_SUCCESSD(in, pos, Import_file, data);
 }
 Rule(Import_general_dir) {
     auto pos = in;
@@ -110,7 +111,7 @@ Rule(Import_general_dir) {
         return {};
     
     auto _local_start = ++pos;
-    std::vector<Rule> files;
+    std::vector<::Parser::Rule> files;
     while(true) {
         int v = ISC_STD::skipup(pos, " ");
         auto file_res = Import_file(pos);
@@ -126,9 +127,9 @@ Rule(Import_general_dir) {
         { "path", path_res.token },
         { "files", files }
     };
-    RULE_SUCCESSD(in, pos, Priv_Import_general_dir, files);
+    RULE_SUCCESSD(in, pos, Import_general_dir, files);
 }
-Rule(Import_rule_specific) {
+Rule(Import_rulespecific) {
     auto pos = in;
     ISC_STD::skipup(pos, " ");
     auto file_res = Import_file(pos);
@@ -141,14 +142,14 @@ Rule(Import_rule_specific) {
     pos++;
     ISC_STD::skipup(pos, " ");
     auto _local_start = pos;
-    std::vector<Token> tokens;
-    std::vector<Token> tokens_current_name;
+    std::vector<::Parser::Rule> rules;
+    std::vector<::Parser::Rule> rules_current_name;
     while (true) {
         ISC_STD::skipup(pos, " ");
         auto id_res = id(pos);
         if (!id_res.result)
             break;
-        tokens.push_back(id_res.token);
+        rules.push_back(id_res.token);
         pos += id_res.token.length();
         ISC_STD::skipup(pos, " ");
         if (*pos == '=') {
@@ -157,17 +158,17 @@ Rule(Import_rule_specific) {
             auto id2_res = id(pos);
             if (!id2_res.result)
                 break;
-            tokens_current_name.push_back(id2_res.token);
+            rules_current_name.push_back(id2_res.token);
         }
     }
     if (_local_start == pos)
         return {}; // zero match
     std::unordered_map<const char*, std::any> data {
         { "path", file_res.token },
-        { "tokens", tokens },
-        { "tokens_current_name", tokens_current_name }
-    }
-    RULE_SUCCESSD(in, pos, Priv_Import_rule_specific, data);
+        { "tokens", rules },
+        { "tokens_current_name", rules_current_name }
+    };
+    RULE_SUCCESSD(in, pos, Import_rulespecific, data);
 }
 Rule(Import) {
     auto pos = in;
@@ -180,14 +181,14 @@ Rule(Import) {
     if (!first_rule_res.result) {
         first_rule_res = Import_general_dir(pos);
         if (!first_rule_res.result) {
-            first_rule_res = Import_rule_specific(pos);
+            first_rule_res = Import_rulespecific(pos);
             if (!first_rule_res.result)
                 return {};
         }
     }
     pos += first_rule_res.token.length();
     ISC_STD::skipup(pos, " ");
-    std::vector<Token> additional_paths;
+    std::vector<::Parser::Rule> additional_paths;
     while (*pos == ',') {
         ++pos;
         ISC_STD::skipup(pos, " ");
@@ -195,7 +196,7 @@ Rule(Import) {
         if (!result.result) {
             result = Import_general_dir(pos);
             if (!result.result) {
-                result = Import_rule_specific(pos);
+                result = Import_rulespecific(pos);
                 if (!result.result)
                     break;
             }
@@ -204,53 +205,60 @@ Rule(Import) {
         additional_paths.push_back(result.token);
     }
     using obj_type = std::unordered_map<const char*, std::any>;
-    std::vector<obj_type> data = {
+    std::vector<::Parser::Rule> data = {
         first_rule_res.token
     };
     // push remaining arguments inlining the array
     data.insert(data.end(), additional_paths.begin(), additional_paths.end());
     for (const auto obj : additional_paths) {
-        data.push_back( TO(obj_type, obj.data ) );
+        data.push_back( obj );
     }
     RULE_SUCCESSD(in, pos, Import, data);
 }
 Rule(use) {
-    auto pos = in;
-    std::unordered_map<const char*, std::string> data();
+    auto pos = in;  // Start parsing from 'in'
+    std::vector<::Parser::Rule> data;  // Use std::vector to store parsed data
+    
+    // Skip leading spaces
     ISC_STD::skipup(pos, " ");
-    if (strncmp(pos, "use", 3)) {
-        return {};
+    
+    // Check if the input starts with "use"
+    if (strncmp(pos, "use", 3) != 0) {
+        return {};  // Return empty result if "use" is not found
     }
-    pos += 3;
-    ISC_STD::skipup(pos, " ");
+    pos += 3;  // Move position past "use"
+    ISC_STD::skipup(pos, " ");  // Skip spaces after "use"
+    
+    // Parse the first unit
     auto use_unit_res = use_unit(pos);
-    if (not use_unit_res.result)
+    if (!use_unit_res.result) {
         return {};
+    }
     pos += use_unit_res.token.length();
+    data.push_back(use_unit_res.token);
+    
     ISC_STD::skipup(pos, " ");
-    std::vector<Rule> use_unit_results_2(5); // generally no over 5 elements will be found & avoid extra allocations optimization
-    ISC_STD::skipup(pos, " ");
-    while(*pos == ',') {
+    
+    while (*pos == ',') {
+        pos++; 
         ISC_STD::skipup(pos, " ");
-        auto use_unit_res = use_unit(pos + 1);
-        if (not use_unit_res.result)
+        
+        auto use_unit_res = use_unit(pos);
+        if (!use_unit_res.result) {
             break;
-        pos += use_unit_res.token.length() + 1;
-        use_unit_results_2.push_back(use_unit_res.token);
+        }
+        pos += use_unit_res.token.length();
+        data.push_back(use_unit_res.token);
+        ISC_STD::skipup(pos, " ");
     }
-    using map_t = std::unordered_map<const char*, const char*>;
-    auto token = TO(map_t, use_unit_res.token.data);
-    data[token["name"]] = token["value"];
-    for (int i = 0; i < use_unti_results_2.size(); ++i) {
-        token = TO (map_t, use_unit_results_2[i].data);
-        data[token["name"]] = token["value"];
-    }
+    
+    // Finalize the rule and return the result
     RULE_SUCCESSD(in, pos, use, data);
 }
 Rule(use_unit) {
     auto pos = in;
     auto id_res = id(pos);
-    if (!id_res)
+    if (!id_res.result)
         return {};
     pos += id_res.token.length();
     ISC_STD::skipup(pos, " ");
@@ -268,8 +276,8 @@ Rule(use_unit) {
         }
     }
     std::unordered_map<const char*, std::any> data {
-        { "name", id.token },
+        { "name", id_res.token },
         { "value", str }
     };
-    RULE_SUCCESSD(in, pos, use, data);
+    RULE_SUCCESSD(in, pos, use_unit, data);
 }

@@ -59,7 +59,7 @@ Rule(number) {
         { "main_n", main_n },
         { "dec", dec },
         { "dec_n", dec_n },
-        { "full", main + point + dec }
+        { "full", sign + main + std::string(".") + dec }
     };
     RULE_SUCCESSD(in, pos, boolean, data);
 }
@@ -67,15 +67,15 @@ Rule(number) {
 // BOOLEAN Rule
 Rule(boolean) {
     const char* pos = in;
-    string_part d;
+    std::string d;
     int val;
     std::unordered_map<const char*, std::any> data;
     ISC_STD::skipup(pos, " ");
-    if (not strncmp(in, "true", sizeof("true"))) {
-        d = string_part(in, sizeof("true"));
+    if (!strncmp(in, "true", sizeof("true"))) {
+        d = "true";
         val = 1;
     } else if (not strncmp(in, "false", sizeof("false"))) {
-        d = string_part(in, sizeof("false"));
+        d = "false";
         val = 0;
     } else {
         return {};
@@ -100,7 +100,7 @@ Rule(array) {
     if (!any_data_f.result) 
         goto arrayClose; // should be closed immediately
     
-    data.push(any_data_f.token);
+    data.push_back(any_data_f.token);
     pos += any_data_f.token.length();
     ISC_STD::skipup(pos, " ");
     while(*pos == ',') {
@@ -129,37 +129,36 @@ Rule(object) {
     ++pos;
     ISC_STD::skipup(pos, " ");
     auto id_res = id(pos);
-    if (not id_res.result)
-        goto objectClose; // should be closed immediately
-    pos += id_res.token.length();
-    ISC_STD::skipup(pos, " ");
-    if (*pos != ':')
-        return {};
-    pos++;
-    ISC_STD::skipup(pos, " ");
-    auto any_data_res = any_data(pos);
-    if (!any_data_res.result)
-        return {};
-    data[TO (std::string, id_res.token.data )] = any_data.token.data;
-    ISC_STD::skipup(pos, " ");
-    while (*pos == ',') {
-        ISC_STD::skipup(pos, " ");
-        ++pos;
-        id_res = id(pos);
-        if (not id_res.result)
-            break;
+    if (id_res.result) {
         pos += id_res.token.length();
         ISC_STD::skipup(pos, " ");
-        if (*pos!= ':')
-            break;
+        if (*pos != ':')
+            return {};
+        pos++;
         ISC_STD::skipup(pos, " ");
-        any_data_res = any_data(++pos);
+        auto any_data_res = any_data(pos);
         if (!any_data_res.result)
-            break;
-        data[TO(std::string, id_res.token.data)] = any_data_res.token.data;
-        pos += any_data_res.token.length();
+            return {};
+        data[TO (std::string, id_res.token.data )] = any_data_res.token;
+        ISC_STD::skipup(pos, " ");
+        while (*pos == ',') {
+            ISC_STD::skipup(pos, " ");
+            ++pos;
+            id_res = id(pos);
+            if (not id_res.result)
+                break;
+            pos += id_res.token.length();
+            ISC_STD::skipup(pos, " ");
+            if (*pos!= ':')
+                break;
+            ISC_STD::skipup(pos, " ");
+            any_data_res = any_data(++pos);
+            if (!any_data_res.result)
+                break;
+            data[TO(std::string, id_res.token.data)] = any_data_res.token;
+            pos += any_data_res.token.length();
+        }
     }
-    objectClose:
     if (*pos != '}')
         return {};
     RULE_SUCCESSD(in, pos, object, data);
@@ -171,20 +170,23 @@ Rule(any_data) {
     std::any data;
 
     // Try each type in order
-    Rule result = boolean(in);
+    ::Parser::Rule_result result = boolean(in);
+    ::Parser::Rule token;
     if (result.result)
-        return result.token;
+        token = result.token;
     result = number(in);
     if (result.result)
-        return result.token;
+        token = result.token;
     result = string(in);
     if (result.result)
-        return result.token;
+        token = result.token;
     result = array(in);
     if (result.result)
-        return result.token;
+        token = result.token;
     result = object(in);
     if (result.result)
-        return result.token;
-    return {};
+        token = result.token;
+    if (token.empty())
+        return {};
+    RULE_SUCCESSD(in, in + token.length(), any_data, token);
 }

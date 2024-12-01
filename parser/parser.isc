@@ -67,7 +67,7 @@ use:
 
 
     'use' #unit (',' #unit)*
-
+    data: [%2, ...%4];
     #unit:
         id (':' [^,]+ | STRING)?
 
