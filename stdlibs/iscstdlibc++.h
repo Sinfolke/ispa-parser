@@ -95,6 +95,10 @@ namespace ISC_STD {
      * @return size_t 
      */
     size_t skipup(const char*& in, const char* text);
+    // Skip a list of symbols
+    size_t skip_list(const char*& in, const char* text);
+    // Skip spaces
+    size_t skip_spaces(const char*& in);
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 

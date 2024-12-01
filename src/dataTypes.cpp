@@ -5,13 +5,13 @@ Rule(string) {
     const char* pos = in;
     char quote;
     std::string data;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (not (*pos == '"' || *pos == '\'') )
         return {};
     quote = *pos++;
     // Capture the string content
     while (*pos != quote) {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         if (*pos == '\\') {
             data += *pos++; // Skip escape character
         }
@@ -28,26 +28,26 @@ Rule(number) {
     std::string main, dec;
     bool hasPoint = false;
 
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     // Check for sign
     if (*pos == '+' || *pos == '-') {
         pos++;
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     // Read main number
     while (isdigit(*pos)) {
         main += *pos++;
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     // Check for decimal point
     if (*pos == '.' || *pos == ',') {
         hasPoint = true;
         pos++;
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         while (isdigit(*pos)) {
             dec += *pos++;
         }
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
     }
 
     std::string full = sign + main + (hasPoint ? (".") + dec : "");
@@ -70,7 +70,7 @@ Rule(boolean) {
     std::string d;
     int val;
     std::unordered_map<const char*, std::any> data;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!strncmp(in, "true", sizeof("true"))) {
         d = "true";
         val = 1;
@@ -91,20 +91,20 @@ Rule(boolean) {
 Rule(array) {
     const char* pos = in;
     std::vector<std::any> data;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '[')
         return {};
     pos++;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto any_data_f = any_data(pos);
     if (!any_data_f.result) 
         goto arrayClose; // should be closed immediately
     
     data.push_back(any_data_f.token);
     pos += any_data_f.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     while(*pos == ',') {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto any_data_s = any_data(pos + 1);
         if (!any_data_s.result)
             break;
@@ -123,35 +123,35 @@ Rule(object) {
     std::vector<std::string> keys;
     std::vector<std::any> values;
 
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '{')
         return {};
     ++pos;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (id_res.result) {
         pos += id_res.token.length();
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         if (*pos != ':')
             return {};
         pos++;
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto any_data_res = any_data(pos);
         if (!any_data_res.result)
             return {};
         data[TO (std::string, id_res.token.data )] = any_data_res.token;
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         while (*pos == ',') {
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             ++pos;
             id_res = id(pos);
             if (not id_res.result)
                 break;
             pos += id_res.token.length();
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             if (*pos!= ':')
                 break;
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             any_data_res = any_data(++pos);
             if (!any_data_res.result)
                 break;

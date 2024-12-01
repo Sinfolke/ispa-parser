@@ -3,16 +3,16 @@
 
 Rule(Rule_csequence) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '[')
         return {};
     bool _not = false;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos == '^')
         _not = true;
     std::vector<::Parser::Rule> dt;
     while(true) {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto res = Rule_csequence_symbol(pos);
         if (!res.result) {
             res = Rule_csequence_diapason(pos);
@@ -22,7 +22,7 @@ Rule(Rule_csequence) {
         pos += res.token.length();
         dt.push_back(res.token);
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos!= ']')
         return {};
     

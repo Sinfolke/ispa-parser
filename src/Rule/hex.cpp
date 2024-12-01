@@ -3,11 +3,11 @@
 //#hex
 Rule(Rule_hex) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (strncmp(pos, "0x", 2)) {
         return {};
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     pos += 2;
     auto begin = pos;
     while (isdigit(*pos) || isupper(*pos) || islower(*pos)) {

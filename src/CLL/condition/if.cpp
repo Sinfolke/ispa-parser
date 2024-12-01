@@ -10,7 +10,7 @@ Rule(cll_if) {
     }
     if (strncmp(pos, "if", sizeof("if")))
         return {};
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto expr_res = expr(pos);
     if (!expr_res.result)
         return {};

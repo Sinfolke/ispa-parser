@@ -7,13 +7,13 @@ Rule(cll_csupport_types)
     bool is_unsigned = false;
     std::string val;
     std::vector<std::any> templated;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!strncmp(pos, "unsigned", sizeof("unsigned") - 1))
     {
         is_unsigned = true;
         pos += sizeof("unsigned") - 1;
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!strncmp(pos, "char", sizeof("char") - 1))
     {
         val = "char";
@@ -86,7 +86,7 @@ Rule(cll_csupport_types)
             val = "forward_list";
             pos += sizeof("forward_list") - 1;
         } else return {};
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             // cll_template
 
 
@@ -94,7 +94,7 @@ Rule(cll_csupport_types)
                 return {};  // Return if the opening '<' is not present
             }
             pos++;
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
 
             // Begin parsing content
             auto content_res = cll_template_typename(pos); // Directly use `cll_template_typename` as the `content` function
@@ -108,18 +108,18 @@ Rule(cll_csupport_types)
             // Parse subsequent elements separated by commas
             while (*pos == ',') {
                 ++pos;
-                ISC_STD::skipup(pos, " ");
+                ISC_STD::skip_spaces(pos);
                 content_res = cll_template_typename(pos); // Call `cll_template_typename` again
                 if (!content_res.result) {
                     break;  // Stop parsing if further content fails
                 }
                 pos += content_res.token.length();
                 templated.push_back(content_res.token);
-                ISC_STD::skipup(pos, " ");
+                ISC_STD::skip_spaces(pos);
             }
 
             // Ensure the closing '>' is present
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             if (*pos != '>') {
                 return {};  // Return if closing '>' is not found
             }
@@ -134,7 +134,7 @@ Rule(cll_csupport_types)
 Rule(cll_type)
 {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto res = cll_csupport_types(pos);
     if (!res.result) {
         res = cll_type_abstract(pos);
@@ -146,7 +146,7 @@ Rule(cll_type)
 Rule(cll_type_abstract) 
 {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     std::string type;
     ::Parser::Rule templ;
     if (
@@ -160,7 +160,7 @@ Rule(cll_type_abstract)
         type.append(pos, 4);
         pos += 4;
     } else if (!strncmp(pos, "arr", 3) || !strncmp(pos, "obj", 3)) {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto cll_template_res = cll_template_typename(pos);
         if (!cll_template_res.result)
         {

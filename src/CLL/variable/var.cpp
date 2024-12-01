@@ -2,26 +2,26 @@
 #include <parser_defs.h>
 Rule(cll_var) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto cll_type_res = cll_type(pos);
     if (!cll_type_res.result)
         return {};
     
     pos += cll_type_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
 
     if (!id_res.result) 
         return {};
     
     pos += id_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto assignment_op_res = assignment_op(pos);
     if (!assignment_op_res.result)
         return {};
     
     pos += assignment_op_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto expr_res = expr(pos);
 
     if (!expr_res.result)

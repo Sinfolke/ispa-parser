@@ -4,7 +4,7 @@ Rule(cll_block) {
     auto pos = in;
     if (*pos != '{')
         return {};
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto res = cll(++pos);
     if (!res.result) {
         /* match rule & exit if not */
@@ -13,7 +13,7 @@ Rule(cll_block) {
             return {};
     }
     pos += res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '}')
         return {};
     RULE_SUCCESSD(in, pos, cll_block, res.token);

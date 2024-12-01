@@ -4,10 +4,10 @@
 Rule(Rule_group) {
     auto pos = in;
     std::string name;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos == '&') {
         pos++;
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto id_res = id(pos);
         if (id_res.result)
             name = TO(std::string, id_res.token);
@@ -15,16 +15,16 @@ Rule(Rule_group) {
             return {};
         
         pos += id_res.token.length();
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
     }
     if (*pos != '(')
         return {};
     pos++;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> r;
     while(true)
     {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         auto rule_res = Rule_rule(pos);
         if (!rule_res.result)
             break;
@@ -32,7 +32,7 @@ Rule(Rule_group) {
         pos += rule_res.token.length();
         r.push_back(rule_res.token);
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!pos != ')')
         return {};
     pos++;

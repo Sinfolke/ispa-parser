@@ -4,7 +4,7 @@ Rule(Rule_rule) {
     auto pos = in;
     auto res = Rule_group(pos);
     bool is_cll=false, is_id=false, is_nested=false;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!res.result) {
         res = Rule_csequence(pos);
         if (!res.result) {
@@ -19,7 +19,7 @@ Rule(Rule_rule) {
                             is_nested = true;
                         }
                         pos++;
-                        ISC_STD::skipup(pos, " ");
+                        ISC_STD::skip_spaces(pos);
                         res = id(pos);
                         if (!res.result) {
                             is_id=false;
@@ -36,7 +36,7 @@ Rule(Rule_rule) {
             }
         }
     }
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto qualifier_res = Rule_qualifier(pos);
     
     ::Parser::Rule qualifier;

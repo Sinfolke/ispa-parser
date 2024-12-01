@@ -9,3 +9,22 @@ size_t ISC_STD::skipup(const char*& in, const char* text)
     }
     return counter;
 }
+size_t ISC_STD::skip_list(const char*& in, const char* text)
+{
+    size_t counter = 0;
+    for (size_t i = 0; i < strlen(text); i++) {
+        if (*in == text[i]) {
+            in++;
+            i = 0;
+            counter++;
+        }
+    }
+    return counter;
+}
+size_t ISC_STD::skip_spaces(const char*& in) {
+    auto prev = in;
+    while(isspace(*in))
+        in++;
+    
+    return in - prev;
+}

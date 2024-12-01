@@ -4,7 +4,7 @@
 Rule(Rule_op) {
     auto pos = in;
     std::string value;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos == '|')
         value = '|';
     else if (*pos == '&' && *pos == '|')

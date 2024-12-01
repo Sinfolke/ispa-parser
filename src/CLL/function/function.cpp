@@ -6,15 +6,15 @@
 
 Rule(function_body_call) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto function_arguments_res = function_arguments(pos);
     if (!function_arguments_res.result)
         return {};
     pos += function_arguments_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
     
@@ -22,15 +22,15 @@ Rule(function_body_call) {
 }
 Rule(function_body_decl) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto function_parameters_res = function_parameters(pos);
     if (!function_parameters_res.result)
         return {};
     pos += function_parameters_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
     
@@ -38,7 +38,7 @@ Rule(function_body_decl) {
 }
 Rule(function_arguments) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto res = any_data(pos);
     if (!res.result) {
         res = id(pos);
@@ -50,7 +50,7 @@ Rule(function_arguments) {
         pos += res.token.length();
         while (*pos == ',') {
             pos++;
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
             auto res2 = any_data(pos);
             if (!res2.result) {
                 res2 = id(pos);
@@ -59,7 +59,7 @@ Rule(function_arguments) {
             }
             pos += res2.token.length();
             _3.push_back(res2.token);
-            ISC_STD::skipup(pos, " ");
+            ISC_STD::skip_spaces(pos);
         }
     }
     
@@ -71,22 +71,22 @@ Rule(function_arguments) {
 }
 Rule(function_parameters) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
     std::vector<::Parser::Rule> _3 {};
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     while (*pos == ',') {
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         pos++;
         auto id2_res = id(pos);
         if (!id2_res.result)
             break;
         pos += id2_res.token.length();
         _3.push_back(id2_res.token);
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
     }    
     std::vector<std::any> data {
         id_res.token,
@@ -96,12 +96,12 @@ Rule(function_parameters) {
 }
 Rule(cll_function_call) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto function_body_call_res = function_body_call(pos);
     if (!function_body_call_res.result)
         return {};
@@ -120,23 +120,23 @@ Rule(function_decl) {
     std::vector<std::string> fun_type;
 
     auto pos = in;
-    spaces = ISC_STD::skipup(pos, " ");
+    spaces = ISC_STD::skip_spaces(pos);
 
     if (strncmp(pos, "fn", 2))
         return {};
     pos += 2;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
 
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto function_body_res = function_body_decl(pos);
     if (!function_body_res.result)
         return {};
     pos += function_body_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto val = function_value(pos, spaces);
     if (val.result)
         pos += val.token.length();
@@ -155,7 +155,7 @@ Rule(function_value, int spaces) {
     bool is_declaration_only = false;
     std::vector<::Parser::Rule> val;
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     while(true) {
         //skipup("\n");
         int current_spaces_amount; // = skipup(" ")

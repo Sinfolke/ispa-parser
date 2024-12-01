@@ -15,9 +15,17 @@ Rule(op) {
 }
 Rule(compare_op) {
     auto pos = in;
-    if (pos == '=' || pos == '!')
-        
-        pos++;
+    bool negative = false;
+    if (*pos == '!') {
+        negative = true;
+    } else if (*pos != '=')
+        return {};
+    pos++;
+    if (*pos != '=') 
+        return {};
+    pos++;
+    
+    RULE_SUCCESSD(in, pos, compare_op, negative);
 }
 Rule(assignment_op) {
     auto op_res = op(in);
@@ -63,7 +71,7 @@ Rule(logical_andr) {
         if (!strncmp(pos, "and", 3))
             return {};
         pos += 3;
-        ISC_STD::skipup(pos, " ");
+        ISC_STD::skip_spaces(pos);
         if (strncmp(in, "or", 2))
             return {};
         pos += 2;

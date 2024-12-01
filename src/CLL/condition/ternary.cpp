@@ -4,26 +4,26 @@
 
 Rule(cll_ternary) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto expr_res = expr(pos);
     if (!expr_res.result)
         return {};
 
     pos += expr_res.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != '?')
         return {};
     pos++;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto expr_res2 = expr(pos);
     if (!expr_res2.result)
         return {};
     pos += expr_res2.token.length();
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (*pos != ':')
         return {};
     pos++;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     auto expr_res3 = expr(pos);
     if (expr_res3.result)
         return {};

@@ -4,13 +4,13 @@
 //#bin
 Rule(Rule_bin) {
     auto pos = in;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     if (!(*pos == '0' && *(pos+1) == 'b')) {
         return {};
     }
     auto begin = in + 2;
     pos = begin;
-    ISC_STD::skipup(pos, " ");
+    ISC_STD::skip_spaces(pos);
     while (*pos == '0' || *pos == '1') {
         ++pos;
     }
