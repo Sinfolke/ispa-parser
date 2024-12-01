@@ -281,3 +281,25 @@ Rule(use_unit) {
     };
     RULE_SUCCESSD(in, pos, use_unit, data);
 }
+#undef Rule
+#undef Token
+::Parser::Tree Parser::Parser::parse() {
+    auto len = strlen(text);
+    Tree tree;
+    for (size_t i = 0; i < len; i++) {
+        auto in = text + i;
+        auto res = Import(in);
+        if (!res.result) {
+            res = use(in);
+            if (!res.result) {
+                res = Rule(in);
+                if (!res.result) {
+                    printf("Stopped at pos %zu\n", i);
+                    break;
+                }
+            }
+        }
+        tree.push_back(res.token);
+    }
+    return tree;
+}

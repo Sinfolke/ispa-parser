@@ -94,15 +94,7 @@ namespace ISC_STD {
      * @param text 
      * @return size_t 
      */
-    size_t skipup(const char*& in, const char* text) {
-        size_t counter = 0;
-        size_t len = strlen(text);
-        while(!strncmp(in, text, len)) {
-            in += len;
-            counter++;
-        }
-        return counter;
-    }
+    size_t skipup(const char*& in, const char* text);
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 

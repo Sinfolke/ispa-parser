@@ -146,7 +146,7 @@ namespace Parser {
             Rule(expr_not);
         public:
             Tree parse();
-
+            Parser(const char* text) : text(text) {}
             // Rule methods
             Rule(end);
             Rule(strict_end);

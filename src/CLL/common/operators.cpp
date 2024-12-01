@@ -13,6 +13,12 @@ Rule(op) {
     }
     return {};
 }
+Rule(compare_op) {
+    auto pos = in;
+    if (pos == '=' || pos == '!')
+        
+        pos++;
+}
 Rule(assignment_op) {
     auto op_res = op(in);
     if (!op_res.result)
@@ -63,4 +69,20 @@ Rule(logical_andr) {
         pos += 2;
         RULE_SUCCESS(in, pos, compare_op);
     }
+}
+Rule(logical_op) {
+    auto pos = in;
+    auto res = logical_not(pos);
+    if (!res.result) {
+        res = logical_and(pos);
+        if (!res.result) {
+            res = logical_or(pos);
+            if (!res.result) {
+                res = logical_andr(pos);
+                if (!res.result)
+                    return {};
+            }
+        }
+    }
+    RULE_SUCCESSD(in, pos, logical_op, res.token);
 }

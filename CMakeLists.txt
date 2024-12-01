@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 3.21)
 project(ParserModule)
-
+enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
 file(GLOB_RECURSE parser_sources CONFIGURE_DEPENDS "src/*.cpp")
 add_library(parser MODULE STATIC ${parser_sources})
+add_library(parser_stdlib MODULE STATIC stdlibs/iscstdlibc++.cpp)
 target_include_directories(parser PUBLIC include stdlibs)
+
+# test
+add_executable(parser_test tests/test.cpp)
+target_link_libraries(parser_test parser parser_stdlib)
+target_include_directories(parser_test PUBLIC include stdlibs)
+target_compile_definitions(parser_test PUBLIC __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}")
+add_test(NAME parser_test COMMAND parser_test)
