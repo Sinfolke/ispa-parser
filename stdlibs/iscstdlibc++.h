@@ -142,16 +142,20 @@ class return_base_exception : public std::exception {
         return mes.c_str();
     }
 };
-struct _return_base {
+template<typename RETURN_T>
+class _return {
 public:
     std::size_t startpos;
-    std::string_view str; // char* start, long long len
-
-    _return_base(const std::size_t& startpos, const char* start, const std::size_t& len) : str(start, len), startpos(startpos) {}
-    _return_base(const std::size_t& startpos, const char* start, const char* end) : str(start, end - start), startpos(startpos) {}
-    _return_base() {
+    const char* start;
+    const char* end;
+    RETURN_T name;
+    std::any data;
+    _return(const std::size_t startpos, const char* start, const char* end, const RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    _return(const std::size_t startpos, const char* start, const char* end, const RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
+    _return() {
         startpos = std::string::npos;
     }
+
 
     /**
      * @brief Returns the number of line of the current token or rule
@@ -164,7 +168,7 @@ public:
         std::size_t count = 0;
         std::size_t escaptions = 0;
         for (std::size_t i = startpos; i >= 0; --i) {
-            if (*(str.data() - i) == '\n') count++;
+            if (*(start - i) == '\n') count++;
         }
         return count;
     }
@@ -176,40 +180,91 @@ public:
     std::size_t endpos() const {
         if (startpos == std::string::npos)
             throw return_base_exception("endpos");
-        return startpos + str.length();
+        return startpos + (end - start);
     }
     std::size_t length() const {
         if (startpos == std::string::npos)
             throw return_base_exception("length");
-        return str.length();
+        return end - start;
     }
     bool empty() const noexcept {
-        return startpos == std::string::npos || str.empty();
+        return startpos == std::string::npos;
     }
-    _return_base operator=(const _return_base& other) {
+    _return<RETURN_T> operator=(const _return<RETURN_T>& other) {
         startpos = other.startpos;
-        str = other.str;
+        start = other.start;
+        end = other.end;
         return *this;
     }
 };
-template<class RETURN_T>
-struct _return : public _return_base {
-    using _return_base::_return_base;
-    _return(const std::size_t& startpos, const char* start, const std::size_t& len) : _return_base(startpos, start, len) {}
-    _return(const std::size_t& startpos, const char* start, const std::size_t& len, const RETURN_T& name) : _return_base(startpos, start, len), name(name) {}
-    _return(const std::size_t& startpos, const char* start, const std::size_t& len, const RETURN_T& name, std::any& data) : _return_base(startpos, start, len), name(name), data(data) {}
-    _return(const std::size_t& startpos, const char* start, const char* end) : _return_base(startpos, start, end) {}
-    _return(const std::size_t& startpos, const char* start, const char* end, const RETURN_T name) : _return_base(startpos, start, end), name(name) {}
-    _return(const std::size_t& startpos, const char* start, const char* end, const RETURN_T name, std::any data) : _return_base(startpos, start, end), name(name), data(data) {}
-    _return(const RETURN_T& name) : _return_base(), name(name) {}
-    _return(const RETURN_T& name, std::any data) : _return_base(), name(name), data(data) {}
-    const RETURN_T name = RETURN_T::NONE;
-    std::any data;
-    _return<RETURN_T> operator=(_return<RETURN_T> const& other) {
-        startpos = other.startpos;
-        return *this;
-    }
-};
+// struct _return_base {
+// public:
+//     std::size_t startpos;
+//     std::string_view str; // char* start, long long len
+
+//     _return_base(const std::size_t& startpos, const char* start, const std::size_t& len) : str(start, len), startpos(startpos) {}
+//     _return_base(const std::size_t& startpos, const char* start, const char* end) : str(start, end - start), startpos(startpos) {}
+//     _return_base() {
+//         startpos = std::string::npos;
+//     }
+
+//     /**
+//      * @brief Returns the number of line of the current token or rule
+//      * 
+//      * @return std::size_t 
+//      */
+//     std::size_t line() const {
+//         if (startpos == std::string::npos)
+//             throw return_base_exception("line");
+//         std::size_t count = 0;
+//         std::size_t escaptions = 0;
+//         for (std::size_t i = startpos; i >= 0; --i) {
+//             if (*(str.data() - i) == '\n') count++;
+//         }
+//         return count;
+//     }
+//     /**
+//      * @brief Get the end position based on startpos and length
+//      * 
+//      * @return long long 
+//      */
+//     std::size_t endpos() const {
+//         if (startpos == std::string::npos)
+//             throw return_base_exception("endpos");
+//         return startpos + str.length();
+//     }
+//     std::size_t length() const {
+//         if (startpos == std::string::npos)
+//             throw return_base_exception("length");
+//         return str.length();
+//     }
+//     bool empty() const noexcept {
+//         return startpos == std::string::npos || str.empty();
+//     }
+//     _return_base operator=(const _return_base& other) {
+//         startpos = other.startpos;
+//         str = other.str;
+//         return *this;
+//     }
+// };
+// template<class RETURN_T>
+// struct _return : public _return_base {
+//     using _return_base::_return_base;
+//     _return(const std::size_t& startpos, const char* start, const std::size_t& len) : _return_base(startpos, start, len) {}
+//     _return(const std::size_t& startpos, const char* start, const std::size_t& len, const RETURN_T& name) : _return_base(startpos, start, len), name(name) {}
+//     _return(const std::size_t& startpos, const char* start, const std::size_t& len, const RETURN_T& name, std::any& data) : _return_base(startpos, start, len), name(name), data(data) {}
+//     _return(const std::size_t& startpos, const char* start, const char* end) : _return_base(startpos, start, end) {}
+//     _return(const std::size_t& startpos, const char* start, const char* end, const RETURN_T name) : _return_base(startpos, start, end), name(name) {}
+//     _return(const std::size_t& startpos, const char* start, const char* end, const RETURN_T name, std::any data) : _return_base(startpos, start, end), name(name), data(data) {}
+//     _return(const RETURN_T& name) : _return_base(), name(name) {}
+//     _return(const RETURN_T& name, std::any data) : _return_base(), name(name), data(data) {}
+//     const RETURN_T name = RETURN_T::NONE;
+//     std::any data;
+//     _return<RETURN_T> operator=(_return<RETURN_T> const& other) {
+//         startpos = other.startpos;
+//         return *this;
+//     }
+// };
 
 
 template<class RESULT_T>

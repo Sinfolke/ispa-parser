@@ -13,7 +13,6 @@ int main() {
     std::stringstream buffer;
     buffer << file.rdbuf();
     std::string content = buffer.str();
-    std::cout << "Content: " << content << std::endl;
     Parser::Parser parser(content.c_str());
     auto tree = parser.parse();
     file.close();

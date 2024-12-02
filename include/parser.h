@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstring>
 #include <cstddef>
+#include <cstdio>
+#include <iostream>
 #include <iscstdlibc++.h>
 namespace Parser {
     class Parser;
@@ -103,14 +105,12 @@ namespace Parser {
     };
     using Rule = ISC_STD::_return<Rules>;
     using Rule_result = ISC_STD::match_result<Rules>;
-    using Tree = ISC_STD::Tree<Rule>;
+    using Tree = ISC_STD::Tree<Rules>;
     using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
     class Parser {
         private:
             const char* text;
-            std::size_t getCurrentPos(const char* pos) {
-                return text - pos;
-            }
+            std::size_t getCurrentPos(const char* pos);
             #define Rule(x, ...) Rule_result x (const char* in, ##__VA_ARGS__);
             Rule(Import_path);
             Rule(Import_ext);

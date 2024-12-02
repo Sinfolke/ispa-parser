@@ -1,32 +1,18 @@
 #include <parser.h>
 #include <parser_defs.h>
 Rule(id) {
-    int c = 0;
     const char* pos = in;
     std::string val;
     ISC_STD::skip_spaces(pos);
-    while (*pos >= '0' and *pos <= '9') {
+    while (isdigit(*pos)) {
         val += *pos++;
     }
     ISC_STD::skip_spaces(pos);
-    if (
-        not 
-        (
-        *pos >= 'a' and *pos <= 'f' || 
-        *pos >= 'A' and *pos <= 'F' || 
-        *pos == '_'
-        )
-    ) {
+    if (!isalpha(*pos) || *pos == '_') {
         return {};
     }
     val += *pos++;
-    ISC_STD::skip_spaces(pos);
-    while (
-        *pos >= 'a' and *pos <= 'f' || 
-        *pos >= 'A' and *pos <= 'F' || 
-        *pos >= '0' and *pos <= '9' || 
-        *pos == '_'
-    ) {
+    while (isalnum(*pos) || *pos == '_') {
         val += *pos++;
     }
     // construct result as valid
@@ -224,6 +210,7 @@ Rule(use) {
     
     // Check if the input starts with "use"
     if (strncmp(pos, "use", 3) != 0) {
+        printf("Exit 1\n");
         return {};  // Return empty result if "use" is not found
     }
     pos += 3;  // Move position past "use"
@@ -232,6 +219,7 @@ Rule(use) {
     // Parse the first unit
     auto use_unit_res = use_unit(pos);
     if (!use_unit_res.result) {
+        printf("Exit2\n");
         return {};
     }
     pos += use_unit_res.token.length();
@@ -283,12 +271,14 @@ Rule(use_unit) {
 }
 #undef Rule
 #undef Token
+size_t Parser::Parser::getCurrentPos(const char* pos) {
+    return pos - text;
+}
 ::Parser::Tree Parser::Parser::parse() {
     auto len = strlen(text);
     Tree tree;
     auto in = text;
-    for (size_t i = 0; i < len; i++) {
-        auto in = text + i;
+    for (;*in;) {
         ISC_STD::skip_spaces(in);
         auto res = Import(in);
         if (!res.result) {
@@ -296,21 +286,23 @@ Rule(use_unit) {
             if (!res.result) {
                 res = Rule(in);
                 if (!res.result) {
-                    printf("Stopped at rule %zu\n", i);
+                    printf("Stopped at rule\n");
                     break;
                 }
             }
         }
-        in += res.token.length();
-        tree.push_back(res.token);
-        printf("Stopped at %ld\n", in - text);
+        std::cout << "Token length: " << res.token.length() << "\n";
         // match end
         ISC_STD::skip_spaces(in);
         auto end_res = end(in);
         if (!end_res.result) {
-            printf("Unmatched end at rule %zu\n", i);
+            printf("Unmatched end at rule\n");
             break;
         }
+        in += end_res.token.length();
+        in += res.token.length();
+        tree.push_back(res.token);
+        printf("Stopped at %ld\n", in - text);
     }
     return tree;
 }
