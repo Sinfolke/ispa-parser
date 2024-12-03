@@ -47,6 +47,8 @@ namespace Parser {
     end,
     strict_end,
     newline,
+    spacemode,
+    linear_comment,
     id,
     Import,
     use,
@@ -151,6 +153,8 @@ namespace Parser {
             Rule(end);
             Rule(strict_end);
             Rule(newline);
+            Rule(spacemode);
+            Rule(linear_comment);
             Rule(id);
             Rule(Import);
             Rule(use);

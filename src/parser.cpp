@@ -7,8 +7,7 @@ Rule(id) {
     while (isdigit(*pos)) {
         val += *pos++;
     }
-    ISC_STD::skip_spaces(pos);
-    if (!isalpha(*pos) || *pos == '_') {
+    if (!isalpha(*pos) && *pos != '_') {
         return {};
     }
     do {
@@ -17,6 +16,38 @@ Rule(id) {
     // construct result as valid
     // extract full string from the first group
     RULE_SUCCESSD(in, pos, id, val);
+}
+Rule(spacemode)
+{
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    std::string val;
+    if (strncmp(pos, "spacemode", sizeof("spacemode") - 1))
+        return {};
+    pos += sizeof("spacemode") - 1;
+    ISC_STD::skip_spaces(pos);
+    if (!strncmp(pos, "mixed", sizeof("mixed") - 1)) {
+        val = "mixed";
+        pos += sizeof("mixed") - 1;
+    } else if (!strncmp(pos, "skipped", sizeof("skipped") - 1)) {
+        val = "skipped";
+        pos += sizeof("skipped") - 1;
+    } else if (!strncmp(pos, "allowed", sizeof("allowed") - 1)) {
+        val = "allowed";
+        pos += sizeof("allowed") - 1;
+    } else {
+        return {};
+    }
+    printf("pos: %c\n", *pos);
+    RULE_SUCCESSD(in, pos, spacemode, val);
+}
+Rule(linear_comment) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    if (strncmp(pos, "//", 2))
+        return {};
+    while(*pos != '\n') pos++;
+    RULE_SUCCESS(in, pos, linear_comment);
 }
 Rule(Import_path) {    
     auto pos = in;
@@ -209,7 +240,6 @@ Rule(use) {
     
     // Check if the input starts with "use"
     if (strncmp(pos, "use", 3) != 0) {
-        printf("Exit 1\n");
         return {};  // Return empty result if "use" is not found
     }
     pos += 3;  // Move position past "use"
@@ -261,7 +291,6 @@ Rule(use_unit) {
         { "name", id_res.token },
         { "value", dt }
     };
-    printf("Returning use_unit...\n");
     RULE_SUCCESSD(in, pos, use_unit, data);
 }
 #undef Rule
@@ -273,16 +302,32 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
     auto len = strlen(text);
     Tree tree;
     auto in = text;
+    size_t rule_count = 0;
     for (;*in;) {
+        printf("entering rule %zu\n", rule_count++);
         ISC_STD::skip_spaces(in);
+        auto comment_res = linear_comment(in);
+        if (comment_res.result) {
+            // found a comment in begin, go to the end and continue loop
+            in += comment_res.token.length();
+            continue;
+        }
         auto res = Import(in);
         if (!res.result) {
             res = use(in);
             if (!res.result) {
                 res = Rule(in);
                 if (!res.result) {
-                    printf("Stopped at rule\n");
-                    break;
+                    res = spacemode(in);
+                    if (!res.result)
+                    {
+                        printf("Stopped at rule\n");
+                        break;
+                    } else {
+                        printf("Matched spacemode\n");
+                    }
+                } else {
+                    printf("matched Rule\n");
                 }
             }
         }
@@ -290,6 +335,7 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
         in += res.token.length();
         // match end
         ISC_STD::skip_spaces(in);
+        printf("in: %c", *in);
         auto end_res = end(in);
         if (!end_res.result) {
             printf("Unmatched end of rule\n");

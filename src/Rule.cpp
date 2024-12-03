@@ -4,9 +4,14 @@ Rule(Rule) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
-    if (!id_res.result)
+    if (!id_res.result) {
+        printf("Exit 1\n");
         return {};
+    }
     pos += id_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    if (*pos != ':')
+        return {};
     ISC_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> rule_results {};
     Rule_result Rule_rule_res;

@@ -100,7 +100,6 @@ Rule(array) {
         return {};
     }
     pos++;
-    printf("Found array open brace\n");
     ISC_STD::skip_spaces(pos);
     auto any_data_f = any_data(pos);
     if (any_data_f.result)
@@ -109,10 +108,8 @@ Rule(array) {
         data.push_back(any_data_f.token);
         pos += any_data_f.token.length();
         ISC_STD::skip_spaces(pos);
-        int i = 0;
         while(*pos == ',') {
             pos++;
-            printf("it %d\n", i++);
             ISC_STD::skip_spaces(pos);
             auto any_data_s = any_data(pos);
             if (!any_data_s.result)
@@ -124,7 +121,6 @@ Rule(array) {
     if (*pos != ']')
         return {};
     pos++;
-    printf("Length: %ld\n", pos - in);
     RULE_SUCCESSD(in, pos, array, data);
 }
 
@@ -180,7 +176,6 @@ Rule(object) {
 Rule(any_data) {
     const char* pos = in;
     std::any data;
-    printf("Enter any_data\n");
     // Try each type in order
     ::Parser::Rule token;
     ::Parser::Rule_result result = boolean(in);
