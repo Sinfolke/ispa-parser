@@ -24,13 +24,14 @@ Rule(string) {
 // NUMBER Rule
 Rule(number) {
     const char* pos = in;
-    std::string sign(1, *pos);
+    std::string sign;
     std::string main, dec;
     bool hasPoint = false;
 
     ISC_STD::skip_spaces(pos);
     // Check for sign
     if (*pos == '+' || *pos == '-') {
+        sign = *pos;
         pos++;
     }
     ISC_STD::skip_spaces(pos);
@@ -49,8 +50,11 @@ Rule(number) {
         }
         ISC_STD::skip_spaces(pos);
     }
-
-    std::string full = sign + main + (hasPoint ? (".") + dec : "");
+    if (main.empty())
+        return {};
+    printf("To full\n");
+    std::string full = sign + main + (hasPoint ? std::string(".") + dec : "");
+    printf("main: %s\n", main.c_str());
     double main_n = std::stod(main);
     double dec_n = hasPoint ? std::stod(dec) : 0.0;
     std::unordered_map<const char*, std::any> data {
@@ -92,27 +96,35 @@ Rule(array) {
     const char* pos = in;
     std::vector<std::any> data;
     ISC_STD::skip_spaces(pos);
-    if (*pos != '[')
+    if (*pos != '[') {
         return {};
+    }
     pos++;
+    printf("Found array open brace\n");
     ISC_STD::skip_spaces(pos);
     auto any_data_f = any_data(pos);
-    if (!any_data_f.result) 
-        goto arrayClose; // should be closed immediately
-    
-    data.push_back(any_data_f.token);
-    pos += any_data_f.token.length();
-    ISC_STD::skip_spaces(pos);
-    while(*pos == ',') {
+    if (any_data_f.result)
+    {
+        
+        data.push_back(any_data_f.token);
+        pos += any_data_f.token.length();
         ISC_STD::skip_spaces(pos);
-        auto any_data_s = any_data(pos + 1);
-        if (!any_data_s.result)
-            break;
-        pos += any_data_s.token.length();
+        int i = 0;
+        while(*pos == ',') {
+            pos++;
+            printf("it %d\n", i++);
+            ISC_STD::skip_spaces(pos);
+            auto any_data_s = any_data(pos);
+            if (!any_data_s.result)
+                break;
+            pos += any_data_s.token.length();
+            ISC_STD::skip_spaces(pos);
+        }
     }
-    arrayClose:
     if (*pos != ']')
         return {};
+    pos++;
+    printf("Length: %ld\n", pos - in);
     RULE_SUCCESSD(in, pos, array, data);
 }
 
@@ -168,10 +180,10 @@ Rule(object) {
 Rule(any_data) {
     const char* pos = in;
     std::any data;
-
+    printf("Enter any_data\n");
     // Try each type in order
-    ::Parser::Rule_result result = boolean(in);
     ::Parser::Rule token;
+    ::Parser::Rule_result result = boolean(in);
     if (result.result)
         token = result.token;
     result = number(in);
@@ -184,6 +196,9 @@ Rule(any_data) {
     if (result.result)
         token = result.token;
     result = object(in);
+    if (result.result)
+        token = result.token;
+    result = id(in);
     if (result.result)
         token = result.token;
     if (token.empty())

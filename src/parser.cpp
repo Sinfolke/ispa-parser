@@ -11,10 +11,9 @@ Rule(id) {
     if (!isalpha(*pos) || *pos == '_') {
         return {};
     }
-    val += *pos++;
-    while (isalnum(*pos) || *pos == '_') {
+    do {
         val += *pos++;
-    }
+    } while (isalnum(*pos) || *pos == '_');
     // construct result as valid
     // extract full string from the first group
     RULE_SUCCESSD(in, pos, id, val);
@@ -219,7 +218,6 @@ Rule(use) {
     // Parse the first unit
     auto use_unit_res = use_unit(pos);
     if (!use_unit_res.result) {
-        printf("Exit2\n");
         return {};
     }
     pos += use_unit_res.token.length();
@@ -239,7 +237,6 @@ Rule(use) {
         data.push_back(use_unit_res.token);
         ISC_STD::skip_spaces(pos);
     }
-    
     // Finalize the rule and return the result
     RULE_SUCCESSD(in, pos, use, data);
 }
@@ -250,23 +247,21 @@ Rule(use_unit) {
         return {};
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
-    std::string str;
+    ::Parser::Rule dt;
     if (*pos == ':') {
+        pos++;
         ISC_STD::skip_spaces(pos);
-        auto string_res = string(++pos); // std::string
-        if (string_res.result) {
-            str = TO(std::string, string_res.token.data);
-        } else {
-            while(*pos != ',')
-            {
-                if (*pos != ' ') str += *pos;
-            }
-        }
+        auto res = any_data(pos);
+        if (!res.result)
+            return {};
+        pos += res.token.length();
+        dt = res.token;
     }
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
-        { "value", str }
+        { "value", dt }
     };
+    printf("Returning use_unit...\n");
     RULE_SUCCESSD(in, pos, use_unit, data);
 }
 #undef Rule
@@ -292,15 +287,15 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
             }
         }
         std::cout << "Token length: " << res.token.length() << "\n";
+        in += res.token.length();
         // match end
         ISC_STD::skip_spaces(in);
         auto end_res = end(in);
         if (!end_res.result) {
-            printf("Unmatched end at rule\n");
+            printf("Unmatched end of rule\n");
             break;
         }
         in += end_res.token.length();
-        in += res.token.length();
         tree.push_back(res.token);
         printf("Stopped at %ld\n", in - text);
     }
