@@ -310,6 +310,7 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
         if (comment_res.result) {
             // found a comment in begin, go to the end and continue loop
             in += comment_res.token.length();
+            printf("found comment - skipping\n");
             continue;
         }
         auto res = Import(in);
@@ -335,7 +336,7 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
         in += res.token.length();
         // match end
         ISC_STD::skip_spaces(in);
-        printf("in: %c", *in);
+        printf("matching end at %ld, in: %c", in - text, *in);
         auto end_res = end(in);
         if (!end_res.result) {
             printf("Unmatched end of rule\n");

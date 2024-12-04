@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 file(GLOB_RECURSE parser_sources CONFIGURE_DEPENDS "src/*.cpp")
-add_library(parser MODULE STATIC ${parser_sources})
-add_library(parser_stdlib MODULE STATIC stdlibs/iscstdlibc++.cpp)
+add_library(parser STATIC ${parser_sources})
+add_library(parser_stdlib STATIC stdlibs/iscstdlibc++.cpp)
 target_include_directories(parser PUBLIC include stdlibs)
 
 # test

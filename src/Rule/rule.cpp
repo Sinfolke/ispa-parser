@@ -2,16 +2,21 @@
 #include <parser_defs.h>
 Rule(Rule_rule) {
     auto pos = in;
-    auto res = Rule_group(pos);
     bool is_cll=false, is_id=false, is_nested=false;
     ISC_STD::skip_spaces(pos);
+    printf("Rule_group\n");
+    auto res = Rule_group(pos);
     if (!res.result) {
+        printf("Rule_csequence\n");
         res = Rule_csequence(pos);
         if (!res.result) {
+            printf("Rule_string\n");
             res = string(pos);
             if (!res.result) {
+                printf("Rule_hex\n");
                 res = Rule_hex(pos);
                 if (!res.result) {
+                    printf("Rule_bin\n");
                     res = Rule_bin(pos);
                     if (!res.result) {
                         is_id = true;
@@ -25,10 +30,12 @@ Rule(Rule_rule) {
                             is_id=false;
                             is_nested=false;
                             is_cll=true;
+                            printf("Rule_cll\n");
                             res = cll(pos);
                             if (!res.result)
                                 return {};
-                            
+                            else
+                                printf("Matched cll\n");
                         }
                         
                     }
@@ -36,6 +43,7 @@ Rule(Rule_rule) {
             }
         }
     }
+    pos += res.token.length();
     ISC_STD::skip_spaces(pos);
     auto qualifier_res = Rule_qualifier(pos);
     
@@ -50,6 +58,7 @@ Rule(Rule_rule) {
         { "val", res.token },
         { "qualifier", qualifier }
     };
+    printf("leaving Rule_rule\n");
     RULE_SUCCESSD(in, pos, Rule_rule, val);
     
 }

@@ -6,10 +6,13 @@ Rule(Rule_csequence) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '[')
         return {};
+    pos++;
     bool _not = false;
     ISC_STD::skip_spaces(pos);
-    if (*pos == '^')
+    if (*pos == '^') {
         _not = true;
+        pos++;
+    }
     std::vector<::Parser::Rule> dt;
     while(true) {
         ISC_STD::skip_spaces(pos);
@@ -25,10 +28,10 @@ Rule(Rule_csequence) {
     ISC_STD::skip_spaces(pos);
     if (*pos!= ']')
         return {};
-    
+    pos++;
     std::unordered_map<const char*, std::any> data {
         { "not", _not },
-        { "val", data }
+        { "val", dt }
     };
     RULE_SUCCESSD(in, pos, Rule_csequence, data);
 }

@@ -12,15 +12,19 @@ Rule(Rule) {
     ISC_STD::skip_spaces(pos);
     if (*pos != ':')
         return {};
+    pos++;
     ISC_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> rule_results {};
     Rule_result Rule_rule_res;
+    printf("enter Rule_rule\n");
     while ((Rule_rule_res = Rule_rule(pos)).result) {
         // do something
         rule_results.push_back(Rule_rule_res.token);
+        printf("Length: %ld\n", Rule_rule_res.token.length());
         pos += Rule_rule_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISC_STD::skip_spaces(pos); 
     }
+    printf("Leave Rule_rule\n");
     std::vector<::Parser::Rule> nested_rule_results {};
     ::Parser::Rule_result Rule_nested_rule_res;
     while ((Rule_nested_rule_res = Rule_rule(pos)).result) {
