@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(ParserModule)
+project(Parser)
 enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
@@ -8,7 +8,9 @@ file(GLOB_RECURSE parser_sources CONFIGURE_DEPENDS "src/*.cpp")
 add_library(parser STATIC ${parser_sources})
 add_library(parser_stdlib STATIC stdlibs/iscstdlibc++.cpp)
 target_include_directories(parser PUBLIC include stdlibs)
-
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_definitions(__LIBC)
+endif()
 # test
 add_executable(parser_test tests/test.cpp)
 target_link_libraries(parser_test parser parser_stdlib)

@@ -33,7 +33,7 @@ Rule(Rule_group) {
         r.push_back(rule_res.token);
     }
     ISC_STD::skip_spaces(pos);
-    if (!pos != ')')
+    if (*pos != ')')
         return {};
     pos++;
     std::unordered_map<const char*, std::any> data {

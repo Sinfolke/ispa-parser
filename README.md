@@ -1,9 +1,10 @@
 This is an output of the parser rule
-do: fix cll matching
 Implementation:
 1. Write base rules [done]
 2. Make skip of spaces in between rules [done]
-3. Fix errors in iscstdlibc++ [seems done]
+3. Fix errors in iscstdlibc++ [done]
 4. Fix errors in parser.h     [done]
 5. fix errors in rules if exists [done]
 6. test on real parser input & output tree to see everything is well
+    - test cll, need to fix (false match) on var assignment in place it shouldn't
+    - if all go success test an output tree
