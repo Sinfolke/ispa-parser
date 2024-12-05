@@ -54,6 +54,10 @@ namespace Parser {
     use,
     Rule,
 
+    accessors_group,
+    accessors_element,
+    accessors_char,
+
     string,
     number,
     boolean,
@@ -158,8 +162,11 @@ namespace Parser {
             Rule(id);
             Rule(Import);
             Rule(use);
-            Rule(Rule)
+            Rule(Rule);
 
+            Rule(accessors_group);
+            Rule(accessors_element);
+            Rule(accessors_char);
             
             Rule(string);
             Rule(number);

@@ -1,0 +1,9 @@
+accessor_group: 
+    '$' NUMBER
+;
+accessor_element: 
+    '% NUMBER
+;
+accessor_char: 
+    '^' NUMBER ('+' | '-')?
+;

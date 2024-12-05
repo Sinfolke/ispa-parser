@@ -8,31 +8,33 @@ Rule(expr) {
     if (*pos == '(')
         matched_grp = true;
 
+    std::vector<::Parser::Rule> data;
     ISC_STD::skip_spaces(pos);
     auto res = any_data(pos);
     if (!res.result) {
         res = expr_compare(pos);
         if (!res.result) {
-            res = expr_logical(pos);
+            res = cll_function_call(pos);
             if (!res.result) {
-                res = cll_function_call(pos);
+                res = method_call(pos);
                 if (!res.result) {
-                    res = method_call(pos);
+                    res = expr_parenthesed(pos);
                     if (!res.result) {
-                        res = expr_parenthesed(pos);
-                        if (!res.result)
-                            return {};
+                        while((res = expr_logical(pos)).result) {
+                            data.push_back(res.token);
+                        }
                     }
                 }
-
             }
+
         }
     }
     pos += res.token.length();
+    if (data.empty()) {
+        data.push_back(res.token);
+    }
     ISC_STD::skip_spaces(pos);
     if (matched_grp && *pos != ')')
         return {};
-
-    std::unordered_map<const char*, std::any> data {};
     RULE_SUCCESSD(in, pos, expr, data);
 }
