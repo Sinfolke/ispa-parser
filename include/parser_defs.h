@@ -18,8 +18,8 @@
         getCurrentPos(in), in, pos, ::Parser::Rules::name \
     } \
 }
-#define RULE_SUCCESSD(in, pos, name, data) return { \
-    true, { \
+#define RULE_SUCCESSD(in, pos, name, data) return ::Parser::Rule_result { \
+    true, ::Parser::Rule { \
         getCurrentPos(in), in, pos, ::Parser::Rules::name, data \
     } \
 }

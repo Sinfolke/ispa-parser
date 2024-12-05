@@ -6,6 +6,7 @@ Rule(accessors_group) {
     if (*pos != '$')
         return {};
     pos++;
+    ISC_STD::skip_spaces(pos);
     auto number_res = number(pos);
     if (!number_res.result)
         return {};
@@ -18,6 +19,7 @@ Rule(accessors_element) {
     if (*pos != '%')
         return {};
     pos++;
+    ISC_STD::skip_spaces(pos);
     auto number_res = number(pos);
     if (!number_res.result)
         return {};
@@ -30,6 +32,7 @@ Rule(accessors_char) {
     if (*pos != '^')
         return {};
     pos++;
+    ISC_STD::skip_spaces(pos);
     auto number_res = number(pos);
     if (!number_res.result)
         return {};

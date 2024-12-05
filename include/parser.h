@@ -109,9 +109,9 @@ namespace Parser {
 
     cll
     };
-    using Rule = ISC_STD::_return<Rules>;
-    using Rule_result = ISC_STD::match_result<Rules>;
-    using Tree = ISC_STD::Tree<Rules>;
+    using Rule = ISC_STD::_return<::Parser::Rules>;
+    using Rule_result = ISC_STD::match_result<::Parser::Rules>;
+    using Tree = ISC_STD::Tree<::Parser::Rules>;
     using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
     class Parser {
         private:

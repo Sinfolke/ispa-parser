@@ -298,6 +298,99 @@ Rule(use_unit) {
 size_t Parser::Parser::getCurrentPos(const char* pos) {
     return pos - text;
 }
+#include <string>
+#include <unordered_map>
+
+// Define the function to convert Rules enum to string
+std::string RulesToString(::Parser::Rules rule) {
+    using Rules = ::Parser::Rules;
+    static const std::unordered_map<::Parser::Rules, std::string> rulesToString{
+        {Rules::NONE, "NONE"},
+        {Rules::Import_path, "Import_path"},
+        {Rules::Import_ext, "Import_ext"},
+        {Rules::Import_file, "Import_file"},
+        {Rules::Import_general_dir, "Import_general_dir"},
+        {Rules::Import_rulespecific, "Import_rulespecific"},
+        {Rules::use_unit, "use_unit"},
+        {Rules::Rule_rule, "Rule_rule"},
+        {Rules::Rule_op, "Rule_op"},
+        {Rules::Rule_qualifier, "Rule_qualifier"},
+        {Rules::Rule_group, "Rule_group"},
+        {Rules::Rule_csequence, "Rule_csequence"},
+        {Rules::Rule_csequence_symbol, "Rule_csequence_symbol"},
+        {Rules::Rule_csequence_escape, "Rule_csequence_escape"},
+        {Rules::Rule_csequence_diapason, "Rule_csequence_diapason"},
+        {Rules::Rule_data_block, "Rule_data_block"},
+        {Rules::Rule_data_block_key, "Rule_data_block_key"},
+        {Rules::Rule_data_block_inclosed_map, "Rule_data_block_inclosed_map"},
+        {Rules::Rule_nested_rule, "Rule_nested_rule"},
+        {Rules::Rule_hex, "Rule_hex"},
+        {Rules::Rule_bin, "Rule_bin"},
+        {Rules::cll_type_abstract, "cll_type_abstract"},
+        {Rules::expr_variable_value, "expr_variable_value"},
+        {Rules::expr_compare, "expr_compare"},
+        {Rules::expr_compare_side, "expr_compare_side"},
+        {Rules::expr_logical, "expr_logical"},
+        {Rules::expr_parenthesed, "expr_parenthesed"},
+        {Rules::expr_parenthesed_variable_assignment, "expr_parenthesed_variable_assignment"},
+        {Rules::expr_not, "expr_not"},
+        {Rules::end, "end"},
+        {Rules::strict_end, "strict_end"},
+        {Rules::newline, "newline"},
+        {Rules::spacemode, "spacemode"},
+        {Rules::linear_comment, "linear_comment"},
+        {Rules::id, "id"},
+        {Rules::Import, "Import"},
+        {Rules::use, "use"},
+        {Rules::Rule, "Rule"},
+        {Rules::accessors_group, "accessors_group"},
+        {Rules::accessors_element, "accessors_element"},
+        {Rules::accessors_char, "accessors_char"},
+        {Rules::string, "string"},
+        {Rules::number, "number"},
+        {Rules::boolean, "boolean"},
+        {Rules::array, "array"},
+        {Rules::object, "object"},
+        {Rules::any_data, "any_data"},
+        {Rules::cll_block, "cll_block"},
+        {Rules::cll_spaced_block, "cll_spaced_block"},
+        {Rules::op, "op"},
+        {Rules::assignment_op, "assignment_op"},
+        {Rules::compare_op, "compare_op"},
+        {Rules::logical_op, "logical_op"},
+        {Rules::logical_and, "logical_and"},
+        {Rules::logical_or, "logical_or"},
+        {Rules::logical_andr, "logical_andr"},
+        {Rules::cll_template_typename, "cll_template_typename"},
+        {Rules::cll_template_int, "cll_template_int"},
+        {Rules::cll_template_bool, "cll_template_bool"},
+        {Rules::cll_template_str, "cll_template_str"},
+        {Rules::cll_template_arr, "cll_template_arr"},
+        {Rules::cll_template_obj, "cll_template_obj"},
+        {Rules::cll_template_any_data, "cll_template_any_data"},
+        {Rules::cll_template_all, "cll_template_all"},
+        {Rules::cll_template, "cll_template"},
+        {Rules::cll_csupport_types, "cll_csupport_types"},
+        {Rules::cll_type, "cll_type"},
+        {Rules::cll_if, "cll_if"},
+        {Rules::cll_ternary, "cll_ternary"},
+        {Rules::expr, "expr"},
+        {Rules::function_body_call, "function_body_call"},
+        {Rules::function_body_decl, "function_body_decl"},
+        {Rules::function_arguments, "function_arguments"},
+        {Rules::function_parameters, "function_parameters"},
+        {Rules::cll_function_call, "cll_function_call"},
+        {Rules::function_decl, "function_decl"},
+        {Rules::function_value, "function_value"},
+        {Rules::method_call, "method_call"},
+        {Rules::copiable_method_call, "copiable_method_call"},
+        {Rules::cll_var, "cll_var"},
+        {Rules::cll, "cll"}
+    };
+
+    auto it = rulesToString.find(rule);
+    return it != rulesToString.end() ? it->second : "Unknown Rule";
+}
 ::Parser::Tree Parser::Parser::parse() {
     auto len = strlen(text);
     Tree tree;
@@ -324,11 +417,7 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
                     {
                         printf("Stopped at rule\n");
                         break;
-                    } else {
-                        printf("Matched spacemode\n");
                     }
-                } else {
-                    printf("matched Rule\n");
                 }
             }
         }
@@ -345,6 +434,9 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
         in += end_res.token.length();
         tree.push_back(res.token);
         printf("Stopped at %ld\n", in - text);
+    }
+    for (auto el : tree) {
+        std::cout << "Token: " << RulesToString(el.name) << "(" << static_cast<int>(el.name) << ")" << std::endl;
     }
     return tree;
 }

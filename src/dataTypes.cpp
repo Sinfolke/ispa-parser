@@ -196,6 +196,18 @@ Rule(any_data) {
     result = id(in);
     if (result.result)
         token = result.token;
+    result = id(in);
+    if (result.result)
+        token = result.token;
+    result = accessors_group(in);
+    if (result.result)
+        token = result.token;
+    result = accessors_element(in);
+    if (result.result)
+        token = result.token;
+    result = accessors_char(in);
+    if (result.result)
+        token = result.token;
     if (token.empty())
         return {};
     RULE_SUCCESSD(in, in + token.length(), any_data, token);
