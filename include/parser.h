@@ -57,6 +57,7 @@ namespace Parser {
     accessors_group,
     accessors_element,
     accessors_char,
+    accessor,
 
     string,
     number,
@@ -167,7 +168,8 @@ namespace Parser {
             Rule(accessors_group);
             Rule(accessors_element);
             Rule(accessors_char);
-            
+            Rule(accessor);
+
             Rule(string);
             Rule(number);
             Rule(boolean);

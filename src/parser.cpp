@@ -38,7 +38,6 @@ Rule(spacemode)
     } else {
         return {};
     }
-    printf("pos: %c\n", *pos);
     RULE_SUCCESSD(in, pos, spacemode, val);
 }
 Rule(linear_comment) {

@@ -5,12 +5,14 @@ Rule(Rule_op) {
     auto pos = in;
     std::string value;
     ISC_STD::skip_spaces(pos);
-    if (*pos == '|')
+    if (*pos == '|') {
         value = '|';
-    else if (*pos == '&' && *pos == '|')
+        pos++;
+    } else if (strncmp(pos, "&|", 2)) {
         value = "&|";
-    else
+        pos += 2;
+    } else {
         return {};
-    
+    }
     RULE_SUCCESSD(in, pos, Rule_op, value);
 }

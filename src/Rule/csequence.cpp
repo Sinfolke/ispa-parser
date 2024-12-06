@@ -26,7 +26,7 @@ Rule(Rule_csequence) {
         dt.push_back(res.token);
     }
     ISC_STD::skip_spaces(pos);
-    if (*pos!= ']')
+    if (*pos != ']')
         return {};
     pos++;
     std::unordered_map<const char*, std::any> data {
@@ -56,16 +56,18 @@ Rule(Rule_csequence_symbol)
 
 }
 Rule(Rule_csequence_diapason) {
+    auto pos = in;
     auto symbol_res = Rule_csequence_symbol(in);
     if (!symbol_res.result)
         return {};
     
-    auto pos = in + symbol_res.token.length();
+    pos += symbol_res.token.length();
     // NO SPACE
 
     if (*pos != '-')
         return {};
-    
+    pos++;
+
     // NOSPACE
 
     auto symbol2_res = Rule_csequence_symbol(pos);
@@ -73,6 +75,7 @@ Rule(Rule_csequence_diapason) {
     if (!symbol2_res.result)
         return {};
     
+    pos+= symbol2_res.token.length();
     std::vector<::Parser::Rule> data;
     data.push_back(symbol_res.token);
     data.push_back(symbol2_res.token);

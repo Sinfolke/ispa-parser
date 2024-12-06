@@ -10,7 +10,8 @@ Rule(accessors_group) {
     auto number_res = number(pos);
     if (!number_res.result)
         return {};
-    
+
+    pos += number_res.token.length();
     RULE_SUCCESSD(in, pos, accessors_group, number_res.token);
 }
 Rule(accessors_element) {
@@ -23,7 +24,8 @@ Rule(accessors_element) {
     auto number_res = number(pos);
     if (!number_res.result)
         return {};
-    
+
+    pos += number_res.token.length();
     RULE_SUCCESSD(in, pos, accessors_element, number_res.token);
 }
 Rule(accessors_char) {
@@ -36,6 +38,21 @@ Rule(accessors_char) {
     auto number_res = number(pos);
     if (!number_res.result)
         return {};
-    
+    pos += number_res.token.length();
     RULE_SUCCESSD(in, pos, accessors_char, number_res.token);
+}
+Rule(accessor) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    auto res = accessors_group(pos);
+    if (!res.result) {
+        res = accessors_element(pos);
+        if (!res.result) {
+            res = accessors_char(pos);
+            if (!res.result) 
+                return {};
+        }
+    }
+    pos += res.token.length();
+    RULE_SUCCESSD(in, pos, accessor, res.token);
 }

@@ -5,7 +5,7 @@
 Rule(Rule_bin) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    if (!(*pos == '0' && *(pos+1) == 'b')) {
+    if (strncmp(pos, "0b", 2)) {
         return {};
     }
     auto begin = in + 2;

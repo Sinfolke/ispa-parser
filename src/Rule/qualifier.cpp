@@ -6,5 +6,6 @@ Rule(Rule_qualifier) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '?' && *pos != '+' && *pos != '*')
         return {};
+    pos++;
     RULE_SUCCESSD(in, pos, Rule_qualifier, *pos);
 }

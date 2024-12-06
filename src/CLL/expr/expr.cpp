@@ -20,9 +20,14 @@ Rule(expr) {
                 if (!res.result) {
                     res = expr_parenthesed(pos);
                     if (!res.result) {
+                        int count = 0;
                         while((res = expr_logical(pos)).result) {
                             data.push_back(res.token);
+                            pos += res.token.length();
+                            count++;
                         }
+                        if (!count)
+                            return {};
                     }
                 }
             }

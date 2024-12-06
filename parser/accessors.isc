@@ -7,3 +7,7 @@ accessor_element:
 accessor_char: 
     '^' NUMBER ('+' | '-')?
 ;
+accessor: 
+    accessor_group | accessor_element | accessor_char
+    data: %1;
+;

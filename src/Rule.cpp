@@ -17,17 +17,28 @@ Rule(Rule) {
     std::vector<::Parser::Rule> rule_results {};
     Rule_result Rule_rule_res;
     printf("enter Rule_rule\n");
+    ::Parser::Rule_result data_block_res;
     while ((Rule_rule_res = Rule_rule(pos)).result) {
-        // do something
         rule_results.push_back(Rule_rule_res.token);
-        printf("Length: %ld\n", Rule_rule_res.token.length());
+
         pos += Rule_rule_res.token.length();
-        ISC_STD::skip_spaces(pos); 
+        printf("Rule_rule Length: %ld, stopped at: %ld, pos: %c\n", 
+            Rule_rule_res.token.length(),
+            pos - in,
+            *pos
+        );
+        ISC_STD::skip_spaces(pos);
+        data_block_res = Rule_data_block(pos);
+        if (data_block_res.result) {
+            pos += data_block_res.token.length();
+            break;
+        }
     }
-    printf("Leave Rule_rule\n");
+    printf("Leave Rule_rule, enter dataBlock\n");
+
     std::vector<::Parser::Rule> nested_rule_results {};
     ::Parser::Rule_result Rule_nested_rule_res;
-    while ((Rule_nested_rule_res = Rule_rule(pos)).result) {
+    while ((Rule_nested_rule_res = Rule_nested_rule(pos)).result) {
         // do something
         nested_rule_results.push_back(Rule_nested_rule_res.token);
         pos += Rule_nested_rule_res.token.length();
@@ -42,6 +53,7 @@ Rule(Rule) {
         { "name", id_res.token },
         { "kind", kind },
         { "rule", rule_results },
+        { "data_block", data_block_res.token },
         { "nestedRules", nested_rule_results }
     };
     RULE_SUCCESSD(in, pos, Rule, data);

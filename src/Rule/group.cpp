@@ -18,27 +18,28 @@ Rule(Rule_group) {
         ISC_STD::skip_spaces(pos);
     }
     if (*pos != '(') {
-        printf("Exit 1\n");
         return {};
     }
     pos++;
     ISC_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> r;
-    int i = 0;
     while(true)
     {
         ISC_STD::skip_spaces(pos);
         auto rule_res = Rule_rule(pos);
-        printf("IT %d\n", i++);
-        if (!rule_res.result)
+        if (!rule_res.result) {
+            printf("Unsuccessful result\n");
             break;
+        }
 
         pos += rule_res.token.length();
         r.push_back(rule_res.token);
+        if (*pos == ')')
+             break;
     }
     ISC_STD::skip_spaces(pos);
     if (*pos != ')') {
-        printf("Exit 2");
+        printf("RULE GROUP EXIT 2, pos: %c, changes: %ld\n", *pos, pos - in);
         return {};
     }
     pos++;
