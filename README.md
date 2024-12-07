@@ -6,5 +6,4 @@ Implementation:
 4. Fix errors in parser.h     [done]
 5. fix errors in rules if exists [done]
 6. test on real parser input & output tree to see everything is well
-    - test cll, need to fix (false match) on var assignment in place it shouldn't
-    - if all go success test an output tree
+    - continue testing 'Rule', it still has somewhere bugs

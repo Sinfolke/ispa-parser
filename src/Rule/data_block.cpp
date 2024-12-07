@@ -39,6 +39,7 @@ Rule(Rule_data_block) {
 // #data_block #inclosed_map
 Rule(Rule_data_block_inclosed_map) {
     auto pos = in;
+    int matched=0;
     std::vector<::Parser::Rule> keys;
     while (true) {
         ISC_STD::skip_spaces(pos);
@@ -47,8 +48,9 @@ Rule(Rule_data_block_inclosed_map) {
             break;
         pos += key_res.token.length();
         keys.push_back(key_res.token);
+        matched=1;
     }
-    if (pos == in)
+    if (!matched)
         return {};
     RULE_SUCCESSD(in, pos, Rule_data_block_inclosed_map, keys);
 
@@ -61,18 +63,15 @@ Rule(Rule_data_block_key) {
     //     pos++;
     // if (in == pos)
     //     return {};
-    
-    std::string name;
     auto id_res = id(pos);
 
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
-    //name = TO(std::string, id.token.data);
     if (*pos != ':')
         return {};
-
+    pos++;
     ISC_STD::skip_spaces(pos);
 
     auto any_data_res = any_data(pos);

@@ -41,7 +41,7 @@ Rule(number) {
     }
     ISC_STD::skip_spaces(pos);
     // Check for decimal point
-    if (*pos == '.' || *pos == ',') {
+    if (*pos == '.') {
         hasPoint = true;
         pos++;
         ISC_STD::skip_spaces(pos);
@@ -106,16 +106,20 @@ Rule(array) {
         pos += any_data_f.token.length();
         data.push_back(any_data_f.token);
         ISC_STD::skip_spaces(pos);
+        printf("MATCHED 1, pos: %c\n", *pos);
         while(*pos == ',') {
             pos++;
+            printf("MATCHED COMMA\n");
             ISC_STD::skip_spaces(pos);
             auto any_data_s = any_data(pos);
             if (!any_data_s.result)
                 break;
             pos += any_data_s.token.length();
             ISC_STD::skip_spaces(pos);
+            printf("MATCHED 2\n");
         }
     }
+    ISC_STD::skip_spaces(pos);
     if (*pos != ']')
         return {};
     pos++;
