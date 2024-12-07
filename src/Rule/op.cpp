@@ -8,7 +8,7 @@ Rule(Rule_op) {
     if (*pos == '|') {
         value = '|';
         pos++;
-    } else if (strncmp(pos, "&|", 2)) {
+    } else if (!strncmp(pos, "&|", 2)) {
         value = "&|";
         pos += 2;
     } else {

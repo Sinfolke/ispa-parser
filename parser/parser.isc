@@ -18,18 +18,10 @@ linear_comment:
 ; 
 main: Import | use | Rule | spacemode;
 
-Import: 
-    // import core/core.isc // single file import with exact extension
-    // import core/core     // single file import without extension (first tryes to find the file with no extension, then with .isc extenison)
-    // import [language/cpp] expr ID template preprocessor/directive/define // import from folder several files same time
-    //      [another syntax of same action] import language/cpp [expr, ID, template, preprocessor/directive/define]
-    // import language/cpp/data { INTLIT, BOOLLIT, STRLIT} // import some certain rules from the file
-    // import language/cpp/data { INTLIT = INT, BOOLLIT = BOOL, STRLIT } // import certain rules from the file changing their incoming name in the current project
-    // import [language/cpp] expr ID data { INTLIT = INT, BOOLIT = BOOL, STRLIT }, core/core.isc;
-
+Import:
 
     'import' #file | #general_dir | #rulespecific (',' #file | #general_dir | #rulespecific)*
-    data: [%2, ...%4];
+    data: [%2, %4];
 
     #path:
         [^*"<>|:?\.]+

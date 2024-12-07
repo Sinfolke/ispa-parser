@@ -3,12 +3,12 @@
 //#nested_rule
 Rule(Rule_nested_rule) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
-    auto begin = pos;
-    while(*pos == '\n' || *pos == '\r')
-        pos ++;
-    if (begin == pos)
-        return {};
+    // ISC_STD::skip_spaces(pos);
+    // auto begin = pos;
+    // while(*pos == '\n' || *pos == '\r')
+    //     pos ++;
+    // if (begin == pos)
+    //     return {};
     ISC_STD::skip_spaces(pos);
     if (*pos != '#')
         return {};

@@ -24,7 +24,7 @@ Rule(string) {
 // NUMBER Rule
 Rule(number) {
     const char* pos = in;
-    std::string sign;
+    std::string sign = "+";
     std::string main, dec;
     bool hasPoint = false;
 
@@ -52,11 +52,10 @@ Rule(number) {
     }
     if (main.empty())
         return {};
-    printf("To full\n");
-    std::string full = sign + main + (hasPoint ? std::string(".") + dec : "");
-    printf("main: %s\n", main.c_str());
+    std::string full = sign + main + (dec.empty() ? "" : std::string(".") + dec);
+    printf("main: %s, dec: %s\n", main.c_str(), dec.c_str());
     double main_n = std::stod(main);
-    double dec_n = hasPoint ? std::stod(dec) : 0.0;
+    double dec_n = dec.empty() ? 0.0 : std::stod(dec);
     std::unordered_map<const char*, std::any> data {
         { "sign", sign },
         { "main", main },
@@ -104,9 +103,8 @@ Rule(array) {
     auto any_data_f = any_data(pos);
     if (any_data_f.result)
     {
-        
-        data.push_back(any_data_f.token);
         pos += any_data_f.token.length();
+        data.push_back(any_data_f.token);
         ISC_STD::skip_spaces(pos);
         while(*pos == ',') {
             pos++;

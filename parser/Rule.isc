@@ -26,7 +26,7 @@ Rule:
         $var val = is_id ? $3>%2 : ( is_cll ? %1 : $2 );
         $char qualifier = %3;
 
-        (( group | csequence | STRING | accessor | hex | bin | ( '#'? ID ) ) qualifier?) | #op | cll
+        (( group | csequence | STRING | accessor | hex | bin | ( '#'? ID ) ) qualifier?) | #op | cll | linear_comment
 
         data: 
             is_id: is_id,

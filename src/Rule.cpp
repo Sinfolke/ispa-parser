@@ -34,7 +34,7 @@ Rule(Rule) {
             break;
         }
     }
-    printf("Leave Rule_rule, enter dataBlock\n");
+    printf("Leave Rule_rule\n");
 
     std::vector<::Parser::Rule> nested_rule_results {};
     ::Parser::Rule_result Rule_nested_rule_res;

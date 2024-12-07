@@ -26,25 +26,31 @@ Rule(Rule_rule) {
                             printf("nested_rule_call -> ");
                             if (*pos == '#') {
                                 is_nested = true;
+                                pos++;
                             }
-                            pos++;
                             ISC_STD::skip_spaces(pos);
                             res = id(pos);
                             if (!res.result) {
+                                printf("Rule_op -> ");
                                 with_qualifier = false;
                                 res = Rule_op(pos);
                                 if (!res.result) {
-                                    is_id=false;
-                                    is_nested=false;
-                                    is_cll=true;
-                                    with_qualifier=false;
-                                    printf("Rule_cll -> ");
-                                    res = cll(pos);
-                                    if (!res.result)
-                                        return {};
-                                    else
-                                        printf("Matched cll");
+                                    printf("linear_comment -> ");
+                                    res = linear_comment(pos);
+                                    if (!res.result) {
+                                        is_id=false;
+                                        is_nested=false;
+                                        is_cll=true;
+                                        with_qualifier=false;
+                                        printf("Rule_cll -> ");
+                                        res = cll(pos);
+                                        if (!res.result)
+                                            return {};
+                                        else
+                                            printf("Matched cll");
+                                    }
                                 }
+
 
                             }
                             

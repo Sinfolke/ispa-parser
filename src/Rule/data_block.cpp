@@ -9,16 +9,14 @@ Rule(Rule_data_block) {
     //     pos++;
     // if (start == pos)
     //     return {};
-    printf("Marching data\n");
+    printf("Matching data-block\n");
     ISC_STD::skip_spaces(pos);
     if (strncmp(pos, "data", 4)) {
-        printf("EXIT 1\n");
         return {};
     }
     pos += 4;
     ISC_STD::skip_spaces(pos);
     if (*pos != ':') {
-        printf("EXIT 2\n");
         return {};
     }
     pos++;
@@ -26,24 +24,16 @@ Rule(Rule_data_block) {
     auto data = any_data(pos);
     if (!data.result) {
         data = Rule_data_block_inclosed_map(pos);
-        if (!data.result) {
-            printf("EXIT 3\n");
+        if (!data.result)
             return {};  
-        } else {
-            printf("MATCHED INCLOSED MAP\n");
-        }
-    } else {
-        printf("MATCHED ANY_DATA\n");
     }
-
     pos += data.token.length();
     ISC_STD::skip_spaces(pos);
-    printf("pos: %c\n", *pos);
     auto strict_end_res = strict_end(pos);
     if (!strict_end_res.result)
         return {};
     pos += strict_end_res.token.length();
-    printf("MATCHED DATA BLOCK\n"); 
+    printf("Matched datablock\n");
     RULE_SUCCESSD(in, pos, Rule_data_block, data.token);
 }
 // #data_block #inclosed_map
