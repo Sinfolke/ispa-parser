@@ -405,6 +405,7 @@ std::string RulesToString(::Parser::Rules rule) {
             printf("found comment - skipping\n");
             continue;
         }
+        bool require_end = true;
         auto res = Import(in);
         if (!res.result) {
             res = use(in);
@@ -417,6 +418,8 @@ std::string RulesToString(::Parser::Rules rule) {
                         printf("Stopped at rule\n");
                         break;
                     }
+                } else {
+                    require_end = false;
                 }
             }
         }
@@ -425,17 +428,33 @@ std::string RulesToString(::Parser::Rules rule) {
         // match end
         ISC_STD::skip_spaces(in);
         printf("matching end at %ld, in: %c", in - text, *in);
-        auto end_res = end(in);
-        if (!end_res.result) {
-            printf("Unmatched end of rule\n");
-            break;
+        if (require_end) {
+            auto end_res = end(in);
+            if (!end_res.result) {
+                printf("Unmatched end of rule\n");
+                break;
+            }
+            in += end_res.token.length();
         }
-        in += end_res.token.length();
         tree.push_back(res.token);
         printf("Stopped at %ld\n", in - text);
     }
+    int count = 0;
+    ::Parser::Rules prevName = ::Parser::Rules::NONE;
     for (auto el : tree) {
-        std::cout << "Token: " << RulesToString(el.name) << "(" << static_cast<int>(el.name) << ")" << std::endl;
+        if (prevName == el.name) {
+            count++;
+            continue;
+        } else if (prevName != ::Parser::Rules::NONE) {
+            printf(" [%d]\n", count + 1);
+            count = 0;
+        } else {
+            printf("\n");
+        }
+        prevName = el.name;
+        std::cout << "Token: " << RulesToString(el.name);
     }
+    if (count != 0)
+        printf(" [%d]\n", count + 1);
     return tree;
 }

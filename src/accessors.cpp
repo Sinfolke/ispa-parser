@@ -25,11 +25,6 @@ Rule(accessors_element) {
     if (!number_res.result)
         return {};
     pos += number_res.token.length();
-    printf("Matched accessor, length: %ld: ", pos - in);
-    for (int i = 0; i < pos - in; i++) {
-        printf("%c", *(in + i));
-    }
-    printf("\n");
     RULE_SUCCESSD(in, pos, accessors_element, number_res.token);
 }
 Rule(accessors_char) {

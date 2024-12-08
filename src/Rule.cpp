@@ -31,22 +31,29 @@ Rule(Rule) {
         data_block_res = Rule_data_block(pos);
         if (data_block_res.result) {
             pos += data_block_res.token.length();
+            printf("Matched data block\n");
             break;
         }
     }
-    printf("Leave Rule_rule\n");
+    printf("Enter Rule_nested_rule\n");
 
     std::vector<::Parser::Rule> nested_rule_results {};
     ::Parser::Rule_result Rule_nested_rule_res;
-    while ((Rule_nested_rule_res = Rule_nested_rule(pos)).result) {
-        // do something
+    while (true) {
+        Rule_nested_rule_res = Rule_nested_rule(pos);
+        if (!Rule_nested_rule_res.result) {
+            break;
+        }
         nested_rule_results.push_back(Rule_nested_rule_res.token);
+        printf("Nested rule length: %zu\n", Rule_nested_rule_res.token.length());
         pos += Rule_nested_rule_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
+    printf("Leave rule_nested_rule\n");
     ISC_STD::skip_spaces(pos);
     auto strict_end_result = strict_end(pos);
-
+    if (strict_end_result.result)
+        pos += strict_end_result.token.length();
     auto id_res_data = TO(std::string, id_res.token.data);
     const char* kind = (id_res_data[0] >= 'A' && id_res_data[0] <= 'Z') ? "token" : "rule";
     std::unordered_map<const char*, std::any> data {
@@ -56,5 +63,6 @@ Rule(Rule) {
         { "data_block", data_block_res.token },
         { "nestedRules", nested_rule_results }
     };
+    printf("leave Rule\n");
     RULE_SUCCESSD(in, pos, Rule, data);
 }

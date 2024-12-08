@@ -1,10 +1,10 @@
 use end_of_rule: [ END, STRICT_END, NEWLINE ];
 use comment: linear_comment;
 use parralel_parsing;
-spacemode mixed;    // make spaces and newlines to be automatically skipped unless directly specified within a rule
-END: [;\n];         // lets you do not add a semicolon
-STRICT_END: ';';    // forces to add a semicolon (usually for rules, tokens and datablocks)
-NEWLINE: [\n];      // to be ended as a newline. Usually for properties in datablock
+spacemode mixed;
+END: [;\n];
+STRICT_END: ';';
+NEWLINE: [\n];
 id: 
     ([0-9]* [a-zA-Z_] [a-zA-Z0-9_]*)
     data: $1;

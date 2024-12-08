@@ -145,21 +145,14 @@ class return_base_exception : public std::exception {
 template<typename RETURN_T>
 class _return {
 public:
-    std::size_t startpos;
-    const char* start;
-    const char* end;
-    RETURN_T name;
+    std::size_t startpos = std::string::npos;
+    const char* start = nullptr;
+    const char* end = nullptr;
+    RETURN_T name = RETURN_T::NONE;
     std::any data;
-    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {
-    }
-    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {
-    }
-    _return() {
-        startpos = std::string::npos;
-        start = nullptr;
-        end = nullptr;
-        name = RETURN_T::NONE;
-    }
+    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
+    _return() {}
 
 
     /**
@@ -199,6 +192,7 @@ public:
         startpos = other.startpos;
         start = other.start;
         end = other.end;
+        name = other.name;
         return *this;
     }
 };
