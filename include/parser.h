@@ -107,7 +107,8 @@ namespace Parser {
     copiable_method_call,
 
     cll_var,
-
+    var_refer,
+    
     cll
     };
     using Rule = ISC_STD::_return<::Parser::Rules>;
@@ -218,7 +219,8 @@ namespace Parser {
             Rule(copiable_method_call);
 
             Rule(cll_var);
-            
+            Rule(var_refer);
+
             Rule(cll);
             #undef Rule
     };

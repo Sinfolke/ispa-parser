@@ -25,7 +25,6 @@ Rule(Rule_data_block) {
     ISC_STD::skip_spaces(pos);
     auto data = any_data(pos);
     if (!data.result) {
-        printf("Matching data_block_inclosed_map");
         data = Rule_data_block_inclosed_map(pos);
         if (!data.result) {
             return {};  
@@ -55,11 +54,6 @@ Rule(Rule_data_block_inclosed_map) {
         pos += key_res.token.length();
         keys.push_back(key_res.token);
         matched=1;
-        auto strict_end_res = strict_end(pos);
-        if (strict_end_res.result) {
-            pos += strict_end_res.token.length();
-            break;
-        }
     }
     if (!matched)
         return {};

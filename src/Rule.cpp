@@ -22,10 +22,11 @@ Rule(Rule) {
         rule_results.push_back(Rule_rule_res.token);
 
         pos += Rule_rule_res.token.length();
-        printf("Rule_rule Length: %ld, stopped at: %ld, pos: %c\n", 
+        printf("Rule_rule Length: %ld, stopped at: %ld, pos: %c, pos: %ld\n", 
             Rule_rule_res.token.length(),
             pos - in,
-            *pos
+            *pos,
+            getCurrentPos(pos)
         );
         ISC_STD::skip_spaces(pos);
         data_block_res = Rule_data_block(pos);

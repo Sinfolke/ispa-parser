@@ -30,8 +30,13 @@ Rule(Rule_rule) {
                             }
                             ISC_STD::skip_spaces(pos);
                             res = id(pos);
-                            if (res.result && *(pos + res.token.length()) == ':')
+                            if (res.result && *(pos + res.token.length()) == ':') {
+                                printf("leaving data\n");
                                 return {}; // to not match data block
+                            }
+                            if (res.result) {
+                                printf("Matched id\n");
+                            }
                             if (!res.result) {
                                 printf("Rule_op -> ");
                                 with_qualifier = false;

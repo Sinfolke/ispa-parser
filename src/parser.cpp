@@ -390,6 +390,89 @@ std::string RulesToString(::Parser::Rules rule) {
     auto it = rulesToString.find(rule);
     return it != rulesToString.end() ? it->second : "Unknown Rule";
 }
+void printTabs(int tabs) {
+    if (tabs > 0) {
+        for (int i = 0; i < tabs; ++i)
+            printf("\t");
+    }
+}
+void printRuleData(const ::Parser::Rule& rule, int tabs = 0) {
+    // Helper function to print indentation
+    auto printTabs = [](int count) {
+        while (count-- > 0) printf("\t");
+    };
+
+    // Print the rule name
+    printTabs(tabs);
+    printf("Name: %s\n", RulesToString(rule.name).c_str());
+
+    // Extract the rule's data
+    const std::any& dt = rule.data;
+    if (!dt.has_value()) { // Check if std::any contains a value
+        printTabs(tabs);
+        printf("No data\n");
+        return;
+    }
+
+    printTabs(tabs);
+
+    // Handle the different possible types of data
+    if (dt.type() == typeid(::Parser::Rule)) {
+        // Recursively print nested rule
+        printRuleData(std::any_cast<::Parser::Rule>(dt), tabs + 1);
+    } 
+    else if (dt.type() == typeid(std::unordered_map<std::string, std::any>)) {
+        // Iterate over the map and handle keys/values
+        const auto& map = std::any_cast<std::unordered_map<std::string, std::any>>(dt);
+        for (const auto& [key, value] : map) {
+            printTabs(tabs + 1);
+            printf("%s: ", key.c_str());
+
+            if (value.type() == typeid(::Parser::Rule)) {
+                printRuleData(std::any_cast<::Parser::Rule>(value), tabs + 2);
+            } 
+            else if (value.type() == typeid(std::string)) {
+                printf("%s\n", std::any_cast<std::string>(value).c_str());
+            } 
+            else if (value.type() == typeid(const char*)) {
+                printf("%s\n", std::any_cast<const char*>(value));
+            } 
+            else {
+                printf("Unknown data type\n");
+            }
+        }
+    } else if (dt.type() == typeid(std::unordered_map<const char*, std::any>)) {
+        // Iterate over the map and handle keys/values
+        const auto& map = std::any_cast<std::unordered_map<const char*, std::any>>(dt);
+        for (const auto& [key, value] : map) {
+            printTabs(tabs + 1);
+            printf("%s: ", key);
+
+            if (value.type() == typeid(::Parser::Rule)) {
+                printRuleData(std::any_cast<::Parser::Rule>(value), tabs + 2);
+            } 
+            else if (value.type() == typeid(std::string)) {
+                printf("%s\n", std::any_cast<std::string>(value).c_str());
+            } 
+            else if (value.type() == typeid(const char*)) {
+                printf("%s\n", std::any_cast<const char*>(value));
+            } 
+            else {
+                printf("Unknown data type\n");
+            }
+        }
+    } 
+    else if (dt.type() == typeid(std::string)) {
+        printf("%s\n", std::any_cast<std::string>(dt).c_str());
+    } 
+    else if (dt.type() == typeid(const char*)) {
+        printf("%s\n", std::any_cast<const char*>(dt));
+    } 
+    else {
+        printf("Unknown data type\n");
+    }
+}
+
 ::Parser::Tree Parser::Parser::parse() {
     auto len = strlen(text);
     Tree tree;
@@ -439,22 +522,25 @@ std::string RulesToString(::Parser::Rules rule) {
         tree.push_back(res.token);
         printf("Stopped at %ld\n", in - text);
     }
-    int count = 0;
-    ::Parser::Rules prevName = ::Parser::Rules::NONE;
-    for (auto el : tree) {
-        if (prevName == el.name) {
-            count++;
-            continue;
-        } else if (prevName != ::Parser::Rules::NONE) {
-            printf(" [%d]\n", count + 1);
-            count = 0;
-        } else {
-            printf("\n");
-        }
-        prevName = el.name;
-        std::cout << "Token: " << RulesToString(el.name);
-    }
-    if (count != 0)
-        printf(" [%d]\n", count + 1);
+    // for (auto el : tree) {
+    //     printRuleData(el);
+    // }
+    // int count = 0;
+    // ::Parser::Rules prevName = ::Parser::Rules::NONE;
+    // for (auto el : tree) {
+    //     if (prevName == el.name) {
+    //         count++;
+    //         continue;
+    //     } else if (prevName != ::Parser::Rules::NONE) {
+    //         printf(" [%d]\n", count + 1);
+    //         count = 0;
+    //     } else {
+    //         printf("\n");
+    //     }
+    //     prevName = el.name;
+    //     std::cout << "Token: " << RulesToString(el.name);
+    // }
+    // if (count != 0)
+    //     printf(" [%d]\n", count + 1);
     return tree;
 }

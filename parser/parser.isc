@@ -20,9 +20,12 @@ main: Import | use | Rule | spacemode;
 
 Import:
 
-    'import' #file | #general_dir | #rulespecific (',' #file | #general_dir | #rulespecific)*
+    'import' #input (',' #input)*
     data: [%2, %4];
-
+    #input:
+        file | general_dir | rulespecific
+        data: %1;
+    ;
     #path:
         [^*"<>|:?\.]+
         data: %1;
@@ -43,7 +46,7 @@ Import:
     #general_dir:
         '[' path ']' file+
         data:
-            path: %2,
+            path: %2
             files: %4
         ;
     ;

@@ -34,7 +34,7 @@ Rule(expr_compare_side) {
     ISC_STD::skip_spaces(pos);
     auto res = any_data(pos);
     if (!res.result) {
-        res = id(pos);
+        res = var_refer(pos);
         if (!res.result) {
             res = cll_function_call(pos);
             if (!res.result) {

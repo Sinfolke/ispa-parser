@@ -38,7 +38,7 @@ expr:
     data: $1;
 
     #variable_value:
-        ID ( ASSIGNMENT_OP (expr) )?
+        var_refer ( ASSIGNMENT_OP (expr) )?
         data:
             name: %1
             op: $2
@@ -49,7 +49,7 @@ expr:
         #side | expr COMPARE_OP #side | expr
 
         #side:
-            ANY_DATA | ID | cll_function_call | method_call
+            ANY_DATA | var_refer | cll_function_call | method_call
             data: %1;
         ;
         data:

@@ -193,6 +193,7 @@ public:
         start = other.start;
         end = other.end;
         name = other.name;
+        data = other.data;
         return *this;
     }
 };

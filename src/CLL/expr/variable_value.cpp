@@ -4,7 +4,7 @@
 Rule(expr_variable_value) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    auto id_res = id(pos);
+    auto id_res = var_refer(pos);
     if (!id_res.result)
         return {};
     pos += id_res.token.length();

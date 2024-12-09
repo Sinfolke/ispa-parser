@@ -7,3 +7,7 @@ Implementation:
 5. fix errors in rules if exists [done]
 6. test on real parser input & output tree to see everything is well
     - continue testing 'Rule', it still has somewhere bugs
+    - Mistakes were done are:
+        - write a parser completely, then test. What were needed is test right when written
+        - Not using generator, writing by hand. Using something like boost::spirit could simplify life
+    - Possibly try GDB but it's kinda slow compared to logs
