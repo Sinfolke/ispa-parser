@@ -1,0 +1,4 @@
+data:
+    hello: "world"
+    o1: $1
+;

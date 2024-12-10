@@ -1,5 +1,6 @@
 #include <parser.h>
 #include <parser_defs.h>
+std::string RulesToString(::Parser::Rules);
 //#data_block
 Rule(Rule_data_block) {
     auto pos = in;
@@ -23,12 +24,19 @@ Rule(Rule_data_block) {
     }
     pos++;
     ISC_STD::skip_spaces(pos);
-    auto data = any_data(pos);
+    auto data = Rule_data_block_inclosed_map(pos);
     if (!data.result) {
-        data = Rule_data_block_inclosed_map(pos);
+        printf("Not matched any_data\n");
+        data = any_data(pos);
         if (!data.result) {
+            printf("Not matched inclosed_map\n");
             return {};  
+        } else {
+            printf("Matched inclosed_map\n");
         }
+    } else {
+        //printf("Matched any_data, name: %s\n",
+        //RulesToString(std::any_cast<::Parser::Rule>(data.token.data).name).c_str());
     }
     pos += data.token.length();
     ISC_STD::skip_spaces(pos);
@@ -38,7 +46,6 @@ Rule(Rule_data_block) {
         return {};
     }
     pos += strict_end_res.token.length();
-    printf("data block success match\n");
     RULE_SUCCESSD(in, pos, Rule_data_block, data.token);
 }
 // #data_block #inclosed_map

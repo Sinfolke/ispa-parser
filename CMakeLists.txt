@@ -12,8 +12,17 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_definitions(__LIBC)
 endif()
 # test
-add_executable(parser_test tests/complete_test.cpp)
-target_link_libraries(parser_test parser parser_stdlib)
-target_include_directories(parser_test PUBLIC include stdlibs)
-target_compile_definitions(parser_test PUBLIC __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}")
-add_test(NAME parser_test COMMAND parser_test)
+add_executable(parser_complete_test 
+    tests/complete_test.cpp
+    )
+target_link_libraries(parser_complete_test parser parser_stdlib)
+target_include_directories(parser_complete_test PUBLIC include stdlibs tests/lib)
+target_compile_definitions(parser_complete_test PUBLIC __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}")
+add_test(NAME parser_complete_test COMMAND parser_complete_test)
+add_executable(parser_rule_test 
+    tests/Rule.cpp
+    )
+target_link_libraries(parser_rule_test parser parser_stdlib)
+target_include_directories(parser_rule_test PUBLIC include stdlibs tests/lib)
+target_compile_definitions(parser_rule_test PUBLIC __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}")
+add_test(NAME parser_rule_test COMMAND parser_rule_test)

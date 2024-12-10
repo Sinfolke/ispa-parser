@@ -9,5 +9,4 @@ Implementation:
     - continue testing 'Rule', it still has somewhere bugs
     - Mistakes were done are:
         - write a parser completely, then test. What were needed is test right when written
-        - Not using generator, writing by hand. Using something like boost::spirit could simplify life
     - Possibly try GDB but it's kinda slow compared to logs

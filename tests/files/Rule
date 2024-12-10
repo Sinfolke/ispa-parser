@@ -1,0 +1,16 @@
+Rule_name:
+    "hello" | 'world!' | expr | 0x0 | 0b0011
+    data: 
+        hello: world
+        o1: %1
+        o2: $2
+        o3: ^3
+    ;
+    #sub1: 
+        "1" | foo | bar
+        data: 
+            foo1: foo
+            bar1: bar
+        ;
+    ;
+;
