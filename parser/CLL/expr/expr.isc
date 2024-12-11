@@ -46,10 +46,10 @@ expr:
         ;
     ;
     #compare:
-        #side | expr COMPARE_OP #side | expr
+        #side | expr COMPARE_OP | OP #side | expr
 
         #side:
-            ANY_DATA | var_refer | cll_function_call | method_call
+            var_refer | ANY_DATA | cll_function_call | method_call
             data: %1;
         ;
         data:

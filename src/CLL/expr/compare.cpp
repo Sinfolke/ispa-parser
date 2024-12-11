@@ -12,8 +12,11 @@ Rule(expr_compare) {
     }
     ISC_STD::skip_spaces(pos);
     auto compare_op_res = compare_op(pos);
-    if (!compare_op_res.result)
-        return {};
+    if (!compare_op_res.result) {
+        compare_op_res = op(pos);
+        if (!compare_op_res.result)
+            return {};
+    }
     ISC_STD::skip_spaces(pos);
     auto right = expr_compare_side(pos);
     if (!right.result) {

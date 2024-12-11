@@ -40,7 +40,7 @@ Rule(accessors_char) {
     pos += number_res.token.length();
     RULE_SUCCESSD(in, pos, accessors_char, number_res.token);
 }
-Rule(accessor) {
+Rule(accessor_all) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
     auto res = accessors_group(pos);
@@ -54,4 +54,24 @@ Rule(accessor) {
     }
     pos += res.token.length();
     RULE_SUCCESSD(in, pos, accessor, res.token);
+}
+Rule(accessor) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    auto res = accessor_all(pos);
+    if (!res.result)
+        return {};
+    pos += res.token.length();
+    ISC_STD::skip_spaces(pos);
+    std::vector<::Parser::Rule> results;
+    results.push_back(res.token);
+    while (*pos == '>') {
+        pos++;
+        ISC_STD::skip_spaces(pos);
+        auto res = accessor_all(pos);
+        if (!res.result)
+            break;
+        results.push_back(res.token);
+    }
+    RULE_SUCCESSD(in, pos, accessor, results);
 }

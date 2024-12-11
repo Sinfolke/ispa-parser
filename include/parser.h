@@ -169,8 +169,9 @@ namespace Parser {
             Rule(accessors_group);
             Rule(accessors_element);
             Rule(accessors_char);
+            Rule(accessor_all);
             Rule(accessor);
-
+            
             Rule(string);
             Rule(number);
             Rule(boolean);
