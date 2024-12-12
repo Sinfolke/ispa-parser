@@ -4,9 +4,15 @@
 Rule(method_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
+    printf("Enter method call\n");
     auto id_res = id(pos);
-    if (!id_res.result)
-        return {};
+    if (!id_res.result) {
+        id_res = accessor(pos);
+        if (id_res.result) {
+            printf("method call EXIT 1, pos: %c\n", *pos);
+            return {};
+        }
+    }
     
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
@@ -14,6 +20,7 @@ Rule(method_call) {
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
+    printf("method_call_enter_function_call, pos: %c, %zu", *pos, getCurrentPos(pos));
     auto cll_function_call_res = cll_function_call(pos);
 
     if (!cll_function_call_res.result)

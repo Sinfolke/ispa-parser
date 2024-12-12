@@ -10,17 +10,24 @@ Rule(expr) {
 
     std::vector<::Parser::Rule> data;
     ISC_STD::skip_spaces(pos);
-    auto res = any_data(pos);
+
+    printf("expr_compare -> ");
+    auto res = expr_compare(pos);
     if (!res.result) {
-        res = expr_compare(pos);
+        printf("expr cll_function_call -> ");
+        res = cll_function_call(pos);
         if (!res.result) {
-            res = cll_function_call(pos);
+            printf("expr method_call -> ");
+            res = method_call(pos);
             if (!res.result) {
-                res = method_call(pos);
+                printf("expr any_data -> ");
+                res = any_data(pos);
                 if (!res.result) {
+                    printf("expr parenthesed -> ");
                     res = expr_parenthesed(pos);
                     if (!res.result) {
                         int count = 0;
+                        printf("expr_logical");
                         while((res = expr_logical(pos)).result) {
                             data.push_back(res.token);
                             pos += res.token.length();
@@ -31,10 +38,11 @@ Rule(expr) {
                     }
                 }
             }
-
         }
-    }
+
+    }    
     pos += res.token.length();
+    printf("\n");
     if (data.empty()) {
         data.push_back(res.token);
     }

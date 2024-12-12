@@ -9,6 +9,7 @@ Rule(function_body_call) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
+    pos++;
     ISC_STD::skip_spaces(pos);
     auto function_arguments_res = function_arguments(pos);
     if (!function_arguments_res.result)
@@ -17,7 +18,7 @@ Rule(function_body_call) {
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
-    
+    pos++;
     RULE_SUCCESSD(in, pos, function_body_call, function_arguments_res.token);
 }
 Rule(function_body_decl) {
@@ -25,6 +26,7 @@ Rule(function_body_decl) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
+    pos++;
     ISC_STD::skip_spaces(pos);
     auto function_parameters_res = function_parameters(pos);
     if (!function_parameters_res.result)
@@ -33,7 +35,7 @@ Rule(function_body_decl) {
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
-    
+    pos++;
     RULE_SUCCESSD(in, pos, function_body_call, function_parameters_res.token);
 }
 Rule(function_arguments) {
@@ -45,6 +47,7 @@ Rule(function_arguments) {
         if (!res.result)
             return {};
     }
+    pos += res.token.length();
     std::vector<::Parser::Rule> _3 {};
     if (res.result) {
         pos += res.token.length();
@@ -79,8 +82,8 @@ Rule(function_parameters) {
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
     while (*pos == ',') {
-        ISC_STD::skip_spaces(pos);
         pos++;
+        ISC_STD::skip_spaces(pos);
         auto id2_res = id(pos);
         if (!id2_res.result)
             break;
@@ -97,6 +100,7 @@ Rule(function_parameters) {
 Rule(cll_function_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
+    printf("Enter function call\n");
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
@@ -105,7 +109,7 @@ Rule(cll_function_call) {
     auto function_body_call_res = function_body_call(pos);
     if (!function_body_call_res.result)
         return {};
-    
+    pos += function_body_call_res.token.length();
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
         { "body", function_body_call_res.token }
