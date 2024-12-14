@@ -123,7 +123,7 @@ class return_base_exception : public std::exception {
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
             "But their methods like ";
             mes += method;
-            mes += "etc. require those properties."
+            mes += " etc. require those properties."
             "When they are called but the object is still uninitialised you get this error\n";
         }
         void fill() {

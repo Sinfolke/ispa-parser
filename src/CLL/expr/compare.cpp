@@ -10,22 +10,25 @@ Rule(expr_compare) {
         if (!left.result)
             return {};
     }
-    ISC_STD::skip_spaces(pos);
     pos += left.token.length();
+    printf("Matched first side\n");
+    ISC_STD::skip_spaces(pos);
     auto compare_op_res = compare_op(pos);
     if (!compare_op_res.result) {
         compare_op_res = op(pos);
         if (!compare_op_res.result)
             return {};
     }
-    ISC_STD::skip_spaces(pos);
+    printf("Matched op\n");
     pos += compare_op_res.token.length();
+    ISC_STD::skip_spaces(pos);
     auto right = expr_compare_side(pos);
     if (!right.result) {
         right = expr(pos);
         if (!right.result)
             return {};
     }
+    printf("Matched second side");
     pos += right.token.length();
     std::unordered_map<const char*, std::any> data {
         { "left", left.token },
@@ -37,13 +40,18 @@ Rule(expr_compare) {
 Rule(expr_compare_side) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    auto res = cll_function_call(pos);
+    printf("[expr_compare_side] ANY_DATA -> ");
+    auto res = any_data(pos);
     if (!res.result) {
-        res = method_call(pos);
+        printf("var_reder -> ");
+        res = var_refer(pos);
         if (!res.result) {
-            res = var_refer(pos);
+            printf("cll_function_call -> ");
+            res = cll_function_call(pos);
             if (!res.result) {
-                res = any_data(pos);
+                printf("Unmatch until method_call ");
+                printf("method_call -> ");
+                res = method_call(pos);
                 if (!res.result)
                     return {};
             }

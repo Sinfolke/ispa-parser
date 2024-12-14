@@ -1,6 +1,6 @@
 #include <parser.h>
 #include <parser_defs.h>
-
+std::string RulesToString(::Parser::Rules);
 Rule(expr) {
     auto pos = in;
     bool matched_grp = false;
@@ -10,7 +10,7 @@ Rule(expr) {
 
     std::vector<::Parser::Rule> data;
     ISC_STD::skip_spaces(pos);
-
+    printf("Enter expr\n");
     printf("expr_compare -> ");
     auto res = expr_compare(pos);
     if (!res.result) {
@@ -42,12 +42,13 @@ Rule(expr) {
 
     }    
     pos += res.token.length();
-    printf("\n");
+    printf("\n, expr length: ");
     if (data.empty()) {
         data.push_back(res.token);
     }
     ISC_STD::skip_spaces(pos);
     if (matched_grp && *pos != ')')
         return {};
+    printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
     RULE_SUCCESSD(in, pos, expr, data);
 }

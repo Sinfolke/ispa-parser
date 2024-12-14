@@ -2,15 +2,22 @@
 #include <parser_defs.h>
 
 Rule(op) {
+    std::string val;
+    auto pos = in;
     if (
         *in == '+' || *in == '-' || *in == '*' || *in == '/' || 
         *in == '%' || *in == '&' || *in == '|' || *in == '^' || 
          *in == '|' | *in == '&' || *in == '^'
     ) {
-        RULE_SUCCESSD(in, in + 1, op, *in);
+        val = *pos;
+        pos++;
     } else if (!strncmp(in, "<<", 2) || !strncmp(in, ">>", 2)) {
-        RULE_SUCCESSD(in, in + 2, op, *in);
+        val = *pos;
+        pos++;
+        val += *pos;
+        pos++;
     }
+    RULE_SUCCESSD(in, pos, op, val);
     return {};
 }
 Rule(compare_op) {
