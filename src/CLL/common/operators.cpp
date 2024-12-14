@@ -6,8 +6,7 @@ Rule(op) {
     auto pos = in;
     if (
         *in == '+' || *in == '-' || *in == '*' || *in == '/' || 
-        *in == '%' || *in == '&' || *in == '|' || *in == '^' || 
-         *in == '|' | *in == '&' || *in == '^'
+        *in == '%' || *in == '&' || *in == '|' || *in == '^'
     ) {
         val = *pos;
         pos++;
@@ -41,6 +40,7 @@ Rule(assignment_op) {
     auto pos = in + op_res.token.length();
     if (*pos!= '=')
         return {};
+    pos++;
     RULE_SUCCESSD(in, pos, assignment_op, op_res.token);
 }
 Rule(logical_not) {
@@ -57,7 +57,7 @@ Rule(logical_and) {
         !strncmp(in, "&&", 2)
     ) {
         RULE_SUCCESS(in, in + 2, compare_op);
-    } else if (( *in == 'a' && *(in + 1) == 'n' && *(in + 2) == 'd' )) {
+    } else if (!strncmp(in, "and", 3)) {
         RULE_SUCCESS(in, in + 3, compare_op);
     } else return {};
 }

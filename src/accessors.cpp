@@ -25,6 +25,7 @@ Rule(accessors_element) {
     if (!number_res.result)
         return {};
     pos += number_res.token.length();
+    printf("accessor-number-length: %zu", number_res.token.length());
     RULE_SUCCESSD(in, pos, accessors_element, number_res.token);
 }
 Rule(accessors_char) {

@@ -42,13 +42,15 @@ Rule(number) {
     ISC_STD::skip_spaces(pos);
     // Check for decimal point
     if (*pos == '.') {
-        hasPoint = true;
-        pos++;
-        ISC_STD::skip_spaces(pos);
-        while (isdigit(*pos)) {
-            dec += *pos++;
+        if (isdigit((*pos + 1))) {
+            hasPoint = true;
+            pos += 2;
+            ISC_STD::skip_spaces(pos);
+            while (isdigit(*pos)) {
+                dec += *pos++;
+            }
+            ISC_STD::skip_spaces(pos);
         }
-        ISC_STD::skip_spaces(pos);
     }
     if (main.empty())
         return {};

@@ -7,14 +7,15 @@
 Rule(function_body_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    if (*pos != '(')
+    if (*pos != '(') {
         return {};
+    }
     pos++;
     ISC_STD::skip_spaces(pos);
     auto function_arguments_res = function_arguments(pos);
-    if (!function_arguments_res.result)
-        return {};
-    pos += function_arguments_res.token.length();
+    if (function_arguments_res.result) {
+        pos += function_arguments_res.token.length();
+    }
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
@@ -43,9 +44,8 @@ Rule(function_arguments) {
     ISC_STD::skip_spaces(pos);
     auto res = any_data(pos);
     if (!res.result) {
-        res = id(pos);
-        if (!res.result)
-            return {};
+        printf("any_data_unsuccessufl res, pos: %c\n", *pos);
+        return {};
     }
     pos += res.token.length();
     std::vector<::Parser::Rule> _3 {};
@@ -102,13 +102,17 @@ Rule(cll_function_call) {
     ISC_STD::skip_spaces(pos);
     printf("Enter function call\n");
     auto id_res = id(pos);
-    if (!id_res.result)
+    if (!id_res.result) {
         return {};
+    }
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
+    printf("Enter body call\n");
     auto function_body_call_res = function_body_call(pos);
-    if (!function_body_call_res.result)
+    if (!function_body_call_res.result) {
+        printf("Function body unsuccessfull call\n");
         return {};
+    }
     pos += function_body_call_res.token.length();
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },

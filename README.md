@@ -8,6 +8,5 @@ Implementation:
 6. test on real parser input & output tree to see everything is well
     - continue testing 'Rule', it still has somewhere bugs
         - cll expr has bugs, unmatch complex rules
-    - Mistakes were done are:
-        - write a parser completely, then test. What were needed is test right when written
-    - Possibly try GDB but it's kinda slow compared to logs
+    TODO: expr likely has a bug where it matches key in inclosed data block as ID, but fails
+    then due colon. Needed to add protection if after that colon is found
