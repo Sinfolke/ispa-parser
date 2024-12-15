@@ -44,7 +44,7 @@ Rule(cll_csupport_types)
         // other cannot be unsigned
         return {};
     } 
-    else if (strncmp(pos, "float", sizeof("float") - 1))
+    else if (!strncmp(pos, "float", sizeof("float") - 1))
     {
         val = "float";
         pos += sizeof("float") - 1;
@@ -66,22 +66,22 @@ Rule(cll_csupport_types)
             val = "vector";
             pos += sizeof("vector") - 1;
         } 
-        else if (strncmp(pos, "queue", sizeof("queue") - 1))
+        else if (!strncmp(pos, "queue", sizeof("queue") - 1))
         {
             val = "queue";
             pos += sizeof("queue") - 1;
         } 
-        else if (strncmp(pos, "stack", sizeof("stack") - 1))
+        else if (!strncmp(pos, "stack", sizeof("stack") - 1))
         {
             val = "stack";
             pos += sizeof("stack") - 1;
         } 
-        else if (strncmp(pos, "list", sizeof("list") - 1)) 
+        else if (!strncmp(pos, "list", sizeof("list") - 1)) 
         {
             val = "list";
             pos += sizeof("list") - 1;
         } 
-        else if (strncmp(pos, "forward_list", sizeof("forward_list") - 1)) 
+        else if (!strncmp(pos, "forward_list", sizeof("forward_list") - 1)) 
         {
             val = "forward_list";
             pos += sizeof("forward_list") - 1;
@@ -123,6 +123,7 @@ Rule(cll_csupport_types)
             if (*pos != '>') {
                 return {};  // Return if closing '>' is not found
             }
+            pos++;
         }
 
         std::unordered_map<const char*, std::any> data {
@@ -141,6 +142,7 @@ Rule(cll_type)
         if (!res.result)
             return {};
     }
+    pos += res.token.length();
     RULE_SUCCESSD(in, pos, cll_type, res);
 }
 Rule(cll_type_abstract) 
@@ -167,6 +169,7 @@ Rule(cll_type_abstract)
             return {};
         }
         templ = cll_template_res.token;
+        pos += cll_template_res.token.length();
     } else return {};
     std::unordered_map<const char*, std::any> data {
         { "type", type },

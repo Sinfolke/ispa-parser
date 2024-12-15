@@ -22,7 +22,6 @@ target_link_libraries(parser_test_common INTERFACE parser parser_stdlib)
 add_executable(parser_complete_test tests/complete_test.cpp)
 target_link_libraries(parser_complete_test PRIVATE parser_test_common)
 add_test(NAME parser_complete_test COMMAND parser_complete_test)
-
 # Define parser_rule_test
 add_executable(parser_rule_test tests/Rule.cpp)
 target_link_libraries(parser_rule_test PRIVATE parser_test_common)
@@ -30,8 +29,12 @@ add_test(NAME parser_rule_test COMMAND parser_rule_test)
 # Define parser_expr_test
 add_executable(parser_expr_test tests/expr.cpp)
 target_link_libraries(parser_expr_test PRIVATE parser_test_common)
-add_test(NAME parser_expr_test COMMAND parser_rule_test)
+add_test(NAME parser_expr_test COMMAND parser_expr_test)
 # Define parser_accessor_test
 add_executable(parser_accessor_test tests/accessors.cpp)
 target_link_libraries(parser_accessor_test PRIVATE parser_test_common)
-add_test(NAME parser_accessor_test COMMAND parser_rule_test)
+add_test(NAME parser_accessor_test COMMAND parser_accessor_test)
+# Define parser_cll_test
+add_executable(parser_cll_test tests/cll.cpp)
+target_link_libraries(parser_cll_test PRIVATE parser_test_common)
+add_test(NAME parser_cll_test COMMAND parser_cll_test)
