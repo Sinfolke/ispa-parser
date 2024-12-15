@@ -6,7 +6,4 @@ Implementation:
 4. Fix errors in parser.h     [done]
 5. fix errors in rules if exists [done]
 6. test on real parser input & output tree to see everything is well
-    - continue testing 'Rule', it still has somewhere bugs
-        - cll expr has bugs, unmatch complex rules
-    TODO: expr likely has a bug where it matches key in inclosed data block as ID, but fails
-    then due colon. Needed to add protection.
+    - begin test cll (possibly the most complex part of parser), not matches in 'use' rule correclty
