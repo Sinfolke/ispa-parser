@@ -44,7 +44,6 @@ Rule(function_arguments) {
     ISC_STD::skip_spaces(pos);
     auto res = any_data(pos);
     if (!res.result) {
-        printf("any_data_unsuccessufl res, pos: %c\n", *pos);
         return {};
     }
     pos += res.token.length();

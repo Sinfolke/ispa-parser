@@ -9,4 +9,4 @@ Implementation:
     - continue testing 'Rule', it still has somewhere bugs
         - cll expr has bugs, unmatch complex rules
     TODO: expr likely has a bug where it matches key in inclosed data block as ID, but fails
-    then due colon. Needed to add protection if after that colon is found
+    then due colon. Needed to add protection.

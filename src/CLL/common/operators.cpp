@@ -15,6 +15,8 @@ Rule(op) {
         pos++;
         val += *pos;
         pos++;
+    } else {
+        return {};
     }
     RULE_SUCCESSD(in, pos, op, val);
     return {};

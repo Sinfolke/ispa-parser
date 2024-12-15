@@ -31,3 +31,7 @@ add_test(NAME parser_rule_test COMMAND parser_rule_test)
 add_executable(parser_expr_test tests/expr.cpp)
 target_link_libraries(parser_expr_test PRIVATE parser_test_common)
 add_test(NAME parser_expr_test COMMAND parser_rule_test)
+# Define parser_accessor_test
+add_executable(parser_accessor_test tests/accessors.cpp)
+target_link_libraries(parser_accessor_test PRIVATE parser_test_common)
+add_test(NAME parser_accessor_test COMMAND parser_rule_test)
