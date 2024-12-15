@@ -1,1 +1,1 @@
-$var a = 0;
+$object<string> a = {};

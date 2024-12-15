@@ -16,6 +16,7 @@ Rule(cll_block) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '}')
         return {};
+    pos++;
     RULE_SUCCESSD(in, pos, cll_block, res.token);
 }
 Rule(cll_spaced_block, int spaces_amount) {

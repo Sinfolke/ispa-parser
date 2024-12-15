@@ -86,51 +86,51 @@ Rule(cll_csupport_types)
             val = "forward_list";
             pos += sizeof("forward_list") - 1;
         } else return {};
+
+        ISC_STD::skip_spaces(pos);
+        // cll_template
+
+        if (*pos != '<') {
+            return {};  // Return if the opening '<' is not present
+        }
+        pos++;
+        ISC_STD::skip_spaces(pos);
+
+        // Begin parsing content
+        auto content_res = cll_template_typename(pos); // Directly use `cll_template_typename` as the `content` function
+        if (!content_res.result) {
+            return {};  // Return if parsing fails
+        }
+        pos += content_res.token.length();
+
+        templated.push_back(content_res.token);
+
+        // Parse subsequent elements separated by commas
+        while (*pos == ',') {
+            ++pos;
             ISC_STD::skip_spaces(pos);
-            // cll_template
-
-
-            if (*pos != '<') {
-                return {};  // Return if the opening '<' is not present
-            }
-            pos++;
-            ISC_STD::skip_spaces(pos);
-
-            // Begin parsing content
-            auto content_res = cll_template_typename(pos); // Directly use `cll_template_typename` as the `content` function
+            content_res = cll_template_typename(pos); // Call `cll_template_typename` again
             if (!content_res.result) {
-                return {};  // Return if parsing fails
+                break;  // Stop parsing if further content fails
             }
             pos += content_res.token.length();
-
             templated.push_back(content_res.token);
-
-            // Parse subsequent elements separated by commas
-            while (*pos == ',') {
-                ++pos;
-                ISC_STD::skip_spaces(pos);
-                content_res = cll_template_typename(pos); // Call `cll_template_typename` again
-                if (!content_res.result) {
-                    break;  // Stop parsing if further content fails
-                }
-                pos += content_res.token.length();
-                templated.push_back(content_res.token);
-                ISC_STD::skip_spaces(pos);
-            }
-
-            // Ensure the closing '>' is present
             ISC_STD::skip_spaces(pos);
-            if (*pos != '>') {
-                return {};  // Return if closing '>' is not found
-            }
-            pos++;
         }
 
-        std::unordered_map<const char*, std::any> data {
-            { "val", val },
-            { "templated", templated }
-        };
-        RULE_SUCCESSD(in, pos, cll_csupport_types, data);
+        // Ensure the closing '>' is present
+        ISC_STD::skip_spaces(pos);
+        if (*pos != '>') {
+            return {};  // Return if closing '>' is not found
+        }
+        pos++;
+    }
+
+    std::unordered_map<const char*, std::any> data {
+        { "val", val },
+        { "templated", templated }
+    };
+    RULE_SUCCESSD(in, pos, cll_csupport_types, data);
 }
 Rule(cll_type)
 {

@@ -36,11 +36,12 @@ Rule(compare_op) {
     RULE_SUCCESSD(in, pos, compare_op, negative);
 }
 Rule(assignment_op) {
+    auto pos = in;
     auto op_res = op(in);
-    if (!op_res.result)
-        return {};
-    auto pos = in + op_res.token.length();
-    if (*pos!= '=')
+    if (op_res.result)
+        pos += op_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    if (*pos != '=')
         return {};
     pos++;
     RULE_SUCCESSD(in, pos, assignment_op, op_res.token);

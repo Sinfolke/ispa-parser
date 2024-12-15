@@ -10,6 +10,7 @@ Rule(cll_template_typename) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = cll_type(pos);
         if (!p1_2_res.result)
@@ -30,6 +31,7 @@ Rule(cll_template_int) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = number(pos);
         if (!p1_2_res.result)
@@ -50,6 +52,7 @@ Rule(cll_template_bool) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = boolean(pos);
         if (!p1_2_res.result)
@@ -70,6 +73,7 @@ Rule(cll_template_str) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = string(pos);
         if (!p1_2_res.result)
@@ -90,6 +94,7 @@ Rule(cll_template_arr) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = array(pos);
         if (!p1_2_res.result)
@@ -110,6 +115,7 @@ Rule(cll_template_obj) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = object(pos);
         if (!p1_2_res.result)
@@ -130,6 +136,7 @@ Rule(cll_template_any_data) {
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto p1_2_res = any_data(pos);
         if (!p1_2_res.result)

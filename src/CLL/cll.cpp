@@ -37,5 +37,6 @@ Rule(cll) {
     if (!end_res.result)
         return {};
     pos += end_res.token.length();
+    printf("Cll matched successfully\n");
     RULE_SUCCESSD(in, pos, cll, res.token);
 }
