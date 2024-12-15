@@ -106,17 +106,17 @@ Rule(cll_csupport_types)
         templated.push_back(content_res.token);
 
         // Parse subsequent elements separated by commas
-        while (*pos == ',') {
-            ++pos;
-            ISC_STD::skip_spaces(pos);
-            content_res = cll_template_typename(pos); // Call `cll_template_typename` again
-            if (!content_res.result) {
-                break;  // Stop parsing if further content fails
-            }
-            pos += content_res.token.length();
-            templated.push_back(content_res.token);
-            ISC_STD::skip_spaces(pos);
-        }
+        // while (*pos == ',') {
+        //     ++pos;
+        //     ISC_STD::skip_spaces(pos);
+        //     content_res = cll_template_typename(pos); // Call `cll_template_typename` again
+        //     if (!content_res.result) {
+        //         break;  // Stop parsing if further content fails
+        //     }
+        //     pos += content_res.token.length();
+        //     templated.push_back(content_res.token);
+        //     ISC_STD::skip_spaces(pos);
+        // }
 
         // Ensure the closing '>' is present
         ISC_STD::skip_spaces(pos);
@@ -162,14 +162,29 @@ Rule(cll_type_abstract)
         type.append(pos, 4);
         pos += 4;
     } else if (!strncmp(pos, "arr", 3) || !strncmp(pos, "obj", 3)) {
+        type.append(pos, 3);
+        pos += 3;
+        printf("Cll_type_enter_obj\n");
+        ISC_STD::skip_spaces(pos);
+        if (*pos != '<') {
+            return {};
+        }
+        pos++;
         ISC_STD::skip_spaces(pos);
         auto cll_template_res = cll_template_typename(pos);
         if (!cll_template_res.result)
         {
             return {};
         }
-        templ = cll_template_res.token;
         pos += cll_template_res.token.length();
+        ISC_STD::skip_spaces(pos);
+        if (*pos != '>') 
+        {
+            return {};
+        }
+        pos++;
+        ISC_STD::skip_spaces(pos);
+        templ = cll_template_res.token;
     } else return {};
     std::unordered_map<const char*, std::any> data {
         { "type", type },

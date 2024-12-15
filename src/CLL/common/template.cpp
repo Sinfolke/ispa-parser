@@ -6,7 +6,9 @@ Rule(cll_template_typename) {
     ISC_STD::skip_spaces(pos);
     auto p1_1_res = cll_type(in); // Replace with the appropriate function
     if (!p1_1_res.result)
+    {
         return {};
+    }
     pos += p1_1_res.token.length();
     std::vector<std::any> cll_p1_seq;
     while (*pos == ',') {

@@ -135,7 +135,7 @@ Rule(object) {
     ISC_STD::skip_spaces(pos);
     if (*pos != '{')
         return {};
-    ++pos;
+    pos++;
     ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (id_res.result) {
@@ -170,6 +170,7 @@ Rule(object) {
     }
     if (*pos != '}')
         return {};
+    pos++;
     RULE_SUCCESSD(in, pos, object, data);
 }
 
