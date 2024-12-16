@@ -60,17 +60,12 @@ Import:
     ;
 ;
 use: 
-    $object<string> data = {  %2.name: %2.value };
-    $for (int i = 0; i < $1>%2.size(); i++):
-    $    data[$1>%2[i].name] = $1>%2[i].value;
-
-
     'use' #unit (',' #unit)*
-    data: [%2, ...%4];
+    data: %2 + %4
     #unit:
         id ANY_DATA?
 
         data:
-            name: %1,
-            value: %2,
+            name: %1
+            value: %2
 ;

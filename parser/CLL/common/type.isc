@@ -20,9 +20,7 @@ cll_csupport_types:
     ;
 ;
 cll_type:
-    cll_csupport_types
-        |
-    #abstract
+    cll_csupport_types | #abstract
 
     data: %1;
     

@@ -498,7 +498,10 @@ void printRuleData(const ::Parser::Rule& rule, int tabs = 0) {
                     res = spacemode(in);
                     if (!res.result)
                     {
-                        printf("Stopped at rule\n");
+                        if (*in == '\0')
+                            printf("EOF\n");
+                        else 
+                            printf("Stopped at rule\n");
                         break;
                     }
                 } else {

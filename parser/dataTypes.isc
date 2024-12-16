@@ -6,41 +6,41 @@ STRING:
 ;
 NUMBER:
     $char sign = %0;
-    $string main = $1;
-    $number main_n = std::to_number(main);
+    $str main = $1;
+    $num main_n = NUMBER(main);
     $char point = $2>%1;
-    $string dec = $2>%1;
-    $number dec_n = std::to_number(dec);
+    $str dec = $2>%1;
+    $num dec_n = NUMBER(dec);
 
-    // $1 and or $2 or only $2 
     [+-] ( [0-9]+ ) |& ([.,] [0-9]+)?
 
     data:
-        sign: sign,
-        main: main,
-        main_n: main_n,
-        dec: dec,
-        dec_n: dec_n,
-        full: main + point + dec;
+        sign: sign
+        main: main
+        main_n: main_n
+        dec: dec
+        dec_n: dec_n
+        full: main + point + dec
+    ;
 ;
 BOOLEAN:
     &d('true' | 'false')
     data:
-        val: d == 'true' ? 1 : 0,
+        val: d == 'true' ? 1 : 0
         lit: d
     ;
 ;
 ARRAY: 
-    $array<any> data;
+    $arr<any> data;
     $data.push(%2);
     $data.concat(%4);
 
     '[' ( (ANY_DATA ',')* )? ']'
 
 OBJECT:
-    $object<any> data = {  %2: %4 };
-    $array<string> keys = $2>%2;
-    $array<any> values = $2>%4;
+    $obj<any> data = {  %2: %4 };
+    $arr<str> keys = $2>%2;
+    $arr<any> values = $2>%4;
 
     $for (int i = 0; i < keys.size(); i++):
     $    data[keys[i]] = values[i];
@@ -51,6 +51,5 @@ OBJECT:
 ANY_DATA: 
     $data = %1;
 
-    BOOLEAN | NUMBER | STRING | ARRAY | OBJECT | ID | accessor_element | accessor_group | accessor_char
+    BOOLEAN | NUMBER | STRING | ARRAY | OBJECT | ID | accessor
 ;
-

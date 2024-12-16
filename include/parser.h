@@ -105,7 +105,8 @@ namespace Parser {
     
     method_call,
     copiable_method_call,
-
+    loop_while,
+    loop_for,
     cll_var,
     var_refer,
     
@@ -219,6 +220,8 @@ namespace Parser {
             Rule(method_call);
             Rule(copiable_method_call);
 
+            Rule(loop_while);
+            Rule(loop_for);
             Rule(cll_var);
             Rule(var_refer);
 

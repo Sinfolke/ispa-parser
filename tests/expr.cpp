@@ -10,5 +10,9 @@ int main() {
     content = getContent("expr2");
     parser = ::Parser::Parser(content.c_str());
     tree = parser.expr(content.c_str());
+    printf("\n### test 3\n");
+    content = getContent("expr3");
+    parser = ::Parser::Parser(content.c_str());
+    tree = parser.expr(content.c_str());
     return 0;
 }

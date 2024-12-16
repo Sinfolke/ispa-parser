@@ -8,7 +8,7 @@ Rule:
     $var rule = %3;
     $var data_block = %4
     $var nested_rules = %5;
-    $bool kind = (name[0] >= 'A' && name[0] <= 'Z') ? 'token' : 'rule';
+    $str kind = (name[0] >= 'A' && name[0] <= 'Z') ? 'token' : 'rule';
 
     // later add match of CLL here
     &rule_begin(ID ':') (#rule)* #data_block #nested_rule* STRICT_END
