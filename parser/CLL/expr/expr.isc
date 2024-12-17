@@ -41,12 +41,12 @@ expr:
         var_refer ( ASSIGNMENT_OP (expr) )?
         data:
             name: %1
-            op: $2
-            val: $3
+            op: %2
+            val: %3
         ;
     ;
     #compare:
-        #side | expr COMPARE_OP | OP #side | expr
+        #side | expr - compare COMPARE_OP | OP #side | expr - compare
 
         #side:
             var_refer | ANY_DATA | cll_function_call | method_call
@@ -59,7 +59,7 @@ expr:
         ;
     ;
     #logical:
-        expr LOGICAL_OP expr
+        expr - logical LOGICAL_OP expr - logical
         data:
             left: %1
             op: %2

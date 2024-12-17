@@ -209,6 +209,8 @@ namespace Parser {
             Rule(cll_ternary);
 
             Rule(expr);
+            Rule(expr_no_compare);
+            Rule(expr_no_logical);
 
             Rule(function_body_call);
             Rule(function_body_decl);

@@ -4,41 +4,34 @@ Rule(cll_block) {
     auto pos = in;
     if (*pos != '{')
         return {};
+    pos++;
     ISC_STD::skip_spaces(pos);
-    auto res = cll(++pos);
-    if (!res.result) {
-        /* match rule & exit if not */
+    std::vector<::Parser::Rule> results;
+    while(true) {
         auto rule_begin_res = Rule_rule(pos);
-        if (rule_begin_res.result)
-            return {};
+        if (!rule_begin_res.result)
+            break;
+        pos += rule_begin_res.token.length();
+        results.push_back(rule_begin_res.token);
     }
-    pos += res.token.length();
+
     ISC_STD::skip_spaces(pos);
     if (*pos != '}')
         return {};
     pos++;
-    RULE_SUCCESSD(in, pos, cll_block, res.token);
+    RULE_SUCCESSD(in, pos, cll_block, results);
 }
 Rule(cll_spaced_block, int spaces_amount) {
     auto pos = in;
-    bool done = 0;
-    std::vector<std::any> results;
-    while(ISC_STD::skipup(pos, " ") > spaces_amount) {
-        done = 1;
+    std::vector<::Parser::Rule> results;
+    while(ISC_STD::skip_spaces(pos) > spaces_amount) {
         // same pattern as with cll block
-        auto res = cll(++pos);
-        if (!res.result) {
-            /* match rule & exit if not */
-            auto rule_begin_res = Rule_rule(pos);
-            if (rule_begin_res.result)
-                return {};
-        }
+        auto res = Rule_rule(pos);
+        if (!res.result)
+            break;
         pos += res.token.length();
         results.push_back(res.token);
     }
-    if (!done)
-        return {};
         
-    // here it should past into array result tree
     RULE_SUCCESSD(in, pos, cll_block, results);
 }

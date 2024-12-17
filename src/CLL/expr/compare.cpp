@@ -6,7 +6,7 @@ Rule(expr_compare) {
     ISC_STD::skip_spaces(pos);
     auto left = expr_compare_side(pos);
     if (!left.result) {
-        left = expr(pos);
+        left = expr_no_compare(pos);
         if (!left.result)
             return {};
         else
@@ -30,7 +30,7 @@ Rule(expr_compare) {
     ISC_STD::skip_spaces(pos);
     auto right = expr_compare_side(pos);
     if (!right.result) {
-        right = expr(pos);
+        right = expr_no_compare(pos);
         if (!right.result)
             return {};
         else
