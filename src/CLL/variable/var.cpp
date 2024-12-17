@@ -40,4 +40,43 @@ Rule(cll_var) {
     };
     RULE_SUCCESSD(in, pos, cll_var, data);
 }
-Rule(var_increament) {}
+
+Rule(cll_var_operator) {
+    auto pos = in;
+    auto res = cll_var_operator_post(pos);
+    if (!res.result) {
+        res = cll_var_operator_pre(pos);
+        if (!res.result) {
+            return {};
+        }
+    }
+    pos += res.token.length();
+    RULE_SUCCESSD(in, pos, cll_var_operator, res.token);
+}
+Rule(cll_var_operator_post) {
+    auto pos = in;
+    if (strncmp(pos, "++", 2)) {
+        return {};
+    }
+    pos += 2;
+    auto res = var_refer(pos);
+    if (!res.result)
+        return {};
+    
+    pos += res.token.length();
+    RULE_SUCCESSD(in, pos, cll_var_operator_post, res.token);
+}
+Rule(cll_var_operator_pre) {
+    auto pos = in;
+    auto res = var_refer(pos);
+    if (!res.result)
+        return {};
+    
+    pos += res.token.length();
+
+    if (strncmp(pos, "++", 2))
+        return {};
+    
+    pos += 2;
+    RULE_SUCCESSD(in, pos, cll_var_operator_pre, res.token);
+}

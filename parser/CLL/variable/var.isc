@@ -10,3 +10,14 @@ cll_var:
         value: $4
     ;
 ;
+
+cll_var_operator:
+    #post | #pre
+    #pre:
+        '++' var_refer
+    ;
+    #post:
+        var_refer '++'
+    ;
+
+;

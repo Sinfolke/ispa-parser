@@ -46,6 +46,7 @@ Rule(loop_for) {
         pos += res1.token.length();
         ISC_STD::skip_spaces(pos);
     }
+    printf("End first expr\n");
     if (*pos != ';')
         return {};
     pos++;
@@ -56,6 +57,7 @@ Rule(loop_for) {
         pos += expr2_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
+    printf("End second expr\n");
     if (*pos != ';')
         return {};
     pos++;
@@ -65,7 +67,7 @@ Rule(loop_for) {
         pos += expr3_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
-
+    printf("End third expr\n");
     if (*pos != ')')
         return {};
     pos++;

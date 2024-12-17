@@ -10,19 +10,20 @@ Rule(var_refer) {
     
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
-    if (*pos!= '[')
-        return {};
-    pos++;
-    auto res = expr(pos);
-    if (!res.result)
-        return {};
-    pos += res.token.length();
-    if (*pos != ']')
-        return {};
-    pos++;
+    ::Parser::Rule_result expr_res;
+    if (*pos == '[') {
+        pos++;
+        expr_res = expr(pos);
+        if (!expr_res.result)
+            return {};
+        pos += expr_res.token.length();
+        if (*pos != ']')
+            return {};
+        pos++;
+    }
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
-        { "data", res.token }
+        { "data", expr_res.token }
     };
     RULE_SUCCESSD(in, pos, var_refer, data);
 }

@@ -1,5 +1,5 @@
 var_refer:
-    ID '[' expr ']'
+    ID ('[' expr ']')?
     data:
         name: %1
         data: %3
