@@ -12,14 +12,14 @@ Rule(var_refer) {
     ISC_STD::skip_spaces(pos);
     if (*pos!= '[')
         return {};
-    
+    pos++;
     auto res = expr(pos);
     if (!res.result)
         return {};
     pos += res.token.length();
     if (*pos != ']')
         return {};
-    
+    pos++;
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
         { "data", res.token }

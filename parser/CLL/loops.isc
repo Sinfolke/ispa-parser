@@ -6,7 +6,7 @@ loop_while:
     ;
 ;
 loop_for: 
-    for '(' expr? ';' expr? ';' expr? ')' cll_block | cll_spaced_block
+    for '(' (expr | cll_var)? ';' expr? ';' expr? ')' cll_block | cll_spaced_block
     data:
         decl: %3
         cond: %5

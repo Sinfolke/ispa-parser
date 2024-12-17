@@ -40,3 +40,4 @@ Rule(cll_var) {
     };
     RULE_SUCCESSD(in, pos, cll_var, data);
 }
+Rule(var_increament) {}

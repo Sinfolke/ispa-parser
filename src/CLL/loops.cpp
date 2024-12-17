@@ -38,14 +38,17 @@ Rule(loop_for) {
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    auto expr1_res = expr(pos);
-    if (expr1_res.result) {
-        pos += expr1_res.token.length();
+    auto res1 = cll_var(pos);
+    if (!res1.result) {
+        res1 = expr(pos);
+    }
+    if (res1.result) {
+        pos += res1.token.length();
         ISC_STD::skip_spaces(pos);
     }
-
     if (*pos != ';')
         return {};
+    pos++;
     ISC_STD::skip_spaces(pos);
 
     auto expr2_res = expr(pos);
@@ -55,7 +58,7 @@ Rule(loop_for) {
     }
     if (*pos != ';')
         return {};
-
+    pos++;
     ISC_STD::skip_spaces(pos);
     auto expr3_res = expr(pos);
     if (expr3_res.result) {
@@ -77,7 +80,7 @@ Rule(loop_for) {
     }
     pos += block.token.length();
     std::unordered_map<const char*, std::any> data {
-        { "decl", expr1_res.token },
+        { "decl", res1.token },
         { "cond", expr2_res.token },
         { "end", expr3_res.token },
         { "block", block.token }
