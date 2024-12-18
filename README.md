@@ -4,7 +4,7 @@
   It helps to have strict plans and quicks up implementation when you have it's details
 ### What is this
  ispa (Independent Standalone Parser) is a declarative language to generate parser from a rule. Generated parser doesn't rely on any library, the output is a direct logic of your rule which aims to be simple and minimalistic, while maintain the most of opportunities you could gain out. With the common language logic (CLL) inside you don't generally need to interact with the parser - that's what makes it standalone and those easer to learn. AST construction is done with simple data blocks - you just specify how the data of your rule should be stored in the token/rule.
- Example of output see in ```concepts/output-example```
+ Example of output see in ```concepts/output-example``` (a bit outdated)
 ### How to implement project
  The language ispa written is C++
  1. Make sure the syntax definion is done
@@ -12,8 +12,8 @@
  3. Begin to write the main code of the parser
     - arguments parser
       - file input
-      - flags (see ```concepts/argp```)
-    - Arguments processer to ART - argument tree (see ```concepts/art```)
+      - flags (see ```concepts/argp```) (not exists)
+    - Arguments processer to ART - argument tree (see ```concepts/art```) (not exists)
     - parse each file      
  5. Compile the parser writing the code on C++ by own
  6. Create rules to walk on parser tree if need some optimisations or else before the compilation
