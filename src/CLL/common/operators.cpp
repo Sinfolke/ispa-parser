@@ -1,6 +1,5 @@
 #include <parser.h>
 #include <parser_defs.h>
-
 Rule(op) {
     std::string val;
     auto pos = in;
@@ -23,17 +22,17 @@ Rule(op) {
 }
 Rule(compare_op) {
     auto pos = in;
-    bool negative = false;
-    if (*pos == '!') {
-        negative = true;
-    } else if (*pos != '=')
+    std::string val;
+    if (!strncmp(pos, "==", 2) || !strncmp(pos, "!=", 2) || !strncmp(pos, ">=", 2) || !strncmp(pos, "<=", 2)) {
+        val.assign(pos, 2);
+        pos += 2;
+    } else if (*pos == '<' || *pos == '>') {
+        val.assign(pos, 1);
+        pos++;
+    } else {
         return {};
-    pos++;
-    if (*pos != '=') 
-        return {};
-    pos++;
-    
-    RULE_SUCCESSD(in, pos, compare_op, negative);
+    }
+    RULE_SUCCESSD(in, pos, compare_op, val);
 }
 Rule(assignment_op) {
     auto pos = in;

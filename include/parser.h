@@ -108,9 +108,6 @@ namespace Parser {
     loop_while,
     loop_for,
     cll_var,
-    cll_var_operator_post,
-    cll_var_operator_pre,
-    cll_var_operator,
     var_refer,
     
     cll
@@ -156,9 +153,6 @@ namespace Parser {
             Rule(expr_parenthesed);
             Rule(expr_parenthesed_variable_assignment)
             Rule(expr_not);
-
-            Rule(cll_var_operator_post);
-            Rule(cll_var_operator_pre);
         public:
             Tree parse();
             Parser(const char* text) : text(text) {}
@@ -231,7 +225,6 @@ namespace Parser {
             Rule(loop_while);
             Rule(loop_for);
             Rule(cll_var);
-            Rule(cll_var_operator);
             Rule(var_refer);
 
             Rule(cll);

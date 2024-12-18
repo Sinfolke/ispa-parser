@@ -44,16 +44,13 @@ Rule(expr) {
 
     }    
     pos += res.token.length();
-    printf("\n, expr length: ");
+    printf("expr length: %zu\n", res.token.length());
     if (data.empty()) {
         data.push_back(res.token);
     }
     ISC_STD::skip_spaces(pos);
-    if (*pos == ')') {
-        if (matched_grp)
-            pos++;
-        else
-            return {};
+    if (*pos == ')' && matched_grp) {
+        pos++;
     }
     printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
     RULE_SUCCESSD(in, pos, expr, data);
@@ -101,11 +98,8 @@ Rule(expr_no_compare) {
         data.push_back(res.token);
     }
     ISC_STD::skip_spaces(pos);
-    if (*pos == ')') {
-        if (matched_grp)
-            pos++;
-        else
-            return {};
+    if (*pos == ')' && matched_grp) {
+        pos++;
     }
     printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
     RULE_SUCCESSD(in, pos, expr, data);
@@ -150,11 +144,8 @@ Rule(expr_no_logical) {
         data.push_back(res.token);
     }
     ISC_STD::skip_spaces(pos);
-    if (*pos == ')') {
-        if (matched_grp)
-            pos++;
-        else
-            return {};
+    if (*pos == ')' && matched_grp) {
+        pos++;
     }
     printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
     RULE_SUCCESSD(in, pos, expr, data);

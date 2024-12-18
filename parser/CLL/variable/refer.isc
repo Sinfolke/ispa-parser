@@ -1,7 +1,11 @@
 var_refer:
-    ID ('[' expr ']')?
+    $var pre = matched($1)
+    $var post = matched($3)
+    ('++' | '--')? ID ('[' expr ']')? ('++' | '--')?
     data:
         name: %1
-        data: %3
+        brace_expression: $2>%2
+        pre: pre
+        post: post
     ;
 ;

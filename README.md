@@ -8,7 +8,5 @@ Implementation:
 6. test on real parser input & output tree to see everything is well
     - begin test cll (possibly the most complex part of parser), not matches in 'use' rule correclty
     TODO NEXT: 
-        - Finish testing for loop and completely fix it
         - Refactor expr. It works incorreclty right now and is unable to handle large, complex expressions
-        - Change var_refer to include ++ operator 
         - add 'any' type

@@ -176,7 +176,6 @@ Rule(object) {
 
 // ANY_DATA Rule
 Rule(any_data) {
-    const char* pos = in;
     std::any data;
     // Try each type in order
     ::Parser::Rule token;
@@ -195,7 +194,7 @@ Rule(any_data) {
     result = object(in);
     if (result.result)
         token = result.token;
-    result = id(in);
+    result = var_refer(in);
     if (result.result)
         token = result.token;
     result = accessor(in);
