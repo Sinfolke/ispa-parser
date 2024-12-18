@@ -152,7 +152,7 @@ Rule(cll_type_abstract)
     std::string type;
     ::Parser::Rule templ;
     if (
-        !strncmp(pos, "var", 3) || !strncmp(pos, "num", 3) ||
+        !strncmp(pos, "var", 3) || !strncmp(pos, "any", 3) || !strncmp(pos, "num", 3) ||
         !strncmp(pos, "str", 3)
     ) {
         type.append(pos, 3);

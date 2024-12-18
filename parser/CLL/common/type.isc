@@ -26,7 +26,7 @@ cll_type:
     
     #abstract:
     // the abstract types
-    ( 'var' | 'num' | 'bool' | 'str' | 'arr' cll_template[typename] | 'obj' cll_template[typename] )
+    ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template[typename]) | ('obj' cll_template[typename]) )
     data:
         type: %1
         template: %2
