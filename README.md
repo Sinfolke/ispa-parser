@@ -3,7 +3,7 @@
   something you may find here may not be actually implemented for now,
   It helps to have strict plans and quicks up implementation when you have it's details
 ### What is this
- ispa (Independent Standalone Parser) is a declarative language to generate parser from a rule. Generated parser doesn't rely on any library, the output is a direct logic of your rule. The output aims to be simple and minimalistic, while maintain the most of opportunities you could gain out. With the common language logic (CLL) inside you don't generally need to interact with the parser - that's what makes it standalone and those easer to learn. AST construction is done with simple data blocks - you just specify how the data of your rule should be stored in the token/rule.
+ ispa (Independent Standalone Parser) is a declarative language to generate parser from a rule. Generated parser doesn't rely on any library, the output is a direct logic of your rule which aims to be simple and minimalistic, while maintain the most of opportunities you could gain out. With the common language logic (CLL) inside you don't generally need to interact with the parser - that's what makes it standalone and those easer to learn. AST construction is done with simple data blocks - you just specify how the data of your rule should be stored in the token/rule.
  Example of output see in ```concepts/output-example```
 ### How to implement project
  The language ispa written is C++
