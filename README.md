@@ -1,12 +1,12 @@
-# ISC-parser
+# ispa
 ### Warning
   something you may find here may not be actually implemented for now,
   It helps to have strict plans and quicks up implementation when you have it's details
 ### What is this
- ISC (Independent Standalone Parser) is the parser which generates code that doesn't rely on any library. The output are some files you may link to your project. The output interface is not complex and inside your code you simply instance the class, paste in the input and get a ready tree. You also don't usually need to interact with the parser during parsing process as usually everything may be done in the ISC interface.
+ ispa (Independent Standalone Parser) is a declarative language to generate parser from a rule. Generated parser doesn't rely on any library, the output is a direct logic of your rule. The output aims to be simple and minimalistic, while maintain the most of opportunities you could gain out. With the common language logic (CLL) inside you don't generally need to interact with the parser - that's what makes it standalone and those easer to learn. AST construction is done with simple data blocks - you just specify how the data of your rule should be stored in the token/rule.
  Example of output see in ```concepts/output-example```
 ### How to implement project
- The language of parser is C++
+ The language ispa written is C++
  1. Make sure the syntax definion is done
  2. Do bootstrap. Write the parser for the syntax of this parser
  3. Begin to write the main code of the parser
