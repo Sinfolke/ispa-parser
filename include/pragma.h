@@ -18,6 +18,7 @@
 
     #define DISABLE_O(opt) \
         // what we can do here is to only disable the fast-math
+        // this gonna save program from being incorrect but nothing more
         __pragma(fp_contract(off)) // Disable FP contraction
 
 #elif defined(__clang__)

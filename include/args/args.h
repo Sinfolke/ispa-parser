@@ -12,6 +12,7 @@ struct listener_return_t {
     const char* arg1;
 };
 
+#define ND [[nodiscard]]
 typedef listener_return_t (*listenerf)(const Arg& arg);
 class Arg {
     public:
@@ -101,23 +102,23 @@ class Args {
                             auto command = result.command;
                             if (command == listener_cmd::SUCCESS) { // parsed successfully
                                 continue; // listener is success
-                            } elif (command == listener_cmd::STOP_PARSING) {
+                            } else if (command == listener_cmd::STOP_PARSING) {
                                 break;
-                            } elif (command == listener_cmd::CONTINUE_PARSING_AT) {
+                            } else if (command == listener_cmd::CONTINUE_PARSING_AT) {
                                 if (command == listener_cmd::ABORT) {
-                                    runterr("Aborted parsing");
+                                    throw Error("listener aborted");
                                 }
                             }
                         }
                     }
-                } elif (argv[i][0] == '!') {
+                } else if (argv[i][0] == '!') {
 
                     if (variadic) {
                         // close variadic
                         args.push_back(argument);
                         variadic = false;
                         if (argv[i][1]) {
-                            user::warning("Ignoring %d symbols here: %s", strlen(argv[i]), argv[i]);
+                            throw UWarning("Ignoring %d symbols here: %s", strlen(argv[i]), argv[i]);
                         }
                     } else {
                         // open variadic

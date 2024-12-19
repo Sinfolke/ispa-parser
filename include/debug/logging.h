@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <debug/relativePath.h>
 #include <debug/tracer.h>
+#include <cpuf/printf>
 class Error : public std::exception {
 public:
     const char* file;
@@ -12,7 +13,7 @@ public:
     size_t line;
     template<typename ...Args>
     Error(const char* file, size_t line, const char* format, Args&&... args)
-        : file(getRelativePath(file)), line(line), message( sprintf(format, args...) ) {}
+        : file(getRelativePath(file)), line(line), message( cpuf::sprintf(format, args...) ) {}
     void print();
     const char* what() const noexcept override;
 };
@@ -21,11 +22,11 @@ class UBase : std::exception {
 public:
     const std::string message;
     template<typename ...Args>
-    UBase(const char* message, Args&&... args) : message( sprintf(message, args...) ) {}
+    UBase(const char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(char* message, Args&&... args) : message( sprintf(message, args...) ) {}
+    UBase(char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(std::string message, Args&&... args) : message( sprintf(message, args...) ) {}
+    UBase(std::string message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
 
 
     void print();
@@ -37,8 +38,17 @@ public:
 };
 class UWarning : public UBase {
 public:
+    template<typename... Args>
+    UWarning(const char* message, Args&&... args)
+        : UBase(message, std::forward<Args>(args)...) {}
+
+    template<typename... Args>
+    UWarning(std::string message, Args&&... args)
+        : UBase(std::move(message), std::forward<Args>(args)...) {}
+
     void print();
 };
+
 
 /*
     needed to auto-print into console if not handled with try-catch block
