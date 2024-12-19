@@ -29,8 +29,18 @@
         a method call 
         a method call with no copy
 */
-// TODO: add data blocks for AST
-expr:
+
+expr: 
+    expr LOGICAL_OP expr |
+    expr COMPARE_OP expr |
+    expr OP expr |
+    '(' expr ')'
+    '(' copiable_method_call ')' |
+    any_data
+;
+    
+
+legacy_expr:
     '('? 
         (ANY_DATA | #compare | #logical* | cll_function_call | cll_method_call | #parenthesed)
     $if(matched(%1)) match(')');

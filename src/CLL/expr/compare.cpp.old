@@ -50,7 +50,7 @@ Rule(expr_compare) {
 Rule(expr_compare_side) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    printf("[expr_compare_side] var_reder -> ");
+    printf("[expr_compare_side] var_refer -> ");
     auto res = var_refer(pos);
     if (!res.result) {
         printf("cll_function_call -> ");

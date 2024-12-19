@@ -1,152 +1,155 @@
 #include <parser.h>
 #include <parser_defs.h>
 std::string RulesToString(::Parser::Rules);
+
 Rule(expr) {
     auto pos = in;
-    bool matched_grp = false;
-    ISC_STD::skip_spaces(pos);
-    if (*pos == '(') {
-        pos++;
-        matched_grp = true;
-    }
-
-    std::vector<::Parser::Rule> data;
-    ISC_STD::skip_spaces(pos);
-    printf("Enter expr\n");
-    printf("expr_compare -> ");
-    auto res = expr_compare(pos);
+    printf("expr -> logical");
+    auto res = expr_logical(pos);
     if (!res.result) {
-        printf("expr cll_function_call -> ");
-        res = cll_function_call(pos);
+        printf("comapre -> ");  
+        res = expr_compare(pos);
         if (!res.result) {
-            printf("expr method_call -> ");
-            res = method_call(pos);
+            printf("arithmetic -> ");
+            res = expr_arithmetic(pos);
             if (!res.result) {
-                printf("expr any_data -> ");
-                res = any_data(pos);
+                printf("group -> ");  
+                res = expr_group(pos);
                 if (!res.result) {
-                    printf("expr parenthesed -> ");
-                    res = expr_parenthesed(pos);
+                    printf("copiable_method_call ->");
+                    res = expr_copiable_method_call(pos);
                     if (!res.result) {
-                        int count = 0;
-                        printf("expr_logical");
-                        while((res = expr_logical(pos)).result) {
-                            data.push_back(res.token);
-                            pos += res.token.length();
-                            count++;
-                        }
-                        if (!count)
+                        printf("any_data ");
+                        res = any_data(pos);
+                        if (!res.result) {
                             return {};
+                        }
                     }
                 }
             }
         }
-
-    }    
+    }
+    printf("\nexpr length: %zu\n", res.token.length());
     pos += res.token.length();
-    printf("expr length: %zu\n", res.token.length());
-    if (data.empty()) {
-        data.push_back(res.token);
-    }
-    ISC_STD::skip_spaces(pos);
-    if (*pos == ')' && matched_grp) {
-        pos++;
-    }
-    printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
-    RULE_SUCCESSD(in, pos, expr, data);
+    RULE_SUCCESSD(in, pos, expr, res.token);
 }
-Rule(expr_no_compare) {
+Rule(expr_for_arithmetic) {
     auto pos = in;
-    bool matched_grp = false;
-    ISC_STD::skip_spaces(pos);
-    if (*pos == '(') {
-        matched_grp = true;
-        pos++;
-    }
-    std::vector<::Parser::Rule> data;
-    ISC_STD::skip_spaces(pos);
-    printf("Enter expr\n");
-    printf("expr cll_function_call -> ");
-    auto res = cll_function_call(pos);
+    auto res = method_call(pos);
     if (!res.result) {
-        printf("expr method_call -> ");
-        res = method_call(pos);
-        if (!res.result) {
-            printf("expr any_data -> ");
-            res = any_data(pos);
-            if (!res.result) {
-                printf("expr parenthesed -> ");
-                res = expr_parenthesed(pos);
-                if (!res.result) {
-                    int count = 0;
-                    printf("expr_logical");
-                    while((res = expr_logical(pos)).result) {
-                        data.push_back(res.token);
-                        pos += res.token.length();
-                        count++;
-                    }
-                    if (!count)
-                        return {};
-                }
-            }
-        }
+        res = any_data(pos);
+        if (!res.result)
+            return {};
     }
-
     pos += res.token.length();
-    printf("\n, expr length: ");
-    if (data.empty()) {
-        data.push_back(res.token);
-    }
-    ISC_STD::skip_spaces(pos);
-    if (*pos == ')' && matched_grp) {
-        pos++;
-    }
-    printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
-    RULE_SUCCESSD(in, pos, expr, data);
+    RULE_SUCCESSD(in, pos, expr, res.token);
 }
-Rule(expr_no_logical) {
+Rule(expr_logical) {
     auto pos = in;
-    bool matched_grp = false;
     ISC_STD::skip_spaces(pos);
-    if (*pos == '(') {
-        pos++;
-        matched_grp = true;
-    }
-
-    std::vector<::Parser::Rule> data;
+    auto expr_res = expr_compare(pos);
+    if (!expr_res.result)
+        return {};
+    pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
-    printf("Enter expr\n");
-    printf("expr_compare -> ");
-    auto res = expr_compare(pos);
-    if (!res.result) {
-        printf("expr cll_function_call -> ");
-        res = cll_function_call(pos);
-        if (!res.result) {
-            printf("expr method_call -> ");
-            res = method_call(pos);
-            if (!res.result) {
-                printf("expr any_data -> ");
-                res = any_data(pos);
-                if (!res.result) {
-                    printf("expr parenthesed -> ");
-                    res = expr_parenthesed(pos);
-                    if (!res.result) {
-                        return {};
-                    }
-                }
-            }
-        }
-
-    }    
-    pos += res.token.length();
-    printf("\n, expr length: ");
-    if (data.empty()) {
-        data.push_back(res.token);
-    }
+    auto logical_op_res = logical_op(pos);
+    if (!logical_op_res.result)
+        return {};
+    pos += logical_op_res.token.length();
     ISC_STD::skip_spaces(pos);
-    if (*pos == ')' && matched_grp) {
-        pos++;
-    }
-    printf("matched expr successfully, name: %s, length: %ld\n", RulesToString(res.token.name).c_str(), pos - in);
-    RULE_SUCCESSD(in, pos, expr, data);
+    auto expr_res2 = expr_compare(pos);
+    if (!expr_res2.result)
+        return {};
+    pos += expr_res2.token.length();
+    std::unordered_map<const char*, std::any> data {
+        { "expr1", expr_res.token },
+        { "op", logical_op_res.token },
+        { "expr2", expr_res2.token }
+    };
+    RULE_SUCCESSD(in, pos, expr_logical, data);
+}
+Rule(expr_compare) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    auto expr_res = expr_arithmetic(pos);
+    if (!expr_res.result)
+        return {};
+    pos += expr_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    auto compare_op_res = compare_op(pos);
+    if (!compare_op_res.result)
+        return {};
+    pos += compare_op_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    auto expr_res2 = expr_arithmetic(pos);
+    if (!expr_res2.result)
+        return {};
+    pos += expr_res2.token.length();
+    std::unordered_map<const char*, std::any> data {
+        { "expr1", expr_res.token },
+        { "op", compare_op_res.token },
+        { "expr2", expr_res2.token }
+    };
+    RULE_SUCCESSD(in, pos, expr_compare, data);
+}
+Rule(expr_arithmetic) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    auto expr_res = expr_for_arithmetic(pos);
+    if (!expr_res.result)
+        return {};
+    pos += expr_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    auto arithmetic_op_res = op(pos);
+    if (!arithmetic_op_res.result)
+        return {};
+    pos += arithmetic_op_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    auto expr_res2 = expr_for_arithmetic(pos);
+    if (!expr_res2.result)
+        return {};
+    pos += expr_res2.token.length();
+    std::unordered_map<const char*, std::any> data {
+        { "expr1", expr_res.token },
+        { "op", arithmetic_op_res.token },
+        { "expr2", expr_res2.token }
+    };
+    RULE_SUCCESSD(in, pos, expr_arithmetic, data);
+}
+Rule(expr_group) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    if (*pos != '(')
+        return {};
+    pos++;
+    ISC_STD::skip_spaces(pos);
+    auto expr_res = expr(pos);
+    if (!expr_res.result)
+        return {};
+    pos += expr_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    if (*pos != ')')
+        return {};
+    pos++;
+    std::unordered_map<const char*, std::any> data {
+        { "expr", expr_res.token }
+    };
+    RULE_SUCCESSD(in, pos, expr_group, data);
+}
+Rule(expr_copiable_method_call) {
+    auto pos = in;
+    ISC_STD::skip_spaces(pos);
+    if (*pos != '(')
+        return {};
+    pos++;
+    ISC_STD::skip_spaces(pos);
+    auto method_call_res = copiable_method_call(pos);
+    if (!method_call_res.result)
+        return {};
+    pos += method_call_res.token.length();
+    ISC_STD::skip_spaces(pos);
+    if (*pos != ')')
+        return {};
+    pos++;
+    RULE_SUCCESSD(in, pos, expr_copiable_method_call, method_call_res.token);
 }

@@ -38,6 +38,10 @@ add_test(NAME parser_accessor_test COMMAND parser_accessor_test)
 add_executable(parser_cll_test tests/cll.cpp)
 target_link_libraries(parser_cll_test PRIVATE parser_test_common)
 add_test(NAME parser_cll_test COMMAND parser_cll_test)
+# Define parser_cll_ternary_test
+add_executable(parser_cll_ternary_test tests/ternary.cpp)
+target_link_libraries(parser_cll_ternary_test PRIVATE parser_test_common)
+add_test(NAME parser_cll_ternary_test COMMAND parser_cll_ternary_test)
 # Define parser_loop_test
 add_executable(parser_loop_test tests/loop.cpp)
 target_link_libraries(parser_loop_test PRIVATE parser_test_common)

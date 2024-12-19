@@ -36,13 +36,13 @@ namespace Parser {
 
     cll_type_abstract,
 
-    expr_variable_value,
-    expr_compare,
-    expr_compare_side,
-    expr_logical,
-    expr_parenthesed,
-    expr_parenthesed_variable_assignment,
-    expr_not,
+    // expr_variable_value,
+    // expr_compare,
+    // expr_compare_side,
+    // expr_logical,
+    // expr_parenthesed,
+    // expr_parenthesed_variable_assignment,
+    // expr_not,
 
     end,
     strict_end,
@@ -95,6 +95,12 @@ namespace Parser {
 
     expr,
 
+    expr_logical,
+    expr_compare,
+    expr_arithmetic,
+    expr_group,
+    expr_copiable_method_call,
+    expr_for_arithmetic,
     function_body_call,
     function_body_decl,
     function_arguments,
@@ -146,13 +152,12 @@ namespace Parser {
 
             Rule(cll_type_abstract)
 
-            Rule(expr_variable_value);
-            Rule(expr_compare);
-            Rule(expr_compare_side);
             Rule(expr_logical);
-            Rule(expr_parenthesed);
-            Rule(expr_parenthesed_variable_assignment)
-            Rule(expr_not);
+            Rule(expr_compare);
+            Rule(expr_arithmetic);
+            Rule(expr_group);
+            Rule(expr_copiable_method_call);
+            Rule(expr_for_arithmetic);
         public:
             Tree parse();
             Parser(const char* text) : text(text) {}
@@ -209,8 +214,6 @@ namespace Parser {
             Rule(cll_ternary);
 
             Rule(expr);
-            Rule(expr_no_compare);
-            Rule(expr_no_logical);
 
             Rule(function_body_call);
             Rule(function_body_decl);
