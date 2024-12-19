@@ -25,9 +25,9 @@ Rule(cll_ternary) {
     pos++;
     ISC_STD::skip_spaces(pos);
     auto expr_res3 = expr(pos);
-    if (expr_res3.result)
+    if (!expr_res3.result)
         return {};
-    
+    printf("\ntotal length: %ld\n", pos - in);
     std::unordered_map<const char*, std::any> data {
         { "cond", expr_res.token },
         { "first", expr_res2.token },
