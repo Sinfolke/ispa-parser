@@ -27,7 +27,15 @@ endif()
 if (NOT DISABLE_TRACER)
     # Enable call tracer
     add_compile_definitions(ENABLE_TRACER)
-    add_compile_options(-g -finstrument-functions)
+    if(MSVC)
+        add_compile_options(/D__MSVC_PROFILE)
+    else()
+        add_compile_options(-g -finstrument-functions)
+    endif()
+
+    if (WIN32)
+        target_link_libraries(ispa dbghelp.lib)
+    endif()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

@@ -22,6 +22,10 @@ struct stack_trace_t {
     stack_trace_t(void* func, void* caller) : func(func), caller(caller) {}
 };
 extern std::vector<stack_trace_t> call_trace;
+#ifdef _MSC_VER
+    void __cdecl __penter(void* func, void* caller);
+    void __cdecl __pexit(void* func, void* caller);
+#else 
 extern "C" {
     void __attribute__((no_instrument_function))
         __cyg_profile_func_enter(void *func, void *caller);
@@ -30,3 +34,5 @@ extern "C" {
     __cyg_profile_func_exit(void *func, void *caller);
 }
 #endif
+
+#endif // ENABLE_TRACER
