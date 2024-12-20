@@ -20,19 +20,26 @@ Rule(var_refer) {
     if (*pos == '[') {
         pos++;
         ISC_STD::skip_spaces(pos);
+        printf("VAR_REFER_ENTER_EXPR\n");
         expr_res = expr(pos);
-        if (!expr_res.result)
+        if (!expr_res.result) {
+            printf("EXIT, pos: %c", *pos);
             return {};
+        }
         pos += expr_res.token.length();
+        printf("VAR_REFER_EXPR_LEN: %zu\n", expr_res.token.length());
         ISC_STD::skip_spaces(pos);
-        if (*pos != ']')
+        if (*pos != ']') {
+            printf("EXIT on closing brace, pos: %c", *pos);
             return {};
+        }
         pos++;
     }
     if (!strncmp(pos, "++", 2) || !strncmp(pos, "--", 2)) {
         pos += 2;
         post = 1;
     }
+    printf("Leaving rule, pos: %c, len: %ld\n", *pos, pos - in);
     std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
         { "brace_expression", expr_res.token },

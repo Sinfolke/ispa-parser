@@ -1,5 +1,6 @@
 #include <parser.h>
 #include <parser_defs.h>
+#include <any>
 std::string RulesToString(::Parser::Rules);
 
 Rule(expr) {
@@ -29,8 +30,8 @@ Rule(expr) {
             }
         }
     }
-    printf("\nexpr length: %zu\n", res.token.length());
     pos += res.token.length();
+    printf("\nexpr length: %zu, pos: %c\n", res.token.length(), *pos);
     RULE_SUCCESSD(in, pos, expr, res.token);
 }
 Rule(expr_for_arithmetic) {
@@ -51,23 +52,43 @@ Rule(expr_logical) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
     auto expr_res = expr_compare(pos);
-    if (!expr_res.result)
-        return {};
+    if (!expr_res.result) {
+        expr_res = expr_arithmetic(pos);
+        if (!expr_res.result) {
+            expr_res = expr_for_arithmetic(pos);
+            if (!expr_res.result) {
+                return {};
+            }
+        }
+    }
+
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
+    printf("LOGICAL MATCHING LOGICAL OP\n");
     auto logical_op_res = logical_op(pos);
-    if (!logical_op_res.result)
+    if (!logical_op_res.result) {
+        printf("OP UNMATCHED\n");
         return {};
+    }
+    printf("op: %s\n", RulesToString(std::any_cast<::Parser::Rule>(logical_op_res.token.data).name).c_str());
     pos += logical_op_res.token.length();
     ISC_STD::skip_spaces(pos);
-    auto expr_res2 = expr_compare(pos);
-    if (!expr_res2.result)
-        return {};
-    pos += expr_res2.token.length();
+    printf("pos: %c\n", *pos);
+    auto expr2_res = expr_compare(pos);
+    if (!expr2_res.result) {
+        expr2_res = expr_arithmetic(pos);
+        if (!expr2_res.result) {
+            expr2_res = expr_for_arithmetic(pos);
+            if (!expr2_res.result) {
+                return {};
+            }
+        }
+    }
+    pos += expr2_res.token.length();
     std::unordered_map<const char*, std::any> data {
         { "expr1", expr_res.token },
         { "op", logical_op_res.token },
-        { "expr2", expr_res2.token }
+        { "expr2", expr2_res.token }
     };
     RULE_SUCCESSD(in, pos, expr_logical, data);
 }
@@ -132,7 +153,6 @@ Rule(expr_group) {
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    printf("GROUP_ENTER_EXPR\n");
     auto expr_res = expr(pos);
     if (!expr_res.result)
         return {};

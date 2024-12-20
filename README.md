@@ -8,12 +8,4 @@ Implementation:
 6. test on real parser input & output tree to see everything is well
     - begin test cll (possibly the most complex part of parser), not matches in 'use' rule correclty
     TODO NEXT: 
-        - Refactor expr. It works incorreclty right now and is unable to handle large, complex expression, it is able to handle basic expressions
-
-    '(' logical>(matches the expression with logical operators) ')'
-        |
-      compare | ternary | arithmetic | any_data
-                        |    
-                expr compare_op expr \
-                expr '?' expr : expr \
-                expr '+'|'-'|'*'|'/'(...) expr
+        - make expr match multiple arithmetic operations at once. Currently it only can single one (5 + 5) and cannot (5 + 5 + 5 ...)

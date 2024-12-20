@@ -75,6 +75,7 @@ namespace Parser {
     logical_and,
     logical_or,
     logical_andr,
+    logical_not,
 
     cll_template_typename,
     cll_template_int,

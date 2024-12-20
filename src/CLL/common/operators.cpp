@@ -49,32 +49,32 @@ Rule(logical_not) {
     if ( 
         *in == '!'
     ) {
-        RULE_SUCCESS(in, in + 1, compare_op);
+        RULE_SUCCESS(in, in + 1, logical_not);
     } else if ( !strncmp(in, "not", 3)) {
-        RULE_SUCCESS(in, in + 3, compare_op);
+        RULE_SUCCESS(in, in + 3, logical_not);
     } else return {};
 }
 Rule(logical_and) {
     if ( 
         !strncmp(in, "&&", 2)
     ) {
-        RULE_SUCCESS(in, in + 2, compare_op);
+        RULE_SUCCESS(in, in + 2, logical_and);
     } else if (!strncmp(in, "and", 3)) {
-        RULE_SUCCESS(in, in + 3, compare_op);
+        RULE_SUCCESS(in, in + 3, logical_and);
     } else return {};
 }
 Rule(logical_or) {
     if ( 
         !strncmp(in, "||", 2) || !strncmp(in, "or", 2)
     ) {
-        RULE_SUCCESS(in, in + 2, compare_op);
+        RULE_SUCCESS(in, in + 2, logical_or);
     } else return {};
 }
 Rule(logical_andr) {
     if ( 
         strncmp(in, "|&", 2)
     ) {
-        RULE_SUCCESS(in, in + 2, compare_op);
+        RULE_SUCCESS(in, in + 2, logical_andr);
     } else {
         auto pos = in;
         if (!strncmp(pos, "and", 3))
@@ -84,7 +84,7 @@ Rule(logical_andr) {
         if (strncmp(in, "or", 2))
             return {};
         pos += 2;
-        RULE_SUCCESS(in, pos, compare_op);
+        RULE_SUCCESS(in, pos, logical_andr);
     }
 }
 Rule(logical_op) {
@@ -101,5 +101,6 @@ Rule(logical_op) {
             }
         }
     }
+    pos += res.token.length();
     RULE_SUCCESSD(in, pos, logical_op, res.token);
 }

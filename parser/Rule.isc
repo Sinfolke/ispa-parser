@@ -1,8 +1,3 @@
-/*
-    A rule to match token and rule definions. They have same syntax but the token begins with
-    the capslock and rules otherwise.
-
-*/
 Rule: 
     $var name = %1;
     $var rule = %3;
