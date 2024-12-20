@@ -38,7 +38,7 @@ add_compile_definitions(O_LEVEL=${O_LEVEL})
 target_include_directories(ispa PRIVATE include external parser/mod/include)
 
 include_directories(include stdlibs)
-set_target_properties(ispa PROPERTIES OUTPUT_NAME isc)
+set_target_properties(ispa PROPERTIES OUTPUT_NAME ispa)
 #set_target_properties(isc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
