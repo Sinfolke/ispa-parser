@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <debug/relativePath.h>
 #include <debug/tracer.h>
-#include <cpuf/printf>
+#include <cpuf/printf.h>
 class Error : public std::exception {
 public:
     const char* file;

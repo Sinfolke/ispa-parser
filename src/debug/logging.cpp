@@ -1,7 +1,6 @@
 #include <debug/logging.h>
 #include <debug/tracer.h>
-#include <cpuf/printf>
-#include <cpuf/color>
+#include <cpuf/color.h>
 #undef Error
 const char* Error::what() const noexcept {
     return message.c_str();
@@ -41,7 +40,7 @@ void terminate_handler() {
         }
     } catch (Error& e) {
         e.print();
-    } catch (UBase& e) {
+    } catch (UWarning& e) {
         e.print();
     } catch (const std::exception& e) {
         printf("Unknown std::exception: %s\n", e.what());

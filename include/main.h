@@ -13,10 +13,10 @@
 
 
 #include <cpuf/cdevinfo> // cdevinfo, devinfo.h
-#include <cpuf/color>
-#include <cpuf/dlib>
+#include <cpuf/color.h>
+#include <cpuf/dlib.h>
 #include <cpuf/let>
-#include <cpuf/printf>
+#include <cpuf/printf.h>
 #include <cpuf/constexpr>
 
 #include <debug/logging.h>
