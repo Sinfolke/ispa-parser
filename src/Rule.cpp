@@ -50,7 +50,7 @@ Rule(Rule) {
         pos += Rule_nested_rule_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
-    printf("Leave rule_nested_rule\n");
+    printf("Leave rule_nested_rule, total length: %ld\n", pos - in);
     ISC_STD::skip_spaces(pos);
     auto strict_end_result = strict_end(pos);
     if (strict_end_result.result)

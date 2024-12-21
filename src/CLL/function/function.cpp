@@ -55,9 +55,7 @@ Rule(function_arguments) {
             ISC_STD::skip_spaces(pos);
             auto res2 = any_data(pos);
             if (!res2.result) {
-                res2 = id(pos);
-                if (!res2.result)
-                    return {};
+                return {};
             }
             pos += res2.token.length();
             _3.push_back(res2.token);

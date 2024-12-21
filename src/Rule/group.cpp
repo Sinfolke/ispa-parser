@@ -10,7 +10,7 @@ Rule(Rule_group) {
         ISC_STD::skip_spaces(pos);
         auto id_res = id(pos);
         if (id_res.result)
-            name = TO(std::string, id_res.token);
+            name = TO(std::string, id_res.token.data);
         else
             return {};
         

@@ -72,16 +72,16 @@ Rule(logical_or) {
 }
 Rule(logical_andr) {
     if ( 
-        strncmp(in, "|&", 2)
+        !strncmp(in, "|&", 2)
     ) {
         RULE_SUCCESS(in, in + 2, logical_andr);
     } else {
         auto pos = in;
-        if (!strncmp(pos, "and", 3))
+        if (strncmp(pos, "and", 3))
             return {};
         pos += 3;
         ISC_STD::skip_spaces(pos);
-        if (strncmp(in, "or", 2))
+        if (strncmp(pos, "or", 2))
             return {};
         pos += 2;
         RULE_SUCCESS(in, pos, logical_andr);

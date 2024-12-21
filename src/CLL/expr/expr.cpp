@@ -20,10 +20,13 @@ Rule(expr) {
                     printf("copiable_method_call ->");
                     res = expr_copiable_method_call(pos);
                     if (!res.result) {
-                        printf("any_data ");
-                        res = any_data(pos);
+                        printf("cll_function_call -> ");
                         if (!res.result) {
-                            return {};
+                            printf("any_data ");
+                            res = any_data(pos);
+                            if (!res.result) {
+                                return {};
+                            }
                         }
                     }
                 }
@@ -40,9 +43,12 @@ Rule(expr_for_arithmetic) {
     if (!res.result) {
         res = method_call(pos);
         if (!res.result) {
-            res = any_data(pos);
-            if (!res.result)
-                return {};
+            res = cll_function_call(pos);
+            if (!res.result) {
+                res = any_data(pos);
+                if (!res.result)
+                    return {};
+            }
         }
     }
     pos += res.token.length();

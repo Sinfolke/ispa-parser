@@ -1,17 +1,14 @@
 Rule: 
     $var name = %1;
     $var rule = %3;
-    $var data_block = %4
+    $var data_block = %4;
     $var nested_rules = %5;
-    $str kind = (name[0] >= 'A' && name[0] <= 'Z') ? 'token' : 'rule';
 
-    // later add match of CLL here
     &rule_begin(ID ':') (#rule)* #data_block #nested_rule* STRICT_END
     data:
-        name: name,
-        kind: kind,
-        rule: rule,
-        data_block: data_block,
+        name: name
+        rule: rule
+        data_block: data_block
         nestedRules: nested_rules 
     ;
     #rule: 
@@ -24,10 +21,10 @@ Rule:
         (( group | csequence | STRING | accessor | hex | bin | ( '#'? ID ) ) qualifier?) | #op | cll | linear_comment
 
         data: 
-            is_id: is_id,
-            is_nested: is_nested,
-            is_cll: is_cll,
-            val: val,
+            is_id: is_id
+            is_nested: is_nested
+            is_cll: is_cll
+            val: val
             qualifier: qualifier
         ;
     ;
