@@ -49,7 +49,6 @@ Rule(function_arguments) {
     pos += res.token.length();
     std::vector<::Parser::Rule> _3 {};
     if (res.result) {
-        pos += res.token.length();
         while (*pos == ',') {
             pos++;
             ISC_STD::skip_spaces(pos);
@@ -115,6 +114,7 @@ Rule(cll_function_call) {
         { "name", id_res.token },
         { "body", function_body_call_res.token }
     };
+    printf("Matched cll_function_call\n");
     RULE_SUCCESSD(in, pos, cll_function_call, data);
 }
 Rule(function_decl) {

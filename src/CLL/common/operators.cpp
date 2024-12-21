@@ -45,13 +45,13 @@ Rule(assignment_op) {
     pos++;
     RULE_SUCCESSD(in, pos, assignment_op, op_res.token);
 }
-Rule(logical_not) {
+Rule(op_not) {
     if ( 
         *in == '!'
     ) {
-        RULE_SUCCESS(in, in + 1, logical_not);
+        RULE_SUCCESS(in, in + 1, op_not);
     } else if ( !strncmp(in, "not", 3)) {
-        RULE_SUCCESS(in, in + 3, logical_not);
+        RULE_SUCCESS(in, in + 3, op_not);
     } else return {};
 }
 Rule(logical_and) {
@@ -89,16 +89,13 @@ Rule(logical_andr) {
 }
 Rule(logical_op) {
     auto pos = in;
-    auto res = logical_not(pos);
+    auto res = logical_and(pos);
     if (!res.result) {
-        res = logical_and(pos);
+        res = logical_or(pos);
         if (!res.result) {
-            res = logical_or(pos);
-            if (!res.result) {
-                res = logical_andr(pos);
-                if (!res.result)
-                    return {};
-            }
+            res = logical_andr(pos);
+            if (!res.result)
+                return {};
         }
     }
     pos += res.token.length();

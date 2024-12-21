@@ -75,7 +75,7 @@ namespace Parser {
     logical_and,
     logical_or,
     logical_andr,
-    logical_not,
+    op_not,
 
     cll_template_typename,
     cll_template_int,
@@ -192,7 +192,7 @@ namespace Parser {
             Rule(assignment_op);
             Rule(compare_op);
             Rule(logical_op);
-            Rule(logical_not);
+            Rule(op_not);
             Rule(logical_and);
             Rule(logical_or);
             Rule(logical_andr);

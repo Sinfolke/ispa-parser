@@ -5,6 +5,10 @@ std::string RulesToString(::Parser::Rules);
 
 Rule(expr) {
     auto pos = in;
+    auto negative_res = op_not(pos);
+    if (negative_res.result) {
+        pos += negative_res.token.length();
+    }
     printf("expr -> logical -> ");
     auto res = expr_logical(pos);
     if (!res.result) {
@@ -21,6 +25,7 @@ Rule(expr) {
                     res = expr_copiable_method_call(pos);
                     if (!res.result) {
                         printf("cll_function_call -> ");
+                        res = cll_function_call(pos);
                         if (!res.result) {
                             printf("any_data ");
                             res = any_data(pos);

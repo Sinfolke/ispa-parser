@@ -29,8 +29,12 @@ Rule(cll_var) {
     ISC_STD::skip_spaces(pos);
     auto expr_res = expr(pos);
 
-    if (!expr_res.result)
-        return {};
+    if (!expr_res.result) {
+        expr_res = cll_ternary(pos);
+        if (!expr_res.result) {
+            return {};
+        }
+    }
     pos += expr_res.token.length();
     std::unordered_map<const char*, std::any> data {
         { "type", cll_type_res.token },

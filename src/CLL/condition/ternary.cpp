@@ -11,6 +11,7 @@ Rule(cll_ternary) {
 
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
+    printf("Pass first expression");
     if (*pos != '?')
         return {};
     pos++;
@@ -20,6 +21,7 @@ Rule(cll_ternary) {
         return {};
     pos += expr_res2.token.length();
     ISC_STD::skip_spaces(pos);
+    printf("Pass second expression\n");
     if (*pos != ':')
         return {};
     pos++;
