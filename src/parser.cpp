@@ -303,7 +303,7 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
 // Define the function to convert Rules enum to string
 std::string RulesToString(::Parser::Rules rule) {
     using Rules = ::Parser::Rules;
-    static const std::unordered_map<::Parser::Rules, std::string> rulesToString{
+    static const std::unordered_map<::Parser::Rules, std::string> rulesToString = {
         {Rules::NONE, "NONE"},
         {Rules::Import_path, "Import_path"},
         {Rules::Import_ext, "Import_ext"},
@@ -326,13 +326,6 @@ std::string RulesToString(::Parser::Rules rule) {
         {Rules::Rule_hex, "Rule_hex"},
         {Rules::Rule_bin, "Rule_bin"},
         {Rules::cll_type_abstract, "cll_type_abstract"},
-        // {Rules::expr_variable_value, "expr_variable_value"},
-        // {Rules::expr_compare, "expr_compare"},
-        // {Rules::expr_compare_side, "expr_compare_side"},
-        // {Rules::expr_logical, "expr_logical"},
-        // {Rules::expr_parenthesed, "expr_parenthesed"},
-        // {Rules::expr_parenthesed_variable_assignment, "expr_parenthesed_variable_assignment"},
-        // {Rules::expr_not, "expr_not"},
         {Rules::end, "end"},
         {Rules::strict_end, "strict_end"},
         {Rules::newline, "newline"},
@@ -345,6 +338,7 @@ std::string RulesToString(::Parser::Rules rule) {
         {Rules::accessors_group, "accessors_group"},
         {Rules::accessors_element, "accessors_element"},
         {Rules::accessors_char, "accessors_char"},
+        {Rules::accessor, "accessor"},
         {Rules::string, "string"},
         {Rules::number, "number"},
         {Rules::boolean, "boolean"},
@@ -360,6 +354,7 @@ std::string RulesToString(::Parser::Rules rule) {
         {Rules::logical_and, "logical_and"},
         {Rules::logical_or, "logical_or"},
         {Rules::logical_andr, "logical_andr"},
+        {Rules::op_not, "op_not"},
         {Rules::cll_template_typename, "cll_template_typename"},
         {Rules::cll_template_int, "cll_template_int"},
         {Rules::cll_template_bool, "cll_template_bool"},
@@ -374,6 +369,12 @@ std::string RulesToString(::Parser::Rules rule) {
         {Rules::cll_if, "cll_if"},
         {Rules::cll_ternary, "cll_ternary"},
         {Rules::expr, "expr"},
+        {Rules::expr_logical, "expr_logical"},
+        {Rules::expr_compare, "expr_compare"},
+        {Rules::expr_arithmetic, "expr_arithmetic"},
+        {Rules::expr_group, "expr_group"},
+        {Rules::expr_copiable_method_call, "expr_copiable_method_call"},
+        {Rules::expr_for_arithmetic, "expr_for_arithmetic"},
         {Rules::function_body_call, "function_body_call"},
         {Rules::function_body_decl, "function_body_decl"},
         {Rules::function_arguments, "function_arguments"},
@@ -383,7 +384,11 @@ std::string RulesToString(::Parser::Rules rule) {
         {Rules::function_value, "function_value"},
         {Rules::method_call, "method_call"},
         {Rules::copiable_method_call, "copiable_method_call"},
+        {Rules::loop_while, "loop_while"},
+        {Rules::loop_for, "loop_for"},
         {Rules::cll_var, "cll_var"},
+        {Rules::cll_var_assign, "cll_var_assign"},
+        {Rules::var_refer, "var_refer"},
         {Rules::cll, "cll"}
     };
 
@@ -396,82 +401,74 @@ void printTabs(int tabs) {
             printf("\t");
     }
 }
-void printRuleData(const ::Parser::Rule& rule, int tabs = 0) {
-    // Helper function to print indentation
-    auto printTabs = [](int count) {
-        while (count-- > 0) printf("\t");
-    };
+void printData(const char* data, int tabs);
+void printData(const std::string data, int tabs);
+void printData(const ::Parser::Rule data, int tabs);
+void printData(const std::unordered_map<const char*, std::any> data, int tabs);
+void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 
-    // Print the rule name
+
+void printData(const char* data, int tabs = 0) {
     printTabs(tabs);
-    printf("Name: %s\n", RulesToString(rule.name).c_str());
-
-    // Extract the rule's data
-    const std::any& dt = rule.data;
-    if (!dt.has_value()) { // Check if std::any contains a value
-        printTabs(tabs);
-        printf("No data\n");
-        return;
-    }
-
+    printf("%s\n", data);
+}
+void printData(const std::string data, int tabs = 0) {
     printTabs(tabs);
+    printf("%s\n", data.c_str());
+}
 
-    // Handle the different possible types of data
+void printData(const ::Parser::Rule data, int tabs = 0) {
+    printTabs(tabs);
+    printf("{\nname: %s\nvalue: ", RulesToString(data.name).c_str());
+    auto dt = data.data;
     if (dt.type() == typeid(::Parser::Rule)) {
-        // Recursively print nested rule
-        printRuleData(std::any_cast<::Parser::Rule>(dt), tabs + 1);
-    } 
-    else if (dt.type() == typeid(std::unordered_map<std::string, std::any>)) {
-        // Iterate over the map and handle keys/values
-        const auto& map = std::any_cast<std::unordered_map<std::string, std::any>>(dt);
-        for (const auto& [key, value] : map) {
-            printTabs(tabs + 1);
-            printf("%s: ", key.c_str());
-
-            if (value.type() == typeid(::Parser::Rule)) {
-                printRuleData(std::any_cast<::Parser::Rule>(value), tabs + 2);
-            } 
-            else if (value.type() == typeid(std::string)) {
-                printf("%s\n", std::any_cast<std::string>(value).c_str());
-            } 
-            else if (value.type() == typeid(const char*)) {
-                printf("%s\n", std::any_cast<const char*>(value));
-            } 
-            else {
-                printf("Unknown data type\n");
-            }
-        }
+        printf("\n\n");
+        printData(std::any_cast<::Parser::Rule>(dt), tabs + 1);
+    } else if (dt.type() == typeid(std::string)) {
+        printData(std::any_cast<std::string>(dt), 0);
+    } else if (dt.type() == typeid(const char*)) {
+        printData(std::any_cast<const char*>(dt), 0);
     } else if (dt.type() == typeid(std::unordered_map<const char*, std::any>)) {
-        // Iterate over the map and handle keys/values
-        const auto& map = std::any_cast<std::unordered_map<const char*, std::any>>(dt);
-        for (const auto& [key, value] : map) {
-            printTabs(tabs + 1);
-            printf("%s: ", key);
-
-            if (value.type() == typeid(::Parser::Rule)) {
-                printRuleData(std::any_cast<::Parser::Rule>(value), tabs + 2);
-            } 
-            else if (value.type() == typeid(std::string)) {
-                printf("%s\n", std::any_cast<std::string>(value).c_str());
-            } 
-            else if (value.type() == typeid(const char*)) {
-                printf("%s\n", std::any_cast<const char*>(value));
-            } 
-            else {
-                printf("Unknown data type\n");
-            }
-        }
-    } 
-    else if (dt.type() == typeid(std::string)) {
-        printf("%s\n", std::any_cast<std::string>(dt).c_str());
-    } 
-    else if (dt.type() == typeid(const char*)) {
-        printf("%s\n", std::any_cast<const char*>(dt));
-    } 
-    else {
+        printData(std::any_cast<std::unordered_map<const char*, std::any>>(dt), tabs + 1);
+    } else if (dt.type() == typeid(std::unordered_map<std::string, std::any>)) {
+        printData(std::any_cast<std::unordered_map<std::string, std::any>>(dt), tabs + 1);
+    } else {
         printf("Unknown data type\n");
     }
+    printf("}\n");
 }
+
+void printData(const std::unordered_map<const char*, std::any> data, int tabs = 0) {
+    for (auto [key, value] : data) {
+        printTabs(tabs);
+        printf("%s: ", key);
+        if (value.type() == typeid(::Parser::Rule)) {
+            printData(std::any_cast<::Parser::Rule>(value), tabs + 1);
+        } else if (value.type() == typeid(std::string)) {
+            printf("%s\n", std::any_cast<std::string>(value).c_str());
+        } else if (value.type() == typeid(const char*)) {
+            printf("%s\n", std::any_cast<const char*>(value));
+        } else {
+            printf("Unknown data type\n");
+        }
+    }
+}
+void printData(const std::unordered_map<std::string, std::any> data, int tabs = 0) {
+    for (auto [key, value] : data) {
+        printTabs(tabs);
+        printf("%s: ", key.c_str());
+        if (value.type() == typeid(::Parser::Rule)) {
+            printData(std::any_cast<::Parser::Rule>(value), tabs + 1);
+        } else if (value.type() == typeid(std::string)) {
+            printf("%s\n", std::any_cast<std::string>(value).c_str());
+        } else if (value.type() == typeid(const char*)) {
+            printf("%s\n", std::any_cast<const char*>(value));
+        } else {
+            printf("Unknown data type\n");
+        }
+    }
+}
+
 
 ::Parser::Tree Parser::Parser::parse() {
     auto len = strlen(text);
@@ -526,24 +523,7 @@ void printRuleData(const ::Parser::Rule& rule, int tabs = 0) {
         printf("Stopped at %ld\n", in - text);
     }
     // for (auto el : tree) {
-    //     printRuleData(el);
+    //     printData(el);
     // }
-    // int count = 0;
-    // ::Parser::Rules prevName = ::Parser::Rules::NONE;
-    // for (auto el : tree) {
-    //     if (prevName == el.name) {
-    //         count++;
-    //         continue;
-    //     } else if (prevName != ::Parser::Rules::NONE) {
-    //         printf(" [%d]\n", count + 1);
-    //         count = 0;
-    //     } else {
-    //         printf("\n");
-    //     }
-    //     prevName = el.name;
-    //     std::cout << "Token: " << RulesToString(el.name);
-    // }
-    // if (count != 0)
-    //     printf(" [%d]\n", count + 1);
     return tree;
 }
