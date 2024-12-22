@@ -36,25 +36,32 @@ Rule(Rule_csequence) {
     RULE_SUCCESSD(in, pos, Rule_csequence, data);
 }
 
-Rule(Rule_csequence_symbol)
-{
+Rule(Rule_csequence_symbol) {
     std::string data;
     auto pos = in;
-    if (*in == '\\' || *in != ']')
-    {
-        data = *in;
-        pos++;
-    } else if (!strncmp(in, "\\]", 2))
-    {
-        data = *in;
-        data += *in + 1;
-        pos += 2;
-    } else 
-        return {};
-    
-    RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
 
+    if (*pos == '\\') { // Handle escape sequences
+        pos++;
+        if (*pos == ']' || *pos == '\\') {
+            data = '\\';
+            data += *pos;
+            pos++;
+        } else {
+            // Handle other escapes, e.g., '\s', '\d' (if applicable)
+            data = '\\';
+            data += *pos;
+            pos++;
+        }
+    } else if (*pos != ']' && *pos != '\0') { // Match unescaped characters except ']'
+        data = *pos;
+        pos++;
+    } else {
+        return {}; // No match
+    }
+
+    RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
 }
+
 Rule(Rule_csequence_diapason) {
     auto pos = in;
     auto symbol_res = Rule_csequence_symbol(in);

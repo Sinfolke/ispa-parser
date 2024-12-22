@@ -33,7 +33,7 @@ Rule:
         ( '|' | '&|' )
     ;
     #qualifier:
-        data = $1;
+        $data = $1;
         ('?' | '+' | '*')
     ;
     #group:
@@ -43,7 +43,7 @@ Rule:
         ('&' ID )? '(' rule* ')'
 
         data: 
-            variable: name,
+            variable: name
             val: r
         ;
     ;

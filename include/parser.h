@@ -115,6 +115,7 @@ namespace Parser {
     loop_while,
     loop_for,
     cll_var,
+    cll_var_assign,
     var_refer,
     
     cll
@@ -229,6 +230,7 @@ namespace Parser {
             Rule(loop_while);
             Rule(loop_for);
             Rule(cll_var);
+            Rule(cll_var_assign);
             Rule(var_refer);
 
             Rule(cll);
