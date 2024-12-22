@@ -6,7 +6,7 @@ Rule(string) {
     char quote;
     std::string data;
     ISC_STD::skip_spaces(pos);
-    if (not (*pos == '"' || *pos == '\'') )
+    if (!(*pos == '"' || *pos == '\'') )
         return {};
     quote = *pos++;
     // Capture the string content
@@ -79,7 +79,7 @@ Rule(boolean) {
     if (!strncmp(in, "true", sizeof("true"))) {
         d = "true";
         val = 1;
-    } else if (not strncmp(in, "false", sizeof("false"))) {
+    } else if (!strncmp(in, "false", sizeof("false"))) {
         d = "false";
         val = 0;
     } else {
@@ -154,7 +154,7 @@ Rule(object) {
             ISC_STD::skip_spaces(pos);
             ++pos;
             id_res = id(pos);
-            if (not id_res.result)
+            if (!id_res.result)
                 break;
             pos += id_res.token.length();
             ISC_STD::skip_spaces(pos);

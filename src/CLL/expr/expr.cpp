@@ -164,9 +164,12 @@ Rule(expr_group) {
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    auto expr_res = expr(pos);
-    if (!expr_res.result)
-        return {};
+    auto expr_res = cll_ternary(pos);
+    if (!expr_res.result) {
+        expr_res = expr(pos);
+        if (!expr_res.result)
+            return {};
+    }
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
