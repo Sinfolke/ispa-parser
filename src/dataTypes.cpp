@@ -128,49 +128,56 @@ Rule(array) {
 // OBJECT Rule
 Rule(object) {
     const char* pos = in;
-    std::unordered_map<std::string, std::any> data;
-    std::vector<std::string> keys;
-    std::vector<std::any> values;
+    std::vector<::Parser::Rule> keys;
+    std::vector<::Parser::Rule> values;
 
     ISC_STD::skip_spaces(pos);
     if (*pos != '{')
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    auto id_res = id(pos);
-    if (id_res.result) {
-        pos += id_res.token.length();
+    auto key_res = any_data(pos);
+    ::Parser::Rule_result value;
+    if (key_res.result) {
+        pos += key_res.token.length();
         ISC_STD::skip_spaces(pos);
         if (*pos != ':')
             return {};
         pos++;
         ISC_STD::skip_spaces(pos);
-        auto any_data_res = any_data(pos);
-        if (!any_data_res.result)
+        value = any_data(pos);
+        if (!value.result)
             return {};
-        data[TO (std::string, id_res.token.data )] = any_data_res.token;
         ISC_STD::skip_spaces(pos);
         while (*pos == ',') {
             ISC_STD::skip_spaces(pos);
             ++pos;
-            id_res = id(pos);
-            if (!id_res.result)
+            auto key2_res = any_data(pos);
+            if (!key2_res.result)
                 break;
-            pos += id_res.token.length();
+            pos += key2_res.token.length();
             ISC_STD::skip_spaces(pos);
             if (*pos!= ':')
                 break;
             ISC_STD::skip_spaces(pos);
-            any_data_res = any_data(++pos);
-            if (!any_data_res.result)
+            auto value2_res = any_data(++pos);
+            if (!value2_res.result)
                 break;
-            data[TO(std::string, id_res.token.data)] = any_data_res.token;
-            pos += any_data_res.token.length();
+            pos += value2_res.token.length();
+
+            keys.push_back(key2_res.token);
+            values.push_back(value2_res.token);
         }
     }
     if (*pos != '}')
         return {};
     pos++;
+    std::unordered_map<const char*, std::any> data {
+        { "key", key_res },
+        { "value", value },
+        { "keys", keys },
+        { "values", values }
+    };
     RULE_SUCCESSD(in, pos, object, data);
 }
 

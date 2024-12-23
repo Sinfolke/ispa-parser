@@ -31,23 +31,21 @@ BOOLEAN:
     ;
 ;
 ARRAY: 
-    $arr<any> data;
-    $data.push(%2);
-    $data.concat(%4);
+    $arr<any> data = [%2, %4];
+
 
     '[' ( (ANY_DATA ',')* )? ']'
 
 OBJECT:
-    $obj<any> data = {  %2: %4 };
-    $arr<str> keys = $2>%2;
-    $arr<any> values = $2>%4;
-
-    $for (int i = 0; i < keys.size(); i++):
-    $    data[keys[i]] = values[i];
-
     '{'
-        ( ID ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
+        ( ANY_DATA ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
     '}'
+    data:
+        key: $1>%1
+        value: $1>%3
+        keys: $2>%2
+        values: $2>%4
+    ;
 ANY_DATA: 
     $data = %1;
 

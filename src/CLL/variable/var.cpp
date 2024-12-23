@@ -5,11 +5,10 @@ Rule(cll_var) {
     printf("Enter cll_var \n");
     ISC_STD::skip_spaces(pos);
     auto cll_type_res = cll_type(pos);
-    if (!cll_type_res.result) {
-        return {};
+    if (cll_type_res.result) {
+        pos += cll_type_res.token.length();
     }
     
-    pos += cll_type_res.token.length();
     ISC_STD::skip_spaces(pos);
     auto id_res = id(pos);
 
@@ -20,22 +19,21 @@ Rule(cll_var) {
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
     auto assignment_op_res = assignment_op(pos);
-    if (!assignment_op_res.result) {
-        printf("assingment_op_exit, pos: %c\n", *pos);
-        return {};
-    }
-    
-    pos += assignment_op_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto expr_res = cll_ternary(pos);
+    ::Parser::Rule_result expr_res;
+    if (assignment_op_res.result) {
+        pos += assignment_op_res.token.length();
+        ISC_STD::skip_spaces(pos);
+        expr_res = cll_ternary(pos);
 
-    if (!expr_res.result) {
-        expr_res = expr(pos);
         if (!expr_res.result) {
-            return {};
+            expr_res = expr(pos);
+            if (!expr_res.result) {
+                return {};
+            }
         }
+        pos += expr_res.token.length();
     }
-    pos += expr_res.token.length();
+
     std::unordered_map<const char*, std::any> data {
         { "type", cll_type_res.token },
         { "id", id_res.token },
@@ -43,33 +41,6 @@ Rule(cll_var) {
         { "value", expr_res.token }
     };
     RULE_SUCCESSD(in, pos, cll_var, data);
-}
-Rule(cll_var_assign) {
-    auto pos = in;
-    ISC_STD::skip_spaces(pos);
-    auto id_res = id(pos);
-    if (!id_res.result)
-        return {};
-    pos += id_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto assignment_op_res = assignment_op(pos);
-    if (!assignment_op_res.result)
-        return {};
-    pos += assignment_op_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto expr_res = cll_ternary(pos);
-    if (!expr_res.result) {
-        expr_res = expr(pos);
-        if (!expr_res.result)
-            return {};
-    }
-    pos += expr_res.token.length();
-    std::unordered_map<const char*, std::any> data {
-        { "id", id_res.token },
-        { "operator", assignment_op_res.token },
-        { "value", expr_res.token }
-    };
-    RULE_SUCCESSD(in, pos, cll_var_assign, data);
 }
 // Rule(cll_var_operator) {
 //     auto pos = in;

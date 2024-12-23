@@ -4,12 +4,9 @@
 Rule(method_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    auto id_res = id(pos);
+    auto id_res = any_data(pos);
     if (!id_res.result) {
-        id_res = accessor(pos);
-        if (!id_res.result) {
-            return {};
-        }
+        return {};
     }
     
     pos += id_res.token.length();

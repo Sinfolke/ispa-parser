@@ -17,16 +17,17 @@ Rule(cll) {
     printf("cll_var\n");
     auto res = cll_var(pos);
     if (!res.result) {
-        res = cll_var_assign(pos);
+        printf("cll_if\n");
+        res = cll_if(pos);
         if (!res.result) {
-            printf("cll_if\n");
-            res = cll_if(pos);
+            printf("expr\n");
+            res = expr(pos);
             if (!res.result) {
-                printf("expr\n");
-                res = expr(pos);
+                printf("copiable_method_call\n");
+                res = copiable_method_call(pos);
                 if (!res.result) {
-                    printf("copiable_method_call\n");
-                    res = copiable_method_call(pos);
+                    printf("method_call\n");
+                    res = method_call(pos);
                     if (!res.result)
                         return {};
                 }

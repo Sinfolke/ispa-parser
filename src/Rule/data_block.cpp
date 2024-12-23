@@ -85,10 +85,13 @@ Rule(Rule_data_block_key) {
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    auto any_data_res = expr(pos);
+    auto any_data_res = cll_ternary(pos);
 
-    if (!any_data_res.result)
-        return {};
+    if (!any_data_res.result) {
+        any_data_res = expr(pos);
+        if (!any_data_res.result)
+            return {};
+    }
     
     pos += any_data_res.token.length();
     // auto strict_end_res = strict_end(pos);

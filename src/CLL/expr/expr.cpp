@@ -109,8 +109,12 @@ Rule(expr_compare) {
     auto expr_res = expr_arithmetic(pos);
     if (!expr_res.result) {
         expr_res = expr_group(pos);
-        if (!expr_res.result)
-            return {};  
+        if (!expr_res.result) {
+            expr_res = expr_for_arithmetic(pos);
+            if (!expr_res.result) {
+                return {};
+            }
+        }
     }
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
@@ -122,8 +126,11 @@ Rule(expr_compare) {
     auto expr2_res = expr_arithmetic(pos);
     if (!expr2_res.result) {
         expr2_res = expr_group(pos);
-        if (!expr2_res.result)
-            return {};  
+        if (!expr2_res.result) {
+            expr2_res = expr_for_arithmetic(pos);
+            if (!expr2_res.result)
+                return {};
+        }
     }
     pos += expr2_res.token.length();
     std::unordered_map<const char*, std::any> data {
@@ -143,7 +150,6 @@ Rule(expr_arithmetic) {
         return {};
     pos += expr_res.token.length();
     while(true) {
-        printf("MATCHING ARITHMETIC\n");
         ISC_STD::skip_spaces(pos);
         auto arithmetic_op_res = op(pos);
         if (!arithmetic_op_res.result)
@@ -157,7 +163,7 @@ Rule(expr_arithmetic) {
         operators.push_back(arithmetic_op_res.token);
         values.push_back(expr_res2.token);
     }
-    if (data.empty()) {
+    if (operators.empty()) {
         return {};
     }
     std::unordered_map<const char*, std::any> data {

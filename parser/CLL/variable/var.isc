@@ -1,14 +1,5 @@
-
-clL_var_assign:
-    ID assignment_op expr | cll_ternary
-    data:
-        id: $2
-        operator: $3
-        value: $4
-    ;
-;
 cll_var: 
-    cll_type cll_var_assign
+    cll_type? ID (assignment_op expr | cll_ternary)?
 
     data:
         type: $1
