@@ -16,12 +16,16 @@ Rule(Rule_csequence) {
     std::vector<::Parser::Rule> dt;
     while(true) {
         ISC_STD::skip_spaces(pos);
-        auto res = Rule_csequence_symbol(pos);
+        auto res = Rule_csequence_escape(pos);
         if (!res.result) {
-            res = Rule_csequence_diapason(pos);
-            if (!res.result)
-                break;
+            res = Rule_csequence_symbol(pos);
+            if (!res.result) {
+                res = Rule_csequence_diapason(pos);
+                if (!res.result)
+                    break;
+            }
         }
+
         pos += res.token.length();
         dt.push_back(res.token);
     }
@@ -40,28 +44,22 @@ Rule(Rule_csequence_symbol) {
     std::string data;
     auto pos = in;
 
-    if (*pos == '\\') { // Handle escape sequences
-        pos++;
-        if (*pos == ']' || *pos == '\\') {
-            data = '\\';
-            data += *pos;
-            pos++;
-        } else {
-            // Handle other escapes, e.g., '\s', '\d' (if applicable)
-            data = '\\';
-            data += *pos;
-            pos++;
-        }
-    } else if (*pos != ']' && *pos != '\0') { // Match unescaped characters except ']'
-        data = *pos;
-        pos++;
-    } else {
-        return {}; // No match
-    }
-
+    if (*pos == ']')
+        return {};
+    
+    data = *pos;
+    pos++;
     RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
 }
-
+Rule(Rule_csequence_escape) {
+    auto pos = in;
+    if (*pos != '\\')
+        return {};
+    pos++;
+    std::string val(*pos, 1);
+    pos++;
+    RULE_SUCCESSD(in, pos, Rule_csequence_escape, val);
+}
 Rule(Rule_csequence_diapason) {
     auto pos = in;
     auto symbol_res = Rule_csequence_symbol(in);

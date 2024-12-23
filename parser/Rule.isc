@@ -48,14 +48,14 @@ Rule:
         ;
     ;
     #csequence:     // Character Sequence
-        '[' '^'? &dt ( #symbol | #diapason )* ']'
+        '[' '^'? &dt ( #escape | #symbol | #diapason )* ']'
         data:
             not: matched(%2)
             val: dt
         ;
         #symbol:
             $data = $1;
-            ('\\'   |   '\]' |  [^\]]) 
+            ('\\'   |   '\\]' |  [^\]]) 
         ;
         #escape:
             $data = $1;

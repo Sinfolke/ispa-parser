@@ -125,7 +125,8 @@ namespace Parser {
     using Tree = ISC_STD::Tree<::Parser::Rules>;
     using cll_template_content_param1_t = Rule_result (Parser::*)(const char*);
     class Parser {
-        private:
+        //private:
+        public:
             const char* text;
             std::size_t getCurrentPos(const char* pos);
             #define Rule(x, ...) Rule_result x (const char* in, ##__VA_ARGS__);
