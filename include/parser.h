@@ -30,6 +30,8 @@ namespace Parser {
     Rule_data_block,
     Rule_data_block_key,
     Rule_data_block_inclosed_map,
+    Rule_escaped,
+    Rule_any,
     Rule_nested_rule,
     Rule_hex,
     Rule_bin,
@@ -149,6 +151,8 @@ namespace Parser {
             Rule(Rule_data_block);
             Rule(Rule_data_block_key);
             Rule(Rule_data_block_inclosed_map);
+            Rule(Rule_escaped);
+            Rule(Rule_any);
             Rule(Rule_nested_rule);
             Rule(Rule_hex);
             Rule(Rule_bin);

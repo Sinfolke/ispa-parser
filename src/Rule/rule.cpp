@@ -38,27 +38,33 @@ Rule(Rule_rule) {
                                 printf("Matched id\n");
                             }
                             if (!res.result) {
-                                printf("Rule_op -> ");
-                                with_qualifier = false;
-                                res = Rule_op(pos);
+                                printf("Rule_escaped -> ");
+                                res = Rule_escaped(pos);
                                 if (!res.result) {
-                                    printf("linear_comment -> ");
-                                    res = linear_comment(pos);
+                                    printf("Rule_any -> ");
+                                    res = Rule_any(pos);
                                     if (!res.result) {
-                                        is_id=false;
-                                        is_nested=false;
-                                        is_cll=true;
-                                        with_qualifier=false;
-                                        printf("Rule_cll -> ");
-                                        res = cll(pos);
-                                        if (!res.result)
-                                            return {};
-                                        else
-                                            printf("Matched cll");
+                                        printf("Rule_op -> ");
+                                        with_qualifier = false;
+                                        res = Rule_op(pos);
+                                        if (!res.result) {
+                                            printf("linear_comment -> ");
+                                            res = linear_comment(pos);
+                                            if (!res.result) {
+                                                is_id=false;
+                                                is_nested=false;
+                                                is_cll=true;
+                                                with_qualifier=false;
+                                                printf("Rule_cll -> ");
+                                                res = cll(pos);
+                                                if (!res.result)
+                                                    return {};
+                                                else
+                                                    printf("Matched cll");
+                                            }
+                                        }
                                     }
                                 }
-
-
                             }
                             
                         }
