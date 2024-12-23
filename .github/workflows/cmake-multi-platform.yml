@@ -50,18 +50,29 @@ jobs:
       - name: Install Boost and Dependencies (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          choco install boost-msvc-14.3 -y
-          echo "BOOST_ROOT=C:\\ProgramData\\chocolatey\\lib\\boost-msvc-14.3\\tools\\boost_1_74_0" >> $GITHUB_ENV
-          echo "BOOST_LIBRARYDIR=C:\\ProgramData\\chocolatey\\lib\\boost-msvc-14.3\\tools\\boost_1_74_0\\lib64-msvc-14.3" >> $GITHUB_ENV
+          # Download Boost prebuilt binaries from Boost official repository
+          $env:BOOST_VERSION="1.74.0"
+          $env:BOOST_ARCHIVE="boost_$(($env:BOOST_VERSION))_windows.zip"
+          $env:BOOST_URL="https://boostorg.jfrog.io/artifactory/main/release/$(($env:BOOST_VERSION))/binaries/windows/$env:BOOST_ARCHIVE"
+          
+          # Download and extract Boost
+          Invoke-WebRequest -Uri $env:BOOST_URL -OutFile $env:BOOST_ARCHIVE
+          Expand-Archive -Path $env:BOOST_ARCHIVE -DestinationPath C:\boost
+
+          # Set environment variables
+          echo "BOOST_ROOT=C:\\boost" >> $GITHUB_ENV
+          echo "BOOST_INCLUDEDIR=C:\\boost\\boost_$(($env:BOOST_VERSION))\\include" >> $GITHUB_ENV
+          echo "BOOST_LIBRARYDIR=C:\\boost\\boost_$(($env:BOOST_VERSION))\\lib64-msvc-14.3" >> $GITHUB_ENV
 
       - name: Configure CMake
-        run: >
+        run: |
           cmake -B build
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT=${{ env.BOOST_ROOT }}
           -DBOOST_LIBRARYDIR=${{ env.BOOST_LIBRARYDIR }}
+          -DBOOST_INCLUDEDIR=${{ env.BOOST_INCLUDEDIR }}
           -S ${{ github.workspace }}
 
       - name: Build
