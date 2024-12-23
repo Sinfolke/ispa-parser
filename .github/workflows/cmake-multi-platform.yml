@@ -46,7 +46,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y libboost-all-dev libbacktrace-dev
+          sudo apt-get install -y libboost-all-dev
 
       - name: Install Boost and Dependencies (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
@@ -61,7 +61,6 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DBOOST_STACKTRACE_USE_BACKTRACE=ON
           -S ${{ github.workspace }}
 
       - name: Build
