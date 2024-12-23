@@ -1,6 +1,6 @@
 STRING:
-    $quote = %1
-    $data = $1
+    $quote = %1;
+    $data = $1;
 
     ( ["'] ) ( "\\${quote}" | [^ quote ] )* quote
 ;

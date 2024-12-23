@@ -135,25 +135,35 @@ Rule(expr_compare) {
 }
 Rule(expr_arithmetic) {
     auto pos = in;
+    std::vector<::Parser::Rule> operators;
+    std::vector<::Parser::Rule> values;
     ISC_STD::skip_spaces(pos);
     auto expr_res = expr_for_arithmetic(pos);
     if (!expr_res.result)
         return {};
     pos += expr_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto arithmetic_op_res = op(pos);
-    if (!arithmetic_op_res.result)
+    while(true) {
+        printf("MATCHING ARITHMETIC\n");
+        ISC_STD::skip_spaces(pos);
+        auto arithmetic_op_res = op(pos);
+        if (!arithmetic_op_res.result)
+            break;
+        pos += arithmetic_op_res.token.length();
+        ISC_STD::skip_spaces(pos);
+        auto expr_res2 = expr_for_arithmetic(pos);
+        if (!expr_res2.result)
+            break;
+        pos += expr_res2.token.length();        
+        operators.push_back(arithmetic_op_res.token);
+        values.push_back(expr_res2.token);
+    }
+    if (data.empty()) {
         return {};
-    pos += arithmetic_op_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto expr_res2 = expr_for_arithmetic(pos);
-    if (!expr_res2.result)
-        return {};
-    pos += expr_res2.token.length();
+    }
     std::unordered_map<const char*, std::any> data {
-        { "expr1", expr_res.token },
-        { "op", arithmetic_op_res.token },
-        { "expr2", expr_res2.token }
+        { "first", expr_res.token },
+        { "operators", operators },
+        { "values", values }
     };
     RULE_SUCCESSD(in, pos, expr_arithmetic, data);
 }

@@ -37,7 +37,12 @@ expr:
         compare LOGICAL_OP compare
     ;
     #compare:
-        arithmetic COMPARE_OP arithmetic
+        arithmetic (COMPARE_OP arithmetic)+
+        data:
+            first: %1
+            operators: %2
+            sequence: %3
+        ;
     ;
     #arithmetic:
         for_arithmetic OP for_arithmetic

@@ -4,7 +4,7 @@
 #include <sstream>
 int main() {
     system("cd " __ROOT_DIR__);
-    std::ifstream file("parser/Rule.isc");
+    std::ifstream file("parser/dataTypes.isc");
     if (!file.is_open()) {
         std::cerr << "Error: Could not open the file.\n";
         return 1;
