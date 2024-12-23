@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}  # Corrected syntax
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code with submodules
         uses: actions/checkout@v4
         with:
-          submodules: true  # Ensures submodules are initialized and updated
+          submodules: true
           fetch-depth: 1
 
       - name: Set reusable strings
@@ -48,12 +48,26 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
+      - name: Install Boost (Ubuntu)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Install Boost (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          choco install boost-msvc-14.3 --version=1.74.0 -y
+          echo "BOOST_ROOT=C:\\local\\boost_1_74_0" >> $GITHUB_ENV
+          echo "BOOST_LIBRARYDIR=C:\\local\\boost_1_74_0\\lib64-msvc-14.3" >> $GITHUB_ENV
+
       - name: Configure CMake
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DBOOST_ROOT=$BOOST_ROOT
           -S ${{ github.workspace }}
 
       - name: Build

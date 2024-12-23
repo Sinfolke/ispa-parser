@@ -1,32 +1,31 @@
+#ifdef ENABLE_TRACER
+    #define BOOST_STACKTRACE_USE_BACKTRACE
+    #include <boost/stacktrace.hpp>
+#endif
 #include <debug/logging.h>
-#include <debug/tracer.h>
 #include <cpuf/color.h>
 #undef Error
 const char* Error::what() const noexcept {
     return message.c_str();
 }
 void Error::print() {
+// Capture the stack trace
+
+    cpuf::perror("RTERROR [%s:%d]: %s\n", file, line, message);
 #ifdef ENABLE_TRACER
-    cpuf::perror("Call trace:\n");
-    for (size_t i = 0; i < call_trace.size() - 1; ++i) {
-        stack_trace_t e = call_trace[i];
-        const char* func_name = e.getFuncName();
-        cpuf::perror("\t%$ --> ", func_name);
-    }
-    cpuf::perror("\t%$\n", call_trace.back().getFuncName());
+    cpuf::perror("call trace: %$\n", boost::stacktrace::stacktrace());
 #endif
-    cpuf::perror("[%s:%d]: %s", file, line, message);
     exit(2);
 }
 const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {
-    cpuf::perror("%$Error%$: %$", color::red, color::reset, message);
+    cpuf::perror("%$Error%$: %$\n", color::red, color::reset, message);
     exit(1);
 }
 void UWarning::print() {
-    cpuf::printf("%$Error%$: %$", color::yellow, color::reset, message);
+    cpuf::printf("%$Error%$: %$\n", color::yellow, color::reset, message);
 }
 
 /*
