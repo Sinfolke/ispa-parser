@@ -12,7 +12,6 @@ jobs:
 
     strategy:
       fail-fast: false
-
       matrix:
         os: [ubuntu-latest, windows-latest]
         build_type: [Release]
@@ -57,15 +56,17 @@ jobs:
 
       - name: Configure CMake
         run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          cmake -B build
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DBOOST_ROOT=${{ env.BOOST_ROOT }}
+          -DBOOST_LIBRARYDIR=${{ env.BOOST_LIBRARYDIR }}
           -S ${{ github.workspace }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+        run: cmake --build build --config ${{ matrix.build_type }}
 
       - name: Test
-        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        working-directory: build
         run: ctest --build-config ${{ matrix.build_type }}
