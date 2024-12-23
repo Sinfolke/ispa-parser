@@ -6,7 +6,7 @@ cll_block:
     data: $1;
 ;
 cll_spaced_block(spaces_amount):
-    $while (skipup(' ') > spaces_amount):
+    $while (skipup(' ') > spaces_amount)
         cll | Rule.rule
     data: %1; // here data is also just a token
 ;
