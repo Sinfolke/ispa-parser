@@ -40,24 +40,31 @@ endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_definitions(__LIBC)
-    include_directories(/usr/lib/gcc/x86_64-linux-gnu/13/include /usr/lib/gcc/x86_64-linux-gnu/14/include)
+    # to somehow find backtrace.h
+    include_directories(
+        /usr/lib/gcc/x86_64-linux-gnu/14/include 
+        /usr/lib/gcc/x86_64-linux-gnu/13/include 
+        /usr/lib/gcc/x86_64-linux-gnu/12/include 
+        /usr/lib/gcc/x86_64-linux-gnu/11/include
+        /usr/lib/gcc/x86_64-linux-gnu/10/include
+    )
 endif()
 # Execute the find command to locate backtrace.h
-execute_process(
-    COMMAND find /usr/lib -name "backtrace.h"
-    RESULT_VARIABLE result
-    OUTPUT_VARIABLE find_output
-    ERROR_VARIABLE find_error
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+# execute_process(
+#     COMMAND find /usr/lib -name "backtrace.h"
+#     RESULT_VARIABLE result
+#     OUTPUT_VARIABLE find_output
+#     ERROR_VARIABLE find_error
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+# )
 
 
-# Print the result of the find command
-if(result EQUAL 0)
-    message(STATUS "Found backtrace.h at: ${find_output}")
-else()
-    message(WARNING "Error occurred while finding backtrace.h: ${find_error}")
-endif()
+# # Print the result of the find command
+# if(result EQUAL 0)
+#     message(STATUS "Found backtrace.h at: ${find_output}")
+# else()
+#     message(WARNING "Error occurred while finding backtrace.h: ${find_error}")
+# endif()
 find_package(Boost 1.74 REQUIRED stacktrace_backtrace)
 target_link_libraries(ispa Boost::stacktrace_backtrace)
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
