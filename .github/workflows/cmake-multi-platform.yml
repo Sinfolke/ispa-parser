@@ -42,22 +42,16 @@ jobs:
           submodules: true
           fetch-depth: 1
 
-      - name: Set reusable strings
-        id: strings
-        shell: bash
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-      - name: Install Boost (Ubuntu)
+      - name: Install Boost and Dependencies (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y libboost-all-dev
+          sudo apt-get install -y libboost-all-dev libbacktrace-dev
 
-      - name: Install Boost (Windows)
+      - name: Install Boost and Dependencies (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          choco install boost-msvc-14.3 --version=1.74.0 -y
+          choco install boost-msvc-14.3 -y
           echo "BOOST_ROOT=C:\\local\\boost_1_74_0" >> $GITHUB_ENV
           echo "BOOST_LIBRARYDIR=C:\\local\\boost_1_74_0\\lib64-msvc-14.3" >> $GITHUB_ENV
 
@@ -67,7 +61,7 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DBOOST_ROOT=$BOOST_ROOT
+          -DBOOST_STACKTRACE_USE_BACKTRACE=ON
           -S ${{ github.workspace }}
 
       - name: Build
