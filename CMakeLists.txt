@@ -40,6 +40,7 @@ endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_definitions(__LIBC)
+    include_directories(/usr/lib/gcc/x86_64-linux-gnu/13/include /usr/lib/gcc/x86_64-linux-gnu/14/include)
 endif()
 find_package(Boost 1.74 REQUIRED stacktrace_backtrace)
 target_link_libraries(ispa Boost::stacktrace_backtrace)
