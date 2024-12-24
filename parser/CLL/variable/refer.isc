@@ -1,6 +1,6 @@
 var_refer:
-    $var pre = matched($1)
-    $var post = matched($3)
+    $var pre = matched($1);
+    $var post = matched($3);
     ('++' | '--')? ID ('[' expr ']')? ('++' | '--')?
     data:
         name: %1

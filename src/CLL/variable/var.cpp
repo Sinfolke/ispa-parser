@@ -2,7 +2,6 @@
 #include <parser_defs.h>
 Rule(cll_var) {
     auto pos = in;
-    printf("Enter cll_var \n");
     ISC_STD::skip_spaces(pos);
     auto cll_type_res = cll_type(pos);
     if (cll_type_res.result) {

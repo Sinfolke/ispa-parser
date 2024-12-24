@@ -4,7 +4,6 @@ std::string RulesToString(::Parser::Rules);
 //#data_block
 Rule(Rule_data_block) {
     auto pos = in;
-    printf("Enter data block\n");
     // ISC_STD::skip_spaces(pos);
     // auto start = pos;
     // while(*pos == '\n' || *pos == '\r')

@@ -30,9 +30,8 @@ Rule(function_body_decl) {
     pos++;
     ISC_STD::skip_spaces(pos);
     auto function_parameters_res = function_parameters(pos);
-    if (!function_parameters_res.result)
-        return {};
-    pos += function_parameters_res.token.length();
+    if (function_parameters_res.result)
+        pos += function_parameters_res.token.length();
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};

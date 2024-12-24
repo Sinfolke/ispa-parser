@@ -75,16 +75,12 @@ Rule(expr_logical) {
 
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
-    printf("LOGICAL MATCHING LOGICAL OP\n");
     auto logical_op_res = logical_op(pos);
     if (!logical_op_res.result) {
-        printf("OP UNMATCHED\n");
         return {};
     }
-    printf("op: %s\n", RulesToString(std::any_cast<::Parser::Rule>(logical_op_res.token.data).name).c_str());
     pos += logical_op_res.token.length();
     ISC_STD::skip_spaces(pos);
-    printf("pos: %c\n", *pos);
     auto expr2_res = expr_compare(pos);
     if (!expr2_res.result) {
         expr2_res = expr_arithmetic(pos);

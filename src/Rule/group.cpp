@@ -35,11 +35,10 @@ Rule(Rule_group) {
         pos += rule_res.token.length();
         r.push_back(rule_res.token);
         if (*pos == ')')
-             break;
+            break;
     }
     ISC_STD::skip_spaces(pos);
     if (*pos != ')') {
-        printf("RULE GROUP EXIT 2, pos: %c, changes: %ld\n", *pos, pos - in);
         return {};
     }
     pos++;

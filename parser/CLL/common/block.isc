@@ -1,12 +1,11 @@
 // TODO: possibly to merge into a single block rule
 cll_block:
-    '{' (cll | Rule.rule)* '}'
+    '{' Rule#rule* '}'
 
-    // data is just a token
     data: $1;
 ;
 cll_spaced_block(spaces_amount):
     $while (skipup(' ') > spaces_amount)
-        cll | Rule.rule
-    data: %1; // here data is also just a token
+        Rule#rule
+    data: %1;
 ;

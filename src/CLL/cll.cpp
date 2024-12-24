@@ -14,11 +14,11 @@ Rule(cll) {
     pos++;
     ISC_STD::skip_spaces(pos);
     // skip spaces
-    printf("cll_var\n");
-    auto res = cll_var(pos);
+    printf("cll_if\n");
+    auto res = cll_if(pos);
     if (!res.result) {
-        printf("cll_if\n");
-        res = cll_if(pos);
+        printf("cll_var\n");
+        res = cll_var(pos);
         if (!res.result) {
             printf("expr\n");
             res = expr(pos);
@@ -38,9 +38,8 @@ Rule(cll) {
     // skip spaces
     // end
     auto end_res = end(pos);
-    if (!end_res.result)
-        return {};
-    pos += end_res.token.length();
+    if (end_res.result)
+        pos += end_res.token.length();
     printf("Cll matched successfully\n");
     RULE_SUCCESSD(in, pos, cll, res.token);
 }

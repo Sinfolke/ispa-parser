@@ -46,3 +46,7 @@ add_test(NAME parser_cll_ternary_test COMMAND parser_cll_ternary_test)
 add_executable(parser_loop_test tests/loop.cpp)
 target_link_libraries(parser_loop_test PRIVATE parser_test_common)
 add_test(NAME parser_loop_test COMMAND parser_loop_test)
+# Define parser_cll_ternary_test
+add_executable(parser_if_test tests/if.cpp)
+target_link_libraries(parser_if_test PRIVATE parser_test_common)
+add_test(NAME parser_if_test COMMAND parser_if_test)

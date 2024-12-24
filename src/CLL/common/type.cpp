@@ -157,7 +157,7 @@ Rule(cll_type_abstract)
     ) {
         type.append(pos, 3);
         pos += 3;
-    
+        printf("Matched abstract type\n");
     } else if (!strncmp(pos, "bool", 4)) {
         type.append(pos, 4);
         pos += 4;

@@ -32,7 +32,6 @@ Rule(Rule) {
         data_block_res = Rule_data_block(pos);
         if (data_block_res.result) {
             pos += data_block_res.token.length();
-            printf("Matched data block\n");
             break;
         }
     }

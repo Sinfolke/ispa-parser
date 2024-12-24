@@ -2,17 +2,7 @@ OP:
     '+' | '-' | '*' | '/' | '%' | 
     // bitwise
     '&' | '|' | '^' | '<<' | '>>'
-
-    // remember variables are not block-scoped
-    $if (%2 >= '&' and %2 <= '>>')
-        $bool kind = "bitwise"
-    else
-        $bool kind = "arithmetic"
-    
-    data: 
-        value: %1
-        kind: kind
-    ;
+    data: %1;
 ;
 ASSIGNMENT_OP:
     OP? '='
