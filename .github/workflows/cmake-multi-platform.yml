@@ -53,6 +53,7 @@ jobs:
           curl -L -o boost_1_87_0.zip https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.zip
           tar -xf boost_1_87_0.zip -C C:/
           setx BOOST_ROOT C:/boost_1_87_0
+          setx BOOST_INCLUDE_DIR C:/boost_1_87_0
           setx BOOST_LIBRARYDIR C:/boost_1_87_0/stage/lib
           cd C:/boost_1_87_0
           ./bootstrap.bat
@@ -68,6 +69,7 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT=${{ env.BOOST_ROOT }}
+          -DBOOST_INCLUDE_DIR=${{ env.BOOST_INCLUDE_DIR }}  
           -DBOOST_LIBRARYDIR=${{ env.BOOST_LIBRARYDIR }}
           -S ${{ github.workspace }}
 
