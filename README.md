@@ -8,4 +8,4 @@ Implementation:
 6. test on real parser input & output tree to see everything is well
     - begin test cll (possibly the most complex part of parser), not matches in 'use' rule correclty
     TODO NEXT: 
-        - make expr match multiple arithmetic operations at once. Currently it only can single one (5 + 5) and cannot (5 + 5 + 5 ...)
+        - for some reason not matching variable declaration at pos 606 (function.isc)
