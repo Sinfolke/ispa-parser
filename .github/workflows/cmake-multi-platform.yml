@@ -51,12 +51,12 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           curl -L -o boost_1_87_0.zip https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.zip
-          tar -xf boost_1_87_0.zip -C C:\\
-          setx BOOST_ROOT C:\\boost_1_87_0
-          setx BOOST_LIBRARYDIR C:\\boost_1_87_0\\stage\\lib
-          cd C:\\boost_1_87_0
-          bootstrap.bat
-          .\b2 install --prefix=C:\\boost_1_87_0 --with-stacktrace
+          tar -xf boost_1_87_0.zip -C C:/
+          setx BOOST_ROOT C:/boost_1_87_0
+          setx BOOST_LIBRARYDIR C:/boost_1_87_0/stage/lib
+          cd C:/boost_1_87_0
+          ./bootstrap.bat
+          ./b2 install --prefix=C:\\boost_1_87_0 --with-stacktrace
 
 
 
