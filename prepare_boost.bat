@@ -33,7 +33,9 @@ IF %ERRORLEVEL% NEQ 0 (
     echo Error: Failed to build Boost stacktrace
     exit /b 1
 )
-
+dir
+cd stage/lib
+dir
 :: Completion message
 echo - Boost has been successfully prepared
 exit /b 0
