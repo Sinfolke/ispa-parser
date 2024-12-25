@@ -24,19 +24,19 @@ else()
     endif()
 endif()
 
-if (NOT DISABLE_TRACER)
-    # Enable call tracer
-    add_compile_definitions(ENABLE_TRACER)
-    if(MSVC)
-        add_compile_options(/D__MSVC_PROFILE)
-    else()
-        add_compile_options(-g -finstrument-functions)
-    endif()
+# if (NOT DISABLE_TRACER)
+#     # Enable call tracer
+#     add_compile_definitions(ENABLE_TRACER)
+#     if(MSVC)
+#         add_compile_options(/D__MSVC_PROFILE)
+#     else()
+#         add_compile_options(-g -finstrument-functions)
+#     endif()
 
-    if (WIN32)
-        target_link_libraries(ispa dbghelp.lib)
-    endif()
-endif()
+#     if (WIN32)
+#         target_link_libraries(ispa dbghelp.lib)
+#     endif()
+# endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_definitions(__LIBC)
@@ -49,22 +49,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         /usr/lib/gcc/x86_64-linux-gnu/10/include
     )
 endif()
-# Execute the find command to locate backtrace.h
-# execute_process(
-#     COMMAND find /usr/lib -name "backtrace.h"
-#     RESULT_VARIABLE result
-#     OUTPUT_VARIABLE find_output
-#     ERROR_VARIABLE find_error
-#     OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
 
-
-# # Print the result of the find command
-# if(result EQUAL 0)
-#     message(STATUS "Found backtrace.h at: ${find_output}")
-# else()
-#     message(WARNING "Error occurred while finding backtrace.h: ${find_error}")
-# endif()
 find_package(Boost 1.74 REQUIRED stacktrace_backtrace)
 target_link_libraries(ispa Boost::stacktrace_backtrace)
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
