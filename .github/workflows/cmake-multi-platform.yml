@@ -61,6 +61,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT=./boost_1_87_0
           -DBOOST_LIBRARYDIR=./boost_1_87_0/stage/lib
+          -DBoost_DIR=./boost_1_87_0/stage/lib/cmake/Boost-1.87.0
+          -DCMAKE_PREFIX_PATH=./boost_1_87_0/stage/lib/cmake/Boost-1.87.0
           -DCMAKE_POLICY_DEFAULT_CMP0167=NEW
           -S ${{ github.workspace }}
 
