@@ -1,1 +1,1 @@
-$str fun_name;
+$int spaces = %1.size();
