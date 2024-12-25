@@ -53,7 +53,7 @@ Rule(Import_path) {
     ISC_STD::skip_spaces(pos);
     std::string v;
     while (
-        not 
+        ! 
         (
             *pos == '"' ||
             *pos == '<' ||

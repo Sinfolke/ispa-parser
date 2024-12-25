@@ -2,7 +2,7 @@
 #include <parser_defs.h>
 
 Rule(end) {
-    if (*in == ';' or *in == '\n')
+    if (*in == ';' || *in == '\n')
         RULE_SUCCESS(in, in + 1, end);
     return {};
 }
