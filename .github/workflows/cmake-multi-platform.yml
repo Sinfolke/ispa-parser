@@ -59,7 +59,6 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT=./boost_1_87_0
-          -DBOOST_LIBRARYDIR=C:/boost_1_87_0/stage/lib
           -S ${{ github.workspace }}
 
       - name: Build

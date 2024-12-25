@@ -52,5 +52,5 @@ public:
 /*
     needed to auto-print into console if not handled with try-catch block
 */
-void terminate_handler();
+void custom_terminate_handler();
 #define Error(format, ...) Error(__FILE__, __LINE__, format, ##__VA_ARGS__)

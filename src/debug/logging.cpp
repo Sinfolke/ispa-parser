@@ -31,7 +31,7 @@ void UWarning::print() {
 /*
     needed to auto-print into console if not handled with try-catch block
 */
-void terminate_handler() {
+void custom_terminate_handler() {
     try {
         // Try to rethrow the last uncaught exception to print it
         if (std::current_exception()) {
