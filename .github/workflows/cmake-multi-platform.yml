@@ -50,6 +50,7 @@ jobs:
       - name: Install Boost (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
+          cd ${{ github.workspace }}
           ./prepare_boost.bat
 
       - name: Configure CMake
@@ -60,6 +61,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT=./boost_1_87_0
           -DBOOST_LIBRARYDIR=./boost_1_87_0/stage/lib
+          -DCMAKE_POLICY_DEFAULT_CMP0167=NEW
           -S ${{ github.workspace }}
 
       - name: Build
