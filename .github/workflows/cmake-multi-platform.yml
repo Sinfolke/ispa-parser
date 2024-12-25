@@ -41,25 +41,16 @@ jobs:
           submodules: true
           fetch-depth: 1
 
-      - name: Install Boost and Dependencies (Ubuntu)
+      - name: Install Boost (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y libboost-all-dev gcc build-essential
 
-      - name: Install Boost and Dependencies (Windows)
+      - name: Install Boost (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          mkdir C:/boost
-          cd C:/boost
-          git clone <boost_cmake>
-          cd boost_cmake
-          cmake -B build -S .
-          cmake --build
-          
-
-
-
+          ./prepare_boost.bat
 
       - name: Configure CMake
         run: >
@@ -67,9 +58,7 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DCMAKE_PREFIX_PATH=C:/boost_1_87_0
-          -DBOOST_ROOT=C:/boost_1_87_0
-          -DBOOST_INCLUDEDIR=C:/boost_1_87_0
+          -DBOOST_ROOT=./boost_1_87_0
           -DBOOST_LIBRARYDIR=C:/boost_1_87_0/stage/lib
           -S ${{ github.workspace }}
 
