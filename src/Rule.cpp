@@ -10,6 +10,11 @@ Rule(Rule) {
     }
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
+    auto body_decl_res = function_body_decl(pos);
+    if (body_decl_res.result) {
+        pos += body_decl_res.token.length();
+        ISC_STD::skip_spaces(pos);
+    }
     if (*pos != ':')
         return {};
     pos++;

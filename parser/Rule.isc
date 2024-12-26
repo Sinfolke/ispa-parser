@@ -4,7 +4,7 @@ Rule:
     $var data_block = %4;
     $var nested_rules = %5;
 
-    &rule_begin(ID ':') (#rule)* #data_block #nested_rule* STRICT_END
+    &rule_begin(ID ':') function_body_decl? (#rule)* #data_block #nested_rule* STRICT_END
     data:
         name: name
         rule: rule
@@ -40,7 +40,7 @@ Rule:
         $var name=$0>%1;
         $var r=%4;
 
-        ('&' ID )? '(' rule* ')'
+        ('&' method_call | ID )? '(' rule* ')'
 
         data: 
             variable: name

@@ -43,7 +43,7 @@ function_decl:
     $   fun_type = $1>%1;
     $   fun_name = fun_type.pop();
     }
-    \s* 'fn' (ID+) function_body_decl $val(#function_value)?
+    \s* 'fn' (ID+) function_body_decl $val(cll_block | cll_spaced_block)?
 
     data:
         is_declaration_only: is_declaration_only
@@ -51,19 +51,5 @@ function_decl:
         name: fun_name
         type: fun_type
         value: val
-
-
-    #function_value(spaces):
-        // get the function value if exists
-        $is_declaration_only = false;
-        $arr val;
-        $while (true) {
-        $   skipup('\n');
-        $   var current_spaces_amount = skipup("\s*").size();
-        $   if (current_spaces_amount >= spaces)
-                // match any cll rule here
-                &val.push(var | cond | expr | copiable_method_call)+ 
-        }
-        data: val;
     ;
 ;

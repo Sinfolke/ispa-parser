@@ -3,18 +3,21 @@
 
 Rule(Rule_group) {
     auto pos = in;
-    std::string name;
+    std::any name;
     ISC_STD::skip_spaces(pos);
     if (*pos == '&') {
         pos++;
         ISC_STD::skip_spaces(pos);
-        auto id_res = id(pos);
-        if (id_res.result)
-            name = TO(std::string, id_res.token.data);
-        else
-            return {};
+        auto res = method_call(pos);
+        if (!res.result) {
+            res = id(pos);
+            if (!res.result) {
+                return {};
+            }
+        }
         
-        pos += id_res.token.length();
+        pos += res.token.length();
+        name = res.token;
         ISC_STD::skip_spaces(pos);
     }
     if (*pos != '(') {
