@@ -1,6 +1,5 @@
 # Set the source directory variable
-set(SRC_DIR ./src)
-file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
+
 
 # Installation script
 

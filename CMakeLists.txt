@@ -3,7 +3,8 @@ project(ISPA)
 
 include(cmake/conf)
 add_subdirectory(mod/parser)    # include parser
-
+set(SRC_DIR ./src)
+file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
 add_executable(ispa ${SOURCES})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -25,12 +26,13 @@ else()
 endif()
 
 if (NOT DISABLE_TRACER)
-     # Enable call tracer
-     add_compile_definitions(ENABLE_TRACER)
-     add_compile_options(-g)
-     if (WIN32)
-         target_link_libraries(ispa dbghelp.lib)
-     endif()
+    # Enable call tracer
+    add_compile_definitions(ENABLE_TRACER)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        add_compile_options(/Zi)
+    else()
+        add_compile_options(-g1)
+    endif()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -51,6 +53,7 @@ else()
     find_package(Boost 1.74 REQUIRED COMPONENTS stacktrace_backtrace)
     target_link_libraries(ispa Boost::stacktrace_backtrace)
 endif()
+
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
 target_include_directories(ispa PRIVATE include external parser/mod/include)

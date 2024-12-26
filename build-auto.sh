@@ -38,7 +38,9 @@ fi
 find_ld
 # GET GENERATOR
 find_generator $generator
-
+if [[ WINDOWS ]]; then
+    cmd.exe /c "./prepare_boost.bat"
+fi
 # configure cmake
 echo "Using C compiler: $c_compiler"
 echo "Using CXX compiler: $cxx_compiler"

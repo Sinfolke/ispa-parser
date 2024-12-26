@@ -49,6 +49,7 @@ ZERO_CHECK.vcxproj
 ZERO_CHECK.vcxproj.filters
 CMakeFiles
 build
+buildw
 !.build
 
 doc
