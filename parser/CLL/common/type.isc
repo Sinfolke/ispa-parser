@@ -12,7 +12,7 @@ cll_csupport_types:
     ('float' | 'double')
         |
     // custom C++ containers (not decided whether to add)
-    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template(cll_template_content[typename])
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template(cll_template_content_typename)
 
     data:
         type: %1
@@ -26,7 +26,7 @@ cll_type:
     
     #abstract:
         // the abstract types
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template[typename]) | ('obj' cll_template[typename]) )
+        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template_typename) | ('obj' cll_template_typename) )
         data:
             type: %1
             template: %2
