@@ -11,7 +11,6 @@ Rule(string) {
     quote = *pos++;
     // Capture the string content
     while (*pos != quote) {
-        ISC_STD::skip_spaces(pos);
         if (*pos == '\\') {
             data += *pos++; // Skip escape character
         }

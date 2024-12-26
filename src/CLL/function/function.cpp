@@ -15,6 +15,7 @@ Rule(function_body_call) {
     auto function_arguments_res = function_arguments(pos);
     if (function_arguments_res.result) {
         pos += function_arguments_res.token.length();
+        printf("Matched function arguments, length: %zu\n", function_arguments_res.token.length());
     }
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
@@ -42,26 +43,26 @@ Rule(function_body_decl) {
 Rule(function_arguments) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
+    printf("length: %ld, pos: %c\n", pos - in, *pos);
     auto res = any_data(pos);
     if (!res.result) {
         return {};
     }
     pos += res.token.length();
+    printf("length: %ld, pos: %c\n", pos - in, *pos);
     std::vector<::Parser::Rule> _3 {};
-    if (res.result) {
-        while (*pos == ',') {
-            pos++;
-            ISC_STD::skip_spaces(pos);
-            auto res2 = any_data(pos);
-            if (!res2.result) {
-                return {};
-            }
-            pos += res2.token.length();
-            _3.push_back(res2.token);
-            ISC_STD::skip_spaces(pos);
+    while (*pos == ',') {
+        pos++;
+        ISC_STD::skip_spaces(pos);
+        auto res2 = any_data(pos);
+        if (!res2.result) {
+            break;
         }
+        pos += res2.token.length();
+        _3.push_back(res2.token);
+        ISC_STD::skip_spaces(pos);
     }
-    
+    std::cout << "Functin arguments length: " << pos - in;
     std::vector<std::any> data {
         res.token,
         _3

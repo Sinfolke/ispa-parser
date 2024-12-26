@@ -2,10 +2,11 @@
 cll_block:
     '{' Rule.rule* '}'
 
-    data: $1;
+    data: %2;
 ;
 cll_spaced_block(spaces_amount):
-    $while (skipup(' ') > spaces_amount)
+    $while (skipup(' ') > spaces_amount) {
         Rule#rule
+    }
     data: %1;
 ;

@@ -4,7 +4,7 @@
 #include <sstream>
 int main() {
     system("cd " __ROOT_DIR__);
-    std::ifstream file("parser/CLL/function/function.isc");
+    std::ifstream file("parser/CLL/common/block.isc");
     if (!file.is_open()) {
         std::cerr << "Error: Could not open the file.\n";
         return 1;

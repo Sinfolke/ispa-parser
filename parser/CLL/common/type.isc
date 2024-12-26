@@ -1,17 +1,10 @@
-/*
-    rule to match out the type of variable in isc
-*/
-
 
 cll_csupport_types: 
-    // integral types
     bool is_unsigned = matched($1>%1);
     ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
         |
-    // floating types
     ('float' | 'double')
         |
-    // custom C++ containers (not decided whether to add)
     ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template(cll_template_content_typename)
 
     data:
@@ -25,7 +18,6 @@ cll_type:
     data: %1;
     
     #abstract:
-        // the abstract types
         ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template_typename) | ('obj' cll_template_typename) )
         data:
             type: %1
