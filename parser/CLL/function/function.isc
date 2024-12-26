@@ -47,7 +47,7 @@ function_decl:
 
     data:
         is_declaration_only: is_declaration_only
-        is_typed = is_typed
+        is_typed: is_typed
         name: fun_name
         type: fun_type
         value: val

@@ -24,13 +24,17 @@ Rule(expr) {
                     printf("copiable_method_call ->");
                     res = expr_copiable_method_call(pos);
                     if (!res.result) {
-                        printf("cll_function_call -> ");
-                        res = cll_function_call(pos);
+                        printf("method_call ->");
+                        res = method_call(pos);
                         if (!res.result) {
-                            printf("any_data ");
-                            res = any_data(pos);
+                            printf("cll_function_call -> ");
+                            res = cll_function_call(pos);
                             if (!res.result) {
-                                return {};
+                                printf("any_data ");
+                                res = any_data(pos);
+                                if (!res.result) {
+                                    return {};
+                                }
                             }
                         }
                     }
