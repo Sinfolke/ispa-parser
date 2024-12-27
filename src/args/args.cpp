@@ -38,6 +38,7 @@ void Args::on(const char* prefix, const std::function<void(Arg&)>& func)
 }
 void Args::parse() {
         Arg currentArg;
+        bool hasArguments = false;
         for (int i = 1; i < argc; ++i) { // Start from 1 to skip program name
             const char* current = argv[i];
             if (current[0] == '-') { // Prefix found
@@ -45,9 +46,15 @@ void Args::parse() {
                     args.push_back(currentArg);
                     currentArg.clear();
                 }
-                currentArg.prefix = current[1] == '-' ? &current[2] : &current[1]; // Handle `--` or `-`
+                if (current[1] == '-') {
+                    hasArguments = true;
+                    currentArg.prefix = &current[2];
+                } else {
+                    hasArguments = false;
+                    currentArg.prefix = &current[1];
+                }
             } else {
-                if (currentArg.empty()) {
+                if (!hasArguments || currentArg.empty()) {
                     _unnamed.push_back(current);
                 } else {
                     currentArg.values.push_back(current);

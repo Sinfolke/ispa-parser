@@ -33,6 +33,14 @@ public:
 };
 class UError : public UBase {
 public:
+    template<typename... Args>
+    UError(const char* message, Args&&... args)
+        : UBase(message, std::forward<Args>(args)...) {}
+
+    template<typename... Args>
+    UError(std::string message, Args&&... args)
+        : UBase(std::move(message), std::forward<Args>(args)...) {}
+
     void print();
 };
 class UWarning : public UBase {

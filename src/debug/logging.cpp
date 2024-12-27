@@ -21,7 +21,7 @@ const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {
-    cpuf::perror("%$Error%$: %$\n", color::red, color::reset, message);
+    cpuf::perror("%sError%s: %$\n", color::red, color::reset, message);
     exit(1);
 }
 void UWarning::print() {
@@ -38,6 +38,8 @@ void custom_terminate_handler() {
             std::rethrow_exception(std::current_exception());
         }
     } catch (Error& e) {
+        e.print();
+    } catch (UError& e) {
         e.print();
     } catch (UWarning& e) {
         e.print();
