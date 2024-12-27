@@ -22,7 +22,7 @@ ND const char* Arg::operator[](const int v) const {
     return values[v];
 }
 
-void Args::init(int argc, const char** argv) {
+void Args::init(int argc, char** argv) {
 #ifdef _WIN32
     // windows does also provide the executable execute name/path
     argc--;
@@ -32,71 +32,50 @@ void Args::init(int argc, const char** argv) {
     this->argv = argv;
 
 }
-void Args::on(const char* prefix, listenerf func) {
+void Args::on(const char* prefix, const std::function<void(Arg&)>& func) 
+{
     listeners[prefix] = func;
 }
-void Args::onParsed(const char* prefix, listenerf func) {
-    listeners_parsed[prefix] = func;
-}
-void Args::onUnparsed(const char* prefix, listenerf func) {
-    listeners_unparsed[prefix] = func;
-}
 void Args::parse() {
-    std::vector<Arg> empty_args;
-    Arg argument;
-    bool variadic = false;
-    const char* continue_arg = NULL;
-    for (int i = 0; i < argc; ++i) {
-        if (argv[i][0] == '-') {
-            if (variadic) {
-                argument.values.push_back(argv[i]);
-                continue;
-            }
-            if (!argument.empty()) {
-                // flush the argument
-                args.push_back(argument);
-            }
-            argument.clear();
-            argument.prefix = &argv[i][1];
-            if (!listeners.empty()) {
-                auto it = listeners.find(argument.prefix);
-                if (it!= listeners.end()) {
-                    listener_return_t result = it->second(argument);
-                    auto command = result.command;
-                    if (command == listener_cmd::SUCCESS) { // parsed successfully
-                        continue; // listener is success
-                    } else if (command == listener_cmd::STOP_PARSING) {
-                        break;
-                    } else if (command == listener_cmd::CONTINUE_PARSING_AT) {
-                        if (command == listener_cmd::ABORT) {
-                            throw Error("listener aborted");
-                        }
-                    }
+        Arg currentArg;
+        for (int i = 1; i < argc; ++i) { // Start from 1 to skip program name
+            const char* current = argv[i];
+            if (current[0] == '-') { // Prefix found
+                if (!currentArg.empty()) {
+                    args.push_back(currentArg);
+                    currentArg.clear();
                 }
-            }
-        } else if (argv[i][0] == '!') {
-
-            if (variadic) {
-                // close variadic
-                args.push_back(argument);
-                variadic = false;
-                if (argv[i][1]) {
-                    throw UWarning("Ignoring %d symbols here: %s", strlen(argv[i]), argv[i]);
-                }
+                currentArg.prefix = current[1] == '-' ? &current[2] : &current[1]; // Handle `--` or `-`
             } else {
-                // open variadic
-                variadic = true;
-                if (argv[i][1]) {
-                    argument.values.push_back(argv[i]);
+                if (currentArg.empty()) {
+                    _unnamed.push_back(current);
+                } else {
+                    currentArg.values.push_back(current);
                 }
             }
-        } else {
-            if (argument.empty())
-               _unnamed.push_back(argv[i]);
-            else
-                argument.values.push_back(argv[i]);
+        }
+        if (!currentArg.empty()) {
+            args.push_back(currentArg);
+        }
+        invokeListeners();
+    }
+ND bool Args::has(const char* prefix)
+{
+    for (auto& arg : args) {
+        if (!strcmp(arg.prefix, prefix)) {
+            return true;
         }
     }
+    return false;
+}
+ND Arg Args::get(const char* prefix)
+{
+    for (auto& arg : args) {
+        if (!strcmp(arg.prefix, prefix)) {
+            return arg;
+        }
+    }
+    return {};
 }
 ND Arg& Args::operator[](const int& id) {
     if (args.size() < id)
@@ -106,3 +85,12 @@ ND Arg& Args::operator[](const int& id) {
 ND std::vector<const char*> Args::unnamed(void) {
     return _unnamed;
 };
+void Args::invokeListeners()
+{
+    for (auto& arg : args) {
+        auto it = listeners.find(arg.prefix);
+        if (it != listeners.end()) {
+            it->second(arg);
+        }
+    }
+}

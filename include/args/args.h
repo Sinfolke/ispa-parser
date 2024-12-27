@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <cstring>
 #include <unordered_map>
+#include <map>
 #include <debug/logging.h>
 class Arg;
 enum class listener_cmd {
@@ -35,24 +36,25 @@ class Arg {
 class Args {
     private:
         int argc;
-        const char** argv;
+        char** argv;
         std::vector<Arg> args;
         std::vector<const char*> _unnamed;
-        std::unordered_map<const char*, listenerf> listeners;
+        std::map<std::string, std::function<void(Arg&)>> listeners;
         std::unordered_map<const char*, listenerf> listeners_parsed;
         std::unordered_map<const char*, listenerf> listeners_unparsed;
+        void invokeListeners();
     public:
-        Args(int argc, const char** argv) : argc(argc), argv(argv) {}
+        Args(int argc, char** argv) : argc(argc), argv(argv) {}
         /**
          * @brief Provide the input argc and argv
          * 
          * @param argc 
          * @param argv 
          */
-        void init(int argc, const char** argv);
-        void on(const char* prefix, listenerf func);
-        void onParsed(const char* prefix, listenerf func);
-        void onUnparsed(const char* prefix, listenerf func);
+        void init(int argc, char** argv);
+        void on(const char* prefix, const std::function<void(Arg&)>& func);
+        bool has(const char* prefix);
+        Arg get(const char* prefix);
         void parse();
         ND Arg& operator[](const int& id);
         ND std::vector<const char*> unnamed(void);

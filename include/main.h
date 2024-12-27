@@ -23,3 +23,5 @@
 #include <init.h>
 
 #include <args/args.h>
+
+void printHelp();
