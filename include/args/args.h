@@ -39,7 +39,7 @@ class Args {
         char** argv;
         std::vector<Arg> args;
         std::vector<const char*> _unnamed;
-        std::map<std::string, std::function<void(Arg&)>> listeners;
+        std::unordered_map<std::string, std::function<void(Arg&)>> listeners;
         std::unordered_map<const char*, listenerf> listeners_parsed;
         std::unordered_map<const char*, listenerf> listeners_unparsed;
         void invokeListeners();

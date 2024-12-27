@@ -55,6 +55,7 @@ else()
 endif()
 
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
+add_compile_definitions(PROGRAM_VERSION="0.1.0 beta")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
 target_include_directories(ispa PRIVATE include external parser/mod/include)
 

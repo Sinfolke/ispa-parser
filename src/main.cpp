@@ -2,11 +2,8 @@
 #include <args/args.h>
 
 void printHelp() {
-    std::cout << "Usage: ./program [options]\n"
-              << "Options:\n"
-              << "  --help      Show this help message\n";
+    cpuf::printf("usage\n");
 }
-
 int main(int argc, char** argv) {
     init();
     Args args(argc, argv);
@@ -16,8 +13,14 @@ int main(int argc, char** argv) {
         printHelp();
         exit(0);
     });
-
-    // Parse arguments
+    args.on("version", [](Arg&) {
+        cpuf::printf("%$\n", PROGRAM_VERSION);
+        exit(0);
+    });
     args.parse();
+    // 1. get source dir
+    // 2. merge sources
+    // 3. separate tokens and rules
+    // 4. redirect to generator
     return 0;
 }
