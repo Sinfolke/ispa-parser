@@ -28,7 +28,8 @@ IF %ERRORLEVEL% NEQ 0 (
 
 :: Build Boost with stacktrace support
 echo - Building Boost stacktrace
-b2 --build-type=minimal --with-stacktrace --with-headers install --prefix=.
+set PREFIX=%cd%
+b2 --build-type=minimal --with-stacktrace --with-headers install --prefix=%PREFIX%
 IF %ERRORLEVEL% NEQ 0 (
     echo Error: Failed to build Boost stacktrace
     exit /b 1

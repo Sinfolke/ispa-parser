@@ -61,6 +61,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DBOOST_ROOT="./boost_1_87_0"
           -DBOOST_LIBRARYDIR="./boost_1_87_0/stage/lib"
+          -DBOOST_INCLUDEDIR="./boost_1_87_0/include"
+          -DBOOST_INCLUDE_DIR="./boost_1_87_0/include"
           -DBoost_DIR="./boost_1_87_0/stage/lib/cmake/Boost-1.87.0"
           -Dboost_headers_DIR="./boost_1_87_0/bin.v2/libs/headers/build/install"
           -DCMAKE_PREFIX_PATH="./boost_1_87_0/stage/lib/cmake/Boost-1.87.0;./boost_1_87_0/bin.v2/libs/headers/build/install"
