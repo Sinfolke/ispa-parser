@@ -22,20 +22,11 @@ Rule(Rule_rule) {
                         printf("Rule_bin -> ");
                         res = Rule_bin(pos);
                         if (!res.result) {
-                            is_id = true;
-                            printf("nested_rule_call -> ");
-                            if (*pos == '#') {
-                                is_nested = true;
-                                pos++;
-                            }
-                            ISC_STD::skip_spaces(pos);
-                            res = id(pos);
+                            printf("Rule_other -> ");
+                            res = Rule_other(pos);
                             if (res.result && *(pos + res.token.length()) == ':') {
                                 printf("leaving data block (not matching)\n");
                                 return {}; // to not match data block
-                            }
-                            if (res.result) {
-                                printf("Matched id\n");
                             }
                             if (!res.result) {
                                 printf("Rule_escaped -> ");

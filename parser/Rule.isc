@@ -11,21 +11,21 @@ Rule:
         data_block: data_block
         nestedRules: nested_rules 
     ;
-    #rule: 
-        $bool is_id = matched($3);
-        $bool is_nested = matched($3>%1);
-        $bool is_cll = !matched($1);
-        $var val = is_id ? $3>%2 : ( is_cll ? %1 : $2 );
-        $char qualifier = %3;
+    #rule:
 
-        (( group | csequence | STRING | accessor | hex | bin | ( '#'? ID ) ) qualifier?) | #escaped | #any | #op | cll | linear_comment
+        (( group | csequence | STRING | accessor | hex | bin | other ) qualifier?) | #escaped | #any | #op | cll | linear_comment
 
         data: 
-            is_id: is_id
-            is_nested: is_nested
-            is_cll: is_cll
-            val: val
-            qualifier: qualifier
+            val: %1
+            qualifier: %2
+        ;
+    ;
+    #other:
+        '#'? ID ('.' ID)*
+        data:
+            is_nested: matched(%1)
+            name: %2
+            nested_name: $1>%2
         ;
     ;
     #op:

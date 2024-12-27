@@ -20,6 +20,7 @@ namespace Parser {
     use_unit,
 
     Rule_rule,
+    Rule_other,
     Rule_op,
     Rule_qualifier,
     Rule_group,
@@ -141,6 +142,7 @@ namespace Parser {
             Rule(use_unit);
 
             Rule(Rule_rule);
+            Rule(Rule_other);
             Rule(Rule_op);
             Rule(Rule_qualifier);
             Rule(Rule_group);
