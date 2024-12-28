@@ -46,7 +46,6 @@ Rule(loop_for) {
         pos += res1.token.length();
         ISC_STD::skip_spaces(pos);
     }
-    printf("End first expr\n");
     if (*pos != ';')
         return {};
     pos++;
@@ -57,20 +56,16 @@ Rule(loop_for) {
         pos += expr2_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
-    printf("End second expr\n");
     if (*pos != ';')
         return {};
     pos++;
     ISC_STD::skip_spaces(pos);
-    printf("Begin third expr\n");
     auto expr3_res = expr(pos);
     if (expr3_res.result) {
         pos += expr3_res.token.length();
         ISC_STD::skip_spaces(pos);
     }
-    printf("End third expr\n");
     if (*pos != ')') {
-        printf("Not matched close brace, pos %c", *pos);
         return {};
     }
     pos++;
@@ -81,12 +76,10 @@ Rule(loop_for) {
         // skip spaces here
         block = cll_spaced_block(pos, spaces);
         if (!block.result) {
-            printf("All blocks unmatched\n");
             return {};
         }
     }
     pos += block.token.length();
-    printf("matched block\n");
     std::unordered_map<const char*, std::any> data {
         { "decl", res1.token },
         { "cond", expr2_res.token },

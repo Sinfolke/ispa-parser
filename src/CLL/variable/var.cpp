@@ -5,7 +5,6 @@ Rule(cll_var) {
     ISC_STD::skip_spaces(pos);
     auto cll_type_res = cll_type(pos);
     if (cll_type_res.result) {
-        printf("Matched type, size: %ld\n", cll_type_res.token.length());
         pos += cll_type_res.token.length();
     }
     
@@ -15,7 +14,6 @@ Rule(cll_var) {
     if (!id_res.result) {
         return {};
     }
-    printf("Matched id, size: %ld\n", id_res.token.length());
 
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
@@ -23,7 +21,6 @@ Rule(cll_var) {
     ::Parser::Rule_result expr_res;
     if (assignment_op_res.result) {
         pos += assignment_op_res.token.length();
-        printf("Matched assignment op, size: %ld\n", assignment_op_res.token.length());
         ISC_STD::skip_spaces(pos);
         expr_res = cll_ternary(pos);
 
@@ -32,10 +29,8 @@ Rule(cll_var) {
             if (!expr_res.result) {
                 return {};
             } else {
-                printf("Matched expr, size: %ld\n", expr_res.token.length());
             }
         } else {
-            printf("Matched ternary, size: %ld\n", expr_res.token.length());
         }
         pos += expr_res.token.length();
     }
