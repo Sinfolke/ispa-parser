@@ -15,7 +15,7 @@ Rule(function_body_call) {
     auto function_arguments_res = function_arguments(pos);
     if (function_arguments_res.result) {
         pos += function_arguments_res.token.length();
-        printf("Matched function arguments, length: %zu\n", function_arguments_res.token.length());
+        
     }
     ISC_STD::skip_spaces(pos);
     if (*pos != ')')
@@ -43,13 +43,13 @@ Rule(function_body_decl) {
 Rule(function_arguments) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    printf("length: %ld, pos: %c\n", pos - in, *pos);
+    
     auto res = any_data(pos);
     if (!res.result) {
         return {};
     }
     pos += res.token.length();
-    printf("length: %ld, pos: %c\n", pos - in, *pos);
+    
     std::vector<::Parser::Rule> _3 {};
     while (*pos == ',') {
         pos++;
@@ -97,17 +97,17 @@ Rule(function_parameters) {
 Rule(cll_function_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    printf("Enter function call\n");
+    
     auto id_res = id(pos);
     if (!id_res.result) {
         return {};
     }
     pos += id_res.token.length();
     ISC_STD::skip_spaces(pos);
-    printf("Enter body call\n");
+    
     auto function_body_call_res = function_body_call(pos);
     if (!function_body_call_res.result) {
-        printf("Function body unsuccessfull call\n");
+        
         return {};
     }
     pos += function_body_call_res.token.length();
@@ -115,7 +115,7 @@ Rule(cll_function_call) {
         { "name", id_res.token },
         { "body", function_body_call_res.token }
     };
-    printf("Matched cll_function_call\n");
+    
     RULE_SUCCESSD(in, pos, cll_function_call, data);
 }
 Rule(function_decl) {

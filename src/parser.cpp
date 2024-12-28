@@ -476,13 +476,11 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
     auto in = text;
     size_t rule_count = 0;
     for (;*in;) {
-        printf("entering rule %zu\n", rule_count++);
         ISC_STD::skip_spaces(in);
         auto comment_res = linear_comment(in);
         if (comment_res.result) {
             // found a comment in begin, go to the end and continue loop
             in += comment_res.token.length();
-            printf("found comment - skipping\n");
             continue;
         }
         bool require_end = true;
@@ -495,10 +493,6 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
                     res = spacemode(in);
                     if (!res.result)
                     {
-                        if (*in == '\0')
-                            printf("EOF\n");
-                        else 
-                            printf("Stopped at rule\n");
                         break;
                     }
                 } else {
@@ -506,21 +500,17 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
                 }
             }
         }
-        std::cout << "Token length: " << res.token.length() << "\n";
         in += res.token.length();
         // match end
         ISC_STD::skip_spaces(in);
-        printf("matching end at %ld, in: %c", in - text, *in);
         if (require_end) {
             auto end_res = end(in);
             if (!end_res.result) {
-                printf("Unmatched end of rule\n");
                 break;
             }
             in += end_res.token.length();
         }
         tree.push_back(res.token);
-        printf("Stopped at %ld\n", in - text);
     }
     // for (auto el : tree) {
     //     printData(el);

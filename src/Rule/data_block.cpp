@@ -12,36 +12,36 @@ Rule(Rule_data_block) {
     //     return {};
     ISC_STD::skip_spaces(pos);
     if (strncmp(pos, "data", 4)) {
-        printf("EXIT 1, pos: %c\n", *pos);
+        
         return {};
     }
     pos += 4;
     ISC_STD::skip_spaces(pos);
     if (*pos != ':') {
-        printf("EXIT 2\n");
+        
         return {};
     }
     pos++;
     ISC_STD::skip_spaces(pos);
     auto data = Rule_data_block_inclosed_map(pos);
     if (!data.result) {
-        printf("Not matched any_data\n");
+        
         data = any_data(pos);
         if (!data.result) {
-            printf("Not matched inclosed_map\n");
+            
             return {};  
         } else {
-            printf("Matched inclosed_map\n");
+            
         }
     } else {
-        //printf("Matched any_data, name: %s\n",
+        //
         //RulesToString(std::any_cast<::Parser::Rule>(data.token.data).name).c_str());
     }
     pos += data.token.length();
     ISC_STD::skip_spaces(pos);
     auto strict_end_res = strict_end(pos);
     if (!strict_end_res.result) {
-        printf("STRICT_END_EXIT, pos: %c", *pos);
+        
         return {};
     }
     pos += strict_end_res.token.length();
@@ -75,7 +75,7 @@ Rule(Rule_data_block_key) {
     // if (in == pos)
     //     return {};
     auto id_res = id(pos);
-    printf("enter data_block_key\n");
+    
     if (!id_res.result)
         return {};
     pos += id_res.token.length();

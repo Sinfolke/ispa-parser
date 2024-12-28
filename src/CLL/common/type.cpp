@@ -163,7 +163,7 @@ Rule(cll_type_abstract)
     } else if (!strncmp(pos, "arr", 3) || !strncmp(pos, "obj", 3)) {
         type.append(pos, 3);
         pos += 3;
-        printf("Cll_type_enter_obj\n");
+        
         ISC_STD::skip_spaces(pos);
         if (*pos != '<') {
             return {};

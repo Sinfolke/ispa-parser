@@ -4,7 +4,7 @@ Rule(cll_block) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
     if (*pos != '{') {
-        printf("BRACE EXIT\n");
+        
         return {};
     }
     pos++;
@@ -23,7 +23,7 @@ Rule(cll_block) {
     if (*pos != '}')
         return {};
     pos++;
-    printf("matched block successfully, pos: %c, length: %ld\n", *pos, pos - in);
+    
     RULE_SUCCESSD(in, pos, cll_block, results);
 }
 Rule(cll_spaced_block, int spaces_amount) {
@@ -37,6 +37,6 @@ Rule(cll_spaced_block, int spaces_amount) {
         pos += res.token.length();
         results.push_back(res.token);
     }
-    printf("matched block successfully\n");
+    
     RULE_SUCCESSD(in, pos, cll_block, results);
 }

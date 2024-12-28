@@ -11,7 +11,7 @@ Rule(cll_if) {
     if (!expr_res.result)
         return {};
     pos += expr_res.token.length();
-    printf("matched expr, pos: %c\n", *pos);
+    
     auto res = cll_block(pos);
     if (!res.result) {
         res = cll_spaced_block(pos, space_amount);
@@ -23,6 +23,6 @@ Rule(cll_if) {
         { "expr", expr_res.token },
         { "block", res.token }
     };
-    printf("Matched condition, length: %ld\n", pos - in);
+    
     RULE_SUCCESSD(in, pos, cll_if, data);
 }

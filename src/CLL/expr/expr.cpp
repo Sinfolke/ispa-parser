@@ -9,28 +9,28 @@ Rule(expr) {
     if (negative_res.result) {
         pos += negative_res.token.length();
     }
-    printf("expr -> logical -> ");
+    
     auto res = expr_logical(pos);
     if (!res.result) {
-        printf("comapre -> ");  
+        
         res = expr_compare(pos);
         if (!res.result) {
-            printf("arithmetic -> ");
+            
             res = expr_arithmetic(pos);
             if (!res.result) {
-                printf("group -> ");  
+                
                 res = expr_group(pos);
                 if (!res.result) {
-                    printf("copiable_method_call ->");
+                    
                     res = expr_copiable_method_call(pos);
                     if (!res.result) {
-                        printf("method_call ->");
+                        
                         res = method_call(pos);
                         if (!res.result) {
-                            printf("cll_function_call -> ");
+                            
                             res = cll_function_call(pos);
                             if (!res.result) {
-                                printf("any_data ");
+                                
                                 res = any_data(pos);
                                 if (!res.result) {
                                     return {};
@@ -43,7 +43,7 @@ Rule(expr) {
         }
     }
     pos += res.token.length();
-    printf("\nexpr length: %zu, pos: %c\n", res.token.length(), *pos);
+    
     RULE_SUCCESSD(in, pos, expr, res.token);
 }
 Rule(expr_for_arithmetic) {

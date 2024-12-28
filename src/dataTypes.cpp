@@ -54,7 +54,6 @@ Rule(number) {
     if (main.empty())
         return {};
     std::string full = sign + main + (dec.empty() ? "" : std::string(".") + dec);
-    printf("main: %s, dec: %s\n", main.c_str(), dec.c_str());
     double main_n = std::stod(main);
     double dec_n = dec.empty() ? 0.0 : std::stod(dec);
     std::unordered_map<const char*, std::any> data {

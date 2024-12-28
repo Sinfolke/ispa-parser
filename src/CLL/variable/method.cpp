@@ -16,7 +16,7 @@ Rule(method_call) {
     }
     pos++;
     ISC_STD::skip_spaces(pos);
-    printf("method_call_enter_function_call, pos: %c, %zu\n", *pos, getCurrentPos(pos));
+    
     auto cll_function_call_res = cll_function_call(pos);
 
     if (!cll_function_call_res.result)
