@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
             cpuf::printf("dir: %$\n", dirPath);
             auto files = getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
+                cpuf::printf("Reading file %$\n", file);
                 std::string content = readFile(file);
                 Parser::Parser parser(content.c_str());
                 auto current_tree = parser.parse();
