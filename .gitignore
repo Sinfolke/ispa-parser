@@ -50,6 +50,7 @@ ZERO_CHECK.vcxproj.filters
 CMakeFiles
 build
 buildw
+Testing
 !.build
 
 doc

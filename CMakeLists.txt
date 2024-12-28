@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISPA)
 
-include(cmake/conf)
+enable_testing()
 add_subdirectory(mod/parser)    # include parser
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
@@ -69,3 +69,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)  # Disable GNU extensions
 set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
+
+add_test(
+    NAME mainTest
+    COMMAND ispa --dir mod/parser/parser
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)

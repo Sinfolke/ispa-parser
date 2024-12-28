@@ -4,6 +4,8 @@
 void printHelp() {
     cpuf::printf("usage\n");
 }
+
+
 int main(int argc, char** argv) {
     init();
     Args args(argc, argv);
@@ -19,27 +21,31 @@ int main(int argc, char** argv) {
     });
     args.parse();
     Parser::Tree tree;
-    if (!args.unnamed().size())
+    if (!args.unnamed().size() && !args.has("dir"))
         throw UError("No input files");
     
     for (const auto file : args.unnamed()) {
         cpuf::printf("file: %$\n", file);
-        std::ifstream ifs(file);
-        // Get the file size
-        std::streamsize fileSize = ifs.tellg();
-        ifs.seekg(0, std::ios::beg);
-        // Read the file content into a string
-        std::string fileContent(static_cast<size_t>(fileSize), '\0');
-        if (!ifs.read(fileContent.data(), fileSize)) {
-            throw Error("Failed to read file %$", file);
-        }
+        auto fileContent = readFile(std::string(file));
         // parse 
         Parser::Parser parser(fileContent.c_str());
         auto current_tree = parser.parse();
         // assign tree
         tree.insert(tree.end(), current_tree.begin(), current_tree.end());
     }
-
+    if (args.has("dir")) {
+        cpuf::printf("Parsing all files in dir\n");
+        for (const auto dirPath : args.get("dir").values) {
+            cpuf::printf("dir: %$\n", dirPath);
+            auto files = getFilesRecursively(dirPath, ".isc");
+            for (auto file : files) {
+                std::string content = readFile(file);
+                Parser::Parser parser(content.c_str());
+                auto current_tree = parser.parse();
+                tree.insert(tree.end(), current_tree.begin(), current_tree.end());
+            }
+        }
+    }
     // 1. get source dir
     // 2. merge sources
     // 3. separate tokens and rules

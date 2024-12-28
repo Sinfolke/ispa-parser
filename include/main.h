@@ -20,6 +20,7 @@
 #include <cpuf/constexpr>
 
 #include <debug/logging.h>
+#include <core/file.h>
 #include <init.h>
 
 #include <args/args.h>
