@@ -28,7 +28,6 @@ int main(int argc, char** argv) {
         // Get the file size
         std::streamsize fileSize = ifs.tellg();
         ifs.seekg(0, std::ios::beg);
-
         // Read the file content into a string
         std::string fileContent(static_cast<size_t>(fileSize), '\0');
         if (!ifs.read(fileContent.data(), fileSize)) {
@@ -40,6 +39,7 @@ int main(int argc, char** argv) {
         // assign tree
         tree.insert(tree.end(), current_tree.begin(), current_tree.end());
     }
+
     // 1. get source dir
     // 2. merge sources
     // 3. separate tokens and rules

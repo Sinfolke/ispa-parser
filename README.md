@@ -26,5 +26,4 @@
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - Improvements to build system
-  - Error handling improvements
+  - Begin to write rules to parse parser files & walk on AST
