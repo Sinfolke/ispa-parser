@@ -1,6 +1,6 @@
 
 cll_csupport_types: 
-    bool is_unsigned = matched($1>%1);
+    $bool is_unsigned = matched($1>%1);
     ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
         |
     ('float' | 'double')

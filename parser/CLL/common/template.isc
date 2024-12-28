@@ -1,4 +1,3 @@
-// cll_template[typename, int, bool, str, arr, obj, any_data, all];
 cll_template_content_typename:
     cll_type
     (',' cll_type)*
@@ -29,7 +28,7 @@ cll_template_content_obj:
     (',' object)*
     data: [%1, %3];
 ;
-cll_template_content_any_data
+cll_template_content_any_data:
     any_data 
     (',' any_data)*
     data: [%1, %3];
