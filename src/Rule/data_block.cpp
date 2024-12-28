@@ -41,7 +41,6 @@ Rule(Rule_data_block) {
     ISC_STD::skip_spaces(pos);
     auto strict_end_res = strict_end(pos);
     if (!strict_end_res.result) {
-        
         return {};
     }
     pos += strict_end_res.token.length();

@@ -62,7 +62,6 @@ Rule(function_arguments) {
         _3.push_back(res2.token);
         ISC_STD::skip_spaces(pos);
     }
-    std::cout << "Functin arguments length: " << pos - in;
     std::vector<std::any> data {
         res.token,
         _3

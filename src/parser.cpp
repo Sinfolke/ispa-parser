@@ -493,6 +493,7 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
                     res = spacemode(in);
                     if (!res.result)
                     {
+                        printf("Stopped at %ld, in == '\\0': %s\n", in - text, (*in == '\0') ? "true" : "false");
                         break;
                     }
                 } else {

@@ -31,7 +31,6 @@ Rule(Rule_group) {
         ISC_STD::skip_spaces(pos);
         auto rule_res = Rule_rule(pos);
         if (!rule_res.result) {
-            printf("Unsuccessful result\n");
             break;
         }
 

@@ -28,9 +28,7 @@ Rule(cll_var) {
             expr_res = expr(pos);
             if (!expr_res.result) {
                 return {};
-            } else {
             }
-        } else {
         }
         pos += expr_res.token.length();
     }

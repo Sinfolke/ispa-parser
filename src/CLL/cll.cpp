@@ -2,12 +2,6 @@
 #include <parser_defs.h>
 Rule(cll) {
     auto pos = in;
-    // if (*pos != '\n') {
-    //     printf("cll exit 1\n");
-    //     return {};
-    // }
-    // pos++;
-    // skip spaces
     ISC_STD::skip_spaces(pos);
     if (*pos != '$')
         return {};
