@@ -13,5 +13,8 @@ accessor_all:
 ;
 accessor:
     accessor_all ('>' accessor_all)* 
-    data: %3.push_front(%1);
+    data: 
+        first: %1
+        second: %3
+    ;
 ;
