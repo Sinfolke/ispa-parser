@@ -1,4 +1,4 @@
 #include <parser.h>
 namespace Tokens {
-    Parser::Rule ruleToToken(Parser::Rule input);
+    Parser::Rule singleRuleToToken(Parser::Rule input);
 };

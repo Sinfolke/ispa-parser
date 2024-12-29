@@ -8,7 +8,7 @@
 static auto count = 0;
 
 namespace Tokens {
-    ::Parser::Rule ruleToToken(::Parser::Rule input) {
+    ::Parser::Rule singleRuleToToken(::Parser::Rule input) {
         // Construct a token here
         std::vector<::Parser::Rule> rule {input};
         ::Parser::Rule data_block = {
