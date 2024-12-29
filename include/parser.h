@@ -60,6 +60,7 @@ namespace Parser {
     accessors_group,
     accessors_element,
     accessors_char,
+    accessor_all,
     accessor,
 
     string,

@@ -53,7 +53,7 @@ Rule(accessor_all) {
         }
     }
     pos += res.token.length();
-    RULE_SUCCESSD(in, pos, accessor, res.token);
+    RULE_SUCCESSD(in, pos, accessor_all, res.token);
 }
 Rule(accessor) {
     auto pos = in;
