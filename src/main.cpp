@@ -30,7 +30,12 @@ int main(int argc, char** argv) {
     
     for (const auto file : args.unnamed()) {
         cpuf::printf("file: %$\n", file);
-        auto fileContent = readFile(std::string(file));
+        std::string fileContent;
+        try {
+            fileContent = readFile(std::string(file));
+        } catch(std::exception& e) {
+            throw UError("Failed read file: %s", e.what());
+        }
         // parse 
         Parser::Parser parser(fileContent.c_str());
         auto current_tree = parser.parse();
@@ -56,8 +61,8 @@ int main(int argc, char** argv) {
         CONVERTION IS STARTING HERE
 
     */
-    Tokens::literalsToToken(tree);
-    
+    literalsToToken(tree);
+
     // now we have tree of all files
     // 1. get source dir
     // 2. merge sources

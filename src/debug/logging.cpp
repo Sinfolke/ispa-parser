@@ -43,11 +43,11 @@ void custom_terminate_handler() {
         e.print();
     } catch (UWarning& e) {
         e.print();
-    } catch (const std::exception& e) {
-        printf("Unknown std::exception: %s\n", e.what());
+    } catch (std::exception& e) {
+        cpuf::printf("Exception: %s\n", e.what());
         exit(1);
     } catch (...) {
-        printf("Unknown exception\n");
+        cpuf::printf("Unknown exception\n");
         exit(1);
     }
 
