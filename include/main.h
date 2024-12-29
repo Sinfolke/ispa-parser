@@ -21,6 +21,8 @@
 
 #include <debug/logging.h>
 #include <core/file.h>
+#include <core/text.h>
+#include <core/tokens.h>
 #include <init.h>
 
 #include <args/args.h>

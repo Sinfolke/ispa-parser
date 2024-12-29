@@ -72,6 +72,6 @@ set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 
 add_test(
     NAME mainTest
-    COMMAND ispa --dir mod/parser/parser
+    COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

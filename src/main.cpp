@@ -5,11 +5,11 @@ void printHelp() {
     cpuf::printf("usage\n");
 }
 
-void printData(const char* data, int tabs);
-void printData(const std::string data, int tabs);
-void printData(const ::Parser::Rule data, int tabs);
-void printData(const std::unordered_map<const char*, std::any> data, int tabs);
-void printData(const std::unordered_map<std::string, std::any> data, int tabs);
+// void printData(const char* data, int tabs);
+// void printData(const std::string data, int tabs);
+// void printData(const ::Parser::Rule data, int tabs);
+// void printData(const std::unordered_map<const char*, std::any> data, int tabs);
+// void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 int main(int argc, char** argv) {
     init();
     Args args(argc, argv);
@@ -51,6 +51,13 @@ int main(int argc, char** argv) {
             }
         }
     }
+    /*
+        LEXICAL CHECKS SHALL GO ABOVE
+        CONVERTION IS STARTING HERE
+
+    */
+    Tokens::literalsToToken(tree);
+    
     // now we have tree of all files
     // 1. get source dir
     // 2. merge sources
