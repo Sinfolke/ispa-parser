@@ -1,11 +1,17 @@
 accessor_group: 
     '$' NUMBER
+    data: %2;
 ;
 accessor_element: 
     '%' NUMBER
+    data: %2;
 ;
 accessor_char: 
     '^' NUMBER ('+' | '-')?
+    data: 
+        val: %2
+        sign: %3
+    ;
 ;
 accessor_all: 
     accessor_group | accessor_element | accessor_char
