@@ -1,11 +1,11 @@
-#include <core/tokens.h>
-#include <core/text.h>
+#include <corelib.h>
+#include <token_management.h>
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <any>
 
-static auto count = 0;
+static size_t count = 0;
 
 namespace Tokens {
     ::Parser::Rule singleRuleToToken(::Parser::Rule input) {

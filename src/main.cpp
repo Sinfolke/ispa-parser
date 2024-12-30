@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
         cpuf::printf("file: %$\n", file);
         std::string fileContent;
         try {
-            fileContent = readFile(std::string(file));
+            fileContent = corelib::file::readFile(std::string(file));
         } catch(std::exception& e) {
             throw UError("Failed read file: %s", e.what());
         }
@@ -43,13 +43,11 @@ int main(int argc, char** argv) {
         tree.insert(tree.end(), current_tree.begin(), current_tree.end());
     }
     if (args.has("dir")) {
-        cpuf::printf("Parsing all files in dir\n");
         for (const auto dirPath : args.get("dir").values) {
-            cpuf::printf("dir: %$\n", dirPath);
-            auto files = getFilesRecursively(dirPath, ".isc");
+            auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
                 cpuf::printf("Parsing file %$\n", file);
-                std::string content = readFile(file);
+                std::string content = corelib::file::readFile(file);
                 Parser::Parser parser(content.c_str());
                 auto current_tree = parser.parse();
                 tree.insert(tree.end(), current_tree.begin(), current_tree.end());

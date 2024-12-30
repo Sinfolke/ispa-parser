@@ -21,9 +21,8 @@
 
 #include <debug/logging.h>
 #include <progress.h>
-#include <core/file.h>
-#include <core/text.h>
-#include <core/tokens.h>
+#include <corelib.h>
+#include <token_management.h>
 #include <init.h>
 
 #include <args/args.h>
