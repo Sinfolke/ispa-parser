@@ -7,10 +7,10 @@ usage:
     [parameters] [individual files]
     Generally you can pass in --dir parameter to make the program parse every file in specified directory.
     Every parameter not being an argument is considered individual file to be parsed.
-    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments until next parameter encountered %s
+    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments until next parameter encountered%s
 
-    --help show this help message
-    --version show version
+    -help show this help message
+    -version show version
     --dir specify the directories where to locate sources
     )", color::yellow, color::reset);
     cpuf::printf("\n");

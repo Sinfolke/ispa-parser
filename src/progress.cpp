@@ -24,7 +24,7 @@ Parser::Tree getTokensFromRule(Parser::Rule member) {
                 auto newTokenData = std::any_cast<obj_t>(newToken.data);
                 auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
                 auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
-                auto id = Tokens::constructId(newToken_name_str);
+                auto id = Tokens::make_rule(Parser::Rules::id, newToken_name_str);
                 tree.push_back(newToken);
                 // use token here instead of literal
                 std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"))[j] = id;
