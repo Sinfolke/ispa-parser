@@ -35,7 +35,7 @@ namespace Tokens {
         };
 
         std::unordered_map<const char*, std::any> data {
-            { "name", std::string("auto_") + std::to_string(count++) },
+            { "name", Parser::Rule(0, nullptr, nullptr, Parser::Rules::id, std::string("auto_") + std::to_string(count++)) },
             { "rule", rule },
             { "data_block", data_block },
             { "nestedRules", std::vector<::Parser::Rule>() }
@@ -44,5 +44,9 @@ namespace Tokens {
         return ::Parser::Rule {
             0, nullptr, nullptr, Parser::Rules::Rule, data
         };
+    }
+    Parser::Rule constructId(std::string name) {
+        Parser::Rule identifier(0, nullptr, nullptr, Parser::Rules::id, name);
+        return identifier;
     }
 }

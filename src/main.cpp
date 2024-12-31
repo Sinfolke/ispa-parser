@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
         CONVERTION IS STARTING HERE
 
     */
-    literalsToToken(tree);
+    literalsToToken(tree);    // get tokens from literals (e.g string, hex or binary)
 
     // now we have tree of all files
     // 1. get source dir
