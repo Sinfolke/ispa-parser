@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISPA)
 
-enable_testing()
+#enable_testing()
 add_subdirectory(mod/parser)    # include parser
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)

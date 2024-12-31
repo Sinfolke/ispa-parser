@@ -2,7 +2,18 @@
 #include <args/args.h>
 
 void printHelp() {
-    cpuf::printf("usage\n");
+    cpuf::printf(R"(
+usage: 
+    [parameters] [individual files]
+    Generally you can pass in --dir parameter to make the program parse every file in specified directory.
+    Every parameter not being an argument is considered individual file to be parsed.
+    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments until next parameter encountered %s
+
+    --help show this help message
+    --version show version
+    --dir specify the directories where to locate sources
+    )", color::yellow, color::reset);
+    cpuf::printf("\n");
 }
 
 // void printData(const char* data, int tabs);
@@ -59,7 +70,7 @@ int main(int argc, char** argv) {
         CONVERTION IS STARTING HERE
 
     */
-    literalsToToken(tree);    // get tokens from literals (e.g string, hex or binary)
+    literalsToToken(tree);    // get tokens from literals (e.g from string, hex or binary)
 
     // now we have tree of all files
     // 1. get source dir
