@@ -64,7 +64,6 @@ Rule(accessor) {
     pos += res.token.length();
     ISC_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> results;
-    results.push_back(res.token);
     while (*pos == '>') {
         pos++;
         ISC_STD::skip_spaces(pos);
@@ -74,5 +73,9 @@ Rule(accessor) {
         results.push_back(res.token);
         pos += res.token.length();
     }
-    RULE_SUCCESSD(in, pos, accessor, results);
+    std::unordered_map<const char*, std::any> data {
+        { "first", res.token },
+        { "second", results }
+    }
+    RULE_SUCCESSD(in, pos, accessor, data);
 }
