@@ -2,6 +2,7 @@
 #include <debug/logging.h>
 #include <filesystem>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <unordered_map>
 namespace corelib {

@@ -23,7 +23,10 @@ Parser::Tree getReplacedTree(Parser::Tree tree, Parser::Tree rules) {
             auto token_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             if (corelib::text::startsWithRange(name_str, 'A', 'Z')) {
-                compare_rules(token_rule, rules);
+                auto matched = Tokens::compare_rules(token_rule, rules);
+                if (matched) {
+                    // replace here with token the repeated rule
+                }
             }
             getReplacedTree(nested_rule, rules);
         }

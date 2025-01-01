@@ -72,9 +72,68 @@ namespace Tokens {
         }
     }
     bool compare_string_rule(Parser::Rule first, Parser::Rule second) {
-        return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
+        return compareStringRule(first, second);
     }
     bool compare_hex_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringViewRule(first, second);
+    }
+    bool compare_bin_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringViewRule(first, second);
+    }
+    bool compare_id_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringRule(first, second);
+    }
+    bool compare_op_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringRule(first, second);
+    }
+    bool compare_csequence_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+
+        auto first_not = std::any_cast<bool>(corelib::map::get(first_data, "not"));
+        auto second_not = std::any_cast<bool>(corelib::map::get(second_data, "not"));
+
+        auto first_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
+        auto second_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
+
+        if (first_not != second_not || first_val.size() != second_val.size())
+            return false; // not equal
+        
+        for (int i = 0; i < first_val.size(); i++) {
+            if (!compare_csequence_internal_dt(first_val[i], second_val[i]))
+                return false;
+        }
+        return true;
+    }
+    bool compare_csequence_internal_dt(Parser::Rule first, Parser::Rule second) {
+        if (first.name != second.name)
+            return false;
+        switch (first.name) {
+            case Parser::Rules::Rule_csequence_diapason:
+                return compare_csequence_diapason_rule(first, second);
+            case Parser::Rules::Rule_csequence_escape:
+                return compare_csequence_escape_rule(first, second);
+            case Parser::Rules::Rule_csequence_symbol:
+                return compare_csequence_symbol_rule(first, second);
+            default:
+                throw Error("Csequence having new rules unhandled by compare_csequence_internal_dt");
+        }
+    }
+    bool compare_csequence_diapason_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<arr_t<Parser::Rule>>(first.data);
+        auto second_data = std::any_cast<arr_t<Parser::Rule>>(second.data);
+        return compare_csequence_symbol_rule(first_data[0], second_data[0]) && compare_csequence_symbol_rule(first_data[1], second_data[1]);
+    }
+    bool compare_csequence_symbol_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringRule(first, second);
+    }
+    bool compare_csequence_escape_rule(Parser::Rule first, Parser::Rule second) {
+        return compareStringRule(first, second);
+    }
+    bool compareStringViewRule(Parser::Rule first, Parser::Rule second) {
+        return std::any_cast<std::string_view>(first.data) == std::any_cast<std::string_view>(second.data);
+    }
+    bool compareStringRule(Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
     }
     // compares the token with rules and 
