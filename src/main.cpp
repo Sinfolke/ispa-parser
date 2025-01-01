@@ -7,7 +7,7 @@ usage:
     [parameters] [individual files]
     Generally you can pass in --dir parameter to make the program parse every file in specified directory.
     Every parameter not being an argument is considered individual file to be parsed.
-    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments until next parameter encountered%s
+    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments%s
 
     -help show this help message
     -version show version
@@ -72,7 +72,9 @@ int main(int argc, char** argv) {
     */
     literalsToToken(tree);    // get tokens from literals (e.g from string, hex or binary)
 
-    // now we have tree of all files
+    // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
+    // if no tokens match current literal, a new token should be added that matches that literal and areplace every place that kind of literal is used
+
     // 1. get source dir
     // 2. merge sources
     // 3. separate tokens and rules
