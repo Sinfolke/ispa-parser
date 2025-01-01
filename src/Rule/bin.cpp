@@ -8,9 +8,8 @@ Rule(Rule_bin) {
     if (strncmp(pos, "0b", 2)) {
         return {};
     }
-    auto begin = in + 2;
-    pos = begin;
-    ISC_STD::skip_spaces(pos);
+    pos += 2;
+    auto begin = pos;
     while (*pos == '0' || *pos == '1') {
         ++pos;
     }

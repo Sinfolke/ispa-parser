@@ -10,7 +10,7 @@ Rule(Rule_hex) {
     ISC_STD::skip_spaces(pos);
     pos += 2;
     auto begin = pos;
-    while (isdigit(*pos) || isupper(*pos) || islower(*pos)) {
+    while (isdigit(*pos) || *pos >= 'A' && *pos <= 'F' || *pos >= 'a' && *pos <= 'f') {
         ++pos;
     }
     if (begin == pos) 
