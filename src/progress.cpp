@@ -2,6 +2,7 @@
 #include <corelib.h>
 #include <internal_types.h>
 #include <token_management.h>
+#include <sstream>
 #include <cpuf/printf.h>
 // this function should replace all token dublications 
 void replaceDublications(Parser::Tree tree) {
