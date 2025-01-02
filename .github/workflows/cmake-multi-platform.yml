@@ -53,9 +53,13 @@ jobs:
           cd ${{ github.workspace }}
           ./prepare_boost.bat
           dir
+      - name: Install Ninja (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          choco install ninja -y
       - name: Configure CMake
         run: >
-          cmake -B build
+          cmake -B build -G Ninja
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
