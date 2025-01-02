@@ -5,19 +5,19 @@
 #include <sstream>
 #include <cpuf/printf.h>
 // this function should replace all token dublications 
-void replaceDublications(Parser::Tree tree) {
-    for (int i = 0; i < tree.size(); i++) {
-        auto member = tree[i];
+void replaceDublications(Parser::Tree& tree) {
+    for (auto& member  : tree) {
         if (member.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(member.data);
             auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto newRules = getReplacedTree(tree, rules);
+            corelib::map::set(data, "rule", std::any(newRules));
+            member.data = data;
         }
     }
 }
 Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
-    for (int i = 0; i < tree.size(); i++) {
-        auto member = tree[i];
+    for (auto& member : tree) {
         if (member.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(member.data);
             auto token_name_str = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);

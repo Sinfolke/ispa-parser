@@ -33,5 +33,13 @@ namespace corelib {
             }
             throw Error("Key %s does not exists in map", key);
         }
+        template<typename T>
+        void set(std::unordered_map<const char*, T>& map, const char* key, T value) {
+            for (const auto pair : map) {
+                if (!strcmp(pair.first, key))
+                    map[pair.first] = value;
+            }
+            throw Error("Key %s does not exists in map", key);
+        }
     };
 }

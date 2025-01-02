@@ -99,20 +99,16 @@ namespace Tokens {
 
         if (first_d.name != second_d.name)
             return false;
-        if (first_d.name == Parser::Rules::accessors_group || first_d.name == Parser::Rules::accessors_element) {
-            return compare_number_rules(std::any_cast<Parser::Rule>(first_d.data), std::any_cast<Parser::Rule>(second_d.data));
-        } else {
-            return compare_accessor_char(first_d, second_d);
-        }
+        return compare_number_rules(std::any_cast<Parser::Rule>(first_d.data), std::any_cast<Parser::Rule>(second_d.data));
     }
-    bool compare_accessor_char(Parser::Rule first_d, Parser::Rule second_d) {
-        auto first_data = std::any_cast<obj_t>(first_d.data);
-        auto second_data = std::any_cast<obj_t>(second_d.data);
-
-        auto first_data_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
-        auto second_data_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
-
-        auto first_data_
+    bool compare_accessor_internal(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second) {
+        if (first.size() != second.size())
+            return false;
+        for (int i = 0; i < first.size(); i++) {
+            if (!compare_accessor_internal(first[i], second[i]))
+                return false;
+        }
+        return true;
     }
     bool compare_number_rules(Parser::Rule first, Parser::Rule second) {
         auto first_data = std::any_cast<obj_t>(first.data);
@@ -195,7 +191,7 @@ namespace Tokens {
     bool compareStringRule(Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
     }
-    // compares the token with rules and 
+    // compares the token with rules and return an index where match discovered
     int compare_rules(Parser::Tree token_rule, Parser::Tree rules) {
         int where = 0;
         if (token_rule.size() > rules.size()) // never match

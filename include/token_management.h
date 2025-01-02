@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <internal_types.h>
 namespace Tokens {
     Parser::Rule singleRuleToToken(Parser::Rule input);
     Parser::Rule make_rule();
@@ -9,6 +10,9 @@ namespace Tokens {
     bool compare_hex_rule(Parser::Rule first, Parser::Rule second);
     bool compare_bin_rule(Parser::Rule first, Parser::Rule second);
     bool compare_accessor_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_accessor_internal(Parser::Rule first, Parser::Rule second);
+    bool compare_accessor_internal(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second);
+    bool compare_number_rules(Parser::Rule first, Parser::Rule second);
     bool compare_id_rule(Parser::Rule first, Parser::Rule second);
     bool compare_op_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_rule(Parser::Rule first, Parser::Rule second);
