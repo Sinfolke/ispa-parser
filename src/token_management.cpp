@@ -61,6 +61,8 @@ namespace Tokens {
                 return compare_hex_rule(first, second);
             case Parser::Rules::Rule_bin:
                 return compare_bin_rule(first, second);
+            case Parser::Rules::accessor:
+                return compare_accessor_rule(first, second);
             case Parser::Rules::id:
                 return compare_id_rule(first, second);
             case Parser::Rules::Rule_csequence:
@@ -68,7 +70,7 @@ namespace Tokens {
             case Parser::Rules::op:
                 return compare_op_rule(first, second);
             default:
-                throw Error("Comparing unknown rule");
+                throw Error("Comparing unknown rule: %s", Parser::RulesToString(first.name));
         }
     }
     bool compare_string_rule(Parser::Rule first, Parser::Rule second) {
@@ -79,6 +81,9 @@ namespace Tokens {
     }
     bool compare_bin_rule(Parser::Rule first, Parser::Rule second) {
         return compareStringViewRule(first, second);
+    }
+    bool compare_accessor_rule(Parser::Rule first, Parser::Rule second) {
+        return false;
     }
     bool compare_id_rule(Parser::Rule first, Parser::Rule second) {
         return compareStringRule(first, second);
@@ -138,11 +143,22 @@ namespace Tokens {
     }
     // compares the token with rules and 
     int compare_rules(Parser::Tree token_rule, Parser::Tree rules) {
-        int i = 0;
-        for (; i < token_rule.size(); i++) {
-            if (!compare_rule(token_rule[i], rules[i]))
-                break;
+        int where = 0;
+        if (token_rule.size() > rules.size()) // never match
+            return -1;
+        for (int i = 0; i < rules.size(); i += token_rule.size()) {
+            where = i;
+            bool success = true;
+            for (int j = 0; j < token_rule.size(); j++) {
+                if (!compare_rule(token_rule[j], rules[i + j])) {
+                    success = false;
+                    break;
+                }
+            }
+            if (success) {
+                return where;
+            }
         }
-        return i;
+        return -1;
     }
 }

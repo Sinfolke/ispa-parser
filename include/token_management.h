@@ -8,6 +8,7 @@ namespace Tokens {
     bool compare_string_rule(Parser::Rule first, Parser::Rule second);
     bool compare_hex_rule(Parser::Rule first, Parser::Rule second);
     bool compare_bin_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_accessor_rule(Parser::Rule first, Parser::Rule second);
     bool compare_id_rule(Parser::Rule first, Parser::Rule second);
     bool compare_op_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_rule(Parser::Rule first, Parser::Rule second);

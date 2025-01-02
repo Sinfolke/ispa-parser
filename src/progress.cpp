@@ -14,24 +14,26 @@ void replaceDublications(Parser::Tree tree) {
         }
     }
 }
-Parser::Tree getReplacedTree(Parser::Tree tree, Parser::Tree rules) {
+Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
     for (int i = 0; i < tree.size(); i++) {
         auto member = tree[i];
         if (member.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(member.data);
-            auto name_str = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);
+            auto token_name_str = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);
             auto token_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-            if (corelib::text::startsWithRange(name_str, 'A', 'Z')) {
-                auto matched = Tokens::compare_rules(token_rule, rules);
-                if (matched) {
+            if (corelib::text::startsWithRange(token_name_str, 'A', 'Z')) {
+                auto matched_pos = Tokens::compare_rules(token_rule, rules);
+                if (matched_pos != -1) {
                     // replace here with token the repeated rule
+                    auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
+                    rules.erase(rules.begin() + matched_pos, rules.begin() + matched_pos + token_rule.size());
+                    rules.insert(rules.begin() + matched_pos, tokenId);
                 }
             }
-            getReplacedTree(nested_rule, rules);
         }
-
     }
+    return rules;
 }
 Parser::Tree getTokensFromRule(Parser::Rule member) {
     Parser::Tree tree;

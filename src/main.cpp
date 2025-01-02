@@ -70,11 +70,11 @@ int main(int argc, char** argv) {
         CONVERTION IS STARTING HERE
 
     */
+    replaceDublications(tree); // replace dublicated tokens (e.g when literal repeats token, replace it to token)
     literalsToToken(tree);    // get tokens from literals (e.g from string, hex or binary)
 
     // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
-    // if no tokens match current literal, a new token should be added that matches that literal and areplace every place that kind of literal is used
-
+    // if no tokens match current literal, a new token should be added that matches that literal and replace every place that kind of literal is used
     // 1. get source dir
     // 2. merge sources
     // 3. separate tokens and rules
