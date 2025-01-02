@@ -6,15 +6,15 @@ set BOOST_REPO=https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/
 set BOOST_DIR=boost_1_87_0
 
 :: Clone Boost repository with submodules
-echo - Downloading boost source
-curl -L -o boost_1_87_0.zip https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.zip
-echo - Extracting boost source
-tar -xf boost_1_87_0.zip
-IF %ERRORLEVEL% NEQ 0 (
-    echo Error: Failed to clone Boost repository or unzip the archive.
-    exit /b 1
-)
-
+@REM echo - Downloading boost source
+@REM curl -L -o boost_1_87_0.zip https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.zip
+@REM echo - Extracting boost source
+@REM tar -xf boost_1_87_0.zip
+@REM IF %ERRORLEVEL% NEQ 0 (
+@REM     echo Error: Failed to clone Boost repository or unzip the archive.
+@REM     exit /b 1
+@REM )
+git clone --recursive https://github.com/boostorg/boost.git
 :: Navigate to Boost directory
 cd %BOOST_DIR%
 
