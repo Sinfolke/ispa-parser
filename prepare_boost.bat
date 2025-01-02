@@ -3,7 +3,7 @@
 
 :: Set Boost version and repository details
 set BOOST_REPO=https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.zip
-set BOOST_DIR=boost_1_87_0
+set BOOST_DIR=boost
 
 :: Clone Boost repository with submodules
 @REM echo - Downloading boost source
