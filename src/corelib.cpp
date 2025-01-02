@@ -1,4 +1,5 @@
 #include <corelib.h>
+#include <sstream>
 #include <debug/logging.h>
 #include <filesystem>
 #include <fstream>
