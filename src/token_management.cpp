@@ -83,7 +83,61 @@ namespace Tokens {
         return compareStringViewRule(first, second);
     }
     bool compare_accessor_rule(Parser::Rule first, Parser::Rule second) {
-        return false;
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+
+        auto first_first = std::any_cast<Parser::Rule> (corelib::map::get(first_data, "first"));
+        auto second_first = std::any_cast<Parser::Rule> (corelib::map::get(second_data, "first"));
+        
+        auto first_second = std::any_cast<arr_t<Parser::Rule>> (corelib::map::get(first_data, "second"));
+        auto second_second = std::any_cast<arr_t<Parser::Rule>> (corelib::map::get(second_data, "second"));
+        return compare_accessor_internal(first_first, second_first) && compare_accessor_internal(first_second, second_second);
+    }
+    bool compare_accessor_internal(Parser::Rule first, Parser::Rule second) {
+        auto first_d = std::any_cast<Parser::Rule>(first.data);
+        auto second_d = std::any_cast<Parser::Rule>(second.data);
+
+        if (first_d.name != second_d.name)
+            return false;
+        if (first_d.name == Parser::Rules::accessors_group || first_d.name == Parser::Rules::accessors_element) {
+            return compare_number_rules(std::any_cast<Parser::Rule>(first_d.data), std::any_cast<Parser::Rule>(second_d.data));
+        } else {
+            return compare_accessor_char(first_d, second_d);
+        }
+    }
+    bool compare_accessor_char(Parser::Rule first_d, Parser::Rule second_d) {
+        auto first_data = std::any_cast<obj_t>(first_d.data);
+        auto second_data = std::any_cast<obj_t>(second_d.data);
+
+        auto first_data_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
+        auto second_data_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
+
+        auto first_data_
+    }
+    bool compare_number_rules(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+        std::string sign_first = std::any_cast<std::string>(corelib::map::get(first_data, "sign"));
+        std::string sign_second = std::any_cast<std::string>(corelib::map::get(second_data, "sign"));
+
+        std::string main_first = std::any_cast<std::string>(corelib::map::get(first_data, "main"));
+        std::string main_second = std::any_cast<std::string>(corelib::map::get(second_data, "main"));
+
+        std::string dec_first = std::any_cast<std::string>(corelib::map::get(first_data, "dec"));
+        std::string dec_second = std::any_cast<std::string>(corelib::map::get(second_data, "dec"));
+
+        double main_n_first = std::any_cast<double>(corelib::map::get(first_data, "main_n"));
+        double main_n_second = std::any_cast<double>(corelib::map::get(second_data, "main_n"));
+
+        double dec_n_first = std::any_cast<double>(corelib::map::get(first_data, "dec_n"));
+        double dec_n_second = std::any_cast<double>(corelib::map::get(second_data, "dec_n"));
+        return
+            sign_first == sign_second &&
+            main_first == main_second &&
+            dec_first == dec_second &&
+            main_n_first == main_n_second &&
+            dec_n_first == dec_n_second
+        ;
     }
     bool compare_id_rule(Parser::Rule first, Parser::Rule second) {
         return compareStringRule(first, second);
