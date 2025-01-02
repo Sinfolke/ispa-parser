@@ -52,6 +52,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           ./prepare_boost.bat
+          xcopy "boost_1_87_0" "bin.v2/libs/include/boost-1_87" /E /I 
 
       - name: Configure CMake
         run: >

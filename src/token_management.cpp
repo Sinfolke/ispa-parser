@@ -70,7 +70,7 @@ namespace Tokens {
             case Parser::Rules::op:
                 return compare_op_rule(first, second);
             default:
-                throw Error("Comparing unknown rule: %s", Parser::RulesToString(first.name));
+                throw Error("Comparing unknown rule: %$", Parser::RulesToString(first.name));
         }
     }
     bool compare_string_rule(Parser::Rule first, Parser::Rule second) {
