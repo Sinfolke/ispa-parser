@@ -297,11 +297,9 @@ Rule(use_unit) {
 size_t Parser::Parser::getCurrentPos(const char* pos) {
     return pos - text;
 }
-#include <string>
-#include <unordered_map>
 
 // Define the function to convert Rules enum to string
-std::string RulesToString(::Parser::Rules rule) {
+std::string Parser::RulesToString(::Parser::Rules rule) {
     using Rules = ::Parser::Rules;
     static const std::unordered_map<::Parser::Rules, std::string> rulesToString = {
         {Rules::NONE, "NONE"},

@@ -124,6 +124,7 @@ namespace Parser {
     
     cll
     };
+    std::string RulesToString(::Parser::Rules rule);
     using Rule = ISC_STD::_return<::Parser::Rules>;
     using Rule_result = ISC_STD::match_result<::Parser::Rules>;
     using Tree = ISC_STD::Tree<::Parser::Rules>;

@@ -76,6 +76,6 @@ Rule(accessor) {
     std::unordered_map<const char*, std::any> data {
         { "first", res.token },
         { "second", results }
-    }
+    };
     RULE_SUCCESSD(in, pos, accessor, data);
 }
