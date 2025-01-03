@@ -18,6 +18,7 @@ namespace Tokens {
     bool compare_op_rule(Parser::Rule first, Parser::Rule second);
     bool compare_other_rule(Parser::Rule first, Parser::Rule second);
     bool compare_other_nested_name(arr_t<Parser::Rule> nested_name1, arr_t<Parser::Rule> nested_name2);
+    bool compare_escape_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_internal_dt(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_diapason_rule(Parser::Rule first, Parser::Rule second);

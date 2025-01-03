@@ -72,6 +72,10 @@ namespace Tokens {
                 return compare_op_rule(first, second);
             case Parser::Rules::Rule_other:
                 return compare_other_rule(first, second);
+            case Parser::Rules::Rule_any:
+                return true;
+            case Parser::Rules::Rule_escaped:
+                return compare_escape_rule(first, second);
             default:
                 throw Error("Comparing unknown rule: %$", Parser::RulesToString(first.name));
         }
@@ -168,6 +172,25 @@ namespace Tokens {
         for (int i = 0; i < nested_name1.size(); i++) {
             if (!compareStringRule(nested_name1[i], nested_name2[i]))
                 return false;
+        }
+        return true;
+    }
+    bool compare_escape_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+
+        auto first_c = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "c"));
+        auto second_c = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "c"));
+
+        auto first_number = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "num"));
+        auto second_number = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "num"));
+
+        if (first_number.data.has_value() != second_number.data.has_value())
+            return false;
+        if (!compareStringRule(first_c, second_c))
+            return false;
+        if (first_number.data.has_value()) {
+            return compare_number_rules(first_number, second_number);
         }
         return true;
     }

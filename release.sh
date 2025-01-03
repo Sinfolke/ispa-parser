@@ -6,7 +6,7 @@ export CXXFLAGS=$OPT
 
 build() {
     cmake -B build -G Ninja
-    ninja -j$((nproc))
+    ninja -j$((nproc)) -C build
 }
 set_comp() {
     export CC=$1
