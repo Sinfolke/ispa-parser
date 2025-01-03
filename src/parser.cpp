@@ -300,98 +300,115 @@ size_t Parser::Parser::getCurrentPos(const char* pos) {
 
 // Define the function to convert Rules enum to string
 std::string Parser::RulesToString(::Parser::Rules rule) {
-    using Rules = ::Parser::Rules;
-    static const std::unordered_map<::Parser::Rules, std::string> rulesToString = {
-        {Rules::NONE, "NONE"},
-        {Rules::Import_path, "Import_path"},
-        {Rules::Import_ext, "Import_ext"},
-        {Rules::Import_file, "Import_file"},
-        {Rules::Import_general_dir, "Import_general_dir"},
-        {Rules::Import_rulespecific, "Import_rulespecific"},
-        {Rules::use_unit, "use_unit"},
-        {Rules::Rule_rule, "Rule_rule"},
-        {Rules::Rule_op, "Rule_op"},
-        {Rules::Rule_qualifier, "Rule_qualifier"},
-        {Rules::Rule_group, "Rule_group"},
-        {Rules::Rule_csequence, "Rule_csequence"},
-        {Rules::Rule_csequence_symbol, "Rule_csequence_symbol"},
-        {Rules::Rule_csequence_escape, "Rule_csequence_escape"},
-        {Rules::Rule_csequence_diapason, "Rule_csequence_diapason"},
-        {Rules::Rule_data_block, "Rule_data_block"},
-        {Rules::Rule_data_block_key, "Rule_data_block_key"},
-        {Rules::Rule_data_block_inclosed_map, "Rule_data_block_inclosed_map"},
-        {Rules::Rule_nested_rule, "Rule_nested_rule"},
-        {Rules::Rule_hex, "Rule_hex"},
-        {Rules::Rule_bin, "Rule_bin"},
-        {Rules::cll_type_abstract, "cll_type_abstract"},
-        {Rules::end, "end"},
-        {Rules::strict_end, "strict_end"},
-        {Rules::newline, "newline"},
-        {Rules::spacemode, "spacemode"},
-        {Rules::linear_comment, "linear_comment"},
-        {Rules::id, "id"},
-        {Rules::Import, "Import"},
-        {Rules::use, "use"},
-        {Rules::Rule, "Rule"},
-        {Rules::accessors_group, "accessors_group"},
-        {Rules::accessors_element, "accessors_element"},
-        {Rules::accessors_char, "accessors_char"},
-        {Rules::accessor, "accessor"},
-        {Rules::string, "string"},
-        {Rules::number, "number"},
-        {Rules::boolean, "boolean"},
-        {Rules::array, "array"},
-        {Rules::object, "object"},
-        {Rules::any_data, "any_data"},
-        {Rules::cll_block, "cll_block"},
-        {Rules::cll_spaced_block, "cll_spaced_block"},
-        {Rules::op, "op"},
-        {Rules::assignment_op, "assignment_op"},
-        {Rules::compare_op, "compare_op"},
-        {Rules::logical_op, "logical_op"},
-        {Rules::logical_and, "logical_and"},
-        {Rules::logical_or, "logical_or"},
-        {Rules::logical_andr, "logical_andr"},
-        {Rules::op_not, "op_not"},
-        {Rules::cll_template_typename, "cll_template_typename"},
-        {Rules::cll_template_int, "cll_template_int"},
-        {Rules::cll_template_bool, "cll_template_bool"},
-        {Rules::cll_template_str, "cll_template_str"},
-        {Rules::cll_template_arr, "cll_template_arr"},
-        {Rules::cll_template_obj, "cll_template_obj"},
-        {Rules::cll_template_any_data, "cll_template_any_data"},
-        {Rules::cll_template_all, "cll_template_all"},
-        {Rules::cll_template, "cll_template"},
-        {Rules::cll_csupport_types, "cll_csupport_types"},
-        {Rules::cll_type, "cll_type"},
-        {Rules::cll_if, "cll_if"},
-        {Rules::cll_ternary, "cll_ternary"},
-        {Rules::expr, "expr"},
-        {Rules::expr_logical, "expr_logical"},
-        {Rules::expr_compare, "expr_compare"},
-        {Rules::expr_arithmetic, "expr_arithmetic"},
-        {Rules::expr_group, "expr_group"},
-        {Rules::expr_copiable_method_call, "expr_copiable_method_call"},
-        {Rules::expr_for_arithmetic, "expr_for_arithmetic"},
-        {Rules::function_body_call, "function_body_call"},
-        {Rules::function_body_decl, "function_body_decl"},
-        {Rules::function_arguments, "function_arguments"},
-        {Rules::function_parameters, "function_parameters"},
-        {Rules::cll_function_call, "cll_function_call"},
-        {Rules::function_decl, "function_decl"},
-        {Rules::function_value, "function_value"},
-        {Rules::method_call, "method_call"},
-        {Rules::copiable_method_call, "copiable_method_call"},
-        {Rules::loop_while, "loop_while"},
-        {Rules::loop_for, "loop_for"},
-        {Rules::cll_var, "cll_var"},
-        {Rules::cll_var_assign, "cll_var_assign"},
-        {Rules::var_refer, "var_refer"},
-        {Rules::cll, "cll"}
-    };
+    switch (rule) {
+        case Rules::NONE: return "NONE";
+        case Rules::Import_path: return "Import_path";
+        case Rules::Import_ext: return "Import_ext";
+        case Rules::Import_file: return "Import_file";
+        case Rules::Import_general_dir: return "Import_general_dir";
+        case Rules::Import_rulespecific: return "Import_rulespecific";
 
-    auto it = rulesToString.find(rule);
-    return it != rulesToString.end() ? it->second : "Unknown Rule";
+        case Rules::use_unit: return "use_unit";
+
+        case Rules::Rule_rule: return "Rule_rule";
+        case Rules::Rule_other: return "Rule_other";
+        case Rules::Rule_op: return "Rule_op";
+        case Rules::Rule_qualifier: return "Rule_qualifier";
+        case Rules::Rule_group: return "Rule_group";
+        case Rules::Rule_csequence: return "Rule_csequence";
+        case Rules::Rule_csequence_symbol: return "Rule_csequence_symbol";
+        case Rules::Rule_csequence_escape: return "Rule_csequence_escape";
+        case Rules::Rule_csequence_diapason: return "Rule_csequence_diapason";
+        case Rules::Rule_data_block: return "Rule_data_block";
+        case Rules::Rule_data_block_key: return "Rule_data_block_key";
+        case Rules::Rule_data_block_inclosed_map: return "Rule_data_block_inclosed_map";
+        case Rules::Rule_escaped: return "Rule_escaped";
+        case Rules::Rule_any: return "Rule_any";
+        case Rules::Rule_nested_rule: return "Rule_nested_rule";
+        case Rules::Rule_hex: return "Rule_hex";
+        case Rules::Rule_bin: return "Rule_bin";
+
+        case Rules::cll_type_abstract: return "cll_type_abstract";
+
+        case Rules::end: return "end";
+        case Rules::strict_end: return "strict_end";
+        case Rules::newline: return "newline";
+        case Rules::spacemode: return "spacemode";
+        case Rules::linear_comment: return "linear_comment";
+        case Rules::id: return "id";
+        case Rules::Import: return "Import";
+        case Rules::use: return "use";
+        case Rules::Rule: return "Rule";
+
+        case Rules::accessors_group: return "accessors_group";
+        case Rules::accessors_element: return "accessors_element";
+        case Rules::accessors_char: return "accessors_char";
+        case Rules::accessor_all: return "accessor_all";
+        case Rules::accessor: return "accessor";
+
+        case Rules::string: return "string";
+        case Rules::number: return "number";
+        case Rules::boolean: return "boolean";
+        case Rules::array: return "array";
+        case Rules::object: return "object";
+        case Rules::any_data: return "any_data";
+
+        case Rules::cll_block: return "cll_block";
+        case Rules::cll_spaced_block: return "cll_spaced_block";
+        case Rules::op: return "op";
+        case Rules::assignment_op: return "assignment_op";
+        case Rules::compare_op: return "compare_op";
+        case Rules::logical_op: return "logical_op";
+        case Rules::logical_and: return "logical_and";
+        case Rules::logical_or: return "logical_or";
+        case Rules::logical_andr: return "logical_andr";
+        case Rules::op_not: return "op_not";
+
+        case Rules::cll_template_typename: return "cll_template_typename";
+        case Rules::cll_template_int: return "cll_template_int";
+        case Rules::cll_template_bool: return "cll_template_bool";
+        case Rules::cll_template_str: return "cll_template_str";
+        case Rules::cll_template_arr: return "cll_template_arr";
+        case Rules::cll_template_obj: return "cll_template_obj";
+        case Rules::cll_template_any_data: return "cll_template_any_data";
+        case Rules::cll_template_all: return "cll_template_all";
+        case Rules::cll_template: return "cll_template";
+
+        case Rules::cll_csupport_types: return "cll_csupport_types";
+        case Rules::cll_type: return "cll_type";
+
+        case Rules::cll_if: return "cll_if";
+
+        case Rules::cll_ternary: return "cll_ternary";
+
+        case Rules::expr: return "expr";
+
+        case Rules::expr_logical: return "expr_logical";
+        case Rules::expr_compare: return "expr_compare";
+        case Rules::expr_arithmetic: return "expr_arithmetic";
+        case Rules::expr_group: return "expr_group";
+        case Rules::expr_copiable_method_call: return "expr_copiable_method_call";
+        case Rules::expr_for_arithmetic: return "expr_for_arithmetic";
+        case Rules::function_body_call: return "function_body_call";
+        case Rules::function_body_decl: return "function_body_decl";
+        case Rules::function_arguments: return "function_arguments";
+        case Rules::function_parameters: return "function_parameters";
+        case Rules::cll_function_call: return "cll_function_call";
+        case Rules::function_decl: return "function_decl";
+        case Rules::function_value: return "function_value";
+
+        case Rules::method_call: return "method_call";
+        case Rules::copiable_method_call: return "copiable_method_call";
+        case Rules::loop_while: return "loop_while";
+        case Rules::loop_for: return "loop_for";
+        case Rules::cll_var: return "cll_var";
+        case Rules::cll_var_assign: return "cll_var_assign";
+        case Rules::var_refer: return "var_refer";
+
+        case Rules::cll: return "cll";
+
+        default: return "Unknown Rule";
+    }
 }
 void printTabs(int tabs) {
     if (tabs > 0) {
