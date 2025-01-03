@@ -60,20 +60,6 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           choco install ninja -y
-      - name: Configure CMake (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        shell: pwsh
-        run: |
-          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\..\..\VC\Auxiliary\Build\vcvarsall.bat" amd64
-          cmake -B build -G Ninja `
-            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
-            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-            -DBOOST_ROOT="./boost" `
-            -S "${{ github.workspace }}"
-        
-        
-        
       - name: Configure CMake (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
@@ -82,7 +68,16 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -S ${{ github.workspace }}
-
+      - name: Configure CMake (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: cmd
+        run: |
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\..\..\VC\Auxiliary\Build\vcvarsall.bat" amd64 && cmake -B build -G Ninja ^
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} ^
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} ^
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+          -DBOOST_ROOT="./boost" ^
+          -S "${{ github.workspace }}"
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
 
