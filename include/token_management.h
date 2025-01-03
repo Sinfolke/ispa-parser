@@ -24,6 +24,9 @@ namespace Tokens {
     bool compare_csequence_diapason_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_symbol_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_escape_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_group_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_cll_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_method_call_rule(Parser::Rule first, Parser::Rule second);
     bool compareStringViewRule(Parser::Rule first, Parser::Rule second);
     bool compareStringRule(Parser::Rule first, Parser::Rule second);
     // compares the token with rules and 
