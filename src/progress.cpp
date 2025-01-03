@@ -25,11 +25,13 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             if (corelib::text::startsWithRange(token_name_str, 'A', 'Z')) {
                 auto matched_pos = Tokens::compare_rules(token_rule, rules);
-                if (matched_pos != -1) {
-                    // replace here with token the repeated rule
-                    auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
-                    rules.erase(rules.begin() + matched_pos, rules.begin() + matched_pos + token_rule.size());
-                    rules.insert(rules.begin() + matched_pos, tokenId);
+                if (!matched_pos.empty()) {
+                    for (auto& pos : matched_pos) {
+                        // replace here with token the repeated rule
+                        auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
+                        rules.erase(rules.begin() + pos, rules.begin() + pos + token_rule.size());
+                        rules.insert(rules.begin() + pos, tokenId);
+                    }
                 }
             }
         }

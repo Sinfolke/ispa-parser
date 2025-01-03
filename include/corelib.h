@@ -19,7 +19,7 @@ namespace corelib {
     namespace map {
         template<typename T>
         bool has(std::unordered_map<const char*, T>& map, const char* key) {
-            for (const auto pair : map) {
+            for (const auto& pair : map) {
                 if (!strcmp(pair.first, key))
                     return true;
             }
@@ -27,19 +27,21 @@ namespace corelib {
         }
         template<typename T>
         T get(std::unordered_map<const char*, T>& map, const char* key) {
-            for (const auto pair : map) {
+            for (const auto& pair : map) {
                 if (!strcmp(pair.first, key))
                     return pair.second;
             }
-            throw Error("Key %s does not exists in map", key);
+            throw Error("Key '%s' does not exists in map", key);
         }
         template<typename T>
         void set(std::unordered_map<const char*, T>& map, const char* key, T value) {
-            for (const auto pair : map) {
-                if (!strcmp(pair.first, key))
+            for (const auto& pair : map) {
+                if (!strcmp(pair.first, key)) {
                     map[pair.first] = value;
+                    return;
+                }
             }
-            throw Error("Key %s does not exists in map", key);
+            throw Error("Key '%s' does not exists in map", key);
         }
     };
 }

@@ -1,5 +1,6 @@
 #include <parser.h>
 #include <internal_types.h>
+#include <forward_list>
 namespace Tokens {
     Parser::Rule singleRuleToToken(Parser::Rule input);
     Parser::Rule make_rule();
@@ -23,5 +24,5 @@ namespace Tokens {
     bool compareStringViewRule(Parser::Rule first, Parser::Rule second);
     bool compareStringRule(Parser::Rule first, Parser::Rule second);
     // compares the token with rules and 
-    int compare_rules(Parser::Tree token_rule, Parser::Tree rules);
+    std::forward_list<int> compare_rules(Parser::Tree token_rule, Parser::Tree rules);
 }

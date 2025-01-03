@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <any>
+#include <forward_list>
 
 static size_t count = 0;
 
@@ -192,23 +193,27 @@ namespace Tokens {
         return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
     }
     // compares the token with rules and return an index where match discovered
-    int compare_rules(Parser::Tree token_rule, Parser::Tree rules) {
-        int where = 0;
+    std::forward_list<int> compare_rules(Parser::Tree token_rule, Parser::Tree rules) {
+        std::forward_list<int> where;
         if (token_rule.size() > rules.size()) // never match
-            return -1;
-        for (int i = 0; i < rules.size(); i += token_rule.size()) {
-            where = i;
+            return where;
+        for (int i = 0; i + token_rule.size() < rules.size(); i += token_rule.size()) {
             bool success = true;
-            for (int j = 0; j < token_rule.size(); j++) {
-                if (!compare_rule(token_rule[j], rules[i + j])) {
+            for (int j = i; j < token_rule.size(); j++) {
+                auto token_data = std::any_cast<obj_t>(token_rule[j].data);
+                auto token_val = std::any_cast<Parser::Rule>(corelib::map::get(token_data, "val"));
+
+                auto rules_data = std::any_cast<obj_t>(rules[j].data);
+                auto rules_val = std::any_cast<Parser::Rule>(corelib::map::get(rules_data, "val"));
+                if (!compare_rule(token_val, rules_val)) {
                     success = false;
                     break;
                 }
             }
             if (success) {
-                return where;
+                where.push_front(i);
             }
         }
-        return -1;
+        return where;
     }
 }
