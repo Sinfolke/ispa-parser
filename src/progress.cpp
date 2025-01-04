@@ -38,19 +38,27 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
 }
 Parser::Tree getTokensFromRule(Parser::Rule member) {
     Parser::Tree tree;
+    printf("1\n");
     auto data = std::any_cast<obj_t>(member.data);
+    printf("2\n");
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
     auto name_str = std::any_cast<std::string>(name.data);
     auto rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
     auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+    printf("3\n");
     if (corelib::text::startsWithRange(name_str, 'a', 'z')) {
         // is rule
+        printf("4\n");
         for (int i = 0; i < rule.size(); i++) {
             auto el = rule[i];
+            printf("5, has_value: %d, type: %s\n", el.data.has_value(), el.data.type().name());
+            if (!el.data.has_value())
+                continue;
             auto el_data = std::any_cast<obj_t>(el.data);
+            printf("6\n");
             auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+            printf("7\n");
             auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
-
             if (val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin) {
                 // convert into token & add here token instead o string
                 auto newToken = Tokens::singleRuleToToken(val);

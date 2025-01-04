@@ -112,7 +112,7 @@ namespace Tokens {
 
         if (first_d.name != second_d.name)
             return false;
-        return compare_number_rules(std::any_cast<Parser::Rule>(first_d.data), std::any_cast<Parser::Rule>(second_d.data));
+        return compare_number_rule(std::any_cast<Parser::Rule>(first_d.data), std::any_cast<Parser::Rule>(second_d.data));
     }
     bool compare_accessor_internal(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second) {
         if (first.size() != second.size())
@@ -123,7 +123,19 @@ namespace Tokens {
         }
         return true;
     }
-    bool compare_number_rules(Parser::Rule first, Parser::Rule second) {
+    bool compare_booolean_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first);
+        auto second_data = std::any_cast<obj_t>(second);
+        return std::any_cast<int>(corelib::map::get(first_data, "val")) == std::any_cast<int>(corelib::map::get(second_data, "val"));
+    }
+    bool compare_array_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<arr_t<Parser::Rule>>(first.data);
+        return false;
+    }
+    bool compare_object_rule(Parser::Rule first, Parser::Rule second) {
+        return false;
+    }
+    bool compare_number_rule(Parser::Rule first, Parser::Rule second) {
         auto first_data = std::any_cast<obj_t>(first.data);
         auto second_data = std::any_cast<obj_t>(second.data);
         std::string sign_first = std::any_cast<std::string>(corelib::map::get(first_data, "sign"));
@@ -196,7 +208,7 @@ namespace Tokens {
         if (!compareStringRule(first_c, second_c))
             return false;
         if (first_number.data.has_value()) {
-            return compare_number_rules(first_number, second_number);
+            return compare_number_rule(first_number, second_number);
         }
         return true;
     }
@@ -245,41 +257,102 @@ namespace Tokens {
         return compareStringRule(first, second);
     }
     bool compare_group_rule(Parser::Rule first, Parser::Rule second) {
-        cpuf::printf("1\n");
         auto first_data = std::any_cast<obj_t>(first.data);
         auto second_data = std::any_cast<obj_t>(second.data);
-        cpuf::printf("2\n");
         auto first_variable = corelib::map::get(first_data, "variable");
         auto second_variable = corelib::map::get(second_data, "variable");
-        cpuf::printf("3\n");
         auto first_rule = corelib::map::get(first_data, "val");
         auto second_rule = corelib::map::get(second_data, "val");
-        cpuf::printf("4\n");
-        if (first_variable.has_value() != second_variable.has_value())
+        if (first_variable.has_value() != second_variable.has_value()) {
             return false;
-        cpuf::printf("5\n");
+        }
         if (first_variable.has_value()) {
             // compare method/id
-            cpuf::printf("6\n");
             auto first_data = std::any_cast<Parser::Rule>(first_variable);
             auto second_data = std::any_cast<Parser::Rule>(second_variable);
-            cpuf::printf("7\n");
             if (first_data.name != second_data.name)
                 return false;
             if (first_data.name == Parser::Rules::id) {
-                if (compare_id_rule(first_data, second_data)) return false;
+                if (!compare_id_rule(first_data, second_data)) return false;
             } else {
-                if (compare_method_call_rule(first_data, second_data)) return false;
+                if (!compare_method_call_rule(first_data, second_data)) return false;
             }
         }
-        cpuf::printf("on_return\n");
         return compare_rule(std::any_cast<Parser::Rule>(first_rule), std::any_cast<Parser::Rule>(second_rule));
+    }
+
+    bool compare_method_call_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+
+        auto first_object = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "object"));
+        auto second_object = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "object"));
+
+        auto first_function_call = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "call"));
+        auto second_function_call = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "call"));
+
+        return compareStringRule(first_object, second_object) && compare_cll_function_call(first_function_call, second_function_call);
+        return false;
     }
     bool compare_cll_rule(Parser::Rule first, Parser::Rule second) {
         return false;
     }
-    bool compare_method_call_rule(Parser::Rule first, Parser::Rule second) {
-        return false;
+    bool compare_cll_function_call(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<obj_t>(first.data);
+        auto second_data = std::any_cast<obj_t>(second.data);
+
+        auto first_name = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "name"));
+        auto second_name = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "name"));
+
+        auto first_body = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "body"));
+        auto second_body = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "body"));
+
+        return compareStringRule(first_name, second_name) && compare_cll_function_body(first_body, second_body);
+    }
+    bool compare_cll_function_body(Parser::Rule first, Parser::Rule second) {
+        return compare_cll_function_arguments(std::any_cast<Parser::Rule>(first.data), std::any_cast<Parser::Rule>(second.data));
+    }
+    bool compare_cll_function_arguments(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<arr_t<std::any>>(first.data);
+        auto second_data = std::any_cast<arr_t<std::any>>(second.data);
+
+        if (!compare_any_data_rule(std::any_cast<Parser::Rule>(first_data[0]), std::any_cast<Parser::Rule>(second_data[0])))
+            return false;
+        auto first_vec = std::any_cast<arr_t<Parser::Rule>>(first_data[1]);
+        auto second_vec = std::any_cast<arr_t<Parser::Rule>>(second_data[1]);
+        if (first_vec.size() != second_vec.size()) 
+            return false;
+        for (int i = 0; i < first_vec.size(); i++) {
+            if (!compare_any_data_rule(std::any_cast<Parser::Rule>(first_vec[i]), std::any_cast<Parser::Rule>(second_vec[i])))
+                return false;
+        }
+        return true;
+    }
+    bool compare_any_data_rule(Parser::Rule first, Parser::Rule second) {
+        auto first_data = std::any_cast<Parser::Rule>(first.data);
+        auto second_data = std::any_cast<Parser::Rule>(second.data);
+        if (first_data.name != second_data.name)
+            return false;
+        
+        switch (first_data.name)
+        {
+        case Parser::Rules::boolean:
+            return compare_booolean_rule(first_data, second_data);
+        case Parser::Rules::number:
+            return compare_number_rule(first_data, second_data);
+        case Parser::Rules::string:
+            return compare_string_rule(first_data, second_data);
+        case Parser::Rules::array:
+            return compare_array_rule(first_data, second_data);
+        case Parser::Rules::object:
+            return compare_object_rule(first_data, second_data);
+        case Parser::Rules::id:
+            return compare_id_rule(first_data, second_data);
+        case Parser::Rules::accessor:
+            return compare_accessor_rule(first_data, second_data);
+        default:
+            throw Error("Comparing unknown rule: %$", Parser::RulesToString(first.name));
+        }
     }
     bool compareStringViewRule(Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string_view>(first.data) == std::any_cast<std::string_view>(second.data);

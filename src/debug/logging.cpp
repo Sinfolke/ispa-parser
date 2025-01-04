@@ -5,6 +5,11 @@
 #include <debug/logging.h>
 #include <cpuf/color.h>
 #undef Error
+void printCallTrace() {
+#ifdef ENABLE_TRACER
+    cpuf::perror("call trace: %$\n", boost::stacktrace::stacktrace());
+#endif
+}
 const char* Error::what() const noexcept {
     return message.c_str();
 }
@@ -12,9 +17,7 @@ void Error::print() {
 // Capture the stack trace
 
     cpuf::perror("RTERROR [%s:%d]: %s\n", file, line, message);
-#ifdef ENABLE_TRACER
-    cpuf::perror("call trace: %$\n", boost::stacktrace::stacktrace());
-#endif
+    printCallTrace();
     exit(2);
 }
 const char* UBase::what() const noexcept {
@@ -45,6 +48,7 @@ void custom_terminate_handler() {
         e.print();
     } catch (std::exception& e) {
         cpuf::printf("Exception: %s\n", e.what());
+        printCallTrace();
         exit(1);
     } catch (...) {
         cpuf::printf("Unknown exception\n");

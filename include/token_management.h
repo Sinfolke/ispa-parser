@@ -13,7 +13,10 @@ namespace Tokens {
     bool compare_accessor_rule(Parser::Rule first, Parser::Rule second);
     bool compare_accessor_internal(Parser::Rule first, Parser::Rule second);
     bool compare_accessor_internal(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second);
-    bool compare_number_rules(Parser::Rule first, Parser::Rule second);
+    bool compare_booolean_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_array_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_object_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_number_rule(Parser::Rule first, Parser::Rule second);
     bool compare_id_rule(Parser::Rule first, Parser::Rule second);
     bool compare_op_rule(Parser::Rule first, Parser::Rule second);
     bool compare_other_rule(Parser::Rule first, Parser::Rule second);
@@ -25,7 +28,12 @@ namespace Tokens {
     bool compare_csequence_symbol_rule(Parser::Rule first, Parser::Rule second);
     bool compare_csequence_escape_rule(Parser::Rule first, Parser::Rule second);
     bool compare_group_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_method_call_rule(Parser::Rule first, Parser::Rule second);
     bool compare_cll_rule(Parser::Rule first, Parser::Rule second);
+    bool compare_cll_function_call(Parser::Rule first, Parser::Rule second);
+    bool compare_cll_function_body(Parser::Rule first, Parser::Rule second);
+    bool compare_cll_function_arguments(Parser::Rule first, Parser::Rule second);
+    bool compare_any_data_rule(Parser::Rule first, Parser::Rule second);
     bool compare_method_call_rule(Parser::Rule first, Parser::Rule second);
     bool compareStringViewRule(Parser::Rule first, Parser::Rule second);
     bool compareStringRule(Parser::Rule first, Parser::Rule second);

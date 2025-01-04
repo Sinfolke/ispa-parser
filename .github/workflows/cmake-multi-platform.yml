@@ -72,7 +72,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         shell: cmd
         run: |
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\..\..\VC\Auxiliary\Build\vcvarsall.bat" amd64 && cmake -B build -G Ninja ^
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\..\..\VC\Auxiliary\Build\vcvarsall.bat" amd64 && cmake -B build ^
           -DCMAKE_CXX_FLAGS="/I\"C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34434\include\"" ^
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} ^
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} ^
