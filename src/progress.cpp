@@ -23,14 +23,22 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
             auto token_name_str = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);
             auto token_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-            if (corelib::text::startsWithRange(token_name_str, 'A', 'Z')) {
-                auto matched_pos = Tokens::compare_rules(token_rule, rules);
-                for (auto& pos : matched_pos) {
-                    // replace here with token the repeated rule
-                    auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
-                    rules.erase(rules.begin() + pos, rules.begin() + pos + token_rule.size());
-                    rules.insert(rules.begin() + pos, tokenId);
-                }
+
+            auto matched_pos = Tokens::compare_rules(token_rule, rules);
+            for (auto& pos : matched_pos) {
+                // replace here with token the repeated rule
+                auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
+                auto other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
+                    { "is_nested", false },
+                    { "name", tokenId },
+                    { "nestedName", std::vector<Parser::Rule> {} }
+                });
+                auto newToken = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    {"val", other },
+                    { "qualifier", Tokens::make_rule() }
+                });
+                rules.erase(rules.begin() + pos, rules.begin() + pos + token_rule.size());
+                rules.insert(rules.begin() + pos, newToken);
             }
         }
     }
@@ -38,26 +46,19 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
 }
 Parser::Tree getTokensFromRule(Parser::Rule member) {
     Parser::Tree tree;
-    printf("1\n");
     auto data = std::any_cast<obj_t>(member.data);
-    printf("2\n");
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
     auto name_str = std::any_cast<std::string>(name.data);
     auto rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
     auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-    printf("3\n");
     if (corelib::text::startsWithRange(name_str, 'a', 'z')) {
         // is rule
-        printf("4\n");
         for (int i = 0; i < rule.size(); i++) {
             auto el = rule[i];
-            printf("5, has_value: %d, type: %s\n", el.data.has_value(), el.data.type().name());
             if (!el.data.has_value())
                 continue;
             auto el_data = std::any_cast<obj_t>(el.data);
-            printf("6\n");
             auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-            printf("7\n");
             auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
             if (val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin) {
                 // convert into token & add here token instead o string
