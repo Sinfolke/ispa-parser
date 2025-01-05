@@ -25,7 +25,7 @@ Rule(Rule_other) {
     std::unordered_map<const char*, std::any> data {
         { "is_nested", is_nested },
         { "name", id_res.token },
-        { "nested_names", nested_names }
+        { "nested_name", nested_names }
     };
     RULE_SUCCESSD(in, pos, Rule_other, data);
 }
