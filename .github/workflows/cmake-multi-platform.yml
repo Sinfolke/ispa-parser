@@ -1,0 +1,80 @@
+name: CMake on multiple platforms
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        build_type: [Release]
+        c_compiler: [gcc, clang, cl]
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: cl
+
+    steps:
+      - name: Checkout code with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Cache Boost (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/boost
+          key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
+          restore-keys: |
+            boost-${{ matrix.os }}-${{ matrix.c_compiler }}
+            boost-${{ matrix.os }}
+      
+      - name: Install dependencies (Ubuntu)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libboost-all-dev gcc build-essential
+
+      - name: Install Boost (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          if (-Not (Test-Path "boost\bootstrap.bat")) {
+              ./prepare_boost.bat
+          }
+
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G "Ninja" -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="./boost" -S "${{ github.workspace }}"
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Test
+        working-directory: build
+        run: ctest --build-config ${{ matrix.build_type }}
