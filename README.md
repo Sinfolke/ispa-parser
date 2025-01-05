@@ -1,29 +1,18 @@
 # ispa
-### Warning
-  something you may find here may not be actually implemented for now,
-  It helps to have strict plans and quicks up implementation when you have it's details
-### What is this
- ispa (Independent Standalone Parser) is a domain specific language to generate parser from rules. The generated parser does not rely on any library; its output is a direct implementation of your rule, aiming to be simple and minimalistic while retaining most of the potential benefits. With the common language logic (CLL) inside you generally don't need to interact with the parser and that's what makes it standalone and those easer to learn. AST construction is done with simple data blocks - you just specify how the data of your rule should be stored in your token/rule.
- Example of output see in ```concepts/output-example``` (a bit outdated)
-### How to implement project
- The language ispa written is C++
- 1. Make sure the syntax definion is done
- 2. Do bootstrap. Write the parser for the syntax of this parser
- 3. Begin to write the main code of the parser
-    - arguments parser
-      - file input
-      - flags (see ```concepts/argp```) (not exists)
-    - Arguments processer to ART - argument tree (see ```concepts/art```) (not exists)
-    - parse each file      
- 5. Compile the parser writing the code on C++ by own
- 6. Create rules to walk on parser tree if need some optimisations or else before the compilation
- 7. Implement core library. The parser without optimizations can be converted using "on" calls
- 8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
- 9. After all done i can adjust parser rule syntax and do bootstrap
-### 
-### Parser syntax
-  
-  see ```concepts/syntax```
+### About
+  This is converter library to output C++ results for parser. You're welcome to do any modifications to improve generation.
+  Note this library is still licensed as the main branch under **Apache 2 license**
 
-### Latest commit changes
-  - Begin to write rules to parse parser files & walk on AST
+  This branch also describe how the parser will be outputted on the target language.
+### Output specifications
+  How the output is done will be described in a list form. This information is required for proper interaction with AST
+  1. Types
+     - var = std::any
+     - str = std::string
+     - num = int
+     - arr = std::vector\<std\:\:any\>
+     - obj = std::unordered_map\<const char*, std::any\>
+
+      Note that when you're accessing element by index (**%1**, **$1**), the type will be exact (not **std::any**). That means that
+      string literal ("hello") will be of type **std::string**, ("hello")+ will be **std::vector\<std::string\>**
+  2. 
