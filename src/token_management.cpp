@@ -216,8 +216,8 @@ namespace Tokens {
         auto name1 = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "name"));
         auto name2 = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "name"));
 
-        auto nested_names1 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "nested_names"));
-        auto nested_names2 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "nested_names"));
+        auto nested_names1 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "nested_name"));
+        auto nested_names2 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "nested_name"));
 
         return 
             is_nested1 == is_nested2 && 
@@ -298,22 +298,17 @@ namespace Tokens {
         return compareStringRule(first, second);
     }
     bool compare_group_rule(Parser::Rule first, Parser::Rule second) {
-        printf("1\n");
         auto first_data = std::any_cast<obj_t>(first.data);
         auto second_data = std::any_cast<obj_t>(second.data);
-        printf("2\n");
         auto first_variable = corelib::map::get(first_data, "variable");
         auto second_variable = corelib::map::get(second_data, "variable");
-        printf("3\n");
         auto first_rule = corelib::map::get(first_data, "val");
         auto second_rule = corelib::map::get(second_data, "val");
         if (first_variable.has_value() != second_variable.has_value()) {
             return false;
         }
-        printf("4\n");
         if (first_variable.has_value()) {
             // compare method/id
-            printf("5\n");
             auto first_data = std::any_cast<Parser::Rule>(first_variable);
             auto second_data = std::any_cast<Parser::Rule>(second_variable);
             if (first_data.name != second_data.name)
@@ -323,12 +318,8 @@ namespace Tokens {
             } else {
                 if (!compare_method_call_rule(first_data, second_data)) return false;
             }
-            printf("6\n");
         }
-        printf("7, type: %s\n", first_rule.type().name());
-        std::any_cast<arr_t<Parser::Rule>>(first_rule);
-        std::any_cast<arr_t<Parser::Rule>>(second_rule);
-        return false;
+        return compare_rules(std::any_cast<arr_t<Parser::Rule>>(first_rule), std::any_cast<arr_t<Parser::Rule>>(second_rule));
     }
 
     bool compare_method_call_rule(Parser::Rule first, Parser::Rule second) {
@@ -342,7 +333,6 @@ namespace Tokens {
         auto second_function_call = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "call"));
 
         return compareStringRule(first_object, second_object) && compare_cll_function_call(first_function_call, second_function_call);
-        return false;
     }
     bool compare_cll_rule(Parser::Rule first, Parser::Rule second) {
         return false;
@@ -410,8 +400,18 @@ namespace Tokens {
     bool compareStringRule(Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
     }
+    bool compare_rules(Parser::Tree first, Parser::Tree second) {
+        if (first.size() != second.size())
+            return false;
+        
+        for (int i = 0; i < first.size(); i++) {
+            if (!compare_rule(first[i], second[i]))
+                return false;
+        }
+        return true;
+    }
     // compares the token with rules and return an index where match discovered
-    std::forward_list<int> compare_rules(Parser::Tree token_rule, Parser::Tree rules) {
+    std::forward_list<int> find_token_in_rule(Parser::Tree token_rule, Parser::Tree rules) {
         std::forward_list<int> where;
         if (token_rule.size() > rules.size()) // never match
             return where;

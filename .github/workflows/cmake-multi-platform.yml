@@ -41,25 +41,31 @@ jobs:
           submodules: true
           fetch-depth: 1
 
-      - name: Install Boost (Ubuntu)
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Install dependencies (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y libboost-all-dev gcc build-essential
 
-      - name: Install Boost (Windows)
+      - name: Install dependencies (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           cd ${{ github.workspace }}
           ./prepare_boost.bat
-      - name: Configure CMake (Windows)
-        run: ^
-          cmake -B build
-          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} 
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DBOOST_ROOT="./boost" 
-          -S "${{ github.workspace }}"
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -G "Ninja" \
+            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DBOOST_ROOT="./boost" \
+            -S "${{ github.workspace }}"
+
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
 

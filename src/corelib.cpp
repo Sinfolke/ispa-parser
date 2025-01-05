@@ -40,7 +40,7 @@ namespace corelib::file {
                 }
             }
         } catch (const std::exception& e) {
-            throw UError("Error accessing directory %$: %s", dir, e.what());
+            throw UError("Error accessing directory %s: %$", dir, e.what());
         }
 
         return contents;

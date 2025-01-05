@@ -24,14 +24,14 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
             auto token_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
 
-            auto matched_pos = Tokens::compare_rules(token_rule, rules);
+            auto matched_pos = Tokens::find_token_in_rule(token_rule, rules);
             for (auto& pos : matched_pos) {
                 // replace here with token the repeated rule
                 auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
                 auto other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
                     { "is_nested", false },
                     { "name", tokenId },
-                    { "nestedName", std::vector<Parser::Rule> {} }
+                    { "nested_name", std::vector<Parser::Rule> {} }
                 });
                 auto newToken = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                     {"val", other },
