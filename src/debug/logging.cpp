@@ -5,7 +5,7 @@
 #include <debug/logging.h>
 #include <cpuf/color.h>
 #undef Error
-void printCallTrace() {
+inline void printCallTrace() {
 #ifdef ENABLE_TRACER
     cpuf::perror("call trace: %$\n", boost::stacktrace::stacktrace());
 #endif
@@ -28,7 +28,7 @@ void UError::print() {
     exit(1);
 }
 void UWarning::print() {
-    cpuf::printf("%$Error%$: %$\n", color::yellow, color::reset, message);
+    cpuf::printf("%sWarning%s: %$\n", color::yellow, color::reset, message);
 }
 
 /*

@@ -87,14 +87,22 @@ int main(int argc, char** argv) {
             }
         }
     }
+    if (args.get("lang").values.size() > 1) {
+        UWarning("Parameter 'lang' having more than 1 argument. Only first is used.").print();
+    }
     /*
         LEXICAL CHECKS SHALL GO ABOVE
-        CONVERTION IS STARTING HERE
-
+        TREE IS ADJUSTED BELOW
     */
     replaceDublications(tree); // replace dublicated tokens (e.g when literal repeats token, replace it to token)
     literalsToToken(tree);    // get tokens from literals (e.g from string, hex or binary)
-    
+
+    /*
+        CONVERTION IS GOING HERE
+
+    */
+    dlib converter(std::string("ispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+
     // begin convertion here
     //dlib converter();
     // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
