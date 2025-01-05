@@ -5,3 +5,7 @@
 	path = mod/parser
 	url = https://github.com/Sinfolke/ISC-parser.git
 	branch = parser
+[submodule "mod/converter-cpp"]
+	path = mod/converter-cpp
+	url = https://github.com/Sinfolke/ispa-parser.git
+	branch = converter-cpp
