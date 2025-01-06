@@ -3,6 +3,7 @@ project(ISPA)
 
 #enable_testing()
 add_subdirectory(mod/parser)    # include parser
+add_subdirectory(mod/converter-cpp)    # include c++ converter
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
 add_executable(ispa ${SOURCES})
@@ -25,10 +26,14 @@ else()
     endif()
 endif()
 
+if (MSVC)
+    # Enable exporting all symbols for MSVC
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 if (NOT DISABLE_TRACER)
     # Enable call tracer
     add_compile_definitions(ENABLE_TRACER)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if (MSVC)
         add_compile_options(/Zi)
     else()
         add_compile_options(-g1)

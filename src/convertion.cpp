@@ -7,7 +7,10 @@ std::string processFunction(const char* funName, Parser::Tree& tree, int& i, Par
     std::string res = function(tree, i, member);
     return res;
 }
+
+
 std::string processRule(Parser::Rule& member) {
+    auto data = std::any_cast<obj_t>(member.data);
     return "null";
 }
 std::string convert(Parser::Tree& tree, dlib& converter) {

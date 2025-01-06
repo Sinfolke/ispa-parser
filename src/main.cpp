@@ -22,6 +22,9 @@ std::forward_list<const char*> parameters_required {
 std::forward_list<const char*> parameters_with_arguments {
     "lang"
 };
+std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
+    { "lang", 1 }
+};
 // void printData(const char* data, int tabs);
 // void printData(const std::string data, int tabs);
 // void printData(const ::Parser::Rule data, int tabs);
@@ -55,6 +58,10 @@ int main(int argc, char** argv) {
     for (auto el : parameters_with_arguments) {
         if (args.has(el) && args.get(el).values.empty())
             throw UError("Parameter '%s' must have a parameter", el);
+    }
+    for (auto pair : parameters_with_fixes_arguments_amount) {
+        if (args.has(pair.first) && args.get(pair.first).values.size() > pair.second)
+            UWarning("Parameter %s expects maximum %d arguments").print();
     }
     // get tree from sources
     Parser::Tree tree;
@@ -101,10 +108,9 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    dlib converter(std::string("ispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    dlib converter(std::string("./build/libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
 
     // begin convertion here
-    //dlib converter();
     // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
     // if no tokens match current literal, a new token should be added that matches that literal and replace every place that kind of literal is used
     // 1. get source dir
