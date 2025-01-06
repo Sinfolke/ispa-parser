@@ -5,3 +5,7 @@
 	path = mod/parser
 	url = https://github.com/Sinfolke/ISC-parser.git
 	branch = parser
+[submodule "mod/main"]
+	path = mod/main
+	url = https://github.com/Sinfolke/ispa-parser.git
+	branch = main
