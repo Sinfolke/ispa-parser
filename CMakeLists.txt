@@ -26,9 +26,12 @@ else()
     endif()
 endif()
 
-if (MSVC)
+if(MSVC)
     # Enable exporting all symbols for MSVC
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+else()
+    # Enable exporting all symbols for GCC/Clang
+    target_link_options(ispa PRIVATE -rdynamic)
 endif()
 if (NOT DISABLE_TRACER)
     # Enable call tracer

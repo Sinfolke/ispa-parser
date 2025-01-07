@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    dlib converter(std::string("./build/libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
 
     // begin convertion here
     // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
