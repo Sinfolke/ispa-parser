@@ -1,5 +1,4 @@
 #ifdef ENABLE_TRACER
-    #define BOOST_STACKTRACE_USE_BACKTRACE
     #include <boost/stacktrace.hpp>
 #endif
 #include <debug/logging.h>
@@ -16,7 +15,7 @@ const char* Error::what() const noexcept {
 void Error::print() {
 // Capture the stack trace
 
-    cpuf::perror("RTERROR [%s:%d]: %s\n", file, line, message);
+    cpuf::perror("ispa: %sinternal_error%s [%s:%d]: %s\n", color::red, color::reset, file, line, message);
     printCallTrace();
     exit(2);
 }
@@ -24,11 +23,11 @@ const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {
-    cpuf::perror("%sError%s: %$\n", color::red, color::reset, message);
+    cpuf::perror("ispa: %serror%s: %$\n", color::red, color::reset, message);
     exit(1);
 }
 void UWarning::print() {
-    cpuf::printf("%sWarning%s: %$\n", color::yellow, color::reset, message);
+    cpuf::printf("ispa: %swarning%s: %$\n", color::yellow, color::reset, message);
 }
 
 /*
@@ -47,7 +46,7 @@ void custom_terminate_handler() {
     } catch (UWarning& e) {
         e.print();
     } catch (std::exception& e) {
-        cpuf::printf("Exception: %s\n", e.what());
+        cpuf::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
         printCallTrace();
         exit(1);
     } catch (...) {
