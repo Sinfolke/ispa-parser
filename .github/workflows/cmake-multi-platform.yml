@@ -48,7 +48,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/boost
+          path: $HOME/boost
           key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
           restore-keys: |
             boost-${{ matrix.os }}-${{ matrix.c_compiler }}
@@ -63,14 +63,16 @@ jobs:
       - name: Install Boost (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          if (-Not (Test-Path "boost\bootstrap.bat")) {
-              ./prepare_boost.bat
-          }
+          if (-Not (Test-Path "$HOME/boost/bootstrap.bat")) {
+              mkdir $HOME/boost
+              cd $HOME/boost
+              ${{ github.workspace }}/prepare_boost.bat
+          }        
 
 
       - name: Configure CMake
         run: |
-          cmake -B build -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="./boost" -S "${{ github.workspace }}"
+          cmake -B build -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="$HOME/boost" -S "${{ github.workspace }}"
 
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
