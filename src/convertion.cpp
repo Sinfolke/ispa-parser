@@ -121,7 +121,9 @@ void process_Rule_any(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::str
 void process_Rule_op(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter) {
     processFunction("on_Rule_op", tree, i, use_prop, buf, member, converter);
 }
-void process_cll(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter) {}
+void process_cll(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter) {
+    processFunction("on_cll", tree, i, use_prop, buf, member, converter);
+}
 void process_string(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter) {
     processFunction("on_string", tree, i, use_prop, buf, member, converter);
 };

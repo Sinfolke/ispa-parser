@@ -44,7 +44,7 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
 
-      - name: Cache Boost (Windows)
+      - name: Restore boost cache
         if: ${{ matrix.os == 'windows-latest' }}
         uses: actions/cache@v3
         with:
@@ -65,14 +65,7 @@ jobs:
           if (-Not (Test-Path "$HOME/boost/bootstrap.bat")) {
               cd $HOME
               ${{ github.workspace }}/prepare_boost.bat
-          }        
-
-      - name: Save Boost Cache
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: actions/cache@v3
-        with:
-          path: $HOME/boost
-          key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
+          }
       - name: Configure CMake
         run: |
           cmake -B build -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="$HOME/boost" -S "${{ github.workspace }}"
