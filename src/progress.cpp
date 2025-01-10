@@ -1,8 +1,9 @@
+#include <sstream>
+#include <algorithm>
 #include <progress.h>
 #include <corelib.h>
 #include <internal_types.h>
 #include <token_management.h>
-#include <sstream>
 #include <cpuf/printf.h>
 // this function should replace all token dublications 
 void replaceDublications(Parser::Tree& tree) {
@@ -44,7 +45,7 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
     }
     return rules;
 }
-Parser::Tree getTokensFromRule(Parser::Rule member) {
+Parser::Tree getTokensFromRule(Parser::Rule &member) {
     Parser::Tree tree;
     auto data = std::any_cast<obj_t>(member.data);
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
@@ -67,13 +68,24 @@ Parser::Tree getTokensFromRule(Parser::Rule member) {
                 auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
                 auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
                 auto id = Tokens::make_rule(Parser::Rules::id, newToken_name_str);
+                auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
+                    { "is_nested", false },
+                    { "name", id },
+                    { "nested_names", arr_t<Parser::Rule>() }
+                });
+                auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    { "val", Rule_other  },
+                    { "qualfier", qualifier }
+                });
                 tree.push_back(newToken);
                 // use token here instead of literal
-                std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"))[i] = id;
+                rule[i] = _rule;
             }
         }
 
     }
+    corelib::map::set(data, "rule", std::any(rule));
+    member.data = std::any(data);
     literalsToToken(nested_rule);
     return tree;
 }
@@ -88,3 +100,29 @@ void literalsToToken(Parser::Tree& tree) {
     // Append tokenSeq to the existing tree
     tree.insert(tree.end(), tokenSeq.begin(), tokenSeq.end());
 }
+bool compareByPriority(Parser::Rule first, Parser::Rule second) {
+    auto first_data = std::any_cast<obj_t>(first.data);
+    auto second_data = std::any_cast<obj_t>(second.data);
+    auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
+    auto second_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
+    if (first_val.name != Parser::Rules::Rule_other || second_val.name != Parser::Rules::Rule_other)
+        throw Error("Value is not identifier, name: %s, %s", Parser::RulesToString(first_val.name), Parser::RulesToString(second_val.name));
+    return true;
+}
+void sortByPriority(Parser::Tree &tree)  {
+    for (auto &member : tree) {
+        if (member.name == Parser::Rules::Rule) {
+            auto data = std::any_cast<obj_t>(member.data);
+            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
+            auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
+            if (corelib::text::startsWithRange(name_str, 'a', 'z')) {
+                // is a rule
+                std::vector<int> priority;
+                for (int i = 0; i < rules.size(); i++) {
+                    std::sort(rules.begin(), rules.end(), compareByPriority);
+                }
+            }
+        }
+    }
+} 

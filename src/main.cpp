@@ -102,8 +102,8 @@ int main(int argc, char** argv) {
         TREE CHANGES BELOW
     */
     replaceDublications(tree); // replace dublicated tokens (e.g when literal repeats token, replace it to token)
-    literalsToToken(tree);    // get tokens from literals (e.g from string, hex or binary)
-
+    literalsToToken(tree);     // get tokens from literals (e.g from string, hex or binary)
+    sortByPriority(tree);      // sorts elements to get which should be placed on top
     /*
         CONVERTION IS GOING HERE
 
