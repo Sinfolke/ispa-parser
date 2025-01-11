@@ -10,7 +10,7 @@
 static size_t count = 0;
 
 namespace Tokens {
-    ::Parser::Rule singleRuleToToken(::Parser::Rule input) {
+    ::Parser::Rule singleRuleToToken(Parser::Rule input) {
         // Construct a token here
         ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 
             obj_t {
@@ -31,7 +31,12 @@ namespace Tokens {
             }
         );
         ::Parser::Rule data_block = make_rule(Parser::Rules::Rule_data_block, accessorRule);
-        arr_t<Parser::Rule> rule {input};
+        arr_t<Parser::Rule> rule { make_rule(Parser::Rules::Rule_rule, 
+            obj_t {
+                { "val", input },
+                { "qualifier", Parser::Rule() }
+            }
+        )};
 
         obj_t data {
             { "name", make_rule(Parser::Rules::id, std::string("auto_") + std::to_string(count++)) },
@@ -416,20 +421,26 @@ namespace Tokens {
         if (token_rule.size() > rules.size()) // never match
             return where;
         for (int i = 0; i + token_rule.size() < rules.size(); i += token_rule.size()) {
-            bool success = true;
+            bool success = true, began = false;
+            int _where = i;
             for (int j = i; j < token_rule.size(); j++) {
                 auto token_data = std::any_cast<obj_t>(token_rule[j].data);
                 auto token_val = std::any_cast<Parser::Rule>(corelib::map::get(token_data, "val"));
 
                 auto rules_data = std::any_cast<obj_t>(rules[j].data);
                 auto rules_val = std::any_cast<Parser::Rule>(corelib::map::get(rules_data, "val"));
+
+                if (!began && token_val.name == Parser::Rules::Rule_op || rules_val.name == Parser::Rules::Rule_op) {
+                    _where++;
+                    continue;
+                } else began = true;
                 if (!compare_rule(token_val, rules_val)) {
                     success = false;
                     break;
                 }
             }
             if (success) {
-                where.push_front(i);
+                where.push_front(_where);
             }
         }
         return where;

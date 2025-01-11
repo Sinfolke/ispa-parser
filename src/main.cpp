@@ -86,7 +86,6 @@ int main(int argc, char** argv) {
         for (const auto dirPath : args.get("dir").values) {
             auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
-                cpuf::printf("Parsing file %$\n", file);
                 std::string content = corelib::file::readFile(file);
                 Parser::Parser parser(content.c_str());
                 auto current_tree = parser.parse();

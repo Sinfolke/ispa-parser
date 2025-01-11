@@ -15,7 +15,7 @@ const char* Error::what() const noexcept {
 void Error::print() {
 // Capture the stack trace
 
-    cpuf::perror("ispa: %sinternal_error%s [%s:%d]: %s\n", color::red, color::reset, file, line, message);
+    cpuf::perror("ispa: %sinternal error%s [%s:%d]: %s\n", color::red, color::reset, file, line, message);
     printCallTrace();
     exit(2);
 }
