@@ -107,17 +107,25 @@ void literalsToToken(Parser::Tree& tree) {
     tree.insert(tree.end(), tokenSeq.begin(), tokenSeq.end());
 }
 static arr_t<Parser::Rule> getValueFromGroup(Parser::Rule first) {
-    cpuf::printf("3\n");
     auto first_data = std::any_cast<obj_t>(first.data);
-    cpuf::printf("4\n");
     return std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
 }
-using priority_t = struct {
+struct priority_t {
     int pos;
     Parser::Rule rule;
 };
 bool sortPriority(priority_t first, priority_t second) {
     cpuf::printf("first_name: %s, second_name: %s\n", Parser::RulesToString(first.rule.name), Parser::RulesToString(second.rule.name));
+    auto first_data = std::any_cast<obj_t>(first.rule.data);
+    auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
+    auto second_data = std::any_cast<obj_t>(second.rule.data);
+    auto second_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
+
+    if (first_val.name == Parser::Rules::string && second_val.name == Parser::Rules::string) {
+        return std::any_cast<std::string>(first_val.data).size() < std::any_cast<std::string>(second_val.data).size(); 
+    } 
+    if (first_val.name == second_val.name)
+        return 0;
     return 1;
 }
 void sortByPriority(Parser::Tree &tree)  {
@@ -152,7 +160,7 @@ void sortByPriority(Parser::Tree &tree)  {
                         have_op = false;
                     }
                 }
-                std::sort(priority.begin(), priority.end(), sortPriority);
+                std::stable_sort(priority.begin(), priority.end(), sortPriority);
             //}
         }
         i++;
