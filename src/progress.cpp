@@ -25,6 +25,10 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
             auto token_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             auto matched_pos = Tokens::find_token_in_rule(token_rule, rules);
+            // for (auto el : token_rule) {
+            //     auto dt = std::any_cast<obj_t>(el.data);
+            //     cpuf::printf("el name: %s\n", Parser::RulesToString(std::any_cast<Parser::Rule>(corelib::map::get(dt, "val")).name));
+            // }
             for (auto& pos : matched_pos) {
                 // replace here with token the repeated rule
                 auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
@@ -132,7 +136,6 @@ void sortByPriority(Parser::Tree &tree)  {
                 for (int i = 0; i < rules.size(); i++) {
                     auto data = std::any_cast<obj_t>(rules[i].data);
                     auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-                    cpuf::printf("i: %d, val name: %s\n", i, Parser::RulesToString(val.name));
                     if (val.name == Parser::Rules::Rule_op)
                     {
                         if (!have_op)

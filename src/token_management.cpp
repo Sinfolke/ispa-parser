@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <any>
+#include <list>
 #include <forward_list>
 
 static size_t count = 0;
@@ -73,7 +74,7 @@ namespace Tokens {
                 return compare_id_rule(first, second);
             case Parser::Rules::Rule_csequence:
                 return compare_csequence_rule(first, second);
-            case Parser::Rules::op:
+            case Parser::Rules::Rule_op:
                 return compare_op_rule(first, second);
             case Parser::Rules::Rule_other:
                 return compare_other_rule(first, second);
@@ -243,15 +244,15 @@ namespace Tokens {
         auto first_data = std::any_cast<obj_t>(first.data);
         auto second_data = std::any_cast<obj_t>(second.data);
 
-        auto first_c = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "c"));
-        auto second_c = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "c"));
+        auto first_c = std::any_cast<std::string>(corelib::map::get(first_data, "c"));
+        auto second_c = std::any_cast<std::string>(corelib::map::get(second_data, "c"));
 
         auto first_number = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "num"));
         auto second_number = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "num"));
 
         if (first_number.data.has_value() != second_number.data.has_value())
             return false;
-        if (!compareStringRule(first_c, second_c))
+        if (first_c != second_c)
             return false;
         if (first_number.data.has_value()) {
             return compare_number_rule(first_number, second_number);
@@ -410,39 +411,57 @@ namespace Tokens {
             return false;
         
         for (int i = 0; i < first.size(); i++) {
-            if (!compare_rule(first[i], second[i]))
+            Parser::Rule _first = first[i], _second = second[i];
+            if (_first.name == Parser::Rules::Rule_rule) {
+                auto data = std::any_cast<obj_t>(_first.data);
+                _first = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+            }
+            if (_second.name == Parser::Rules::Rule_rule) {
+                auto data = std::any_cast<obj_t>(_second.data);
+                _second = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+            }
+            if (!compare_rule(_first, _second))
                 return false;
         }
         return true;
     }
     // compares the token with rules and return an index where match discovered
-    std::forward_list<int> find_token_in_rule(Parser::Tree token_rule, Parser::Tree rules) {
+    std::forward_list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules) {
         std::forward_list<int> where;
+
         if (token_rule.size() > rules.size()) // never match
-            return where;
-        for (int i = 0; i + token_rule.size() < rules.size(); i += token_rule.size()) {
-            bool success = true, began = false;
+            return {};
+
+        for (size_t i = 0; i <= rules.size() - token_rule.size(); ++i) {
+            bool success = true;
             int _where = i;
-            for (int j = i; j < token_rule.size(); j++) {
+
+            for (size_t j = 0; j < token_rule.size(); ++j) {
                 auto token_data = std::any_cast<obj_t>(token_rule[j].data);
                 auto token_val = std::any_cast<Parser::Rule>(corelib::map::get(token_data, "val"));
 
-                auto rules_data = std::any_cast<obj_t>(rules[j].data);
+                auto rules_data = std::any_cast<obj_t>(rules[i + j].data);
                 auto rules_val = std::any_cast<Parser::Rule>(corelib::map::get(rules_data, "val"));
 
-                if (!began && token_val.name == Parser::Rules::Rule_op || rules_val.name == Parser::Rules::Rule_op) {
+                // Skip Rule_op at the start of the comparison
+                if (j == 0 && (token_val.name == Parser::Rules::Rule_op || rules_val.name == Parser::Rules::Rule_op)) {
                     _where++;
                     continue;
-                } else began = true;
+                }
+
                 if (!compare_rule(token_val, rules_val)) {
                     success = false;
                     break;
                 }
             }
+
             if (success) {
                 where.push_front(_where);
             }
         }
+
         return where;
     }
+
+
 }

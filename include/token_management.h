@@ -39,5 +39,5 @@ namespace Tokens {
     bool compareStringRule(Parser::Rule first, Parser::Rule second);
     // compares the token with rules and 
     bool compare_rules(Parser::Tree first, Parser::Tree second);
-    std::forward_list<int> find_token_in_rule(Parser::Tree token_rule, Parser::Tree rules);
+    std::forward_list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules);
 }

@@ -9,6 +9,8 @@
 #include <cstdarg>
 #include <unordered_map>
 #include <stdexcept>
+#include <forward_list>
+#include <list>
 #include <stdlib.h>
 
 
