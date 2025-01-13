@@ -116,14 +116,15 @@ struct priority_t {
     Parser::Rule rule;
 };
 static bool processGroup_helper(arr_t<Parser::Rule> group, Parser::Rule second) {
+    auto data = std::any_cast<obj_t>(second.data);  
+    auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
     if (second.name == Parser::Rules::Rule_group) {
-        auto data = std::any_cast<obj_t>(second.data);
-        auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+
         return group.size() < val.size();
     }
     if (second.name == Parser::Rules::string)
         return 1;
-    return 0;
+    return sortPriority({0, val[0]}, {0, second});
 }
 bool sortPriority(priority_t first, priority_t second) {
     auto first_data = std::any_cast<obj_t>(first.rule.data);
