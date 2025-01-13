@@ -71,12 +71,12 @@ Rule:
         '.'
     ;
     #data_block:
-        [\r\n]+ 'data' ':' &data ( ANY_DATA | #inclosed_map ) ';'
+        [\r\n]+ 'data' ':' &data ( any_data | #inclosed_map ) ';'
         #inclosed_map:
             &data(key+)
         ;
         #key:
-            [\n\r]+ &name(id) ':' &dt (ANY_DATA)
+            [\n\r]+ &name(id) ':' &dt (any_data)
             data:
                 name: name
                 val: dt

@@ -1,5 +1,5 @@
 expr: 
-    #logical | #compare | #arithmetic | #group | expr_copiable_method_call | cll_function_call | ANY_DATA
+    #logical | #compare | #arithmetic | #group | expr_copiable_method_call | cll_function_call | any_data
 
     #logical:
         compare LOGICAL_OP compare
@@ -16,7 +16,7 @@ expr:
         for_arithmetic OP for_arithmetic
     ;
     #for_arithmetic:
-        group | copiable_method_call | method_call | cll_function_call | ANY_DATA
+        group | copiable_method_call | method_call | cll_function_call | any_data
     ;
     #group:
         '(' cll_ternary | expr ')'

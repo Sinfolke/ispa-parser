@@ -7,9 +7,9 @@ function_body_decl:
     data: $1;
 ;
 function_arguments: 
-    ANY_DATA | ID?
+    any_data | ID?
     $if (matched(%1)) {
-        (',' ANY_DATA | ID)*
+        (',' any_data | ID)*
     }
     data: [%1, %3];
 ;

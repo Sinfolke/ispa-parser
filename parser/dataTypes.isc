@@ -30,15 +30,15 @@ BOOLEAN:
         lit: d
     ;
 ;
-ARRAY: 
+array: 
     $arr<any> data = [%2, %4];
 
 
-    '[' ( (ANY_DATA ',')* )? ']'
+    '[' ( (any_data ',')* )? ']'
 
-OBJECT:
+object:
     '{'
-        ( ANY_DATA ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
+        ( any_data ':' any_data ( ',' ID ':' any_data )* ';' )?
     '}'
     data:
         key: $1>%1
@@ -46,7 +46,7 @@ OBJECT:
         keys: $2>%2
         values: $2>%4
     ;
-ANY_DATA: 
+any_data: 
     $data = %1;
 
     BOOLEAN | NUMBER | STRING | ARRAY | OBJECT | ID | accessor
