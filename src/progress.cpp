@@ -1,5 +1,6 @@
 #include <sstream>
 #include <algorithm>
+#include <queue>
 #include <progress.h>
 #include <corelib.h>
 #include <internal_types.h>
@@ -114,19 +115,67 @@ struct priority_t {
     int pos;
     Parser::Rule rule;
 };
+static bool processGroup_helper(arr_t<Parser::Rule> group, Parser::Rule second) {
+    if (second.name == Parser::Rules::Rule_group) {
+        auto data = std::any_cast<obj_t>(second.data);
+        auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+        return group.size() < val.size();
+    }
+    if (second.name == Parser::Rules::string)
+        return 1;
+    return 0;
+}
 bool sortPriority(priority_t first, priority_t second) {
-    cpuf::printf("first_name: %s, second_name: %s\n", Parser::RulesToString(first.rule.name), Parser::RulesToString(second.rule.name));
     auto first_data = std::any_cast<obj_t>(first.rule.data);
     auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
     auto second_data = std::any_cast<obj_t>(second.rule.data);
     auto second_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
 
     if (first_val.name == Parser::Rules::string && second_val.name == Parser::Rules::string) {
+        // if first value size is lower second, put the second before
+        // this ensure correct match of values
         return std::any_cast<std::string>(first_val.data).size() < std::any_cast<std::string>(second_val.data).size(); 
+    }
+    // here is same as with strings
+    if (first_val.name == Parser::Rules::Rule_bin && second_val.name == Parser::Rules::Rule_bin) {
+        return std::any_cast<std::string>(first_val.data).size() < std::any_cast<std::string>(second_val.data).size();
     } 
+    if (first_val.name == Parser::Rules::Rule_hex && second_val.name == Parser::Rules::Rule_hex) {
+        return std::any_cast<std::string>(first_val.data).size() < std::any_cast<std::string>(second_val.data).size();
+    }
+    // if non above is true but the value kind is same, remain values in their order
     if (first_val.name == second_val.name)
         return 0;
-    return 1;
+    // string goes before csequence
+    if (first_val.name == Parser::Rules::string && second_val.name == Parser::Rules::Rule_csequence)
+        return 0;
+    else if (first_val.name == Parser::Rules::Rule_csequence && second_val.name == Parser::Rules::string)
+        return 1;
+    // string goes before escape
+    if (first_val.name == Parser::Rules::string && second_val.name == Parser::Rules::Rule_escaped)
+        return 0;
+    else if (first_val.name == Parser::Rules::Rule_escaped && second_val.name == Parser::Rules::string)
+        return 1;
+    // any goes the last one
+    if (first_val.name == Parser::Rules::Rule_any)
+        return 1;
+    else if (second_val.name == Parser::Rules::Rule_any)
+        return 0;
+    // literals go before identifier
+    if (first_val.name == Parser::Rules::Rule_other && (second_val.name == Parser::Rules::string || second_val.name == Parser::Rules::Rule_csequence_escape))
+        return 1;
+    else if ((first_val.name == Parser::Rules::string || first_val.name == Parser::Rules::Rule_csequence) && second_val.name == Parser::Rules::Rule_other) 
+        return 0;
+    
+    if (first_val.name == Parser::Rules::Rule_group) {
+        auto data = std::any_cast<obj_t>(first_val.data);
+        return processGroup_helper(std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val")), second_val);
+    }
+    if (second_val.name == Parser::Rules::Rule_group) {
+        auto data = std::any_cast<obj_t>(second_val.data);
+        return !processGroup_helper(std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val")), first_val);
+    }
+    return 0;
 }
 void sortByPriority(Parser::Tree &tree)  {
     int i = 0;
@@ -136,32 +185,49 @@ void sortByPriority(Parser::Tree &tree)  {
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
             auto name_str = std::any_cast<std::string>(name.data);
             auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
-            //if (corelib::text::startsWithRange(name_str, 'a', 'z')) {
- 
-                std::vector<priority_t> priority;
-                bool have_op = false;
-                bool prev_op = false;
-                for (int i = 0; i < rules.size(); i++) {
-                    auto data = std::any_cast<obj_t>(rules[i].data);
-                    auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-                    if (val.name == Parser::Rules::Rule_op)
-                    {
-                        if (!have_op)
-                            priority.push_back({i - 1, rules[i - 1]});
 
-                        prev_op = true;
-                        have_op = true;
-                    } else if (prev_op) 
-                    {
-                        prev_op = false;
-                        priority.push_back({i, rules[i]});
-                    } else 
-                    {
-                        have_op = false;
-                    }
+            std::vector<priority_t> priority;
+            bool have_op = false;
+            bool prev_op = false;
+            for (int i = 0; i < rules.size(); i++) {
+                auto data = std::any_cast<obj_t>(rules[i].data);
+                auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+                if (val.name == Parser::Rules::Rule_op)
+                {
+                    if (!have_op)
+                        priority.push_back({i - 1, rules[i - 1]});
+
+                    prev_op = true;
+                    have_op = true;
+                } else if (prev_op) 
+                {
+                    prev_op = false;
+                    priority.push_back({i, rules[i]});
+                } else 
+                {
+                    have_op = false;
                 }
-                std::stable_sort(priority.begin(), priority.end(), sortPriority);
-            //}
+            }
+            std::stable_sort(priority.begin(), priority.end(), sortPriority);
+            while(priority.size() != 0) {
+                auto min = std::min_element(priority.begin(), priority.end(), [](priority_t first, priority_t second) { return first.pos < second.pos; });
+                rules[min->pos] = priority[0].rule;
+                // pop first element
+                priority.erase(priority.begin());
+            }
+
+            // LOG CHANGES
+            // cpuf::printf("result: \n");
+            // for (auto el : rules) {
+            //     auto first_data = std::any_cast<obj_t>(el.data);
+            //     auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
+            //     cpuf::printf("\t%s\n", Parser::RulesToString(first_val.name));
+            // }
+
+            // apply changes
+
+            corelib::map::set(data, "rule", std::any(rules));
+            member.data = data;
         }
         i++;
     }
