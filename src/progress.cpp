@@ -185,13 +185,27 @@ void sortByPriority(Parser::Tree &tree)  {
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
             auto name_str = std::any_cast<std::string>(name.data);
             auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
-
+            auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+            
             std::vector<priority_t> priority;
             bool have_op = false;
             bool prev_op = false;
             for (int i = 0; i < rules.size(); i++) {
                 auto data = std::any_cast<obj_t>(rules[i].data);
                 auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+                // apply the sort for groups
+                // note this does not have relation to the sortion itself
+                if (val.name == Parser::Rules::Rule_group) {
+                    auto data = std::any_cast<obj_t>(val.data);
+                    auto this_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+                    sortByPriority(this_val);
+                    
+                    // assign result to the current group value
+                    corelib::map::set(data, "val", std::any(this_val));
+                    val.data = data;
+                }
+
+                // sort process
                 if (val.name == Parser::Rules::Rule_op)
                 {
                     if (!have_op)
@@ -224,6 +238,9 @@ void sortByPriority(Parser::Tree &tree)  {
                 cpuf::printf("\t%s\n", Parser::RulesToString(first_val.name));
             }
 
+            // sort nested rule
+            sortByPriority(nested_rules);
+            corelib::map::set(data, "nestedRules", std::any(nested_rules));
             // apply changes
 
             corelib::map::set(data, "rule", std::any(rules));
