@@ -21,4 +21,4 @@ set_target_properties(ispa-converter-cpp PROPERTIES CXX_EXTENSIONS ON)
 
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
-include_directories(external mod/parser/include mod/parser/stdlibs include mod/main/include)
+include_directories(include external mod/parser/include mod/parser/stdlibs  mod/main/include)

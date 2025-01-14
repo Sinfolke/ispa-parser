@@ -4,7 +4,7 @@
 #include <parser.h>
 #include <corelib.h>
 bool processingToken;
-void on_Rule(Parser::Tree tree, int i, std::string &buf, Parser::Rule member) {
+void on_Rule(Parser::Tree &tree, int &i, std::string &buf, Parser::Rule member) {
     std::stringstream res;
     auto data = std::any_cast<obj_t>(member.data);
     std::string name = std::any_cast<std::string>(std::any_cast<Parser::Rule> (corelib::map::get(data, "name")).data);

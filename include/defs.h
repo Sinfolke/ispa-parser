@@ -2,8 +2,18 @@
 #include <string>
 #include <internal_types.h>
 #include <corelib.h>
+
+struct variable_place {
+    int rule_number;
+    bool is_multiple_assing;
+    size_t place;
+    size_t assign_place;
+};
+
 extern bool processingToken;
 extern char qualifier;
+extern std::vector<variable_place> vars;
+extern variable_place current_place;
 void on_Rule(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
 void on_Rule_group(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
 void on_Rule_csequence(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
