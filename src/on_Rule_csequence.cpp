@@ -28,8 +28,9 @@ void on_Rule_csequence_close(Parser::Tree &tree, int &i, use_prop_t &use_prop, s
         buf += ') {';
     current_place.assign_place = buf.size();
     buf += "\n\t\treturn {};\n";
-    buf += '\t}'
-    
+    buf += '\t}';
+    vars.push_back(current_place);
+    current_place = {};
 }
 void on_Rule_csequence_diapason(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     auto data = std::any_cast<arr_t<Parser::Rule>>(member.data);
