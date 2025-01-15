@@ -25,10 +25,10 @@ void on_Rule_csequence(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::st
 void on_Rule_csequence_close(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     buf += ')';
     if (!csequence_not)
-        buf += ') {';
+        buf += ") {";
     current_place.assign_place = buf.size();
     buf += "\n\t\treturn {};\n";
-    buf += '\t}';
+    buf += "\t}";
     vars.push_back(current_place);
     current_place = {};
 }
