@@ -462,6 +462,14 @@ namespace Tokens {
 
         return where;
     }
-
+    Parser::Rule find_token_in_tree(Parser::Tree &tree, Parser::Rule id) {
+        for (auto &member : tree) {
+            auto data = std::any_cast<obj_t>(member.data);
+            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            if (compare_id_rule(name, id))
+                return member;     
+        }
+        return {};
+    }
 
 }

@@ -21,7 +21,7 @@
  8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
  9. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
-  - Make sort of identifiers (Rule_other) based of value of token they're pointing to.
+  - fix bad any cast error
 ### Parser syntax
   
   see ```concepts/syntax```
