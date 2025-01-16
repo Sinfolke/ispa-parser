@@ -7,18 +7,18 @@
 #include <corelib.h>
 #include <convertion.h>
 auto getFunction(dlib& converter, const char* name);
-void processFunction(const char* funName, Parser::Tree &tree, int& i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void processRule(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_group(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_csequence(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_accessor(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_hex(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_bin(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_other(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_escaped(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_any(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_Rule_op(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_cll(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_string(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
-void process_number(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member, dlib &converter);
+void processFunction(const char* funName, dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void processRule(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_group(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_csequence(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_accessor(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_hex(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_bin(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_other(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_escaped(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_any(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_Rule_op(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_cll(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_string(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
+void process_number(dlib &converter, use_prop_t &use_prop, std::string &buf, Parser::Rule member);
 std::string convert(Parser::Tree& tree, dlib& converter);
