@@ -24,4 +24,4 @@ app:
     }
 
 dll:
-    the on call must first define the data block
+    the on call generally should just output the code. It must minimally include logic
