@@ -30,6 +30,7 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const ::Parser::Rule data, int tabs);
 // void printData(const std::unordered_map<const char*, std::any> data, int tabs);
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
+Parser::Tree tree;
 int main(int argc, char** argv) {
     init();
     Args args(argc, argv);
@@ -64,7 +65,6 @@ int main(int argc, char** argv) {
             UWarning("Parameter %s expects maximum %d arguments").print();
     }
     // get tree from sources
-    Parser::Tree tree;
     if (!args.unnamed().size() && !args.has("dir"))
         throw UError("No input files");
     

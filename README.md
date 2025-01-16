@@ -21,10 +21,10 @@
  8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
  9. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
-  - fix bad any cast error
+  - Implement convertion (see ```concepts/convertion``` to see how i implement it)
 ### Parser syntax
   
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - Begin to write rules to parse parser files & walk on AST
+  - Trying to implement convertion

@@ -131,12 +131,12 @@ static bool processGroup_helper(arr_t<Parser::Rule> group, Parser::Rule second) 
 static Parser::Rule processNestedRuleHelper(arr_t<Parser::Rule> nestedName, obj_t ruleother_data, Parser::Rule token) {
     while(!nestedName.empty()) {
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(ruleother_data, "nestedRules"));
-        token = Tokens::find_token_in_tree(nested_rules, nestedName[0]);
+        auto new_token = Tokens::find_token_in_tree(nested_rules, nestedName[0]);
         nestedName.erase(nestedName.begin());
     }
     return token;
 }
-static Parser::Tree *full_tree;
+extern Parser::Tree tree;
 bool sortPriority(priority_t first, priority_t second) {
 
     auto first_data = std::any_cast<obj_t>(first.rule.data);
@@ -164,9 +164,11 @@ bool sortPriority(priority_t first, priority_t second) {
 
         auto first_nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_ruleother_data, "nested_name"));
         auto second_nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_ruleother_data, "nested_name"));
-
-        auto first_token = Tokens::find_token_in_tree(*full_tree, first_name);
-        auto second_token = Tokens::find_token_in_tree(*full_tree, second_name);
+        auto first_token = Tokens::find_token_in_tree(tree, first_name);
+        auto second_token = Tokens::find_token_in_tree(tree, second_name);
+        if (!first_token.data.has_value() || !second_token.data.has_value()) {
+            return 0;
+        }
         first_token = processNestedRuleHelper(first_nested_name, first_ruleother_data, first_token);
         second_token = processNestedRuleHelper(second_nested_name, second_ruleother_data, second_token);
 
@@ -224,7 +226,6 @@ bool sortPriority(priority_t first, priority_t second) {
 }
 void sortByPriority(Parser::Tree &tree)  {
     int i = 0;
-    full_tree = &tree;
     for (auto &member : tree) {
         if (member.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(member.data);
