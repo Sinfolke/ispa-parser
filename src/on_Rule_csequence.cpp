@@ -2,9 +2,7 @@
 #include <debug/logging.h>
 bool csequence_not;
 int rule_number = 0;
-std::vector<variable_place> vars;
-variable_place current_place;
-void on_Rule_csequence(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_csequence(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     if (!processingToken)
         throw Error("processing Rule_csequence in non-token rule");
     auto data = std::any_cast<obj_t>(member.data);
@@ -22,7 +20,7 @@ void on_Rule_csequence(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::st
         buf += "true";
     }
 }
-void on_Rule_csequence_close(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_csequence_close(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     buf += ')';
     if (!csequence_not)
         buf += ") {";
@@ -32,7 +30,7 @@ void on_Rule_csequence_close(Parser::Tree &tree, int &i, use_prop_t &use_prop, s
     vars.push_back(current_place);
     current_place = {};
 }
-void on_Rule_csequence_diapason(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_csequence_diapason(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     auto data = std::any_cast<arr_t<Parser::Rule>>(member.data);
     auto first = std::any_cast<char>(data[0].data);
     auto second = std::any_cast<char>(data[1].data);
@@ -40,7 +38,7 @@ void on_Rule_csequence_diapason(Parser::Tree &tree, int &i, use_prop_t &use_prop
     str << " && (" <<  "*pos >= '" << first << "' && *pos <= '" << second << "')";
     buf += str.str();
 }
-void on_Rule_csequence_escape(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_csequence_escape(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     auto data = std::any_cast<char>(member.data);
     std::stringstream str;
     std::string c = data == '\'' ? "\\'" : c;
@@ -51,7 +49,7 @@ void on_Rule_csequence_escape(Parser::Tree &tree, int &i, use_prop_t &use_prop, 
     
     buf += str.str();
 }
-void on_Rule_csequence_symbol(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_csequence_symbol(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     auto data = std::any_cast<char>(member.data);
     std::stringstream str;
     std::string c = data == '\'' ? "\\'" : c;

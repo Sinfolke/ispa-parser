@@ -1,5 +1,5 @@
 #include <defs.h>
-void on_Rule_hex(Parser::Tree &tree, int &i, use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
+EXPORT void on_Rule_hex(use_prop_t &use_prop, std::string &buf, Parser::Rule member) {
     auto data = std::any_cast<std::string>(member.data);
     std::stringstream expr;
     buf += "if (!";
