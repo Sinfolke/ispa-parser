@@ -82,7 +82,7 @@ IR::ir ruleToIr(Parser::Rule rule_rule) {
             auto member = {
                 IR::types::IF,
 
-            }
+            };
         }
         default:
             throw Error("Converting undefined rule");
