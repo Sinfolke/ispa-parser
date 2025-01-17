@@ -107,10 +107,10 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    //dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
 
     // invoke convertion
-    convert(tree, converter);
+    //convert(tree, converter);
     // begin convertion here
     // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
     // if no tokens match current literal, a new token should be added that matches that literal and replace every place that kind of literal is used
