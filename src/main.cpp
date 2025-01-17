@@ -103,6 +103,7 @@ int main(int argc, char** argv) {
     replaceDublications(tree); // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     sortByPriority(tree);      // sorts elements to get which should be placed on top. This ensures proper
     literalsToToken(tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+    normalizeTree(tree);
     /*
         CONVERTION IS GOING HERE
 

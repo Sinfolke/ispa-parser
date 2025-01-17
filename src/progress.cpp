@@ -82,7 +82,7 @@ Parser::Tree getTokensFromRule(Parser::Rule &member) {
                 });
                 auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                     { "val", Rule_other  },
-                    { "qualfier", qualifier }
+                    { "qualifier", qualifier }
                 });
                 tree.push_back(newToken);
                 // use token here instead of literal

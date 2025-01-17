@@ -30,4 +30,5 @@
 #include <args/args.h>
 #include <parser.h>
 #include <convertion.h>
+#include <treeNormalizer.h>
 void printHelp();
