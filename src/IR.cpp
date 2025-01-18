@@ -1,5 +1,6 @@
 #include <IR.h>
 #include <internal_types.h>
+#include <token_management.h>
 #include <corelib.h>
 #include <parser.h>
 // a structure used to cout
@@ -9,16 +10,63 @@ void IR::ir::add(IR::ir repr) {
 void IR::ir::push(IR::member member) {
     elements.push_back(member);
 }
-size_t getElementByAccessor(arr_t<size_t> &elements, size_t index) {
-    return elements[index];
+size_t IR::ir::size() {
+    return elements.size();
 }
-size_t getGroupedElementByAccessor(arr_t<size_t> &elements, arr_t<size_t> &groups, size_t index) {
-    return elements[groups[index]];
+struct element_count {
+    size_t index;
+    arr_t<IR::member> subrule;
+    bool is_group = false;
+    size_t group_length = 0;
+};
+element_count getGroup(arr_t<element_count> elements, double index) {
+    for (auto el : elements) {
+        if (el.is_group)
+            index--;
+        if (index == 0)
+            return el;
+    }
+    throw UError("invalid accesor number");
 }
-size_t getGroupedElementByAccessor(arr_t<size_t> &elements, arr_t<size_t> &groups, size_t group_index, size_t index) {
-    return elements[groups[group_index] + index];
+std::pair<element_count, int> getElementByAccessor(arr_t<element_count> &elements, Parser::Rule accessor) {
+    auto data = std::any_cast<obj_t>(accessor.data);
+    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
+    auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
+    second.insert(second.begin(), first);
+    bool is_first = true;
+    Parser::Rules prev = Parser::Rules::NONE;
+    element_count result;
+    double prev_index = 0;
+
+    int i;
+    for (auto &el : second) {
+        auto accessor = std::any_cast<Parser::Rule>(el.data);
+        auto number = std::any_cast<Parser::Rule>(accessor.data);
+        auto num_data = std::any_cast<obj_t>(number.data);
+        auto num_main_n = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
+        
+        switch (accessor.name) {
+            case Parser::Rules::accessors_element:
+                if (prev == Parser::Rules::accessors_element)
+                    throw UError("Accessor '%' cannot have subaccessors");
+                prev = Parser::Rules::accessors_element;
+                result = elements[(size_t) num_main_n];
+            case Parser::Rules::accessors_group:
+                if (prev == Parser::Rules::accessors_element)
+                    throw UError("Accessor '%' cannot have subaccessors");
+                prev_index += num_main_n;
+                result = getGroup(elements, prev_index);
+            case Parser::Rules::accessors_char:
+                if (!is_first)
+                    throw UError("accessor '^' cannot be a subaccessor");
+                return {};
+        }
+        is_first = false;
+        i++;
+    }
+    return { result, i };
 }
-IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<size_t> &elements, arr_t<size_t> &groups) {
+IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<element_count> &elements, int &variable_count) {
     member.elements.push_back(IR::member{ IR::types::RULE, });
 
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
@@ -29,7 +77,6 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<size_t> &elements
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
         {
-            groups.push_back(member.elements.size() + 1);
             auto data = std::any_cast<obj_t>(rule.data);
 
             // Extract variables within this block to avoid scope conflicts.
@@ -41,15 +88,16 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<size_t> &elements
             IR::member var = {
                 IR::types::VARIABLE,
                 var_rule,
-                values.elements.size(),
+                values.size(),
             };
             member.push(var);
             member.add(values);
+            elements.push_back({ member.size() - 1, {var} });
+            elements.push_back({ member.size(), values.elements, true, values.size()});
             break;
         }
         case Parser::Rules::Rule_csequence:
         {
-            elements.push_back(rule);
             auto data = std::any_cast<obj_t>(rule.data);
             auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
             auto values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
@@ -99,21 +147,31 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<size_t> &elements
                 expr
             };
             member.push(mem);
+            elements.push_back({member.size() - 1, {mem} });
         }
         case Parser::Rules::string:
         {
             auto data = std::any_cast<std::string>(rule.data);
             arr_t<IR::cond_unit> expr = {
-                {IR::condition::ACCESSOR_STRING, 0, Parser::Rules::accessors_char}, {IR::condition::EQUAL}, {IR::condition::STRING, data}
+                {IR::condition::STRNCMP, data}
             };
             auto mem = IR::member {
                 IR::types::IF,
                 expr
             };
             member.push(mem);
+            elements.push_back({member.size() - 1, {mem} });
         }
         case Parser::Rules::accessor:
-            
+        {
+            auto [element, i] = getElementByAccessor(elements, rule);
+            auto var = IR::member {
+                IR::types::VARIABLE,
+                Tokens::make_rule(Parser::Rules::id, "_" + std::to_string(variable_count++)),
+            };
+            member.elements.insert(member.elements.begin() + element.index, var);
+        }
+
         default:
             throw Error("Converting undefined rule");
     }
@@ -122,10 +180,10 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<size_t> &elements
 }
 IR::ir rulesToIr(arr_t<Parser::Rule> rules) {
     IR::ir result;
-    arr_t<size_t> elements;
-    arr_t<size_t> groups;
+    arr_t<element_count> elements;
+    int variable_count = 0;
     for (auto &rule : rules) {
-        ruleToIr(rule, result, elements, groups);
+        ruleToIr(rule, result, elements, variable_count);
     }
     return result;
 }

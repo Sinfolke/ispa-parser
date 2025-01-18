@@ -7,7 +7,7 @@ namespace IR {
     enum class condition {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
         HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
-        ACCESSOR, ACCESSOR_STRING, CHARACTER, STRING
+        ACCESSOR, CHARACTER, STRING, STRNCMP
     };
 
     struct cond_unit {
@@ -25,6 +25,7 @@ namespace IR {
         arr_t<member> elements;
         void add(ir repr);
         void push(member member);
+        size_t size();
     };
 
 };
