@@ -4,10 +4,21 @@ namespace IR {
     enum class types {
         RULE, GROUP, VARIABLE, IF
     };
+    enum class condition {
+        GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
+        HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
+        ACCESSOR, ACCESSOR_STRING, CHARACTER, STRING
+    };
+
+    struct cond_unit {
+        condition id;
+        std::any value = {};
+        Parser::Rules accessor_kind = Parser::Rules::NONE;
+    };
     struct member {
         types type;
-        size_t assign_next_rules = 0;
         std::any value = {};
+        size_t assign_next_rules = 0;
     };
     class ir {
         public:
