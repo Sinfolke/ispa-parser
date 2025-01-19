@@ -278,12 +278,12 @@ void sortByPriority(Parser::Tree &tree)  {
             }
 
             //LOG CHANGES
-            cpuf::printf("result: \n");
-            for (auto el : rules) {
-                auto first_data = std::any_cast<obj_t>(el.data);
-                auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
-                cpuf::printf("\t%s\n", Parser::RulesToString(first_val.name));
-            }
+            // cpuf::printf("result: \n");
+            // for (auto el : rules) {
+            //     auto first_data = std::any_cast<obj_t>(el.data);
+            //     auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
+            //     cpuf::printf("\t%s\n", Parser::RulesToString(first_val.name));
+            // }
 
             // sort nested rule
             sortByPriority(nested_rules);

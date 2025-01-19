@@ -104,6 +104,7 @@ int main(int argc, char** argv) {
     sortByPriority(tree);      // sorts elements to get which should be placed on top. This ensures proper
     literalsToToken(tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     normalizeTree(tree);
+    auto ir = treeToIr(tree);
     /*
         CONVERTION IS GOING HERE
 

@@ -32,15 +32,21 @@ void normalizeRule(Parser::Rule &member) {
             if (in_op) {
                 // Create a new rule with accumulated operators and operands
                 auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
+                obj_t new_rule_data = {
+                    { "val", new_rule },
+                    { "qualifier", Parser::Rule() }
+                };
+                auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
                 // Replace the operator sequence in `rules` with the new rule
                 rules.erase(rules.begin() + begin, rules.begin() + i + 1);
-                rules.insert(rules.begin() + begin, new_rule);
+                rules.insert(rules.begin() + begin, new_token);
 
                 // Adjust the loop variables
-                i = begin; // Reset `i` to the start of the inserted rule
-                in_op = false; // Reset the in_op flag
-                ops.clear();   // Clear accumulated operators
+                i = begin;  // Reset `i` to the start of the inserted rule
+                in_op = false;  // Reset the in_op flag
+                ops.clear();    // Clear accumulated operators
             }
+
         }
 
         prev_rule = rule; // Update the previous rule
@@ -49,8 +55,13 @@ void normalizeRule(Parser::Rule &member) {
     // Handle any remaining operator sequences at the end
     if (in_op && !ops.empty()) {
         auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
+        obj_t new_rule_data = {
+            { "val", new_rule },
+            { "qualifier", Parser::Rule() }
+        };
+        auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
         rules.erase(rules.begin() + begin, rules.end());
-        rules.push_back(new_rule);
+        rules.push_back(new_token);
     }
 
     // Update the modified `rules` back into the member

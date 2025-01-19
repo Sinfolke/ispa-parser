@@ -3,6 +3,7 @@
 #include <token_management.h>
 #include <corelib.h>
 #include <parser.h>
+#include <cpuf/hex.h>
 // a structure used to cout
 void IR::ir::add(IR::ir repr) {
     elements.insert(elements.end(), repr.elements.begin(), repr.elements.end());
@@ -13,62 +14,12 @@ void IR::ir::push(IR::member member) {
 size_t IR::ir::size() {
     return elements.size();
 }
-struct element_count {
-    size_t index;
-    arr_t<IR::member> subrule;
-    bool is_group = false;
-    size_t group_length = 0;
-};
-element_count getGroup(arr_t<element_count> elements, double index) {
-    for (auto el : elements) {
-        if (el.is_group)
-            index--;
-        if (index == 0)
-            return el;
-    }
-    throw UError("invalid accesor number");
-}
-std::pair<element_count, int> getElementByAccessor(arr_t<element_count> &elements, Parser::Rule accessor) {
-    auto data = std::any_cast<obj_t>(accessor.data);
-    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
-    auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
-    second.insert(second.begin(), first);
-    bool is_first = true;
-    Parser::Rules prev = Parser::Rules::NONE;
-    element_count result;
-    double prev_index = 0;
 
-    int i;
-    for (auto &el : second) {
-        auto accessor = std::any_cast<Parser::Rule>(el.data);
-        auto number = std::any_cast<Parser::Rule>(accessor.data);
-        auto num_data = std::any_cast<obj_t>(number.data);
-        auto num_main_n = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
-        
-        switch (accessor.name) {
-            case Parser::Rules::accessors_element:
-                if (prev == Parser::Rules::accessors_element)
-                    throw UError("Accessor '%' cannot have subaccessors");
-                prev = Parser::Rules::accessors_element;
-                result = elements[(size_t) num_main_n];
-            case Parser::Rules::accessors_group:
-                if (prev == Parser::Rules::accessors_element)
-                    throw UError("Accessor '%' cannot have subaccessors");
-                prev_index += num_main_n;
-                result = getGroup(elements, prev_index);
-            case Parser::Rules::accessors_char:
-                if (!is_first)
-                    throw UError("accessor '^' cannot be a subaccessor");
-                return {};
-        }
-        is_first = false;
-        i++;
-    }
-    return { result, i };
+void push_to_elements(arr_t<IR::element_count> &elements, IR::ir &member) {
+    elements.push_back({member.size(), elements.size() > 0 ? elements.back().index_in_rule : 0});
 }
-IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<element_count> &elements, int &variable_count) {
-    member.elements.push_back(IR::member{ IR::types::RULE, });
-
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count) {
+    member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
@@ -77,27 +28,40 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<element_count> &e
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
         {
+            cpuf::printf("group\n");
+            cpuf::printf("1\n");
             auto data = std::any_cast<obj_t>(rule.data);
 
+            cpuf::printf("2, type: %s\n", corelib::map::get(data, "variable").type().name());
             // Extract variables within this block to avoid scope conflicts.
-            auto variable = std::any_cast<Parser::Rule>(corelib::map::get(data, "variable"));
+            Parser::Rule variable;
+            if (corelib::map::get(data, "variable").has_value()) {
+                variable = std::any_cast<Parser::Rule>(corelib::map::get(data, "variable"));
+            }
+            cpuf::printf("3\n");
             auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
-            auto var_rule = std::any_cast<Parser::Rule>(variable.data);
-
+            cpuf::printf("4\n");
             IR::ir values = rulesToIr(val);
-            IR::member var = {
-                IR::types::VARIABLE,
-                var_rule,
-                values.size(),
-            };
-            member.push(var);
+
+            if (!variable.empty()) {
+                Parser::Rule var_rule = std::any_cast<Parser::Rule>(variable.data);
+                IR::member var = {
+                    IR::types::VARIABLE,
+                    var_rule,
+                    values.size(),
+                };
+                member.push(var);
+                elements.push_back({member.size(), elements.back().index_in_rule + 1});
+            }
+
             member.add(values);
-            elements.push_back({ member.size() - 1, {var} });
-            elements.push_back({ member.size(), values.elements, true, values.size()});
+            push_to_elements(elements, member);
+            cpuf::printf("5\n");
             break;
         }
         case Parser::Rules::Rule_csequence:
         {
+            cpuf::printf("csequence\n");
             auto data = std::any_cast<obj_t>(rule.data);
             auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
             auto values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
@@ -105,27 +69,26 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<element_count> &e
             bool first = true;
             for (auto &value : values) {
                 if (first) {
-                    expr.push_back({IR::condition::GROUP_OPEN});
-                    if (_not) {
-                        expr.push_back({IR::condition::NOT});
-                        expr.push_back({IR::condition::GROUP_OPEN});
+                    if (!_not) {
+                        expr.push_back({IR::condition_types::NOT});
+                        expr.push_back({IR::condition_types::GROUP_OPEN});
                     }
                 } else {
-                    expr.push_back({IR::condition::AND});
+                    expr.push_back({IR::condition_types::AND});
                 }
                 switch (value.name) {
                     case Parser::Rules::Rule_csequence_diapason:
                     {
                         auto data = std::any_cast<arr_t<char>>(value.data);
-                        expr.push_back({IR::condition::GROUP_OPEN});
-                        expr.push_back({IR::condition::ACCESSOR, 0, Parser::Rules::accessors_char});
-                        expr.push_back({IR::condition::HIGHER_OR_EQUAL});
-                        expr.push_back({IR::condition::CHARACTER, data[0]});
-                        expr.push_back({IR::condition::AND});
-                        expr.push_back({IR::condition::ACCESSOR, 0, Parser::Rules::accessors_char});
-                        expr.push_back({IR::condition::HIGHER_OR_EQUAL});
-                        expr.push_back({IR::condition::CHARACTER, data[1]});
-                        expr.push_back({IR::condition::GROUP_CLOSE});
+                        expr.push_back({IR::condition_types::GROUP_OPEN});
+                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+                        expr.push_back({IR::condition_types::HIGHER_OR_EQUAL});
+                        expr.push_back({IR::condition_types::CHARACTER, data[0]});
+                        expr.push_back({IR::condition_types::AND});
+                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+                        expr.push_back({IR::condition_types::HIGHER_OR_EQUAL});
+                        expr.push_back({IR::condition_types::CHARACTER, data[1]});
+                        expr.push_back({IR::condition_types::GROUP_CLOSE});
                         break;
                     }
                     default:
@@ -133,54 +96,129 @@ IR::ir ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<element_count> &e
                         if (value.name != Parser::Rules::Rule_csequence_escape && value.name != Parser::Rules::Rule_csequence_symbol)
                             throw Error("undefined csequence subrule");
                         auto data = std::any_cast<std::string>(value.data);
-                        expr.push_back({IR::condition::ACCESSOR, 0, Parser::Rules::accessors_char});
-                        expr.push_back({IR::condition::EQUAL});
-                        expr.push_back({IR::condition::CHARACTER, data});
+                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+                        expr.push_back({IR::condition_types::EQUAL});
+                        expr.push_back({IR::condition_types::CHARACTER, data});
                     }
                 }
             }
-            expr.push_back({IR::condition::GROUP_CLOSE});
-            if (_not)
-                expr.push_back({IR::condition::GROUP_CLOSE});
+            if (!_not)
+                expr.push_back({IR::condition_types::GROUP_CLOSE});
             auto mem = IR::member {
                 IR::types::IF,
                 expr
             };
             member.push(mem);
-            elements.push_back({member.size() - 1, {mem} });
+            push_to_elements(elements, member);
         }
         case Parser::Rules::string:
         {
+            cpuf::printf("string\n");
             auto data = std::any_cast<std::string>(rule.data);
             arr_t<IR::cond_unit> expr = {
-                {IR::condition::STRNCMP, data}
+                {IR::condition_types::STRNCMP, data}
             };
             auto mem = IR::member {
                 IR::types::IF,
                 expr
             };
             member.push(mem);
-            elements.push_back({member.size() - 1, {mem} });
+            push_to_elements(elements, member);
         }
         case Parser::Rules::accessor:
         {
-            auto [element, i] = getElementByAccessor(elements, rule);
-            auto var = IR::member {
-                IR::types::VARIABLE,
-                Tokens::make_rule(Parser::Rules::id, "_" + std::to_string(variable_count++)),
+            cpuf::printf("accessor\n");
+            cpuf::printf("1, type: %s, data: %s\n", rule.data.type().name(), std::any_cast<std::string>(rule.data));
+            auto data = std::any_cast<obj_t>(rule.data);
+            cpuf::printf("2\n"); 
+            auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
+            cpuf::printf("3\n");
+            auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
+            second.insert(second.begin(), first);
+            for (auto &el : second) {
+                el = std::any_cast<Parser::Rule>(el.data);
+            }
+            auto mem = IR::member {
+                IR::types::ACCESSOR,
+                second,
             };
-            member.elements.insert(member.elements.begin() + element.index, var);
+            push_to_elements(elements, member);
         }
-
+        case Parser::Rules::Rule_hex:
+        {
+            cpuf::printf("hex\n");
+            auto data = std::any_cast<std::string>(rule.data);
+            arr_t<IR::cond_unit> expr = {};
+            bool is_first = true;
+            if (data.size() % 2 != 0)
+                data.insert(data.begin(), '0');
+            for (int i = 0; i < data.size(); i += 2) {
+                std::string hex(data.data() + i, 2);
+                if (!is_first)
+                    expr.push_back({IR::condition_types::AND});
+                expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+                expr.push_back({IR::condition_types::EQUAL});
+                expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex)});
+                is_first = false;
+            }
+            // if (data.size() % 2 != 0) {
+            //     auto last_char = data[data.size() - 1];
+            //     std::string last_char_str(last_char, 1);
+            //     if (!is_first)
+            //         expr.push_back({IR::condition_types::AND});
+                
+            //     expr.push_back({IR::condition_types::GROUP_OPEN});
+            //     expr.push_back({IR::condition_types::GROUP_OPEN});
+            //     expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+            //     expr.push_back({IR::condition_types::BITWISE_AND});
+            //     expr.push_back({IR::condition_types::NUMBER, 0xF0});
+            //     expr.push_back({IR::condition_types::GROUP_CLOSE});
+            //     expr.push_back({IR::condition_types::RIGHT_BITWISE});
+            //     expr.push_back({IR::condition_types::NUMBER, 4});
+            //     expr.push_back({IR::condition_types::GROUP_CLOSE});
+            //     expr.push_back({IR::condition_types::EQUAL});
+            //     expr.push_back({IR::condition_types::NUMBER, hex::to_decimal(last_char_str)});
+            // }
+            auto mem = IR::member {
+                IR::types::IF,
+                expr
+            };
+            member.push(mem);
+            push_to_elements(elements, member);
+        }
+        case Parser::Rules::Rule_bin: 
+        {
+            cpuf::printf("bin\n");
+            auto data = std::any_cast<std::string>(rule.data);
+            arr_t<IR::cond_unit> expr = {};
+            bool is_first = true;
+            while (data.size() % 4 != 0)
+                data.insert(data.begin(), '0');
+            for (int i = 0; i < data.size(); i += 4) {
+                std::string hex(data[i], 1);
+                hex += data[i + 1];
+                if (!is_first)
+                    expr.push_back({IR::condition_types::AND});
+                expr.push_back({IR::condition_types::CURRENT_CHARACTER});
+                expr.push_back({IR::condition_types::EQUAL});
+                expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex::from_binary(hex))});
+                is_first = false;
+            }
+            auto mem = IR::member {
+                IR::types::IF,
+                expr
+            };
+            member.push(mem);
+            push_to_elements(elements, member);
+        }
         default:
-            throw Error("Converting undefined rule");
+            return;
+            //throw Error("Converting undefined rule");
     }
-
-    return member;
 }
 IR::ir rulesToIr(arr_t<Parser::Rule> rules) {
     IR::ir result;
-    arr_t<element_count> elements;
+    arr_t<IR::element_count> elements;
     int variable_count = 0;
     for (auto &rule : rules) {
         ruleToIr(rule, result, elements, variable_count);
