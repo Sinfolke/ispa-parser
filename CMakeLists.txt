@@ -3,7 +3,7 @@ project(ISPA)
 
 #enable_testing()
 add_subdirectory(mod/parser)           # include parser
-add_subdirectory(mod/converter-cpp)    # include c++ converter
+#add_subdirectory(mod/converter-cpp)    # include c++ converter
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
 add_executable(ispa ${SOURCES})

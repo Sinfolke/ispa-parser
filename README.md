@@ -23,7 +23,8 @@
 ### Todo
   - Make blocks for IF conditions and add EXIT instruction
   - Add while instruction and apply when qualifier is '+' or '*'
-  - Fix error bad_any_cast for accessor 
+  - Fix error bad_any_cast for accessor
+  - Finish method call 
 ### Parser syntax
   
   see ```concepts/syntax```

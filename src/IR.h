@@ -2,7 +2,8 @@
 #include <internal_types.h>
 namespace IR {
     enum class types {
-        RULE, GROUP, VARIABLE, IF, ACCESSOR
+        RULE, GROUP, VARIABLE, IF, WHILE, ACCESSOR,
+        METHOD_CALL
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -10,16 +11,29 @@ namespace IR {
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND,
         CHARACTER, CURRENT_CHARACTER, NUMBER, STRING, STRNCMP
     };
-
-    struct cond_unit {
-        condition_types id;
-        std::any value = {};
-
+    enum class var_type {
+        UNDEFINED, STRING
     };
     struct member {
         types type;
         std::any value = {};
-        size_t assign_next_rules = 0;
+    };
+    struct method_call {
+        std::string var_name; 
+    };
+    struct expr {
+        condition_types id;
+        std::any value = {};
+    };
+    struct condition {
+        arr_t<expr> expression;
+        arr_t<member> block; 
+    };
+    struct variable {
+        var_type type;
+        std::string name;
+        std::string value;
+        int assign_next_rules = 0;
     };
     class ir {
         public:
