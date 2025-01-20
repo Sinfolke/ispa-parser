@@ -1,7 +1,7 @@
 // TODO: add data block
 
 method_call:
-    ID '.' cll_function_call
+    ID ('.' cll_function_call)+
 
     data:
         object: %1

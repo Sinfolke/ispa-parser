@@ -50,3 +50,7 @@ add_test(NAME parser_loop_test COMMAND parser_loop_test)
 add_executable(parser_if_test tests/if.cpp)
 target_link_libraries(parser_if_test PRIVATE parser_test_common)
 add_test(NAME parser_if_test COMMAND parser_if_test)
+# Define parser_cll_method_call_test
+add_executable(parser_method_call_test tests/method_call.cpp)
+target_link_libraries(parser_method_call_test PRIVATE parser_test_common)
+add_test(NAME parser_method_call_test COMMAND parser_method_call_test)
