@@ -38,5 +38,5 @@ Rule(cll_spaced_block, int spaces_amount) {
         results.push_back(res.token);
     }
     
-    RULE_SUCCESSD(in, pos, cll_block, results);
+    RULE_SUCCESSD(in, pos, cll_spaced_block, results);
 }

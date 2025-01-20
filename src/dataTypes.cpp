@@ -64,7 +64,7 @@ Rule(number) {
         { "dec_n", dec_n },
         { "full", sign + main + std::string(".") + dec }
     };
-    RULE_SUCCESSD(in, pos, boolean, data);
+    RULE_SUCCESSD(in, pos, number, data);
 }
 
 // BOOLEAN Rule

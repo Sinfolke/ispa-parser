@@ -16,5 +16,5 @@ Rule(Rule_bin) {
     if (begin == pos) 
         return {};
     
-    RULE_SUCCESSD(in, pos, Rule_hex, std::string_view(begin, pos - begin));
+    RULE_SUCCESSD(in, pos, Rule_bin, std::string_view(begin, pos - begin));
 }

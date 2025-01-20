@@ -61,7 +61,7 @@ Rule(expr_for_arithmetic) {
         }
     }
     pos += res.token.length();
-    RULE_SUCCESSD(in, pos, expr, res.token);
+    RULE_SUCCESSD(in, pos, expr_for_arithmetic, res.token);
 }
 Rule(expr_logical) {
     auto pos = in;

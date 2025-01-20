@@ -38,7 +38,7 @@ Rule(function_body_decl) {
     if (*pos != ')')
         return {};
     pos++;
-    RULE_SUCCESSD(in, pos, function_body_call, function_parameters_res.token);
+    RULE_SUCCESSD(in, pos, function_body_decl, function_parameters_res.token);
 }
 Rule(function_arguments) {
     auto pos = in;
@@ -91,7 +91,7 @@ Rule(function_parameters) {
         id_res.token,
         _3
     };
-    RULE_SUCCESSD(in, pos, function_arguments, data);
+    RULE_SUCCESSD(in, pos, function_parameters, data);
 }
 Rule(cll_function_call) {
     auto pos = in;

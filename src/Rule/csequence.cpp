@@ -85,5 +85,5 @@ Rule(Rule_csequence_diapason) {
     data.push_back(symbol_res.token);
     data.push_back(symbol2_res.token);
 
-    RULE_SUCCESSD(in, pos, Rule_csequence_symbol, data);
+    RULE_SUCCESSD(in, pos, Rule_csequence_diapason, data);
 }
