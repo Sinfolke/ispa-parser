@@ -166,7 +166,7 @@ namespace Tokens {
         auto first_values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "values"));
         auto second_values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "values"));
 
-        if (!compare_any_data_rule(first_key, second_key) || !compare_any_data_rule(first_value, second_value));
+        if (!compare_any_data_rule(first_key, second_key) || !compare_any_data_rule(first_value, second_value))
             return false;
         
         if (first_keys.size() < second_keys.size() || first_values.size() < second_values.size())
