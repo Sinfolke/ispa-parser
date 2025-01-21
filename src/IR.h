@@ -2,7 +2,7 @@
 #include <internal_types.h>
 namespace IR {
     enum class types {
-        RULE, GROUP, VARIABLE, IF, WHILE, ACCESSOR,
+        RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
         ASSIGN_VARIABLE
     };
@@ -15,6 +15,9 @@ namespace IR {
     };
     enum class var_type {
         UNDEFINED, STRING, BOOLEAN
+    };
+    enum class var_assign_types {
+        NONE, TRUE, FALSE, CURRENT_POS_COUNTER
     };
     struct member {
         types type;
@@ -34,12 +37,12 @@ namespace IR {
     struct variable {
         var_type type;
         std::string name;
-        std::string value;
+        var_assign_types value;
         int assign_next_rules = 0;
     };
     struct variable_assign {
         std::string name;
-        std::string value;
+        var_assign_types value;
     };
     class ir {
         public:

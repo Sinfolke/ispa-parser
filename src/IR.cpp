@@ -27,7 +27,7 @@ IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
     IR::variable var {
         IR::var_type::UNDEFINED,
         name,
-        "",
+        IR::var_assign_types::NONE,
         assign_next_rules
     };
     return var;
@@ -51,11 +51,7 @@ void affectGroupByQualifier(IR::ir values, char qualifier, int &variable_count) 
                 auto condition = std::any_cast<IR::condition>(el.value);
                 for (auto &unit : condition.block) {
                     if (unit.type == IR::types::EXIT) {
-                        if (qualifier == '?') {
-                            unit.type = IR::types::BREAK_LOOP;
-                        } else if (qualifier == '+') {
-                            unit.type = IR::types::BREAK_LOOP;
-                        }
+                        unit.type = IR::types::BREAK_LOOP;
                     }
                 }
             }
@@ -67,11 +63,11 @@ void affectGroupByQualifier(IR::ir values, char qualifier, int &variable_count) 
             // at the end insert check that will exit if not success
             IR::variable var = createEmptyVariable(generateVariableName(variable_count));
             var.type = IR::var_type::BOOLEAN;
-            var.value = "false";
+            var.value = IR::var_assign_types::FALSE;
             // assign variable to true at the end of the loop
             IR::variable_assign assign = {
                 var.name,
-                "true"
+                IR::var_assign_types::TRUE
             };
             IR::condition check_cond = {
                 { 
@@ -91,29 +87,43 @@ void affectGroupByQualifier(IR::ir values, char qualifier, int &variable_count) 
         }
 
     } else if (qualifier == '?') {
-        // create variable that equal to 
+        // create do while(0) loop to use break statements
+        IR::condition loop = {
+            { {IR::condition_types::NUMBER, 0} },
+            values.elements
+        };
+        for (auto &el : loop.block) {
+            if (el.type == IR::types::IF) {
+                // replace condition to while or for loop
+                auto condition = std::any_cast<IR::condition>(el.value);
+                for (auto &unit : condition.block) {
+                    if (unit.type == IR::types::EXIT)
+                        unit.type = IR::types::BREAK_LOOP;
+                }
+                el.value = condition;
+            }
+        }
+        IR::member loop_mem = {
+            IR::types::DOWHILE,
+            loop
+        };
+        new_ir.push(loop_mem);
     } else {
         // no qualifier, values should not be affected
         return;
     }
+    values = new_ir;
 
-    for (auto &el : values.elements) {
-        if (el.type == IR::types::IF) {
-            // replace condition to while or for loop
-            auto condition = std::any_cast<IR::condition>(el.value);
-            for (auto &unit : condition.block) {
-                if (unit.type == IR::types::EXIT) {}
-            }
-        }
-    }
 }
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count) {
     member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
-
-
+    char qualifier_char = '\0';
+    if (qualifier.data.type() == typeid(char)) {
+        qualifier_char = std::any_cast<char>(qualifier.data);
+    }
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
         {
@@ -139,22 +149,20 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             } else {
                 var = createEmptyVariable(generateVariableName(variable_count), values.size());
             }
+
+            affectGroupByQualifier(values, qualifier_char, variable_count);
             if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::method_call) {
                 auto var_rule = std::any_cast<Parser::Rule>(variable.data);
                 auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
                 method_call.value = var_rule_data;
                 member.push({IR::types::VARIABLE, var});
                 member.push({IR::types::GROUP});
-                char qualifier_char = '\0';
-                if (!qualifier.empty()) {
-                    qualifier_char = std::any_cast<char>(qualifier.data);
-                }
-                affectGroupByQualifier(values, qualifier_char, variable_count);
                 member.add(values);
                 member.push({IR::types::METHOD_CALL, method_call});
             } else {
                 member.push({IR::types::VARIABLE, var});
                 member.push({IR::types::GROUP, values});
+                affectGroupByQualifier(values, qualifier_char, variable_count);
             }
 
             cpuf::printf("5\n");
