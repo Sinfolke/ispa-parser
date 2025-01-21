@@ -32,7 +32,81 @@ IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
     };
     return var;
 }
+std::string generateVariableName(int &variable_count) {
+    return std::string("_") + std::to_string(variable_count++);
+}
+void affectGroupByQualifier(IR::ir values, char qualifier, int &variable_count) {
+    IR::ir new_ir;
+    if (qualifier == '*' || qualifier == '+') {
+        // create a while loop with elements inside
+        int i = 0;
+        IR::condition loop = {
+            { { IR::condition_types::NUMBER, 1 } },
+            {} 
+        };
+        for (; i < values.size(); i++) {
+            auto &el = values.elements[i];
 
+            if (el.type == IR::types::IF) {
+                auto condition = std::any_cast<IR::condition>(el.value);
+                for (auto &unit : condition.block) {
+                    if (unit.type == IR::types::EXIT) {
+                        if (qualifier == '?') {
+                            unit.type = IR::types::BREAK_LOOP;
+                        } else if (qualifier == '+') {
+                            unit.type = IR::types::BREAK_LOOP;
+                        }
+                    }
+                }
+            }
+        }
+        loop.block = values.elements;
+        new_ir.push({IR::types::WHILE, loop});
+        if (qualifier == '+') {
+            // insert variable that will containt whether first iteration is success
+            // at the end insert check that will exit if not success
+            IR::variable var = createEmptyVariable(generateVariableName(variable_count));
+            var.type = IR::var_type::BOOLEAN;
+            var.value = "false";
+            // assign variable to true at the end of the loop
+            IR::variable_assign assign = {
+                var.name,
+                "true"
+            };
+            IR::condition check_cond = {
+                { 
+                    { IR::condition_types::VARIABLE, var.name },
+                    { IR::condition_types::EQUAL },
+                    { IR::condition_types::NUMBER, false }
+                },
+                {
+                    { IR::types::EXIT }
+                }
+            };
+            loop.block.insert(loop.block.end(), {IR::types::ASSIGN_VARIABLE, assign});
+            new_ir.elements.clear();
+            new_ir.push({IR::types::VARIABLE, var});
+            new_ir.push({IR::types::WHILE, loop});
+            new_ir.push({IR::types::IF, check_cond});
+        }
+
+    } else if (qualifier == '?') {
+        // create variable that equal to 
+    } else {
+        // no qualifier, values should not be affected
+        return;
+    }
+
+    for (auto &el : values.elements) {
+        if (el.type == IR::types::IF) {
+            // replace condition to while or for loop
+            auto condition = std::any_cast<IR::condition>(el.value);
+            for (auto &unit : condition.block) {
+                if (unit.type == IR::types::EXIT) {}
+            }
+        }
+    }
+}
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count) {
     member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
@@ -57,44 +131,30 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
             cpuf::printf("4\n");
             IR::ir values = rulesToIr(val);
-
-            if (!variable.empty()) {
-                Parser::Rule var_rule = std::any_cast<Parser::Rule>(variable.data);
-                if (var_rule.name == Parser::Rules::id) {
-                    auto var = createEmptyVariable(std::any_cast<std::string>(var_rule.data), values.size());
-                    if (val.size() > 1) {
-                        var.type = IR::var_type::STRING;
-                    } else {
-                        var.type = deduceTypeOfSingleUnit(val[0]);
-                    }
-                    member.push({IR::types::VARIABLE, var});
-                    push_to_elements_increament(elements, member);
-                    member.add(values);
-                } else {
-                    auto var = createEmptyVariable(std::any_cast<std::string>(var_rule.data), values.size());
-                    if (val.size() > 1) {
-                        var.type = IR::var_type::STRING;
-                    } else {
-                        var.type = deduceTypeOfSingleUnit(val[0]);
-                    }
-                    member.push({IR::types::VARIABLE, var});
-                    push_to_elements_increament(elements, member);
-                    member.add(values);
-
-                    IR::member method_call = {
-                        IR::types::METHOD_CALL,
-
-                    };
-                    // it is method call
-                    // push the call after elements
+            IR::variable var;
+            IR::member method_call {IR::types::METHOD_CALL};
+            if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::id) {
+                auto var_rule = std::any_cast<Parser::Rule>(variable.data);
+                var = createEmptyVariable(std::any_cast<std::string>(var_rule.data), values.size());
+            } else {
+                var = createEmptyVariable(generateVariableName(variable_count), values.size());
+            }
+            if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::method_call) {
+                auto var_rule = std::any_cast<Parser::Rule>(variable.data);
+                auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
+                method_call.value = var_rule_data;
+                member.push({IR::types::VARIABLE, var});
+                member.push({IR::types::GROUP});
+                char qualifier_char = '\0';
+                if (!qualifier.empty()) {
+                    qualifier_char = std::any_cast<char>(qualifier.data);
                 }
-
-                // IR::member var = {
-                //     IR::types::VARIABLE,
-                //     var_rule,
-                //     values.size(),
-                // };
-
+                affectGroupByQualifier(values, qualifier_char, variable_count);
+                member.add(values);
+                member.push({IR::types::METHOD_CALL, method_call});
+            } else {
+                member.push({IR::types::VARIABLE, var});
+                member.push({IR::types::GROUP, values});
             }
 
             cpuf::printf("5\n");

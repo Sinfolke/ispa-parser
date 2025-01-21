@@ -3,16 +3,18 @@
 namespace IR {
     enum class types {
         RULE, GROUP, VARIABLE, IF, WHILE, ACCESSOR,
-        METHOD_CALL
+        METHOD_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
+        ASSIGN_VARIABLE
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
         HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND,
-        CHARACTER, CURRENT_CHARACTER, NUMBER, STRING, STRNCMP
+        CHARACTER, CURRENT_CHARACTER, NUMBER, STRING, STRNCMP,
+        VARIABLE
     };
     enum class var_type {
-        UNDEFINED, STRING
+        UNDEFINED, STRING, BOOLEAN
     };
     struct member {
         types type;
@@ -34,6 +36,10 @@ namespace IR {
         std::string name;
         std::string value;
         int assign_next_rules = 0;
+    };
+    struct variable_assign {
+        std::string name;
+        std::string value;
     };
     class ir {
         public:

@@ -15,3 +15,4 @@ character sequence:
     if the qualifier is '+', use while loop. create variable "bool is_first = true" and at the end assign false.
         then check if that variable is true then return, else increase position counter and assign content to variable if needed
     if the qualifier is '*', use only while loop and increase position counter on each success
+
