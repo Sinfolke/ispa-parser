@@ -1,5 +1,6 @@
 #include <parser.h>
 #include <internal_types.h>
+#include <any>
 namespace IR {
     enum class types {
         RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
@@ -17,7 +18,7 @@ namespace IR {
         UNDEFINED, STRING, BOOLEAN
     };
     enum class var_assign_values {
-        NONE, TRUE, FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE
+        NONE, _TRUE, _FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE
     };
     enum class var_assign_types {
         ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO

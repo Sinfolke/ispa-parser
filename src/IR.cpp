@@ -52,12 +52,12 @@ void processExitStatements(IR::ir &values) {
 IR::variable createSuccessVariable(int &variable_count) {
     IR::variable var = createEmptyVariable(generateVariableName(variable_count));
     var.type = IR::var_type::BOOLEAN;
-    var.value = IR::var_assign_values::FALSE;
+    var.value = IR::var_assign_values::_FALSE;
     return var;
 }
 
 void addPostLoopCheck(IR::ir &new_ir, const IR::variable &var) {
-    IR::variable_assign assign = { var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::TRUE };
+    IR::variable_assign assign = { var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE };
     IR::condition check_cond = {
         { { IR::condition_types::VARIABLE, var.name },
           { IR::condition_types::EQUAL },
