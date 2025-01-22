@@ -4,7 +4,7 @@ namespace IR {
     enum class types {
         RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
-        ASSIGN_VARIABLE
+        ASSIGN_VARIABLE, INCREASE_POS_COUNTER
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -16,8 +16,11 @@ namespace IR {
     enum class var_type {
         UNDEFINED, STRING, BOOLEAN
     };
+    enum class var_assign_values {
+        NONE, TRUE, FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE
+    };
     enum class var_assign_types {
-        NONE, TRUE, FALSE, CURRENT_POS_COUNTER
+        ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO
     };
     struct member {
         types type;
@@ -37,12 +40,13 @@ namespace IR {
     struct variable {
         var_type type;
         std::string name;
-        var_assign_types value;
+        var_assign_values value;
         int assign_next_rules = 0;
     };
     struct variable_assign {
         std::string name;
-        var_assign_types value;
+        var_assign_types assign_type;
+        var_assign_values value;
     };
     class ir {
         public:

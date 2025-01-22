@@ -27,7 +27,7 @@ IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
     IR::variable var {
         IR::var_type::UNDEFINED,
         name,
-        IR::var_assign_types::NONE,
+        IR::var_assign_values::NONE,
         assign_next_rules
     };
     return var;
@@ -35,208 +35,247 @@ IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
 std::string generateVariableName(int &variable_count) {
     return std::string("_") + std::to_string(variable_count++);
 }
-void affectGroupByQualifier(IR::ir values, char qualifier, int &variable_count) {
-    IR::ir new_ir;
-    if (qualifier == '*' || qualifier == '+') {
-        // create a while loop with elements inside
-        int i = 0;
-        IR::condition loop = {
-            { { IR::condition_types::NUMBER, 1 } },
-            {} 
-        };
-        for (; i < values.size(); i++) {
-            auto &el = values.elements[i];
-
-            if (el.type == IR::types::IF) {
-                auto condition = std::any_cast<IR::condition>(el.value);
-                for (auto &unit : condition.block) {
-                    if (unit.type == IR::types::EXIT) {
-                        unit.type = IR::types::BREAK_LOOP;
-                    }
+void processExitStatements(IR::ir &values) {
+    for (auto &el : values.elements) {
+        if (el.type == IR::types::IF) {
+            auto condition = std::any_cast<IR::condition>(el.value);
+            for (auto &unit : condition.block) {
+                if (unit.type == IR::types::EXIT) {
+                    unit.type = IR::types::BREAK_LOOP;
                 }
             }
+            el.value = condition;
         }
+    }
+}
+
+IR::variable createSuccessVariable(int &variable_count) {
+    IR::variable var = createEmptyVariable(generateVariableName(variable_count));
+    var.type = IR::var_type::BOOLEAN;
+    var.value = IR::var_assign_values::FALSE;
+    return var;
+}
+
+void addPostLoopCheck(IR::ir &new_ir, const IR::variable &var) {
+    IR::variable_assign assign = { var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::TRUE };
+    IR::condition check_cond = {
+        { { IR::condition_types::VARIABLE, var.name },
+          { IR::condition_types::EQUAL },
+          { IR::condition_types::NUMBER, false } },
+        { { IR::types::EXIT } }
+    };
+    new_ir.push({IR::types::ASSIGN_VARIABLE, assign});
+    new_ir.push({IR::types::IF, check_cond});
+}
+
+// void handleQualifier(arr_t<IR::member> block, arr_t<expr> expression, char qualifier, int &variable_count) {
+//     IR::ir new_ir;
+//     if (qualifier == '*' || qualifier == '+') {
+//         IR::condition loop = {{expression}, {} };
+//         loop.block = block;
+//         new_ir.push({IR::types::WHILE, loop});
+//         if (qualifier == '+') {
+//             IR::variable var = createSuccessVariable(variable_count);
+//             new_ir.elements.clear();
+//             new_ir.push({IR::types::VARIABLE, var});
+//             new_ir.push({IR::types::WHILE, loop});
+//             addPostLoopCheck(new_ir, var);
+//         }
+//     } else if (qualifier == '?') {
+//         IR::condition loop = { { {IR::condition_types::NUMBER, 0} }, block };
+//         new_ir.push({ IR::types::DOWHILE, loop });
+//     } else {
+//         return;
+//     }
+// }
+
+void affectIrByQualifier(IR::ir values, char qualifier, int &variable_count) {
+    IR::ir new_ir;
+    if (qualifier == '*' || qualifier == '+') {
+        IR::condition loop = { { { IR::condition_types::NUMBER, 1 } }, {} };
+        processExitStatements(values);
         loop.block = values.elements;
         new_ir.push({IR::types::WHILE, loop});
         if (qualifier == '+') {
-            // insert variable that will containt whether first iteration is success
-            // at the end insert check that will exit if not success
-            IR::variable var = createEmptyVariable(generateVariableName(variable_count));
-            var.type = IR::var_type::BOOLEAN;
-            var.value = IR::var_assign_types::FALSE;
-            // assign variable to true at the end of the loop
-            IR::variable_assign assign = {
-                var.name,
-                IR::var_assign_types::TRUE
-            };
-            IR::condition check_cond = {
-                { 
-                    { IR::condition_types::VARIABLE, var.name },
-                    { IR::condition_types::EQUAL },
-                    { IR::condition_types::NUMBER, false }
-                },
-                {
-                    { IR::types::EXIT }
-                }
-            };
-            loop.block.insert(loop.block.end(), {IR::types::ASSIGN_VARIABLE, assign});
+            IR::variable var = createSuccessVariable(variable_count);
             new_ir.elements.clear();
             new_ir.push({IR::types::VARIABLE, var});
             new_ir.push({IR::types::WHILE, loop});
-            new_ir.push({IR::types::IF, check_cond});
+            addPostLoopCheck(new_ir, var);
         }
-
     } else if (qualifier == '?') {
-        // create do while(0) loop to use break statements
-        IR::condition loop = {
-            { {IR::condition_types::NUMBER, 0} },
-            values.elements
-        };
-        for (auto &el : loop.block) {
-            if (el.type == IR::types::IF) {
-                // replace condition to while or for loop
-                auto condition = std::any_cast<IR::condition>(el.value);
-                for (auto &unit : condition.block) {
-                    if (unit.type == IR::types::EXIT)
-                        unit.type = IR::types::BREAK_LOOP;
-                }
-                el.value = condition;
-            }
-        }
-        IR::member loop_mem = {
-            IR::types::DOWHILE,
-            loop
-        };
-        new_ir.push(loop_mem);
+        IR::condition loop = { { {IR::condition_types::NUMBER, 0} }, values.elements };
+        processExitStatements(values);
+        new_ir.push({ IR::types::DOWHILE, loop });
     } else {
-        // no qualifier, values should not be affected
         return;
     }
     values = new_ir;
+}
+void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char) {
+    cpuf::printf("group\n");
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
+    auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+    auto values = rulesToIr(val);
+    auto method_call = IR::member {IR::types::METHOD_CALL};
+    // create variable with name of "var" or with auto-generated one
+    auto var = (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::id) ?
+                        createEmptyVariable(std::any_cast<std::string>(std::any_cast<Parser::Rule>(variable.data)), values.size()) :
+                        createEmptyVariable(generateVariableName(variable_count), values.size());
 
+    affectIrByQualifier(values, qualifier_char, variable_count);
+    if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::method_call) {
+        auto var_rule = std::any_cast<Parser::Rule>(variable.data);
+        auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
+        method_call.value = var_rule_data;
+        member.push({IR::types::VARIABLE, var});
+        member.push({IR::types::GROUP});
+        member.add(values);
+        member.push({IR::types::METHOD_CALL, method_call});
+    } else {
+        member.push({IR::types::VARIABLE, var});
+        member.push({IR::types::GROUP, values});
+    }
+
+    cpuf::printf("5\n");
+}
+void processRuleCsequence(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char) {
+    cpuf::printf("csequence\n");
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
+    auto values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+
+    auto var = createEmptyVariable(generateVariableName(variable_count));
+    bool is_negative = false;
+    arr_t<IR::expr> expr;
+
+    if ((!_not && qualifier_char == '\0') || _not) {
+        expr = {
+            {IR::condition_types::NOT},
+            {IR::condition_types::GROUP_OPEN}
+        };
+        is_negative = true;
+    }
+
+    bool first = true;
+    for (auto &value : values) {
+        if (!first)
+            expr.push_back({IR::condition_types::AND});
+        first = false;
+
+        switch (value.name) {
+            case Parser::Rules::Rule_csequence_diapason: {
+                auto range_data = std::any_cast<arr_t<char>>(value.data);
+                expr.insert(expr.end(), {
+                    {IR::condition_types::GROUP_OPEN},
+                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::HIGHER_OR_EQUAL},
+                    {IR::condition_types::CHARACTER, range_data[0]},
+                    {IR::condition_types::AND},
+                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::LOWER_OR_EQUAL},
+                    {IR::condition_types::CHARACTER, range_data[1]},
+                    {IR::condition_types::GROUP_CLOSE}
+                });
+                break;
+            }
+            case Parser::Rules::Rule_csequence_escape:
+            case Parser::Rules::Rule_csequence_symbol: {
+                auto char_data = std::any_cast<std::string>(value.data);
+                expr.insert(expr.end(), {
+                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::EQUAL},
+                    {IR::condition_types::CHARACTER, char_data}
+                });
+                break;
+            }
+            default:
+                throw Error("undefined csequence subrule");
+        }
+    }
+
+    if (is_negative) {
+        expr.push_back({IR::condition_types::GROUP_CLOSE});
+    }
+    member.push({IR::types::VARIABLE, var});
+    arr_t<IR::member> block = {
+        {IR::types::ASSIGN_VARIABLE, IR::variable_assign {var.name, IR::var_assign_types::ADD, IR::var_assign_values::CURRENT_POS_SEQUENCE}},
+        {IR::types::INCREASE_POS_COUNTER}
+    };
+
+    switch (qualifier_char) {
+        case '+':
+        case '*':
+            member.push({IR::types::WHILE, IR::condition{expr, block}});
+            break;
+        case '?':
+            member.push({IR::types::IF, IR::condition{expr, block}});
+            break;
+        default:
+            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
+            member.push(
+                IR::member{ 
+                    IR::types::ASSIGN_VARIABLE, 
+                    IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::CURRENT_POS_SEQUENCE}
+                }
+            );
+            member.push({IR::types::INCREASE_POS_COUNTER});
+            break;
+    }
+}
+void processString(Parser::Rule rule, IR::ir &member, char qualifier_char) {
+    cpuf::printf("string, type: %s\n", rule.data.type().name());
+    auto data = std::any_cast<std::string>(rule.data);
+    arr_t<IR::expr> expr = {
+        {IR::condition_types::STRNCMP, data}
+    };
+    arr_t<IR::member> block;
+    switch (qualifier_char) {
+        case '+':
+        case '*':
+            member.push({IR::types::WHILE, IR::condition{expr}});
+            break;
+        case '?':
+            member.push({IR::types::IF, IR::condition{expr}});
+            break;
+        default:
+            expr.insert(expr.begin(), {IR::condition_types::NOT});
+            member.push({IR::types::IF, IR::condition{expr}});
+            break;
+    }
+    auto mem = IR::member {
+        IR::types::IF,
+        expr
+    };
+    member.push(mem);
 }
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count) {
     member.push({ IR::types::RULE, });
+    cpuf::printf("ENTER_1\n");
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
+    cpuf::printf("ENTER_2\n");
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
+    cpuf::printf("ENTER_3\n");
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
     char qualifier_char = '\0';
     if (qualifier.data.type() == typeid(char)) {
+        cpuf::printf("ENTER_4\n");
         qualifier_char = std::any_cast<char>(qualifier.data);
     }
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
-        {
-            cpuf::printf("group\n");
-            cpuf::printf("1\n");
-            auto data = std::any_cast<obj_t>(rule.data);
-
-            cpuf::printf("2, type: %s\n", corelib::map::get(data, "variable").type().name());
-            // Extract variables within this block to avoid scope conflicts.
-            Parser::Rule variable;
-            if (corelib::map::get(data, "variable").has_value()) {
-                variable = std::any_cast<Parser::Rule>(corelib::map::get(data, "variable"));
-            }
-            cpuf::printf("3\n");
-            auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
-            cpuf::printf("4\n");
-            IR::ir values = rulesToIr(val);
-            IR::variable var;
-            IR::member method_call {IR::types::METHOD_CALL};
-            if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::id) {
-                auto var_rule = std::any_cast<Parser::Rule>(variable.data);
-                var = createEmptyVariable(std::any_cast<std::string>(var_rule.data), values.size());
-            } else {
-                var = createEmptyVariable(generateVariableName(variable_count), values.size());
-            }
-
-            affectGroupByQualifier(values, qualifier_char, variable_count);
-            if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::method_call) {
-                auto var_rule = std::any_cast<Parser::Rule>(variable.data);
-                auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
-                method_call.value = var_rule_data;
-                member.push({IR::types::VARIABLE, var});
-                member.push({IR::types::GROUP});
-                member.add(values);
-                member.push({IR::types::METHOD_CALL, method_call});
-            } else {
-                member.push({IR::types::VARIABLE, var});
-                member.push({IR::types::GROUP, values});
-                affectGroupByQualifier(values, qualifier_char, variable_count);
-            }
-
-            cpuf::printf("5\n");
+            processGroup(rule, member, variable_count, qualifier_char);
             break;
-        }
         case Parser::Rules::Rule_csequence:
-        {
-            cpuf::printf("csequence\n");
-            auto data = std::any_cast<obj_t>(rule.data);
-            auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
-            auto values = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
-            arr_t<IR::expr> expr;
-            bool first = true;
-            for (auto &value : values) {
-                if (first) {
-                    if (!_not) {
-                        expr.push_back({IR::condition_types::NOT});
-                        expr.push_back({IR::condition_types::GROUP_OPEN});
-                    }
-                } else {
-                    expr.push_back({IR::condition_types::AND});
-                }
-                switch (value.name) {
-                    case Parser::Rules::Rule_csequence_diapason:
-                    {
-                        auto data = std::any_cast<arr_t<char>>(value.data);
-                        expr.push_back({IR::condition_types::GROUP_OPEN});
-                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
-                        expr.push_back({IR::condition_types::HIGHER_OR_EQUAL});
-                        expr.push_back({IR::condition_types::CHARACTER, data[0]});
-                        expr.push_back({IR::condition_types::AND});
-                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
-                        expr.push_back({IR::condition_types::HIGHER_OR_EQUAL});
-                        expr.push_back({IR::condition_types::CHARACTER, data[1]});
-                        expr.push_back({IR::condition_types::GROUP_CLOSE});
-                        break;
-                    }
-                    default:
-                    {
-                        if (value.name != Parser::Rules::Rule_csequence_escape && value.name != Parser::Rules::Rule_csequence_symbol)
-                            throw Error("undefined csequence subrule");
-                        auto data = std::any_cast<std::string>(value.data);
-                        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
-                        expr.push_back({IR::condition_types::EQUAL});
-                        expr.push_back({IR::condition_types::CHARACTER, data});
-                    }
-                }
-            }
-            if (!_not)
-                expr.push_back({IR::condition_types::GROUP_CLOSE});
-            auto mem = IR::member {
-                IR::types::IF,
-                expr
-            };
-            member.push(mem);
-            push_to_elements(elements, member);
-        }
+            processRuleCsequence(rule, member, variable_count, qualifier_char);
+            break;
         case Parser::Rules::string:
-        {
-            cpuf::printf("string\n");
-            auto data = std::any_cast<std::string>(rule.data);
-            arr_t<IR::expr> expr = {
-                {IR::condition_types::STRNCMP, data}
-            };
-            auto mem = IR::member {
-                IR::types::IF,
-                expr
-            };
-            member.push(mem);
-            push_to_elements(elements, member);
-        }
+            processString(rule, member, qualifier_char);
+            break;
         case Parser::Rules::accessor:
         {
-            cpuf::printf("accessor\n");
+            cpuf::printf("accessor, type: %s\n", Parser::RulesToString(rule.name));
             cpuf::printf("1, type: %s, data: %s\n", rule.data.type().name(), std::any_cast<std::string>(rule.data));
             auto data = std::any_cast<obj_t>(rule.data);
             cpuf::printf("2\n"); 
@@ -252,6 +291,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
                 second,
             };
             push_to_elements(elements, member);
+            break;
         }
         case Parser::Rules::Rule_hex:
         {
@@ -260,6 +300,10 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             std::string data_str(data.data(), data.size());
             arr_t<IR::expr> expr = {};
             bool is_first = true;
+            if (qualifier_char == '?' || qualifier_char == '\0') {
+                expr.push_back({IR::condition_types::NOT});
+                expr.push_back({IR::condition_types::GROUP_OPEN});
+            }
             if (data.size() % 2 != 0)
                 data_str.insert(data_str.begin(), '0');
             for (int i = 0; i < data_str.size(); i += 2) {
@@ -295,6 +339,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             };
             member.push(mem);
             push_to_elements(elements, member);
+            break;
         }
         case Parser::Rules::Rule_bin: 
         {
@@ -320,6 +365,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             };
             member.push(mem);
             push_to_elements(elements, member);
+            break;
         }
         default:
             return;
