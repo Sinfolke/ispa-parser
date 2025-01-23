@@ -12,7 +12,7 @@ usage:
     -help show this help message
     -version show version
     --dir specify the directories where to locate sources
-    --lang specify target language to build the parser for
+    --lang specify target language to generate to. Use --help-lang to see all languages
     )", color::yellow, color::reset);
     cpuf::printf("\n");
 }
@@ -104,6 +104,7 @@ int main(int argc, char** argv) {
     sortByPriority(tree);      // sorts elements to get which should be placed on top. This ensures proper
     literalsToToken(tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     normalizeTree(tree);
+    // convert tree into IR
     auto ir = treeToIr(tree);
     /*
         CONVERTION IS GOING HERE

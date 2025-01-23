@@ -49,10 +49,15 @@ namespace IR {
         var_assign_types assign_type;
         var_assign_values value;
     };
+    struct accessor {
+        arr_t<Parser::Rule> elements;
+        char qualifier;
+    };
     class ir {
         public:
         arr_t<member> elements;
         void add(ir repr);
+        void add(arr_t<member> repr);
         void push(member member);
         size_t size();
     };
@@ -66,6 +71,6 @@ namespace IR {
     };
 };
 
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules);
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count, bool isToken);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken);
 IR::ir treeToIr(Parser::Tree &tree);

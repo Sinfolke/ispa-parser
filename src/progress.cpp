@@ -66,7 +66,7 @@ Parser::Tree getTokensFromRule(Parser::Rule &member) {
             auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
             if (
                 val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
-                val.name == Parser::Rules::Rule_csequence
+                val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
             )
             {
                 // convert into token & add here token instead of string
