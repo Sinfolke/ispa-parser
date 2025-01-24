@@ -40,7 +40,7 @@ namespace Tokens {
         )};
 
         obj_t data {
-            { "name", make_rule(Parser::Rules::id, std::string("auto_") + std::to_string(count++)) },
+            { "name", make_rule(Parser::Rules::id, std::string("AUTO_") + std::to_string(count++)) },
             { "rule", rule },
             { "data_block", data_block },
             { "nestedRules", arr_t<Parser::Rule>() }

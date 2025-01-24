@@ -49,6 +49,53 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules) {
     }
     return rules;
 }
+std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parser::Rule qualifier) {
+    auto newToken = Tokens::singleRuleToToken(val);
+    auto newTokenData = std::any_cast<obj_t>(newToken.data);
+    auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
+    auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
+    auto id = Tokens::make_rule(Parser::Rules::id, newToken_name_str);
+    auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
+        { "is_nested", false },
+        { "name", id },
+        { "nested_name", arr_t<Parser::Rule>() }
+    });
+    auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+        { "val", Rule_other  },
+        { "qualifier", qualifier }
+    });
+    return {newToken, _rule};
+}
+std::pair<Parser::Tree, arr_t<Parser::Rule>> getTokensFromRule_rule(Parser::Tree tree, arr_t<Parser::Rule> rule) {
+    // is rule
+    for (auto &el : rule) {
+        if (!el.data.has_value())
+            continue;
+        auto el_data = std::any_cast<obj_t>(el.data);
+        auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+        auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
+        if (
+            val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
+            val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
+        )
+        {
+            // convert into token & add here token instead of string
+            auto [newToken, _rule] = getNewRuleAndToken(val, qualifier);
+            tree.push_back(newToken);
+            // use token here instead of literal
+            el = _rule;
+        } else if (val.name == Parser::Rules::Rule_group) {
+            auto group_data = std::any_cast<obj_t>(val.data);
+            auto group_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(group_data, "val"));
+            std::tie(tree, group_val) = getTokensFromRule_rule(tree, group_val);
+            corelib::map::set(group_data, "val", std::any(group_val));
+            val.data = std::any(group_data);
+            corelib::map::set(el_data, "val", std::any(val));
+            el.data = std::any(el_data);
+        }
+    }
+    return {tree, rule};
+}
 Parser::Tree getTokensFromRule(Parser::Rule &member) {
     Parser::Tree tree;
     auto data = std::any_cast<obj_t>(member.data);
@@ -57,42 +104,11 @@ Parser::Tree getTokensFromRule(Parser::Rule &member) {
     auto rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
     auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
     if (corelib::text::startsWithRange(name_str, 'a', 'z')) {
-        // is rule
-        for (auto &el : rule) {
-            if (!el.data.has_value())
-                continue;
-            auto el_data = std::any_cast<obj_t>(el.data);
-            auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-            auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
-            if (
-                val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
-                val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
-            )
-            {
-                // convert into token & add here token instead of string
-                auto newToken = Tokens::singleRuleToToken(val);
-                auto newTokenData = std::any_cast<obj_t>(newToken.data);
-                auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
-                auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
-                auto id = Tokens::make_rule(Parser::Rules::id, newToken_name_str);
-                auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
-                    { "is_nested", false },
-                    { "name", id },
-                    { "nested_name", arr_t<Parser::Rule>() }
-                });
-                auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                    { "val", Rule_other  },
-                    { "qualifier", qualifier }
-                });
-                tree.push_back(newToken);
-                // use token here instead of literal
-                el = _rule;
-            }
-        }
-
+        std::tie(tree, rule) = getTokensFromRule_rule(tree, rule);
+        corelib::map::set(data, "rule", std::any(rule));
+        member.data = std::any(data);
     }
-    corelib::map::set(data, "rule", std::any(rule));
-    member.data = std::any(data);
+
     literalsToToken(nested_rule);
     return tree;
 }

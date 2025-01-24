@@ -21,9 +21,7 @@
  8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
  9. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
-  - Add handle for '+' for process_csequence, process_string
-  - Add handle of qualifiers for process_hex, process_bin
-  
+
 ### Parser syntax
   
   see ```concepts/syntax```

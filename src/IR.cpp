@@ -75,6 +75,23 @@ void handle_plus_qualifier(IR::condition loop, IR::ir &new_ir, int &variable_cou
     new_ir.push({IR::types::WHILE, loop});
     addPostLoopCheck(new_ir, var);
 }
+void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::ir &member, char qualifier_char, int &variable_count) {
+    switch (qualifier_char) {
+        case '+':
+            handle_plus_qualifier({expr, block}, member, variable_count);
+            break;
+        case '*':
+            member.push({IR::types::WHILE, IR::condition{expr, block}});
+            break;
+        case '?':
+            member.push({IR::types::IF, IR::condition{expr, block}});
+            break;
+        default:
+            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
+            member.add(block);
+            break;
+    }
+}
 void affectIrByQualifier(IR::ir values, char qualifier, int &variable_count) {
     IR::ir new_ir;
     if (qualifier == '*' || qualifier == '+') {
@@ -103,13 +120,17 @@ void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char q
     auto values = rulesToIr(val, isToken);
     auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
-    auto var = (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::id) ?
-                        createEmptyVariable(std::any_cast<std::string>(std::any_cast<Parser::Rule>(variable.data)), values.size()) :
+    cpuf::printf("1\n");
+    auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
+                        createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
                         createEmptyVariable(generateVariableName(variable_count), values.size());
-
+    cpuf::printf("1.1\n");
     affectIrByQualifier(values, qualifier_char, variable_count);
-    if (!variable.empty() && std::any_cast<Parser::Rule>(variable.data).name == Parser::Rules::method_call) {
+
+    if (!variable.empty() && variable.name == Parser::Rules::method_call) {
+        cpuf::printf("2\n");
         auto var_rule = std::any_cast<Parser::Rule>(variable.data);
+        cpuf::printf("3\n");
         auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
         method_call.value = var_rule_data;
         member.push({IR::types::VARIABLE, var});
@@ -121,7 +142,7 @@ void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char q
         member.push({IR::types::GROUP, values});
     }
 
-    cpuf::printf("5\n");
+    cpuf::printf("leave group\n");
 }
 void processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("csequence\n");
@@ -188,30 +209,10 @@ void processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variabl
         {IR::types::INCREASE_POS_COUNTER}
     };
 
-    switch (qualifier_char) {
-        case '+':
-            handle_plus_qualifier({expr, block}, member, variable_count);
-            break;
-        case '*':
-            member.push({IR::types::WHILE, IR::condition{expr, block}});
-            break;
-        case '?':
-            member.push({IR::types::IF, IR::condition{expr, block}});
-            break;
-        default:
-            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
-            member.push(
-                IR::member{ 
-                    IR::types::ASSIGN_VARIABLE, 
-                    IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::CURRENT_POS_SEQUENCE}
-                }
-            );
-            member.push({IR::types::INCREASE_POS_COUNTER});
-            break;
-    }
+    pushBasedOnQualifier(expr, block, member, qualifier_char, variable_count);
 }
 void processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
-    cpuf::printf("string, type: %s\n", rule.data.type().name());
+    cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     auto data = std::any_cast<std::string>(rule.data);
     auto var = createEmptyVariable(generateVariableName(variable_count));
     var.type = IR::var_type::STRING;
@@ -223,22 +224,7 @@ void processString(const Parser::Rule &rule, IR::ir &member, int &variable_count
         {IR::types::INCREASE_POS_COUNTER},
     };
     member.push({IR::types::VARIABLE, var});
-    switch (qualifier_char) {
-        case '+':
-            handle_plus_qualifier({expr, block}, member, variable_count);
-            break;
-        case '*':
-            member.push({IR::types::WHILE, IR::condition{expr, block}});
-            break;
-        case '?':
-            member.push({IR::types::IF, IR::condition{expr, block}});
-            break;
-        default:
-            expr.insert(expr.begin(), {IR::condition_types::NOT});
-            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
-            member.add(block);
-            break;
-    }
+    pushBasedOnQualifier(expr, block, member, qualifier_char, variable_count);
 }
 void process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("hex\n");
@@ -267,21 +253,7 @@ void process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_co
         expr.push_back({IR::condition_types::EQUAL});
         expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex)});
     }
-    switch (qualifier_char) {
-        case '+':
-            handle_plus_qualifier({expr, block}, member, variable_count);
-            break;
-        case '*':
-            member.push({IR::types::WHILE, IR::condition{expr, block}});
-            break;
-        case '?':
-            member.push({IR::types::IF, IR::condition{expr, block}});
-            break;
-        default:
-            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
-            member.add(block);
-            break;
-    }
+    pushBasedOnQualifier(expr, block, member, qualifier_char, variable_count);
 }
 void process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("hex\n");
@@ -310,21 +282,7 @@ void process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_co
         expr.push_back({IR::condition_types::EQUAL});
         expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex::from_binary(bin))});
     }
-    switch (qualifier_char) {
-        case '+':
-            handle_plus_qualifier({expr, block}, member, variable_count);
-            break;
-        case '*':
-            member.push({IR::types::WHILE, IR::condition{expr, block}});
-            break;
-        case '?':
-            member.push({IR::types::IF, IR::condition{expr, block}});
-            break;
-        default:
-            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
-            member.add(block);
-            break;
-    }
+    pushBasedOnQualifier(expr, block, member, qualifier_char, variable_count);
 }
 void processAccessor(const Parser::Rule &rule, IR::ir &member, char qualifier_char) {
     cpuf::printf("accessor\n");
@@ -340,6 +298,11 @@ void processAccessor(const Parser::Rule &rule, IR::ir &member, char qualifier_ch
         IR::accessor { second, qualifier_char }
     };
     member.push(mem);
+}
+void process_Rule_other(const Parser::Rule &rule, IR::ir &member, char qualifier_char, bool isToken) {
+    cpuf::printf("Rule_other\n");
+    auto data = std::any_cast<obj_t>(rule.data);
+    std::string name;
 }
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count, bool isToken) {
     member.push({ IR::types::RULE, });
@@ -372,6 +335,10 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             break;
         case Parser::Rules::Rule_bin: 
             process_Rule_bin(rule, member, variable_count, qualifier_char);
+            break;
+        case Parser::Rules::Rule_other:
+            process_Rule_other(rule, member, variable_count, qualifier_char);
+            break;
         default:
             return;
             //throw Error("Converting undefined rule");
