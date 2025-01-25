@@ -193,14 +193,14 @@ public:
 #ifdef DEBUG
         std::cout << "as: enabled debugging"\n;
         if (!data.has_value()) {}
-           std::cerr << "iscstdlibc++: No value in data\n"
+           std::cerr << "iscstdlibc++: No value in data\n";
            exit(1);
         } else if (data.type() != typeid(T)) {
             std::cerr << "iscstdlibc++: Data type mismatch. Expected: " << typeid(T).name() << " but got: " << data.type().name() << "\n";
             exit(1);
         }
-        return std::any_cast<T>(data);
 #endif
+        return std::any_cast<T>(data);
     }
     _return<RETURN_T> operator=(const _return<RETURN_T>& other) {
         startpos = other.startpos;
