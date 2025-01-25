@@ -120,17 +120,13 @@ void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char q
     auto values = rulesToIr(val, isToken);
     auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
-    cpuf::printf("1\n");
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
                         createEmptyVariable(generateVariableName(variable_count), values.size());
-    cpuf::printf("1.1\n");
     affectIrByQualifier(values, qualifier_char, variable_count);
 
     if (!variable.empty() && variable.name == Parser::Rules::method_call) {
-        cpuf::printf("2\n");
         auto var_rule = std::any_cast<Parser::Rule>(variable.data);
-        cpuf::printf("3\n");
         auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
         method_call.value = var_rule_data;
         member.push({IR::types::VARIABLE, var});
@@ -141,8 +137,6 @@ void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char q
         member.push({IR::types::VARIABLE, var});
         member.push({IR::types::GROUP, values});
     }
-
-    cpuf::printf("leave group\n");
 }
 void processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("csequence\n");
@@ -300,9 +294,12 @@ void processAccessor(const Parser::Rule &rule, IR::ir &member, char qualifier_ch
     member.push(mem);
 }
 void process_Rule_other(const Parser::Rule &rule, IR::ir &member, char qualifier_char, bool isToken) {
-    cpuf::printf("Rule_other\n");
+    cpuf::printf("Rule_other");
     auto data = std::any_cast<obj_t>(rule.data);
-    std::string name;
+    auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+    auto name_str = std::any_cast<std::string>(name.data);
+    cpuf::printf(", name: %s\n", name_str);
+    std::string _name;
 }
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count, bool isToken) {
     member.push({ IR::types::RULE, });
