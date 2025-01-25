@@ -188,6 +188,20 @@ public:
     bool empty() const noexcept {
         return startpos == std::string::npos;
     }
+    template<typename T>
+    T as() {
+#ifdef DEBUG
+        std::cout << "as: enabled debugging"\n;
+        if (!data.has_value()) {}
+           std::cerr << "iscstdlibc++: No value in data\n"
+           exit(1);
+        } else if (data.type() != typeid(T)) {
+            std::cerr << "iscstdlibc++: Data type mismatch. Expected: " << typeid(T).name() << " but got: " << data.type().name() << "\n";
+            exit(1);
+        }
+        return std::any_cast<T>(data);
+#endif
+    }
     _return<RETURN_T> operator=(const _return<RETURN_T>& other) {
         startpos = other.startpos;
         start = other.start;
