@@ -159,13 +159,9 @@ static Parser::Rule processNestedRuleHelper(arr_t<Parser::Rule> nestedName, obj_
 }
 extern Parser::Tree tree;
 bool sortPriority(priority_t first, priority_t second) {
-    cpuf::printf("1, type: %s, name: %s\n", first.rule.data.type().name(), Parser::RulesToString(first.rule.name));
     auto first_data = std::any_cast<obj_t>(first.rule.data);
-    cpuf::printf("2\n");
     auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
-    cpuf::printf("3\n");
     auto second_data = std::any_cast<obj_t>(second.rule.data);
-    cpuf::printf("4\n");
     auto second_val = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "val"));
     if (first_val.name == Parser::Rules::string && second_val.name == Parser::Rules::string) {
         // if first value size is lower second, put the second before
@@ -184,7 +180,7 @@ bool sortPriority(priority_t first, priority_t second) {
         auto second_ruleother_data = std::any_cast<obj_t>(second_val.data);
 
         auto first_name = std::any_cast<Parser::Rule>(corelib::map::get(first_ruleother_data, "name"));
-        auto second_name = std::any_cast<Parser::Rule>(corelib::map::get(first_ruleother_data, "name"));
+        auto second_name = std::any_cast<Parser::Rule>(corelib::map::get(second_ruleother_data, "name"));
 
         auto first_nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_ruleother_data, "nested_name"));
         auto second_nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_ruleother_data, "nested_name"));
@@ -207,12 +203,12 @@ bool sortPriority(priority_t first, priority_t second) {
             auto first_rules_data = std::any_cast<obj_t>(first_rules[i].data);
             auto second_rules_data = std::any_cast<obj_t>(second_rules[i].data);
             auto first_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(first_rules_data, "val"));
-            auto second_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(first_rules_data, "val"));
+            auto second_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(second_rules_data, "val"));
             // go to same part
             if (Tokens::compare_rule(first_rules_val, second_rules_val))
                 continue;
             // found not same part, call this function to determine which should go before
-            return sortPriority({0, first_rules_val}, {1, second_rules_val});            
+            return sortPriority({0, first_rules[i]}, {1, second_rules[i]});            
         }
         // rules are same, do nothing
         return 0;
@@ -240,14 +236,12 @@ bool sortPriority(priority_t first, priority_t second) {
         return 1;
     else if ((first_val.name == Parser::Rules::string || first_val.name == Parser::Rules::Rule_csequence) && second_val.name == Parser::Rules::Rule_other) 
         return 0;
-    cpuf::printf("ON_GROUP\n");
     if (first_val.name == Parser::Rules::Rule_group) {
         return processGroup_helper(getValueFromGroup(first_val), second_val);
     }    
     if (second_val.name == Parser::Rules::Rule_group) {
         return !processGroup_helper(getValueFromGroup(second_val), first_val);
     }
-    cpuf::printf("AFTER_GROUP\n");
     return 0;
 }
 void sortByPriority(Parser::Tree &tree)  {
@@ -264,7 +258,6 @@ void sortByPriority(Parser::Tree &tree)  {
             bool have_op = false;
             bool prev_op = false;
             for (int i = 0; i < rules.size(); i++) {
-                cpuf::printf("rules[i].name %s\n", Parser::RulesToString(rules[i].name));
                 auto data = std::any_cast<obj_t>(rules[i].data);
                 auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
                 // apply the sort for groups

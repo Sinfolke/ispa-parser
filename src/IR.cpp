@@ -310,7 +310,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
     if (qualifier.data.type() == typeid(char)) {
         qualifier_char = std::any_cast<char>(qualifier.data);
     }
-    if (!isToken && (rule.name != Parser::Rules::Rule_other && rule.name != Parser::Rules::Rule_group && rule.name != Parser::Rules::Rule_op && rule.name != Parser::Rules::cll && rule.name != Parser::Rules::linear_comment)  ) {
+    if (!isToken && (rule.name != Parser::Rules::Rule_other && rule.name != Parser::Rules::Rule_group && rule.name != Parser::Rules::Rule_op && rule.name != Parser::Rules::cll && rule.name != Parser::Rules::linear_comment && rule.name != Parser::Rules::accessor)  ) {
         throw Error("Rule having literals. Name: %s", Parser::RulesToString(rule.name));
         return;
     }
