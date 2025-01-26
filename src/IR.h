@@ -15,7 +15,7 @@ namespace IR {
         VARIABLE
     };
     enum class var_type {
-        UNDEFINED, STRING, BOOLEAN
+        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token
     };
     enum class var_assign_values {
         NONE, _TRUE, _FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE

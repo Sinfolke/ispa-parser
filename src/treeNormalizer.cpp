@@ -2,28 +2,29 @@
 #include <internal_types.h>
 #include <token_management.h>
 #include <corelib.h>
-void normalizeRule(Parser::Rule &member) {
-    auto data = std::any_cast<obj_t>(member.data);
-    auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
-
+void normalizeHelper(arr_t<Parser::Rule> &rules) {
     arr_t<Parser::Rule> ops;
     Parser::Rule prev_rule;
+    
     bool in_op = false, prev_op = false; // Initialize flags
-    int begin = 0;                      // Initialize the start index
-
+    int begin = 0;
     for (int i = 0; i < rules.size(); i++) {
         auto el = rules[i];
         auto rule_data = std::any_cast<obj_t>(el.data);
         auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
-        auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
 
+        if (rule.name == Parser::Rules::Rule_group) {
+            auto rules = rule.as<arr_t<Parser::Rule>>();
+            normalizeHelper(rules);
+            
+        }
         if (rule.name == Parser::Rules::Rule_op) {
             if (!in_op) {
                 in_op = true;
                 ops.push_back(prev_rule);
                 begin = i - 1; // Track the start of the operator sequence
             }
-            ops.push_back(rule); // Add operator to ops
+            //ops.push_back(rule); // Add operator to ops
             prev_op = true;
         } else if (prev_op) {
             ops.push_back(rule); // Add non-operator to ops
@@ -52,6 +53,7 @@ void normalizeRule(Parser::Rule &member) {
         prev_rule = rule; // Update the previous rule
     }
 
+
     // Handle any remaining operator sequences at the end
     if (in_op && !ops.empty()) {
         auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
@@ -63,6 +65,12 @@ void normalizeRule(Parser::Rule &member) {
         rules.erase(rules.begin() + begin, rules.end());
         rules.push_back(new_token);
     }
+}
+void normalizeRule(Parser::Rule &member) {
+    auto data = std::any_cast<obj_t>(member.data);
+    auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
+
+    normalizeHelper(rules);
 
     // Update the modified `rules` back into the member
     corelib::map::set(data, "rule", std::any(rules));

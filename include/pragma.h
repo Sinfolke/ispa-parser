@@ -4,9 +4,12 @@
     Control optimization FOR FUNCTIONS in code
     This assumes the compiler supports these features. If not, it is ignored.
 */
-
+#ifndef O_LEVEL
+#error "O_LEVEL is required"
+#endif
 #ifdef _MSC_VER
-    #warning "MSVC is bad in optimization control. Consider better use of GCC/Clang instead (if you could)"
+    #pragma message("Note that gcc/clang would produce better executable than MSVC for this project")
+
     #define ENABLE_OPTIMIZATION \
         __pragma(optimize("t", on))
 
@@ -14,19 +17,17 @@
         __pragma(optimize("", off))
 
     #define ENABLE_O(opt) \
-        __pragma(optimize(opt, on))
+        ENABLE_OPTIMIZATION
 
     #define DISABLE_O(opt) \
-        // what we can do here is to only disable the fast-math
-        // this gonna save program from being incorrect but nothing more
-        __pragma(fp_contract(off)) // Disable FP contraction
+        __pragma(float_control(precise, on, push)) // Ensure precise FP calculations
 
 #elif defined(__clang__)
     #define ENABLE_OPTIMIZATION \
-        __attribute__((optimize("on")))
+        __attribute__((optimize("-O" O_LEVEL)))
 
     #define DISABLE_OPTIMIZATION \
-        __attribute__((optimize("off")))
+        __attribute__((optimize("-O0")))
 
     #define ENABLE_O(opt) \
         __attribute__((optimize("-f" opt)))
@@ -35,15 +36,12 @@
         __attribute__((optimize("-fno-" opt)))
 
 #elif defined(__GNUC__)
-    #ifndef O_LEVEL
-        #define O_LEVEL "2"
-    #endif
 
     #define ENABLE_OPTIMIZATION \
-        _Pragma("GCC optimize (\"" O_LEVEL "\")")
+        __attribute__((optimize("-O" O_LEVEL)))
 
     #define DISABLE_OPTIMIZATION \
-        _Pragma("GCC optimize (\"O0\")")
+        __attribute__((optimize("-O0")))
 
     #define ENABLE_O(opt) \
         __attribute__((optimize("-f" opt)))
