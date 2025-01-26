@@ -191,7 +191,6 @@ public:
     template<typename T>
     T as() {
 #ifdef DEBUG
-        std::cout << "as: enabled debugging\n";
         if (!data.has_value()) {
            std::cerr << "iscstdlibc++: No value in data\n";
            exit(1);
