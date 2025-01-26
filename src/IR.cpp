@@ -310,11 +310,18 @@ void process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_
     }
 }
 void process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
+    cpuf::printf("Rule_escaped\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
     auto num = std::any_cast<Parser::Rule>(corelib::map::get(data, "num"));
-    auto num_data = num.as<obj_t>();
-    auto num_dec = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
+    obj_t num_data;
+    double num_dec;
+    if (num.data.has_value()) {
+        num_data = num.as<obj_t>();
+        num_dec = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
+    } else {
+        num_dec = -1;
+    }
     auto var = createEmptyVariable(generateVariableName(variable_count));
     arr_t<IR::expr> expression;
     arr_t<IR::member> block = createDefaultBlock(var);
@@ -341,7 +348,7 @@ void process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variabl
     member.push({IR::types::IF, IR::condition{expression, block}});
 }
 void process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
-    auto data = std::any_cast<obj_t>(rule.data);
+    cpuf::printf("Rule_any, type: %s\n", rule.data.type().name());
     auto var = createEmptyVariable(generateVariableName(variable_count));
     arr_t<IR::expr> expression;
     arr_t<IR::member> block = createDefaultBlock(var);
@@ -349,8 +356,8 @@ void process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_co
         UWarning("Qualifier after . ignored").print();
     expression = {
         {IR::condition_types::CURRENT_CHARACTER},
-        {IR::condition_types::EQUAL},
-        {IR::condition_types::NUMBER, 0}
+        {IR::condition_types::NOT_EQUAL},
+        {IR::condition_types::CHARACTER, '\0'}
     };
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::IF, IR::condition{expression, block}});
@@ -364,12 +371,18 @@ void process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_cou
     arr_t<IR::member> block = createDefaultBlock(var);
     for (auto &rule : op) {
         cpuf::printf("rule name: %s\n", Parser::RulesToString(rule.name));
-        auto rule_data = rule.as<obj_t>();
+        //auto rule_data = rule.as<obj_t>();
     }
 }
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count, bool isToken) {
     member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
+    if (corelib::map::get(rule_data, "val").type() == typeid(std::unordered_map<const char*, std::any>)) {
+        auto group = std::any_cast<obj_t>(corelib::map::get(rule_data, "val"));
+        for (const auto &key : group) {
+            cpuf::printf("key: %s\n", key.first);
+        }
+    }
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
     char qualifier_char = '\0';
@@ -401,7 +414,6 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> 
             process_Rule_bin(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::Rule_other:
-            break;
             process_Rule_other(rule, member, variable_count, qualifier_char, isToken);
             break;
         case Parser::Rules::Rule_escaped:
