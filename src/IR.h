@@ -71,6 +71,6 @@ namespace IR {
     };
 };
 
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, arr_t<IR::element_count> &elements, int &variable_count, bool isToken);
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken);
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken);
 IR::ir treeToIr(Parser::Tree &tree);
