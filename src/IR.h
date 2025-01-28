@@ -4,7 +4,7 @@
 #include <any>
 namespace IR {
     enum class types {
-        RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
+        NONE, RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
         ASSIGN_VARIABLE, INCREASE_POS_COUNTER
     };
@@ -25,11 +25,12 @@ namespace IR {
         ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO
     };
     struct member {
-        types type;
+        types type = types::NONE;
         std::any value = {};
     };
     struct method_call {
-        std::string var_name; 
+        std::string var_name;
+        std::string method_name;
     };
     struct expr {
         condition_types id;
@@ -40,15 +41,15 @@ namespace IR {
         arr_t<member> block; 
     };
     struct variable {
-        var_type type;
-        std::string name;
-        var_assign_values value;
+        var_type type = var_type::UNDEFINED;
+        std::string name = "";
+        var_assign_values value = var_assign_values::NONE;
         int assign_next_rules = 0;
     };
     struct variable_assign {
         std::string name;
-        var_assign_types assign_type;
-        var_assign_values value;
+        var_assign_types assign_type = var_assign_types::ASSIGN;
+        var_assign_values value = var_assign_values::NONE;
     };
     struct accessor {
         arr_t<Parser::Rule> elements;

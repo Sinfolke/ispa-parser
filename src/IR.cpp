@@ -66,7 +66,7 @@ void addPostLoopCheck(IR::ir &new_ir, const IR::variable &var) {
     IR::condition check_cond = {
         { { IR::condition_types::VARIABLE, var.name },
           { IR::condition_types::EQUAL },
-          { IR::condition_types::NUMBER, false } },
+          { IR::condition_types::NUMBER, (long long) false } },
         { { IR::types::EXIT } }
     };
     new_ir.push({IR::types::IF, check_cond});
@@ -115,7 +115,7 @@ void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::var
 void affectIrByQualifier(IR::ir values, char qualifier, int &variable_count) {
     IR::ir new_ir;
     if (qualifier == '*' || qualifier == '+') {
-        IR::condition loop = { { { IR::condition_types::NUMBER, 1 } }, {} };
+        IR::condition loop = { { { IR::condition_types::NUMBER, (long long) 1 } }, {} };
         processExitStatements(values);
         loop.block = values.elements;
         new_ir.push({IR::types::WHILE, loop});
@@ -124,7 +124,7 @@ void affectIrByQualifier(IR::ir values, char qualifier, int &variable_count) {
             handle_plus_qualifier(loop, new_ir, variable_count);
         }
     } else if (qualifier == '?') {
-        IR::condition loop = { { {IR::condition_types::NUMBER, 0} }, values.elements };
+        IR::condition loop = { { {IR::condition_types::NUMBER, (long long) 0} }, values.elements };
         processExitStatements(values);
         new_ir.push({ IR::types::DOWHILE, loop });
     } else {
@@ -139,7 +139,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
     arr_t<IR::node_ret_t> success_vars;
     auto values = rulesToIr(val, isToken, success_vars);
-    auto method_call = IR::member {IR::types::METHOD_CALL};
+    auto method_call = IR::member {IR::types::METHOD_CALL, IR::method_call {}};
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
@@ -208,11 +208,11 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                     {IR::condition_types::GROUP_OPEN},
                     {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::HIGHER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, range_data[0]},
+                    {IR::condition_types::CHARACTER, (char) range_data[0]},
                     {IR::condition_types::AND},
                     {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::LOWER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, range_data[1]},
+                    {IR::condition_types::CHARACTER, (char) range_data[1]},
                     {IR::condition_types::GROUP_CLOSE}
                 });
                 break;
@@ -223,7 +223,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                 expr.insert(expr.end(), {
                     {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::EQUAL},
-                    {IR::condition_types::CHARACTER, char_data}
+                    {IR::condition_types::CHARACTER, (char) char_data[0]}
                 });
                 break;
             }
@@ -281,7 +281,7 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
         is_first = false;
         expr.push_back({IR::condition_types::CURRENT_CHARACTER});
         expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex)});
+        expr.push_back({IR::condition_types::NUMBER, (long long) hex::to_decimal(hex)});
     }
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
@@ -317,7 +317,7 @@ IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &v
         is_first = false;
         expr.push_back({IR::condition_types::CURRENT_CHARACTER});
         expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::NUMBER, (char) hex::to_decimal(hex::from_binary(bin))});
+        expr.push_back({IR::condition_types::NUMBER, (long long) hex::to_decimal(hex::from_binary(bin))});
     }
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
@@ -447,7 +447,7 @@ void convert_op_rule(arr_t<Parser::Rule> &rules, IR::ir &member, int &variable_c
         { 
             { IR::condition_types::VARIABLE, success_var },
             { IR::condition_types::EQUAL },
-            { IR::condition_types::NUMBER, 0 }
+            { IR::condition_types::NUMBER, (long long) 0 }
         },
         block.elements
     };

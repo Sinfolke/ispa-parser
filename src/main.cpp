@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
     auto ir = treeToIr(tree);
 
     // Output to console
-    IR::outputIRToConsole(ir);
+    //IR::outputIRToConsole(ir);
 
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
