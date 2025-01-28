@@ -106,10 +106,7 @@ int main(int argc, char** argv) {
     normalizeTree(tree);
     // convert tree into IR
     auto ir = treeToIr(tree);
-
-    // Output to console
-    //IR::outputIRToConsole(ir);
-
+    
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
     /*

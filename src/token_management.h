@@ -1,3 +1,4 @@
+#pragma once
 #include <parser.h>
 #include <internal_types.h>
 #include <forward_list>

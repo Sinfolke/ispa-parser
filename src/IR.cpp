@@ -138,8 +138,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
     arr_t<IR::node_ret_t> success_vars;
-    auto values = rulesToIr(val, isToken, success_vars);
-    auto method_call = IR::member {IR::types::METHOD_CALL, IR::method_call {}};
+    auto values = rulesToIr(val, isToken, success_vars, variable_count);
+    auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
@@ -531,6 +531,16 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
             throw Error("Converting undefined rule");
     }
 }
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count) {
+    IR::ir result;
+    arr_t<IR::element_count> elements;
+    for (auto &rule : rules) {
+        IR::node_ret_t success_var;
+        ruleToIr(rule, result, variable_count, isToken, success_var);
+        success_vars.push_back(success_var);
+    }
+    return result;
+}
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars) {
     IR::ir result;
     arr_t<IR::element_count> elements;
@@ -539,6 +549,15 @@ IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> 
         IR::node_ret_t success_var;
         ruleToIr(rule, result, variable_count, isToken, success_var);
         success_vars.push_back(success_var);
+    }
+    return result;
+}
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, int &variable_count) {
+    IR::ir result;
+    arr_t<IR::element_count> elements;
+    for (auto &rule : rules) {
+        IR::node_ret_t success_var;
+        ruleToIr(rule, result, variable_count, isToken, success_var);
     }
     return result;
 }
