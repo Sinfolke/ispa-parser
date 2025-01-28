@@ -114,10 +114,10 @@ Parser::Tree getTokensFromRule(Parser::Rule &member) {
         member.data = std::any(data);
     }
 
-    literalsToToken(nested_rule);
+    literalsToToken(nested_rule, tree);
     return tree;
 }
-void literalsToToken(Parser::Tree& tree) {
+void literalsToToken(Parser::Tree& tree, Parser::Tree &treeInsert) {
     Parser::Tree tokenSeq;
     for (auto& member : tree) {
         if (member.name == Parser::Rules::Rule) {
@@ -126,7 +126,7 @@ void literalsToToken(Parser::Tree& tree) {
         }
     }
     // Append tokenSeq to the existing tree
-    tree.insert(tree.end(), tokenSeq.begin(), tokenSeq.end());
+    treeInsert.insert(treeInsert.end(), tokenSeq.begin(), tokenSeq.end());
 }
 
 struct priority_t {

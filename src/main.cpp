@@ -101,11 +101,17 @@ int main(int argc, char** argv) {
         TREE CHANGES BELOW
     */
     sortByPriority(tree);      // sorts elements to get which should be placed on top. This ensures proper matching
-    literalsToToken(tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+    literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     replaceDublications(tree); // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     normalizeTree(tree);
     // convert tree into IR
     auto ir = treeToIr(tree);
+
+    // Output to console
+    IR::outputIRToConsole(ir);
+
+    // Output to file
+    IR::outputIRToFile(ir, "output_ir.txt");
     /*
         CONVERTION IS GOING HERE
 

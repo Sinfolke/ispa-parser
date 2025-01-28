@@ -17,6 +17,9 @@ void IR::ir::push(IR::member member) {
 size_t IR::ir::size() {
     return elements.size();
 }
+bool IR::ir::empty() {
+    return elements.empty();
+}
 IR::var_type deduceTypeOfSingleUnit(Parser::Rule rule) {
     return IR::var_type::UNDEFINED;
 }
@@ -129,19 +132,34 @@ void affectIrByQualifier(IR::ir values, char qualifier, int &variable_count) {
     }
     values = new_ir;
 }
-void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     cpuf::printf("group\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
-    auto values = rulesToIr(val, isToken);
+    arr_t<IR::node_ret_t> success_vars;
+    auto values = rulesToIr(val, isToken, success_vars);
     auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
                         createEmptyVariable(generateVariableName(variable_count), values.size());
+    auto svar = createSuccessVariable(variable_count);
+    arr_t<IR::expr> svar_expr = {};
+    cpuf::printf("success_vars.size(): %d\n", success_vars.size());
+    for (int i = 0; i < success_vars.size(); i++) {
+        if (i != 0)
+            svar_expr.push_back({IR::condition_types::AND});
+        svar_expr.push_back({IR::condition_types::VARIABLE, success_vars[i]});
+    }
+    auto svar_cond = IR::member {
+        IR::types::IF,
+        IR::condition {
+            svar_expr,
+            {{IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}}}
+        }
+    };
     affectIrByQualifier(values, qualifier_char, variable_count);
-
     if (!variable.empty() && variable.name == Parser::Rules::method_call) {
         auto var_rule = std::any_cast<Parser::Rule>(variable.data);
         auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
@@ -154,8 +172,10 @@ void processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char q
         member.push({IR::types::VARIABLE, var});
         member.push({IR::types::GROUP, values});
     }
+    member.push(svar_cond);
+    return svar.name;
 }
-void processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("csequence\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
@@ -220,8 +240,9 @@ void processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variabl
     arr_t<IR::member> block = createDefaultBlock(var, svar);
 
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    return svar.name;
 }
-void processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     auto data = std::any_cast<std::string>(rule.data);
     auto var = createEmptyVariable(generateVariableName(variable_count));
@@ -234,8 +255,9 @@ void processString(const Parser::Rule &rule, IR::ir &member, int &variable_count
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    return svar.name;
 }
-void process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("hex\n");
     auto data = std::any_cast<std::string_view>(rule.data);
     std::string data_str(data.data(), data.size());
@@ -267,8 +289,9 @@ void process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_co
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    return svar.name;
 }
-void process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("hex\n");
     auto data = std::any_cast<std::string_view>(rule.data);
     std::string data_str(data.data(), data.size());
@@ -302,12 +325,14 @@ void process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_co
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    return svar.name;
 }
-void processAccessor(const Parser::Rule &rule, IR::ir &member, char qualifier_char) {
+IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     cpuf::printf("accessor\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
     auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
+    auto svar = createSuccessVariable(variable_count);
     second.insert(second.begin(), first);
     for (auto &el : second) {
         el = std::any_cast<Parser::Rule>(el.data);
@@ -316,9 +341,11 @@ void processAccessor(const Parser::Rule &rule, IR::ir &member, char qualifier_ch
         IR::types::ACCESSOR,
         IR::accessor { second, qualifier_char }
     };
+    member.push({IR::types::VARIABLE, svar});
     member.push(mem);
+    return svar.name;
 }
-void process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     cpuf::printf("Rule_other");
     auto data = std::any_cast<obj_t>(rule.data);
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
@@ -326,13 +353,15 @@ void process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_
     cpuf::printf(", name: %s\n", name_str);
 
     auto var = createEmptyVariable(generateVariableName(variable_count));
+    auto svar = createSuccessVariable(variable_count);
     bool isCallingToken = isupper(name_str[0]);
     var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
     if (isToken) {
 
     }
+    return svar.name;
 }
-void process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
+IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
     cpuf::printf("Rule_escaped\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
@@ -357,7 +386,7 @@ void process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variabl
             if (num_dec == 0) {
                 // means do not add skip of spaces
                 add_space = false;
-                return;
+                return svar.name;
             } else {
                 UWarning("Number after \\s ignored").print();
             }
@@ -373,8 +402,9 @@ void process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variabl
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
+    return svar.name;
 }
-void process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
+IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
     cpuf::printf("Rule_any\n");
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
@@ -391,29 +421,64 @@ void process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_co
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
+    return svar.name;
 }
-void convertRule(Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
-    auto var = createEmptyVariable(generateVariableName(variable_count));
+void convert_op_rule(arr_t<Parser::Rule> &rules, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+    if (rules.size() == 0)
+        return;
+
+    IR::node_ret_t success_var;
     IR::ir new_ir;
-    ruleToIr(rule, new_ir, variable_count, isToken);
+    auto Rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+         {"val", rules[0] },
+         {"qualifier", Parser::Rule() } 
+    });
+    ruleToIr(Rule_rule, new_ir, variable_count, isToken, success_var);
+    rules.erase(rules.begin());
 
+    if (success_var.empty())
+        throw Error("Success var is empty\n");
 
+    IR::ir block = {};
+    convert_op_rule(rules, new_ir, variable_count, qualifier_char, isToken);
+    if (block.empty())
+        block.push({IR::types::EXIT});
+    auto cond = IR::condition {
+        { 
+            { IR::condition_types::VARIABLE, success_var },
+            { IR::condition_types::EQUAL },
+            { IR::condition_types::NUMBER, 0 }
+        },
+        block.elements
+    };
+    auto mem = IR::member{
+        IR::types::IF,
+        cond
+    };
+    member.add(new_ir);
+    member.push(mem);
 }
-void process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+
+IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     cpuf::printf("Rule_op, type: %s\n", rule.data.type().name());
     auto op = std::any_cast<arr_t<Parser::Rule>>(rule.data);
-    auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    auto succcess_var = createSuccessVariable(variable_count);
-    arr_t<IR::expr> expression;
-    arr_t<IR::member> block = createDefaultBlock(var, svar);
-    for (auto &rule : op) {
-        cpuf::printf("rule name: %s\n", Parser::RulesToString(rule.name));
-        //auto rule_data = rule.as<obj_t>();
-    }
+    auto block = createDefaultBlock();
+
+    // Add the initial success variable to the member
+    member.push({IR::types::VARIABLE, svar});
+
+    // Process each rule in the op array and nest them in the required manner
+    IR::ir nested_ir;
+    IR::ir temp_ir;
+    IR::node_ret_t success_var;
+    convert_op_rule(op, temp_ir, variable_count, qualifier_char, isToken);
+    member.add(block);
+    // Return the name of the final success variable
+    return svar.name;
 }
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken) {
-    member.push({ IR::types::RULE, });
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::node_ret_t &success_var) {
+    //member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
@@ -428,34 +493,34 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
     bool add_space_skip = true;
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
-            processGroup(rule, member, variable_count, qualifier_char, isToken);
+            success_var = processGroup(rule, member, variable_count, qualifier_char, isToken);
             break;
         case Parser::Rules::Rule_csequence:
-            processRuleCsequence(rule, member, variable_count, qualifier_char);
+            success_var = processRuleCsequence(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::string:
-            processString(rule, member, variable_count, qualifier_char);
+            success_var = processString(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::accessor:
-            processAccessor(rule, member, qualifier_char);
+            success_var = processAccessor(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::Rule_hex:
-            process_Rule_hex(rule, member, variable_count, qualifier_char);
+            success_var = process_Rule_hex(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::Rule_bin: 
-            process_Rule_bin(rule, member, variable_count, qualifier_char);
+            success_var = process_Rule_bin(rule, member, variable_count, qualifier_char);
             break;
         case Parser::Rules::Rule_other:
-            process_Rule_other(rule, member, variable_count, qualifier_char, isToken);
+            success_var = process_Rule_other(rule, member, variable_count, qualifier_char, isToken);
             break;
         case Parser::Rules::Rule_escaped:
-            process_Rule_escaped(rule, member, variable_count, qualifier_char, add_space_skip);
+            success_var = process_Rule_escaped(rule, member, variable_count, qualifier_char, add_space_skip);
             break;
         case Parser::Rules::Rule_any:
-            process_Rule_any(rule, member, variable_count, qualifier_char, add_space_skip);
+            success_var = process_Rule_any(rule, member, variable_count, qualifier_char, add_space_skip);
             break;
         case Parser::Rules::Rule_op:
-            process_Rule_op(rule, member, variable_count, qualifier_char, isToken);
+            success_var = process_Rule_op(rule, member, variable_count, qualifier_char, isToken);
             break;
         case Parser::Rules::cll:
             break;
@@ -466,12 +531,24 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
             throw Error("Converting undefined rule");
     }
 }
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars) {
+    IR::ir result;
+    arr_t<IR::element_count> elements;
+    int variable_count = 0;
+    for (auto &rule : rules) {
+        IR::node_ret_t success_var;
+        ruleToIr(rule, result, variable_count, isToken, success_var);
+        success_vars.push_back(success_var);
+    }
+    return result;
+}
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken) {
     IR::ir result;
     arr_t<IR::element_count> elements;
     int variable_count = 0;
     for (auto &rule : rules) {
-        ruleToIr(rule, result, variable_count, isToken);
+        IR::node_ret_t success_var;
+        ruleToIr(rule, result, variable_count, isToken, success_var);
     }
     return result;
 }

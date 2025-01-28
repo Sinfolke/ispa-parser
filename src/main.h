@@ -32,4 +32,5 @@
 #include <convertion.h>
 #include <treeNormalizer.h>
 #include <IR.h>
+#include <IR-debug.h>
 void printHelp();

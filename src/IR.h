@@ -1,3 +1,4 @@
+#pragma once
 #include <parser.h>
 #include <internal_types.h>
 #include <any>
@@ -60,6 +61,7 @@ namespace IR {
         void add(arr_t<member> repr);
         void push(member member);
         size_t size();
+        bool empty();
     };
     // struct element_count {
     //     size_t in_rule_index;
@@ -69,8 +71,10 @@ namespace IR {
         size_t index_in_ir;
         size_t index_in_rule;
     };
+    using node_ret_t = std::string; 
 };
 
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken);
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::node_ret_t &success_var);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars);
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken);
 IR::ir treeToIr(Parser::Tree &tree);
