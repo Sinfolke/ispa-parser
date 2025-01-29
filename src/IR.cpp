@@ -1,4 +1,5 @@
 #include <IR.h>
+#include <IR-debug.h>
 #include <internal_types.h>
 #include <token_management.h>
 #include <corelib.h>
@@ -139,6 +140,9 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
     arr_t<IR::node_ret_t> success_vars;
     auto values = rulesToIr(val, isToken, success_vars, variable_count);
+    cpuf::printf("Values got: \n");
+    IR::outputIRToConsole(values);
+    cpuf::printf("End values\n");
     auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
@@ -199,7 +203,6 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     for (auto &value : values) {
         if (!first)
             expr.push_back({IR::condition_types::AND});
-        first = false;
 
         switch (value.name) {
             case Parser::Rules::Rule_csequence_diapason: {
@@ -230,16 +233,22 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
             default:
                 throw Error("undefined csequence subrule");
         }
+        first = false;
     }
 
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
     }
+    int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
+    cpuf::printf("csequence_open\n");
     arr_t<IR::member> block = createDefaultBlock(var, svar);
-
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    for (int i = size; i < member.size(); i++) {
+        IR::convertMember(member.elements[i], std::cout, 0);
+    }
+    cpuf::printf("csequence_close\n");
     return svar.name;
 }
 IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -286,9 +295,15 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
     }
+    cpuf::printf("hex_open\n");
+    int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    for (int i = size; i < member.size(); i++) {
+        IR::convertMember(member.elements[i], std::cout, 0);
+    }
+    cpuf::printf("hex_close\n");
     return svar.name;
 }
 IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -367,15 +382,16 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
     auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
     auto num = std::any_cast<Parser::Rule>(corelib::map::get(data, "num"));
     obj_t num_data;
-    double num_dec;
+    double num_main;
     if (num.data.has_value()) {
         num_data = num.as<obj_t>();
-        num_dec = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
+        num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
     } else {
-        num_dec = -1;
+        num_main = -1;
     }
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
+    var.type = IR::var_type::STRING;
     arr_t<IR::expr> expression;
     arr_t<IR::member> block = {{IR::types::EXIT}};
     arr_t<IR::member> block_after = createDefaultBlock(var, svar);
@@ -383,25 +399,36 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
         UWarning("Qualifier after \\%s ignored", c).print();
     switch (c[0]) {
         case 's':
-            if (num_dec == 0) {
+            if (num_main == 0) {
                 // means do not add skip of spaces
                 add_space = false;
+                cpuf::printf("on_exit\n");
                 return svar.name;
-            } else {
+            } else if (num_main != -1) {
                 UWarning("Number after \\s ignored").print();
             }
+            cpuf::printf("ON_EXPRESSION\n");
             expression = {
                 {IR::condition_types::CURRENT_CHARACTER},
                 {IR::condition_types::NOT_EQUAL},
                 {IR::condition_types::CHARACTER, ' '}
             };
             break;
+        default:
+            throw Error("UNdefined char '%c'", c[0]);
             
     }
+    cpuf::printf("escaped_open\n");
+    int size = member.size();
+
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
+    for (int i = size; i < member.size(); i++) {
+        IR::convertMember(member.elements[i], std::cout, 0);
+    }
+    cpuf::printf("escaped_close\n");
     return svar.name;
 }
 IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
@@ -579,7 +606,6 @@ IR::ir treeToIr(Parser::Tree &tree) {
         auto data = std::any_cast<obj_t>(el.data);
         auto name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);
         auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
-        cpuf::printf("Processing %s\n", name);
         result_ir.add(rulesToIr(rules, isupper(name[0])));
     }
     return result_ir;

@@ -15,7 +15,7 @@ using arr_t = std::vector<T>;
 namespace IR {
     std::string convert_var_type(var_type type) {
         static const std::unordered_map<var_type, std::string> typesMap = {
-            {var_type::UNDEFINED, "UNDEFINED"}, {var_type::BOOLEAN, "bool"}, {var_type::STRING, "str"}, {var_type::NUMBER, "num"},
+            {var_type::UNDEFINED, "UNDEF"}, {var_type::BOOLEAN, "bool"}, {var_type::STRING, "str"}, {var_type::NUMBER, "num"},
             {var_type::ARRAY, "array"}, {var_type::OBJECT, "object"}, {var_type::FUNCTION, "function"},
             {var_type::ANY, "any"}, {var_type::Rule, "rule"}, {var_type::Token, "token"}
         };
@@ -55,7 +55,7 @@ namespace IR {
         } else if (type == condition_types::STRING) {
             return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
         } else if (type == condition_types::STRNCMP) {
-            return std::string("!STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
+            return std::string("STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
         } else if (type == condition_types::VARIABLE) {
             return std::any_cast<std::string>(data);
         }
@@ -104,12 +104,19 @@ namespace IR {
             auto el_num = std::any_cast<Parser::Rule>(el.data);
             auto el_num_data = std::any_cast<obj_t>(el_num.data);
             auto main = std::any_cast<std::string>(corelib::map::get(el_num_data, "main"));
-            if (el.name == Parser::Rules::accessors_group)
-                out << '$';
-            else if (el.name == Parser::Rules::accessors_element)
-                out << '%';
-            else 
-                out << '^';
+            switch (el.name) {
+                case Parser::Rules::accessors_group:
+                    out << '$';
+                    break;
+                case Parser::Rules::accessors_element:
+                    out << '%';
+                    break;
+                case Parser::Rules::accessors_char:
+                    out << '^';
+                    break;
+                default:
+                    throw Error("Undefined accessor");
+            }
             out << main;
         }
         out << '\n';
@@ -121,6 +128,7 @@ namespace IR {
 
     void convertMethodCall(method_call method, std::ostream &out, int indentLevel) {
         // Implement method call conversion with proper indentation
+        out << "<method call>\n";
     }
 
     void convertMember(const member& mem, std::ostream& out, int indentLevel) {
@@ -166,6 +174,7 @@ namespace IR {
             out << "return {}";
             break;
         default:
+            return;
             break;
         }
         out << '\n';
