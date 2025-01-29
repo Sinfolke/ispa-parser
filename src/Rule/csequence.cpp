@@ -18,9 +18,9 @@ Rule(Rule_csequence) {
         ISC_STD::skip_spaces(pos);
         auto res = Rule_csequence_escape(pos);
         if (!res.result) {
-            res = Rule_csequence_symbol(pos);
+            res = Rule_csequence_diapason(pos);
             if (!res.result) {
-                res = Rule_csequence_diapason(pos);
+                res = Rule_csequence_symbol(pos);
                 if (!res.result)
                     break;
             }
@@ -56,7 +56,7 @@ Rule(Rule_csequence_escape) {
     if (*pos != '\\')
         return {};
     pos++;
-    std::string val(*pos, 1);
+    std::string val(pos, 1);
     pos++;
     RULE_SUCCESSD(in, pos, Rule_csequence_escape, val);
 }

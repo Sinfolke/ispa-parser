@@ -5,7 +5,7 @@ Rule(Rule_escaped) {
     if (*pos != '\\')
         return {};
     pos++;
-    std::string val(*pos, 1);
+    std::string val(pos, 1);
     pos++;
     auto num = number(pos);
     if (num.result) {
