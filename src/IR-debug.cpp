@@ -6,7 +6,7 @@
 #include <typeinfo>
 #include <unordered_map>
 #include <iomanip>
-#include "IR.h"
+#include <IR.h>
 #include <IR-debug.h>
 // Assume arr_t is defined as:
 template <typename T>
@@ -53,7 +53,7 @@ namespace IR {
         } else if (type == condition_types::NUMBER) {
             return std::to_string(std::any_cast<long long>(data));
         } else if (type == condition_types::STRING) {
-            return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
+            return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
         } else if (type == condition_types::STRNCMP) {
             return std::string("STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
         } else if (type == condition_types::VARIABLE) {
@@ -67,15 +67,17 @@ namespace IR {
             {condition_types::HIGHER_OR_EQUAL, ">="}, {condition_types::LOWER_OR_EQUAL, "<="},
             {condition_types::LEFT_BITWISE, "<<"}, {condition_types::RIGHT_BITWISE, ">>"},
             {condition_types::BITWISE_AND, "&"}, {condition_types::CHARACTER, ""},
-            {condition_types::CURRENT_CHARACTER, "CURRENT_CHARACTER"}, {condition_types::NUMBER, "NUMBER"},
+            {condition_types::CURRENT_CHARACTER, "CURRENT_CHARACTER"}, {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, {condition_types::NUMBER, "NUMBER"},
             {condition_types::STRING, "STRING"}, {condition_types::STRNCMP, "STRNCMP"},
             {condition_types::VARIABLE, "VARIABLE"}
         };
         return condTypesMap.at(type);
     }
-
+    std::string convertAssign(assign asgn) {
+        return convert_var_assing_values(asgn.value);
+    }
     void convertVariable(variable var, std::ostream& out, int indentLevel) {
-        out << std::string(indentLevel, '\t') << convert_var_type(var.type) << " " << var.name << " = " << convert_var_assing_values(var.value) << " %" << var.assign_next_rules << ";\n";
+        out << std::string(indentLevel, '\t') << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
     }
 
     void convertExpression(arr_t<expr> expression, std::ostream &out, int indentLevel) {
@@ -123,7 +125,7 @@ namespace IR {
     }
 
     void convertAssignVariable(variable_assign var, std::ostream &out, int indentLevel) {
-        out << std::string(indentLevel, '\t') << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convert_var_assing_values(var.value) << ";\n";
+        out << std::string(indentLevel, '\t') << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value) << ";\n";
     }
 
     void convertMethodCall(method_call method, std::ostream &out, int indentLevel) {

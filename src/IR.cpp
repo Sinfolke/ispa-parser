@@ -59,7 +59,7 @@ void processExitStatements(IR::ir &values) {
 IR::variable createSuccessVariable(int &variable_count) {
     IR::variable var = createEmptyVariable("success" + generateVariableName(variable_count));
     var.type = IR::var_type::BOOLEAN;
-    var.value = IR::var_assign_values::_FALSE;
+    var.value = {IR::var_assign_values::_FALSE};
     return var;
 }
 
@@ -99,9 +99,10 @@ void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::var
             break;
         case '*': {
             IR::member pop = block.back();
-            block.pop_back();
+ 
+            //block.pop_back();
             member.push({IR::types::WHILE, IR::condition{expr, block}});
-            member.push(pop);
+            //member.push(pop);
             break;
         }
         case '?':
@@ -206,16 +207,18 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
 
         switch (value.name) {
             case Parser::Rules::Rule_csequence_diapason: {
-                auto range_data = std::any_cast<arr_t<char>>(value.data);
+                auto range_data = std::any_cast<arr_t<Parser::Rule>>(value.data);
+                auto first = std::any_cast<std::string>(range_data[0].data)[0];
+                auto second = std::any_cast<std::string>(range_data[1].data)[0];
                 expr.insert(expr.end(), {
                     {IR::condition_types::GROUP_OPEN},
                     {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::HIGHER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, (char) range_data[0]},
+                    {IR::condition_types::CHARACTER, first},
                     {IR::condition_types::AND},
                     {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::LOWER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, (char) range_data[1]},
+                    {IR::condition_types::CHARACTER, second},
                     {IR::condition_types::GROUP_CLOSE}
                 });
                 break;
@@ -242,13 +245,8 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    cpuf::printf("csequence_open\n");
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
-    for (int i = size; i < member.size(); i++) {
-        IR::convertMember(member.elements[i], std::cout, 0);
-    }
-    cpuf::printf("csequence_close\n");
     return svar.name;
 }
 IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -372,7 +370,18 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     bool isCallingToken = isupper(name_str[0]);
     var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
     if (isToken) {
-
+        member.push(
+            {
+                IR::types::IF,
+                IR::condition {
+                    {
+                        {IR::condition_types::CURRENT_TOKEN},
+                        {IR::condition_types::EQUAL},
+                        {IR::condition_types::STRING, name_str}
+                    }
+                }
+            }
+        );
     }
     return svar.name;
 }

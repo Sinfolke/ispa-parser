@@ -12,7 +12,7 @@ namespace IR {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
         HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND,
-        CHARACTER, CURRENT_CHARACTER, NUMBER, STRING, STRNCMP,
+        CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, STRING, STRNCMP,
         VARIABLE
     };
     enum class var_type {
@@ -40,16 +40,20 @@ namespace IR {
         arr_t<expr> expression;
         arr_t<member> block; 
     };
+    struct assign {
+        var_assign_values value;
+        std::any data;
+    };
     struct variable {
         var_type type = var_type::UNDEFINED;
         std::string name = "";
-        var_assign_values value = var_assign_values::NONE;
+        assign value = {var_assign_values::NONE};
         int assign_next_rules = 0;
     };
     struct variable_assign {
         std::string name;
         var_assign_types assign_type = var_assign_types::ASSIGN;
-        var_assign_values value = var_assign_values::NONE;
+        assign value = {var_assign_values::NONE};
     };
     struct accessor {
         arr_t<Parser::Rule> elements;
