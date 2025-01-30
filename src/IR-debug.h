@@ -14,6 +14,8 @@ namespace IR {
     std::string convert_var_assing_values(var_assign_values value);
     std::string convert_var_assing_types(var_assign_types value);
     std::string conditionTypesToString(condition_types type, std::any data);
+    std::string convertFunctionCall(function_call call);
+    std::string convertAssign(assign asgn);
     void convertVariable(variable var, std::ostream& out, int indentLevel);
     void convertExpression(arr_t<expr> expression, std::ostream &out, int indentLevel);
     void convertBlock(arr_t<IR::member> block, std::ostream& out, int indentLevel);

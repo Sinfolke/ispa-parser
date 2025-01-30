@@ -91,6 +91,22 @@ arr_t<IR::member> createDefaultBlock() {
         {IR::types::INCREASE_POS_COUNTER}
     };
 }
+void createDefaultCall(const arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
+    auto function_call = IR::function_call {
+        name,
+        {{IR::var_assign_values::TOKEN_SEQUENCE}}
+    };
+    auto var_assign = IR::variable_assign {
+        var.name, 
+        IR::var_assign_types::ASSIGN,
+        { IR::var_assign_values::FUNCTION_CALL, function_call }
+    };
+    expr = {
+        {IR::condition_types::NOT},
+        {IR::condition_types::SUCCESS_CHECK, var.name}
+    };
+    member.push({IR::types::ASSIGN_VARIABLE, var_assign});
+}
 void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     switch (qualifier_char) {
@@ -367,21 +383,44 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
 
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
+    
     bool isCallingToken = isupper(name_str[0]);
     var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
+    auto block = createDefaultBlock(var, svar);
     if (isToken) {
-        member.push(
-            {
-                IR::types::IF,
-                IR::condition {
-                    {
-                        {IR::condition_types::CURRENT_TOKEN},
-                        {IR::condition_types::EQUAL},
-                        {IR::condition_types::STRING, name_str}
-                    }
+        // replace variable assignment from pos sequence to current token
+        if (!isCallingToken) return svar.name;
+            //throw Error("Cannot call rule from token");
+        // remove variable assignemnt
+        block.erase(block.begin());
+        arr_t<IR::expr> expr;
+        createDefaultCall(block, var, name_str, member, expr);
+        pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    } else {
+        if (isCallingToken) {
+            block[0] = {
+                IR::types::ASSIGN_VARIABLE, 
+                IR::variable_assign {
+                    var.name,
+                    IR::var_assign_types::ASSIGN,
+                    IR::var_assign_values::CURRENT_TOKEN
                 }
-            }
-        );
+            };
+            arr_t<IR::expr> expr = {
+                {IR::condition_types::CURRENT_TOKEN},
+                {IR::condition_types::NOT_EQUAL},
+                {IR::condition_types::STRING, name_str}
+            };
+            pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+        } else {
+
+            // remove variable assignemnt
+            block.erase(block.begin());
+            arr_t<IR::expr> expr;
+            createDefaultCall(block, var, name_str, member, expr);
+            pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+        }
+
     }
     return svar.name;
 }

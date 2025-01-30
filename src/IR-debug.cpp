@@ -28,7 +28,9 @@ namespace IR {
             {var_assign_values::_TRUE, "TRUE"},
             {var_assign_values::_FALSE, "FALSE"},
             {var_assign_values::CURRENT_POS_COUNTER, "CURRENT_POS_COUNTER"},
-            {var_assign_values::CURRENT_POS_SEQUENCE, "CURRENT_POS_SEQUENCE"}
+            {var_assign_values::CURRENT_POS_SEQUENCE, "CURRENT_POS_SEQUENCE"},
+            {var_assign_values::CURRENT_TOKEN, "CURRENT_TOKEN"},
+            {var_assign_values::TOKEN_SEQUENCE, "TOKEN_SEQUENCE"},
         };
         return typesMap.at(value);
     }
@@ -58,6 +60,8 @@ namespace IR {
             return std::string("STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
         } else if (type == condition_types::VARIABLE) {
             return std::any_cast<std::string>(data);
+        } else if (type == condition_types::SUCCESS_CHECK) {
+            return std::any_cast<std::string>(data) + ".res";
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
             {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
@@ -67,13 +71,21 @@ namespace IR {
             {condition_types::HIGHER_OR_EQUAL, ">="}, {condition_types::LOWER_OR_EQUAL, "<="},
             {condition_types::LEFT_BITWISE, "<<"}, {condition_types::RIGHT_BITWISE, ">>"},
             {condition_types::BITWISE_AND, "&"}, {condition_types::CHARACTER, ""},
-            {condition_types::CURRENT_CHARACTER, "CURRENT_CHARACTER"}, {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, {condition_types::NUMBER, "NUMBER"},
-            {condition_types::STRING, "STRING"}, {condition_types::STRNCMP, "STRNCMP"},
-            {condition_types::VARIABLE, "VARIABLE"}
+            {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, 
         };
         return condTypesMap.at(type);
     }
+    std::string convertFunctionCall(function_call call) {
+        std::string res = call.name + "(";
+        for (auto param : call.params) {
+            res += convertAssign(param);
+        }
+        res += ')';
+        return res;
+    }
     std::string convertAssign(assign asgn) {
+        if (asgn.value == var_assign_values::FUNCTION_CALL)
+            return convertFunctionCall(std::any_cast<function_call>(asgn.data));
         return convert_var_assing_values(asgn.value);
     }
     void convertVariable(variable var, std::ostream& out, int indentLevel) {

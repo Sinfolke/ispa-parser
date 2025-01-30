@@ -13,13 +13,13 @@ namespace IR {
         HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND,
         CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, STRING, STRNCMP,
-        VARIABLE
+        VARIABLE, SUCCESS_CHECK
     };
     enum class var_type {
         UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token
     };
     enum class var_assign_values {
-        NONE, _TRUE, _FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE
+        NONE, _TRUE, _FALSE, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
     };
     enum class var_assign_types {
         ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO
@@ -28,9 +28,17 @@ namespace IR {
         types type = types::NONE;
         std::any value = {};
     };
+    struct assign {
+        var_assign_values value;
+        std::any data;
+    };
+    struct function_call {
+        std::string name;
+        arr_t<assign> params;
+    };
     struct method_call {
         std::string var_name;
-        std::string method_name;
+        function_call call;
     };
     struct expr {
         condition_types id;
@@ -40,10 +48,7 @@ namespace IR {
         arr_t<expr> expression;
         arr_t<member> block; 
     };
-    struct assign {
-        var_assign_values value;
-        std::any data;
-    };
+
     struct variable {
         var_type type = var_type::UNDEFINED;
         std::string name = "";
