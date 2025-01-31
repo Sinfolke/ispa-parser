@@ -57,7 +57,7 @@ namespace IR {
         } else if (type == condition_types::STRING) {
             return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
         } else if (type == condition_types::STRNCMP) {
-            return std::string("STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
+            return std::string("!STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
         } else if (type == condition_types::VARIABLE) {
             return std::any_cast<std::string>(data);
         } else if (type == condition_types::SUCCESS_CHECK) {
@@ -110,6 +110,10 @@ namespace IR {
     void convertCondition(condition cond, std::ostream& out, int indentLevel) {
         convertExpression(cond.expression, out, indentLevel);
         convertBlock(cond.block, out, indentLevel);
+        if (!cond.else_block.empty()) {
+            out << std::string(indentLevel, '\t') << "else ";
+            convertBlock(cond.else_block, out, indentLevel);
+        }
     }
 
     void convertAccessor(accessor acc, std::ostream &out, int indentLevel) {

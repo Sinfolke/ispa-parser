@@ -46,7 +46,8 @@ namespace IR {
     };
     struct condition {
         arr_t<expr> expression;
-        arr_t<member> block; 
+        arr_t<member> block;
+        arr_t<member> else_block = {}; 
     };
 
     struct variable {
