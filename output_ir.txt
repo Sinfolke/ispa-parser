@@ -60,6 +60,30 @@ success_3 = TRUE;
 pos++
 bool success_0 = FALSE
 
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 _0 = accessor_all(TOKEN_SEQUENCE);
 
@@ -127,8 +151,56 @@ success_5 = TRUE;
 pos++
 bool success_0 = FALSE
 
+_1 = AUTO_73(TOKEN_SEQUENCE);
+
+if ( !  _1.res )
+{
+	return {}
+}
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 bool success_5 = FALSE
+
+_6 = AUTO_73(TOKEN_SEQUENCE);
+
+if ( !  _6.res )
+{
+	return {}
+}
+
+success_7 = TRUE;
+
+pos++
+if ()
+{
+		_8 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _8.res )
+	{
+		return {}
+	}
+
+		success_9 = TRUE;
+
+	pos++
+}
 
 pos++
 _0 = OP(TOKEN_SEQUENCE);
@@ -153,20 +225,180 @@ success_3 = TRUE;
 pos++
 bool success_0 = FALSE
 
+_1 = AUTO_73(TOKEN_SEQUENCE);
+
+if ( !  _1.res )
+{
+	return {}
+}
+
+success_2 = TRUE;
+
 pos++
-bool success_0 = FALSE
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 bool success_0 = FALSE
 
+_1 = LOGICAL_AND(TOKEN_SEQUENCE);
+
+if ( !  _1.res )
+{
+	return {}
+}
+
+success_2 = TRUE;
+
 pos++
-bool success_0 = FALSE
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 bool success_0 = FALSE
 
+str _1 = NONE
+
+bool success_2 = FALSE
+
+if ( STRNCMP(pos, "!") )
+{
+	return {}
+}
+
+_1 += CURRENT_POS_SEQUENCE;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 bool success_0 = FALSE
+
+str _1 = NONE
+
+bool success_2 = FALSE
+
+if ( STRNCMP(pos, "&&") )
+{
+	return {}
+}
+
+_1 += CURRENT_POS_SEQUENCE;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
+
+pos++
+bool success_0 = FALSE
+
+str _1 = NONE
+
+bool success_2 = FALSE
+
+if ( STRNCMP(pos, "||") )
+{
+	return {}
+}
+
+_1 += CURRENT_POS_SEQUENCE;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
+
+pos++
+bool success_0 = FALSE
+
+str _1 = NONE
+
+bool success_2 = FALSE
+
+if ( STRNCMP(pos, "|&") )
+{
+	return {}
+}
+
+_1 += CURRENT_POS_SEQUENCE;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+		_3 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _3.res )
+	{
+		return {}
+	}
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 _0 = cll_type(TOKEN_SEQUENCE);
@@ -297,6 +529,30 @@ if ( success_3  &&  success_5 )
 
 bool success_0 = FALSE
 
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 _5 = cll_template(TOKEN_SEQUENCE);
 
@@ -317,6 +573,30 @@ if ( success_8 )
 }
 
 bool success_0 = FALSE
+
+_1 = cll_csupport_types(TOKEN_SEQUENCE);
+
+if ( !  _1.res )
+{
+	return {}
+}
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 UNDEF _2 = NONE
@@ -407,6 +687,30 @@ success_9 = TRUE;
 pos++
 bool success_0 = FALSE
 
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 if ( CURRENT_TOKEN  !=  "AUTO_33" )
 {
@@ -469,6 +773,30 @@ success_5 = TRUE;
 
 pos++
 bool success_0 = FALSE
+
+_1 = any_data(TOKEN_SEQUENCE);
+
+if ( !  _1.res )
+{
+	return {}
+}
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 if ( CURRENT_TOKEN  !=  "ID" )
@@ -569,6 +897,30 @@ success_3 = TRUE;
 pos++
 bool success_4 = FALSE
 
+_5 = cll_block(TOKEN_SEQUENCE);
+
+if ( !  _5.res )
+{
+	return {}
+}
+
+success_6 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_7 = CURRENT_TOKEN;
+
+		success_8 = TRUE;
+
+	pos++
+}
+
 pos++
 _0 = for(TOKEN_SEQUENCE);
 
@@ -649,6 +1001,30 @@ success_20 = TRUE;
 
 pos++
 bool success_21 = FALSE
+
+_22 = cll_block(TOKEN_SEQUENCE);
+
+if ( !  _22.res )
+{
+	return {}
+}
+
+success_23 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_24 = CURRENT_TOKEN;
+
+		success_25 = TRUE;
+
+	pos++
+}
 
 pos++
 if ( CURRENT_TOKEN  !=  "ID" )
@@ -779,6 +1155,30 @@ success_1 = TRUE;
 pos++
 bool success_2 = FALSE
 
+_3 = END(TOKEN_SEQUENCE);
+
+if ( !  _3.res )
+{
+	return {}
+}
+
+success_4 = TRUE;
+
+pos++
+if ()
+{
+		_5 = AUTO_73(TOKEN_SEQUENCE);
+
+	if 	( !  _5.res )
+	{
+		return {}
+	}
+
+		success_6 = TRUE;
+
+	pos++
+}
+
 pos++
 UNDEF d = NONE
 
@@ -846,8 +1246,56 @@ success_23 = TRUE;
 pos++
 bool success_0 = FALSE
 
+if ( CURRENT_TOKEN  !=  "BOOLEAN" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
+
 pos++
 bool success_5 = FALSE
+
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_6 = CURRENT_TOKEN;
+
+success_7 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_8 = CURRENT_TOKEN;
+
+		success_9 = TRUE;
+
+	pos++
+}
 
 pos++
 _0 = NEWLINE(TOKEN_SEQUENCE);
@@ -900,6 +1348,30 @@ success_1 = TRUE;
 pos++
 bool success_2 = FALSE
 
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_3 = CURRENT_TOKEN;
+
+success_4 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_5 = CURRENT_TOKEN;
+
+		success_6 = TRUE;
+
+	pos++
+}
+
 pos++
 if ( CURRENT_TOKEN  !=  "AUTO_68" )
 {
@@ -922,6 +1394,30 @@ success_3 = TRUE;
 
 pos++
 bool success_0 = FALSE
+
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 str _0 = NONE
@@ -1023,6 +1519,30 @@ success_3 = TRUE;
 
 pos++
 bool success_0 = FALSE
+
+if ( CURRENT_TOKEN  !=  "AUTO_73" )
+{
+	return {}
+}
+
+_1 = CURRENT_TOKEN;
+
+success_2 = TRUE;
+
+pos++
+if ()
+{
+	if 	( CURRENT_TOKEN  !=  "AUTO_73" )
+	{
+		return {}
+	}
+
+		_3 = CURRENT_TOKEN;
+
+		success_4 = TRUE;
+
+	pos++
+}
 
 pos++
 UNDEF rule_begin = NONE
