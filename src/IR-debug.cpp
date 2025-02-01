@@ -89,14 +89,22 @@ namespace IR {
         return convert_var_assing_values(asgn.value);
     }
     void convertVariable(variable var, std::ostream& out, int indentLevel) {
-        out << std::string(indentLevel, '\t') << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
+        out << std::string(indentLevel * 4, ' ') << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
     }
 
     void convertExpression(arr_t<expr> expression, std::ostream &out, int indentLevel) {
         out << std::string(indentLevel, '\t') << '(';
         for (int i = 0; i < expression.size(); i++) {
             expr current = expression[i];
-            out << ' ' << conditionTypesToString(current.id, current.value) << ' ';
+            if (
+                current.id == IR::condition_types::AND || 
+                current.id == IR::condition_types::OR || 
+                current.id == IR::condition_types::EQUAL ||
+                current.id == IR::condition_types::NOT_EQUAL
+                )
+                out << ' ' << conditionTypesToString(current.id, current.value) << ' ';
+            else
+                out << conditionTypesToString(current.id, current.value);
         }
         out << ")\n";
     }

@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
     }
     for (auto pair : parameters_with_fixes_arguments_amount) {
         if (args.has(pair.first) && args.get(pair.first).values.size() > pair.second)
-            UWarning("Parameter %s expects maximum %d arguments").print();
+            UWarning("Parameter %s expects maximum %d arguments", pair.first, pair.second).print();
     }
     // get tree from sources
     if (!args.unnamed().size() && !args.has("dir"))

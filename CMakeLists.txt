@@ -78,6 +78,14 @@ set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 
+#create interface for tests
+add_library(tests INTERFACE)
+target_compile_definitions(tests INTERFACE __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests")
+target_include_directories(tests INTERFACE mod/parser/include mod/parser/stdlibs)
+#IR-convertion-group
+add_executable(IR-convertion-group tests/IR-convertion-group.cpp)
+target_link_libraries(IR-convertion-group PRIVATE tests)
+
 add_test(
     NAME mainTest
     COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser

@@ -543,6 +543,9 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
         auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
         auto first_str = std::any_cast<std::string>(first.data);
         cpuf::printf("%s\n", first_str);
+    } else if (rule.name == Parser::Rules::string) {
+        auto data = std::any_cast<std::string>(rule.data);
+        cpuf::printf("%s\n", data);
     } else {
         cpuf::printf("<null>\n");
     }

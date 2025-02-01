@@ -27,7 +27,6 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
             for (auto el : rules) {
                 cpuf::printf("name: %s, type: %s\n", Parser::RulesToString(el.name), el.data.type().name());
             }
-            continue; 
         }
 
         if (rule.name == Parser::Rules::Rule_op) {
