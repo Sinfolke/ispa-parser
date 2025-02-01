@@ -26,9 +26,6 @@
   Add handle of variables in Rule_other
   Make proper handle of method call in group
   Add handle of ${} in string
-  Fix issue with missing declarations
-  Fix issue with long Rule_op
-
 ### Parser syntax
   
   see ```concepts/syntax```

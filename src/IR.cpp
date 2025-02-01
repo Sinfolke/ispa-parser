@@ -65,9 +65,10 @@ IR::variable createSuccessVariable(int &variable_count) {
 
 void addPostLoopCheck(IR::ir &new_ir, const IR::variable &var) {
     IR::condition check_cond = {
-        { { IR::condition_types::VARIABLE, var.name },
-          { IR::condition_types::EQUAL },
-          { IR::condition_types::NUMBER, (long long) false } },
+        { 
+            {IR::condition_types::NOT}, 
+            { IR::condition_types::VARIABLE, var.name },
+        },
         { { IR::types::EXIT } }
     };
     new_ir.push({IR::types::IF, check_cond});
@@ -165,9 +166,9 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
     arr_t<IR::node_ret_t> success_vars;
     auto values = rulesToIr(val, isToken, success_vars, variable_count);
-    //cpuf::printf("Values got: \n");
+    cpuf::printf("Group Values got: \n");
     IR::outputIRToConsole(values);
-    //cpuf::printf("End values\n");
+    cpuf::printf("End values\n");
     auto method_call = IR::member {IR::types::METHOD_CALL};
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
@@ -189,18 +190,15 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
         }
     };
     affectIrByQualifier(values, qualifier_char, variable_count);
+    member.push({IR::types::VARIABLE, var});
+    member.push({IR::types::VARIABLE, svar});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) {
         auto var_rule = std::any_cast<Parser::Rule>(variable.data);
         auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
         method_call.value = var_rule_data;
-        member.push({IR::types::VARIABLE, var});
-        member.push({IR::types::VARIABLE, svar});
-        member.push({IR::types::GROUP});
         member.add(values);
         member.push({IR::types::METHOD_CALL, method_call});
     } else {
-        member.push({IR::types::VARIABLE, var});
-        member.push({IR::types::VARIABLE, svar});
         member.add(values);
     }
     member.push(svar_cond);
@@ -395,6 +393,8 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     bool isCallingToken = isupper(name_str[0]);
     var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
     auto block = createDefaultBlock(var, svar);
+    member.push({IR::types::VARIABLE, var});
+    member.push({IR::types::VARIABLE, svar});
     if (isToken) {
         // replace variable assignment from pos sequence to current token
         if (!isCallingToken) return svar.name;
@@ -410,7 +410,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
                 IR::types::ASSIGN_VARIABLE, 
                 IR::variable_assign {
                     var.name,
-                    IR::var_assign_types::ASSIGN,
+                    (qualifier_char == '*' || qualifier_char == '+') ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN,
                     IR::var_assign_values::CURRENT_TOKEN
                 }
             };
@@ -502,6 +502,7 @@ IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &v
         {IR::condition_types::CHARACTER, '\0'}
     };
     member.push({IR::types::VARIABLE, var});
+    member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
     return svar.name;
@@ -525,7 +526,7 @@ arr_t<IR::member> construct_block(const arr_t<arr_t<IR::member>> &blocks, const 
     return block;
 }
 
-arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_count, char qualifier_char, bool isToken) {
     if (rules.empty()) {
         return {{IR::types::EXIT}};
     }
@@ -553,33 +554,33 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, IR::ir &member, in
 
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
-    switch(rule.name) {
-        case Parser::Rules::string:
-        case Parser::Rules::Rule_any:
-        case Parser::Rules::Rule_csequence:
-        case Parser::Rules::Rule_escaped:
-        case Parser::Rules::Rule_other:
-            for (int i = 0; i < new_ir.elements.size(); i++) {
-                auto &el = new_ir.elements[i];
-                if (el.type == IR::types::IF) {
-                    auto val = std::any_cast<IR::condition>(el.value);
-                    if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
-                        val.block = convert_op_rule(rules, member, variable_count, qualifier_char, isToken);
-                        for (int j = i + 1; j < new_ir.elements.size(); j++) {
-                            if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER)
-                                continue;
-                            val.else_block.push_back(new_ir.elements[j]);
-                            erase_indices.push_back(j);
-                        }
-                        el.value = val;  // Ensure value is update
+    if (rule.name == Parser::Rules::Rule_group) {
+        auto cond = IR::condition {
+            arr_t<IR::expr> {
+                {IR::condition_types::NOT}, {IR::condition_types::VARIABLE}
+            },
+            convert_op_rule(rules, variable_count, qualifier_char, isToken)
+        };
+        new_ir.push({IR::types::IF, cond});
+    } else {
+        for (int i = 0; i < new_ir.elements.size(); i++) {
+            auto &el = new_ir.elements[i];
+            if (el.type == IR::types::IF) {
+                auto val = std::any_cast<IR::condition>(el.value);
+                if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
+                    val.block = convert_op_rule(rules, variable_count, qualifier_char, isToken);
+                    for (int j = i + 1; j < new_ir.elements.size(); j++) {
+                        if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER)
+                            continue;
+                        val.else_block.push_back(new_ir.elements[j]);
+                        erase_indices.push_back(j);
                     }
-                } else if (el.type == IR::types::INCREASE_POS_COUNTER) {
-                    erase_indices.push_back(i);
+                    el.value = val;  // Ensure value is update
                 }
+            } else if (el.type == IR::types::INCREASE_POS_COUNTER) {
+                erase_indices.push_back(i);
             }
-            break;
-        case Parser::Rules::Rule_group:
-            break;
+        }
     }
 
     // Erase marked indices in reverse to prevent shifting issues
@@ -604,7 +605,7 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     member.push({IR::types::VARIABLE, svar});
 
     // Convert rules into IR
-    member.add(convert_op_rule(op, member, variable_count, qualifier_char, isToken));
+    member.add(convert_op_rule(op, variable_count, qualifier_char, isToken));
 
     // Append default block
     member.add(block);
@@ -628,7 +629,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
         qualifier_char = std::any_cast<char>(qualifier.data);
     }
     if (!isToken && (rule.name != Parser::Rules::Rule_other && rule.name != Parser::Rules::Rule_group && rule.name != Parser::Rules::Rule_op && rule.name != Parser::Rules::cll && rule.name != Parser::Rules::linear_comment && rule.name != Parser::Rules::accessor)  ) {
-        //throw Error("Rule having literals. Name: %s", Parser::RulesToString(rule.name));
+        throw Error("Rule having literals. Name: %s", Parser::RulesToString(rule.name));
         return;
     }
     bool add_space_skip = true;

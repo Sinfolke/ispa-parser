@@ -1,0 +1,3 @@
+Rule:
+    'a' | 'b' | ("hello" "world" | "null")
+;
