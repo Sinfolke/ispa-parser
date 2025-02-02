@@ -46,17 +46,23 @@ void processExitStatements(arr_t<IR::member> &values) {
     for (auto &el : values) {
         if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
             auto condition = std::any_cast<IR::condition>(el.value);
+            
+            // Process the block and else block of the condition recursively
+            processExitStatements(condition.block);
+            processExitStatements(condition.else_block);
+
+            // Ensure that any EXIT statements within the blocks are replaced with BREAK_LOOP
             for (auto &unit : condition.block) {
                 if (unit.type == IR::types::EXIT) {
-                    unit.type = IR::types::BREAK_LOOP;
+                    unit.type = IR::types::BREAK_LOOP; // Replacing EXIT with BREAK_LOOP
                 } else if (unit.type == IR::types::IF || unit.type == IR::types::WHILE || unit.type == IR::types::DOWHILE) {
                     auto cond = std::any_cast<IR::condition>(unit.value);
-                    processExitStatements(cond.block);
-                    processExitStatements(cond.else_block);
-                    unit.value = cond;
+                    processExitStatements(cond.block); // Recursive call on nested blocks
+                    processExitStatements(cond.else_block); // Recursive call on else blocks
+                    unit.value = cond; // Update unit with the modified condition
                 }
             }
-            el.value = condition;
+            el.value = condition; // Update the original element with the modified condition
         }
     }
 }
