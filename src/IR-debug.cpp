@@ -183,9 +183,9 @@ namespace IR {
             convertCondition(std::any_cast<condition>(mem.value), out, indentLevel);
             break;
         case types::DOWHILE:
-            out << "do";
+            out << "do\n";
             convertBlock(std::any_cast<condition>(mem.value).block, out, indentLevel);
-            out << "while";
+            out << std::string(indentLevel, '\t') << "while";
             convertExpression(std::any_cast<condition>(mem.value).expression, out, indentLevel);
             break;
         case types::INCREASE_POS_COUNTER:

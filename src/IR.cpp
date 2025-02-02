@@ -579,6 +579,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             },
             convert_op_rule(rules, variable_count, qualifier_char, isToken)
         };
+        new_ir.push({IR::types::IF, cond});
     } else {
         for (int i = 0; i < new_ir.elements.size(); i++) {
             auto &el = new_ir.elements[i];

@@ -6,44 +6,60 @@ str _2 = NONE
 
 bool success_3 = FALSE
 
-if (!(!STRNCMP(pos, "b")))
+if (!(!STRNCMP(pos, "a")))
 {
-	UNDEF _12 = NONE
+	str _4 = NONE
 
-	bool success_13 = FALSE
+	bool success_5 = FALSE
 
-	do	{
-		str _4 = NONE
+	if (!(!STRNCMP(pos, "b")))
+	{
+		UNDEF _14 = NONE
 
-		bool success_5 = FALSE
+		bool success_15 = FALSE
 
-		if (!(!STRNCMP(pos, "hello")))
+		do
 		{
-			break
-		}
+			str _6 = NONE
 
-		_4 += CURRENT_POS_SEQUENCE;
+			bool success_7 = FALSE
 
-		success_5 = TRUE;
+			if (!(!STRNCMP(pos, "hello")))
+			{
+				break
+			}
 
-		pos++
-		UNDEF _6 = NONE
+			_6 += CURRENT_POS_SEQUENCE;
 
-		bool success_7 = FALSE
+			success_7 = TRUE;
 
-		str _8 = NONE
+			pos++
+			UNDEF _8 = NONE
 
-		bool success_9 = FALSE
+			bool success_9 = FALSE
 
-		if (!(!STRNCMP(pos, "world")))
-		{
 			str _10 = NONE
 
 			bool success_11 = FALSE
 
-			if (!(!STRNCMP(pos, "null")))
+			if (!(!STRNCMP(pos, "world")))
 			{
-				break
+				str _12 = NONE
+
+				bool success_13 = FALSE
+
+				if (!(!STRNCMP(pos, "null")))
+				{
+					break
+				}
+				else 
+				{
+					_12 += CURRENT_POS_SEQUENCE;
+
+					success_13 = TRUE;
+
+				}
+
 			}
 			else 
 			{
@@ -53,26 +69,31 @@ if (!(!STRNCMP(pos, "b")))
 
 			}
 
-		}
-		else 
-		{
 			_8 += CURRENT_POS_SEQUENCE;
 
 			success_9 = TRUE;
 
+			pos++
+		}
+		while(0)
+
+		if (success_7 && success_9)
+		{
+			success_15 = TRUE;
+
 		}
 
-		_6 += CURRENT_POS_SEQUENCE;
+		if (!success_15)
+		{
+			return {}
+		}
 
-		success_7 = TRUE;
-
-		pos++
 	}
-while(0)
-
-	if (success_5 && success_7)
+	else 
 	{
-		success_13 = TRUE;
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
 
 	}
 

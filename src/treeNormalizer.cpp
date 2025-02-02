@@ -7,7 +7,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
     arr_t<Parser::Rule> ops;
     Parser::Rule prev_rule;
     
-    bool in_op = false;
+    bool in_op = false, prev_op;
     int begin = -1;
 
     for (int i = 0; i < rules.size(); i++) {
@@ -33,27 +33,33 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
                 ops.push_back(prev_rule);
                 begin = i - 1;
             }
-        } else {
-            if (in_op) {
-                // Add the current rule to the operator sequence
-                ops.push_back(rule);
-                
-                // Create a new combined rule for the operator sequence
-                auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
-                obj_t new_rule_data = {
-                    { "val", new_rule },
-                    { "qualifier", Parser::Rule() }
-                };
-                auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
+            prev_op = true;
+        } else if (prev_op) {
+            // Add the current rule to the operator sequence
+            ops.push_back(rule);
+            prev_op = false;
+        } else if (in_op) {
+            // Create a new combined rule for the operator sequence
+            auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
+            obj_t new_rule_data = {
+                { "val", new_rule },
+                { "qualifier", Parser::Rule() }
+            };
+            auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
 
-                // Replace the operator sequence in rules
-                rules.erase(rules.begin() + begin, rules.begin() + i + 1);
-                rules.insert(rules.begin() + begin, new_token);
-                cpuf::printf("ops size: %$\n", ops.size());
-                i = begin;
-                in_op = false;
-                ops.clear();
+            // Replace the operator sequence in rules
+            rules.erase(rules.begin() + begin, rules.begin() + i + 1);
+            rules.insert(rules.begin() + begin, new_token);
+            for (auto &el : ops) {
+                cpuf::printf("name: %s\n", Parser::RulesToString(el.name));
+                if (el.name == Parser::Rules::string) {
+                    auto data = std::any_cast<std::string>(el.data);
+                    cpuf::printf("\tvalue: %s\n", data);
+                }
             }
+            i = begin;
+            in_op = false;
+            ops.clear();
         }
 
         prev_rule = rule;
@@ -70,6 +76,9 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
         rules.erase(rules.begin() + begin, rules.end());
         rules.push_back(new_token);
         cpuf::printf("ops size: %$\n", ops.size());
+        for (auto el : ops) {
+            cpuf::printf("name: %s\n", Parser::RulesToString(el.name));
+        }
     }
 }
 
