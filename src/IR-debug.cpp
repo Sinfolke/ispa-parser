@@ -49,18 +49,25 @@ namespace IR {
 
     std::string conditionTypesToString(condition_types type, std::any data) {
         if (type == condition_types::CHARACTER) {
+                //cpuf::printf("character\n");
             return std::string("'") + std::any_cast<char>(data) + std::string("'");
         } else if (type == condition_types::CURRENT_CHARACTER) {
+            //::printf("current_character\n");
             return "*pos";
         } else if (type == condition_types::NUMBER) {
+//cpuf::printf("number\n");    
             return std::to_string(std::any_cast<long long>(data));
         } else if (type == condition_types::STRING) {
+           // cpuf::printf("string\n");
             return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
         } else if (type == condition_types::STRNCMP) {
+            //cpuf::printf("strncmp\n");
             return std::string("!STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
         } else if (type == condition_types::VARIABLE) {
+            //cpuf::printf("variable\n");    
             return std::any_cast<std::string>(data);
         } else if (type == condition_types::SUCCESS_CHECK) {
+            //cpuf::printf("success_check\n");
             return std::any_cast<std::string>(data) + ".res";
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
@@ -89,11 +96,11 @@ namespace IR {
         return convert_var_assing_values(asgn.value);
     }
     void convertVariable(variable var, std::ostream& out, int indentLevel) {
-        out << std::string(indentLevel * 4, ' ') << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
+        out << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
     }
 
     void convertExpression(arr_t<expr> expression, std::ostream &out, int indentLevel) {
-        out << std::string(indentLevel, '\t') << '(';
+        out << '(';
         for (int i = 0; i < expression.size(); i++) {
             expr current = expression[i];
             if (
@@ -119,7 +126,7 @@ namespace IR {
         convertExpression(cond.expression, out, indentLevel);
         convertBlock(cond.block, out, indentLevel);
         if (!cond.else_block.empty()) {
-            out << std::string(indentLevel, '\t') << "else ";
+            out << std::string(indentLevel, '\t') << "else \n";
             convertBlock(cond.else_block, out, indentLevel);
         }
     }
@@ -149,7 +156,7 @@ namespace IR {
     }
 
     void convertAssignVariable(variable_assign var, std::ostream &out, int indentLevel) {
-        out << std::string(indentLevel, '\t') << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value) << ";\n";
+        out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value) << ";\n";
     }
 
     void convertMethodCall(method_call method, std::ostream &out, int indentLevel) {

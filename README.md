@@ -26,6 +26,7 @@
   Add handle of variables in Rule_other
   Make proper handle of method call in group
   Add handle of ${} in string
+  Fix issue with missing first rule in treeNormalizer
 ### Parser syntax
   
   see ```concepts/syntax```

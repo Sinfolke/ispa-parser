@@ -24,9 +24,6 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
             rule.data = group_rules;
             corelib::map::set(rule_data, "val", std::any(rule));
             rules[i].data = rule_data;
-            for (auto el : rules) {
-                cpuf::printf("name: %s, type: %s\n", Parser::RulesToString(el.name), el.data.type().name());
-            }
         }
 
         if (rule.name == Parser::Rules::Rule_op) {
@@ -49,10 +46,10 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
                 };
                 auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
 
-                // Replace the operator sequence in `rules`
+                // Replace the operator sequence in rules
                 rules.erase(rules.begin() + begin, rules.begin() + i + 1);
                 rules.insert(rules.begin() + begin, new_token);
-
+                cpuf::printf("ops size: %$\n", ops.size());
                 i = begin;
                 in_op = false;
                 ops.clear();
@@ -72,6 +69,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
         auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
         rules.erase(rules.begin() + begin, rules.end());
         rules.push_back(new_token);
+        cpuf::printf("ops size: %$\n", ops.size());
     }
 }
 
