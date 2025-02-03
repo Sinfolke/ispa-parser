@@ -59,4 +59,24 @@ namespace corelib::text {
     bool startsWithRange(const std::string& str, char from, char to) {
         return (str[0] >= from && str[0] <= to);
     }
+
+
+    bool isUpper(const char* str) {
+        while (*str) {  // Iterate until null terminator
+            if (!std::isupper(static_cast<unsigned char>(*str))) {
+                return false;
+            }
+            str++;
+        }
+        return true;
+    }
+
+    bool isUpper(const std::string str) {  // Pass by reference to avoid copying
+        for (char ch : str) {
+            if (!std::isupper(static_cast<unsigned char>(ch))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

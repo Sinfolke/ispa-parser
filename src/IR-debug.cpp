@@ -95,11 +95,11 @@ namespace IR {
             return convertFunctionCall(std::any_cast<function_call>(asgn.data));
         return convert_var_assing_values(asgn.value);
     }
-    void convertVariable(variable var, std::ostream& out, int indentLevel) {
+    void convertVariable(variable var, std::ostream& out, int &indentLevel) {
         out << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
     }
 
-    void convertExpression(arr_t<expr> expression, std::ostream &out, int indentLevel) {
+    void convertExpression(arr_t<expr> expression, std::ostream &out, int &indentLevel) {
         out << '(';
         for (int i = 0; i < expression.size(); i++) {
             expr current = expression[i];
@@ -116,13 +116,15 @@ namespace IR {
         out << ")\n";
     }
 
-    void convertBlock(arr_t<IR::member> block, std::ostream& out, int indentLevel) {
+    void convertBlock(arr_t<IR::member> block, std::ostream& out, int &indentLevel) {
         out << std::string(indentLevel, '\t') << "{\n";
-        convertMembers(block, out, indentLevel + 1);
+        indentLevel++;
+        convertMembers(block, out, indentLevel);
+        indentLevel--;
         out << std::string(indentLevel, '\t') << "}\n";
     }
 
-    void convertCondition(condition cond, std::ostream& out, int indentLevel) {
+    void convertCondition(condition cond, std::ostream& out, int &indentLevel) {
         convertExpression(cond.expression, out, indentLevel);
         convertBlock(cond.block, out, indentLevel);
         if (!cond.else_block.empty()) {
@@ -131,7 +133,7 @@ namespace IR {
         }
     }
 
-    void convertAccessor(accessor acc, std::ostream &out, int indentLevel) {
+    void convertAccessor(accessor acc, std::ostream &out, int &indentLevel) {
         out << std::string(indentLevel, '\t');
         for (auto el : acc.elements) {
             auto el_num = std::any_cast<Parser::Rule>(el.data);
@@ -155,19 +157,31 @@ namespace IR {
         out << '\n';
     }
 
-    void convertAssignVariable(variable_assign var, std::ostream &out, int indentLevel) {
+    void convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel) {
         out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value) << ";\n";
     }
 
-    void convertMethodCall(method_call method, std::ostream &out, int indentLevel) {
+    void convertMethodCall(method_call method, std::ostream &out, int &indentLevel) {
         // Implement method call conversion with proper indentation
         out << "<method call>\n";
     }
 
-    void convertMember(const member& mem, std::ostream& out, int indentLevel) {
+    void convertMember(const member& mem, std::ostream& out, int &indentLevel) {
         out << std::string(indentLevel, '\t');
         switch (mem.type)
         {
+        case types::RULE:
+            out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {\n";
+            indentLevel++;
+            break;
+        case types::TOKEN:
+            out << "Token(" << std::any_cast<std::string>(mem.value) << ") {\n";
+            indentLevel++;
+            break;
+        case types::RULE_END:
+            out << "\n}";
+            indentLevel--;
+            break;
         case types::VARIABLE:
             convertVariable(std::any_cast<variable>(mem.value), out, indentLevel);
             break;
@@ -213,14 +227,14 @@ namespace IR {
         out << '\n';
     }
 
-    void convertMembers(arr_t<member> members, std::ostream& out, int indentLevel) {
+    void convertMembers(arr_t<member> members, std::ostream& out, int &indentLevel) {
         for (auto mem : members)
             convertMember(mem, out, indentLevel);
     }
 
     std::string typesToString(types type) {
         static const std::unordered_map<types, std::string> typesMap = {
-            {types::NONE, "NONE"}, {types::RULE, "RULE"}, {types::GROUP, "GROUP"}, {types::VARIABLE, "VARIABLE"},
+            {types::NONE, "NONE"}, {types::RULE, "RULE"}, {types::VARIABLE, "VARIABLE"},
             {types::IF, "IF"}, {types::WHILE, "WHILE"}, {types::DOWHILE, "DOWHILE"},
             {types::ACCESSOR, "ACCESSOR"}, {types::METHOD_CALL, "METHOD_CALL"}, {types::EXIT, "EXIT"},
             {types::BREAK_LOOP, "BREAK_LOOP"}, {types::CONTINUE_LOOP, "CONTINUE_LOOP"},
@@ -229,16 +243,17 @@ namespace IR {
         return typesMap.at(type);
     }
 
-    void printIR(const ir& representation, std::ostream& out, int indentLevel) {
+    void printIR(const ir& representation, std::ostream& out, int &indentLevel) {
         for (const auto& mem : representation.elements) {
             convertMember(mem, out, indentLevel);
         }
     }
 
     void outputIRToFile(ir representation, std::string filename) {
+        int identLevel = 0;
         std::ofstream file(filename);
         if (file.is_open()) {
-            printIR(representation, file, 0);
+            printIR(representation, file, identLevel);
             file.close();
         } else {
             std::cerr << "Unable to open file " << filename << "\n";
@@ -246,6 +261,7 @@ namespace IR {
     }
 
     void outputIRToConsole(const ir& representation) {
-        printIR(representation, std::cout, 0);
+        int identLevel = 0;
+        printIR(representation, std::cout, identLevel);
     }
 }

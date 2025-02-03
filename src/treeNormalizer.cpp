@@ -2,6 +2,7 @@
 #include <internal_types.h>
 #include <token_management.h>
 #include <corelib.h>
+#include <treeNormalizer.h>
 
 void normalizeHelper(arr_t<Parser::Rule> &rules) {
     arr_t<Parser::Rule> ops;
@@ -50,13 +51,6 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
             // Replace the operator sequence in rules
             rules.erase(rules.begin() + begin, rules.begin() + i + 1);
             rules.insert(rules.begin() + begin, new_token);
-            for (auto &el : ops) {
-                cpuf::printf("name: %s\n", Parser::RulesToString(el.name));
-                if (el.name == Parser::Rules::string) {
-                    auto data = std::any_cast<std::string>(el.data);
-                    cpuf::printf("\tvalue: %s\n", data);
-                }
-            }
             i = begin;
             in_op = false;
             ops.clear();
@@ -75,27 +69,33 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
         auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
         rules.erase(rules.begin() + begin, rules.end());
         rules.push_back(new_token);
-        cpuf::printf("ops size: %$\n", ops.size());
-        for (auto el : ops) {
-            cpuf::printf("name: %s\n", Parser::RulesToString(el.name));
-        }
     }
 }
 
-void normalizeRule(Parser::Rule &member) {
-    auto data = std::any_cast<obj_t>(member.data);
+void normalizeRule(Parser::Rule &member, bool is_nested) {
+    obj_t data;
+    if (is_nested) {
+        data = std::any_cast<obj_t>(std::any_cast<Parser::Rule>(member.data).data);
+    } else {
+        data = std::any_cast<obj_t>(member.data);
+    }
     auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
+    auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
 
     normalizeHelper(rules);
+    normalizeTree(nested_rules, true);
 
     corelib::map::set(data, "rule", std::any(rules));
+    corelib::map::set(data, "nestedRules", std::any(nested_rules));
     member.data = data;
+    if (is_nested)
+        member.name = Parser::Rules::Rule;
 }
 
-void normalizeTree(Parser::Tree &tree) {
+void normalizeTree(Parser::Tree &tree, bool is_nested) {
     for (auto &member : tree) {
-        if (member.name == Parser::Rules::Rule) {
-            normalizeRule(member);
+        if (member.name == Parser::Rules::Rule || is_nested) {
+            normalizeRule(member, is_nested);
         }
     }
 }

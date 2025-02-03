@@ -211,7 +211,7 @@ namespace Tokens {
         return compareStringRule(first, second);
     }
     bool compare_op_rule(Parser::Rule first, Parser::Rule second) {
-        return compareStringRule(first, second);
+        return compare_rules(std::any_cast<arr_t<Parser::Rule>>(first.data), std::any_cast<arr_t<Parser::Rule>>(second.data));
     }
     bool compare_other_rule(Parser::Rule first, Parser::Rule second) {
         auto first_data = std::any_cast<obj_t>(first.data);
@@ -406,7 +406,16 @@ namespace Tokens {
     bool compareStringRule(Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data) == std::any_cast<std::string>(second.data);
     }
-    bool compare_rules(Parser::Tree first, Parser::Tree second) {
+    bool compare_rules(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second) {
+        if (first.size() != second.size())
+            return false;
+        for (int i = 0; i < first.size(); i++) {
+            if (!compare_rule(first[i], second[i]))
+                return false;
+        }
+        return true;
+    }
+    bool compare_token_with_rules(Parser::Tree first, Parser::Tree second) {
         if (first.size() != second.size())
             return false;
         

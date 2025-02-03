@@ -4,7 +4,7 @@
 #include <any>
 namespace IR {
     enum class types {
-        NONE, RULE, GROUP, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
+        NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
         ASSIGN_VARIABLE, INCREASE_POS_COUNTER
     };
@@ -86,8 +86,8 @@ namespace IR {
 };
 
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::node_ret_t &success_var, char custom_qualifier = -1);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, arr_t<IR::node_ret_t> &success_vars);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count, bool new_rule = false);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, bool new_rule = false);
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, bool isToken);
-IR::ir treeToIr(Parser::Tree &tree);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, bool new_rule = false);
+IR::ir treeToIr(Parser::Tree &tree, std::string nested_name = "");

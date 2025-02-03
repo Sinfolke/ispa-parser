@@ -1,18 +1,3713 @@
-UNDEF _0 = NONE
+Rule(accessor_group) {
 
-bool success_1 = FALSE
+	token _0 = NONE
 
-str _2 = NONE
+	bool success_1 = FALSE
 
-bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_0"))
+	{
+		return {}
+	}
 
-if (!(!STRNCMP(pos, "a")))
-{
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "NUMBER"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(accessor_element) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_1"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "NUMBER"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(accessor_char) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_2"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "NUMBER"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(accessor_all) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = accessor_group(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = accessor_element(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = accessor_char(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				return {}
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(accessor) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = accessor_all(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_3"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = accessor_all(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll) {
+
+	UNDEF cll_begin = NONE
+
+	bool success_2 = FALSE
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_4"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_2 = TRUE;
+
+	}
+
+	UNDEF _23 = NONE
+
+	bool success_24 = FALSE
+
+	bool success_25 = FALSE
+
+	while (1)
+	{
+		UNDEF _19 = NONE
+
+		bool success_20 = FALSE
+
+		UNDEF _3 = NONE
+
+		bool success_4 = FALSE
+
+		rule _5 = NONE
+
+		bool success_6 = FALSE
+
+		_5 = cll_var(TOKEN_SEQUENCE);
+
+		if (!(_5.res))
+		{
+			rule _7 = NONE
+
+			bool success_8 = FALSE
+
+			_7 = cll_if(TOKEN_SEQUENCE);
+
+			if (!(_7.res))
+			{
+				rule _9 = NONE
+
+				bool success_10 = FALSE
+
+				_9 = expr(TOKEN_SEQUENCE);
+
+				if (!(_9.res))
+				{
+					rule _11 = NONE
+
+					bool success_12 = FALSE
+
+					_11 = copiable_method_call(TOKEN_SEQUENCE);
+
+					if (!(_11.res))
+					{
+						rule _13 = NONE
+
+						bool success_14 = FALSE
+
+						_13 = method_call(TOKEN_SEQUENCE);
+
+						if (!(_13.res))
+						{
+							rule _15 = NONE
+
+							bool success_16 = FALSE
+
+							_15 = loop_while(TOKEN_SEQUENCE);
+
+							if (!(_15.res))
+							{
+								rule _17 = NONE
+
+								bool success_18 = FALSE
+
+								_17 = loop_for(TOKEN_SEQUENCE);
+
+								if (!(_17.res))
+								{
+									break
+								}
+								else 
+								{
+									success_18 = TRUE;
+
+								}
+
+							}
+							else 
+							{
+								success_16 = TRUE;
+
+							}
+
+						}
+						else 
+						{
+							success_14 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						success_12 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					success_10 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_8 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_6 = TRUE;
+
+		}
+
+		_3 += CURRENT_POS_SEQUENCE;
+
+		success_4 = TRUE;
+
+		pos++
+		if (success_4)
+		{
+			success_20 = TRUE;
+
+		}
+
+		token _21 = NONE
+
+		bool success_22 = FALSE
+
+		if (!(CURRENT_TOKEN == "END"))
+		{
+			break
+		}
+
+		_21 = CURRENT_TOKEN;
+
+		success_22 = TRUE;
+
+		pos++
+		success_25 = TRUE;
+
+	}
+
+	if (!success_25)
+	{
+		return {}
+	}
+
+	if (success_20 && success_22)
+	{
+		success_24 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_block) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_5"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	while (CURRENT_TOKEN == "Rule")
+	{
+		_2 += CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+	}
+
+	token _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_6"))
+	{
+		return {}
+	}
+
+	_4 = CURRENT_TOKEN;
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(cll_spaced_block) {
+
+	
+}
+Token(OP) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "&")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "|")))
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!STRNCMP(pos, "^")))
+			{
+				str _8 = NONE
+
+				bool success_9 = FALSE
+
+				if (!(!STRNCMP(pos, "<<")))
+				{
+					str _10 = NONE
+
+					bool success_11 = FALSE
+
+					if (!(!STRNCMP(pos, ">>")))
+					{
+						return {}
+					}
+					else 
+					{
+						_10 += CURRENT_POS_SEQUENCE;
+
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_8 += CURRENT_POS_SEQUENCE;
+
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_6 += CURRENT_POS_SEQUENCE;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(ASSIGNMENT_OP) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (CURRENT_TOKEN == "OP")
+	{
+		_0 = CURRENT_TOKEN;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_7"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(COMPARE_OP) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, ">")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "<")))
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!STRNCMP(pos, "==")))
+			{
+				str _8 = NONE
+
+				bool success_9 = FALSE
+
+				if (!(!STRNCMP(pos, "!=")))
+				{
+					str _10 = NONE
+
+					bool success_11 = FALSE
+
+					if (!(!STRNCMP(pos, ">=")))
+					{
+						str _12 = NONE
+
+						bool success_13 = FALSE
+
+						if (!(!STRNCMP(pos, "<=")))
+						{
+							return {}
+						}
+						else 
+						{
+							_12 += CURRENT_POS_SEQUENCE;
+
+							success_13 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						_10 += CURRENT_POS_SEQUENCE;
+
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_8 += CURRENT_POS_SEQUENCE;
+
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_6 += CURRENT_POS_SEQUENCE;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(LOGICAL_OP) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "LOGICAL_AND"))
+	{
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "LOGICAL_OR"))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(LOGICAL_NOT) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "!")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "not")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(LOGICAL_AND) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "&&")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "and")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(LOGICAL_OR) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "||")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "or")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(LOGICAL_ANDR) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	do
+	{
+		str _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(!STRNCMP(pos, "and")))
+		{
+			break
+		}
+
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+		pos++
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (*pos != ' ')
+		{
+			break
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+		str _6 = NONE
+
+		bool success_7 = FALSE
+
+		if (!(!STRNCMP(pos, "or")))
+		{
+			break
+		}
+
+		_6 += CURRENT_POS_SEQUENCE;
+
+		success_7 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_3 && success_5 && success_7)
+	{
+		success_9 = TRUE;
+
+	}
+
+	if (!success_9)
+	{
+		str _10 = NONE
+
+		bool success_11 = FALSE
+
+		if (!(!STRNCMP(pos, "|&")))
+		{
+			return {}
+		}
+		else 
+		{
+			_10 += CURRENT_POS_SEQUENCE;
+
+			success_11 = TRUE;
+
+		}
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(cll_template_content_typename) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = cll_type(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_8"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = cll_type(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_int) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "NUMBER"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_9"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "NUMBER"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_bool) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "BOOLEAN"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_10"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "BOOLEAN"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_str) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "STRING"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_11"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "STRING"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_arr) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = array(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_12"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = array(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_obj) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = object(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_13"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = object(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_template_content_any_data) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = any_data(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_14"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = any_data(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_csupport_types) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	UNDEF _18 = NONE
+
+	bool success_19 = FALSE
+
+	do
+	{
+		str _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!STRNCMP(pos, "unsigned"))
+		{
+			_2 += CURRENT_POS_SEQUENCE;
+
+			success_3 = TRUE;
+
+			pos++
+		}
+
+		UNDEF _16 = NONE
+
+		bool success_17 = FALSE
+
+		UNDEF _4 = NONE
+
+		bool success_5 = FALSE
+
+		str _6 = NONE
+
+		bool success_7 = FALSE
+
+		if (!(!STRNCMP(pos, "char")))
+		{
+			str _8 = NONE
+
+			bool success_9 = FALSE
+
+			if (!(!STRNCMP(pos, "short")))
+			{
+				str _10 = NONE
+
+				bool success_11 = FALSE
+
+				if (!(!STRNCMP(pos, "int")))
+				{
+					str _12 = NONE
+
+					bool success_13 = FALSE
+
+					if (!(!STRNCMP(pos, "long")))
+					{
+						str _14 = NONE
+
+						bool success_15 = FALSE
+
+						if (!(!STRNCMP(pos, "long long")))
+						{
+							break
+						}
+						else 
+						{
+							_14 += CURRENT_POS_SEQUENCE;
+
+							success_15 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						_12 += CURRENT_POS_SEQUENCE;
+
+						success_13 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_10 += CURRENT_POS_SEQUENCE;
+
+					success_11 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_8 += CURRENT_POS_SEQUENCE;
+
+				success_9 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_6 += CURRENT_POS_SEQUENCE;
+
+			success_7 = TRUE;
+
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+		if (success_5)
+		{
+			success_17 = TRUE;
+
+		}
+
+	}
+	while(0)
+
+	if (success_3 && success_17)
+	{
+		success_19 = TRUE;
+
+	}
+
+	if (!success_19)
+	{
+		UNDEF _26 = NONE
+
+		bool success_27 = FALSE
+
+		do
+		{
+			UNDEF _20 = NONE
+
+			bool success_21 = FALSE
+
+			str _22 = NONE
+
+			bool success_23 = FALSE
+
+			if (!(!STRNCMP(pos, "float")))
+			{
+				str _24 = NONE
+
+				bool success_25 = FALSE
+
+				if (!(!STRNCMP(pos, "double")))
+				{
+					break
+				}
+				else 
+				{
+					_24 += CURRENT_POS_SEQUENCE;
+
+					success_25 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_22 += CURRENT_POS_SEQUENCE;
+
+				success_23 = TRUE;
+
+			}
+
+			_20 += CURRENT_POS_SEQUENCE;
+
+			success_21 = TRUE;
+
+			pos++
+		}
+		while(0)
+
+		if (success_21)
+		{
+			success_27 = TRUE;
+
+		}
+
+		if (!success_27)
+		{
+			UNDEF _42 = NONE
+
+			bool success_43 = FALSE
+
+			do
+			{
+				UNDEF _28 = NONE
+
+				bool success_29 = FALSE
+
+				str _30 = NONE
+
+				bool success_31 = FALSE
+
+				if (!(!STRNCMP(pos, "deque")))
+				{
+					str _32 = NONE
+
+					bool success_33 = FALSE
+
+					if (!(!STRNCMP(pos, "vector")))
+					{
+						str _34 = NONE
+
+						bool success_35 = FALSE
+
+						if (!(!STRNCMP(pos, "queue")))
+						{
+							str _36 = NONE
+
+							bool success_37 = FALSE
+
+							if (!(!STRNCMP(pos, "stack")))
+							{
+								str _38 = NONE
+
+								bool success_39 = FALSE
+
+								if (!(!STRNCMP(pos, "list")))
+								{
+									str _40 = NONE
+
+									bool success_41 = FALSE
+
+									if (!(!STRNCMP(pos, "forward_list")))
+									{
+										break
+									}
+									else 
+									{
+										_40 += CURRENT_POS_SEQUENCE;
+
+										success_41 = TRUE;
+
+									}
+
+								}
+								else 
+								{
+									_38 += CURRENT_POS_SEQUENCE;
+
+									success_39 = TRUE;
+
+								}
+
+							}
+							else 
+							{
+								_36 += CURRENT_POS_SEQUENCE;
+
+								success_37 = TRUE;
+
+							}
+
+						}
+						else 
+						{
+							_34 += CURRENT_POS_SEQUENCE;
+
+							success_35 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						_32 += CURRENT_POS_SEQUENCE;
+
+						success_33 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_30 += CURRENT_POS_SEQUENCE;
+
+					success_31 = TRUE;
+
+				}
+
+				_28 += CURRENT_POS_SEQUENCE;
+
+				success_29 = TRUE;
+
+				pos++
+			}
+			while(0)
+
+			if (success_29)
+			{
+				success_43 = TRUE;
+
+			}
+
+			if (!success_43)
+			{
+				return {}
+			}
+
+		}
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _46 = NONE
+
+	bool success_47 = FALSE
+
+	rule _44 = NONE
+
+	bool success_45 = FALSE
+
+	_44 = cll_template_content_typename(TOKEN_SEQUENCE);
+
+	if (!(_44.res))
+	{
+		return {}
+	}
+
+	success_45 = TRUE;
+
+	pos++
+	if (success_45)
+	{
+		success_47 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_type_abstract) {
+
+	UNDEF _24 = NONE
+
+	bool success_25 = FALSE
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "var")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "any")))
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!STRNCMP(pos, "num")))
+			{
+				str _8 = NONE
+
+				bool success_9 = FALSE
+
+				if (!(!STRNCMP(pos, "bool")))
+				{
+					str _10 = NONE
+
+					bool success_11 = FALSE
+
+					if (!(!STRNCMP(pos, "str")))
+					{
+						UNDEF _16 = NONE
+
+						bool success_17 = FALSE
+
+						do
+						{
+							str _12 = NONE
+
+							bool success_13 = FALSE
+
+							if (!(!STRNCMP(pos, "arr")))
+							{
+								break
+							}
+
+							_12 += CURRENT_POS_SEQUENCE;
+
+							success_13 = TRUE;
+
+							pos++
+							rule _14 = NONE
+
+							bool success_15 = FALSE
+
+							_14 = cll_template_typename(TOKEN_SEQUENCE);
+
+							if (!(_14.res))
+							{
+								break
+							}
+
+							success_15 = TRUE;
+
+							pos++
+						}
+						while(0)
+
+						if (success_13 && success_15)
+						{
+							success_17 = TRUE;
+
+						}
+
+						if (!success_17)
+						{
+							UNDEF _22 = NONE
+
+							bool success_23 = FALSE
+
+							do
+							{
+								str _18 = NONE
+
+								bool success_19 = FALSE
+
+								if (!(!STRNCMP(pos, "obj")))
+								{
+									break
+								}
+
+								_18 += CURRENT_POS_SEQUENCE;
+
+								success_19 = TRUE;
+
+								pos++
+								rule _20 = NONE
+
+								bool success_21 = FALSE
+
+								_20 = cll_template_typename(TOKEN_SEQUENCE);
+
+								if (!(_20.res))
+								{
+									break
+								}
+
+								success_21 = TRUE;
+
+								pos++
+							}
+							while(0)
+
+							if (success_19 && success_21)
+							{
+								success_23 = TRUE;
+
+							}
+
+							if (!success_23)
+							{
+								return {}
+							}
+
+						}
+
+					}
+					else 
+					{
+						_10 += CURRENT_POS_SEQUENCE;
+
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_8 += CURRENT_POS_SEQUENCE;
+
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_6 += CURRENT_POS_SEQUENCE;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_25 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_type) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = cll_csupport_types(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = abstract(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(cll_if) {
+
+	UNDEF _2 = NONE
+
+	bool success_3 = FALSE
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	while (CURRENT_TOKEN == "AUTO_15")
+	{
+		_0 += CURRENT_TOKEN;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	if (success_1)
+	{
+		success_3 = TRUE;
+
+	}
+
+	token _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_16"))
+	{
+		return {}
+	}
+
+	_4 = CURRENT_TOKEN;
+
+	success_5 = TRUE;
+
+	pos++
+	rule _6 = NONE
+
+	bool success_7 = FALSE
+
+	_6 = expr(TOKEN_SEQUENCE);
+
+	if (!(_6.res))
+	{
+		return {}
+	}
+
+	success_7 = TRUE;
+
+	pos++
+	UNDEF _14 = NONE
+
+	bool success_15 = FALSE
+
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	rule _10 = NONE
+
+	bool success_11 = FALSE
+
+	_10 = cll_block(TOKEN_SEQUENCE);
+
+	if (!(_10.res))
+	{
+		rule _12 = NONE
+
+		bool success_13 = FALSE
+
+		_12 = cll_spaced_block(TOKEN_SEQUENCE);
+
+		if (!(_12.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_13 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_11 = TRUE;
+
+	}
+
+	_8 += CURRENT_POS_SEQUENCE;
+
+	success_9 = TRUE;
+
+	pos++
+	if (success_9)
+	{
+		success_15 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_ternary) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = expr(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_17"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	rule _4 = NONE
+
+	bool success_5 = FALSE
+
+	_4 = expr(TOKEN_SEQUENCE);
+
+	if (!(_4.res))
+	{
+		return {}
+	}
+
+	success_5 = TRUE;
+
+	pos++
+	token _6 = NONE
+
+	bool success_7 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_18"))
+	{
+		return {}
+	}
+
+	_6 = CURRENT_TOKEN;
+
+	success_7 = TRUE;
+
+	pos++
+	rule _8 = NONE
+
+	bool success_9 = FALSE
+
+	_8 = expr(TOKEN_SEQUENCE);
+
+	if (!(_8.res))
+	{
+		return {}
+	}
+
+	success_9 = TRUE;
+
+	pos++
+	
+}
+Rule(expr_logical) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = compare(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "LOGICAL_OP"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	rule _4 = NONE
+
+	bool success_5 = FALSE
+
+	_4 = compare(TOKEN_SEQUENCE);
+
+	if (!(_4.res))
+	{
+		return {}
+	}
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(expr_compare) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = arithmetic(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	bool success_8 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "COMPARE_OP"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = arithmetic(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+		success_8 = TRUE;
+
+	}
+
+	if (!success_8)
+	{
+		return {}
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(expr_arithmetic) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = for_arithmetic(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "OP"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	rule _4 = NONE
+
+	bool success_5 = FALSE
+
+	_4 = for_arithmetic(TOKEN_SEQUENCE);
+
+	if (!(_4.res))
+	{
+		return {}
+	}
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(expr_for_arithmetic) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = group(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = copiable_method_call(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = method_call(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+
+				bool success_9 = FALSE
+
+				_8 = cll_function_call(TOKEN_SEQUENCE);
+
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+
+					bool success_11 = FALSE
+
+					_10 = any_data(TOKEN_SEQUENCE);
+
+					if (!(_10.res))
+					{
+						return {}
+					}
+					else 
+					{
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(expr_group) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _2 = NONE
+
+	bool success_3 = FALSE
+
+	rule _4 = NONE
+
+	bool success_5 = FALSE
+
+	_4 = cll_ternary(TOKEN_SEQUENCE);
+
+	if (!(_4.res))
+	{
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = expr(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_7 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_5 = TRUE;
+
+	}
+
+	_2 += CURRENT_POS_SEQUENCE;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(expr_expr_copiable_method_call) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = copiable_method_call(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
 	str _4 = NONE
 
 	bool success_5 = FALSE
 
-	if (!(!STRNCMP(pos, "b")))
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_4 += CURRENT_POS_SEQUENCE;
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(expr) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = logical(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = compare(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = arithmetic(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+
+				bool success_9 = FALSE
+
+				_8 = group(TOKEN_SEQUENCE);
+
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+
+					bool success_11 = FALSE
+
+					_10 = expr_copiable_method_call(TOKEN_SEQUENCE);
+
+					if (!(_10.res))
+					{
+						rule _12 = NONE
+
+						bool success_13 = FALSE
+
+						_12 = cll_function_call(TOKEN_SEQUENCE);
+
+						if (!(_12.res))
+						{
+							rule _14 = NONE
+
+							bool success_15 = FALSE
+
+							_14 = any_data(TOKEN_SEQUENCE);
+
+							if (!(_14.res))
+							{
+								return {}
+							}
+							else 
+							{
+								success_15 = TRUE;
+
+							}
+
+						}
+						else 
+						{
+							success_13 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(function_body_call) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_22"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = function_arguments(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	token _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_23"))
+	{
+		return {}
+	}
+
+	_4 = CURRENT_TOKEN;
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(function_body_decl) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_24"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = function_parameters(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	token _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_25"))
+	{
+		return {}
+	}
+
+	_4 = CURRENT_TOKEN;
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(function_arguments) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = any_data(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(function_parameters) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (CURRENT_TOKEN == "ID")
+	{
+		_0 = CURRENT_TOKEN;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	
+}
+Rule(cll_function_call) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = function_body_call(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(function_decl) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	while (CURRENT_TOKEN == "AUTO_26")
+	{
+		_0 += CURRENT_TOKEN;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_27"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _7 = NONE
+
+	bool success_8 = FALSE
+
+	token _4 = NONE
+
+	bool success_5 = FALSE
+
+	bool success_6 = FALSE
+
+	while (CURRENT_TOKEN == "ID")
+	{
+		_4 += CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+		success_6 = TRUE;
+
+	}
+
+	if (!success_6)
+	{
+		return {}
+	}
+
+	if (success_5)
+	{
+		success_8 = TRUE;
+
+	}
+
+	rule _9 = NONE
+
+	bool success_10 = FALSE
+
+	_9 = function_body_decl(TOKEN_SEQUENCE);
+
+	if (!(_9.res))
+	{
+		return {}
+	}
+
+	success_10 = TRUE;
+
+	pos++
+	UNDEF _17 = NONE
+
+	bool success_18 = FALSE
+
+	do
+	{
+		UNDEF _11 = NONE
+
+		bool success_12 = FALSE
+
+		rule _13 = NONE
+
+		bool success_14 = FALSE
+
+		_13 = cll_block(TOKEN_SEQUENCE);
+
+		if (!(_13.res))
+		{
+			rule _15 = NONE
+
+			bool success_16 = FALSE
+
+			_15 = cll_spaced_block(TOKEN_SEQUENCE);
+
+			if (!(_15.res))
+			{
+				break
+			}
+			else 
+			{
+				success_16 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_14 = TRUE;
+
+		}
+
+		_11 += CURRENT_POS_SEQUENCE;
+
+		success_12 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_12)
+	{
+		success_18 = TRUE;
+
+	}
+
+	
+}
+Rule(loop_while) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_28"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = expr(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _4 = NONE
+
+	bool success_5 = FALSE
+
+	rule _6 = NONE
+
+	bool success_7 = FALSE
+
+	_6 = cll_block(TOKEN_SEQUENCE);
+
+	if (!(_6.res))
+	{
+		rule _8 = NONE
+
+		bool success_9 = FALSE
+
+		_8 = cll_spaced_block(TOKEN_SEQUENCE);
+
+		if (!(_8.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_9 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_7 = TRUE;
+
+	}
+
+	_4 += CURRENT_POS_SEQUENCE;
+
+	success_5 = TRUE;
+
+	pos++
+	
+}
+Rule(loop_for) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = for(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_29"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _10 = NONE
+
+	bool success_11 = FALSE
+
+	do
+	{
+		UNDEF _4 = NONE
+
+		bool success_5 = FALSE
+
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = expr(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			rule _8 = NONE
+
+			bool success_9 = FALSE
+
+			_8 = cll_var(TOKEN_SEQUENCE);
+
+			if (!(_8.res))
+			{
+				break
+			}
+			else 
+			{
+				success_9 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_7 = TRUE;
+
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_5)
+	{
+		success_11 = TRUE;
+
+	}
+
+	token _12 = NONE
+
+	bool success_13 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_30"))
+	{
+		return {}
+	}
+
+	_12 = CURRENT_TOKEN;
+
+	success_13 = TRUE;
+
+	pos++
+	rule _14 = NONE
+
+	bool success_15 = FALSE
+
+	_14 = expr(TOKEN_SEQUENCE);
+
+	if (_14.res)
+	{
+		success_15 = TRUE;
+
+		pos++
+	}
+
+	token _16 = NONE
+
+	bool success_17 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_31"))
+	{
+		return {}
+	}
+
+	_16 = CURRENT_TOKEN;
+
+	success_17 = TRUE;
+
+	pos++
+	rule _18 = NONE
+
+	bool success_19 = FALSE
+
+	_18 = expr(TOKEN_SEQUENCE);
+
+	if (_18.res)
+	{
+		success_19 = TRUE;
+
+		pos++
+	}
+
+	token _20 = NONE
+
+	bool success_21 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_32"))
+	{
+		return {}
+	}
+
+	_20 = CURRENT_TOKEN;
+
+	success_21 = TRUE;
+
+	pos++
+	UNDEF _22 = NONE
+
+	bool success_23 = FALSE
+
+	rule _24 = NONE
+
+	bool success_25 = FALSE
+
+	_24 = cll_block(TOKEN_SEQUENCE);
+
+	if (!(_24.res))
+	{
+		rule _26 = NONE
+
+		bool success_27 = FALSE
+
+		_26 = cll_spaced_block(TOKEN_SEQUENCE);
+
+		if (!(_26.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_27 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_25 = TRUE;
+
+	}
+
+	_22 += CURRENT_POS_SEQUENCE;
+
+	success_23 = TRUE;
+
+	pos++
+	
+}
+Rule(method_call) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	bool success_8 = FALSE
+
+	while (1)
+	{
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_33"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = cll_function_call(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+		success_8 = TRUE;
+
+	}
+
+	if (!success_8)
+	{
+		return {}
+	}
+
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(copiable_method_call) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_34"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = method_call(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(var_refer) {
+
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	do
+	{
+		UNDEF _0 = NONE
+
+		bool success_1 = FALSE
+
+		str _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(!STRNCMP(pos, "++")))
+		{
+			str _4 = NONE
+
+			bool success_5 = FALSE
+
+			if (!(!STRNCMP(pos, "--")))
+			{
+				break
+			}
+			else 
+			{
+				_4 += CURRENT_POS_SEQUENCE;
+
+				success_5 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_2 += CURRENT_POS_SEQUENCE;
+
+			success_3 = TRUE;
+
+		}
+
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_1)
+	{
+		success_7 = TRUE;
+
+	}
+
+	token _8 = NONE
+
+	bool success_9 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_8 = CURRENT_TOKEN;
+
+	success_9 = TRUE;
+
+	pos++
+	UNDEF _16 = NONE
+
+	bool success_17 = FALSE
+
+	do
+	{
+		token _10 = NONE
+
+		bool success_11 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_35"))
+		{
+			break
+		}
+
+		_10 = CURRENT_TOKEN;
+
+		success_11 = TRUE;
+
+		pos++
+		rule _12 = NONE
+
+		bool success_13 = FALSE
+
+		_12 = expr(TOKEN_SEQUENCE);
+
+		if (!(_12.res))
+		{
+			break
+		}
+
+		success_13 = TRUE;
+
+		pos++
+		token _14 = NONE
+
+		bool success_15 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_36"))
+		{
+			break
+		}
+
+		_14 = CURRENT_TOKEN;
+
+		success_15 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_11 && success_13 && success_15)
+	{
+		success_17 = TRUE;
+
+	}
+
+	UNDEF _24 = NONE
+
+	bool success_25 = FALSE
+
+	do
+	{
+		UNDEF _18 = NONE
+
+		bool success_19 = FALSE
+
+		str _20 = NONE
+
+		bool success_21 = FALSE
+
+		if (!(!STRNCMP(pos, "++")))
+		{
+			str _22 = NONE
+
+			bool success_23 = FALSE
+
+			if (!(!STRNCMP(pos, "--")))
+			{
+				break
+			}
+			else 
+			{
+				_22 += CURRENT_POS_SEQUENCE;
+
+				success_23 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_20 += CURRENT_POS_SEQUENCE;
+
+			success_21 = TRUE;
+
+		}
+
+		_18 += CURRENT_POS_SEQUENCE;
+
+		success_19 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_19)
+	{
+		success_25 = TRUE;
+
+	}
+
+	
+}
+Rule(cll_var) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = cll_type(TOKEN_SEQUENCE);
+
+	if (_0.res)
+	{
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _12 = NONE
+
+	bool success_13 = FALSE
+
+	do
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = assignment_op(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+		UNDEF _6 = NONE
+
+		bool success_7 = FALSE
+
+		rule _8 = NONE
+
+		bool success_9 = FALSE
+
+		_8 = expr(TOKEN_SEQUENCE);
+
+		if (!(_8.res))
+		{
+			rule _10 = NONE
+
+			bool success_11 = FALSE
+
+			_10 = cll_ternary(TOKEN_SEQUENCE);
+
+			if (!(_10.res))
+			{
+				break
+			}
+			else 
+			{
+				success_11 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_9 = TRUE;
+
+		}
+
+		_6 += CURRENT_POS_SEQUENCE;
+
+		success_7 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_5 && success_7)
+	{
+		success_13 = TRUE;
+
+	}
+
+	
+}
+Token(STRING) {
+
+	UNDEF _2 = NONE
+
+	bool success_3 = FALSE
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == '"' && *pos == '''))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_3 = TRUE;
+
+	}
+
+	UNDEF _10 = NONE
+
+	bool success_11 = FALSE
+
+	while (1)
+	{
+		UNDEF _4 = NONE
+
+		bool success_5 = FALSE
+
+		str _6 = NONE
+
+		bool success_7 = FALSE
+
+		if (!(!STRNCMP(pos, "\\${quote}")))
+		{
+			str _8 = NONE
+
+			bool success_9 = FALSE
+
+			if (!(!(*pos == 'q' && *pos == 'u' && *pos == 'o' && *pos == 't' && *pos == 'e')))
+			{
+				break
+			}
+			else 
+			{
+				_8 += CURRENT_POS_SEQUENCE;
+
+				success_9 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_6 += CURRENT_POS_SEQUENCE;
+
+			success_7 = TRUE;
+
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_5)
+	{
+		success_11 = TRUE;
+
+	}
+
+	rule _12 = NONE
+
+	bool success_13 = FALSE
+
+	
+}
+Token(NUMBER) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == '+' && *pos == '-'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _2 = NONE
+
+	bool success_3 = FALSE
+
+	UNDEF _7 = NONE
+
+	bool success_8 = FALSE
+
+	do
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		bool success_6 = FALSE
+
+		while ((*pos>='0' && *pos<='9'))
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+			pos++
+			success_6 = TRUE;
+
+		}
+
+		if (!success_6)
+		{
+			break
+		}
+
+	}
+	while(0)
+
+	if (success_5)
+	{
+		success_8 = TRUE;
+
+	}
+
+	if (!success_8)
 	{
 		UNDEF _14 = NONE
 
@@ -20,64 +3715,46 @@ if (!(!STRNCMP(pos, "a")))
 
 		do
 		{
-			str _6 = NONE
+			str _9 = NONE
 
-			bool success_7 = FALSE
+			bool success_10 = FALSE
 
-			if (!(!STRNCMP(pos, "hello")))
+			if (!(*pos == '.' && *pos == ','))
 			{
 				break
 			}
 
-			_6 += CURRENT_POS_SEQUENCE;
+			_9 += CURRENT_POS_SEQUENCE;
 
-			success_7 = TRUE;
+			success_10 = TRUE;
 
 			pos++
-			UNDEF _8 = NONE
+			str _11 = NONE
 
-			bool success_9 = FALSE
+			bool success_12 = FALSE
 
-			str _10 = NONE
+			bool success_13 = FALSE
 
-			bool success_11 = FALSE
-
-			if (!(!STRNCMP(pos, "world")))
+			while ((*pos>='0' && *pos<='9'))
 			{
-				str _12 = NONE
+				_11 += CURRENT_POS_SEQUENCE;
 
-				bool success_13 = FALSE
+				success_12 = TRUE;
 
-				if (!(!STRNCMP(pos, "null")))
-				{
-					break
-				}
-				else 
-				{
-					_12 += CURRENT_POS_SEQUENCE;
-
-					success_13 = TRUE;
-
-				}
-
-			}
-			else 
-			{
-				_10 += CURRENT_POS_SEQUENCE;
-
-				success_11 = TRUE;
+				pos++
+				success_13 = TRUE;
 
 			}
 
-			_8 += CURRENT_POS_SEQUENCE;
+			if (!success_13)
+			{
+				break
+			}
 
-			success_9 = TRUE;
-
-			pos++
 		}
 		while(0)
 
-		if (success_7 && success_9)
+		if (success_10 && success_12)
 		{
 			success_15 = TRUE;
 
@@ -89,6 +3766,615 @@ if (!(!STRNCMP(pos, "a")))
 		}
 
 	}
+
+	_2 += CURRENT_POS_SEQUENCE;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Token(BOOLEAN) {
+
+	UNDEF d = NONE
+
+	bool success_6 = FALSE
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "true")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "false")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_6 = TRUE;
+
+	}
+
+	
+}
+Rule(array) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_37"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	do
+	{
+		UNDEF _6 = NONE
+
+		bool success_7 = FALSE
+
+		while (1)
+		{
+			rule _2 = NONE
+
+			bool success_3 = FALSE
+
+			_2 = any_data(TOKEN_SEQUENCE);
+
+			if (!(_2.res))
+			{
+				break
+			}
+
+			success_3 = TRUE;
+
+			pos++
+			token _4 = NONE
+
+			bool success_5 = FALSE
+
+			if (!(CURRENT_TOKEN == "AUTO_38"))
+			{
+				break
+			}
+
+			_4 = CURRENT_TOKEN;
+
+			success_5 = TRUE;
+
+			pos++
+		}
+
+		if (success_3 && success_5)
+		{
+			success_7 = TRUE;
+
+		}
+
+	}
+	while(0)
+
+	if (success_7)
+	{
+		success_9 = TRUE;
+
+	}
+
+	token _10 = NONE
+
+	bool success_11 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_39"))
+	{
+		return {}
+	}
+
+	_10 = CURRENT_TOKEN;
+
+	success_11 = TRUE;
+
+	pos++
+	
+}
+Rule(object) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_40"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _20 = NONE
+
+	bool success_21 = FALSE
+
+	do
+	{
+		rule _2 = NONE
+
+		bool success_3 = FALSE
+
+		_2 = any_data(TOKEN_SEQUENCE);
+
+		if (!(_2.res))
+		{
+			break
+		}
+
+		success_3 = TRUE;
+
+		pos++
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_41"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = any_data(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			break
+		}
+
+		success_7 = TRUE;
+
+		pos++
+		UNDEF _16 = NONE
+
+		bool success_17 = FALSE
+
+		while (1)
+		{
+			token _8 = NONE
+
+			bool success_9 = FALSE
+
+			if (!(CURRENT_TOKEN == "AUTO_42"))
+			{
+				break
+			}
+
+			_8 = CURRENT_TOKEN;
+
+			success_9 = TRUE;
+
+			pos++
+			token _10 = NONE
+
+			bool success_11 = FALSE
+
+			if (!(CURRENT_TOKEN == "ID"))
+			{
+				break
+			}
+
+			_10 = CURRENT_TOKEN;
+
+			success_11 = TRUE;
+
+			pos++
+			token _12 = NONE
+
+			bool success_13 = FALSE
+
+			if (!(CURRENT_TOKEN == "AUTO_43"))
+			{
+				break
+			}
+
+			_12 = CURRENT_TOKEN;
+
+			success_13 = TRUE;
+
+			pos++
+			rule _14 = NONE
+
+			bool success_15 = FALSE
+
+			_14 = any_data(TOKEN_SEQUENCE);
+
+			if (!(_14.res))
+			{
+				break
+			}
+
+			success_15 = TRUE;
+
+			pos++
+		}
+
+		if (success_9 && success_11 && success_13 && success_15)
+		{
+			success_17 = TRUE;
+
+		}
+
+		token _18 = NONE
+
+		bool success_19 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_44"))
+		{
+			break
+		}
+
+		_18 = CURRENT_TOKEN;
+
+		success_19 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_3 && success_5 && success_7 && success_17 && success_19)
+	{
+		success_21 = TRUE;
+
+	}
+
+	token _22 = NONE
+
+	bool success_23 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_45"))
+	{
+		return {}
+	}
+
+	_22 = CURRENT_TOKEN;
+
+	success_23 = TRUE;
+
+	pos++
+	
+}
+Rule(any_data) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "BOOLEAN"))
+	{
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "NUMBER"))
+		{
+			token _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(CURRENT_TOKEN == "STRING"))
+			{
+				token _8 = NONE
+
+				bool success_9 = FALSE
+
+				if (!(CURRENT_TOKEN == "ARRAY"))
+				{
+					token _10 = NONE
+
+					bool success_11 = FALSE
+
+					if (!(CURRENT_TOKEN == "OBJECT"))
+					{
+						token _12 = NONE
+
+						bool success_13 = FALSE
+
+						if (!(CURRENT_TOKEN == "ID"))
+						{
+							rule _14 = NONE
+
+							bool success_15 = FALSE
+
+							_14 = accessor(TOKEN_SEQUENCE);
+
+							if (!(_14.res))
+							{
+								return {}
+							}
+							else 
+							{
+								success_15 = TRUE;
+
+							}
+
+						}
+						else 
+						{
+							_12 = CURRENT_TOKEN;
+
+							success_13 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						_10 = CURRENT_TOKEN;
+
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					_8 = CURRENT_TOKEN;
+
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Token(END) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == ';' && *pos == 'n'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(STRICT_END) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_46"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Token(NEWLINE) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == 'n'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Token(ID) {
+
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	while ((*pos>='0' && *pos<='9'))
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!((*pos>='a' && *pos<='z') && (*pos>='A' && *pos<='Z') && *pos == '_'))
+	{
+		return {}
+	}
+
+	_2 += CURRENT_POS_SEQUENCE;
+
+	success_3 = TRUE;
+
+	pos++
+	str _4 = NONE
+
+	bool success_5 = FALSE
+
+	while ((*pos>='a' && *pos<='z') && (*pos>='A' && *pos<='Z') && (*pos>='0' && *pos<='9') && *pos == '_')
+	{
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_1 && success_3 && success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(spacemode) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_47"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _2 = NONE
+
+	bool success_3 = FALSE
+
+	str _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(!STRNCMP(pos, "mixed")))
+	{
+		str _6 = NONE
+
+		bool success_7 = FALSE
+
+		if (!(!STRNCMP(pos, "skipped")))
+		{
+			str _8 = NONE
+
+			bool success_9 = FALSE
+
+			if (!(!STRNCMP(pos, "allowed")))
+			{
+				return {}
+			}
+			else 
+			{
+				_8 += CURRENT_POS_SEQUENCE;
+
+				success_9 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_6 += CURRENT_POS_SEQUENCE;
+
+			success_7 = TRUE;
+
+		}
+
+	}
 	else 
 	{
 		_4 += CURRENT_POS_SEQUENCE;
@@ -97,17 +4383,4323 @@ if (!(!STRNCMP(pos, "a")))
 
 	}
 
-}
-else 
-{
 	_2 += CURRENT_POS_SEQUENCE;
 
 	success_3 = TRUE;
 
+	pos++
+	
 }
+Rule(linear_comment) {
 
-_0 += CURRENT_POS_SEQUENCE;
+	token _0 = NONE
 
-success_1 = TRUE;
+	bool success_1 = FALSE
 
-pos++
+	if (!(CURRENT_TOKEN == "AUTO_48"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_49"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(main) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "Import"))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = use(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			token _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(CURRENT_TOKEN == "Rule"))
+			{
+				rule _8 = NONE
+
+				bool success_9 = FALSE
+
+				_8 = spacemode(TOKEN_SEQUENCE);
+
+				if (!(_8.res))
+				{
+					return {}
+				}
+				else 
+				{
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(Import_input) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = file(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = general_dir(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = rulespecific(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				return {}
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(Import_path) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	bool success_2 = FALSE
+
+	while (!(*pos == '*' && *pos == '"' && *pos == '<' && *pos == '>' && *pos == '|' && *pos == ':' && *pos == '?' && *pos == '.'))
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		success_2 = TRUE;
+
+	}
+
+	if (!success_2)
+	{
+		return {}
+	}
+
+	
+}
+Rule(Import_ext) {
+
+	UNDEF _4 = NONE
+
+	bool success_5 = FALSE
+
+	while (1)
+	{
+		str _0 = NONE
+
+		bool success_1 = FALSE
+
+		if (!(!STRNCMP(pos, ".")))
+		{
+			break
+		}
+
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		token _2 = NONE
+
+		bool success_3 = FALSE
+
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			break
+		}
+
+		_2 = CURRENT_TOKEN;
+
+		success_3 = TRUE;
+
+		pos++
+	}
+
+	if (success_1 && success_3)
+	{
+		success_5 = TRUE;
+
+	}
+
+	
+}
+Rule(Import_file) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = path(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = ext(TOKEN_SEQUENCE);
+
+	while (_2.res)
+	{
+		success_3 = TRUE;
+
+		pos++
+	}
+
+	
+}
+Rule(Import_general_dir) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = path(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	str _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_4 += CURRENT_POS_SEQUENCE;
+
+	success_5 = TRUE;
+
+	pos++
+	rule _6 = NONE
+
+	bool success_7 = FALSE
+
+	_6 = file(TOKEN_SEQUENCE);
+
+	bool success_8 = FALSE
+
+	while (_6.res)
+	{
+		success_7 = TRUE;
+
+		pos++
+		success_8 = TRUE;
+
+	}
+
+	if (!success_8)
+	{
+		return {}
+	}
+
+	
+}
+Rule(Import_rulespecific) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = file(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+
+	_2 += CURRENT_POS_SEQUENCE;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _12 = NONE
+
+	bool success_13 = FALSE
+
+	bool success_14 = FALSE
+
+	while (1)
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = id(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			break
+		}
+
+		success_5 = TRUE;
+
+		pos++
+		UNDEF _10 = NONE
+
+		bool success_11 = FALSE
+
+		do
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!STRNCMP(pos, "=")))
+			{
+				break
+			}
+
+			_6 += CURRENT_POS_SEQUENCE;
+
+			success_7 = TRUE;
+
+			pos++
+			rule _8 = NONE
+
+			bool success_9 = FALSE
+
+			_8 = id(TOKEN_SEQUENCE);
+
+			if (!(_8.res))
+			{
+				break
+			}
+
+			success_9 = TRUE;
+
+			pos++
+		}
+		while(0)
+
+		if (success_7 && success_9)
+		{
+			success_11 = TRUE;
+
+		}
+
+		success_14 = TRUE;
+
+	}
+
+	if (!success_14)
+	{
+		return {}
+	}
+
+	if (success_5 && success_11)
+	{
+		success_13 = TRUE;
+
+	}
+
+	str _15 = NONE
+
+	bool success_16 = FALSE
+
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+
+	_15 += CURRENT_POS_SEQUENCE;
+
+	success_16 = TRUE;
+
+	pos++
+	
+}
+Rule(Import) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_50"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = input(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	while (1)
+	{
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_51"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = input(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			break
+		}
+
+		success_7 = TRUE;
+
+		pos++
+	}
+
+	if (success_5 && success_7)
+	{
+		success_9 = TRUE;
+
+	}
+
+	
+}
+Rule(use) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_59"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = unit(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	while (1)
+	{
+		token _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(CURRENT_TOKEN == "AUTO_60"))
+		{
+			break
+		}
+
+		_4 = CURRENT_TOKEN;
+
+		success_5 = TRUE;
+
+		pos++
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = unit(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			break
+		}
+
+		success_7 = TRUE;
+
+		pos++
+	}
+
+	if (success_5 && success_7)
+	{
+		success_9 = TRUE;
+
+	}
+
+	
+}
+Rule(data_unit) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = id(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = any_data(TOKEN_SEQUENCE);
+
+	if (_2.res)
+	{
+		success_3 = TRUE;
+
+		pos++
+	}
+
+	
+}
+Rule(data) {
+
+	bool success_0 = FALSE
+
+		%2
+
+	bool success_1 = FALSE
+
+		%4
+
+	
+}
+Rule(preproc_all) {
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = preproc_begin(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = preproc(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc_begin) {
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_61"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_62"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc_lang_specific_cond_endif_define_set_clear_rem) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "rem")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc_lang_specific_cond_endif_define_set_clear) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "clear")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc_lang_specific_cond_endif_define_set) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "set")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF value = NONE
+
+	bool success_6 = FALSE
+
+	str _4 = NONE
+
+	bool success_5 = FALSE
+
+	while (!(*pos == 'n' && *pos == 'r'))
+	{
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_5)
+	{
+		success_6 = TRUE;
+
+	}
+
+	
+}
+Rule(preproc_lang_specific_cond_endif_define) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "define")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF value = NONE
+
+	bool success_6 = FALSE
+
+	str _4 = NONE
+
+	bool success_5 = FALSE
+
+	while (!(*pos == 'n' && *pos == 'r'))
+	{
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_5)
+	{
+		success_6 = TRUE;
+
+	}
+
+	
+}
+Rule(preproc_lang_specific_cond_endif) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "endif")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc_lang_specific_cond) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "if")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _4 = NONE
+
+	bool success_5 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = expr(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		return {}
+	}
+
+	success_3 = TRUE;
+
+	pos++
+	if (success_3)
+	{
+		success_5 = TRUE;
+
+	}
+
+	
+}
+Rule(preproc_lang_specific) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "for")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	
+}
+Rule(preproc) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = lang_specific(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = cond(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = define(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+
+				bool success_9 = FALSE
+
+				_8 = set(TOKEN_SEQUENCE);
+
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+
+					bool success_11 = FALSE
+
+					_10 = clear(TOKEN_SEQUENCE);
+
+					if (!(_10.res))
+					{
+						rule _12 = NONE
+
+						bool success_13 = FALSE
+
+						_12 = rem(TOKEN_SEQUENCE);
+
+						if (!(_12.res))
+						{
+							return {}
+						}
+						else 
+						{
+							success_13 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_rule) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	rule _2 = NONE
+
+	bool success_3 = FALSE
+
+	_2 = escaped(TOKEN_SEQUENCE);
+
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = any(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+
+			bool success_7 = FALSE
+
+			_6 = op(TOKEN_SEQUENCE);
+
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+
+				bool success_9 = FALSE
+
+				_8 = cll(TOKEN_SEQUENCE);
+
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+
+					bool success_11 = FALSE
+
+					_10 = linear_comment(TOKEN_SEQUENCE);
+
+					if (!(_10.res))
+					{
+						UNDEF _32 = NONE
+
+						bool success_33 = FALSE
+
+						do
+						{
+							UNDEF _28 = NONE
+
+							bool success_29 = FALSE
+
+							UNDEF _12 = NONE
+
+							bool success_13 = FALSE
+
+							rule _14 = NONE
+
+							bool success_15 = FALSE
+
+							_14 = group(TOKEN_SEQUENCE);
+
+							if (!(_14.res))
+							{
+								rule _16 = NONE
+
+								bool success_17 = FALSE
+
+								_16 = csequence(TOKEN_SEQUENCE);
+
+								if (!(_16.res))
+								{
+									token _18 = NONE
+
+									bool success_19 = FALSE
+
+									if (!(CURRENT_TOKEN == "STRING"))
+									{
+										rule _20 = NONE
+
+										bool success_21 = FALSE
+
+										_20 = accessor(TOKEN_SEQUENCE);
+
+										if (!(_20.res))
+										{
+											rule _22 = NONE
+
+											bool success_23 = FALSE
+
+											_22 = hex(TOKEN_SEQUENCE);
+
+											if (!(_22.res))
+											{
+												rule _24 = NONE
+
+												bool success_25 = FALSE
+
+												_24 = bin(TOKEN_SEQUENCE);
+
+												if (!(_24.res))
+												{
+													rule _26 = NONE
+
+													bool success_27 = FALSE
+
+													_26 = other(TOKEN_SEQUENCE);
+
+													if (!(_26.res))
+													{
+														break
+													}
+													else 
+													{
+														success_27 = TRUE;
+
+													}
+
+												}
+												else 
+												{
+													success_25 = TRUE;
+
+												}
+
+											}
+											else 
+											{
+												success_23 = TRUE;
+
+											}
+
+										}
+										else 
+										{
+											success_21 = TRUE;
+
+										}
+
+									}
+									else 
+									{
+										_18 = CURRENT_TOKEN;
+
+										success_19 = TRUE;
+
+									}
+
+								}
+								else 
+								{
+									success_17 = TRUE;
+
+								}
+
+							}
+							else 
+							{
+								success_15 = TRUE;
+
+							}
+
+							_12 += CURRENT_POS_SEQUENCE;
+
+							success_13 = TRUE;
+
+							pos++
+							if (success_13)
+							{
+								success_29 = TRUE;
+
+							}
+
+							rule _30 = NONE
+
+							bool success_31 = FALSE
+
+							_30 = qualifier(TOKEN_SEQUENCE);
+
+							if (_30.res)
+							{
+								success_31 = TRUE;
+
+								pos++
+							}
+
+						}
+						while(0)
+
+						if (success_29 && success_31)
+						{
+							success_33 = TRUE;
+
+						}
+
+						if (!success_33)
+						{
+							return {}
+						}
+
+					}
+					else 
+					{
+						success_11 = TRUE;
+
+					}
+
+				}
+				else 
+				{
+					success_9 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_other) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!STRNCMP(pos, "#"))
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+	}
+
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	while (1)
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, ".")))
+		{
+			break
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+		token _6 = NONE
+
+		bool success_7 = FALSE
+
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			break
+		}
+
+		_6 = CURRENT_TOKEN;
+
+		success_7 = TRUE;
+
+		pos++
+	}
+
+	if (success_5 && success_7)
+	{
+		success_9 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_op) {
+
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "|")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "|&")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_qualifier) {
+
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "?")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "+")))
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!STRNCMP(pos, "*")))
+			{
+				return {}
+			}
+			else 
+			{
+				_6 += CURRENT_POS_SEQUENCE;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_9 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_group) {
+
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	do
+	{
+		str _0 = NONE
+
+		bool success_1 = FALSE
+
+		if (!(!STRNCMP(pos, "&")))
+		{
+			break
+		}
+
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		UNDEF _2 = NONE
+
+		bool success_3 = FALSE
+
+		rule _4 = NONE
+
+		bool success_5 = FALSE
+
+		_4 = method_call(TOKEN_SEQUENCE);
+
+		if (!(_4.res))
+		{
+			token _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(CURRENT_TOKEN == "ID"))
+			{
+				break
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_5 = TRUE;
+
+		}
+
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+		pos++
+	}
+	while(0)
+
+	if (success_1 && success_3)
+	{
+		success_9 = TRUE;
+
+	}
+
+	str _10 = NONE
+
+	bool success_11 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_10 += CURRENT_POS_SEQUENCE;
+
+	success_11 = TRUE;
+
+	pos++
+	rule _12 = NONE
+
+	bool success_13 = FALSE
+
+	_12 = rule(TOKEN_SEQUENCE);
+
+	while (_12.res)
+	{
+		success_13 = TRUE;
+
+		pos++
+	}
+
+	str _14 = NONE
+
+	bool success_15 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_14 += CURRENT_POS_SEQUENCE;
+
+	success_15 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_csequence_symbol) {
+
+	UNDEF _8 = NONE
+
+	bool success_9 = FALSE
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		str _4 = NONE
+
+		bool success_5 = FALSE
+
+		if (!(!STRNCMP(pos, "\\]")))
+		{
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (!(!(*pos == ']')))
+			{
+				return {}
+			}
+			else 
+			{
+				_6 += CURRENT_POS_SEQUENCE;
+
+				success_7 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_9 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_csequence_escape) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _6 = NONE
+
+	bool success_7 = FALSE
+
+	UNDEF _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (*pos == ' ')
+	{
+		return {}
+	}
+
+	_4 += CURRENT_POS_SEQUENCE;
+
+	success_5 = TRUE;
+
+	pos++
+	if (success_5)
+	{
+		success_7 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_csequence_diapason) {
+
+	UNDEF _12 = NONE
+
+	bool success_13 = FALSE
+
+	UNDEF from = NONE
+
+	bool success_2 = FALSE
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = symbol(TOKEN_SEQUENCE);
+
+	if (!(_0.res))
+	{
+		return {}
+	}
+
+	success_1 = TRUE;
+
+	pos++
+	if (success_1)
+	{
+		success_2 = TRUE;
+
+	}
+
+	str _5 = NONE
+
+	bool success_6 = FALSE
+
+	if (!(!STRNCMP(pos, "-")))
+	{
+		return {}
+	}
+
+	_5 += CURRENT_POS_SEQUENCE;
+
+	success_6 = TRUE;
+
+	pos++
+	UNDEF to = NONE
+
+	bool success_11 = FALSE
+
+	rule _9 = NONE
+
+	bool success_10 = FALSE
+
+	_9 = symbol(TOKEN_SEQUENCE);
+
+	if (!(_9.res))
+	{
+		return {}
+	}
+
+	success_10 = TRUE;
+
+	pos++
+	if (success_10)
+	{
+		success_11 = TRUE;
+
+	}
+
+	if (success_2 && success_4 && success_6 && success_8 && success_11)
+	{
+		success_13 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_csequence) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!STRNCMP(pos, "^"))
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+		pos++
+	}
+
+	UNDEF dt = NONE
+
+	bool success_12 = FALSE
+
+	while (1)
+	{
+		UNDEF _4 = NONE
+
+		bool success_5 = FALSE
+
+		rule _6 = NONE
+
+		bool success_7 = FALSE
+
+		_6 = escape(TOKEN_SEQUENCE);
+
+		if (!(_6.res))
+		{
+			rule _8 = NONE
+
+			bool success_9 = FALSE
+
+			_8 = symbol(TOKEN_SEQUENCE);
+
+			if (!(_8.res))
+			{
+				rule _10 = NONE
+
+				bool success_11 = FALSE
+
+				_10 = diapason(TOKEN_SEQUENCE);
+
+				if (!(_10.res))
+				{
+					break
+				}
+				else 
+				{
+					success_11 = TRUE;
+
+				}
+
+			}
+			else 
+			{
+				success_9 = TRUE;
+
+			}
+
+		}
+		else 
+		{
+			success_7 = TRUE;
+
+		}
+
+		_4 += CURRENT_POS_SEQUENCE;
+
+		success_5 = TRUE;
+
+		pos++
+	}
+
+	if (success_5)
+	{
+		success_12 = TRUE;
+
+	}
+
+	str _13 = NONE
+
+	bool success_14 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_13 += CURRENT_POS_SEQUENCE;
+
+	success_14 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_any) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_data_block_inclosed_map) {
+
+	UNDEF data = NONE
+
+	bool success_3 = FALSE
+
+	rule _0 = NONE
+
+	bool success_1 = FALSE
+
+	_0 = key(TOKEN_SEQUENCE);
+
+	bool success_2 = FALSE
+
+	while (_0.res)
+	{
+		success_1 = TRUE;
+
+		pos++
+		success_2 = TRUE;
+
+	}
+
+	if (!success_2)
+	{
+		return {}
+	}
+
+	if (success_1)
+	{
+		success_3 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_data_block_key) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	bool success_2 = FALSE
+
+	while (*pos == 'n' && *pos == 'r')
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		success_2 = TRUE;
+
+	}
+
+	if (!success_2)
+	{
+		return {}
+	}
+
+	UNDEF name = NONE
+
+	bool success_5 = FALSE
+
+	rule _3 = NONE
+
+	bool success_4 = FALSE
+
+	_3 = id(TOKEN_SEQUENCE);
+
+	if (!(_3.res))
+	{
+		return {}
+	}
+
+	success_4 = TRUE;
+
+	pos++
+	if (success_4)
+	{
+		success_5 = TRUE;
+
+	}
+
+	str _6 = NONE
+
+	bool success_7 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_6 += CURRENT_POS_SEQUENCE;
+
+	success_7 = TRUE;
+
+	pos++
+	UNDEF dt = NONE
+
+	bool success_10 = FALSE
+
+	rule _8 = NONE
+
+	bool success_9 = FALSE
+
+	_8 = any_data(TOKEN_SEQUENCE);
+
+	if (!(_8.res))
+	{
+		return {}
+	}
+
+	success_9 = TRUE;
+
+	pos++
+	if (success_9)
+	{
+		success_10 = TRUE;
+
+	}
+
+	
+}
+Rule(Rule_data_block) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	bool success_2 = FALSE
+
+	while (*pos == 'r' && *pos == 'n')
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		success_2 = TRUE;
+
+	}
+
+	if (!success_2)
+	{
+		return {}
+	}
+
+	str _3 = NONE
+
+	bool success_4 = FALSE
+
+	if (!(!STRNCMP(pos, "data")))
+	{
+		return {}
+	}
+
+	_3 += CURRENT_POS_SEQUENCE;
+
+	success_4 = TRUE;
+
+	pos++
+	str _5 = NONE
+
+	bool success_6 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_5 += CURRENT_POS_SEQUENCE;
+
+	success_6 = TRUE;
+
+	pos++
+	UNDEF data = NONE
+
+	bool success_13 = FALSE
+
+	UNDEF _7 = NONE
+
+	bool success_8 = FALSE
+
+	rule _9 = NONE
+
+	bool success_10 = FALSE
+
+	_9 = any_data(TOKEN_SEQUENCE);
+
+	if (!(_9.res))
+	{
+		rule _11 = NONE
+
+		bool success_12 = FALSE
+
+		_11 = inclosed_map(TOKEN_SEQUENCE);
+
+		if (!(_11.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_12 = TRUE;
+
+		}
+
+	}
+	else 
+	{
+		success_10 = TRUE;
+
+	}
+
+	_7 += CURRENT_POS_SEQUENCE;
+
+	success_8 = TRUE;
+
+	pos++
+	if (success_8)
+	{
+		success_13 = TRUE;
+
+	}
+
+	str _14 = NONE
+
+	bool success_15 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_14 += CURRENT_POS_SEQUENCE;
+
+	success_15 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule_escaped) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	UNDEF _4 = NONE
+
+	bool success_5 = FALSE
+
+	if (*pos == ' ')
+	{
+		return {}
+	}
+
+	_4 += CURRENT_POS_SEQUENCE;
+
+	success_5 = TRUE;
+
+	pos++
+	token _8 = NONE
+
+	bool success_9 = FALSE
+
+	if (CURRENT_TOKEN == "NUMBER")
+	{
+		_8 = CURRENT_TOKEN;
+
+		success_9 = TRUE;
+
+		pos++
+	}
+
+	
+}
+Rule(Rule_nested_rule_hex_bin) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "0b")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	bool success_4 = FALSE
+
+	while (*pos == '0' && *pos == '1')
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+		pos++
+		success_4 = TRUE;
+
+	}
+
+	if (!success_4)
+	{
+		return {}
+	}
+
+	
+}
+Rule(Rule_nested_rule_hex) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "0x")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	str _2 = NONE
+
+	bool success_3 = FALSE
+
+	bool success_4 = FALSE
+
+	while ((*pos>='1' && *pos<='9') && (*pos>='A' && *pos<='F') && (*pos>='a' && *pos<='f'))
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
+
+		pos++
+		success_4 = TRUE;
+
+	}
+
+	if (!success_4)
+	{
+		return {}
+	}
+
+	
+}
+Rule(Rule_nested_rule) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	bool success_2 = FALSE
+
+	while (*pos == 'r' && *pos == 'n')
+	{
+		_0 += CURRENT_POS_SEQUENCE;
+
+		success_1 = TRUE;
+
+		pos++
+		success_2 = TRUE;
+
+	}
+
+	if (!success_2)
+	{
+		return {}
+	}
+
+	str _3 = NONE
+
+	bool success_4 = FALSE
+
+	if (!(!STRNCMP(pos, "#")))
+	{
+		return {}
+	}
+
+	_3 += CURRENT_POS_SEQUENCE;
+
+	success_4 = TRUE;
+
+	pos++
+	token _7 = NONE
+
+	bool success_8 = FALSE
+
+	if (!(CURRENT_TOKEN == "Rule"))
+	{
+		return {}
+	}
+
+	_7 = CURRENT_TOKEN;
+
+	success_8 = TRUE;
+
+	pos++
+	
+}
+Rule(Rule) {
+
+	UNDEF rule_begin = NONE
+
+	bool success_4 = FALSE
+
+	token _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+
+	_0 = CURRENT_TOKEN;
+
+	success_1 = TRUE;
+
+	pos++
+	token _2 = NONE
+
+	bool success_3 = FALSE
+
+	if (!(CURRENT_TOKEN == "AUTO_72"))
+	{
+		return {}
+	}
+
+	_2 = CURRENT_TOKEN;
+
+	success_3 = TRUE;
+
+	pos++
+	if (success_1 && success_3)
+	{
+		success_4 = TRUE;
+
+	}
+
+	rule _5 = NONE
+
+	bool success_6 = FALSE
+
+	_5 = function_body_decl(TOKEN_SEQUENCE);
+
+	if (_5.res)
+	{
+		success_6 = TRUE;
+
+		pos++
+	}
+
+	UNDEF _9 = NONE
+
+	bool success_10 = FALSE
+
+	while (1)
+	{
+		rule _7 = NONE
+
+		bool success_8 = FALSE
+
+		_7 = rule(TOKEN_SEQUENCE);
+
+		if (!(_7.res))
+		{
+			break
+		}
+
+		success_8 = TRUE;
+
+		pos++
+	}
+
+	if (success_8)
+	{
+		success_10 = TRUE;
+
+	}
+
+	rule _11 = NONE
+
+	bool success_12 = FALSE
+
+	_11 = data_block(TOKEN_SEQUENCE);
+
+	if (!(_11.res))
+	{
+		return {}
+	}
+
+	success_12 = TRUE;
+
+	pos++
+	rule _13 = NONE
+
+	bool success_14 = FALSE
+
+	_13 = nested_rule(TOKEN_SEQUENCE);
+
+	while (_13.res)
+	{
+		success_14 = TRUE;
+
+		pos++
+	}
+
+	token _15 = NONE
+
+	bool success_16 = FALSE
+
+	if (!(CURRENT_TOKEN == "STRICT_END"))
+	{
+		return {}
+	}
+
+	_15 = CURRENT_TOKEN;
+
+	success_16 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_0) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "$")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_1) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "%")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_2) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "^")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_3) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ">")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_4) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "$")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_5) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_6) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_7) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "=")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_8) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_9) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_10) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_11) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_12) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_13) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_14) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_15) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (*pos != ' ')
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_16) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "if")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_17) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "?")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_18) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_19) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_20) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_21) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_22) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_23) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_24) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_25) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_26) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (*pos != ' ')
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_27) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "fn")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_28) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "while")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_29) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_30) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_31) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_32) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_33) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_34) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "=")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_35) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_36) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_37) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_38) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_39) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_40) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_41) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_42) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_43) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_44) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_45) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_46) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_47) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "spacemode")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_48) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "//")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_49) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!(*pos == 'n')))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_50) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "import")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_51) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_52) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!(*pos == '*' && *pos == '"' && *pos == '<' && *pos == '>' && *pos == '|' && *pos == ':' && *pos == '?' && *pos == '.')))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_53) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_54) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_55) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_56) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_57) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "=")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_58) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_59) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "use")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_60) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_61) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "\n")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_62) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "@")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_63) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "for")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_64) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "if")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_65) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "endif")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_66) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "define")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_67) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!(*pos == 'n' && *pos == 'r')))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_68) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "set")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_69) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!(*pos == 'n' && *pos == 'r')))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_70) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "clear")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_71) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "rem")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_72) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_73) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "#")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_74) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_75) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "&")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_76) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_77) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_78) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_79) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "^")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_80) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_81) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_82) {
+
+	
+}
+Rule(AUTO_83) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (*pos == ' ')
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_84) {
+
+	
+}
+Rule(AUTO_85) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "-")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_86) {
+
+	
+}
+Rule(AUTO_87) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_88) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == 'r' && *pos == 'n'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_89) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "data")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_90) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_91) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_92) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == 'n' && *pos == 'r'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_93) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_94) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_95) {
+
+	
+}
+Rule(AUTO_96) {
+
+	UNDEF _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (*pos == ' ')
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_97) {
+
+	
+}
+Rule(AUTO_98) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == 'r' && *pos == 'n'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_99) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "#")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_100) {
+
+	
+}
+Rule(AUTO_101) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "0x")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_102) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!((*pos>='1' && *pos<='9') && (*pos>='A' && *pos<='F') && (*pos>='a' && *pos<='f')))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_103) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(!STRNCMP(pos, "0b")))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}
+Rule(AUTO_104) {
+
+	str _0 = NONE
+
+	bool success_1 = FALSE
+
+	if (!(*pos == '0' && *pos == '1'))
+	{
+		return {}
+	}
+
+	_0 += CURRENT_POS_SEQUENCE;
+
+	success_1 = TRUE;
+
+	pos++
+	
+}

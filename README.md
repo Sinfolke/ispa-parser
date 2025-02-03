@@ -21,12 +21,13 @@
  8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
  9. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
-  Finish process_Rule_op
-  Finish process_Rule_group
   Add handle of variables in Rule_other
   Make proper handle of method call in group
   Add handle of ${} in string
-  Fix issue with missing first rule in treeNormalizer
+  Add skip of spaces between rules
+  Add defintion of type for group value
+  Add handle of value when assigned to variable in group
+  Fix error with incorrect literalsToToken convertion and replaceDublications
 ### Parser syntax
   
   see ```concepts/syntax```
