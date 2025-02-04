@@ -173,7 +173,7 @@ void affectIrByQualifier(IR::ir &values, char qualifier, int &variable_count) {
 IR::function_call TreeFunctionToIR(Parser::Rule rule) {
     IR::function_call call;
     auto data = std::any_cast<obj_t>(rule.data);
-    call.name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+    call.name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")));
     auto body = std::any_cast<Parser::Rule>(corelib::map::get(data, "body")); 
     auto arguments = std::any_cast<arr_t<Parser::Rule>>(std::any_cast<Parser::Rule>(body.data));
     for (auto &argument : arguments) {
@@ -186,7 +186,7 @@ IR::function_call TreeFunctionToIR(Parser::Rule rule) {
             newarg.data = std::any_cast<std::string>(arg.data);
             break;
         case Parser::Rules::id:
-            newarg.value == IR::var_assign_values::ID;
+            newarg.value = IR::var_assign_values::ID;
             newarg.data = std::any_cast<std::string>(arg.data);
             break;
         case Parser::Rules::boolean: 
@@ -216,7 +216,7 @@ IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     auto call = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "call"));
     method_call.var_name = std::any_cast<std::string>(id.data);
 
-    method_call.call fun_call = TreeFunctionToIR(call);
+    method_call.call = TreeFunctionToIR(call);
 }
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     //cpuf::printf("group\n");
