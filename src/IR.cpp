@@ -170,6 +170,54 @@ void affectIrByQualifier(IR::ir &values, char qualifier, int &variable_count) {
     }
     values = new_ir;
 }
+IR::function_call TreeFunctionToIR(Parser::Rule rule) {
+    IR::function_call call;
+    auto data = std::any_cast<obj_t>(rule.data);
+    call.name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+    auto body = std::any_cast<Parser::Rule>(corelib::map::get(data, "body")); 
+    auto arguments = std::any_cast<arr_t<Parser::Rule>>(std::any_cast<Parser::Rule>(body.data));
+    for (auto &argument : arguments) {
+        auto arg = std::any_cast<Parser::Rule>(argument.data);
+        IR::assign newarg;
+        switch (arg.name)
+        {
+        case Parser::Rules::string:
+            newarg.value = IR::var_assign_values::STRING;
+            newarg.data = std::any_cast<std::string>(arg.data);
+            break;
+        case Parser::Rules::id:
+            newarg.value == IR::var_assign_values::ID;
+            newarg.data = std::any_cast<std::string>(arg.data);
+            break;
+        case Parser::Rules::boolean: 
+        {
+            auto data = std::any_cast<obj_t>(arg.data);
+            auto val = std::any_cast<int>(corelib::map::get(data, "val"));
+            newarg.value = val ? IR::var_assign_values::_TRUE : IR::var_assign_values::_FALSE;
+            break;
+        }
+        case Parser::Rules::number: 
+        {
+            auto data = std::any_cast<obj_t>(arg.data);
+            auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
+            newarg.value = IR::var_assign_values::INT;
+            newarg.data = full;
+        }
+        default:
+            break;
+        }
+    }
+
+}
+IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
+    IR::method_call method_call;
+    auto var_rule_data = std::any_cast<obj_t>(rule.data);
+    auto id = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "object"));
+    auto call = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "call"));
+    method_call.var_name = std::any_cast<std::string>(id.data);
+
+    method_call.call fun_call = TreeFunctionToIR(call);
+}
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     //cpuf::printf("group\n");
     auto data = std::any_cast<obj_t>(rule.data);
@@ -180,7 +228,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     cpuf::printf("Group Values got: \n");
     IR::outputIRToConsole(values);
     cpuf::printf("End values\n");
-    auto method_call = IR::member {IR::types::METHOD_CALL};
+    IR::method_call method_call;
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
@@ -204,9 +252,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) {
-        auto var_rule = std::any_cast<Parser::Rule>(variable.data);
-        auto var_rule_data = std::any_cast<obj_t>(var_rule.data);
-        method_call.value = var_rule_data;
+        method_call = TreeMethodCallToIR(std::any_cast<Parser::Rule>(variable.data));
         member.add(values);
         member.push({IR::types::METHOD_CALL, method_call});
     } else {
@@ -238,7 +284,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     bool first = true;
     for (auto &value : values) {
         if (!first)
-            expr.push_back({IR::condition_types::AND});
+            expr.push_back({IR::condition_types::OR});
 
         switch (value.name) {
             case Parser::Rules::Rule_csequence_diapason: {
@@ -613,13 +659,14 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
 
 IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     cpuf::printf("Rule_op\n");
-    cpuf::printf("1, type: %s\n", rule.data.type().name());
     auto op = std::any_cast<arr_t<Parser::Rule>>(rule.data);
+    for (auto o : op) {
+        cpuf::printf("o type: %s\n", Parser::RulesToString(o.name));
+    }
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
     auto block = createDefaultBlock(var, svar);
     auto size = member.size();
-    cpuf::printf("2\n");
     // Add success variable
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});

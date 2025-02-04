@@ -17,6 +17,8 @@ namespace corelib {
         bool startsWithRange(const std::string& str, char from, char to);
         bool isUpper(const char* str);
         bool isUpper(const std::string str);
+        bool isLower(const char* str);
+        bool isLower(const std::string str);
     }
     namespace map {
         template<typename T>

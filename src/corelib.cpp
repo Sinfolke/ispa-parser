@@ -62,21 +62,24 @@ namespace corelib::text {
 
 
     bool isUpper(const char* str) {
-        while (*str) {  // Iterate until null terminator
-            if (!std::isupper(static_cast<unsigned char>(*str))) {
+        for (; *str; str++) {  // Iterate until null terminator
+            if (!std::isupper(*str))
                 return false;
-            }
-            str++;
         }
         return true;
     }
 
-    bool isUpper(const std::string str) {  // Pass by reference to avoid copying
+    bool isUpper(const std::string str) {
         for (char ch : str) {
-            if (!std::isupper(static_cast<unsigned char>(ch))) {
+            if (!std::isupper(ch))
                 return false;
-            }
         }
         return true;
+    }
+    bool isLower(const char* str) {
+        return !isUpper(str);
+    }
+    bool isLower(const std::string str) {
+        return !isUpper(str);
     }
 }

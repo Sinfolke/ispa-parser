@@ -462,31 +462,31 @@ Token(OP) {
 
 	bool success_3 = FALSE
 
-	if (!(!STRNCMP(pos, "&")))
+	if (!(!STRNCMP(pos, "<<")))
 	{
 		str _4 = NONE
 
 		bool success_5 = FALSE
 
-		if (!(!STRNCMP(pos, "|")))
+		if (!(!STRNCMP(pos, ">>")))
 		{
 			str _6 = NONE
 
 			bool success_7 = FALSE
 
-			if (!(!STRNCMP(pos, "^")))
+			if (!(!STRNCMP(pos, "&")))
 			{
 				str _8 = NONE
 
 				bool success_9 = FALSE
 
-				if (!(!STRNCMP(pos, "<<")))
+				if (!(!STRNCMP(pos, "|")))
 				{
 					str _10 = NONE
 
 					bool success_11 = FALSE
 
-					if (!(!STRNCMP(pos, ">>")))
+					if (!(!STRNCMP(pos, "^")))
 					{
 						return {}
 					}
@@ -582,37 +582,37 @@ Rule(COMPARE_OP) {
 
 	bool success_3 = FALSE
 
-	if (!(!STRNCMP(pos, ">")))
+	if (!(!STRNCMP(pos, "==")))
 	{
 		str _4 = NONE
 
 		bool success_5 = FALSE
 
-		if (!(!STRNCMP(pos, "<")))
+		if (!(!STRNCMP(pos, "!=")))
 		{
 			str _6 = NONE
 
 			bool success_7 = FALSE
 
-			if (!(!STRNCMP(pos, "==")))
+			if (!(!STRNCMP(pos, ">=")))
 			{
 				str _8 = NONE
 
 				bool success_9 = FALSE
 
-				if (!(!STRNCMP(pos, "!=")))
+				if (!(!STRNCMP(pos, "<=")))
 				{
 					str _10 = NONE
 
 					bool success_11 = FALSE
 
-					if (!(!STRNCMP(pos, ">=")))
+					if (!(!STRNCMP(pos, ">")))
 					{
 						str _12 = NONE
 
 						bool success_13 = FALSE
 
-						if (!(!STRNCMP(pos, "<=")))
+						if (!(!STRNCMP(pos, "<")))
 						{
 							return {}
 						}
@@ -730,13 +730,13 @@ Rule(LOGICAL_NOT) {
 
 	bool success_3 = FALSE
 
-	if (!(!STRNCMP(pos, "!")))
+	if (!(!STRNCMP(pos, "not")))
 	{
 		str _4 = NONE
 
 		bool success_5 = FALSE
 
-		if (!(!STRNCMP(pos, "not")))
+		if (!(!STRNCMP(pos, "!")))
 		{
 			return {}
 		}
@@ -774,13 +774,13 @@ Rule(LOGICAL_AND) {
 
 	bool success_3 = FALSE
 
-	if (!(!STRNCMP(pos, "&&")))
+	if (!(!STRNCMP(pos, "and")))
 	{
 		str _4 = NONE
 
 		bool success_5 = FALSE
 
-		if (!(!STRNCMP(pos, "and")))
+		if (!(!STRNCMP(pos, "&&")))
 		{
 			return {}
 		}
@@ -858,80 +858,80 @@ Rule(LOGICAL_ANDR) {
 
 	bool success_1 = FALSE
 
-	UNDEF _8 = NONE
+	str _2 = NONE
 
-	bool success_9 = FALSE
+	bool success_3 = FALSE
 
-	do
+	if (!(!STRNCMP(pos, "|&")))
 	{
-		str _2 = NONE
-
-		bool success_3 = FALSE
-
-		if (!(!STRNCMP(pos, "and")))
-		{
-			break
-		}
-
-		_2 += CURRENT_POS_SEQUENCE;
-
-		success_3 = TRUE;
-
-		pos++
-		str _4 = NONE
-
-		bool success_5 = FALSE
-
-		if (*pos != ' ')
-		{
-			break
-		}
-
-		_4 += CURRENT_POS_SEQUENCE;
-
-		success_5 = TRUE;
-
-		pos++
-		str _6 = NONE
-
-		bool success_7 = FALSE
-
-		if (!(!STRNCMP(pos, "or")))
-		{
-			break
-		}
-
-		_6 += CURRENT_POS_SEQUENCE;
-
-		success_7 = TRUE;
-
-		pos++
-	}
-	while(0)
-
-	if (success_3 && success_5 && success_7)
-	{
-		success_9 = TRUE;
-
-	}
-
-	if (!success_9)
-	{
-		str _10 = NONE
+		UNDEF _10 = NONE
 
 		bool success_11 = FALSE
 
-		if (!(!STRNCMP(pos, "|&")))
+		do
 		{
-			return {}
-		}
-		else 
-		{
-			_10 += CURRENT_POS_SEQUENCE;
+			str _4 = NONE
 
+			bool success_5 = FALSE
+
+			if (!(!STRNCMP(pos, "and")))
+			{
+				break
+			}
+
+			_4 += CURRENT_POS_SEQUENCE;
+
+			success_5 = TRUE;
+
+			pos++
+			str _6 = NONE
+
+			bool success_7 = FALSE
+
+			if (*pos != ' ')
+			{
+				break
+			}
+
+			_6 += CURRENT_POS_SEQUENCE;
+
+			success_7 = TRUE;
+
+			pos++
+			str _8 = NONE
+
+			bool success_9 = FALSE
+
+			if (!(!STRNCMP(pos, "or")))
+			{
+				break
+			}
+
+			_8 += CURRENT_POS_SEQUENCE;
+
+			success_9 = TRUE;
+
+			pos++
+		}
+		while(0)
+
+		if (success_5 && success_7 && success_9)
+		{
 			success_11 = TRUE;
 
 		}
+
+		if (!success_11)
+		{
+			return {}
+		}
+
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE;
+
+		success_3 = TRUE;
 
 	}
 
@@ -1368,187 +1368,179 @@ Rule(cll_csupport_types) {
 
 	bool success_1 = FALSE
 
-	UNDEF _18 = NONE
+	UNDEF _8 = NONE
 
-	bool success_19 = FALSE
+	bool success_9 = FALSE
 
 	do
 	{
-		str _2 = NONE
+		UNDEF _2 = NONE
 
 		bool success_3 = FALSE
 
-		if (!STRNCMP(pos, "unsigned"))
-		{
-			_2 += CURRENT_POS_SEQUENCE;
-
-			success_3 = TRUE;
-
-			pos++
-		}
-
-		UNDEF _16 = NONE
-
-		bool success_17 = FALSE
-
-		UNDEF _4 = NONE
+		str _4 = NONE
 
 		bool success_5 = FALSE
 
-		str _6 = NONE
-
-		bool success_7 = FALSE
-
-		if (!(!STRNCMP(pos, "char")))
+		if (!(!STRNCMP(pos, "float")))
 		{
-			str _8 = NONE
+			str _6 = NONE
 
-			bool success_9 = FALSE
+			bool success_7 = FALSE
 
-			if (!(!STRNCMP(pos, "short")))
+			if (!(!STRNCMP(pos, "double")))
 			{
-				str _10 = NONE
-
-				bool success_11 = FALSE
-
-				if (!(!STRNCMP(pos, "int")))
-				{
-					str _12 = NONE
-
-					bool success_13 = FALSE
-
-					if (!(!STRNCMP(pos, "long")))
-					{
-						str _14 = NONE
-
-						bool success_15 = FALSE
-
-						if (!(!STRNCMP(pos, "long long")))
-						{
-							break
-						}
-						else 
-						{
-							_14 += CURRENT_POS_SEQUENCE;
-
-							success_15 = TRUE;
-
-						}
-
-					}
-					else 
-					{
-						_12 += CURRENT_POS_SEQUENCE;
-
-						success_13 = TRUE;
-
-					}
-
-				}
-				else 
-				{
-					_10 += CURRENT_POS_SEQUENCE;
-
-					success_11 = TRUE;
-
-				}
-
+				break
 			}
 			else 
 			{
-				_8 += CURRENT_POS_SEQUENCE;
+				_6 += CURRENT_POS_SEQUENCE;
 
-				success_9 = TRUE;
+				success_7 = TRUE;
 
 			}
 
 		}
 		else 
 		{
-			_6 += CURRENT_POS_SEQUENCE;
+			_4 += CURRENT_POS_SEQUENCE;
 
-			success_7 = TRUE;
+			success_5 = TRUE;
 
 		}
 
-		_4 += CURRENT_POS_SEQUENCE;
+		_2 += CURRENT_POS_SEQUENCE;
 
-		success_5 = TRUE;
+		success_3 = TRUE;
 
 		pos++
-		if (success_5)
-		{
-			success_17 = TRUE;
-
-		}
-
 	}
 	while(0)
 
-	if (success_3 && success_17)
+	if (success_3)
 	{
-		success_19 = TRUE;
+		success_9 = TRUE;
 
 	}
 
-	if (!success_19)
+	if (!success_9)
 	{
-		UNDEF _26 = NONE
+		UNDEF _24 = NONE
 
-		bool success_27 = FALSE
+		bool success_25 = FALSE
 
 		do
 		{
-			UNDEF _20 = NONE
+			UNDEF _10 = NONE
 
-			bool success_21 = FALSE
+			bool success_11 = FALSE
 
-			str _22 = NONE
+			str _12 = NONE
 
-			bool success_23 = FALSE
+			bool success_13 = FALSE
 
-			if (!(!STRNCMP(pos, "float")))
+			if (!(!STRNCMP(pos, "deque")))
 			{
-				str _24 = NONE
+				str _14 = NONE
 
-				bool success_25 = FALSE
+				bool success_15 = FALSE
 
-				if (!(!STRNCMP(pos, "double")))
+				if (!(!STRNCMP(pos, "vector")))
 				{
-					break
+					str _16 = NONE
+
+					bool success_17 = FALSE
+
+					if (!(!STRNCMP(pos, "queue")))
+					{
+						str _18 = NONE
+
+						bool success_19 = FALSE
+
+						if (!(!STRNCMP(pos, "stack")))
+						{
+							str _20 = NONE
+
+							bool success_21 = FALSE
+
+							if (!(!STRNCMP(pos, "list")))
+							{
+								str _22 = NONE
+
+								bool success_23 = FALSE
+
+								if (!(!STRNCMP(pos, "forward_list")))
+								{
+									break
+								}
+								else 
+								{
+									_22 += CURRENT_POS_SEQUENCE;
+
+									success_23 = TRUE;
+
+								}
+
+							}
+							else 
+							{
+								_20 += CURRENT_POS_SEQUENCE;
+
+								success_21 = TRUE;
+
+							}
+
+						}
+						else 
+						{
+							_18 += CURRENT_POS_SEQUENCE;
+
+							success_19 = TRUE;
+
+						}
+
+					}
+					else 
+					{
+						_16 += CURRENT_POS_SEQUENCE;
+
+						success_17 = TRUE;
+
+					}
+
 				}
 				else 
 				{
-					_24 += CURRENT_POS_SEQUENCE;
+					_14 += CURRENT_POS_SEQUENCE;
 
-					success_25 = TRUE;
+					success_15 = TRUE;
 
 				}
 
 			}
 			else 
 			{
-				_22 += CURRENT_POS_SEQUENCE;
+				_12 += CURRENT_POS_SEQUENCE;
 
-				success_23 = TRUE;
+				success_13 = TRUE;
 
 			}
 
-			_20 += CURRENT_POS_SEQUENCE;
+			_10 += CURRENT_POS_SEQUENCE;
 
-			success_21 = TRUE;
+			success_11 = TRUE;
 
 			pos++
 		}
 		while(0)
 
-		if (success_21)
+		if (success_11)
 		{
-			success_27 = TRUE;
+			success_25 = TRUE;
 
 		}
 
-		if (!success_27)
+		if (!success_25)
 		{
 			UNDEF _42 = NONE
 
@@ -1556,6 +1548,23 @@ Rule(cll_csupport_types) {
 
 			do
 			{
+				str _26 = NONE
+
+				bool success_27 = FALSE
+
+				if (!STRNCMP(pos, "unsigned"))
+				{
+					_26 += CURRENT_POS_SEQUENCE;
+
+					success_27 = TRUE;
+
+					pos++
+				}
+
+				UNDEF _40 = NONE
+
+				bool success_41 = FALSE
+
 				UNDEF _28 = NONE
 
 				bool success_29 = FALSE
@@ -1564,48 +1573,33 @@ Rule(cll_csupport_types) {
 
 				bool success_31 = FALSE
 
-				if (!(!STRNCMP(pos, "deque")))
+				if (!(!STRNCMP(pos, "char")))
 				{
 					str _32 = NONE
 
 					bool success_33 = FALSE
 
-					if (!(!STRNCMP(pos, "vector")))
+					if (!(!STRNCMP(pos, "short")))
 					{
 						str _34 = NONE
 
 						bool success_35 = FALSE
 
-						if (!(!STRNCMP(pos, "queue")))
+						if (!(!STRNCMP(pos, "int")))
 						{
 							str _36 = NONE
 
 							bool success_37 = FALSE
 
-							if (!(!STRNCMP(pos, "stack")))
+							if (!(!STRNCMP(pos, "long")))
 							{
 								str _38 = NONE
 
 								bool success_39 = FALSE
 
-								if (!(!STRNCMP(pos, "list")))
+								if (!(!STRNCMP(pos, "long long")))
 								{
-									str _40 = NONE
-
-									bool success_41 = FALSE
-
-									if (!(!STRNCMP(pos, "forward_list")))
-									{
-										break
-									}
-									else 
-									{
-										_40 += CURRENT_POS_SEQUENCE;
-
-										success_41 = TRUE;
-
-									}
-
+									break
 								}
 								else 
 								{
@@ -1656,10 +1650,16 @@ Rule(cll_csupport_types) {
 				success_29 = TRUE;
 
 				pos++
+				if (success_29)
+				{
+					success_41 = TRUE;
+
+				}
+
 			}
 			while(0)
 
-			if (success_29)
+			if (success_27 && success_41)
 			{
 				success_43 = TRUE;
 
@@ -3574,7 +3574,7 @@ Token(STRING) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == '"' && *pos == '''))
+	if (!(*pos == '"' || *pos == '''))
 	{
 		return {}
 	}
@@ -3610,7 +3610,7 @@ Token(STRING) {
 
 			bool success_9 = FALSE
 
-			if (!(!(*pos == 'q' && *pos == 'u' && *pos == 'o' && *pos == 't' && *pos == 'e')))
+			if (!(!(*pos == 'q' || *pos == 'u' || *pos == 'o' || *pos == 't' || *pos == 'e')))
 			{
 				break
 			}
@@ -3656,7 +3656,7 @@ Token(NUMBER) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == '+' && *pos == '-'))
+	if (!(*pos == '+' || *pos == '-'))
 	{
 		return {}
 	}
@@ -3719,7 +3719,7 @@ Token(NUMBER) {
 
 			bool success_10 = FALSE
 
-			if (!(*pos == '.' && *pos == ','))
+			if (!(*pos == '.' || *pos == ','))
 			{
 				break
 			}
@@ -4215,7 +4215,7 @@ Token(END) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == ';' && *pos == 'n'))
+	if (!(*pos == ';' || *pos == 'n'))
 	{
 		return {}
 	}
@@ -4286,7 +4286,7 @@ Token(ID) {
 
 	bool success_3 = FALSE
 
-	if (!((*pos>='a' && *pos<='z') && (*pos>='A' && *pos<='Z') && *pos == '_'))
+	if (!((*pos>='a' && *pos<='z') || (*pos>='A' && *pos<='Z') || *pos == '_'))
 	{
 		return {}
 	}
@@ -4300,7 +4300,7 @@ Token(ID) {
 
 	bool success_5 = FALSE
 
-	while ((*pos>='a' && *pos<='z') && (*pos>='A' && *pos<='Z') && (*pos>='0' && *pos<='9') && *pos == '_')
+	while ((*pos>='a' && *pos<='z') || (*pos>='A' && *pos<='Z') || (*pos>='0' && *pos<='9') || *pos == '_')
 	{
 		_4 += CURRENT_POS_SEQUENCE;
 
@@ -4341,19 +4341,19 @@ Rule(spacemode) {
 
 	bool success_5 = FALSE
 
-	if (!(!STRNCMP(pos, "mixed")))
+	if (!(!STRNCMP(pos, "skipped")))
 	{
 		str _6 = NONE
 
 		bool success_7 = FALSE
 
-		if (!(!STRNCMP(pos, "skipped")))
+		if (!(!STRNCMP(pos, "allowed")))
 		{
 			str _8 = NONE
 
 			bool success_9 = FALSE
 
-			if (!(!STRNCMP(pos, "allowed")))
+			if (!(!STRNCMP(pos, "mixed")))
 			{
 				return {}
 			}
@@ -4563,7 +4563,7 @@ Rule(Import_path) {
 
 	bool success_2 = FALSE
 
-	while (!(*pos == '*' && *pos == '"' && *pos == '<' && *pos == '>' && *pos == '|' && *pos == ':' && *pos == '?' && *pos == '.'))
+	while (!(*pos == '*' || *pos == '"' || *pos == '<' || *pos == '>' || *pos == '|' || *pos == ':' || *pos == '?' || *pos == '.'))
 	{
 		_0 += CURRENT_POS_SEQUENCE;
 
@@ -5209,7 +5209,7 @@ Rule(preproc_lang_specific_cond_endif_define_set) {
 
 	bool success_5 = FALSE
 
-	while (!(*pos == 'n' && *pos == 'r'))
+	while (!(*pos == 'n' || *pos == 'r'))
 	{
 		_4 += CURRENT_POS_SEQUENCE;
 
@@ -5264,7 +5264,7 @@ Rule(preproc_lang_specific_cond_endif_define) {
 
 	bool success_5 = FALSE
 
-	while (!(*pos == 'n' && *pos == 'r'))
+	while (!(*pos == 'n' || *pos == 'r'))
 	{
 		_4 += CURRENT_POS_SEQUENCE;
 
@@ -6396,7 +6396,7 @@ Rule(Rule_data_block_key) {
 
 	bool success_2 = FALSE
 
-	while (*pos == 'n' && *pos == 'r')
+	while (*pos == 'n' || *pos == 'r')
 	{
 		_0 += CURRENT_POS_SEQUENCE;
 
@@ -6484,7 +6484,7 @@ Rule(Rule_data_block) {
 
 	bool success_2 = FALSE
 
-	while (*pos == 'r' && *pos == 'n')
+	while (*pos == 'r' || *pos == 'n')
 	{
 		_0 += CURRENT_POS_SEQUENCE;
 
@@ -6661,7 +6661,7 @@ Rule(Rule_nested_rule_hex_bin) {
 
 	bool success_4 = FALSE
 
-	while (*pos == '0' && *pos == '1')
+	while (*pos == '0' || *pos == '1')
 	{
 		_2 += CURRENT_POS_SEQUENCE;
 
@@ -6701,7 +6701,7 @@ Rule(Rule_nested_rule_hex) {
 
 	bool success_4 = FALSE
 
-	while ((*pos>='1' && *pos<='9') && (*pos>='A' && *pos<='F') && (*pos>='a' && *pos<='f'))
+	while ((*pos>='1' && *pos<='9') || (*pos>='A' && *pos<='F') || (*pos>='a' && *pos<='f'))
 	{
 		_2 += CURRENT_POS_SEQUENCE;
 
@@ -6727,7 +6727,7 @@ Rule(Rule_nested_rule) {
 
 	bool success_2 = FALSE
 
-	while (*pos == 'r' && *pos == 'n')
+	while (*pos == 'r' || *pos == 'n')
 	{
 		_0 += CURRENT_POS_SEQUENCE;
 
@@ -7839,7 +7839,7 @@ Rule(AUTO_52) {
 
 	bool success_1 = FALSE
 
-	if (!(!(*pos == '*' && *pos == '"' && *pos == '<' && *pos == '>' && *pos == '|' && *pos == ':' && *pos == '?' && *pos == '.')))
+	if (!(!(*pos == '*' || *pos == '"' || *pos == '<' || *pos == '>' || *pos == '|' || *pos == ':' || *pos == '?' || *pos == '.')))
 	{
 		return {}
 	}
@@ -8109,7 +8109,7 @@ Rule(AUTO_67) {
 
 	bool success_1 = FALSE
 
-	if (!(!(*pos == 'n' && *pos == 'r')))
+	if (!(!(*pos == 'n' || *pos == 'r')))
 	{
 		return {}
 	}
@@ -8145,7 +8145,7 @@ Rule(AUTO_69) {
 
 	bool success_1 = FALSE
 
-	if (!(!(*pos == 'n' && *pos == 'r')))
+	if (!(!(*pos == 'n' || *pos == 'r')))
 	{
 		return {}
 	}
@@ -8445,7 +8445,7 @@ Rule(AUTO_88) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == 'r' && *pos == 'n'))
+	if (!(*pos == 'r' || *pos == 'n'))
 	{
 		return {}
 	}
@@ -8517,7 +8517,7 @@ Rule(AUTO_92) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == 'n' && *pos == 'r'))
+	if (!(*pos == 'n' || *pos == 'r'))
 	{
 		return {}
 	}
@@ -8597,7 +8597,7 @@ Rule(AUTO_98) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == 'r' && *pos == 'n'))
+	if (!(*pos == 'r' || *pos == 'n'))
 	{
 		return {}
 	}
@@ -8655,7 +8655,7 @@ Rule(AUTO_102) {
 
 	bool success_1 = FALSE
 
-	if (!((*pos>='1' && *pos<='9') && (*pos>='A' && *pos<='F') && (*pos>='a' && *pos<='f')))
+	if (!((*pos>='1' && *pos<='9') || (*pos>='A' && *pos<='F') || (*pos>='a' && *pos<='f')))
 	{
 		return {}
 	}
@@ -8691,7 +8691,7 @@ Rule(AUTO_104) {
 
 	bool success_1 = FALSE
 
-	if (!(*pos == '0' && *pos == '1'))
+	if (!(*pos == '0' || *pos == '1'))
 	{
 		return {}
 	}
