@@ -1,4 +1,4 @@
 #pragma once
 #include <exception>
-#include <debug/logging.h>
+#include <logging.h>
 void init(void);

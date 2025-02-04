@@ -5,7 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <unordered_map>
-#include <debug/logging.h>
+#include <logging.h>
 namespace corelib {
     namespace file {
         std::string readFile(const std::filesystem::path filePath);

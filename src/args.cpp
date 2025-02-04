@@ -1,4 +1,4 @@
-#include <args/args.h>
+#include <args.h>
 ND bool Arg::empty() const {
     return prefix == nullptr;
 }

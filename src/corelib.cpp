@@ -1,6 +1,5 @@
 #include <corelib.h>
 #include <sstream>
-#include <debug/logging.h>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -62,8 +61,8 @@ namespace corelib::text {
 
 
     bool isUpper(const char* str) {
-        for (; *str; str++) {  // Iterate until null terminator
-            if (!std::isupper(*str))
+        for (; *str; str++) {
+            if (isalpha(*str) && std::islower(*str))
                 return false;
         }
         return true;
@@ -71,7 +70,7 @@ namespace corelib::text {
 
     bool isUpper(const std::string str) {
         for (char ch : str) {
-            if (!std::isupper(ch))
+            if (isalpha(ch) && std::islower(ch))
                 return false;
         }
         return true;

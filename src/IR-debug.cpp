@@ -158,12 +158,12 @@ namespace IR {
     }
 
     void convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel) {
-        out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value) << ";\n";
+        out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
     }
 
     void convertMethodCall(method_call method, std::ostream &out, int &indentLevel) {
         // Implement method call conversion with proper indentation
-        out << "<method call>\n";
+        out << "<method call>";
     }
 
     void convertMember(const member& mem, std::ostream& out, int &indentLevel) {
@@ -171,11 +171,11 @@ namespace IR {
         switch (mem.type)
         {
         case types::RULE:
-            out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {\n";
+            out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;
         case types::TOKEN:
-            out << "Token(" << std::any_cast<std::string>(mem.value) << ") {\n";
+            out << "Token(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;
         case types::RULE_END:
@@ -230,17 +230,6 @@ namespace IR {
     void convertMembers(arr_t<member> members, std::ostream& out, int &indentLevel) {
         for (auto mem : members)
             convertMember(mem, out, indentLevel);
-    }
-
-    std::string typesToString(types type) {
-        static const std::unordered_map<types, std::string> typesMap = {
-            {types::NONE, "NONE"}, {types::RULE, "RULE"}, {types::VARIABLE, "VARIABLE"},
-            {types::IF, "IF"}, {types::WHILE, "WHILE"}, {types::DOWHILE, "DOWHILE"},
-            {types::ACCESSOR, "ACCESSOR"}, {types::METHOD_CALL, "METHOD_CALL"}, {types::EXIT, "EXIT"},
-            {types::BREAK_LOOP, "BREAK_LOOP"}, {types::CONTINUE_LOOP, "CONTINUE_LOOP"},
-            {types::ASSIGN_VARIABLE, "ASSIGN_VARIABLE"}, {types::INCREASE_POS_COUNTER, "INCREASE_POS_COUNTER"}
-        };
-        return typesMap.at(type);
     }
 
     void printIR(const ir& representation, std::ostream& out, int &indentLevel) {

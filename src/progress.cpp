@@ -74,8 +74,6 @@ std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parse
 std::pair<Parser::Tree, arr_t<Parser::Rule>> getTokensFromRule_rule(Parser::Tree tree, arr_t<Parser::Rule> rule) {
     // is rule
     for (auto &el : rule) {
-        if (!el.data.has_value())
-            continue;
         auto el_data = std::any_cast<obj_t>(el.data);
         auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
         auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
@@ -115,6 +113,8 @@ Parser::Tree getTokensFromRule(Parser::Rule &member) {
     }
 
     literalsToToken(nested_rule, tree);
+    corelib::map::set(data, "nestedRules", std::any(nested_rule));
+    member.data = std::any(data);
     return tree;
 }
 void literalsToToken(Parser::Tree& tree, Parser::Tree &treeInsert) {

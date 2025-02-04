@@ -22,12 +22,20 @@
  9. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
   Add handle of variables in Rule_other
-  Make proper handle of method call in group
+
+  Make proper handle of method call in IR-debug
+
   Add handle of ${} in string
+
   Add skip of spaces between rules
+
   Add defintion of type for group value
+
   Add handle of value when assigned to variable in group
-  Fix error with incorrect literalsToToken convertion and replaceDublications
+
+  Fix error with incorrect replaceDublications
+
+  Add proper handle of nested rules in process_Rule_other
 ### Parser syntax
   
   see ```concepts/syntax```

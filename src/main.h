@@ -21,13 +21,13 @@
 #include <cpuf/printf.h>
 #include <cpuf/constexpr>
 
-#include <debug/logging.h>
+#include <logging.h>
 #include <progress.h>
 #include <corelib.h>
 #include <token_management.h>
 #include <init.h>
 
-#include <args/args.h>
+#include <args.h>
 #include <parser.h>
 #include <convertion.h>
 #include <treeNormalizer.h>

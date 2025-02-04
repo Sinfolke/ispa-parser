@@ -19,7 +19,7 @@ namespace IR {
         UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token
     };
     enum class var_assign_values {
-        NONE, _TRUE, _FALSE, INT, BOOLEAN, STRING, ARRAY, MAP, ID, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
+        NONE, _TRUE, _FALSE, INT, BOOLEAN, STRING, ARRAY, OBJECT, ID, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
     };
     enum class var_assign_types {
         ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO
@@ -40,6 +40,8 @@ namespace IR {
         std::string var_name;
         function_call call;
     };
+    using array = std::vector<assign>;
+    using object = std::unordered_map<std::string, assign>;
     struct expr {
         condition_types id;
         std::any value = {};

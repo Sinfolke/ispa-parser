@@ -1,7 +1,7 @@
 #ifdef ENABLE_TRACER
     #include <boost/stacktrace.hpp>
 #endif
-#include <debug/logging.h>
+#include <logging.h>
 #include <cpuf/color.h>
 #undef Error
 inline void printCallTrace() {
