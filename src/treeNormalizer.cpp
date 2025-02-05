@@ -31,13 +31,13 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
             if (!in_op) {
                 in_op = true;
                 ops.clear();
-                ops.push_back(prev_rule);
+                ops.push_back(Tokens::make_rule(Parser::Rules::Rule_rule, obj_t { {"val", prev_rule}, {"qualifier", Parser::Rule()} }));
                 begin = i - 1;
             }
             prev_op = true;
         } else if (prev_op) {
             // Add the current rule to the operator sequence
-            ops.push_back(rule);
+            ops.push_back(Tokens::make_rule(Parser::Rules::Rule_rule, obj_t { {"val", rule}, {"qualifier", Parser::Rule()} }));
             prev_op = false;
         } else if (in_op) {
             // Create a new combined rule for the operator sequence

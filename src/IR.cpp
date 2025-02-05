@@ -645,19 +645,17 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     } else {
         cpuf::printf("<null>\n");
     }
-    auto Rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-        {"val", rule},
-        {"qualifier", Parser::Rule()}
-    });
     char qualifier = -1;
     if (rule.name == Parser::Rules::Rule_group)
         qualifier = '?';
-    ruleToIr(Rule_rule, new_ir, variable_count, isToken, success_var, qualifier);
+    ruleToIr(rule, new_ir, variable_count, isToken, success_var, qualifier);
     
     
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
-    if (rule.name == Parser::Rules::Rule_group) {
+    auto rule_data = std::any_cast<obj_t>(rule.data);
+    auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
+    if (rule_val.name == Parser::Rules::Rule_group) {
         auto cond = IR::condition {
             arr_t<IR::expr> {
                 {IR::condition_types::NOT}, {IR::condition_types::VARIABLE, success_var}
@@ -768,8 +766,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
         case Parser::Rules::linear_comment:
             return;
         default:
-            return;
-            throw Error("Converting undefined rule");
+            throw Error("Converting undefined rule: %s,%s", Parser::RulesToString(rule_rule.name), Parser::RulesToString(rule.name));
     }
     if (add_space_skip)
         member.push({IR::types::SKIP_SPACES});
@@ -848,7 +845,6 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name) {
         auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
-        cpuf::printf("name: %s[%s], istoken: %d\n", name, fullname, corelib::text::isUpper(name));
         result_ir.add(treeToIr(nested_rules, fullname));
         result_ir.add(rulesToIr(rules, fullname, corelib::text::isUpper(name), true));
 

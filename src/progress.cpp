@@ -71,23 +71,37 @@ std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parse
     });
     return {newToken, _rule};
 }
+bool checkRuleEscaped(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
+    auto num = std::any_cast<Parser::Rule>(corelib::map::get(data, "num"));
+    obj_t num_data;
+    double num_main;
+    if (num.data.has_value()) {
+        num_data = num.as<obj_t>();
+        num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
+    } else {
+        num_main = -1;
+    }
+    if (c[0] == 's' && num_main == 0)
+        return 1;
+    return 0;
+}
 void getTokensFromRule_rule(Parser::Tree &tree, arr_t<Parser::Rule>& rule, bool is_not_rule_rule = false) {
     // is rule
     for (auto &el : rule) {
-        obj_t el_data;
-        Parser::Rule val = el;
-        Parser::Rule qualifier = {};
-        if (!is_not_rule_rule) {
-            el_data = std::any_cast<obj_t>(el.data);
-            val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-            qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
-        }
-        cpuf::printf("val name: %s\n", Parser::RulesToString(val.name));
+        obj_t el_data = std::any_cast<obj_t>(el.data);
+        Parser::Rule val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+        Parser::Rule qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
+        cpuf::printf("el.name: %s, val.name: %s\n", Parser::RulesToString(el.name), Parser::RulesToString(val.name));
         if (
             val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
             val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
         )
         {
+            // do not tokenize rule_escaped if it is \s0
+            if (val.name == Parser::Rules::Rule_escaped && checkRuleEscaped(val))
+                continue;
             // convert into token & add here token instead of string
             auto [newToken, _rule] = getNewRuleAndToken(val, qualifier);
             tree.push_back(newToken);
@@ -99,24 +113,20 @@ void getTokensFromRule_rule(Parser::Tree &tree, arr_t<Parser::Rule>& rule, bool 
             getTokensFromRule_rule(tree, group_val);
             corelib::map::set(group_data, "val", std::any(group_val));
             val.data = std::any(group_data);
-            if (is_not_rule_rule) {
-                el = val;
-            } else {
-                corelib::map::set(el_data, "val", std::any(val));
-                el.data = std::any(el_data);
-            }
+
+            corelib::map::set(el_data, "val", std::any(val));
+            el.data = std::any(el_data);
 
         } else if (val.name == Parser::Rules::Rule_op) {
             auto rules = std::any_cast<arr_t<Parser::Rule>>(val.data);
-            getTokensFromRule_rule(tree, rules, true);
-            val.data = rules;
-            if (is_not_rule_rule) {
-                el = val;
-            } else {
-                corelib::map::set(el_data, "val", std::any(val));
-                el.data = std::any(el_data);
+            for (auto el : rules) {
+                cpuf::printf("rule_op member name: %s\n", Parser::RulesToString(el.name));
             }
+            getTokensFromRule_rule(tree, rules);
+            val.data = rules;
 
+            corelib::map::set(el_data, "val", std::any(val));
+            el.data = std::any(el_data);
         }
     }
 }
@@ -168,7 +178,6 @@ static bool processGroup_helper(arr_t<Parser::Rule> group, Parser::Rule second) 
                 auto groupv = getValueFromRule_rule(group[i]);
                 auto second_groupv = getValueFromRule_rule(second_group[i]);
 
-                cpuf::printf("names: %s,%s\n", Parser::RulesToString(groupv.name), Parser::RulesToString(second_groupv.name));
                 if (Tokens::compare_rule(groupv, second_groupv))
                     continue;
                 return sortPriority(groupv, second_groupv);
@@ -267,11 +276,9 @@ bool sortPriority(Parser::Rule first, Parser::Rule second) {
     else if ((first.name == Parser::Rules::string || first.name == Parser::Rules::Rule_csequence) && second.name == Parser::Rules::Rule_other) 
         return 0;
     if (first.name == Parser::Rules::Rule_group) {
-        cpuf::printf("Group first check\n");
         return processGroup_helper(getValueFromGroup(first), second);
     }    
     if (second.name == Parser::Rules::Rule_group) {
-        cpuf::printf("Group second check\n");
         return !processGroup_helper(getValueFromGroup(second), first);
     }
     return 0;

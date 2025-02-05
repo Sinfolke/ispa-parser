@@ -85,9 +85,11 @@ target_include_directories(tests INTERFACE mod/parser/include mod/parser/stdlibs
 #IR-convertion-group
 add_executable(IR-convertion-group tests/IR-convertion-group.cpp)
 target_link_libraries(IR-convertion-group PRIVATE tests)
-
+#IR-skip-spaces
+add_executable(IR-skip-spaces tests/IR-skip-spaces.cpp)
+target_link_libraries(IR-skip-spaces PRIVATE tests)
 add_test(
     NAME mainTest
-    COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser
+    COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

@@ -25,8 +25,6 @@
 
   Add handle of ${} in string
 
-  Add skip of spaces between rules
-
   Add defintion of type for group value
 
   Add handle of value when assigned to variable in group
