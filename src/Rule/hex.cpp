@@ -10,13 +10,15 @@ Rule(Rule_hex) {
     ISC_STD::skip_spaces(pos);
     pos += 2;
     auto begin = pos;
+    std::string str = "";
     while (isdigit(*pos) || *pos >= 'A' && *pos <= 'F' || *pos >= 'a' && *pos <= 'f') {
-        ++pos;
+        str += *pos;
+        pos++;
     }
     if (begin == pos) 
         return {};
     
-    RULE_SUCCESSD(in, pos, Rule_hex, std::string_view(begin, pos - begin));
+    RULE_SUCCESSD(in, pos, Rule_hex, str);
     return {};
 
 }

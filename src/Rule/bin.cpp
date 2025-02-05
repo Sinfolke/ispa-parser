@@ -10,11 +10,13 @@ Rule(Rule_bin) {
     }
     pos += 2;
     auto begin = pos;
+    std::string str = "";
     while (*pos == '0' || *pos == '1') {
-        ++pos;
+        str += *pos;
+        pos++;
     }
     if (begin == pos) 
         return {};
     
-    RULE_SUCCESSD(in, pos, Rule_bin, std::string_view(begin, pos - begin));
+    RULE_SUCCESSD(in, pos, Rule_bin, str);
 }
