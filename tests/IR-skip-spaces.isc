@@ -1,0 +1,3 @@
+Rule:
+    "spacemode" \s0 "mixed" | "allowed" | "disallowed"
+;
