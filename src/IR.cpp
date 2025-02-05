@@ -264,7 +264,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     arr_t<IR::node_ret_t> success_vars;
     auto values = rulesToIr(val, "", isToken, success_vars, variable_count);
     cpuf::printf("Group Values got: \n");
-    IR::outputIRToConsole(values);
+    //IR::outputIRToConsole(values);
     cpuf::printf("End values\n");
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
@@ -485,7 +485,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
     
-    bool isCallingToken = isupper(name_str[0]);
+    bool isCallingToken = corelib::text::isUpper(name_str);
     var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
     auto block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
@@ -771,6 +771,8 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
             return;
             throw Error("Converting undefined rule");
     }
+    if (add_space_skip)
+        member.push({IR::types::SKIP_SPACES});
 }
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count, bool new_rule) {
     IR::ir result;

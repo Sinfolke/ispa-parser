@@ -71,12 +71,18 @@ std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parse
     });
     return {newToken, _rule};
 }
-std::pair<Parser::Tree, arr_t<Parser::Rule>> getTokensFromRule_rule(Parser::Tree tree, arr_t<Parser::Rule> rule) {
+void getTokensFromRule_rule(Parser::Tree &tree, arr_t<Parser::Rule>& rule, bool is_not_rule_rule = false) {
     // is rule
     for (auto &el : rule) {
-        auto el_data = std::any_cast<obj_t>(el.data);
-        auto val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-        auto qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
+        obj_t el_data;
+        Parser::Rule val = el;
+        Parser::Rule qualifier = {};
+        if (!is_not_rule_rule) {
+            el_data = std::any_cast<obj_t>(el.data);
+            val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+            qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
+        }
+        cpuf::printf("val name: %s\n", Parser::RulesToString(val.name));
         if (
             val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
             val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
@@ -90,37 +96,54 @@ std::pair<Parser::Tree, arr_t<Parser::Rule>> getTokensFromRule_rule(Parser::Tree
         } else if (val.name == Parser::Rules::Rule_group) {
             auto group_data = std::any_cast<obj_t>(val.data);
             auto group_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(group_data, "val"));
-            std::tie(tree, group_val) = getTokensFromRule_rule(tree, group_val);
+            getTokensFromRule_rule(tree, group_val);
             corelib::map::set(group_data, "val", std::any(group_val));
             val.data = std::any(group_data);
-            corelib::map::set(el_data, "val", std::any(val));
-            el.data = std::any(el_data);
+            if (is_not_rule_rule) {
+                el = val;
+            } else {
+                corelib::map::set(el_data, "val", std::any(val));
+                el.data = std::any(el_data);
+            }
+
+        } else if (val.name == Parser::Rules::Rule_op) {
+            auto rules = std::any_cast<arr_t<Parser::Rule>>(val.data);
+            getTokensFromRule_rule(tree, rules, true);
+            val.data = rules;
+            if (is_not_rule_rule) {
+                el = val;
+            } else {
+                corelib::map::set(el_data, "val", std::any(val));
+                el.data = std::any(el_data);
+            }
+
         }
     }
-    return {tree, rule};
 }
 Parser::Tree getTokensFromRule(Parser::Rule &member) {
     Parser::Tree tree;
     auto data = std::any_cast<obj_t>(member.data);
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
     auto name_str = std::any_cast<std::string>(name.data);
-    auto rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
+    auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
     auto nested_rule = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
     if (corelib::text::isLower(name_str)) {
-        std::tie(tree, rule) = getTokensFromRule_rule(tree, rule);
-        corelib::map::set(data, "rule", std::any(rule));
-        member.data = std::any(data);
+        getTokensFromRule_rule(tree, rules);
+
+        // apply changes to map
+        corelib::map::set(data, "rule", std::any(rules));
     }
 
     literalsToToken(nested_rule, tree);
+    // apply changes to map
     corelib::map::set(data, "nestedRules", std::any(nested_rule));
-    member.data = std::any(data);
+    member.data = std::any(data); // apply changes to member
     return tree;
 }
 void literalsToToken(Parser::Tree& tree, Parser::Tree &treeInsert) {
     Parser::Tree tokenSeq;
     for (auto& member : tree) {
-        if (member.name == Parser::Rules::Rule || member.name == Parser::Rules::Rule_nested_rule) {
+        if (member.name == Parser::Rules::Rule) {
             Parser::Tree tokenseq = getTokensFromRule(member);
             tokenSeq.insert(tokenSeq.end(), tokenseq.begin(), tokenseq.end());
         }

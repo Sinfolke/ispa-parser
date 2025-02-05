@@ -22,7 +22,38 @@ namespace IR {
         return typesMap.at(type);
     }
 
-    std::string convert_var_assing_values(var_assign_values value) {
+    std::string convert_var_assing_values(var_assign_values value, std::any data) {
+        switch (value) {
+            case var_assign_values::STRING:
+                return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
+            case var_assign_values::ID:
+            case var_assign_values::INT:
+                return std::any_cast<std::string>(data);
+            case var_assign_values::ARRAY:
+            {
+                auto arr = std::any_cast<IR::array>(data);
+                std::string res = "[";
+                for (auto &el : arr) {
+                    res += convertAssign(el);
+                    res += ',';
+                }
+                res += ']';
+                return res;
+            }
+            case var_assign_values::OBJECT:
+            {
+                auto obj = std::any_cast<IR::object>(data);
+                std::string res = "{";
+                for (auto [key, value] : obj) {
+                    res += key;
+                    res += ": ";
+                    res += convertAssign(value);
+                    res += ",";
+                }
+                res += "}";
+                return res;
+            }
+        }
         static const std::unordered_map<var_assign_values, std::string> typesMap = {
             {var_assign_values::NONE, "NONE"},
             {var_assign_values::_TRUE, "TRUE"},
@@ -93,10 +124,10 @@ namespace IR {
     std::string convertAssign(assign asgn) {
         if (asgn.value == var_assign_values::FUNCTION_CALL)
             return convertFunctionCall(std::any_cast<function_call>(asgn.data));
-        return convert_var_assing_values(asgn.value);
+        return convert_var_assing_values(asgn.value, asgn.data);
     }
     void convertVariable(variable var, std::ostream& out, int &indentLevel) {
-        out << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value) << "\n";
+        out << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value);
     }
 
     void convertExpression(arr_t<expr> expression, std::ostream &out, int &indentLevel) {
@@ -121,14 +152,14 @@ namespace IR {
         indentLevel++;
         convertMembers(block, out, indentLevel);
         indentLevel--;
-        out << std::string(indentLevel, '\t') << "}\n";
+        out << std::string(indentLevel, '\t') << "}";
     }
 
     void convertCondition(condition cond, std::ostream& out, int &indentLevel) {
         convertExpression(cond.expression, out, indentLevel);
         convertBlock(cond.block, out, indentLevel);
         if (!cond.else_block.empty()) {
-            out << std::string(indentLevel, '\t') << "else \n";
+            out << "\n" << std::string(indentLevel, '\t') << "else \n";
             convertBlock(cond.else_block, out, indentLevel);
         }
     }
@@ -167,7 +198,9 @@ namespace IR {
     }
 
     void convertMember(const member& mem, std::ostream& out, int &indentLevel) {
-        out << std::string(indentLevel, '\t');
+        if (mem.type != types::RULE_END)
+            out << std::string(indentLevel, '\t');
+
         switch (mem.type)
         {
         case types::RULE:
@@ -179,7 +212,7 @@ namespace IR {
             indentLevel++;
             break;
         case types::RULE_END:
-            out << "\n}";
+            out << "}";
             indentLevel--;
             break;
         case types::VARIABLE:
@@ -219,6 +252,9 @@ namespace IR {
             break;
         case types::EXIT:
             out << "return {}";
+            break;
+        case types::SKIP_SPACES:
+            out << "skipspaces(pos)";
             break;
         default:
             return;

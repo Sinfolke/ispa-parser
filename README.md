@@ -23,8 +23,6 @@
 ### Todo
   Add handle of variables in Rule_other
 
-  Make proper handle of method call in IR-debug
-
   Add handle of ${} in string
 
   Add skip of spaces between rules
