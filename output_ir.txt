@@ -1,59 +1,36 @@
 Rule(Rule) {
-	token _0 = NONE
+	UNDEF _0 = NONE
 	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_0"))
 	{
-		return {}
-	}
-	_0 = CURRENT_TOKEN
-	success_1 = TRUE
-	pos++
-	skipspaces(pos)
-	UNDEF _4 = NONE
-	bool success_5 = FALSE
-	token _6 = NONE
-	bool success_7 = FALSE
-	if (!(CURRENT_TOKEN == "AUTO_1"))
-	{
-		token _8 = NONE
-		bool success_9 = FALSE
-		if (!(CURRENT_TOKEN == "AUTO_2"))
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_1"))
 		{
-			token _10 = NONE
-			bool success_11 = FALSE
-			if (!(CURRENT_TOKEN == "AUTO_3"))
-			{
-				return {}
-			}
-			else 
-			{
-				_10 = CURRENT_TOKEN
-				success_11 = TRUE
-				skipspaces(pos)
-			}
+			return {}
 		}
 		else 
 		{
-			_8 = CURRENT_TOKEN
-			success_9 = TRUE
-			skipspaces(pos)
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
 		}
 	}
 	else 
 	{
-		_6 = CURRENT_TOKEN
-		success_7 = TRUE
-		skipspaces(pos)
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
 	}
-	_4 += CURRENT_POS_SEQUENCE
-	success_5 = TRUE
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
 	pos++
 	skipspaces(pos)
 }
 Token(AUTO_0) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "spacemode")))
+	if (!(!(*pos == 0x10 && *pos == 0x10)))
 	{
 		return {}
 	}
@@ -63,38 +40,13 @@ Token(AUTO_0) {
 	skipspaces(pos)
 }
 Token(AUTO_1) {
-	str _0 = NONE
+	UNDEF _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "mixed")))
+	if (!(!(*pos == 0x03)))
 	{
 		return {}
 	}
 	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
-	skipspaces(pos)
-}
-Token(AUTO_2) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "allowed")))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
-	skipspaces(pos)
-}
-Token(AUTO_3) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "disallowed")))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
 	pos++
 	skipspaces(pos)
 }

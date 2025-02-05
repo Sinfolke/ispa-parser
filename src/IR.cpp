@@ -382,8 +382,7 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
 }
 IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("hex\n");
-    auto data = std::any_cast<std::string_view>(rule.data);
-    std::string data_str(data.data(), data.size());
+    auto data = std::any_cast<std::string>(rule.data);
     arr_t<IR::expr> expr = {};
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
@@ -396,15 +395,16 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
         is_negative = true;
     }
     if (data.size() % 2 != 0)
-        data_str.insert(data_str.begin(), '0');
-    for (int i = 0; i < data_str.size(); i += 2) {
-        std::string hex(data_str.data() + i, 2);
+        data.insert(data.begin(), '0');
+    cpuf::printf("hex_str: %$\n", data);
+    for (int i = 0; i < data.size(); i += 2) {
+        std::string hex(data.data() + i, 2);
         if (!is_first)
             expr.push_back({IR::condition_types::AND});
         is_first = false;
         expr.push_back({IR::condition_types::CURRENT_CHARACTER});
         expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::NUMBER, (long long) hex::to_decimal(hex)});
+        expr.push_back({IR::condition_types::HEX, hex});
     }
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
@@ -423,8 +423,7 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
 }
 IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("hex\n");
-    auto data = std::any_cast<std::string_view>(rule.data);
-    std::string data_str(data.data(), data.size());
+    auto data = std::any_cast<std::string>(rule.data);
     arr_t<IR::expr> expr = {};
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
@@ -438,16 +437,18 @@ IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &v
         expr.push_back({IR::condition_types::GROUP_OPEN});
         is_negative = true;
     }
-    while (data.size() % 4 != 0)
-        data_str.insert(data_str.begin(), '0');
-    for (int i = 0; i < data_str.size(); i += 2) {
-        std::string bin(data_str.data() + i, 4);
+    while (data.size() % 8 != 0)
+        data.insert(data.begin(), '0');
+    for (int i = 0; i < data.size(); i += 8) {
+        std::string bin(data.data() + i, 8);
+        auto as_hex = hex::from_binary(bin);
+        as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
         if (!is_first)
             expr.push_back({IR::condition_types::AND});
         is_first = false;
         expr.push_back({IR::condition_types::CURRENT_CHARACTER});
         expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::NUMBER, (long long) hex::to_decimal(hex::from_binary(bin))});
+        expr.push_back({IR::condition_types::HEX, as_hex});
     }
     if (is_negative) {
         expr.push_back({IR::condition_types::GROUP_CLOSE});
@@ -671,14 +672,14 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                 if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
                     val.block = convert_op_rule(rules, variable_count, qualifier_char, isToken);
                     for (int j = i + 1; j < new_ir.elements.size(); j++) {
-                        if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER)
+                        if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER || new_ir.elements[j].type == IR::types::SKIP_SPACES)
                             continue;
                         val.else_block.push_back(new_ir.elements[j]);
                         erase_indices.push_back(j);
                     }
                     el.value = val;  // Ensure value is update
                 }
-            } else if (el.type == IR::types::INCREASE_POS_COUNTER) {
+            } else if (el.type == IR::types::INCREASE_POS_COUNTER || el.type == IR::types::SKIP_SPACES) {
                 erase_indices.push_back(i);
             }
         }

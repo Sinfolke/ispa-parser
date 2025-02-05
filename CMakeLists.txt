@@ -83,11 +83,17 @@ add_library(tests INTERFACE)
 target_compile_definitions(tests INTERFACE __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests")
 target_include_directories(tests INTERFACE mod/parser/include mod/parser/stdlibs)
 #IR-convertion-group
-add_executable(IR-convertion-group tests/IR-convertion-group.cpp)
+add_executable(IR-convertion-group tests/tester.cpp)
 target_link_libraries(IR-convertion-group PRIVATE tests)
+target_compile_definitions(IR-convertion-group PRIVATE __PROCESS_FILE__="IR-convertion-group.isc")
 #IR-skip-spaces
-add_executable(IR-skip-spaces tests/IR-skip-spaces.cpp)
+add_executable(IR-skip-spaces tests/tester.cpp)
 target_link_libraries(IR-skip-spaces PRIVATE tests)
+target_compile_definitions(IR-skip-spaces PRIVATE __PROCESS_FILE__="IR-skip-spaces.isc")
+#hex-bin
+add_executable(hex-bin tests/tester.cpp)
+target_link_libraries(hex-bin PRIVATE tests)
+target_compile_definitions(hex-bin PRIVATE __PROCESS_FILE__="hex-bin.isc")
 add_test(
     NAME mainTest
     COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp

@@ -100,6 +100,10 @@ namespace IR {
         } else if (type == condition_types::SUCCESS_CHECK) {
             //cpuf::printf("success_check\n");
             return std::any_cast<std::string>(data) + ".res";
+        } else if (type == condition_types::HEX) {
+            return std::string("0x") + std::any_cast<std::string>(data);
+        } else if (type == condition_types::BIN) {
+            return std::string("0b") + std::any_cast<std::string>(data);
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
             {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
