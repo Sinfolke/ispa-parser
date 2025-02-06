@@ -21,9 +21,6 @@ size_t IR::ir::size() {
 bool IR::ir::empty() {
     return elements.empty();
 }
-IR::var_type deduceTypeOfSingleUnit(Parser::Rule rule) {
-    return IR::var_type::UNDEFINED;
-}
 void push_to_elements(arr_t<IR::element_count> &elements, IR::ir &member) {
     elements.push_back({member.size(), elements.size() > 0 ? elements.back().index_in_rule : 0});
 }
@@ -256,6 +253,86 @@ IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     method_call.call = TreeFunctionToIR(call);
     return method_call;
 }
+IR::var_type deduceVarTypeByValue(Parser::Rule mem) {
+    if (mem.name == Parser::Rules::Rule_rule) {
+        auto memdata = std::any_cast<obj_t>(mem.data);
+        mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
+        cpuf::printf("New mem name: %s\n", Parser::RulesToString(mem.name));
+    }
+    if (mem.name == Parser::Rules::Rule_group) {
+        auto data = std::any_cast<obj_t>(mem.data);
+        auto group = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+        if (group.size() > 1) {
+            cpuf::printf("in_group return string\n"); 
+            return IR::var_type::STRING;
+        } else {
+            cpuf::printf("in_group return other, group[0].name == %s\n", Parser::RulesToString(group[0].name)); 
+            return deduceVarTypeByValue(group[0]);
+        }
+    } if (mem.name == Parser::Rules::Rule_op) {
+        Parser::Rules rules = Parser::Rules::NONE;
+        bool isToken = false;
+        auto val = std::any_cast<arr_t<Parser::Rule>>(mem.data);
+        for (auto el : val) {
+            auto el_data = std::any_cast<obj_t>(el.data);
+            auto el_val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+            if (rules == Parser::Rules::NONE) {
+                rules = el_val.name;
+                if (el_val.name == Parser::Rules::Rule_other) {
+                    auto data = std::any_cast<obj_t>(el_val.data);
+                    auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+                    auto name_str = std::any_cast<std::string>(name.data);
+                    isToken = corelib::text::isUpper(name_str);
+                }
+            } else {
+                if (rules == el_val.name) {
+                    if (el_val.name == Parser::Rules::Rule_other) {
+                        auto data = std::any_cast<obj_t>(el_val.data);
+                        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+                        auto name_str = std::any_cast<std::string>(name.data);
+                        bool _isToken = corelib::text::isUpper(name_str);
+                        if (isToken != _isToken) {
+                            rules = Parser::Rules::NONE;
+                            break;
+                        }
+                    }
+                    continue;
+                } else {
+                    rules = Parser::Rules::NONE;
+                    break;
+                }
+            }
+        }
+        switch(rules) {
+            case Parser::Rules::NONE:
+                cpuf::printf("ANY type");
+                return IR::var_type::ANY; // there are different values so use any type
+            case Parser::Rules::Rule:
+                if (isToken) {
+                    cpuf::printf("Token");
+                    return IR::var_type::Token;
+                } else {
+                    cpuf::printf("Rule");
+                    return IR::var_type::Rule;
+                }
+            default:
+                cpuf::printf("STRING\n");
+                return IR::var_type::STRING;
+        }
+    } else if (mem.name == Parser::Rules::Rule_other) {
+        auto data = std::any_cast<obj_t>(mem.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        bool isToken = corelib::text::isUpper(name_str);
+        if (isToken)
+            return IR::var_type::Token;
+        else 
+            return IR::var_type::Rule;
+    } else {
+        cpuf::printf("RETURNING string as default");
+        return IR::var_type::STRING;
+    }
+}
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     //cpuf::printf("group\n");
     auto data = std::any_cast<obj_t>(rule.data);
@@ -271,6 +348,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
                         createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
                         createEmptyVariable(generateVariableName(variable_count), values.size());
     auto svar = createSuccessVariable(variable_count);
+    var.type = deduceVarTypeByValue(rule);
     arr_t<IR::expr> svar_expr = {};
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     for (int i = 0; i < success_vars.size(); i++) {
@@ -634,28 +712,25 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     auto rule = rules[0];
     rules.erase(rules.begin());
     IR::ir new_ir;
-    cpuf::printf("rule name: %s, IF_RULE_OTHER_VALUE: ", Parser::RulesToString(rule.name));
-    if (rule.name == Parser::Rules::Rule_other) {
-        auto data = std::any_cast<obj_t>(rule.data);
-        auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto first_str = std::any_cast<std::string>(first.data);
-        cpuf::printf("%s\n", first_str);
-    } else if (rule.name == Parser::Rules::string) {
-        auto data = std::any_cast<std::string>(rule.data);
-        cpuf::printf("%s\n", data);
+    auto rule_data = std::any_cast<obj_t>(rule.data);
+    auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
+    auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
+    char qualifier_c;
+    if (qualifier.data.has_value()) {
+        qualifier_c = std::any_cast<char>(qualifier.data);
     } else {
-        cpuf::printf("<null>\n");
+        qualifier_c = '\0';
     }
-    char qualifier = -1;
-    if (rule.name == Parser::Rules::Rule_group)
-        qualifier = '?';
-    ruleToIr(rule, new_ir, variable_count, isToken, success_var, qualifier);
+    char new_qualifier;
+    if (qualifier_c == '+')
+        new_qualifier = '*';
+    else if (qualifier_c == '\0')
+        new_qualifier = '?';
+    ruleToIr(rule, new_ir, variable_count, isToken, success_var, new_qualifier);
     
     
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
-    auto rule_data = std::any_cast<obj_t>(rule.data);
-    auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     if (rule_val.name == Parser::Rules::Rule_group) {
         auto cond = IR::condition {
             arr_t<IR::expr> {
@@ -696,9 +771,6 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
 IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     cpuf::printf("Rule_op\n");
     auto op = std::any_cast<arr_t<Parser::Rule>>(rule.data);
-    for (auto o : op) {
-        cpuf::printf("o type: %s\n", Parser::RulesToString(o.name));
-    }
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
     auto block = createDefaultBlock(var, svar);

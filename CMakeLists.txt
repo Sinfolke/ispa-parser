@@ -94,6 +94,10 @@ target_compile_definitions(IR-skip-spaces PRIVATE __PROCESS_FILE__="IR-skip-spac
 add_executable(hex-bin tests/tester.cpp)
 target_link_libraries(hex-bin PRIVATE tests)
 target_compile_definitions(hex-bin PRIVATE __PROCESS_FILE__="hex-bin.isc")
+#group-variable-type
+add_executable(group-variable-type tests/tester.cpp)
+target_link_libraries(group-variable-type PRIVATE tests)
+target_compile_definitions(group-variable-type PRIVATE __PROCESS_FILE__="group-variable-type.isc")
 add_test(
     NAME mainTest
     COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp
