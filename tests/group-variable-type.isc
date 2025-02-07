@@ -1,6 +1,6 @@
 Rule:
     &first("a") |
-    &second("b" | ID) |
+    &second(ID | 'b') |
     &third(ID) |
     &fourth(id) |
     &fifth(ID | id)

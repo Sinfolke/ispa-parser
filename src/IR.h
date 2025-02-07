@@ -73,6 +73,7 @@ namespace IR {
         void add(ir repr);
         void add(arr_t<member> repr);
         void push(member member);
+        void pop();
         size_t size();
         bool empty();
     };
@@ -84,7 +85,10 @@ namespace IR {
         size_t index_in_ir;
         size_t index_in_rule;
     };
-    using node_ret_t = std::string; 
+    struct node_ret_t {
+        std::string svar;
+        std::string var;
+    }; 
 };
 
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::node_ret_t &success_var, char custom_qualifier = -1);

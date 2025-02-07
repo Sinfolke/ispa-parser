@@ -80,16 +80,20 @@ namespace IR {
 
     std::string conditionTypesToString(condition_types type, std::any data) {
         if (type == condition_types::CHARACTER) {
-                //cpuf::printf("character\n");
-            return std::string("'") + std::any_cast<char>(data) + std::string("'");
+            //cpuf::printf("character\n");
+            auto dt = std::any_cast<char>(data);
+            if (dt == '\0')
+                return std::string("'\\0'");
+            else
+                return std::string("'") + dt + std::string("'");
         } else if (type == condition_types::CURRENT_CHARACTER) {
-            //::printf("current_character\n");
+            //cpuf::printf("current_character\n");
             return "*pos";
         } else if (type == condition_types::NUMBER) {
-//cpuf::printf("number\n");    
+            //cpuf::printf("number\n");    
             return std::to_string(std::any_cast<long long>(data));
         } else if (type == condition_types::STRING) {
-           // cpuf::printf("string\n");
+            //cpuf::printf("string\n");
             return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
         } else if (type == condition_types::STRNCMP) {
             //cpuf::printf("strncmp\n");
@@ -101,8 +105,10 @@ namespace IR {
             //cpuf::printf("success_check\n");
             return std::any_cast<std::string>(data) + ".res";
         } else if (type == condition_types::HEX) {
+            //cpuf::printf("hex\n");
             return std::string("0x") + std::any_cast<std::string>(data);
         } else if (type == condition_types::BIN) {
+            //cpuf::printf("bin\n");
             return std::string("0b") + std::any_cast<std::string>(data);
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
@@ -258,11 +264,13 @@ namespace IR {
             out << "return {}";
             break;
         case types::SKIP_SPACES:
-            out << "skipspaces(pos)";
+            if (std::any_cast<bool>(mem.value)) // isToken
+                out << "skipspaces(pos)";
+            else
+                out << "skipspaces(TOKEN_SEQUENCE)";
             break;
         default:
-            return;
-            break;
+            throw Error("Undefined IR member\n");
         }
         out << '\n';
     }
