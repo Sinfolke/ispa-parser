@@ -301,4 +301,27 @@ namespace IR {
         int identLevel = 0;
         printIR(representation, std::cout, identLevel);
     }
+
+    std::string typesToString(types t) {
+        switch (t) {
+            case types::NONE:                return "NONE";
+            case types::RULE:                return "RULE";
+            case types::TOKEN:               return "TOKEN";
+            case types::RULE_END:            return "RULE_END";
+            case types::VARIABLE:            return "VARIABLE";
+            case types::IF:                  return "IF";
+            case types::WHILE:               return "WHILE";
+            case types::DOWHILE:             return "DOWHILE";
+            case types::ACCESSOR:            return "ACCESSOR";
+            case types::METHOD_CALL:         return "METHOD_CALL";
+            case types::FUNCTION_CALL:       return "FUNCTION_CALL";
+            case types::EXIT:                return "EXIT";
+            case types::BREAK_LOOP:          return "BREAK_LOOP";
+            case types::CONTINUE_LOOP:       return "CONTINUE_LOOP";
+            case types::ASSIGN_VARIABLE:     return "ASSIGN_VARIABLE";
+            case types::INCREASE_POS_COUNTER:return "INCREASE_POS_COUNTER";
+            case types::SKIP_SPACES:         return "SKIP_SPACES";
+            default:                         return "UNKNOWN";
+        }
+    }
 }

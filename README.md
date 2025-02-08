@@ -17,9 +17,10 @@
     - parse each file      
  5. Compile the parser writing the code on C++ by own
  6. Create rules to walk on parser tree if need some optimisations or else before the compilation
- 7. Implement core library. The parser without optimizations can be converted using "on" calls
- 8. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results.
- 9. After all done i can adjust parser rule syntax and do bootstrap
+ 7. Convert rules into IR. First convert high level constructs, then cll and accessor
+ 8. Optimze IR
+ 9. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results. This library converts IR into approaritate language
+ 10. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
   Add handle of variables in Rule_other
 

@@ -646,9 +646,13 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
         UWarning("Qualifier after \\%s ignored", c).print();
     switch (c[0]) {
         case 's':
+            // means do not add skip of spaces
+            add_space = false;
+            cpuf::printf("member prev element: %s\n", IR::typesToString(member.elements.back().type));
+            if (member.elements.back().type == IR::types::SKIP_SPACES)
+                member.pop();
+
             if (num_main == 0) {
-                // means do not add skip of spaces
-                add_space = false;
                 //cpuf::printf("on_exit\n");
                 return {svar.name, var.name};
             } else if (num_main != -1) {
@@ -718,7 +722,7 @@ IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &v
 //     return block;
 // }
 
-arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_count, char qualifier_char, bool isToken) {
+arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_count, IR::variable var, char qualifier_char, bool isToken) {
     if (rules.empty()) {
         return {{IR::types::EXIT}};
     }
@@ -758,7 +762,19 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             arr_t<IR::expr> {
                 {IR::condition_types::NOT}, {IR::condition_types::VARIABLE, success_var.svar}
             },
-            convert_op_rule(rules, variable_count, qualifier_char, isToken)
+            convert_op_rule(rules, variable_count, var, qualifier_char, isToken),
+            {{
+                IR::types::ASSIGN_VARIABLE,
+                IR::variable_assign 
+                {
+                    var.name,
+                    IR::var_assign_types::ASSIGN,
+                    IR::assign {
+                        IR::var_assign_values::ID,
+                        success_var.var
+                    }
+                }
+            }}
         };
         new_ir.push({IR::types::IF, cond});
     } else {
@@ -767,13 +783,25 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             if (el.type == IR::types::IF) {
                 auto val = std::any_cast<IR::condition>(el.value);
                 if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
-                    val.block = convert_op_rule(rules, variable_count, qualifier_char, isToken);
+                    val.block = convert_op_rule(rules, variable_count, var, qualifier_char, isToken);
                     for (int j = i + 1; j < new_ir.elements.size(); j++) {
                         if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER || new_ir.elements[j].type == IR::types::SKIP_SPACES)
                             continue;
                         val.else_block.push_back(new_ir.elements[j]);
                         erase_indices.push_back(j);
                     }
+                    val.else_block.push_back({
+                        IR::types::ASSIGN_VARIABLE,
+                        IR::variable_assign 
+                        {
+                            var.name,
+                            IR::var_assign_types::ASSIGN,
+                            IR::assign {
+                                IR::var_assign_values::ID,
+                                success_var.var
+                            }
+                        }
+                    });
                     el.value = val;  // Ensure value is update
                 }
             } else if (el.type == IR::types::INCREASE_POS_COUNTER || el.type == IR::types::SKIP_SPACES) {
@@ -798,6 +826,7 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     auto block = createDefaultBlock(var, svar);
     auto size = member.size();
     // Add success variable
+    var.type = deduceVarTypeByValue(rule);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
 
@@ -815,13 +844,29 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
             cpuf::printf("\tname: %s\n", id_str);
         }
     }
-    member.add(convert_op_rule(op, variable_count, qualifier_char, isToken));
+    member.add(convert_op_rule(op, variable_count, var, qualifier_char, isToken));
 
     // Append default block
     member.add(block);
 
     return {svar.name, var.name};
 }
+IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+    
+}
+IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+    auto rule_val = std::any_cast<Parser::Rule>(rule.data);
+    switch (rule_val.name)
+    {
+    case Parser::Rules::cll_var:
+        process_cll_var(rule_val, member, variable_count, qualifier_char, isToken);
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::node_ret_t &success_var, char custom_qualifier) {
     //member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
@@ -878,8 +923,6 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
     }
     if (add_space_skip)
         member.push({IR::types::SKIP_SPACES, isToken});
-    else
-        member.pop(); // remove skipspaces as it is last element
 }
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count, bool new_rule) {
     IR::ir result;
