@@ -10,7 +10,7 @@
 #include <corelib.h>
 
 namespace IR {
-    std::string convert_var_type(var_type type);
+    std::string convert_var_type(var_types type);
     std::string convert_var_assing_values(var_assign_values value);
     std::string convert_var_assing_types(var_assign_types value);
     std::string conditionTypesToString(condition_types type, std::any data);

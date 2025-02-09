@@ -13,11 +13,11 @@ template <typename T>
 using arr_t = std::vector<T>;
 
 namespace IR {
-    std::string convert_var_type(var_type type) {
-        static const std::unordered_map<var_type, std::string> typesMap = {
-            {var_type::UNDEFINED, "UNDEF"}, {var_type::BOOLEAN, "bool"}, {var_type::STRING, "str"}, {var_type::NUMBER, "num"},
-            {var_type::ARRAY, "array"}, {var_type::OBJECT, "object"}, {var_type::FUNCTION, "function"},
-            {var_type::ANY, "any"}, {var_type::Rule, "rule"}, {var_type::Token, "token"}
+    std::string convert_var_type(var_types type) {
+        static const std::unordered_map<var_types, std::string> typesMap = {
+            {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
+            {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},
+            {var_types::ANY, "any"}, {var_types::Rule, "rule"}, {var_types::Token, "token"}
         };
         return typesMap.at(type);
     }
@@ -137,7 +137,7 @@ namespace IR {
         return convert_var_assing_values(asgn.value, asgn.data);
     }
     void convertVariable(variable var, std::ostream& out, int &indentLevel) {
-        out << convert_var_type(var.type) << " " << var.name << " = " << convertAssign(var.value);
+        out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
     }
 
     void convertExpression(arr_t<expr> expression, std::ostream &out, int &indentLevel) {
