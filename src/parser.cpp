@@ -490,7 +490,7 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
     Tree tree;
     auto in = text;
     size_t rule_count = 0;
-    for (;*in;) {
+    while (*in) {
         ISC_STD::skip_spaces(in);
         auto comment_res = linear_comment(in);
         if (comment_res.result) {

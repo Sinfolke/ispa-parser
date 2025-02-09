@@ -43,7 +43,7 @@ Rule(expr) {
         }
     }
     pos += res.token.length();
-    
+
     RULE_SUCCESSD(in, pos, expr, res.token);
 }
 Rule(expr_for_arithmetic) {
@@ -97,9 +97,9 @@ Rule(expr_logical) {
     }
     pos += expr2_res.token.length();
     std::unordered_map<const char*, std::any> data {
-        { "expr1", expr_res.token },
+        { "left", expr_res.token },
         { "op", logical_op_res.token },
-        { "expr2", expr2_res.token }
+        { "right", expr2_res.token }
     };
     RULE_SUCCESSD(in, pos, expr_logical, data);
 }
@@ -118,25 +118,35 @@ Rule(expr_compare) {
     }
     pos += expr_res.token.length();
     ISC_STD::skip_spaces(pos);
-    auto compare_op_res = compare_op(pos);
-    if (!compare_op_res.result)
-        return {};
-    pos += compare_op_res.token.length();
-    ISC_STD::skip_spaces(pos);
-    auto expr2_res = expr_arithmetic(pos);
-    if (!expr2_res.result) {
-        expr2_res = expr_group(pos);
+    auto begin = pos;
+    std::vector<::Parser::Rule> ops;
+    std::vector<::Parser::Rule> sequence;
+    while(true) {
+        auto compare_op_res = compare_op(pos);
+        if (!compare_op_res.result)
+            break;
+        pos += compare_op_res.token.length();
+        ISC_STD::skip_spaces(pos);
+        auto expr2_res = expr_arithmetic(pos);
         if (!expr2_res.result) {
-            expr2_res = expr_for_arithmetic(pos);
-            if (!expr2_res.result)
-                return {};
+            expr2_res = expr_group(pos);
+            if (!expr2_res.result) {
+                expr2_res = expr_for_arithmetic(pos);
+                if (!expr2_res.result)
+                    break;
+            }
         }
+        pos += expr2_res.token.length();
+        ops.push_back(compare_op_res.token);
+        sequence.push_back(expr2_res.token);
     }
-    pos += expr2_res.token.length();
+    if (begin == pos)
+        return {};
+
     std::unordered_map<const char*, std::any> data {
-        { "expr1", expr_res.token },
-        { "op", compare_op_res.token },
-        { "expr2", expr2_res.token }
+        { "first", expr_res.token },
+        { "operators", ops },
+        { "sequence", sequence }
     };
     RULE_SUCCESSD(in, pos, expr_compare, data);
 }
@@ -169,7 +179,7 @@ Rule(expr_arithmetic) {
     std::unordered_map<const char*, std::any> data {
         { "first", expr_res.token },
         { "operators", operators },
-        { "values", values }
+        { "sequence", values }
     };
     RULE_SUCCESSD(in, pos, expr_arithmetic, data);
 }
