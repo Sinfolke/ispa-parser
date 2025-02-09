@@ -101,7 +101,6 @@ Rule(accessor_all) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -253,7 +252,6 @@ Rule(cll) {
 			success_6 = TRUE
 			_3 = _5
 		}
-		_3 += CURRENT_POS_SEQUENCE
 		success_4 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -377,7 +375,6 @@ Token(OP) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -473,7 +470,6 @@ Token(COMPARE_OP) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -504,7 +500,6 @@ Token(LOGICAL_OP) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -535,7 +530,6 @@ Token(LOGICAL_NOT) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -566,7 +560,6 @@ Token(LOGICAL_AND) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -597,7 +590,6 @@ Token(LOGICAL_OR) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -663,7 +655,6 @@ Token(LOGICAL_ANDR) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -1039,7 +1030,6 @@ Rule(cll_csupport_types) {
 			success_7 = TRUE
 			_4 = _6
 		}
-		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -1086,7 +1076,6 @@ Rule(cll_csupport_types) {
 				success_23 = TRUE
 				_20 = _22
 			}
-			_20 += CURRENT_POS_SEQUENCE
 			success_21 = TRUE
 			pos++
 			skipspaces(TOKEN_SEQUENCE)
@@ -1172,7 +1161,6 @@ Rule(cll_csupport_types) {
 					success_31 = TRUE
 					_28 = _30
 				}
-				_28 += CURRENT_POS_SEQUENCE
 				success_29 = TRUE
 				pos++
 				skipspaces(TOKEN_SEQUENCE)
@@ -1201,7 +1189,6 @@ Rule(cll_csupport_types) {
 	{
 		_0 = _18
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1360,7 +1347,6 @@ Rule(cll_type_abstract) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1396,7 +1382,6 @@ Rule(cll_type) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1465,7 +1450,6 @@ Rule(cll_if) {
 		success_11 = TRUE
 		_8 = _10
 	}
-	_8 += CURRENT_POS_SEQUENCE
 	success_9 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1698,7 +1682,6 @@ Rule(expr_for_arithmetic) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1739,7 +1722,6 @@ Rule(expr_group) {
 		success_5 = TRUE
 		_2 = _4
 	}
-	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1857,7 +1839,6 @@ Rule(expr) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -1952,7 +1933,6 @@ Rule(function_arguments) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -2080,7 +2060,6 @@ Rule(function_decl) {
 			success_14 = TRUE
 			_11 = _13
 		}
-		_11 += CURRENT_POS_SEQUENCE
 		success_12 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -2138,7 +2117,6 @@ Rule(loop_while) {
 		success_7 = TRUE
 		_4 = _6
 	}
-	_4 += CURRENT_POS_SEQUENCE
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -2193,7 +2171,6 @@ Rule(loop_for) {
 			success_7 = TRUE
 			_4 = _6
 		}
-		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -2277,7 +2254,6 @@ Rule(loop_for) {
 		success_25 = TRUE
 		_22 = _24
 	}
-	_22 += CURRENT_POS_SEQUENCE
 	success_23 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -2384,7 +2360,6 @@ Rule(var_refer) {
 			success_3 = TRUE
 			_0 = _2
 		}
-		_0 += CURRENT_POS_SEQUENCE
 		success_1 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -2475,7 +2450,6 @@ Rule(var_refer) {
 			success_21 = TRUE
 			_18 = _20
 		}
-		_18 += CURRENT_POS_SEQUENCE
 		success_19 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -2546,7 +2520,6 @@ Rule(cll_var) {
 			success_9 = TRUE
 			_6 = _8
 		}
-		_6 += CURRENT_POS_SEQUENCE
 		success_7 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -2607,7 +2580,6 @@ Token(STRING) {
 			success_7 = TRUE
 			_4 = _6
 		}
-		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
 		pos++
 		skipspaces(pos)
@@ -2717,7 +2689,6 @@ Token(NUMBER) {
 	{
 		_2 = _7
 	}
-	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
 	pos++
 	skipspaces(pos)
@@ -2750,7 +2721,6 @@ Token(BOOLEAN) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
@@ -3029,7 +2999,6 @@ Rule(any_data) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -3154,7 +3123,6 @@ Rule(spacemode) {
 		success_5 = TRUE
 		_2 = _4
 	}
-	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -3229,7 +3197,6 @@ Rule(main) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -3271,7 +3238,6 @@ Rule(Import_input) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -3914,7 +3880,6 @@ Rule(preproc) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -4008,7 +3973,6 @@ Rule(Rule_rule) {
 			success_5 = TRUE
 			_2 = _4
 		}
-		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -4096,7 +4060,6 @@ Rule(Rule_rule) {
 	{
 		_0 = _22
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -4181,7 +4144,6 @@ Rule(Rule_op) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -4231,7 +4193,6 @@ Rule(Rule_qualifier) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -4283,7 +4244,6 @@ Rule(Rule_group) {
 			success_5 = TRUE
 			_2 = _4
 		}
-		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -4364,7 +4324,6 @@ Rule(Rule_csequence_symbol) {
 		success_3 = TRUE
 		_0 = _2
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
@@ -4514,7 +4473,6 @@ Rule(Rule_csequence) {
 			success_7 = TRUE
 			_4 = _6
 		}
-		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
@@ -4695,7 +4653,6 @@ Rule(Rule_data_block) {
 		success_10 = TRUE
 		_7 = _9
 	}
-	_7 += CURRENT_POS_SEQUENCE
 	success_8 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)

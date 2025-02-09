@@ -15,14 +15,23 @@ namespace IR {
         CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, HEX, BIN, STRING, STRNCMP,
         VARIABLE, SUCCESS_CHECK
     };
-    enum class var_type {
-        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token
+    enum class var_types {
+        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token,
+        CHAR, UCHAR, SHORT, USHORT, INT, UINT, LONG, ULONG, LONGLONG, ULONGLONG
     };
     enum class var_assign_values {
-        NONE, _TRUE, _FALSE, INT, BOOLEAN, STRING, ARRAY, OBJECT, ID, CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
+        NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, ID, 
+        UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG,
+        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
     };
     enum class var_assign_types {
-        ASSIGN, ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO
+        ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO, BITWISE_AND, BITWISE_OR, BITWISE_ANDR, BITWISE_RIGHTSHFT, BITWISE_LEFTSHIFT, ASSIGN,
+        ASSIGN_ADD, ASSIGN_SUBSTR, ASSIGN_MULTIPLY, ASSIGN_DIVIDE, ASSIGN_MODULO, 
+        ASSIGN_BITWISE_AND, ASSIGN_BITWISE_OR, ASSIGN_BITWISE_ANDR, ASSIGN_BITWISE_RIGHTSHFT, ASSIGN_BITWISE_LEFTSHIFT
+    };
+    struct var_type {
+        var_types type;
+        arr_t<var_type> templ;
     };
     struct member {
         types type = types::NONE;
@@ -53,7 +62,7 @@ namespace IR {
     };
 
     struct variable {
-        var_type type = var_type::UNDEFINED;
+        var_type type = {var_types::UNDEFINED};
         std::string name = "";
         assign value = {var_assign_values::NONE};
         int assign_next_rules = 0;

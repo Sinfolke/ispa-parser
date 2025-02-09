@@ -32,7 +32,7 @@ void push_to_elements_increament(arr_t<IR::element_count> &elements, IR::ir &mem
 }
 IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
     IR::variable var {
-        IR::var_type::UNDEFINED,
+        IR::var_types::UNDEFINED,
         name,
         IR::var_assign_values::NONE,
         assign_next_rules
@@ -69,7 +69,7 @@ void processExitStatements(arr_t<IR::member> &values) {
 
 IR::variable createSuccessVariable(int &variable_count) {
     IR::variable var = createEmptyVariable("success" + generateVariableName(variable_count));
-    var.type = IR::var_type::BOOLEAN;
+    var.type = IR::var_types::BOOLEAN;
     var.value = {IR::var_assign_values::_FALSE};
     return var;
 }
@@ -194,7 +194,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     {
         auto data = std::any_cast<obj_t>(val.data);
         auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
-        newval.value = IR::var_assign_values::INT;
+        newval.value = IR::var_assign_values::NUMBER;
         newval.data = full;
     }
     case Parser::Rules::array:
@@ -247,6 +247,7 @@ IR::function_call TreeFunctionToIR(Parser::Rule rule) {
     call.params = new_params;
     return call;
 }
+
 IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     IR::method_call method_call;
     auto var_rule_data = std::any_cast<obj_t>(rule.data);
@@ -256,7 +257,7 @@ IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     method_call.call = TreeFunctionToIR(call);
     return method_call;
 }
-IR::var_type deduceVarTypeByValue(Parser::Rule mem) {
+IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
     if (mem.name == Parser::Rules::Rule_rule) {
         auto memdata = std::any_cast<obj_t>(mem.data);
         mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
@@ -265,7 +266,7 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem) {
         auto data = std::any_cast<obj_t>(mem.data);
         auto group = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
         if (group.size() > 1) {
-            return IR::var_type::STRING;
+            return IR::var_types::STRING;
         } else {
             return deduceVarTypeByValue(group[0]);
         }
@@ -302,14 +303,14 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem) {
         }
         switch(rules) {
             case Parser::Rules::NONE:
-                return IR::var_type::ANY; // there are different values so use any type
+                return IR::var_types::ANY; // there are different values so use any type
             case Parser::Rules::Rule_other:
                 if (isToken)
-                    return IR::var_type::Token;
+                    return IR::var_types::Token;
                 else
-                    return IR::var_type::Rule;
+                    return IR::var_types::Rule;
             default:
-                return IR::var_type::STRING;
+                return IR::var_types::STRING;
         }
     } else if (mem.name == Parser::Rules::Rule_other) {
         auto data = std::any_cast<obj_t>(mem.data);
@@ -317,11 +318,11 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem) {
         auto name_str = std::any_cast<std::string>(name.data);
         bool isToken = corelib::text::isUpper(name_str);
         if (isToken)
-            return IR::var_type::Token;
+            return IR::var_types::Token;
         else 
-            return IR::var_type::Rule;
+            return IR::var_types::Rule;
     } else {
-        return IR::var_type::STRING;
+        return IR::var_types::STRING;
     }
 }
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
@@ -342,7 +343,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     var.type = deduceVarTypeByValue(rule);
     arr_t<IR::member> var_members;
     switch (var.type) {
-        case IR::var_type::STRING:
+        case IR::var_types::STRING:
         {
             // it is a string so add all values
             for (auto node : node_ret) {
@@ -354,8 +355,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
                 );
             }
         }
-        case IR::var_type::Token:
-        case IR::var_type::Rule:
+        case IR::var_types::Token:
+        case IR::var_types::Rule:
             // it is token so perform a single assign
             var_members.push_back(
                 {
@@ -400,7 +401,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
 
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    var.type = IR::var_type::STRING;
+    var.type = IR::var_types::STRING;
     bool is_negative = false;
     arr_t<IR::expr> expr;
 
@@ -464,7 +465,7 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
     auto data = std::any_cast<std::string>(rule.data);
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    var.type = IR::var_type::STRING;
+    var.type = IR::var_types::STRING;
     arr_t<IR::expr> expr = {
         {IR::condition_types::STRNCMP, data}
     };
@@ -480,7 +481,7 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
     arr_t<IR::expr> expr = {};
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    var.type = IR::var_type::STRING;
+    var.type = IR::var_types::STRING;
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     bool is_first = true, is_negative = false;
     if (qualifier_char == '\0') {
@@ -582,7 +583,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     auto svar = createSuccessVariable(variable_count);
     
     bool isCallingToken = corelib::text::isUpper(name_str);
-    var.type = isCallingToken ? IR::var_type::Token : IR::var_type::Rule;
+    var.type = isCallingToken ? IR::var_types::Token : IR::var_types::Rule;
     auto block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
@@ -638,7 +639,7 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
     }
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    var.type = IR::var_type::STRING;
+    var.type = IR::var_types::STRING;
     arr_t<IR::expr> expression;
     arr_t<IR::member> block = {{IR::types::EXIT}};
     arr_t<IR::member> block_after = createDefaultBlock(var, svar);
@@ -851,8 +852,121 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
 
     return {svar.name, var.name};
 }
-IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+IR::var_type cllTreeCsupportTypeToIR(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    bool is_unsigned = std::any_cast<bool>(corelib::map::get(data, "is_unsigned"));
+    auto val = std::any_cast<std::string>(corelib::map::get(data, "val"));
+    auto templ = std::any_cast<Parser::Rule>(corelib::map::get(data, "template"));
+    IR::var_types result;
+    if (val == "char")
+        result = IR::var_types::CHAR;
+    else if (val == "short")
+        result = IR::var_types::SHORT;
+    else if (val == "int")
+        result = IR::var_types::INT;
+    else if (val == "long")
+        result = IR::var_types::LONG;
+    else if (val == "long long")
+        result = IR::var_types::LONGLONG;
     
+    if (is_unsigned)
+        result = static_cast<IR::var_types>(static_cast<int>(result) + 1); // result++
+    return { result, {} };
+    throw Error("Undefined csupport type");
+}
+IR::var_type cllTreeAbstactTypeToIR(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto val = std::any_cast<std::string>(corelib::map::get(data, "val"));
+    auto templ = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "template"));
+    if (val == "str")
+        return {IR::var_types::STRING, {}};
+    else if (val == "bool")
+        return {IR::var_types::BOOLEAN, {}};
+    else if (val == "num")
+        return {IR::var_types::NUMBER, {}};
+    else if (val == "arr") {
+        IR::var_types type = IR::var_types::ARRAY;
+        IR::var_type _template = cllTreeTypeToIR(templ[0]);
+        return {type, {_template}};
+    } else if (val == "obj") {
+        IR::var_types type = IR::var_types::OBJECT;
+        IR::var_type _template1 = cllTreeTypeToIR(templ[0]);
+        IR::var_type _template2 = cllTreeTypeToIR(templ[1]);
+        return {type, {_template1, _template2}};
+    }
+    throw Error("undefined abstract type");
+}
+IR::var_type cllTreeTypeToIR(Parser::Rule rule) {
+    auto data = std::any_cast<Parser::Rule>(rule.data);
+    if (data.name == Parser::Rules::cll_csupport_types)
+        return cllTreeCsupportTypeToIR(data);
+    else
+        return cllTreeAbstactTypeToIR(data);
+}
+IR::var_assign_types TreeOpToIR(Parser::Rule rule) {
+    auto data = std::any_cast<std::string>(rule.data);
+    if (data == ">>")
+        return IR::var_assign_types::BITWISE_RIGHTSHFT;
+    if (data == "<<")
+        return IR::var_assign_types::BITWISE_LEFTSHIFT;
+    // all other is single character so can use switch
+    switch (data[0]) {
+        case '+':
+            return IR::var_assign_types::ADD;
+        case '-':
+            return IR::var_assign_types::SUBSTR;
+        case '*':
+            return IR::var_assign_types::MULTIPLY;
+        case '/':
+            return IR::var_assign_types::DIVIDE;
+        case '%':
+            return IR::var_assign_types::MODULO;
+        case '&':
+            return IR::var_assign_types::BITWISE_AND;
+        case '|':
+            return IR::var_assign_types::BITWISE_OR;
+        case '^':
+            return IR::var_assign_types::BITWISE_ANDR;
+        default:
+            throw Error("Undefined operator");
+    }
+}
+IR::var_assign_types TreeAssignmentOpToIR(Parser::Rule rule) {
+    auto val = std::any_cast<Parser::Rule>(rule.data);
+    auto v = TreeOpToIR(val);
+    v = static_cast<IR::var_assign_types>(static_cast<int>(v) + static_cast<int>(IR::var_assign_types::ASSIGN));
+    return v;
+}
+IR::var_assign_types TreeOperatorsToIR(Parser::Rule rule) {
+    if (rule.name == Parser::Rules::op)
+        return TreeOpToIR(rule);
+    else if (rule.name == Parser::Rules::assignment_op)
+        return TreeAssignmentOpToIR(rule);
+    else
+        throw Error("Undefined operator");
+}
+IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
+    // get data section
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto type = std::any_cast<Parser::Rule>(corelib::map::get(data, "type"));
+    auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "id"));
+    auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "operator"));
+    auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
+
+    IR::var_type ir_type;
+    IR::var_assign_types assign_types;
+    IR::var_assign_values assign_values;
+    IR::assign assign;
+    if (type.data.has_value()) {
+        ir_type = cllTreeTypeToIR(type);
+    }
+    if (op.data.has_value()) {
+        assign_types = TreeOpToIR(op);
+        if (value.name == Parser::Rules::expr)
+            assign = TreeExprToIR();
+        else
+            assign = TreeTernaryToIR();
+    }
 }
 IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     auto rule_val = std::any_cast<Parser::Rule>(rule.data);
