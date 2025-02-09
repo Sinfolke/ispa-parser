@@ -11,9 +11,10 @@ namespace IR {
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
         HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
-        LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND,
+        LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
+        ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
         CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, HEX, BIN, STRING, STRNCMP,
-        VARIABLE, SUCCESS_CHECK
+        VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL
     };
     enum class var_types {
         UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token,
@@ -22,7 +23,7 @@ namespace IR {
     enum class var_assign_values {
         NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, ID, 
         UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG,
-        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL
+        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR
     };
     enum class var_assign_types {
         ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO, BITWISE_AND, BITWISE_OR, BITWISE_ANDR, BITWISE_RIGHTSHFT, BITWISE_LEFTSHIFT, ASSIGN,
@@ -62,10 +63,10 @@ namespace IR {
     };
 
     struct variable {
-        var_type type = {var_types::UNDEFINED};
         std::string name = "";
+        var_type type = {var_types::UNDEFINED};
+        var_assign_types assign_type = {var_assign_types::ASSIGN};
         assign value = {var_assign_values::NONE};
-        int assign_next_rules = 0;
     };
     struct variable_assign {
         std::string name;

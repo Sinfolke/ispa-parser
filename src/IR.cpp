@@ -30,12 +30,12 @@ void push_to_elements(arr_t<IR::element_count> &elements, IR::ir &member) {
 void push_to_elements_increament(arr_t<IR::element_count> &elements, IR::ir &member) {
     elements.push_back({member.size(), elements.size() > 0 ? elements.back().index_in_rule + 1 : 0});
 }
-IR::variable createEmptyVariable(std::string name, int assign_next_rules=0) {
+IR::variable createEmptyVariable(std::string name) {
     IR::variable var {
-        {IR::var_types::UNDEFINED},
         name,
+        {IR::var_types::UNDEFINED},
+        IR::var_assign_types::ASSIGN,
         IR::var_assign_values::NONE,
-        assign_next_rules
     };
     return var;
 }
@@ -337,8 +337,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     cpuf::printf("End values\n");
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
-                        createEmptyVariable(std::any_cast<std::string>(variable.data), values.size()) :
-                        createEmptyVariable(generateVariableName(variable_count), values.size());
+                        createEmptyVariable(std::any_cast<std::string>(variable.data)) :
+                        createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
     var.type = {deduceVarTypeByValue(rule)};
     arr_t<IR::member> var_members;
@@ -932,6 +932,58 @@ IR::var_assign_types TreeOpToIR(Parser::Rule rule) {
             throw Error("Undefined operator");
     }
 }
+IR::expr TreeOpToExpr(Parser::Rule rule) {
+    auto data = std::any_cast<std::string>(rule.data);
+    if (data == ">>")
+        return {IR::condition_types::RIGHT_BITWISE};
+    if (data == "<<")
+        return {IR::condition_types::LEFT_BITWISE};
+    // all other is single character so can use switch
+    switch (data[0]) {
+        case '+':
+            return {IR::condition_types::ADD};
+        case '-':
+            return {IR::condition_types::SUBSTR};
+        case '*':
+            return {IR::condition_types::MULTIPLY};
+        case '/':
+            return {IR::condition_types::DIVIDE};
+        case '%':
+            return {IR::condition_types::MODULO};
+        case '&':
+            return {IR::condition_types::BITWISE_AND};
+        case '|':
+            return {IR::condition_types::BITWISE_OR};
+        case '^':
+            return {IR::condition_types::BITWISE_ANDR};
+        default:
+            throw Error("Undefined operator");
+    }
+}
+IR::expr TreeCompareOpToExpr(Parser::Rule rule) {
+    auto data = std::any_cast<std::string>(rule.data);
+    if (data == "==")
+        return {IR::condition_types::EQUAL};
+    if (data == "!=")
+        return {IR::condition_types::NOT_EQUAL};
+    if (data == ">")
+        return {IR::condition_types::HIGHER};
+    if (data == "<")
+        return {IR::condition_types::LOWER};
+    if (data == ">=")
+        return {IR::condition_types::HIGHER_OR_EQUAL};
+    if (data == "<=")
+        return {IR::condition_types::LOWER_OR_EQUAL};
+    throw Error("undefined compare operator");
+}
+IR::expr TreeLogicalOpToIR(Parser::Rule rule) {
+    auto data = std::any_cast<Parser::Rule>(rule.data);
+    if (data.name == Parser::Rules::logical_and)
+        return {IR::condition_types::AND};
+    else if (data.name == Parser::Rules::logical_or)
+        return {IR::condition_types::OR};
+    throw Error("undefined logical operator");
+}
 IR::var_assign_types TreeAssignmentOpToIR(Parser::Rule rule) {
     auto val = std::any_cast<Parser::Rule>(rule.data);
     auto v = TreeOpToIR(val);
@@ -946,6 +998,110 @@ IR::var_assign_types TreeOperatorsToIR(Parser::Rule rule) {
     else
         throw Error("Undefined operator");
 }
+arr_t<IR::expr> TreeExprToIR(Parser::Rule expr);
+arr_t<IR::expr> TreeExprGroupToIR(Parser::Rule rule) {
+    arr_t<IR::expr> expr;
+    auto data = std::any_cast<Parser::Rule>(rule.data);
+    auto expression = TreeExprToIR(data);
+    expr.push_back({IR::condition_types::GROUP_OPEN});
+    expr.insert(expr.end(), expression.begin(), expression.end());
+    expr.push_back({IR::condition_types::GROUP_CLOSE});
+    return expr;
+}
+arr_t<IR::expr> TreeExprArithmetic_forToIR(Parser::Rule rule) {
+    arr_t<IR::expr> expr;
+    switch (rule.name)
+    {
+    case Parser::Rules::expr_group:
+    {
+        auto group_res = TreeExprGroupToIR(rule);
+        expr.insert(expr.end(), group_res.begin(), group_res.end());
+        break;
+    }
+    case Parser::Rules::method_call:
+        expr.push_back({IR::condition_types::METHOD_CALL, TreeMethodCallToIR(rule)});
+    case Parser::Rules::cll_function_call:
+        expr.push_back({IR::condition_types::FUNCTION_CALL, TreeFunctionToIR(rule)});
+    case Parser::Rules::any_data:
+        expr.push_back({IR::condition_types::ANY_DATA, TreeAnyDataToIR(rule)});
+    default:
+        throw Error("Undefined data in arithmetic_for");
+        break;
+    }
+}
+arr_t<IR::expr> TreeExprArithmeticToIR(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
+    auto operators = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "operators"));
+    auto sequence = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "sequence"));
+
+    arr_t<IR::expr> cond;
+    auto res = TreeExprArithmetic_forToIR(first);
+    cond.insert(cond.end(), res.begin(), res.end());
+    for (int i = 0; i < operators.size(); i++) {
+        cond.push_back(TreeOpToExpr(operators[i]));
+        res = TreeExprArithmetic_forToIR(sequence[i]);
+        cond.insert(cond.end(), res.begin(), res.end());
+    }
+    return cond;
+}
+arr_t<IR::expr> TreeExprCompareToIR(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
+    auto operators = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "operators"));
+    auto sequence = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "sequence"));
+
+    arr_t<IR::expr> cond;
+    auto res = TreeExprArithmeticToIR(first);
+    cond.insert(cond.end(), res.begin(), res.end());
+    for (int i = 0; i < operators.size(); i++) {
+        cond.push_back(TreeCompareOpToExpr(operators[i]));
+        res = TreeExprArithmeticToIR(sequence[i]);
+        cond.insert(cond.end(), res.begin(), res.end());
+    }
+    return cond;
+}
+arr_t<IR::expr> TreeExprLogicalUnitToIR(Parser::Rule rule) {
+    switch (rule.name)
+    {
+    case Parser::Rules::expr_compare:
+        return TreeExprCompareToIR(rule);
+    case Parser::Rules::expr_arithmetic:
+        return TreeExprArithmeticToIR(rule);
+    case Parser::Rules::expr_for_arithmetic:
+        return TreeExprArithmetic_forToIR(rule);
+    default:
+        throw Error("Undefined unit\n");
+    }
+} 
+arr_t<IR::expr> TreeExprLogicalToIR(Parser::Rule rule) {
+    auto data = std::any_cast<obj_t>(rule.data);
+    auto left = std::any_cast<Parser::Rule>(corelib::map::get(data, "left"));
+    auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "op"));
+    auto right = std::any_cast<Parser::Rule>(corelib::map::get(data, "right"));
+
+    arr_t<IR::expr> cond;
+    auto left_res = TreeExprLogicalUnitToIR(left);
+    auto op_res = TreeLogicalOpToIR(op);
+    auto rigth_res = TreeExprLogicalUnitToIR(right);
+    cond.insert(cond.end(), left_res.begin(), left_res.end());
+    cond.push_back(op_res);
+    cond.insert(cond.end(), rigth_res.begin(), rigth_res.end());
+    return cond;
+}
+arr_t<IR::expr> TreeExprToIR(Parser::Rule expr) {
+    auto val = std::any_cast<Parser::Rule>(expr.data);
+    switch(val.name) {
+        case Parser::Rules::expr_logical:
+            return TreeExprLogicalToIR(val);
+        case Parser::Rules::expr_compare:
+            return TreeExprCompareToIR(val);
+        case Parser::Rules::expr_arithmetic:
+            return TreeExprArithmeticToIR(val);
+        case Parser::Rules::expr_group:
+            return TreeExprGroupToIR(val);
+    }
+}
 IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     // get data section
     auto data = std::any_cast<obj_t>(rule.data);
@@ -956,18 +1112,18 @@ IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &va
 
     IR::var_type ir_type;
     IR::var_assign_types assign_types;
-    IR::var_assign_values assign_values;
     IR::assign assign;
     if (type.data.has_value()) {
         ir_type = cllTreeTypeToIR(type);
     }
-    // if (op.data.has_value()) {
-    //     assign_types = TreeOpToIR(op);
-    //     if (value.name == Parser::Rules::expr)
-    //         assign = TreeExprToIR();
-    //     else
-    //         assign = TreeTernaryToIR();
-    // }
+    if (op.data.has_value()) {
+        assign_types = TreeOpToIR(op);
+        if (value.name == Parser::Rules::expr)
+            assign = {IR::var_assign_values::EXPR, TreeExprToIR(value)};
+        // else
+        //     assign = TreeTernaryToIR(value);
+    }
+    member.push({IR::types::VARIABLE, IR::variable {std::any_cast<std::string>(name.data), ir_type, assign_types, assign}});
 }
 IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     auto rule_val = std::any_cast<Parser::Rule>(rule.data);
