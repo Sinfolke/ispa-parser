@@ -65,7 +65,6 @@ namespace IR {
     struct variable {
         std::string name = "";
         var_type type = {var_types::UNDEFINED};
-        var_assign_types assign_type = {var_assign_types::ASSIGN};
         assign value = {var_assign_values::NONE};
     };
     struct variable_assign {
