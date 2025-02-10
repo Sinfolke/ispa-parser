@@ -127,6 +127,7 @@ Rule(cll_csupport_types)
     }
 
     std::unordered_map<const char*, std::any> data {
+        { "is_unsigned", is_unsigned },
         { "val", val },
         { "template", templated }
     };
