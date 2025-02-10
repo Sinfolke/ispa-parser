@@ -128,7 +128,7 @@ Rule(cll_csupport_types)
 
     std::unordered_map<const char*, std::any> data {
         { "val", val },
-        { "templated", templated }
+        { "template", templated }
     };
     RULE_SUCCESSD(in, pos, cll_csupport_types, data);
 }
@@ -143,7 +143,7 @@ Rule(cll_type)
             return {};
     }
     pos += res.token.length();
-    RULE_SUCCESSD(in, pos, cll_type, res);
+    RULE_SUCCESSD(in, pos, cll_type, res.token);
 }
 Rule(cll_type_abstract) 
 {

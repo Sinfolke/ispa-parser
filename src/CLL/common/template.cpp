@@ -10,7 +10,7 @@ Rule(cll_template_typename) {
         return {};
     }
     pos += p1_1_res.token.length();
-    std::vector<std::any> cll_p1_seq;
+    std::vector<::Parser::Rule> cll_p1_seq;
     while (*pos == ',') {
         pos++;
         ISC_STD::skip_spaces(pos);
@@ -20,7 +20,8 @@ Rule(cll_template_typename) {
         pos += p1_2_res.token.length();
         cll_p1_seq.push_back(p1_2_res.token);
     }
-    std::vector<std::any> data = { p1_1_res.token, cll_p1_seq };
+    std::vector<::Parser::Rule> data = { p1_1_res.token };
+    data.insert(data.end(), cll_p1_seq.begin(), cll_p1_seq.end());
     RULE_SUCCESSD(in, pos, cll_template_typename, data);
 }
 

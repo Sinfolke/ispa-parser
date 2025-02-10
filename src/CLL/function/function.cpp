@@ -62,11 +62,8 @@ Rule(function_arguments) {
         _3.push_back(res2.token);
         ISC_STD::skip_spaces(pos);
     }
-    std::vector<std::any> data {
-        res.token,
-        _3
-    };
-    RULE_SUCCESSD(in, pos, function_arguments, data);
+    _3.insert(_3.begin(), res.token);
+    RULE_SUCCESSD(in, pos, function_arguments, _3);
 }
 Rule(function_parameters) {
     auto pos = in;
