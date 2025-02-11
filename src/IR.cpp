@@ -179,9 +179,24 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
         newval.data = std::any_cast<std::string>(val.data);
         break;
     case Parser::Rules::var_refer:
+    {
+        IR::var_refer refer;
+        auto data = std::any_cast<obj_t>(val.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto pre = std::any_cast<std::string>(corelib::map::get(data, "pre"));
+        auto post = std::any_cast<std::string>(corelib::map::get(data, "post"));
+        if (!pre.empty())
+            refer.pre_increament = true;
+        if (!post.empty())
+            refer.post_increament = true;
+        refer.name = name_str;
+        // skip brace expression for now as it is not used in rules for parser
         newval.value = IR::var_assign_values::VAR_REFER;
-        newval.data = val.data;
+        newval.data = refer;
         break;
+    }
+
     case Parser::Rules::boolean: 
     {
         auto data = std::any_cast<obj_t>(val.data);

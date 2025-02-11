@@ -50,6 +50,11 @@ namespace IR {
         std::string var_name;
         std::vector<function_call> calls;
     };
+    struct var_refer {        
+        bool pre_increament;
+        bool post_increament;
+        std::string name;
+    };
     using array = std::vector<assign>;
     using object = std::unordered_map<std::string, assign>;
     struct expr {

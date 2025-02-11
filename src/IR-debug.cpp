@@ -26,7 +26,17 @@ namespace IR {
         switch (value) {
             case var_assign_values::STRING:
                 return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
-            case var_assign_values::ID:
+            case var_assign_values::VAR_REFER:
+            {
+                auto dt = std::any_cast<var_refer>(data);
+                std::string res;
+                if (dt.pre_increament)
+                    res += "++";
+                res += dt.name;
+                if (dt.post_increament)
+                    res += "++";
+                return res;
+            }
             case var_assign_values::INT:
                 return std::any_cast<std::string>(data);
             case var_assign_values::ARRAY:
