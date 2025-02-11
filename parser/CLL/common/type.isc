@@ -5,7 +5,7 @@ cll_csupport_types:
         |
     ('float' | 'double')
         |
-    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template(cll_template_content_typename)
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template_typename
 
     data:
         type: %1

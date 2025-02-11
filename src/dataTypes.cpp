@@ -93,8 +93,7 @@ Rule(boolean) {
 // ARRAY Rule
 Rule(array) {
     const char* pos = in;
-    std::vector<std::any> data;
-    std::vector<std::any> second_data;
+    std::vector<::Parser::Rule> data;
     ISC_STD::skip_spaces(pos);
     if (*pos != '[') {
         return {};
@@ -115,10 +114,9 @@ Rule(array) {
                 break;
             pos += any_data_s.token.length();
             ISC_STD::skip_spaces(pos);
-            second_data.push_back(any_data_s.token);
+            data.push_back(any_data_s.token);
         }
     }
-    data.push_back(second_data);
     ISC_STD::skip_spaces(pos);
     if (*pos != ']')
         return {};

@@ -4,7 +4,7 @@
 Rule(method_call) {
     auto pos = in;
     ISC_STD::skip_spaces(pos);
-    auto id_res = any_data(pos);
+    auto id_res = id(pos);
     if (!id_res.result) {
         return {};
     }

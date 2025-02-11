@@ -84,11 +84,8 @@ Rule(function_parameters) {
         _3.push_back(id2_res.token);
         ISC_STD::skip_spaces(pos);
     }    
-    std::vector<std::any> data {
-        id_res.token,
-        _3
-    };
-    RULE_SUCCESSD(in, pos, function_parameters, data);
+    _3.insert(_3.begin(), id_res.token);
+    RULE_SUCCESSD(in, pos, function_parameters, _3);
 }
 Rule(cll_function_call) {
     auto pos = in;

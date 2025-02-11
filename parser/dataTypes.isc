@@ -31,10 +31,10 @@ BOOLEAN:
     ;
 ;
 array: 
-    $arr<any> data = [%2, %4];
-
 
     '[' ( (any_data ',')* )? ']'
+
+    data: $2>%2;
 
 object:
     '{'
