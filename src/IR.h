@@ -48,7 +48,7 @@ namespace IR {
     };
     struct method_call {
         std::string var_name;
-        function_call call;
+        std::vector<function_call> calls;
     };
     using array = std::vector<assign>;
     using object = std::unordered_map<std::string, assign>;
