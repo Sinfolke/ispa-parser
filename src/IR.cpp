@@ -172,16 +172,15 @@ void affectIrByQualifier(IR::ir &values, char qualifier, int &variable_count) {
 IR::assign TreeAnyDataToIR(Parser::Rule value) {
     auto val = std::any_cast<Parser::Rule>(value.data);
     IR::assign newval;
-    cpuf::printf("val.name: %s\n", Parser::RulesToString(val.name));
     switch (val.name)
     {
     case Parser::Rules::string:
         newval.value = IR::var_assign_values::STRING;
         newval.data = std::any_cast<std::string>(val.data);
         break;
-    case Parser::Rules::id:
-        newval.value = IR::var_assign_values::ID;
-        newval.data = std::any_cast<std::string>(val.data);
+    case Parser::Rules::var_refer:
+        newval.value = IR::var_assign_values::VAR_REFER;
+        newval.data = val.data;
         break;
     case Parser::Rules::boolean: 
     {
@@ -196,17 +195,18 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
         auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
         newval.value = IR::var_assign_values::NUMBER;
         newval.data = full;
+        break;
     }
     case Parser::Rules::array:
     {
         auto data = std::any_cast<arr_t<Parser::Rule>>(val.data);
         IR::array arr;
         for (auto &el : data) {
-            auto truedata = std::any_cast<Parser::Rule>(el.data);
-            arr.push_back(TreeAnyDataToIR(truedata));
+            arr.push_back(TreeAnyDataToIR(el));
         }
         newval.value = IR::var_assign_values::ARRAY;
         newval.data = arr;
+        break;
     }
     case Parser::Rules::object:
     {
@@ -228,23 +228,24 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
         }
         newval.value = IR::var_assign_values::OBJECT;
         newval.data = obj;
+        break;
     }
+    case Parser::Rules::accessor:
+        newval.value = IR::var_assign_values::ACCESSOR;
+        newval.data = val.data;
+        break;
     default:
+        throw Error("Undefined rule");
         break;
     }
     return newval;
 }
 IR::function_call TreeFunctionToIR(Parser::Rule rule) {
     IR::function_call call;
-    cpuf::printf("1\n");
     auto data = std::any_cast<obj_t>(rule.data);
-    cpuf::printf("2\n");
     call.name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name"))).data);
-    cpuf::printf("3\n");
     auto body = std::any_cast<Parser::Rule>(corelib::map::get(data, "body")); 
-    cpuf::printf("4, name: %s, type: %s\n", Parser::RulesToString(std::any_cast<Parser::Rule>(body.data).name), std::any_cast<Parser::Rule>(body.data).data.type().name());
     auto params = std::any_cast<arr_t<Parser::Rule>>(std::any_cast<Parser::Rule>(body.data).data);
-    cpuf::printf("5\n");
     arr_t<IR::assign> new_params;
     for (auto arg : params) {
         new_params.push_back(TreeAnyDataToIR(arg));
@@ -255,15 +256,10 @@ IR::function_call TreeFunctionToIR(Parser::Rule rule) {
 
 IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     IR::method_call method_call;
-    cpuf::printf("1\n");
     auto var_rule_data = std::any_cast<obj_t>(rule.data);
-    cpuf::printf("2\n");
     auto id = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "object"));
-    cpuf::printf("3, type: %s\n", corelib::map::get(var_rule_data, "call").type().name());
     auto call = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(var_rule_data, "call"));
-    cpuf::printf("4, name: %s\n", Parser::RulesToString(id.name));
     method_call.var_name = std::any_cast<std::string>(id.data);
-    cpuf::printf("5\n");
     std::vector<IR::function_call> calls;
     for (auto cl : call) {
         calls.push_back(TreeFunctionToIR(cl));
@@ -277,7 +273,6 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
         mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
     }
     if (mem.name == Parser::Rules::Rule_group) {
-        cpuf::printf("In group\n");
         auto data = std::any_cast<obj_t>(mem.data);
         auto group = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
         if (group.size() == 0) {
@@ -289,7 +284,6 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
             return deduceVarTypeByValue(group[0]);
         }
     } if (mem.name == Parser::Rules::Rule_op) {
-        cpuf::printf("In rule_op\n");
         Parser::Rules rules = Parser::Rules::NONE;
         bool isToken = false;
         auto val = std::any_cast<arr_t<Parser::Rule>>(mem.data);
@@ -332,7 +326,6 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
                 return IR::var_types::STRING;
         }
     } else if (mem.name == Parser::Rules::Rule_other) {
-        cpuf::printf("In rule_other");
         auto data = std::any_cast<obj_t>(mem.data);
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
         auto name_str = std::any_cast<std::string>(name.data);
@@ -543,6 +536,7 @@ arr_t<IR::expr> TreeExprArithmetic_forToIR(Parser::Rule rule) {
         throw Error("Undefined data in arithmetic_for");
         break;
     }
+    return expr;
 }
 arr_t<IR::expr> TreeExprArithmeticToIR(Parser::Rule rule) {
     auto data = std::any_cast<obj_t>(rule.data);
@@ -1139,12 +1133,10 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
         auto rule_data = std::any_cast<obj_t>(rule.data);
         auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
         auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
-        cpuf::printf("rule.name: %s\n", Parser::RulesToString(rule_val.name));
         if (rule_val.name == Parser::Rules::Rule_other) {
             auto data = std::any_cast<obj_t>(rule_val.data);
             auto id = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
             auto id_str = std::any_cast<std::string>(id.data);
-            cpuf::printf("\tname: %s\n", id_str);
         }
     }
     member.add(convert_op_rule(op, variable_count, var, qualifier_char, isToken));
