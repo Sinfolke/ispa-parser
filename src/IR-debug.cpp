@@ -25,9 +25,11 @@ namespace IR {
     std::string convert_var_assing_values(var_assign_values value, std::any data) {
         switch (value) {
             case var_assign_values::STRING:
+                cpuf::printf("on String\n");
                 return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
             case var_assign_values::VAR_REFER:
             {
+                cpuf::printf("ON var_refer\n");
                 auto dt = std::any_cast<var_refer>(data);
                 std::string res;
                 if (dt.pre_increament)
@@ -37,10 +39,14 @@ namespace IR {
                     res += "++";
                 return res;
             }
+            case var_assign_values::ID:
+                cpuf::printf("on ID\n");
             case var_assign_values::INT:
+                cpuf::printf("on INT\n");
                 return std::any_cast<std::string>(data);
             case var_assign_values::ARRAY:
             {
+                cpuf::printf("on array\n");
                 auto arr = std::any_cast<IR::array>(data);
                 std::string res = "[";
                 for (auto &el : arr) {
@@ -52,6 +58,7 @@ namespace IR {
             }
             case var_assign_values::OBJECT:
             {
+                cpuf::printf("on object\n");
                 auto obj = std::any_cast<IR::object>(data);
                 std::string res = "{";
                 for (auto [key, value] : obj) {
@@ -63,6 +70,16 @@ namespace IR {
                 res += "}";
                 return res;
             }
+            case var_assign_values::ACCESSOR: 
+            {
+                cpuf::printf("accessor\n");
+                return convertAccessor(std::any_cast<accessor>(data));
+            }
+            case var_assign_values::FUNCTION_CALL:
+                return convertFunctionCall(std::any_cast<function_call>(data));
+            case var_assign_values::EXPR:
+                cpuf::printf("On expr\n");
+                return convertExpression(std::any_cast<arr_t<IR::expr>>(data));
         }
         static const std::unordered_map<var_assign_values, std::string> typesMap = {
             {var_assign_values::NONE, "NONE"},
@@ -142,16 +159,41 @@ namespace IR {
         return res;
     }
     std::string convertAssign(assign asgn) {
-        if (asgn.value == var_assign_values::FUNCTION_CALL)
+        if (asgn.kind == var_assign_values::FUNCTION_CALL)
             return convertFunctionCall(std::any_cast<function_call>(asgn.data));
-        return convert_var_assing_values(asgn.value, asgn.data);
+        return convert_var_assing_values(asgn.kind, asgn.data);
+    }
+
+    std::string convertAccessor(accessor acc) {
+        std::string str;
+        for (auto el : acc.elements) {
+            auto el_num = std::any_cast<Parser::Rule>(el.data);
+            auto el_num_data = std::any_cast<obj_t>(el_num.data);
+            auto main = std::any_cast<std::string>(corelib::map::get(el_num_data, "main"));
+            switch (el.name) {
+                case Parser::Rules::accessors_group:
+                    str += '$';
+                    break;
+                case Parser::Rules::accessors_element:
+                    str += '%';
+                    break;
+                case Parser::Rules::accessors_char:
+                    str += '^';
+                    break;
+                default:
+                    throw Error("Undefined accessor");
+            }
+            str += main;
+        }
+        str += '\n';
     }
     void convertVariable(variable var, std::ostream& out, int &indentLevel) {
         out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
     }
 
-    void convertExpression(arr_t<expr> expression, std::ostream &out, int &indentLevel) {
-        out << '(';
+    std::string convertExpression(arr_t<expr> expression) {
+        std::string result;
+        result += '(';
         for (int i = 0; i < expression.size(); i++) {
             expr current = expression[i];
             if (
@@ -159,12 +201,16 @@ namespace IR {
                 current.id == IR::condition_types::OR || 
                 current.id == IR::condition_types::EQUAL ||
                 current.id == IR::condition_types::NOT_EQUAL
-                )
-                out << ' ' << conditionTypesToString(current.id, current.value) << ' ';
-            else
-                out << conditionTypesToString(current.id, current.value);
+                ) {
+                result += ' ';
+                result += conditionTypesToString(current.id, current.value);
+                result += ' ';
+            } else {
+                result += conditionTypesToString(current.id, current.value);
+            }
         }
-        out << ")\n";
+        result += ")\n";
+        return result;
     }
 
     void convertBlock(arr_t<IR::member> block, std::ostream& out, int &indentLevel) {
@@ -176,7 +222,7 @@ namespace IR {
     }
 
     void convertCondition(condition cond, std::ostream& out, int &indentLevel) {
-        convertExpression(cond.expression, out, indentLevel);
+        out << convertExpression(cond.expression);
         convertBlock(cond.block, out, indentLevel);
         if (!cond.else_block.empty()) {
             out << "\n" << std::string(indentLevel, '\t') << "else \n";
@@ -184,29 +230,6 @@ namespace IR {
         }
     }
 
-    void convertAccessor(accessor acc, std::ostream &out, int &indentLevel) {
-        out << std::string(indentLevel, '\t');
-        for (auto el : acc.elements) {
-            auto el_num = std::any_cast<Parser::Rule>(el.data);
-            auto el_num_data = std::any_cast<obj_t>(el_num.data);
-            auto main = std::any_cast<std::string>(corelib::map::get(el_num_data, "main"));
-            switch (el.name) {
-                case Parser::Rules::accessors_group:
-                    out << '$';
-                    break;
-                case Parser::Rules::accessors_element:
-                    out << '%';
-                    break;
-                case Parser::Rules::accessors_char:
-                    out << '^';
-                    break;
-                default:
-                    throw Error("Undefined accessor");
-            }
-            out << main;
-        }
-        out << '\n';
-    }
 
     void convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel) {
         out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
@@ -253,13 +276,13 @@ namespace IR {
             out << "do\n";
             convertBlock(std::any_cast<condition>(mem.value).block, out, indentLevel);
             out << std::string(indentLevel, '\t') << "while";
-            convertExpression(std::any_cast<condition>(mem.value).expression, out, indentLevel);
+            out << convertExpression(std::any_cast<condition>(mem.value).expression);
             break;
         case types::INCREASE_POS_COUNTER:
             out << "pos++";
             break;
         case types::ACCESSOR:
-            convertAccessor(std::any_cast<accessor>(mem.value), out, indentLevel);
+            convertAccessor(std::any_cast<accessor>(mem.value));
             break;
         case types::ASSIGN_VARIABLE:
             convertAssignVariable(std::any_cast<variable_assign>(mem.value), out, indentLevel);

@@ -175,24 +175,28 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     switch (val.name)
     {
     case Parser::Rules::string:
-        newval.value = IR::var_assign_values::STRING;
+        newval.kind = IR::var_assign_values::STRING;
         newval.data = std::any_cast<std::string>(val.data);
         break;
     case Parser::Rules::var_refer:
     {
         IR::var_refer refer;
+        cpuf::printf("in var_refer\n");
+        cpuf::printf("1\n");
         auto data = std::any_cast<obj_t>(val.data);
+        cpuf::printf("2\n");
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        cpuf::printf("3\n");
         auto name_str = std::any_cast<std::string>(name.data);
-        auto pre = std::any_cast<std::string>(corelib::map::get(data, "pre"));
-        auto post = std::any_cast<std::string>(corelib::map::get(data, "post"));
-        if (!pre.empty())
-            refer.pre_increament = true;
-        if (!post.empty())
-            refer.post_increament = true;
+        cpuf::printf("4\n");
+        auto pre = std::any_cast<bool>(corelib::map::get(data, "pre"));
+        cpuf::printf("5\n");
+        auto post = std::any_cast<bool>(corelib::map::get(data, "post"));
+        refer.pre_increament = pre;
+        refer.post_increament = post;
         refer.name = name_str;
         // skip brace expression for now as it is not used in rules for parser
-        newval.value = IR::var_assign_values::VAR_REFER;
+        newval.kind = IR::var_assign_values::VAR_REFER;
         newval.data = refer;
         break;
     }
@@ -201,14 +205,14 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     {
         auto data = std::any_cast<obj_t>(val.data);
         auto val = std::any_cast<int>(corelib::map::get(data, "val"));
-        newval.value = val ? IR::var_assign_values::_TRUE : IR::var_assign_values::_FALSE;
+        newval.kind = val ? IR::var_assign_values::_TRUE : IR::var_assign_values::_FALSE;
         break;
     }
     case Parser::Rules::number: 
     {
         auto data = std::any_cast<obj_t>(val.data);
         auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
-        newval.value = IR::var_assign_values::NUMBER;
+        newval.kind = IR::var_assign_values::NUMBER;
         newval.data = full;
         break;
     }
@@ -219,7 +223,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
         for (auto &el : data) {
             arr.push_back(TreeAnyDataToIR(el));
         }
-        newval.value = IR::var_assign_values::ARRAY;
+        newval.kind = IR::var_assign_values::ARRAY;
         newval.data = arr;
         break;
     }
@@ -241,14 +245,24 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
             auto value_data = TreeAnyDataToIR(value);
             obj[strkey] = value_data;
         }
-        newval.value = IR::var_assign_values::OBJECT;
+        newval.kind = IR::var_assign_values::OBJECT;
         newval.data = obj;
         break;
     }
     case Parser::Rules::accessor:
-        newval.value = IR::var_assign_values::ACCESSOR;
-        newval.data = val.data;
+    {
+        auto data = std::any_cast<obj_t>(val.data);
+        auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
+        auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
+        second.insert(second.begin(), first);
+        for (auto &el : second) {
+            el = std::any_cast<Parser::Rule>(el.data);
+        }
+        IR::accessor mem = {second};
+        newval.kind = IR::var_assign_values::ACCESSOR;
+        newval.data = mem;
         break;
+    }
     default:
         throw Error("Undefined rule");
         break;

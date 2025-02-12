@@ -39,7 +39,7 @@ namespace IR {
         std::any value = {};
     };
     struct assign {
-        var_assign_values value;
+        var_assign_values kind;
         std::any data;
     };
     struct function_call {

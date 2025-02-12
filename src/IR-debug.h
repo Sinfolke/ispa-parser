@@ -17,10 +17,10 @@ namespace IR {
     std::string convertFunctionCall(function_call call);
     std::string convertAssign(assign asgn);
     void convertVariable(variable var, std::ostream& out, int &indentLevel);
-    void convertExpression(arr_t<expr> expression, std::ostream &out, int &indentLevel);
+    std::string convertExpression(arr_t<expr> expression);
     void convertBlock(arr_t<IR::member> block, std::ostream& out, int &indentLevel);
     void convertCondition(condition cond, std::ostream& out, int &indentLevel);
-    void convertAccessor(accessor acc, std::ostream &out, int &indentLevel);
+    std::string convertAccessor(accessor acc);
     void convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel);
     void convertMethodCall(method_call method, std::ostream &out, int &indentLevel);
     void convertMember(const member& mem, std::ostream& out, int &indentLevel);
