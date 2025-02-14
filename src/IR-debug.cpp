@@ -14,13 +14,20 @@ using arr_t = std::vector<T>;
 
 namespace IR {
     std::string convert_var_type(var_types type) {
+        cpuf::printf("number: %d\n", (int) type);
         static const std::unordered_map<var_types, std::string> typesMap = {
             {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
             {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},
-            {var_types::ANY, "any"}, {var_types::Rule, "rule"}, {var_types::Token, "token"}
+            {var_types::ANY, "any"}, {var_types::Rule, "rule"}, {var_types::Token, "token"},
+            {var_types::CHAR, "char"}, {var_types::UCHAR, "unsigned char"}, 
+            {var_types::SHORT, "short"}, {var_types::USHORT, "unsigned short"},
+            {var_types::INT, "int"}, {var_types::UINT, "unsigned int"},
+            {var_types::LONG, "long"}, {var_types::ULONG, "unsigned long"},
+            {var_types::LONGLONG, "long long"}, {var_types::ULONGLONG, "unsigned long long"}
         };
         return typesMap.at(type);
     }
+    
 
     std::string convert_var_assing_values(var_assign_values value, std::any data) {
         switch (value) {
@@ -79,7 +86,7 @@ namespace IR {
                 return convertFunctionCall(std::any_cast<function_call>(data));
             case var_assign_values::EXPR:
                 cpuf::printf("On expr\n");
-                return convertExpression(std::any_cast<arr_t<IR::expr>>(data));
+                return convertExpression(std::any_cast<arr_t<IR::expr>>(data), false);
         }
         static const std::unordered_map<var_assign_values, std::string> typesMap = {
             {var_assign_values::NONE, "NONE"},
@@ -137,6 +144,14 @@ namespace IR {
         } else if (type == condition_types::BIN) {
             //cpuf::printf("bin\n");
             return std::string("0b") + std::any_cast<std::string>(data);
+        } else if (type == condition_types::ANY_DATA) {
+            auto dt = std::any_cast<assign>(data);
+            return convert_var_assing_values(dt.kind, dt.data);
+        } else if (type == condition_types::METHOD_CALL) {
+            return convertMethodCall(std::any_cast<method_call>(data));
+        } else if (type == IR::condition_types::FUNCTION_CALL) {
+            auto call = std::any_cast<function_call>(data);
+            return convertFunctionCall(call);
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
             {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
@@ -186,14 +201,16 @@ namespace IR {
             str += main;
         }
         str += '\n';
+        return str;
     }
     void convertVariable(variable var, std::ostream& out, int &indentLevel) {
         out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
     }
 
-    std::string convertExpression(arr_t<expr> expression) {
+    std::string convertExpression(arr_t<expr> expression, bool with_braces) {
         std::string result;
-        result += '(';
+        if (with_braces)
+            result += '(';
         for (int i = 0; i < expression.size(); i++) {
             expr current = expression[i];
             if (
@@ -209,7 +226,8 @@ namespace IR {
                 result += conditionTypesToString(current.id, current.value);
             }
         }
-        result += ")\n";
+        if (with_braces)
+            result += ")\n";
         return result;
     }
 
@@ -222,7 +240,7 @@ namespace IR {
     }
 
     void convertCondition(condition cond, std::ostream& out, int &indentLevel) {
-        out << convertExpression(cond.expression);
+        out << convertExpression(cond.expression, true);
         convertBlock(cond.block, out, indentLevel);
         if (!cond.else_block.empty()) {
             out << "\n" << std::string(indentLevel, '\t') << "else \n";
@@ -235,9 +253,14 @@ namespace IR {
         out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
     }
 
-    void convertMethodCall(method_call method, std::ostream &out, int &indentLevel) {
+    std::string convertMethodCall(method_call method) {
         // Implement method call conversion with proper indentation
-        out << "<method call>";
+        std::string res = method.var_name;
+        for (auto call : method.calls) {
+            res += '.';
+            res += convertFunctionCall(call);
+        }
+        return res;
     }
 
     void convertMember(const member& mem, std::ostream& out, int &indentLevel) {
@@ -262,7 +285,7 @@ namespace IR {
             convertVariable(std::any_cast<variable>(mem.value), out, indentLevel);
             break;
         case types::METHOD_CALL:
-            convertMethodCall(std::any_cast<method_call>(mem.value), out, indentLevel);
+            out << convertMethodCall(std::any_cast<method_call>(mem.value));
             break;
         case types::IF:
             out << "if ";
@@ -276,7 +299,7 @@ namespace IR {
             out << "do\n";
             convertBlock(std::any_cast<condition>(mem.value).block, out, indentLevel);
             out << std::string(indentLevel, '\t') << "while";
-            out << convertExpression(std::any_cast<condition>(mem.value).expression);
+            out << convertExpression(std::any_cast<condition>(mem.value).expression, true);
             break;
         case types::INCREASE_POS_COUNTER:
             out << "pos++";

@@ -516,3 +516,5770 @@ Token(LOGICAL_NOT) {
 	bool success_3 = FALSE
 	if (!(!STRNCMP(pos, "!")))
 	{
+		str _4 = NONE
+		bool success_5 = FALSE
+		if (!(!STRNCMP(pos, "not")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(LOGICAL_AND) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	str _2 = NONE
+	bool success_3 = FALSE
+	if (!(!STRNCMP(pos, "&&")))
+	{
+		str _4 = NONE
+		bool success_5 = FALSE
+		if (!(!STRNCMP(pos, "and")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(LOGICAL_OR) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	str _2 = NONE
+	bool success_3 = FALSE
+	if (!(!STRNCMP(pos, "||")))
+	{
+		str _4 = NONE
+		bool success_5 = FALSE
+		if (!(!STRNCMP(pos, "or")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(LOGICAL_ANDR) {
+	any _0 = NONE
+	bool success_1 = FALSE
+	str _2 = NONE
+	bool success_3 = FALSE
+	if (!(!STRNCMP(pos, "|&")))
+	{
+		str _10 = NONE
+		bool success_11 = FALSE
+		do
+		{
+			str _4 = NONE
+			bool success_5 = FALSE
+			if (!(!STRNCMP(pos, "and")))
+			{
+				break
+			}
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			pos++
+			str _6 = NONE
+			bool success_7 = FALSE
+			if (*pos != ' ')
+			{
+				break
+			}
+			_6 += CURRENT_POS_SEQUENCE
+			success_7 = TRUE
+			pos++
+			str _8 = NONE
+			bool success_9 = FALSE
+			if (!(!STRNCMP(pos, "or")))
+			{
+				break
+			}
+			_8 += CURRENT_POS_SEQUENCE
+			success_9 = TRUE
+			pos++
+			skipspaces(pos)
+		}		while(0)
+
+		if (success_5 && success_7 && success_9)
+		{
+			success_11 = TRUE
+		}
+		skipspaces(pos)
+		if (!success_11)
+		{
+			return {}
+		}
+		else 
+		{
+			_0 = _10
+		}
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Rule(cll_template_content_typename) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = cll_type(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_7"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = cll_type(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_int) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "NUMBER"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_8"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "NUMBER"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_bool) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "BOOLEAN"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_9"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "BOOLEAN"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_str) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "STRING"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_10"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "STRING"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_arr) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = array(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_11"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = array(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_obj) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = object(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_12"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = object(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_template_content_any_data) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = any_data(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_13"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = any_data(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_csupport_types) {
+	bool is_unsigned = matched($1%1
+)
+	skipspaces(TOKEN_SEQUENCE)
+	str _0 = NONE
+	bool success_1 = FALSE
+	str _18 = NONE
+	bool success_19 = FALSE
+	do
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (CURRENT_TOKEN == "AUTO_14")
+		{
+			_2 = CURRENT_TOKEN
+			success_3 = TRUE
+			pos++
+		}
+		skipspaces(TOKEN_SEQUENCE)
+		token _16 = NONE
+		bool success_17 = FALSE
+		token _4 = NONE
+		bool success_5 = FALSE
+		token _6 = NONE
+		bool success_7 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_15"))
+		{
+			token _8 = NONE
+			bool success_9 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_16"))
+			{
+				token _10 = NONE
+				bool success_11 = FALSE
+				if (!(CURRENT_TOKEN == "AUTO_17"))
+				{
+					token _12 = NONE
+					bool success_13 = FALSE
+					if (!(CURRENT_TOKEN == "AUTO_18"))
+					{
+						token _14 = NONE
+						bool success_15 = FALSE
+						if (!(CURRENT_TOKEN == "AUTO_19"))
+						{
+							break
+						}
+						else 
+						{
+							_14 = CURRENT_TOKEN
+							success_15 = TRUE
+							_4 = _14
+						}
+					}
+					else 
+					{
+						_12 = CURRENT_TOKEN
+						success_13 = TRUE
+						_4 = _12
+					}
+				}
+				else 
+				{
+					_10 = CURRENT_TOKEN
+					success_11 = TRUE
+					_4 = _10
+				}
+			}
+			else 
+			{
+				_8 = CURRENT_TOKEN
+				success_9 = TRUE
+				_4 = _8
+			}
+		}
+		else 
+		{
+			_6 = CURRENT_TOKEN
+			success_7 = TRUE
+			_4 = _6
+		}
+		_4 += CURRENT_POS_SEQUENCE
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		if (success_5)
+		{
+			success_17 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_3 && success_17)
+	{
+		success_19 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (!success_19)
+	{
+		token _26 = NONE
+		bool success_27 = FALSE
+		do
+		{
+			token _20 = NONE
+			bool success_21 = FALSE
+			token _22 = NONE
+			bool success_23 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_20"))
+			{
+				token _24 = NONE
+				bool success_25 = FALSE
+				if (!(CURRENT_TOKEN == "AUTO_21"))
+				{
+					break
+				}
+				else 
+				{
+					_24 = CURRENT_TOKEN
+					success_25 = TRUE
+					_20 = _24
+				}
+			}
+			else 
+			{
+				_22 = CURRENT_TOKEN
+				success_23 = TRUE
+				_20 = _22
+			}
+			_20 += CURRENT_POS_SEQUENCE
+			success_21 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+		}		while(0)
+
+		if (success_21)
+		{
+			success_27 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+		if (!success_27)
+		{
+			token _42 = NONE
+			bool success_43 = FALSE
+			do
+			{
+				token _28 = NONE
+				bool success_29 = FALSE
+				token _30 = NONE
+				bool success_31 = FALSE
+				if (!(CURRENT_TOKEN == "AUTO_22"))
+				{
+					token _32 = NONE
+					bool success_33 = FALSE
+					if (!(CURRENT_TOKEN == "AUTO_23"))
+					{
+						token _34 = NONE
+						bool success_35 = FALSE
+						if (!(CURRENT_TOKEN == "AUTO_24"))
+						{
+							token _36 = NONE
+							bool success_37 = FALSE
+							if (!(CURRENT_TOKEN == "AUTO_25"))
+							{
+								token _38 = NONE
+								bool success_39 = FALSE
+								if (!(CURRENT_TOKEN == "AUTO_26"))
+								{
+									token _40 = NONE
+									bool success_41 = FALSE
+									if (!(CURRENT_TOKEN == "AUTO_27"))
+									{
+										break
+									}
+									else 
+									{
+										_40 = CURRENT_TOKEN
+										success_41 = TRUE
+										_28 = _40
+									}
+								}
+								else 
+								{
+									_38 = CURRENT_TOKEN
+									success_39 = TRUE
+									_28 = _38
+								}
+							}
+							else 
+							{
+								_36 = CURRENT_TOKEN
+								success_37 = TRUE
+								_28 = _36
+							}
+						}
+						else 
+						{
+							_34 = CURRENT_TOKEN
+							success_35 = TRUE
+							_28 = _34
+						}
+					}
+					else 
+					{
+						_32 = CURRENT_TOKEN
+						success_33 = TRUE
+						_28 = _32
+					}
+				}
+				else 
+				{
+					_30 = CURRENT_TOKEN
+					success_31 = TRUE
+					_28 = _30
+				}
+				_28 += CURRENT_POS_SEQUENCE
+				success_29 = TRUE
+				pos++
+				skipspaces(TOKEN_SEQUENCE)
+			}			while(0)
+
+			if (success_29)
+			{
+				success_43 = TRUE
+			}
+			skipspaces(TOKEN_SEQUENCE)
+			if (!success_43)
+			{
+				return {}
+			}
+			else 
+			{
+				_0 = _42
+			}
+		}
+		else 
+		{
+			_0 = _26
+		}
+	}
+	else 
+	{
+		_0 = _18
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_type_abstract) {
+	any _24 = NONE
+	bool success_25 = FALSE
+	any _0 = NONE
+	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_28"))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_29"))
+		{
+			token _6 = NONE
+			bool success_7 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_30"))
+			{
+				token _8 = NONE
+				bool success_9 = FALSE
+				if (!(CURRENT_TOKEN == "AUTO_31"))
+				{
+					token _10 = NONE
+					bool success_11 = FALSE
+					if (!(CURRENT_TOKEN == "AUTO_32"))
+					{
+						str _16 = NONE
+						bool success_17 = FALSE
+						do
+						{
+							token _12 = NONE
+							bool success_13 = FALSE
+							if (!(CURRENT_TOKEN == "AUTO_33"))
+							{
+								break
+							}
+							_12 = CURRENT_TOKEN
+							success_13 = TRUE
+							pos++
+							skipspaces(TOKEN_SEQUENCE)
+							rule _14 = NONE
+							bool success_15 = FALSE
+							_14 = cll_template_typename(TOKEN_SEQUENCE)
+							if (!(_14.res))
+							{
+								break
+							}
+							success_15 = TRUE
+							pos++
+							skipspaces(TOKEN_SEQUENCE)
+						}						while(0)
+
+						if (success_13 && success_15)
+						{
+							success_17 = TRUE
+						}
+						skipspaces(TOKEN_SEQUENCE)
+						if (!success_17)
+						{
+							str _22 = NONE
+							bool success_23 = FALSE
+							do
+							{
+								token _18 = NONE
+								bool success_19 = FALSE
+								if (!(CURRENT_TOKEN == "AUTO_34"))
+								{
+									break
+								}
+								_18 = CURRENT_TOKEN
+								success_19 = TRUE
+								pos++
+								skipspaces(TOKEN_SEQUENCE)
+								rule _20 = NONE
+								bool success_21 = FALSE
+								_20 = cll_template_typename(TOKEN_SEQUENCE)
+								if (!(_20.res))
+								{
+									break
+								}
+								success_21 = TRUE
+								pos++
+								skipspaces(TOKEN_SEQUENCE)
+							}							while(0)
+
+							if (success_19 && success_21)
+							{
+								success_23 = TRUE
+							}
+							skipspaces(TOKEN_SEQUENCE)
+							if (!success_23)
+							{
+								return {}
+							}
+							else 
+							{
+								_0 = _22
+							}
+						}
+						else 
+						{
+							_0 = _16
+						}
+					}
+					else 
+					{
+						_10 = CURRENT_TOKEN
+						success_11 = TRUE
+						_0 = _10
+					}
+				}
+				else 
+				{
+					_8 = CURRENT_TOKEN
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_25 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_type) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = cll_csupport_types(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = abstract(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_if) {
+	token _2 = NONE
+	bool success_3 = FALSE
+	token _0 = NONE
+	bool success_1 = FALSE
+	while (CURRENT_TOKEN == "AUTO_35")
+	{
+		_0 += CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_3 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_36"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _6 = NONE
+	bool success_7 = FALSE
+	_6 = expr(TOKEN_SEQUENCE)
+	if (!(_6.res))
+	{
+		return {}
+	}
+	success_7 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _14 = NONE
+	bool success_15 = FALSE
+	rule _8 = NONE
+	bool success_9 = FALSE
+	rule _10 = NONE
+	bool success_11 = FALSE
+	_10 = cll_block(TOKEN_SEQUENCE)
+	if (!(_10.res))
+	{
+		rule _12 = NONE
+		bool success_13 = FALSE
+		_12 = cll_spaced_block(TOKEN_SEQUENCE)
+		if (!(_12.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_13 = TRUE
+			_8 = _12
+		}
+	}
+	else 
+	{
+		success_11 = TRUE
+		_8 = _10
+	}
+	_8 += CURRENT_POS_SEQUENCE
+	success_9 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_9)
+	{
+		success_15 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_ternary) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = expr(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_37"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _4 = NONE
+	bool success_5 = FALSE
+	_4 = expr(TOKEN_SEQUENCE)
+	if (!(_4.res))
+	{
+		return {}
+	}
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _6 = NONE
+	bool success_7 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_38"))
+	{
+		return {}
+	}
+	_6 = CURRENT_TOKEN
+	success_7 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _8 = NONE
+	bool success_9 = FALSE
+	_8 = expr(TOKEN_SEQUENCE)
+	if (!(_8.res))
+	{
+		return {}
+	}
+	success_9 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_logical) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = compare(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = arithmetic(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = for_arithmetic(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				return {}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _8 = NONE
+	bool success_9 = FALSE
+	rule _10 = NONE
+	bool success_11 = FALSE
+	_10 = compare(TOKEN_SEQUENCE)
+	if (!(_10.res))
+	{
+		rule _12 = NONE
+		bool success_13 = FALSE
+		_12 = arithmetic(TOKEN_SEQUENCE)
+		if (!(_12.res))
+		{
+			rule _14 = NONE
+			bool success_15 = FALSE
+			_14 = for_arithmetic(TOKEN_SEQUENCE)
+			if (!(_14.res))
+			{
+				return {}
+			}
+			else 
+			{
+				success_15 = TRUE
+				_8 = _14
+			}
+		}
+		else 
+		{
+			success_13 = TRUE
+			_8 = _12
+		}
+	}
+	else 
+	{
+		success_11 = TRUE
+		_8 = _10
+	}
+	_8 += CURRENT_POS_SEQUENCE
+	success_9 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_compare) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = arithmetic(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	bool success_8 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "COMPARE_OP"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = arithmetic(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		success_8 = TRUE
+	}
+	if (!success_8)
+	{
+		return {}
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_arithmetic) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = for_arithmetic(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	bool success_8 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "OP"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = for_arithmetic(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		success_8 = TRUE
+	}
+	if (!success_8)
+	{
+		return {}
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_for_arithmetic) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = group(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = method_call(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = cll_function_call(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+				bool success_9 = FALSE
+				_8 = any_data(TOKEN_SEQUENCE)
+				if (!(_8.res))
+				{
+					return {}
+				}
+				else 
+				{
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_group) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_39"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	rule _4 = NONE
+	bool success_5 = FALSE
+	_4 = cll_ternary(TOKEN_SEQUENCE)
+	if (!(_4.res))
+	{
+		rule _6 = NONE
+		bool success_7 = FALSE
+		_6 = expr(TOKEN_SEQUENCE)
+		if (!(_6.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_7 = TRUE
+			_2 = _6
+		}
+	}
+	else 
+	{
+		success_5 = TRUE
+		_2 = _4
+	}
+	_2 += CURRENT_POS_SEQUENCE
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr_expr_copiable_method_call) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_40"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = copiable_method_call(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_41"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(expr) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = logical(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = compare(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = arithmetic(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+				bool success_9 = FALSE
+				_8 = group(TOKEN_SEQUENCE)
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+					bool success_11 = FALSE
+					_10 = expr_copiable_method_call(TOKEN_SEQUENCE)
+					if (!(_10.res))
+					{
+						rule _12 = NONE
+						bool success_13 = FALSE
+						_12 = cll_function_call(TOKEN_SEQUENCE)
+						if (!(_12.res))
+						{
+							rule _14 = NONE
+							bool success_15 = FALSE
+							_14 = any_data(TOKEN_SEQUENCE)
+							if (!(_14.res))
+							{
+								return {}
+							}
+							else 
+							{
+								success_15 = TRUE
+								_0 = _14
+							}
+						}
+						else 
+						{
+							success_13 = TRUE
+							_0 = _12
+						}
+					}
+					else 
+					{
+						success_11 = TRUE
+						_0 = _10
+					}
+				}
+				else 
+				{
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(function_body_call) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_42"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = function_arguments(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_43"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(function_body_decl) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_44"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = function_parameters(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_45"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(function_arguments) {
+	any _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = any_data(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(function_parameters) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (CURRENT_TOKEN == "ID")
+	{
+		_0 = CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_function_call) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = function_body_call(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(function_decl) {
+	bool is_declaration_only = true
+	skipspaces(TOKEN_SEQUENCE)
+	bool is_typed = false
+	skipspaces(TOKEN_SEQUENCE)
+	int spaces = %1
+
+	skipspaces(TOKEN_SEQUENCE)
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_46"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = size(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	UNDEF _4 = NONE
+	bool success_5 = FALSE
+	if ()
+	{
+		success_5 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(loop_while) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_47"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = expr(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _4 = NONE
+	bool success_5 = FALSE
+	rule _6 = NONE
+	bool success_7 = FALSE
+	_6 = cll_block(TOKEN_SEQUENCE)
+	if (!(_6.res))
+	{
+		rule _8 = NONE
+		bool success_9 = FALSE
+		_8 = cll_spaced_block(TOKEN_SEQUENCE)
+		if (!(_8.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_9 = TRUE
+			_4 = _8
+		}
+	}
+	else 
+	{
+		success_7 = TRUE
+		_4 = _6
+	}
+	_4 += CURRENT_POS_SEQUENCE
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(loop_for) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = for(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_48"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _10 = NONE
+	bool success_11 = FALSE
+	do
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		rule _6 = NONE
+		bool success_7 = FALSE
+		_6 = expr(TOKEN_SEQUENCE)
+		if (!(_6.res))
+		{
+			rule _8 = NONE
+			bool success_9 = FALSE
+			_8 = cll_var(TOKEN_SEQUENCE)
+			if (!(_8.res))
+			{
+				break
+			}
+			else 
+			{
+				success_9 = TRUE
+				_4 = _8
+			}
+		}
+		else 
+		{
+			success_7 = TRUE
+			_4 = _6
+		}
+		_4 += CURRENT_POS_SEQUENCE
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_5)
+	{
+		success_11 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _12 = NONE
+	bool success_13 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_49"))
+	{
+		return {}
+	}
+	_12 = CURRENT_TOKEN
+	success_13 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _14 = NONE
+	bool success_15 = FALSE
+	_14 = expr(TOKEN_SEQUENCE)
+	if (_14.res)
+	{
+		success_15 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _16 = NONE
+	bool success_17 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_50"))
+	{
+		return {}
+	}
+	_16 = CURRENT_TOKEN
+	success_17 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _18 = NONE
+	bool success_19 = FALSE
+	_18 = expr(TOKEN_SEQUENCE)
+	if (_18.res)
+	{
+		success_19 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _20 = NONE
+	bool success_21 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_51"))
+	{
+		return {}
+	}
+	_20 = CURRENT_TOKEN
+	success_21 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _22 = NONE
+	bool success_23 = FALSE
+	rule _24 = NONE
+	bool success_25 = FALSE
+	_24 = cll_block(TOKEN_SEQUENCE)
+	if (!(_24.res))
+	{
+		rule _26 = NONE
+		bool success_27 = FALSE
+		_26 = cll_spaced_block(TOKEN_SEQUENCE)
+		if (!(_26.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_27 = TRUE
+			_22 = _26
+		}
+	}
+	else 
+	{
+		success_25 = TRUE
+		_22 = _24
+	}
+	_22 += CURRENT_POS_SEQUENCE
+	success_23 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(method_call) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _6 = NONE
+	bool success_7 = FALSE
+	bool success_8 = FALSE
+	while (1)
+	{
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_52"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = cll_function_call(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		success_8 = TRUE
+	}
+	if (!success_8)
+	{
+		return {}
+	}
+	if (success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(copiable_method_call) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_53"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = method_call(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(var_refer) {
+	any pre = matched($1
+)
+	skipspaces(TOKEN_SEQUENCE)
+	any post = matched($3
+)
+	skipspaces(TOKEN_SEQUENCE)
+	token _6 = NONE
+	bool success_7 = FALSE
+	do
+	{
+		token _0 = NONE
+		bool success_1 = FALSE
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_54"))
+		{
+			token _4 = NONE
+			bool success_5 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_55"))
+			{
+				break
+			}
+			else 
+			{
+				_4 = CURRENT_TOKEN
+				success_5 = TRUE
+				_0 = _4
+			}
+		}
+		else 
+		{
+			_2 = CURRENT_TOKEN
+			success_3 = TRUE
+			_0 = _2
+		}
+		_0 += CURRENT_POS_SEQUENCE
+		success_1 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_1)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _8 = NONE
+	bool success_9 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_8 = CURRENT_TOKEN
+	success_9 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _16 = NONE
+	bool success_17 = FALSE
+	do
+	{
+		token _10 = NONE
+		bool success_11 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_56"))
+		{
+			break
+		}
+		_10 = CURRENT_TOKEN
+		success_11 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _12 = NONE
+		bool success_13 = FALSE
+		_12 = expr(TOKEN_SEQUENCE)
+		if (!(_12.res))
+		{
+			break
+		}
+		success_13 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _14 = NONE
+		bool success_15 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_57"))
+		{
+			break
+		}
+		_14 = CURRENT_TOKEN
+		success_15 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_11 && success_13 && success_15)
+	{
+		success_17 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _24 = NONE
+	bool success_25 = FALSE
+	do
+	{
+		token _18 = NONE
+		bool success_19 = FALSE
+		token _20 = NONE
+		bool success_21 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_58"))
+		{
+			token _22 = NONE
+			bool success_23 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_59"))
+			{
+				break
+			}
+			else 
+			{
+				_22 = CURRENT_TOKEN
+				success_23 = TRUE
+				_18 = _22
+			}
+		}
+		else 
+		{
+			_20 = CURRENT_TOKEN
+			success_21 = TRUE
+			_18 = _20
+		}
+		_18 += CURRENT_POS_SEQUENCE
+		success_19 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_19)
+	{
+		success_25 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(cll_var) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = cll_type(TOKEN_SEQUENCE)
+	if (_0.res)
+	{
+		success_1 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _12 = NONE
+	bool success_13 = FALSE
+	do
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = assignment_op(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			break
+		}
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _6 = NONE
+		bool success_7 = FALSE
+		rule _8 = NONE
+		bool success_9 = FALSE
+		_8 = expr(TOKEN_SEQUENCE)
+		if (!(_8.res))
+		{
+			rule _10 = NONE
+			bool success_11 = FALSE
+			_10 = cll_ternary(TOKEN_SEQUENCE)
+			if (!(_10.res))
+			{
+				break
+			}
+			else 
+			{
+				success_11 = TRUE
+				_6 = _10
+			}
+		}
+		else 
+		{
+			success_9 = TRUE
+			_6 = _8
+		}
+		_6 += CURRENT_POS_SEQUENCE
+		success_7 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_5 && success_7)
+	{
+		success_13 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Token(STRING) {
+	quote = %1
+
+	skipspaces(pos)
+	data = $1
+
+	skipspaces(pos)
+	str _2 = NONE
+	bool success_3 = FALSE
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == '"' || *pos == '''))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+	if (success_1)
+	{
+		success_3 = TRUE
+	}
+	skipspaces(pos)
+	any _10 = NONE
+	bool success_11 = FALSE
+	while (1)
+	{
+		any _4 = NONE
+		bool success_5 = FALSE
+		str _6 = NONE
+		bool success_7 = FALSE
+		if (!(!STRNCMP(pos, "\\${quote}")))
+		{
+			str _8 = NONE
+			bool success_9 = FALSE
+			if (!(!(*pos == 'q' || *pos == 'u' || *pos == 'o' || *pos == 't' || *pos == 'e')))
+			{
+				break
+			}
+			else 
+			{
+				_8 += CURRENT_POS_SEQUENCE
+				success_9 = TRUE
+				_4 = _8
+			}
+		}
+		else 
+		{
+			_6 += CURRENT_POS_SEQUENCE
+			success_7 = TRUE
+			_4 = _6
+		}
+		_4 += CURRENT_POS_SEQUENCE
+		success_5 = TRUE
+		pos++
+		skipspaces(pos)
+	}
+	if (success_5)
+	{
+		success_11 = TRUE
+	}
+	skipspaces(pos)
+	rule _12 = NONE
+	bool success_13 = FALSE
+	skipspaces(pos)
+}
+Token(NUMBER) {
+	char sign = %0
+
+	skipspaces(pos)
+	str main = $1
+
+	skipspaces(pos)
+	num main_n = NUMBER(main)
+	skipspaces(pos)
+	char point = $2%1
+
+	skipspaces(pos)
+	str dec = $2%1
+
+	skipspaces(pos)
+	num dec_n = NUMBER(dec)
+	skipspaces(pos)
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == '+' || *pos == '-'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+	str _2 = NONE
+	bool success_3 = FALSE
+	str _7 = NONE
+	bool success_8 = FALSE
+	do
+	{
+		str _4 = NONE
+		bool success_5 = FALSE
+		bool success_6 = FALSE
+		while ((*pos>='0' && *pos<='9'))
+		{
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			pos++
+			success_6 = TRUE
+		}
+		if (!success_6)
+		{
+			break
+		}
+		skipspaces(pos)
+	}	while(0)
+
+	if (success_5)
+	{
+		success_8 = TRUE
+	}
+	skipspaces(pos)
+	if (!success_8)
+	{
+		str _14 = NONE
+		bool success_15 = FALSE
+		do
+		{
+			str _9 = NONE
+			bool success_10 = FALSE
+			if (!(*pos == '.' || *pos == ','))
+			{
+				break
+			}
+			_9 += CURRENT_POS_SEQUENCE
+			success_10 = TRUE
+			pos++
+			skipspaces(pos)
+			str _11 = NONE
+			bool success_12 = FALSE
+			bool success_13 = FALSE
+			while ((*pos>='0' && *pos<='9'))
+			{
+				_11 += CURRENT_POS_SEQUENCE
+				success_12 = TRUE
+				pos++
+				success_13 = TRUE
+			}
+			if (!success_13)
+			{
+				break
+			}
+			skipspaces(pos)
+		}		while(0)
+
+		if (success_10 && success_12)
+		{
+			success_15 = TRUE
+		}
+		skipspaces(pos)
+		if (!success_15)
+		{
+			return {}
+		}
+		else 
+		{
+			_2 = _14
+		}
+	}
+	else 
+	{
+		_2 = _7
+	}
+	_2 += CURRENT_POS_SEQUENCE
+	success_3 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(BOOLEAN) {
+	str d = NONE
+	bool success_6 = FALSE
+	str _0 = NONE
+	bool success_1 = FALSE
+	str _2 = NONE
+	bool success_3 = FALSE
+	if (!(!STRNCMP(pos, "true")))
+	{
+		str _4 = NONE
+		bool success_5 = FALSE
+		if (!(!STRNCMP(pos, "false")))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 += CURRENT_POS_SEQUENCE
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+	if (success_1)
+	{
+		success_6 = TRUE
+	}
+	skipspaces(pos)
+}
+Rule(array) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_60"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _8 = NONE
+	bool success_9 = FALSE
+	do
+	{
+		str _6 = NONE
+		bool success_7 = FALSE
+		while (1)
+		{
+			rule _2 = NONE
+			bool success_3 = FALSE
+			_2 = any_data(TOKEN_SEQUENCE)
+			if (!(_2.res))
+			{
+				break
+			}
+			success_3 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+			token _4 = NONE
+			bool success_5 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_61"))
+			{
+				break
+			}
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+		}
+		if (success_3 && success_5)
+		{
+			success_7 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_7)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _10 = NONE
+	bool success_11 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_62"))
+	{
+		return {}
+	}
+	_10 = CURRENT_TOKEN
+	success_11 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(object) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_63"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _20 = NONE
+	bool success_21 = FALSE
+	do
+	{
+		rule _2 = NONE
+		bool success_3 = FALSE
+		_2 = any_data(TOKEN_SEQUENCE)
+		if (!(_2.res))
+		{
+			break
+		}
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_64"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _6 = NONE
+		bool success_7 = FALSE
+		_6 = any_data(TOKEN_SEQUENCE)
+		if (!(_6.res))
+		{
+			break
+		}
+		success_7 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		str _16 = NONE
+		bool success_17 = FALSE
+		while (1)
+		{
+			token _8 = NONE
+			bool success_9 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_65"))
+			{
+				break
+			}
+			_8 = CURRENT_TOKEN
+			success_9 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+			token _10 = NONE
+			bool success_11 = FALSE
+			if (!(CURRENT_TOKEN == "ID"))
+			{
+				break
+			}
+			_10 = CURRENT_TOKEN
+			success_11 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+			token _12 = NONE
+			bool success_13 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_66"))
+			{
+				break
+			}
+			_12 = CURRENT_TOKEN
+			success_13 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+			rule _14 = NONE
+			bool success_15 = FALSE
+			_14 = any_data(TOKEN_SEQUENCE)
+			if (!(_14.res))
+			{
+				break
+			}
+			success_15 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+		}
+		if (success_9 && success_11 && success_13 && success_15)
+		{
+			success_17 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+		token _18 = NONE
+		bool success_19 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_67"))
+		{
+			break
+		}
+		_18 = CURRENT_TOKEN
+		success_19 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_3 && success_5 && success_7 && success_17 && success_19)
+	{
+		success_21 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _22 = NONE
+	bool success_23 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_68"))
+	{
+		return {}
+	}
+	_22 = CURRENT_TOKEN
+	success_23 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(any_data) {
+	data = %1
+
+	skipspaces(TOKEN_SEQUENCE)
+	any _0 = NONE
+	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "BOOLEAN"))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "NUMBER"))
+		{
+			token _6 = NONE
+			bool success_7 = FALSE
+			if (!(CURRENT_TOKEN == "STRING"))
+			{
+				token _8 = NONE
+				bool success_9 = FALSE
+				if (!(CURRENT_TOKEN == "ARRAY"))
+				{
+					token _10 = NONE
+					bool success_11 = FALSE
+					if (!(CURRENT_TOKEN == "OBJECT"))
+					{
+						token _12 = NONE
+						bool success_13 = FALSE
+						if (!(CURRENT_TOKEN == "ID"))
+						{
+							rule _14 = NONE
+							bool success_15 = FALSE
+							_14 = accessor(TOKEN_SEQUENCE)
+							if (!(_14.res))
+							{
+								return {}
+							}
+							else 
+							{
+								success_15 = TRUE
+								_0 = _14
+							}
+						}
+						else 
+						{
+							_12 = CURRENT_TOKEN
+							success_13 = TRUE
+							_0 = _12
+						}
+					}
+					else 
+					{
+						_10 = CURRENT_TOKEN
+						success_11 = TRUE
+						_0 = _10
+					}
+				}
+				else 
+				{
+					_8 = CURRENT_TOKEN
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Token(END) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == ';' || *pos == 'n'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(STRICT_END) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(NEWLINE) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == 'n'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(ID) {
+	str _6 = NONE
+	bool success_7 = FALSE
+	str _0 = NONE
+	bool success_1 = FALSE
+	while ((*pos>='0' && *pos<='9'))
+	{
+		_0 += CURRENT_POS_SEQUENCE
+		success_1 = TRUE
+		pos++
+	}
+	skipspaces(pos)
+	str _2 = NONE
+	bool success_3 = FALSE
+	if (!((*pos>='a' && *pos<='z') || (*pos>='A' && *pos<='Z') || *pos == '_'))
+	{
+		return {}
+	}
+	_2 += CURRENT_POS_SEQUENCE
+	success_3 = TRUE
+	pos++
+	skipspaces(pos)
+	str _4 = NONE
+	bool success_5 = FALSE
+	while ((*pos>='a' && *pos<='z') || (*pos>='A' && *pos<='Z') || (*pos>='0' && *pos<='9') || *pos == '_')
+	{
+		_4 += CURRENT_POS_SEQUENCE
+		success_5 = TRUE
+		pos++
+	}
+	skipspaces(pos)
+	if (success_1 && success_3 && success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(pos)
+}
+Rule(spacemode) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_69"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_70"))
+	{
+		token _6 = NONE
+		bool success_7 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_71"))
+		{
+			token _8 = NONE
+			bool success_9 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_72"))
+			{
+				return {}
+			}
+			else 
+			{
+				_8 = CURRENT_TOKEN
+				success_9 = TRUE
+				_2 = _8
+			}
+		}
+		else 
+		{
+			_6 = CURRENT_TOKEN
+			success_7 = TRUE
+			_2 = _6
+		}
+	}
+	else 
+	{
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		_2 = _4
+	}
+	_2 += CURRENT_POS_SEQUENCE
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(linear_comment) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_73"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_74"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(main) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = Import(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = use(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = Rule(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+				bool success_9 = FALSE
+				_8 = spacemode(TOKEN_SEQUENCE)
+				if (!(_8.res))
+				{
+					return {}
+				}
+				else 
+				{
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Import_input) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = file(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = general_dir(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = rulespecific(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				return {}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Import_path) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	bool success_2 = FALSE
+	while (CURRENT_TOKEN == "AUTO_77")
+	{
+		_0 += CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		success_2 = TRUE
+	}
+	if (!success_2)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Import_ext) {
+	str _4 = NONE
+	bool success_5 = FALSE
+	while (1)
+	{
+		token _0 = NONE
+		bool success_1 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_78"))
+		{
+			break
+		}
+		_0 = CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _2 = NONE
+		bool success_3 = FALSE
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			break
+		}
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_1 && success_3)
+	{
+		success_5 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Import_file) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = path(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = ext(TOKEN_SEQUENCE)
+	while (_2.res)
+	{
+		success_3 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Import) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_75"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = input(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _8 = NONE
+	bool success_9 = FALSE
+	while (1)
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_76"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		rule _6 = NONE
+		bool success_7 = FALSE
+		_6 = input(TOKEN_SEQUENCE)
+		if (!(_6.res))
+		{
+			break
+		}
+		success_7 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_5 && success_7)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(data) {
+}
+Rule(path) {
+	bool success_0 = FALSE
+	
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(ext) {
+	bool success_0 = FALSE
+	
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(fullext) {
+	bool success_0 = FALSE
+	
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(fullpath) {
+	bool success_0 = FALSE
+	
+	skipspaces(TOKEN_SEQUENCE)
+	bool success_2 = FALSE
+	
+	skipspaces(TOKEN_SEQUENCE)
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_79"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _6 = NONE
+	bool success_7 = FALSE
+	_6 = join(TOKEN_SEQUENCE)
+	if (!(_6.res))
+	{
+		return {}
+	}
+	success_7 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	UNDEF _8 = NONE
+	bool success_9 = FALSE
+	if ()
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_all) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = preproc_begin(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = preproc(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_begin) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_80"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_81"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond_endif_define_set_clear_rem) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_90"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond_endif_define_set_clear) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_89"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond_endif_define_set) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_87"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token value = NONE
+	bool success_6 = FALSE
+	token _4 = NONE
+	bool success_5 = FALSE
+	while (CURRENT_TOKEN == "AUTO_88")
+	{
+		_4 += CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_5)
+	{
+		success_6 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond_endif_define) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_85"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token value = NONE
+	bool success_6 = FALSE
+	token _4 = NONE
+	bool success_5 = FALSE
+	while (CURRENT_TOKEN == "AUTO_86")
+	{
+		_4 += CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_5)
+	{
+		success_6 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond_endif) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_84"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific_cond) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_83"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _4 = NONE
+	bool success_5 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = expr(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		return {}
+	}
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_3)
+	{
+		success_5 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc_lang_specific) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_82"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(preproc) {
+	rule _0 = NONE
+	bool success_1 = FALSE
+	rule _2 = NONE
+	bool success_3 = FALSE
+	_2 = lang_specific(TOKEN_SEQUENCE)
+	if (!(_2.res))
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = cond(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = define(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				rule _8 = NONE
+				bool success_9 = FALSE
+				_8 = set(TOKEN_SEQUENCE)
+				if (!(_8.res))
+				{
+					rule _10 = NONE
+					bool success_11 = FALSE
+					_10 = clear(TOKEN_SEQUENCE)
+					if (!(_10.res))
+					{
+						rule _12 = NONE
+						bool success_13 = FALSE
+						_12 = rem(TOKEN_SEQUENCE)
+						if (!(_12.res))
+						{
+							return {}
+						}
+						else 
+						{
+							success_13 = TRUE
+							_0 = _12
+						}
+					}
+					else 
+					{
+						success_11 = TRUE
+						_0 = _10
+					}
+				}
+				else 
+				{
+					success_9 = TRUE
+					_0 = _8
+				}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_rule) {
+	any _0 = NONE
+	bool success_1 = FALSE
+	str _22 = NONE
+	bool success_23 = FALSE
+	do
+	{
+		any _18 = NONE
+		bool success_19 = FALSE
+		any _2 = NONE
+		bool success_3 = FALSE
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = group(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			rule _6 = NONE
+			bool success_7 = FALSE
+			_6 = csequence(TOKEN_SEQUENCE)
+			if (!(_6.res))
+			{
+				token _8 = NONE
+				bool success_9 = FALSE
+				if (!(CURRENT_TOKEN == "STRING"))
+				{
+					rule _10 = NONE
+					bool success_11 = FALSE
+					_10 = accessor(TOKEN_SEQUENCE)
+					if (!(_10.res))
+					{
+						rule _12 = NONE
+						bool success_13 = FALSE
+						_12 = hex(TOKEN_SEQUENCE)
+						if (!(_12.res))
+						{
+							rule _14 = NONE
+							bool success_15 = FALSE
+							_14 = bin(TOKEN_SEQUENCE)
+							if (!(_14.res))
+							{
+								rule _16 = NONE
+								bool success_17 = FALSE
+								_16 = other(TOKEN_SEQUENCE)
+								if (!(_16.res))
+								{
+									break
+								}
+								else 
+								{
+									success_17 = TRUE
+									_2 = _16
+								}
+							}
+							else 
+							{
+								success_15 = TRUE
+								_2 = _14
+							}
+						}
+						else 
+						{
+							success_13 = TRUE
+							_2 = _12
+						}
+					}
+					else 
+					{
+						success_11 = TRUE
+						_2 = _10
+					}
+				}
+				else 
+				{
+					_8 = CURRENT_TOKEN
+					success_9 = TRUE
+					_2 = _8
+				}
+			}
+			else 
+			{
+				success_7 = TRUE
+				_2 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_2 = _4
+		}
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		if (success_3)
+		{
+			success_19 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+		rule _20 = NONE
+		bool success_21 = FALSE
+		_20 = qualifier(TOKEN_SEQUENCE)
+		if (_20.res)
+		{
+			success_21 = TRUE
+			pos++
+		}
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_19 && success_21)
+	{
+		success_23 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (!success_23)
+	{
+		rule _24 = NONE
+		bool success_25 = FALSE
+		_24 = escaped(TOKEN_SEQUENCE)
+		if (!(_24.res))
+		{
+			rule _26 = NONE
+			bool success_27 = FALSE
+			_26 = any(TOKEN_SEQUENCE)
+			if (!(_26.res))
+			{
+				rule _28 = NONE
+				bool success_29 = FALSE
+				_28 = op(TOKEN_SEQUENCE)
+				if (!(_28.res))
+				{
+					rule _30 = NONE
+					bool success_31 = FALSE
+					_30 = cll(TOKEN_SEQUENCE)
+					if (!(_30.res))
+					{
+						rule _32 = NONE
+						bool success_33 = FALSE
+						_32 = linear_comment(TOKEN_SEQUENCE)
+						if (!(_32.res))
+						{
+							return {}
+						}
+						else 
+						{
+							success_33 = TRUE
+							_0 = _32
+						}
+					}
+					else 
+					{
+						success_31 = TRUE
+						_0 = _30
+					}
+				}
+				else 
+				{
+					success_29 = TRUE
+					_0 = _28
+				}
+			}
+			else 
+			{
+				success_27 = TRUE
+				_0 = _26
+			}
+		}
+		else 
+		{
+			success_25 = TRUE
+			_0 = _24
+		}
+	}
+	else 
+	{
+		_0 = _22
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_other) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (CURRENT_TOKEN == "AUTO_92")
+	{
+		_0 = CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	str _8 = NONE
+	bool success_9 = FALSE
+	while (1)
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_93"))
+		{
+			break
+		}
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		token _6 = NONE
+		bool success_7 = FALSE
+		if (!(CURRENT_TOKEN == "ID"))
+		{
+			break
+		}
+		_6 = CURRENT_TOKEN
+		success_7 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_5 && success_7)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_op) {
+	data = $1
+
+	skipspaces(TOKEN_SEQUENCE)
+	token _6 = NONE
+	bool success_7 = FALSE
+	token _0 = NONE
+	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_94"))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_95"))
+		{
+			return {}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_qualifier) {
+	data = $1
+
+	skipspaces(TOKEN_SEQUENCE)
+	token _8 = NONE
+	bool success_9 = FALSE
+	token _0 = NONE
+	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_96"))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_97"))
+		{
+			token _6 = NONE
+			bool success_7 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_98"))
+			{
+				return {}
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_group) {
+	any name = $0%1
+
+	skipspaces(TOKEN_SEQUENCE)
+	any r = %4
+
+	skipspaces(TOKEN_SEQUENCE)
+	str _8 = NONE
+	bool success_9 = FALSE
+	do
+	{
+		token _0 = NONE
+		bool success_1 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_99"))
+		{
+			break
+		}
+		_0 = CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+		any _2 = NONE
+		bool success_3 = FALSE
+		rule _4 = NONE
+		bool success_5 = FALSE
+		_4 = method_call(TOKEN_SEQUENCE)
+		if (!(_4.res))
+		{
+			token _6 = NONE
+			bool success_7 = FALSE
+			if (!(CURRENT_TOKEN == "ID"))
+			{
+				break
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN
+				success_7 = TRUE
+				_2 = _6
+			}
+		}
+		else 
+		{
+			success_5 = TRUE
+			_2 = _4
+		}
+		_2 += CURRENT_POS_SEQUENCE
+		success_3 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}	while(0)
+
+	if (success_1 && success_3)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _10 = NONE
+	bool success_11 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_100"))
+	{
+		return {}
+	}
+	_10 = CURRENT_TOKEN
+	success_11 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _12 = NONE
+	bool success_13 = FALSE
+	_12 = rule(TOKEN_SEQUENCE)
+	while (_12.res)
+	{
+		success_13 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _14 = NONE
+	bool success_15 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_101"))
+	{
+		return {}
+	}
+	_14 = CURRENT_TOKEN
+	success_15 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_csequence_symbol) {
+	data = $1
+
+	skipspaces(TOKEN_SEQUENCE)
+	token _8 = NONE
+	bool success_9 = FALSE
+	token _0 = NONE
+	bool success_1 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_105"))
+	{
+		token _4 = NONE
+		bool success_5 = FALSE
+		if (!(CURRENT_TOKEN == "AUTO_106"))
+		{
+			token _6 = NONE
+			bool success_7 = FALSE
+			if (!(CURRENT_TOKEN == "AUTO_107"))
+			{
+				return {}
+			}
+			else 
+			{
+				_6 = CURRENT_TOKEN
+				success_7 = TRUE
+				_0 = _6
+			}
+		}
+		else 
+		{
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			_0 = _4
+		}
+	}
+	else 
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		_0 = _2
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_9 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_csequence_escape) {
+	data = $1
+
+	skipspaces(TOKEN_SEQUENCE)
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_108"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	token _6 = NONE
+	bool success_7 = FALSE
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_109"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_5)
+	{
+		success_7 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_csequence_diapason) {
+	str _12 = NONE
+	bool success_13 = FALSE
+	rule from = NONE
+	bool success_2 = FALSE
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = symbol(TOKEN_SEQUENCE)
+	if (!(_0.res))
+	{
+		return {}
+	}
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_2 = TRUE
+	}
+	token _5 = NONE
+	bool success_6 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_110"))
+	{
+		return {}
+	}
+	_5 = CURRENT_TOKEN
+	success_6 = TRUE
+	pos++
+	rule to = NONE
+	bool success_11 = FALSE
+	rule _9 = NONE
+	bool success_10 = FALSE
+	_9 = symbol(TOKEN_SEQUENCE)
+	if (!(_9.res))
+	{
+		return {}
+	}
+	success_10 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_10)
+	{
+		success_11 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_2 && success_4 && success_6 && success_8 && success_11)
+	{
+		success_13 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_csequence) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_102"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (CURRENT_TOKEN == "AUTO_103")
+	{
+		_2 = CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	rule dt = NONE
+	bool success_12 = FALSE
+	while (1)
+	{
+		rule _4 = NONE
+		bool success_5 = FALSE
+		rule _6 = NONE
+		bool success_7 = FALSE
+		_6 = escape(TOKEN_SEQUENCE)
+		if (!(_6.res))
+		{
+			rule _8 = NONE
+			bool success_9 = FALSE
+			_8 = symbol(TOKEN_SEQUENCE)
+			if (!(_8.res))
+			{
+				rule _10 = NONE
+				bool success_11 = FALSE
+				_10 = diapason(TOKEN_SEQUENCE)
+				if (!(_10.res))
+				{
+					break
+				}
+				else 
+				{
+					success_11 = TRUE
+					_4 = _10
+				}
+			}
+			else 
+			{
+				success_9 = TRUE
+				_4 = _8
+			}
+		}
+		else 
+		{
+			success_7 = TRUE
+			_4 = _6
+		}
+		_4 += CURRENT_POS_SEQUENCE
+		success_5 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_5)
+	{
+		success_12 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _13 = NONE
+	bool success_14 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_104"))
+	{
+		return {}
+	}
+	_13 = CURRENT_TOKEN
+	success_14 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_any) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_111"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_data_block_inclosed_map) {
+	rule data = NONE
+	bool success_3 = FALSE
+	rule _0 = NONE
+	bool success_1 = FALSE
+	_0 = key(TOKEN_SEQUENCE)
+	bool success_2 = FALSE
+	while (_0.res)
+	{
+		success_1 = TRUE
+		pos++
+		success_2 = TRUE
+	}
+	if (!success_2)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1)
+	{
+		success_3 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_data_block_key) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	bool success_2 = FALSE
+	while (CURRENT_TOKEN == "AUTO_116")
+	{
+		_0 += CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		success_2 = TRUE
+	}
+	if (!success_2)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	rule name = NONE
+	bool success_5 = FALSE
+	rule _3 = NONE
+	bool success_4 = FALSE
+	_3 = id(TOKEN_SEQUENCE)
+	if (!(_3.res))
+	{
+		return {}
+	}
+	success_4 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_4)
+	{
+		success_5 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _6 = NONE
+	bool success_7 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_117"))
+	{
+		return {}
+	}
+	_6 = CURRENT_TOKEN
+	success_7 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule dt = NONE
+	bool success_10 = FALSE
+	rule _8 = NONE
+	bool success_9 = FALSE
+	_8 = any_data(TOKEN_SEQUENCE)
+	if (!(_8.res))
+	{
+		return {}
+	}
+	success_9 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_9)
+	{
+		success_10 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_data_block) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	bool success_2 = FALSE
+	while (CURRENT_TOKEN == "AUTO_112")
+	{
+		_0 += CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		success_2 = TRUE
+	}
+	if (!success_2)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _3 = NONE
+	bool success_4 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_113"))
+	{
+		return {}
+	}
+	_3 = CURRENT_TOKEN
+	success_4 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _5 = NONE
+	bool success_6 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_114"))
+	{
+		return {}
+	}
+	_5 = CURRENT_TOKEN
+	success_6 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule data = NONE
+	bool success_13 = FALSE
+	rule _7 = NONE
+	bool success_8 = FALSE
+	rule _9 = NONE
+	bool success_10 = FALSE
+	_9 = any_data(TOKEN_SEQUENCE)
+	if (!(_9.res))
+	{
+		rule _11 = NONE
+		bool success_12 = FALSE
+		_11 = inclosed_map(TOKEN_SEQUENCE)
+		if (!(_11.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_12 = TRUE
+			_7 = _11
+		}
+	}
+	else 
+	{
+		success_10 = TRUE
+		_7 = _9
+	}
+	_7 += CURRENT_POS_SEQUENCE
+	success_8 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_8)
+	{
+		success_13 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _14 = NONE
+	bool success_15 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_115"))
+	{
+		return {}
+	}
+	_14 = CURRENT_TOKEN
+	success_15 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_escaped) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_118"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	token _4 = NONE
+	bool success_5 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_119"))
+	{
+		return {}
+	}
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
+	pos++
+	token _8 = NONE
+	bool success_9 = FALSE
+	if (CURRENT_TOKEN == "NUMBER")
+	{
+		_8 = CURRENT_TOKEN
+		success_9 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_nested_rule_hex_bin) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_124"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	bool success_4 = FALSE
+	while (CURRENT_TOKEN == "AUTO_125")
+	{
+		_2 += CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		success_4 = TRUE
+	}
+	if (!success_4)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_nested_rule_hex) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_122"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	bool success_4 = FALSE
+	while (CURRENT_TOKEN == "AUTO_123")
+	{
+		_2 += CURRENT_TOKEN
+		success_3 = TRUE
+		pos++
+		success_4 = TRUE
+	}
+	if (!success_4)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule_nested_rule) {
+	token _0 = NONE
+	bool success_1 = FALSE
+	bool success_2 = FALSE
+	while (CURRENT_TOKEN == "AUTO_120")
+	{
+		_0 += CURRENT_TOKEN
+		success_1 = TRUE
+		pos++
+		success_2 = TRUE
+	}
+	if (!success_2)
+	{
+		return {}
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _3 = NONE
+	bool success_4 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_121"))
+	{
+		return {}
+	}
+	_3 = CURRENT_TOKEN
+	success_4 = TRUE
+	pos++
+	rule _7 = NONE
+	bool success_8 = FALSE
+	_7 = Rule(TOKEN_SEQUENCE)
+	if (!(_7.res))
+	{
+		return {}
+	}
+	success_8 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Rule(Rule) {
+	any name = %1
+
+	skipspaces(TOKEN_SEQUENCE)
+	any rule = %3
+
+	skipspaces(TOKEN_SEQUENCE)
+	any data_block = %4
+
+	skipspaces(TOKEN_SEQUENCE)
+	any nested_rules = %5
+
+	skipspaces(TOKEN_SEQUENCE)
+	str rule_begin = NONE
+	bool success_4 = FALSE
+	token _0 = NONE
+	bool success_1 = FALSE
+	if (!(CURRENT_TOKEN == "ID"))
+	{
+		return {}
+	}
+	_0 = CURRENT_TOKEN
+	success_1 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	token _2 = NONE
+	bool success_3 = FALSE
+	if (!(CURRENT_TOKEN == "AUTO_91"))
+	{
+		return {}
+	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	if (success_1 && success_3)
+	{
+		success_4 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	rule _5 = NONE
+	bool success_6 = FALSE
+	_5 = function_body_decl(TOKEN_SEQUENCE)
+	if (_5.res)
+	{
+		success_6 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	rule _9 = NONE
+	bool success_10 = FALSE
+	while (1)
+	{
+		rule _7 = NONE
+		bool success_8 = FALSE
+		_7 = rule(TOKEN_SEQUENCE)
+		if (!(_7.res))
+		{
+			break
+		}
+		success_8 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
+	if (success_8)
+	{
+		success_10 = TRUE
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	rule _11 = NONE
+	bool success_12 = FALSE
+	_11 = data_block(TOKEN_SEQUENCE)
+	if (!(_11.res))
+	{
+		return {}
+	}
+	success_12 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+	rule _13 = NONE
+	bool success_14 = FALSE
+	_13 = nested_rule(TOKEN_SEQUENCE)
+	while (_13.res)
+	{
+		success_14 = TRUE
+		pos++
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	token _15 = NONE
+	bool success_16 = FALSE
+	if (!(CURRENT_TOKEN == "STRICT_END"))
+	{
+		return {}
+	}
+	_15 = CURRENT_TOKEN
+	success_16 = TRUE
+	pos++
+	skipspaces(TOKEN_SEQUENCE)
+}
+Token(AUTO_0) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "$")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_1) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "%")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_2) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "^")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_3) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ">")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_4) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "$")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_5) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_6) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_7) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_8) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_9) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_10) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_11) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_12) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_13) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_14) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "unsigned")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_15) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "char")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_16) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "short")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_17) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "int")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_18) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "long")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_19) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "long long")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_20) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "float")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_21) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "double")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_22) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "deque")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_23) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "vector")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_24) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "queue")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_25) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "stack")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_26) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "list")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_27) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "forward_list")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_28) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "var")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_29) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "any")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_30) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "num")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_31) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "bool")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_32) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "str")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_33) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "arr")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_34) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "obj")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_35) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (*pos != ' ')
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+}
+Token(AUTO_36) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "if")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_37) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "?")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_38) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_39) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_40) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_41) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_42) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_43) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_44) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_45) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_46) {
+	UNDEF _0 = NONE
+	bool success_1 = FALSE
+	if (*pos == '\0')
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_47) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "while")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_48) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_49) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_50) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_51) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_52) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_53) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "=")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_54) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "++")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_55) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "--")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_56) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_57) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_58) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "++")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_59) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "--")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_60) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_61) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_62) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_63) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "{")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_64) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_65) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_66) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_67) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_68) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "}")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_69) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "spacemode")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_70) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "mixed")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_71) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "skipped")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_72) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "allowed")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_73) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "//")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_74) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!(*pos == 'n')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_75) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "import")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_76) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ",")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_77) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!(*pos == '*' || *pos == '"' || *pos == '<' || *pos == '>' || *pos == '|' || *pos == ':' || *pos == '?' || *pos == '.')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_78) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_79) {
+	UNDEF _0 = NONE
+	bool success_1 = FALSE
+	if (*pos == '\0')
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_80) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "\n")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_81) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "@")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_82) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "for")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_83) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "if")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_84) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "endif")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_85) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "define")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_86) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!(*pos == 'n' || *pos == 'r')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_87) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "set")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_88) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!(*pos == 'n' || *pos == 'r')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_89) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "clear")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_90) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "rem")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_91) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_92) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "#")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_93) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_94) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "|")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_95) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "|&")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_96) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "?")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_97) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "+")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_98) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "*")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_99) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "&")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_100) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "(")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_101) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ")")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_102) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "[")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_103) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "^")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_104) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "]")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_105) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_106) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "\\]")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_107) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!(*pos == ']')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_108) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_109) {
+	UNDEF _0 = NONE
+	bool success_1 = FALSE
+	if (*pos == '\0')
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_110) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "-")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_111) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ".")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_112) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == 'r' || *pos == 'n'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_113) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "data")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_114) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_115) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ";")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_116) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == 'n' || *pos == 'r'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_117) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, ":")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_118) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "\\")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_119) {
+	UNDEF _0 = NONE
+	bool success_1 = FALSE
+	if (*pos == '\0')
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_120) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == 'r' || *pos == 'n'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_121) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "#")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_122) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "0x")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_123) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!((*pos>='1' && *pos<='9') || (*pos>='A' && *pos<='F') || (*pos>='a' && *pos<='f')))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_124) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(!STRNCMP(pos, "0b")))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}
+Token(AUTO_125) {
+	str _0 = NONE
+	bool success_1 = FALSE
+	if (!(*pos == '0' || *pos == '1'))
+	{
+		return {}
+	}
+	_0 += CURRENT_POS_SEQUENCE
+	success_1 = TRUE
+	pos++
+	skipspaces(pos)
+}

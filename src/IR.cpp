@@ -394,7 +394,7 @@ IR::var_type cllTreeCsupportTypeToIR(Parser::Rule rule) {
     
     if (is_unsigned)
         result = static_cast<IR::var_types>(static_cast<int>(result) + 1); // result++
-    return { result, {} };
+    return { result };
     throw Error("Undefined csupport type");
 }
 IR::var_type cllTreeAbstactTypeToIR(Parser::Rule rule);
@@ -416,7 +416,7 @@ IR::var_type cllTreeAbstactTypeToIR(Parser::Rule rule) {
     }
     cpuf::printf("type: %s\n", val);
     if (val == "var" || val == "any")
-        return {IR::var_types::ANY};
+        return {IR::var_types::ANY, {}};
     else if (val == "str")
         return {IR::var_types::STRING, {}};
     else if (val == "bool")
@@ -1180,6 +1180,7 @@ IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &va
     auto data = std::any_cast<obj_t>(rule.data);
     auto type = std::any_cast<Parser::Rule>(corelib::map::get(data, "type"));
     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "id"));
+    auto name_str = std::any_cast<std::string>(name.data);
     auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "operator"));
     auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
 
@@ -1196,7 +1197,11 @@ IR::node_ret_t process_cll_var(const Parser::Rule &rule, IR::ir &member, int &va
         // else
         //     assign = TreeTernaryToIR(value);
     }
-    member.push({IR::types::VARIABLE, IR::variable {std::any_cast<std::string>(name.data), ir_type, assign}});
+    if (type.data.has_value()) {
+        member.push({IR::types::VARIABLE, IR::variable {name_str, ir_type, assign}});
+    } else {
+        member.push({IR::types::ASSIGN_VARIABLE, IR::variable_assign {name_str, assign_types, assign}});
+    }
     return {};
 }
 IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
