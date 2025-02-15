@@ -108,6 +108,23 @@ arr_t<IR::member> createDefaultBlock() {
         {IR::types::INCREASE_POS_COUNTER}
     };
 }
+char getEscapedChar(char in) {
+    switch (in)
+    {
+    case 'n': return '\n';   // Newline
+    case 'r': return '\r';   // Carriage return
+    case 't': return '\t';   // Horizontal tab
+    case 'a': return '\a';   // Bell (alert)
+    case 'b': return '\b';   // Backspace
+    case 'f': return '\f';   // Form feed (new page)
+    case 'v': return '\v';   // Vertical tab
+    case '\\': return '\\';  // Backslash
+    case '\'': return '\'';  // Single quote
+    case '\"': return '\"';  // Double quote
+    default: return in;      // Return the character itself if not an escape sequence
+    }
+}
+
 void createDefaultCall(const arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
     auto function_call = IR::function_call {
         name,
@@ -794,6 +811,12 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                 break;
             }
             case Parser::Rules::Rule_csequence_escape:
+                expr.insert(expr.end(), {
+                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::EQUAL},
+                    {IR::condition_types::CHARACTER, getEscapedChar(std::any_cast<std::string>(value.data)[0])}
+                });
+                break;
             case Parser::Rules::Rule_csequence_symbol:
                 expr.insert(expr.end(), {
                     {IR::condition_types::CURRENT_CHARACTER},
@@ -823,9 +846,21 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
     var.type = {IR::var_types::STRING};
-    arr_t<IR::expr> expr = {
-        {IR::condition_types::STRNCMP, data}
-    };
+    arr_t<IR::expr> expr;
+    if (data.size() == 0)
+        return {};
+    if (data.size() == 1) {
+        expr = {
+            {IR::condition_types::CURRENT_CHARACTER},
+            {IR::condition_types::EQUAL},
+            {IR::condition_types::CHARACTER, data[0]}
+        };
+    } else {
+        expr = {
+            {IR::condition_types::STRNCMP, data}
+        };
+    }
+
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
@@ -1257,7 +1292,8 @@ IR::node_ret_t process_cll_cond(const Parser::Rule &rule, IR::ir &member, int &v
     member.push({ is_if ? IR::types::IF : IR::types::WHILE, cond});
     return {};
 }
-IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken) {
+IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool &add_skip_space, bool isToken) {
+    add_skip_space = false;
     auto rule_val = std::any_cast<Parser::Rule>(rule.data);
     switch (rule_val.name)
     {
@@ -1324,7 +1360,7 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
             success_var = process_Rule_op(rule, member, variable_count, qualifier_char, fullname, isToken);
             break;
         case Parser::Rules::cll:
-            process_cll(rule, member, variable_count, qualifier_char, fullname, isToken);
+            process_cll(rule, member, variable_count, qualifier_char, fullname, add_space_skip, isToken);
             break;
         case Parser::Rules::linear_comment:
             return;

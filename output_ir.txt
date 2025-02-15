@@ -329,22 +329,21 @@ Rule(cll_spaced_block) {
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
 	}
-	skipspaces(TOKEN_SEQUENCE)
 }
 Token(OP) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	str _2 = NONE
 	bool success_3 = FALSE
-	if (!(!STRNCMP(pos, "&")))
+	if (!(*pos == '&'))
 	{
 		str _4 = NONE
 		bool success_5 = FALSE
-		if (!(!STRNCMP(pos, "|")))
+		if (!(*pos == '|'))
 		{
 			str _6 = NONE
 			bool success_7 = FALSE
-			if (!(!STRNCMP(pos, "^")))
+			if (!(*pos == '^'))
 			{
 				str _8 = NONE
 				bool success_9 = FALSE
@@ -407,7 +406,7 @@ Token(ASSIGNMENT_OP) {
 	skipspaces(pos)
 	str _2 = NONE
 	bool success_3 = FALSE
-	if (!(!STRNCMP(pos, "=")))
+	if (!(*pos == '='))
 	{
 		return {}
 	}
@@ -429,11 +428,11 @@ Token(COMPARE_OP) {
 		{
 			str _6 = NONE
 			bool success_7 = FALSE
-			if (!(!STRNCMP(pos, ">")))
+			if (!(*pos == '>'))
 			{
 				str _8 = NONE
 				bool success_9 = FALSE
-				if (!(!STRNCMP(pos, "<")))
+				if (!(*pos == '<'))
 				{
 					str _10 = NONE
 					bool success_11 = FALSE
@@ -527,7 +526,7 @@ Token(LOGICAL_NOT) {
 	bool success_1 = FALSE
 	str _2 = NONE
 	bool success_3 = FALSE
-	if (!(!STRNCMP(pos, "!")))
+	if (!(*pos == '!'))
 	{
 		str _4 = NONE
 		bool success_5 = FALSE
@@ -978,7 +977,6 @@ Rule(cll_template_content_any_data) {
 Rule(cll_csupport_types) {
 	bool is_unsigned = matched($1%1
 )
-	skipspaces(TOKEN_SEQUENCE)
 	str _0 = NONE
 	bool success_1 = FALSE
 	str _18 = NONE
@@ -2029,7 +2027,7 @@ Rule(function_parameters) {
 		{
 			str _2 = NONE
 			bool success_3 = FALSE
-			if (!(!STRNCMP(pos, ",")))
+			if (!(*pos == ','))
 			{
 				break
 			}
@@ -2054,7 +2052,6 @@ Rule(function_parameters) {
 		}
 		skipspaces(TOKEN_SEQUENCE)
 	}
-	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(cll_function_call) {
 	token _0 = NONE
@@ -2080,12 +2077,9 @@ Rule(cll_function_call) {
 }
 Rule(function_decl) {
 	bool is_declaration_only = true
-	skipspaces(TOKEN_SEQUENCE)
 	bool is_typed = false
-	skipspaces(TOKEN_SEQUENCE)
 	int spaces = %1
 
-	skipspaces(TOKEN_SEQUENCE)
 	token _0 = NONE
 	bool success_1 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_46"))
@@ -2377,10 +2371,8 @@ Rule(copiable_method_call) {
 Rule(var_refer) {
 	any pre = matched($1
 )
-	skipspaces(TOKEN_SEQUENCE)
 	any post = matched($3
 )
-	skipspaces(TOKEN_SEQUENCE)
 	token _6 = NONE
 	bool success_7 = FALSE
 	do
@@ -2587,15 +2579,13 @@ Rule(cll_var) {
 Token(STRING) {
 	quote = %1
 
-	skipspaces(pos)
 	data = $1
 
-	skipspaces(pos)
 	str _2 = NONE
 	bool success_3 = FALSE
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == '"' || *pos == '''))
+	if (!(*pos == '"' || *pos == '\''))
 	{
 		return {}
 	}
@@ -2654,20 +2644,14 @@ Token(STRING) {
 Token(NUMBER) {
 	char sign = %0
 
-	skipspaces(pos)
 	str main = $1
 
-	skipspaces(pos)
 	num main_n = NUMBER(main)
-	skipspaces(pos)
 	char point = $2%1
 
-	skipspaces(pos)
 	str dec = $2%1
 
-	skipspaces(pos)
 	num dec_n = NUMBER(dec)
-	skipspaces(pos)
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '+' || *pos == '-'))
@@ -2989,7 +2973,6 @@ Rule(object) {
 Rule(any_data) {
 	data = %1
 
-	skipspaces(TOKEN_SEQUENCE)
 	any _0 = NONE
 	bool success_1 = FALSE
 	token _2 = NONE
@@ -3078,7 +3061,7 @@ Rule(any_data) {
 Token(END) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == ';' || *pos == 'n'))
+	if (!(*pos == ';' || *pos == '\n'))
 	{
 		return {}
 	}
@@ -3090,7 +3073,7 @@ Token(END) {
 Token(STRICT_END) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ";")))
+	if (!(*pos == ';'))
 	{
 		return {}
 	}
@@ -3102,7 +3085,7 @@ Token(STRICT_END) {
 Token(NEWLINE) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == 'n'))
+	if (!(*pos == '\n'))
 	{
 		return {}
 	}
@@ -4029,7 +4012,6 @@ Rule(Rule_other) {
 Rule(Rule_op) {
 	data = $1
 
-	skipspaces(TOKEN_SEQUENCE)
 	token _6 = NONE
 	bool success_7 = FALSE
 	token _0 = NONE
@@ -4070,7 +4052,6 @@ Rule(Rule_op) {
 Rule(Rule_qualifier) {
 	data = $1
 
-	skipspaces(TOKEN_SEQUENCE)
 	token _8 = NONE
 	bool success_9 = FALSE
 	token _0 = NONE
@@ -4122,10 +4103,8 @@ Rule(Rule_qualifier) {
 Rule(Rule_group) {
 	any name = $0%1
 
-	skipspaces(TOKEN_SEQUENCE)
 	any r = %4
 
-	skipspaces(TOKEN_SEQUENCE)
 	str _8 = NONE
 	bool success_9 = FALSE
 	do
@@ -4209,7 +4188,6 @@ Rule(Rule_group) {
 Rule(Rule_csequence_symbol) {
 	data = $1
 
-	skipspaces(TOKEN_SEQUENCE)
 	token _8 = NONE
 	bool success_9 = FALSE
 	token _0 = NONE
@@ -4261,7 +4239,6 @@ Rule(Rule_csequence_symbol) {
 Rule(Rule_csequence_escape) {
 	data = $1
 
-	skipspaces(TOKEN_SEQUENCE)
 	token _0 = NONE
 	bool success_1 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_108"))
@@ -4723,16 +4700,12 @@ Rule(Rule_nested_rule) {
 Rule(Rule) {
 	any name = %1
 
-	skipspaces(TOKEN_SEQUENCE)
 	any rule = %3
 
-	skipspaces(TOKEN_SEQUENCE)
 	any data_block = %4
 
-	skipspaces(TOKEN_SEQUENCE)
 	any nested_rules = %5
 
-	skipspaces(TOKEN_SEQUENCE)
 	str rule_begin = NONE
 	bool success_4 = FALSE
 	token _0 = NONE
@@ -4822,7 +4795,7 @@ Rule(Rule) {
 Token(AUTO_0) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "$")))
+	if (!(*pos == '$'))
 	{
 		return {}
 	}
@@ -4834,7 +4807,7 @@ Token(AUTO_0) {
 Token(AUTO_1) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "%")))
+	if (!(*pos == '%'))
 	{
 		return {}
 	}
@@ -4846,7 +4819,7 @@ Token(AUTO_1) {
 Token(AUTO_2) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "^")))
+	if (!(*pos == '^'))
 	{
 		return {}
 	}
@@ -4858,7 +4831,7 @@ Token(AUTO_2) {
 Token(AUTO_3) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ">")))
+	if (!(*pos == '>'))
 	{
 		return {}
 	}
@@ -4870,7 +4843,7 @@ Token(AUTO_3) {
 Token(AUTO_4) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "$")))
+	if (!(*pos == '$'))
 	{
 		return {}
 	}
@@ -4882,7 +4855,7 @@ Token(AUTO_4) {
 Token(AUTO_5) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "{")))
+	if (!(*pos == '{'))
 	{
 		return {}
 	}
@@ -4894,7 +4867,7 @@ Token(AUTO_5) {
 Token(AUTO_6) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "}")))
+	if (!(*pos == '}'))
 	{
 		return {}
 	}
@@ -4906,7 +4879,7 @@ Token(AUTO_6) {
 Token(AUTO_7) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4918,7 +4891,7 @@ Token(AUTO_7) {
 Token(AUTO_8) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4930,7 +4903,7 @@ Token(AUTO_8) {
 Token(AUTO_9) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4942,7 +4915,7 @@ Token(AUTO_9) {
 Token(AUTO_10) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4954,7 +4927,7 @@ Token(AUTO_10) {
 Token(AUTO_11) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4966,7 +4939,7 @@ Token(AUTO_11) {
 Token(AUTO_12) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -4978,7 +4951,7 @@ Token(AUTO_12) {
 Token(AUTO_13) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -5265,7 +5238,7 @@ Token(AUTO_36) {
 Token(AUTO_37) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "?")))
+	if (!(*pos == '?'))
 	{
 		return {}
 	}
@@ -5277,7 +5250,7 @@ Token(AUTO_37) {
 Token(AUTO_38) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -5289,7 +5262,7 @@ Token(AUTO_38) {
 Token(AUTO_39) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -5301,7 +5274,7 @@ Token(AUTO_39) {
 Token(AUTO_40) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -5313,7 +5286,7 @@ Token(AUTO_40) {
 Token(AUTO_41) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ")")))
+	if (!(*pos == ')'))
 	{
 		return {}
 	}
@@ -5325,7 +5298,7 @@ Token(AUTO_41) {
 Token(AUTO_42) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -5337,7 +5310,7 @@ Token(AUTO_42) {
 Token(AUTO_43) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ")")))
+	if (!(*pos == ')'))
 	{
 		return {}
 	}
@@ -5349,7 +5322,7 @@ Token(AUTO_43) {
 Token(AUTO_44) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -5361,7 +5334,7 @@ Token(AUTO_44) {
 Token(AUTO_45) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ")")))
+	if (!(*pos == ')'))
 	{
 		return {}
 	}
@@ -5397,7 +5370,7 @@ Token(AUTO_47) {
 Token(AUTO_48) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -5409,7 +5382,7 @@ Token(AUTO_48) {
 Token(AUTO_49) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ";")))
+	if (!(*pos == ';'))
 	{
 		return {}
 	}
@@ -5421,7 +5394,7 @@ Token(AUTO_49) {
 Token(AUTO_50) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ";")))
+	if (!(*pos == ';'))
 	{
 		return {}
 	}
@@ -5433,7 +5406,7 @@ Token(AUTO_50) {
 Token(AUTO_51) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ")")))
+	if (!(*pos == ')'))
 	{
 		return {}
 	}
@@ -5445,7 +5418,7 @@ Token(AUTO_51) {
 Token(AUTO_52) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ".")))
+	if (!(*pos == '.'))
 	{
 		return {}
 	}
@@ -5457,7 +5430,7 @@ Token(AUTO_52) {
 Token(AUTO_53) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "=")))
+	if (!(*pos == '='))
 	{
 		return {}
 	}
@@ -5493,7 +5466,7 @@ Token(AUTO_55) {
 Token(AUTO_56) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "[")))
+	if (!(*pos == '['))
 	{
 		return {}
 	}
@@ -5505,7 +5478,7 @@ Token(AUTO_56) {
 Token(AUTO_57) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "]")))
+	if (!(*pos == ']'))
 	{
 		return {}
 	}
@@ -5541,7 +5514,7 @@ Token(AUTO_59) {
 Token(AUTO_60) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "[")))
+	if (!(*pos == '['))
 	{
 		return {}
 	}
@@ -5553,7 +5526,7 @@ Token(AUTO_60) {
 Token(AUTO_61) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -5565,7 +5538,7 @@ Token(AUTO_61) {
 Token(AUTO_62) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "]")))
+	if (!(*pos == ']'))
 	{
 		return {}
 	}
@@ -5577,7 +5550,7 @@ Token(AUTO_62) {
 Token(AUTO_63) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "{")))
+	if (!(*pos == '{'))
 	{
 		return {}
 	}
@@ -5589,7 +5562,7 @@ Token(AUTO_63) {
 Token(AUTO_64) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -5601,7 +5574,7 @@ Token(AUTO_64) {
 Token(AUTO_65) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -5613,7 +5586,7 @@ Token(AUTO_65) {
 Token(AUTO_66) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -5625,7 +5598,7 @@ Token(AUTO_66) {
 Token(AUTO_67) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ";")))
+	if (!(*pos == ';'))
 	{
 		return {}
 	}
@@ -5637,7 +5610,7 @@ Token(AUTO_67) {
 Token(AUTO_68) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "}")))
+	if (!(*pos == '}'))
 	{
 		return {}
 	}
@@ -5709,7 +5682,7 @@ Token(AUTO_73) {
 Token(AUTO_74) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!(*pos == 'n')))
+	if (!(!(*pos == '\n')))
 	{
 		return {}
 	}
@@ -5733,7 +5706,7 @@ Token(AUTO_75) {
 Token(AUTO_76) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ",")))
+	if (!(*pos == ','))
 	{
 		return {}
 	}
@@ -5757,7 +5730,7 @@ Token(AUTO_77) {
 Token(AUTO_78) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ".")))
+	if (!(*pos == '.'))
 	{
 		return {}
 	}
@@ -5793,7 +5766,7 @@ Token(AUTO_80) {
 Token(AUTO_81) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "@")))
+	if (!(*pos == '@'))
 	{
 		return {}
 	}
@@ -5853,7 +5826,7 @@ Token(AUTO_85) {
 Token(AUTO_86) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!(*pos == 'n' || *pos == 'r')))
+	if (!(!(*pos == '\n' || *pos == '\r')))
 	{
 		return {}
 	}
@@ -5877,7 +5850,7 @@ Token(AUTO_87) {
 Token(AUTO_88) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!(*pos == 'n' || *pos == 'r')))
+	if (!(!(*pos == '\n' || *pos == '\r')))
 	{
 		return {}
 	}
@@ -5913,7 +5886,7 @@ Token(AUTO_90) {
 Token(AUTO_91) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -5925,7 +5898,7 @@ Token(AUTO_91) {
 Token(AUTO_92) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "#")))
+	if (!(*pos == '#'))
 	{
 		return {}
 	}
@@ -5937,7 +5910,7 @@ Token(AUTO_92) {
 Token(AUTO_93) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ".")))
+	if (!(*pos == '.'))
 	{
 		return {}
 	}
@@ -5949,7 +5922,7 @@ Token(AUTO_93) {
 Token(AUTO_94) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "|")))
+	if (!(*pos == '|'))
 	{
 		return {}
 	}
@@ -5973,7 +5946,7 @@ Token(AUTO_95) {
 Token(AUTO_96) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "?")))
+	if (!(*pos == '?'))
 	{
 		return {}
 	}
@@ -5985,7 +5958,7 @@ Token(AUTO_96) {
 Token(AUTO_97) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "+")))
+	if (!(*pos == '+'))
 	{
 		return {}
 	}
@@ -5997,7 +5970,7 @@ Token(AUTO_97) {
 Token(AUTO_98) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "*")))
+	if (!(*pos == '*'))
 	{
 		return {}
 	}
@@ -6009,7 +5982,7 @@ Token(AUTO_98) {
 Token(AUTO_99) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "&")))
+	if (!(*pos == '&'))
 	{
 		return {}
 	}
@@ -6021,7 +5994,7 @@ Token(AUTO_99) {
 Token(AUTO_100) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "(")))
+	if (!(*pos == '('))
 	{
 		return {}
 	}
@@ -6033,7 +6006,7 @@ Token(AUTO_100) {
 Token(AUTO_101) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ")")))
+	if (!(*pos == ')'))
 	{
 		return {}
 	}
@@ -6045,7 +6018,7 @@ Token(AUTO_101) {
 Token(AUTO_102) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "[")))
+	if (!(*pos == '['))
 	{
 		return {}
 	}
@@ -6057,7 +6030,7 @@ Token(AUTO_102) {
 Token(AUTO_103) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "^")))
+	if (!(*pos == '^'))
 	{
 		return {}
 	}
@@ -6069,7 +6042,7 @@ Token(AUTO_103) {
 Token(AUTO_104) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "]")))
+	if (!(*pos == ']'))
 	{
 		return {}
 	}
@@ -6141,7 +6114,7 @@ Token(AUTO_109) {
 Token(AUTO_110) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "-")))
+	if (!(*pos == '-'))
 	{
 		return {}
 	}
@@ -6153,7 +6126,7 @@ Token(AUTO_110) {
 Token(AUTO_111) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ".")))
+	if (!(*pos == '.'))
 	{
 		return {}
 	}
@@ -6165,7 +6138,7 @@ Token(AUTO_111) {
 Token(AUTO_112) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == 'r' || *pos == 'n'))
+	if (!(*pos == '\r' || *pos == '\n'))
 	{
 		return {}
 	}
@@ -6189,7 +6162,7 @@ Token(AUTO_113) {
 Token(AUTO_114) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -6201,7 +6174,7 @@ Token(AUTO_114) {
 Token(AUTO_115) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ";")))
+	if (!(*pos == ';'))
 	{
 		return {}
 	}
@@ -6213,7 +6186,7 @@ Token(AUTO_115) {
 Token(AUTO_116) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == 'n' || *pos == 'r'))
+	if (!(*pos == '\n' || *pos == '\r'))
 	{
 		return {}
 	}
@@ -6225,7 +6198,7 @@ Token(AUTO_116) {
 Token(AUTO_117) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, ":")))
+	if (!(*pos == ':'))
 	{
 		return {}
 	}
@@ -6261,7 +6234,7 @@ Token(AUTO_119) {
 Token(AUTO_120) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(*pos == 'r' || *pos == 'n'))
+	if (!(*pos == '\r' || *pos == '\n'))
 	{
 		return {}
 	}
@@ -6273,7 +6246,7 @@ Token(AUTO_120) {
 Token(AUTO_121) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "#")))
+	if (!(*pos == '#'))
 	{
 		return {}
 	}
