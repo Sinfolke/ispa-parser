@@ -175,22 +175,23 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     switch (val.name)
     {
     case Parser::Rules::string:
+        //cpuf::printf("string, type: %s\n", val.data.type().name());
         newval.kind = IR::var_assign_values::STRING;
         newval.data = std::any_cast<std::string>(val.data);
         break;
     case Parser::Rules::var_refer:
-    {
+    {        
+        //cpuf::printf("var_refer\n");
         IR::var_refer refer;
-        cpuf::printf("in var_refer\n");
-        cpuf::printf("1\n");
+        //cpuf::printf("1\n");
         auto data = std::any_cast<obj_t>(val.data);
-        cpuf::printf("2\n");
+        //cpuf::printf("2\n");
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        cpuf::printf("3\n");
+        //cpuf::printf("3\n");
         auto name_str = std::any_cast<std::string>(name.data);
-        cpuf::printf("4\n");
+        //cpuf::printf("4\n");
         auto pre = std::any_cast<bool>(corelib::map::get(data, "pre"));
-        cpuf::printf("5\n");
+        //cpuf::printf("5\n");
         auto post = std::any_cast<bool>(corelib::map::get(data, "post"));
         refer.pre_increament = pre;
         refer.post_increament = post;
@@ -203,6 +204,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
 
     case Parser::Rules::boolean: 
     {
+        //cpuf::printf("boolean\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto val = std::any_cast<int>(corelib::map::get(data, "val"));
         newval.kind = val ? IR::var_assign_values::_TRUE : IR::var_assign_values::_FALSE;
@@ -210,6 +212,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     }
     case Parser::Rules::number: 
     {
+        //cpuf::printf("number\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
         newval.kind = IR::var_assign_values::NUMBER;
@@ -218,6 +221,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     }
     case Parser::Rules::array:
     {
+        //cpuf::printf("array\n");
         auto data = std::any_cast<arr_t<Parser::Rule>>(val.data);
         IR::array arr;
         for (auto &el : data) {
@@ -229,6 +233,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     }
     case Parser::Rules::object:
     {
+        //cpuf::printf("object\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto key = std::any_cast<Parser::Rule>(corelib::map::get(data, "key"));
         auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
@@ -251,6 +256,7 @@ IR::assign TreeAnyDataToIR(Parser::Rule value) {
     }
     case Parser::Rules::accessor:
     {
+        //cpuf::printf("accessor\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
         auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
@@ -558,10 +564,13 @@ arr_t<IR::expr> TreeExprArithmetic_forToIR(Parser::Rule rule) {
     }
     case Parser::Rules::method_call:
         expr.push_back({IR::condition_types::METHOD_CALL, TreeMethodCallToIR(data)});
+        break;
     case Parser::Rules::cll_function_call:
         expr.push_back({IR::condition_types::FUNCTION_CALL, TreeFunctionToIR(data)});
+        break;
     case Parser::Rules::any_data:
         expr.push_back({IR::condition_types::ANY_DATA, TreeAnyDataToIR(data)});
+        break;
     default:
         throw Error("Undefined data in arithmetic_for %s", Parser::RulesToString(data.name));
         break;

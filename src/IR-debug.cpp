@@ -32,7 +32,7 @@ namespace IR {
         switch (value) {
             case var_assign_values::STRING:
                 cpuf::printf("on String\n");
-                return std::string('"', 1) + std::any_cast<std::string>(data) + std::string('"', 1);
+                return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
             case var_assign_values::VAR_REFER:
             {
                 cpuf::printf("ON var_refer\n");

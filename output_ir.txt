@@ -316,6 +316,19 @@ Rule(cll_block) {
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(cll_spaced_block) {
+	while ((skipup(" ")>spaces_amount))
+	{
+		rule _0 = NONE
+		bool success_1 = FALSE
+		_0 = Rule(TOKEN_SEQUENCE)
+		if (!(_0.res))
+		{
+			return {}
+		}
+		success_1 = TRUE
+		pos++
+		skipspaces(TOKEN_SEQUENCE)
+	}
 	skipspaces(TOKEN_SEQUENCE)
 }
 Token(OP) {
