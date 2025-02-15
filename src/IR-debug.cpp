@@ -14,7 +14,6 @@ using arr_t = std::vector<T>;
 
 namespace IR {
     std::string convert_var_type(var_types type) {
-        cpuf::printf("number: %d\n", (int) type);
         static const std::unordered_map<var_types, std::string> typesMap = {
             {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
             {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},

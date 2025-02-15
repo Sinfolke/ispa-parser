@@ -2007,6 +2007,40 @@ Rule(function_parameters) {
 		pos++
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	if ((matched(%1
+)))
+	{
+		str _6 = NONE
+		bool success_7 = FALSE
+		while (1)
+		{
+			str _2 = NONE
+			bool success_3 = FALSE
+			if (!(!STRNCMP(pos, ",")))
+			{
+				break
+			}
+			_2 += CURRENT_POS_SEQUENCE
+			success_3 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+			token _4 = NONE
+			bool success_5 = FALSE
+			if (!(CURRENT_TOKEN == "ID"))
+			{
+				break
+			}
+			_4 = CURRENT_TOKEN
+			success_5 = TRUE
+			pos++
+			skipspaces(TOKEN_SEQUENCE)
+		}
+		if (success_3 && success_5)
+		{
+			success_7 = TRUE
+		}
+		skipspaces(TOKEN_SEQUENCE)
+	}
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(cll_function_call) {
