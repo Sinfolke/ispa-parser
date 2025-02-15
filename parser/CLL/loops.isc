@@ -1,7 +1,7 @@
 loop_while:
     'while' expr cll_block | cll_spaced_block
     data:
-        cond: %2
+        expr: %2
         block: %3
     ;
 ;

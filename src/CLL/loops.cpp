@@ -22,7 +22,7 @@ Rule(loop_while) {
     pos += block.token.length();
 
     std::unordered_map<const char*, std::any> data {
-        { "cond", expr_res.token },
+        { "expr", expr_res.token },
         { "block", block.token }
     };
     RULE_SUCCESSD(in, pos, loop_while, data);
