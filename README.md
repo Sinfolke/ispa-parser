@@ -32,8 +32,6 @@
 
   Fix error with incorrect replaceDublications
 
-  Add proper handle of nested rules in process_Rule_other
-
   Add inline of automatic tokens when value accessed
 ### Parser syntax
   
