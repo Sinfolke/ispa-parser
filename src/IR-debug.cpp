@@ -110,7 +110,11 @@ namespace IR {
         };
         return valueToString.at(value);
     }
-    std::string getCharFromEscaped(char in) {
+    std::string getCharFromEscaped(char in, bool string) {
+        if (in == '"')
+            return string ? "\\\"" : "\"";
+        if (in == '\'')
+            return string ? "'" : "\\'";
         switch (in)
         {
         case '\n': return "\\n";  // Newline
@@ -121,8 +125,6 @@ namespace IR {
         case '\f': return "\\f";  // Form feed (new page)
         case '\v': return "\\v";  // Vertical tab
         case '\\': return "\\";   // Backslash
-        case '\"': return "\\\""; // Single quote
-        case '\'': return "\\'";  // Single quote
         default: return std::string(1, in);      // Return the character itself if not an escape sequence
         }
     }
@@ -133,7 +135,7 @@ namespace IR {
             if (dt == '\0')
                 return std::string("'\\0'");
             else
-                return std::string("'") + getCharFromEscaped(dt) + std::string("'");
+                return std::string("'") + getCharFromEscaped(dt, false) + std::string("'");
         } else if (type == condition_types::CURRENT_CHARACTER) {
             //cpuf::printf("current_character\n");
             return "*pos";

@@ -2,11 +2,12 @@
 #include <parser.h>
 #include <internal_types.h>
 #include <any>
+#include <list>
 namespace IR {
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
-        ASSIGN_VARIABLE, INCREASE_POS_COUNTER, SKIP_SPACES
+        ASSIGN_VARIABLE, INCREASE_POS_COUNTER, SKIP_SPACES, DATA_BLOCK
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -23,7 +24,7 @@ namespace IR {
     enum class var_assign_values {
         NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, ID, VAR_REFER, ACCESSOR, 
         UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG,
-        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR
+        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR, INCLOSED_MAP
     };
     enum class var_assign_types {
         ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO, BITWISE_AND, BITWISE_OR, BITWISE_ANDR, BITWISE_RIGHTSHFT, BITWISE_LEFTSHIFT, ASSIGN,
@@ -81,12 +82,20 @@ namespace IR {
         arr_t<Parser::Rule> elements;
         char qualifier;
     };
+    using inclosed_map = std::unordered_map<std::string, arr_t<IR::expr>>;
+    struct data_block_node {
+        assign value;
+        bool is_inclosed_map;
+    };
+    using data_block = std::list<data_block_node>;
     class ir {
         public:
         arr_t<member> elements;
         void add(ir repr);
         void add(arr_t<member> repr);
         void push(member member);
+        void push_begin(member member);
+        void pop_begin();
         void pop();
         size_t size();
         bool empty();

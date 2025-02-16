@@ -26,13 +26,17 @@
 
   Add handle of ${} in string
 
-  Add defintion of type for group value
-
-  Add handle of value when assigned to variable in group
-
   Fix error with incorrect replaceDublications
 
-  Add inline of automatic tokens when value accessed
+  Necessary:
+
+    Add inline of automatic tokens when value accessed
+
+    *add handle of same level nested rule
+
+    *Add handle of data block
+
+
 ### Parser syntax
   
   see ```concepts/syntax```
