@@ -702,10 +702,31 @@ arr_t<IR::expr> TreeExprToIR(Parser::Rule expr) {
 IR::data_block TreeDataBlockToIR(Parser::Rule rule) {
     auto val = std::any_cast<Parser::Rule>(rule.data);
     IR::data_block datablock;
-    if (val.name == Parser::Rules::any_data) {
+    cpuf::printf("2, rule_name: %s, name: %s\n", Parser::RulesToString(rule.name), Parser::RulesToString(val.name));
+    if (val.name == Parser::Rules::Rule_data_block_inclosed_map) {
+        // inclosed map
+        cpuf::printf("3, name: %s, type: %s\n", Parser::RulesToString(val.name), val.data.type().name());
+        datablock.is_inclosed_map = true;
+        IR::inclosed_map map;
+        auto keys = std::any_cast<arr_t<Parser::Rule>>(val.data);
+        cpuf::printf("4\n");
+        for (auto &key : keys) {
+            cpuf::printf("5, type: %s\n", key.data.type().name());
+            auto data = std::any_cast<obj_t>(key.data);
+            cpuf::printf("6\n");
+            auto k = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto v = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+            if (v.name == Parser::Rules::expr)
+                map[std::any_cast<std::string>(k.data)] = TreeExprToIR(v);
+        }
+        datablock.value = {IR::var_assign_values::INCLOSED_MAP, map};
+    } else if (val.name == Parser::Rules::any_data) {
         datablock.is_inclosed_map = false;
-        
+        datablock.value = TreeAnyDataToIR(val);
+    } else {
+        throw Error("Undefined data block val\n");
     }
+    return datablock;
 }
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, bool isToken) {
     //cpuf::printf("group\n");
@@ -737,6 +758,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
                     }
                 );
             }
+            break;
         }
         case IR::var_types::Token:
         case IR::var_types::Rule:
@@ -744,7 +766,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
             var_members.push_back(
                 {
                     IR::types::ASSIGN_VARIABLE,
-                    IR::variable_assign {var.name, IR::var_assign_types::ADD, IR::assign { IR::var_assign_values::ID,  node_ret[0].var }}
+                    IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::assign { IR::var_assign_values::ID,  node_ret[0].var }}
                 }
             );
         break;
@@ -771,7 +793,6 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     member.push({IR::types::VARIABLE, svar});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) 
     {
-        cpuf::printf("On method call\n");
         IR::method_call method_call = TreeMethodCallToIR(std::any_cast<Parser::Rule>(variable.data));
         member.add(values);
         member.push({IR::types::METHOD_CALL, method_call});
@@ -779,6 +800,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
         member.add(values);
     }
     member.push(svar_cond);
+    member.add(var_members);
     return {svar.name, var.name};
 }
 IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -1467,12 +1489,12 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name) {
         auto data_block = std::any_cast<Parser::Rule>(corelib::map::get(data, "data_block"));
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
-
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname));
 
         result_ir.add(rulesToIr(rules, fullname, corelib::text::isUpper(name), true));
-        //result_ir.elements.insert(result_ir.elements.end() - 1, TreeDataBlockToIR(data_block));
+        if (data_block.data.has_value())
+            result_ir.elements.insert(result_ir.elements.end() - 1, {IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
 
     }
     return result_ir;

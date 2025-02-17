@@ -83,11 +83,10 @@ namespace IR {
         char qualifier;
     };
     using inclosed_map = std::unordered_map<std::string, arr_t<IR::expr>>;
-    struct data_block_node {
+    struct data_block {
         assign value;
         bool is_inclosed_map;
     };
-    using data_block = std::list<data_block_node>;
     class ir {
         public:
         arr_t<member> elements;

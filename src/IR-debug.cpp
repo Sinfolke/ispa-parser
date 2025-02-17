@@ -125,17 +125,14 @@ namespace IR {
         case '\f': return "\\f";  // Form feed (new page)
         case '\v': return "\\v";  // Vertical tab
         case '\\': return "\\";   // Backslash
+        case '\0': return "\\0";  // end of string
         default: return std::string(1, in);      // Return the character itself if not an escape sequence
         }
     }
     std::string conditionTypesToString(condition_types type, std::any data) {
         if (type == condition_types::CHARACTER) {
             //cpuf::printf("character\n");
-            auto dt = std::any_cast<char>(data);
-            if (dt == '\0')
-                return std::string("'\\0'");
-            else
-                return std::string("'") + getCharFromEscaped(dt, false) + std::string("'");
+            return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
         } else if (type == condition_types::CURRENT_CHARACTER) {
             //cpuf::printf("current_character\n");
             return "*pos";
@@ -166,8 +163,7 @@ namespace IR {
         } else if (type == condition_types::METHOD_CALL) {
             return convertMethodCall(std::any_cast<method_call>(data));
         } else if (type == IR::condition_types::FUNCTION_CALL) {
-            auto call = std::any_cast<function_call>(data);
-            return convertFunctionCall(call);
+            return convertFunctionCall( std::any_cast<function_call>(data));
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
             {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
@@ -176,8 +172,10 @@ namespace IR {
             {condition_types::HIGHER, ">"}, {condition_types::LOWER, "<"},
             {condition_types::HIGHER_OR_EQUAL, ">="}, {condition_types::LOWER_OR_EQUAL, "<="},
             {condition_types::LEFT_BITWISE, "<<"}, {condition_types::RIGHT_BITWISE, ">>"},
-            {condition_types::BITWISE_AND, "&"}, {condition_types::CHARACTER, ""},
-            {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, 
+            {condition_types::BITWISE_AND, "&"}, {condition_types::BITWISE_ANDR, "^"},
+            {condition_types::ADD, "+"}, {condition_types::SUBSTR, "-"},
+            {condition_types::MULTIPLY, "*"}, {condition_types::DIVIDE, "/"},
+            {condition_types::MODULO, "%"}, {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, 
         };
         return condTypesMap.at(type);
     }
@@ -279,6 +277,26 @@ namespace IR {
         return res;
     }
 
+    std::string convertDataBlock(data_block dtb, int indentLevel) {
+        // Implement method call conversion with proper indentation
+        std::string res;
+        res += "data = ";
+        if (dtb.is_inclosed_map) {
+            res += "\n";
+            for (auto [key, value] : std::any_cast<inclosed_map>(dtb.value.data)) {
+                res += std::string(indentLevel + 1, '\t');
+                res += key;
+                res += ": ";
+                res += convertExpression(value, false);
+                res += '\n';
+            }
+            res += std::string(indentLevel, '\t') + ";";
+        } else {
+            res += convertAssign(std::any_cast<assign>(dtb.value));
+        }
+        return res;
+    }
+
     void convertMember(const member& mem, std::ostream& out, int &indentLevel) {
         if (mem.type != types::RULE_END)
             out << std::string(indentLevel, '\t');
@@ -340,6 +358,9 @@ namespace IR {
                 out << "skipspaces(pos)";
             else
                 out << "skipspaces(TOKEN_SEQUENCE)";
+            break;
+        case types::DATA_BLOCK:
+            out << convertDataBlock(std::any_cast<IR::data_block>(mem.value), indentLevel);
             break;
         default:
             throw Error("Undefined IR member\n");

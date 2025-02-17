@@ -19,6 +19,8 @@ Rule(accessor_group) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(accessor_element) {
 	token _0 = NONE
@@ -41,6 +43,8 @@ Rule(accessor_element) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(accessor_char) {
 	token _0 = NONE
@@ -63,6 +67,8 @@ Rule(accessor_char) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(accessor_all) {
 	rule _0 = NONE
@@ -105,6 +111,8 @@ Rule(accessor_all) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(accessor) {
 	rule _0 = NONE
@@ -146,7 +154,15 @@ Rule(accessor) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		second: %3
+
+		first: %1
+
+	;
 }
 Rule(cll) {
 	token cll_begin = NONE
@@ -165,6 +181,7 @@ Rule(cll) {
 	{
 		success_2 = TRUE
 	}
+	cll_begin = _0
 	skipspaces(TOKEN_SEQUENCE)
 	str _23 = NONE
 	bool success_24 = FALSE
@@ -261,6 +278,7 @@ Rule(cll) {
 		{
 			success_20 = TRUE
 		}
+		_19 = _3
 		skipspaces(TOKEN_SEQUENCE)
 		token _21 = NONE
 		bool success_22 = FALSE
@@ -282,7 +300,11 @@ Rule(cll) {
 	{
 		success_24 = TRUE
 	}
+	_23 += _19
+	_23 += _21
 	skipspaces(TOKEN_SEQUENCE)
+	data = $2
+
 }
 Rule(cll_block) {
 	token _0 = NONE
@@ -314,6 +336,8 @@ Rule(cll_block) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(cll_spaced_block) {
 	while ((skipup(" ")>spaces_amount))
@@ -329,6 +353,8 @@ Rule(cll_spaced_block) {
 		pos++
 		skipspaces(TOKEN_SEQUENCE)
 	}
+	data = %1
+
 }
 Token(OP) {
 	str _0 = NONE
@@ -393,6 +419,8 @@ Token(OP) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(ASSIGNMENT_OP) {
 	token _0 = NONE
@@ -414,6 +442,8 @@ Token(ASSIGNMENT_OP) {
 	success_3 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(COMPARE_OP) {
 	str _0 = NONE
@@ -489,6 +519,8 @@ Token(COMPARE_OP) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(LOGICAL_OP) {
 	token _0 = NONE
@@ -520,6 +552,8 @@ Token(LOGICAL_OP) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(LOGICAL_NOT) {
 	str _0 = NONE
@@ -551,6 +585,8 @@ Token(LOGICAL_NOT) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(LOGICAL_AND) {
 	str _0 = NONE
@@ -582,6 +618,8 @@ Token(LOGICAL_AND) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(LOGICAL_OR) {
 	str _0 = NONE
@@ -613,6 +651,8 @@ Token(LOGICAL_OR) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(LOGICAL_ANDR) {
 	any _0 = NONE
@@ -659,6 +699,9 @@ Token(LOGICAL_ANDR) {
 		{
 			success_11 = TRUE
 		}
+		_10 += _4
+		_10 += _6
+		_10 += _8
 		skipspaces(pos)
 		if (!success_11)
 		{
@@ -679,6 +722,8 @@ Token(LOGICAL_ANDR) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Rule(cll_template_content_typename) {
 	rule _0 = NONE
@@ -720,7 +765,12 @@ Rule(cll_template_content_typename) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_int) {
 	token _0 = NONE
@@ -762,7 +812,12 @@ Rule(cll_template_content_int) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_bool) {
 	token _0 = NONE
@@ -804,7 +859,12 @@ Rule(cll_template_content_bool) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_str) {
 	token _0 = NONE
@@ -846,7 +906,12 @@ Rule(cll_template_content_str) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_arr) {
 	rule _0 = NONE
@@ -888,7 +953,12 @@ Rule(cll_template_content_arr) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_obj) {
 	rule _0 = NONE
@@ -930,7 +1000,12 @@ Rule(cll_template_content_obj) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_template_content_any_data) {
 	rule _0 = NONE
@@ -972,7 +1047,12 @@ Rule(cll_template_content_any_data) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(cll_csupport_types) {
 	bool is_unsigned = matched($1%1
@@ -1060,6 +1140,7 @@ Rule(cll_csupport_types) {
 		{
 			success_17 = TRUE
 		}
+		_16 = _4
 		skipspaces(TOKEN_SEQUENCE)
 	}	while(0)
 
@@ -1067,6 +1148,8 @@ Rule(cll_csupport_types) {
 	{
 		success_19 = TRUE
 	}
+	_18 += _2
+	_18 += _16
 	skipspaces(TOKEN_SEQUENCE)
 	if (!success_19)
 	{
@@ -1109,6 +1192,7 @@ Rule(cll_csupport_types) {
 		{
 			success_27 = TRUE
 		}
+		_26 = _20
 		skipspaces(TOKEN_SEQUENCE)
 		if (!success_27)
 		{
@@ -1195,6 +1279,7 @@ Rule(cll_csupport_types) {
 			{
 				success_43 = TRUE
 			}
+			_42 = _28
 			skipspaces(TOKEN_SEQUENCE)
 			if (!success_43)
 			{
@@ -1218,6 +1303,12 @@ Rule(cll_csupport_types) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		template: %2
+
+		type: %1
+
+	;
 }
 Rule(cll_type_abstract) {
 	any _24 = NONE
@@ -1274,6 +1365,8 @@ Rule(cll_type_abstract) {
 						{
 							success_17 = TRUE
 						}
+						_16 += _12
+						_16 += _14
 						skipspaces(TOKEN_SEQUENCE)
 						if (!success_17)
 						{
@@ -1307,6 +1400,8 @@ Rule(cll_type_abstract) {
 							{
 								success_23 = TRUE
 							}
+							_22 += _18
+							_22 += _20
 							skipspaces(TOKEN_SEQUENCE)
 							if (!success_23)
 							{
@@ -1365,6 +1460,12 @@ Rule(cll_type_abstract) {
 		success_25 = TRUE
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		template: %2
+
+		type: %1
+
+	;
 }
 Rule(cll_type) {
 	rule _0 = NONE
@@ -1396,6 +1497,8 @@ Rule(cll_type) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(cll_if) {
 	token _2 = NONE
@@ -1413,6 +1516,7 @@ Rule(cll_if) {
 	{
 		success_3 = TRUE
 	}
+	_2 = _0
 	skipspaces(TOKEN_SEQUENCE)
 	token _4 = NONE
 	bool success_5 = FALSE
@@ -1469,7 +1573,14 @@ Rule(cll_if) {
 	{
 		success_15 = TRUE
 	}
+	_14 = _8
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		block: $1
+
+		expr: %3
+
+	;
 }
 Rule(cll_ternary) {
 	rule _0 = NONE
@@ -1522,6 +1633,14 @@ Rule(cll_ternary) {
 	success_9 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		second: %5
+
+		first: %3
+
+		cond: %1
+
+	;
 }
 Rule(expr_logical) {
 	rule _0 = NONE
@@ -1604,6 +1723,14 @@ Rule(expr_logical) {
 	success_9 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		right: %3
+
+		op: %2
+
+		left: %1
+
+	;
 }
 Rule(expr_compare) {
 	rule _0 = NONE
@@ -1651,7 +1778,17 @@ Rule(expr_compare) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		sequence: %3
+
+		operators: %2
+
+		first: %1
+
+	;
 }
 Rule(expr_arithmetic) {
 	rule _0 = NONE
@@ -1699,7 +1836,17 @@ Rule(expr_arithmetic) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		sequence: %3
+
+		operators: %2
+
+		first: %1
+
+	;
 }
 Rule(expr_for_arithmetic) {
 	rule _0 = NONE
@@ -1753,6 +1900,8 @@ Rule(expr_for_arithmetic) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(expr_group) {
 	token _0 = NONE
@@ -1794,6 +1943,8 @@ Rule(expr_group) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(expr_expr_copiable_method_call) {
 	token _0 = NONE
@@ -1826,6 +1977,8 @@ Rule(expr_expr_copiable_method_call) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(expr) {
 	rule _0 = NONE
@@ -1912,6 +2065,8 @@ Rule(expr) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(function_body_call) {
 	token _0 = NONE
@@ -1944,6 +2099,8 @@ Rule(function_body_call) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = $1
+
 }
 Rule(function_body_decl) {
 	token _0 = NONE
@@ -1976,6 +2133,8 @@ Rule(function_body_decl) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = $1
+
 }
 Rule(function_arguments) {
 	any _0 = NONE
@@ -2007,6 +2166,9 @@ Rule(function_arguments) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%1
+,%3
+,]
 }
 Rule(function_parameters) {
 	token _0 = NONE
@@ -2050,8 +2212,13 @@ Rule(function_parameters) {
 		{
 			success_7 = TRUE
 		}
+		_6 += _2
+		_6 += _4
 		skipspaces(TOKEN_SEQUENCE)
 	}
+	data = [%1
+,%3
+,]
 }
 Rule(cll_function_call) {
 	token _0 = NONE
@@ -2074,6 +2241,12 @@ Rule(cll_function_call) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		body: $2
+
+		name: $1
+
+	;
 }
 Rule(function_decl) {
 	bool is_declaration_only = true
@@ -2158,6 +2331,12 @@ Rule(loop_while) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		block: %3
+
+		expr: %2
+
+	;
 }
 Rule(loop_for) {
 	rule _0 = NONE
@@ -2219,6 +2398,7 @@ Rule(loop_for) {
 	{
 		success_11 = TRUE
 	}
+	_10 = _4
 	skipspaces(TOKEN_SEQUENCE)
 	token _12 = NONE
 	bool success_13 = FALSE
@@ -2297,6 +2477,16 @@ Rule(loop_for) {
 	success_23 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		block: %9
+
+		end: %7
+
+		cond: %5
+
+		decl: %3
+
+	;
 }
 Rule(method_call) {
 	token _0 = NONE
@@ -2344,7 +2534,15 @@ Rule(method_call) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _2
+	_6 += _4
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		call: %3
+
+		object: %1
+
+	;
 }
 Rule(copiable_method_call) {
 	token _0 = NONE
@@ -2367,6 +2565,8 @@ Rule(copiable_method_call) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = $2
+
 }
 Rule(var_refer) {
 	any pre = matched($1
@@ -2412,6 +2612,7 @@ Rule(var_refer) {
 	{
 		success_7 = TRUE
 	}
+	_6 = _0
 	skipspaces(TOKEN_SEQUENCE)
 	token _8 = NONE
 	bool success_9 = FALSE
@@ -2463,6 +2664,9 @@ Rule(var_refer) {
 	{
 		success_17 = TRUE
 	}
+	_16 += _10
+	_16 += _12
+	_16 += _14
 	skipspaces(TOKEN_SEQUENCE)
 	token _24 = NONE
 	bool success_25 = FALSE
@@ -2503,7 +2707,16 @@ Rule(var_refer) {
 	{
 		success_25 = TRUE
 	}
+	_24 = _18
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		post: post
+		pre: pre
+		brace_expression: $2%2
+
+		name: %1
+
+	;
 }
 Rule(cll_var) {
 	rule _0 = NONE
@@ -2574,7 +2787,19 @@ Rule(cll_var) {
 	{
 		success_13 = TRUE
 	}
+	_12 += _4
+	_12 += _6
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		value: $4
+
+		operator: $3
+
+		id: $2
+
+		type: $1
+
+	;
 }
 Token(STRING) {
 	quote = %1
@@ -2597,6 +2822,7 @@ Token(STRING) {
 	{
 		success_3 = TRUE
 	}
+	_2 += _0
 	skipspaces(pos)
 	any _10 = NONE
 	bool success_11 = FALSE
@@ -2689,6 +2915,7 @@ Token(NUMBER) {
 	{
 		success_8 = TRUE
 	}
+	_7 += _4
 	skipspaces(pos)
 	if (!success_8)
 	{
@@ -2727,6 +2954,8 @@ Token(NUMBER) {
 		{
 			success_15 = TRUE
 		}
+		_14 += _9
+		_14 += _11
 		skipspaces(pos)
 		if (!success_15)
 		{
@@ -2745,6 +2974,14 @@ Token(NUMBER) {
 	success_3 = TRUE
 	pos++
 	skipspaces(pos)
+	data = 
+		full: main+point+dec
+		dec_n: dec_n
+		dec: dec
+		main_n: main_n
+		main: main
+		sign: sign
+	;
 }
 Token(BOOLEAN) {
 	str d = NONE
@@ -2782,7 +3019,11 @@ Token(BOOLEAN) {
 	{
 		success_6 = TRUE
 	}
+	d += _0
 	skipspaces(pos)
+	data = 
+		lit: d
+	;
 }
 Rule(array) {
 	token _0 = NONE
@@ -2828,6 +3069,8 @@ Rule(array) {
 		{
 			success_7 = TRUE
 		}
+		_6 += _2
+		_6 += _4
 		skipspaces(TOKEN_SEQUENCE)
 	}	while(0)
 
@@ -2835,6 +3078,7 @@ Rule(array) {
 	{
 		success_9 = TRUE
 	}
+	_8 += _6
 	skipspaces(TOKEN_SEQUENCE)
 	token _10 = NONE
 	bool success_11 = FALSE
@@ -2846,6 +3090,8 @@ Rule(array) {
 	success_11 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = $2%2
+
 }
 Rule(object) {
 	token _0 = NONE
@@ -2941,6 +3187,10 @@ Rule(object) {
 		{
 			success_17 = TRUE
 		}
+		_16 += _8
+		_16 += _10
+		_16 += _12
+		_16 += _14
 		skipspaces(TOKEN_SEQUENCE)
 		token _18 = NONE
 		bool success_19 = FALSE
@@ -2958,6 +3208,11 @@ Rule(object) {
 	{
 		success_21 = TRUE
 	}
+	_20 += _2
+	_20 += _4
+	_20 += _6
+	_20 += _16
+	_20 += _18
 	skipspaces(TOKEN_SEQUENCE)
 	token _22 = NONE
 	bool success_23 = FALSE
@@ -2969,6 +3224,16 @@ Rule(object) {
 	success_23 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		values: $2%4
+
+		keys: $2%2
+
+		value: $1%3
+
+		key: $1%1
+
+	;
 }
 Rule(any_data) {
 	data = %1
@@ -3129,7 +3394,12 @@ Token(ID) {
 	{
 		success_7 = TRUE
 	}
+	_6 += _0
+	_6 += _2
+	_6 += _4
 	skipspaces(pos)
+	data = $1
+
 }
 Rule(spacemode) {
 	token _0 = NONE
@@ -3182,6 +3452,8 @@ Rule(spacemode) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(linear_comment) {
 	token _0 = NONE
@@ -3299,6 +3571,8 @@ Rule(Import_input) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(Import_path) {
 	token _0 = NONE
@@ -3316,6 +3590,8 @@ Rule(Import_path) {
 		return {}
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	data = %1
+
 }
 Rule(Import_ext) {
 	str _4 = NONE
@@ -3347,7 +3623,11 @@ Rule(Import_ext) {
 	{
 		success_5 = TRUE
 	}
+	_4 += _0
+	_4 += _2
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(Import_file) {
 	rule _0 = NONE
@@ -3420,7 +3700,12 @@ Rule(Import) {
 	{
 		success_9 = TRUE
 	}
+	_8 += _4
+	_8 += _6
 	skipspaces(TOKEN_SEQUENCE)
+	data = [%2
+,%4
+,]
 }
 Rule(data) {
 }
@@ -3539,6 +3824,8 @@ Rule(preproc_lang_specific_cond_endif_define_set_clear_rem) {
 	success_3 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = $1
+
 }
 Rule(preproc_lang_specific_cond_endif_define_set_clear) {
 	token _0 = NONE
@@ -3598,6 +3885,7 @@ Rule(preproc_lang_specific_cond_endif_define_set) {
 	{
 		success_6 = TRUE
 	}
+	value = _4
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(preproc_lang_specific_cond_endif_define) {
@@ -3636,6 +3924,7 @@ Rule(preproc_lang_specific_cond_endif_define) {
 	{
 		success_6 = TRUE
 	}
+	value = _4
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(preproc_lang_specific_cond_endif) {
@@ -3677,6 +3966,7 @@ Rule(preproc_lang_specific_cond) {
 	{
 		success_5 = TRUE
 	}
+	_4 = _2
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(preproc_lang_specific) {
@@ -3889,6 +4179,8 @@ Rule(Rule_rule) {
 	{
 		success_23 = TRUE
 	}
+	_22 += _18
+	_22 += _20
 	skipspaces(TOKEN_SEQUENCE)
 	if (!success_23)
 	{
@@ -3957,6 +4249,12 @@ Rule(Rule_rule) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		qualifier: %2
+
+		val: %1
+
+	;
 }
 Rule(Rule_other) {
 	token _0 = NONE
@@ -4007,7 +4305,17 @@ Rule(Rule_other) {
 	{
 		success_9 = TRUE
 	}
+	_8 += _4
+	_8 += _6
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		nested_name: $1%2
+
+		name: %2
+
+		is_nested: matched(%1
+)
+	;
 }
 Rule(Rule_op) {
 	data = $1
@@ -4047,6 +4355,7 @@ Rule(Rule_op) {
 	{
 		success_7 = TRUE
 	}
+	_6 = _0
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(Rule_qualifier) {
@@ -4098,6 +4407,7 @@ Rule(Rule_qualifier) {
 	{
 		success_9 = TRUE
 	}
+	_8 = _0
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(Rule_group) {
@@ -4154,6 +4464,8 @@ Rule(Rule_group) {
 	{
 		success_9 = TRUE
 	}
+	_8 += _0
+	_8 += _2
 	skipspaces(TOKEN_SEQUENCE)
 	token _10 = NONE
 	bool success_11 = FALSE
@@ -4184,6 +4496,10 @@ Rule(Rule_group) {
 	success_15 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		val: r
+		variable: name
+	;
 }
 Rule(Rule_csequence_symbol) {
 	data = $1
@@ -4234,6 +4550,7 @@ Rule(Rule_csequence_symbol) {
 	{
 		success_9 = TRUE
 	}
+	_8 = _0
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(Rule_csequence_escape) {
@@ -4264,6 +4581,7 @@ Rule(Rule_csequence_escape) {
 	{
 		success_7 = TRUE
 	}
+	_6 = _4
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(Rule_csequence_diapason) {
@@ -4285,6 +4603,7 @@ Rule(Rule_csequence_diapason) {
 	{
 		success_2 = TRUE
 	}
+	from = _0
 	token _5 = NONE
 	bool success_6 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_110"))
@@ -4310,12 +4629,19 @@ Rule(Rule_csequence_diapason) {
 	{
 		success_11 = TRUE
 	}
+	to = _9
 	skipspaces(TOKEN_SEQUENCE)
 	if (success_11)
 	{
 		success_13 = TRUE
 	}
+	_12 += from
+	_12 += _3
+	_12 += _5
+	_12 += _7
+	_12 += to
 	skipspaces(TOKEN_SEQUENCE)
+	data = [from,to,]
 }
 Rule(Rule_csequence) {
 	token _0 = NONE
@@ -4386,6 +4712,7 @@ Rule(Rule_csequence) {
 	{
 		success_12 = TRUE
 	}
+	dt = _4
 	skipspaces(TOKEN_SEQUENCE)
 	token _13 = NONE
 	bool success_14 = FALSE
@@ -4397,6 +4724,11 @@ Rule(Rule_csequence) {
 	success_14 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		val: dt
+		not: matched(%2
+)
+	;
 }
 Rule(Rule_any) {
 	token _0 = NONE
@@ -4432,6 +4764,7 @@ Rule(Rule_data_block_inclosed_map) {
 	{
 		success_3 = TRUE
 	}
+	data = _0
 	skipspaces(TOKEN_SEQUENCE)
 }
 Rule(Rule_data_block_key) {
@@ -4466,6 +4799,7 @@ Rule(Rule_data_block_key) {
 	{
 		success_5 = TRUE
 	}
+	name = _3
 	skipspaces(TOKEN_SEQUENCE)
 	token _6 = NONE
 	bool success_7 = FALSE
@@ -4478,22 +4812,46 @@ Rule(Rule_data_block_key) {
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
 	rule dt = NONE
-	bool success_10 = FALSE
+	bool success_14 = FALSE
 	rule _8 = NONE
 	bool success_9 = FALSE
-	_8 = any_data(TOKEN_SEQUENCE)
-	if (!(_8.res))
+	rule _10 = NONE
+	bool success_11 = FALSE
+	_10 = cll_ternary(TOKEN_SEQUENCE)
+	if (!(_10.res))
 	{
-		return {}
+		rule _12 = NONE
+		bool success_13 = FALSE
+		_12 = expr(TOKEN_SEQUENCE)
+		if (!(_12.res))
+		{
+			return {}
+		}
+		else 
+		{
+			success_13 = TRUE
+			_8 = _12
+		}
 	}
+	else 
+	{
+		success_11 = TRUE
+		_8 = _10
+	}
+	_8 += CURRENT_POS_SEQUENCE
 	success_9 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
 	if (success_9)
 	{
-		success_10 = TRUE
+		success_14 = TRUE
 	}
+	dt = _8
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		val: dt
+		name: name
+	;
 }
 Rule(Rule_data_block) {
 	token _0 = NONE
@@ -4566,6 +4924,7 @@ Rule(Rule_data_block) {
 	{
 		success_13 = TRUE
 	}
+	data = _7
 	skipspaces(TOKEN_SEQUENCE)
 	token _14 = NONE
 	bool success_15 = FALSE
@@ -4606,6 +4965,12 @@ Rule(Rule_escaped) {
 		pos++
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		num: %5
+
+		c: %3
+
+	;
 }
 Rule(Rule_nested_rule_hex_bin) {
 	token _0 = NONE
@@ -4633,6 +4998,8 @@ Rule(Rule_nested_rule_hex_bin) {
 		return {}
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(Rule_nested_rule_hex) {
 	token _0 = NONE
@@ -4660,6 +5027,8 @@ Rule(Rule_nested_rule_hex) {
 		return {}
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	data = %2
+
 }
 Rule(Rule_nested_rule) {
 	token _0 = NONE
@@ -4696,6 +5065,8 @@ Rule(Rule_nested_rule) {
 	success_8 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = %4
+
 }
 Rule(Rule) {
 	any name = %1
@@ -4732,6 +5103,8 @@ Rule(Rule) {
 	{
 		success_4 = TRUE
 	}
+	rule_begin += _0
+	rule_begin += _2
 	skipspaces(TOKEN_SEQUENCE)
 	rule _5 = NONE
 	bool success_6 = FALSE
@@ -4761,6 +5134,7 @@ Rule(Rule) {
 	{
 		success_10 = TRUE
 	}
+	_9 = _7
 	skipspaces(TOKEN_SEQUENCE)
 	rule _11 = NONE
 	bool success_12 = FALSE
@@ -4791,6 +5165,12 @@ Rule(Rule) {
 	success_16 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
+	data = 
+		nestedRules: nested_rules
+		data_block: data_block
+		rule: rule
+		name: name
+	;
 }
 Token(AUTO_0) {
 	str _0 = NONE
@@ -4803,6 +5183,8 @@ Token(AUTO_0) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_1) {
 	str _0 = NONE
@@ -4815,6 +5197,8 @@ Token(AUTO_1) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_2) {
 	str _0 = NONE
@@ -4827,6 +5211,8 @@ Token(AUTO_2) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_3) {
 	str _0 = NONE
@@ -4839,6 +5225,8 @@ Token(AUTO_3) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_4) {
 	str _0 = NONE
@@ -4851,6 +5239,8 @@ Token(AUTO_4) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_5) {
 	str _0 = NONE
@@ -4863,6 +5253,8 @@ Token(AUTO_5) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_6) {
 	str _0 = NONE
@@ -4875,6 +5267,8 @@ Token(AUTO_6) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_7) {
 	str _0 = NONE
@@ -4887,6 +5281,8 @@ Token(AUTO_7) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_8) {
 	str _0 = NONE
@@ -4899,6 +5295,8 @@ Token(AUTO_8) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_9) {
 	str _0 = NONE
@@ -4911,6 +5309,8 @@ Token(AUTO_9) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_10) {
 	str _0 = NONE
@@ -4923,6 +5323,8 @@ Token(AUTO_10) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_11) {
 	str _0 = NONE
@@ -4935,6 +5337,8 @@ Token(AUTO_11) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_12) {
 	str _0 = NONE
@@ -4947,6 +5351,8 @@ Token(AUTO_12) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_13) {
 	str _0 = NONE
@@ -4959,6 +5365,8 @@ Token(AUTO_13) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_14) {
 	str _0 = NONE
@@ -4971,6 +5379,8 @@ Token(AUTO_14) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_15) {
 	str _0 = NONE
@@ -4983,6 +5393,8 @@ Token(AUTO_15) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_16) {
 	str _0 = NONE
@@ -4995,6 +5407,8 @@ Token(AUTO_16) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_17) {
 	str _0 = NONE
@@ -5007,6 +5421,8 @@ Token(AUTO_17) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_18) {
 	str _0 = NONE
@@ -5019,6 +5435,8 @@ Token(AUTO_18) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_19) {
 	str _0 = NONE
@@ -5031,6 +5449,8 @@ Token(AUTO_19) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_20) {
 	str _0 = NONE
@@ -5043,6 +5463,8 @@ Token(AUTO_20) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_21) {
 	str _0 = NONE
@@ -5055,6 +5477,8 @@ Token(AUTO_21) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_22) {
 	str _0 = NONE
@@ -5067,6 +5491,8 @@ Token(AUTO_22) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_23) {
 	str _0 = NONE
@@ -5079,6 +5505,8 @@ Token(AUTO_23) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_24) {
 	str _0 = NONE
@@ -5091,6 +5519,8 @@ Token(AUTO_24) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_25) {
 	str _0 = NONE
@@ -5103,6 +5533,8 @@ Token(AUTO_25) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_26) {
 	str _0 = NONE
@@ -5115,6 +5547,8 @@ Token(AUTO_26) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_27) {
 	str _0 = NONE
@@ -5127,6 +5561,8 @@ Token(AUTO_27) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_28) {
 	str _0 = NONE
@@ -5139,6 +5575,8 @@ Token(AUTO_28) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_29) {
 	str _0 = NONE
@@ -5151,6 +5589,8 @@ Token(AUTO_29) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_30) {
 	str _0 = NONE
@@ -5163,6 +5603,8 @@ Token(AUTO_30) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_31) {
 	str _0 = NONE
@@ -5175,6 +5617,8 @@ Token(AUTO_31) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_32) {
 	str _0 = NONE
@@ -5187,6 +5631,8 @@ Token(AUTO_32) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_33) {
 	str _0 = NONE
@@ -5199,6 +5645,8 @@ Token(AUTO_33) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_34) {
 	str _0 = NONE
@@ -5211,6 +5659,8 @@ Token(AUTO_34) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_35) {
 	str _0 = NONE
@@ -5222,6 +5672,8 @@ Token(AUTO_35) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
+	data = %1
+
 }
 Token(AUTO_36) {
 	str _0 = NONE
@@ -5234,6 +5686,8 @@ Token(AUTO_36) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_37) {
 	str _0 = NONE
@@ -5246,6 +5700,8 @@ Token(AUTO_37) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_38) {
 	str _0 = NONE
@@ -5258,6 +5714,8 @@ Token(AUTO_38) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_39) {
 	str _0 = NONE
@@ -5270,6 +5728,8 @@ Token(AUTO_39) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_40) {
 	str _0 = NONE
@@ -5282,6 +5742,8 @@ Token(AUTO_40) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_41) {
 	str _0 = NONE
@@ -5294,6 +5756,8 @@ Token(AUTO_41) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_42) {
 	str _0 = NONE
@@ -5306,6 +5770,8 @@ Token(AUTO_42) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_43) {
 	str _0 = NONE
@@ -5318,6 +5784,8 @@ Token(AUTO_43) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_44) {
 	str _0 = NONE
@@ -5330,6 +5798,8 @@ Token(AUTO_44) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_45) {
 	str _0 = NONE
@@ -5342,6 +5812,8 @@ Token(AUTO_45) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_46) {
 	UNDEF _0 = NONE
@@ -5354,6 +5826,8 @@ Token(AUTO_46) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_47) {
 	str _0 = NONE
@@ -5366,6 +5840,8 @@ Token(AUTO_47) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_48) {
 	str _0 = NONE
@@ -5378,6 +5854,8 @@ Token(AUTO_48) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_49) {
 	str _0 = NONE
@@ -5390,6 +5868,8 @@ Token(AUTO_49) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_50) {
 	str _0 = NONE
@@ -5402,6 +5882,8 @@ Token(AUTO_50) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_51) {
 	str _0 = NONE
@@ -5414,6 +5896,8 @@ Token(AUTO_51) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_52) {
 	str _0 = NONE
@@ -5426,6 +5910,8 @@ Token(AUTO_52) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_53) {
 	str _0 = NONE
@@ -5438,6 +5924,8 @@ Token(AUTO_53) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_54) {
 	str _0 = NONE
@@ -5450,6 +5938,8 @@ Token(AUTO_54) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_55) {
 	str _0 = NONE
@@ -5462,6 +5952,8 @@ Token(AUTO_55) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_56) {
 	str _0 = NONE
@@ -5474,6 +5966,8 @@ Token(AUTO_56) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_57) {
 	str _0 = NONE
@@ -5486,6 +5980,8 @@ Token(AUTO_57) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_58) {
 	str _0 = NONE
@@ -5498,6 +5994,8 @@ Token(AUTO_58) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_59) {
 	str _0 = NONE
@@ -5510,6 +6008,8 @@ Token(AUTO_59) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_60) {
 	str _0 = NONE
@@ -5522,6 +6022,8 @@ Token(AUTO_60) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_61) {
 	str _0 = NONE
@@ -5534,6 +6036,8 @@ Token(AUTO_61) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_62) {
 	str _0 = NONE
@@ -5546,6 +6050,8 @@ Token(AUTO_62) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_63) {
 	str _0 = NONE
@@ -5558,6 +6064,8 @@ Token(AUTO_63) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_64) {
 	str _0 = NONE
@@ -5570,6 +6078,8 @@ Token(AUTO_64) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_65) {
 	str _0 = NONE
@@ -5582,6 +6092,8 @@ Token(AUTO_65) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_66) {
 	str _0 = NONE
@@ -5594,6 +6106,8 @@ Token(AUTO_66) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_67) {
 	str _0 = NONE
@@ -5606,6 +6120,8 @@ Token(AUTO_67) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_68) {
 	str _0 = NONE
@@ -5618,6 +6134,8 @@ Token(AUTO_68) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_69) {
 	str _0 = NONE
@@ -5630,6 +6148,8 @@ Token(AUTO_69) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_70) {
 	str _0 = NONE
@@ -5642,6 +6162,8 @@ Token(AUTO_70) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_71) {
 	str _0 = NONE
@@ -5654,6 +6176,8 @@ Token(AUTO_71) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_72) {
 	str _0 = NONE
@@ -5666,6 +6190,8 @@ Token(AUTO_72) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_73) {
 	str _0 = NONE
@@ -5678,6 +6204,8 @@ Token(AUTO_73) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_74) {
 	str _0 = NONE
@@ -5690,6 +6218,8 @@ Token(AUTO_74) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_75) {
 	str _0 = NONE
@@ -5702,6 +6232,8 @@ Token(AUTO_75) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_76) {
 	str _0 = NONE
@@ -5714,6 +6246,8 @@ Token(AUTO_76) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_77) {
 	str _0 = NONE
@@ -5726,6 +6260,8 @@ Token(AUTO_77) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_78) {
 	str _0 = NONE
@@ -5738,6 +6274,8 @@ Token(AUTO_78) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_79) {
 	UNDEF _0 = NONE
@@ -5750,6 +6288,8 @@ Token(AUTO_79) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_80) {
 	str _0 = NONE
@@ -5762,6 +6302,8 @@ Token(AUTO_80) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_81) {
 	str _0 = NONE
@@ -5774,6 +6316,8 @@ Token(AUTO_81) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_82) {
 	str _0 = NONE
@@ -5786,6 +6330,8 @@ Token(AUTO_82) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_83) {
 	str _0 = NONE
@@ -5798,6 +6344,8 @@ Token(AUTO_83) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_84) {
 	str _0 = NONE
@@ -5810,6 +6358,8 @@ Token(AUTO_84) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_85) {
 	str _0 = NONE
@@ -5822,6 +6372,8 @@ Token(AUTO_85) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_86) {
 	str _0 = NONE
@@ -5834,6 +6386,8 @@ Token(AUTO_86) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_87) {
 	str _0 = NONE
@@ -5846,6 +6400,8 @@ Token(AUTO_87) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_88) {
 	str _0 = NONE
@@ -5858,6 +6414,8 @@ Token(AUTO_88) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_89) {
 	str _0 = NONE
@@ -5870,6 +6428,8 @@ Token(AUTO_89) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_90) {
 	str _0 = NONE
@@ -5882,6 +6442,8 @@ Token(AUTO_90) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_91) {
 	str _0 = NONE
@@ -5894,6 +6456,8 @@ Token(AUTO_91) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_92) {
 	str _0 = NONE
@@ -5906,6 +6470,8 @@ Token(AUTO_92) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_93) {
 	str _0 = NONE
@@ -5918,6 +6484,8 @@ Token(AUTO_93) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_94) {
 	str _0 = NONE
@@ -5930,6 +6498,8 @@ Token(AUTO_94) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_95) {
 	str _0 = NONE
@@ -5942,6 +6512,8 @@ Token(AUTO_95) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_96) {
 	str _0 = NONE
@@ -5954,6 +6526,8 @@ Token(AUTO_96) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_97) {
 	str _0 = NONE
@@ -5966,6 +6540,8 @@ Token(AUTO_97) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_98) {
 	str _0 = NONE
@@ -5978,6 +6554,8 @@ Token(AUTO_98) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_99) {
 	str _0 = NONE
@@ -5990,6 +6568,8 @@ Token(AUTO_99) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_100) {
 	str _0 = NONE
@@ -6002,6 +6582,8 @@ Token(AUTO_100) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_101) {
 	str _0 = NONE
@@ -6014,6 +6596,8 @@ Token(AUTO_101) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_102) {
 	str _0 = NONE
@@ -6026,6 +6610,8 @@ Token(AUTO_102) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_103) {
 	str _0 = NONE
@@ -6038,6 +6624,8 @@ Token(AUTO_103) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_104) {
 	str _0 = NONE
@@ -6050,6 +6638,8 @@ Token(AUTO_104) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_105) {
 	str _0 = NONE
@@ -6062,6 +6652,8 @@ Token(AUTO_105) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_106) {
 	str _0 = NONE
@@ -6074,6 +6666,8 @@ Token(AUTO_106) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_107) {
 	str _0 = NONE
@@ -6086,6 +6680,8 @@ Token(AUTO_107) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_108) {
 	str _0 = NONE
@@ -6098,6 +6694,8 @@ Token(AUTO_108) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_109) {
 	UNDEF _0 = NONE
@@ -6110,6 +6708,8 @@ Token(AUTO_109) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_110) {
 	str _0 = NONE
@@ -6122,6 +6722,8 @@ Token(AUTO_110) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_111) {
 	str _0 = NONE
@@ -6134,6 +6736,8 @@ Token(AUTO_111) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_112) {
 	str _0 = NONE
@@ -6146,6 +6750,8 @@ Token(AUTO_112) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_113) {
 	str _0 = NONE
@@ -6158,6 +6764,8 @@ Token(AUTO_113) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_114) {
 	str _0 = NONE
@@ -6170,6 +6778,8 @@ Token(AUTO_114) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_115) {
 	str _0 = NONE
@@ -6182,6 +6792,8 @@ Token(AUTO_115) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_116) {
 	str _0 = NONE
@@ -6194,6 +6806,8 @@ Token(AUTO_116) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_117) {
 	str _0 = NONE
@@ -6206,6 +6820,8 @@ Token(AUTO_117) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_118) {
 	str _0 = NONE
@@ -6218,6 +6834,8 @@ Token(AUTO_118) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_119) {
 	UNDEF _0 = NONE
@@ -6230,6 +6848,8 @@ Token(AUTO_119) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_120) {
 	str _0 = NONE
@@ -6242,6 +6862,8 @@ Token(AUTO_120) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_121) {
 	str _0 = NONE
@@ -6254,6 +6876,8 @@ Token(AUTO_121) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_122) {
 	str _0 = NONE
@@ -6266,6 +6890,8 @@ Token(AUTO_122) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_123) {
 	str _0 = NONE
@@ -6278,6 +6904,8 @@ Token(AUTO_123) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_124) {
 	str _0 = NONE
@@ -6290,6 +6918,8 @@ Token(AUTO_124) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }
 Token(AUTO_125) {
 	str _0 = NONE
@@ -6302,4 +6932,6 @@ Token(AUTO_125) {
 	success_1 = TRUE
 	pos++
 	skipspaces(pos)
+	data = %1
+
 }

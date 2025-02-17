@@ -16,7 +16,7 @@ namespace Tokens {
         ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 
             obj_t {
                     { "sign", "" },
-                    { "main", "1" },
+                    { "main", std::string("1") },
                     { "main_n", 1 },
                     { "point", "" },
                     { "dec", "" },
@@ -31,7 +31,8 @@ namespace Tokens {
                 { "second", arr_t<Parser::Rule>{} }
             }
         );
-        ::Parser::Rule data_block = make_rule(Parser::Rules::Rule_data_block, accessorRule);
+        ::Parser::Rule any_data = make_rule(Parser::Rules::any_data, accessorRule);
+        ::Parser::Rule data_block = make_rule(Parser::Rules::Rule_data_block, any_data);
         arr_t<Parser::Rule> rule { make_rule(Parser::Rules::Rule_rule, 
             obj_t {
                 { "val", input },
