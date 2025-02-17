@@ -31,11 +31,11 @@ namespace IR {
     std::string convert_var_assing_values(var_assign_values value, std::any data) {
         switch (value) {
             case var_assign_values::STRING:
-                cpuf::printf("on String\n");
+                //cpuf::printf("on String\n");
                 return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
             case var_assign_values::VAR_REFER:
             {
-                cpuf::printf("ON var_refer\n");
+                //cpuf::printf("ON var_refer\n");
                 auto dt = std::any_cast<var_refer>(data);
                 std::string res;
                 if (dt.pre_increament)
@@ -46,13 +46,13 @@ namespace IR {
                 return res;
             }
             case var_assign_values::ID:
-                cpuf::printf("on ID\n");
+                //cpuf::printf("on ID\n");
             case var_assign_values::INT:
-                cpuf::printf("on INT\n");
+                //cpuf::printf("on INT\n");
                 return std::any_cast<std::string>(data);
             case var_assign_values::ARRAY:
             {
-                cpuf::printf("on array\n");
+                //cpuf::printf("on array\n");
                 auto arr = std::any_cast<IR::array>(data);
                 std::string res = "[";
                 for (auto &el : arr) {
@@ -64,7 +64,7 @@ namespace IR {
             }
             case var_assign_values::OBJECT:
             {
-                cpuf::printf("on object\n");
+                //cpuf::printf("on object\n");
                 auto obj = std::any_cast<IR::object>(data);
                 std::string res = "{";
                 for (auto [key, value] : obj) {
@@ -77,14 +77,12 @@ namespace IR {
                 return res;
             }
             case var_assign_values::ACCESSOR: 
-            {
-                cpuf::printf("accessor\n");
+                //cpuf::printf("accessor\n");
                 return convertAccessor(std::any_cast<accessor>(data));
-            }
             case var_assign_values::FUNCTION_CALL:
                 return convertFunctionCall(std::any_cast<function_call>(data));
             case var_assign_values::EXPR:
-                cpuf::printf("On expr\n");
+                //cpuf::printf("On expr\n");
                 return convertExpression(std::any_cast<arr_t<IR::expr>>(data), false);
         }
         static const std::unordered_map<var_assign_values, std::string> typesMap = {

@@ -702,18 +702,14 @@ arr_t<IR::expr> TreeExprToIR(Parser::Rule expr) {
 IR::data_block TreeDataBlockToIR(Parser::Rule rule) {
     auto val = std::any_cast<Parser::Rule>(rule.data);
     IR::data_block datablock;
-    cpuf::printf("2, rule_name: %s, name: %s\n", Parser::RulesToString(rule.name), Parser::RulesToString(val.name));
     if (val.name == Parser::Rules::Rule_data_block_inclosed_map) {
         // inclosed map
-        cpuf::printf("3, name: %s, type: %s\n", Parser::RulesToString(val.name), val.data.type().name());
         datablock.is_inclosed_map = true;
         IR::inclosed_map map;
         auto keys = std::any_cast<arr_t<Parser::Rule>>(val.data);
         cpuf::printf("4\n");
         for (auto &key : keys) {
-            cpuf::printf("5, type: %s\n", key.data.type().name());
             auto data = std::any_cast<obj_t>(key.data);
-            cpuf::printf("6\n");
             auto k = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
             auto v = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
             if (v.name == Parser::Rules::expr)
@@ -1086,8 +1082,7 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
         case 's':
             // means do not add skip of spaces
             add_space = false;
-            cpuf::printf("member prev element: %s\n", IR::typesToString(member.elements.back().type));
-            if (member.elements.back().type == IR::types::SKIP_SPACES)
+            if (member.elements.size() > 0 && member.elements.back().type == IR::types::SKIP_SPACES)
                 member.pop();
 
             if (num_main == 0) {
@@ -1406,47 +1401,26 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
     if (add_space_skip)
         member.push({IR::types::SKIP_SPACES, isToken});
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count, bool new_rule) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, int &variable_count) {
     IR::ir result;
     arr_t<IR::element_count> elements;
-    if (new_rule) {
-        if (isToken)
-            result.push({IR::types::TOKEN, rule_name});  
-        else
-            result.push({IR::types::RULE, rule_name});  
-    }
-
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
         ruleToIr(rule, result, variable_count, isToken, rule_name, success_var);
         success_vars.push_back(success_var);
     }
-
-    if (new_rule)
-        result.push({IR::types::RULE_END});
-
     return result;
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars, bool new_rule) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, arr_t<IR::node_ret_t> &success_vars) {
     IR::ir result;
     arr_t<IR::element_count> elements;
     int variable_count = 0;
-    if (new_rule) {
-        if (isToken)
-            result.push({IR::types::TOKEN, rule_name});  
-        else
-            result.push({IR::types::RULE, rule_name});  
-    }
 
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
         ruleToIr(rule, result, variable_count, isToken, rule_name, success_var);
         success_vars.push_back(success_var);
     }
-
-    if (new_rule)
-        result.push({IR::types::RULE_END});
-
     return result;
 }
 IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, int &variable_count) {
@@ -1458,23 +1432,14 @@ IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken,
     }
     return result;
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken, bool new_rule) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken) {
     IR::ir result;
     arr_t<IR::element_count> elements;
     int variable_count = 0;
-    if (new_rule) {
-        if (isToken)
-            result.push({IR::types::TOKEN, rule_name});  
-        else
-            result.push({IR::types::RULE, rule_name});  
-    }
-
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
         ruleToIr(rule, result, variable_count, isToken, rule_name, success_var);
     }
-    if (new_rule)
-        result.push({IR::types::RULE_END});
     return result;
 }
 IR::ir treeToIr(Parser::Tree &tree, std::string nested_name) {
@@ -1489,13 +1454,14 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name) {
         auto data_block = std::any_cast<Parser::Rule>(corelib::map::get(data, "data_block"));
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
+        bool isToken = corelib::text::isUpper(name);
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname));
-
-        result_ir.add(rulesToIr(rules, fullname, corelib::text::isUpper(name), true));
+        result_ir.push({ isToken ? IR::types::TOKEN : IR::types::RULE, fullname});  
+        result_ir.add(rulesToIr(rules, fullname, isToken));
         if (data_block.data.has_value())
-            result_ir.elements.insert(result_ir.elements.end() - 1, {IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
-
+            result_ir.push({IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
+        result_ir.push({IR::types::RULE_END});
     }
     return result_ir;
 }
