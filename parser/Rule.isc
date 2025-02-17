@@ -76,7 +76,7 @@ Rule:
             &data(key+)
         ;
         #key:
-            [\n\r]+ &name(id) ':' &dt (any_data)
+            [\n\r]+ &name(id) ':' &dt (cll_ternary | expr)
             data:
                 name: name
                 val: dt

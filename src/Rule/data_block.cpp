@@ -25,17 +25,9 @@ Rule(Rule_data_block) {
     ISC_STD::skip_spaces(pos);
     auto data = Rule_data_block_inclosed_map(pos);
     if (!data.result) {
-        
         data = any_data(pos);
-        if (!data.result) {
-            
-            return {};  
-        } else {
-            
-        }
-    } else {
-        //
-        //RulesToString(std::any_cast<::Parser::Rule>(data.token.data).name).c_str());
+        if (!data.result)
+            return {};
     }
     pos += data.token.length();
     ISC_STD::skip_spaces(pos);
@@ -96,7 +88,7 @@ Rule(Rule_data_block_key) {
     // if (!strict_end_res.result)
     //     return {};
     // pos += strict_end_res.token.length();
-    std::unordered_map<std::string, std::any> data {
+    std::unordered_map<const char*, std::any> data {
         { "name", id_res.token },
         { "val", any_data_res.token }
     };
