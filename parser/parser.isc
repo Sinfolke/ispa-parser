@@ -18,6 +18,18 @@ linear_comment:
 ; 
 main: Import | use | Rule | spacemode;
 
+use: 
+    'use' #unit (',' #unit)*
+    data: %2 + %4
+    #unit:
+        id any_data?
+
+        data:
+            name: %1
+            value: %2
+;
+
+
 Import:
 
     'import' #input (',' #input)*
@@ -58,14 +70,4 @@ Import:
             tokens_current_name: $2>%2
         ;
     ;
-;
-use: 
-    'use' #unit (',' #unit)*
-    data: %2 + %4
-    #unit:
-        id any_data?
-
-        data:
-            name: %1
-            value: %2
 ;

@@ -92,12 +92,14 @@ Rule:
     ;
     #nested_rule: 
         [\r\n]+ '#' \s0 Rule
-        data: %4
+        data: %4;
     ;
     #hex:
         '0x' [1-9A-Fa-f]+
         data: %2;
+    ;
     #bin:
         '0b' [01]+
         data: %2;
+    ;
 ;
