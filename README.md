@@ -32,7 +32,6 @@
 
     Add inline of automatic tokens when value accessed
 
-
 ### Parser syntax
   
   see ```concepts/syntax```

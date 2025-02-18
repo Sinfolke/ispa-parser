@@ -988,7 +988,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     if (is_nested) {
         name_str.insert(0, "_");
         name_str.insert(0, fullname);
-    } else {
+    } else if (nested_rule_names.size()) {
         for (int i = nested_rule_names.size() - 1; i; i--) {
             auto current = nested_rule_names[i];
             if (name_str == current.first) {
@@ -1424,6 +1424,15 @@ IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string rule_name, bool isToken,
     }
     return result;
 }
+
+void getNestedRuleNames(IR::nested_rule_name &nested_rule_name, std::string fullname, arr_t<Parser::Rule> nested_rules) {
+    for (auto el : nested_rules) {
+        auto data = std::any_cast<obj_t>(el.data);
+        auto name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data); 
+        nested_rule_name.push_back({name, fullname + "_" + name}); 
+    }
+}
+
 IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_name &nested_rule_names) {
     IR::ir result_ir;
     for (auto &el : tree) {
@@ -1436,7 +1445,7 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
         bool isToken = corelib::text::isUpper(name);
-        nested_rule_names.push_back({name, fullname});
+        getNestedRuleNames(nested_rule_names, fullname, nested_rules);
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname, nested_rule_names));
         result_ir.push({ isToken ? IR::types::TOKEN : IR::types::RULE, fullname});  
@@ -1444,6 +1453,8 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         if (data_block.data.has_value())
             result_ir.push({IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
         result_ir.push({IR::types::RULE_END});
+        if (nested_name == "")
+            nested_rule_names.clear();
     }
     return result_ir;
 }
