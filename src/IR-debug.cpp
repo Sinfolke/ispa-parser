@@ -8,9 +8,6 @@
 #include <iomanip>
 #include <IR.h>
 #include <IR-debug.h>
-// Assume arr_t is defined as:
-template <typename T>
-using arr_t = std::vector<T>;
 
 namespace IR {
     std::string convert_var_type(var_types type) {
@@ -193,7 +190,10 @@ namespace IR {
 
     std::string convertAccessor(accessor acc) {
         std::string str;
+        bool first = true;
         for (auto el : acc.elements) {
+            if (!first)
+                str += '>';
             auto el_num = std::any_cast<Parser::Rule>(el.data);
             auto el_num_data = std::any_cast<obj_t>(el_num.data);
             auto main = std::any_cast<std::string>(corelib::map::get(el_num_data, "main"));
@@ -211,6 +211,7 @@ namespace IR {
                     throw Error("Undefined accessor");
             }
             str += main;
+            first = false;
         }
         str += '\n';
         return str;

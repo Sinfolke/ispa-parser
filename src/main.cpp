@@ -104,7 +104,8 @@ int main(int argc, char** argv) {
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     //replaceDublications(tree); // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     // convert tree into IR
-    auto ir = treeToIr(tree);
+    IR::nested_rule_name nested_rule_names;
+    auto ir = treeToIr(tree, "", nested_rule_names);
     
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");

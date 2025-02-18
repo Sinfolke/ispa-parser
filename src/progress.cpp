@@ -93,7 +93,6 @@ void getTokensFromRule_rule(Parser::Tree &tree, arr_t<Parser::Rule>& rule, bool 
         obj_t el_data = std::any_cast<obj_t>(el.data);
         Parser::Rule val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
         Parser::Rule qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
-        cpuf::printf("el.name: %s, val.name: %s\n", Parser::RulesToString(el.name), Parser::RulesToString(val.name));
         if (
             val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
             val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
@@ -119,9 +118,6 @@ void getTokensFromRule_rule(Parser::Tree &tree, arr_t<Parser::Rule>& rule, bool 
 
         } else if (val.name == Parser::Rules::Rule_op) {
             auto rules = std::any_cast<arr_t<Parser::Rule>>(val.data);
-            for (auto el : rules) {
-                cpuf::printf("rule_op member name: %s\n", Parser::RulesToString(el.name));
-            }
             getTokensFromRule_rule(tree, rules);
             val.data = rules;
 

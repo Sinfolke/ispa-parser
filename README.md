@@ -32,10 +32,6 @@
 
     Add inline of automatic tokens when value accessed
 
-    *add handle of same level nested rule
-
-    *Add handle of data block
-
 
 ### Parser syntax
   
