@@ -1,0 +1,10 @@
+Test_raw_element_access:
+    "'" | '"' %1 | "a"
+;
+Test_raw_group_access:
+    ("a" | "b") $1
+;
+
+Test_element_of_group_access:
+    ("a" "b") $1>%2 
+;

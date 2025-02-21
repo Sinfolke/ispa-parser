@@ -98,6 +98,10 @@ target_compile_definitions(hex-bin PRIVATE __PROCESS_FILE__="hex-bin.isc")
 add_executable(group-variable-type tests/tester.cpp)
 target_link_libraries(group-variable-type PRIVATE tests)
 target_compile_definitions(group-variable-type PRIVATE __PROCESS_FILE__="group-variable-type.isc")
+#accessor
+add_executable(accessor tests/tester.cpp)
+target_link_libraries(accessor PRIVATE tests)
+target_compile_definitions(accessor PRIVATE __PROCESS_FILE__="accessor.isc")
 add_test(
     NAME mainTest
     COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp

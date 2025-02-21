@@ -49,7 +49,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules) {
             auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
 
             // Replace the operator sequence in rules
-            rules.erase(rules.begin() + begin, rules.begin() + i + 1);
+            rules.erase(rules.begin() + begin, rules.begin() + i);
             rules.insert(rules.begin() + begin, new_token);
             i = begin;
             in_op = false;

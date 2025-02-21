@@ -139,7 +139,12 @@ namespace IR {
             return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
         } else if (type == condition_types::STRNCMP) {
             //cpuf::printf("strncmp\n");
-            return std::string("!STRNCMP(pos, \"") + std::any_cast<std::string>(data) + std::string("\")");
+            auto dt = std::any_cast<IR::strncmp>(data);
+            if (dt.is_string) {
+                return std::string("!STRNCMP(pos, \"") + dt.value + std::string("\")");
+            } else {
+                return std::string("!STRNCMP(pos, ") + dt.value + std::string(")");
+            }
         } else if (type == condition_types::VARIABLE) {
             //cpuf::printf("variable\n");    
             return std::any_cast<std::string>(data);
@@ -338,7 +343,7 @@ namespace IR {
             out << "pos++";
             break;
         case types::ACCESSOR:
-            convertAccessor(std::any_cast<accessor>(mem.value));
+            out << convertAccessor(std::any_cast<accessor>(mem.value));
             break;
         case types::ASSIGN_VARIABLE:
             convertAssignVariable(std::any_cast<variable_assign>(mem.value), out, indentLevel);
