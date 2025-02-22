@@ -88,6 +88,7 @@ int main(int argc, char** argv) {
                 std::string content = corelib::file::readFile(file);
                 Parser::Parser parser(content.c_str());
                 auto current_tree = parser.parse();
+                tree.push_back(Tokens::make_rule(Parser::Rules::id, file));
                 tree.insert(tree.end(), current_tree.begin(), current_tree.end());
             }
         }
