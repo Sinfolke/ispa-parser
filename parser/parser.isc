@@ -20,54 +20,13 @@ main: Import | use | Rule | spacemode;
 
 use: 
     'use' #unit (',' #unit)*
-    data: %2 + %4
+    
+    data: %2 + %4;
+
     #unit:
         id any_data?
 
         data:
             name: %1
             value: %2
-;
-
-
-Import:
-
-    'import' #input (',' #input)*
-    data: [%2, %4];
-    #input:
-        file | general_dir | rulespecific
-        data: %1;
-    ;
-    #path:
-        [^*"<>|:?\.]+
-        data: %1;
-    ;
-    #ext:
-        ('.' ID)*
-        data: %2;
-    ;
-    #file:
-        path ext*
-        data:
-            path: %1
-            ext: %2
-            fullext: %2
-            fullpath: %1 + %2.join()
-        ;
-    ;
-    #general_dir:
-        '[' path ']' file+
-        data:
-            path: %2
-            files: %4
-        ;
-    ;
-    #rulespecific:
-        file '{' (id ('=' id)? )+  '}'
-        data:
-            path: %1
-            tokens: $1>%1
-            tokens_current_name: $2>%2
-        ;
-    ;
 ;

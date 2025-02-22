@@ -86,13 +86,13 @@ Rule:
     #escaped:
         '\\' \s0 . \s0 NUMBER?
         data:
-            c: %3
-            num: %5
+            c: %2
+            num: %3
         ;
     ;
     #nested_rule: 
         [\r\n]+ '#' \s0 Rule
-        data: %4;
+        data: %3;
     ;
     #hex:
         '0x' [1-9A-Fa-f]+
