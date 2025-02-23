@@ -106,6 +106,7 @@ namespace IR {
     struct node_ret_t {
         std::string svar;
         std::string var;
+        std::string shadow_var = "";
     };
     struct var_group {
         std::string var;

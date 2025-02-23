@@ -17,7 +17,7 @@ namespace Tokens {
             obj_t {
                     { "sign", "" },
                     { "main", std::string("1") },
-                    { "main_n", 1 },
+                    { "main_n", (double) 1 },
                     { "point", "" },
                     { "dec", "" },
                     { "dec_n", 0 }
