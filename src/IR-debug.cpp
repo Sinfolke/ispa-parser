@@ -81,6 +81,14 @@ namespace IR {
             case var_assign_values::EXPR:
                 //cpuf::printf("On expr\n");
                 return convertExpression(std::any_cast<arr_t<IR::expr>>(data), false);
+            case var_assign_values::CURRENT_POS:
+            {
+                auto dt = std::any_cast<double>(data);
+                char sign = dt >= 0 ? '+' : '-';
+                if (dt == 0)
+                    return "*pos";
+                return "*pos" + sign + std::to_string((int) dt);
+            }
         }
         static const std::unordered_map<var_assign_values, std::string> typesMap = {
             {var_assign_values::NONE, "NONE"},

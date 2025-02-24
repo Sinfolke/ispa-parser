@@ -106,6 +106,10 @@ target_compile_definitions(accessor PRIVATE __PROCESS_FILE__="accessor.isc")
 add_executable(inline-accessor-if-test tests/tester.cpp)
 target_link_libraries(inline-accessor-if-test PRIVATE tests)
 target_compile_definitions(inline-accessor-if-test PRIVATE __PROCESS_FILE__="inline-accessor-if-test.isc")
+#inline-test
+add_executable(inline-test tests/tester.cpp)
+target_link_libraries(inline-test PRIVATE tests)
+target_compile_definitions(inline-test PRIVATE __PROCESS_FILE__="inline-test.isc")
 add_test(
     NAME mainTest
     COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp

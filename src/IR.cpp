@@ -693,25 +693,21 @@ arr_t<IR::expr> TreeExprToIR(Parser::Rule expr) {
     }
     throw Error("Undefined tree unit: %s", Parser::RulesToString(val.name));
 }
-std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &elements, IR::groups &groups) {
+std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &elements, IR::groups &groups, bool is_match_rule) {
     enum class accessor_states {
         GROUP, ELEMENT, CHAR, UNKNOWN
     };
-    cpuf::printf("%d\n", __LINE__);
     accessor_states state = accessor_states::UNKNOWN;
     std::string* elements_pointer = nullptr;
     IR::var_group* group_pointer = nullptr; 
     for (auto &unit : accessor.elements) {
-        cpuf::printf("%d\n", __LINE__);
         auto num = std::any_cast<Parser::Rule>(unit.data);
-        cpuf::printf("%d\n", __LINE__);
         auto num_data = std::any_cast<obj_t>(num.data);
-        cpuf::printf("%d, type: %s\n", __LINE__, corelib::map::get(num_data, "main_n").type().name());
         auto num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n")) - 1;
         switch (unit.name)
         {
         case Parser::Rules::accessors_group:
-            cpuf::printf("accessor $%d\n", (int) num_main);
+            //cpuf::printf("accessor $%d\n", (int) num_main);
             if (state == accessor_states::ELEMENT)
                 throw Error("accessor %% cannot refer to accessor $");
             else if (state == accessor_states::GROUP) {
@@ -722,12 +718,12 @@ std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &eleme
                 state = accessor_states::GROUP;
                 if (num_main > groups.size())
                     throw Error("Group %d does not exist", (int) num_main);
-                cpuf::printf("Accessing %d, group size: %llu\n", (int) num_main, groups.size());
+                //cpuf::printf("Accessing %d, group size: %llu\n", (int) num_main, groups.size());
                 group_pointer = &groups[num_main];
             }
             break;
         case Parser::Rules::accessors_element:
-            cpuf::printf("accessor %%%d\n", (int) num_main);
+            //cpuf::printf("accessor %%%d\n", (int) num_main);
             if (state == accessor_states::ELEMENT) {
                 if (&elements_pointer[(int) num_main] >= elements.data() + elements.size())
                     throw Error("Element does not exist");
@@ -738,17 +734,17 @@ std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &eleme
                 elements_pointer = &elements[group_pointer->begin + (int) num_main];
             } else {
                 if (num_main >= elements.size())
-                    throw Error("Element does not exist");
+                    throw Error("Element does not exist. elements size(): %llu while num_main: %d. elements.back().var=%s", elements.size(), (int) num_main, elements.back());
                 elements_pointer = &elements[num_main];
             }
             state = accessor_states::ELEMENT;
             break;
         case Parser::Rules::accessors_char:
-            cpuf::printf("accessor ^%d\n", (int) num_main);
+            //cpuf::printf("accessor ^%d\n", (int) num_main);
             if (state != accessor_states::UNKNOWN)
-                throw Error("accessor ^ cannot be reffered by another accessor. Furthermore accessor ^ cannot be used as a match rule");
-            
-            throw Error("accessor ^ cannot be used as a match rule");
+                throw Error("accessor ^ cannot be reffered by another accessor");
+            if (is_match_rule)
+                throw Error("accessor ^ cannot be used as a match rule");
             break;
         default:
             break;
@@ -759,7 +755,19 @@ std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &eleme
 void inlineExprAccessor(IR::assign &data, IR::var_elements &elements, IR::groups &groups) {
     if (data.kind == IR::var_assign_values::ACCESSOR) {
         auto accessor = std::any_cast<IR::accessor>(data.data);
-        auto var = getElementbyAccessor(accessor, elements, groups);
+        if (accessor.elements[0].name == Parser::Rules::accessors_char) {
+            if (accessor.elements.size() > 1)
+                throw Error("Cannot refer subaccessor for accessor '^");
+
+            auto num = std::any_cast<Parser::Rule>(accessor.elements[0].data);
+            auto num_data = std::any_cast<obj_t>(num.data);
+            auto num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n")) - 1;
+            data.kind = IR::var_assign_values::CURRENT_POS;
+            data.data = num_main;
+            return;
+        }
+        // a regular accessor
+        auto var = getElementbyAccessor(accessor, elements, groups, false);
         data.kind = IR::var_assign_values::ID;
         data.data = var;
     }
@@ -779,16 +787,13 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
     for (auto it = values.begin(); it != values.end(); it++) {
         auto &el = *it;
         if (el.type == IR::types::ACCESSOR) {
-
             auto accessor = std::any_cast<IR::accessor>(el.value);
-            cpuf::printf("%d\n", __LINE__);
-            std::string var = getElementbyAccessor(accessor, elements, groups);
+            std::string var = getElementbyAccessor(accessor, elements, groups, true);
             arr_t<IR::expr> expr = {
                 {IR::condition_types::STRNCMP, IR::strncmp{0, var}}
             };
             // go to reverse to get names of var and svar
             IR::variable accessor_var, accessor_svar;
-            cpuf::printf("%d\n", __LINE__);
             for (auto reverse_it = std::make_reverse_iterator(it + 1); reverse_it != values.rend(); reverse_it++) {
                 if (reverse_it->type == IR::types::VARIABLE) {
                     auto data = std::any_cast<IR::variable>(reverse_it->value);
@@ -802,23 +807,15 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
             }
             if (accessor_var.name.empty() || accessor_svar.name.empty())
                 throw Error("Cannot find variable and success variable for accessor");
-            cpuf::printf("After error Cannot find variable and success variable for accessor\n");
             // replace accessor with rule
-            cpuf::printf("%d\n", __LINE__);
             it = values.erase(it); // Erase the accessor element and update iterator
-            cpuf::printf("%d\n", __LINE__);
             arr_t<IR::member> block = createDefaultBlock(accessor_var, accessor_svar);
             IR::ir result_rule;
-            cpuf::printf("%d\n", __LINE__);
             pushBasedOnQualifier(expr, block, accessor_svar, result_rule, accessor.qualifier, variable_count);
             // replace_exit_to_unsuccess(result_rule.elements, accessor_svar);
-            cpuf::printf("%d\n", __LINE__);
             it = values.insert(it, result_rule.elements.begin(), result_rule.elements.end()); // Insert new elements and update iterator
-            cpuf::printf("%d\n", __LINE__);
-            cpuf::printf("Size of result_rule.elements: %llu\n", result_rule.elements.size());
             if (it != values.end())
                 std::advance(it, result_rule.elements.size() - 1); // Move iterator past the newly inserted elements
-            cpuf::printf("%d\n", __LINE__);
         } else if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
             auto dt = std::any_cast<IR::condition>(el.value);
             inlineExprAccessor(dt.expression, elements, groups);
@@ -832,7 +829,6 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
             inlineExprAccessor(data.value, elements, groups);
         }
     }
-    cpuf::printf("%d\n", __LINE__);
 }
 IR::data_block TreeDataBlockToIR(Parser::Rule rule, IR::var_elements elements, IR::groups groups) {
     auto val = std::any_cast<Parser::Rule>(rule.data);

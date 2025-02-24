@@ -1,0 +1,9 @@
+Rule:
+    #nested1 | #nested1.nested2 "wepmfwopef"
+    #nested1: 
+        "a" | "b"
+        #nested2:
+            '.'
+        ;
+    ;
+;

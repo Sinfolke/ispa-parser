@@ -89,6 +89,13 @@ namespace Tokens {
                 return true; // comments shall be ignored
             case Parser::Rules::cll:
                 return compare_cll_rule(first, second);
+            case Parser::Rules::Rule_rule: {
+                auto rule1 = std::any_cast<obj_t>(first.data);
+                auto first = std::any_cast<Parser::Rule>(corelib::map::get(rule1, "val"));
+                auto rule2 = std::any_cast<obj_t>(second.data);
+                auto second = std::any_cast<Parser::Rule>(corelib::map::get(rule2, "val"));
+                return compare_rule(first, second);
+            }
             default:
                 throw Error("Comparing unknown rule: %$", Parser::RulesToString(first.name));
         }
@@ -97,10 +104,10 @@ namespace Tokens {
         return compareStringRule(first, second);
     }
     bool compare_hex_rule(Parser::Rule first, Parser::Rule second) {
-        return compareStringViewRule(first, second);
+        return compareStringRule(first, second);
     }
     bool compare_bin_rule(Parser::Rule first, Parser::Rule second) {
-        return compareStringViewRule(first, second);
+        return compareStringRule(first, second);
     }
     bool compare_accessor_rule(Parser::Rule first, Parser::Rule second) {
         auto first_data = std::any_cast<obj_t>(first.data);
@@ -268,12 +275,12 @@ namespace Tokens {
         auto second_not = std::any_cast<bool>(corelib::map::get(second_data, "not"));
 
         auto first_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
-        auto second_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
+        auto second_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "val"));
 
         if (first_not != second_not || first_val.size() != second_val.size())
             return false; // not equal
-        
         for (int i = 0; i < first_val.size(); i++) {
+
             if (!compare_csequence_internal_dt(first_val[i], second_val[i]))
                 return false;
         }
@@ -436,8 +443,8 @@ namespace Tokens {
         return true;
     }
     // compares the token with rules and return an index where match discovered
-    std::forward_list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules) {
-        std::forward_list<int> where;
+    std::list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules) {
+        std::list<int> where;
 
         if (token_rule.size() > rules.size()) // never match
             return {};
@@ -453,12 +460,6 @@ namespace Tokens {
                 auto rules_data = std::any_cast<obj_t>(rules[i + j].data);
                 auto rules_val = std::any_cast<Parser::Rule>(corelib::map::get(rules_data, "val"));
 
-                // Skip Rule_op at the start of the comparison
-                if (j == 0 && (token_val.name == Parser::Rules::Rule_op || rules_val.name == Parser::Rules::Rule_op)) {
-                    _where++;
-                    continue;
-                }
-
                 if (!compare_rule(token_val, rules_val)) {
                     success = false;
                     break;
@@ -466,7 +467,7 @@ namespace Tokens {
             }
 
             if (success) {
-                where.push_front(_where);
+                where.push_back(_where);
             }
         }
 

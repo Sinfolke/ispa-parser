@@ -22,15 +22,17 @@
  9. Since the parser is for multiple languages for each language will be different shared library responsible for outputting the result. For the first i only create library to output C++ results. This library converts IR into approaritate language
  10. After all done i can adjust parser rule syntax and do bootstrap
 ### Todo
-  Add handle of variables in Rule_other
+  Add handle of variables in Rule_other (*?)
 
-  Add handle of ${} in string
-
-  Fix error with incorrect replaceDublications
+  Add handle of ${} in string (?)
 
   Necessary:
 
-    Add inline of automatic tokens when value accessed
+    Fix segmentation fail for inline tokens and rules that are only reffering to another token/rule (*)
+
+    Add inline of automatic tokens when value accessed (?)
+
+    Add shadow variable (e.g the array variable when qualifiers + and * are used. Use that variable when value accessed) (*)
 
 ### Parser syntax
   

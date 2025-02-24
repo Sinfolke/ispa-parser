@@ -1,7 +1,7 @@
 #pragma once
 #include <parser.h>
 #include <internal_types.h>
-#include <forward_list>
+#include <list>
 namespace Tokens {
     Parser::Rule singleRuleToToken(Parser::Rule input);
     Parser::Rule make_rule();
@@ -41,6 +41,6 @@ namespace Tokens {
     // compares the token with rules and 
     bool compare_rules(arr_t<Parser::Rule> first, arr_t<Parser::Rule> second);
     bool compare_token_with_rules(Parser::Tree first, Parser::Tree second);
-    std::forward_list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules);
+    std::list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules);
     Parser::Rule find_token_in_tree(Parser::Tree tree, Parser::Rule id);
 }
