@@ -28,11 +28,11 @@
 
   Necessary:
 
-    Fix segmentation fail for inline tokens and rules that are only reffering to another token/rule (*)
+    Fix not correclty removed tokens when they're pointing to another token (*)
 
     Add inline of automatic tokens when value accessed (?)
 
-    Add shadow variable (e.g the array variable when qualifiers + and * are used. Use that variable when value accessed) (*)
+    Add shadow variable (e.g the array variable when quantifiers + and * are used. Use that variable when value accessed) (*)
 
 ### Parser syntax
   
