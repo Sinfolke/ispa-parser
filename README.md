@@ -32,7 +32,8 @@
 
     Add inline of automatic tokens when value accessed (?)
 
-    Add shadow variable (e.g the array variable when quantifiers + and * are used. Use that variable when value accessed) (*)
+    Check whether shadow variable behave correctly with groups and operators '|' (*)
+    Make to use shadow variable if it does exists instead
 
 ### Parser syntax
   

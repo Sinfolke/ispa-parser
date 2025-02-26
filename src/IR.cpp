@@ -151,16 +151,26 @@ void createDefaultCall(const arr_t<IR::member> &block, const IR::variable var, c
     };
     member.push({IR::types::ASSIGN_VARIABLE, var_assign});
 }
-void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count) {
+IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::variable var, int &variable_count) {
+    IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
+    shadow_var.type = {IR::var_types::ARRAY, {var.type}};
+    member.push({IR::types::VARIABLE, shadow_var});
+    block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::ID, var.name}}}}}});
+    return shadow_var
+}
+void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
+    IR::variable shadow_variable;
     switch (qualifier_char) {
         case '+':
+            shadow_variable = add_shadow_variable(member, block, var, variable_count);
             handle_plus_qualifier({expr, block}, member, variable_count);
             break;
         case '*': {
             IR::member pop = block.back();
  
             //block.pop_back();
+            shadow_variable = add_shadow_variable(member, block, var, variable_count);
             member.push({IR::types::WHILE, IR::condition{expr, block}});
             //member.push(pop);
             break;
@@ -811,7 +821,7 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
             it = values.erase(it); // Erase the accessor element and update iterator
             arr_t<IR::member> block = createDefaultBlock(accessor_var, accessor_svar);
             IR::ir result_rule;
-            pushBasedOnQualifier(expr, block, accessor_svar, result_rule, accessor.qualifier, variable_count);
+            pushBasedOnQualifier(expr, block, accessor_var, accessor_svar, result_rule, accessor.qualifier, variable_count);
             // replace_exit_to_unsuccess(result_rule.elements, accessor_svar);
             it = values.insert(it, result_rule.elements.begin(), result_rule.elements.end()); // Insert new elements and update iterator
             if (it != values.end())
@@ -1007,7 +1017,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     arr_t<IR::member> block = createDefaultBlock(var, svar);
-    pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     return {svar.name, var.name};
 }
 IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -1035,7 +1045,7 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     return {svar.name, var.name};
 }
 IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -1070,7 +1080,7 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
     int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     for (int i = size; i < member.size(); i++) {
         int identLevel = 0;
         IR::convertMember(member.elements[i], std::cout, identLevel);
@@ -1112,7 +1122,7 @@ IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &v
     }
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     return {svar.name, var.name};
 }
 IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
@@ -1174,7 +1184,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         block.erase(block.begin());
         arr_t<IR::expr> expr;
         createDefaultCall(block, var, name_str, member, expr);
-        pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+        pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     } else {
         if (isCallingToken) {
             block[0] = {
@@ -1190,14 +1200,14 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
                 {IR::condition_types::EQUAL},
                 {IR::condition_types::STRING, name_str}
             };
-            pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+            pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
         } else {
 
             // remove variable assignemnt
             block.erase(block.begin());
             arr_t<IR::expr> expr;
             createDefaultCall(block, var, name_str, member, expr);
-            pushBasedOnQualifier(expr, block, svar, member, qualifier_char, variable_count);
+            pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
         }
 
     }
