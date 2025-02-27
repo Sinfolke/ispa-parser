@@ -309,6 +309,7 @@ Rule(cll_block) {
 		success_3 = TRUE
 		pos++
 		shadow_4.push(_2)
+		_2 = Rule_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	token _5 = NONE
@@ -1574,6 +1575,7 @@ Rule(cll_if) {
 	str _17 = NONE
 	bool success_18 = FALSE
 	UNDEF _20 = NONE
+	UNDEF shadow_21 = NONE
 	bool success_19 = FALSE
 	if (!(!STRNCMP(pos, _2)))
 	{
@@ -1583,40 +1585,40 @@ Rule(cll_if) {
 	success_19 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	token _21 = NONE
-	bool success_22 = FALSE
+	token _22 = NONE
+	bool success_23 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_96"))
 	{
 		return {}
 	}
-	_21 = CURRENT_TOKEN
-	success_22 = TRUE
+	_22 = CURRENT_TOKEN
+	success_23 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	rule _23 = NONE
-	bool success_24 = FALSE
-	_23 = size(TOKEN_SEQUENCE)
-	if (!(_23.res))
+	rule _24 = NONE
+	bool success_25 = FALSE
+	_24 = size(TOKEN_SEQUENCE)
+	if (!(_24.res))
 	{
 		return {}
 	}
-	success_24 = TRUE
+	success_25 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	UNDEF _25 = NONE
-	bool success_26 = FALSE
+	UNDEF _26 = NONE
+	bool success_27 = FALSE
 	if ()
 	{
-		success_26 = TRUE
+		success_27 = TRUE
 	}
-	if (success_26)
+	if (success_27)
 	{
 		success_18 = TRUE
 	}
 	_17 += _20
-	_17 += _21
-	_17 += _23
-	_17 += _25
+	_17 += _22
+	_17 += _24
+	_17 += _26
 	if (success_18)
 	{
 		success_10 = TRUE
@@ -4107,6 +4109,7 @@ Rule(Rule_group) {
 		success_13 = TRUE
 		pos++
 		shadow_14.push(_12)
+		_12 = rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	token _15 = NONE
@@ -4366,6 +4369,7 @@ Rule(Rule_data_block_inclosed_map) {
 		success_2 = TRUE
 		pos++
 		shadow_3.push(_1)
+		_1 = Rule_data_block_key(TOKEN_SEQUENCE)
 		success_4 = TRUE
 	}
 	if (!success_4)
@@ -4760,6 +4764,7 @@ Rule(Rule) {
 		success_14 = TRUE
 		pos++
 		shadow_15.push(_13)
+		_13 = Rule_nested_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	token _16 = NONE

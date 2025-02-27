@@ -136,7 +136,7 @@ char getEscapedChar(char in) {
     }
 }
 
-void createDefaultCall(const arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
+IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
     auto function_call = IR::function_call {
         name,
         {{IR::var_assign_values::TOKEN_SEQUENCE}}
@@ -149,16 +149,16 @@ void createDefaultCall(const arr_t<IR::member> &block, const IR::variable var, c
     expr = {
         {IR::condition_types::SUCCESS_CHECK, var.name}
     };
-    member.push({IR::types::ASSIGN_VARIABLE, var_assign});
+    return {IR::types::ASSIGN_VARIABLE, var_assign};
 }
 IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::variable var, int &variable_count) {
     IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
     shadow_var.type = {IR::var_types::ARRAY, {var.type}};
     member.push({IR::types::VARIABLE, shadow_var});
     block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::ID, var.name}}}}}});
-    return shadow_var
+    return shadow_var;
 }
-void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count) {
+IR::variable pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     IR::variable shadow_variable;
     switch (qualifier_char) {
@@ -186,6 +186,36 @@ void pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::var
             member.add(block);
             break;
     }
+    return shadow_variable;
+}
+// function to push based on qualifier for Rule_other
+IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::member call, IR::ir &member, char qualifier_char, int &variable_count) {
+    //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
+    IR::variable shadow_variable;
+    switch (qualifier_char) {
+        case '+':
+            shadow_variable = add_shadow_variable(member, block, var, variable_count);
+            block.push_back(call);
+            handle_plus_qualifier({expr, block}, member, variable_count);
+            break;
+        case '*': {
+            shadow_variable = add_shadow_variable(member, block, var, variable_count);
+            block.push_back(call);
+            member.push({IR::types::WHILE, IR::condition{expr, block}});
+            break;
+        }
+        case '?':
+            member.push({IR::types::IF, IR::condition{expr, block}});
+            break;
+        default:
+            expr.insert(expr.begin(), {IR::condition_types::NOT});
+            expr.insert(expr.begin() + 1, {IR::condition_types::GROUP_OPEN});
+            expr.push_back({IR::condition_types::GROUP_CLOSE});
+            member.push({IR::types::IF, IR::condition{expr, {{IR::types::EXIT}}}});
+            member.add(block);
+            break;
+    }
+    return shadow_variable;
 }
 void affectIrByQualifier(IR::ir &values, char qualifier, int &variable_count) {
     IR::ir new_ir;
@@ -803,12 +833,14 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
                 {IR::condition_types::STRNCMP, IR::strncmp{0, var}}
             };
             // go to reverse to get names of var and svar
-            IR::variable accessor_var, accessor_svar;
+            IR::variable accessor_var, accessor_shadow, accessor_svar;
             for (auto reverse_it = std::make_reverse_iterator(it + 1); reverse_it != values.rend(); reverse_it++) {
                 if (reverse_it->type == IR::types::VARIABLE) {
                     auto data = std::any_cast<IR::variable>(reverse_it->value);
                     if (accessor_svar.name.empty()) {
                         accessor_svar = data;
+                    } else if (accessor_shadow.name.empty()) {
+                        accessor_shadow = data;
                     } else {
                         accessor_var = data;
                         break;
@@ -1017,8 +1049,8 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     arr_t<IR::member> block = createDefaultBlock(var, svar);
-    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
-    return {svar.name, var.name};
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
@@ -1045,8 +1077,8 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
-    return {svar.name, var.name};
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("hex\n");
@@ -1080,13 +1112,13 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
     int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
     for (int i = size; i < member.size(); i++) {
         int identLevel = 0;
         IR::convertMember(member.elements[i], std::cout, identLevel);
     }
     //cpuf::printf("hex_close\n");
-    return {svar.name, var.name};
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("hex\n");
@@ -1122,8 +1154,8 @@ IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &v
     }
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
-    return {svar.name, var.name};
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("accessor\n");
@@ -1132,6 +1164,7 @@ IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &va
     auto second = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "second"));
     auto svar = createSuccessVariable(variable_count);
     auto var = createEmptyVariable(generateVariableName(variable_count));
+    auto shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
     second.insert(second.begin(), first);
     for (auto &el : second) {
         el = std::any_cast<Parser::Rule>(el.data);
@@ -1141,6 +1174,7 @@ IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &va
         IR::accessor { second, qualifier_char }
     };
     member.push({IR::types::VARIABLE, var});
+    member.push({IR::types::VARIABLE, shadow_var});
     member.push({IR::types::VARIABLE, svar});
     member.push(mem);
     return {svar.name, var.name};
@@ -1170,7 +1204,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
 
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
-    
+    IR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name_str);
     var.type = isCallingToken ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
     auto block = createDefaultBlock(var, svar);
@@ -1183,8 +1217,9 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         // remove variable assignemnt
         block.erase(block.begin());
         arr_t<IR::expr> expr;
-        createDefaultCall(block, var, name_str, member, expr);
-        pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+        auto call = createDefaultCall(block, var, name_str, member, expr);
+        member.push(call);
+        shadow_var = pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count);
     } else {
         if (isCallingToken) {
             block[0] = {
@@ -1200,18 +1235,20 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
                 {IR::condition_types::EQUAL},
                 {IR::condition_types::STRING, name_str}
             };
-            pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+            shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
         } else {
 
             // remove variable assignemnt
             block.erase(block.begin());
             arr_t<IR::expr> expr;
-            createDefaultCall(block, var, name_str, member, expr);
-            pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+            auto call = createDefaultCall(block, var, name_str, member, expr);
+            member.push(call);
+            shadow_var= pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count);
+
         }
 
     }
-    return {svar.name, var.name};
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
     //cpuf::printf("Rule_escaped\n");
