@@ -3052,7 +3052,7 @@ Token(NUMBER) {
 	{
 		success_5 = TRUE
 	}
-	_4 += _6
+	_4 += shadow_8
 	if (!success_5)
 	{
 		str _10 = NONE
@@ -3092,7 +3092,7 @@ Token(NUMBER) {
 			success_11 = TRUE
 		}
 		_10 += _12
-		_10 += _14
+		_10 += shadow_16
 		if (!success_11)
 		{
 			return {}
@@ -3504,9 +3504,9 @@ Token(ID) {
 	{
 		success_1 = TRUE
 	}
-	_0 += _2
+	_0 += shadow_4
 	_0 += _5
-	_0 += _7
+	_0 += shadow_9
 	data = _0
 }
 Rule(spacemode) {
@@ -3685,7 +3685,7 @@ Rule(use) {
 		skipspaces(TOKEN_SEQUENCE)
 		rule _8 = NONE
 		bool success_9 = FALSE
-		_8 = _unit(TOKEN_SEQUENCE)
+		_8 = use_unit(TOKEN_SEQUENCE)
 		if (!(_8.res))
 		{
 			break
@@ -4102,14 +4102,14 @@ Rule(Rule_group) {
 	skipspaces(TOKEN_SEQUENCE)
 	rule _12 = NONE
 	bool success_13 = FALSE
-	_12 = rule(TOKEN_SEQUENCE)
+	_12 = Rule_rule(TOKEN_SEQUENCE)
 	array shadow_14 = NONE
 	while (_12.res)
 	{
 		success_13 = TRUE
 		pos++
 		shadow_14.push(_12)
-		_12 = rule(TOKEN_SEQUENCE)
+		_12 = Rule_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	token _15 = NONE
@@ -4188,22 +4188,22 @@ Rule(Rule_csequence_escape) {
 	_0 = CURRENT_TOKEN
 	success_1 = TRUE
 	pos++
+	token _2 = NONE
+	bool success_3 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
-	token _6 = NONE
-	bool success_7 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_96"))
 	{
 		return {}
 	}
-	_6 = CURRENT_TOKEN
-	success_7 = TRUE
+	_4 = CURRENT_TOKEN
+	success_5 = TRUE
 	pos++
-	if (success_7)
+	if (success_5)
 	{
-		success_5 = TRUE
+		success_3 = TRUE
 	}
-	_4 = _6
+	_2 = _4
 }
 Rule(Rule_csequence_diapason) {
 	str _0 = NONE
@@ -4224,39 +4224,37 @@ Rule(Rule_csequence_diapason) {
 		success_2 = TRUE
 	}
 	from = _3
-	token _7 = NONE
-	bool success_8 = FALSE
+	token _5 = NONE
+	bool success_6 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_97"))
 	{
 		return {}
 	}
-	_7 = CURRENT_TOKEN
-	success_8 = TRUE
+	_5 = CURRENT_TOKEN
+	success_6 = TRUE
 	pos++
 	rule to = NONE
-	bool success_11 = FALSE
-	rule _12 = NONE
-	bool success_13 = FALSE
-	_12 = Rule_csequence_symbol(TOKEN_SEQUENCE)
-	if (!(_12.res))
+	bool success_7 = FALSE
+	rule _8 = NONE
+	bool success_9 = FALSE
+	_8 = Rule_csequence_symbol(TOKEN_SEQUENCE)
+	if (!(_8.res))
 	{
 		return {}
 	}
-	success_13 = TRUE
+	success_9 = TRUE
 	pos++
-	if (success_13)
+	if (success_9)
 	{
-		success_11 = TRUE
+		success_7 = TRUE
 	}
-	to = _12
-	if (success_11)
+	to = _8
+	if (success_7)
 	{
 		success_1 = TRUE
 	}
 	_0 += from
 	_0 += _5
-	_0 += _7
-	_0 += _9
 	_0 += to
 	data = [from,to,]
 }
@@ -4288,17 +4286,17 @@ Rule(Rule_csequence) {
 		bool success_6 = FALSE
 		rule _7 = NONE
 		bool success_8 = FALSE
-		_7 = _escape(TOKEN_SEQUENCE)
+		_7 = Rule_csequence_escape(TOKEN_SEQUENCE)
 		if (!(_7.res))
 		{
 			rule _9 = NONE
 			bool success_10 = FALSE
-			_9 = _symbol(TOKEN_SEQUENCE)
+			_9 = Rule_csequence_symbol(TOKEN_SEQUENCE)
 			if (!(_9.res))
 			{
 				rule _11 = NONE
 				bool success_12 = FALSE
-				_11 = _diapason(TOKEN_SEQUENCE)
+				_11 = Rule_csequence_diapason(TOKEN_SEQUENCE)
 				if (!(_11.res))
 				{
 					break
@@ -4516,7 +4514,7 @@ Rule(Rule_data_block) {
 	{
 		rule _13 = NONE
 		bool success_14 = FALSE
-		_13 = _inclosed_map(TOKEN_SEQUENCE)
+		_13 = Rule_data_block_inclosed_map(TOKEN_SEQUENCE)
 		if (!(_13.res))
 		{
 			return {}
@@ -4561,21 +4559,21 @@ Rule(Rule_escaped) {
 	_0 = CURRENT_TOKEN
 	success_1 = TRUE
 	pos++
-	token _4 = NONE
-	bool success_5 = FALSE
+	token _2 = NONE
+	bool success_3 = FALSE
 	if (!(CURRENT_TOKEN == "AUTO_106"))
 	{
 		return {}
 	}
-	_4 = CURRENT_TOKEN
-	success_5 = TRUE
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
 	pos++
-	token _8 = NONE
-	bool success_9 = FALSE
+	token _4 = NONE
+	bool success_5 = FALSE
 	if (CURRENT_TOKEN == "NUMBER")
 	{
-		_8 = CURRENT_TOKEN
-		success_9 = TRUE
+		_4 = CURRENT_TOKEN
+		success_5 = TRUE
 		pos++
 	}
 	data = 
@@ -4610,14 +4608,14 @@ Rule(Rule_nested_rule) {
 	_4 = CURRENT_TOKEN
 	success_5 = TRUE
 	pos++
-	rule _8 = NONE
-	bool success_9 = FALSE
-	_8 = Rule(TOKEN_SEQUENCE)
-	if (!(_8.res))
+	rule _6 = NONE
+	bool success_7 = FALSE
+	_6 = Rule(TOKEN_SEQUENCE)
+	if (!(_6.res))
 	{
 		return {}
 	}
-	success_9 = TRUE
+	success_7 = TRUE
 	pos++
 	data = _6
 }
@@ -4731,7 +4729,7 @@ Rule(Rule) {
 	{
 		rule _9 = NONE
 		bool success_10 = FALSE
-		_9 = _rule(TOKEN_SEQUENCE)
+		_9 = Rule_rule(TOKEN_SEQUENCE)
 		if (!(_9.res))
 		{
 			break
