@@ -1,4 +1,5 @@
 #include <IR.h>
+#include <cstdint>
 #include <cpuf/printf.h>
 void getVariablesToTable(std::vector<IR::member>& elements, size_t &i, std::list<IR::member>& table) {
     for (; i < elements.size(); i++) {
@@ -28,13 +29,12 @@ size_t getBegin(arr_t<IR::member>& elements, size_t& i) {
             return i + 1;
         }
     }
-    return std::string::npos;
+    return UINT64_MAX;
 }
 
-void insertVariablesOnTop(arr_t<IR::member>& elements, std::list<IR::member>& table, size_t i) {
+void insertVariablesOnTop(arr_t<IR::member>& elements, std::list<IR::member>& table, size_t begin) {
     for (auto& el : table) {
-        cpuf::printf("inserting %s\n", std::any_cast<IR::variable>(el.value).name);
-        elements.insert(elements.begin() + i++, el);
+        elements.insert(elements.begin() + begin++, el);
     }
 }
 
@@ -43,7 +43,7 @@ void raiseVarsTop(IR::ir &ir) {
 
     for (size_t i = 0; i < ir.elements.size(); i++) {
         auto begin = getBegin(ir.elements, i);
-        if (begin == std::string::npos) break;
+        if (begin == UINT64_MAX) break;
         getVariablesToTable(ir.elements, i, table);
         insertVariablesOnTop(ir.elements, table, begin);
         table.clear();

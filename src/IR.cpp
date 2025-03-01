@@ -219,7 +219,7 @@ IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::mem
     }
     return shadow_variable;
 }
-void affectIrByQualifier(IR::ir &values, char qualifier, int &variable_count) {
+void affectIrByQuantifier(IR::ir &values, char qualifier, int &variable_count) {
     IR::ir new_ir;
     if (qualifier == '*' || qualifier == '+') {
         IR::condition loop = { { { IR::condition_types::NUMBER, (long long) 1 } }, {} };
@@ -946,6 +946,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
             );
         break;
     }
+    std::string begin_var_name = "begin" + generateVariableName(variable_count);
     arr_t<IR::expr> svar_expr = {};
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     if (!node_ret.empty()) {
@@ -960,15 +961,19 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
         IR::types::IF,
         IR::condition {
             svar_expr,
-            {{IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}}}
+            {
+                {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}},
+                {IR::types::POP_POS_COUNTER}
+            }
         }
     };
     if (!values.elements.empty() && values.elements.back().type == IR::types::SKIP_SPACES) {
         values.elements.pop_back();
     }
-    affectIrByQualifier(values, qualifier_char, variable_count);
+    affectIrByQuantifier(values, qualifier_char, variable_count);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
+    member.push({IR::types::PUSH_POS_COUNTER, begin_var_name});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) 
     {
         IR::method_call method_call = TreeMethodCallToIR(std::any_cast<Parser::Rule>(variable.data));
@@ -1111,15 +1116,9 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
         expr.push_back({IR::condition_types::GROUP_CLOSE});
     }
     //cpuf::printf("hex_open\n");
-    int size = member.size();
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
-    for (int i = size; i < member.size(); i++) {
-        int identLevel = 0;
-        IR::convertMember(member.elements[i], std::cout, identLevel);
-    }
-    //cpuf::printf("hex_close\n");
     return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
