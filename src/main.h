@@ -33,4 +33,5 @@
 #include <treeNormalizer.h>
 #include <IR.h>
 #include <IR-debug.h>
+#include <IR-optimizations.h>
 void printHelp();

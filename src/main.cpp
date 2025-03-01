@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
     // convert tree into IR
     IR::nested_rule_name nested_rule_names;
     auto ir = treeToIr(tree, "", nested_rule_names);
-    
+    raiseVarsTop(ir);
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
     /*
