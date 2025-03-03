@@ -100,6 +100,8 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
+
+    auto use = accamulate_use_data_to_map(tree);
     normalizeTree(tree, false);
     sortByPriority(tree);            // sorts elements to get which should be placed on top. This ensures proper matching
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
@@ -115,8 +117,15 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    //dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-
+    dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    auto convert_fun = converter.loadfun<std::string, const IR::ir&, const use_prop_t&>("convert");
+    auto content = convert_fun(ir, use);
+    std::ofstream out("output.cpp");
+    if (!out)
+        throw Error("Failed open output file");
+    out << content;
+    out.close();
+    // write to file
     // invoke convertion
     //convert(tree, converter);
     // begin convertion here

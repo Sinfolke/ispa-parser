@@ -459,4 +459,35 @@ void sortByPriority(Parser::Tree &tree)  {
         }
         i++;
     }
-} 
+}
+use_prop_t get_use_data(Parser::Rule use) {
+    use_prop_t result;
+    auto data = std::any_cast<arr_t<Parser::Rule>>(use.data);
+    for (auto &el : data) {
+        auto el_data = std::any_cast<obj_t>(el.data);
+        auto el_id = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "name"));
+        auto el_name = std::any_cast<std::string>(el_id.data);
+        auto value = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "value"));
+        if (value.data.has_value()) {
+            auto value_data = std::any_cast<Parser::Rule>(value.data);
+            result[el_name] = value_data;
+        } else {
+            result[el_name] = Parser::Rule();
+        }
+
+    }
+    return result;
+}
+use_prop_t accamulate_use_data_to_map(Parser::Tree tree) {
+    use_prop_t result;
+    for (auto el : tree) {
+        if (el.name != Parser::Rules::use)
+            continue;
+        
+        auto res = get_use_data(el);
+        for (auto [key, value] : res) {
+            result[key] = value;
+        }
+    }
+    return result;
+}

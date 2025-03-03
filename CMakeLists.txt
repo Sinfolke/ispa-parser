@@ -67,7 +67,7 @@ add_compile_definitions(PROGRAM_VERSION="0.1.0 beta")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
 include_directories(mod/parser/include)
 include_directories(include stdlibs)
-target_include_directories(ispa PRIVATE include src external parser/mod/include)
+target_include_directories(ispa PRIVATE include src external mod/parser/include)
 set_target_properties(ispa PROPERTIES OUTPUT_NAME ispa)
 target_link_libraries(ispa parser parser_stdlib)
 #set_target_properties(isc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -78,6 +78,9 @@ set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 
+# add converter library
+add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp)
+target_include_directories(ispa-converter-cpp PRIVATE include src external mod/parser/include mod/parser/stdlibs converters/C++)
 #create interface for tests
 add_library(tests INTERFACE)
 target_compile_definitions(tests INTERFACE __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests")

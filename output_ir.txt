@@ -104,7 +104,7 @@ Rule(accessor_all) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Rule(accessor) {
 	rule _0 = NONE
@@ -470,7 +470,7 @@ Token(OP) {
 	_12 += CURRENT_POS_SEQUENCE
 	success_13 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(ASSIGNMENT_OP) {
 	token _0 = NONE
@@ -566,7 +566,7 @@ Token(COMPARE_OP) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(LOGICAL_OP) {
 	token _0 = NONE
@@ -597,7 +597,7 @@ Token(LOGICAL_OP) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(LOGICAL_NOT) {
 	str _0 = NONE
@@ -628,7 +628,7 @@ Token(LOGICAL_NOT) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(LOGICAL_AND) {
 	str _0 = NONE
@@ -659,7 +659,7 @@ Token(LOGICAL_AND) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(LOGICAL_OR) {
 	str _0 = NONE
@@ -690,7 +690,7 @@ Token(LOGICAL_OR) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Token(LOGICAL_ANDR) {
 	any _0 = NONE
@@ -759,7 +759,7 @@ Token(LOGICAL_ANDR) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _6
 }
 Rule(cll_template_content_typename) {
 	rule _0 = NONE
@@ -1350,7 +1350,7 @@ Rule(cll_csupport_types) {
 	success_49 = TRUE
 	pos++
 	data = 
-		template: _10
+		template: _8
 		type: _4
 	;
 }
@@ -1505,8 +1505,8 @@ Rule(cll_type_abstract) {
 		pos = begin_28
 	}
 	data = 
-		template: _6
-		type: _4
+		template: _18
+		type: _16
 	;
 }
 Rule(cll_type) {
@@ -1538,7 +1538,7 @@ Rule(cll_type) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Rule(cll_if) {
 	token _0 = NONE
@@ -1823,9 +1823,9 @@ Rule(expr_logical) {
 	success_11 = TRUE
 	pos++
 	data = 
-		right: _6
-		op: _4
-		left: _2
+		right: _8
+		op: _0
+		left: _0
 	;
 }
 Rule(expr_compare) {
@@ -1989,7 +1989,7 @@ Rule(expr_for_arithmetic) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Rule(expr_group) {
 	token _0 = NONE
@@ -2040,7 +2040,7 @@ Rule(expr_group) {
 	_8 = CURRENT_TOKEN
 	success_9 = TRUE
 	pos++
-	data = _4
+	data = _2
 }
 Rule(expr_expr_copiable_method_call) {
 	token _0 = NONE
@@ -2158,7 +2158,7 @@ Rule(expr) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _2
+	data = _0
 }
 Rule(function_body_call) {
 	token _0 = NONE
@@ -2452,7 +2452,7 @@ Rule(loop_while) {
 	success_5 = TRUE
 	pos++
 	data = 
-		block: _6
+		block: _4
 		expr: _2
 	;
 }
@@ -2596,10 +2596,10 @@ Rule(loop_for) {
 	success_24 = TRUE
 	pos++
 	data = 
-		block: _17
-		end: _13
-		cond: _6
-		decl: _8
+		block: _19
+		end: _15
+		cond: _4
+		decl: _6
 	;
 }
 Rule(method_call) {
@@ -2825,7 +2825,7 @@ Rule(var_refer) {
 		post: post
 		pre: pre
 		brace_expression: _15
-		name: _4
+		name: _2
 	;
 }
 Rule(cll_var) {
@@ -2901,7 +2901,7 @@ Rule(cll_var) {
 	_4 += _6
 	_4 += _8
 	data = 
-		value: _10
+		value: _8
 		operator: _6
 		id: _2
 		type: _0
@@ -3982,8 +3982,8 @@ Rule(Rule_rule) {
 	success_1 = TRUE
 	pos++
 	data = 
-		qualifier: _10
-		val: _8
+		qualifier: _6
+		val: _6
 	;
 }
 Rule(Rule_other) {

@@ -32,12 +32,9 @@
 
     Add inline of automatic tokens when value accessed (?)
 
-    Check whether shadow variable behave correctly with groups and operators '|' (*)
-    Make to use shadow variable if it does exists instead
-
 ### Parser syntax
   
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - Progress of convertion to IR.
+  - Implementation of IR optimizations
