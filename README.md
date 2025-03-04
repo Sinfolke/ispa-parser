@@ -32,6 +32,10 @@
 
     Add inline of automatic tokens when value accessed (?)
 
+    Add handle of qualifier in matched() function
+
+    Finish convertion of IR to C++
+
 ### Parser syntax
   
   see ```concepts/syntax```

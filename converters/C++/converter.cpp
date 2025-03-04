@@ -14,15 +14,44 @@ namespace global {
     size_t pos_counter;
     use_prop_t use;
 }
+size_t count_strlen(const char* str) {
+    size_t count = 0;
+    for (const char* pos = str; *pos; pos++) {
+        if (*pos == '\\' && *(pos - 1) != '\\') {
+            continue;
+        }
+        count++;
+    }
+    return count;
+}
+std::string getCharFromEscaped(char in, bool string) {
+    if (in == '"')
+        return string ? "\\\"" : "\"";
+    if (in == '\'')
+        return string ? "'" : "\\'";
+    switch (in)
+    {
+    case '\n': return "\\n";  // Newline
+    case '\r': return "\\r";  // Carriage return
+    case '\t': return "\\t";  // Horizontal tab
+    case '\a': return "\\a";  // Bell (alert)
+    case '\b': return "\\b";  // Backspace
+    case '\f': return "\\f";  // Form feed (new page)
+    case '\v': return "\\v";  // Vertical tab
+    case '\\': return "\\";   // Backslash
+    case '\0': return "\\0";  // end of string
+    default: return std::string(1, in);      // Return the character itself if not an escape sequence
+    }
+}
 std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
     if (type == IR::var_types::ARRAY) {
-        std::string t = "ISPA_ARRAY_TYPE";
+        std::string t = "arr_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
         return t;
     } else if (type == IR::var_types::OBJECT) {
-        std::string t = "ISPA_OBJECT_TYPE";
+        std::string t = "obj_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ", ";
@@ -31,9 +60,10 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         return t;
     }
     static const std::unordered_map<IR::var_types, std::string> typesMap = {
-        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool"}, {IR::var_types::STRING, "ISPA_STR_TYPE"}, {IR::var_types::NUMBER, "ISPA_NUM_TYPE"},
+        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool"}, 
+        {IR::var_types::STRING, "str_t"}, {IR::var_types::NUMBER, "num_t"},
         {IR::var_types::FUNCTION, "function"},
-        {IR::var_types::ANY, "ISPA_ANY_TYPE"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
+        {IR::var_types::ANY, "any_t"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
         {IR::var_types::CHAR, "char"}, {IR::var_types::UCHAR, "unsigned char"}, 
         {IR::var_types::SHORT, "short"}, {IR::var_types::USHORT, "unsigned short"},
         {IR::var_types::INT, "int"}, {IR::var_types::UINT, "unsigned int"},
@@ -116,8 +146,8 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
         {IR::var_assign_values::_TRUE, "true"},
         {IR::var_assign_values::_FALSE, "false"},
         {IR::var_assign_values::CURRENT_POS_COUNTER, current_pos_counter.top()},
-        {IR::var_assign_values::CURRENT_POS_SEQUENCE, "*(" + current_pos_counter.top() + std::to_string(global::pos_counter) + ")"},
-        {IR::var_assign_values::CURRENT_TOKEN, "*pos"},
+        {IR::var_assign_values::CURRENT_POS_SEQUENCE, "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")"},
+        {IR::var_assign_values::CURRENT_TOKEN, current_pos_counter.top()},
         {IR::var_assign_values::TOKEN_SEQUENCE, "tokens"},
     };
     return typesMap.at(value);
@@ -134,25 +164,7 @@ std::string convert_var_assing_types(IR::var_assign_types value) {
     };
     return valueToString.at(value);
 }
-std::string getCharFromEscaped(char in, bool string) {
-    if (in == '"')
-        return string ? "\\\"" : "\"";
-    if (in == '\'')
-        return string ? "'" : "\\'";
-    switch (in)
-    {
-    case '\n': return "\\n";  // Newline
-    case '\r': return "\\r";  // Carriage return
-    case '\t': return "\\t";  // Horizontal tab
-    case '\a': return "\\a";  // Bell (alert)
-    case '\b': return "\\b";  // Backspace
-    case '\f': return "\\f";  // Form feed (new page)
-    case '\v': return "\\v";  // Vertical tab
-    case '\\': return "\\";   // Backslash
-    case '\0': return "\\0";  // end of string
-    default: return std::string(1, in);      // Return the character itself if not an escape sequence
-    }
-}
+
 std::string conditionTypesToString(IR::condition_types type, std::any data, std::stack<std::string> &current_pos_counter) {
     if (type == IR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
@@ -170,7 +182,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<IR::strncmp>(data);
         if (dt.is_string) {
-            return std::string("!std::strncmp(pos, \"") + dt.value + std::string("\", ") + std::to_string(dt.value.size()) + ")";
+            return std::string("!std::strncmp(pos, \"") + dt.value + std::string("\", ") + std::to_string(count_strlen(dt.value.c_str())) + ")";
         } else {
             return std::string("!std::strncmp(pos, ") + dt.value + ", strlen(" + dt.value + "))";
         }
@@ -193,6 +205,14 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return convertMethodCall(std::any_cast<IR::method_call>(data), current_pos_counter);
     } else if (type == IR::condition_types::FUNCTION_CALL) {
         return convertFunctionCall( std::any_cast<IR::function_call>(data), current_pos_counter);
+    } else if (type == IR::condition_types::CURRENT_TOKEN) {
+        if (data.has_value()) {
+            auto dt = std::any_cast<IR::current_token>(data);
+            auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
+            return "*token " + op + " " + "Tokens::" + dt.name;
+        } else {
+            return "*token";
+        }
     }
     static const std::unordered_map<IR::condition_types, std::string> condTypesMap = {
         {IR::condition_types::GROUP_OPEN, "("}, {IR::condition_types::GROUP_CLOSE, ")"},
@@ -204,7 +224,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         {IR::condition_types::BITWISE_AND, "&"}, {IR::condition_types::BITWISE_ANDR, "^"},
         {IR::condition_types::ADD, "+"}, {IR::condition_types::SUBSTR, "-"},
         {IR::condition_types::MULTIPLY, "*"}, {IR::condition_types::DIVIDE, "/"},
-        {IR::condition_types::MODULO, "%"}, {IR::condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, 
+        {IR::condition_types::MODULO, "%"}, 
     };
     return condTypesMap.at(type);
 }
@@ -306,16 +326,15 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
 void convertMember(const IR::member& mem, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     if (mem.type != IR::types::RULE_END)
         out << std::string(indentLevel, '\t');
-    cpuf::printf("type: %s\n", global::use["name"].data.type().name());
     auto name = std::any_cast<std::string>(global::use["name"].data);
     switch (mem.type)
     {
     case IR::types::RULE:
-        out << name << "::Rule_res " << std::any_cast<std::string>(mem.value) << "() {";
+        out << name << "::Parser::Rule_res " << std::any_cast<std::string>(mem.value) << "(Token* &pos, const Token_sequence &tokens) {";
         indentLevel++;
         break;
     case IR::types::TOKEN:
-        out << name << "::Token_res " << std::any_cast<std::string>(mem.value) << "() {";
+        out << name << "::Tokenizator::Token_res " << std::any_cast<std::string>(mem.value) << "(const char* pos, const char* const str) {";
         indentLevel++;
         break;
     case IR::types::RULE_END:
@@ -360,10 +379,7 @@ void convertMember(const IR::member& mem, std::ostream& out, int &indentLevel, s
         out << "return {}";
         break;
     case IR::types::SKIP_SPACES:
-        if (std::any_cast<bool>(mem.value)) // isToken
-            out << "skipspaces(pos)";
-        else
-            out << "skipspaces(TOKEN_SEQUENCE)";
+        out << "skipspaces(pos)";
         break;
     case IR::types::DATA_BLOCK:
         out << convertDataBlock(std::any_cast<IR::data_block>(mem.value), indentLevel, current_pos_counter);
@@ -382,7 +398,7 @@ void convertMember(const IR::member& mem, std::ostream& out, int &indentLevel, s
     default:
         throw Error("Undefined IR member\n");
     }
-    out << '\n';
+    out << ";\n";
 }
 
 void convertMembers(arr_t<IR::member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {

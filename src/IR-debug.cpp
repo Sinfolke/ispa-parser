@@ -173,6 +173,14 @@ namespace IR {
             return convertMethodCall(std::any_cast<method_call>(data), current_pos_counter);
         } else if (type == IR::condition_types::FUNCTION_CALL) {
             return convertFunctionCall( std::any_cast<function_call>(data), current_pos_counter);
+        } else if (type == IR::condition_types::CURRENT_TOKEN) {
+            if (data.has_value()) {
+                auto dt = std::any_cast<IR::current_token>(data);
+                auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
+                return "CURRENT_TOKEN " + op + " " + dt.name;
+            } else {
+                return "CURRENT_TOKEN";
+            }
         }
         static const std::unordered_map<condition_types, std::string> condTypesMap = {
             {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},

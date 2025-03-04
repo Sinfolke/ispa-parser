@@ -56,6 +56,10 @@ namespace IR {
         bool post_increament;
         std::string name;
     };
+    struct current_token {
+        condition_types op;
+        std::string name;
+    };
     using array = std::vector<assign>;
     using object = std::unordered_map<std::string, assign>;
     struct expr {

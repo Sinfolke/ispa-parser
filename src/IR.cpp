@@ -1232,9 +1232,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
                 }
             };
             arr_t<IR::expr> expr = {
-                {IR::condition_types::CURRENT_TOKEN},
-                {IR::condition_types::EQUAL},
-                {IR::condition_types::STRING, name_str}
+                {IR::condition_types::CURRENT_TOKEN, IR::current_token {IR::condition_types::EQUAL, name_str}},
             };
             shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
         } else {
