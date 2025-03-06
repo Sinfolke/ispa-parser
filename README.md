@@ -34,7 +34,15 @@
 
     Add handle of qualifier in matched() function
 
-    Finish convertion of IR to C++
+    Add shadow variables for all variables if they're located within the loop
+
+    Add automatic deduce of type for each member in data block
+
+    Add data block structures
+
+    Add dead variables that should not be added. Remove any interaction with them
+
+    Add remove of unused variables (required IR optimization)
 
 ### Parser syntax
   

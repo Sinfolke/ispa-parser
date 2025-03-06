@@ -3694,7 +3694,6 @@ Rule(linear_comment) {
 	bool success_1 = FALSE
 	token _2 = NONE
 	bool success_3 = FALSE
-	array shadow_4 = NONE
 	if (!(CURRENT_TOKEN == AUTO_74))
 	{
 		return {}
@@ -3703,13 +3702,13 @@ Rule(linear_comment) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	while (CURRENT_TOKEN == AUTO_75)
+	if (!(CURRENT_TOKEN == AUTO_75))
 	{
-		_2 += CURRENT_TOKEN
-		success_3 = TRUE
-		pos++
-		shadow_4.push(_2)
+		return {}
 	}
+	_2 = CURRENT_TOKEN
+	success_3 = TRUE
+	pos++
 }
 Rule(main) {
 	rule _0 = NONE
@@ -3720,16 +3719,27 @@ Rule(main) {
 	bool success_5 = FALSE
 	rule _6 = NONE
 	bool success_7 = FALSE
-	_2 = use(TOKEN_SEQUENCE)
+	rule _8 = NONE
+	bool success_9 = FALSE
+	_2 = Import(TOKEN_SEQUENCE)
 	if (!(_2.res))
 	{
-		_4 = Rule(TOKEN_SEQUENCE)
+		_4 = use(TOKEN_SEQUENCE)
 		if (!(_4.res))
 		{
-			_6 = spacemode(TOKEN_SEQUENCE)
+			_6 = Rule(TOKEN_SEQUENCE)
 			if (!(_6.res))
 			{
-				return {}
+				_8 = spacemode(TOKEN_SEQUENCE)
+				if (!(_8.res))
+				{
+					return {}
+				}
+				else 
+				{
+					success_9 = TRUE
+					_0 = _8
+				}
 			}
 			else 
 			{

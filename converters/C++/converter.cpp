@@ -73,7 +73,7 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         return t;
     }
     static const std::unordered_map<IR::var_types, std::string> typesMap = {
-        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool"}, 
+        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool_t"}, 
         {IR::var_types::STRING, "str_t"}, {IR::var_types::NUMBER, "num_t"},
         {IR::var_types::FUNCTION, "function"},
         {IR::var_types::ANY, "any_t"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
@@ -212,7 +212,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return std::any_cast<std::string>(data);
     } else if (type == IR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
-        return std::any_cast<std::string>(data) + ".status";
+        return std::any_cast<std::string>(data) + ".result";
     } else if (type == IR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
@@ -348,12 +348,12 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     {
     case IR::types::RULE:
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Parser::Rule_res " << std::any_cast<std::string>(mem.value) << "(Token* &pos, const Token_sequence &tokens) {";
+        out << name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {";
         indentLevel++;
         break;
     case IR::types::TOKEN:
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Tokenizator::Token_res " << std::any_cast<std::string>(mem.value) << "(const char* pos, const char* const str) {";
+        out << name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {";
         indentLevel++;
         break;
     case IR::types::RULE_END:
@@ -395,7 +395,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "continue";
         break;
     case IR::types::EXIT:
-        out << "return {}";
+        out << "return {};";
         break;
     case IR::types::SKIP_SPACES:
         out << "skipspaces(pos)";
@@ -418,7 +418,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         throw Error("Undefined IR member\n");
     }
     auto back = out.str().back();
-    if (back != '{' && back != '}' && global::add_semicolon)
+    if (back != '{' && back != '}' && back != ';' && global::add_semicolon)
         out << ";";
     out << "\n";
     global::add_semicolon = true;
