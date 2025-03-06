@@ -6,6 +6,7 @@
 #include <internal_types.h>
 #include <token_management.h>
 #include <cpuf/printf.h>
+#include <list>
 
 Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules, std::string name) {
     // Create a copy of the rules to avoid modifying the original while iterating
@@ -459,6 +460,32 @@ void sortByPriority(Parser::Tree &tree)  {
         }
         i++;
     }
+}
+std::pair<std::list<std::string>, std::list<std::string>> getTokenAndRuleNames(Parser::Tree tree, std::string nested_name) {
+    std::list<std::string> tokens, rules;
+    for (auto el : tree) {
+        if (el.name == Parser::Rules::Rule) {
+            auto data = std::any_cast<obj_t>(el.data);
+            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
+            auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+            if (corelib::text::isUpper(name_str)) {
+                tokens.push_back(nested_name + name_str);
+            } else {
+                rules.push_back(nested_name + name_str);
+            }
+            auto prev_nested_name = nested_name;
+            if (nested_name.empty())
+                nested_name = name_str;
+            else
+                nested_name += "_" + name_str;
+            auto [new_tokens, new_rules] = getTokenAndRuleNames(nested_rules, nested_name);
+            tokens.insert(tokens.end(), new_tokens.begin(), new_tokens.end());
+            rules.insert(rules.end(), new_rules.begin(), new_rules.end());
+            nested_name = prev_nested_name;
+        }
+    }
+    return {tokens, rules};
 }
 use_prop_t get_use_data(Parser::Rule use) {
     use_prop_t result;

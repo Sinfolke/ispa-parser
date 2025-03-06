@@ -13,6 +13,8 @@
 namespace global {
     size_t pos_counter;
     use_prop_t use;
+    std::string rule_prev_name;
+    bool add_semicolon;
 }
 size_t count_strlen(const char* str) {
     size_t count = 0;
@@ -23,6 +25,17 @@ size_t count_strlen(const char* str) {
         count++;
     }
     return count;
+}
+std::string format_str(std::string str) {
+    std::string res;
+    for (auto &c : str) {
+        if (c == '"') {
+            res += "\\\"";
+            continue;
+        }
+        res += c;
+    }
+    return res;
 }
 std::string getCharFromEscaped(char in, bool string) {
     if (in == '"')
@@ -78,7 +91,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
     switch (value) {
         case IR::var_assign_values::STRING:
             //cpuf::printf("on String\n");
-            return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
+            return std::string(1, '"') + format_str(std::any_cast<std::string>(data)) + std::string(1, '"');
         case IR::var_assign_values::VAR_REFER:
         {
             //cpuf::printf("ON var_refer\n");
@@ -105,7 +118,10 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 res += convertAssign(el, current_pos_counter);
                 res += ',';
             }
-            res += '}';
+            if (res.size() > 1)
+                res.back() = '}';
+            else
+                res += '}';
             return res;
         }
         case IR::var_assign_values::OBJECT:
@@ -120,7 +136,11 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 res += convertAssign(value, current_pos_counter);
                 res += "},";
             }
-            res[res.size() - 1] = '}';
+            if (res.size() > 1) {
+                res.back() = '}';
+            } else {
+                res += '}';
+            }
             return res;
         }
         case IR::var_assign_values::ACCESSOR: 
@@ -136,6 +156,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
         {
             auto dt = std::any_cast<double>(data);
             char sign = dt >= 0 ? '+' : '-';
+            dt = abs(dt);
             if (dt == 0)
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
@@ -182,9 +203,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<IR::strncmp>(data);
         if (dt.is_string) {
-            return std::string("!std::strncmp(pos, \"") + dt.value + std::string("\", ") + std::to_string(count_strlen(dt.value.c_str())) + ")";
+            return std::string("!std::strncmp(pos, \"") + format_str(dt.value) + std::string("\", ") + std::to_string(count_strlen(dt.value.c_str())) + ")";
         } else {
-            return std::string("!std::strncmp(pos, ") + dt.value + ", strlen(" + dt.value + "))";
+            return std::string("!std::strncmp(pos, ") + format_str(dt.value) + ", strlen(" + dt.value + "))";
         }
     } else if (type == IR::condition_types::VARIABLE) {
         //cpuf::printf("variable\n");    
@@ -195,9 +216,6 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
     } else if (type == IR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
-    } else if (type == IR::condition_types::BIN) {
-        //cpuf::printf("bin\n");
-        return std::string("0b") + std::any_cast<std::string>(data);
     } else if (type == IR::condition_types::ANY_DATA) {
         auto dt = std::any_cast<IR::assign>(data);
         return convert_var_assing_values(dt.kind, dt.data, current_pos_counter);
@@ -241,7 +259,7 @@ std::string convertAssign(IR::assign asgn, std::stack<std::string> &current_pos_
         return convertFunctionCall(std::any_cast<IR::function_call>(asgn.data), current_pos_counter);
     return convert_var_assing_values(asgn.kind, asgn.data, current_pos_counter);
 }
-void convertVariable(IR::variable var, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertVariable(IR::variable var, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
     if (var.value.kind != IR::var_assign_values::NONE)
         out << " = " << convertAssign(var.value, current_pos_counter);
@@ -271,7 +289,7 @@ std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std:
     return result;
 }
 
-void convertBlock(arr_t<IR::member> block, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertBlock(arr_t<IR::member> block, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out, indentLevel, current_pos_counter);
@@ -279,7 +297,7 @@ void convertBlock(arr_t<IR::member> block, std::ostream& out, int &indentLevel, 
     out << std::string(indentLevel, '\t') << "}";
 }
 
-void convertCondition(IR::condition cond, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertCondition(IR::condition cond, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     out << convertExpression(cond.expression, true, current_pos_counter);
     convertBlock(cond.block, out, indentLevel, current_pos_counter);
     if (!cond.else_block.empty()) {
@@ -306,34 +324,35 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
 std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter) {
     // Implement method call conversion with proper indentation
     std::string res;
-    res += "data = ";
+    res += global::rule_prev_name + "_data data";
     if (dtb.is_inclosed_map) {
+        res += ";";
         res += "\n";
         for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.value.data)) {
-            res += std::string(indentLevel + 1, '\t');
-            res += key;
-            res += ": ";
-            res += convertExpression(value, false, current_pos_counter);
-            res += '\n';
+            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value, false, current_pos_counter) + ";\n";
         }
-        res += std::string(indentLevel, '\t') + ";";
     } else {
+        res += " = ";
         res += convertAssign(std::any_cast<IR::assign>(dtb.value), current_pos_counter);
+        res += ';';
     }
+    global::add_semicolon = false;
     return res;
 }
 
-void convertMember(const IR::member& mem, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     if (mem.type != IR::types::RULE_END)
         out << std::string(indentLevel, '\t');
     auto name = std::any_cast<std::string>(global::use["name"].data);
     switch (mem.type)
     {
     case IR::types::RULE:
+        global::rule_prev_name = std::any_cast<std::string>(mem.value);
         out << name << "::Parser::Rule_res " << std::any_cast<std::string>(mem.value) << "(Token* &pos, const Token_sequence &tokens) {";
         indentLevel++;
         break;
     case IR::types::TOKEN:
+        global::rule_prev_name = std::any_cast<std::string>(mem.value);
         out << name << "::Tokenizator::Token_res " << std::any_cast<std::string>(mem.value) << "(const char* pos, const char* const str) {";
         indentLevel++;
         break;
@@ -398,20 +417,30 @@ void convertMember(const IR::member& mem, std::ostream& out, int &indentLevel, s
     default:
         throw Error("Undefined IR member\n");
     }
-    out << ";\n";
+    auto back = out.str().back();
+    if (back != '{' && back != '}' && global::add_semicolon)
+        out << ";";
+    out << "\n";
+    global::add_semicolon = true;
 }
 
-void convertMembers(arr_t<IR::member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     for (auto mem : members)
         convertMember(mem, out, indentLevel, current_pos_counter);
 }
+void addHeader(std::ostringstream &out) {
+    out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
+}
 extern "C" std::string convert(const IR::ir &ir, const use_prop_t &use) {
-    std::stringstream ss;
+    std::ostringstream ss;
     std::stack<std::string> current_pos_counter;
     int identLevel = 0;
     current_pos_counter.push("pos");
     global::use = use;
     global::pos_counter = 0;
+
+    addHeader(ss);
+
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();
 }

@@ -107,9 +107,11 @@ int main(int argc, char** argv) {
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
+    auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
     IR::nested_rule_name nested_rule_names;
     auto ir = treeToIr(tree, "", nested_rule_names);
+    tree.clear();
     raiseVarsTop(ir);
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
@@ -119,12 +121,17 @@ int main(int argc, char** argv) {
     */
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR::ir&, const use_prop_t&>("convert");
+    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, use_prop_t>("convert_header");
     auto content = convert_fun(ir, use);
-    std::ofstream out("output.cpp");
-    if (!out)
+    auto header_content = convert_header_fun(tokens, rules, use);
+    std::ofstream cpp("output.cpp");
+    if (!cpp)
         throw Error("Failed open output file");
-    out << content;
-    out.close();
+    cpp << content;
+    std::ofstream header("output.h");
+    if (!header)
+        throw Error("Failed open output file");
+    header << header_content;
     // write to file
     // invoke convertion
     //convert(tree, converter);

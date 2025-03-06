@@ -109,6 +109,7 @@ Rule(accessor_all) {
 Rule(accessor) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -141,6 +142,7 @@ Rule(accessor) {
 		}
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -159,9 +161,10 @@ Rule(cll) {
 	bool success_0 = FALSE
 	token _1 = NONE
 	bool success_2 = FALSE
+	array shadow_28 = NONE
 	str _4 = NONE
 	bool success_5 = FALSE
-	bool success_28 = FALSE
+	bool success_29 = FALSE
 	rule _6 = NONE
 	bool success_7 = FALSE
 	rule _8 = NONE
@@ -282,9 +285,10 @@ Rule(cll) {
 		_25 = CURRENT_TOKEN
 		success_26 = TRUE
 		begin_27++
-		success_28 = TRUE
+		shadow_28.push(_4)
+		success_29 = TRUE
 	}
-	if (!success_28)
+	if (!success_29)
 	{
 		return {}
 	}
@@ -295,7 +299,7 @@ Rule(cll) {
 	}
 	_4 += _6
 	_4 += _25
-	data = _4
+	data = shadow_28
 }
 Rule(cll_block) {
 	token _0 = NONE
@@ -764,6 +768,7 @@ Token(LOGICAL_ANDR) {
 Rule(cll_template_content_typename) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -796,6 +801,7 @@ Rule(cll_template_content_typename) {
 		}
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -811,6 +817,7 @@ Rule(cll_template_content_typename) {
 Rule(cll_template_content_int) {
 	token _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -843,6 +850,7 @@ Rule(cll_template_content_int) {
 		_6 = CURRENT_TOKEN
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -858,6 +866,7 @@ Rule(cll_template_content_int) {
 Rule(cll_template_content_bool) {
 	token _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -890,6 +899,7 @@ Rule(cll_template_content_bool) {
 		_6 = CURRENT_TOKEN
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -905,6 +915,7 @@ Rule(cll_template_content_bool) {
 Rule(cll_template_content_str) {
 	token _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -937,6 +948,7 @@ Rule(cll_template_content_str) {
 		_6 = CURRENT_TOKEN
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -952,6 +964,7 @@ Rule(cll_template_content_str) {
 Rule(cll_template_content_arr) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -984,6 +997,7 @@ Rule(cll_template_content_arr) {
 		}
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -999,6 +1013,7 @@ Rule(cll_template_content_arr) {
 Rule(cll_template_content_obj) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -1031,6 +1046,7 @@ Rule(cll_template_content_obj) {
 		}
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -1046,6 +1062,7 @@ Rule(cll_template_content_obj) {
 Rule(cll_template_content_any_data) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	token _4 = NONE
@@ -1078,6 +1095,7 @@ Rule(cll_template_content_any_data) {
 		}
 		success_7 = TRUE
 		begin_8++
+		shadow_9.push(_2)
 	}
 	if (success_7)
 	{
@@ -1831,9 +1849,10 @@ Rule(expr_logical) {
 Rule(expr_compare) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
-	bool success_9 = FALSE
+	bool success_10 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
 	rule _6 = NONE
@@ -1864,9 +1883,10 @@ Rule(expr_compare) {
 		}
 		success_7 = TRUE
 		begin_8++
-		success_9 = TRUE
+		shadow_9.push(_2)
+		success_10 = TRUE
 	}
-	if (!success_9)
+	if (!success_10)
 	{
 		return {}
 	}
@@ -1886,9 +1906,10 @@ Rule(expr_compare) {
 Rule(expr_arithmetic) {
 	rule _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
-	bool success_9 = FALSE
+	bool success_10 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
 	rule _6 = NONE
@@ -1919,9 +1940,10 @@ Rule(expr_arithmetic) {
 		}
 		success_7 = TRUE
 		begin_8++
-		success_9 = TRUE
+		shadow_9.push(_2)
+		success_10 = TRUE
 	}
-	if (!success_9)
+	if (!success_10)
 	{
 		return {}
 	}
@@ -2233,6 +2255,7 @@ Rule(function_arguments) {
 	bool success_5 = FALSE
 	token _6 = NONE
 	bool success_7 = FALSE
+	array shadow_20 = NONE
 	str _9 = NONE
 	bool success_10 = FALSE
 	str _11 = NONE
@@ -2312,6 +2335,7 @@ Rule(function_arguments) {
 			_13 += CURRENT_POS_SEQUENCE
 			success_14 = TRUE
 			begin_19++
+			shadow_20.push(_9)
 		}
 		if (success_14)
 		{
@@ -2329,6 +2353,7 @@ Rule(function_arguments) {
 Rule(function_parameters) {
 	token _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
 	str _4 = NONE
@@ -2363,6 +2388,7 @@ Rule(function_parameters) {
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
 			begin_8++
+			shadow_9.push(_2)
 		}
 		if (success_7)
 		{
@@ -2605,9 +2631,10 @@ Rule(loop_for) {
 Rule(method_call) {
 	token _0 = NONE
 	bool success_1 = FALSE
+	array shadow_9 = NONE
 	str _2 = NONE
 	bool success_3 = FALSE
-	bool success_9 = FALSE
+	bool success_10 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
 	rule _6 = NONE
@@ -2638,9 +2665,10 @@ Rule(method_call) {
 		}
 		success_7 = TRUE
 		begin_8++
-		success_9 = TRUE
+		shadow_9.push(_2)
+		success_10 = TRUE
 	}
-	if (!success_9)
+	if (!success_10)
 	{
 		return {}
 	}
@@ -2914,7 +2942,7 @@ Token(STRING) {
 	bool success_1 = FALSE
 	str _2 = NONE
 	bool success_3 = FALSE
-	auto begin_17 = pos
+	auto begin_18 = pos
 	do
 	{
 		str _4 = NONE
@@ -2925,11 +2953,12 @@ Token(STRING) {
 		}
 		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
-		begin_17++
+		begin_18++
 		skipspaces(pos)
+		array shadow_15 = NONE
 		any _6 = NONE
 		bool success_7 = FALSE
-		auto begin_14 = begin_17
+		auto begin_14 = begin_18
 		while (1)
 		{
 			any _8 = NONE
@@ -2960,115 +2989,118 @@ Token(STRING) {
 			_8 += CURRENT_POS_SEQUENCE
 			success_9 = TRUE
 			begin_14++
+			shadow_15.push(_6)
 		}
 		if (success_9)
 		{
 			success_7 = TRUE
-			begin_17 = begin_14
+			begin_18 = begin_14
 		}
 		skipspaces(pos)
-		str _15 = NONE
-		bool success_16 = FALSE
+		str _16 = NONE
+		bool success_17 = FALSE
 		if (!(*pos == '\''))
 		{
 			break
 		}
-		_15 += CURRENT_POS_SEQUENCE
-		success_16 = TRUE
-		begin_17++
+		_16 += CURRENT_POS_SEQUENCE
+		success_17 = TRUE
+		begin_18++
 	}	while(0)
 
-	if (success_16)
+	if (success_17)
 	{
 		success_3 = TRUE
-		pos = begin_17
+		pos = begin_18
 	}
 	_2 += _4
-	_2 += _6
-	_2 += _15
+	_2 += shadow_15
+	_2 += _16
 	if (!success_3)
 	{
-		str _18 = NONE
-		bool success_19 = FALSE
-		auto begin_33 = pos
+		str _19 = NONE
+		bool success_20 = FALSE
+		auto begin_35 = pos
 		do
 		{
-			str _20 = NONE
-			bool success_21 = FALSE
+			str _21 = NONE
+			bool success_22 = FALSE
 			if (!(*pos == '"'))
 			{
 				break
 			}
-			_20 += CURRENT_POS_SEQUENCE
-			success_21 = TRUE
-			begin_33++
+			_21 += CURRENT_POS_SEQUENCE
+			success_22 = TRUE
+			begin_35++
 			skipspaces(pos)
-			any _22 = NONE
-			bool success_23 = FALSE
-			auto begin_30 = begin_33
+			array shadow_32 = NONE
+			any _23 = NONE
+			bool success_24 = FALSE
+			auto begin_31 = begin_35
 			while (1)
 			{
-				any _24 = NONE
-				bool success_25 = FALSE
-				str _26 = NONE
-				bool success_27 = FALSE
+				any _25 = NONE
+				bool success_26 = FALSE
+				str _27 = NONE
+				bool success_28 = FALSE
 				if (!(!STRNCMP(pos, "\\"")))
 				{
-					str _28 = NONE
-					bool success_29 = FALSE
+					str _29 = NONE
+					bool success_30 = FALSE
 					if (!(!(*pos == '"')))
 					{
 						break
 					}
 					else 
 					{
-						_28 += CURRENT_POS_SEQUENCE
-						success_29 = TRUE
-						_24 = _28
+						_29 += CURRENT_POS_SEQUENCE
+						success_30 = TRUE
+						_25 = _29
 					}
 				}
 				else 
 				{
-					_26 += CURRENT_POS_SEQUENCE
-					success_27 = TRUE
-					_24 = _26
+					_27 += CURRENT_POS_SEQUENCE
+					success_28 = TRUE
+					_25 = _27
 				}
-				_24 += CURRENT_POS_SEQUENCE
-				success_25 = TRUE
-				begin_30++
+				_25 += CURRENT_POS_SEQUENCE
+				success_26 = TRUE
+				begin_31++
+				shadow_32.push(_23)
 			}
-			if (success_25)
+			if (success_26)
 			{
-				success_23 = TRUE
-				begin_33 = begin_30
+				success_24 = TRUE
+				begin_35 = begin_31
 			}
 			skipspaces(pos)
-			str _31 = NONE
-			bool success_32 = FALSE
+			str _33 = NONE
+			bool success_34 = FALSE
 			if (!(*pos == '"'))
 			{
 				break
 			}
-			_31 += CURRENT_POS_SEQUENCE
-			success_32 = TRUE
-			begin_33++
+			_33 += CURRENT_POS_SEQUENCE
+			success_34 = TRUE
+			begin_35++
 		}		while(0)
 
-		if (success_32)
+		if (success_34)
 		{
-			success_19 = TRUE
-			pos = begin_33
+			success_20 = TRUE
+			pos = begin_35
 		}
-		_18 += _20
-		_18 += _22
-		_18 += _31
-		if (!success_19)
+		_19 += _21
+		_19 += shadow_32
+		_19 += _33
+		if (!success_20)
 		{
 			return {}
 		}
 		else 
 		{
-			_0 = _18
+			_0 = _19
 		}
 	}
 	else 
@@ -3245,14 +3277,15 @@ Rule(array) {
 	bool success_1 = FALSE
 	str _2 = NONE
 	bool success_3 = FALSE
+	array shadow_11 = NONE
 	str _4 = NONE
 	bool success_5 = FALSE
 	rule _6 = NONE
 	bool success_7 = FALSE
 	token _8 = NONE
 	bool success_9 = FALSE
-	token _12 = NONE
-	bool success_13 = FALSE
+	token _13 = NONE
+	bool success_14 = FALSE
 	if (!(CURRENT_TOKEN == AUTO_89))
 	{
 		return {}
@@ -3261,10 +3294,10 @@ Rule(array) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	auto begin_11 = pos
+	auto begin_12 = pos
 	do
 	{
-		auto begin_10 = begin_11
+		auto begin_10 = begin_12
 		while (1)
 		{
 			_6 = any_data(TOKEN_SEQUENCE)
@@ -3282,11 +3315,12 @@ Rule(array) {
 			_8 = CURRENT_TOKEN
 			success_9 = TRUE
 			begin_10++
+			shadow_11.push(_4)
 		}
 		if (success_9)
 		{
 			success_5 = TRUE
-			begin_11 = begin_10
+			begin_12 = begin_10
 		}
 		_4 += _6
 		_4 += _8
@@ -3295,16 +3329,16 @@ Rule(array) {
 	if (success_5)
 	{
 		success_3 = TRUE
-		pos = begin_11
+		pos = begin_12
 	}
-	_2 += _4
+	_2 += shadow_11
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == AUTO_91))
 	{
 		return {}
 	}
-	_12 = CURRENT_TOKEN
-	success_13 = TRUE
+	_13 = CURRENT_TOKEN
+	success_14 = TRUE
 	pos++
 	data = _8
 }
@@ -3319,6 +3353,7 @@ Rule(object) {
 	bool success_7 = FALSE
 	rule _8 = NONE
 	bool success_9 = FALSE
+	array shadow_21 = NONE
 	str _10 = NONE
 	bool success_11 = FALSE
 	token _12 = NONE
@@ -3329,10 +3364,10 @@ Rule(object) {
 	bool success_17 = FALSE
 	rule _18 = NONE
 	bool success_19 = FALSE
-	token _21 = NONE
-	bool success_22 = FALSE
-	token _24 = NONE
-	bool success_25 = FALSE
+	token _22 = NONE
+	bool success_23 = FALSE
+	token _25 = NONE
+	bool success_26 = FALSE
 	if (!(CURRENT_TOKEN == AUTO_64))
 	{
 		return {}
@@ -3341,7 +3376,7 @@ Rule(object) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	auto begin_23 = pos
+	auto begin_24 = pos
 	do
 	{
 		_4 = any_data(TOKEN_SEQUENCE)
@@ -3350,7 +3385,7 @@ Rule(object) {
 			break
 		}
 		success_5 = TRUE
-		begin_23++
+		begin_24++
 		skipspaces(TOKEN_SEQUENCE)
 		if (!(CURRENT_TOKEN == AUTO_67))
 		{
@@ -3358,7 +3393,7 @@ Rule(object) {
 		}
 		_6 = CURRENT_TOKEN
 		success_7 = TRUE
-		begin_23++
+		begin_24++
 		skipspaces(TOKEN_SEQUENCE)
 		_8 = any_data(TOKEN_SEQUENCE)
 		if (!(_8.res))
@@ -3366,9 +3401,9 @@ Rule(object) {
 			break
 		}
 		success_9 = TRUE
-		begin_23++
+		begin_24++
 		skipspaces(TOKEN_SEQUENCE)
-		auto begin_20 = begin_23
+		auto begin_20 = begin_24
 		while (1)
 		{
 			if (!(CURRENT_TOKEN == AUTO_77))
@@ -3402,11 +3437,12 @@ Rule(object) {
 			}
 			success_19 = TRUE
 			begin_20++
+			shadow_21.push(_10)
 		}
 		if (success_19)
 		{
 			success_11 = TRUE
-			begin_23 = begin_20
+			begin_24 = begin_20
 		}
 		_10 += _12
 		_10 += _14
@@ -3417,28 +3453,28 @@ Rule(object) {
 		{
 			break
 		}
-		_21 = CURRENT_TOKEN
-		success_22 = TRUE
-		begin_23++
+		_22 = CURRENT_TOKEN
+		success_23 = TRUE
+		begin_24++
 	}	while(0)
 
-	if (success_22)
+	if (success_23)
 	{
 		success_3 = TRUE
-		pos = begin_23
+		pos = begin_24
 	}
 	_2 += _4
 	_2 += _6
 	_2 += _8
-	_2 += _10
-	_2 += _21
+	_2 += shadow_21
+	_2 += _22
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == AUTO_69))
 	{
 		return {}
 	}
-	_24 = CURRENT_TOKEN
-	success_25 = TRUE
+	_25 = CURRENT_TOKEN
+	success_26 = TRUE
 	pos++
 	data = 
 		values: _18
@@ -3745,6 +3781,7 @@ Rule(use) {
 	bool success_1 = FALSE
 	rule _2 = NONE
 	bool success_3 = FALSE
+	array shadow_11 = NONE
 	str _4 = NONE
 	bool success_5 = FALSE
 	token _6 = NONE
@@ -3785,6 +3822,7 @@ Rule(use) {
 		}
 		success_9 = TRUE
 		begin_10++
+		shadow_11.push(_4)
 	}
 	if (success_9)
 	{
@@ -3991,6 +4029,7 @@ Rule(Rule_other) {
 	bool success_1 = FALSE
 	token _2 = NONE
 	bool success_3 = FALSE
+	array shadow_11 = NONE
 	str _4 = NONE
 	bool success_5 = FALSE
 	token _6 = NONE
@@ -4030,6 +4069,7 @@ Rule(Rule_other) {
 		_8 = CURRENT_TOKEN
 		success_9 = TRUE
 		begin_10++
+		shadow_11.push(_4)
 	}
 	if (success_9)
 	{
@@ -4379,6 +4419,7 @@ Rule(Rule_csequence) {
 	bool success_1 = FALSE
 	token _2 = NONE
 	bool success_3 = FALSE
+	array shadow_14 = NONE
 	rule dt = NONE
 	bool success_4 = FALSE
 	rule _5 = NONE
@@ -4389,8 +4430,8 @@ Rule(Rule_csequence) {
 	bool success_10 = FALSE
 	rule _11 = NONE
 	bool success_12 = FALSE
-	token _14 = NONE
-	bool success_15 = FALSE
+	token _15 = NONE
+	bool success_16 = FALSE
 	if (!(CURRENT_TOKEN == AUTO_89))
 	{
 		return {}
@@ -4440,6 +4481,7 @@ Rule(Rule_csequence) {
 		_5 += CURRENT_POS_SEQUENCE
 		success_6 = TRUE
 		begin_13++
+		shadow_14.push(dt)
 	}
 	if (success_6)
 	{
@@ -4452,8 +4494,8 @@ Rule(Rule_csequence) {
 	{
 		return {}
 	}
-	_14 = CURRENT_TOKEN
-	success_15 = TRUE
+	_15 = CURRENT_TOKEN
+	success_16 = TRUE
 	pos++
 	data = 
 		val: dt
@@ -4820,17 +4862,18 @@ Rule(Rule) {
 	bool success_4 = FALSE
 	rule _6 = NONE
 	bool success_7 = FALSE
+	array shadow_13 = NONE
 	rule _8 = NONE
 	bool success_9 = FALSE
 	rule _10 = NONE
 	bool success_11 = FALSE
-	rule _13 = NONE
-	bool success_14 = FALSE
-	rule _15 = NONE
-	bool success_16 = FALSE
-	array shadow_17 = NONE
-	token _18 = NONE
-	bool success_19 = FALSE
+	rule _14 = NONE
+	bool success_15 = FALSE
+	rule _16 = NONE
+	bool success_17 = FALSE
+	array shadow_18 = NONE
+	token _19 = NONE
+	bool success_20 = FALSE
 	auto begin_5 = pos
 	if (!(CURRENT_TOKEN == ID))
 	{
@@ -4872,6 +4915,7 @@ Rule(Rule) {
 		}
 		success_11 = TRUE
 		begin_12++
+		shadow_13.push(_8)
 	}
 	if (success_11)
 	{
@@ -4880,29 +4924,29 @@ Rule(Rule) {
 	}
 	_8 = _10
 	skipspaces(TOKEN_SEQUENCE)
-	_13 = Rule_data_block(TOKEN_SEQUENCE)
-	if (!(_13.res))
+	_14 = Rule_data_block(TOKEN_SEQUENCE)
+	if (!(_14.res))
 	{
 		return {}
 	}
-	success_14 = TRUE
+	success_15 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	_15 = Rule_nested_rule(TOKEN_SEQUENCE)
-	while (_15.res)
+	_16 = Rule_nested_rule(TOKEN_SEQUENCE)
+	while (_16.res)
 	{
-		success_16 = TRUE
+		success_17 = TRUE
 		pos++
-		shadow_17.push(_15)
-		_15 = Rule_nested_rule(TOKEN_SEQUENCE)
+		shadow_18.push(_16)
+		_16 = Rule_nested_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == AUTO_50))
 	{
 		return {}
 	}
-	_18 = CURRENT_TOKEN
-	success_19 = TRUE
+	_19 = CURRENT_TOKEN
+	success_20 = TRUE
 	pos++
 	data = 
 		nestedRules: nested_rules

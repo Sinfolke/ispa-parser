@@ -151,7 +151,7 @@ IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, c
     };
     return {IR::types::ASSIGN_VARIABLE, var_assign};
 }
-IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::variable var, int &variable_count) {
+IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::variable &var, int &variable_count) {
     IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
     shadow_var.type = {IR::var_types::ARRAY, {var.type}};
     member.push({IR::types::VARIABLE, shadow_var});
@@ -219,12 +219,14 @@ IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::mem
     }
     return shadow_variable;
 }
-void affectIrByQuantifier(IR::ir &values, char qualifier, int &variable_count) {
+IR::variable affectIrByQuantifier(IR::ir &member, IR::ir &values, char qualifier, IR::variable var, int &variable_count) {
     IR::ir new_ir;
+    IR::variable shadow_var;
     if (qualifier == '*' || qualifier == '+') {
         IR::condition loop = { { { IR::condition_types::NUMBER, (long long) 1 } }, {} };
         processExitStatements(values.elements);
         loop.block = values.elements;
+        shadow_var = add_shadow_variable(member, loop.block, var, variable_count);
         new_ir.push({IR::types::WHILE, loop});
         if (qualifier == '+') {
             new_ir.elements.clear();
@@ -235,9 +237,10 @@ void affectIrByQuantifier(IR::ir &values, char qualifier, int &variable_count) {
         IR::condition loop = { { {IR::condition_types::NUMBER, (long long) 0} }, values.elements };
         new_ir.push({ IR::types::DOWHILE, loop });
     } else {
-        return;
+        return shadow_var;
     }
     values = new_ir;
+    return shadow_var;
 }
 IR::assign TreeAnyDataToIR(Parser::Rule value) {
     auto val = std::any_cast<Parser::Rule>(value.data);
@@ -970,7 +973,12 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     if (!values.elements.empty() && values.elements.back().type == IR::types::SKIP_SPACES) {
         values.elements.pop_back();
     }
-    affectIrByQuantifier(values, qualifier_char, variable_count);
+    auto shadow_var = affectIrByQuantifier(member, values, qualifier_char, var, variable_count);
+
+    if (!shadow_var.name.empty()) {
+        groups[groups_el].var = shadow_var.name;
+    }
+
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::PUSH_POS_COUNTER, begin_var_name});
@@ -984,7 +992,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     }
     member.push(svar_cond);
     member.add(var_members);
-    return {svar.name, var.name};
+
+    return {svar.name, var.name, shadow_var.name};
 }
 IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
     //cpuf::printf("csequence\n");

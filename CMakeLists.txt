@@ -79,7 +79,7 @@ set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 
 # add converter library
-add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp)
+add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp)
 target_include_directories(ispa-converter-cpp PRIVATE include src external mod/parser/include mod/parser/stdlibs converters/C++)
 #create interface for tests
 add_library(tests INTERFACE)
