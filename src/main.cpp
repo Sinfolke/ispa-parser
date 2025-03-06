@@ -124,11 +124,11 @@ int main(int argc, char** argv) {
     auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, use_prop_t>("convert_header");
     auto content = convert_fun(ir, use);
     auto header_content = convert_header_fun(tokens, rules, use);
-    std::ofstream cpp("output.cpp");
+    std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
     if (!cpp)
         throw Error("Failed open output file");
     cpp << content;
-    std::ofstream header("output.h");
+    std::ofstream header(std::any_cast<std::string>(use["name"].data) + ".h");
     if (!header)
         throw Error("Failed open output file");
     header << header_content;

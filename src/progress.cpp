@@ -463,30 +463,36 @@ void sortByPriority(Parser::Tree &tree)  {
 }
 std::pair<std::list<std::string>, std::list<std::string>> getTokenAndRuleNames(Parser::Tree tree, std::string nested_name) {
     std::list<std::string> tokens, rules;
+    
     for (auto el : tree) {
         if (el.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(el.data);
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
             auto name_str = std::any_cast<std::string>(name.data);
             auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+
+            // Construct the full rule name properly
+            std::string new_nested_name = nested_name.empty() ? name_str : nested_name + "_" + name_str;
+
+            // Categorize as token or rule
             if (corelib::text::isUpper(name_str)) {
-                tokens.push_back(nested_name + name_str);
+                tokens.push_back(new_nested_name);
             } else {
-                rules.push_back(nested_name + name_str);
+                rules.push_back(new_nested_name);
             }
-            auto prev_nested_name = nested_name;
-            if (nested_name.empty())
-                nested_name = name_str;
-            else
-                nested_name += "_" + name_str;
-            auto [new_tokens, new_rules] = getTokenAndRuleNames(nested_rules, nested_name);
+
+            // Recursively process nested rules with the updated name
+            auto [new_tokens, new_rules] = getTokenAndRuleNames(nested_rules, new_nested_name);
+
+            // Insert the results into the main lists
             tokens.insert(tokens.end(), new_tokens.begin(), new_tokens.end());
             rules.insert(rules.end(), new_rules.begin(), new_rules.end());
-            nested_name = prev_nested_name;
         }
     }
+
     return {tokens, rules};
 }
+
 use_prop_t get_use_data(Parser::Rule use) {
     use_prop_t result;
     auto data = std::any_cast<arr_t<Parser::Rule>>(use.data);
