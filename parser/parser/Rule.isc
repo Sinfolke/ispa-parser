@@ -1,0 +1,105 @@
+Rule: 
+    $var name = %1;
+    $var rule = %3;
+    $var data_block = %4;
+    $var nested_rules = %5;
+
+    &rule_begin(ID ':') function_body_decl? (#rule)* #data_block #nested_rule* STRICT_END
+    data:
+        name: name
+        rule: rule
+        data_block: data_block
+        nestedRules: nested_rules 
+    ;
+    #rule:
+
+        (( group | csequence | STRING | accessor | hex | bin | other ) qualifier?) | #escaped | #any | #op | cll | linear_comment
+
+        data: 
+            val: %1
+            qualifier: %2
+        ;
+    ;
+    #other:
+        '#'? ID ('.' ID)*
+        data:
+            is_nested: matched(%1)
+            name: %2
+            nested_name: $1>%2
+        ;
+    ;
+    #op:
+        $data = $1;
+        ( '|' | '|&' )
+    ;
+    #qualifier:
+        $data = $1;
+        ('?' | '+' | '*')
+    ;
+    #group:
+        $var name=$0>%1;
+        $var r=%4;
+
+        ('&' method_call | ID )? '(' rule* ')'
+
+        data: 
+            variable: name
+            val: r
+        ;
+    ;
+    #csequence:     // Character Sequence
+        '[' '^'? &dt ( #escape | #symbol | #diapason )* ']'
+        data:
+            not: matched(%2)
+            val: dt
+        ;
+        #symbol:
+            $data = $1;
+            ('\\'   |   '\\]' |  [^\]]) 
+        ;
+        #escape:
+            $data = $1;
+            // some escape chars like \s, \d
+            '\\' \s0 (.)
+        ;
+        #diapason:
+            ( &from (symbol) \s0 '-' \s0 &to (symbol))
+            data: [from, to];
+        ;
+    ;
+    #any:
+        '.'
+    ;
+    #data_block:
+        [\r\n]+ 'data' ':' &data ( any_data | #inclosed_map ) ';'
+        #inclosed_map:
+            &data(key+)
+        ;
+        #key:
+            [\n\r]+ &name(id) ':' &dt (cll_ternary | expr)
+            data:
+                name: name
+                val: dt
+            ;
+        ;
+    ;
+    #escaped:
+        '\\' \s0 . \s0 NUMBER?
+        data:
+            c: %2
+            num: %3
+        ;
+    ;
+    #nested_rule: 
+        [\r\n]+ '#' \s0 Rule
+        data: %3;
+    ;
+    #hex:
+        '0x' [1-9A-Fa-f]+
+        data: %2;
+    ;
+    #bin:
+        '0b' [01]+
+        data: %2;
+    ;
+;

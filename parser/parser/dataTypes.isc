@@ -1,0 +1,53 @@
+STRING:
+    $data = $2;
+
+    ("'" ("\\'" | [^'] )* "'") | ('"' ('\\"' | [^"] )* '"')
+
+;
+NUMBER:
+    $char sign = %0;
+    $str main = $1;
+    $num main_n = NUMBER(main);
+    $char point = $2>%1;
+    $str dec = $2>%1;
+    $num dec_n = NUMBER(dec);
+
+    [+-] ( [0-9]+ ) |& ([.,] [0-9]+)?
+
+    data:
+        sign: sign
+        main: main
+        main_n: main_n
+        dec: dec
+        dec_n: dec_n
+        full: main + point + dec
+    ;
+;
+BOOLEAN:
+    &d('true' | 'false')
+    data:
+        val: d == 'true' ? 1 : 0
+        lit: d
+    ;
+;
+array: 
+
+    '[' ( (any_data ',')* )? ']'
+
+    data: $2>%2;
+
+object:
+    '{'
+        ( any_data ':' any_data ( ',' ID ':' any_data )* ';' )?
+    '}'
+    data:
+        key: $1>%1
+        value: $1>%3
+        keys: $2>%2
+        values: $2>%4
+    ;
+any_data: 
+    $data = %1;
+
+    BOOLEAN | NUMBER | STRING | ID | array | object | accessor
+;

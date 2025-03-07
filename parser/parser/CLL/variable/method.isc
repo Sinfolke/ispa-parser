@@ -1,0 +1,14 @@
+// TODO: add data block
+
+method_call:
+    ID ('.' cll_function_call)+
+
+    data:
+        object: %1
+        call: %3
+    ; 
+;
+copiable_method_call:
+    '=' method_call
+    data: %2;
+;

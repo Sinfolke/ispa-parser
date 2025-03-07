@@ -1,0 +1,39 @@
+function_body_call:
+    '(' function_arguments ')'
+    data: %2;
+;
+function_body_decl:
+    '(' function_parameters ')'
+    data: %2;
+;
+function_arguments: 
+    (any_data | ID)?
+    $if (matched(%1)) {
+        (',' any_data | ID)*
+    }
+    data: [%1, %3];
+;
+function_parameters:
+    ID?
+    $if (matched(%1)) {
+        (',' ID)*
+    }
+    
+    data: [%1, %3];
+;
+cll_function_call:
+    ID function_body_call
+    data:
+        name: %1
+        body: %2
+    ;
+;
+function_decl: 
+    'fn' (ID+) function_body_decl &val(cll_block | cll_spaced_block)?
+
+    data:
+        type: %2
+        name: %3
+        value: val
+    ;
+;

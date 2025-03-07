@@ -1,0 +1,359 @@
+
+Cll should begin with '$' 
+myrule:
+    // rule
+    ([0-9]+ '/' [0-9]+) ('s' | 'ms' | 'mu' | "n")
+
+    // cll
+    $int a = NUMBER(%1);
+    $int b = NUMBER(%2);
+
+    $if (a < b):
+    $    dblog("a < b");
+    $elif a > b:
+    $    dblog("a > b");
+    $else:
+    $    dblog("a == b");
+
+
+variables:
+    variables must be declared with specific type. The type can be also dynamic.
+    This is because the parser can be compiled to C and C++. Therefore the result code
+    will be more optimisated. Also it is required when you do some kind of bitwise operators.
+    long long a;
+    unsigned short b;
+
+
+    !!! In future such wide types may be reduced since theoritically the compiler can optimise this itself.
+     But the type also affect the internal structure of parser since you also can restrict the type to one specific data type.
+     Therefore there are some common types:
+
+    var                 // any type
+    num                 // number
+    bool                // boolean
+    str                 // string
+    array<T=var>        // array. By default accept 'var' type unless you specify
+    obj<T1=var, T2=var> // object, binding value by key. Both key and value are any type by default unless you specify them.
+    
+    these types may also have some methods to let you interact with. 
+    The 'var' type have methods depends what kind of data is there.
+    !!! If the type is not correct you'd get a runtime error during parsing.
+
+    here is example of use (located in the dataTypes of this parser):
+
+    OBJECT:
+        $object<var> data = {  %2: %4 };
+        $array<string> keys = $2>%2;
+        %array<var> values = $2>%4;
+
+        for (int i = 0; i < keys.size(); i++):
+            data[keys[i]] = values[i];
+
+        '{'
+            ( ID ':' ANY_DATA ( ',' ID ':' ANY_DATA )* ';' )?
+        '}'
+    ;
+    You may access global variables or functions if that required.
+    For that you should declare it as:
+    global my_var;
+    
+
+    Operators:
+        The operators variable does have.
+        + add (string and number)
+        - * / % is minus multiple, divide and remainder (only number)
+        << >> & | ^ are bitwise operators. 
+            Due the need to have compatibility with many languages to
+            bitwise is done only with 32 bit integrals. If your number is 64 bit
+            it'll be converted to 32 bit first and possibly then back.
+            If the convertion is not being possible you'll got an error
+        if you write '=' after an operator that means assignment:
+        a += b means a = a + b;
+        ++i means increase i at one;
+        i++ means increase i at one but return an old one value
+        
+    Keep in mind if you assign to the variable a result of a rule or token the type is "obj<string, var>".
+    By default result of object has following keys:
+    num start - the start position in text
+    num end - the end position in text
+    num len - the length in text the rule taken
+    num line - the line.
+    num name - the name of token
+    var data - the data of object you saved.
+    Therefore if you assign some variable a result of a rule to access the data block you would need to access .data property.
+    You also may access the other properties and usually wouldn't override them
+
+
+    the method itself always returns a new copy of object with the changes
+    if you want to apply these changes directly you put an operator before the call
+    =my_array.find('a') means myarray = myarray.find('a')
+    +=myarray.find('b') means myarray += myarray.find('b')
+    Keep in mind it is considered assignment operator and you cannot put before another one. For such cases it must be surrounded to the braces.
+    If the result cannot be assigned to the type of variable an error will be thrown.
+    example:
+    $str a = "Hello"
+    $str b = "World"
+    $var c = "abcde"
+    $b += (=a.substr(a.find('e'), a.find('o') - 1));
+    $=c.find('c');
+    $dblog(a);  // ell
+    $dblog(b);  // Worldell
+    $dblog(c);  // 2
+    $=a.find('e'); // error: assigning number to str
+
+    methods:
+        // type str is almost same as arr<char>
+        str:
+            // find string/character at specific position
+            num find(char c)
+            num find(str s)
+
+            // get the amount of characters in the string. The begin and end lets you set begin and end positions to count. end=0 means until end of string
+            num size(begin=0, end=0)
+            // slice the string by specific positions
+            str substr(num begin, num end=0)
+            // remove specific characters from the begin to end position
+            str rem(num begin, num end)
+            // insert a string/character to the certain position in string
+            str insert(num begin, char c)
+            str insert(num begin, str c)
+        arr<T>:
+            // find specific element in the array. Checks by '==' operator. Returns id
+            num find(T el)
+
+            // get the amount of elements in the array. The begin and end lets you set begin and end positions to count
+            num size(begin=0, end=0)
+            // slice the array by the begin and end position. Returns new array
+            arr<T> substr(num begin, num end=0)
+            // remove specific elements from the array with the begin and end positions
+            arr<T> rem(num begin, num end)
+            // insert a some elements to the position in array
+            arr<T> insert(num begin, ...array<T> elements>)
+            // convert an array to a string
+            str join(char separator = "")
+        obj<KEY, VAL>:
+            // find specific element in the array. Checks by '==' operator. Returns id
+            num find(T el)
+
+            // get the amount of keys in the object. The begin and end lets you set begin and end positions to count
+            num size(begin=0, end=0)
+            // remove certain key
+            obj<KEY, VAL> rem(KEY key)
+            // remove all keys by the value
+            obj<KEY, VAL> remv(VAL val)
+            
+            // insert all keys and values to the object.
+            // each position of key in keys equivalent to the value at same position in values array
+            // if the values has lower size than keys the remaining keys are left empty
+            // if the values has higher size than keys the remaining values are missing
+            obj<KEY, VAL> insert(array<KEY> keys, array<VALUE> values)
+Access of the parsed data:
+    This also can works not only in CLL but during parsing too. You can require
+    to match element that has been already matched before by the index
+    % - means access the value by certain index. Index beginds from 1;
+    $ - means access the value by index of group. Index also begins from 1;
+    ^ - means access the value by the current offset. Index beginds from 0;
+
+    Imagine some rule:
+    'a' 'b' ( 'c' [0-9]+ ( '+' [a-z]+ )? )
+    %1 - access 'a'
+    %3 - access 'c'
+    $1 - access entire value in group 1;
+    $1>%1 - access first value in first group ('c')
+    $1>$1>%1 - access '+' 
+    $2>%1 - access '+'
+
+    The ^ is not used in such access but instead right during parsing.
+    It can access current parsed symbol, or symbol with offset before or after, or a sequence of symbols.
+
+    Imagine we parse a String: "Hello+World" and are at position where the plus (5)
+    $var current_parsing_char = ^0 // '+'
+    $var before_at_one_parsing_char = ^-1; // 'o'
+    $var next_at_one_parsing_char = ^+1; // 'W'
+    $var sequence_of_3_chars_before = ^3- // array<char> { ^-1, ^-2, ^-3} - is equal 'oll'
+    $var sequence_of_3_chars_next = ^3+ // array<char> {^+1, ^+2, ^+3} - is equal 'Wor'
+    As you could see the sequence does not include the current character.
+
+    You can also reference an element by the actual rule.
+    Note this is a readability concern and will be nice in little rules.
+    You should enclose the element within the rule with '<' and '>' parentheses.
+    For example:
+    'bool' [a-zA-Z0-9]+ '=' '0' | '1';
+    data:
+        type: <'bool'>
+        name: <[a-zA-Z0-9]+>
+        value: <'0' | '1'>
+    while it may be slower to re-write every pattern, it nicely breaks down it's components,
+    and may highly increase the readability.
+Control flow and loops:
+    You can do conditional checks and loops. Your cll and the parsing logic can be mixed
+    Just like:
+    var i = 0;
+    $for (; i < 10; i++):
+        i // here you'd match a sequence of 0-10 characters
+        if (!matched(%1)):
+            i = null;
+    $if (i == null)
+        dblog("no pattern matched");
+preprocessor:
+    You may also have a preprocessor. Typical preprocessor has macros and the conditions to check them
+    Since below we'll have a lot of features related to language separation, the language name is equivalent to the language
+    name set in compile arguments. It always must be lowercase.
+    c - C, cpp - C++, js - JavaScript, ts - TypeScript, java - Java, 
+    php etc.
+    
+    The c and cpp are still language specific. Therefore c won't accept C++, and cpp won't accept C.
+    In C there is no std::any type therefore when compiling it is a custom structure. You'd have
+    to handle differently.
+
+    The features are going to be implemented:
+        1. language check
+            @reqlang [lang] message? - the languages parser supports (@reqlang ccpp java ts "Please use other rules for @lang: https//...)
+            @prhlang [lang] message? - the prohibited languages      (@prhlang ccpp java ts )
+            If the current language is not required by reqleng or is prohibited by prhlang 
+            then the compilation will be terminated with error message. The message is optional.
+            In the message using '@' you can insert some variable
+                @lang - the language user specified
+        2. language separation. Sometimes you may need to act with specific features or api on certain language.
+
+
+        En example of language separation:
+        @for [lang] ':'- the specific code for the language. Must be follwed by the colon and the code you put at least
+            on space higher than the directive. There you write the regular code.
+            For cases you have to do something with variables of the CLL language, you surround CLL code via '$'. An example:
+            somerule:
+                $array<str> props = { "Line", "Column", "Number_Of_Message"};
+                $array<num> vals = { 49, 0, 20 };
+                @for c:
+                    #include <stdio.h>
+                    // if the type would be 'var' you would have to handle as 
+                    // struct ISC_CLL_VAR {ble, char, bool, int };
+                    //     // have an exact type a user specified
+                    //     enum t { str, num, arr, obj, null, long_dou
+                    //     t exact_type = null;
+                    //     // a type as common in CLL (str, num, arr, obj, null)
+                    //     t type = null;
+                    //     void* data;
+                    // } 
+                    for (int i = 0; i < $vals.size()$; ++i) {
+                        printf("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+                @for cpp:
+                    // if the type would be 'var' you would have to handle as std::any
+                    #include <iostream> 
+                    for (int i = 0; i < $vals.size()$; ++i) {
+                        std::cout << $props[i]$ << " :" << $vals[i]$;
+                    }
+                @for ts || js:
+                    for (let i = 0; i < $vals.size()$; ++i) {
+                        console.log("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+                @for java:
+                    for (let i = 0; i < $vals.size()$; ++i) {
+                        System.out.println("%s: %d\n", $props[i]$, $vals[i]$);
+                    }
+            ;
+        The preprocessor is processed right during parsing process. It may adjust
+        tokens or rules, or a tree.
+        3. Output compile-time messages:
+        In preprocessor you can output a message, warning or an error.
+        They affect for compilation in compile time. The error would stop the compilation.
+        For those below there may be inserted following variables:
+            @lang - the language you compile on
+            @mainrule - the name of main rule
+            @rule - the path to rule where the error has occurred (including nested rules)
+        @err message
+            output an error message
+        @warn message
+            output a warning
+        @msg message - output a compile time message
+
+functions:
+    !!! for now i only think whether they should be added. The language most of time do not need it.
+    !!! But below you see the syntax they will have if added
+
+    fn name1(var a, number b, int c):
+        // code
+    fn name2(var p0) {
+
+    }
+    Function may also have some return type:
+    fn void name3(var p0) {}
+
+    functions also may support parralelism. That lets you do different implementations
+    for different types. The C types like (int, double) are considered num type.
+    Therefore if a function is with 'num' type, all such custom types will be inputted to that function.
+    However if there exists a more exact overload, it may be choosen instead.
+    if you want escape such behaviour you put before parameter exact 
+    fn int NUMBER(exact int a):
+        return a;
+    fn num NUMBER(num a):
+        return a
+    fn str NUMBER(str a):
+        @Cpp
+            for (int i = 0; i < $a.size()$; i++) {
+                if ($a$[i] == '.' || $a$[i] == ',')
+                    // it is double
+                    return stod($a$);
+            }
+            return stoi($a$);
+        @ts
+            return NUMBER($a$);
+        // other languages here...
+        @none
+            @err "Function NUMBER does not exists for @lang"
+    somerule:
+        $var n1 = 10;
+        $var n2 = 20;
+        $var n1_str = NUMBER(n1);
+        $var n2_str = NUMBER(n2);
+    ;
+
+build in functions:
+    Actually this is set of common functions you may find in every programming language. 
+    When compiled it just calls a correspond function on a target language.
+    There are also functions to help you debug your code.
+    Functions with [debug] are added only to the debug version and to the isc debugger
+
+    NUMBER(num): num - string to number
+    STRING(str): str - number to string
+    matched(reference): bool - whether certain element is matched. 
+                This function is internal and it's parameter is not surrounded to any of type.
+                You can only pass a reference (%0, $0) or a variable assigned that reference.
+                However the variable itself is considered a str type
+    match(str): str - request to match something while you're in cll.
+                 it can parse the runtime string and match the rule, but
+                 usually you would put a constant value and it would be inlined
+                 with the compile-time matching. Otherwise may very slow down performance
+    skipup(regex): str - skip characters with matching pattern within cll
+                    usually like match would inline your constant request for perfomance, 
+                    but can match a runtime value as well
+    typeof(var): str - get current type of the dynamic variable
+    [debug] dblog(str) - output a debug message to console. (see dblog.sample)
+    log(str) - output a regular message to console with no other modifications
+    [debug] varlist(void) - output all variables to console with their values.
+    varlistnd(void) - like the varlist but will still run even without debugger.
+    Please never use it in release, your parser will be very down in perfomance
+    
+    CMD(str)   - execute certain command in the system environment
+    runterr(str, int=1) - throw the runtime error (is log(RED message RESET) + exit(code));
+    exit(int)  - exit the program with the return code
+    You can access other functions OF YOUR TARGET LANGUAGE. Just like:
+    
+    global std::cout here cout; 
+Condition operators:
+    &&, 'and' - and operators
+    ||, 'or' - or operators
+    '(' ')' - open and close group
+    !, 'not' - negative operators
+    >, <, >=, <=, ==, != - comparasion operators
+    +, -, *, / - aritchmetic operators
+
+    the '&&' and '||' are considered higher priority than the 'and' and 'or'.
+    Therefore the last will be executed first before the first one. An example:
+    a and b || c and d
+    first_result or second_result
+           final_result    
+    inside condition you can use variable methods and reassign it:
+    var a = "h";
+    var c, i;

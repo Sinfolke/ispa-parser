@@ -1,0 +1,11 @@
+var_refer:
+    $var pre = matched($1);
+    $var post = matched($3);
+    ('++' | '--')? ID ('[' expr ']')? ('++' | '--')?
+    data:
+        name: %1
+        brace_expression: $2>%2
+        pre: pre
+        post: post
+    ;
+;

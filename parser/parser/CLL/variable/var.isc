@@ -1,0 +1,10 @@
+cll_var: 
+    cll_type? ID (assignment_op expr | cll_ternary)?
+
+    data:
+        type: %1
+        id: %2
+        operator: %3
+        value: %4
+    ;
+;

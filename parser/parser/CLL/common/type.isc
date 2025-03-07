@@ -1,0 +1,27 @@
+
+cll_csupport_types: 
+    $bool is_unsigned = matched($1>%1);
+    ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
+        |
+    ('float' | 'double')
+        |
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template_typename
+
+    data:
+        type: %1
+        template: %2
+    ;
+;
+cll_type:
+    cll_csupport_types | #abstract
+
+    data: %1;
+    
+    #abstract:
+        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template_typename) | ('obj' cll_template_typename) )
+        data:
+            type: %1
+            template: %2
+        ;
+    ;
+;

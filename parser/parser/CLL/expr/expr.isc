@@ -1,0 +1,44 @@
+expr: 
+    #logical | #compare | #arithmetic | #group | expr_copiable_method_call | cll_function_call | any_data
+
+    data: %1;
+    #logical:
+        compare | arithmetic | for_arithmetic LOGICAL_OP compare | arithmetic | for_arithmetic
+        data:
+            left: %1
+            op: %2
+            right: %3
+        ;
+    ;
+    #compare:
+        arithmetic (COMPARE_OP arithmetic)+
+        data:
+            first: %1
+            operators: %2
+            sequence: %3
+        ;
+    ;
+    #arithmetic:
+        for_arithmetic (OP for_arithmetic)+
+        data: 
+            first: %1
+            operators: %2
+            sequence: %3
+        ;
+    ;
+    #for_arithmetic:
+        group | method_call | cll_function_call | any_data
+
+        data: %1;
+    ;
+    #group:
+        '(' cll_ternary | expr ')'
+        
+        data: %2;
+    ;
+    #expr_copiable_method_call:
+        '(' copiable_method_call ')'
+        
+        data: %2;
+    ;
+;

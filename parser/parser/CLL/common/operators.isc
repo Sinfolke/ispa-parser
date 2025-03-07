@@ -1,0 +1,37 @@
+OP:
+    '+' | '-' | '*' | '/' | '%' | 
+    // bitwise
+    '&' | '|' | '^' | '<<' | '>>'
+    data: %1;
+;
+ASSIGNMENT_OP:
+    OP? '='
+
+    data: %1;
+;
+COMPARE_OP:
+    '==' | '!=' | '>' | '<' | '>=' | '<='
+
+    data: %1;
+;
+
+LOGICAL_OP:
+    LOGICAL_AND | LOGICAL_OR
+    data: %1;
+;
+LOGICAL_NOT:
+    '!' | 'not'
+    data: %1;
+;
+LOGICAL_AND:
+    '&&' | 'and'
+    data: %1;
+;
+LOGICAL_OR:
+    '||' | 'or'
+    data: %1; 
+;
+LOGICAL_ANDR:
+    '|&' | ( 'and' \s* 'or' )
+    data: %1;
+;
