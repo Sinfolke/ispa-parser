@@ -65,9 +65,15 @@ void replaceDublications(Parser::Tree& tree) {
         }
     }
 }
+void print_str_vector(std::vector<std::string> v) {
+    for (auto key : v) {
+        cpuf::printf("%s_", key);
+    }
+    cpuf::printf("\n");
+}
 void accumulateInlineNamesAndRemove(Parser::Tree& tree, 
-                                    std::vector<std::vector<std::string>> &table_key, 
-                                    std::vector<Parser::Rule> &table_value, 
+                                    std::vector<std::vector<std::string>>& table_key, 
+                                    std::vector<Parser::Rule>& table_value, 
                                     std::vector<std::string> nested) {
     for (auto it = tree.begin(); it != tree.end(); ) {
         auto member = *it;
@@ -87,24 +93,63 @@ void accumulateInlineNamesAndRemove(Parser::Tree& tree,
                 if (first_val.name == Parser::Rules::Rule_other) {
                     table_key.push_back(nested);
                     table_value.push_back(first_val);
+
+                    // Instead of removing the element here, 
+                    // we continue processing and just advance the iterator.
+                    nested.pop_back();
                     it = tree.erase(it);  // Correctly remove element
                     continue;
                 }
             }
+
+            // Recurse with updated nested_rules and modified state
             accumulateInlineNamesAndRemove(nested_rules, table_key, table_value, nested);
+            cpuf::printf("nested length: %$, vec: ", nested.size());
+            print_str_vector(nested);
+            nested.pop_back();
+            // Ensure that the data gets set back correctly after recursion
             corelib::map::set(data, "rule", std::any(rules));
             corelib::map::set(data, "nestedRules", std::any(nested_rules));
             it->data = data;
-            nested.pop_back();
         }
         ++it;
     }
 }
+Parser::Rule find_key_in_table_by_name(const std::vector<std::vector<std::string>>& table_key,  const std::vector<Parser::Rule>& table_value, const std::vector<std::string>& name) {
+    for (size_t i = 0; i < table_key.size(); ++i) {
+        if (table_key[i] == name) {
+            return table_value[i];
+        }
+    }
 
-void inline_Rule_rule(arr_t<Parser::Rule> &rules, 
-                      const std::vector<std::vector<std::string>> &table_key, 
-                      const std::vector<Parser::Rule> &table_value, 
-                      std::vector<std::string> nested) {
+    return Parser::Rule{};
+}
+
+void inlineTokensInTable(std::vector<std::vector<std::string>> &table_key, std::vector<Parser::Rule> &table_value) {
+    int inlineCount;
+    do {
+        inlineCount = 0;
+        for (int i = 0; i < table_key.size(); i++) {
+            auto key = table_key[i];
+            auto value = table_value[i];
+            
+            auto data = std::any_cast<obj_t>(table_value[i].data);
+            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto nestedNames = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nested_name"));
+            nestedNames.insert(nestedNames.begin(), name);
+            std::vector<std::string> result_name;
+            for (auto el : nestedNames) {
+                result_name.push_back(std::any_cast<std::string>(el.data));
+            }
+            auto rule = find_key_in_table_by_name(table_key, table_value, result_name);
+            if (!rule.empty()) {
+                table_value[i] = rule;
+                inlineCount++;
+            }
+        }
+    } while(inlineCount > 0);
+}
+void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<std::string>> &table_key, const std::vector<Parser::Rule> &table_value, std::vector<std::string> nested) {
     for (auto &rule : rules) {
         auto rule_data = std::any_cast<obj_t>(rule.data);
         auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
@@ -173,6 +218,16 @@ void inlineTokens(Parser::Tree &tree) {
     std::vector<std::vector<std::string>> keys;
     std::vector<Parser::Rule> values;
     accumulateInlineNamesAndRemove(tree, keys, values, {});
+    inlineTokensInTable(keys, values);
+    for (int i = 0; i < keys.size(); i++) {
+        for (auto el : keys[i]) {
+            cpuf::printf("%s_", el);
+        }
+        cpuf::printf(": ");
+        auto data = std::any_cast<obj_t>(values[i].data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        cpuf::printf("%s\n", std::any_cast<std::string>(name.data));
+    }
     inlineTokens(tree, keys, values, {});
 }
 
