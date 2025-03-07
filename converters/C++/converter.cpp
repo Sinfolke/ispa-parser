@@ -162,28 +162,36 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
             return current_pos_counter.top() + sign + std::to_string((int) dt);
         }
     }
-    static const std::unordered_map<IR::var_assign_values, std::string> typesMap = {
-        {IR::var_assign_values::NONE, "NONE"},
-        {IR::var_assign_values::_TRUE, "true"},
-        {IR::var_assign_values::_FALSE, "false"},
-        {IR::var_assign_values::CURRENT_POS_COUNTER, current_pos_counter.top()},
-        {IR::var_assign_values::CURRENT_POS_SEQUENCE, "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")"},
-        {IR::var_assign_values::CURRENT_TOKEN, current_pos_counter.top()},
-        {IR::var_assign_values::TOKEN_SEQUENCE, "tokens"},
-    };
-    return typesMap.at(value);
+    switch (value) {
+        case IR::var_assign_values::NONE:
+            return "NONE";
+        case IR::var_assign_values::_TRUE:
+            return "true";
+        case IR::var_assign_values::_FALSE:
+            return "false";
+        case IR::var_assign_values::CURRENT_POS_COUNTER:
+            return current_pos_counter.top();
+        case IR::var_assign_values::CURRENT_POS_SEQUENCE:
+            return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
+        case IR::var_assign_values::CURRENT_TOKEN:
+            return current_pos_counter.top();
+        case IR::var_assign_values::TOKEN_SEQUENCE:
+            return "tokens";
+        default:
+            return "NONE";
+    }
 }
 
 std::string convert_var_assing_types(IR::var_assign_types value) {
-    static const std::unordered_map<IR::var_assign_types, std::string> valueToString = {
-        {IR::var_assign_types::ASSIGN, "="},
-        {IR::var_assign_types::ADD, "+="},
-        {IR::var_assign_types::SUBSTR, "-="},
-        {IR::var_assign_types::MULTIPLY, "*="},
-        {IR::var_assign_types::DIVIDE, "/="},
-        {IR::var_assign_types::MODULO, "%="}
-    };
-    return valueToString.at(value);
+    switch (value) {
+        case IR::var_assign_types::ASSIGN:    return "=";
+        case IR::var_assign_types::ADD:       return "+=";
+        case IR::var_assign_types::SUBSTR:    return "-=";
+        case IR::var_assign_types::MULTIPLY:  return "*=";
+        case IR::var_assign_types::DIVIDE:    return "/=";
+        case IR::var_assign_types::MODULO:    return "%=";
+        default: return "="; // Handle unknown values
+    }
 }
 
 std::string conditionTypesToString(IR::condition_types type, std::any data, std::stack<std::string> &current_pos_counter) {

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28.3)
 project(ISPA)
 
 #enable_testing()
-add_subdirectory(mod/parser)           # include parser
+add_subdirectory(parser)           # include parser
 #add_subdirectory(mod/converter-cpp)    # include c++ converter
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
@@ -65,9 +65,9 @@ endif()
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_compile_definitions(PROGRAM_VERSION="0.1.0 beta")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
-include_directories(mod/parser/include)
+include_directories(parser/include)
 include_directories(include stdlibs)
-target_include_directories(ispa PRIVATE include src external mod/parser/include)
+target_include_directories(ispa PRIVATE include src external parser/include)
 set_target_properties(ispa PROPERTIES OUTPUT_NAME ispa)
 target_link_libraries(ispa parser parser_stdlib)
 #set_target_properties(isc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -80,11 +80,11 @@ set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 
 # add converter library
 add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp)
-target_include_directories(ispa-converter-cpp PRIVATE include src external mod/parser/include mod/parser/stdlibs converters/C++)
+target_include_directories(ispa-converter-cpp PRIVATE include src external parser/include parser/stdlibs converters/C++)
 #create interface for tests
 add_library(tests INTERFACE)
 target_compile_definitions(tests INTERFACE __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests")
-target_include_directories(tests INTERFACE mod/parser/include mod/parser/stdlibs)
+target_include_directories(tests INTERFACE parser/include parser/stdlibs)
 #IR-convertion-group
 add_executable(IR-convertion-group tests/tester.cpp)
 target_link_libraries(IR-convertion-group PRIVATE tests)
@@ -115,6 +115,6 @@ target_link_libraries(inline-test PRIVATE tests)
 target_compile_definitions(inline-test PRIVATE __PROCESS_FILE__="inline-test.isc")
 add_test(
     NAME mainTest
-    COMMAND ${CMAKE_BINARY_DIR} ispa --dir mod/parser/parser --lang cpp
+    COMMAND ${CMAKE_BINARY_DIR} ispa --dir parser/parser --lang cpp
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

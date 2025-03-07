@@ -91,28 +91,27 @@ namespace IR {
                 return current_pos_counter.top() + sign + std::to_string((int) dt);
             }
         }
-        static const std::unordered_map<var_assign_values, std::string> typesMap = {
-            {var_assign_values::NONE, "NONE"},
-            {var_assign_values::_TRUE, "TRUE"},
-            {var_assign_values::_FALSE, "FALSE"},
-            {var_assign_values::CURRENT_POS_COUNTER, "CURRENT_POS_COUNTER"},
-            {var_assign_values::CURRENT_POS_SEQUENCE, "CURRENT_POS_SEQUENCE"},
-            {var_assign_values::CURRENT_TOKEN, "CURRENT_TOKEN"},
-            {var_assign_values::TOKEN_SEQUENCE, "TOKEN_SEQUENCE"},
-        };
-        return typesMap.at(value);
+        switch (value) {
+            case var_assign_values::NONE:                  return "NONE";
+            case var_assign_values::_TRUE:                 return "TRUE";
+            case var_assign_values::_FALSE:                return "FALSE";
+            case var_assign_values::CURRENT_POS_COUNTER:   return "CURRENT_POS_COUNTER";
+            case var_assign_values::CURRENT_POS_SEQUENCE:  return "CURRENT_POS_SEQUENCE";
+            case var_assign_values::CURRENT_TOKEN:         return "CURRENT_TOKEN";
+            case var_assign_values::TOKEN_SEQUENCE:        return "TOKEN_SEQUENCE";
+            default: return "NONE"; // Handle unknown values
+        }
     }
-
-    std::string convert_var_assing_types(var_assign_types value) {
-        static const std::unordered_map<var_assign_types, std::string> valueToString = {
-            {var_assign_types::ASSIGN, "="},
-            {var_assign_types::ADD, "+="},
-            {var_assign_types::SUBSTR, "-="},
-            {var_assign_types::MULTIPLY, "*="},
-            {var_assign_types::DIVIDE, "/="},
-            {var_assign_types::MODULO, "%="}
-        };
-        return valueToString.at(value);
+    std::string convert_var_assing_types(var_assign_types type) {
+        switch (type) {
+            case var_assign_types::ASSIGN:    return "=";
+            case var_assign_types::ADD:       return "+=";
+            case var_assign_types::SUBSTR:    return "-=";
+            case var_assign_types::MULTIPLY:  return "*=";
+            case var_assign_types::DIVIDE:    return "/=";
+            case var_assign_types::MODULO:    return "%=";
+            default: return "="; // Handle unknown values
+        }
     }
     std::string getCharFromEscaped(char in, bool string) {
         if (in == '"')
