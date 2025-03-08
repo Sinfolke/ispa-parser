@@ -15,6 +15,7 @@ namespace global {
     use_prop_t use;
     std::string rule_prev_name;
     bool add_semicolon;
+    bool has_data_block;
 }
 size_t count_strlen(const char* str) {
     size_t count = 0;
@@ -176,7 +177,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
         case IR::var_assign_values::CURRENT_TOKEN:
             return current_pos_counter.top();
         case IR::var_assign_values::TOKEN_SEQUENCE:
-            return "tokens";
+            return "pos";
         default:
             return "NONE";
     }
@@ -235,9 +236,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
-            return "*token " + op + " " + "Tokens::" + dt.name;
+            return "*pos " + op + " " + "Tokens::" + dt.name;
         } else {
-            return "*token";
+            return "*pos";
         }
     }
     static const std::unordered_map<IR::condition_types, std::string> condTypesMap = {
@@ -337,7 +338,7 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
         res += ";";
         res += "\n";
         for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.value.data)) {
-            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value, false, current_pos_counter) + ";\n";
+            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false, current_pos_counter) + ";\n";
         }
     } else {
         res += " = ";
@@ -355,16 +356,22 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     switch (mem.type)
     {
     case IR::types::RULE:
+        global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
         out << name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {";
         indentLevel++;
         break;
     case IR::types::TOKEN:
+        global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
         out << name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {";
         indentLevel++;
         break;
     case IR::types::RULE_END:
+        if (global::has_data_block)
+            out << "\treturn data;\n";
+        else
+            out << "\treturn {};\n";
         out << "}";
         indentLevel--;
         break;
@@ -409,6 +416,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "skipspaces(pos)";
         break;
     case IR::types::DATA_BLOCK:
+        global::has_data_block = true;
         out << convertDataBlock(std::any_cast<IR::data_block>(mem.value), indentLevel, current_pos_counter);
         break;
     case IR::types::PUSH_POS_COUNTER: {

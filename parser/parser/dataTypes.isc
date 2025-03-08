@@ -11,7 +11,7 @@ NUMBER:
     $char point = $2>%1;
     $str dec = $2>%1;
     $num dec_n = NUMBER(dec);
-
+    $str full = main + point + dec
     [+-] ( [0-9]+ ) |& ([.,] [0-9]+)?
 
     data:
@@ -20,7 +20,7 @@ NUMBER:
         main_n: main_n
         dec: dec
         dec_n: dec_n
-        full: main + point + dec
+        full: full
     ;
 ;
 BOOLEAN:

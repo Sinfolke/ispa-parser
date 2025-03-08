@@ -104,8 +104,6 @@ void accumulateInlineNamesAndRemove(Parser::Tree& tree,
 
             // Recurse with updated nested_rules and modified state
             accumulateInlineNamesAndRemove(nested_rules, table_key, table_value, nested);
-            cpuf::printf("nested length: %$, vec: ", nested.size());
-            print_str_vector(nested);
             nested.pop_back();
             // Ensure that the data gets set back correctly after recursion
             corelib::map::set(data, "rule", std::any(rules));
@@ -219,15 +217,6 @@ void inlineTokens(Parser::Tree &tree) {
     std::vector<Parser::Rule> values;
     accumulateInlineNamesAndRemove(tree, keys, values, {});
     inlineTokensInTable(keys, values);
-    for (int i = 0; i < keys.size(); i++) {
-        for (auto el : keys[i]) {
-            cpuf::printf("%s_", el);
-        }
-        cpuf::printf(": ");
-        auto data = std::any_cast<obj_t>(values[i].data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        cpuf::printf("%s\n", std::any_cast<std::string>(name.data));
-    }
     inlineTokens(tree, keys, values, {});
 }
 

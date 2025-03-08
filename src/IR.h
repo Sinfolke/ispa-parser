@@ -90,9 +90,10 @@ namespace IR {
         bool is_string;
         std::string value;
     };
-    using inclosed_map = std::unordered_map<std::string, arr_t<IR::expr>>;
+    using inclosed_map = std::unordered_map<std::string, std::pair<arr_t<IR::expr>, var_type>>;
     struct data_block {
         assign value;
+        IR::var_type assign_type;
         bool is_inclosed_map;
     };
     class ir {
@@ -108,9 +109,9 @@ namespace IR {
         bool empty();
     };
     struct node_ret_t {
-        std::string svar;
-        std::string var;
-        std::string shadow_var = "";
+        IR::variable svar;
+        IR::variable var;
+        IR::variable shadow_var = {};
     };
     struct var_group {
         std::string var;
@@ -118,12 +119,13 @@ namespace IR {
         size_t end;
     };
     using var_elements = std::vector<std::string>;
+    using variables = std::list<IR::variable>;
     using groups = std::vector<var_group>;
     using nested_rule_name = std::vector<std::pair<std::string, std::string>>;
 };
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier = -1);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, arr_t<IR::node_ret_t> &success_vars, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, arr_t<IR::node_ret_t> &success_vars);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups);
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier = -1);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars, int &variable_count);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, int &variable_count);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars);
 IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_name &nested_rule_names);

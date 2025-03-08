@@ -33,7 +33,7 @@ namespace IR {
                 return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
             case var_assign_values::VAR_REFER:
             {
-                //cpuf::printf("ON var_refer\n");
+                cpuf::printf("ON var_refer\n");
                 auto dt = std::any_cast<var_refer>(data);
                 std::string res;
                 if (dt.pre_increament)
@@ -46,7 +46,11 @@ namespace IR {
             case var_assign_values::ID:
                 //cpuf::printf("on ID\n");
             case var_assign_values::INT:
-                //cpuf::printf("on INT\n");
+                //cpuf::printf("on INT, type: %s\n", data.type().name());
+                if (data.type() == typeid(IR::variable)) {
+                    cpuf::printf("name: %s\n", std::any_cast<IR::variable>(data).name);
+                    return "";
+                }
                 return std::any_cast<std::string>(data);
             case var_assign_values::ARRAY:
             {
@@ -307,12 +311,16 @@ namespace IR {
                 res += std::string(indentLevel + 1, '\t');
                 res += key;
                 res += ": ";
-                res += convertExpression(value, false, current_pos_counter);
+                res += convertExpression(value.first, false, current_pos_counter);
+                res += " # ";
+                res += convert_var_type(value.second.type);
                 res += '\n';
             }
             res += std::string(indentLevel, '\t') + ";";
         } else {
             res += convertAssign(std::any_cast<assign>(dtb.value), current_pos_counter);
+            res += " # ";
+            res += convert_var_type(dtb.assign_type.type);
         }
         return res;
     }
@@ -320,14 +328,15 @@ namespace IR {
     void convertMember(const member& mem, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
         if (mem.type != types::RULE_END)
             out << std::string(indentLevel, '\t');
-
         switch (mem.type)
         {
         case types::RULE:
+            cpuf::printf("rule name: %s\n", std::any_cast<std::string>(mem.value));
             out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;
         case types::TOKEN:
+            cpuf::printf("rule name: %s\n", std::any_cast<std::string>(mem.value));
             out << "Token(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;
