@@ -16,6 +16,7 @@ namespace global {
     std::string rule_prev_name;
     bool add_semicolon;
     bool has_data_block;
+    bool isToken;
 }
 size_t count_strlen(const char* str) {
     size_t count = 0;
@@ -344,6 +345,7 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
     } else {
         res += " = ";
         res += convertAssign(std::any_cast<IR::assign>(dtb.value), current_pos_counter);
+        res += ";\n";
     }
     return res;
 }
@@ -357,18 +359,33 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::RULE:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {";
+        out << name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
+        out << "\tauto in = pos" ;
         indentLevel++;
+        global::isToken = false;
         break;
     case IR::types::TOKEN:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {";
+        out << name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
+        out << "auto in = pos";
         indentLevel++;
+        global::isToken = true;
         break;
     case IR::types::RULE_END:
-        if (global::has_data_block)
-            out << "\treturn {true, data};\n";
+        if (global::has_data_block) {
+            if (global::isToken) {
+                out << "\treturn {true, ::" << name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
+                if (global::has_data_block)
+                    out << ", data";
+                out << ")};\n";
+            } else {
+                out << "\treturn {true, ::" << name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
+                if (global::has_data_block)
+                    out << ", data";
+                out << ")};\n";
+            }
+        }
         else
             out << "\treturn {};\n";
         out << "}";

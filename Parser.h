@@ -42,6 +42,7 @@ namespace Parser {
 	using Token_res = ISC_STD::match_result<Tokens>;
 	using Tree = ISC_STD::Tree<Rules>;
 	class Tokenizator {
+		private:			const char* str
 		public:
 			using OP_data = any_t;
 			using ASSIGNMENT_OP_data = Token;

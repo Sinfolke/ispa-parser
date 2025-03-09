@@ -102,7 +102,7 @@ std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &
     return res;
 }
 std::string create_tokenizator_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
-    std::string res = "\tclass Tokenizator {\n\t\tpublic:\n";
+    std::string res = "\tclass Tokenizator {\n\t\tprivate:\t\t\tconst char* str\n\t\tpublic:\n";
     res += write_data_block(dtb);
     for (auto name : tokens) {
         res += "\t\t\tToken_res " + name + "(const char*&);\n";
