@@ -77,16 +77,42 @@ std::string getTypesFromStdlib() {
     res += "\tusing Tree = ISC_STD::Tree<Rules>;\n";
     return res;
 }
-std::string create_tokenizator_header(std::list<std::string> tokens) {
+std::string convert_inclosed_map(IR::inclosed_map map) {
+    std::string res;
+    for (auto [key, value] : map) {
+        auto [expr, type] = value;
+        res += "\t\t\t\t" + convert_var_type(type.type, type.templ) + " " + key + ";\n";
+    }
+    return res;
+}
+std::string convert_single_assignment_data(IR::var_type type, std::string name) {
+    return "\t\t\tusing " + name + "_data = " + convert_var_type(type.type, type.templ) + ";\n";
+}
+std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &dtb) {
+    std::string res;
+    for (auto [block, name] : dtb) {
+        if (block.is_inclosed_map) {
+            res += "\t\t\tstruct " + name + "_data {\n";
+            res += convert_inclosed_map(std::any_cast<IR::inclosed_map>(block.value.data));
+            res += "\t\t\t};\n";
+        } else {
+            res += convert_single_assignment_data(block.assign_type, name);
+        }
+    }
+    return res;
+}
+std::string create_tokenizator_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
     std::string res = "\tclass Tokenizator {\n\t\tpublic:\n";
+    res += write_data_block(dtb);
     for (auto name : tokens) {
         res += "\t\t\tToken_res " + name + "(const char*&);\n";
     }
     res += "\t};\n";
     return res;
 }
-std::string create_parser_header(std::list<std::string> tokens) {
+std::string create_parser_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
     std::string res = "\tclass Parser {\n\t\tpublic:\n";
+    res += write_data_block(dtb);
     for (auto name : tokens) {
         res += "\t\t\tRule_res " + name + "(Token*&);\n";
     }
@@ -94,7 +120,7 @@ std::string create_parser_header(std::list<std::string> tokens) {
     return res;
 }
 
-extern "C" std::string convert_header(std::list<std::string> tokens, std::list<std::string> rules, use_prop_t use) {
+extern "C" std::string convert_header(std::list<std::string> tokens, std::list<std::string> rules, std::list<std::pair<IR::data_block, std::string>> datablocks_tokens, std::list<std::pair<IR::data_block, std::string>> datablocks_rules, use_prop_t use) {
     std::string res;
     res += createLibrary();
     res += createNamespace(use);
@@ -102,8 +128,8 @@ extern "C" std::string convert_header(std::list<std::string> tokens, std::list<s
     res += createTokensEnum(tokens);
     res += createRulesEnum(rules);
     res += getTypesFromStdlib();
-    res += create_tokenizator_header(tokens);
-    res += create_parser_header(rules);
+    res += create_tokenizator_header(tokens, datablocks_tokens);
+    res += create_parser_header(rules, datablocks_rules);
     res += "\n}"; // close enum
     return res;
 }

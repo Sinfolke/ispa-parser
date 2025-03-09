@@ -1454,6 +1454,7 @@ IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &v
     //cpuf::printf("Rule_any\n");
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
+    var.type = {IR::var_types::STRING};
     arr_t<IR::expr> expression;
     arr_t<IR::member> block = {{IR::types::EXIT}};
     arr_t<IR::member> block_after = createDefaultBlock(var, svar);

@@ -9,7 +9,7 @@
 #include <IR.h>
 #include <corelib.h>
 #include <stack>
-std::string convert_var_type(IR::var_types type);
+std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data);
 std::string convert_var_assing_values(IR::var_assign_values value, std::any data, std::stack<std::string> &current_pos_counter);
 std::string convert_var_assing_types(IR::var_assign_types value);
 std::string getCharFromEscaped(char in, bool string);

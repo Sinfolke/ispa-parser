@@ -340,12 +340,11 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
         for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.value.data)) {
             res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false, current_pos_counter) + ";\n";
         }
+        global::add_semicolon = false;
     } else {
         res += " = ";
         res += convertAssign(std::any_cast<IR::assign>(dtb.value), current_pos_counter);
-        res += ';';
     }
-    global::add_semicolon = false;
     return res;
 }
 
@@ -369,7 +368,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::RULE_END:
         if (global::has_data_block)
-            out << "\treturn data;\n";
+            out << "\treturn {true, data};\n";
         else
             out << "\treturn {};\n";
         out << "}";

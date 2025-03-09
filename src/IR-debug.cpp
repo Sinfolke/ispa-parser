@@ -33,7 +33,7 @@ namespace IR {
                 return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
             case var_assign_values::VAR_REFER:
             {
-                cpuf::printf("ON var_refer\n");
+                //cpuf::printf("ON var_refer\n");
                 auto dt = std::any_cast<var_refer>(data);
                 std::string res;
                 if (dt.pre_increament)
@@ -331,12 +331,10 @@ namespace IR {
         switch (mem.type)
         {
         case types::RULE:
-            cpuf::printf("rule name: %s\n", std::any_cast<std::string>(mem.value));
             out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;
         case types::TOKEN:
-            cpuf::printf("rule name: %s\n", std::any_cast<std::string>(mem.value));
             out << "Token(" << std::any_cast<std::string>(mem.value) << ") {";
             indentLevel++;
             break;

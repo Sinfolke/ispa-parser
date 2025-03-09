@@ -7,6 +7,7 @@
 #include <token_management.h>
 #include <cpuf/printf.h>
 #include <list>
+#include <IR.h>
 
 Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules, std::string name) {
     // Create a copy of the rules to avoid modifying the original while iterating
@@ -567,4 +568,25 @@ use_prop_t accamulate_use_data_to_map(Parser::Tree tree) {
         }
     }
     return result;
+}
+std::pair<std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair<IR::data_block, std::string>>> get_data_blocks(IR::ir ir) {
+    std::list<std::pair<IR::data_block, std::string>> datablocks_tokens;
+    std::list<std::pair<IR::data_block, std::string>> datablocks_rules;
+    bool isToken;
+    std::string name;
+    for (auto el : ir.elements) {
+        if (el.type == IR::types::TOKEN) {
+            name = std::any_cast<std::string>(el.value);
+            isToken = true;
+        } else if (el.type == IR::types::RULE) {
+            name = std::any_cast<std::string>(el.value);
+            isToken = false;
+        } else if (el.type == IR::types::DATA_BLOCK) {
+            if (isToken)
+                datablocks_tokens.push_back({std::any_cast<IR::data_block>(el.value), name});
+            else
+                datablocks_rules.push_back({std::any_cast<IR::data_block>(el.value), name});
+        }
+    }
+    return {datablocks_tokens, datablocks_rules};
 }

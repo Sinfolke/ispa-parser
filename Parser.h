@@ -43,6 +43,95 @@ namespace Parser {
 	using Tree = ISC_STD::Tree<Rules>;
 	class Tokenizator {
 		public:
+			using OP_data = any_t;
+			using ASSIGNMENT_OP_data = Token;
+			using COMPARE_OP_data = str_t;
+			using LOGICAL_OP_data = Token;
+			using LOGICAL_NOT_data = str_t;
+			using LOGICAL_AND_data = str_t;
+			using LOGICAL_OR_data = str_t;
+			using LOGICAL_ANDR_data = str_t;
+			struct NUMBER_data {
+				str_t full;
+				num_t dec_n;
+				str_t dec;
+				num_t main_n;
+				str_t main;
+				char sign;
+			};
+			struct BOOLEAN_data {
+				str_t lit;
+				bool_t val;
+			};
+			using ID_data = str_t;
+			using AUTO_1_data = str_t;
+			using AUTO_3_data = str_t;
+			using AUTO_4_data = str_t;
+			using AUTO_14_data = str_t;
+			using AUTO_15_data = str_t;
+			using AUTO_16_data = str_t;
+			using AUTO_17_data = str_t;
+			using AUTO_18_data = str_t;
+			using AUTO_19_data = str_t;
+			using AUTO_20_data = str_t;
+			using AUTO_21_data = str_t;
+			using AUTO_22_data = str_t;
+			using AUTO_23_data = str_t;
+			using AUTO_24_data = str_t;
+			using AUTO_25_data = str_t;
+			using AUTO_26_data = str_t;
+			using AUTO_27_data = str_t;
+			using AUTO_28_data = str_t;
+			using AUTO_29_data = str_t;
+			using AUTO_30_data = str_t;
+			using AUTO_31_data = str_t;
+			using AUTO_32_data = str_t;
+			using AUTO_33_data = str_t;
+			using AUTO_34_data = str_t;
+			using AUTO_35_data = str_t;
+			using AUTO_36_data = str_t;
+			using AUTO_48_data = str_t;
+			using AUTO_49_data = str_t;
+			using AUTO_55_data = str_t;
+			using AUTO_60_data = str_t;
+			using AUTO_61_data = str_t;
+			using AUTO_65_data = str_t;
+			using AUTO_70_data = str_t;
+			using AUTO_71_data = str_t;
+			using AUTO_72_data = str_t;
+			using AUTO_73_data = str_t;
+			using AUTO_74_data = str_t;
+			using AUTO_75_data = str_t;
+			using AUTO_76_data = str_t;
+			using AUTO_77_data = str_t;
+			using AUTO_78_data = str_t;
+			using AUTO_82_data = str_t;
+			using AUTO_83_data = str_t;
+			using AUTO_84_data = str_t;
+			using AUTO_85_data = str_t;
+			using AUTO_86_data = str_t;
+			using AUTO_87_data = str_t;
+			using AUTO_88_data = str_t;
+			using AUTO_89_data = str_t;
+			using AUTO_90_data = str_t;
+			using AUTO_91_data = str_t;
+			using AUTO_92_data = str_t;
+			using AUTO_94_data = str_t;
+			using AUTO_95_data = str_t;
+			using AUTO_98_data = str_t;
+			using AUTO_99_data = str_t;
+			using AUTO_101_data = str_t;
+			using AUTO_103_data = str_t;
+			using AUTO_104_data = str_t;
+			using AUTO_105_data = str_t;
+			using AUTO_106_data = str_t;
+			using AUTO_107_data = str_t;
+			using AUTO_108_data = str_t;
+			using AUTO_109_data = str_t;
+			using AUTO_110_data = str_t;
+			using AUTO_111_data = str_t;
+			using AUTO_112_data = str_t;
+			using AUTO_113_data = str_t;
 			Token_res OP(const char*&);
 			Token_res ASSIGNMENT_OP(const char*&);
 			Token_res COMPARE_OP(const char*&);
@@ -128,6 +217,152 @@ namespace Parser {
 	};
 	class Parser {
 		public:
+			using accessor_group_data = Token;
+			using accessor_element_data = Token;
+			using accessor_char_data = Token;
+			using accessor_all_data = Rule;
+			struct accessor_data {
+				Rule second;
+				Rule first;
+			};
+			using cll_data = arr_t<str_t>;
+			using cll_block_data = Rule;
+			using cll_spaced_block_data = Rule;
+			using cll_template_content_typename_data = arr_t<any_t>;
+			using cll_template_content_int_data = arr_t<any_t>;
+			using cll_template_content_bool_data = arr_t<any_t>;
+			using cll_template_content_str_data = arr_t<any_t>;
+			using cll_template_content_arr_data = arr_t<any_t>;
+			using cll_template_content_obj_data = arr_t<any_t>;
+			using cll_template_content_any_data_data = arr_t<any_t>;
+			struct cll_csupport_types_data {
+				Token template;
+				Token type;
+			};
+			struct cll_type_abstract_data {
+				Rule template;
+				Token type;
+			};
+			using cll_type_data = Rule;
+			struct cll_if_data {
+				Token block;
+				Token expr;
+			};
+			struct cll_ternary_data {
+				Rule second;
+				Rule first;
+				Rule cond;
+			};
+			struct expr_logical_data {
+				Token right;
+				Rule op;
+				Rule left;
+			};
+			struct expr_compare_data {
+				Rule sequence;
+				Token operators;
+				Rule first;
+			};
+			struct expr_arithmetic_data {
+				Rule sequence;
+				Token operators;
+				Rule first;
+			};
+			using expr_for_arithmetic_data = Rule;
+			using expr_group_data = Rule;
+			using expr_expr_copiable_method_call_data = Rule;
+			using expr_data = Rule;
+			using function_body_call_data = Rule;
+			using function_body_decl_data = Rule;
+			using function_arguments_data = arr_t<any_t>;
+			using function_parameters_data = arr_t<any_t>;
+			struct cll_function_call_data {
+				Rule body;
+				Token name;
+			};
+			struct function_decl_data {
+				Rule value;
+				Token name;
+				Token type;
+			};
+			struct loop_while_data {
+				Rule block;
+				Rule expr;
+			};
+			struct loop_for_data {
+				Rule block;
+				Rule end;
+				Rule cond;
+				Rule decl;
+			};
+			struct method_call_data {
+				Rule call;
+				Token object;
+			};
+			using copiable_method_call_data = Rule;
+			struct var_refer_data {
+				any_t post;
+				any_t pre;
+				Rule brace_expression;
+				Token name;
+			};
+			struct cll_var_data {
+				Rule value;
+				Rule operator;
+				Token id;
+				Rule type;
+			};
+			using array_data = Token;
+			struct object_data {
+				Rule values;
+				Token keys;
+				Rule value;
+				Rule key;
+			};
+			using spacemode_data = Token;
+			struct use_unit_data {
+				Rule value;
+				Rule name;
+			};
+			struct use_data {
+				Rule second;
+				Rule first;
+			};
+			struct Rule_rule_data {
+				any_t qualifier;
+				any_t val;
+			};
+			struct Rule_other_data {
+				Token nested_name;
+				Token name;
+				bool_t is_nested;
+			};
+			struct Rule_group_data {
+				any_t val;
+				any_t variable;
+			};
+			using Rule_csequence_diapason_data = arr_t<any_t>;
+			struct Rule_csequence_data {
+				Rule val;
+				bool_t not;
+			};
+			struct Rule_data_block_key_data {
+				Rule val;
+				Rule name;
+			};
+			struct Rule_escaped_data {
+				Token num;
+				Token c;
+			};
+			using Rule_nested_rule_data = Rule;
+			using Rule_hex_data = Token;
+			using Rule_bin_data = Token;
+			struct Rule_data {
+				any_t nestedRules;
+				any_t data_block;
+				any_t rule;
+				any_t name;
+			};
 			Rule_res accessor_group(Token*&);
 			Rule_res accessor_element(Token*&);
 			Rule_res accessor_char(Token*&);

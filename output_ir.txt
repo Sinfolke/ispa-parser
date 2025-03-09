@@ -3366,8 +3366,11 @@ Token(BOOLEAN) {
 		pos = begin_7
 	}
 	d += _1
+	skipspaces(pos)
+	bool val = NONE
 	data = 
 		lit: d # str
+		val: val # bool
 	;
 }
 Rule(array) {
@@ -5787,7 +5790,7 @@ Token(AUTO_106) {
 	data = _0 # str
 }
 Token(AUTO_107) {
-	UNDEF _0 = NONE
+	str _0 = NONE
 	bool success_1 = FALSE
 	if (*pos == '\0')
 	{
@@ -5796,7 +5799,7 @@ Token(AUTO_107) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	data = _0 # UNDEF
+	data = _0 # str
 }
 Token(AUTO_108) {
 	str _0 = NONE

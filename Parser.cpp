@@ -20,7 +20,7 @@ Parser::Rule_res Parser::Parser::accessor_group(Token*& pos) {
 	success_3 = true;
 	pos++;
 	accessor_group_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::accessor_element(Token*& pos) {
 	Token _0;
@@ -43,7 +43,7 @@ Parser::Rule_res Parser::Parser::accessor_element(Token*& pos) {
 	success_3 = true;
 	pos++;
 	accessor_element_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::accessor_char(Token*& pos) {
 	Token _0;
@@ -66,7 +66,7 @@ Parser::Rule_res Parser::Parser::accessor_char(Token*& pos) {
 	success_3 = true;
 	pos++;
 	accessor_char_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::accessor_all(Token*& pos) {
 	Rule _0;
@@ -109,7 +109,7 @@ Parser::Rule_res Parser::Parser::accessor_all(Token*& pos) {
 	success_1 = true;
 	pos++;
 	accessor_all_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 	Rule _0;
@@ -160,7 +160,7 @@ Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 	data.second = _6;
 	data.first = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 	Token cll_begin;
@@ -306,7 +306,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 	_4 += _6;
 	_4 += _25;
 	cll_data data = shadow_28;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_block(Token*& pos) {
 	Token _0;
@@ -341,7 +341,7 @@ Parser::Rule_res Parser::Parser::cll_block(Token*& pos) {
 	success_6 = true;
 	pos++;
 	cll_block_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_spaced_block(Token*& pos) {
 	Rule _0;
@@ -358,7 +358,7 @@ Parser::Rule_res Parser::Parser::cll_spaced_block(Token*& pos) {
 		skipspaces(pos);
 	}
 	cll_spaced_block_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::OP(const char* &pos) {
 	any_t _0;
@@ -484,7 +484,7 @@ Parser::Token_res Parser::Tokenizator::OP(const char* &pos) {
 	success_13 = true;
 	pos++;
 	OP_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* &pos) {
 	Token _0;
@@ -506,7 +506,7 @@ Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* &pos) {
 	success_3 = true;
 	pos++;
 	ASSIGNMENT_OP_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* &pos) {
 	str_t _0;
@@ -582,7 +582,7 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* &pos) {
 	success_1 = true;
 	pos++;
 	COMPARE_OP_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* &pos) {
 	Token _0;
@@ -614,7 +614,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* &pos) {
 	success_1 = true;
 	pos++;
 	LOGICAL_OP_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* &pos) {
 	str_t _0;
@@ -646,7 +646,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* &pos) {
 	success_1 = true;
 	pos++;
 	LOGICAL_NOT_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* &pos) {
 	str_t _0;
@@ -678,7 +678,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* &pos) {
 	success_1 = true;
 	pos++;
 	LOGICAL_AND_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* &pos) {
 	str_t _0;
@@ -710,7 +710,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* &pos) {
 	success_1 = true;
 	pos++;
 	LOGICAL_OR_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::LOGICAL_ANDR(const char* &pos) {
 	any_t _0;
@@ -780,7 +780,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_ANDR(const char* &pos) {
 	success_1 = true;
 	pos++;
 	LOGICAL_ANDR_data data = _6;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_typename(Token*& pos) {
 	Rule _0;
@@ -827,8 +827,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_typename(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_typename_data data = {,};
-	return data;
+	cll_template_content_typename_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_int(Token*& pos) {
 	Token _0;
@@ -875,8 +875,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_int(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_int_data data = {,};
-	return data;
+	cll_template_content_int_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_bool(Token*& pos) {
 	Token _0;
@@ -923,8 +923,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_bool(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_bool_data data = {,};
-	return data;
+	cll_template_content_bool_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_str(Token*& pos) {
 	Token _0;
@@ -971,8 +971,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_str(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_str_data data = {,};
-	return data;
+	cll_template_content_str_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_arr(Token*& pos) {
 	Rule _0;
@@ -1019,8 +1019,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_arr(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_arr_data data = {,};
-	return data;
+	cll_template_content_arr_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_obj(Token*& pos) {
 	Rule _0;
@@ -1067,8 +1067,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_obj(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_obj_data data = {,};
-	return data;
+	cll_template_content_obj_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_template_content_any_data(Token*& pos) {
 	Rule _0;
@@ -1115,8 +1115,8 @@ Parser::Rule_res Parser::Parser::cll_template_content_any_data(Token*& pos) {
 	}
 	_2 += _4;
 	_2 += _6;
-	cll_template_content_any_data_data data = {,};
-	return data;
+	cll_template_content_any_data_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 	bool_t is_unsigned = matched();
@@ -1380,7 +1380,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 	data.template = _8;
 	data.type = _4;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_type_abstract(Token*& pos) {
 	any_t _0;
@@ -1536,7 +1536,7 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(Token*& pos) {
 	data.template = _18;
 	data.type = _16;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_type(Token*& pos) {
 	Rule _0;
@@ -1568,7 +1568,7 @@ Parser::Rule_res Parser::Parser::cll_type(Token*& pos) {
 	success_1 = true;
 	pos++;
 	cll_type_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	Token _0;
@@ -1705,7 +1705,7 @@ Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	data.block = _0;
 	data.expr = _6;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	Rule _0;
@@ -1762,7 +1762,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	data.first = _4;
 	data.cond = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 	Rule _0;
@@ -1859,7 +1859,7 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 	data.op = _0;
 	data.left = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 	Rule _0;
@@ -1917,7 +1917,7 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 	data.operators = _4;
 	data.first = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 	Rule _0;
@@ -1975,7 +1975,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 	data.operators = _4;
 	data.first = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_for_arithmetic(Token*& pos) {
 	Rule _0;
@@ -2029,7 +2029,7 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(Token*& pos) {
 	success_1 = true;
 	pos++;
 	expr_for_arithmetic_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 	Token _0;
@@ -2081,7 +2081,7 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 	success_9 = true;
 	pos++;
 	expr_group_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(Token*& pos) {
 	Token _0;
@@ -2114,7 +2114,7 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(Token*& pos) {
 	success_5 = true;
 	pos++;
 	expr_expr_copiable_method_call_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::expr(Token*& pos) {
 	Rule _0;
@@ -2201,7 +2201,7 @@ Parser::Rule_res Parser::Parser::expr(Token*& pos) {
 	success_1 = true;
 	pos++;
 	expr_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::function_body_call(Token*& pos) {
 	Token _0;
@@ -2234,7 +2234,7 @@ Parser::Rule_res Parser::Parser::function_body_call(Token*& pos) {
 	success_5 = true;
 	pos++;
 	function_body_call_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::function_body_decl(Token*& pos) {
 	Token _0;
@@ -2267,7 +2267,7 @@ Parser::Rule_res Parser::Parser::function_body_decl(Token*& pos) {
 	success_5 = true;
 	pos++;
 	function_body_decl_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 	any_t _0;
@@ -2368,8 +2368,8 @@ Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 		_9 += _13;
 		skipspaces(pos);
 	}
-	function_arguments_data data = {,};
-	return data;
+	function_arguments_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 	Token _0;
@@ -2419,8 +2419,8 @@ Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 		_2 += _6;
 		skipspaces(pos);
 	}
-	function_parameters_data data = {,};
-	return data;
+	function_parameters_data data = {,}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_function_call(Token*& pos) {
 	Token _0;
@@ -2446,7 +2446,7 @@ Parser::Rule_res Parser::Parser::cll_function_call(Token*& pos) {
 	data.body = _2;
 	data.name = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	Token _0;
@@ -2541,7 +2541,7 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	data.name = _2;
 	data.type = _4;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	Token _0;
@@ -2596,7 +2596,7 @@ Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	data.block = _4;
 	data.expr = _2;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	Rule _0;
@@ -2743,7 +2743,7 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	data.cond = _4;
 	data.decl = _6;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	Token _0;
@@ -2800,7 +2800,7 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	data.call = _6;
 	data.object = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::copiable_method_call(Token*& pos) {
 	Token _0;
@@ -2823,7 +2823,7 @@ Parser::Rule_res Parser::Parser::copiable_method_call(Token*& pos) {
 	success_3 = true;
 	pos++;
 	copiable_method_call_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	any_t pre = matched();
@@ -2972,7 +2972,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	data.brace_expression = _15;
 	data.name = _2;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 	Rule _0;
@@ -3052,7 +3052,7 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 	data.id = _2;
 	data.type = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 	data = ;
@@ -3348,7 +3348,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 	data.main = main;
 	data.sign = sign;
 
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* &pos) {
 	str_t d;
@@ -3388,10 +3388,13 @@ Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* &pos) {
 		pos = begin_7;
 	}
 	d += _1;
+	skipspaces(pos);
+	bool_t val = NONE;
 	BOOLEAN_data data;
 	data.lit = d;
+	data.val = val;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	Token _0;
@@ -3462,7 +3465,7 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	success_14 = true;
 	pos++;
 	array_data data = _8;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	Token _0;
@@ -3604,7 +3607,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	data.value = _8;
 	data.key = _4;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::any_data(Token*& pos) {
 	any_t _0;
@@ -3761,7 +3764,7 @@ Parser::Token_res Parser::Tokenizator::ID(const char* &pos) {
 	_0 += _5;
 	_0 += shadow_9;
 	ID_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::spacemode(Token*& pos) {
 	Token _0;
@@ -3814,7 +3817,7 @@ Parser::Rule_res Parser::Parser::spacemode(Token*& pos) {
 	success_3 = true;
 	pos++;
 	spacemode_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::linear_comment(Token*& pos) {
 	Token _0;
@@ -3914,7 +3917,7 @@ Parser::Rule_res Parser::Parser::use_unit(Token*& pos) {
 	data.value = _2;
 	data.name = _0;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::use(Token*& pos) {
 	Token _0;
@@ -3975,7 +3978,7 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 	data.second = _8;
 	data.first = _2;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 	any_t _0;
@@ -4164,7 +4167,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 	data.qualifier = _6;
 	data.val = _6;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 	bool_t m = matched();
@@ -4226,7 +4229,7 @@ Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 	data.name = _2;
 	data.is_nested = m;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_op(Token*& pos) {
 	Token _0;
@@ -4412,7 +4415,7 @@ Parser::Rule_res Parser::Parser::Rule_group(Token*& pos) {
 	data.val = r;
 	data.variable = name;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_csequence_symbol(Token*& pos) {
 	Token _0;
@@ -4554,8 +4557,8 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	_0 += from;
 	_0 += _6;
 	_0 += to;
-	Rule_csequence_diapason_data data = {from,to};
-	return data;
+	Rule_csequence_diapason_data data = {from,to}
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	bool_t m = matched();
@@ -4645,7 +4648,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	data.val = dt;
 	data.not = m;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_data_block_inclosed_map(Token*& pos) {
 	Rule data;
@@ -4764,7 +4767,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 	data.val = dt;
 	data.name = name;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 	Token _0;
@@ -4884,7 +4887,7 @@ Parser::Rule_res Parser::Parser::Rule_escaped(Token*& pos) {
 	data.num = _4;
 	data.c = _2;
 
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_nested_rule(Token*& pos) {
 	Token _0;
@@ -4923,7 +4926,7 @@ Parser::Rule_res Parser::Parser::Rule_nested_rule(Token*& pos) {
 	success_7 = true;
 	pos++;
 	Rule_nested_rule_data data = _6;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_hex(Token*& pos) {
 	Token _0;
@@ -4953,7 +4956,7 @@ Parser::Rule_res Parser::Parser::Rule_hex(Token*& pos) {
 		return {};
 	}
 	Rule_hex_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule_bin(Token*& pos) {
 	Token _0;
@@ -4983,7 +4986,7 @@ Parser::Rule_res Parser::Parser::Rule_bin(Token*& pos) {
 		return {};
 	}
 	Rule_bin_data data = _2;
-	return data;
+	return {true, data};
 }
 Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 	any_t name = ;
@@ -5090,7 +5093,7 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 	data.rule = rule;
 	data.name = name;
 
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_1(const char* &pos) {
 	str_t _0;
@@ -5103,7 +5106,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_1(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_1_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_3(const char* &pos) {
 	str_t _0;
@@ -5116,7 +5119,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_3(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_3_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_4(const char* &pos) {
 	str_t _0;
@@ -5129,7 +5132,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_4(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_4_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_14(const char* &pos) {
 	str_t _0;
@@ -5142,7 +5145,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_14(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_14_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_15(const char* &pos) {
 	str_t _0;
@@ -5155,7 +5158,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_15(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_15_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_16(const char* &pos) {
 	str_t _0;
@@ -5168,7 +5171,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_16(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_16_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_17(const char* &pos) {
 	str_t _0;
@@ -5181,7 +5184,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_17(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_17_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_18(const char* &pos) {
 	str_t _0;
@@ -5194,7 +5197,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_18(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_18_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_19(const char* &pos) {
 	str_t _0;
@@ -5207,7 +5210,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_19(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_19_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_20(const char* &pos) {
 	str_t _0;
@@ -5220,7 +5223,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_20(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_20_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_21(const char* &pos) {
 	str_t _0;
@@ -5233,7 +5236,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_21(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_21_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_22(const char* &pos) {
 	str_t _0;
@@ -5246,7 +5249,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_22(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_22_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_23(const char* &pos) {
 	str_t _0;
@@ -5259,7 +5262,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_23(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_23_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_24(const char* &pos) {
 	str_t _0;
@@ -5272,7 +5275,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_24(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_24_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_25(const char* &pos) {
 	str_t _0;
@@ -5285,7 +5288,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_25(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_25_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_26(const char* &pos) {
 	str_t _0;
@@ -5298,7 +5301,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_26(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_26_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_27(const char* &pos) {
 	str_t _0;
@@ -5311,7 +5314,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_27(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_27_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_28(const char* &pos) {
 	str_t _0;
@@ -5324,7 +5327,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_28(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_28_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_29(const char* &pos) {
 	str_t _0;
@@ -5337,7 +5340,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_29(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_29_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_30(const char* &pos) {
 	str_t _0;
@@ -5350,7 +5353,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_30(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_30_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_31(const char* &pos) {
 	str_t _0;
@@ -5363,7 +5366,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_31(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_31_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_32(const char* &pos) {
 	str_t _0;
@@ -5376,7 +5379,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_32(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_32_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_33(const char* &pos) {
 	str_t _0;
@@ -5389,7 +5392,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_33(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_33_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_34(const char* &pos) {
 	str_t _0;
@@ -5402,7 +5405,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_34(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_34_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_35(const char* &pos) {
 	str_t _0;
@@ -5415,7 +5418,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_35(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_35_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_36(const char* &pos) {
 	str_t _0;
@@ -5428,7 +5431,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_36(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_36_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_48(const char* &pos) {
 	str_t _0;
@@ -5441,7 +5444,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_48(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_48_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_49(const char* &pos) {
 	str_t _0;
@@ -5454,7 +5457,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_49(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_49_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_55(const char* &pos) {
 	str_t _0;
@@ -5467,7 +5470,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_55(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_55_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_60(const char* &pos) {
 	str_t _0;
@@ -5480,7 +5483,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_60(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_60_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_61(const char* &pos) {
 	str_t _0;
@@ -5493,7 +5496,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_61(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_61_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_65(const char* &pos) {
 	str_t _0;
@@ -5506,7 +5509,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_65(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_65_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_70(const char* &pos) {
 	str_t _0;
@@ -5519,7 +5522,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_70(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_70_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_71(const char* &pos) {
 	str_t _0;
@@ -5532,7 +5535,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_71(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_71_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_72(const char* &pos) {
 	str_t _0;
@@ -5545,7 +5548,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_72(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_72_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_73(const char* &pos) {
 	str_t _0;
@@ -5558,7 +5561,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_73(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_73_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_74(const char* &pos) {
 	str_t _0;
@@ -5571,7 +5574,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_74(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_74_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_75(const char* &pos) {
 	str_t _0;
@@ -5584,7 +5587,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_75(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_75_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_76(const char* &pos) {
 	str_t _0;
@@ -5597,7 +5600,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_76(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_76_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_77(const char* &pos) {
 	str_t _0;
@@ -5610,7 +5613,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_77(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_77_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_78(const char* &pos) {
 	str_t _0;
@@ -5623,7 +5626,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_78(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_78_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_82(const char* &pos) {
 	str_t _0;
@@ -5636,7 +5639,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_82(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_82_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_83(const char* &pos) {
 	str_t _0;
@@ -5649,7 +5652,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_83(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_83_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_84(const char* &pos) {
 	str_t _0;
@@ -5662,7 +5665,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_84(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_84_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_85(const char* &pos) {
 	str_t _0;
@@ -5675,7 +5678,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_85(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_85_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_86(const char* &pos) {
 	str_t _0;
@@ -5688,7 +5691,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_86(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_86_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_87(const char* &pos) {
 	str_t _0;
@@ -5701,7 +5704,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_87(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_87_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_88(const char* &pos) {
 	str_t _0;
@@ -5714,7 +5717,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_88(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_88_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_89(const char* &pos) {
 	str_t _0;
@@ -5727,7 +5730,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_89(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_89_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_90(const char* &pos) {
 	str_t _0;
@@ -5740,7 +5743,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_90(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_90_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_91(const char* &pos) {
 	str_t _0;
@@ -5753,7 +5756,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_91(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_91_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_92(const char* &pos) {
 	str_t _0;
@@ -5766,7 +5769,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_92(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_92_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_94(const char* &pos) {
 	str_t _0;
@@ -5779,7 +5782,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_94(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_94_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_95(const char* &pos) {
 	str_t _0;
@@ -5792,7 +5795,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_95(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_95_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_98(const char* &pos) {
 	str_t _0;
@@ -5805,7 +5808,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_98(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_98_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_99(const char* &pos) {
 	str_t _0;
@@ -5818,7 +5821,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_99(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_99_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_101(const char* &pos) {
 	str_t _0;
@@ -5831,7 +5834,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_101(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_101_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_103(const char* &pos) {
 	str_t _0;
@@ -5844,7 +5847,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_103(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_103_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_104(const char* &pos) {
 	str_t _0;
@@ -5857,7 +5860,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_104(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_104_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_105(const char* &pos) {
 	str_t _0;
@@ -5870,7 +5873,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_105(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_105_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_106(const char* &pos) {
 	str_t _0;
@@ -5883,10 +5886,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_106(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_106_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_107(const char* &pos) {
-	UNDEF _0;
+	str_t _0;
 	bool_t success_1 = false;
 	if (*pos == '\0')
 	{
@@ -5896,7 +5899,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_107(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_107_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_108(const char* &pos) {
 	str_t _0;
@@ -5909,7 +5912,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_108(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_108_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_109(const char* &pos) {
 	str_t _0;
@@ -5922,7 +5925,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_109(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_109_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_110(const char* &pos) {
 	str_t _0;
@@ -5935,7 +5938,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_110(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_110_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_111(const char* &pos) {
 	str_t _0;
@@ -5948,7 +5951,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_111(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_111_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_112(const char* &pos) {
 	str_t _0;
@@ -5961,7 +5964,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_112(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_112_data data = _0;
-	return data;
+	return {true, data};
 }
 Parser::Token_res Parser::Tokenizator::AUTO_113(const char* &pos) {
 	str_t _0;
@@ -5974,5 +5977,5 @@ Parser::Token_res Parser::Tokenizator::AUTO_113(const char* &pos) {
 	success_1 = true;
 	pos++;
 	AUTO_113_data data = _0;
-	return data;
+	return {true, data};
 }

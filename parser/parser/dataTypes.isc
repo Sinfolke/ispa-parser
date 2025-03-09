@@ -25,8 +25,10 @@ NUMBER:
 ;
 BOOLEAN:
     &d('true' | 'false')
+
+    $bool val = d == 'true' ? 1 : 0
     data:
-        val: d == 'true' ? 1 : 0
+        val: val
         lit: d
     ;
 ;

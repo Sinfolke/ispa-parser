@@ -119,11 +119,12 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
+    auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR::ir&, const use_prop_t&>("convert");
-    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, use_prop_t>("convert_header");
+    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair<IR::data_block, std::string>>, use_prop_t>("convert_header");
     auto content = convert_fun(ir, use);
-    auto header_content = convert_header_fun(tokens, rules, use);
+    auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
     std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
     if (!cpp)
         throw Error("Failed open output file");
