@@ -7,7 +7,7 @@ namespace IR {
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
-        ASSIGN_VARIABLE, INCREASE_POS_COUNTER, SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER
+        ASSIGN_VARIABLE, INCREASE_POS_COUNTER, SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -123,9 +123,9 @@ namespace IR {
     using groups = std::vector<var_group>;
     using nested_rule_name = std::vector<std::pair<std::string, std::string>>;
 };
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier = -1);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, int &variable_count);
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars);
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier = -1);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, arr_t<IR::node_ret_t> &success_vars, int &variable_count);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, arr_t<IR::node_ret_t> &success_vars);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, int &variable_count);
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop);
 IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_name &nested_rule_names);

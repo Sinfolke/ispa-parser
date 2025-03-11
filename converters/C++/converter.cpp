@@ -14,6 +14,7 @@ namespace global {
     size_t pos_counter;
     use_prop_t use;
     std::string rule_prev_name;
+    std::string namespace_name;
     bool add_semicolon;
     bool has_data_block;
     bool isToken;
@@ -60,13 +61,13 @@ std::string getCharFromEscaped(char in, bool string) {
 }
 std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
     if (type == IR::var_types::ARRAY) {
-        std::string t = "arr_t";
+        std::string t = "::" + global::namespace_name + "::arr_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
         return t;
     } else if (type == IR::var_types::OBJECT) {
-        std::string t = "obj_t";
+        std::string t = "::" + global::namespace_name + "::obj_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ", ";
@@ -85,7 +86,10 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         {IR::var_types::LONG, "long"}, {IR::var_types::ULONG, "unsigned long"},
         {IR::var_types::LONGLONG, "long long"}, {IR::var_types::ULONGLONG, "unsigned long long"}
     };
-    return typesMap.at(type);
+    if (type < IR::var_types::CHAR)
+        return "::" + global::namespace_name + "::" + typesMap.at(type);
+    else
+        return typesMap.at(type);
 }
 
 
@@ -176,9 +180,9 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
         case IR::var_assign_values::CURRENT_POS_SEQUENCE:
             return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
         case IR::var_assign_values::CURRENT_TOKEN:
-            return current_pos_counter.top();
+            return "*" + current_pos_counter.top();
         case IR::var_assign_values::TOKEN_SEQUENCE:
-            return "pos";
+            return current_pos_counter.top();
         default:
             return "NONE";
     }
@@ -237,9 +241,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
-            return "*pos " + op + " " + "Tokens::" + dt.name;
+            return current_pos_counter.top() + "->name " + op + " " + "Tokens::" + dt.name;
         } else {
-            return "*pos";
+            return "*" + current_pos_counter.top();
         }
     }
     static const std::unordered_map<IR::condition_types, std::string> condTypesMap = {
@@ -345,7 +349,7 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
     } else {
         res += " = ";
         res += convertAssign(std::any_cast<IR::assign>(dtb.value), current_pos_counter);
-        res += ";\n";
+        res += ";";
     }
     return res;
 }
@@ -353,13 +357,13 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
 void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     if (mem.type != IR::types::RULE_END)
         out << std::string(indentLevel, '\t');
-    auto name = std::any_cast<std::string>(global::use["name"].data);
+    global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
     switch (mem.type)
     {
     case IR::types::RULE:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
+        out << global::namespace_name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
         out << "\tauto in = pos" ;
         indentLevel++;
         global::isToken = false;
@@ -367,7 +371,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::TOKEN:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
+        out << global::namespace_name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
         out << "auto in = pos";
         indentLevel++;
         global::isToken = true;
@@ -375,12 +379,12 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::RULE_END:
         if (global::has_data_block) {
             if (global::isToken) {
-                out << "\treturn {true, ::" << name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
+                out << "\treturn {true, ::" << global::namespace_name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
                 if (global::has_data_block)
                     out << ", data";
                 out << ")};\n";
             } else {
-                out << "\treturn {true, ::" << name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
+                out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
                 if (global::has_data_block)
                     out << ", data";
                 out << ")};\n";

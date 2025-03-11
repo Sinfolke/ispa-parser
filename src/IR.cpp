@@ -158,9 +158,13 @@ IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::v
     block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::ID, var.name}}}}}});
     return shadow_var;
 }
-IR::variable pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count, bool add_shadow_var = true) {
+IR::variable pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count, bool insideLoop, bool add_shadow_var = true) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     IR::variable shadow_variable;
+    if (insideLoop) {
+       shadow_variable = add_shadow_variable(member, block, var, variable_count);
+       add_shadow_var = false;
+    }
     switch (qualifier_char) {
         case '+':
             if (add_shadow_var)
@@ -191,17 +195,23 @@ IR::variable pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block,
     return shadow_variable;
 }
 // function to push based on qualifier for Rule_other
-IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::member call, IR::ir &member, char qualifier_char, int &variable_count) {
+IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::member call, IR::ir &member, char qualifier_char, int &variable_count, bool &insideLoop, bool add_shadow_var = false) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     IR::variable shadow_variable;
+    if (insideLoop) {
+        shadow_variable = add_shadow_variable(member, block, var, variable_count);
+        add_shadow_var = false;
+    }
     switch (qualifier_char) {
         case '+':
-            shadow_variable = add_shadow_variable(member, block, var, variable_count);
+            if (add_shadow_var)
+                shadow_variable = add_shadow_variable(member, block, var, variable_count);
             block.push_back(call);
             handle_plus_qualifier({expr, block}, member, variable_count);
             break;
         case '*': {
-            shadow_variable = add_shadow_variable(member, block, var, variable_count);
+            if (add_shadow_var)
+                shadow_variable = add_shadow_variable(member, block, var, variable_count);
             block.push_back(call);
             member.push({IR::types::WHILE, IR::condition{expr, block}});
             break;
@@ -219,10 +229,10 @@ IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::mem
     }
     return shadow_variable;
 }
-IR::variable affectIrByQuantifier(IR::ir &member, IR::ir &values, char qualifier, IR::variable var, int &variable_count) {
+IR::variable affectIrByQuantifier(IR::ir &member, IR::ir &values, char qualifier, IR::variable var, int &variable_count, bool insideLoop) {
     IR::ir new_ir;
     IR::variable shadow_var;
-    if (qualifier == '*' || qualifier == '+') {
+    if (qualifier == '*' || qualifier == '+' || insideLoop) {
         IR::condition loop = { { { IR::condition_types::NUMBER, (long long) 1 } }, {} };
         processExitStatements(values.elements);
         loop.block = values.elements;
@@ -826,6 +836,8 @@ std::string getElementbyAccessor(IR::accessor &accessor, IR::var_elements &eleme
     }
     return state == accessor_states::ELEMENT ? *elements_pointer : group_pointer->var;
 }
+void inlineExprAccessor(IR::assign &data, IR::var_elements &elements, IR::groups &groups);
+void inlineExprAccessor(arr_t<IR::expr> &expr, IR::var_elements &elements, IR::groups &groups);
 void inlineExprAccessor(IR::assign &data, IR::var_elements &elements, IR::groups &groups) {
     if (data.kind == IR::var_assign_values::ACCESSOR) {
         auto accessor = std::any_cast<IR::accessor>(data.data);
@@ -844,6 +856,11 @@ void inlineExprAccessor(IR::assign &data, IR::var_elements &elements, IR::groups
         auto var = getElementbyAccessor(accessor, elements, groups, false);
         data.kind = IR::var_assign_values::ID;
         data.data = var;
+    } else if (data.kind == IR::var_assign_values::EXPR) {
+        auto dt = std::any_cast<arr_t<IR::expr>>(data.data);
+        inlineExprAccessor(dt, elements, groups);
+        data.data = dt;
+
     }
 }
 void inlineExprAccessor(arr_t<IR::expr> &expr, IR::var_elements &elements, IR::groups &groups) {
@@ -859,7 +876,7 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
     if (values.empty() || elements.empty())
         return;
     for (auto it = values.begin(); it != values.end(); it++) {
-        auto &el = *it;
+        auto el = *it;
         if (el.type == IR::types::ACCESSOR) {
             auto accessor = std::any_cast<IR::accessor>(el.value);
             std::string var = getElementbyAccessor(accessor, elements, groups, true);
@@ -867,9 +884,13 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
                 {IR::condition_types::STRNCMP, IR::strncmp{0, var}}
             };
             // go to reverse to get names of var and svar
+            bool insideLoop;
             IR::variable accessor_var, accessor_shadow, accessor_svar;
             for (auto reverse_it = std::make_reverse_iterator(it + 1); reverse_it != values.rend(); reverse_it++) {
-                if (reverse_it->type == IR::types::VARIABLE) {
+                if (reverse_it->type == IR::types::INSIDE_LOOP) {
+                    insideLoop = true;
+                    reverse_it = std::make_reverse_iterator(values.erase(std::prev(reverse_it.base())));
+                } else if (reverse_it->type == IR::types::VARIABLE) {
                     auto data = std::any_cast<IR::variable>(reverse_it->value);
                     if (accessor_svar.name.empty()) {
                         accessor_svar = data;
@@ -896,13 +917,15 @@ void inlineAccessors(arr_t<IR::member> &values, IR::var_elements elements, IR::g
             auto dt = std::any_cast<IR::condition>(el.value);
             inlineExprAccessor(dt.expression, elements, groups);
             inlineAccessors(dt.block, elements, groups, variable_count);
-            el.value = dt;
+            it->value = dt;
         } else if (el.type == IR::types::VARIABLE) {
             auto data = std::any_cast<IR::variable>(el.value);
             inlineExprAccessor(data.value, elements, groups);
+            it->value = data;
         } else if (el.type == IR::types::ASSIGN_VARIABLE) {
             auto data = std::any_cast<IR::variable_assign>(el.value);
             inlineExprAccessor(data.value, elements, groups);
+            it->value = data;
         }
     }
 }
@@ -1033,7 +1056,7 @@ IR::data_block TreeDataBlockToIR(Parser::Rule rule, IR::var_elements elements, I
     } else throw Error("Undefined data block val\n");
     return datablock;
 }
-IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, std::string &fullname, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, std::string &fullname, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     //cpuf::printf("group\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
@@ -1048,7 +1071,11 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     arr_t<IR::node_ret_t> node_ret;
     auto groups_el = groups.size();
     groups.push_back({var.name, elements.size(), 0});
-    auto values = rulesToIr(val, fullname, isToken, nested_rule_name, elements, groups, vars, node_ret, variable_count);
+    auto inside_loop_prev = insideLoop;
+    if (qualifier_char == '*' || qualifier_char == '+')
+        insideLoop = true;
+    auto values = rulesToIr(val, fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop, node_ret, variable_count);
+    insideLoop = inside_loop_prev;
     groups[groups_el].end = elements.size() - 1;
     var.type = {deduceVarTypeByValue(rule)};
     arr_t<IR::member> var_members;
@@ -1103,7 +1130,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     if (!values.elements.empty() && values.elements.back().type == IR::types::SKIP_SPACES) {
         values.elements.pop_back();
     }
-    auto shadow_var = affectIrByQuantifier(member, values, qualifier_char, var, variable_count);
+    auto shadow_var = affectIrByQuantifier(member, values, qualifier_char, var, variable_count, insideLoop);
 
     if (!shadow_var.name.empty()) {
         groups[groups_el].var = shadow_var.name;
@@ -1125,7 +1152,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
 
     return {svar, var, shadow_var};
 }
-IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &insideLoop) {
     //cpuf::printf("csequence\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
@@ -1195,10 +1222,10 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     arr_t<IR::member> block = createDefaultBlock(var, svar);
-    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
     return {svar, var, shadow_var};
 }
-IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &insideLoop) {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     auto data = std::any_cast<std::string>(rule.data);
     auto var = createEmptyVariable(generateVariableName(variable_count));
@@ -1223,10 +1250,10 @@ IR::node_ret_t processString(const Parser::Rule &rule, IR::ir &member, int &vari
     arr_t<IR::member> block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
     return {svar, var, shadow_var};
 }
-IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &insideLoop) {
     //cpuf::printf("hex\n");
     auto data = std::any_cast<std::string>(rule.data);
     arr_t<IR::expr> expr = {};
@@ -1257,10 +1284,10 @@ IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, IR::ir &member, int &v
     //cpuf::printf("hex_open\n");
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
     return {svar, var, shadow_var};
 }
-IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &insideLoop) {
     //cpuf::printf("hex\n");
     auto data = std::any_cast<std::string>(rule.data);
     arr_t<IR::expr> expr = {};
@@ -1294,10 +1321,10 @@ IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, IR::ir &member, int &v
     }
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+    auto shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
     return {svar, var, shadow_var};
 }
-IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char) {
+IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &insideLoop) {
     //cpuf::printf("accessor\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
@@ -1313,13 +1340,15 @@ IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &va
         IR::types::ACCESSOR,
         IR::accessor { second, qualifier_char }
     };
+    if (insideLoop)
+        member.push({IR::types::INSIDE_LOOP});
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, shadow_var});
     member.push({IR::types::VARIABLE, svar});
     member.push(mem);
-    return {svar, var};
+    return {svar, var, shadow_var};
 }
-IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names) {
+IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, bool &insideLoop) {
     //cpuf::printf("Rule_other");
     auto data = std::any_cast<obj_t>(rule.data);
     auto is_nested = std::any_cast<bool>(corelib::map::get(data, "is_nested"));
@@ -1359,7 +1388,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         arr_t<IR::expr> expr;
         auto call = createDefaultCall(block, var, name_str, member, expr);
         member.push(call);
-        shadow_var = pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count);
+        shadow_var = pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count, insideLoop);
     } else {
         if (isCallingToken) {
             block[0] = {
@@ -1373,7 +1402,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
             arr_t<IR::expr> expr = {
                 {IR::condition_types::CURRENT_TOKEN, IR::current_token {IR::condition_types::EQUAL, name_str}},
             };
-            shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count);
+            shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
         } else {
 
             // remove variable assignemnt
@@ -1381,14 +1410,14 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
             arr_t<IR::expr> expr;
             auto call = createDefaultCall(block, var, name_str, member, expr);
             member.push(call);
-            shadow_var= pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count);
+            shadow_var= pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count, insideLoop);
 
         }
 
     }
     return {svar, var, shadow_var};
 }
-IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
+IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space, bool &insideLoop) {
     //cpuf::printf("Rule_escaped\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
@@ -1443,14 +1472,15 @@ IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, IR::ir &member, in
     var.type = {IR::var_types::STRING};
     arr_t<IR::member> block = {{IR::types::EXIT}};
     arr_t<IR::member> block_after = createDefaultBlock(var, svar);
+    auto shadow_var = add_shadow_variable(member, block, var, variable_count);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
     //cpuf::printf("escaped_close\n");
-    return {svar, var};
+    return {svar, var, shadow_var};
 }
-IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space) {
+IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, bool &add_space, bool &insideLoop) {
     //cpuf::printf("Rule_any\n");
     auto var = createEmptyVariable(generateVariableName(variable_count));
     auto svar = createSuccessVariable(variable_count);
@@ -1465,11 +1495,14 @@ IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &v
         {IR::condition_types::EQUAL},
         {IR::condition_types::CHARACTER, '\0'}
     };
+    IR::variable shadow_var;
+    if (insideLoop)
+        shadow_var = add_shadow_variable(member, block, var, variable_count);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::IF, IR::condition{expression, block}});
     member.add(block_after);
-    return {svar, var};
+    return {svar, var, shadow_var};
 }
 // arr_t<IR::member> construct_block(const arr_t<arr_t<IR::member>> &blocks, const arr_t<arr_t<IR::expr>> &conditions, size_t i = 0) {
 //     if (i >= blocks.size()) {
@@ -1490,7 +1523,7 @@ IR::node_ret_t process_Rule_any(const Parser::Rule &rule, IR::ir &member, int &v
 //     return block;
 // }
 
-arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_count, IR::variable var, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_count, IR::variable var, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     if (rules.empty()) {
         return {{IR::types::EXIT}};
     }
@@ -1518,9 +1551,9 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     IR::var_elements new_elements;
     IR::groups new_groups;
     if (rule_val.name == Parser::Rules::Rule_group || rule_val.name == Parser::Rules::accessor)
-        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, elements, groups, vars, fullname, success_var, new_qualifier);
+        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, fullname, success_var, new_qualifier);
     else    
-        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, new_elements, new_groups, vars, fullname, success_var);
+        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, new_elements, new_groups, vars, insideLoop, fullname, success_var);
     
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
@@ -1530,7 +1563,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             arr_t<IR::expr> {
                 {IR::condition_types::NOT}, {IR::condition_types::VARIABLE, success_var.svar.name}
             },
-            convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars),
+            convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop),
         };
         if (!success_var.var.name.empty()) {
             cond.else_block = {{
@@ -1553,7 +1586,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             if (el.type == IR::types::IF) {
                 auto val = std::any_cast<IR::condition>(el.value);
                 if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
-                    val.block = convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars);
+                    val.block = convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop);
                     for (int j = i + 1; j < new_ir.elements.size(); j++) {
                         if (new_ir.elements[j].type == IR::types::INCREASE_POS_COUNTER || new_ir.elements[j].type == IR::types::SKIP_SPACES)
                             continue;
@@ -1588,7 +1621,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     return new_ir.elements;
 }
 
-IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     //cpuf::printf("Rule_op\n");
     auto op = std::any_cast<arr_t<Parser::Rule>>(rule.data);
     auto var = createEmptyVariable(generateVariableName(variable_count));
@@ -1610,7 +1643,7 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     //         auto id_str = std::any_cast<std::string>(id.data);
     //     }
     // }
-    member.add(convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars));
+    member.add(convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop));
 
     // Append default block
     member.add(block);
@@ -1647,18 +1680,18 @@ void process_cll_var(const Parser::Rule &rule, IR::ir &member, int &variable_cou
         member.push({IR::types::ASSIGN_VARIABLE, IR::variable_assign {name_str, assign_types, assign}});
     }
 }
-IR::condition process_cll_cond(const Parser::Rule &rule, IR::ir &member, int &varriable_count, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+IR::condition process_cll_cond(const Parser::Rule &rule, IR::ir &member, int &varriable_count, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto expr = std::any_cast<Parser::Rule>(corelib::map::get(data, "expr"));
     auto block = std::any_cast<Parser::Rule>(corelib::map::get(data, "block"));
     auto block_data = std::any_cast<arr_t<Parser::Rule>>(block.data);
-    auto block_ir = rulesToIr(block_data, fullname, isToken, nested_rule_names, elements, groups, vars, varriable_count);
+    auto block_ir = rulesToIr(block_data, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop, varriable_count);
     IR::condition cond;
     cond.expression = TreeExprToIR(expr);
     cond.block = block_ir.elements;
     return cond;
 }
-IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool &add_skip_space, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool &add_skip_space, bool isToken, IR::nested_rule_name nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     add_skip_space = false;
     auto rule_val = std::any_cast<Parser::Rule>(rule.data);
     IR::condition cond;
@@ -1668,20 +1701,25 @@ IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variab
         process_cll_var(rule_val, member, variable_count, qualifier_char, isToken, vars);
         break;
     case Parser::Rules::cll_if:
-        cond = process_cll_cond(rule_val, member, variable_count, fullname, isToken, nested_rule_names, elements, groups, vars);
+        cond = process_cll_cond(rule_val, member, variable_count, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop);
         member.push({IR::types::IF, cond});
         break;
     case Parser::Rules::loop_while:
-        cond = process_cll_cond(rule_val, member, variable_count, fullname, isToken, nested_rule_names, elements, groups, vars);
+    {
+        bool insideLoop_prev = insideLoop;
+        insideLoop = true;
+        cond = process_cll_cond(rule_val, member, variable_count, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop);
         member.push({IR::types::WHILE, cond});
+        insideLoop = insideLoop_prev;
         break;
+    }
     default:
         break;
     }
     return {{}, {}};
 }
 
-void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier) {
+void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier) {
     //member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
@@ -1699,37 +1737,37 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
     bool add_space_skip = true;
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
-            success_var = processGroup(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name, elements, groups, vars);
+            success_var = processGroup(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop);
             break;
         case Parser::Rules::Rule_csequence:
-            success_var = processRuleCsequence(rule, member, variable_count, qualifier_char);
+            success_var = processRuleCsequence(rule, member, variable_count, qualifier_char, insideLoop);
             break;
         case Parser::Rules::string:
-            success_var = processString(rule, member, variable_count, qualifier_char);
+            success_var = processString(rule, member, variable_count, qualifier_char, insideLoop);
             break;
         case Parser::Rules::accessor:
-            success_var = processAccessor(rule, member, variable_count, qualifier_char);
+            success_var = processAccessor(rule, member, variable_count, qualifier_char, insideLoop);
             break;
         case Parser::Rules::Rule_hex:
-            success_var = process_Rule_hex(rule, member, variable_count, qualifier_char);
+            success_var = process_Rule_hex(rule, member, variable_count, qualifier_char, insideLoop);
             break;
         case Parser::Rules::Rule_bin: 
-            success_var = process_Rule_bin(rule, member, variable_count, qualifier_char);
+            success_var = process_Rule_bin(rule, member, variable_count, qualifier_char, insideLoop);
             break;
         case Parser::Rules::Rule_other:
-            success_var = process_Rule_other(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name);
+            success_var = process_Rule_other(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name, insideLoop);
             break;
         case Parser::Rules::Rule_escaped:
-            success_var = process_Rule_escaped(rule, member, variable_count, qualifier_char, add_space_skip);
+            success_var = process_Rule_escaped(rule, member, variable_count, qualifier_char, add_space_skip, insideLoop);
             break;
         case Parser::Rules::Rule_any:
-            success_var = process_Rule_any(rule, member, variable_count, qualifier_char, add_space_skip);
+            success_var = process_Rule_any(rule, member, variable_count, qualifier_char, add_space_skip, insideLoop);
             break;
         case Parser::Rules::Rule_op:
-            success_var = process_Rule_op(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name, elements, groups, vars);
+            success_var = process_Rule_op(rule, member, variable_count, qualifier_char, fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop);
             break;
         case Parser::Rules::cll:
-            success_var = process_cll(rule, member, variable_count, qualifier_char, fullname, add_space_skip, isToken, nested_rule_name, elements, groups, vars);
+            success_var = process_cll(rule, member, variable_count, qualifier_char, fullname, add_space_skip, isToken, nested_rule_name, elements, groups, vars, insideLoop);
             break;
         case Parser::Rules::linear_comment:
             return;
@@ -1744,40 +1782,40 @@ void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool
     vars.push_back(success_var.svar);
     vars.push_back(success_var.shadow_var);
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars, int &variable_count) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, arr_t<IR::node_ret_t> &success_vars, int &variable_count) {
     IR::ir result;
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
-        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, rule_name, success_var);
+        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, rule_name, success_var);
         success_vars.push_back(success_var);
     }
     return result;
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, arr_t<IR::node_ret_t> &success_vars) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, arr_t<IR::node_ret_t> &success_vars) {
     IR::ir result;
     int variable_count = 0;
 
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
-        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, rule_name, success_var);
+        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, rule_name, success_var);
         success_vars.push_back(success_var);
     }
     return result;
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, int &variable_count) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, int &variable_count) {
     IR::ir result;
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
-        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, rule_name, success_var);
+        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, rule_name, success_var);
     }
     return result;
 }
-IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars) {
+IR::ir rulesToIr(arr_t<Parser::Rule> rules, std::string &rule_name, bool isToken, IR::nested_rule_name &nested_rule_names, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     IR::ir result;
     int variable_count = 0;
     for (auto &rule : rules) {
         IR::node_ret_t success_var;
-        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, rule_name, success_var);
+        ruleToIr(rule, result, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, rule_name, success_var);
     }
     return result;
 }
@@ -1800,6 +1838,7 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         IR::groups groups;
         IR::variables vars;
         int variable_count = 0;
+        bool insideLoop = false;
         auto data = std::any_cast<obj_t>(el.data);
         auto name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name")).data);
         auto rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "rule"));
@@ -1811,7 +1850,7 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname, nested_rule_names));
 
-        auto values = rulesToIr(rules, fullname, isToken, nested_rule_names, elements, groups, vars, variable_count);
+        auto values = rulesToIr(rules, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop, variable_count);
         if (!values.elements.empty() && values.elements.back().type == IR::types::SKIP_SPACES)
             values.pop(); // remove skip of spaces at the end
         inlineAccessors(values.elements, elements, groups, variable_count);

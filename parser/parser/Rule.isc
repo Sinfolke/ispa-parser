@@ -1,15 +1,10 @@
 Rule: 
-    $var name = %1;
-    $var rule = %3;
-    $var data_block = %4;
-    $var nested_rules = %5;
-
-    &rule_begin(ID ':') function_body_decl? (#rule)* #data_block #nested_rule* STRICT_END
+    ID ':' (#rule)* #data_block #nested_rule* STRICT_END
     data:
-        name: name
-        rule: rule
-        data_block: data_block
-        nestedRules: nested_rules 
+        name: %1
+        rule: %3
+        data_block: %4
+        nestedRules: %5 
     ;
     #rule:
 
