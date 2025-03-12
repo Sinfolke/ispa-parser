@@ -81,4 +81,9 @@ namespace corelib::text {
     bool isLower(const std::string str) {
         return !isUpper(str);
     }
+    std::string ToUpper(std::string str) {
+        for (auto &c : str)
+            c = toupper(c);
+        return str; 
+    }
 }

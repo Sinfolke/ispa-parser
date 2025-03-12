@@ -15,14 +15,14 @@ namespace IR {
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
         ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
         CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, HEX, BIN, STRING, STRNCMP,
-        VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL
+        VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL, PROPERTY
     };
     enum class var_types {
-        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token,
+        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result,
         CHAR, UCHAR, SHORT, USHORT, INT, UINT, LONG, ULONG, LONGLONG, ULONGLONG
     };
     enum class var_assign_values {
-        NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, ID, VAR_REFER, ACCESSOR, 
+        NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VARIABLE, PROPERTY, VAR_REFER, ACCESSOR, 
         UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG, CURRENT_POS,
         CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR, INCLOSED_MAP
     };
@@ -51,6 +51,10 @@ namespace IR {
         std::string var_name;
         std::vector<function_call> calls;
     };
+    struct property {
+        std::string obj;
+        std::list<std::string> properties;
+    };
     struct var_refer {        
         bool pre_increament;
         bool post_increament;
@@ -76,6 +80,7 @@ namespace IR {
         std::string name = "";
         var_type type = {var_types::UNDEFINED};
         assign value = {var_assign_values::NONE};
+        std::list<std::string> property_access = {};
     };
     struct variable_assign {
         std::string name;
@@ -88,7 +93,7 @@ namespace IR {
     };
     struct strncmp {
         bool is_string;
-        std::string value;
+        IR::variable value;
     };
     using inclosed_map = std::unordered_map<std::string, std::pair<arr_t<IR::expr>, var_type>>;
     struct data_block {
@@ -114,11 +119,11 @@ namespace IR {
         IR::variable shadow_var = {};
     };
     struct var_group {
-        std::string var;
+        IR::variable var;
         size_t begin;
         size_t end;
     };
-    using var_elements = std::vector<std::string>;
+    using var_elements = std::vector<IR::variable>;
     using variables = std::list<IR::variable>;
     using groups = std::vector<var_group>;
     using nested_rule_name = std::vector<std::pair<std::string, std::string>>;

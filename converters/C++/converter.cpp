@@ -80,6 +80,7 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         {IR::var_types::STRING, "str_t"}, {IR::var_types::NUMBER, "num_t"},
         {IR::var_types::FUNCTION, "function"},
         {IR::var_types::ANY, "any_t"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
+        {IR::var_types::Rule_result, "Rule_res"}, {IR::var_types::Token_result, "Token_res"},
         {IR::var_types::CHAR, "char"}, {IR::var_types::UCHAR, "unsigned char"}, 
         {IR::var_types::SHORT, "short"}, {IR::var_types::USHORT, "unsigned short"},
         {IR::var_types::INT, "int"}, {IR::var_types::UINT, "unsigned int"},
@@ -110,8 +111,15 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 res += "++";
             return res;
         }
-        case IR::var_assign_values::ID:
+        case IR::var_assign_values::VARIABLE:
+        {
             //cpuf::printf("on ID\n");
+            auto dt = std::any_cast<IR::variable>(data);
+            std::string res = dt.name;
+            for (auto el : dt.property_access)
+                res += "." + el;
+            return res;
+        }
         case IR::var_assign_values::INT:
             //cpuf::printf("on INT\n");
             return std::any_cast<std::string>(data);
@@ -167,6 +175,15 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
         }
+        case IR::var_assign_values::PROPERTY:
+        {
+            auto dt = std::any_cast<IR::property>(data);
+            std::string res = dt.obj;
+            for (auto el : dt.properties) {
+                res += "." + el;
+            }
+            return res;
+        }
     }
     switch (value) {
         case IR::var_assign_values::NONE:
@@ -217,13 +234,17 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<IR::strncmp>(data);
         if (dt.is_string) {
-            return std::string("!std::strncmp(pos, \"") + format_str(dt.value) + std::string("\", ") + std::to_string(count_strlen(dt.value.c_str())) + ")";
+            return std::string("!std::strncmp(pos, \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
         } else {
-            return std::string("!std::strncmp(pos, ") + format_str(dt.value) + ", strlen(" + dt.value + "))";
+            return std::string("!std::strncmp(pos, ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
     } else if (type == IR::condition_types::VARIABLE) {
-        //cpuf::printf("variable\n");    
-        return std::any_cast<std::string>(data);
+        //cpuf::printf("variable\n");   
+        auto dt = std::any_cast<IR::variable>(data);
+        std::string res = dt.name;
+        for (auto el : dt.property_access)
+            res += "." + el;
+        return res;
     } else if (type == IR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
         return std::any_cast<std::string>(data) + ".result";
@@ -330,6 +351,9 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
     std::string res = method.var_name;
     for (auto call : method.calls) {
         res += '.';
+        if (call.name == "push")
+            call.name = "push_back";
+
         res += convertFunctionCall(call, current_pos_counter);
     }
     return res;

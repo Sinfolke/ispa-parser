@@ -19,6 +19,7 @@ namespace corelib {
         bool isUpper(const std::string str);
         bool isLower(const char* str);
         bool isLower(const std::string str);
+        std::string ToUpper(std::string str);
     }
     namespace map {
         template<typename T>

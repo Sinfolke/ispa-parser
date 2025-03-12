@@ -16,6 +16,7 @@ namespace IR {
             {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
             {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},
             {var_types::ANY, "any"}, {var_types::Rule, "rule"}, {var_types::Token, "token"},
+            {var_types::Rule_result, "Rule_result"}, {var_types::Token_result, "Token_result"},
             {var_types::CHAR, "char"}, {var_types::UCHAR, "unsigned char"}, 
             {var_types::SHORT, "short"}, {var_types::USHORT, "unsigned short"},
             {var_types::INT, "int"}, {var_types::UINT, "unsigned int"},
@@ -43,14 +44,17 @@ namespace IR {
                     res += "++";
                 return res;
             }
-            case var_assign_values::ID:
+            case var_assign_values::VARIABLE:
+            {
                 //cpuf::printf("on ID\n");
+                auto dt = std::any_cast<IR::variable>(data);
+                std::string res = dt.name;
+                for (auto el : dt.property_access)
+                    res += "." + el;
+                return res;
+            }
             case var_assign_values::INT:
                 //cpuf::printf("on INT, type: %s\n", data.type().name());
-                if (data.type() == typeid(IR::variable)) {
-                    cpuf::printf("name: %s\n", std::any_cast<IR::variable>(data).name);
-                    return "";
-                }
                 return std::any_cast<std::string>(data);
             case var_assign_values::ARRAY:
             {
@@ -93,6 +97,15 @@ namespace IR {
                 if (dt == 0)
                     return current_pos_counter.top();
                 return current_pos_counter.top() + sign + std::to_string((int) dt);
+            }
+            case var_assign_values::PROPERTY:
+            {
+                auto dt = std::any_cast<IR::property>(data);
+                std::string res = dt.obj;
+                for (auto el : dt.properties) {
+                    res += "." + el;
+                }
+                return res;
             }
         }
         switch (value) {
@@ -153,13 +166,17 @@ namespace IR {
             //cpuf::printf("strncmp\n");
             auto dt = std::any_cast<IR::strncmp>(data);
             if (dt.is_string) {
-                return std::string("!STRNCMP(pos, \"") + dt.value + std::string("\")");
+                return std::string("!STRNCMP(pos, \"") + dt.value.name + std::string("\")");
             } else {
-                return std::string("!STRNCMP(pos, ") + dt.value + std::string(")");
+                return std::string("!STRNCMP(pos, ") + dt.value.name + std::string(")");
             }
         } else if (type == condition_types::VARIABLE) {
-            //cpuf::printf("variable\n");    
-            return std::any_cast<std::string>(data);
+            //cpuf::printf("variable\n");   
+            auto dt = std::any_cast<IR::variable>(data);
+            std::string res = dt.name;
+            for (auto el : dt.property_access)
+                res += "." + el;
+            return res;
         } else if (type == condition_types::SUCCESS_CHECK) {
             //cpuf::printf("success_check\n");
             return std::any_cast<std::string>(data) + ".res";

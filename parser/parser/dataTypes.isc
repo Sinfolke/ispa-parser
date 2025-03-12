@@ -1,11 +1,11 @@
 STRING:
-    $data = $2;
+    $data = %1;
 
     ("'" ("\\'" | [^'] )* "'") | ('"' ('\\"' | [^"] )* '"')
 
 ;
 NUMBER:
-    $char sign = %0;
+    $char sign = %1;
     $str main = $1;
     $num main_n = NUMBER(main);
     $char point = $2>%1;

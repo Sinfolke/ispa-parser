@@ -7,15 +7,26 @@
 #include <logging.h>
 #include <converter.h>
 #include <unordered_map>
+namespace global
+{
+    extern std::string namespace_name;
+}
+
 std::string createLibrary() {
     std::string res;
     std::unordered_map<std::string, std::string> macros = {
-        {"ISPA_BOOLEAN_TYPE", "bool"},
-        {"ISPA_NUM_TYPE", "double"},
-        {"ISPA_STR_TYPE", "std::string"},
-        {"ISPA_ANY_TYPE", "std::any"},
-        {"ISPA_ARRAY_TYPE", "std::list"},
-        {"ISPA_OBJECT_TYPE", "std::unordered_map"}
+        {"BOOLEAN_TYPE", "bool"},
+        {"NUM_TYPE", "double"},
+        {"STR_TYPE", "std::string"},
+        {"ANY_TYPE", "std::any"},
+        {"ARRAY_TYPE", "std::list"},
+        {"OBJECT_TYPE", "std::unordered_map"}
+    };
+    std::unordered_map<std::string, std::string> push_methods {
+        { "std::stack", "push" },
+        { "std::queue", "push" },
+        { "std::priority_queue", "push" },
+
     };
     res += "#pragma once\n";
     res += "#include <string>\n";
@@ -23,8 +34,10 @@ std::string createLibrary() {
     res += "#include <unordered_map>\n";
     res += "#include <iscstdlibc++.h>\n";
     for (auto [macro, deftype] : macros) {
-        res += "#ifndef " + macro + "\n";
-        res += "#define " + macro + " " + deftype + "\n";
+        auto actual_name = corelib::text::ToUpper(global::namespace_name) + "_" + macro;
+        
+        res += "#ifndef " + actual_name + "\n";
+        res += "#define " + actual_name + " " + deftype + "\n";
         res += "#endif\n";
     }
     return res;
@@ -37,14 +50,14 @@ std::string createNamespace(use_prop_t use) {
 }
 std::string createTypes() {
     std::string res;
-    res += "\tusing str_t = ISPA_STR_TYPE;\n";
-    res += "\tusing num_t = ISPA_NUM_TYPE;\n";
-    res += "\tusing bool_t = ISPA_BOOLEAN_TYPE;\n";
-    res += "\tusing any_t = ISPA_ANY_TYPE;\n";
+    res += "\tusing str_t = " + corelib::text::ToUpper(global::namespace_name) + "_STR_TYPE;\n";
+    res += "\tusing num_t = " + corelib::text::ToUpper(global::namespace_name) + "_NUM_TYPE;\n";
+    res += "\tusing bool_t = " + corelib::text::ToUpper(global::namespace_name) + "_BOOLEAN_TYPE;\n";
+    res += "\tusing any_t = " + corelib::text::ToUpper(global::namespace_name) + "_ANY_TYPE;\n";
     res += "\ttemplate<typename T>\n";
-    res += "\tusing arr_t = ISPA_ARRAY_TYPE<T>;\n";
+    res += "\tusing arr_t = " + corelib::text::ToUpper(global::namespace_name) + "_ARRAY_TYPE;\n";
     res += "\ttemplate<typename Key, typename Value>\n";
-    res += "\tusing obj_t = ISPA_OBJECT_TYPE<Key, Value>;\n";
+    res += "\tusing obj_t = " + corelib::text::ToUpper(global::namespace_name) + "_OBJECT_TYPE;\n";
     return res;
 }
 void writeEnum(std::string &res, std::list<std::string> enm) {

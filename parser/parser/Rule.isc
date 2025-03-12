@@ -33,7 +33,7 @@ Rule:
         ('?' | '+' | '*')
     ;
     #group:
-        $var name=$0>%1;
+        $var name=$1>%1;
         $var r=%4;
 
         ('&' method_call | ID )? '(' rule* ')'
