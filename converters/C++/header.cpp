@@ -15,12 +15,12 @@ namespace global
 std::string createLibrary() {
     std::string res;
     std::unordered_map<std::string, std::string> macros = {
-        {"BOOLEAN_TYPE", "bool"},
+        {"BOOL_TYPE", "bool"},
         {"NUM_TYPE", "double"},
         {"STR_TYPE", "std::string"},
         {"ANY_TYPE", "std::any"},
-        {"ARRAY_TYPE", "std::list"},
-        {"OBJECT_TYPE", "std::unordered_map"}
+        {"ARR_TYPE", "std::list"},
+        {"OBJ_TYPE", "std::unordered_map"}
     };
     std::unordered_map<std::string, std::string> push_methods {
         { "std::stack", "push" },
@@ -52,12 +52,12 @@ std::string createTypes() {
     std::string res;
     res += "\tusing str_t = " + corelib::text::ToUpper(global::namespace_name) + "_STR_TYPE;\n";
     res += "\tusing num_t = " + corelib::text::ToUpper(global::namespace_name) + "_NUM_TYPE;\n";
-    res += "\tusing bool_t = " + corelib::text::ToUpper(global::namespace_name) + "_BOOLEAN_TYPE;\n";
+    res += "\tusing bool_t = " + corelib::text::ToUpper(global::namespace_name) + "_BOOL_TYPE;\n";
     res += "\tusing any_t = " + corelib::text::ToUpper(global::namespace_name) + "_ANY_TYPE;\n";
     res += "\ttemplate<typename T>\n";
-    res += "\tusing arr_t = " + corelib::text::ToUpper(global::namespace_name) + "_ARRAY_TYPE;\n";
+    res += "\tusing arr_t = " + corelib::text::ToUpper(global::namespace_name) + "_ARR_TYPE<T>;\n";
     res += "\ttemplate<typename Key, typename Value>\n";
-    res += "\tusing obj_t = " + corelib::text::ToUpper(global::namespace_name) + "_OBJECT_TYPE;\n";
+    res += "\tusing obj_t = " + corelib::text::ToUpper(global::namespace_name) + "_OBJ_TYPE<Key, Value>;\n";
     return res;
 }
 void writeEnum(std::string &res, std::list<std::string> enm) {
@@ -83,11 +83,11 @@ std::string createRulesEnum(std::list<std::string> rules) {
 }
 std::string getTypesFromStdlib() {
     std::string res;
-    res += "\tusing Rule = ISC_STD::_return<Rules>;\n";
-    res += "\tusing Rule_res = ISC_STD::match_result<Rules>;\n";
-    res += "\tusing Token = ISC_STD::_return<Tokens>;\n";
-    res += "\tusing Token_res = ISC_STD::match_result<Tokens>;\n";
-    res += "\tusing Tree = ISC_STD::Tree<Rules>;\n";
+    res += "\ttypedef ISC_STD::_return<Rules> Rule;\n";
+    res += "\ttypedef ISC_STD::match_result<Rules> Rule_res;\n";
+    res += "\ttypedef ISC_STD::_return<Tokens> Token;\n";
+    res += "\ttypedef ISC_STD::match_result<Tokens> Token_res;\n";
+    res += "\ttypedef ISC_STD::Tree<Rules> Tree;\n";
     return res;
 }
 std::string convert_inclosed_map(IR::inclosed_map map) {

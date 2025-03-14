@@ -18,7 +18,7 @@ Rule(accessor_group) {
 	_2 = CURRENT_TOKEN
 	success_3 = TRUE
 	pos++
-	data = _2 # Token_result
+	data = _2 # token
 }
 Rule(accessor_element) {
 	Token_result _0 = NONE
@@ -40,7 +40,7 @@ Rule(accessor_element) {
 	_2 = CURRENT_TOKEN
 	success_3 = TRUE
 	pos++
-	data = _2 # Token_result
+	data = _2 # token
 }
 Rule(accessor_char) {
 	Token_result _0 = NONE
@@ -62,7 +62,7 @@ Rule(accessor_char) {
 	_2 = CURRENT_TOKEN
 	success_3 = TRUE
 	pos++
-	data = _2 # Token_result
+	data = _2 # token
 }
 Rule(accessor_all) {
 	rule _0 = NONE
@@ -87,19 +87,19 @@ Rule(accessor_all) {
 			else 
 			{
 				success_7 = TRUE
-				_0 = 
+				_0 = _6.token
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -157,7 +157,7 @@ Rule(accessor) {
 	_2 += shadow_9
 	data = 
 		second: shadow_9 # array
-		first: _0.token # Rule_result
+		first: _0.token # rule
 	;
 }
 Rule(cll) {
@@ -246,49 +246,49 @@ Rule(cll) {
 									{
 										success_29 = TRUE
 										shadow_30.push(_28.token)
-										_8 = _28.token
+										_8 = shadow_30
 									}
 								}
 								else 
 								{
 									success_26 = TRUE
 									shadow_27.push(_25.token)
-									_8 = _25.token
+									_8 = shadow_27
 								}
 							}
 							else 
 							{
 								success_23 = TRUE
 								shadow_24.push(_22.token)
-								_8 = _22.token
+								_8 = shadow_24
 							}
 						}
 						else 
 						{
 							success_20 = TRUE
 							shadow_21.push(_19.token)
-							_8 = _19.token
+							_8 = shadow_21
 						}
 					}
 					else 
 					{
 						success_17 = TRUE
 						shadow_18.push(_16.token)
-						_8 = _16.token
+						_8 = shadow_18
 					}
 				}
 				else 
 				{
 					success_14 = TRUE
 					shadow_15.push(_13.token)
-					_8 = _13.token
+					_8 = shadow_15
 				}
 			}
 			else 
 			{
 				success_11 = TRUE
 				shadow_12.push(_10.token)
-				_8 = _10.token
+				_8 = shadow_12
 			}
 			_8 += CURRENT_POS_SEQUENCE
 			success_9 = TRUE
@@ -356,7 +356,7 @@ Rule(cll_block) {
 	_4 = CURRENT_TOKEN
 	success_5 = TRUE
 	pos++
-	data = _2.token # Rule_result
+	data = _2.token # rule
 }
 Rule(cll_spaced_block) {
 	Rule_result _0 = NONE
@@ -404,35 +404,35 @@ Token(OP) {
 					{
 						_10 += CURRENT_POS_SEQUENCE
 						success_11 = TRUE
-						_0 = 
+						_0 = _10
 					}
 				}
 				else 
 				{
 					_8 += CURRENT_POS_SEQUENCE
 					success_9 = TRUE
-					_0 = 
+					_0 = _8
 				}
 			}
 			else 
 			{
 				_6 += CURRENT_POS_SEQUENCE
 				success_7 = TRUE
-				_0 = 
+				_0 = _6
 			}
 		}
 		else 
 		{
 			_4 += CURRENT_POS_SEQUENCE
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -466,35 +466,35 @@ Token(OP) {
 					{
 						_22 += CURRENT_POS_SEQUENCE
 						success_23 = TRUE
-						_12 = 
+						_12 = _22
 					}
 				}
 				else 
 				{
 					_20 += CURRENT_POS_SEQUENCE
 					success_21 = TRUE
-					_12 = 
+					_12 = _20
 				}
 			}
 			else 
 			{
 				_18 += CURRENT_POS_SEQUENCE
 				success_19 = TRUE
-				_12 = 
+				_12 = _18
 			}
 		}
 		else 
 		{
 			_16 += CURRENT_POS_SEQUENCE
 			success_17 = TRUE
-			_12 = 
+			_12 = _16
 		}
 	}
 	else 
 	{
 		_14 += CURRENT_POS_SEQUENCE
 		success_15 = TRUE
-		_12 = 
+		_12 = _14
 	}
 	_12 += CURRENT_POS_SEQUENCE
 	success_13 = TRUE
@@ -520,7 +520,7 @@ Token(ASSIGNMENT_OP) {
 	}
 	success_3 = TRUE
 	pos++
-	data = _0.token # Token_result
+	data = _0.token # token
 }
 Token(COMPARE_OP) {
 	str _0 = NONE
@@ -555,42 +555,42 @@ Token(COMPARE_OP) {
 						{
 							_12 += CURRENT_POS_SEQUENCE
 							success_13 = TRUE
-							_0 = 
+							_0 = _12
 						}
 					}
 					else 
 					{
 						_10 += CURRENT_POS_SEQUENCE
 						success_11 = TRUE
-						_0 = 
+						_0 = _10
 					}
 				}
 				else 
 				{
 					_8 += CURRENT_POS_SEQUENCE
 					success_9 = TRUE
-					_0 = 
+					_0 = _8
 				}
 			}
 			else 
 			{
 				_6 += CURRENT_POS_SEQUENCE
 				success_7 = TRUE
-				_0 = 
+				_0 = _6
 			}
 		}
 		else 
 		{
 			_4 += CURRENT_POS_SEQUENCE
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -615,13 +615,13 @@ Token(LOGICAL_OP) {
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -645,14 +645,14 @@ Token(LOGICAL_NOT) {
 		{
 			_4 += CURRENT_POS_SEQUENCE
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -676,14 +676,14 @@ Token(LOGICAL_AND) {
 		{
 			_4 += CURRENT_POS_SEQUENCE
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -707,14 +707,14 @@ Token(LOGICAL_OR) {
 		{
 			_4 += CURRENT_POS_SEQUENCE
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -785,7 +785,7 @@ Token(LOGICAL_ANDR) {
 	{
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -1239,35 +1239,35 @@ Rule(cll_csupport_types) {
 						{
 							_18 = CURRENT_TOKEN
 							success_19 = TRUE
-							_8 = 
+							_8 = _18
 						}
 					}
 					else 
 					{
 						_16 = CURRENT_TOKEN
 						success_17 = TRUE
-						_8 = 
+						_8 = _16
 					}
 				}
 				else 
 				{
 					_14 = CURRENT_TOKEN
 					success_15 = TRUE
-					_8 = 
+					_8 = _14
 				}
 			}
 			else 
 			{
 				_12 = CURRENT_TOKEN
 				success_13 = TRUE
-				_8 = 
+				_8 = _12
 			}
 		}
 		else 
 		{
 			_10 = CURRENT_TOKEN
 			success_11 = TRUE
-			_8 = 
+			_8 = _10
 		}
 		_8 += CURRENT_POS_SEQUENCE
 		success_9 = TRUE
@@ -1302,14 +1302,14 @@ Rule(cll_csupport_types) {
 				{
 					_28 = CURRENT_TOKEN
 					success_29 = TRUE
-					_24 = 
+					_24 = _28
 				}
 			}
 			else 
 			{
 				_26 = CURRENT_TOKEN
 				success_27 = TRUE
-				_24 = 
+				_24 = _26
 			}
 			_24 += CURRENT_POS_SEQUENCE
 			success_25 = TRUE
@@ -1345,42 +1345,42 @@ Rule(cll_csupport_types) {
 									{
 										_45 = CURRENT_TOKEN
 										success_46 = TRUE
-										_33 = 
+										_33 = _45
 									}
 								}
 								else 
 								{
 									_43 = CURRENT_TOKEN
 									success_44 = TRUE
-									_33 = 
+									_33 = _43
 								}
 							}
 							else 
 							{
 								_41 = CURRENT_TOKEN
 								success_42 = TRUE
-								_33 = 
+								_33 = _41
 							}
 						}
 						else 
 						{
 							_39 = CURRENT_TOKEN
 							success_40 = TRUE
-							_33 = 
+							_33 = _39
 						}
 					}
 					else 
 					{
 						_37 = CURRENT_TOKEN
 						success_38 = TRUE
-						_33 = 
+						_33 = _37
 					}
 				}
 				else 
 				{
 					_35 = CURRENT_TOKEN
 					success_36 = TRUE
-					_33 = 
+					_33 = _35
 				}
 				_33 += CURRENT_POS_SEQUENCE
 				success_34 = TRUE
@@ -1424,7 +1424,7 @@ Rule(cll_csupport_types) {
 	pos++
 	data = 
 		template: _8 # token
-		type: _4 # Token_result
+		type: _4 # token
 	;
 }
 Rule(cll_type_abstract) {
@@ -1539,35 +1539,35 @@ Rule(cll_type_abstract) {
 					{
 						_12 = CURRENT_TOKEN
 						success_13 = TRUE
-						_2 = 
+						_2 = _12
 					}
 				}
 				else 
 				{
 					_10 = CURRENT_TOKEN
 					success_11 = TRUE
-					_2 = 
+					_2 = _10
 				}
 			}
 			else 
 			{
 				_8 = CURRENT_TOKEN
 				success_9 = TRUE
-				_2 = 
+				_2 = _8
 			}
 		}
 		else 
 		{
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
-			_2 = 
+			_2 = _6
 		}
 	}
 	else 
 	{
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
-		_2 = 
+		_2 = _4
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
@@ -1578,8 +1578,8 @@ Rule(cll_type_abstract) {
 		pos = begin_28
 	}
 	data = 
-		template: _18.token # Rule_result
-		type: _16 # Token_result
+		template: _23 # token
+		type: _16 # token
 	;
 }
 Rule(cll_type) {
@@ -1600,13 +1600,13 @@ Rule(cll_type) {
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -1685,13 +1685,13 @@ Rule(cll_if) {
 		else 
 		{
 			success_17 = TRUE
-			_12 = 
+			_12 = _16.token
 		}
 	}
 	else 
 	{
 		success_15 = TRUE
-		_12 = 
+		_12 = _14.token
 	}
 	_12 += CURRENT_POS_SEQUENCE
 	success_13 = TRUE
@@ -1746,7 +1746,7 @@ Rule(cll_if) {
 	_10 += _18
 	data = 
 		block: _0 # token
-		expr: _6 # Token_result
+		expr: _6 # token
 	;
 }
 Rule(cll_ternary) {
@@ -1800,9 +1800,9 @@ Rule(cll_ternary) {
 	success_9 = TRUE
 	pos++
 	data = 
-		second: _8.token # Rule_result
-		first: _4.token # Rule_result
-		cond: _0.token # Rule_result
+		second: _8.token # rule
+		first: _4.token # rule
+		cond: _0.token # rule
 	;
 }
 Rule(expr_logical) {
@@ -1838,19 +1838,19 @@ Rule(expr_logical) {
 			else 
 			{
 				success_7 = TRUE
-				_0 = 
+				_0 = _6.token
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -1878,26 +1878,26 @@ Rule(expr_logical) {
 			else 
 			{
 				success_17 = TRUE
-				_10 = 
+				_10 = _16.token
 			}
 		}
 		else 
 		{
 			success_15 = TRUE
-			_10 = 
+			_10 = _14.token
 		}
 	}
 	else 
 	{
 		success_13 = TRUE
-		_10 = 
+		_10 = _12.token
 	}
 	_10 += CURRENT_POS_SEQUENCE
 	success_11 = TRUE
 	pos++
 	data = 
 		right: _10 # rule
-		op: _8 # Token_result
+		op: _8 # token
 		left: _0 # rule
 	;
 }
@@ -1959,7 +1959,7 @@ Rule(expr_compare) {
 	data = 
 		sequence: shadow_9 # array
 		operators: shadow_6 # array
-		first: _0.token # Rule_result
+		first: _0.token # rule
 	;
 }
 Rule(expr_arithmetic) {
@@ -2020,7 +2020,7 @@ Rule(expr_arithmetic) {
 	data = 
 		sequence: shadow_9 # array
 		operators: shadow_6 # array
-		first: _0.token # Rule_result
+		first: _0.token # rule
 	;
 }
 Rule(expr_for_arithmetic) {
@@ -2051,25 +2051,25 @@ Rule(expr_for_arithmetic) {
 				else 
 				{
 					success_9 = TRUE
-					_0 = 
+					_0 = _8.token
 				}
 			}
 			else 
 			{
 				success_7 = TRUE
-				_0 = 
+				_0 = _6.token
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -2106,13 +2106,13 @@ Rule(expr_group) {
 		else 
 		{
 			success_7 = TRUE
-			_2 = 
+			_2 = _6.token
 		}
 	}
 	else 
 	{
 		success_5 = TRUE
-		_2 = 
+		_2 = _4.token
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
@@ -2157,7 +2157,7 @@ Rule(expr_expr_copiable_method_call) {
 	_4 = CURRENT_TOKEN
 	success_5 = TRUE
 	pos++
-	data = _2.token # Rule_result
+	data = _2.token # rule
 }
 Rule(expr) {
 	rule _0 = NONE
@@ -2202,43 +2202,43 @@ Rule(expr) {
 							else 
 							{
 								success_15 = TRUE
-								_0 = 
+								_0 = _14.token
 							}
 						}
 						else 
 						{
 							success_13 = TRUE
-							_0 = 
+							_0 = _12.token
 						}
 					}
 					else 
 					{
 						success_11 = TRUE
-						_0 = 
+						_0 = _10.token
 					}
 				}
 				else 
 				{
 					success_9 = TRUE
-					_0 = 
+					_0 = _8.token
 				}
 			}
 			else 
 			{
 				success_7 = TRUE
-				_0 = 
+				_0 = _6.token
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -2275,7 +2275,7 @@ Rule(function_body_call) {
 	_4 = CURRENT_TOKEN
 	success_5 = TRUE
 	pos++
-	data = _2.token # Rule_result
+	data = _2.token # rule
 }
 Rule(function_body_decl) {
 	Token_result _0 = NONE
@@ -2307,7 +2307,7 @@ Rule(function_body_decl) {
 	_4 = CURRENT_TOKEN
 	success_5 = TRUE
 	pos++
-	data = _2.token # Rule_result
+	data = _2.token # rule
 }
 Rule(function_arguments) {
 	any _0 = NONE
@@ -2346,13 +2346,13 @@ Rule(function_arguments) {
 			{
 				_6 = CURRENT_TOKEN
 				success_7 = TRUE
-				_2 = 
+				_2 = _6
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_2 = 
+			_2 = _4.token
 		}
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
@@ -2392,14 +2392,14 @@ Rule(function_arguments) {
 					_19 = CURRENT_TOKEN
 					success_20 = TRUE
 					shadow_21.push(_19)
-					_14 = _19
+					_14 = shadow_21
 				}
 			}
 			else 
 			{
 				success_17 = TRUE
 				shadow_18.push(_16.token)
-				_14 = _16.token
+				_14 = shadow_18
 			}
 			_14 += CURRENT_POS_SEQUENCE
 			success_15 = TRUE
@@ -2497,8 +2497,8 @@ Rule(cll_function_call) {
 	success_3 = TRUE
 	pos++
 	data = 
-		body: _2.token # Rule_result
-		name: _0 # Token_result
+		body: _2.token # rule
+		name: _0 # token
 	;
 }
 Rule(function_decl) {
@@ -2570,13 +2570,13 @@ Rule(function_decl) {
 			else 
 			{
 				success_17 = TRUE
-				_12 = 
+				_12 = _16.token
 			}
 		}
 		else 
 		{
 			success_15 = TRUE
-			_12 = 
+			_12 = _14.token
 		}
 		_12 += CURRENT_POS_SEQUENCE
 		success_13 = TRUE
@@ -2633,20 +2633,20 @@ Rule(loop_while) {
 		else 
 		{
 			success_9 = TRUE
-			_4 = 
+			_4 = _8.token
 		}
 	}
 	else 
 	{
 		success_7 = TRUE
-		_4 = 
+		_4 = _6.token
 	}
 	_4 += CURRENT_POS_SEQUENCE
 	success_5 = TRUE
 	pos++
 	data = 
 		block: _4 # rule
-		expr: _2.token # Rule_result
+		expr: _2.token # rule
 	;
 }
 Rule(loop_for) {
@@ -2708,13 +2708,13 @@ Rule(loop_for) {
 			else 
 			{
 				success_11 = TRUE
-				_6 = 
+				_6 = _10.token
 			}
 		}
 		else 
 		{
 			success_9 = TRUE
-			_6 = 
+			_6 = _8.token
 		}
 		_6 += CURRENT_POS_SEQUENCE
 		success_7 = TRUE
@@ -2777,21 +2777,21 @@ Rule(loop_for) {
 		else 
 		{
 			success_28 = TRUE
-			_23 = 
+			_23 = _27.token
 		}
 	}
 	else 
 	{
 		success_26 = TRUE
-		_23 = 
+		_23 = _25.token
 	}
 	_23 += CURRENT_POS_SEQUENCE
 	success_24 = TRUE
 	pos++
 	data = 
-		block: _21 # Token_result
-		end: _17 # Token_result
-		cond: _13 # Token_result
+		block: _21 # token
+		end: _17 # token
+		cond: _13 # token
 		decl: _6 # rule
 	;
 }
@@ -2852,7 +2852,7 @@ Rule(method_call) {
 	_2 += shadow_9
 	data = 
 		call: shadow_9 # array
-		object: _0 # Token_result
+		object: _0 # token
 	;
 }
 Rule(copiable_method_call) {
@@ -2875,7 +2875,7 @@ Rule(copiable_method_call) {
 	}
 	success_3 = TRUE
 	pos++
-	data = _2.token # Rule_result
+	data = _2.token # rule
 }
 Rule(var_refer) {
 	any pre = matched($1
@@ -2921,14 +2921,14 @@ Rule(var_refer) {
 			{
 				_6 = CURRENT_TOKEN
 				success_7 = TRUE
-				_2 = 
+				_2 = _6
 			}
 		}
 		else 
 		{
 			_4 = CURRENT_TOKEN
 			success_5 = TRUE
-			_2 = 
+			_2 = _4
 		}
 		_2 += CURRENT_POS_SEQUENCE
 		success_3 = TRUE
@@ -3000,14 +3000,14 @@ Rule(var_refer) {
 			{
 				_26 = CURRENT_TOKEN
 				success_27 = TRUE
-				_22 = 
+				_22 = _26
 			}
 		}
 		else 
 		{
 			_24 = CURRENT_TOKEN
 			success_25 = TRUE
-			_22 = 
+			_22 = _24
 		}
 		_22 += CURRENT_POS_SEQUENCE
 		success_23 = TRUE
@@ -3023,7 +3023,7 @@ Rule(var_refer) {
 	data = 
 		post: post # any
 		pre: pre # any
-		brace_expression: _15.token # Rule_result
+		brace_expression: _15.token # rule
 		name: _2 # token
 	;
 }
@@ -3079,13 +3079,13 @@ Rule(cll_var) {
 			else 
 			{
 				success_13 = TRUE
-				_8 = 
+				_8 = _12.token
 			}
 		}
 		else 
 		{
 			success_11 = TRUE
-			_8 = 
+			_8 = _10.token
 		}
 		_8 += CURRENT_POS_SEQUENCE
 		success_9 = TRUE
@@ -3101,9 +3101,9 @@ Rule(cll_var) {
 	_4 += _8
 	data = 
 		value: _8 # rule
-		operator: _6.token # Rule_result
-		id: _2 # Token_result
-		type: _0.token # Rule_result
+		operator: _6.token # rule
+		id: _2 # token
+		type: _0.token # rule
 	;
 }
 Token(STRING) {
@@ -3150,7 +3150,7 @@ Token(STRING) {
 					_13 += CURRENT_POS_SEQUENCE
 					success_14 = TRUE
 					shadow_15.push(_13)
-					_8 = _13
+					_8 = shadow_15
 				}
 			}
 			else 
@@ -3158,7 +3158,7 @@ Token(STRING) {
 				_10 += CURRENT_POS_SEQUENCE
 				success_11 = TRUE
 				shadow_12.push(_10)
-				_8 = _10
+				_8 = shadow_12
 			}
 			_8 += CURRENT_POS_SEQUENCE
 			success_9 = TRUE
@@ -3232,7 +3232,7 @@ Token(STRING) {
 						_32 += CURRENT_POS_SEQUENCE
 						success_33 = TRUE
 						shadow_34.push(_32)
-						_27 = _32
+						_27 = shadow_34
 					}
 				}
 				else 
@@ -3240,7 +3240,7 @@ Token(STRING) {
 					_29 += CURRENT_POS_SEQUENCE
 					success_30 = TRUE
 					shadow_31.push(_29)
-					_27 = _29
+					_27 = shadow_31
 				}
 				_27 += CURRENT_POS_SEQUENCE
 				success_28 = TRUE
@@ -3293,8 +3293,8 @@ Token(NUMBER) {
 	char sign = _0
 	str main = _6
 	num main_n = NUMBER(main)
-	char point = _15
-	str dec = _15
+	char point = _0
+	str dec = _0
 	num dec_n = NUMBER(dec)
 	str full = main+point
 	Rule_result _0 = NONE
@@ -3428,14 +3428,14 @@ Token(BOOLEAN) {
 		{
 			_5 += CURRENT_POS_SEQUENCE
 			success_6 = TRUE
-			_1 = 
+			_1 = _5
 		}
 	}
 	else 
 	{
 		_3 += CURRENT_POS_SEQUENCE
 		success_4 = TRUE
-		_1 = 
+		_1 = _3
 	}
 	_1 += CURRENT_POS_SEQUENCE
 	success_2 = TRUE
@@ -3672,8 +3672,8 @@ Rule(object) {
 	data = 
 		values: shadow_23 # array
 		keys: shadow_17 # array
-		value: _8.token # Rule_result
-		key: _4.token # Rule_result
+		value: _8.token # rule
+		key: _4.token # rule
 	;
 }
 Rule(any_data) {
@@ -3716,47 +3716,47 @@ Rule(any_data) {
 							else 
 							{
 								success_15 = TRUE
-								_0 = 
+								_0 = _14.token
 							}
 						}
 						else 
 						{
 							success_13 = TRUE
-							_0 = 
+							_0 = _12.token
 						}
 					}
 					else 
 					{
 						success_11 = TRUE
-						_0 = 
+						_0 = _10.token
 					}
 				}
 				else 
 				{
 					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					_0 = 
+					_0 = _8
 				}
 			}
 			else 
 			{
 				_6 = CURRENT_TOKEN
 				success_7 = TRUE
-				_0 = 
+				_0 = _6
 			}
 		}
 		else 
 		{
 			_4 = CURRENT_TOKEN
 			success_5 = TRUE
-			_0 = 
+			_0 = _4
 		}
 	}
 	else 
 	{
 		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		_0 = 
+		_0 = _2
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -3860,26 +3860,26 @@ Rule(spacemode) {
 			{
 				_8 = CURRENT_TOKEN
 				success_9 = TRUE
-				_2 = 
+				_2 = _8
 			}
 		}
 		else 
 		{
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
-			_2 = 
+			_2 = _6
 		}
 	}
 	else 
 	{
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
-		_2 = 
+		_2 = _4
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
 	pos++
-	data = _0 # Token_result
+	data = _0 # token
 }
 Rule(linear_comment) {
 	Token_result _0 = NONE
@@ -3930,25 +3930,25 @@ Rule(main) {
 				else 
 				{
 					success_9 = TRUE
-					_0 = 
+					_0 = _8.token
 				}
 			}
 			else 
 			{
 				success_7 = TRUE
-				_0 = 
+				_0 = _6.token
 			}
 		}
 		else 
 		{
 			success_5 = TRUE
-			_0 = 
+			_0 = _4.token
 		}
 	}
 	else 
 	{
 		success_3 = TRUE
-		_0 = 
+		_0 = _2.token
 	}
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
@@ -3974,8 +3974,8 @@ Rule(use_unit) {
 		pos++
 	}
 	data = 
-		value: _2.token # Rule_result
-		name: _0.token # Rule_result
+		value: _2.token # rule
+		name: _0.token # rule
 	;
 }
 Rule(use) {
@@ -4039,7 +4039,7 @@ Rule(use) {
 	_4 += shadow_11
 	data = 
 		second: shadow_11 # array
-		first: _2.token # Rule_result
+		first: _2.token # rule
 	;
 }
 Rule(Rule_rule) {
@@ -4106,44 +4106,44 @@ Rule(Rule_rule) {
 								else 
 								{
 									success_21 = TRUE
-									_6 = 
+									_6 = _20.token
 								}
 							}
 							else 
 							{
 								success_19 = TRUE
-								_6 = 
+								_6 = _18.token
 							}
 						}
 						else 
 						{
 							success_17 = TRUE
-							_6 = 
+							_6 = _16.token
 						}
 					}
 					else 
 					{
 						success_15 = TRUE
-						_6 = 
+						_6 = _14.token
 					}
 				}
 				else 
 				{
 					_12 = CURRENT_TOKEN
 					success_13 = TRUE
-					_6 = 
+					_6 = _12
 				}
 			}
 			else 
 			{
 				success_11 = TRUE
-				_6 = 
+				_6 = _10.token
 			}
 		}
 		else 
 		{
 			success_9 = TRUE
-			_6 = 
+			_6 = _8.token
 		}
 		_6 += CURRENT_POS_SEQUENCE
 		success_7 = TRUE
@@ -4191,31 +4191,31 @@ Rule(Rule_rule) {
 						else 
 						{
 							success_35 = TRUE
-							_0 = 
+							_0 = _34.token
 						}
 					}
 					else 
 					{
 						success_33 = TRUE
-						_0 = 
+						_0 = _32.token
 					}
 				}
 				else 
 				{
 					success_31 = TRUE
-					_0 = 
+					_0 = _30.token
 				}
 			}
 			else 
 			{
 				success_29 = TRUE
-				_0 = 
+				_0 = _28.token
 			}
 		}
 		else 
 		{
 			success_27 = TRUE
-			_0 = 
+			_0 = _26.token
 		}
 	}
 	else 
@@ -4292,7 +4292,7 @@ Rule(Rule_other) {
 	_4 += shadow_11
 	data = 
 		nested_name: shadow_11 # array
-		name: _2 # Token_result
+		name: _2 # token
 		is_nested: m # bool
 	;
 }
@@ -4317,14 +4317,14 @@ Rule(Rule_op) {
 		{
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
-			_2 = 
+			_2 = _6
 		}
 	}
 	else 
 	{
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
-		_2 = 
+		_2 = _4
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
@@ -4361,21 +4361,21 @@ Rule(Rule_qualifier) {
 			{
 				_8 = CURRENT_TOKEN
 				success_9 = TRUE
-				_2 = 
+				_2 = _8
 			}
 		}
 		else 
 		{
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
-			_2 = 
+			_2 = _6
 		}
 	}
 	else 
 	{
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
-		_2 = 
+		_2 = _4
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
@@ -4428,13 +4428,13 @@ Rule(Rule_group) {
 			{
 				_8 = CURRENT_TOKEN
 				success_9 = TRUE
-				_4 = 
+				_4 = _8
 			}
 		}
 		else 
 		{
 			success_7 = TRUE
-			_4 = 
+			_4 = _6.token
 		}
 		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
@@ -4502,21 +4502,21 @@ Rule(Rule_csequence_symbol) {
 			{
 				_8 = CURRENT_TOKEN
 				success_9 = TRUE
-				_2 = 
+				_2 = _8
 			}
 		}
 		else 
 		{
 			_6 = CURRENT_TOKEN
 			success_7 = TRUE
-			_2 = 
+			_2 = _6
 		}
 	}
 	else 
 	{
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
-		_2 = 
+		_2 = _4
 	}
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
@@ -4673,21 +4673,21 @@ Rule(Rule_csequence) {
 				{
 					success_14 = TRUE
 					shadow_15.push(_13.token)
-					_5 = _13.token
+					_5 = shadow_15
 				}
 			}
 			else 
 			{
 				success_11 = TRUE
 				shadow_12.push(_10.token)
-				_5 = _10.token
+				_5 = shadow_12
 			}
 		}
 		else 
 		{
 			success_8 = TRUE
 			shadow_9.push(_7.token)
-			_5 = _7.token
+			_5 = shadow_9
 		}
 		_5 += CURRENT_POS_SEQUENCE
 		success_6 = TRUE
@@ -4806,13 +4806,13 @@ Rule(Rule_data_block_key) {
 		else 
 		{
 			success_16 = TRUE
-			_11 = 
+			_11 = _15.token
 		}
 	}
 	else 
 	{
 		success_14 = TRUE
-		_11 = 
+		_11 = _13.token
 	}
 	_11 += CURRENT_POS_SEQUENCE
 	success_12 = TRUE
@@ -4888,13 +4888,13 @@ Rule(Rule_data_block) {
 		else 
 		{
 			success_14 = TRUE
-			_9 = 
+			_9 = _13.token
 		}
 	}
 	else 
 	{
 		success_12 = TRUE
-		_9 = 
+		_9 = _11.token
 	}
 	_9 += CURRENT_POS_SEQUENCE
 	success_10 = TRUE
@@ -4942,8 +4942,8 @@ Rule(Rule_escaped) {
 		pos++
 	}
 	data = 
-		num: _4 # Token_result
-		c: _2 # Token_result
+		num: _4 # token
+		c: _2 # token
 	;
 }
 Rule(Rule_nested_rule) {
@@ -4982,7 +4982,7 @@ Rule(Rule_nested_rule) {
 	}
 	success_7 = TRUE
 	pos++
-	data = _6.token # Rule_result
+	data = _6.token # rule
 }
 Rule(Rule_hex) {
 	Token_result _0 = NONE
@@ -5119,10 +5119,10 @@ Rule(Rule) {
 	success_16 = TRUE
 	pos++
 	data = 
-		nestedRules: _11.token # Rule_result
+		nestedRules: _11.token # rule
 		data_block: shadow_10 # array
 		rule: shadow_8 # array
-		name: _0 # Token_result
+		name: _0 # token
 	;
 }
 Token(AUTO_1) {

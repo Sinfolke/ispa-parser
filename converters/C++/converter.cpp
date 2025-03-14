@@ -12,6 +12,7 @@
 #include <converter.h>
 namespace global {
     size_t pos_counter;
+    std::list<std::string> dynamic_pos_counter;
     use_prop_t use;
     std::string rule_prev_name;
     std::string namespace_name;
@@ -175,15 +176,6 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
         }
-        case IR::var_assign_values::PROPERTY:
-        {
-            auto dt = std::any_cast<IR::property>(data);
-            std::string res = dt.obj;
-            for (auto el : dt.properties) {
-                res += "." + el;
-            }
-            return res;
-        }
     }
     switch (value) {
         case IR::var_assign_values::NONE:
@@ -195,7 +187,15 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
         case IR::var_assign_values::CURRENT_POS_COUNTER:
             return current_pos_counter.top();
         case IR::var_assign_values::CURRENT_POS_SEQUENCE:
-            return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
+        {
+            std::string count_str = std::to_string(global::pos_counter);
+            if (global::dynamic_pos_counter.size()) {
+                for (auto el : global::dynamic_pos_counter)
+                    count_str += " + " + el;
+            }
+            global::dynamic_pos_counter = {};
+            return "::" + global::namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
+        }
         case IR::var_assign_values::CURRENT_TOKEN:
             return "*" + current_pos_counter.top();
         case IR::var_assign_values::TOKEN_SEQUENCE:
@@ -223,7 +223,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
     } else if (type == IR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*pos";
+        return "*(pos + " + std::to_string(global::pos_counter++) + ")";
+    } else if (type == IR::condition_types::PREV_CHARACTER) {
+        return "*(pos + " + std::to_string(global::pos_counter - 1) + ")";
     } else if (type == IR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -234,8 +236,10 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<IR::strncmp>(data);
         if (dt.is_string) {
+            global::pos_counter += count_strlen(dt.value.name.c_str());
             return std::string("!std::strncmp(pos, \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
         } else {
+            global::dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
             return std::string("!std::strncmp(pos, ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
     } else if (type == IR::condition_types::VARIABLE) {
@@ -259,6 +263,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
     } else if (type == IR::condition_types::FUNCTION_CALL) {
         return convertFunctionCall( std::any_cast<IR::function_call>(data), current_pos_counter);
     } else if (type == IR::condition_types::CURRENT_TOKEN) {
+        global::pos_counter++;
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
@@ -387,7 +392,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::RULE:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Rule_res " << "Parser::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
+        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
         out << "\tauto in = pos" ;
         indentLevel++;
         global::isToken = false;
@@ -395,8 +400,8 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::TOKEN:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Token_res " << "Parser::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
-        out << "auto in = pos";
+        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
+        out << "\tauto in = pos";
         indentLevel++;
         global::isToken = true;
         break;
@@ -440,7 +445,8 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
         break;
     case IR::types::INCREASE_POS_COUNTER:
-        out << current_pos_counter.top() << "++";
+        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter);
+        global::pos_counter = 0;
         break;
     case IR::types::ACCESSOR:
         throw Error("Accessor cannot be here\n");

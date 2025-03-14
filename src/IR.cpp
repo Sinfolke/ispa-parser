@@ -957,11 +957,13 @@ IR::var_type deduceTypeFromAnyData(Parser::Rule value, std::list<IR::variable> &
         auto var = std::find_if(vars.begin(), vars.end(), [&name_str](const IR::variable var) {return var.name == name_str;});
         if (var == vars.end())
             throw Error("Requested variable in expression could not be found");
-        type = var->type;
-        if (type.type == IR::var_types::Token_result)
+        if (var->type.type == IR::var_types::Token_result) {
             type.type = IR::var_types::Token;
-        else if (type.type == IR::var_types::Rule_result)
+        } else if (var->type.type == IR::var_types::Rule_result) {
             type.type = IR::var_types::Rule;
+        } else {
+            type = var->type;
+        }
         break;
     }
     case Parser::Rules::boolean: 
@@ -1018,7 +1020,13 @@ IR::var_type deduceTypeFromAnyData(Parser::Rule value, std::list<IR::variable> &
         auto accessor = std::any_cast<IR::accessor>(TreeAnyDataToIR(value).data);
         auto name = getElementbyAccessor(accessor, elements, groups, false);
         auto var = std::find_if(vars.begin(), vars.end(), [&name](const IR::variable var) {return var.name == name.name;});
-        type = var->type;
+        if (var->type.type == IR::var_types::Token_result) {
+            type.type = IR::var_types::Token;
+        } else if (var->type.type == IR::var_types::Rule_result) {
+            type.type = IR::var_types::Rule;
+        } else {
+            type = var->type;
+        }
         break;
     }
     default:
@@ -1202,7 +1210,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                     {IR::condition_types::HIGHER_OR_EQUAL},
                     {IR::condition_types::CHARACTER, first},
                     {IR::condition_types::AND},
-                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::PREV_CHARACTER},
                     {IR::condition_types::LOWER_OR_EQUAL},
                     {IR::condition_types::CHARACTER, second},
                     {IR::condition_types::GROUP_CLOSE}
@@ -1566,10 +1574,16 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     IR::var_elements new_elements;
     IR::groups new_groups;
     if (rule_val.name == Parser::Rules::Rule_group || rule_val.name == Parser::Rules::accessor)
-        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, elements, groups, vars, insideLoop, fullname, success_var, new_qualifier);
+        ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, new_elements, new_groups, vars, insideLoop, fullname, success_var, new_qualifier);
     else    
         ruleToIr(rule, new_ir, variable_count, isToken, nested_rule_names, new_elements, new_groups, vars, insideLoop, fullname, success_var);
     
+    groups.insert(groups.end(), new_groups.begin(), new_groups.end());
+    for (auto el : new_groups) {
+        for (int i = el.begin; i < el.end; i++) {
+            elements.push_back(new_elements[i]);
+        }
+    }
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
     if (rule_val.name == Parser::Rules::Rule_group || rule_val.name == Parser::Rules::accessor) {
@@ -1580,7 +1594,8 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             },
             convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop),
         };
-        if (!success_var.var.name.empty()) {
+        auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
+        if (!v.name.empty()) {
             cond.else_block = {{
                 IR::types::ASSIGN_VARIABLE,
                 IR::variable_assign 
@@ -1589,7 +1604,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                     IR::var_assign_types::ASSIGN,
                     IR::assign {
                         IR::var_assign_values::VARIABLE,
-                        success_var.var
+                        v
                     }
                 }
             }};
@@ -1608,7 +1623,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                         val.else_block.push_back(new_ir.elements[j]);
                         erase_indices.push_back(j);
                     }
-                    auto v = success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
+                    auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
                     val.else_block.push_back({
                         IR::types::ASSIGN_VARIABLE,
                         IR::variable_assign 
@@ -1621,7 +1636,6 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                             }
                         }
                     });
-
                     el.value = val;  // Ensure value is update
                 }
             } else if (el.type == IR::types::INCREASE_POS_COUNTER || el.type == IR::types::SKIP_SPACES) {
