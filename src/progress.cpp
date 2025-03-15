@@ -66,12 +66,6 @@ void replaceDublications(Parser::Tree& tree) {
         }
     }
 }
-void print_str_vector(std::vector<std::string> v) {
-    for (auto key : v) {
-        cpuf::printf("%s_", key);
-    }
-    cpuf::printf("\n");
-}
 void accumulateInlineNamesAndRemove(Parser::Tree& tree, 
                                     std::vector<std::vector<std::string>>& table_key, 
                                     std::vector<Parser::Rule>& table_value, 
@@ -537,7 +531,27 @@ std::pair<std::list<std::string>, std::list<std::string>> getTokenAndRuleNames(P
 
     return {tokens, rules};
 }
-
+void addSpaceToken(Parser::Tree &tree) {
+    arr_t<Parser::Rule> chars = {
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\n')) },
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\r')) },
+    };
+    auto csequence = Tokens::make_rule(Parser::Rules::Rule_csequence, obj_t {
+        {"not", false},
+        {"val", chars}
+    });
+    auto Rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+        { "val", csequence },
+        { "qualifier", Tokens::make_rule() }
+    });
+    auto token = Tokens::make_rule(Parser::Rules::Rule, obj_t {
+        {"name", Tokens::make_rule(Parser::Rules::id, std::string("__WHITESPACE"))},
+        {"rule", arr_t<Parser::Rule> {Rule_rule}},
+        {"data_block", Tokens::make_rule()},
+        {"nestedRules", arr_t<Parser::Rule>()}
+    });
+    tree.push_back(token);
+}
 use_prop_t get_use_data(Parser::Rule use) {
     use_prop_t result;
     auto data = std::any_cast<arr_t<Parser::Rule>>(use.data);

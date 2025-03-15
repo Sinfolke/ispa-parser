@@ -3,6 +3,7 @@
 #include <internal_types.h>
 #include <any>
 #include <list>
+#include <algorithm>
 namespace IR {
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,

@@ -158,13 +158,6 @@ IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::v
     block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, var}}}}}});
     return shadow_var;
 }
-IR::variable add_shadow_variable_rule_other(IR::ir &member, arr_t<IR::member> &block, IR::variable &var, int &variable_count) {
-    IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
-    shadow_var.type = {IR::var_types::ARRAY, {var.type}};
-    member.push({IR::types::VARIABLE, shadow_var});
-    block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::PROPERTY, IR::property{var.name, {"token"}}}}}}}});
-    return shadow_var;
-}
 IR::variable pushBasedOnQualifier(arr_t<IR::expr> expr, arr_t<IR::member> block, IR::variable var, IR::variable svar, IR::ir &member, char qualifier_char, int &variable_count, bool insideLoop, bool add_shadow_var = true) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     IR::variable shadow_variable;
@@ -208,19 +201,19 @@ IR::variable pushBasedOnQualifier_Rule_other(arr_t<IR::expr> expr, arr_t<IR::mem
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     IR::variable shadow_variable;
     if (insideLoop) {
-        shadow_variable = add_shadow_variable_rule_other(member, block, var, variable_count);
+        shadow_variable = add_shadow_variable(member, block, var, variable_count);
         add_shadow_var = false;
     }
     switch (qualifier_char) {
         case '+':
             if (add_shadow_var)
-                shadow_variable = add_shadow_variable_rule_other(member, block, var, variable_count);
+                shadow_variable = add_shadow_variable(member, block, var, variable_count);
             block.push_back(call);
             handle_plus_qualifier({expr, block}, member, variable_count);
             break;
         case '*': {
             if (add_shadow_var)
-                shadow_variable = add_shadow_variable_rule_other(member, block, var, variable_count);
+                shadow_variable = add_shadow_variable(member, block, var, variable_count);
             block.push_back(call);
             member.push({IR::types::WHILE, IR::condition{expr, block}});
             break;
@@ -1206,7 +1199,7 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                 auto second = std::any_cast<std::string>(range_data[1].data)[0];
                 expr.insert(expr.end(), {
                     {IR::condition_types::GROUP_OPEN},
-                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::PREV_CHARACTER},
                     {IR::condition_types::HIGHER_OR_EQUAL},
                     {IR::condition_types::CHARACTER, first},
                     {IR::condition_types::AND},
@@ -1219,14 +1212,14 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
             }
             case Parser::Rules::Rule_csequence_escape:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::PREV_CHARACTER},
                     {IR::condition_types::EQUAL},
                     {IR::condition_types::CHARACTER, getEscapedChar(std::any_cast<std::string>(value.data)[0])}
                 });
                 break;
             case Parser::Rules::Rule_csequence_symbol:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::CURRENT_CHARACTER},
+                    {IR::condition_types::PREV_CHARACTER},
                     {IR::condition_types::EQUAL},
                     {IR::condition_types::CHARACTER, (char) std::any_cast<std::string>(value.data)[0]}
                 });
@@ -1397,7 +1390,12 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     auto svar = createSuccessVariable(variable_count);
     IR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name_str);
-    var.type = isCallingToken ? IR::var_type {IR::var_types::Token_result} : IR::var_type {IR::var_types::Rule_result};
+    if (!isToken && isCallingToken) {
+        var.type.type = IR::var_types::Token;
+    } else {
+        var.type = isCallingToken ? IR::var_type {IR::var_types::Token_result} : IR::var_type {IR::var_types::Rule_result};
+    }
+   
     auto block = createDefaultBlock(var, svar);
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
@@ -1418,7 +1416,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
                 IR::types::ASSIGN_VARIABLE, 
                 IR::variable_assign {
                     var.name,
-                    (qualifier_char == '*' || qualifier_char == '+') ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN,
+                    IR::var_assign_types::ASSIGN,
                     IR::var_assign_values::CURRENT_TOKEN
                 }
             };
@@ -1427,7 +1425,6 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
             };
             shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
         } else {
-
             // remove variable assignemnt
             block.erase(block.begin());
             arr_t<IR::expr> expr;
@@ -1662,7 +1659,6 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     var.type = {deduceVarTypeByValue(rule)};
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
-
     // Convert rules into IR
     // for (auto rule : op) {
     //     auto rule_data = std::any_cast<obj_t>(rule.data);

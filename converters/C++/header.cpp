@@ -83,11 +83,16 @@ std::string createRulesEnum(std::list<std::string> rules) {
 }
 std::string getTypesFromStdlib() {
     std::string res;
-    res += "\ttypedef ISC_STD::_return<Rules> Rule;\n";
-    res += "\ttypedef ISC_STD::match_result<Rules> Rule_res;\n";
-    res += "\ttypedef ISC_STD::_return<Tokens> Token;\n";
-    res += "\ttypedef ISC_STD::match_result<Tokens> Token_res;\n";
-    res += "\ttypedef ISC_STD::Tree<Rules> Tree;\n";
+    // res += "\ttypedef ISC_STD::_return<Rules> Rule;\n";
+    // res += "\ttypedef ISC_STD::match_result<Rules> Rule_res;\n";
+    // res += "\ttypedef ISC_STD::_return<Tokens> Token;\n";
+    // res += "\ttypedef ISC_STD::match_result<Tokens> Token_res;\n";
+    // res += "\ttypedef ISC_STD::Tree<Rules> Tree;\n";
+    res += "\tusing Rule = ISC_STD::_return<Rules>;\n";
+    res += "\tusing Rule_res = ISC_STD::match_result<Rules>;\n";
+    res += "\tusing Token = ISC_STD::_return<Tokens>;\n";
+    res += "\tusing Token_res = ISC_STD::match_result<Tokens>;\n";
+    res += "\tusing Tree = ISC_STD::Tree<Rules>;\n";
     return res;
 }
 std::string convert_inclosed_map(IR::inclosed_map map) {

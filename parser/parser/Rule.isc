@@ -1,5 +1,5 @@
 Rule: 
-    ID ':' (#rule)* #data_block #nested_rule* STRICT_END
+    ID ':' #rule* #data_block #nested_rule* STRICT_END
     data:
         name: %1
         rule: %3
@@ -47,7 +47,7 @@ Rule:
         $bool m  = matched(%2)
         '[' '^'? &dt ( #escape | #symbol | #diapason )* ']'
         data:
-            not: m
+            _not: m
             val: dt
         ;
         #symbol:
@@ -73,7 +73,7 @@ Rule:
             &data(key+)
         ;
         #key:
-            [\n\r]+ &name(id) ':' &dt (cll_ternary | expr)
+            [\n\r]+ &name(ID) ':' &dt (cll_ternary | expr)
             data:
                 name: name
                 val: dt

@@ -69,36 +69,6 @@ namespace {
  * 
 */
 namespace ISC_STD {
-    /**
-     * @brief Join vector into string
-     * 
-     * @tparam T 
-     * @param vec
-     * @param del
-     * @return std::string 
-     */
-    template<typename T>
-    std::string join(const std::vector<T>& vec, const std::string& del = "") {
-        std::string str;
-        for (size_t i = 0; i < vec.size() - 1; ++i) {
-            str += vec[i];
-            str += del;
-        }
-        str += vec.back();
-        return str;
-    }
-    /**
-     * @brief Skip a specific amount of symbols
-     * 
-     * @param in 
-     * @param text 
-     * @return size_t 
-     */
-    size_t skipup(const char*& in, const char* text);
-    // Skip a list of symbols
-    size_t skip_list(const char*& in, const char* text);
-    // Skip spaces
-    size_t skip_spaces(const char*& in);
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 
@@ -290,6 +260,47 @@ template<class TOKEN_T>
 using TokenFlow = std::vector<_return<TOKEN_T>>;
 template<class RULE_T>
 using Tree = std::vector<_return<RULE_T>>;
+
+/**
+ * @brief Join vector into string
+ * 
+ * @tparam T 
+ * @param vec
+ * @param del
+ * @return std::string 
+ */
+template<typename T>
+std::string join(const std::vector<T>& vec, const std::string& del = "") {
+    std::string str;
+    for (size_t i = 0; i < vec.size() - 1; ++i) {
+        str += vec[i];
+        str += del;
+    }
+    str += vec.back();
+    return str;
+}
+/**
+ * @brief Skip a specific amount of symbols
+ * 
+ * @param in 
+ * @param text 
+ * @return size_t 
+ */
+size_t skipup(const char*& in, const char* text);
+// Skip a list of symbols
+size_t skip_list(const char*& in, const char* text);
+// Skip spaces
+size_t skip_spaces(const char*& in);
+
+
+template<typename Tokens>
+size_t skip_spaces(_return<Tokens>*& pos) {
+    auto prev = pos;
+    while(pos->name == Tokens::__WHITESPACE)
+        pos++;
+    
+    return pos - prev;
+}
 
 template<class TOKEN_T>
 class Tokenizator_base {

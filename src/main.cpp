@@ -105,6 +105,7 @@ int main(int argc, char** argv) {
     normalizeTree(tree, false);
     sortByPriority(tree);            // sorts elements to get which should be placed on top. This ensures proper matching
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+    addSpaceToken(tree);
     replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");

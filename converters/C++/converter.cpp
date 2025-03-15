@@ -225,7 +225,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         //cpuf::printf("current_character\n");
         return "*(pos + " + std::to_string(global::pos_counter++) + ")";
     } else if (type == IR::condition_types::PREV_CHARACTER) {
-        return "*(pos + " + std::to_string(global::pos_counter - 1) + ")";
+        return "*(pos + " + std::to_string(global::pos_counter > 0 ? global::pos_counter  - 1 : 0) + ")";
     } else if (type == IR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -445,7 +445,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
         break;
     case IR::types::INCREASE_POS_COUNTER:
-        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter);
+        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter + 1);
         global::pos_counter = 0;
         break;
     case IR::types::ACCESSOR:
@@ -463,7 +463,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "return {};";
         break;
     case IR::types::SKIP_SPACES:
-        out << "skipspaces(pos)";
+        out << "ISC_STD::skip_spaces(pos)";
         break;
     case IR::types::DATA_BLOCK:
         global::has_data_block = true;
