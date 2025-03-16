@@ -1,6 +1,7 @@
 cll_if: 
-    (\s*) 'if' expr (cll_block | cll_spaced_block( %1.size() ))
+    'if' expr cll_block
     data:
-        expr: %3
-        block: $1
+        expr: %2
+        block: %3
+    ;
 ;

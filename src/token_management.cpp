@@ -277,9 +277,9 @@ namespace Tokens {
         auto first_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
         auto second_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "val"));
 
-        if (first_not != second_not || first_val.size() != second_val.size())
+        if (first_not != second_not || first_val.size() > second_val.size())
             return false; // not equal
-        for (int i = 0; i < first_val.size(); i++) {
+        for (int i = 0; i < second_val.size(); i++) {
 
             if (!compare_csequence_internal_dt(first_val[i], second_val[i]))
                 return false;

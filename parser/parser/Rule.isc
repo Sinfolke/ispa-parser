@@ -68,9 +68,14 @@ Rule:
         '.'
     ;
     #data_block:
-        [\r\n]+ 'data' ':' &data ( any_data | #inclosed_map ) ';'
+        [\r\n]+ 'data' ':' any_data | #inclosed_map ';'
+
+        data: %4;
+
+
         #inclosed_map:
-            &data(key+)
+            key+
+            data: %1;
         ;
         #key:
             [\n\r]+ &name(ID) ':' &dt (cll_ternary | expr)

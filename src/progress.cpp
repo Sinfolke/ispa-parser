@@ -92,7 +92,8 @@ void accumulateInlineNamesAndRemove(Parser::Tree& tree,
                     // Instead of removing the element here, 
                     // we continue processing and just advance the iterator.
                     nested.pop_back();
-                    it = tree.erase(it);  // Correctly remove element
+                    //it = tree.erase(it);  // Correctly remove element
+                    it++;
                     continue;
                 }
             }
@@ -533,8 +534,12 @@ std::pair<std::list<std::string>, std::list<std::string>> getTokenAndRuleNames(P
 }
 void addSpaceToken(Parser::Tree &tree) {
     arr_t<Parser::Rule> chars = {
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, ' '))  },
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\t')) },
         { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\n')) },
         { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\r')) },
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\v')) },
+        { Tokens::make_rule(Parser::Rules::Rule_csequence_escape, std::string(1, '\f')) },
     };
     auto csequence = Tokens::make_rule(Parser::Rules::Rule_csequence, obj_t {
         {"not", false},
@@ -542,7 +547,7 @@ void addSpaceToken(Parser::Tree &tree) {
     });
     auto Rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
         { "val", csequence },
-        { "qualifier", Tokens::make_rule() }
+        { "qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier, '*') }
     });
     auto token = Tokens::make_rule(Parser::Rules::Rule, obj_t {
         {"name", Tokens::make_rule(Parser::Rules::id, std::string("__WHITESPACE"))},

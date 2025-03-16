@@ -153,7 +153,12 @@ IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, c
 }
 IR::variable add_shadow_variable(IR::ir &member, arr_t<IR::member> &block, IR::variable &var, int &variable_count) {
     IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName(variable_count));
-    shadow_var.type = {IR::var_types::ARRAY, {var.type}};
+    auto type = var.type;
+    if (type.type == IR::var_types::Rule_result)
+        type.type = IR::var_types::Rule;
+    else if (type.type == IR::var_types::Token_result)
+        type.type = IR::var_types::Token;
+    shadow_var.type = {IR::var_types::ARRAY, {type}};
     member.push({IR::types::VARIABLE, shadow_var});
     block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, var}}}}}});
     return shadow_var;
@@ -389,7 +394,8 @@ IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     method_call.calls = calls;
     return method_call;
 }
-IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
+IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char) {
+    IR::var_type type;
     if (mem.name == Parser::Rules::Rule_rule) {
         auto memdata = std::any_cast<obj_t>(mem.data);
         mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
@@ -398,12 +404,12 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
         auto data = std::any_cast<obj_t>(mem.data);
         auto group = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
         if (group.size() == 0) {
-            return IR::var_types::UNDEFINED;
+            type.type = IR::var_types::UNDEFINED;
         }
         if (group.size() > 1) {
-            return IR::var_types::STRING;
+            type.type = IR::var_types::STRING;
         } else {
-            return deduceVarTypeByValue(group[0]);
+            type = deduceVarTypeByValue(group[0], qualifier_char);
         }
     } if (mem.name == Parser::Rules::Rule_op) {
         Parser::Rules rules = Parser::Rules::NONE;
@@ -438,14 +444,17 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
         }
         switch(rules) {
             case Parser::Rules::NONE:
-                return IR::var_types::ANY; // there are different values so use any type
+                type.type = IR::var_types::ANY; // there are different values so use any type
+                break;
             case Parser::Rules::Rule_other:
                 if (isToken)
-                    return IR::var_types::Token;
+                    type.type = IR::var_types::Token;
                 else
-                    return IR::var_types::Rule;
+                    type.type = IR::var_types::Rule;
+                break;
             default:
-                return IR::var_types::STRING;
+                type.type = IR::var_types::STRING;
+                break;
         }
     } else if (mem.name == Parser::Rules::Rule_other) {
         auto data = std::any_cast<obj_t>(mem.data);
@@ -453,12 +462,17 @@ IR::var_types deduceVarTypeByValue(Parser::Rule mem) {
         auto name_str = std::any_cast<std::string>(name.data);
         bool isToken = corelib::text::isUpper(name_str);
         if (isToken)
-            return IR::var_types::Token;
+            type.type = IR::var_types::Token;
         else 
-            return IR::var_types::Rule;
+            type.type =  IR::var_types::Rule;
     } else {
-        return IR::var_types::STRING;
+        type.type = IR::var_types::STRING;
     }
+    if (qualifier_char == '*' || qualifier_char == '+') {
+        type.templ = {{type.type}};
+        type.type = IR::var_types::ARRAY;
+    }
+    return type;
 }
 IR::var_type cllTreeCsupportTypeToIR(Parser::Rule rule) {
     auto data = std::any_cast<obj_t>(rule.data);
@@ -1092,7 +1106,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     auto values = rulesToIr(val, fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop, node_ret, variable_count);
     insideLoop = inside_loop_prev;
     groups[groups_el].end = elements.size() - 1;
-    var.type = {deduceVarTypeByValue(rule)};
+    var.type = {deduceVarTypeByValue(rule, qualifier_char)};
     arr_t<IR::member> var_members;
     switch (var.type.type) {
         case IR::var_types::STRING:
@@ -1404,12 +1418,12 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         if (!isCallingToken) return {svar, var};
             //throw Error("Cannot call rule from token");
         // remove variable assignemnt
+        var.property_access = {"token"};
         block.erase(block.begin());
         arr_t<IR::expr> expr;
         auto call = createDefaultCall(block, var, name_str, member, expr);
         member.push(call);
         shadow_var = pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count, insideLoop);
-        var.property_access = {"token"};
     } else {
         if (isCallingToken) {
             block[0] = {
@@ -1425,13 +1439,12 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
             };
             shadow_var = pushBasedOnQualifier(expr, block, var, svar, member, qualifier_char, variable_count, insideLoop);
         } else {
-            // remove variable assignemnt
-            block.erase(block.begin());
+            var.property_access = {"token"};
+            block.erase(block.begin()); // remove variable assignment
             arr_t<IR::expr> expr;
             auto call = createDefaultCall(block, var, name_str, member, expr);
             member.push(call);
             shadow_var = pushBasedOnQualifier_Rule_other(expr, block, var, svar, call, member, qualifier_char, variable_count, insideLoop);
-            var.property_access = {"token"};
         }
 
     }
@@ -1656,7 +1669,10 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     auto svar = createSuccessVariable(variable_count);
     auto block = createDefaultBlock(var, svar);
     // Add success variable
-    var.type = {deduceVarTypeByValue(rule)};
+    if (insideLoop)
+        var.type = {deduceVarTypeByValue(rule, '*')};
+    else
+        var.type = {deduceVarTypeByValue(rule, qualifier_char)};
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     // Convert rules into IR
@@ -1672,6 +1688,7 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     // }
     member.add(convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop));
 
+    block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
     // Append default block
     member.add(block);
     return {svar, var};

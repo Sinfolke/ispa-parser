@@ -29,6 +29,9 @@ std::string createLibrary() {
 
     };
     res += "#pragma once\n";
+    res += "#ifndef " + corelib::text::ToUpper(global::namespace_name) + "\n";
+    res += "#define " + corelib::text::ToUpper(global::namespace_name) + "\n";
+    res += "\n";
     res += "#include <string>\n";
     res += "#include <list>\n";
     res += "#include <unordered_map>\n";
@@ -40,6 +43,12 @@ std::string createLibrary() {
         res += "#define " + actual_name + " " + deftype + "\n";
         res += "#endif\n";
     }
+    return res;
+}
+std::string close_library() {
+    std::string res;
+    res += "\n} // " + global::namespace_name + "\n"; // close enum
+    res += "\n\n#endif // " + corelib::text::ToUpper(global::namespace_name) + "\n"; // close header
     return res;
 }
 std::string createNamespace(use_prop_t use) {
@@ -148,6 +157,6 @@ extern "C" std::string convert_header(std::list<std::string> tokens, std::list<s
     res += getTypesFromStdlib();
     res += create_tokenizator_header(tokens, datablocks_tokens);
     res += create_parser_header(rules, datablocks_rules);
-    res += "\n}"; // close enum
+    res += close_library();
     return res;
 }

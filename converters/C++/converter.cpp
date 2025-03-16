@@ -393,7 +393,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
         out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
-        out << "\tauto in = pos" ;
+        out << "\tauto in = pos;" ;
         indentLevel++;
         global::isToken = false;
         break;
@@ -406,21 +406,18 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         global::isToken = true;
         break;
     case IR::types::RULE_END:
-        if (global::has_data_block) {
-            if (global::isToken) {
-                out << "\treturn {true, ::" << global::namespace_name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
-                if (global::has_data_block)
-                    out << ", data";
-                out << ")};\n";
-            } else {
-                out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
-                if (global::has_data_block)
-                    out << ", data";
-                out << ")};\n";
-            }
+        if (global::isToken) {
+            out << "\treturn {true, ::" << global::namespace_name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
+            if (global::has_data_block)
+                out << ", data";
+            out << ")};\n";
+        } else {
+            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
+            if (global::has_data_block)
+                out << ", data";
+            out << ")};\n";
         }
-        else
-            out << "\treturn {};\n";
+
         out << "}";
         indentLevel--;
         break;
