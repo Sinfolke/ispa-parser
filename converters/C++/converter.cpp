@@ -10,6 +10,7 @@
 #include <IR.h>
 #include <logging.h>
 #include <converter.h>
+#include <logging.h>
 namespace global {
     size_t pos_counter;
     std::list<std::string> dynamic_pos_counter;
@@ -62,12 +63,20 @@ std::string getCharFromEscaped(char in, bool string) {
 }
 std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
     if (type == IR::var_types::ARRAY) {
+        if (data.empty())
+            data.push_back({IR::var_types::ANY});
         std::string t = "::" + global::namespace_name + "::arr_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
         return t;
     } else if (type == IR::var_types::OBJECT) {
+        if (data.size() < 1) {
+            data.push_back({IR::var_types::ANY});
+        }
+        if (data.size() < 2) {
+            data.push_back({IR::var_types::ANY});
+        }
         std::string t = "::" + global::namespace_name + "::obj_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);

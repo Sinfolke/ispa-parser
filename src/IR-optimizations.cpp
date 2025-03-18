@@ -25,7 +25,7 @@ void getVariablesToTable(std::vector<IR::member>& elements, size_t &i, std::list
 
 size_t getBegin(arr_t<IR::member>& elements, size_t& i) {
     for (;i < elements.size(); i++) {
-        if (elements[i].type == IR::types::RULE) {
+        if (elements[i].type == IR::types::RULE || elements[i].type == IR::types::TOKEN) {
             return i + 1;
         }
     }

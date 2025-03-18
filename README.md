@@ -28,15 +28,11 @@
 
   Necessary:
 
-    Fix not correclty removed tokens when they're pointing to another token (*)
-
-    Add inline of automatic tokens when value accessed (?)
-
     Add handle of qualifier in matched() function
 
-    Add dead variables that would never be added. Remove any interaction with them
-
     Add remove of unused variables (required IR optimization)
+
+    Add not adding shadow variable when add value is character and the result is string
 
     
 

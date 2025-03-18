@@ -34,10 +34,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, OP, ASSIGNMENT_OP, COMPARE_OP, LOGICAL_OP, LOGICAL_NOT, LOGICAL_AND, LOGICAL_OR, LOGICAL_ANDR, STRING, NUMBER, BOOLEAN, END, STRICT_END, NEWLINE, ID, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_8, AUTO_9, AUTO_10, AUTO_11, AUTO_12, AUTO_13, AUTO_14, AUTO_15, AUTO_16, AUTO_17, AUTO_18, AUTO_19, AUTO_20, AUTO_21, AUTO_22, AUTO_23, AUTO_24, AUTO_25, AUTO_26, AUTO_27, AUTO_28, AUTO_29, AUTO_30, AUTO_31, AUTO_32, AUTO_33, AUTO_34, AUTO_35, AUTO_36, AUTO_37, AUTO_38, AUTO_39, AUTO_40, AUTO_41, AUTO_42, AUTO_43, AUTO_44, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_49, AUTO_50, AUTO_51, AUTO_52, AUTO_53, AUTO_54, AUTO_55, AUTO_56, AUTO_57, AUTO_58, AUTO_59, AUTO_60, AUTO_61, AUTO_62, AUTO_63, AUTO_64, AUTO_65, AUTO_66, AUTO_67, AUTO_68, AUTO_69, AUTO_70, AUTO_71, AUTO_72, AUTO_73, AUTO_74, AUTO_75, AUTO_76, AUTO_77, AUTO_78, AUTO_79, AUTO_80, AUTO_81, AUTO_82, AUTO_83, AUTO_84, AUTO_85, AUTO_86, AUTO_87, AUTO_88, AUTO_89, AUTO_90, AUTO_91, AUTO_92, AUTO_93, AUTO_94, AUTO_95, AUTO_96, AUTO_97, AUTO_98, AUTO_99, AUTO_100, AUTO_101, AUTO_102, AUTO_103, AUTO_104, AUTO_105, AUTO_106, AUTO_107, AUTO_108, AUTO_109, AUTO_110, AUTO_111, __WHITESPACE
+		NONE, OP, ASSIGNMENT_OP, COMPARE_OP, LOGICAL_OP, LOGICAL_NOT, LOGICAL_AND, LOGICAL_OR, LOGICAL_ANDR, STRING, NUMBER, BOOLEAN, END, NEWLINE, ID, AUTO_1, AUTO_3, AUTO_4, AUTO_14, AUTO_15, AUTO_16, AUTO_17, AUTO_18, AUTO_19, AUTO_20, AUTO_21, AUTO_22, AUTO_23, AUTO_24, AUTO_25, AUTO_26, AUTO_27, AUTO_28, AUTO_29, AUTO_30, AUTO_31, AUTO_32, AUTO_33, AUTO_34, AUTO_35, AUTO_46, AUTO_47, AUTO_53, AUTO_58, AUTO_59, AUTO_63, AUTO_68, AUTO_69, AUTO_70, AUTO_71, AUTO_72, AUTO_73, AUTO_74, AUTO_75, AUTO_76, AUTO_80, AUTO_81, AUTO_82, AUTO_83, AUTO_84, AUTO_85, AUTO_86, AUTO_87, AUTO_88, AUTO_89, AUTO_90, AUTO_92, AUTO_93, AUTO_96, AUTO_97, AUTO_99, AUTO_101, AUTO_102, AUTO_103, AUTO_104, AUTO_105, AUTO_106, AUTO_107, AUTO_108, AUTO_109, AUTO_110, AUTO_111, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, accessor_group, accessor_element, accessor_char, accessor_all, accessor, cll, cll_block, cll_spaced_block, cll_template_content_typename, cll_template_content_int, cll_template_content_bool, cll_template_content_str, cll_template_content_arr, cll_template_content_obj, cll_template_content_any_data, cll_csupport_types, cll_type, cll_type_abstract, cll_if, cll_ternary, expr, expr_logical, expr_compare, expr_arithmetic, expr_for_arithmetic, expr_group, expr_expr_copiable_method_call, function_body_call, function_body_decl, function_arguments, function_parameters, cll_function_call, function_decl, loop_while, loop_for, method_call, copiable_method_call, var_refer, cll_var, array, object, any_data, spacemode, linear_comment, main, use, use_unit, Rule, Rule_rule, Rule_other, Rule_op, Rule_qualifier, Rule_group, Rule_csequence, Rule_csequence_symbol, Rule_csequence_escape, Rule_csequence_diapason, Rule_any, Rule_data_block, Rule_data_block_inclosed_map, Rule_data_block_key, Rule_escaped, Rule_nested_rule, Rule_hex, Rule_bin
+		NONE, accessor_group, accessor_element, accessor_char, accessor_all, accessor, cll, cll_block, cll_spaced_block, cll_template_content_typename, cll_template_content_int, cll_template_content_bool, cll_template_content_str, cll_template_content_arr, cll_template_content_obj, cll_template_content_any_data, cll_csupport_types, cll_type, cll_type_abstract, cll_if, cll_ternary, expr, expr_logical, expr_compare, expr_arithmetic, expr_for_arithmetic, expr_group, expr_expr_copiable_method_call, function_body_call, function_body_decl, function_arguments, function_parameters, cll_function_call, function_decl, loop_while, loop_for, method_call, copiable_method_call, var_refer, cll_var, array, object, any_data, spacemode, linear_comment, main, use, use_unit, Rule, Rule_rule, Rule_other, Rule_op, Rule_qualifier, Rule_group, Rule_csequence, Rule_csequence_symbol, Rule_csequence_escape, Rule_csequence_diapason, Rule_data_block, Rule_data_block_inclosed_map, Rule_data_block_key, Rule_escaped, Rule_nested_rule, Rule_hex, Rule_bin
 	};
 	using Rule = ISC_STD::_return<Rules>;
 	using Rule_res = ISC_STD::match_result<Rules>;
@@ -69,20 +69,9 @@ namespace Parser {
 				::Parser::bool_t val;
 			};
 			using ID_data = ::Parser::str_t;
-			using AUTO_0_data = ::Parser::Token;
 			using AUTO_1_data = ::Parser::str_t;
-			using AUTO_2_data = ::Parser::Token;
 			using AUTO_3_data = ::Parser::str_t;
 			using AUTO_4_data = ::Parser::str_t;
-			using AUTO_5_data = ::Parser::Token;
-			using AUTO_6_data = ::Parser::Token;
-			using AUTO_7_data = ::Parser::Token;
-			using AUTO_8_data = ::Parser::Token;
-			using AUTO_9_data = ::Parser::Token;
-			using AUTO_10_data = ::Parser::Token;
-			using AUTO_11_data = ::Parser::Token;
-			using AUTO_12_data = ::Parser::Token;
-			using AUTO_13_data = ::Parser::Token;
 			using AUTO_14_data = ::Parser::str_t;
 			using AUTO_15_data = ::Parser::str_t;
 			using AUTO_16_data = ::Parser::str_t;
@@ -105,38 +94,12 @@ namespace Parser {
 			using AUTO_33_data = ::Parser::str_t;
 			using AUTO_34_data = ::Parser::str_t;
 			using AUTO_35_data = ::Parser::str_t;
-			using AUTO_36_data = ::Parser::Token;
-			using AUTO_37_data = ::Parser::Token;
-			using AUTO_38_data = ::Parser::Token;
-			using AUTO_39_data = ::Parser::Token;
-			using AUTO_40_data = ::Parser::Token;
-			using AUTO_41_data = ::Parser::Token;
-			using AUTO_42_data = ::Parser::Token;
-			using AUTO_43_data = ::Parser::Token;
-			using AUTO_44_data = ::Parser::Token;
-			using AUTO_45_data = ::Parser::Token;
 			using AUTO_46_data = ::Parser::str_t;
 			using AUTO_47_data = ::Parser::str_t;
-			using AUTO_48_data = ::Parser::Token;
-			using AUTO_49_data = ::Parser::Token;
-			using AUTO_50_data = ::Parser::Token;
-			using AUTO_51_data = ::Parser::Token;
-			using AUTO_52_data = ::Parser::Token;
 			using AUTO_53_data = ::Parser::str_t;
-			using AUTO_54_data = ::Parser::Token;
-			using AUTO_55_data = ::Parser::Token;
-			using AUTO_56_data = ::Parser::Token;
-			using AUTO_57_data = ::Parser::Token;
 			using AUTO_58_data = ::Parser::str_t;
 			using AUTO_59_data = ::Parser::str_t;
-			using AUTO_60_data = ::Parser::Token;
-			using AUTO_61_data = ::Parser::Token;
-			using AUTO_62_data = ::Parser::Token;
 			using AUTO_63_data = ::Parser::str_t;
-			using AUTO_64_data = ::Parser::Token;
-			using AUTO_65_data = ::Parser::Token;
-			using AUTO_66_data = ::Parser::Token;
-			using AUTO_67_data = ::Parser::Token;
 			using AUTO_68_data = ::Parser::str_t;
 			using AUTO_69_data = ::Parser::str_t;
 			using AUTO_70_data = ::Parser::str_t;
@@ -146,9 +109,6 @@ namespace Parser {
 			using AUTO_74_data = ::Parser::str_t;
 			using AUTO_75_data = ::Parser::str_t;
 			using AUTO_76_data = ::Parser::str_t;
-			using AUTO_77_data = ::Parser::Token;
-			using AUTO_78_data = ::Parser::Token;
-			using AUTO_79_data = ::Parser::Token;
 			using AUTO_80_data = ::Parser::str_t;
 			using AUTO_81_data = ::Parser::str_t;
 			using AUTO_82_data = ::Parser::str_t;
@@ -160,16 +120,11 @@ namespace Parser {
 			using AUTO_88_data = ::Parser::str_t;
 			using AUTO_89_data = ::Parser::str_t;
 			using AUTO_90_data = ::Parser::str_t;
-			using AUTO_91_data = ::Parser::Token;
 			using AUTO_92_data = ::Parser::str_t;
 			using AUTO_93_data = ::Parser::str_t;
-			using AUTO_94_data = ::Parser::Token;
-			using AUTO_95_data = ::Parser::Token;
 			using AUTO_96_data = ::Parser::str_t;
 			using AUTO_97_data = ::Parser::str_t;
-			using AUTO_98_data = ::Parser::Token;
 			using AUTO_99_data = ::Parser::str_t;
-			using AUTO_100_data = ::Parser::Token;
 			using AUTO_101_data = ::Parser::str_t;
 			using AUTO_102_data = ::Parser::str_t;
 			using AUTO_103_data = ::Parser::str_t;
@@ -193,23 +148,11 @@ namespace Parser {
 			Token_res NUMBER(const char*&);
 			Token_res BOOLEAN(const char*&);
 			Token_res END(const char*&);
-			Token_res STRICT_END(const char*&);
 			Token_res NEWLINE(const char*&);
 			Token_res ID(const char*&);
-			Token_res AUTO_0(const char*&);
 			Token_res AUTO_1(const char*&);
-			Token_res AUTO_2(const char*&);
 			Token_res AUTO_3(const char*&);
 			Token_res AUTO_4(const char*&);
-			Token_res AUTO_5(const char*&);
-			Token_res AUTO_6(const char*&);
-			Token_res AUTO_7(const char*&);
-			Token_res AUTO_8(const char*&);
-			Token_res AUTO_9(const char*&);
-			Token_res AUTO_10(const char*&);
-			Token_res AUTO_11(const char*&);
-			Token_res AUTO_12(const char*&);
-			Token_res AUTO_13(const char*&);
 			Token_res AUTO_14(const char*&);
 			Token_res AUTO_15(const char*&);
 			Token_res AUTO_16(const char*&);
@@ -232,38 +175,12 @@ namespace Parser {
 			Token_res AUTO_33(const char*&);
 			Token_res AUTO_34(const char*&);
 			Token_res AUTO_35(const char*&);
-			Token_res AUTO_36(const char*&);
-			Token_res AUTO_37(const char*&);
-			Token_res AUTO_38(const char*&);
-			Token_res AUTO_39(const char*&);
-			Token_res AUTO_40(const char*&);
-			Token_res AUTO_41(const char*&);
-			Token_res AUTO_42(const char*&);
-			Token_res AUTO_43(const char*&);
-			Token_res AUTO_44(const char*&);
-			Token_res AUTO_45(const char*&);
 			Token_res AUTO_46(const char*&);
 			Token_res AUTO_47(const char*&);
-			Token_res AUTO_48(const char*&);
-			Token_res AUTO_49(const char*&);
-			Token_res AUTO_50(const char*&);
-			Token_res AUTO_51(const char*&);
-			Token_res AUTO_52(const char*&);
 			Token_res AUTO_53(const char*&);
-			Token_res AUTO_54(const char*&);
-			Token_res AUTO_55(const char*&);
-			Token_res AUTO_56(const char*&);
-			Token_res AUTO_57(const char*&);
 			Token_res AUTO_58(const char*&);
 			Token_res AUTO_59(const char*&);
-			Token_res AUTO_60(const char*&);
-			Token_res AUTO_61(const char*&);
-			Token_res AUTO_62(const char*&);
 			Token_res AUTO_63(const char*&);
-			Token_res AUTO_64(const char*&);
-			Token_res AUTO_65(const char*&);
-			Token_res AUTO_66(const char*&);
-			Token_res AUTO_67(const char*&);
 			Token_res AUTO_68(const char*&);
 			Token_res AUTO_69(const char*&);
 			Token_res AUTO_70(const char*&);
@@ -273,9 +190,6 @@ namespace Parser {
 			Token_res AUTO_74(const char*&);
 			Token_res AUTO_75(const char*&);
 			Token_res AUTO_76(const char*&);
-			Token_res AUTO_77(const char*&);
-			Token_res AUTO_78(const char*&);
-			Token_res AUTO_79(const char*&);
 			Token_res AUTO_80(const char*&);
 			Token_res AUTO_81(const char*&);
 			Token_res AUTO_82(const char*&);
@@ -287,16 +201,11 @@ namespace Parser {
 			Token_res AUTO_88(const char*&);
 			Token_res AUTO_89(const char*&);
 			Token_res AUTO_90(const char*&);
-			Token_res AUTO_91(const char*&);
 			Token_res AUTO_92(const char*&);
 			Token_res AUTO_93(const char*&);
-			Token_res AUTO_94(const char*&);
-			Token_res AUTO_95(const char*&);
 			Token_res AUTO_96(const char*&);
 			Token_res AUTO_97(const char*&);
-			Token_res AUTO_98(const char*&);
 			Token_res AUTO_99(const char*&);
-			Token_res AUTO_100(const char*&);
 			Token_res AUTO_101(const char*&);
 			Token_res AUTO_102(const char*&);
 			Token_res AUTO_103(const char*&);
@@ -320,7 +229,7 @@ namespace Parser {
 				::Parser::arr_t<::Parser::Rule> second;
 				::Parser::Rule first;
 			};
-			using cll_data = ::Parser::arr_t<::Parser::str_t>;
+			using cll_data = ::Parser::arr_t<::Parser::Rule>;
 			using cll_block_data = ::Parser::Rule;
 			using cll_spaced_block_data = ::Parser::arr_t<::Parser::Rule>;
 			using cll_template_content_typename_data = ::Parser::arr_t<::Parser::any_t>;
@@ -376,8 +285,8 @@ namespace Parser {
 				::Parser::Token name;
 			};
 			struct function_decl_data {
-				::Parser::str_t value;
-				::Parser::str_t name;
+				::Parser::Rule value;
+				::Parser::Token name;
 				::Parser::arr_t<::Parser::Token> type;
 			};
 			struct loop_while_data {
@@ -424,7 +333,7 @@ namespace Parser {
 				::Parser::Rule first;
 			};
 			struct Rule_rule_data {
-				::Parser::str_t qualifier;
+				::Parser::any_t qualifier;
 				::Parser::any_t val;
 			};
 			struct Rule_other_data {
@@ -438,20 +347,20 @@ namespace Parser {
 			};
 			using Rule_csequence_diapason_data = ::Parser::arr_t<::Parser::any_t>;
 			struct Rule_csequence_data {
-				::Parser::arr_t<::Parser::str_t> val;
+				::Parser::Rule val;
 				::Parser::bool_t _not;
 			};
 			using Rule_data_block_inclosed_map_data = ::Parser::Rule;
 			struct Rule_data_block_key_data {
-				::Parser::str_t val;
-				::Parser::str_t name;
+				::Parser::Rule val;
+				::Parser::Token name;
 			};
 			using Rule_data_block_data = ::Parser::Rule;
 			struct Rule_escaped_data {
 				::Parser::Token num;
 				::Parser::Token c;
 			};
-			using Rule_nested_rule_data = ::Parser::Rule;
+			using Rule_nested_rule_data = ::Parser::Token;
 			using Rule_hex_data = ::Parser::arr_t<::Parser::Token>;
 			using Rule_bin_data = ::Parser::arr_t<::Parser::Token>;
 			struct Rule_data {
@@ -517,7 +426,6 @@ namespace Parser {
 			Rule_res Rule_csequence_symbol(Token*&);
 			Rule_res Rule_csequence_escape(Token*&);
 			Rule_res Rule_csequence_diapason(Token*&);
-			Rule_res Rule_any(Token*&);
 			Rule_res Rule_data_block(Token*&);
 			Rule_res Rule_data_block_inclosed_map(Token*&);
 			Rule_res Rule_data_block_key(Token*&);

@@ -33,8 +33,8 @@ namespace IR {
         ASSIGN_BITWISE_AND, ASSIGN_BITWISE_OR, ASSIGN_BITWISE_ANDR, ASSIGN_BITWISE_RIGHTSHFT, ASSIGN_BITWISE_LEFTSHIFT
     };
     struct var_type {
-        var_types type;
-        arr_t<var_type> templ;
+        var_types type = IR::var_types::UNDEFINED;
+        arr_t<var_type> templ = {};
     };
     struct member {
         types type = types::NONE;

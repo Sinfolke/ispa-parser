@@ -394,7 +394,7 @@ IR::method_call TreeMethodCallToIR(Parser::Rule rule) {
     method_call.calls = calls;
     return method_call;
 }
-IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char) {
+IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char = '\0') {
     IR::var_type type;
     if (mem.name == Parser::Rules::Rule_rule) {
         auto memdata = std::any_cast<obj_t>(mem.data);
@@ -404,14 +404,19 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char) {
         auto data = std::any_cast<obj_t>(mem.data);
         auto group = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
         if (group.size() == 0) {
-            type.type = IR::var_types::UNDEFINED;
-        }
-        if (group.size() > 1) {
-            type.type = IR::var_types::STRING;
+            return {IR::var_types::UNDEFINED};
         } else {
-            type = deduceVarTypeByValue(group[0], qualifier_char);
+            if (group.size() > 1) {
+                for (auto i = 0; i < group.size(); i++) {
+                    if (deduceVarTypeByValue(group[i]).type != IR::var_types::STRING)
+                        return {IR::var_types::UNDEFINED};
+                }
+                return {IR::var_types::STRING};
+            }
+
+            return deduceVarTypeByValue(group[0], qualifier_char);
         }
-    } if (mem.name == Parser::Rules::Rule_op) {
+    } else if (mem.name == Parser::Rules::Rule_op) {
         Parser::Rules rules = Parser::Rules::NONE;
         bool isToken = false;
         auto val = std::any_cast<arr_t<Parser::Rule>>(mem.data);
@@ -444,35 +449,26 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char) {
         }
         switch(rules) {
             case Parser::Rules::NONE:
-                type.type = IR::var_types::ANY; // there are different values so use any type
+                return {IR::var_types::ANY}; // there are different values so use any type
                 break;
             case Parser::Rules::Rule_other:
-                if (isToken)
-                    type.type = IR::var_types::Token;
-                else
-                    type.type = IR::var_types::Rule;
-                break;
+                return isToken ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
             default:
-                type.type = IR::var_types::STRING;
+                return {IR::var_types::STRING};
                 break;
         }
     } else if (mem.name == Parser::Rules::Rule_other) {
         auto data = std::any_cast<obj_t>(mem.data);
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
         auto name_str = std::any_cast<std::string>(name.data);
-        bool isToken = corelib::text::isUpper(name_str);
-        if (isToken)
-            type.type = IR::var_types::Token;
-        else 
-            type.type =  IR::var_types::Rule;
-    } else {
-        type.type = IR::var_types::STRING;
+        return corelib::text::isUpper(name_str) ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
+    } else if (
+        mem.name == Parser::Rules::Rule_csequence || mem.name == Parser::Rules::Rule_any || mem.name == Parser::Rules::Rule_escaped ||
+        mem.name == Parser::Rules::Rule_hex       || mem.name == Parser::Rules::Rule_bin
+    ) {
+        return {IR::var_types::STRING};
     }
-    if (qualifier_char == '*' || qualifier_char == '+') {
-        type.templ = {{type.type}};
-        type.type = IR::var_types::ARRAY;
-    }
-    return type;
+    return {IR::var_types::UNDEFINED};
 }
 IR::var_type cllTreeCsupportTypeToIR(Parser::Rule rule) {
     auto data = std::any_cast<obj_t>(rule.data);
@@ -1110,7 +1106,6 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     arr_t<IR::member> var_members;
     switch (var.type.type) {
         case IR::var_types::STRING:
-        {
             // it is a string so add all values
             for (auto node : node_ret) {
                 if (node.var.name == "" && node.svar.name == "")
@@ -1123,7 +1118,6 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
                 );
             }
             break;
-        }
         case IR::var_types::Token:
         case IR::var_types::Rule:
             // it is token so perform a single assign
@@ -1133,7 +1127,7 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
                     IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::assign { IR::var_assign_values::VARIABLE,  node_ret[0].var }}
                 }
             );
-        break;
+            break;
     }
     std::string begin_var_name = "begin" + generateVariableName(variable_count);
     arr_t<IR::expr> svar_expr = {};
@@ -1164,8 +1158,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
     if (!shadow_var.name.empty()) {
         groups[groups_el].var = shadow_var;
     }
-
-    member.push({IR::types::VARIABLE, var});
+    if (var.type.type != IR::var_types::UNDEFINED)
+        member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     member.push({IR::types::PUSH_POS_COUNTER, begin_var_name});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) 
@@ -1177,7 +1171,8 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
         member.add(values);
     }
     member.push(svar_cond);
-    member.add(var_members);
+    if (var.type.type != IR::var_types::UNDEFINED)
+        member.add(var_members);
 
     return {svar, var, shadow_var};
 }
@@ -1669,10 +1664,11 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     auto svar = createSuccessVariable(variable_count);
     auto block = createDefaultBlock(var, svar);
     // Add success variable
-    if (insideLoop)
-        var.type = {deduceVarTypeByValue(rule, '*')};
-    else
-        var.type = {deduceVarTypeByValue(rule, qualifier_char)};
+    var.type = {deduceVarTypeByValue(rule)};
+    if (insideLoop) {
+        var.type.templ = {{var.type.type}};
+        var.type.type = IR::var_types::ARRAY;
+    }
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     // Convert rules into IR
@@ -1891,6 +1887,7 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
         bool isToken = corelib::text::isUpper(name);
+        cpuf::printf("rule: %s\n", name);
         getNestedRuleNames(nested_rule_names, fullname, nested_rules);
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname, nested_rule_names));
