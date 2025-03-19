@@ -22,7 +22,7 @@ else()
         message(STATUS "Found compiler not support direct optimization control")
     endif()
     if (NOT O_LEVEL)
-        set(O_LEVEL, 2)
+        set(O_LEVEL 2)
     endif()
 endif()
 
@@ -41,6 +41,14 @@ if (NOT DISABLE_TRACER)
     else()
         add_compile_options(-g1)
     endif()
+
+    if (WIN32)
+       find_package(Boost REQUIRED COMPONENTS stacktrace_noop)
+       target_link_libraries(ispa Boost::stacktrace_noop)
+    else()
+       find_package(Boost 1.74 REQUIRED COMPONENTS stacktrace_backtrace)
+       target_link_libraries(ispa Boost::stacktrace_backtrace)
+    endif()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -53,13 +61,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         /usr/lib/gcc/x86_64-linux-gnu/11/include
         /usr/lib/gcc/x86_64-linux-gnu/10/include
     )
-endif()
-if (WIN32)
-    find_package(Boost REQUIRED COMPONENTS stacktrace_noop)
-    target_link_libraries(ispa Boost::stacktrace_noop)
-else()
-    find_package(Boost 1.74 REQUIRED COMPONENTS stacktrace_backtrace)
-    target_link_libraries(ispa Boost::stacktrace_backtrace)
 endif()
 
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -77,9 +78,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)  # Disable GNU extensions
 set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
-
 # add converter library
-add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp)
+if(WIN32)
+    file(GLOB_RECURSE SHARED_SOURCES external/cpuf/*.cpp)
+    list(APPEND SHARED_SOURCES ${SRC_DIR}/logging.cpp ${SRC_DIR}/corelib.cpp)
+else()
+    set(SHARED_SOURCES "")
+endif()
+add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp ${SHARED_SOURCES})
+
 target_include_directories(ispa-converter-cpp PRIVATE include src external parser/include parser/stdlibs converters/C++)
 #create interface for tests
 add_library(tests INTERFACE)

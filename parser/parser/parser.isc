@@ -1,6 +1,5 @@
 use end_of_rule: [ END, STRICT_END, NEWLINE ];
 use comment: linear_comment;
-use parralel_parsing;
 use name: "Parser";
 spacemode mixed;
 END: [;\n];
@@ -14,10 +13,15 @@ spacemode:
     "spacemode" "mixed" | "skipped" | "allowed"
     data: %1;
 ;
+name:
+    "name" ID
+
+    data: %2;
+;
 linear_comment:
     '//' [^\n]
 ; 
-main: Import | use | Rule | spacemode;
+main: use | Rule | spacemode;
 
 use: 
     'use' #unit (',' #unit)*
@@ -28,7 +32,7 @@ use:
     ;
 
     #unit:
-        id any_data?
+        ID any_data?
 
         data:
             name: %1

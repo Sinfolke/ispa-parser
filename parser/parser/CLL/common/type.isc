@@ -1,15 +1,14 @@
 
 cll_csupport_types: 
-    $bool is_unsigned = matched($1>%1);
     ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
         |
     ('float' | 'double')
         |
-    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template_typename
+    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template
 
     data:
         type: %1
-        template: %2
+        templ: %2
     ;
 ;
 cll_type:
@@ -18,10 +17,10 @@ cll_type:
     data: %1;
     
     #abstract:
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template_typename) | ('obj' cll_template_typename) )
+        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template) | ('obj' cll_template) )
         data:
             type: %1
-            template: %2
+            templ: %2
         ;
     ;
 ;

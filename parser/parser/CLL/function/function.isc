@@ -7,19 +7,18 @@ function_body_decl:
     data: %2;
 ;
 function_arguments: 
-    (any_data | ID)?
-    $if (matched(%1)) {
-        (',' any_data | ID)*
-    }
-    data: [%1, %3];
+    (any_data | ID (',' any_data | ID)*)?
+    data: 
+        first: %1
+        second: %3
+    ;
 ;
 function_parameters:
-    ID?
-    $if (matched(%1)) {
-        (',' ID)*
-    }
-    
-    data: [%1, %3];
+    (any_data | ID (',' any_data | ID)*)?
+    data: 
+        first: %1
+        second: %3
+    ;
 ;
 cll_function_call:
     ID function_body_call
@@ -29,7 +28,7 @@ cll_function_call:
     ;
 ;
 function_decl: 
-    'fn' (ID+) function_body_decl &val(cll_block | cll_spaced_block)?
+    'fn' (ID+) function_body_decl &val(cll_block)?
 
     data:
         type: %2
