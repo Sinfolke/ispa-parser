@@ -20,6 +20,7 @@ namespace global {
     bool add_semicolon;
     bool has_data_block;
     bool isToken;
+    bool void_token = false;
 }
 size_t count_strlen(const char* str) {
     size_t count = 0;
@@ -312,6 +313,7 @@ void convertVariable(IR::variable var, std::ostringstream &out, int &indentLevel
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
     if (var.value.kind != IR::var_assign_values::NONE)
         out << " = " << convertAssign(var.value, current_pos_counter);
+    out << ';';
 }
 
 std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std::stack<std::string> &current_pos_counter) {
@@ -395,7 +397,6 @@ std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std
 void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     if (mem.type != IR::types::RULE_END)
         out << std::string(indentLevel, '\t');
-    global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
     switch (mem.type)
     {
     case IR::types::RULE:
@@ -466,7 +467,10 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "continue";
         break;
     case IR::types::EXIT:
-        out << "return {};";
+        out << "return";
+        if (!global::void_token)
+            out << "{}";
+        out << ';';
         break;
     case IR::types::SKIP_SPACES:
         out << "ISC_STD::skip_spaces(pos)";
@@ -503,16 +507,32 @@ void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &ind
 void addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
 }
-extern "C" std::string convert(const IR::ir &ir, const use_prop_t &use) {
+void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
+    out << "void " << global::namespace_name << "::Tokenizator::makeTokens(const char*& pos) {\n";
+    identLevel++;
+}
+void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
+    out << "\tthis->tokens = " << var.name << ";\n";
+    out << "}\n";
+    identLevel--;
+}
+extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::node_ret_t& tokenizator_access_var, const use_prop_t &use) {
     std::ostringstream ss;
     std::stack<std::string> current_pos_counter;
     int identLevel = 0;
     current_pos_counter.push("pos");
     global::use = use;
     global::pos_counter = 0;
+    global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
     addHeader(ss);
-
+    addTokenizator_codeHeader(ss, identLevel);
+    tokenizator_code.elements.erase(tokenizator_code.elements.begin());
+    tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
+    global::void_token = true;
+    convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
+    global::void_token = false;
+    addTokenizator_codeBottom(ss, identLevel, tokenizator_access_var.var);
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();
 }

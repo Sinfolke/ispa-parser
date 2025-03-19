@@ -247,14 +247,14 @@ void inlineTokens(Parser::Tree &tree) {
     std::vector<Parser::Rule> values;
     accumulateInlineNamesAndRemove(tree, keys, values, {});
     inlineTokensInTable(keys, values);
-    // for (int i = 0; i < keys.size(); i++) {
-    //     print_str_vector(keys[i]);
-    //     cpuf::printf(" : ");
-    //     auto val = values[i];
-    //     auto data = std::any_cast<obj_t>(val.data);
-    //     auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-    //     cpuf::printf("%s\n", std::any_cast<std::string>(name.data));
-    // }
+    for (int i = 0; i < keys.size(); i++) {
+        print_str_vector(keys[i]);
+        cpuf::printf(" : ");
+        auto val = values[i];
+        auto data = std::any_cast<obj_t>(val.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        cpuf::printf("%s\n", std::any_cast<std::string>(name.data));
+    }
     inlineTokens(tree, keys, values, {});
 }
 
@@ -650,4 +650,44 @@ std::pair<std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair
         }
     }
     return {datablocks_tokens, datablocks_rules};
+}
+
+std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(std::list<std::pair<IR::data_block, std::string>> token_data_block) {
+    arr_t<Parser::Rule> rule_op;
+    for (auto &[data_block, name] : token_data_block) {
+        auto rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
+            {"is_nested", false},
+            {"name", Tokens::make_rule(Parser::Rules::id, name)},
+            {"nested_name", arr_t<Parser::Rule>()}
+        });
+        auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+            {"val", rule_other},
+            {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
+        });
+        rule_op.push_back(rule_rule);
+    }
+    auto rule_op_rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+        {"val", Tokens::make_rule(Parser::Rules::Rule_op, rule_op)},
+        {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
+    });
+    auto rule_group = Tokens::make_rule(Parser::Rules::Rule_group, obj_t {
+        {"val", arr_t<Parser::Rule>{rule_op_rule_rule}},
+        {"variable", std::any()}
+    });
+    auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+        {"val", rule_group},
+        {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier, '+')}
+    });
+    IR::ir code;
+    int variable_count = 0;
+    IR::var_elements elements;
+    IR::groups groups;
+    IR::variables vars;
+    bool insideLoop = false;
+    std::string fullname = "makeTokens";
+    IR::node_ret_t success_var;
+    ruleToIr(rule_rule, code, variable_count, true, {}, elements, groups, vars, insideLoop, fullname, success_var);
+    code.push_begin({IR::types::TOKEN, std::string("makeTokens")});
+    code.push({IR::types::RULE_END});
+    return {code, success_var};
 }

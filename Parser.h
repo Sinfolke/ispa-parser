@@ -129,6 +129,7 @@ namespace Parser {
 			using AUTO_107_data = ::Parser::str_t;
 			using AUTO_108_data = ::Parser::str_t;
 			using AUTO_109_data = ::Parser::str_t;
+			arr_t<Token> tokens;			void makeTokens(const char*&);
 			Token_res OP(const char*&);
 			Token_res ASSIGNMENT_OP(const char*&);
 			Token_res COMPARE_OP(const char*&);
@@ -266,15 +267,15 @@ namespace Parser {
 			using expr_group_data = ::Parser::Rule;
 			using expr_expr_copiable_method_call_data = ::Parser::Rule;
 			using expr_data = ::Parser::Rule;
-			using function_body_call_data = ::Parser::Token;
-			using function_body_decl_data = ::Parser::Token;
+			using function_body_call_data = ::Parser::Rule;
+			using function_body_decl_data = ::Parser::Rule;
 			struct function_arguments_data {
 				::Parser::arr_t<::Parser::arr_t<::Parser::Token>> second;
 				::Parser::any_t first;
 			};
 			struct function_parameters_data {
-				::Parser::arr_t<::Parser::arr_t<::Parser::Token>> second;
-				::Parser::any_t first;
+				::Parser::arr_t<::Parser::Token> second;
+				::Parser::Token first;
 			};
 			struct cll_function_call_data {
 				::Parser::Rule body;

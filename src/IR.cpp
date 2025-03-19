@@ -44,8 +44,15 @@ std::string generateVariableName(int &variable_count) {
 void processExitStatements(arr_t<IR::member> &values) {
     for (auto &el : values) {
         if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
-            auto condition = std::any_cast<IR::condition>(el.value);
+            auto &condition = std::any_cast<IR::condition&>(el.value); // Avoid unnecessary copies
             
+            // Prevent potential infinite recursion by checking if we already processed this condition
+            static std::unordered_set<IR::condition*> visited;
+            if (visited.find(&condition) != visited.end()) {
+                continue; // Skip already processed conditions to avoid infinite loops
+            }
+            visited.insert(&condition);
+
             // Process the block and else block of the condition recursively
             processExitStatements(condition.block);
             processExitStatements(condition.else_block);
@@ -55,16 +62,22 @@ void processExitStatements(arr_t<IR::member> &values) {
                 if (unit.type == IR::types::EXIT) {
                     unit.type = IR::types::BREAK_LOOP; // Replacing EXIT with BREAK_LOOP
                 } else if (unit.type == IR::types::IF || unit.type == IR::types::WHILE || unit.type == IR::types::DOWHILE) {
-                    auto cond = std::any_cast<IR::condition>(unit.value);
+                    auto &cond = std::any_cast<IR::condition&>(unit.value);
+                    
+                    // Check if we've processed this before
+                    if (visited.find(&cond) != visited.end()) {
+                        continue;
+                    }
+                    visited.insert(&cond);
+
                     processExitStatements(cond.block); // Recursive call on nested blocks
                     processExitStatements(cond.else_block); // Recursive call on else blocks
-                    unit.value = cond; // Update unit with the modified condition
                 }
             }
-            el.value = condition; // Update the original element with the modified condition
         }
     }
 }
+
 
 IR::variable createSuccessVariable(int &variable_count) {
     IR::variable var = createEmptyVariable("success" + generateVariableName(variable_count));
@@ -1056,9 +1069,13 @@ IR::data_block TreeDataBlockToIR(Parser::Rule rule, IR::var_elements elements, I
 }
 IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_count, char qualifier_char, std::string &fullname, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop) {
     //cpuf::printf("group\n");
+    cpuf::printf("%d\n", __LINE__);
     auto data = std::any_cast<obj_t>(rule.data);
+    cpuf::printf("%d\n", __LINE__);
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
+    cpuf::printf("%d\n", __LINE__);
     auto val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "val"));
+    cpuf::printf("%d\n", __LINE__);
 
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
@@ -1099,7 +1116,6 @@ IR::node_ret_t processGroup(Parser::Rule rule, IR::ir &member, int &variable_cou
         case IR::var_types::Token:
         case IR::var_types::Rule:
             // it is token so perform a single assign
-            cpuf::printf("Assigning %s to %s\n", var.name, node_ret[0].var.name);
             var_members.push_back(
                 {
                     IR::types::ASSIGN_VARIABLE,
@@ -1653,7 +1669,6 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     auto block = createDefaultBlock(var, svar);
     // Add success variable
     var.type = {deduceVarTypeByValue(rule)};
-    cpuf::printf("var type: %s\n", IR::convert_var_type(var.type.type));
     if (insideLoop && var.type.type != IR::var_types::STRING) {
         var.type.templ = {{var.type.type}};
         var.type.type = IR::var_types::ARRAY;
@@ -1748,7 +1763,6 @@ IR::node_ret_t process_cll(const Parser::Rule &rule, IR::ir &member, int &variab
 }
 
 void ruleToIr(Parser::Rule &rule_rule, IR::ir &member, int &variable_count, bool isToken, IR::nested_rule_name nested_rule_name, IR::var_elements &elements, IR::groups &groups, IR::variables &vars, bool &insideLoop, std::string &fullname, IR::node_ret_t &success_var, char custom_qualifier) {
-    //member.push({ IR::types::RULE, });
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));

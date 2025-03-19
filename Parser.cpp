@@ -1,4 +1,1034 @@
 #include "Parser.h"
+void Parser::Tokenizator::makeTokens(const char*& pos) {
+	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> shadow_236;
+	::Parser::arr_t<::Parser::Token> _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::bool_t success_237 = false;
+	::Parser::arr_t<::Parser::Token> _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token_res _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::arr_t<::Parser::Token> shadow_6;
+	::Parser::Token_res _7;
+	::Parser::bool_t success_8 = false;
+	::Parser::arr_t<::Parser::Token> shadow_9;
+	::Parser::Token_res _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::arr_t<::Parser::Token> shadow_12;
+	::Parser::Token_res _13;
+	::Parser::bool_t success_14 = false;
+	::Parser::arr_t<::Parser::Token> shadow_15;
+	::Parser::Token_res _16;
+	::Parser::bool_t success_17 = false;
+	::Parser::arr_t<::Parser::Token> shadow_18;
+	::Parser::Token_res _19;
+	::Parser::bool_t success_20 = false;
+	::Parser::arr_t<::Parser::Token> shadow_21;
+	::Parser::Token_res _22;
+	::Parser::bool_t success_23 = false;
+	::Parser::arr_t<::Parser::Token> shadow_24;
+	::Parser::Token_res _25;
+	::Parser::bool_t success_26 = false;
+	::Parser::arr_t<::Parser::Token> shadow_27;
+	::Parser::Token_res _28;
+	::Parser::bool_t success_29 = false;
+	::Parser::arr_t<::Parser::Token> shadow_30;
+	::Parser::Token_res _31;
+	::Parser::bool_t success_32 = false;
+	::Parser::arr_t<::Parser::Token> shadow_33;
+	::Parser::Token_res _34;
+	::Parser::bool_t success_35 = false;
+	::Parser::arr_t<::Parser::Token> shadow_36;
+	::Parser::Token_res _37;
+	::Parser::bool_t success_38 = false;
+	::Parser::arr_t<::Parser::Token> shadow_39;
+	::Parser::Token_res _40;
+	::Parser::bool_t success_41 = false;
+	::Parser::arr_t<::Parser::Token> shadow_42;
+	::Parser::Token_res _43;
+	::Parser::bool_t success_44 = false;
+	::Parser::arr_t<::Parser::Token> shadow_45;
+	::Parser::Token_res _46;
+	::Parser::bool_t success_47 = false;
+	::Parser::arr_t<::Parser::Token> shadow_48;
+	::Parser::Token_res _49;
+	::Parser::bool_t success_50 = false;
+	::Parser::arr_t<::Parser::Token> shadow_51;
+	::Parser::Token_res _52;
+	::Parser::bool_t success_53 = false;
+	::Parser::arr_t<::Parser::Token> shadow_54;
+	::Parser::Token_res _55;
+	::Parser::bool_t success_56 = false;
+	::Parser::arr_t<::Parser::Token> shadow_57;
+	::Parser::Token_res _58;
+	::Parser::bool_t success_59 = false;
+	::Parser::arr_t<::Parser::Token> shadow_60;
+	::Parser::Token_res _61;
+	::Parser::bool_t success_62 = false;
+	::Parser::arr_t<::Parser::Token> shadow_63;
+	::Parser::Token_res _64;
+	::Parser::bool_t success_65 = false;
+	::Parser::arr_t<::Parser::Token> shadow_66;
+	::Parser::Token_res _67;
+	::Parser::bool_t success_68 = false;
+	::Parser::arr_t<::Parser::Token> shadow_69;
+	::Parser::Token_res _70;
+	::Parser::bool_t success_71 = false;
+	::Parser::arr_t<::Parser::Token> shadow_72;
+	::Parser::Token_res _73;
+	::Parser::bool_t success_74 = false;
+	::Parser::arr_t<::Parser::Token> shadow_75;
+	::Parser::Token_res _76;
+	::Parser::bool_t success_77 = false;
+	::Parser::arr_t<::Parser::Token> shadow_78;
+	::Parser::Token_res _79;
+	::Parser::bool_t success_80 = false;
+	::Parser::arr_t<::Parser::Token> shadow_81;
+	::Parser::Token_res _82;
+	::Parser::bool_t success_83 = false;
+	::Parser::arr_t<::Parser::Token> shadow_84;
+	::Parser::Token_res _85;
+	::Parser::bool_t success_86 = false;
+	::Parser::arr_t<::Parser::Token> shadow_87;
+	::Parser::Token_res _88;
+	::Parser::bool_t success_89 = false;
+	::Parser::arr_t<::Parser::Token> shadow_90;
+	::Parser::Token_res _91;
+	::Parser::bool_t success_92 = false;
+	::Parser::arr_t<::Parser::Token> shadow_93;
+	::Parser::Token_res _94;
+	::Parser::bool_t success_95 = false;
+	::Parser::arr_t<::Parser::Token> shadow_96;
+	::Parser::Token_res _97;
+	::Parser::bool_t success_98 = false;
+	::Parser::arr_t<::Parser::Token> shadow_99;
+	::Parser::Token_res _100;
+	::Parser::bool_t success_101 = false;
+	::Parser::arr_t<::Parser::Token> shadow_102;
+	::Parser::Token_res _103;
+	::Parser::bool_t success_104 = false;
+	::Parser::arr_t<::Parser::Token> shadow_105;
+	::Parser::Token_res _106;
+	::Parser::bool_t success_107 = false;
+	::Parser::arr_t<::Parser::Token> shadow_108;
+	::Parser::Token_res _109;
+	::Parser::bool_t success_110 = false;
+	::Parser::arr_t<::Parser::Token> shadow_111;
+	::Parser::Token_res _112;
+	::Parser::bool_t success_113 = false;
+	::Parser::arr_t<::Parser::Token> shadow_114;
+	::Parser::Token_res _115;
+	::Parser::bool_t success_116 = false;
+	::Parser::arr_t<::Parser::Token> shadow_117;
+	::Parser::Token_res _118;
+	::Parser::bool_t success_119 = false;
+	::Parser::arr_t<::Parser::Token> shadow_120;
+	::Parser::Token_res _121;
+	::Parser::bool_t success_122 = false;
+	::Parser::arr_t<::Parser::Token> shadow_123;
+	::Parser::Token_res _124;
+	::Parser::bool_t success_125 = false;
+	::Parser::arr_t<::Parser::Token> shadow_126;
+	::Parser::Token_res _127;
+	::Parser::bool_t success_128 = false;
+	::Parser::arr_t<::Parser::Token> shadow_129;
+	::Parser::Token_res _130;
+	::Parser::bool_t success_131 = false;
+	::Parser::arr_t<::Parser::Token> shadow_132;
+	::Parser::Token_res _133;
+	::Parser::bool_t success_134 = false;
+	::Parser::arr_t<::Parser::Token> shadow_135;
+	::Parser::Token_res _136;
+	::Parser::bool_t success_137 = false;
+	::Parser::arr_t<::Parser::Token> shadow_138;
+	::Parser::Token_res _139;
+	::Parser::bool_t success_140 = false;
+	::Parser::arr_t<::Parser::Token> shadow_141;
+	::Parser::Token_res _142;
+	::Parser::bool_t success_143 = false;
+	::Parser::arr_t<::Parser::Token> shadow_144;
+	::Parser::Token_res _145;
+	::Parser::bool_t success_146 = false;
+	::Parser::arr_t<::Parser::Token> shadow_147;
+	::Parser::Token_res _148;
+	::Parser::bool_t success_149 = false;
+	::Parser::arr_t<::Parser::Token> shadow_150;
+	::Parser::Token_res _151;
+	::Parser::bool_t success_152 = false;
+	::Parser::arr_t<::Parser::Token> shadow_153;
+	::Parser::Token_res _154;
+	::Parser::bool_t success_155 = false;
+	::Parser::arr_t<::Parser::Token> shadow_156;
+	::Parser::Token_res _157;
+	::Parser::bool_t success_158 = false;
+	::Parser::arr_t<::Parser::Token> shadow_159;
+	::Parser::Token_res _160;
+	::Parser::bool_t success_161 = false;
+	::Parser::arr_t<::Parser::Token> shadow_162;
+	::Parser::Token_res _163;
+	::Parser::bool_t success_164 = false;
+	::Parser::arr_t<::Parser::Token> shadow_165;
+	::Parser::Token_res _166;
+	::Parser::bool_t success_167 = false;
+	::Parser::arr_t<::Parser::Token> shadow_168;
+	::Parser::Token_res _169;
+	::Parser::bool_t success_170 = false;
+	::Parser::arr_t<::Parser::Token> shadow_171;
+	::Parser::Token_res _172;
+	::Parser::bool_t success_173 = false;
+	::Parser::arr_t<::Parser::Token> shadow_174;
+	::Parser::Token_res _175;
+	::Parser::bool_t success_176 = false;
+	::Parser::arr_t<::Parser::Token> shadow_177;
+	::Parser::Token_res _178;
+	::Parser::bool_t success_179 = false;
+	::Parser::arr_t<::Parser::Token> shadow_180;
+	::Parser::Token_res _181;
+	::Parser::bool_t success_182 = false;
+	::Parser::arr_t<::Parser::Token> shadow_183;
+	::Parser::Token_res _184;
+	::Parser::bool_t success_185 = false;
+	::Parser::arr_t<::Parser::Token> shadow_186;
+	::Parser::Token_res _187;
+	::Parser::bool_t success_188 = false;
+	::Parser::arr_t<::Parser::Token> shadow_189;
+	::Parser::Token_res _190;
+	::Parser::bool_t success_191 = false;
+	::Parser::arr_t<::Parser::Token> shadow_192;
+	::Parser::Token_res _193;
+	::Parser::bool_t success_194 = false;
+	::Parser::arr_t<::Parser::Token> shadow_195;
+	::Parser::Token_res _196;
+	::Parser::bool_t success_197 = false;
+	::Parser::arr_t<::Parser::Token> shadow_198;
+	::Parser::Token_res _199;
+	::Parser::bool_t success_200 = false;
+	::Parser::arr_t<::Parser::Token> shadow_201;
+	::Parser::Token_res _202;
+	::Parser::bool_t success_203 = false;
+	::Parser::arr_t<::Parser::Token> shadow_204;
+	::Parser::Token_res _205;
+	::Parser::bool_t success_206 = false;
+	::Parser::arr_t<::Parser::Token> shadow_207;
+	::Parser::Token_res _208;
+	::Parser::bool_t success_209 = false;
+	::Parser::arr_t<::Parser::Token> shadow_210;
+	::Parser::Token_res _211;
+	::Parser::bool_t success_212 = false;
+	::Parser::arr_t<::Parser::Token> shadow_213;
+	::Parser::Token_res _214;
+	::Parser::bool_t success_215 = false;
+	::Parser::arr_t<::Parser::Token> shadow_216;
+	::Parser::Token_res _217;
+	::Parser::bool_t success_218 = false;
+	::Parser::arr_t<::Parser::Token> shadow_219;
+	::Parser::Token_res _220;
+	::Parser::bool_t success_221 = false;
+	::Parser::arr_t<::Parser::Token> shadow_222;
+	::Parser::Token_res _223;
+	::Parser::bool_t success_224 = false;
+	::Parser::arr_t<::Parser::Token> shadow_225;
+	::Parser::Token_res _226;
+	::Parser::bool_t success_227 = false;
+	::Parser::arr_t<::Parser::Token> shadow_228;
+	::Parser::Token_res _229;
+	::Parser::bool_t success_230 = false;
+	::Parser::arr_t<::Parser::Token> shadow_231;
+	::Parser::Token_res _232;
+	::Parser::bool_t success_233 = false;
+	::Parser::arr_t<::Parser::Token> shadow_234;
+	auto begin_235 = pos;
+	while (1)
+	{
+		_4 = OP(begin_235);
+		if (!(_4.result))
+		{
+			_7 = ASSIGNMENT_OP(begin_235);
+			if (!(_7.result))
+			{
+				_10 = COMPARE_OP(begin_235);
+				if (!(_10.result))
+				{
+					_13 = LOGICAL_OP(begin_235);
+					if (!(_13.result))
+					{
+						_16 = STRING(begin_235);
+						if (!(_16.result))
+						{
+							_19 = NUMBER(begin_235);
+							if (!(_19.result))
+							{
+								_22 = BOOLEAN(begin_235);
+								if (!(_22.result))
+								{
+									_25 = ID(begin_235);
+									if (!(_25.result))
+									{
+										_28 = AUTO_1(begin_235);
+										if (!(_28.result))
+										{
+											_31 = AUTO_3(begin_235);
+											if (!(_31.result))
+											{
+												_34 = AUTO_4(begin_235);
+												if (!(_34.result))
+												{
+													_37 = AUTO_8(begin_235);
+													if (!(_37.result))
+													{
+														_40 = AUTO_9(begin_235);
+														if (!(_40.result))
+														{
+															_43 = AUTO_10(begin_235);
+															if (!(_43.result))
+															{
+																_46 = AUTO_11(begin_235);
+																if (!(_46.result))
+																{
+																	_49 = AUTO_12(begin_235);
+																	if (!(_49.result))
+																	{
+																		_52 = AUTO_13(begin_235);
+																		if (!(_52.result))
+																		{
+																			_55 = AUTO_14(begin_235);
+																			if (!(_55.result))
+																			{
+																				_58 = AUTO_15(begin_235);
+																				if (!(_58.result))
+																				{
+																					_61 = AUTO_16(begin_235);
+																					if (!(_61.result))
+																					{
+																						_64 = AUTO_17(begin_235);
+																						if (!(_64.result))
+																						{
+																							_67 = AUTO_18(begin_235);
+																							if (!(_67.result))
+																							{
+																								_70 = AUTO_19(begin_235);
+																								if (!(_70.result))
+																								{
+																									_73 = AUTO_20(begin_235);
+																									if (!(_73.result))
+																									{
+																										_76 = AUTO_21(begin_235);
+																										if (!(_76.result))
+																										{
+																											_79 = AUTO_22(begin_235);
+																											if (!(_79.result))
+																											{
+																												_82 = AUTO_23(begin_235);
+																												if (!(_82.result))
+																												{
+																													_85 = AUTO_24(begin_235);
+																													if (!(_85.result))
+																													{
+																														_88 = AUTO_25(begin_235);
+																														if (!(_88.result))
+																														{
+																															_91 = AUTO_26(begin_235);
+																															if (!(_91.result))
+																															{
+																																_94 = AUTO_27(begin_235);
+																																if (!(_94.result))
+																																{
+																																	_97 = AUTO_28(begin_235);
+																																	if (!(_97.result))
+																																	{
+																																		_100 = AUTO_29(begin_235);
+																																		if (!(_100.result))
+																																		{
+																																			_103 = AUTO_42(begin_235);
+																																			if (!(_103.result))
+																																			{
+																																				_106 = AUTO_43(begin_235);
+																																				if (!(_106.result))
+																																				{
+																																					_109 = AUTO_44(begin_235);
+																																					if (!(_109.result))
+																																					{
+																																						_112 = AUTO_50(begin_235);
+																																						if (!(_112.result))
+																																						{
+																																							_115 = AUTO_55(begin_235);
+																																							if (!(_115.result))
+																																							{
+																																								_118 = AUTO_56(begin_235);
+																																								if (!(_118.result))
+																																								{
+																																									_121 = AUTO_60(begin_235);
+																																									if (!(_121.result))
+																																									{
+																																										_124 = AUTO_65(begin_235);
+																																										if (!(_124.result))
+																																										{
+																																											_127 = AUTO_66(begin_235);
+																																											if (!(_127.result))
+																																											{
+																																												_130 = AUTO_67(begin_235);
+																																												if (!(_130.result))
+																																												{
+																																													_133 = AUTO_68(begin_235);
+																																													if (!(_133.result))
+																																													{
+																																														_136 = AUTO_69(begin_235);
+																																														if (!(_136.result))
+																																														{
+																																															_139 = AUTO_70(begin_235);
+																																															if (!(_139.result))
+																																															{
+																																																_142 = AUTO_71(begin_235);
+																																																if (!(_142.result))
+																																																{
+																																																	_145 = AUTO_72(begin_235);
+																																																	if (!(_145.result))
+																																																	{
+																																																		_148 = AUTO_73(begin_235);
+																																																		if (!(_148.result))
+																																																		{
+																																																			_151 = AUTO_74(begin_235);
+																																																			if (!(_151.result))
+																																																			{
+																																																				_154 = AUTO_78(begin_235);
+																																																				if (!(_154.result))
+																																																				{
+																																																					_157 = AUTO_79(begin_235);
+																																																					if (!(_157.result))
+																																																					{
+																																																						_160 = AUTO_80(begin_235);
+																																																						if (!(_160.result))
+																																																						{
+																																																							_163 = AUTO_81(begin_235);
+																																																							if (!(_163.result))
+																																																							{
+																																																								_166 = AUTO_82(begin_235);
+																																																								if (!(_166.result))
+																																																								{
+																																																									_169 = AUTO_83(begin_235);
+																																																									if (!(_169.result))
+																																																									{
+																																																										_172 = AUTO_84(begin_235);
+																																																										if (!(_172.result))
+																																																										{
+																																																											_175 = AUTO_85(begin_235);
+																																																											if (!(_175.result))
+																																																											{
+																																																												_178 = AUTO_86(begin_235);
+																																																												if (!(_178.result))
+																																																												{
+																																																													_181 = AUTO_87(begin_235);
+																																																													if (!(_181.result))
+																																																													{
+																																																														_184 = AUTO_88(begin_235);
+																																																														if (!(_184.result))
+																																																														{
+																																																															_187 = AUTO_90(begin_235);
+																																																															if (!(_187.result))
+																																																															{
+																																																																_190 = AUTO_91(begin_235);
+																																																																if (!(_190.result))
+																																																																{
+																																																																	_193 = AUTO_94(begin_235);
+																																																																	if (!(_193.result))
+																																																																	{
+																																																																		_196 = AUTO_95(begin_235);
+																																																																		if (!(_196.result))
+																																																																		{
+																																																																			_199 = AUTO_97(begin_235);
+																																																																			if (!(_199.result))
+																																																																			{
+																																																																				_202 = AUTO_99(begin_235);
+																																																																				if (!(_202.result))
+																																																																				{
+																																																																					_205 = AUTO_100(begin_235);
+																																																																					if (!(_205.result))
+																																																																					{
+																																																																						_208 = AUTO_101(begin_235);
+																																																																						if (!(_208.result))
+																																																																						{
+																																																																							_211 = AUTO_102(begin_235);
+																																																																							if (!(_211.result))
+																																																																							{
+																																																																								_214 = AUTO_103(begin_235);
+																																																																								if (!(_214.result))
+																																																																								{
+																																																																									_217 = AUTO_104(begin_235);
+																																																																									if (!(_217.result))
+																																																																									{
+																																																																										_220 = AUTO_105(begin_235);
+																																																																										if (!(_220.result))
+																																																																										{
+																																																																											_223 = AUTO_106(begin_235);
+																																																																											if (!(_223.result))
+																																																																											{
+																																																																												_226 = AUTO_107(begin_235);
+																																																																												if (!(_226.result))
+																																																																												{
+																																																																													_229 = AUTO_108(begin_235);
+																																																																													if (!(_229.result))
+																																																																													{
+																																																																														_232 = AUTO_109(begin_235);
+																																																																														if (!(_232.result))
+																																																																														{
+																																																																															break;
+																																																																														}
+																																																																														else 
+																																																																														{
+																																																																															success_233 = true;
+																																																																															shadow_234.push_back(_232.token);
+																																																																															_2.push_back(_232.token);
+																																																																														}
+																																																																													}
+																																																																													else 
+																																																																													{
+																																																																														success_230 = true;
+																																																																														shadow_231.push_back(_229.token);
+																																																																														_2.push_back(_229.token);
+																																																																													}
+																																																																												}
+																																																																												else 
+																																																																												{
+																																																																													success_227 = true;
+																																																																													shadow_228.push_back(_226.token);
+																																																																													_2.push_back(_226.token);
+																																																																												}
+																																																																											}
+																																																																											else 
+																																																																											{
+																																																																												success_224 = true;
+																																																																												shadow_225.push_back(_223.token);
+																																																																												_2.push_back(_223.token);
+																																																																											}
+																																																																										}
+																																																																										else 
+																																																																										{
+																																																																											success_221 = true;
+																																																																											shadow_222.push_back(_220.token);
+																																																																											_2.push_back(_220.token);
+																																																																										}
+																																																																									}
+																																																																									else 
+																																																																									{
+																																																																										success_218 = true;
+																																																																										shadow_219.push_back(_217.token);
+																																																																										_2.push_back(_217.token);
+																																																																									}
+																																																																								}
+																																																																								else 
+																																																																								{
+																																																																									success_215 = true;
+																																																																									shadow_216.push_back(_214.token);
+																																																																									_2.push_back(_214.token);
+																																																																								}
+																																																																							}
+																																																																							else 
+																																																																							{
+																																																																								success_212 = true;
+																																																																								shadow_213.push_back(_211.token);
+																																																																								_2.push_back(_211.token);
+																																																																							}
+																																																																						}
+																																																																						else 
+																																																																						{
+																																																																							success_209 = true;
+																																																																							shadow_210.push_back(_208.token);
+																																																																							_2.push_back(_208.token);
+																																																																						}
+																																																																					}
+																																																																					else 
+																																																																					{
+																																																																						success_206 = true;
+																																																																						shadow_207.push_back(_205.token);
+																																																																						_2.push_back(_205.token);
+																																																																					}
+																																																																				}
+																																																																				else 
+																																																																				{
+																																																																					success_203 = true;
+																																																																					shadow_204.push_back(_202.token);
+																																																																					_2.push_back(_202.token);
+																																																																				}
+																																																																			}
+																																																																			else 
+																																																																			{
+																																																																				success_200 = true;
+																																																																				shadow_201.push_back(_199.token);
+																																																																				_2.push_back(_199.token);
+																																																																			}
+																																																																		}
+																																																																		else 
+																																																																		{
+																																																																			success_197 = true;
+																																																																			shadow_198.push_back(_196.token);
+																																																																			_2.push_back(_196.token);
+																																																																		}
+																																																																	}
+																																																																	else 
+																																																																	{
+																																																																		success_194 = true;
+																																																																		shadow_195.push_back(_193.token);
+																																																																		_2.push_back(_193.token);
+																																																																	}
+																																																																}
+																																																																else 
+																																																																{
+																																																																	success_191 = true;
+																																																																	shadow_192.push_back(_190.token);
+																																																																	_2.push_back(_190.token);
+																																																																}
+																																																															}
+																																																															else 
+																																																															{
+																																																																success_188 = true;
+																																																																shadow_189.push_back(_187.token);
+																																																																_2.push_back(_187.token);
+																																																															}
+																																																														}
+																																																														else 
+																																																														{
+																																																															success_185 = true;
+																																																															shadow_186.push_back(_184.token);
+																																																															_2.push_back(_184.token);
+																																																														}
+																																																													}
+																																																													else 
+																																																													{
+																																																														success_182 = true;
+																																																														shadow_183.push_back(_181.token);
+																																																														_2.push_back(_181.token);
+																																																													}
+																																																												}
+																																																												else 
+																																																												{
+																																																													success_179 = true;
+																																																													shadow_180.push_back(_178.token);
+																																																													_2.push_back(_178.token);
+																																																												}
+																																																											}
+																																																											else 
+																																																											{
+																																																												success_176 = true;
+																																																												shadow_177.push_back(_175.token);
+																																																												_2.push_back(_175.token);
+																																																											}
+																																																										}
+																																																										else 
+																																																										{
+																																																											success_173 = true;
+																																																											shadow_174.push_back(_172.token);
+																																																											_2.push_back(_172.token);
+																																																										}
+																																																									}
+																																																									else 
+																																																									{
+																																																										success_170 = true;
+																																																										shadow_171.push_back(_169.token);
+																																																										_2.push_back(_169.token);
+																																																									}
+																																																								}
+																																																								else 
+																																																								{
+																																																									success_167 = true;
+																																																									shadow_168.push_back(_166.token);
+																																																									_2.push_back(_166.token);
+																																																								}
+																																																							}
+																																																							else 
+																																																							{
+																																																								success_164 = true;
+																																																								shadow_165.push_back(_163.token);
+																																																								_2.push_back(_163.token);
+																																																							}
+																																																						}
+																																																						else 
+																																																						{
+																																																							success_161 = true;
+																																																							shadow_162.push_back(_160.token);
+																																																							_2.push_back(_160.token);
+																																																						}
+																																																					}
+																																																					else 
+																																																					{
+																																																						success_158 = true;
+																																																						shadow_159.push_back(_157.token);
+																																																						_2.push_back(_157.token);
+																																																					}
+																																																				}
+																																																				else 
+																																																				{
+																																																					success_155 = true;
+																																																					shadow_156.push_back(_154.token);
+																																																					_2.push_back(_154.token);
+																																																				}
+																																																			}
+																																																			else 
+																																																			{
+																																																				success_152 = true;
+																																																				shadow_153.push_back(_151.token);
+																																																				_2.push_back(_151.token);
+																																																			}
+																																																		}
+																																																		else 
+																																																		{
+																																																			success_149 = true;
+																																																			shadow_150.push_back(_148.token);
+																																																			_2.push_back(_148.token);
+																																																		}
+																																																	}
+																																																	else 
+																																																	{
+																																																		success_146 = true;
+																																																		shadow_147.push_back(_145.token);
+																																																		_2.push_back(_145.token);
+																																																	}
+																																																}
+																																																else 
+																																																{
+																																																	success_143 = true;
+																																																	shadow_144.push_back(_142.token);
+																																																	_2.push_back(_142.token);
+																																																}
+																																															}
+																																															else 
+																																															{
+																																																success_140 = true;
+																																																shadow_141.push_back(_139.token);
+																																																_2.push_back(_139.token);
+																																															}
+																																														}
+																																														else 
+																																														{
+																																															success_137 = true;
+																																															shadow_138.push_back(_136.token);
+																																															_2.push_back(_136.token);
+																																														}
+																																													}
+																																													else 
+																																													{
+																																														success_134 = true;
+																																														shadow_135.push_back(_133.token);
+																																														_2.push_back(_133.token);
+																																													}
+																																												}
+																																												else 
+																																												{
+																																													success_131 = true;
+																																													shadow_132.push_back(_130.token);
+																																													_2.push_back(_130.token);
+																																												}
+																																											}
+																																											else 
+																																											{
+																																												success_128 = true;
+																																												shadow_129.push_back(_127.token);
+																																												_2.push_back(_127.token);
+																																											}
+																																										}
+																																										else 
+																																										{
+																																											success_125 = true;
+																																											shadow_126.push_back(_124.token);
+																																											_2.push_back(_124.token);
+																																										}
+																																									}
+																																									else 
+																																									{
+																																										success_122 = true;
+																																										shadow_123.push_back(_121.token);
+																																										_2.push_back(_121.token);
+																																									}
+																																								}
+																																								else 
+																																								{
+																																									success_119 = true;
+																																									shadow_120.push_back(_118.token);
+																																									_2.push_back(_118.token);
+																																								}
+																																							}
+																																							else 
+																																							{
+																																								success_116 = true;
+																																								shadow_117.push_back(_115.token);
+																																								_2.push_back(_115.token);
+																																							}
+																																						}
+																																						else 
+																																						{
+																																							success_113 = true;
+																																							shadow_114.push_back(_112.token);
+																																							_2.push_back(_112.token);
+																																						}
+																																					}
+																																					else 
+																																					{
+																																						success_110 = true;
+																																						shadow_111.push_back(_109.token);
+																																						_2.push_back(_109.token);
+																																					}
+																																				}
+																																				else 
+																																				{
+																																					success_107 = true;
+																																					shadow_108.push_back(_106.token);
+																																					_2.push_back(_106.token);
+																																				}
+																																			}
+																																			else 
+																																			{
+																																				success_104 = true;
+																																				shadow_105.push_back(_103.token);
+																																				_2.push_back(_103.token);
+																																			}
+																																		}
+																																		else 
+																																		{
+																																			success_101 = true;
+																																			shadow_102.push_back(_100.token);
+																																			_2.push_back(_100.token);
+																																		}
+																																	}
+																																	else 
+																																	{
+																																		success_98 = true;
+																																		shadow_99.push_back(_97.token);
+																																		_2.push_back(_97.token);
+																																	}
+																																}
+																																else 
+																																{
+																																	success_95 = true;
+																																	shadow_96.push_back(_94.token);
+																																	_2.push_back(_94.token);
+																																}
+																															}
+																															else 
+																															{
+																																success_92 = true;
+																																shadow_93.push_back(_91.token);
+																																_2.push_back(_91.token);
+																															}
+																														}
+																														else 
+																														{
+																															success_89 = true;
+																															shadow_90.push_back(_88.token);
+																															_2.push_back(_88.token);
+																														}
+																													}
+																													else 
+																													{
+																														success_86 = true;
+																														shadow_87.push_back(_85.token);
+																														_2.push_back(_85.token);
+																													}
+																												}
+																												else 
+																												{
+																													success_83 = true;
+																													shadow_84.push_back(_82.token);
+																													_2.push_back(_82.token);
+																												}
+																											}
+																											else 
+																											{
+																												success_80 = true;
+																												shadow_81.push_back(_79.token);
+																												_2.push_back(_79.token);
+																											}
+																										}
+																										else 
+																										{
+																											success_77 = true;
+																											shadow_78.push_back(_76.token);
+																											_2.push_back(_76.token);
+																										}
+																									}
+																									else 
+																									{
+																										success_74 = true;
+																										shadow_75.push_back(_73.token);
+																										_2.push_back(_73.token);
+																									}
+																								}
+																								else 
+																								{
+																									success_71 = true;
+																									shadow_72.push_back(_70.token);
+																									_2.push_back(_70.token);
+																								}
+																							}
+																							else 
+																							{
+																								success_68 = true;
+																								shadow_69.push_back(_67.token);
+																								_2.push_back(_67.token);
+																							}
+																						}
+																						else 
+																						{
+																							success_65 = true;
+																							shadow_66.push_back(_64.token);
+																							_2.push_back(_64.token);
+																						}
+																					}
+																					else 
+																					{
+																						success_62 = true;
+																						shadow_63.push_back(_61.token);
+																						_2.push_back(_61.token);
+																					}
+																				}
+																				else 
+																				{
+																					success_59 = true;
+																					shadow_60.push_back(_58.token);
+																					_2.push_back(_58.token);
+																				}
+																			}
+																			else 
+																			{
+																				success_56 = true;
+																				shadow_57.push_back(_55.token);
+																				_2.push_back(_55.token);
+																			}
+																		}
+																		else 
+																		{
+																			success_53 = true;
+																			shadow_54.push_back(_52.token);
+																			_2.push_back(_52.token);
+																		}
+																	}
+																	else 
+																	{
+																		success_50 = true;
+																		shadow_51.push_back(_49.token);
+																		_2.push_back(_49.token);
+																	}
+																}
+																else 
+																{
+																	success_47 = true;
+																	shadow_48.push_back(_46.token);
+																	_2.push_back(_46.token);
+																}
+															}
+															else 
+															{
+																success_44 = true;
+																shadow_45.push_back(_43.token);
+																_2.push_back(_43.token);
+															}
+														}
+														else 
+														{
+															success_41 = true;
+															shadow_42.push_back(_40.token);
+															_2.push_back(_40.token);
+														}
+													}
+													else 
+													{
+														success_38 = true;
+														shadow_39.push_back(_37.token);
+														_2.push_back(_37.token);
+													}
+												}
+												else 
+												{
+													success_35 = true;
+													shadow_36.push_back(_34.token);
+													_2.push_back(_34.token);
+												}
+											}
+											else 
+											{
+												success_32 = true;
+												shadow_33.push_back(_31.token);
+												_2.push_back(_31.token);
+											}
+										}
+										else 
+										{
+											success_29 = true;
+											shadow_30.push_back(_28.token);
+											_2.push_back(_28.token);
+										}
+									}
+									else 
+									{
+										success_26 = true;
+										shadow_27.push_back(_25.token);
+										_2.push_back(_25.token);
+									}
+								}
+								else 
+								{
+									success_23 = true;
+									shadow_24.push_back(_22.token);
+									_2.push_back(_22.token);
+								}
+							}
+							else 
+							{
+								success_20 = true;
+								shadow_21.push_back(_19.token);
+								_2.push_back(_19.token);
+							}
+						}
+						else 
+						{
+							success_17 = true;
+							shadow_18.push_back(_16.token);
+							_2.push_back(_16.token);
+						}
+					}
+					else 
+					{
+						success_14 = true;
+						shadow_15.push_back(_13.token);
+						_2.push_back(_13.token);
+					}
+				}
+				else 
+				{
+					success_11 = true;
+					shadow_12.push_back(_10.token);
+					_2.push_back(_10.token);
+				}
+			}
+			else 
+			{
+				success_8 = true;
+				shadow_9.push_back(_7.token);
+				_2.push_back(_7.token);
+			}
+		}
+		else 
+		{
+			success_5 = true;
+			shadow_6.push_back(_4.token);
+			_2.push_back(_4.token);
+		}
+		success_3 = true;
+		begin_235 += 1;
+		_0 = _2;
+		shadow_236.push_back(_0);
+		success_237 = true;
+	}
+	if (!success_237)
+	{
+		return;
+	}
+	if (success_3)
+	{
+		success_1 = true;
+		pos = begin_235;
+	}
+	ISC_STD::skip_spaces(pos);
+	this->tokens = _0;
+}
 Parser::Rule_res Parser::Parser::accessor_group(Token*& pos) {
 	auto in = pos;
 	::Parser::Token _0;
@@ -7,7 +1037,7 @@ Parser::Rule_res Parser::Parser::accessor_group(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_4))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -15,7 +1045,7 @@ Parser::Rule_res Parser::Parser::accessor_group(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -31,7 +1061,7 @@ Parser::Rule_res Parser::Parser::accessor_element(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_1))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -39,7 +1069,7 @@ Parser::Rule_res Parser::Parser::accessor_element(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -55,7 +1085,7 @@ Parser::Rule_res Parser::Parser::accessor_char(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_87))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -63,7 +1093,7 @@ Parser::Rule_res Parser::Parser::accessor_char(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -90,7 +1120,7 @@ Parser::Rule_res Parser::Parser::accessor_all(Token*& pos) {
 			_6 = accessor_char(pos);
 			if (!(_6.result))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -128,7 +1158,7 @@ Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 	_0 = accessor_all(pos);
 	if (!(_0.result))
 	{
-		return {};
+		return{};
 	}
 	success_1 = true;
 	pos += 1;
@@ -201,7 +1231,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 	::Parser::arr_t<::Parser::Token> shadow_32;
 	if (!(pos->name == Tokens::AUTO_4))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -303,7 +1333,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 	}
 	if (!success_34)
 	{
-		return {};
+		return{};
 	}
 	if (success_31)
 	{
@@ -323,7 +1353,7 @@ Parser::Rule_res Parser::Parser::cll_block(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_60))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -339,7 +1369,7 @@ Parser::Rule_res Parser::Parser::cll_block(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
@@ -431,7 +1461,7 @@ Parser::Token_res Parser::Tokenizator::OP(const char* &pos) {
 				{
 					if (!(!std::strncmp(pos, ">>", 2)))
 					{
-						return {};
+						return{};
 					}
 					else 
 					{
@@ -488,7 +1518,7 @@ Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* &pos) {
 	_2 = AUTO_50(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -523,7 +1553,7 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* &pos) {
 					{
 						if (!(!std::strncmp(pos, "<=", 2)))
 						{
-							return {};
+							return{};
 						}
 						else 
 						{
@@ -585,7 +1615,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* &pos) {
 		_4 = LOGICAL_OR(pos);
 		if (!(_4.result))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -615,7 +1645,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* &pos) {
 	{
 		if (!(!std::strncmp(pos, "not", 3)))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -646,7 +1676,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* &pos) {
 	{
 		if (!(!std::strncmp(pos, "and", 3)))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -677,7 +1707,7 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* &pos) {
 	{
 		if (!(!std::strncmp(pos, "or", 2)))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -710,7 +1740,7 @@ Parser::Rule_res Parser::Parser::cll_template(Token*& pos) {
 	_0 = cll_type(pos);
 	if (!(_0.result))
 	{
-		return {};
+		return{};
 	}
 	success_1 = true;
 	pos += 1;
@@ -718,7 +1748,7 @@ Parser::Rule_res Parser::Parser::cll_template(Token*& pos) {
 	auto begin_10 = pos;
 	while (1)
 	{
-		if (!(begin_10->name == Tokens::AUTO_40))
+		if (!(begin_10->name == Tokens::AUTO_74))
 		{
 			break;
 		}
@@ -972,7 +2002,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 			}
 			if (!success_32)
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -990,7 +2020,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 	_48 = cll_template(pos);
 	if (!(_48.result))
 	{
-		return {};
+		return{};
 	}
 	success_49 = true;
 	pos += 1;
@@ -1091,7 +2121,7 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(Token*& pos) {
 							}
 							if (!success_22)
 							{
-								return {};
+								return{};
 							}
 						}
 					}
@@ -1156,7 +2186,7 @@ Parser::Rule_res Parser::Parser::cll_type(Token*& pos) {
 		_4 = cll_type_abstract(pos);
 		if (!(_4.result))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -1184,7 +2214,7 @@ Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_29))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -1193,7 +2223,7 @@ Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -1201,7 +2231,7 @@ Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
-		return {};
+		return{};
 	}
 	success_5 = true;
 	pos += 1;
@@ -1226,14 +2256,14 @@ Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	_0 = expr(pos);
 	if (!(_0.result))
 	{
-		return {};
+		return{};
 	}
 	success_1 = true;
 	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_80))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -1242,14 +2272,14 @@ Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	_4 = expr(pos);
 	if (!(_4.result))
 	{
-		return {};
+		return{};
 	}
 	success_5 = true;
 	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_61))
+	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return {};
+		return{};
 	}
 	_6 = *pos;
 	success_7 = true;
@@ -1258,7 +2288,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	_8 = expr(pos);
 	if (!(_8.result))
 	{
-		return {};
+		return{};
 	}
 	success_9 = true;
 	pos += 1;
@@ -1298,7 +2328,7 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 			_6 = expr_for_arithmetic(pos);
 			if (!(_6.result))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -1322,7 +2352,7 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::LOGICAL_OP))
 	{
-		return {};
+		return{};
 	}
 	_8 = *pos;
 	success_9 = true;
@@ -1337,7 +2367,7 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 			_16 = expr_for_arithmetic(pos);
 			if (!(_16.result))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -1380,7 +2410,7 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 	_0 = expr_arithmetic(pos);
 	if (!(_0.result))
 	{
-		return {};
+		return{};
 	}
 	success_1 = true;
 	pos += 1;
@@ -1409,7 +2439,7 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 	}
 	if (!success_11)
 	{
-		return {};
+		return{};
 	}
 	if (success_8)
 	{
@@ -1438,7 +2468,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 	_0 = expr_for_arithmetic(pos);
 	if (!(_0.result))
 	{
-		return {};
+		return{};
 	}
 	success_1 = true;
 	pos += 1;
@@ -1458,7 +2488,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 		_7 = expr_for_arithmetic(begin_10);
 		if (!(_7.result))
 		{
-			break;
+			return{};
 		}
 		success_8 = true;
 		begin_10 += 1;
@@ -1467,7 +2497,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 	}
 	if (!success_11)
 	{
-		return {};
+		return{};
 	}
 	if (success_8)
 	{
@@ -1505,7 +2535,7 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(Token*& pos) {
 				_8 = any_data(pos);
 				if (!(_8.result))
 				{
-					return {};
+					return{};
 				}
 				else 
 				{
@@ -1547,9 +2577,9 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 	::Parser::bool_t success_7 = false;
 	::Parser::Token _8;
 	::Parser::bool_t success_9 = false;
-	if (!(pos->name == Tokens::AUTO_34))
+	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -1561,7 +2591,7 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 		_6 = expr(pos);
 		if (!(_6.result))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -1577,9 +2607,9 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 	success_3 = true;
 	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_35))
+	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_8 = *pos;
 	success_9 = true;
@@ -1595,9 +2625,9 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name == Tokens::AUTO_36))
+	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -1606,14 +2636,14 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(Token*& pos) {
 	_2 = copiable_method_call(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_37))
+	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
@@ -1660,7 +2690,7 @@ Parser::Rule_res Parser::Parser::expr(Token*& pos) {
 							_14 = any_data(pos);
 							if (!(_14.result))
 							{
-								return {};
+								return{};
 							}
 							else 
 							{
@@ -1712,68 +2742,68 @@ Parser::Rule_res Parser::Parser::function_body_call(Token*& pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
+	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name == Tokens::AUTO_38))
+	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
 	pos += 2;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_46))
+	_2 = function_arguments(pos);
+	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
-	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_39))
+	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
 	pos += 2;
-	function_body_call_data data = _2;
+	function_body_call_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::function_body_call, data)};
 }
 Parser::Rule_res Parser::Parser::function_body_decl(Token*& pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
+	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name == Tokens::AUTO_45))
+	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
 	pos += 2;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_46))
+	_2 = function_parameters(pos);
+	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
-	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_48))
+	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
 	pos += 2;
-	function_body_decl_data data = _2;
+	function_body_decl_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::function_body_decl, data)};
 }
 Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
@@ -1794,56 +2824,52 @@ Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 	::Parser::bool_t success_13 = false;
 	::Parser::arr_t<::Parser::Token> shadow_14;
 	auto begin_17 = pos;
-	do
+	_4 = any_data(begin_17);
+	if (!(_4.result))
 	{
-		_4 = any_data(begin_17);
-		if (!(_4.result))
+		if (!(begin_17->name == Tokens::ID))
 		{
-			if (!(begin_17->name == Tokens::ID))
-			{
-				break;
-			}
-			else 
-			{
-				_6 = *begin_17;
-				success_7 = true;
-				_2 = _6;
-			}
+			return{};
 		}
 		else 
 		{
-			success_5 = true;
-			_2 = _4.token;
+			_6 = *begin_17;
+			success_7 = true;
+			_2 = _6;
 		}
-		success_3 = true;
-		begin_17 += 2;
-		ISC_STD::skip_spaces(pos);
-		auto begin_15 = begin_17;
-		while (1)
+	}
+	else 
+	{
+		success_5 = true;
+		_2 = _4.token;
+	}
+	success_3 = true;
+	begin_17 += 2;
+	ISC_STD::skip_spaces(pos);
+	auto begin_15 = begin_17;
+	while (1)
+	{
+		if (!(begin_15->name == Tokens::AUTO_74))
 		{
-			if (!(begin_15->name == Tokens::AUTO_41))
-			{
-				break;
-			}
-			else 
-			{
-				_12 = *begin_15;
-				success_13 = true;
-				shadow_14.push_back(_12);
-				_10.push_back(_12);
-			}
-			success_11 = true;
-			begin_15 += 2;
-			_8 = _10;
-			shadow_16.push_back(_8);
+			break;
 		}
-		if (success_11)
+		else 
 		{
-			success_9 = true;
-			begin_17 = begin_15;
+			_12 = *begin_15;
+			success_13 = true;
+			shadow_14.push_back(_12);
+			_10.push_back(_12);
 		}
-	}	while(0)
-;
+		success_11 = true;
+		begin_15 += 2;
+		_8 = _10;
+		shadow_16.push_back(_8);
+	}
+	if (success_11)
+	{
+		success_9 = true;
+		begin_17 = begin_15;
+	}
 	if (success_9)
 	{
 		success_1 = true;
@@ -1858,78 +2884,57 @@ Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
-	::Parser::any_t _2;
+	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
 	::Parser::Token _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> shadow_16;
-	::Parser::arr_t<::Parser::Token> _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::arr_t<::Parser::Token> _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::arr_t<::Parser::Token> shadow_14;
-	auto begin_17 = pos;
-	do
+	::Parser::arr_t<::Parser::Token> shadow_8;
+	::Parser::Token _9;
+	::Parser::bool_t success_10 = false;
+	::Parser::arr_t<::Parser::Token> shadow_11;
+	auto begin_13 = pos;
+	if (!(begin_13->name == Tokens::ID))
 	{
-		_4 = any_data(begin_17);
-		if (!(_4.result))
+		return{};
+	}
+	_2 = *begin_13;
+	success_3 = true;
+	begin_13 += 2;
+	ISC_STD::skip_spaces(pos);
+	auto begin_12 = begin_13;
+	while (1)
+	{
+		if (!(begin_12->name == Tokens::AUTO_74))
 		{
-			if (!(begin_17->name == Tokens::ID))
-			{
-				break;
-			}
-			else 
-			{
-				_6 = *begin_17;
-				success_7 = true;
-				_2 = _6;
-			}
+			break;
 		}
-		else 
-		{
-			success_5 = true;
-			_2 = _4.token;
-		}
-		success_3 = true;
-		begin_17 += 2;
+		_6 = *begin_12;
+		success_7 = true;
+		begin_12 += 2;
+		shadow_8.push_back(_6);
 		ISC_STD::skip_spaces(pos);
-		auto begin_15 = begin_17;
-		while (1)
+		if (!(begin_12->name == Tokens::ID))
 		{
-			if (!(begin_15->name == Tokens::AUTO_58))
-			{
-				break;
-			}
-			else 
-			{
-				_12 = *begin_15;
-				success_13 = true;
-				shadow_14.push_back(_12);
-				_10.push_back(_12);
-			}
-			success_11 = true;
-			begin_15 += 2;
-			_8 = _10;
-			shadow_16.push_back(_8);
+			break;
 		}
-		if (success_11)
-		{
-			success_9 = true;
-			begin_17 = begin_15;
-		}
-	}	while(0)
-;
-	if (success_9)
+		_9 = *begin_12;
+		success_10 = true;
+		begin_12 += 2;
+		shadow_11.push_back(_9);
+	}
+	if (success_10)
+	{
+		success_5 = true;
+		begin_13 = begin_12;
+	}
+	if (success_5)
 	{
 		success_1 = true;
-		pos = begin_17;
+		pos = begin_13;
 	}
 	function_parameters_data data;
-	data.second = shadow_16;
+	data.second = shadow_11;
 	data.first = _2;
 
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::function_parameters, data)};
@@ -1942,7 +2947,7 @@ Parser::Rule_res Parser::Parser::cll_function_call(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -1951,7 +2956,7 @@ Parser::Rule_res Parser::Parser::cll_function_call(Token*& pos) {
 	_2 = function_body_call(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -1979,7 +2984,7 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	::Parser::bool_t success_13 = false;
 	if (!(pos->name == Tokens::AUTO_42))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -1996,7 +3001,7 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	}
 	if (!success_7)
 	{
-		return {};
+		return{};
 	}
 	_2 = _4;
 	if (success_5)
@@ -2008,7 +3013,7 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	_9 = function_body_decl(pos);
 	if (!(_9.result))
 	{
-		return {};
+		return{};
 	}
 	success_10 = true;
 	pos += 1;
@@ -2048,7 +3053,7 @@ Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_43))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2057,7 +3062,7 @@ Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -2065,7 +3070,7 @@ Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
-		return {};
+		return{};
 	}
 	success_5 = true;
 	pos += 1;
@@ -2103,7 +3108,7 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	::Parser::bool_t success_24 = false;
 	if (!(pos->name == Tokens::AUTO_44))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2111,7 +3116,7 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -2150,9 +3155,9 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 		pos = begin_12;
 	}
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_47))
+	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return {};
+		return{};
 	}
 	_13 = *pos;
 	success_14 = true;
@@ -2165,9 +3170,9 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 		pos += 1;
 	}
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_64))
+	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return {};
+		return{};
 	}
 	_17 = *pos;
 	success_18 = true;
@@ -2182,7 +3187,7 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_21 = *pos;
 	success_22 = true;
@@ -2191,7 +3196,7 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	_23 = cll_block(pos);
 	if (!(_23.result))
 	{
-		return {};
+		return{};
 	}
 	success_24 = true;
 	pos += 1;
@@ -2217,7 +3222,7 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	::Parser::arr_t<::Parser::Rule> shadow_9;
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2226,7 +3231,7 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	auto begin_10 = pos;
 	while (1)
 	{
-		if (!(begin_10->name == Tokens::AUTO_77))
+		if (!(begin_10->name == Tokens::AUTO_95))
 		{
 			break;
 		}
@@ -2247,7 +3252,7 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	}
 	if (!success_11)
 	{
-		return {};
+		return{};
 	}
 	if (success_8)
 	{
@@ -2268,7 +3273,7 @@ Parser::Rule_res Parser::Parser::copiable_method_call(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_50))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2277,7 +3282,7 @@ Parser::Rule_res Parser::Parser::copiable_method_call(Token*& pos) {
 	_2 = method_call(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -2346,7 +3351,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_9 = *pos;
 	success_10 = true;
@@ -2355,7 +3360,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	auto begin_19 = pos;
 	do
 	{
-		if (!(begin_19->name == Tokens::AUTO_57))
+		if (!(begin_19->name == Tokens::AUTO_86))
 		{
 			break;
 		}
@@ -2371,7 +3376,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 		success_16 = true;
 		begin_19 += 1;
 		ISC_STD::skip_spaces(pos);
-		if (!(begin_19->name == Tokens::AUTO_59))
+		if (!(begin_19->name == Tokens::AUTO_88))
 		{
 			break;
 		}
@@ -2450,7 +3455,7 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -2553,7 +3558,7 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 			{
 				if (!(!(*(pos + 1) == '\'')))
 				{
-					break;
+					return{};
 				}
 				else 
 				{
@@ -2659,7 +3664,7 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 		}
 		if (!success_19)
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -2693,7 +3698,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 	::Parser::bool_t success_14 = false;
 	if (!(*(pos + 0) == '+' || *(pos + 0) == '-'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -2709,7 +3714,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 	}
 	if (!success_6)
 	{
-		return {};
+		return{};
 	}
 	_2 += _4;
 	if (success_5)
@@ -2771,7 +3776,7 @@ Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* &pos) {
 	{
 		if (!(!std::strncmp(pos, "false", 5)))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -2813,7 +3818,7 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	::Parser::bool_t success_15 = false;
 	if (!(pos->name == Tokens::AUTO_86))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2834,7 +3839,7 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 			begin_12 += 1;
 			shadow_8.push_back(_6.token);
 			ISC_STD::skip_spaces(pos);
-			if (!(begin_12->name == Tokens::AUTO_62))
+			if (!(begin_12->name == Tokens::AUTO_74))
 			{
 				break;
 			}
@@ -2858,7 +3863,7 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
-		return {};
+		return{};
 	}
 	_14 = *pos;
 	success_15 = true;
@@ -2896,7 +3901,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	::Parser::bool_t success_29 = false;
 	if (!(pos->name == Tokens::AUTO_60))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -2913,9 +3918,9 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 		success_5 = true;
 		begin_27 += 1;
 		ISC_STD::skip_spaces(pos);
-		if (!(begin_27->name == Tokens::AUTO_63))
+		if (!(begin_27->name == Tokens::AUTO_101))
 		{
-			break;
+			return{};
 		}
 		_6 = *begin_27;
 		success_7 = true;
@@ -2950,7 +3955,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 			begin_24 += 2;
 			shadow_17.push_back(_15);
 			ISC_STD::skip_spaces(pos);
-			if (!(begin_24->name == Tokens::AUTO_75))
+			if (!(begin_24->name == Tokens::AUTO_101))
 			{
 				break;
 			}
@@ -2991,7 +3996,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
-		return {};
+		return{};
 	}
 	_28 = *pos;
 	success_29 = true;
@@ -3039,7 +4044,7 @@ Parser::Rule_res Parser::Parser::any_data(Token*& pos) {
 							_14 = accessor(pos);
 							if (!(_14.result))
 							{
-								return {};
+								return{};
 							}
 							else 
 							{
@@ -3097,7 +4102,7 @@ Parser::Token_res Parser::Tokenizator::END(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ';' || *(pos + 0) == '\n'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -3110,7 +4115,7 @@ Parser::Token_res Parser::Tokenizator::NEWLINE(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\n'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -3137,7 +4142,7 @@ Parser::Token_res Parser::Tokenizator::ID(const char* &pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!((*(pos + 0)>='a' && *(pos + 0)<='z') || (*(pos + 0)>='A' && *(pos + 0)<='Z') || *(pos + 0) == '_'))
 	{
-		return {};
+		return{};
 	}
 	_4 += ::Parser::str_t(begin_8, 0);
 	success_5 = true;
@@ -3174,7 +4179,7 @@ Parser::Rule_res Parser::Parser::spacemode(Token*& pos) {
 	::Parser::bool_t success_9 = false;
 	if (!(pos->name == Tokens::AUTO_66))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3186,7 +4191,7 @@ Parser::Rule_res Parser::Parser::spacemode(Token*& pos) {
 		{
 			if (!(pos->name == Tokens::AUTO_69))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -3221,7 +4226,7 @@ Parser::Rule_res Parser::Parser::name(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_70))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3229,7 +4234,7 @@ Parser::Rule_res Parser::Parser::name(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -3245,7 +4250,7 @@ Parser::Rule_res Parser::Parser::linear_comment(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_71))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3253,7 +4258,7 @@ Parser::Rule_res Parser::Parser::linear_comment(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_72))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -3278,7 +4283,7 @@ Parser::Rule_res Parser::Parser::main(Token*& pos) {
 			_6 = spacemode(pos);
 			if (!(_6.result))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -3310,7 +4315,7 @@ Parser::Rule_res Parser::Parser::use_unit(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3343,7 +4348,7 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 	::Parser::arr_t<::Parser::Rule> shadow_11;
 	if (!(pos->name == Tokens::AUTO_73))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3352,7 +4357,7 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 	_2 = use_unit(pos);
 	if (!(_2.result))
 	{
-		return {};
+		return{};
 	}
 	success_3 = true;
 	pos += 1;
@@ -3529,7 +4534,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 						_34 = linear_comment(pos);
 						if (!(_34.result))
 						{
-							return {};
+							return{};
 						}
 						else 
 						{
@@ -3592,7 +4597,7 @@ Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -3646,7 +4651,7 @@ Parser::Rule_res Parser::Parser::Rule_op(Token*& pos) {
 	{
 		if (!(begin_8->name == Tokens::AUTO_79))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -3691,7 +4696,7 @@ Parser::Rule_res Parser::Parser::Rule_qualifier(Token*& pos) {
 		{
 			if (!(begin_10->name == Tokens::AUTO_82))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -3783,7 +4788,7 @@ Parser::Rule_res Parser::Parser::Rule_group(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return {};
+		return{};
 	}
 	_11 = *pos;
 	success_12 = true;
@@ -3799,7 +4804,7 @@ Parser::Rule_res Parser::Parser::Rule_group(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return {};
+		return{};
 	}
 	_15 = *pos;
 	success_16 = true;
@@ -3823,13 +4828,13 @@ Parser::Rule_res Parser::Parser::Rule_csequence_symbol(Token*& pos) {
 	::Parser::Token _8;
 	::Parser::bool_t success_9 = false;
 	auto begin_10 = pos;
-	if (!(begin_10->name == Tokens::AUTO_92))
+	if (!(begin_10->name == Tokens::AUTO_102))
 	{
 		if (!(begin_10->name == Tokens::AUTO_90))
 		{
 			if (!(begin_10->name == Tokens::AUTO_91))
 			{
-				return {};
+				return{};
 			}
 			else 
 			{
@@ -3872,7 +4877,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence_escape(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_102))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -3880,7 +4885,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence_escape(Token*& pos) {
 	auto begin_6 = pos;
 	if (!(begin_6->name == Tokens::AUTO_103))
 	{
-		return {};
+		return{};
 	}
 	_4 = *begin_6;
 	success_5 = true;
@@ -3912,7 +4917,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	_3 = Rule_csequence_symbol(begin_5);
 	if (!(_3.result))
 	{
-		return {};
+		return{};
 	}
 	success_4 = true;
 	begin_5 += 1;
@@ -3924,7 +4929,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	}
 	if (!(begin_12->name == Tokens::AUTO_94))
 	{
-		return {};
+		return{};
 	}
 	_6 = *begin_12;
 	success_7 = true;
@@ -3933,7 +4938,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	_9 = Rule_csequence_symbol(begin_11);
 	if (!(_9.result))
 	{
-		return {};
+		return{};
 	}
 	success_10 = true;
 	begin_11 += 1;
@@ -3975,7 +4980,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	::Parser::bool_t success_19 = false;
 	if (!(pos->name == Tokens::AUTO_86))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -4035,7 +5040,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
-		return {};
+		return{};
 	}
 	_18 = *pos;
 	success_19 = true;
@@ -4061,7 +5066,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_inclosed_map(Token*& pos) {
 	}
 	if (!success_2)
 	{
-		return {};
+		return{};
 	}
 	Rule_data_block_inclosed_map_data data = _0.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_data_block_inclosed_map, data)};
@@ -4096,13 +5101,13 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 	}
 	if (!success_3)
 	{
-		return {};
+		return{};
 	}
 	ISC_STD::skip_spaces(pos);
 	auto begin_7 = pos;
 	if (!(begin_7->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_5 = *begin_7;
 	success_6 = true;
@@ -4116,7 +5121,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return {};
+		return{};
 	}
 	_8 = *pos;
 	success_9 = true;
@@ -4129,7 +5134,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 		_15 = expr(begin_17);
 		if (!(_15.result))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -4184,12 +5189,12 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 	}
 	if (!success_3)
 	{
-		return {};
+		return{};
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_97))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
@@ -4197,7 +5202,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return {};
+		return{};
 	}
 	_6 = *pos;
 	success_7 = true;
@@ -4209,7 +5214,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 		_12 = Rule_data_block_inclosed_map(pos);
 		if (!(_12.result))
 		{
-			return {};
+			return{};
 		}
 		else 
 		{
@@ -4227,7 +5232,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return {};
+		return{};
 	}
 	_14 = *pos;
 	success_15 = true;
@@ -4245,14 +5250,14 @@ Parser::Rule_res Parser::Parser::Rule_escaped(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_102))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
 	pos += 2;
 	if (!(pos->name == Tokens::AUTO_103))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -4289,19 +5294,19 @@ Parser::Rule_res Parser::Parser::Rule_nested_rule(Token*& pos) {
 	}
 	if (!success_3)
 	{
-		return {};
+		return{};
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_105))
 	{
-		return {};
+		return{};
 	}
 	_4 = *pos;
 	success_5 = true;
 	pos += 2;
 	if (!(pos->name == Tokens::AUTO_95))
 	{
-		return {};
+		return{};
 	}
 	_6 = *pos;
 	success_7 = true;
@@ -4319,7 +5324,7 @@ Parser::Rule_res Parser::Parser::Rule_hex(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_106))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -4335,7 +5340,7 @@ Parser::Rule_res Parser::Parser::Rule_hex(Token*& pos) {
 	}
 	if (!success_5)
 	{
-		return {};
+		return{};
 	}
 	Rule_hex_data data = shadow_4;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_hex, data)};
@@ -4350,7 +5355,7 @@ Parser::Rule_res Parser::Parser::Rule_bin(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_108))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
@@ -4366,7 +5371,7 @@ Parser::Rule_res Parser::Parser::Rule_bin(Token*& pos) {
 	}
 	if (!success_5)
 	{
-		return {};
+		return{};
 	}
 	Rule_bin_data data = shadow_4;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_bin, data)};
@@ -4387,15 +5392,15 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 	::Parser::bool_t success_11 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return {};
+		return{};
 	}
 	_0 = *pos;
 	success_1 = true;
 	pos += 2;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_98))
+	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return {};
+		return{};
 	}
 	_2 = *pos;
 	success_3 = true;
@@ -4412,7 +5417,7 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 	_6 = Rule_data_block(pos);
 	if (!(_6.result))
 	{
-		return {};
+		return{};
 	}
 	success_7 = true;
 	pos += 1;
@@ -4425,9 +5430,9 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 		_8 = Rule_nested_rule(pos);
 	}
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_46))
+	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return {};
+		return{};
 	}
 	_10 = *pos;
 	success_11 = true;
@@ -4446,7 +5451,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_1(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '%'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4460,7 +5465,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_3(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '>'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4474,7 +5479,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_4(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '$'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4488,7 +5493,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_8(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "unsigned", 8)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 8);
 	success_1 = true;
@@ -4502,7 +5507,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_9(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "char", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -4516,7 +5521,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_10(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "short", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4530,7 +5535,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_11(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "int", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4544,7 +5549,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_12(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "long", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -4558,7 +5563,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_13(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "long long", 9)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 9);
 	success_1 = true;
@@ -4572,7 +5577,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_14(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "float", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4586,7 +5591,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_15(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "double", 6)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 6);
 	success_1 = true;
@@ -4600,7 +5605,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_16(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "deque", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4614,7 +5619,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_17(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "vector", 6)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 6);
 	success_1 = true;
@@ -4628,7 +5633,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_18(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "queue", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4642,7 +5647,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_19(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "stack", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4656,7 +5661,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_20(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "list", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -4670,7 +5675,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_21(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "forward_list", 12)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 12);
 	success_1 = true;
@@ -4684,7 +5689,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_22(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "var", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4698,7 +5703,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_23(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "any", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4712,7 +5717,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_24(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "num", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4726,7 +5731,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_25(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "bool", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -4740,7 +5745,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_26(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "str", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4754,7 +5759,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_27(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "arr", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4768,7 +5773,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_28(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "obj", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4782,7 +5787,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_29(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "if", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -4796,7 +5801,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_42(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "fn", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -4810,7 +5815,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_43(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "while", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4824,7 +5829,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_44(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "for", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -4838,7 +5843,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_50(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '='))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4852,7 +5857,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_55(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "++", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -4866,7 +5871,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_56(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "--", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -4880,7 +5885,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_60(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '{'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4894,7 +5899,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_65(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '}'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -4908,7 +5913,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_66(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "spacemode", 9)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 9);
 	success_1 = true;
@@ -4922,7 +5927,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_67(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "mixed", 5)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
@@ -4936,7 +5941,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_68(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "skipped", 7)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 7);
 	success_1 = true;
@@ -4950,7 +5955,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_69(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "allowed", 7)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 7);
 	success_1 = true;
@@ -4964,7 +5969,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_70(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "name", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -4978,7 +5983,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_71(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "//", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -4992,7 +5997,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_72(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!(*(pos + 0) == '\n')))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -5006,7 +6011,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_73(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "use", 3)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
@@ -5020,7 +6025,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_74(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ','))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5034,7 +6039,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_78(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '|'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5048,7 +6053,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_79(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "|&", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -5062,7 +6067,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_80(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '?'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5076,7 +6081,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_81(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '+'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5090,7 +6095,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_82(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '*'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5104,7 +6109,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_83(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '&'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5118,7 +6123,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_84(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '('))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5132,7 +6137,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_85(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ')'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5146,7 +6151,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_86(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '['))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5160,7 +6165,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_87(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '^'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5174,7 +6179,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_88(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ']'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5188,7 +6193,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_90(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "\\]", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -5202,7 +6207,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_91(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!(*(pos + 0) == ']')))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -5216,7 +6221,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_94(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '-'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5230,7 +6235,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_95(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '.'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5244,7 +6249,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_97(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "data", 4)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
@@ -5258,7 +6263,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_99(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ';'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5272,7 +6277,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_100(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\n' || *(pos + 0) == '\r'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -5286,7 +6291,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_101(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ':'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5300,7 +6305,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_102(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "\\", 1)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5314,7 +6319,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_103(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (*(pos + 0) == '\0')
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5328,7 +6333,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_104(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\r' || *(pos + 0) == '\n'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -5342,7 +6347,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_105(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '#'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
@@ -5356,7 +6361,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_106(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "0x", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -5370,7 +6375,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_107(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!((*(pos + 0)>='1' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f')))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;
@@ -5384,7 +6389,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_108(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(!std::strncmp(pos, "0b", 2)))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
@@ -5398,7 +6403,7 @@ Parser::Token_res Parser::Tokenizator::AUTO_109(const char* &pos) {
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '0' || *(pos + 0) == '1'))
 	{
-		return {};
+		return{};
 	}
 	_0 += ::Parser::str_t(pos, 0);
 	success_1 = true;

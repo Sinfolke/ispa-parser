@@ -6,15 +6,16 @@ function_body_decl:
     '(' function_parameters ')'
     data: %2;
 ;
-function_arguments: 
-    (any_data | ID (',' any_data | ID)*)?
+function_arguments:
+    (any_data | ID (',' any_data | ID)* )
+
     data: 
         first: %1
         second: %3
     ;
 ;
 function_parameters:
-    (any_data | ID (',' any_data | ID)*)?
+    (ID (',' ID)* )
     data: 
         first: %1
         second: %3

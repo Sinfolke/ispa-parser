@@ -121,10 +121,12 @@ int main(int argc, char** argv) {
 
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
+    auto tokenizator_code = getCodeForTokinizator(datablocks_tokens);
+    raiseVarsTop(tokenizator_code.first);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto convert_fun = converter.loadfun<std::string, const IR::ir&, const use_prop_t&>("convert");
+    auto convert_fun = converter.loadfun<std::string, const IR::ir&, IR::ir&, IR::node_ret_t&, const use_prop_t&>("convert");
     auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair<IR::data_block, std::string>>, use_prop_t>("convert_header");
-    auto content = convert_fun(ir, use);
+    auto content = convert_fun(ir, tokenizator_code.first, tokenizator_code.second, use);
     auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
     std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
     if (!cpp)
