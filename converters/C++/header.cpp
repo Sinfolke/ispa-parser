@@ -132,9 +132,9 @@ std::string create_tokenizator_header(std::list<std::string> tokens, std::list<s
     std::string res = "\tclass Tokenizator {\n\t\tprivate:\n\t\t\tconst char* str;\n\t\tpublic:\n";
     res += write_data_block(dtb);
     res += "\t\t\tarr_t<Token> tokens;";
-    res += "\t\t\tvoid makeTokens(const char*&);\n";
+    res += "\t\t\tvoid makeTokens(const char*);\n";
     for (auto name : tokens) {
-        res += "\t\t\tToken_res " + name + "(const char*&);\n";
+        res += "\t\t\tToken_res " + name + "(const char*);\n";
     }
     res += "\t};\n";
     return res;

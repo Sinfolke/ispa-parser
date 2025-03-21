@@ -687,6 +687,21 @@ std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(std::list<std::pair<IR::
     std::string fullname = "makeTokens";
     IR::node_ret_t success_var;
     ruleToIr(rule_rule, code, variable_count, true, {}, elements, groups, vars, insideLoop, fullname, success_var);
+    // get position of the loop
+    size_t i = 0;
+    for (; i < code.elements.size(); i++) {
+        if (code.elements[i].type == IR::types::WHILE) {
+            break;
+        }
+    }
+    // insert some custom checks inside
+    auto expr = arr_t<IR::expr> {
+        {IR::condition_types::CURRENT_CHARACTER}, {IR::condition_types::EQUAL}, {IR::condition_types::CHARACTER, '\0'},
+    };
+    auto block = arr_t<IR::member> {{IR::types::BREAK_LOOP}};
+    auto loop = std::any_cast<IR::condition>(code.elements[i].value);
+    loop.block.insert(loop.block.begin(), {IR::types::IF, IR::condition {expr, block}});
+    code.elements[i].value = loop;
     code.push_begin({IR::types::TOKEN, std::string("makeTokens")});
     code.push({IR::types::RULE_END});
     return {code, success_var};

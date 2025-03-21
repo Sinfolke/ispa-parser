@@ -164,7 +164,7 @@ namespace IR {
         } else if (type == condition_types::STRING) {
             //cpuf::printf("string\n");
             return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
-        } else if (type == condition_types::STRNCMP) {
+        } else if (type == condition_types::STRNCMP || type == condition_types::STRNCMP_PREV) {
             //cpuf::printf("strncmp\n");
             auto dt = std::any_cast<IR::strncmp>(data);
             if (dt.is_string) {
@@ -383,6 +383,13 @@ namespace IR {
             break;
         case types::INCREASE_POS_COUNTER:
             out << current_pos_counter.top() << "++";
+            break;
+        case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+            auto var = std::any_cast<std::string>(mem.value);
+            out << current_pos_counter.top() << " += " << var << ".token.length()";
+            break;
+        }
+        case IR::types::RESET_POS_COUNTER:
             break;
         case types::ACCESSOR:
             out << convertAccessor(std::any_cast<accessor>(mem.value), current_pos_counter);

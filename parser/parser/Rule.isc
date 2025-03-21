@@ -17,6 +17,7 @@ Rule:
     ;
     #other:
         '#'? ID ('.' ID)*
+
         data:
             is_nested: %1
             name: %2

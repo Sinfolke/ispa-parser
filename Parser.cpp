@@ -1,5 +1,6 @@
 #include "Parser.h"
-void Parser::Tokenizator::makeTokens(const char*& pos) {
+void Parser::Tokenizator::makeTokens(const char* pos) {
+	this->str = pos;
 	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> shadow_236;
 	::Parser::arr_t<::Parser::Token> _0;
 	::Parser::bool_t success_1 = false;
@@ -240,6 +241,10 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 	auto begin_235 = pos;
 	while (1)
 	{
+		if (*(begin_235 + 0) == '\0')
+		{
+			break;
+		}
 		_4 = OP(begin_235);
 		if (!(_4.result))
 		{
@@ -476,6 +481,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																														else 
 																																																																														{
 																																																																															success_233 = true;
+																																																																															begin_235 += _232.token.length();
 																																																																															shadow_234.push_back(_232.token);
 																																																																															_2.push_back(_232.token);
 																																																																														}
@@ -483,6 +489,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																													else 
 																																																																													{
 																																																																														success_230 = true;
+																																																																														begin_235 += _229.token.length();
 																																																																														shadow_231.push_back(_229.token);
 																																																																														_2.push_back(_229.token);
 																																																																													}
@@ -490,6 +497,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																												else 
 																																																																												{
 																																																																													success_227 = true;
+																																																																													begin_235 += _226.token.length();
 																																																																													shadow_228.push_back(_226.token);
 																																																																													_2.push_back(_226.token);
 																																																																												}
@@ -497,6 +505,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																											else 
 																																																																											{
 																																																																												success_224 = true;
+																																																																												begin_235 += _223.token.length();
 																																																																												shadow_225.push_back(_223.token);
 																																																																												_2.push_back(_223.token);
 																																																																											}
@@ -504,6 +513,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																										else 
 																																																																										{
 																																																																											success_221 = true;
+																																																																											begin_235 += _220.token.length();
 																																																																											shadow_222.push_back(_220.token);
 																																																																											_2.push_back(_220.token);
 																																																																										}
@@ -511,6 +521,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																									else 
 																																																																									{
 																																																																										success_218 = true;
+																																																																										begin_235 += _217.token.length();
 																																																																										shadow_219.push_back(_217.token);
 																																																																										_2.push_back(_217.token);
 																																																																									}
@@ -518,6 +529,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																								else 
 																																																																								{
 																																																																									success_215 = true;
+																																																																									begin_235 += _214.token.length();
 																																																																									shadow_216.push_back(_214.token);
 																																																																									_2.push_back(_214.token);
 																																																																								}
@@ -525,6 +537,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																							else 
 																																																																							{
 																																																																								success_212 = true;
+																																																																								begin_235 += _211.token.length();
 																																																																								shadow_213.push_back(_211.token);
 																																																																								_2.push_back(_211.token);
 																																																																							}
@@ -532,6 +545,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																						else 
 																																																																						{
 																																																																							success_209 = true;
+																																																																							begin_235 += _208.token.length();
 																																																																							shadow_210.push_back(_208.token);
 																																																																							_2.push_back(_208.token);
 																																																																						}
@@ -539,6 +553,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																					else 
 																																																																					{
 																																																																						success_206 = true;
+																																																																						begin_235 += _205.token.length();
 																																																																						shadow_207.push_back(_205.token);
 																																																																						_2.push_back(_205.token);
 																																																																					}
@@ -546,6 +561,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																				else 
 																																																																				{
 																																																																					success_203 = true;
+																																																																					begin_235 += _202.token.length();
 																																																																					shadow_204.push_back(_202.token);
 																																																																					_2.push_back(_202.token);
 																																																																				}
@@ -553,6 +569,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																			else 
 																																																																			{
 																																																																				success_200 = true;
+																																																																				begin_235 += _199.token.length();
 																																																																				shadow_201.push_back(_199.token);
 																																																																				_2.push_back(_199.token);
 																																																																			}
@@ -560,6 +577,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																		else 
 																																																																		{
 																																																																			success_197 = true;
+																																																																			begin_235 += _196.token.length();
 																																																																			shadow_198.push_back(_196.token);
 																																																																			_2.push_back(_196.token);
 																																																																		}
@@ -567,6 +585,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																	else 
 																																																																	{
 																																																																		success_194 = true;
+																																																																		begin_235 += _193.token.length();
 																																																																		shadow_195.push_back(_193.token);
 																																																																		_2.push_back(_193.token);
 																																																																	}
@@ -574,6 +593,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																																else 
 																																																																{
 																																																																	success_191 = true;
+																																																																	begin_235 += _190.token.length();
 																																																																	shadow_192.push_back(_190.token);
 																																																																	_2.push_back(_190.token);
 																																																																}
@@ -581,6 +601,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																															else 
 																																																															{
 																																																																success_188 = true;
+																																																																begin_235 += _187.token.length();
 																																																																shadow_189.push_back(_187.token);
 																																																																_2.push_back(_187.token);
 																																																															}
@@ -588,6 +609,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																														else 
 																																																														{
 																																																															success_185 = true;
+																																																															begin_235 += _184.token.length();
 																																																															shadow_186.push_back(_184.token);
 																																																															_2.push_back(_184.token);
 																																																														}
@@ -595,6 +617,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																													else 
 																																																													{
 																																																														success_182 = true;
+																																																														begin_235 += _181.token.length();
 																																																														shadow_183.push_back(_181.token);
 																																																														_2.push_back(_181.token);
 																																																													}
@@ -602,6 +625,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																												else 
 																																																												{
 																																																													success_179 = true;
+																																																													begin_235 += _178.token.length();
 																																																													shadow_180.push_back(_178.token);
 																																																													_2.push_back(_178.token);
 																																																												}
@@ -609,6 +633,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																											else 
 																																																											{
 																																																												success_176 = true;
+																																																												begin_235 += _175.token.length();
 																																																												shadow_177.push_back(_175.token);
 																																																												_2.push_back(_175.token);
 																																																											}
@@ -616,6 +641,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																										else 
 																																																										{
 																																																											success_173 = true;
+																																																											begin_235 += _172.token.length();
 																																																											shadow_174.push_back(_172.token);
 																																																											_2.push_back(_172.token);
 																																																										}
@@ -623,6 +649,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																									else 
 																																																									{
 																																																										success_170 = true;
+																																																										begin_235 += _169.token.length();
 																																																										shadow_171.push_back(_169.token);
 																																																										_2.push_back(_169.token);
 																																																									}
@@ -630,6 +657,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																								else 
 																																																								{
 																																																									success_167 = true;
+																																																									begin_235 += _166.token.length();
 																																																									shadow_168.push_back(_166.token);
 																																																									_2.push_back(_166.token);
 																																																								}
@@ -637,6 +665,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																							else 
 																																																							{
 																																																								success_164 = true;
+																																																								begin_235 += _163.token.length();
 																																																								shadow_165.push_back(_163.token);
 																																																								_2.push_back(_163.token);
 																																																							}
@@ -644,6 +673,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																						else 
 																																																						{
 																																																							success_161 = true;
+																																																							begin_235 += _160.token.length();
 																																																							shadow_162.push_back(_160.token);
 																																																							_2.push_back(_160.token);
 																																																						}
@@ -651,6 +681,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																					else 
 																																																					{
 																																																						success_158 = true;
+																																																						begin_235 += _157.token.length();
 																																																						shadow_159.push_back(_157.token);
 																																																						_2.push_back(_157.token);
 																																																					}
@@ -658,6 +689,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																				else 
 																																																				{
 																																																					success_155 = true;
+																																																					begin_235 += _154.token.length();
 																																																					shadow_156.push_back(_154.token);
 																																																					_2.push_back(_154.token);
 																																																				}
@@ -665,6 +697,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																			else 
 																																																			{
 																																																				success_152 = true;
+																																																				begin_235 += _151.token.length();
 																																																				shadow_153.push_back(_151.token);
 																																																				_2.push_back(_151.token);
 																																																			}
@@ -672,6 +705,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																		else 
 																																																		{
 																																																			success_149 = true;
+																																																			begin_235 += _148.token.length();
 																																																			shadow_150.push_back(_148.token);
 																																																			_2.push_back(_148.token);
 																																																		}
@@ -679,6 +713,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																	else 
 																																																	{
 																																																		success_146 = true;
+																																																		begin_235 += _145.token.length();
 																																																		shadow_147.push_back(_145.token);
 																																																		_2.push_back(_145.token);
 																																																	}
@@ -686,6 +721,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																																else 
 																																																{
 																																																	success_143 = true;
+																																																	begin_235 += _142.token.length();
 																																																	shadow_144.push_back(_142.token);
 																																																	_2.push_back(_142.token);
 																																																}
@@ -693,6 +729,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																															else 
 																																															{
 																																																success_140 = true;
+																																																begin_235 += _139.token.length();
 																																																shadow_141.push_back(_139.token);
 																																																_2.push_back(_139.token);
 																																															}
@@ -700,6 +737,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																														else 
 																																														{
 																																															success_137 = true;
+																																															begin_235 += _136.token.length();
 																																															shadow_138.push_back(_136.token);
 																																															_2.push_back(_136.token);
 																																														}
@@ -707,6 +745,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																													else 
 																																													{
 																																														success_134 = true;
+																																														begin_235 += _133.token.length();
 																																														shadow_135.push_back(_133.token);
 																																														_2.push_back(_133.token);
 																																													}
@@ -714,6 +753,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																												else 
 																																												{
 																																													success_131 = true;
+																																													begin_235 += _130.token.length();
 																																													shadow_132.push_back(_130.token);
 																																													_2.push_back(_130.token);
 																																												}
@@ -721,6 +761,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																											else 
 																																											{
 																																												success_128 = true;
+																																												begin_235 += _127.token.length();
 																																												shadow_129.push_back(_127.token);
 																																												_2.push_back(_127.token);
 																																											}
@@ -728,6 +769,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																										else 
 																																										{
 																																											success_125 = true;
+																																											begin_235 += _124.token.length();
 																																											shadow_126.push_back(_124.token);
 																																											_2.push_back(_124.token);
 																																										}
@@ -735,6 +777,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																									else 
 																																									{
 																																										success_122 = true;
+																																										begin_235 += _121.token.length();
 																																										shadow_123.push_back(_121.token);
 																																										_2.push_back(_121.token);
 																																									}
@@ -742,6 +785,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																								else 
 																																								{
 																																									success_119 = true;
+																																									begin_235 += _118.token.length();
 																																									shadow_120.push_back(_118.token);
 																																									_2.push_back(_118.token);
 																																								}
@@ -749,6 +793,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																							else 
 																																							{
 																																								success_116 = true;
+																																								begin_235 += _115.token.length();
 																																								shadow_117.push_back(_115.token);
 																																								_2.push_back(_115.token);
 																																							}
@@ -756,6 +801,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																						else 
 																																						{
 																																							success_113 = true;
+																																							begin_235 += _112.token.length();
 																																							shadow_114.push_back(_112.token);
 																																							_2.push_back(_112.token);
 																																						}
@@ -763,6 +809,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																					else 
 																																					{
 																																						success_110 = true;
+																																						begin_235 += _109.token.length();
 																																						shadow_111.push_back(_109.token);
 																																						_2.push_back(_109.token);
 																																					}
@@ -770,6 +817,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																				else 
 																																				{
 																																					success_107 = true;
+																																					begin_235 += _106.token.length();
 																																					shadow_108.push_back(_106.token);
 																																					_2.push_back(_106.token);
 																																				}
@@ -777,6 +825,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																			else 
 																																			{
 																																				success_104 = true;
+																																				begin_235 += _103.token.length();
 																																				shadow_105.push_back(_103.token);
 																																				_2.push_back(_103.token);
 																																			}
@@ -784,6 +833,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																		else 
 																																		{
 																																			success_101 = true;
+																																			begin_235 += _100.token.length();
 																																			shadow_102.push_back(_100.token);
 																																			_2.push_back(_100.token);
 																																		}
@@ -791,6 +841,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																	else 
 																																	{
 																																		success_98 = true;
+																																		begin_235 += _97.token.length();
 																																		shadow_99.push_back(_97.token);
 																																		_2.push_back(_97.token);
 																																	}
@@ -798,6 +849,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																																else 
 																																{
 																																	success_95 = true;
+																																	begin_235 += _94.token.length();
 																																	shadow_96.push_back(_94.token);
 																																	_2.push_back(_94.token);
 																																}
@@ -805,6 +857,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																															else 
 																															{
 																																success_92 = true;
+																																begin_235 += _91.token.length();
 																																shadow_93.push_back(_91.token);
 																																_2.push_back(_91.token);
 																															}
@@ -812,6 +865,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																														else 
 																														{
 																															success_89 = true;
+																															begin_235 += _88.token.length();
 																															shadow_90.push_back(_88.token);
 																															_2.push_back(_88.token);
 																														}
@@ -819,6 +873,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																													else 
 																													{
 																														success_86 = true;
+																														begin_235 += _85.token.length();
 																														shadow_87.push_back(_85.token);
 																														_2.push_back(_85.token);
 																													}
@@ -826,6 +881,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																												else 
 																												{
 																													success_83 = true;
+																													begin_235 += _82.token.length();
 																													shadow_84.push_back(_82.token);
 																													_2.push_back(_82.token);
 																												}
@@ -833,6 +889,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																											else 
 																											{
 																												success_80 = true;
+																												begin_235 += _79.token.length();
 																												shadow_81.push_back(_79.token);
 																												_2.push_back(_79.token);
 																											}
@@ -840,6 +897,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																										else 
 																										{
 																											success_77 = true;
+																											begin_235 += _76.token.length();
 																											shadow_78.push_back(_76.token);
 																											_2.push_back(_76.token);
 																										}
@@ -847,6 +905,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																									else 
 																									{
 																										success_74 = true;
+																										begin_235 += _73.token.length();
 																										shadow_75.push_back(_73.token);
 																										_2.push_back(_73.token);
 																									}
@@ -854,6 +913,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																								else 
 																								{
 																									success_71 = true;
+																									begin_235 += _70.token.length();
 																									shadow_72.push_back(_70.token);
 																									_2.push_back(_70.token);
 																								}
@@ -861,6 +921,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																							else 
 																							{
 																								success_68 = true;
+																								begin_235 += _67.token.length();
 																								shadow_69.push_back(_67.token);
 																								_2.push_back(_67.token);
 																							}
@@ -868,6 +929,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																						else 
 																						{
 																							success_65 = true;
+																							begin_235 += _64.token.length();
 																							shadow_66.push_back(_64.token);
 																							_2.push_back(_64.token);
 																						}
@@ -875,6 +937,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																					else 
 																					{
 																						success_62 = true;
+																						begin_235 += _61.token.length();
 																						shadow_63.push_back(_61.token);
 																						_2.push_back(_61.token);
 																					}
@@ -882,6 +945,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																				else 
 																				{
 																					success_59 = true;
+																					begin_235 += _58.token.length();
 																					shadow_60.push_back(_58.token);
 																					_2.push_back(_58.token);
 																				}
@@ -889,6 +953,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																			else 
 																			{
 																				success_56 = true;
+																				begin_235 += _55.token.length();
 																				shadow_57.push_back(_55.token);
 																				_2.push_back(_55.token);
 																			}
@@ -896,6 +961,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																		else 
 																		{
 																			success_53 = true;
+																			begin_235 += _52.token.length();
 																			shadow_54.push_back(_52.token);
 																			_2.push_back(_52.token);
 																		}
@@ -903,6 +969,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																	else 
 																	{
 																		success_50 = true;
+																		begin_235 += _49.token.length();
 																		shadow_51.push_back(_49.token);
 																		_2.push_back(_49.token);
 																	}
@@ -910,6 +977,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 																else 
 																{
 																	success_47 = true;
+																	begin_235 += _46.token.length();
 																	shadow_48.push_back(_46.token);
 																	_2.push_back(_46.token);
 																}
@@ -917,6 +985,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 															else 
 															{
 																success_44 = true;
+																begin_235 += _43.token.length();
 																shadow_45.push_back(_43.token);
 																_2.push_back(_43.token);
 															}
@@ -924,6 +993,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 														else 
 														{
 															success_41 = true;
+															begin_235 += _40.token.length();
 															shadow_42.push_back(_40.token);
 															_2.push_back(_40.token);
 														}
@@ -931,6 +1001,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 													else 
 													{
 														success_38 = true;
+														begin_235 += _37.token.length();
 														shadow_39.push_back(_37.token);
 														_2.push_back(_37.token);
 													}
@@ -938,6 +1009,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 												else 
 												{
 													success_35 = true;
+													begin_235 += _34.token.length();
 													shadow_36.push_back(_34.token);
 													_2.push_back(_34.token);
 												}
@@ -945,6 +1017,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 											else 
 											{
 												success_32 = true;
+												begin_235 += _31.token.length();
 												shadow_33.push_back(_31.token);
 												_2.push_back(_31.token);
 											}
@@ -952,6 +1025,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 										else 
 										{
 											success_29 = true;
+											begin_235 += _28.token.length();
 											shadow_30.push_back(_28.token);
 											_2.push_back(_28.token);
 										}
@@ -959,6 +1033,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 									else 
 									{
 										success_26 = true;
+										begin_235 += _25.token.length();
 										shadow_27.push_back(_25.token);
 										_2.push_back(_25.token);
 									}
@@ -966,6 +1041,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 								else 
 								{
 									success_23 = true;
+									begin_235 += _22.token.length();
 									shadow_24.push_back(_22.token);
 									_2.push_back(_22.token);
 								}
@@ -973,6 +1049,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 							else 
 							{
 								success_20 = true;
+								begin_235 += _19.token.length();
 								shadow_21.push_back(_19.token);
 								_2.push_back(_19.token);
 							}
@@ -980,6 +1057,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 						else 
 						{
 							success_17 = true;
+							begin_235 += _16.token.length();
 							shadow_18.push_back(_16.token);
 							_2.push_back(_16.token);
 						}
@@ -987,6 +1065,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 					else 
 					{
 						success_14 = true;
+						begin_235 += _13.token.length();
 						shadow_15.push_back(_13.token);
 						_2.push_back(_13.token);
 					}
@@ -994,6 +1073,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 				else 
 				{
 					success_11 = true;
+					begin_235 += _10.token.length();
 					shadow_12.push_back(_10.token);
 					_2.push_back(_10.token);
 				}
@@ -1001,6 +1081,7 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 			else 
 			{
 				success_8 = true;
+				begin_235 += _7.token.length();
 				shadow_9.push_back(_7.token);
 				_2.push_back(_7.token);
 			}
@@ -1008,11 +1089,12 @@ void Parser::Tokenizator::makeTokens(const char*& pos) {
 		else 
 		{
 			success_5 = true;
+			begin_235 += _4.token.length();
 			shadow_6.push_back(_4.token);
 			_2.push_back(_4.token);
 		}
 		success_3 = true;
-		begin_235 += 1;
+		begin_235 += 0;
 		_0 = _2;
 		shadow_236.push_back(_0);
 		success_237 = true;
@@ -1037,19 +1119,19 @@ Parser::Rule_res Parser::Parser::accessor_group(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_4))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	accessor_group_data data = _2;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::accessor_group, data)};
 }
@@ -1061,19 +1143,19 @@ Parser::Rule_res Parser::Parser::accessor_element(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_1))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	accessor_element_data data = _2;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::accessor_element, data)};
 }
@@ -1085,19 +1167,19 @@ Parser::Rule_res Parser::Parser::accessor_char(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_87))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	accessor_char_data data = _2;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::accessor_char, data)};
 }
@@ -1120,27 +1202,30 @@ Parser::Rule_res Parser::Parser::accessor_all(Token*& pos) {
 			_6 = accessor_char(pos);
 			if (!(_6.result))
 			{
-				return{};
+				return {};
 			}
 			else 
 			{
 				success_7 = true;
+				pos += _6.token.length();
 				_0 = _6.token;
 			}
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	accessor_all_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::accessor_all, data)};
 }
@@ -1158,10 +1243,10 @@ Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 	_0 = accessor_all(pos);
 	if (!(_0.result))
 	{
-		return{};
+		return {};
 	}
 	success_1 = true;
-	pos += 1;
+	pos += _0.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_10 = pos;
 	while (1)
@@ -1172,7 +1257,7 @@ Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 		}
 		_4 = *begin_10;
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		shadow_6.push_back(_4);
 		ISC_STD::skip_spaces(pos);
 		_7 = accessor_all(begin_10);
@@ -1181,10 +1266,10 @@ Parser::Rule_res Parser::Parser::accessor(Token*& pos) {
 			break;
 		}
 		success_8 = true;
-		begin_10 += 1;
+		begin_10 += _7.token.length();
 		shadow_9.push_back(_7.token);
 	}
-	if (success_8)
+	if (success_5 && success_8)
 	{
 		success_3 = true;
 		pos = begin_10;
@@ -1231,11 +1316,11 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 	::Parser::arr_t<::Parser::Token> shadow_32;
 	if (!(pos->name == Tokens::AUTO_4))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_33 = pos;
 	while (1)
@@ -1267,6 +1352,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 								else 
 								{
 									success_27 = true;
+									begin_29 += _26.token.length();
 									shadow_28.push_back(_26.token);
 									_6.push_back(_26.token);
 								}
@@ -1274,6 +1360,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 							else 
 							{
 								success_24 = true;
+								begin_29 += _23.token.length();
 								shadow_25.push_back(_23.token);
 								_6.push_back(_23.token);
 							}
@@ -1281,6 +1368,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 						else 
 						{
 							success_21 = true;
+							begin_29 += _20.token.length();
 							shadow_22.push_back(_20.token);
 							_6.push_back(_20.token);
 						}
@@ -1288,6 +1376,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 					else 
 					{
 						success_18 = true;
+						begin_29 += _17.token.length();
 						shadow_19.push_back(_17.token);
 						_6.push_back(_17.token);
 					}
@@ -1295,6 +1384,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 				else 
 				{
 					success_15 = true;
+					begin_29 += _14.token.length();
 					shadow_16.push_back(_14.token);
 					_6.push_back(_14.token);
 				}
@@ -1302,6 +1392,7 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 			else 
 			{
 				success_12 = true;
+				begin_29 += _11.token.length();
 				shadow_13.push_back(_11.token);
 				_6.push_back(_11.token);
 			}
@@ -1309,11 +1400,12 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 		else 
 		{
 			success_9 = true;
+			begin_29 += _8.token.length();
 			shadow_10.push_back(_8.token);
 			_6.push_back(_8.token);
 		}
 		success_7 = true;
-		begin_29 += 1;
+		begin_29 += 0;
 		_4 = _6;
 		if (success_7)
 		{
@@ -1323,19 +1415,19 @@ Parser::Rule_res Parser::Parser::cll(Token*& pos) {
 		ISC_STD::skip_spaces(pos);
 		if (!(begin_33->name == Tokens::END))
 		{
-			break;
+			return {};
 		}
 		_30 = *begin_33;
 		success_31 = true;
-		begin_33 += 2;
+		begin_33 += 1;
 		shadow_32.push_back(_30);
 		success_34 = true;
 	}
 	if (!success_34)
 	{
-		return{};
+		return {};
 	}
-	if (success_31)
+	if (success_5 && success_31)
 	{
 		success_3 = true;
 		pos = begin_33;
@@ -1353,156 +1445,42 @@ Parser::Rule_res Parser::Parser::cll_block(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_60))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = Rule_rule(pos);
 	while (_2.result)
 	{
 		success_3 = true;
-		pos += 1;
+		pos += _2.token.length();
 		_2 = Rule_rule(pos);
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	cll_block_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::cll_block, data)};
 }
-Parser::Token_res Parser::Tokenizator::OP(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::str_t _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::str_t _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::str_t _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::str_t _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::str_t _18;
-	::Parser::bool_t success_19 = false;
-	::Parser::str_t _20;
-	::Parser::bool_t success_21 = false;
-	::Parser::str_t _22;
-	::Parser::bool_t success_23 = false;
-	if (!(*(pos + 0) == '+'))
-	{
-		if (!(*(pos + 1) == '-'))
-		{
-			if (!(*(pos + 2) == '*'))
-			{
-				if (!(*(pos + 3) == '/'))
-				{
-					if (!(*(pos + 4) == '%'))
-					{
-					}
-					else 
-					{
-						_10 += ::Parser::str_t(pos, 5);
-						success_11 = true;
-						_0 += _10;
-					}
-				}
-				else 
-				{
-					_8 += ::Parser::str_t(pos, 5);
-					success_9 = true;
-					_0 += _8;
-				}
-			}
-			else 
-			{
-				_6 += ::Parser::str_t(pos, 5);
-				success_7 = true;
-				_0 += _6;
-			}
-		}
-		else 
-		{
-			_4 += ::Parser::str_t(pos, 5);
-			success_5 = true;
-			_0 += _4;
-		}
-	}
-	else 
-	{
-		_2 += ::Parser::str_t(pos, 5);
-		success_3 = true;
-		_0 += _2;
-	}
 	success_1 = true;
-	pos += 6;
-	ISC_STD::skip_spaces(pos);
-	if (!(*(pos + 0) == '&'))
-	{
-		if (!(*(pos + 1) == '|'))
-		{
-			if (!(*(pos + 2) == '^'))
-			{
-				if (!(!std::strncmp(pos, "<<", 2)))
-				{
-					if (!(!std::strncmp(pos, ">>", 2)))
-					{
-						return{};
-					}
-					else 
-					{
-						_22 += ::Parser::str_t(pos, 7);
-						success_23 = true;
-						_12 += _22;
-					}
-				}
-				else 
-				{
-					_20 += ::Parser::str_t(pos, 7);
-					success_21 = true;
-					_12 += _20;
-				}
-			}
-			else 
-			{
-				_18 += ::Parser::str_t(pos, 7);
-				success_19 = true;
-				_12 += _18;
-			}
-		}
-		else 
-		{
-			_16 += ::Parser::str_t(pos, 7);
-			success_17 = true;
-			_12 += _16;
-		}
-	}
-	else 
-	{
-		_14 += ::Parser::str_t(pos, 7);
-		success_15 = true;
-		_12 += _14;
-	}
-	success_13 = true;
-	pos += 8;
+	pos += 0;
 	OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* pos) {
 	auto in = pos;
 	::Parser::Token_res _0;
 	::Parser::bool_t success_1 = false;
@@ -1512,96 +1490,31 @@ Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* &pos) {
 	if (_0.result)
 	{
 		success_1 = true;
-		pos += 1;
+		pos += _0.token.length();
 	}
 	ISC_STD::skip_spaces(pos);
 	_2 = AUTO_50(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ASSIGNMENT_OP_data data = _0.token;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::ASSIGNMENT_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::str_t _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::str_t _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
-	if (!(!std::strncmp(pos, "==", 2)))
-	{
-		if (!(!std::strncmp(pos, "!=", 2)))
-		{
-			if (!(*(pos + 4) == '>'))
-			{
-				if (!(*(pos + 5) == '<'))
-				{
-					if (!(!std::strncmp(pos, ">=", 2)))
-					{
-						if (!(!std::strncmp(pos, "<=", 2)))
-						{
-							return{};
-						}
-						else 
-						{
-							_12 += ::Parser::str_t(pos, 10);
-							success_13 = true;
-							_0 += _12;
-						}
-					}
-					else 
-					{
-						_10 += ::Parser::str_t(pos, 10);
-						success_11 = true;
-						_0 += _10;
-					}
-				}
-				else 
-				{
-					_8 += ::Parser::str_t(pos, 10);
-					success_9 = true;
-					_0 += _8;
-				}
-			}
-			else 
-			{
-				_6 += ::Parser::str_t(pos, 10);
-				success_7 = true;
-				_0 += _6;
-			}
-		}
-		else 
-		{
-			_4 += ::Parser::str_t(pos, 10);
-			success_5 = true;
-			_0 += _4;
-		}
-	}
-	else 
-	{
-		_2 += ::Parser::str_t(pos, 10);
-		success_3 = true;
-		_0 += _2;
-	}
 	success_1 = true;
-	pos += 11;
+	pos += 0;
 	COMPARE_OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::COMPARE_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -1615,115 +1528,54 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* &pos) {
 		_4 = LOGICAL_OR(pos);
 		if (!(_4.result))
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	LOGICAL_OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	if (!(*(pos + 0) == '!'))
-	{
-		if (!(!std::strncmp(pos, "not", 3)))
-		{
-			return{};
-		}
-		else 
-		{
-			_4 += ::Parser::str_t(pos, 4);
-			success_5 = true;
-			_0 += _4;
-		}
-	}
-	else 
-	{
-		_2 += ::Parser::str_t(pos, 4);
-		success_3 = true;
-		_0 += _2;
-	}
 	success_1 = true;
-	pos += 5;
+	pos += 0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_NOT)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	if (!(!std::strncmp(pos, "&&", 2)))
-	{
-		if (!(!std::strncmp(pos, "and", 3)))
-		{
-			return{};
-		}
-		else 
-		{
-			_4 += ::Parser::str_t(pos, 5);
-			success_5 = true;
-			_0 += _4;
-		}
-	}
-	else 
-	{
-		_2 += ::Parser::str_t(pos, 5);
-		success_3 = true;
-		_0 += _2;
-	}
 	success_1 = true;
-	pos += 6;
+	pos += 0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_AND)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	if (!(!std::strncmp(pos, "||", 2)))
-	{
-		if (!(!std::strncmp(pos, "or", 2)))
-		{
-			return{};
-		}
-		else 
-		{
-			_4 += ::Parser::str_t(pos, 4);
-			success_5 = true;
-			_0 += _4;
-		}
-	}
-	else 
-	{
-		_2 += ::Parser::str_t(pos, 4);
-		success_3 = true;
-		_0 += _2;
-	}
 	success_1 = true;
-	pos += 5;
+	pos += 0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_OR)};
 }
 Parser::Rule_res Parser::Parser::cll_template(Token*& pos) {
@@ -1740,10 +1592,10 @@ Parser::Rule_res Parser::Parser::cll_template(Token*& pos) {
 	_0 = cll_type(pos);
 	if (!(_0.result))
 	{
-		return{};
+		return {};
 	}
 	success_1 = true;
-	pos += 1;
+	pos += _0.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_10 = pos;
 	while (1)
@@ -1754,19 +1606,19 @@ Parser::Rule_res Parser::Parser::cll_template(Token*& pos) {
 		}
 		_4 = *begin_10;
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		shadow_6.push_back(_4);
 		ISC_STD::skip_spaces(pos);
 		_7 = cll_type(begin_10);
 		if (!(_7.result))
 		{
-			break;
+			return {};
 		}
 		success_8 = true;
-		begin_10 += 1;
+		begin_10 += _7.token.length();
 		shadow_9.push_back(_7.token);
 	}
-	if (success_8)
+	if (success_5 && success_8)
 	{
 		success_3 = true;
 		pos = begin_10;
@@ -1790,38 +1642,18 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 	::Parser::bool_t success_9 = false;
 	::Parser::Token _10;
 	::Parser::bool_t success_11 = false;
-	::Parser::Token _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Token _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::Token _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::Token _18;
-	::Parser::bool_t success_19 = false;
 	::Parser::Token _22;
 	::Parser::bool_t success_23 = false;
 	::Parser::Token _24;
 	::Parser::bool_t success_25 = false;
 	::Parser::Token _26;
 	::Parser::bool_t success_27 = false;
-	::Parser::Token _28;
-	::Parser::bool_t success_29 = false;
 	::Parser::Token _31;
 	::Parser::bool_t success_32 = false;
 	::Parser::Token _33;
 	::Parser::bool_t success_34 = false;
 	::Parser::Token _35;
 	::Parser::bool_t success_36 = false;
-	::Parser::Token _37;
-	::Parser::bool_t success_38 = false;
-	::Parser::Token _39;
-	::Parser::bool_t success_40 = false;
-	::Parser::Token _41;
-	::Parser::bool_t success_42 = false;
-	::Parser::Token _43;
-	::Parser::bool_t success_44 = false;
-	::Parser::Token _45;
-	::Parser::bool_t success_46 = false;
 	::Parser::Rule_res _48;
 	::Parser::bool_t success_49 = false;
 	auto begin_21 = pos;
@@ -1831,58 +1663,12 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 		{
 			_4 = *begin_21;
 			success_5 = true;
-			begin_21 += 2;
+			begin_21 += 1;
 		}
 		ISC_STD::skip_spaces(pos);
 		auto begin_20 = begin_21;
-		if (!(begin_20->name == Tokens::AUTO_9))
-		{
-			if (!(begin_20->name == Tokens::AUTO_10))
-			{
-				if (!(begin_20->name == Tokens::AUTO_11))
-				{
-					if (!(begin_20->name == Tokens::AUTO_12))
-					{
-						if (!(begin_20->name == Tokens::AUTO_13))
-						{
-							break;
-						}
-						else 
-						{
-							_18 = *begin_20;
-							success_19 = true;
-							_8 = _18;
-						}
-					}
-					else 
-					{
-						_16 = *begin_20;
-						success_17 = true;
-						_8 = _16;
-					}
-				}
-				else 
-				{
-					_14 = *begin_20;
-					success_15 = true;
-					_8 = _14;
-				}
-			}
-			else 
-			{
-				_12 = *begin_20;
-				success_13 = true;
-				_8 = _12;
-			}
-		}
-		else 
-		{
-			_10 = *begin_20;
-			success_11 = true;
-			_8 = _10;
-		}
 		success_9 = true;
-		begin_20 += 6;
+		begin_20 += 0;
 		_6 = _8;
 		if (success_9)
 		{
@@ -1896,32 +1682,14 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 		success_3 = true;
 		pos = begin_21;
 	}
+	;
 	if (!success_3)
 	{
 		auto begin_30 = pos;
 		do
 		{
-			if (!(begin_30->name == Tokens::AUTO_14))
-			{
-				if (!(begin_30->name == Tokens::AUTO_15))
-				{
-					break;
-				}
-				else 
-				{
-					_28 = *begin_30;
-					success_29 = true;
-					_24 = _28;
-				}
-			}
-			else 
-			{
-				_26 = *begin_30;
-				success_27 = true;
-				_24 = _26;
-			}
 			success_25 = true;
-			begin_30 += 3;
+			begin_30 += 0;
 			_22 = _24;
 		}		while(0)
 ;
@@ -1930,68 +1698,14 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 			success_23 = true;
 			pos = begin_30;
 		}
+		;
 		if (!success_23)
 		{
 			auto begin_47 = pos;
 			do
 			{
-				if (!(begin_47->name == Tokens::AUTO_16))
-				{
-					if (!(begin_47->name == Tokens::AUTO_17))
-					{
-						if (!(begin_47->name == Tokens::AUTO_18))
-						{
-							if (!(begin_47->name == Tokens::AUTO_19))
-							{
-								if (!(begin_47->name == Tokens::AUTO_20))
-								{
-									if (!(begin_47->name == Tokens::AUTO_21))
-									{
-										break;
-									}
-									else 
-									{
-										_45 = *begin_47;
-										success_46 = true;
-										_33 = _45;
-									}
-								}
-								else 
-								{
-									_43 = *begin_47;
-									success_44 = true;
-									_33 = _43;
-								}
-							}
-							else 
-							{
-								_41 = *begin_47;
-								success_42 = true;
-								_33 = _41;
-							}
-						}
-						else 
-						{
-							_39 = *begin_47;
-							success_40 = true;
-							_33 = _39;
-						}
-					}
-					else 
-					{
-						_37 = *begin_47;
-						success_38 = true;
-						_33 = _37;
-					}
-				}
-				else 
-				{
-					_35 = *begin_47;
-					success_36 = true;
-					_33 = _35;
-				}
 				success_34 = true;
-				begin_47 += 7;
+				begin_47 += 0;
 				_31 = _33;
 			}			while(0)
 ;
@@ -2000,9 +1714,10 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 				success_32 = true;
 				pos = begin_47;
 			}
+			;
 			if (!success_32)
 			{
-				return{};
+				return {};
 			}
 			else 
 			{
@@ -2015,15 +1730,15 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(Token*& pos) {
 		}
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	ISC_STD::skip_spaces(pos);
 	_48 = cll_template(pos);
 	if (!(_48.result))
 	{
-		return{};
+		return {};
 	}
 	success_49 = true;
-	pos += 1;
+	pos += _48.token.length();
 	cll_csupport_types_data data;
 	data.templ = _8;
 	data.type = _4;
@@ -2038,129 +1753,9 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Token _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::bool_t success_15 = false;
-	::Parser::Token _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::Rule_res _18;
-	::Parser::bool_t success_19 = false;
-	::Parser::bool_t success_22 = false;
-	::Parser::Token _23;
-	::Parser::bool_t success_24 = false;
-	::Parser::Rule_res _25;
-	::Parser::bool_t success_26 = false;
 	auto begin_28 = pos;
-	if (!(begin_28->name == Tokens::AUTO_22))
-	{
-		if (!(begin_28->name == Tokens::AUTO_23))
-		{
-			if (!(begin_28->name == Tokens::AUTO_24))
-			{
-				if (!(begin_28->name == Tokens::AUTO_25))
-				{
-					if (!(begin_28->name == Tokens::AUTO_26))
-					{
-						auto begin_20 = begin_28;
-						do
-						{
-							if (!(begin_20->name == Tokens::AUTO_27))
-							{
-								break;
-							}
-							_16 = *begin_20;
-							success_17 = true;
-							begin_20 += 7;
-							ISC_STD::skip_spaces(pos);
-							_18 = cll_template(begin_20);
-							if (!(_18.result))
-							{
-								break;
-							}
-							success_19 = true;
-							begin_20 += 1;
-						}						while(0)
-;
-						if (success_19)
-						{
-							success_15 = true;
-							begin_28 = begin_20;
-						}
-						if (!success_15)
-						{
-							auto begin_27 = begin_28;
-							do
-							{
-								if (!(begin_27->name == Tokens::AUTO_28))
-								{
-									break;
-								}
-								_23 = *begin_27;
-								success_24 = true;
-								begin_27 += 2;
-								ISC_STD::skip_spaces(pos);
-								_25 = cll_template(begin_27);
-								if (!(_25.result))
-								{
-									break;
-								}
-								success_26 = true;
-								begin_27 += 1;
-							}							while(0)
-;
-							if (success_26)
-							{
-								success_22 = true;
-								begin_28 = begin_27;
-							}
-							if (!success_22)
-							{
-								return{};
-							}
-						}
-					}
-					else 
-					{
-						_12 = *begin_28;
-						success_13 = true;
-						_2 = _12;
-					}
-				}
-				else 
-				{
-					_10 = *begin_28;
-					success_11 = true;
-					_2 = _10;
-				}
-			}
-			else 
-			{
-				_8 = *begin_28;
-				success_9 = true;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = *begin_28;
-			success_7 = true;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *begin_28;
-		success_5 = true;
-		_2 = _4;
-	}
 	success_3 = true;
-	begin_28 += 1;
+	begin_28 += 0;
 	if (success_3)
 	{
 		success_1 = true;
@@ -2186,21 +1781,23 @@ Parser::Rule_res Parser::Parser::cll_type(Token*& pos) {
 		_4 = cll_type_abstract(pos);
 		if (!(_4.result))
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	cll_type_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::cll_type, data)};
 }
@@ -2214,27 +1811,27 @@ Parser::Rule_res Parser::Parser::cll_if(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_29))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
-		return{};
+		return {};
 	}
 	success_5 = true;
-	pos += 1;
+	pos += _4.token.length();
 	cll_if_data data;
 	data.block = _4.token;
 	data.expr = _2.token;
@@ -2256,42 +1853,42 @@ Parser::Rule_res Parser::Parser::cll_ternary(Token*& pos) {
 	_0 = expr(pos);
 	if (!(_0.result))
 	{
-		return{};
+		return {};
 	}
 	success_1 = true;
-	pos += 1;
+	pos += _0.token.length();
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_80))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_4 = expr(pos);
 	if (!(_4.result))
 	{
-		return{};
+		return {};
 	}
 	success_5 = true;
-	pos += 1;
+	pos += _4.token.length();
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return{};
+		return {};
 	}
 	_6 = *pos;
 	success_7 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_8 = expr(pos);
 	if (!(_8.result))
 	{
-		return{};
+		return {};
 	}
 	success_9 = true;
-	pos += 1;
+	pos += _8.token.length();
 	cll_ternary_data data;
 	data.second = _8.token;
 	data.first = _4.token;
@@ -2328,35 +1925,38 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 			_6 = expr_for_arithmetic(pos);
 			if (!(_6.result))
 			{
-				return{};
+				return {};
 			}
 			else 
 			{
 				success_7 = true;
+				pos += _6.token.length();
 				_0 = _6.token;
 			}
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::LOGICAL_OP))
 	{
-		return{};
+		return {};
 	}
 	_8 = *pos;
 	success_9 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_12 = expr_compare(pos);
 	if (!(_12.result))
@@ -2367,27 +1967,30 @@ Parser::Rule_res Parser::Parser::expr_logical(Token*& pos) {
 			_16 = expr_for_arithmetic(pos);
 			if (!(_16.result))
 			{
-				return{};
+				return {};
 			}
 			else 
 			{
 				success_17 = true;
+				pos += _16.token.length();
 				_10 = _16.token;
 			}
 		}
 		else 
 		{
 			success_15 = true;
+			pos += _14.token.length();
 			_10 = _14.token;
 		}
 	}
 	else 
 	{
 		success_13 = true;
+		pos += _12.token.length();
 		_10 = _12.token;
 	}
 	success_11 = true;
-	pos += 1;
+	pos += 0;
 	expr_logical_data data;
 	data.right = _10;
 	data.op = _8;
@@ -2410,10 +2013,10 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 	_0 = expr_arithmetic(pos);
 	if (!(_0.result))
 	{
-		return{};
+		return {};
 	}
 	success_1 = true;
-	pos += 1;
+	pos += _0.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_10 = pos;
 	while (1)
@@ -2424,7 +2027,7 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 		}
 		_4 = *begin_10;
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		shadow_6.push_back(_4);
 		ISC_STD::skip_spaces(pos);
 		_7 = expr_arithmetic(begin_10);
@@ -2433,15 +2036,15 @@ Parser::Rule_res Parser::Parser::expr_compare(Token*& pos) {
 			break;
 		}
 		success_8 = true;
-		begin_10 += 1;
+		begin_10 += _7.token.length();
 		shadow_9.push_back(_7.token);
 		success_11 = true;
 	}
 	if (!success_11)
 	{
-		return{};
+		return {};
 	}
-	if (success_8)
+	if (success_5 && success_8)
 	{
 		success_3 = true;
 		pos = begin_10;
@@ -2468,10 +2071,10 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 	_0 = expr_for_arithmetic(pos);
 	if (!(_0.result))
 	{
-		return{};
+		return {};
 	}
 	success_1 = true;
-	pos += 1;
+	pos += _0.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_10 = pos;
 	while (1)
@@ -2482,24 +2085,24 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(Token*& pos) {
 		}
 		_4 = *begin_10;
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		shadow_6.push_back(_4);
 		ISC_STD::skip_spaces(pos);
 		_7 = expr_for_arithmetic(begin_10);
 		if (!(_7.result))
 		{
-			return{};
+			break;
 		}
 		success_8 = true;
-		begin_10 += 1;
+		begin_10 += _7.token.length();
 		shadow_9.push_back(_7.token);
 		success_11 = true;
 	}
 	if (!success_11)
 	{
-		return{};
+		return {};
 	}
-	if (success_8)
+	if (success_5 && success_8)
 	{
 		success_3 = true;
 		pos = begin_10;
@@ -2535,33 +2138,37 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(Token*& pos) {
 				_8 = any_data(pos);
 				if (!(_8.result))
 				{
-					return{};
+					return {};
 				}
 				else 
 				{
 					success_9 = true;
+					pos += _8.token.length();
 					_0 = _8.token;
 				}
 			}
 			else 
 			{
 				success_7 = true;
+				pos += _6.token.length();
 				_0 = _6.token;
 			}
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	expr_for_arithmetic_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr_for_arithmetic, data)};
 }
@@ -2579,11 +2186,11 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 	::Parser::bool_t success_9 = false;
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_4 = cll_ternary(pos);
 	if (!(_4.result))
@@ -2591,29 +2198,31 @@ Parser::Rule_res Parser::Parser::expr_group(Token*& pos) {
 		_6 = expr(pos);
 		if (!(_6.result))
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
 			success_7 = true;
+			pos += _6.token.length();
 			_2 = _6.token;
 		}
 	}
 	else 
 	{
 		success_5 = true;
+		pos += _4.token.length();
 		_2 = _4.token;
 	}
 	success_3 = true;
-	pos += 1;
+	pos += 0;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_8 = *pos;
 	success_9 = true;
-	pos += 2;
+	pos += 1;
 	expr_group_data data = _2;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr_group, data)};
 }
@@ -2627,27 +2236,27 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = copiable_method_call(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	expr_expr_copiable_method_call_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr_expr_copiable_method_call, data)};
 }
@@ -2690,51 +2299,58 @@ Parser::Rule_res Parser::Parser::expr(Token*& pos) {
 							_14 = any_data(pos);
 							if (!(_14.result))
 							{
-								return{};
+								return {};
 							}
 							else 
 							{
 								success_15 = true;
+								pos += _14.token.length();
 								_0 = _14.token;
 							}
 						}
 						else 
 						{
 							success_13 = true;
+							pos += _12.token.length();
 							_0 = _12.token;
 						}
 					}
 					else 
 					{
 						success_11 = true;
+						pos += _10.token.length();
 						_0 = _10.token;
 					}
 				}
 				else 
 				{
 					success_9 = true;
+					pos += _8.token.length();
 					_0 = _8.token;
 				}
 			}
 			else 
 			{
 				success_7 = true;
+				pos += _6.token.length();
 				_0 = _6.token;
 			}
 		}
 		else 
 		{
 			success_5 = true;
+			pos += _4.token.length();
 			_0 = _4.token;
 		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	expr_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr, data)};
 }
@@ -2748,27 +2364,27 @@ Parser::Rule_res Parser::Parser::function_body_call(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = function_arguments(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	function_body_call_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::function_body_call, data)};
 }
@@ -2782,27 +2398,27 @@ Parser::Rule_res Parser::Parser::function_body_decl(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = function_parameters(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	function_body_decl_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::function_body_decl, data)};
 }
@@ -2827,41 +2443,21 @@ Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 	_4 = any_data(begin_17);
 	if (!(_4.result))
 	{
-		if (!(begin_17->name == Tokens::ID))
-		{
-			return{};
-		}
-		else 
-		{
-			_6 = *begin_17;
-			success_7 = true;
-			_2 = _6;
-		}
 	}
 	else 
 	{
 		success_5 = true;
+		begin_17 += _4.token.length();
 		_2 = _4.token;
 	}
 	success_3 = true;
-	begin_17 += 2;
+	begin_17 += 0;
 	ISC_STD::skip_spaces(pos);
 	auto begin_15 = begin_17;
 	while (1)
 	{
-		if (!(begin_15->name == Tokens::AUTO_74))
-		{
-			break;
-		}
-		else 
-		{
-			_12 = *begin_15;
-			success_13 = true;
-			shadow_14.push_back(_12);
-			_10.push_back(_12);
-		}
 		success_11 = true;
-		begin_15 += 2;
+		begin_15 += 0;
 		_8 = _10;
 		shadow_16.push_back(_8);
 	}
@@ -2870,7 +2466,7 @@ Parser::Rule_res Parser::Parser::function_arguments(Token*& pos) {
 		success_9 = true;
 		begin_17 = begin_15;
 	}
-	if (success_9)
+	if (success_3)
 	{
 		success_1 = true;
 		pos = begin_17;
@@ -2896,11 +2492,11 @@ Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 	auto begin_13 = pos;
 	if (!(begin_13->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_2 = *begin_13;
 	success_3 = true;
-	begin_13 += 2;
+	begin_13 += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_12 = begin_13;
 	while (1)
@@ -2911,7 +2507,7 @@ Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 		}
 		_6 = *begin_12;
 		success_7 = true;
-		begin_12 += 2;
+		begin_12 += 1;
 		shadow_8.push_back(_6);
 		ISC_STD::skip_spaces(pos);
 		if (!(begin_12->name == Tokens::ID))
@@ -2920,15 +2516,15 @@ Parser::Rule_res Parser::Parser::function_parameters(Token*& pos) {
 		}
 		_9 = *begin_12;
 		success_10 = true;
-		begin_12 += 2;
+		begin_12 += 1;
 		shadow_11.push_back(_9);
 	}
-	if (success_10)
+	if (success_7 && success_10)
 	{
 		success_5 = true;
 		begin_13 = begin_12;
 	}
-	if (success_5)
+	if (success_3 && success_5)
 	{
 		success_1 = true;
 		pos = begin_13;
@@ -2947,19 +2543,19 @@ Parser::Rule_res Parser::Parser::cll_function_call(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = function_body_call(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	cll_function_call_data data;
 	data.body = _2.token;
 	data.name = _0;
@@ -2984,24 +2580,24 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	::Parser::bool_t success_13 = false;
 	if (!(pos->name == Tokens::AUTO_42))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_8 = pos;
 	while (begin_8->name == Tokens::ID)
 	{
 		_4 = *begin_8;
 		success_5 = true;
-		begin_8 += 2;
+		begin_8 += 1;
 		shadow_6.push_back(_4);
 		success_7 = true;
 	}
 	if (!success_7)
 	{
-		return{};
+		return {};
 	}
 	_2 = _4;
 	if (success_5)
@@ -3013,10 +2609,10 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 	_9 = function_body_decl(pos);
 	if (!(_9.result))
 	{
-		return{};
+		return {};
 	}
 	success_10 = true;
-	pos += 1;
+	pos += _9.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_14 = pos;
 	do
@@ -3027,7 +2623,7 @@ Parser::Rule_res Parser::Parser::function_decl(Token*& pos) {
 			break;
 		}
 		success_13 = true;
-		begin_14 += 1;
+		begin_14 += _12.token.length();
 		val = _12.token;
 	}	while(0)
 ;
@@ -3053,27 +2649,27 @@ Parser::Rule_res Parser::Parser::loop_while(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_43))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
-		return{};
+		return {};
 	}
 	success_5 = true;
-	pos += 1;
+	pos += _4.token.length();
 	loop_while_data data;
 	data.block = _4.token;
 	data.expr = _2.token;
@@ -3108,19 +2704,19 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	::Parser::bool_t success_24 = false;
 	if (!(pos->name == Tokens::AUTO_44))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_12 = pos;
 	do
@@ -3136,16 +2732,18 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 			else 
 			{
 				success_11 = true;
+				begin_12 += _10.token.length();
 				_6 = _10.token;
 			}
 		}
 		else 
 		{
 			success_9 = true;
+			begin_12 += _8.token.length();
 			_6 = _8.token;
 		}
 		success_7 = true;
-		begin_12 += 1;
+		begin_12 += 0;
 		_4 = _6;
 	}	while(0)
 ;
@@ -3157,49 +2755,49 @@ Parser::Rule_res Parser::Parser::loop_for(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return{};
+		return {};
 	}
 	_13 = *pos;
 	success_14 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_15 = expr(pos);
 	if (_15.result)
 	{
 		success_16 = true;
-		pos += 1;
+		pos += _15.token.length();
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return{};
+		return {};
 	}
 	_17 = *pos;
 	success_18 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_19 = expr(pos);
 	if (_19.result)
 	{
 		success_20 = true;
-		pos += 1;
+		pos += _19.token.length();
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_21 = *pos;
 	success_22 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_23 = cll_block(pos);
 	if (!(_23.result))
 	{
-		return{};
+		return {};
 	}
 	success_24 = true;
-	pos += 1;
+	pos += _23.token.length();
 	loop_for_data data;
 	data.block = _21;
 	data.end = _17;
@@ -3222,11 +2820,11 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 	::Parser::arr_t<::Parser::Rule> shadow_9;
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_10 = pos;
 	while (1)
@@ -3237,24 +2835,24 @@ Parser::Rule_res Parser::Parser::method_call(Token*& pos) {
 		}
 		_4 = *begin_10;
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		shadow_6.push_back(_4);
 		ISC_STD::skip_spaces(pos);
 		_7 = cll_function_call(begin_10);
 		if (!(_7.result))
 		{
-			break;
+			return {};
 		}
 		success_8 = true;
-		begin_10 += 1;
+		begin_10 += _7.token.length();
 		shadow_9.push_back(_7.token);
 		success_11 = true;
 	}
 	if (!success_11)
 	{
-		return{};
+		return {};
 	}
-	if (success_8)
+	if (success_5 && success_8)
 	{
 		success_3 = true;
 		pos = begin_10;
@@ -3273,19 +2871,19 @@ Parser::Rule_res Parser::Parser::copiable_method_call(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_50))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = method_call(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	copiable_method_call_data data = _2.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::copiable_method_call, data)};
 }
@@ -3297,8 +2895,6 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
 	::Parser::Token _9;
 	::Parser::bool_t success_10 = false;
 	::Parser::bool_t success_12 = false;
@@ -3314,32 +2910,11 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	::Parser::bool_t success_23 = false;
 	::Parser::Token _24;
 	::Parser::bool_t success_25 = false;
-	::Parser::Token _26;
-	::Parser::bool_t success_27 = false;
 	auto begin_8 = pos;
 	do
 	{
-		if (!(begin_8->name == Tokens::AUTO_55))
-		{
-			if (!(begin_8->name == Tokens::AUTO_56))
-			{
-				break;
-			}
-			else 
-			{
-				_6 = *begin_8;
-				success_7 = true;
-				_2 = _6;
-			}
-		}
-		else 
-		{
-			_4 = *begin_8;
-			success_5 = true;
-			_2 = _4;
-		}
 		success_3 = true;
-		begin_8 += 3;
+		begin_8 += 0;
 		_0 = _2;
 	}	while(0)
 ;
@@ -3351,11 +2926,11 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_9 = *pos;
 	success_10 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_19 = pos;
 	do
@@ -3366,7 +2941,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 		}
 		_13 = *begin_19;
 		success_14 = true;
-		begin_19 += 2;
+		begin_19 += 1;
 		ISC_STD::skip_spaces(pos);
 		_15 = expr(begin_19);
 		if (!(_15.result))
@@ -3374,7 +2949,7 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 			break;
 		}
 		success_16 = true;
-		begin_19 += 1;
+		begin_19 += _15.token.length();
 		ISC_STD::skip_spaces(pos);
 		if (!(begin_19->name == Tokens::AUTO_88))
 		{
@@ -3382,10 +2957,10 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 		}
 		_17 = *begin_19;
 		success_18 = true;
-		begin_19 += 2;
+		begin_19 += 1;
 	}	while(0)
 ;
-	if (success_18)
+	if (success_14 && success_16 && success_18)
 	{
 		success_12 = true;
 		pos = begin_19;
@@ -3394,27 +2969,8 @@ Parser::Rule_res Parser::Parser::var_refer(Token*& pos) {
 	auto begin_28 = pos;
 	do
 	{
-		if (!(begin_28->name == Tokens::AUTO_55))
-		{
-			if (!(begin_28->name == Tokens::AUTO_56))
-			{
-				break;
-			}
-			else 
-			{
-				_26 = *begin_28;
-				success_27 = true;
-				_22 = _26;
-			}
-		}
-		else 
-		{
-			_24 = *begin_28;
-			success_25 = true;
-			_22 = _24;
-		}
 		success_23 = true;
-		begin_28 += 3;
+		begin_28 += 0;
 		_20 = _22;
 	}	while(0)
 ;
@@ -3450,16 +3006,16 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 	if (_0.result)
 	{
 		success_1 = true;
-		pos += 1;
+		pos += _0.token.length();
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_14 = pos;
 	do
@@ -3470,7 +3026,7 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 		}
 		_6 = *begin_14;
 		success_7 = true;
-		begin_14 += 2;
+		begin_14 += 1;
 		ISC_STD::skip_spaces(pos);
 		_10 = expr(begin_14);
 		if (!(_10.result))
@@ -3483,19 +3039,21 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 			else 
 			{
 				success_13 = true;
+				begin_14 += _12.token.length();
 				_8 = _12.token;
 			}
 		}
 		else 
 		{
 			success_11 = true;
+			begin_14 += _10.token.length();
 			_8 = _10.token;
 		}
 		success_9 = true;
-		begin_14 += 1;
+		begin_14 += 0;
 	}	while(0)
 ;
-	if (success_9)
+	if (success_7 && success_9)
 	{
 		success_5 = true;
 		pos = begin_14;
@@ -3508,7 +3066,7 @@ Parser::Rule_res Parser::Parser::cll_var(Token*& pos) {
 
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::cll_var, data)};
 }
-Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::STRING(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -3522,8 +3080,6 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 	::Parser::bool_t success_9 = false;
 	::Parser::str_t _10;
 	::Parser::bool_t success_11 = false;
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
 	::Parser::str_t _15;
 	::Parser::bool_t success_16 = false;
 	::Parser::str_t _18;
@@ -3536,45 +3092,24 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 	::Parser::bool_t success_25 = false;
 	::Parser::str_t _26;
 	::Parser::bool_t success_27 = false;
-	::Parser::str_t _28;
-	::Parser::bool_t success_29 = false;
 	::Parser::str_t _31;
 	::Parser::bool_t success_32 = false;
 	auto begin_17 = pos;
 	do
 	{
-		if (!(*(pos + 0) == '\''))
+		if (!(*(begin_17 + 0) == '\''))
 		{
 			break;
 		}
-		_4 += ::Parser::str_t(begin_17, 1);
+		_4 += ::Parser::str_t(begin_17, 2);
 		success_5 = true;
-		begin_17 += 2;
+		begin_17 += 1;
 		ISC_STD::skip_spaces(pos);
 		auto begin_14 = begin_17;
 		while (1)
 		{
-			if (!(!std::strncmp(pos, "\\'", 2)))
-			{
-				if (!(!(*(pos + 1) == '\'')))
-				{
-					return{};
-				}
-				else 
-				{
-					_12 += ::Parser::str_t(begin_14, 2);
-					success_13 = true;
-					_8 += _12;
-				}
-			}
-			else 
-			{
-				_10 += ::Parser::str_t(begin_14, 2);
-				success_11 = true;
-				_8 += _10;
-			}
 			success_9 = true;
-			begin_14 += 3;
+			begin_14 += 0;
 			_6 += _8;
 		}
 		if (success_9)
@@ -3583,60 +3118,42 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 			begin_17 = begin_14;
 		}
 		ISC_STD::skip_spaces(pos);
-		if (!(*(pos + 0) == '\''))
+		if (!(*(begin_17 + 0) == '\''))
 		{
 			break;
 		}
-		_15 += ::Parser::str_t(begin_17, 1);
+		_15 += ::Parser::str_t(begin_17, 2);
 		success_16 = true;
-		begin_17 += 2;
+		begin_17 += 1;
 		_2 += _4;
 		_2 += _6;
 		_2 += _15;
 	}	while(0)
 ;
-	if (success_16)
+	if (success_5 && success_16)
 	{
 		success_3 = true;
 		pos = begin_17;
 	}
+	;
 	if (!success_3)
 	{
 		auto begin_33 = pos;
 		do
 		{
-			if (!(*(pos + 0) == '"'))
+			if (!(*(begin_33 + 0) == '"'))
 			{
 				break;
 			}
-			_20 += ::Parser::str_t(begin_33, 1);
+			_20 += ::Parser::str_t(begin_33, 2);
 			success_21 = true;
-			begin_33 += 2;
+			begin_33 += 1;
 			ISC_STD::skip_spaces(pos);
 			auto begin_30 = begin_33;
 			while (1)
 			{
-				if (!(!std::strncmp(pos, "\\\"", 2)))
-				{
-					if (!(!(*(pos + 1) == '"')))
-					{
-						break;
-					}
-					else 
-					{
-						_28 += ::Parser::str_t(begin_30, 2);
-						success_29 = true;
-						_24 += _28;
-					}
-				}
-				else 
-				{
-					_26 += ::Parser::str_t(begin_30, 2);
-					success_27 = true;
-					_24 += _26;
-				}
 				success_25 = true;
-				begin_30 += 3;
+				begin_30 += 0;
 				_22 += _24;
 			}
 			if (success_25)
@@ -3645,26 +3162,27 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 				begin_33 = begin_30;
 			}
 			ISC_STD::skip_spaces(pos);
-			if (!(*(pos + 0) == '"'))
+			if (!(*(begin_33 + 0) == '"'))
 			{
 				break;
 			}
-			_31 += ::Parser::str_t(begin_33, 1);
+			_31 += ::Parser::str_t(begin_33, 2);
 			success_32 = true;
-			begin_33 += 2;
+			begin_33 += 1;
 			_18 += _20;
 			_18 += _22;
 			_18 += _31;
 		}		while(0)
 ;
-		if (success_32)
+		if (success_21 && success_32)
 		{
 			success_19 = true;
 			pos = begin_33;
 		}
+		;
 		if (!success_19)
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
@@ -3676,11 +3194,11 @@ Parser::Token_res Parser::Tokenizator::STRING(const char* &pos) {
 		_0 += _2;
 	}
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	STRING_data data = _2;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::STRING, data)};
 }
-Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -3698,23 +3216,23 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 	::Parser::bool_t success_14 = false;
 	if (!(*(pos + 0) == '+' || *(pos + 0) == '-'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	ISC_STD::skip_spaces(pos);
 	auto begin_7 = pos;
-	while ((*(pos + 0)>='0' && *(pos + 0)<='9'))
+	while ((*(begin_7 + 0)>='0' && *(begin_7 + 0)<='9'))
 	{
-		_4 += ::Parser::str_t(begin_7, 0);
+		_4 += ::Parser::str_t(begin_7, 1);
 		success_5 = true;
-		begin_7 += 1;
+		begin_7 += 0;
 		success_6 = true;
 	}
 	if (!success_6)
 	{
-		return{};
+		return {};
 	}
 	_2 += _4;
 	if (success_5)
@@ -3726,19 +3244,19 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 	auto begin_15 = pos;
 	do
 	{
-		if (!(*(pos + 0) == '.' || *(pos + 0) == ','))
+		if (!(*(begin_15 + 0) == '.' || *(begin_15 + 0) == ','))
 		{
 			break;
 		}
-		_10 += ::Parser::str_t(begin_15, 0);
+		_10 += ::Parser::str_t(begin_15, 1);
 		success_11 = true;
-		begin_15 += 1;
+		begin_15 += 0;
 		ISC_STD::skip_spaces(pos);
-		while ((*(pos + 0)>='0' && *(pos + 0)<='9'))
+		while ((*(begin_15 + 0)>='0' && *(begin_15 + 0)<='9'))
 		{
-			_12 += ::Parser::str_t(begin_15, 0);
+			_12 += ::Parser::str_t(begin_15, 1);
 			success_13 = true;
-			begin_15 += 1;
+			begin_15 += 0;
 			success_14 = true;
 		}
 		if (!success_14)
@@ -3749,7 +3267,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 		_8 += _12;
 	}	while(0)
 ;
-	if (success_13)
+	if (success_11 && success_13)
 	{
 		success_9 = true;
 		pos = begin_15;
@@ -3761,7 +3279,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* &pos) {
 
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::NUMBER, data)};
 }
-Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* pos) {
 	auto in = pos;
 	::Parser::str_t d;
 	::Parser::bool_t success_0 = false;
@@ -3769,30 +3287,9 @@ Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* &pos) {
 	::Parser::bool_t success_2 = false;
 	::Parser::str_t _3;
 	::Parser::bool_t success_4 = false;
-	::Parser::str_t _5;
-	::Parser::bool_t success_6 = false;
 	auto begin_7 = pos;
-	if (!(!std::strncmp(pos, "true", 4)))
-	{
-		if (!(!std::strncmp(pos, "false", 5)))
-		{
-			return{};
-		}
-		else 
-		{
-			_5 += ::Parser::str_t(begin_7, 9);
-			success_6 = true;
-			_1 += _5;
-		}
-	}
-	else 
-	{
-		_3 += ::Parser::str_t(begin_7, 9);
-		success_4 = true;
-		_1 += _3;
-	}
 	success_2 = true;
-	begin_7 += 10;
+	begin_7 += 0;
 	d += _1;
 	if (success_2)
 	{
@@ -3818,11 +3315,11 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	::Parser::bool_t success_15 = false;
 	if (!(pos->name == Tokens::AUTO_86))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_13 = pos;
 	do
@@ -3836,7 +3333,7 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 				break;
 			}
 			success_7 = true;
-			begin_12 += 1;
+			begin_12 += _6.token.length();
 			shadow_8.push_back(_6.token);
 			ISC_STD::skip_spaces(pos);
 			if (!(begin_12->name == Tokens::AUTO_74))
@@ -3845,10 +3342,10 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 			}
 			_9 = *begin_12;
 			success_10 = true;
-			begin_12 += 2;
+			begin_12 += 1;
 			shadow_11.push_back(_9);
 		}
-		if (success_10)
+		if (success_7 && success_10)
 		{
 			success_5 = true;
 			begin_13 = begin_12;
@@ -3863,11 +3360,11 @@ Parser::Rule_res Parser::Parser::array(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
-		return{};
+		return {};
 	}
 	_14 = *pos;
 	success_15 = true;
-	pos += 2;
+	pos += 1;
 	array_data data = shadow_11;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::array, data)};
 }
@@ -3901,11 +3398,11 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	::Parser::bool_t success_29 = false;
 	if (!(pos->name == Tokens::AUTO_60))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_27 = pos;
 	do
@@ -3913,18 +3410,18 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 		_4 = any_data(begin_27);
 		if (!(_4.result))
 		{
-			break;
+			return {};
 		}
 		success_5 = true;
-		begin_27 += 1;
+		begin_27 += _4.token.length();
 		ISC_STD::skip_spaces(pos);
 		if (!(begin_27->name == Tokens::AUTO_101))
 		{
-			return{};
+			return {};
 		}
 		_6 = *begin_27;
 		success_7 = true;
-		begin_27 += 2;
+		begin_27 += 1;
 		ISC_STD::skip_spaces(pos);
 		_8 = any_data(begin_27);
 		if (!(_8.result))
@@ -3932,7 +3429,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 			break;
 		}
 		success_9 = true;
-		begin_27 += 1;
+		begin_27 += _8.token.length();
 		ISC_STD::skip_spaces(pos);
 		auto begin_24 = begin_27;
 		while (1)
@@ -3943,7 +3440,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 			}
 			_12 = *begin_24;
 			success_13 = true;
-			begin_24 += 2;
+			begin_24 += 1;
 			shadow_14.push_back(_12);
 			ISC_STD::skip_spaces(pos);
 			if (!(begin_24->name == Tokens::ID))
@@ -3952,7 +3449,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 			}
 			_15 = *begin_24;
 			success_16 = true;
-			begin_24 += 2;
+			begin_24 += 1;
 			shadow_17.push_back(_15);
 			ISC_STD::skip_spaces(pos);
 			if (!(begin_24->name == Tokens::AUTO_101))
@@ -3961,7 +3458,7 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 			}
 			_18 = *begin_24;
 			success_19 = true;
-			begin_24 += 2;
+			begin_24 += 1;
 			shadow_20.push_back(_18);
 			ISC_STD::skip_spaces(pos);
 			_21 = any_data(begin_24);
@@ -3970,10 +3467,10 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 				break;
 			}
 			success_22 = true;
-			begin_24 += 1;
+			begin_24 += _21.token.length();
 			shadow_23.push_back(_21.token);
 		}
-		if (success_22)
+		if (success_13 && success_16 && success_19 && success_22)
 		{
 			success_11 = true;
 			begin_27 = begin_24;
@@ -3985,10 +3482,10 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 		}
 		_25 = *begin_27;
 		success_26 = true;
-		begin_27 += 2;
+		begin_27 += 1;
 	}	while(0)
 ;
-	if (success_26)
+	if (success_5 && success_7 && success_9 && success_11 && success_26)
 	{
 		success_3 = true;
 		pos = begin_27;
@@ -3996,11 +3493,11 @@ Parser::Rule_res Parser::Parser::object(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
-		return{};
+		return {};
 	}
 	_28 = *pos;
 	success_29 = true;
-	pos += 2;
+	pos += 1;
 	object_data data;
 	data.values = shadow_23;
 	data.keys = shadow_17;
@@ -4015,114 +3512,38 @@ Parser::Rule_res Parser::Parser::any_data(Token*& pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Rule_res _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Rule_res _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
-	if (!(pos->name == Tokens::BOOLEAN))
-	{
-		if (!(pos->name == Tokens::NUMBER))
-		{
-			if (!(pos->name == Tokens::STRING))
-			{
-				if (!(pos->name == Tokens::ID))
-				{
-					_10 = array(pos);
-					if (!(_10.result))
-					{
-						_12 = object(pos);
-						if (!(_12.result))
-						{
-							_14 = accessor(pos);
-							if (!(_14.result))
-							{
-								return{};
-							}
-							else 
-							{
-								success_15 = true;
-								_0 = _14.token;
-							}
-						}
-						else 
-						{
-							success_13 = true;
-							_0 = _12.token;
-						}
-					}
-					else 
-					{
-						success_11 = true;
-						_0 = _10.token;
-					}
-				}
-				else 
-				{
-					_8 = *pos;
-					success_9 = true;
-					_0 = _8;
-				}
-			}
-			else 
-			{
-				_6 = *pos;
-				success_7 = true;
-				_0 = _6;
-			}
-		}
-		else 
-		{
-			_4 = *pos;
-			success_5 = true;
-			_0 = _4;
-		}
-	}
-	else 
-	{
-		_2 = *pos;
-		success_3 = true;
-		_0 = _2;
-	}
 	success_1 = true;
-	pos += 5;
+	pos += 0;
 	any_data_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::any_data, data)};
 }
-Parser::Token_res Parser::Tokenizator::END(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::END(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ';' || *(pos + 0) == '\n'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::END)};
 }
-Parser::Token_res Parser::Tokenizator::NEWLINE(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::NEWLINE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\n'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::NEWLINE)};
 }
-Parser::Token_res Parser::Tokenizator::ID(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::ID(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -4133,31 +3554,31 @@ Parser::Token_res Parser::Tokenizator::ID(const char* &pos) {
 	::Parser::str_t _6;
 	::Parser::bool_t success_7 = false;
 	auto begin_8 = pos;
-	while ((*(pos + 0)>='0' && *(pos + 0)<='9'))
+	while ((*(begin_8 + 0)>='0' && *(begin_8 + 0)<='9'))
 	{
-		_2 += ::Parser::str_t(begin_8, 0);
+		_2 += ::Parser::str_t(begin_8, 1);
 		success_3 = true;
-		begin_8 += 1;
+		begin_8 += 0;
 	}
 	ISC_STD::skip_spaces(pos);
-	if (!((*(pos + 0)>='a' && *(pos + 0)<='z') || (*(pos + 0)>='A' && *(pos + 0)<='Z') || *(pos + 0) == '_'))
+	if (!((*(begin_8 + 0)>='a' && *(begin_8 + 0)<='z') || (*(begin_8 + 0)>='A' && *(begin_8 + 0)<='Z') || *(begin_8 + 0) == '_'))
 	{
-		return{};
+		return {};
 	}
-	_4 += ::Parser::str_t(begin_8, 0);
+	_4 += ::Parser::str_t(begin_8, 1);
 	success_5 = true;
-	begin_8 += 1;
+	begin_8 += 0;
 	ISC_STD::skip_spaces(pos);
-	while ((*(pos + 0)>='a' && *(pos + 0)<='z') || (*(pos + 0)>='A' && *(pos + 0)<='Z') || (*(pos + 0)>='0' && *(pos + 0)<='9') || *(pos + 0) == '_')
+	while ((*(begin_8 + 0)>='a' && *(begin_8 + 0)<='z') || (*(begin_8 + 0)>='A' && *(begin_8 + 0)<='Z') || (*(begin_8 + 0)>='0' && *(begin_8 + 0)<='9') || *(begin_8 + 0) == '_')
 	{
-		_6 += ::Parser::str_t(begin_8, 0);
+		_6 += ::Parser::str_t(begin_8, 1);
 		success_7 = true;
-		begin_8 += 1;
+		begin_8 += 0;
 	}
 	_0 += _2;
 	_0 += _4;
 	_0 += _6;
-	if (success_7)
+	if (success_5)
 	{
 		success_1 = true;
 		pos = begin_8;
@@ -4173,48 +3594,16 @@ Parser::Rule_res Parser::Parser::spacemode(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
 	if (!(pos->name == Tokens::AUTO_66))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
-	if (!(pos->name == Tokens::AUTO_67))
-	{
-		if (!(pos->name == Tokens::AUTO_68))
-		{
-			if (!(pos->name == Tokens::AUTO_69))
-			{
-				return{};
-			}
-			else 
-			{
-				_8 = *pos;
-				success_9 = true;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = *pos;
-			success_7 = true;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *pos;
-		success_5 = true;
-		_2 = _4;
-	}
 	success_3 = true;
-	pos += 4;
+	pos += 0;
 	spacemode_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::spacemode, data)};
 }
@@ -4226,19 +3615,19 @@ Parser::Rule_res Parser::Parser::name(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_70))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	name_data data = _2;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::name, data)};
 }
@@ -4250,19 +3639,19 @@ Parser::Rule_res Parser::Parser::linear_comment(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::AUTO_71))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_72))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::linear_comment)};
 }
 Parser::Rule_res Parser::Parser::main(Token*& pos) {
@@ -4273,38 +3662,18 @@ Parser::Rule_res Parser::Parser::main(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
 	_2 = use(pos);
 	if (!(_2.result))
 	{
-		if (!(pos->name == Tokens::AUTO_95))
-		{
-			_6 = spacemode(pos);
-			if (!(_6.result))
-			{
-				return{};
-			}
-			else 
-			{
-				success_7 = true;
-				_0 = _6.token;
-			}
-		}
-		else 
-		{
-			_4 = *pos;
-			success_5 = true;
-			_0 = _4;
-		}
 	}
 	else 
 	{
 		success_3 = true;
+		pos += _2.token.length();
 		_0 = _2.token;
 	}
 	success_1 = true;
-	pos += 2;
+	pos += 0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::main)};
 }
 Parser::Rule_res Parser::Parser::use_unit(Token*& pos) {
@@ -4315,17 +3684,17 @@ Parser::Rule_res Parser::Parser::use_unit(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = any_data(pos);
 	if (_2.result)
 	{
 		success_3 = true;
-		pos += 1;
+		pos += _2.token.length();
 	}
 	use_unit_data data;
 	data.value = _2.token;
@@ -4348,19 +3717,19 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 	::Parser::arr_t<::Parser::Rule> shadow_11;
 	if (!(pos->name == Tokens::AUTO_73))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_2 = use_unit(pos);
 	if (!(_2.result))
 	{
-		return{};
+		return {};
 	}
 	success_3 = true;
-	pos += 1;
+	pos += _2.token.length();
 	ISC_STD::skip_spaces(pos);
 	auto begin_12 = pos;
 	while (1)
@@ -4371,7 +3740,7 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 		}
 		_6 = *begin_12;
 		success_7 = true;
-		begin_12 += 2;
+		begin_12 += 1;
 		shadow_8.push_back(_6);
 		ISC_STD::skip_spaces(pos);
 		_9 = use_unit(begin_12);
@@ -4380,10 +3749,10 @@ Parser::Rule_res Parser::Parser::use(Token*& pos) {
 			break;
 		}
 		success_10 = true;
-		begin_12 += 1;
+		begin_12 += _9.token.length();
 		shadow_11.push_back(_9.token);
 	}
-	if (success_10)
+	if (success_7 && success_10)
 	{
 		success_5 = true;
 		pos = begin_12;
@@ -4409,26 +3778,12 @@ Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 	::Parser::bool_t success_11 = false;
 	::Parser::Token _12;
 	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::Rule_res _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::Rule_res _18;
-	::Parser::bool_t success_19 = false;
-	::Parser::Rule_res _20;
-	::Parser::bool_t success_21 = false;
 	::Parser::Rule_res _23;
 	::Parser::bool_t success_24 = false;
 	::Parser::Rule_res _26;
 	::Parser::bool_t success_27 = false;
 	::Parser::Token _28;
 	::Parser::bool_t success_29 = false;
-	::Parser::Rule_res _30;
-	::Parser::bool_t success_31 = false;
-	::Parser::Rule_res _32;
-	::Parser::bool_t success_33 = false;
-	::Parser::Rule_res _34;
-	::Parser::bool_t success_35 = false;
 	auto begin_25 = pos;
 	do
 	{
@@ -4439,66 +3794,22 @@ Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 			_10 = Rule_csequence(begin_22);
 			if (!(_10.result))
 			{
-				if (!(begin_22->name == Tokens::STRING))
-				{
-					_14 = accessor(begin_22);
-					if (!(_14.result))
-					{
-						_16 = Rule_hex(begin_22);
-						if (!(_16.result))
-						{
-							_18 = Rule_bin(begin_22);
-							if (!(_18.result))
-							{
-								_20 = Rule_other(begin_22);
-								if (!(_20.result))
-								{
-									break;
-								}
-								else 
-								{
-									success_21 = true;
-									_6 = _20.token;
-								}
-							}
-							else 
-							{
-								success_19 = true;
-								_6 = _18.token;
-							}
-						}
-						else 
-						{
-							success_17 = true;
-							_6 = _16.token;
-						}
-					}
-					else 
-					{
-						success_15 = true;
-						_6 = _14.token;
-					}
-				}
-				else 
-				{
-					_12 = *begin_22;
-					success_13 = true;
-					_6 = _12;
-				}
 			}
 			else 
 			{
 				success_11 = true;
+				begin_22 += _10.token.length();
 				_6 = _10.token;
 			}
 		}
 		else 
 		{
 			success_9 = true;
+			begin_22 += _8.token.length();
 			_6 = _8.token;
 		}
 		success_7 = true;
-		begin_22 += 2;
+		begin_22 += 0;
 		if (success_7)
 		{
 			success_5 = true;
@@ -4509,66 +3820,31 @@ Parser::Rule_res Parser::Parser::Rule_rule(Token*& pos) {
 		if (_23.result)
 		{
 			success_24 = true;
-			begin_25 += 1;
+			begin_25 += _23.token.length();
 		}
 	}	while(0)
 ;
-	if (success_24)
+	if (success_5)
 	{
 		success_3 = true;
 		pos = begin_25;
 	}
+	;
 	if (!success_3)
 	{
 		_26 = Rule_escaped(pos);
 		if (!(_26.result))
 		{
-			if (!(pos->name == Tokens::AUTO_95))
-			{
-				_30 = Rule_op(pos);
-				if (!(_30.result))
-				{
-					_32 = cll(pos);
-					if (!(_32.result))
-					{
-						_34 = linear_comment(pos);
-						if (!(_34.result))
-						{
-							return{};
-						}
-						else 
-						{
-							success_35 = true;
-							_0 = _34.token;
-						}
-					}
-					else 
-					{
-						success_33 = true;
-						_0 = _32.token;
-					}
-				}
-				else 
-				{
-					success_31 = true;
-					_0 = _30.token;
-				}
-			}
-			else 
-			{
-				_28 = *pos;
-				success_29 = true;
-				_0 = _28;
-			}
 		}
 		else 
 		{
 			success_27 = true;
+			pos += _26.token.length();
 			_0 = _26.token;
 		}
 	}
 	success_1 = true;
-	pos += 2;
+	pos += 0;
 	Rule_rule_data data;
 	data.qualifier = _4;
 	data.val = _6;
@@ -4592,16 +3868,16 @@ Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 	{
 		_0 = *pos;
 		success_1 = true;
-		pos += 2;
+		pos += 1;
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_12 = pos;
 	while (1)
@@ -4612,7 +3888,7 @@ Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 		}
 		_6 = *begin_12;
 		success_7 = true;
-		begin_12 += 2;
+		begin_12 += 1;
 		shadow_8.push_back(_6);
 		ISC_STD::skip_spaces(pos);
 		if (!(begin_12->name == Tokens::ID))
@@ -4621,10 +3897,10 @@ Parser::Rule_res Parser::Parser::Rule_other(Token*& pos) {
 		}
 		_9 = *begin_12;
 		success_10 = true;
-		begin_12 += 2;
+		begin_12 += 1;
 		shadow_11.push_back(_9);
 	}
-	if (success_10)
+	if (success_7 && success_10)
 	{
 		success_5 = true;
 		pos = begin_12;
@@ -4644,30 +3920,9 @@ Parser::Rule_res Parser::Parser::Rule_op(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
 	auto begin_8 = pos;
-	if (!(begin_8->name == Tokens::AUTO_78))
-	{
-		if (!(begin_8->name == Tokens::AUTO_79))
-		{
-			return{};
-		}
-		else 
-		{
-			_6 = *begin_8;
-			success_7 = true;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *begin_8;
-		success_5 = true;
-		_2 = _4;
-	}
 	success_3 = true;
-	begin_8 += 3;
+	begin_8 += 0;
 	_0 = _2;
 	if (success_3)
 	{
@@ -4685,41 +3940,9 @@ Parser::Rule_res Parser::Parser::Rule_qualifier(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
 	auto begin_10 = pos;
-	if (!(begin_10->name == Tokens::AUTO_80))
-	{
-		if (!(begin_10->name == Tokens::AUTO_81))
-		{
-			if (!(begin_10->name == Tokens::AUTO_82))
-			{
-				return{};
-			}
-			else 
-			{
-				_8 = *begin_10;
-				success_9 = true;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = *begin_10;
-			success_7 = true;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *begin_10;
-		success_5 = true;
-		_2 = _4;
-	}
 	success_3 = true;
-	begin_10 += 4;
+	begin_10 += 0;
 	_0 = _2;
 	if (success_3)
 	{
@@ -4755,32 +3978,23 @@ Parser::Rule_res Parser::Parser::Rule_group(Token*& pos) {
 		}
 		_2 = *begin_10;
 		success_3 = true;
-		begin_10 += 2;
+		begin_10 += 1;
 		ISC_STD::skip_spaces(pos);
 		_6 = method_call(begin_10);
 		if (!(_6.result))
 		{
-			if (!(begin_10->name == Tokens::ID))
-			{
-				break;
-			}
-			else 
-			{
-				_8 = *begin_10;
-				success_9 = true;
-				_4 = _8;
-			}
 		}
 		else 
 		{
 			success_7 = true;
+			begin_10 += _6.token.length();
 			_4 = _6.token;
 		}
 		success_5 = true;
-		begin_10 += 2;
+		begin_10 += 0;
 	}	while(0)
 ;
-	if (success_5)
+	if (success_3 && success_5)
 	{
 		success_1 = true;
 		pos = begin_10;
@@ -4788,27 +4002,27 @@ Parser::Rule_res Parser::Parser::Rule_group(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
-		return{};
+		return {};
 	}
 	_11 = *pos;
 	success_12 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_13 = Rule_rule(pos);
 	while (_13.result)
 	{
 		success_14 = true;
-		pos += 1;
+		pos += _13.token.length();
 		_13 = Rule_rule(pos);
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
-		return{};
+		return {};
 	}
 	_15 = *pos;
 	success_16 = true;
-	pos += 2;
+	pos += 1;
 	Rule_group_data data;
 	data.val = _13.token;
 	data.variable = _2;
@@ -4823,41 +4037,9 @@ Parser::Rule_res Parser::Parser::Rule_csequence_symbol(Token*& pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
 	auto begin_10 = pos;
-	if (!(begin_10->name == Tokens::AUTO_102))
-	{
-		if (!(begin_10->name == Tokens::AUTO_90))
-		{
-			if (!(begin_10->name == Tokens::AUTO_91))
-			{
-				return{};
-			}
-			else 
-			{
-				_8 = *begin_10;
-				success_9 = true;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = *begin_10;
-			success_7 = true;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *begin_10;
-		success_5 = true;
-		_2 = _4;
-	}
 	success_3 = true;
-	begin_10 += 4;
+	begin_10 += 0;
 	_0 = _2;
 	if (success_3)
 	{
@@ -4877,19 +4059,19 @@ Parser::Rule_res Parser::Parser::Rule_csequence_escape(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_102))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	auto begin_6 = pos;
 	if (!(begin_6->name == Tokens::AUTO_103))
 	{
-		return{};
+		return {};
 	}
 	_4 = *begin_6;
 	success_5 = true;
-	begin_6 += 2;
+	begin_6 += 1;
 	_2 = _4;
 	if (success_5)
 	{
@@ -4917,10 +4099,10 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	_3 = Rule_csequence_symbol(begin_5);
 	if (!(_3.result))
 	{
-		return{};
+		return {};
 	}
 	success_4 = true;
-	begin_5 += 1;
+	begin_5 += _3.token.length();
 	from = _3.token;
 	if (success_4)
 	{
@@ -4929,26 +4111,26 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(Token*& pos) {
 	}
 	if (!(begin_12->name == Tokens::AUTO_94))
 	{
-		return{};
+		return {};
 	}
 	_6 = *begin_12;
 	success_7 = true;
-	begin_12 += 2;
+	begin_12 += 1;
 	auto begin_11 = begin_12;
 	_9 = Rule_csequence_symbol(begin_11);
 	if (!(_9.result))
 	{
-		return{};
+		return {};
 	}
 	success_10 = true;
-	begin_11 += 1;
+	begin_11 += _9.token.length();
 	to = _9.token;
 	if (success_10)
 	{
 		success_8 = true;
 		begin_12 = begin_11;
 	}
-	if (success_8)
+	if (success_2 && success_7 && success_8)
 	{
 		success_1 = true;
 		pos = begin_12;
@@ -4980,17 +4162,17 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	::Parser::bool_t success_19 = false;
 	if (!(pos->name == Tokens::AUTO_86))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (pos->name == Tokens::AUTO_87)
 	{
 		_2 = *pos;
 		success_3 = true;
-		pos += 2;
+		pos += 1;
 	}
 	ISC_STD::skip_spaces(pos);
 	auto begin_16 = pos;
@@ -5010,6 +4192,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 				else 
 				{
 					success_14 = true;
+					begin_16 += _13.token.length();
 					shadow_15.push_back(_13.token);
 					_5.push_back(_13.token);
 				}
@@ -5017,6 +4200,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 			else 
 			{
 				success_11 = true;
+				begin_16 += _10.token.length();
 				shadow_12.push_back(_10.token);
 				_5.push_back(_10.token);
 			}
@@ -5024,11 +4208,12 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 		else 
 		{
 			success_8 = true;
+			begin_16 += _7.token.length();
 			shadow_9.push_back(_7.token);
 			_5.push_back(_7.token);
 		}
 		success_6 = true;
-		begin_16 += 1;
+		begin_16 += 0;
 		dt = _5;
 		shadow_17.push_back(dt);
 	}
@@ -5040,11 +4225,11 @@ Parser::Rule_res Parser::Parser::Rule_csequence(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
-		return{};
+		return {};
 	}
 	_18 = *pos;
 	success_19 = true;
-	pos += 2;
+	pos += 1;
 	Rule_csequence_data data;
 	data.val = dt;
 	data._not = _2;
@@ -5060,13 +4245,13 @@ Parser::Rule_res Parser::Parser::Rule_data_block_inclosed_map(Token*& pos) {
 	while (_0.result)
 	{
 		success_1 = true;
-		pos += 1;
+		pos += _0.token.length();
 		_0 = Rule_data_block_key(pos);
 		success_2 = true;
 	}
 	if (!success_2)
 	{
-		return{};
+		return {};
 	}
 	Rule_data_block_inclosed_map_data data = _0.token;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_data_block_inclosed_map, data)};
@@ -5095,23 +4280,23 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 	{
 		_0 = *pos;
 		success_1 = true;
-		pos += 2;
+		pos += 1;
 		shadow_2.push_back(_0);
 		success_3 = true;
 	}
 	if (!success_3)
 	{
-		return{};
+		return {};
 	}
 	ISC_STD::skip_spaces(pos);
 	auto begin_7 = pos;
 	if (!(begin_7->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_5 = *begin_7;
 	success_6 = true;
-	begin_7 += 2;
+	begin_7 += 1;
 	name = _5;
 	if (success_6)
 	{
@@ -5121,11 +4306,11 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return{};
+		return {};
 	}
 	_8 = *pos;
 	success_9 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	auto begin_17 = pos;
 	_13 = cll_ternary(begin_17);
@@ -5134,21 +4319,23 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(Token*& pos) {
 		_15 = expr(begin_17);
 		if (!(_15.result))
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
 			success_16 = true;
+			begin_17 += _15.token.length();
 			_11 = _15.token;
 		}
 	}
 	else 
 	{
 		success_14 = true;
+		begin_17 += _13.token.length();
 		_11 = _13.token;
 	}
 	success_12 = true;
-	begin_17 += 1;
+	begin_17 += 0;
 	dt = _11;
 	if (success_12)
 	{
@@ -5183,30 +4370,30 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 	{
 		_0 = *pos;
 		success_1 = true;
-		pos += 2;
+		pos += 1;
 		shadow_2.push_back(_0);
 		success_3 = true;
 	}
 	if (!success_3)
 	{
-		return{};
+		return {};
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_97))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return{};
+		return {};
 	}
 	_6 = *pos;
 	success_7 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_10 = any_data(pos);
 	if (!(_10.result))
@@ -5214,29 +4401,31 @@ Parser::Rule_res Parser::Parser::Rule_data_block(Token*& pos) {
 		_12 = Rule_data_block_inclosed_map(pos);
 		if (!(_12.result))
 		{
-			return{};
+			return {};
 		}
 		else 
 		{
 			success_13 = true;
+			pos += _12.token.length();
 			_8 = _12.token;
 		}
 	}
 	else 
 	{
 		success_11 = true;
+		pos += _10.token.length();
 		_8 = _10.token;
 	}
 	success_9 = true;
-	pos += 1;
+	pos += 0;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return{};
+		return {};
 	}
 	_14 = *pos;
 	success_15 = true;
-	pos += 2;
+	pos += 1;
 	Rule_data_block_data data = _8;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_data_block, data)};
 }
@@ -5250,23 +4439,23 @@ Parser::Rule_res Parser::Parser::Rule_escaped(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_102))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	if (!(pos->name == Tokens::AUTO_103))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	if (pos->name == Tokens::NUMBER)
 	{
 		_4 = *pos;
 		success_5 = true;
-		pos += 2;
+		pos += 1;
 	}
 	Rule_escaped_data data;
 	data.num = _4;
@@ -5288,29 +4477,29 @@ Parser::Rule_res Parser::Parser::Rule_nested_rule(Token*& pos) {
 	{
 		_0 = *pos;
 		success_1 = true;
-		pos += 2;
+		pos += 1;
 		shadow_2.push_back(_0);
 		success_3 = true;
 	}
 	if (!success_3)
 	{
-		return{};
+		return {};
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_105))
 	{
-		return{};
+		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
-	pos += 2;
+	pos += 1;
 	if (!(pos->name == Tokens::AUTO_95))
 	{
-		return{};
+		return {};
 	}
 	_6 = *pos;
 	success_7 = true;
-	pos += 2;
+	pos += 1;
 	Rule_nested_rule_data data = _6;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_nested_rule, data)};
 }
@@ -5324,23 +4513,23 @@ Parser::Rule_res Parser::Parser::Rule_hex(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_106))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	while (pos->name == Tokens::AUTO_107)
 	{
 		_2 = *pos;
 		success_3 = true;
-		pos += 2;
+		pos += 1;
 		shadow_4.push_back(_2);
 		success_5 = true;
 	}
 	if (!success_5)
 	{
-		return{};
+		return {};
 	}
 	Rule_hex_data data = shadow_4;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_hex, data)};
@@ -5355,23 +4544,23 @@ Parser::Rule_res Parser::Parser::Rule_bin(Token*& pos) {
 	::Parser::bool_t success_5 = false;
 	if (!(pos->name == Tokens::AUTO_108))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	while (pos->name == Tokens::AUTO_109)
 	{
 		_2 = *pos;
 		success_3 = true;
-		pos += 2;
+		pos += 1;
 		shadow_4.push_back(_2);
 		success_5 = true;
 	}
 	if (!success_5)
 	{
-		return{};
+		return {};
 	}
 	Rule_bin_data data = shadow_4;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule_bin, data)};
@@ -5392,51 +4581,51 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 	::Parser::bool_t success_11 = false;
 	if (!(pos->name == Tokens::ID))
 	{
-		return{};
+		return {};
 	}
 	_0 = *pos;
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
-		return{};
+		return {};
 	}
 	_2 = *pos;
 	success_3 = true;
-	pos += 2;
+	pos += 1;
 	ISC_STD::skip_spaces(pos);
 	_4 = Rule_rule(pos);
 	while (_4.result)
 	{
 		success_5 = true;
-		pos += 1;
+		pos += _4.token.length();
 		_4 = Rule_rule(pos);
 	}
 	ISC_STD::skip_spaces(pos);
 	_6 = Rule_data_block(pos);
 	if (!(_6.result))
 	{
-		return{};
+		return {};
 	}
 	success_7 = true;
-	pos += 1;
+	pos += _6.token.length();
 	ISC_STD::skip_spaces(pos);
 	_8 = Rule_nested_rule(pos);
 	while (_8.result)
 	{
 		success_9 = true;
-		pos += 1;
+		pos += _8.token.length();
 		_8 = Rule_nested_rule(pos);
 	}
 	ISC_STD::skip_spaces(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
-		return{};
+		return {};
 	}
 	_10 = *pos;
 	success_11 = true;
-	pos += 2;
+	pos += 1;
 	Rule_data data;
 	data.nestedRules = _8.token;
 	data.data_block = _6.token;
@@ -5445,981 +4634,981 @@ Parser::Rule_res Parser::Parser::Rule(Token*& pos) {
 
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::Rule, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_1(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_1(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '%'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_1_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_1, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_3(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_3(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '>'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_3_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_3, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_4(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_4(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '$'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_4_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_4, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_8(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_8(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "unsigned", 8)))
+	if (!(!std::strncmp(pos + 0, "unsigned", 8)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 8);
 	success_1 = true;
-	pos += 9;
+	pos += 7;
 	AUTO_8_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_8, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_9(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_9(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "char", 4)))
+	if (!(!std::strncmp(pos + 0, "char", 4)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
-	pos += 5;
+	pos += 3;
 	AUTO_9_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_9, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_10(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_10(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "short", 5)))
+	if (!(!std::strncmp(pos + 0, "short", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_10_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_10, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_11(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_11(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "int", 3)))
+	if (!(!std::strncmp(pos + 0, "int", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_11_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_11, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_12(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_12(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "long", 4)))
+	if (!(!std::strncmp(pos + 0, "long", 4)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
-	pos += 5;
+	pos += 3;
 	AUTO_12_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_12, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_13(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_13(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "long long", 9)))
+	if (!(!std::strncmp(pos + 0, "long long", 9)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 9);
 	success_1 = true;
-	pos += 10;
+	pos += 8;
 	AUTO_13_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_13, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_14(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_14(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "float", 5)))
+	if (!(!std::strncmp(pos + 0, "float", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_14_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_14, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_15(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_15(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "double", 6)))
+	if (!(!std::strncmp(pos + 0, "double", 6)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 6);
 	success_1 = true;
-	pos += 7;
+	pos += 5;
 	AUTO_15_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_15, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_16(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_16(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "deque", 5)))
+	if (!(!std::strncmp(pos + 0, "deque", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_16_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_16, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_17(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_17(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "vector", 6)))
+	if (!(!std::strncmp(pos + 0, "vector", 6)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 6);
 	success_1 = true;
-	pos += 7;
+	pos += 5;
 	AUTO_17_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_17, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_18(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_18(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "queue", 5)))
+	if (!(!std::strncmp(pos + 0, "queue", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_18_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_18, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_19(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_19(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "stack", 5)))
+	if (!(!std::strncmp(pos + 0, "stack", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_19_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_19, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_20(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_20(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "list", 4)))
+	if (!(!std::strncmp(pos + 0, "list", 4)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
-	pos += 5;
+	pos += 3;
 	AUTO_20_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_20, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_21(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_21(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "forward_list", 12)))
+	if (!(!std::strncmp(pos + 0, "forward_list", 12)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 12);
 	success_1 = true;
-	pos += 13;
+	pos += 11;
 	AUTO_21_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_21, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_22(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_22(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "var", 3)))
+	if (!(!std::strncmp(pos + 0, "var", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_22_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_22, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_23(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_23(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "any", 3)))
+	if (!(!std::strncmp(pos + 0, "any", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_23_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_23, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_24(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_24(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "num", 3)))
+	if (!(!std::strncmp(pos + 0, "num", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_24_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_24, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_25(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_25(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "bool", 4)))
+	if (!(!std::strncmp(pos + 0, "bool", 4)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
-	pos += 5;
+	pos += 3;
 	AUTO_25_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_25, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_26(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_26(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "str", 3)))
+	if (!(!std::strncmp(pos + 0, "str", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_26_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_26, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_27(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_27(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "arr", 3)))
+	if (!(!std::strncmp(pos + 0, "arr", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_27_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_27, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_28(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_28(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "obj", 3)))
+	if (!(!std::strncmp(pos + 0, "obj", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_28_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_28, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_29(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_29(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "if", 2)))
+	if (!(!std::strncmp(pos + 0, "if", 2)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
 	AUTO_29_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_29, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_42(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_42(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "fn", 2)))
+	if (!(!std::strncmp(pos + 0, "fn", 2)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
 	AUTO_42_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_42, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_43(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_43(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "while", 5)))
+	if (!(!std::strncmp(pos + 0, "while", 5)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 6;
+	pos += 4;
 	AUTO_43_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_43, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_44(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_44(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "for", 3)))
+	if (!(!std::strncmp(pos + 0, "for", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_44_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_44, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_50(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_50(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '='))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_50_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_50, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_55(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_55(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "++", 2)))
+	if (!(!std::strncmp(pos + 0, "++", 2)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
 	AUTO_55_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_55, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_56(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_56(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "--", 2)))
+	if (!(!std::strncmp(pos + 0, "--", 2)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
 	AUTO_56_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_56, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_60(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_60(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '{'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_60_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_60, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_65(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_65(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '}'))
 	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 2;
-	AUTO_65_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_65, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_66(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "spacemode", 9)))
-	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 9);
-	success_1 = true;
-	pos += 10;
-	AUTO_66_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_66, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_67(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "mixed", 5)))
-	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 6;
-	AUTO_67_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_67, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_68(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "skipped", 7)))
-	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 7);
-	success_1 = true;
-	pos += 8;
-	AUTO_68_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_68, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_69(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "allowed", 7)))
-	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 7);
-	success_1 = true;
-	pos += 8;
-	AUTO_69_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_69, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_70(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "name", 4)))
-	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 5;
-	AUTO_70_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_70, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_71(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "//", 2)))
-	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
+	pos += 1;
+	AUTO_65_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_65, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_66(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "spacemode", 9)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 9);
+	success_1 = true;
+	pos += 8;
+	AUTO_66_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_66, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_67(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "mixed", 5)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 5);
+	success_1 = true;
+	pos += 4;
+	AUTO_67_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_67, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_68(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "skipped", 7)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 7);
+	success_1 = true;
+	pos += 6;
+	AUTO_68_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_68, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_69(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "allowed", 7)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 7);
+	success_1 = true;
+	pos += 6;
+	AUTO_69_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_69, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_70(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "name", 4)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 4);
+	success_1 = true;
 	pos += 3;
+	AUTO_70_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_70, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_71(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "//", 2)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 2);
+	success_1 = true;
+	pos += 1;
 	AUTO_71_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_71, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_72(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_72(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(!(*(pos + 0) == '\n')))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_72_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_72, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_73(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_73(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "use", 3)))
+	if (!(!std::strncmp(pos + 0, "use", 3)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
-	pos += 4;
+	pos += 2;
 	AUTO_73_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_73, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_74(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_74(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ','))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_74_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_74, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_78(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_78(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '|'))
 	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 2;
-	AUTO_78_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_78, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_79(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "|&", 2)))
-	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
+	AUTO_78_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_78, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_79(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "|&", 2)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 2);
+	success_1 = true;
+	pos += 1;
 	AUTO_79_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_79, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_80(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_80(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '?'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_80_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_80, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_81(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_81(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '+'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_81_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_81, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_82(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_82(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '*'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_82_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_82, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_83(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_83(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '&'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_83_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_83, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_84(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_84(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '('))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_84_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_84, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_85(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_85(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ')'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_85_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_85, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_86(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_86(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '['))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_86_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_86, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_87(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_87(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '^'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_87_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_87, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_88(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_88(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ']'))
 	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 2;
-	AUTO_88_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_88, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_90(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "\\]", 2)))
-	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
+	AUTO_88_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_88, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_90(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "\\]", 2)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 2);
+	success_1 = true;
+	pos += 1;
 	AUTO_90_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_90, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_91(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_91(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(!(*(pos + 0) == ']')))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_91_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_91, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_94(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_94(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '-'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_94_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_94, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_95(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_95(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '.'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_95_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_95, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_97(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_97(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "data", 4)))
+	if (!(!std::strncmp(pos + 0, "data", 4)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
-	pos += 5;
+	pos += 3;
 	AUTO_97_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_97, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_99(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_99(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ';'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_99_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_99, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_100(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_100(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\n' || *(pos + 0) == '\r'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_100_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_100, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_101(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_101(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == ':'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_101_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_101, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_102(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_102(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "\\", 1)))
+	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 0;
 	AUTO_102_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_102, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_103(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_103(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (*(pos + 0) == '\0')
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_103_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_103, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_104(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_104(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '\r' || *(pos + 0) == '\n'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_104_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_104, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_105(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_105(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '#'))
 	{
-		return{};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 2;
-	AUTO_105_data data = _0;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_105, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_106(const char* &pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "0x", 2)))
-	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
+	AUTO_105_data data = _0;
+	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_105, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_106(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "0x", 2)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 2);
+	success_1 = true;
+	pos += 1;
 	AUTO_106_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_106, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_107(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_107(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!((*(pos + 0)>='1' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f')))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_107_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_107, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_108(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_108(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos, "0b", 2)))
+	if (!(!std::strncmp(pos + 0, "0b", 2)))
 	{
-		return{};
+		return {};
 	}
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 3;
+	pos += 1;
 	AUTO_108_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_108, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_109(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_109(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	if (!(*(pos + 0) == '0' || *(pos + 0) == '1'))
 	{
-		return{};
+		return {};
 	}
-	_0 += ::Parser::str_t(pos, 0);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 1;
+	pos += 0;
 	AUTO_109_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_109, data)};
 }
-Parser::Token_res Parser::Tokenizator::__WHITESPACE(const char* &pos) {
+Parser::Token_res Parser::Tokenizator::__WHITESPACE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	while (*(pos + 0) == ' ' || *(pos + 0) == '\t' || *(pos + 0) == '\n' || *(pos + 0) == '\r' || *(pos + 0) == '\v' || *(pos + 0) == '\f')
 	{
-		_0 += ::Parser::str_t(pos, 0);
+		_0 += ::Parser::str_t(pos, 1);
 		success_1 = true;
-		pos += 1;
+		pos += 0;
 	}
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::__WHITESPACE)};
 }

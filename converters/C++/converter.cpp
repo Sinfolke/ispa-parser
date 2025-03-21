@@ -14,6 +14,7 @@
 namespace global {
     size_t pos_counter;
     std::list<std::string> dynamic_pos_counter;
+    std::stack<size_t> pos_counter_stack;
     use_prop_t use;
     std::string rule_prev_name;
     std::string namespace_name;
@@ -198,7 +199,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
             return current_pos_counter.top();
         case IR::var_assign_values::CURRENT_POS_SEQUENCE:
         {
-            std::string count_str = std::to_string(global::pos_counter);
+            std::string count_str = std::to_string(global::pos_counter_stack.top() + 1);
             if (global::dynamic_pos_counter.size()) {
                 for (auto el : global::dynamic_pos_counter)
                     count_str += " + " + el;
@@ -233,9 +234,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
     } else if (type == IR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*(pos + " + std::to_string(global::pos_counter++) + ")";
+        return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter++) + ")";
     } else if (type == IR::condition_types::PREV_CHARACTER) {
-        return "*(pos + " + std::to_string(global::pos_counter > 0 ? global::pos_counter  - 1 : 0) + ")";
+        return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
     } else if (type == IR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -245,13 +246,27 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
     } else if (type == IR::condition_types::STRNCMP) {
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<IR::strncmp>(data);
+        std::string val;
         if (dt.is_string) {
-            global::pos_counter += count_strlen(dt.value.name.c_str());
-            return std::string("!std::strncmp(pos, \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " +  std::to_string(global::pos_counter) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
+            global::pos_counter += count_strlen(dt.value.name.c_str()) - 1;
         } else {
             global::dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
-            return std::string("!std::strncmp(pos, ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
+        return val;
+    } else if (type == IR::condition_types::STRNCMP_PREV) {
+        //cpuf::printf("strncmp\n");
+        auto dt = std::any_cast<IR::strncmp>(data);
+        std::string val;
+        if (dt.is_string) {
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
+            global::pos_counter += count_strlen(dt.value.name.c_str()) - 1;
+        } else {
+            global::dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
+        }
+        return val;
     } else if (type == IR::condition_types::VARIABLE) {
         //cpuf::printf("variable\n");   
         auto dt = std::any_cast<IR::variable>(data);
@@ -318,6 +333,7 @@ void convertVariable(IR::variable var, std::ostringstream &out, int &indentLevel
 
 std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std::stack<std::string> &current_pos_counter) {
     std::string result;
+    global::pos_counter = 0;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
@@ -337,6 +353,8 @@ std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std:
     }
     if (with_braces)
         result += ")\n";
+    global::pos_counter_stack.push(global::pos_counter);
+    global::pos_counter = 0;
     return result;
 }
 
@@ -410,7 +428,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::TOKEN:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* &pos) {\n";
+        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* pos) {\n";
         out << "\tauto in = pos";
         indentLevel++;
         global::isToken = true;
@@ -452,8 +470,16 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
         break;
     case IR::types::INCREASE_POS_COUNTER:
-        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter + 1);
-        global::pos_counter = 0;
+        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top());
+        global::pos_counter_stack.pop();
+        break;
+    case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+        auto var = std::any_cast<std::string>(mem.value);
+        out << current_pos_counter.top() << " += " << var << ".token.length()";
+        break;
+    }
+    case IR::types::RESET_POS_COUNTER:
+        global::pos_counter_stack.pop();
         break;
     case IR::types::ACCESSOR:
         throw Error("Accessor cannot be here\n");
@@ -469,7 +495,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::EXIT:
         out << "return";
         if (!global::void_token)
-            out << "{}";
+            out << " {}";
         out << ';';
         break;
     case IR::types::SKIP_SPACES:
@@ -508,7 +534,8 @@ void addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
 }
 void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "void " << global::namespace_name << "::Tokenizator::makeTokens(const char*& pos) {\n";
+    out << "void " << global::namespace_name << "::Tokenizator::makeTokens(const char* pos) {\n";
+    out << "\tthis->str = pos;\n";
     identLevel++;
 }
 void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
