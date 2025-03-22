@@ -293,13 +293,13 @@ size_t skip_list(const char*& in, const char* text);
 size_t skip_spaces(const char*& in);
 
 
-template<typename Tokens>
-size_t skip_spaces(_return<Tokens>*& pos) {
+template <typename Iterator, typename Tokens>
+size_t skip_spaces(Iterator& pos) {
     auto prev = pos;
-    while(pos->name == Tokens::__WHITESPACE)
-        pos++;
+    while (pos->name == Tokens::__WHITESPACE)
+        ++pos;
     
-    return pos - prev;
+    return std::distance(prev, pos);  // Works for any iterator
 }
 
 template<class TOKEN_T>

@@ -291,7 +291,7 @@ Rule(cll) {
 		skipspaces(TOKEN_SEQUENCE)
 		if (!(CURRENT_TOKEN == END))
 		{
-			return {}
+			break
 		}
 		_30 = CURRENT_TOKEN
 		success_31 = TRUE
@@ -2669,7 +2669,7 @@ Rule(Rule_other) {
 		skipspaces(TOKEN_SEQUENCE)
 		if (!(CURRENT_TOKEN == ID))
 		{
-			break
+			return {}
 		}
 		_9 = CURRENT_TOKEN
 		success_10 = TRUE
@@ -3034,7 +3034,7 @@ Rule(Rule_data_block_key) {
 	bool success_14 = FALSE
 	Rule_result _15 = NONE
 	bool success_16 = FALSE
-	while (CURRENT_TOKEN == AUTO_100)
+	while (CURRENT_TOKEN == AUTO_104)
 	{
 		_0 = CURRENT_TOKEN
 		success_1 = TRUE
@@ -4079,18 +4079,6 @@ Token(AUTO_99) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == ';'))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
-	data = _0 # str
-}
-Token(AUTO_100) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(*pos == '\n' || *pos == '\r'))
 	{
 		return {}
 	}

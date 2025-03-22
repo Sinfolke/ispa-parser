@@ -313,8 +313,12 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
 }
 std::string convertFunctionCall(IR::function_call call, std::stack<std::string> &current_pos_counter) {
     std::string res = call.name + "(";
+    bool first = true;
     for (auto param : call.params) {
+        if (!first)
+            res += ", ";
         res += convertAssign(param, current_pos_counter);
+        first = false;
     }
     res += ')';
     return res;
@@ -420,7 +424,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::RULE:
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << std::any_cast<std::string>(mem.value) << "(Token*& pos) {\n";
+        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << std::any_cast<std::string>(mem.value) << "(::" << global::namespace_name << "::arr_t<Token>::iterator pos) {\n";
         out << "\tauto in = pos;" ;
         indentLevel++;
         global::isToken = false;
@@ -470,12 +474,24 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
         break;
     case IR::types::INCREASE_POS_COUNTER:
-        out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top());
+        if (global::isToken) {
+            out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top());
+        } else {
+            if (global::pos_counter_stack.top() == 1)
+                out << current_pos_counter.top() << "++";
+            else
+                out << "std::advance(" << current_pos_counter.top() << ", " << global::pos_counter_stack.top() << ")";
+        }
         global::pos_counter_stack.pop();
         break;
     case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
-        out << current_pos_counter.top() << " += " << var << ".token.length()";
+        if (global::isToken) {
+            out << current_pos_counter.top() << " += " + var + ".token.length()";
+        } else {
+            out << "std::advance(" << current_pos_counter.top() << ", " << var << ".token.length())";
+        }
+        global::pos_counter_stack.pop();
         break;
     }
     case IR::types::RESET_POS_COUNTER:
@@ -499,7 +515,10 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << ';';
         break;
     case IR::types::SKIP_SPACES:
-        out << "ISC_STD::skip_spaces(pos)";
+        if (global::isToken)            
+            out << "ISC_STD::skip_spaces(pos)";
+        else
+            out << "ISC_STD::skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
         break;
     case IR::types::DATA_BLOCK:
         global::has_data_block = true;
@@ -534,7 +553,7 @@ void addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
 }
 void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "void " << global::namespace_name << "::Tokenizator::makeTokens(const char* pos) {\n";
+    out << "\nvoid " << global::namespace_name << "::Tokenizator::makeTokens(const char* pos) {\n";
     out << "\tthis->str = pos;\n";
     identLevel++;
 }
@@ -557,8 +576,10 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     tokenizator_code.elements.erase(tokenizator_code.elements.begin());
     tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
     global::void_token = true;
+    global::isToken = true;
     convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
     global::void_token = false;
+    global::isToken = false;
     addTokenizator_codeBottom(ss, identLevel, tokenizator_access_var.var);
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();

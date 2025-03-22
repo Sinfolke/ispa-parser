@@ -39,7 +39,7 @@ if (NOT DISABLE_TRACER)
     if (MSVC)
         add_compile_options(/Zi)
     else()
-        add_compile_options(-g1)
+        add_compile_options(-g)
     endif()
 
     if (WIN32)

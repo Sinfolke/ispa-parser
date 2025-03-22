@@ -270,19 +270,19 @@ namespace Tokens {
     bool compare_csequence_rule(Parser::Rule first, Parser::Rule second) {
         auto first_data = std::any_cast<obj_t>(first.data);
         auto second_data = std::any_cast<obj_t>(second.data);
-
         auto first_not = std::any_cast<bool>(corelib::map::get(first_data, "not"));
         auto second_not = std::any_cast<bool>(corelib::map::get(second_data, "not"));
-
         auto first_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "val"));
         auto second_val = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "val"));
-
         if (first_not != second_not || first_val.size() > second_val.size())
             return false; // not equal
         for (int i = 0; i < second_val.size(); i++) {
-
-            if (!compare_csequence_internal_dt(first_val[i], second_val[i]))
-                return false;
+            for (int j = 0; j < first_val.size(); j++) {
+                if (compare_csequence_internal_dt(first_val[j], second_val[i]))
+                    break;
+                if (j == first_val.size() - 1)
+                    return false;
+            }
         }
         return true;
     }

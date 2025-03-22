@@ -174,7 +174,8 @@ char getEscapedChar(char in) {
 IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
     auto function_call = IR::function_call {
         name,
-        {{IR::var_assign_values::TOKEN_SEQUENCE}}
+        {{IR::var_assign_values::TOKEN_SEQUENCE}},
+        
     };
     auto var_assign = IR::variable_assign {
         var.name, 

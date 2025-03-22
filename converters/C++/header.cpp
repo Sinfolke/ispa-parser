@@ -143,7 +143,7 @@ std::string create_parser_header(std::list<std::string> tokens, std::list<std::p
     std::string res = "\tclass Parser {\n\t\tpublic:\n";
     res += write_data_block(dtb);
     for (auto name : tokens) {
-        res += "\t\t\tRule_res " + name + "(Token*&);\n";
+        res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::arr_t<Token>::iterator pos);\n";
     }
     res += "\t};\n";
     return res;
