@@ -475,12 +475,12 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::INCREASE_POS_COUNTER:
         if (global::isToken) {
-            out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top());
+            out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top() + 1);
         } else {
             if (global::pos_counter_stack.top() == 1)
                 out << current_pos_counter.top() << "++";
             else
-                out << "std::advance(" << current_pos_counter.top() << ", " << global::pos_counter_stack.top() << ")";
+                out << "std::advance(" << current_pos_counter.top() << ", " << global::pos_counter_stack.top() + 1 << ")";
         }
         global::pos_counter_stack.pop();
         break;
@@ -491,7 +491,6 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         } else {
             out << "std::advance(" << current_pos_counter.top() << ", " << var << ".token.length())";
         }
-        global::pos_counter_stack.pop();
         break;
     }
     case IR::types::RESET_POS_COUNTER:

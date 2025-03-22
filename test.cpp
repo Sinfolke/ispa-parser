@@ -9,4 +9,5 @@ int main() {
     ss << file.rdbuf();
     const char* str = ss.str().c_str();
     tokenizator.makeTokens(str);
+    parser.main(tokenizator.tokens.begin());
 }

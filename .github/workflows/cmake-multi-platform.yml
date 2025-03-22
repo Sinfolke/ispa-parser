@@ -44,31 +44,31 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
 
-      - name: Restore boost cache
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: actions/cache@v3
-        with:
-          path: $HOME/boost
-          key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
-          restore-keys: |
-            boost-${{ matrix.os }}-${{ matrix.c_compiler }}
-            boost-${{ matrix.os }}
-      - name: Install dependencies (Ubuntu)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libboost-all-dev gcc build-essential
+      # - name: Restore boost cache
+      #   if: ${{ matrix.os == 'windows-latest' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: $HOME/boost
+      #     key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
+      #     restore-keys: |
+      #       boost-${{ matrix.os }}-${{ matrix.c_compiler }}
+      #       boost-${{ matrix.os }}
+      # - name: Install dependencies (Ubuntu)
+      #   if: ${{ matrix.os == 'ubuntu-latest' }}
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y libboost-all-dev gcc build-essential
 
-      - name: Install Boost (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          if (-Not (Test-Path "$HOME/boost/bootstrap.bat")) {
-              cd $HOME
-              ${{ github.workspace }}/prepare_boost.bat
-          }
+      # - name: Install Boost (Windows)
+      #   if: ${{ matrix.os == 'windows-latest' }}
+      #   run: |
+      #     if (-Not (Test-Path "$HOME/boost/bootstrap.bat")) {
+      #         cd $HOME
+      #         ${{ github.workspace }}/prepare_boost.bat
+      #     }
       - name: Configure CMake
         run: |
-          cmake -B build -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="$HOME/boost" -S "${{ github.workspace }}"
+          cmake -B build -DDISABLE_TRACER=1-DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBOOST_ROOT="$HOME/boost" -S "${{ github.workspace }}"
 
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}

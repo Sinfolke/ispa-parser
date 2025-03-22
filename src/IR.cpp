@@ -1634,40 +1634,38 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             auto &el = new_ir.elements[i];
             if (el.type == IR::types::IF) {
                 auto val = std::any_cast<IR::condition>(el.value);
-                if (!val.block.empty() && val.block[0].type == IR::types::EXIT) {
-                    val.block = convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop);
-                    for (int j = i + 1; j < new_ir.elements.size(); j++) {
-                        auto el = new_ir.elements[j];
-                        if (el.type == IR::types::SKIP_SPACES)
-                            continue;
-                        if (el.type == IR::types::INCREASE_POS_COUNTER)
-                            el.type = IR::types::RESET_POS_COUNTER;
-                        val.else_block.push_back(el);
-                        erase_indices.push_back(j);
-                    }
-                    if (var.type.type == IR::var_types::ARRAY) {
-                        val.else_block.push_back({IR::types::METHOD_CALL, IR::method_call { var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, success_var.var}}}}}});
-                    } else {
-                        auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
-                        auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
-                        val.else_block.push_back({
-                            IR::types::ASSIGN_VARIABLE,
-                            IR::variable_assign 
-                            {
-                                var.name,
-                                assign_type,
-                                IR::assign {
-                                    IR::var_assign_values::VARIABLE,
-                                    v
-                                }
-                            }
-                        });
-                    }
-
-                    el.value = val;  // Ensure value is update
+                // get recursively nested block
+                val.block = convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, nested_rule_names, elements, groups, vars, insideLoop);
+                // change condition and remove it's content into else blocks
+                for (int j = i + 1; j < new_ir.elements.size(); j++) {
+                    auto el = new_ir.elements[j];
+                    if (el.type == IR::types::SKIP_SPACES)
+                        continue;
+                    val.else_block.push_back(el);
+                    erase_indices.push_back(j);
                 }
-            } else if (el.type == IR::types::INCREASE_POS_COUNTER || el.type == IR::types::SKIP_SPACES) {
-                erase_indices.push_back(i);
+                // push into else block an assignment to variable
+                if (var.type.type == IR::var_types::ARRAY) {
+                    val.else_block.push_back({IR::types::METHOD_CALL, IR::method_call { var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, success_var.var}}}}}});
+                } else {
+                    auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
+                    auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
+                    val.else_block.push_back({
+                        IR::types::ASSIGN_VARIABLE,
+                        IR::variable_assign 
+                        {
+                            var.name,
+                            assign_type,
+                            IR::assign {
+                                IR::var_assign_values::VARIABLE,
+                                v
+                            }
+                        }
+                    });
+                }
+                
+                // update the value
+                el.value = val;
             }
         }
     }
@@ -1676,6 +1674,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     for (int i = erase_indices.size() - 1; i >= 0; i--) {
         new_ir.elements.erase(new_ir.elements.begin() + erase_indices[i]);
     }
+    cpuf::printf("fullname: %s\n", fullname.c_str());
 
     return new_ir.elements;
 }
@@ -1705,9 +1704,17 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     //         auto id_str = std::any_cast<std::string>(id.data);
     //     }
     // }
-    member.add(convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop));
-
+    auto res = convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop);
+    if (fullname == "COMPARE_OP") {
+        cpuf::printf("Printing COMPARE_OP IR to console\n");
+        IR::ir ir;
+        ir.elements = res;
+        IR::outputIRToConsole(ir);
+        cpuf::printf("DONE\n");
+    }
+    member.add(res);
     block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
+    block.erase(block.end() - 1);
     // Append default block
     member.add(block);
     return {svar, var, {}, qualifier_char};
