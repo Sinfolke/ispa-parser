@@ -3,23 +3,23 @@
 
 Rule(var_refer) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     bool pre = 0, post = 0;
     if (!strncmp(pos, "++", 2) || !strncmp(pos, "--", 2)) {
         pos += 2;
         pre = 1;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
     }
     auto id_res = id(pos);
     if (!id_res.result)
         return {};
     
     pos += id_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     ::Parser::Rule_result expr_res;
     if (*pos == '[') {
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         
         expr_res = expr(pos);
         if (!expr_res.result) {
@@ -28,7 +28,7 @@ Rule(var_refer) {
         }
         pos += expr_res.token.length();
         
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos != ']') {
             
             return {};

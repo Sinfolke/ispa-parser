@@ -39,7 +39,7 @@ Rule(assignment_op) {
     auto op_res = op(in);
     if (op_res.result)
         pos += op_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '=')
         return {};
     pos++;
@@ -80,7 +80,7 @@ Rule(logical_andr) {
         if (strncmp(pos, "and", 3))
             return {};
         pos += 3;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (strncmp(pos, "or", 2))
             return {};
         pos += 2;

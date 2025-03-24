@@ -4,7 +4,7 @@
 //#bin
 Rule(Rule_bin) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (strncmp(pos, "0b", 2)) {
         return {};
     }

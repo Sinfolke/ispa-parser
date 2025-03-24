@@ -4,10 +4,10 @@
 Rule(Rule_group) {
     auto pos = in;
     std::any name;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos == '&') {
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto res = method_call(pos);
         if (!res.result) {
             res = id(pos);
@@ -18,17 +18,17 @@ Rule(Rule_group) {
         
         pos += res.token.length();
         name = res.token;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
     }
     if (*pos != '(') {
         return {};
     }
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> r;
     while(true)
     {
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto rule_res = Rule_rule(pos);
         if (!rule_res.result) {
             break;
@@ -39,7 +39,7 @@ Rule(Rule_group) {
         if (*pos == ')')
             break;
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ')') {
         return {};
     }

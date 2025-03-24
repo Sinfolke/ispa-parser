@@ -65,7 +65,7 @@ Rule(expr_for_arithmetic) {
 }
 Rule(expr_logical) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr_res = expr_compare(pos);
     if (!expr_res.result) {
         expr_res = expr_arithmetic(pos);
@@ -78,13 +78,13 @@ Rule(expr_logical) {
     }
 
     pos += expr_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto logical_op_res = logical_op(pos);
     if (!logical_op_res.result) {
         return {};
     }
     pos += logical_op_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr2_res = expr_compare(pos);
     if (!expr2_res.result) {
         expr2_res = expr_arithmetic(pos);
@@ -105,7 +105,7 @@ Rule(expr_logical) {
 }
 Rule(expr_compare) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr_res = expr_arithmetic(pos);
     if (!expr_res.result) {
         expr_res = expr_group(pos);
@@ -117,7 +117,7 @@ Rule(expr_compare) {
         }
     }
     pos += expr_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto begin = pos;
     std::vector<::Parser::Rule> ops;
     std::vector<::Parser::Rule> sequence;
@@ -126,7 +126,7 @@ Rule(expr_compare) {
         if (!compare_op_res.result)
             break;
         pos += compare_op_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto expr2_res = expr_arithmetic(pos);
         if (!expr2_res.result) {
             expr2_res = expr_group(pos);
@@ -154,18 +154,18 @@ Rule(expr_arithmetic) {
     auto pos = in;
     std::vector<::Parser::Rule> operators;
     std::vector<::Parser::Rule> values;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr_res = expr_for_arithmetic(pos);
     if (!expr_res.result)
         return {};
     pos += expr_res.token.length();
     while(true) {
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto arithmetic_op_res = op(pos);
         if (!arithmetic_op_res.result)
             break;
         pos += arithmetic_op_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto expr_res2 = expr_for_arithmetic(pos);
         if (!expr_res2.result)
             break;
@@ -185,11 +185,11 @@ Rule(expr_arithmetic) {
 }
 Rule(expr_group) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr_res = cll_ternary(pos);
     if (!expr_res.result) {
         expr_res = expr(pos);
@@ -197,7 +197,7 @@ Rule(expr_group) {
             return {};
     }
     pos += expr_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
     pos++;
@@ -205,16 +205,16 @@ Rule(expr_group) {
 }
 Rule(expr_copiable_method_call) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '(')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto method_call_res = copiable_method_call(pos);
     if (!method_call_res.result)
         return {};
     pos += method_call_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ')')
         return {};
     pos++;

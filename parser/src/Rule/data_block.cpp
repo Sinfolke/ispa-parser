@@ -10,19 +10,19 @@ Rule(Rule_data_block) {
     //     pos++;
     // if (start == pos)
     //     return {};
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (strncmp(pos, "data", 4)) {
         
         return {};
     }
     pos += 4;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ':') {
         
         return {};
     }
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto data = Rule_data_block_inclosed_map(pos);
     if (!data.result) {
         data = any_data(pos);
@@ -30,7 +30,7 @@ Rule(Rule_data_block) {
             return {};
     }
     pos += data.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto strict_end_res = strict_end(pos);
     if (!strict_end_res.result) {
         return {};
@@ -44,7 +44,7 @@ Rule(Rule_data_block_inclosed_map) {
     int matched=0;
     std::vector<::Parser::Rule> keys;
     while (true) {
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto key_res = Rule_data_block_key(pos);
         if (!key_res.result)
             break;
@@ -60,7 +60,7 @@ Rule(Rule_data_block_inclosed_map) {
 // #data_block #key
 Rule(Rule_data_block_key) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     // while ( *pos == '\n' || *pos == '\r')
     //     pos++;
     // if (in == pos)
@@ -70,11 +70,11 @@ Rule(Rule_data_block_key) {
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ':')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto any_data_res = cll_ternary(pos);
 
     if (!any_data_res.result) {

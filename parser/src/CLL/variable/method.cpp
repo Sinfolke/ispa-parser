@@ -3,19 +3,19 @@
 #include <vector>
 Rule(method_call) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (!id_res.result) {
         return {};
     }
     
     pos += id_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     bool first = true;
     std::vector<::Parser::Rule> calls;
     while(*pos == '.') {
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
     
         auto cll_function_call_res = cll_function_call(pos);
 
@@ -40,7 +40,7 @@ Rule(copiable_method_call) {
     if (*pos != '=')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto method_call_res = method_call(pos);
 
     if (!method_call_res.result)

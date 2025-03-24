@@ -4,12 +4,12 @@
 Rule(Rule_other) {
     auto pos = in;
     bool is_nested = false;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos == '#') {
         is_nested = true;
         pos++;
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto id_res = id(pos);
     if (!id_res.result)
         return {};

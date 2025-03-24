@@ -2,11 +2,11 @@
 #include <parser_defs.h>
 Rule(cll) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '$')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     // skip spaces
     auto res = cll_if(pos);
     if (!res.result) {

@@ -7,7 +7,8 @@ int main() {
     std::ifstream file("parser/parser/Rule.isc");
     std::stringstream ss;
     ss << file.rdbuf();
-    const char* str = ss.str().c_str();
+    std::string temp = ss.str();  // ✅ Store the string first
+    const char* str = temp.c_str(); // Safe, as temp lives long enough
     tokenizator.makeTokens(str);
     parser.main(tokenizator.tokens.begin());
 }

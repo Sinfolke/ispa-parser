@@ -156,8 +156,6 @@ namespace IR {
         } else if (type == condition_types::CURRENT_CHARACTER) {
             //cpuf::printf("current_character\n");
             return "*pos";
-        } else if (type == IR::condition_types::PREV_CHARACTER) {
-            return "*pos";
         } else if (type == condition_types::NUMBER) {
             //cpuf::printf("number\n");    
             return std::to_string(std::any_cast<long long>(data));

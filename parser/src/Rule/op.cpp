@@ -4,7 +4,7 @@
 Rule(Rule_op) {
     auto pos = in;
     std::string value;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!strncmp(pos, "|&", 2)) {
         value = "|&";
         pos += 2;

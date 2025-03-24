@@ -10,7 +10,7 @@ Rule(Rule_nested_rule) {
     //     pos ++;
     // if (begin == pos)
     //     return {};
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '#') {
         return {};
     }

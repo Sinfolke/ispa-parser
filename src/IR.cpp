@@ -103,23 +103,21 @@ void handle_plus_qualifier(IR::condition loop, IR::ir &new_ir, int &variable_cou
     new_ir.push({IR::types::WHILE, loop});
     addPostLoopCheck(new_ir, var);
 }
-void replaceCurrentCharacterToPrevCharacter(arr_t<IR::member> &elements, int i) {
+void replaceToPrevChar(arr_t<IR::member> &elements, int i) {
     for (; i < elements.size(); i++) {
         auto &el = elements[i];
         if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
             // replace CURRENT_CHARACTER to PREV_CHARACTER
             auto val = std::any_cast<IR::condition>(el.value);
             for (auto &expr : val.expression) {
-                if (expr.id == IR::condition_types::CURRENT_CHARACTER) {
-                    expr.id = IR::condition_types::PREV_CHARACTER;
-                } else if (expr.id == IR::condition_types::STRNCMP) {
+                if (expr.id == IR::condition_types::STRNCMP) {
                     expr.id = IR::condition_types::STRNCMP_PREV;
                 }
 
             }
-            replaceCurrentCharacterToPrevCharacter(val.block, 0);
+            replaceToPrevChar(val.block, 0);
             if (el.type == IR::types::IF)
-                replaceCurrentCharacterToPrevCharacter(val.else_block, 0);
+                replaceToPrevChar(val.else_block, 0);
             elements[i].value = val;
         }
     }
@@ -1237,11 +1235,11 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
                 auto second = std::any_cast<std::string>(range_data[1].data)[0];
                 expr.insert(expr.end(), {
                     {IR::condition_types::GROUP_OPEN},
-                    {IR::condition_types::PREV_CHARACTER},
+                    {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::HIGHER_OR_EQUAL},
                     {IR::condition_types::CHARACTER, first},
                     {IR::condition_types::AND},
-                    {IR::condition_types::PREV_CHARACTER},
+                    {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::LOWER_OR_EQUAL},
                     {IR::condition_types::CHARACTER, second},
                     {IR::condition_types::GROUP_CLOSE}
@@ -1250,14 +1248,14 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
             }
             case Parser::Rules::Rule_csequence_escape:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::PREV_CHARACTER},
+                    {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::EQUAL},
                     {IR::condition_types::CHARACTER, getEscapedChar(std::any_cast<std::string>(value.data)[0])}
                 });
                 break;
             case Parser::Rules::Rule_csequence_symbol:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::PREV_CHARACTER},
+                    {IR::condition_types::CURRENT_CHARACTER},
                     {IR::condition_types::EQUAL},
                     {IR::condition_types::CHARACTER, (char) std::any_cast<std::string>(value.data)[0]}
                 });
@@ -1629,7 +1627,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
         } 
         new_ir.push({IR::types::IF, cond});
     } else {
-        replaceCurrentCharacterToPrevCharacter(new_ir.elements, 0);
+        replaceToPrevChar(new_ir.elements, 0);
         for (int i = 0; i < new_ir.elements.size(); i++) {
             auto &el = new_ir.elements[i];
             if (el.type == IR::types::IF) {
@@ -1639,10 +1637,10 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                 // change condition and remove it's content into else blocks
                 for (int j = i + 1; j < new_ir.elements.size(); j++) {
                     auto el = new_ir.elements[j];
-                    if (el.type == IR::types::SKIP_SPACES)
-                        continue;
-                    val.else_block.push_back(el);
                     erase_indices.push_back(j);
+                    if (el.type != IR::types::SKIP_SPACES) {
+                        val.else_block.push_back(el);
+                    }
                 }
                 // push into else block an assignment to variable
                 if (var.type.type == IR::var_types::ARRAY) {
@@ -1705,13 +1703,6 @@ IR::node_ret_t process_Rule_op(const Parser::Rule &rule, IR::ir &member, int &va
     //     }
     // }
     auto res = convert_op_rule(op, variable_count, var, qualifier_char,  fullname, isToken, nested_rule_name, elements, groups, vars, insideLoop);
-    if (fullname == "COMPARE_OP") {
-        cpuf::printf("Printing COMPARE_OP IR to console\n");
-        IR::ir ir;
-        ir.elements = res;
-        IR::outputIRToConsole(ir);
-        cpuf::printf("DONE\n");
-    }
     member.add(res);
     block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
     block.erase(block.end() - 1);

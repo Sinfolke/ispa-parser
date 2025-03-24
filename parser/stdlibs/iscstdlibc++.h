@@ -68,7 +68,7 @@ namespace {
  * @brief For the C++ here are common class declarations and structures
  * 
 */
-namespace ISC_STD {
+namespace ISPA_STD {
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 

@@ -2,11 +2,11 @@
 #include <parser_defs.h>
 Rule(cll_if) {
     auto pos = in;
-    int space_amount = ISC_STD::skip_spaces(pos);
+    int space_amount = ISPA_STD::skip_spaces(pos);
     if (strncmp(pos, "if", 2))
         return {};
     pos += 2;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto expr_res = expr(pos);
     if (!expr_res.result)
         return {};

@@ -3,7 +3,7 @@
 Rule(Rule_rule) {
     auto pos = in;
     bool is_cll=false, is_id=false, is_nested=false, with_qualifier = true;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto res = Rule_group(pos);
     if (!res.result) {
         res = Rule_csequence(pos);
@@ -50,7 +50,7 @@ Rule(Rule_rule) {
         }
     }
     pos += res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     ::Parser::Rule_result qualifier_res;
     if (with_qualifier) {
         qualifier_res = Rule_qualifier(pos);        

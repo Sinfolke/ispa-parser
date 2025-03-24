@@ -2,16 +2,16 @@
 #include <parser_defs.h>
 Rule(cll_block) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '{') {
         
         return {};
     }
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> results;
     while(true) {
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto rule_begin_res = Rule_rule(pos);
         if (!rule_begin_res.result)
             break;
@@ -19,7 +19,7 @@ Rule(cll_block) {
         results.push_back(rule_begin_res.token);
     }
 
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '}')
         return {};
     pos++;
@@ -29,7 +29,7 @@ Rule(cll_block) {
 Rule(cll_spaced_block, int spaces_amount) {
     auto pos = in;
     std::vector<::Parser::Rule> results;
-    while(ISC_STD::skip_spaces(pos) > spaces_amount) {
+    while(ISPA_STD::skip_spaces(pos) > spaces_amount) {
         // same pattern as with cll block
         auto res = Rule_rule(pos);
         if (!res.result)

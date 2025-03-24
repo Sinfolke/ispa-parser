@@ -3,7 +3,7 @@
 
 Rule(Rule_qualifier) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '?' && *pos != '+' && *pos != '*')
         return {};
     char c = *pos;

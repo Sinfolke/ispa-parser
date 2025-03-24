@@ -3,7 +3,7 @@
 Rule(id) {
     const char* pos = in;
     std::string val;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     while (isdigit(*pos)) {
         val += *pos++;
     }
@@ -20,12 +20,12 @@ Rule(id) {
 Rule(spacemode)
 {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::string val;
     if (strncmp(pos, "spacemode", sizeof("spacemode") - 1))
         return {};
     pos += sizeof("spacemode") - 1;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!strncmp(pos, "mixed", sizeof("mixed") - 1)) {
         val = "mixed";
         pos += sizeof("mixed") - 1;
@@ -42,7 +42,7 @@ Rule(spacemode)
 }
 Rule(linear_comment) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (strncmp(pos, "//", 2))
         return {};
     while(*pos != '\n') pos++;
@@ -50,7 +50,7 @@ Rule(linear_comment) {
 }
 Rule(Import_path) {    
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::string v;
     while (
         ! 
@@ -70,11 +70,11 @@ Rule(Import_path) {
 Rule(Import_ext) {    
     auto pos = in;
     std::vector<::Parser::Rule> data;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     while(true) {
         if (*pos == '.') {
             ++pos;
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             auto match_res = id(pos);
             if (match_res.result) {
                 data.push_back(match_res.token);
@@ -90,11 +90,11 @@ Rule(Import_ext) {
 };
 Rule(Import_file) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto path_res = Import_path(pos);
     if (!path_res.result) return {};
     pos += path_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto ext_res = Import_ext(pos);
     if (!ext_res.result) return {};
     pos += ext_res.token.length();
@@ -113,22 +113,22 @@ Rule(Import_file) {
 }
 Rule(Import_general_dir) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '[')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto path_res = Import_path(pos);
     if (!path_res.result) return {};
     pos += path_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ']')
         return {};
     
     auto _local_start = ++pos;
     std::vector<::Parser::Rule> files;
     while(true) {
-        int v = ISC_STD::skip_spaces(pos);
+        int v = ISPA_STD::skip_spaces(pos);
         auto file_res = Import_file(pos);
         if (!file_res.result)
             pos -= v; //! to not include spaces into result token length
@@ -146,30 +146,30 @@ Rule(Import_general_dir) {
 }
 Rule(Import_rulespecific) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto file_res = Import_file(pos);
     if (!file_res.result)
         return {};
     pos += file_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '{')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto _local_start = pos;
     std::vector<::Parser::Rule> rules;
     std::vector<::Parser::Rule> rules_current_name;
     while (true) {
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto id_res = id(pos);
         if (!id_res.result)
             break;
         rules.push_back(id_res.token);
         pos += id_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos == '=') {
             ++pos;
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             auto id2_res = id(pos);
             if (!id2_res.result)
                 break;
@@ -187,11 +187,11 @@ Rule(Import_rulespecific) {
 }
 Rule(Import) {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (strncmp(pos, "import", sizeof("import") - 1))
         return {};
     pos += sizeof("import") - 1;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto first_rule_res = Import_file(pos);
     if (!first_rule_res.result) {
         first_rule_res = Import_general_dir(pos);
@@ -202,11 +202,11 @@ Rule(Import) {
         }
     }
     pos += first_rule_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::vector<::Parser::Rule> additional_paths;
     while (*pos == ',') {
         ++pos;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto result = Import_file(pos);
         if (!result.result) {
             result = Import_general_dir(pos);
@@ -235,14 +235,14 @@ Rule(use) {
     std::vector<::Parser::Rule> data;  // Use std::vector to store parsed data
     
     // Skip leading spaces
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     
     // Check if the input starts with "use"
     if (strncmp(pos, "use", 3) != 0) {
         return {};  // Return empty result if "use" is not found
     }
     pos += 3;  // Move position past "use"
-    ISC_STD::skip_spaces(pos);  // Skip spaces after "use"
+    ISPA_STD::skip_spaces(pos);  // Skip spaces after "use"
     
     // Parse the first unit
     auto use_unit_res = use_unit(pos);
@@ -252,11 +252,11 @@ Rule(use) {
     pos += use_unit_res.token.length();
     data.push_back(use_unit_res.token);
     
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     
     while (*pos == ',') {
         pos++; 
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         
         auto use_unit_res = use_unit(pos);
         if (!use_unit_res.result) {
@@ -264,7 +264,7 @@ Rule(use) {
         }
         pos += use_unit_res.token.length();
         data.push_back(use_unit_res.token);
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
     }
     // Finalize the rule and return the result
     RULE_SUCCESSD(in, pos, use, data);
@@ -275,11 +275,11 @@ Rule(use_unit) {
     if (!id_res.result)
         return {};
     pos += id_res.token.length();
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     ::Parser::Rule dt;
     if (*pos == ':') {
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto res = any_data(pos);
         if (!res.result)
             return {};
@@ -491,7 +491,7 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
     auto in = text;
     size_t rule_count = 0;
     while (*in) {
-        ISC_STD::skip_spaces(in);
+        ISPA_STD::skip_spaces(in);
         auto comment_res = linear_comment(in);
         if (comment_res.result) {
             // found a comment in begin, go to the end and continue loop
@@ -518,7 +518,7 @@ void printData(const std::unordered_map<std::string, std::any> data, int tabs = 
         }
         in += res.token.length();
         // match end
-        ISC_STD::skip_spaces(in);
+        ISPA_STD::skip_spaces(in);
         if (require_end) {
             auto end_res = end(in);
             if (!end_res.result) {

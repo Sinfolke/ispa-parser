@@ -239,6 +239,7 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 	auto begin_232 = pos;
 	while (1)
 	{
+		ISPA_STD::skip_spaces(begin_232);
 		if (*(begin_232 + 0) == '\0')
 		{
 			break;
@@ -480,7 +481,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																														shadow_231.push_back(_229.token);
 																																																																														_2.push_back(_229.token);
 																																																																													}
-																																																																													ISC_STD::skip_spaces(pos);
 																																																																												}
 																																																																												else 
 																																																																												{
@@ -489,7 +489,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																													shadow_228.push_back(_226.token);
 																																																																													_2.push_back(_226.token);
 																																																																												}
-																																																																												ISC_STD::skip_spaces(pos);
 																																																																											}
 																																																																											else 
 																																																																											{
@@ -498,7 +497,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																												shadow_225.push_back(_223.token);
 																																																																												_2.push_back(_223.token);
 																																																																											}
-																																																																											ISC_STD::skip_spaces(pos);
 																																																																										}
 																																																																										else 
 																																																																										{
@@ -507,7 +505,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																											shadow_222.push_back(_220.token);
 																																																																											_2.push_back(_220.token);
 																																																																										}
-																																																																										ISC_STD::skip_spaces(pos);
 																																																																									}
 																																																																									else 
 																																																																									{
@@ -516,7 +513,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																										shadow_219.push_back(_217.token);
 																																																																										_2.push_back(_217.token);
 																																																																									}
-																																																																									ISC_STD::skip_spaces(pos);
 																																																																								}
 																																																																								else 
 																																																																								{
@@ -525,7 +521,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																									shadow_216.push_back(_214.token);
 																																																																									_2.push_back(_214.token);
 																																																																								}
-																																																																								ISC_STD::skip_spaces(pos);
 																																																																							}
 																																																																							else 
 																																																																							{
@@ -534,7 +529,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																								shadow_213.push_back(_211.token);
 																																																																								_2.push_back(_211.token);
 																																																																							}
-																																																																							ISC_STD::skip_spaces(pos);
 																																																																						}
 																																																																						else 
 																																																																						{
@@ -543,7 +537,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																							shadow_210.push_back(_208.token);
 																																																																							_2.push_back(_208.token);
 																																																																						}
-																																																																						ISC_STD::skip_spaces(pos);
 																																																																					}
 																																																																					else 
 																																																																					{
@@ -552,7 +545,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																						shadow_207.push_back(_205.token);
 																																																																						_2.push_back(_205.token);
 																																																																					}
-																																																																					ISC_STD::skip_spaces(pos);
 																																																																				}
 																																																																				else 
 																																																																				{
@@ -561,7 +553,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																					shadow_204.push_back(_202.token);
 																																																																					_2.push_back(_202.token);
 																																																																				}
-																																																																				ISC_STD::skip_spaces(pos);
 																																																																			}
 																																																																			else 
 																																																																			{
@@ -570,7 +561,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																				shadow_201.push_back(_199.token);
 																																																																				_2.push_back(_199.token);
 																																																																			}
-																																																																			ISC_STD::skip_spaces(pos);
 																																																																		}
 																																																																		else 
 																																																																		{
@@ -579,7 +569,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																			shadow_198.push_back(_196.token);
 																																																																			_2.push_back(_196.token);
 																																																																		}
-																																																																		ISC_STD::skip_spaces(pos);
 																																																																	}
 																																																																	else 
 																																																																	{
@@ -588,7 +577,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																		shadow_195.push_back(_193.token);
 																																																																		_2.push_back(_193.token);
 																																																																	}
-																																																																	ISC_STD::skip_spaces(pos);
 																																																																}
 																																																																else 
 																																																																{
@@ -597,7 +585,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																	shadow_192.push_back(_190.token);
 																																																																	_2.push_back(_190.token);
 																																																																}
-																																																																ISC_STD::skip_spaces(pos);
 																																																															}
 																																																															else 
 																																																															{
@@ -606,7 +593,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																																shadow_189.push_back(_187.token);
 																																																																_2.push_back(_187.token);
 																																																															}
-																																																															ISC_STD::skip_spaces(pos);
 																																																														}
 																																																														else 
 																																																														{
@@ -615,7 +601,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																															shadow_186.push_back(_184.token);
 																																																															_2.push_back(_184.token);
 																																																														}
-																																																														ISC_STD::skip_spaces(pos);
 																																																													}
 																																																													else 
 																																																													{
@@ -624,7 +609,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																														shadow_183.push_back(_181.token);
 																																																														_2.push_back(_181.token);
 																																																													}
-																																																													ISC_STD::skip_spaces(pos);
 																																																												}
 																																																												else 
 																																																												{
@@ -633,7 +617,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																													shadow_180.push_back(_178.token);
 																																																													_2.push_back(_178.token);
 																																																												}
-																																																												ISC_STD::skip_spaces(pos);
 																																																											}
 																																																											else 
 																																																											{
@@ -642,7 +625,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																												shadow_177.push_back(_175.token);
 																																																												_2.push_back(_175.token);
 																																																											}
-																																																											ISC_STD::skip_spaces(pos);
 																																																										}
 																																																										else 
 																																																										{
@@ -651,7 +633,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																											shadow_174.push_back(_172.token);
 																																																											_2.push_back(_172.token);
 																																																										}
-																																																										ISC_STD::skip_spaces(pos);
 																																																									}
 																																																									else 
 																																																									{
@@ -660,7 +641,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																										shadow_171.push_back(_169.token);
 																																																										_2.push_back(_169.token);
 																																																									}
-																																																									ISC_STD::skip_spaces(pos);
 																																																								}
 																																																								else 
 																																																								{
@@ -669,7 +649,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																									shadow_168.push_back(_166.token);
 																																																									_2.push_back(_166.token);
 																																																								}
-																																																								ISC_STD::skip_spaces(pos);
 																																																							}
 																																																							else 
 																																																							{
@@ -678,7 +657,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																								shadow_165.push_back(_163.token);
 																																																								_2.push_back(_163.token);
 																																																							}
-																																																							ISC_STD::skip_spaces(pos);
 																																																						}
 																																																						else 
 																																																						{
@@ -687,7 +665,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																							shadow_162.push_back(_160.token);
 																																																							_2.push_back(_160.token);
 																																																						}
-																																																						ISC_STD::skip_spaces(pos);
 																																																					}
 																																																					else 
 																																																					{
@@ -696,7 +673,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																						shadow_159.push_back(_157.token);
 																																																						_2.push_back(_157.token);
 																																																					}
-																																																					ISC_STD::skip_spaces(pos);
 																																																				}
 																																																				else 
 																																																				{
@@ -705,7 +681,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																					shadow_156.push_back(_154.token);
 																																																					_2.push_back(_154.token);
 																																																				}
-																																																				ISC_STD::skip_spaces(pos);
 																																																			}
 																																																			else 
 																																																			{
@@ -714,7 +689,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																				shadow_153.push_back(_151.token);
 																																																				_2.push_back(_151.token);
 																																																			}
-																																																			ISC_STD::skip_spaces(pos);
 																																																		}
 																																																		else 
 																																																		{
@@ -723,7 +697,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																			shadow_150.push_back(_148.token);
 																																																			_2.push_back(_148.token);
 																																																		}
-																																																		ISC_STD::skip_spaces(pos);
 																																																	}
 																																																	else 
 																																																	{
@@ -732,7 +705,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																		shadow_147.push_back(_145.token);
 																																																		_2.push_back(_145.token);
 																																																	}
-																																																	ISC_STD::skip_spaces(pos);
 																																																}
 																																																else 
 																																																{
@@ -741,7 +713,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																	shadow_144.push_back(_142.token);
 																																																	_2.push_back(_142.token);
 																																																}
-																																																ISC_STD::skip_spaces(pos);
 																																															}
 																																															else 
 																																															{
@@ -750,7 +721,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																																shadow_141.push_back(_139.token);
 																																																_2.push_back(_139.token);
 																																															}
-																																															ISC_STD::skip_spaces(pos);
 																																														}
 																																														else 
 																																														{
@@ -759,7 +729,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																															shadow_138.push_back(_136.token);
 																																															_2.push_back(_136.token);
 																																														}
-																																														ISC_STD::skip_spaces(pos);
 																																													}
 																																													else 
 																																													{
@@ -768,7 +737,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																														shadow_135.push_back(_133.token);
 																																														_2.push_back(_133.token);
 																																													}
-																																													ISC_STD::skip_spaces(pos);
 																																												}
 																																												else 
 																																												{
@@ -777,7 +745,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																													shadow_132.push_back(_130.token);
 																																													_2.push_back(_130.token);
 																																												}
-																																												ISC_STD::skip_spaces(pos);
 																																											}
 																																											else 
 																																											{
@@ -786,7 +753,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																												shadow_129.push_back(_127.token);
 																																												_2.push_back(_127.token);
 																																											}
-																																											ISC_STD::skip_spaces(pos);
 																																										}
 																																										else 
 																																										{
@@ -795,7 +761,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																											shadow_126.push_back(_124.token);
 																																											_2.push_back(_124.token);
 																																										}
-																																										ISC_STD::skip_spaces(pos);
 																																									}
 																																									else 
 																																									{
@@ -804,7 +769,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																										shadow_123.push_back(_121.token);
 																																										_2.push_back(_121.token);
 																																									}
-																																									ISC_STD::skip_spaces(pos);
 																																								}
 																																								else 
 																																								{
@@ -813,7 +777,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																									shadow_120.push_back(_118.token);
 																																									_2.push_back(_118.token);
 																																								}
-																																								ISC_STD::skip_spaces(pos);
 																																							}
 																																							else 
 																																							{
@@ -822,7 +785,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																								shadow_117.push_back(_115.token);
 																																								_2.push_back(_115.token);
 																																							}
-																																							ISC_STD::skip_spaces(pos);
 																																						}
 																																						else 
 																																						{
@@ -831,7 +793,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																							shadow_114.push_back(_112.token);
 																																							_2.push_back(_112.token);
 																																						}
-																																						ISC_STD::skip_spaces(pos);
 																																					}
 																																					else 
 																																					{
@@ -840,7 +801,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																						shadow_111.push_back(_109.token);
 																																						_2.push_back(_109.token);
 																																					}
-																																					ISC_STD::skip_spaces(pos);
 																																				}
 																																				else 
 																																				{
@@ -849,7 +809,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																					shadow_108.push_back(_106.token);
 																																					_2.push_back(_106.token);
 																																				}
-																																				ISC_STD::skip_spaces(pos);
 																																			}
 																																			else 
 																																			{
@@ -858,7 +817,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																				shadow_105.push_back(_103.token);
 																																				_2.push_back(_103.token);
 																																			}
-																																			ISC_STD::skip_spaces(pos);
 																																		}
 																																		else 
 																																		{
@@ -867,7 +825,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																			shadow_102.push_back(_100.token);
 																																			_2.push_back(_100.token);
 																																		}
-																																		ISC_STD::skip_spaces(pos);
 																																	}
 																																	else 
 																																	{
@@ -876,7 +833,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																		shadow_99.push_back(_97.token);
 																																		_2.push_back(_97.token);
 																																	}
-																																	ISC_STD::skip_spaces(pos);
 																																}
 																																else 
 																																{
@@ -885,7 +841,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																	shadow_96.push_back(_94.token);
 																																	_2.push_back(_94.token);
 																																}
-																																ISC_STD::skip_spaces(pos);
 																															}
 																															else 
 																															{
@@ -894,7 +849,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																																shadow_93.push_back(_91.token);
 																																_2.push_back(_91.token);
 																															}
-																															ISC_STD::skip_spaces(pos);
 																														}
 																														else 
 																														{
@@ -903,7 +857,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																															shadow_90.push_back(_88.token);
 																															_2.push_back(_88.token);
 																														}
-																														ISC_STD::skip_spaces(pos);
 																													}
 																													else 
 																													{
@@ -912,7 +865,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																														shadow_87.push_back(_85.token);
 																														_2.push_back(_85.token);
 																													}
-																													ISC_STD::skip_spaces(pos);
 																												}
 																												else 
 																												{
@@ -921,7 +873,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																													shadow_84.push_back(_82.token);
 																													_2.push_back(_82.token);
 																												}
-																												ISC_STD::skip_spaces(pos);
 																											}
 																											else 
 																											{
@@ -930,7 +881,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																												shadow_81.push_back(_79.token);
 																												_2.push_back(_79.token);
 																											}
-																											ISC_STD::skip_spaces(pos);
 																										}
 																										else 
 																										{
@@ -939,7 +889,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																											shadow_78.push_back(_76.token);
 																											_2.push_back(_76.token);
 																										}
-																										ISC_STD::skip_spaces(pos);
 																									}
 																									else 
 																									{
@@ -948,7 +897,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																										shadow_75.push_back(_73.token);
 																										_2.push_back(_73.token);
 																									}
-																									ISC_STD::skip_spaces(pos);
 																								}
 																								else 
 																								{
@@ -957,7 +905,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																									shadow_72.push_back(_70.token);
 																									_2.push_back(_70.token);
 																								}
-																								ISC_STD::skip_spaces(pos);
 																							}
 																							else 
 																							{
@@ -966,7 +913,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																								shadow_69.push_back(_67.token);
 																								_2.push_back(_67.token);
 																							}
-																							ISC_STD::skip_spaces(pos);
 																						}
 																						else 
 																						{
@@ -975,7 +921,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																							shadow_66.push_back(_64.token);
 																							_2.push_back(_64.token);
 																						}
-																						ISC_STD::skip_spaces(pos);
 																					}
 																					else 
 																					{
@@ -984,7 +929,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																						shadow_63.push_back(_61.token);
 																						_2.push_back(_61.token);
 																					}
-																					ISC_STD::skip_spaces(pos);
 																				}
 																				else 
 																				{
@@ -993,7 +937,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																					shadow_60.push_back(_58.token);
 																					_2.push_back(_58.token);
 																				}
-																				ISC_STD::skip_spaces(pos);
 																			}
 																			else 
 																			{
@@ -1002,7 +945,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																				shadow_57.push_back(_55.token);
 																				_2.push_back(_55.token);
 																			}
-																			ISC_STD::skip_spaces(pos);
 																		}
 																		else 
 																		{
@@ -1011,7 +953,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																			shadow_54.push_back(_52.token);
 																			_2.push_back(_52.token);
 																		}
-																		ISC_STD::skip_spaces(pos);
 																	}
 																	else 
 																	{
@@ -1020,7 +961,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																		shadow_51.push_back(_49.token);
 																		_2.push_back(_49.token);
 																	}
-																	ISC_STD::skip_spaces(pos);
 																}
 																else 
 																{
@@ -1029,7 +969,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																	shadow_48.push_back(_46.token);
 																	_2.push_back(_46.token);
 																}
-																ISC_STD::skip_spaces(pos);
 															}
 															else 
 															{
@@ -1038,7 +977,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 																shadow_45.push_back(_43.token);
 																_2.push_back(_43.token);
 															}
-															ISC_STD::skip_spaces(pos);
 														}
 														else 
 														{
@@ -1047,7 +985,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 															shadow_42.push_back(_40.token);
 															_2.push_back(_40.token);
 														}
-														ISC_STD::skip_spaces(pos);
 													}
 													else 
 													{
@@ -1056,7 +993,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 														shadow_39.push_back(_37.token);
 														_2.push_back(_37.token);
 													}
-													ISC_STD::skip_spaces(pos);
 												}
 												else 
 												{
@@ -1065,7 +1001,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 													shadow_36.push_back(_34.token);
 													_2.push_back(_34.token);
 												}
-												ISC_STD::skip_spaces(pos);
 											}
 											else 
 											{
@@ -1074,7 +1009,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 												shadow_33.push_back(_31.token);
 												_2.push_back(_31.token);
 											}
-											ISC_STD::skip_spaces(pos);
 										}
 										else 
 										{
@@ -1083,7 +1017,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 											shadow_30.push_back(_28.token);
 											_2.push_back(_28.token);
 										}
-										ISC_STD::skip_spaces(pos);
 									}
 									else 
 									{
@@ -1092,7 +1025,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 										shadow_27.push_back(_25.token);
 										_2.push_back(_25.token);
 									}
-									ISC_STD::skip_spaces(pos);
 								}
 								else 
 								{
@@ -1101,7 +1033,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 									shadow_24.push_back(_22.token);
 									_2.push_back(_22.token);
 								}
-								ISC_STD::skip_spaces(pos);
 							}
 							else 
 							{
@@ -1110,7 +1041,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 								shadow_21.push_back(_19.token);
 								_2.push_back(_19.token);
 							}
-							ISC_STD::skip_spaces(pos);
 						}
 						else 
 						{
@@ -1119,7 +1049,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 							shadow_18.push_back(_16.token);
 							_2.push_back(_16.token);
 						}
-						ISC_STD::skip_spaces(pos);
 					}
 					else 
 					{
@@ -1128,7 +1057,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 						shadow_15.push_back(_13.token);
 						_2.push_back(_13.token);
 					}
-					ISC_STD::skip_spaces(pos);
 				}
 				else 
 				{
@@ -1137,7 +1065,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 					shadow_12.push_back(_10.token);
 					_2.push_back(_10.token);
 				}
-				ISC_STD::skip_spaces(pos);
 			}
 			else 
 			{
@@ -1146,7 +1073,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 				shadow_9.push_back(_7.token);
 				_2.push_back(_7.token);
 			}
-			ISC_STD::skip_spaces(pos);
 		}
 		else 
 		{
@@ -1155,7 +1081,6 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 			shadow_6.push_back(_4.token);
 			_2.push_back(_4.token);
 		}
-		ISC_STD::skip_spaces(pos);
 		success_3 = true;
 		_0 = _2;
 		shadow_233.push_back(_0);
@@ -1170,7 +1095,7 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 		success_1 = true;
 		pos = begin_232;
 	}
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(pos);
 	this->tokens = _0;
 }
 Parser::Rule_res Parser::Parser::accessor_group(::Parser::arr_t<Token>::iterator pos) {
@@ -1186,7 +1111,7 @@ Parser::Rule_res Parser::Parser::accessor_group(::Parser::arr_t<Token>::iterator
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
 		return {};
@@ -1210,7 +1135,7 @@ Parser::Rule_res Parser::Parser::accessor_element(::Parser::arr_t<Token>::iterat
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
 		return {};
@@ -1234,7 +1159,7 @@ Parser::Rule_res Parser::Parser::accessor_char(::Parser::arr_t<Token>::iterator 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::NUMBER))
 	{
 		return {};
@@ -1272,7 +1197,6 @@ Parser::Rule_res Parser::Parser::accessor_all(::Parser::arr_t<Token>::iterator p
 				std::advance(pos, _6.token.length());
 				_0 = _6.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -1280,7 +1204,6 @@ Parser::Rule_res Parser::Parser::accessor_all(::Parser::arr_t<Token>::iterator p
 			std::advance(pos, _4.token.length());
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -1288,7 +1211,6 @@ Parser::Rule_res Parser::Parser::accessor_all(::Parser::arr_t<Token>::iterator p
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	accessor_all_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::accessor_all, data)};
@@ -1311,7 +1233,7 @@ Parser::Rule_res Parser::Parser::accessor(::Parser::arr_t<Token>::iterator pos) 
 	}
 	success_1 = true;
 	std::advance(pos, _0.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_10 = pos;
 	while (1)
 	{
@@ -1323,7 +1245,7 @@ Parser::Rule_res Parser::Parser::accessor(::Parser::arr_t<Token>::iterator pos) 
 		success_5 = true;
 		begin_10++;
 		shadow_6.push_back(_4);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_7 = accessor_all(begin_10);
 		if (!(_7.result))
 		{
@@ -1385,7 +1307,7 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_33 = pos;
 	while (1)
 	{
@@ -1420,7 +1342,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 									shadow_28.push_back(_26.token);
 									_6.push_back(_26.token);
 								}
-								ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 							}
 							else 
 							{
@@ -1429,7 +1350,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 								shadow_25.push_back(_23.token);
 								_6.push_back(_23.token);
 							}
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 						}
 						else 
 						{
@@ -1438,7 +1358,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 							shadow_22.push_back(_20.token);
 							_6.push_back(_20.token);
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -1447,7 +1366,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 						shadow_19.push_back(_17.token);
 						_6.push_back(_17.token);
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -1456,7 +1374,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 					shadow_16.push_back(_14.token);
 					_6.push_back(_14.token);
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -1465,7 +1382,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 				shadow_13.push_back(_11.token);
 				_6.push_back(_11.token);
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -1474,7 +1390,6 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 			shadow_10.push_back(_8.token);
 			_6.push_back(_8.token);
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_7 = true;
 		_4 = _6;
 		if (success_7)
@@ -1482,7 +1397,7 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 			success_5 = true;
 			begin_33 = begin_29;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_33->name == Tokens::END))
 		{
 			break;
@@ -1520,7 +1435,7 @@ Parser::Rule_res Parser::Parser::cll_block(::Parser::arr_t<Token>::iterator pos)
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = Rule_rule(pos);
 	while (_2.result)
 	{
@@ -1528,7 +1443,7 @@ Parser::Rule_res Parser::Parser::cll_block(::Parser::arr_t<Token>::iterator pos)
 		std::advance(pos, _2.token.length());
 		_2 = Rule_rule(pos);
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
 		return {};
@@ -1592,7 +1507,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 											pos += 2;
 											_0 += _20;
 										}
-										ISC_STD::skip_spaces(pos);
 									}
 									else 
 									{
@@ -1601,7 +1515,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 										pos += 2;
 										_0 += _18;
 									}
-									ISC_STD::skip_spaces(pos);
 								}
 								else 
 								{
@@ -1610,7 +1523,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 									pos += 1;
 									_0 += _16;
 								}
-								ISC_STD::skip_spaces(pos);
 							}
 							else 
 							{
@@ -1619,7 +1531,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 								pos += 1;
 								_0 += _14;
 							}
-							ISC_STD::skip_spaces(pos);
 						}
 						else 
 						{
@@ -1628,7 +1539,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 							pos += 1;
 							_0 += _12;
 						}
-						ISC_STD::skip_spaces(pos);
 					}
 					else 
 					{
@@ -1637,7 +1547,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 						pos += 1;
 						_0 += _10;
 					}
-					ISC_STD::skip_spaces(pos);
 				}
 				else 
 				{
@@ -1646,7 +1555,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 					pos += 1;
 					_0 += _8;
 				}
-				ISC_STD::skip_spaces(pos);
 			}
 			else 
 			{
@@ -1655,7 +1563,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 				pos += 1;
 				_0 += _6;
 			}
-			ISC_STD::skip_spaces(pos);
 		}
 		else 
 		{
@@ -1664,7 +1571,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 			pos += 1;
 			_0 += _4;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1673,7 +1579,6 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 		pos += 1;
 		_0 += _2;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::OP, data)};
@@ -1690,7 +1595,7 @@ Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* pos) {
 		success_1 = true;
 		pos += _0.token.length();
 	}
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(pos);
 	_2 = AUTO_50(pos);
 	if (!(_2.result))
 	{
@@ -1738,7 +1643,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 							pos += 2;
 							_0 += _12;
 						}
-						ISC_STD::skip_spaces(pos);
 					}
 					else 
 					{
@@ -1747,7 +1651,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 						pos += 2;
 						_0 += _10;
 					}
-					ISC_STD::skip_spaces(pos);
 				}
 				else 
 				{
@@ -1756,7 +1659,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 					pos += 1;
 					_0 += _8;
 				}
-				ISC_STD::skip_spaces(pos);
 			}
 			else 
 			{
@@ -1765,7 +1667,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 				pos += 1;
 				_0 += _6;
 			}
-			ISC_STD::skip_spaces(pos);
 		}
 		else 
 		{
@@ -1774,7 +1675,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 			pos += 2;
 			_0 += _4;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1783,7 +1683,6 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 		pos += 2;
 		_0 += _2;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	COMPARE_OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::COMPARE_OP, data)};
@@ -1810,7 +1709,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
 			pos += _4.token.length();
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1818,7 +1716,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
 		pos += _2.token.length();
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	LOGICAL_OP_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_OP, data)};
@@ -1844,7 +1741,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* pos) {
 			pos += 3;
 			_0 += _4;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1853,7 +1749,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* pos) {
 		pos += 1;
 		_0 += _2;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_NOT)};
 }
@@ -1878,7 +1773,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* pos) {
 			pos += 3;
 			_0 += _4;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1887,7 +1781,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* pos) {
 		pos += 2;
 		_0 += _2;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_AND)};
 }
@@ -1912,7 +1805,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* pos) {
 			pos += 2;
 			_0 += _4;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -1921,7 +1813,6 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* pos) {
 		pos += 2;
 		_0 += _2;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_1 = true;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::LOGICAL_OR)};
 }
@@ -1943,7 +1834,7 @@ Parser::Rule_res Parser::Parser::cll_template(::Parser::arr_t<Token>::iterator p
 	}
 	success_1 = true;
 	std::advance(pos, _0.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_10 = pos;
 	while (1)
 	{
@@ -1955,7 +1846,7 @@ Parser::Rule_res Parser::Parser::cll_template(::Parser::arr_t<Token>::iterator p
 		success_5 = true;
 		begin_10++;
 		shadow_6.push_back(_4);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_7 = cll_type(begin_10);
 		if (!(_7.result))
 		{
@@ -2032,7 +1923,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 			success_5 = true;
 			begin_21++;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		auto begin_20 = begin_21;
 		if (!(begin_20->name == Tokens::AUTO_9))
 		{
@@ -2053,7 +1944,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 							begin_20++;
 							_8 = _18;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -2062,7 +1952,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 						begin_20++;
 						_8 = _16;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -2071,7 +1960,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 					begin_20++;
 					_8 = _14;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -2080,7 +1968,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 				begin_20++;
 				_8 = _12;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2089,7 +1976,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 			begin_20++;
 			_8 = _10;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_9 = true;
 		_6 = _8;
 		if (success_9)
@@ -2097,7 +1983,8 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 			success_7 = true;
 			begin_21 = begin_20;
 		}
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_7)
 	{
@@ -2123,7 +2010,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 					begin_30++;
 					_24 = _28;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -2132,10 +2018,10 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 				begin_30++;
 				_24 = _26;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			success_25 = true;
 			_22 = _24;
-		}		while(0)
+		}
+		while(0)
 ;
 		if (success_25)
 		{
@@ -2160,7 +2046,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 								{
 									if (!(begin_47->name == Tokens::AUTO_21))
 									{
-										break;
+										return {};
 									}
 									else 
 									{
@@ -2169,7 +2055,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 										begin_47++;
 										_33 = _45;
 									}
-									ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 								}
 								else 
 								{
@@ -2178,7 +2063,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 									begin_47++;
 									_33 = _43;
 								}
-								ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 							}
 							else 
 							{
@@ -2187,7 +2071,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 								begin_47++;
 								_33 = _41;
 							}
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 						}
 						else 
 						{
@@ -2196,7 +2079,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 							begin_47++;
 							_33 = _39;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -2205,7 +2087,6 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 						begin_47++;
 						_33 = _37;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -2214,10 +2095,10 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 					begin_47++;
 					_33 = _35;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				success_34 = true;
 				_31 = _33;
-			}			while(0)
+			}
+			while(0)
 ;
 			if (success_34)
 			{
@@ -2240,7 +2121,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 		}
 	}
 	success_1 = true;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_48 = cll_template(pos);
 	if (!(_48.result))
 	{
@@ -2301,7 +2182,7 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 							_16 = *begin_20;
 							success_17 = true;
 							begin_20++;
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+							ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 							_18 = cll_template(begin_20);
 							if (!(_18.result))
 							{
@@ -2309,7 +2190,8 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 							}
 							success_19 = true;
 							std::advance(begin_20, _18.token.length());
-						}						while(0)
+						}
+						while(0)
 ;
 						if (success_17 && success_19)
 						{
@@ -2329,7 +2211,7 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 								_23 = *begin_27;
 								success_24 = true;
 								begin_27++;
-								ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+								ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 								_25 = cll_template(begin_27);
 								if (!(_25.result))
 								{
@@ -2337,7 +2219,8 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 								}
 								success_26 = true;
 								std::advance(begin_27, _25.token.length());
-							}							while(0)
+							}
+							while(0)
 ;
 							if (success_24 && success_26)
 							{
@@ -2358,7 +2241,6 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 						std::advance(begin_28, 1);
 						_2 = _12;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -2367,7 +2249,6 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 					std::advance(begin_28, 1);
 					_2 = _10;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -2376,7 +2257,6 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 				std::advance(begin_28, 1);
 				_2 = _8;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2385,7 +2265,6 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 			std::advance(begin_28, 1);
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2394,7 +2273,6 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 		std::advance(begin_28, 1);
 		_2 = _4;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
 	if (success_3)
 	{
@@ -2429,7 +2307,6 @@ Parser::Rule_res Parser::Parser::cll_type(::Parser::arr_t<Token>::iterator pos) 
 			std::advance(pos, _4.token.length());
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2437,7 +2314,6 @@ Parser::Rule_res Parser::Parser::cll_type(::Parser::arr_t<Token>::iterator pos) 
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	cll_type_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::cll_type, data)};
@@ -2457,7 +2333,7 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
@@ -2465,7 +2341,7 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
@@ -2498,7 +2374,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(::Parser::arr_t<Token>::iterator po
 	}
 	success_1 = true;
 	std::advance(pos, _0.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_80))
 	{
 		return {};
@@ -2506,7 +2382,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(::Parser::arr_t<Token>::iterator po
 	_2 = *pos;
 	success_3 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_4 = expr(pos);
 	if (!(_4.result))
 	{
@@ -2514,7 +2390,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(::Parser::arr_t<Token>::iterator po
 	}
 	success_5 = true;
 	std::advance(pos, _4.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
 		return {};
@@ -2522,7 +2398,7 @@ Parser::Rule_res Parser::Parser::cll_ternary(::Parser::arr_t<Token>::iterator po
 	_6 = *pos;
 	success_7 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_8 = expr(pos);
 	if (!(_8.result))
 	{
@@ -2574,7 +2450,6 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 				std::advance(pos, _6.token.length());
 				_0 = _6.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2582,7 +2457,6 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 			std::advance(pos, _4.token.length());
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2590,9 +2464,8 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::LOGICAL_OP))
 	{
 		return {};
@@ -2600,7 +2473,7 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 	_8 = *pos;
 	success_9 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_12 = expr_compare(pos);
 	if (!(_12.result))
 	{
@@ -2618,7 +2491,6 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 				std::advance(pos, _16.token.length());
 				_10 = _16.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2626,7 +2498,6 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 			std::advance(pos, _14.token.length());
 			_10 = _14.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2634,7 +2505,6 @@ Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator p
 		std::advance(pos, _12.token.length());
 		_10 = _12.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_11 = true;
 	expr_logical_data data;
 	data.right = _10;
@@ -2662,7 +2532,7 @@ Parser::Rule_res Parser::Parser::expr_compare(::Parser::arr_t<Token>::iterator p
 	}
 	success_1 = true;
 	std::advance(pos, _0.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_10 = pos;
 	while (1)
 	{
@@ -2674,7 +2544,7 @@ Parser::Rule_res Parser::Parser::expr_compare(::Parser::arr_t<Token>::iterator p
 		success_5 = true;
 		begin_10++;
 		shadow_6.push_back(_4);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_7 = expr_arithmetic(begin_10);
 		if (!(_7.result))
 		{
@@ -2720,7 +2590,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(::Parser::arr_t<Token>::iterato
 	}
 	success_1 = true;
 	std::advance(pos, _0.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_10 = pos;
 	while (1)
 	{
@@ -2732,7 +2602,7 @@ Parser::Rule_res Parser::Parser::expr_arithmetic(::Parser::arr_t<Token>::iterato
 		success_5 = true;
 		begin_10++;
 		shadow_6.push_back(_4);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_7 = expr_for_arithmetic(begin_10);
 		if (!(_7.result))
 		{
@@ -2791,7 +2661,6 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::ite
 					std::advance(pos, _8.token.length());
 					_0 = _8.token;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -2799,7 +2668,6 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::ite
 				std::advance(pos, _6.token.length());
 				_0 = _6.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2807,7 +2675,6 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::ite
 			std::advance(pos, _4.token.length());
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2815,7 +2682,6 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::ite
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	expr_for_arithmetic_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr_for_arithmetic, data)};
@@ -2839,7 +2705,7 @@ Parser::Rule_res Parser::Parser::expr_group(::Parser::arr_t<Token>::iterator pos
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_4 = cll_ternary(pos);
 	if (!(_4.result))
 	{
@@ -2854,7 +2720,6 @@ Parser::Rule_res Parser::Parser::expr_group(::Parser::arr_t<Token>::iterator pos
 			std::advance(pos, _6.token.length());
 			_2 = _6.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -2862,9 +2727,8 @@ Parser::Rule_res Parser::Parser::expr_group(::Parser::arr_t<Token>::iterator pos
 		std::advance(pos, _4.token.length());
 		_2 = _4.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -2890,7 +2754,7 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = copiable_method_call(pos);
 	if (!(_2.result))
 	{
@@ -2898,7 +2762,7 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -2956,7 +2820,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 								std::advance(pos, _14.token.length());
 								_0 = _14.token;
 							}
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 						}
 						else 
 						{
@@ -2964,7 +2827,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 							std::advance(pos, _12.token.length());
 							_0 = _12.token;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -2972,7 +2834,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 						std::advance(pos, _10.token.length());
 						_0 = _10.token;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -2980,7 +2841,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 					std::advance(pos, _8.token.length());
 					_0 = _8.token;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -2988,7 +2848,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 				std::advance(pos, _6.token.length());
 				_0 = _6.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -2996,7 +2855,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 			std::advance(pos, _4.token.length());
 			_0 = _4.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -3004,7 +2862,6 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	expr_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::expr, data)};
@@ -3024,7 +2881,7 @@ Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iter
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = function_arguments(pos);
 	if (!(_2.result))
 	{
@@ -3032,7 +2889,7 @@ Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iter
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -3058,7 +2915,7 @@ Parser::Rule_res Parser::Parser::function_body_decl(::Parser::arr_t<Token>::iter
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = function_parameters(pos);
 	if (!(_2.result))
 	{
@@ -3066,7 +2923,7 @@ Parser::Rule_res Parser::Parser::function_body_decl(::Parser::arr_t<Token>::iter
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -3109,7 +2966,6 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 			begin_17++;
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -3117,9 +2973,8 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 		std::advance(begin_17, _4.token.length());
 		_2 = _4.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_15 = begin_17;
 	while (1)
 	{
@@ -3135,7 +2990,6 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 			shadow_14.push_back(_12);
 			_10.push_back(_12);
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_11 = true;
 		_8 = _10;
 		shadow_16.push_back(_8);
@@ -3176,7 +3030,7 @@ Parser::Rule_res Parser::Parser::function_parameters(::Parser::arr_t<Token>::ite
 	_2 = *begin_13;
 	success_3 = true;
 	begin_13++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_12 = begin_13;
 	while (1)
 	{
@@ -3188,7 +3042,7 @@ Parser::Rule_res Parser::Parser::function_parameters(::Parser::arr_t<Token>::ite
 		success_7 = true;
 		begin_12++;
 		shadow_8.push_back(_6);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_12->name == Tokens::ID))
 		{
 			break;
@@ -3227,7 +3081,7 @@ Parser::Rule_res Parser::Parser::cll_function_call(::Parser::arr_t<Token>::itera
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = function_body_call(pos);
 	if (!(_2.result))
 	{
@@ -3264,7 +3118,7 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_8 = pos;
 	while (begin_8->name == Tokens::ID)
 	{
@@ -3284,7 +3138,7 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 		success_3 = true;
 		pos = begin_8;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_9 = function_body_decl(pos);
 	if (!(_9.result))
 	{
@@ -3292,7 +3146,7 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 	}
 	success_10 = true;
 	std::advance(pos, _9.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_14 = pos;
 	do
 	{
@@ -3304,7 +3158,8 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 		success_13 = true;
 		std::advance(begin_14, _12.token.length());
 		val = _12.token;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_13)
 	{
@@ -3333,7 +3188,7 @@ Parser::Rule_res Parser::Parser::loop_while(::Parser::arr_t<Token>::iterator pos
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = expr(pos);
 	if (!(_2.result))
 	{
@@ -3341,7 +3196,7 @@ Parser::Rule_res Parser::Parser::loop_while(::Parser::arr_t<Token>::iterator pos
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_4 = cll_block(pos);
 	if (!(_4.result))
 	{
@@ -3388,7 +3243,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
 		return {};
@@ -3396,7 +3251,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	_2 = *pos;
 	success_3 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_12 = pos;
 	do
 	{
@@ -3414,7 +3269,6 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 				std::advance(begin_12, _10.token.length());
 				_6 = _10.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -3422,17 +3276,17 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 			std::advance(begin_12, _8.token.length());
 			_6 = _8.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_7 = true;
 		_4 = _6;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_7)
 	{
 		success_5 = true;
 		pos = begin_12;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
 		return {};
@@ -3440,14 +3294,14 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	_13 = *pos;
 	success_14 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_15 = expr(pos);
 	if (_15.result)
 	{
 		success_16 = true;
 		std::advance(pos, _15.token.length());
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
 		return {};
@@ -3455,14 +3309,14 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	_17 = *pos;
 	success_18 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_19 = expr(pos);
 	if (_19.result)
 	{
 		success_20 = true;
 		std::advance(pos, _19.token.length());
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -3470,7 +3324,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	_21 = *pos;
 	success_22 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_23 = cll_block(pos);
 	if (!(_23.result))
 	{
@@ -3505,19 +3359,19 @@ Parser::Rule_res Parser::Parser::method_call(::Parser::arr_t<Token>::iterator po
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_10 = pos;
 	while (1)
 	{
 		if (!(begin_10->name == Tokens::AUTO_95))
 		{
-			return {};
+			break;
 		}
 		_4 = *begin_10;
 		success_5 = true;
 		begin_10++;
 		shadow_6.push_back(_4);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_7 = cll_function_call(begin_10);
 		if (!(_7.result))
 		{
@@ -3556,7 +3410,7 @@ Parser::Rule_res Parser::Parser::copiable_method_call(::Parser::arr_t<Token>::it
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = method_call(pos);
 	if (!(_2.result))
 	{
@@ -3610,7 +3464,6 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 				begin_8++;
 				_2 = _6;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -3619,17 +3472,17 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 			begin_8++;
 			_2 = _4;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_3 = true;
 		_0 = _2;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_3)
 	{
 		success_1 = true;
 		pos = begin_8;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::ID))
 	{
 		return {};
@@ -3637,7 +3490,7 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 	_9 = *pos;
 	success_10 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_19 = pos;
 	do
 	{
@@ -3648,7 +3501,7 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 		_13 = *begin_19;
 		success_14 = true;
 		begin_19++;
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_15 = expr(begin_19);
 		if (!(_15.result))
 		{
@@ -3656,7 +3509,7 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 		}
 		success_16 = true;
 		std::advance(begin_19, _15.token.length());
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_19->name == Tokens::AUTO_88))
 		{
 			break;
@@ -3664,14 +3517,15 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 		_17 = *begin_19;
 		success_18 = true;
 		begin_19++;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_14 && success_16 && success_18)
 	{
 		success_12 = true;
 		pos = begin_19;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_28 = pos;
 	do
 	{
@@ -3688,7 +3542,6 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 				begin_28++;
 				_22 = _26;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -3697,10 +3550,10 @@ Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos)
 			begin_28++;
 			_22 = _24;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_23 = true;
 		_20 = _22;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_23)
 	{
@@ -3736,7 +3589,7 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 		success_1 = true;
 		std::advance(pos, _0.token.length());
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::ID))
 	{
 		return {};
@@ -3744,7 +3597,7 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 	_2 = *pos;
 	success_3 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_14 = pos;
 	do
 	{
@@ -3755,7 +3608,7 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 		_6 = *begin_14;
 		success_7 = true;
 		begin_14++;
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_10 = expr(begin_14);
 		if (!(_10.result))
 		{
@@ -3770,7 +3623,6 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 				std::advance(begin_14, _12.token.length());
 				_8 = _12.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -3778,9 +3630,9 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 			std::advance(begin_14, _10.token.length());
 			_8 = _10.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_9 = true;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_7 && success_9)
 	{
@@ -3795,185 +3647,196 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::cll_var, data)};
 }
+#include <iostream>  // For debugging
+
 Parser::Token_res Parser::Tokenizator::STRING(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::str_t _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::str_t _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::str_t _15;
-	::Parser::bool_t success_16 = false;
-	::Parser::str_t _18;
-	::Parser::bool_t success_19 = false;
-	::Parser::str_t _20;
-	::Parser::bool_t success_21 = false;
-	::Parser::str_t _22;
-	::Parser::bool_t success_23 = false;
-	::Parser::str_t _24;
-	::Parser::bool_t success_25 = false;
-	::Parser::str_t _26;
-	::Parser::bool_t success_27 = false;
-	::Parser::str_t _28;
-	::Parser::bool_t success_29 = false;
-	::Parser::str_t _31;
-	::Parser::bool_t success_32 = false;
-	auto begin_17 = pos;
-	do
-	{
-		if (!(*(begin_17 + 0) == '\''))
-		{
-			break;
-		}
-		_4 += ::Parser::str_t(begin_17, 2);
-		success_5 = true;
-		begin_17 += 2;
-		ISC_STD::skip_spaces(pos);
-		auto begin_14 = begin_17;
-		while (1)
-		{
-			if (!(!std::strncmp(begin_14, "\\'", 2)))
-			{
-				if (!(!(*(begin_14 + 0) == '\'')))
-				{
+    auto in = pos;
+    std::cerr << "Starting STRING parsing at: " << static_cast<const void*>(pos) << std::endl;
+
+    ::Parser::str_t _0;
+    ::Parser::bool_t success_1 = false;
+    ::Parser::str_t _2;
+    ::Parser::bool_t success_3 = false;
+    ::Parser::str_t _4;
+    ::Parser::bool_t success_5 = false;
+    ::Parser::str_t _6;
+    ::Parser::bool_t success_7 = false;
+    ::Parser::str_t _8;
+    ::Parser::bool_t success_9 = false;
+    ::Parser::str_t _10;
+    ::Parser::bool_t success_11 = false;
+    ::Parser::str_t _12;
+    ::Parser::bool_t success_13 = false;
+    ::Parser::str_t _15;
+    ::Parser::bool_t success_16 = false;
+    ::Parser::str_t _18;
+    ::Parser::bool_t success_19 = false;
+    ::Parser::str_t _20;
+    ::Parser::bool_t success_21 = false;
+    ::Parser::str_t _22;
+    ::Parser::bool_t success_23 = false;
+    ::Parser::str_t _24;
+    ::Parser::bool_t success_25 = false;
+    ::Parser::str_t _26;
+    ::Parser::bool_t success_27 = false;
+    ::Parser::str_t _28;
+    ::Parser::bool_t success_29 = false;
+    ::Parser::str_t _31;
+    ::Parser::bool_t success_32 = false;
+    auto begin_17 = pos;
+
+    std::cerr << "Checking for single-quoted string..." << std::endl;
+    do {
+        if (!(*(begin_17 + 0) == '\'')) {
+            std::cerr << "No single-quoted string found." << std::endl;
+            break;
+        }
+        _4 += ::Parser::str_t(begin_17, 1);
+        success_5 = true;
+        begin_17 += 1;
+        ISPA_STD::skip_spaces(begin_17);
+
+        auto begin_14 = begin_17;
+        std::cerr << "Parsing single-quoted string contents at pos: " << pos - str << std::endl;
+        while (1) {
+			if (*begin_14 == '\0') {
+				break;
+			}
+            std::cerr << "At position: " << static_cast<const void*>(begin_14) << " char: " << *begin_14 << std::endl;
+            if (!(!std::strncmp(begin_14, "\\'", 2))) {
+                if (!(!(*(begin_14 + 0) == '\''))) {
+                    std::cerr << "Found closing single quote." << std::endl;
+                    break;
+                } else {
+                    _12 += ::Parser::str_t(begin_14, 1);
+                    success_13 = true;
+                    begin_14 += 1;
+                    _8 += _12;
+                }
+            } else {
+                _10 += ::Parser::str_t(begin_14, 2);
+                success_11 = true;
+                begin_14 += 2;
+                _8 += _10;
+            }
+            success_9 = true;
+            _6 += _8;
+        }
+
+        if (success_9) {
+            success_7 = true;
+            begin_17 = begin_14;
+        }
+        ISPA_STD::skip_spaces(begin_17);
+
+        if (!(*(begin_17 + 0) == '\'')) {
+            std::cerr << "Error: Unmatched single quote." << std::endl;
+            break;
+        }
+
+        _15 += ::Parser::str_t(begin_17, 1);
+        success_16 = true;
+        begin_17 += 1;
+        _2 += _4;
+        _2 += _6;
+        _2 += _15;
+    } while (0);
+
+    if (success_5 && success_16) {
+        success_3 = true;
+        pos = begin_17;
+    }
+
+    if (!success_3) {
+        std::cerr << "Checking for double-quoted string..." << std::endl;
+        auto begin_33 = pos;
+        do {
+            if (!(*(begin_33 + 0) == '"')) {
+                std::cerr << "No double-quoted string found." << std::endl;
+                break;
+            }
+
+            _20 += ::Parser::str_t(begin_33, 1);
+            success_21 = true;
+            begin_33 += 1;
+            ISPA_STD::skip_spaces(begin_33);
+
+            auto begin_30 = begin_33;
+            std::cerr << "Parsing double-quoted string contents..." << std::endl;
+			int i = 0;
+            while (1) {
+				if (*begin_30 == '\0') {
 					break;
 				}
-				else 
-				{
-					_12 += ::Parser::str_t(begin_14, 1);
-					success_13 = true;
-					begin_14 += 1;
-					_8 += _12;
+				if (i++ > 40) {
+					std::cerr << "bad loop\n";
+					exit(1);
 				}
-				ISC_STD::skip_spaces(pos);
-			}
-			else 
-			{
-				_10 += ::Parser::str_t(begin_14, 2);
-				success_11 = true;
-				begin_14 += 2;
-				_8 += _10;
-			}
-			ISC_STD::skip_spaces(pos);
-			success_9 = true;
-			_6 += _8;
-		}
-		if (success_9)
-		{
-			success_7 = true;
-			begin_17 = begin_14;
-		}
-		ISC_STD::skip_spaces(pos);
-		if (!(*(begin_17 + 0) == '\''))
-		{
-			return {};
-		}
-		_15 += ::Parser::str_t(begin_17, 2);
-		success_16 = true;
-		begin_17 += 2;
-		_2 += _4;
-		_2 += _6;
-		_2 += _15;
-	}	while(0)
-;
-	if (success_5 && success_16)
-	{
-		success_3 = true;
-		pos = begin_17;
-	}
-	;
-	if (!success_3)
-	{
-		auto begin_33 = pos;
-		do
-		{
-			if (!(*(begin_33 + 0) == '"'))
-			{
-				break;
-			}
-			_20 += ::Parser::str_t(begin_33, 2);
-			success_21 = true;
-			begin_33 += 2;
-			ISC_STD::skip_spaces(pos);
-			auto begin_30 = begin_33;
-			while (1)
-			{
-				if (!(!std::strncmp(begin_30, "\\\"", 2)))
-				{
-					if (!(!(*(begin_30 + 0) == '"')))
-					{
-						break;
-					}
-					else 
-					{
-						_28 += ::Parser::str_t(begin_30, 1);
-						success_29 = true;
-						begin_30 += 1;
-						_24 += _28;
-					}
-					ISC_STD::skip_spaces(pos);
-				}
-				else 
-				{
-					_26 += ::Parser::str_t(begin_30, 2);
-					success_27 = true;
-					begin_30 += 2;
-					_24 += _26;
-				}
-				ISC_STD::skip_spaces(pos);
-				success_25 = true;
-				_22 += _24;
-			}
-			if (success_25)
-			{
-				success_23 = true;
-				begin_33 = begin_30;
-			}
-			ISC_STD::skip_spaces(pos);
-			if (!(*(begin_33 + 0) == '"'))
-			{
-				break;
-			}
-			_31 += ::Parser::str_t(begin_33, 2);
-			success_32 = true;
-			begin_33 += 2;
-			_18 += _20;
-			_18 += _22;
-			_18 += _31;
-		}		while(0)
-;
-		if (success_21 && success_32)
-		{
-			success_19 = true;
-			pos = begin_33;
-		}
-		;
-		if (!success_19)
-		{
-			return {};
-		}
-		else 
-		{
-			_0 += _18;
-		}
-	}
-	else 
-	{
-		_0 += _2;
-	}
-	success_1 = true;
-	STRING_data data = _2;
-	return {true, ::Parser::Token(in - str, in, pos, Tokens::STRING, data)};
+                std::cerr << "At position: " << static_cast<const void*>(begin_30) << " char: " << *begin_30 << std::endl;
+				auto prev_begin30 = begin_30;
+                if (!(!std::strncmp(begin_30, "\\\"", 2))) {
+                    if (!(!(*(begin_30 + 0) == '"'))) {
+                        std::cerr << "Found closing double quote." << std::endl;
+                        break;
+                    } else {
+						std::cerr << "at first condition" << std::endl;
+                        _28 += ::Parser::str_t(begin_30, 1);
+                        success_29 = true;
+                        begin_30 += 1;
+                        _24 += _28;
+                    }
+                } else {
+					std::cerr << "at second condition" << std::endl;
+                    _26 += ::Parser::str_t(begin_30, 2);
+                    success_27 = true;
+                    begin_30 += 2;
+                    _24 += _26;
+                }
+				std::cerr << "begin30 - prev_begin30: " << begin_30 - prev_begin30 << std::endl;
+                success_25 = true;
+                _22 += _24;
+            }
+
+            if (success_25) {
+                success_23 = true;
+                begin_33 = begin_30;
+            }
+            ISPA_STD::skip_spaces(begin_33);
+
+            if (!(*(begin_33 + 0) == '"')) {
+                std::cerr << "Error: Unmatched double quote." << std::endl;
+                break;
+            }
+
+            _31 += ::Parser::str_t(begin_33, 1);
+            success_32 = true;
+            begin_33 += 1;
+            _18 += _20;
+            _18 += _22;
+            _18 += _31;
+        } while (0);
+
+        if (success_21 && success_32) {
+            success_19 = true;
+            pos = begin_33;
+        }
+
+        if (!success_19) {
+            std::cerr << "STRING parsing failed." << std::endl;
+            return {};
+        } else {
+            _0 += _18;
+        }
+    } else {
+        _0 += _2;
+    }
+
+    success_1 = true;
+    STRING_data data = _6;
+    std::cerr << "STRING parsing succeeded: " << _0 << std::endl;
+    return {true, ::Parser::Token(in - str, in, pos, Tokens::STRING, data)};
 }
+
 Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
@@ -3997,7 +3860,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(pos);
 	auto begin_7 = pos;
 	while ((*(begin_7 + 0)>='0' && *(begin_7 + 0)<='9'))
 	{
@@ -4016,7 +3879,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 		success_3 = true;
 		pos = begin_7;
 	}
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(pos);
 	auto begin_15 = pos;
 	do
 	{
@@ -4027,7 +3890,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 		_10 += ::Parser::str_t(begin_15, 1);
 		success_11 = true;
 		begin_15 += 1;
-		ISC_STD::skip_spaces(pos);
+		ISPA_STD::skip_spaces(begin_15);
 		while ((*(begin_15 + 0)>='0' && *(begin_15 + 0)<='9'))
 		{
 			_12 += ::Parser::str_t(begin_15, 1);
@@ -4041,7 +3904,8 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 		}
 		_8 += _10;
 		_8 += _12;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_11 && success_13)
 	{
@@ -4079,7 +3943,6 @@ Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* pos) {
 			begin_7 += 5;
 			_1 += _5;
 		}
-		ISC_STD::skip_spaces(pos);
 	}
 	else 
 	{
@@ -4088,7 +3951,6 @@ Parser::Token_res Parser::Tokenizator::BOOLEAN(const char* pos) {
 		begin_7 += 4;
 		_1 += _3;
 	}
-	ISC_STD::skip_spaces(pos);
 	success_2 = true;
 	d += _1;
 	if (success_2)
@@ -4120,7 +3982,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_13 = pos;
 	do
 	{
@@ -4135,7 +3997,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 			success_7 = true;
 			std::advance(begin_12, _6.token.length());
 			shadow_8.push_back(_6.token);
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			if (!(begin_12->name == Tokens::AUTO_74))
 			{
 				break;
@@ -4150,14 +4012,15 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 			success_5 = true;
 			begin_13 = begin_12;
 		}
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_5)
 	{
 		success_3 = true;
 		pos = begin_13;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
 		return {};
@@ -4203,7 +4066,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_27 = pos;
 	do
 	{
@@ -4214,7 +4077,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		}
 		success_5 = true;
 		std::advance(begin_27, _4.token.length());
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_27->name == Tokens::AUTO_101))
 		{
 			return {};
@@ -4222,7 +4085,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		_6 = *begin_27;
 		success_7 = true;
 		begin_27++;
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_8 = any_data(begin_27);
 		if (!(_8.result))
 		{
@@ -4230,7 +4093,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		}
 		success_9 = true;
 		std::advance(begin_27, _8.token.length());
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		auto begin_24 = begin_27;
 		while (1)
 		{
@@ -4242,7 +4105,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			success_13 = true;
 			begin_24++;
 			shadow_14.push_back(_12);
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			if (!(begin_24->name == Tokens::ID))
 			{
 				break;
@@ -4251,7 +4114,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			success_16 = true;
 			begin_24++;
 			shadow_17.push_back(_15);
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			if (!(begin_24->name == Tokens::AUTO_101))
 			{
 				break;
@@ -4260,7 +4123,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			success_19 = true;
 			begin_24++;
 			shadow_20.push_back(_18);
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			_21 = any_data(begin_24);
 			if (!(_21.result))
 			{
@@ -4275,7 +4138,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			success_11 = true;
 			begin_27 = begin_24;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_27->name == Tokens::AUTO_99))
 		{
 			break;
@@ -4283,14 +4146,15 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		_25 = *begin_27;
 		success_26 = true;
 		begin_27++;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_5 && success_7 && success_9 && success_11 && success_26)
 	{
 		success_3 = true;
 		pos = begin_27;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_65))
 	{
 		return {};
@@ -4349,7 +4213,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 								std::advance(pos, _14.token.length());
 								_0 = _14.token;
 							}
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 						}
 						else 
 						{
@@ -4357,7 +4220,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 							std::advance(pos, _12.token.length());
 							_0 = _12.token;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -4365,7 +4227,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 						std::advance(pos, _10.token.length());
 						_0 = _10.token;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -4374,7 +4235,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 					std::advance(pos, 1);
 					_0 = _8;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -4383,7 +4243,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 				std::advance(pos, 1);
 				_0 = _6;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -4392,7 +4251,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 			std::advance(pos, 1);
 			_0 = _4;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -4401,7 +4259,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 		pos++;
 		_0 = _2;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	any_data_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::any_data, data)};
@@ -4449,7 +4306,7 @@ Parser::Token_res Parser::Tokenizator::ID(const char* pos) {
 		success_3 = true;
 		begin_8 += 1;
 	}
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(begin_8);
 	if (!((*(begin_8 + 0)>='a' && *(begin_8 + 0)<='z') || (*(begin_8 + 0)>='A' && *(begin_8 + 0)<='Z') || *(begin_8 + 0) == '_'))
 	{
 		return {};
@@ -4457,7 +4314,7 @@ Parser::Token_res Parser::Tokenizator::ID(const char* pos) {
 	_4 += ::Parser::str_t(begin_8, 1);
 	success_5 = true;
 	begin_8 += 1;
-	ISC_STD::skip_spaces(pos);
+	ISPA_STD::skip_spaces(begin_8);
 	while ((*(begin_8 + 0)>='a' && *(begin_8 + 0)<='z') || (*(begin_8 + 0)>='A' && *(begin_8 + 0)<='Z') || (*(begin_8 + 0)>='0' && *(begin_8 + 0)<='9') || *(begin_8 + 0) == '_')
 	{
 		_6 += ::Parser::str_t(begin_8, 1);
@@ -4494,7 +4351,7 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_67))
 	{
 		if (!(pos->name == Tokens::AUTO_68))
@@ -4510,7 +4367,6 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 				pos++;
 				_2 = _8;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -4519,7 +4375,6 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 			pos++;
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -4528,7 +4383,6 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 		pos++;
 		_2 = _4;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
 	spacemode_data data = _0;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::spacemode, data)};
@@ -4546,7 +4400,7 @@ Parser::Rule_res Parser::Parser::name(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::ID))
 	{
 		return {};
@@ -4570,7 +4424,7 @@ Parser::Rule_res Parser::Parser::linear_comment(::Parser::arr_t<Token>::iterator
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_72))
 	{
 		return {};
@@ -4606,7 +4460,6 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 				std::advance(pos, _6.token.length());
 				_0 = _6.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -4615,7 +4468,6 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 			std::advance(pos, 1);
 			_0 = _4;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -4623,7 +4475,6 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 		std::advance(pos, _2.token.length());
 		_0 = _2.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_1 = true;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::main)};
 }
@@ -4640,7 +4491,7 @@ Parser::Rule_res Parser::Parser::use_unit(::Parser::arr_t<Token>::iterator pos) 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = any_data(pos);
 	if (_2.result)
 	{
@@ -4673,7 +4524,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_2 = use_unit(pos);
 	if (!(_2.result))
 	{
@@ -4681,7 +4532,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::arr_t<Token>::iterator pos) {
 	}
 	success_3 = true;
 	std::advance(pos, _2.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_12 = pos;
 	while (1)
 	{
@@ -4693,7 +4544,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::arr_t<Token>::iterator pos) {
 		success_7 = true;
 		begin_12++;
 		shadow_8.push_back(_6);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_9 = use_unit(begin_12);
 		if (!(_9.result))
 		{
@@ -4781,7 +4632,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 									std::advance(begin_22, _20.token.length());
 									_6 = _20.token;
 								}
-								ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 							}
 							else 
 							{
@@ -4789,7 +4639,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 								std::advance(begin_22, _18.token.length());
 								_6 = _18.token;
 							}
-							ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 						}
 						else 
 						{
@@ -4797,7 +4646,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 							std::advance(begin_22, _16.token.length());
 							_6 = _16.token;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -4805,7 +4653,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 						std::advance(begin_22, _14.token.length());
 						_6 = _14.token;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -4814,7 +4661,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 					std::advance(begin_22, 1);
 					_6 = _12;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -4822,7 +4668,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 				std::advance(begin_22, _10.token.length());
 				_6 = _10.token;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -4830,21 +4675,21 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 			std::advance(begin_22, _8.token.length());
 			_6 = _8.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_7 = true;
 		if (success_7)
 		{
 			success_5 = true;
 			begin_25 = begin_22;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_23 = Rule_qualifier(begin_25);
 		if (_23.result)
 		{
 			success_24 = true;
 			std::advance(begin_25, _23.token.length());
 		}
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_5)
 	{
@@ -4876,7 +4721,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 							std::advance(pos, _34.token.length());
 							_0 = _34.token;
 						}
-						ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 					}
 					else 
 					{
@@ -4884,7 +4728,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 						std::advance(pos, _32.token.length());
 						_0 = _32.token;
 					}
-					ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 				}
 				else 
 				{
@@ -4892,7 +4735,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 					std::advance(pos, _30.token.length());
 					_0 = _30.token;
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -4901,7 +4743,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 				std::advance(pos, 1);
 				_0 = _28;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -4909,7 +4750,6 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 			std::advance(pos, _26.token.length());
 			_0 = _26.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	success_1 = true;
 	Rule_rule_data data;
@@ -4937,7 +4777,7 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 		success_1 = true;
 		pos++;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::ID))
 	{
 		return {};
@@ -4945,7 +4785,7 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 	_2 = *pos;
 	success_3 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_12 = pos;
 	while (1)
 	{
@@ -4957,7 +4797,7 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 		success_7 = true;
 		begin_12++;
 		shadow_8.push_back(_6);
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_12->name == Tokens::ID))
 		{
 			break;
@@ -5003,7 +4843,6 @@ Parser::Rule_res Parser::Parser::Rule_op(::Parser::arr_t<Token>::iterator pos) {
 			begin_8++;
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -5012,7 +4851,6 @@ Parser::Rule_res Parser::Parser::Rule_op(::Parser::arr_t<Token>::iterator pos) {
 		begin_8++;
 		_2 = _4;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
 	_0 = _2;
 	if (success_3)
@@ -5051,7 +4889,6 @@ Parser::Rule_res Parser::Parser::Rule_qualifier(::Parser::arr_t<Token>::iterator
 				begin_10++;
 				_2 = _8;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -5060,7 +4897,6 @@ Parser::Rule_res Parser::Parser::Rule_qualifier(::Parser::arr_t<Token>::iterator
 			begin_10++;
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -5069,7 +4905,6 @@ Parser::Rule_res Parser::Parser::Rule_qualifier(::Parser::arr_t<Token>::iterator
 		begin_10++;
 		_2 = _4;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
 	_0 = _2;
 	if (success_3)
@@ -5107,7 +4942,7 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos
 		_2 = *begin_10;
 		success_3 = true;
 		begin_10++;
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		_6 = method_call(begin_10);
 		if (!(_6.result))
 		{
@@ -5122,7 +4957,6 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos
 				begin_10++;
 				_4 = _8;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -5130,16 +4964,16 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos
 			std::advance(begin_10, _6.token.length());
 			_4 = _6.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_5 = true;
-	}	while(0)
+	}
+	while(0)
 ;
 	if (success_3 && success_5)
 	{
 		success_1 = true;
 		pos = begin_10;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_84))
 	{
 		return {};
@@ -5147,7 +4981,7 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos
 	_11 = *pos;
 	success_12 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_13 = Rule_rule(pos);
 	while (_13.result)
 	{
@@ -5155,7 +4989,7 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos
 		std::advance(pos, _13.token.length());
 		_13 = Rule_rule(pos);
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_85))
 	{
 		return {};
@@ -5197,7 +5031,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence_symbol(::Parser::arr_t<Token>::i
 				begin_10++;
 				_2 = _8;
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -5206,7 +5039,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence_symbol(::Parser::arr_t<Token>::i
 			begin_10++;
 			_2 = _6;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -5215,7 +5047,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence_symbol(::Parser::arr_t<Token>::i
 		begin_10++;
 		_2 = _4;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_3 = true;
 	_0 = _2;
 	if (success_3)
@@ -5344,14 +5175,14 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (pos->name == Tokens::AUTO_87)
 	{
 		_2 = *pos;
 		success_3 = true;
 		pos++;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_16 = pos;
 	while (1)
 	{
@@ -5373,7 +5204,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 					shadow_15.push_back(_13.token);
 					_5.push_back(_13.token);
 				}
-				ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			}
 			else 
 			{
@@ -5382,7 +5212,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 				shadow_12.push_back(_10.token);
 				_5.push_back(_10.token);
 			}
-			ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		}
 		else 
 		{
@@ -5391,7 +5220,6 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 			shadow_9.push_back(_7.token);
 			_5.push_back(_7.token);
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		success_6 = true;
 		dt = _5;
 		shadow_17.push_back(dt);
@@ -5401,7 +5229,7 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 		success_4 = true;
 		pos = begin_16;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_88))
 	{
 		return {};
@@ -5467,7 +5295,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::ite
 	{
 		return {};
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_7 = pos;
 	if (!(begin_7->name == Tokens::ID))
 	{
@@ -5482,7 +5310,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::ite
 		success_4 = true;
 		pos = begin_7;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
 		return {};
@@ -5490,7 +5318,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::ite
 	_8 = *pos;
 	success_9 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	auto begin_17 = pos;
 	_13 = cll_ternary(begin_17);
 	if (!(_13.result))
@@ -5506,7 +5334,6 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::ite
 			std::advance(begin_17, _15.token.length());
 			_11 = _15.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -5514,7 +5341,6 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::ite
 		std::advance(begin_17, _13.token.length());
 		_11 = _13.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_12 = true;
 	dt = _11;
 	if (success_12)
@@ -5558,7 +5384,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterato
 	{
 		return {};
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_97))
 	{
 		return {};
@@ -5566,7 +5392,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterato
 	_4 = *pos;
 	success_5 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
 		return {};
@@ -5574,7 +5400,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterato
 	_6 = *pos;
 	success_7 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_10 = any_data(pos);
 	if (!(_10.result))
 	{
@@ -5589,7 +5415,6 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterato
 			std::advance(pos, _12.token.length());
 			_8 = _12.token;
 		}
-		ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	}
 	else 
 	{
@@ -5597,9 +5422,8 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterato
 		std::advance(pos, _10.token.length());
 		_8 = _10.token;
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	success_9 = true;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
 		return {};
@@ -5666,7 +5490,7 @@ Parser::Rule_res Parser::Parser::Rule_nested_rule(::Parser::arr_t<Token>::iterat
 	{
 		return {};
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_105))
 	{
 		return {};
@@ -5699,7 +5523,7 @@ Parser::Rule_res Parser::Parser::Rule_hex(::Parser::arr_t<Token>::iterator pos) 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	while (pos->name == Tokens::AUTO_107)
 	{
 		_2 = *pos;
@@ -5730,7 +5554,7 @@ Parser::Rule_res Parser::Parser::Rule_bin(::Parser::arr_t<Token>::iterator pos) 
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	while (pos->name == Tokens::AUTO_109)
 	{
 		_2 = *pos;
@@ -5767,7 +5591,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 	_0 = *pos;
 	success_1 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_101))
 	{
 		return {};
@@ -5775,7 +5599,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 	_2 = *pos;
 	success_3 = true;
 	pos++;
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_4 = Rule_rule(pos);
 	while (_4.result)
 	{
@@ -5783,7 +5607,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 		std::advance(pos, _4.token.length());
 		_4 = Rule_rule(pos);
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_6 = Rule_data_block(pos);
 	if (!(_6.result))
 	{
@@ -5791,7 +5615,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 	}
 	success_7 = true;
 	std::advance(pos, _6.token.length());
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	_8 = Rule_nested_rule(pos);
 	while (_8.result)
 	{
@@ -5799,7 +5623,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 		std::advance(pos, _8.token.length());
 		_8 = Rule_nested_rule(pos);
 	}
-	ISC_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 	if (!(pos->name == Tokens::AUTO_99))
 	{
 		return {};
@@ -5823,9 +5647,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_1(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_1_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_1, data)};
 }
@@ -5837,9 +5661,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_3(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_3_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_3, data)};
 }
@@ -5851,9 +5675,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_4(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_4_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_4, data)};
 }
@@ -6215,9 +6039,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_50(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_50_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_50, data)};
 }
@@ -6257,9 +6081,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_60(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_60_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_60, data)};
 }
@@ -6271,9 +6095,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_65(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_65_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_65, data)};
 }
@@ -6397,9 +6221,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_74(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_74_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_74, data)};
 }
@@ -6411,9 +6235,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_78(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_78_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_78, data)};
 }
@@ -6439,9 +6263,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_80(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_80_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_80, data)};
 }
@@ -6453,9 +6277,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_81(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_81_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_81, data)};
 }
@@ -6467,9 +6291,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_82(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_82_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_82, data)};
 }
@@ -6481,9 +6305,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_83(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_83_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_83, data)};
 }
@@ -6495,9 +6319,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_84(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_84_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_84, data)};
 }
@@ -6509,9 +6333,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_85(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_85_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_85, data)};
 }
@@ -6523,9 +6347,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_86(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_86_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_86, data)};
 }
@@ -6537,9 +6361,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_87(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_87_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_87, data)};
 }
@@ -6551,9 +6375,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_88(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_88_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_88, data)};
 }
@@ -6593,9 +6417,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_94(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_94_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_94, data)};
 }
@@ -6607,9 +6431,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_95(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_95_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_95, data)};
 }
@@ -6635,9 +6459,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_99(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_99_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_99, data)};
 }
@@ -6649,9 +6473,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_101(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_101_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_101, data)};
 }
@@ -6677,9 +6501,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_103(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_103_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_103, data)};
 }
@@ -6705,9 +6529,9 @@ Parser::Token_res Parser::Tokenizator::AUTO_105(const char* pos) {
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	AUTO_105_data data = _0;
 	return {true, ::Parser::Token(in - str, in, pos, Tokens::AUTO_105, data)};
 }

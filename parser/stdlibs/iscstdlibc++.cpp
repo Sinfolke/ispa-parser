@@ -1,5 +1,5 @@
 #include "iscstdlibc++.h"
-size_t ISC_STD::skipup(const char*& in, const char* text)
+size_t ISPA_STD::skipup(const char*& in, const char* text)
 {
     size_t counter = 0;
     size_t len = strlen(text);
@@ -9,7 +9,7 @@ size_t ISC_STD::skipup(const char*& in, const char* text)
     }
     return counter;
 }
-size_t ISC_STD::skip_list(const char*& in, const char* text)
+size_t ISPA_STD::skip_list(const char*& in, const char* text)
 {
     size_t counter = 0;
     for (size_t i = 0; i < strlen(text); i++) {
@@ -21,7 +21,7 @@ size_t ISC_STD::skip_list(const char*& in, const char* text)
     }
     return counter;
 }
-size_t ISC_STD::skip_spaces(const char*& in) {
+size_t ISPA_STD::skip_spaces(const char*& in) {
     auto prev = in;
     while(isspace(*in))
         in++;

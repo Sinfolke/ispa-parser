@@ -7,13 +7,13 @@ Rule(cll_csupport_types)
     bool is_unsigned = false;
     std::string val;
     std::vector<std::any> templated;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!strncmp(pos, "unsigned", sizeof("unsigned") - 1))
     {
         is_unsigned = true;
         pos += sizeof("unsigned") - 1;
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!strncmp(pos, "char", sizeof("char") - 1))
     {
         val = "char";
@@ -87,14 +87,14 @@ Rule(cll_csupport_types)
             pos += sizeof("forward_list") - 1;
         } else return {};
 
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         // cll_template
 
         if (*pos != '<') {
             return {};  // Return if the opening '<' is not present
         }
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
 
         // Begin parsing content
         auto content_res = cll_template_typename(pos); // Directly use `cll_template_typename` as the `content` function
@@ -119,7 +119,7 @@ Rule(cll_csupport_types)
         // }
 
         // Ensure the closing '>' is present
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos != '>') {
             return {};  // Return if closing '>' is not found
         }
@@ -136,7 +136,7 @@ Rule(cll_csupport_types)
 Rule(cll_type)
 {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto res = cll_csupport_types(pos);
     if (!res.result) {
         res = cll_type_abstract(pos);
@@ -149,7 +149,7 @@ Rule(cll_type)
 Rule(cll_type_abstract) 
 {
     auto pos = in;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     std::string type;
     ::Parser::Rule templ;
     if (
@@ -165,25 +165,25 @@ Rule(cll_type_abstract)
         type.append(pos, 3);
         pos += 3;
         
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos != '<') {
             return {};
         }
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         auto cll_template_res = cll_template_typename(pos);
         if (!cll_template_res.result)
         {
             return {};
         }
         pos += cll_template_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos != '>') 
         {
             return {};
         }
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         templ = cll_template_res.token;
     } else return {};
     std::unordered_map<const char*, std::any> data {

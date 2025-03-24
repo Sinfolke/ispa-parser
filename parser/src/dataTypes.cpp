@@ -5,7 +5,7 @@ Rule(string) {
     const char* pos = in;
     char quote;
     std::string data;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!(*pos == '"' || *pos == '\'') )
         return {};
     quote = *pos++;
@@ -27,28 +27,28 @@ Rule(number) {
     std::string main, dec;
     bool hasPoint = false;
 
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     // Check for sign
     if (*pos == '+' || *pos == '-') {
         sign = *pos;
         pos++;
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     // Read main number
     while (isdigit(*pos)) {
         main += *pos++;
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     // Check for decimal point
     if (*pos == '.') {
         if (isdigit((*pos + 1))) {
             hasPoint = true;
             pos += 2;
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             while (isdigit(*pos)) {
                 dec += *pos++;
             }
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
         }
     }
     if (main.empty())
@@ -73,7 +73,7 @@ Rule(boolean) {
     std::string d;
     int val;
     std::unordered_map<const char*, std::any> data;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (!strncmp(in, "true", sizeof("true"))) {
         d = "true";
         val = 1;
@@ -94,30 +94,30 @@ Rule(boolean) {
 Rule(array) {
     const char* pos = in;
     std::vector<::Parser::Rule> data;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '[') {
         return {};
     }
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto any_data_f = any_data(pos);
     if (any_data_f.result)
     {
         pos += any_data_f.token.length();
         data.push_back(any_data_f.token);
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         while(*pos == ',') {
             pos++;
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             auto any_data_s = any_data(pos);
             if (!any_data_s.result)
                 break;
             pos += any_data_s.token.length();
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             data.push_back(any_data_s.token);
         }
     }
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != ']')
         return {};
     pos++;
@@ -130,35 +130,35 @@ Rule(object) {
     std::vector<::Parser::Rule> keys;
     std::vector<::Parser::Rule> values;
 
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     if (*pos != '{')
         return {};
     pos++;
-    ISC_STD::skip_spaces(pos);
+    ISPA_STD::skip_spaces(pos);
     auto key_res = any_data(pos);
     ::Parser::Rule_result value;
     if (key_res.result) {
         pos += key_res.token.length();
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         if (*pos != ':')
             return {};
         pos++;
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         value = any_data(pos);
         if (!value.result)
             return {};
-        ISC_STD::skip_spaces(pos);
+        ISPA_STD::skip_spaces(pos);
         while (*pos == ',') {
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             ++pos;
             auto key2_res = any_data(pos);
             if (!key2_res.result)
                 break;
             pos += key2_res.token.length();
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             if (*pos!= ':')
                 break;
-            ISC_STD::skip_spaces(pos);
+            ISPA_STD::skip_spaces(pos);
             auto value2_res = any_data(++pos);
             if (!value2_res.result)
                 break;

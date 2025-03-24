@@ -234,8 +234,6 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
     } else if (type == IR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter++) + ")";
-    } else if (type == IR::condition_types::PREV_CHARACTER) {
         return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
     } else if (type == IR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
@@ -470,7 +468,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::DOWHILE:
         out << "do\n";
         convertBlock(std::any_cast<IR::condition>(mem.value).block, out, indentLevel, current_pos_counter);
-        out << std::string(indentLevel, '\t') << "while";
+        out << '\n' << std::string(indentLevel, '\t') << "while";
         out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
         break;
     case IR::types::INCREASE_POS_COUNTER:
@@ -515,9 +513,9 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::SKIP_SPACES:
         if (global::isToken)            
-            out << "ISC_STD::skip_spaces(pos)";
+            out << "ISPA_STD::skip_spaces(" << current_pos_counter.top() << ")";
         else
-            out << "ISC_STD::skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
+            out << "ISPA_STD::skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
         break;
     case IR::types::DATA_BLOCK:
         global::has_data_block = true;
