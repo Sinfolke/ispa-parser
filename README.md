@@ -34,7 +34,9 @@
 
     Add not adding shadow variable when add value is character and the result is string
 
-    
+  Code improvements:
+    Encapsulate IR.cpp into a class
+    Encapsulate converter.cpp into a class
 
 ### Parser syntax
   

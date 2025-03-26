@@ -102,7 +102,9 @@ int main(int argc, char** argv) {
     */
 
     auto use = accamulate_use_data_to_map(tree);
-    normalizeTree(tree, false);
+    arr_t<std::string> fullname;
+    arr_t<std::pair<std::string, arr_t<std::string>>> nested_rule_names;
+    normalizeTree(tree, fullname, nested_rule_names);
     sortByPriority(tree);            // sorts elements to get which should be placed on top. This ensures proper matching
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     addSpaceToken(tree);
@@ -110,8 +112,8 @@ int main(int argc, char** argv) {
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
-    IR::nested_rule_name nested_rule_names;
-    auto ir = treeToIr(tree, "", nested_rule_names);
+    IR::nested_rule_name nested_rule_names2;
+    auto ir = treeToIr(tree, "", nested_rule_names2);
     tree.clear();
     raiseVarsTop(ir);
     // Output to file

@@ -1,10 +1,8 @@
 
 cll_csupport_types: 
-    ('unsigned'? ('char' | 'short' | 'int' | 'long' | 'long long'))
+    ('unsigned'? ('char' | 'short' | 'int' | 'long' | ('long' 'long') ))
         |
-    ('float' | 'double')
-        |
-    ('deque' | 'vector' | 'queue' | 'stack' | 'list' | 'forward_list') cll_template
+    ('float' | 'double' | ('long' 'double'))
 
     data:
         type: %1

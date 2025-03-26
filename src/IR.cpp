@@ -1672,7 +1672,6 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
     for (int i = erase_indices.size() - 1; i >= 0; i--) {
         new_ir.elements.erase(new_ir.elements.begin() + erase_indices[i]);
     }
-    cpuf::printf("fullname: %s\n", fullname.c_str());
 
     return new_ir.elements;
 }
@@ -1907,7 +1906,6 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         auto fullname = nested_name.empty() ? name : nested_name + "_" + name;
         bool isToken = corelib::text::isUpper(name);
-        cpuf::printf("rule: %s\n", name);
         getNestedRuleNames(nested_rule_names, fullname, nested_rules);
         if (!nested_rules.empty())
             result_ir.add(treeToIr(nested_rules, fullname, nested_rule_names));

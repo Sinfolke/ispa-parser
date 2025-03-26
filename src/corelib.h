@@ -20,6 +20,7 @@ namespace corelib {
         bool isLower(const char* str);
         bool isLower(const std::string str);
         std::string ToUpper(std::string str);
+        std::string join(const std::vector<std::string> &elements, const std::string &delimiter);
     }
     namespace map {
         template<typename T>
@@ -49,4 +50,25 @@ namespace corelib {
             throw Error("Key '%s' does not exists in map", key);
         }
     };
+    namespace sort {
+        template<typename Iterator, typename Compare>
+        void bubbleSort(Iterator begin, Iterator end, Compare compare) {
+            bool swapped;
+            auto n = std::distance(begin, end);
+            for (decltype(n) i = 0; i < n - 1; ++i) {
+                swapped = false;
+                for (decltype(n) j = 0; j < n - i - 1; ++j) {
+                    auto current = std::next(begin, j);
+                    auto next = std::next(begin, j + 1);
+                    if (compare(*next, *current)) {
+                        std::iter_swap(current, next);
+                        swapped = true;
+                    }
+                }
+                if (!swapped) {
+                    break;
+                }
+            }
+        }        
+    }
 }
