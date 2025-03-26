@@ -222,22 +222,9 @@ namespace Tokens {
         return compare_rules(std::any_cast<arr_t<Parser::Rule>>(first.data), std::any_cast<arr_t<Parser::Rule>>(second.data));
     }
     bool compare_other_rule(Parser::Rule first, Parser::Rule second) {
-        auto first_data = std::any_cast<obj_t>(first.data);
-        auto second_data = std::any_cast<obj_t>(second.data);
-
-        auto is_nested1 = std::any_cast<bool>(corelib::map::get(first_data, "is_nested"));
-        auto is_nested2 = std::any_cast<bool>(corelib::map::get(second_data, "is_nested"));
-        auto name1 = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "name"));
-        auto name2 = std::any_cast<Parser::Rule>(corelib::map::get(second_data, "name"));
-
-        auto nested_names1 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(first_data, "nested_name"));
-        auto nested_names2 = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(second_data, "nested_name"));
-
-        return 
-            is_nested1 == is_nested2 && 
-            compareStringRule(name1, name2) && 
-            compare_other_nested_name(nested_names1, nested_names2)
-        ;
+        auto first_data = std::any_cast<arr_t<std::string>>(first.data);
+        auto second_data = std::any_cast<arr_t<std::string>>(second.data);
+        return first_data == second_data;
     }
     bool compare_other_nested_name(arr_t<Parser::Rule> nested_name1, arr_t<Parser::Rule> nested_name2) {
         if (nested_name1.size() != nested_name2.size())

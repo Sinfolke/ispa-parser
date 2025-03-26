@@ -9,7 +9,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
     Parser::Rule prev_rule;
     bool in_op = false, prev_op = false;
     arr_t<Parser::Rule>::iterator begin;
-
+    bool assign_back = false;
     for (auto it = rules.begin(); it != rules.end(); it++) {
         auto el = *it;
         auto rule_data = std::any_cast<obj_t>(el.data);
@@ -22,8 +22,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
             normalizeHelper(group_val, fullname, nested_rule_names);
             corelib::map::set(group_rules, "val", std::any(group_val));
             rule.data = group_rules;
-            corelib::map::set(rule_data, "val", std::any(rule));
-            it->data = rule_data;
+            assign_back = true;
         } else if (rule.name == Parser::Rules::cll) {
             auto data = rule.as<Parser::Rule>();
             if (data.name == Parser::Rules::cll_if || data.name == Parser::Rules::loop_while) {
@@ -35,8 +34,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
                 corelib::map::set(dt, "block", std::any(block_rule));
                 data.data = std::any(dt);
                 rule.data = data;
-                corelib::map::set(rule_data, "val", std::any(rule));
-                it->data = rule_data;
+                assign_back = true;
             }
         } else if (rule.name == Parser::Rules::Rule_other && rule.data.type() != typeid(arr_t<std::string>)) {
             auto data = std::any_cast<obj_t>(rule.data);
@@ -67,10 +65,13 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
             }
 
             rule.data = rule_name;
+            assign_back = true;
+        }
+
+        if (assign_back) {
             corelib::map::set(rule_data, "val", std::any(rule));
             it->data = rule_data;
         }
-
 
         if (rule.name == Parser::Rules::Rule_op) {
             if (!in_op) {

@@ -27,12 +27,7 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules, std::strin
 
             for (auto& pos : matched_pos) {
                 // Replace the repeated rule with a token
-                auto tokenId = Tokens::make_rule(Parser::Rules::id, token_name_str);
-                auto other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
-                    { "is_nested", false },
-                    { "name", tokenId },
-                    { "nested_name", std::vector<Parser::Rule> {} },
-                });
+                auto other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {token_name_str});
                 auto newToken = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                     { "val", other },
                     { "qualifier", Tokens::make_rule() }
@@ -131,15 +126,8 @@ void inlineTokensInTable(std::vector<std::vector<std::string>> &table_key, std::
             auto key = table_key[i];
             auto value = table_value[i];
             
-            auto data = std::any_cast<obj_t>(table_value[i].data);
-            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-            auto nestedNames = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nested_name"));
-            nestedNames.insert(nestedNames.begin(), name);
-            std::vector<std::string> result_name;
-            for (auto el : nestedNames) {
-                result_name.push_back(std::any_cast<std::string>(el.data));
-            }
-            auto rule = find_key_in_table_by_name(table_key, table_value, result_name);
+            auto name = std::any_cast<arr_t<std::string>>(table_value[i].data);
+            auto rule = find_key_in_table_by_name(table_key, table_value, name);
             if (!rule.empty()) {
                 table_value[i] = rule;
                 inlineCount++;
@@ -153,20 +141,7 @@ void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<
         auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
 
         if (rule_val.name == Parser::Rules::Rule_other) {
-            auto rule_data2 = std::any_cast<obj_t>(rule_val.data);
-            auto rule_name = std::any_cast<Parser::Rule>(corelib::map::get(rule_data2, "name"));
-            auto rule_name_str = std::any_cast<std::string>(rule_name.data);
-            auto rule_nested_names = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(rule_data2, "nested_name"));
-            auto is_nested = std::any_cast<bool>(corelib::map::get(rule_data2, "is_nested"));
-
-            rule_nested_names.insert(rule_nested_names.begin(), rule_name);
-            
-            std::vector<std::string> rule_nested_names_str(nested);
-            if (!is_nested) rule_nested_names_str.pop_back();
-
-            for (const auto& rule_nested : rule_nested_names)
-                rule_nested_names_str.push_back(std::any_cast<std::string>(rule_nested.data));
-
+            auto name = std::any_cast<arr_t<std::string>>(rule_val.data);
             // // Debugging: Log the constructed nested names
             // std::cerr << "Rule: " << rule_name_str << " | Nested names:";
             // for (const auto& nested_name : rule_nested_names_str) {
@@ -185,7 +160,7 @@ void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<
             // }
 
             // Check if we are only trying to match the last element (the identifier)
-            std::string rule_name_to_find = rule_nested_names_str.back();
+            std::string rule_name_to_find = name.back();
             //std::cerr << "Trying to find: " << rule_name_to_find << std::endl;
 
             // Search for the rule name in table_key
@@ -197,9 +172,6 @@ void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<
             if (find_it != table_key.end()) {
                 auto index = find_it - table_key.begin();
                 corelib::map::set(rule_data, "val", std::any(table_value[index]));
-                //std::cerr << "Found matching rule for: " << rule_name_str << " at index " << index << std::endl;
-            } else {
-                //std::cerr << "No match found for rule: " << rule_name_str << std::endl;
             }
         } else if (rule_val.name == Parser::Rules::Rule_group) {
             auto data = std::any_cast<obj_t>(rule_val.data);
@@ -264,12 +236,7 @@ std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parse
     auto newTokenData = std::any_cast<obj_t>(newToken.data);
     auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
     auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
-    auto id = Tokens::make_rule(Parser::Rules::id, newToken_name_str);
-    auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
-        { "is_nested", false },
-        { "name", id },
-        { "nested_name", arr_t<Parser::Rule>() }
-    });
+    auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {newToken_name_str});
     auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
         { "val", Rule_other  },
         { "qualifier", qualifier }
@@ -421,8 +388,10 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size();
     }
     if (first.name == Parser::Rules::Rule_other && second.name == Parser::Rules::Rule_other) {
-        auto first_data = std::any_cast<arr_t<std::string>>(first);
-        auto second_data = std::any_cast<arr_t<std::string>>(second);
+        cpuf::printf("Cast in Rule_other, type: %s, %s\n", first.data.type().name(), second.data.type().name());
+        auto first_data = std::any_cast<arr_t<std::string>>(first.data);
+        auto second_data = std::any_cast<arr_t<std::string>>(second.data);
+        cpuf::printf("end cast\n");
         return 0;
         // auto first_token = Tokens::find_token_in_tree(tree, first_data);
         // auto second_token = Tokens::find_token_in_tree(tree, second_data);
@@ -660,11 +629,7 @@ std::pair<std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair
 std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(std::list<std::pair<IR::data_block, std::string>> token_data_block) {
     arr_t<Parser::Rule> rule_op;
     for (auto &[data_block, name] : token_data_block) {
-        auto rule_other = Tokens::make_rule(Parser::Rules::Rule_other, obj_t {
-            {"is_nested", false},
-            {"name", Tokens::make_rule(Parser::Rules::id, name)},
-            {"nested_name", arr_t<Parser::Rule>()}
-        });
+        auto rule_other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {name});
         auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
             {"val", rule_other},
             {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
