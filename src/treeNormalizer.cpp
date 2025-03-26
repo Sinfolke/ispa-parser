@@ -36,7 +36,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
                 rule.data = data;
                 assign_back = true;
             }
-        } else if (rule.name == Parser::Rules::Rule_other && rule.data.type() != typeid(arr_t<std::string>)) {
+        } else if (rule.name == Parser::Rules::Rule_other && rule.data.type() != typeid(rule_other)) {
             auto data = std::any_cast<obj_t>(rule.data);
             auto is_nested = std::any_cast<bool>(corelib::map::get(data, "is_nested"));
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
@@ -64,13 +64,14 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
                 }
             }
 
-            rule.data = rule_name;
+            rule.data = rule_other(std::any_cast<std::string>(name.data), rule_name);
             assign_back = true;
         }
 
         if (assign_back) {
             corelib::map::set(rule_data, "val", std::any(rule));
             it->data = rule_data;
+            assign_back = false;
         }
 
         if (rule.name == Parser::Rules::Rule_op) {

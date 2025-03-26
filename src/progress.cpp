@@ -27,7 +27,7 @@ Parser::Tree getReplacedTree(Parser::Tree& tree, Parser::Tree& rules, std::strin
 
             for (auto& pos : matched_pos) {
                 // Replace the repeated rule with a token
-                auto other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {token_name_str});
+                auto other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other(token_name_str, {token_name_str}));
                 auto newToken = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                     { "val", other },
                     { "qualifier", Tokens::make_rule() }
@@ -126,8 +126,8 @@ void inlineTokensInTable(std::vector<std::vector<std::string>> &table_key, std::
             auto key = table_key[i];
             auto value = table_value[i];
             
-            auto name = std::any_cast<arr_t<std::string>>(table_value[i].data);
-            auto rule = find_key_in_table_by_name(table_key, table_value, name);
+            auto name = std::any_cast<rule_other>(table_value[i].data);
+            auto rule = find_key_in_table_by_name(table_key, table_value, name.second);
             if (!rule.empty()) {
                 table_value[i] = rule;
                 inlineCount++;
@@ -141,7 +141,7 @@ void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<
         auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
 
         if (rule_val.name == Parser::Rules::Rule_other) {
-            auto name = std::any_cast<arr_t<std::string>>(rule_val.data);
+            auto [name, whole_name] = std::any_cast<rule_other>(rule_val.data);
             // // Debugging: Log the constructed nested names
             // std::cerr << "Rule: " << rule_name_str << " | Nested names:";
             // for (const auto& nested_name : rule_nested_names_str) {
@@ -160,13 +160,12 @@ void inline_Rule_rule(arr_t<Parser::Rule> &rules, const std::vector<std::vector<
             // }
 
             // Check if we are only trying to match the last element (the identifier)
-            std::string rule_name_to_find = name.back();
             //std::cerr << "Trying to find: " << rule_name_to_find << std::endl;
 
             // Search for the rule name in table_key
             auto find_it = std::find_if(table_key.begin(), table_key.end(),
-                [&rule_name_to_find](const std::vector<std::string>& key) {
-                    return std::find(key.begin(), key.end(), rule_name_to_find) != key.end();
+                [&name](const std::vector<std::string>& key) {
+                    return std::find(key.begin(), key.end(), name) != key.end();
                 });
 
             if (find_it != table_key.end()) {
@@ -236,7 +235,7 @@ std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(Parser::Rule val, Parse
     auto newTokenData = std::any_cast<obj_t>(newToken.data);
     auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
     auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
-    auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {newToken_name_str});
+    auto Rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other(newToken_name_str, {newToken_name_str}));
     auto _rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
         { "val", Rule_other  },
         { "qualifier", qualifier }
@@ -388,10 +387,8 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size();
     }
     if (first.name == Parser::Rules::Rule_other && second.name == Parser::Rules::Rule_other) {
-        cpuf::printf("Cast in Rule_other, type: %s, %s\n", first.data.type().name(), second.data.type().name());
-        auto first_data = std::any_cast<arr_t<std::string>>(first.data);
-        auto second_data = std::any_cast<arr_t<std::string>>(second.data);
-        cpuf::printf("end cast\n");
+        auto first_data = std::any_cast<rule_other>(first.data);
+        auto second_data = std::any_cast<rule_other>(second.data);
         return 0;
         // auto first_token = Tokens::find_token_in_tree(tree, first_data);
         // auto second_token = Tokens::find_token_in_tree(tree, second_data);
@@ -629,9 +626,9 @@ std::pair<std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair
 std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(std::list<std::pair<IR::data_block, std::string>> token_data_block) {
     arr_t<Parser::Rule> rule_op;
     for (auto &[data_block, name] : token_data_block) {
-        auto rule_other = Tokens::make_rule(Parser::Rules::Rule_other, arr_t<std::string> {name});
+        auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other(name, {name}));
         auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-            {"val", rule_other},
+            {"val", _rule_other},
             {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
         });
         rule_op.push_back(rule_rule);

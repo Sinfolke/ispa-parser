@@ -90,15 +90,10 @@ namespace corelib::text {
 namespace corelib::text {
     std::string join(const std::vector<std::string> &elements, const std::string &delimiter) {
         if (elements.empty()) return "";
-        
-        std::ostringstream joined;
-        auto it = elements.begin();
-        joined << *it; // Add the first element
-        
-        for (++it; it != elements.end(); ++it) {
-            joined << delimiter << *it;
+        std::string joined = elements.front();
+        for (auto it = elements.begin() + 1; it != elements.end(); ++it) {
+            joined += delimiter + *it;
         }
-        
-        return joined.str();
+        return joined;
     }
 }

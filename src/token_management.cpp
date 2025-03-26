@@ -222,9 +222,9 @@ namespace Tokens {
         return compare_rules(std::any_cast<arr_t<Parser::Rule>>(first.data), std::any_cast<arr_t<Parser::Rule>>(second.data));
     }
     bool compare_other_rule(Parser::Rule first, Parser::Rule second) {
-        auto first_data = std::any_cast<arr_t<std::string>>(first.data);
-        auto second_data = std::any_cast<arr_t<std::string>>(second.data);
-        return first_data == second_data;
+        auto first_data = std::any_cast<rule_other>(first.data);
+        auto second_data = std::any_cast<rule_other>(second.data);
+        return first_data.second == second_data.second;
     }
     bool compare_other_nested_name(arr_t<Parser::Rule> nested_name1, arr_t<Parser::Rule> nested_name2) {
         if (nested_name1.size() != nested_name2.size())

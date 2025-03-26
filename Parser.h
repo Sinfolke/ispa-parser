@@ -208,7 +208,7 @@ namespace Parser {
 				::Parser::Rule first;
 			};
 			using cll_data = ::Parser::arr_t<::Parser::Rule>;
-			using cll_block_data = ::Parser::Rule;
+			using cll_block_data = ::Parser::arr_t<::Parser::Token>;
 			struct cll_template_data {
 				::Parser::arr_t<::Parser::Rule> second;
 				::Parser::Rule first;

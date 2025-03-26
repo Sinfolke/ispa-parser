@@ -66,9 +66,7 @@ Rule:
     ;
     #data_block:
         [\r\n]+ 'data' ':' any_data | #inclosed_map ';'
-
         data: %4;
-
 
         #inclosed_map:
             key+
@@ -83,15 +81,15 @@ Rule:
         ;
     ;
     #escaped:
-        '\\' \s0 . \s0 NUMBER?
+        '\\' \s0 (.) \s0 NUMBER?
         data:
-            c: %2
+            c: $1
             num: %3
         ;
     ;
     #nested_rule: 
-        [\r\n]+ '#' \s0 Rule
-        data: %3;
+        [\r\n]+ '#' \s0 (Rule)
+        data: $1;
     ;
     #hex:
         '0x' [1-9A-Fa-f]+

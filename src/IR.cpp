@@ -470,10 +470,8 @@ IR::var_type deduceVarTypeByValue(Parser::Rule mem, char qualifier_char = '\0') 
         }
         return type;
     } else if (mem.name == Parser::Rules::Rule_other) {
-        auto data = std::any_cast<obj_t>(mem.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        return corelib::text::isUpper(name_str) ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
+        auto data = std::any_cast<rule_other>(mem.data);
+        return corelib::text::isUpper(data.first) ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
     }
     return {IR::var_types::STRING};
 }
@@ -1401,25 +1399,8 @@ IR::node_ret_t processAccessor(const Parser::Rule &rule, IR::ir &member, int &va
 }
 IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int &variable_count, char qualifier_char, std::string fullname, bool isToken, IR::nested_rule_name nested_rule_names, bool &insideLoop) {
     //cpuf::printf("Rule_other");
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto is_nested = std::any_cast<bool>(corelib::map::get(data, "is_nested"));
-    auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-    auto nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nested_name"));
-    auto name_str = std::any_cast<std::string>(name.data);
-    if (is_nested) {
-        name_str.insert(0, "_");
-        name_str.insert(0, fullname);
-    } else if (nested_rule_names.size()) {
-        for (int i = nested_rule_names.size() - 1; i; i--) {
-            auto current = nested_rule_names[i];
-            if (name_str == current.first) {
-                name_str = current.second;
-            }
-        }
-    }
-    for (auto &name : nested_name) {
-        name_str += '_' + std::any_cast<std::string>(name.data);
-    }
+    auto name = std::any_cast<rule_other>(rule.data);
+    auto name_str = corelib::text::join(name.second, "_");
     //cpuf::printf(", name: %s\n", name_str);
 
     auto var = createEmptyVariable(generateVariableName(variable_count));
@@ -1436,8 +1417,6 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
     member.push({IR::types::VARIABLE, var});
     member.push({IR::types::VARIABLE, svar});
     if (isToken) {
-        // replace variable assignment from pos sequence to current token
-        if (!isCallingToken) return {svar, var};
             //throw Error("Cannot call rule from token");
         // remove variable assignemnt
         block.back().type = IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
@@ -1919,7 +1898,6 @@ IR::ir treeToIr(Parser::Tree &tree, std::string nested_name, IR::nested_rule_nam
         if (data_block.data.has_value())
             result_ir.push({IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block, elements, groups, vars)});
         result_ir.push({IR::types::RULE_END});
-
     }
     return result_ir;
 }
