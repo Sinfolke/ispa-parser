@@ -210,16 +210,16 @@ Rule(cll) {
 				_14 = expr(TOKEN_SEQUENCE)
 				if (!(_14.res))
 				{
-					_17 = copiable_method_call(TOKEN_SEQUENCE)
+					_17 = method_call(TOKEN_SEQUENCE)
 					if (!(_17.res))
 					{
-						_20 = method_call(TOKEN_SEQUENCE)
+						_20 = loop_while(TOKEN_SEQUENCE)
 						if (!(_20.res))
 						{
-							_23 = loop_while(TOKEN_SEQUENCE)
+							_23 = loop_for(TOKEN_SEQUENCE)
 							if (!(_23.res))
 							{
-								_26 = loop_for(TOKEN_SEQUENCE)
+								_26 = copiable_method_call(TOKEN_SEQUENCE)
 								if (!(_26.res))
 								{
 									break
@@ -885,7 +885,7 @@ Rule(cll_csupport_types) {
 							
 							if (!success_35)
 							{
-								return {}
+								break
 							}
 						}
 						else 
@@ -1437,13 +1437,13 @@ Rule(expr_for_arithmetic) {
 	bool success_7 = FALSE
 	Rule_result _8 = NONE
 	bool success_9 = FALSE
-	_2 = expr_group(TOKEN_SEQUENCE)
+	_2 = cll_function_call(TOKEN_SEQUENCE)
 	if (!(_2.res))
 	{
 		_4 = method_call(TOKEN_SEQUENCE)
 		if (!(_4.res))
 		{
-			_6 = cll_function_call(TOKEN_SEQUENCE)
+			_6 = expr_group(TOKEN_SEQUENCE)
 			if (!(_6.res))
 			{
 				_8 = any_data(TOKEN_SEQUENCE)
@@ -1590,13 +1590,13 @@ Rule(expr) {
 			_6 = expr_arithmetic(TOKEN_SEQUENCE)
 			if (!(_6.res))
 			{
-				_8 = expr_group(TOKEN_SEQUENCE)
+				_8 = cll_function_call(TOKEN_SEQUENCE)
 				if (!(_8.res))
 				{
-					_10 = expr_expr_copiable_method_call(TOKEN_SEQUENCE)
+					_10 = expr_group(TOKEN_SEQUENCE)
 					if (!(_10.res))
 					{
-						_12 = cll_function_call(TOKEN_SEQUENCE)
+						_12 = expr_expr_copiable_method_call(TOKEN_SEQUENCE)
 						if (!(_12.res))
 						{
 							_14 = any_data(TOKEN_SEQUENCE)
@@ -1764,7 +1764,7 @@ Rule(function_arguments) {
 	{
 		if (!(CURRENT_TOKEN == AUTO_71))
 		{
-			return {}
+			break
 		}
 		else 
 		{
@@ -2376,7 +2376,7 @@ Rule(cll_var) {
 			_12 = cll_ternary(TOKEN_SEQUENCE)
 			if (!(_12.res))
 			{
-				break
+				return {}
 			}
 			else 
 			{
@@ -2736,7 +2736,7 @@ Rule(array) {
 			skipspaces(TOKEN_SEQUENCE)
 			if (!(CURRENT_TOKEN == AUTO_71))
 			{
-				break
+				return {}
 			}
 			_9 = CURRENT_TOKEN
 			success_10 = TRUE
@@ -2908,47 +2908,49 @@ Rule(any_data) {
 	bool success_3 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
-	token _6 = NONE
+	Rule_result _6 = NONE
 	bool success_7 = FALSE
-	token _8 = NONE
+	Rule_result _8 = NONE
 	bool success_9 = FALSE
 	Rule_result _10 = NONE
 	bool success_11 = FALSE
-	Rule_result _12 = NONE
+	token _12 = NONE
 	bool success_13 = FALSE
-	Rule_result _14 = NONE
+	token _14 = NONE
 	bool success_15 = FALSE
-	if (!(CURRENT_TOKEN == BOOLEAN))
+	if (!(CURRENT_TOKEN == NUMBER))
 	{
-		if (!(CURRENT_TOKEN == NUMBER))
+		if (!(CURRENT_TOKEN == STRING))
 		{
-			if (!(CURRENT_TOKEN == STRING))
+			_6 = accessor(TOKEN_SEQUENCE)
+			if (!(_6.res))
 			{
-				if (!(CURRENT_TOKEN == ID))
+				_8 = array(TOKEN_SEQUENCE)
+				if (!(_8.res))
 				{
-					_10 = array(TOKEN_SEQUENCE)
+					_10 = object(TOKEN_SEQUENCE)
 					if (!(_10.res))
 					{
-						_12 = object(TOKEN_SEQUENCE)
-						if (!(_12.res))
+						if (!(CURRENT_TOKEN == BOOLEAN))
 						{
-							_14 = accessor(TOKEN_SEQUENCE)
-							if (!(_14.res))
+							if (!(CURRENT_TOKEN == ID))
 							{
 								return {}
 							}
 							else 
 							{
+								_14 = CURRENT_TOKEN
 								success_15 = TRUE
-								pos += _14.token.length()
-								_0 = _14.token
+								pos++
+								_0 = _14
 							}
 						}
 						else 
 						{
+							_12 = CURRENT_TOKEN
 							success_13 = TRUE
-							pos += _12.token.length()
-							_0 = _12.token
+							pos++
+							_0 = _12
 						}
 					}
 					else 
@@ -2960,18 +2962,16 @@ Rule(any_data) {
 				}
 				else 
 				{
-					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					pos++
-					_0 = _8
+					pos += _8.token.length()
+					_0 = _8.token
 				}
 			}
 			else 
 			{
-				_6 = CURRENT_TOKEN
 				success_7 = TRUE
-				pos++
-				_0 = _6
+				pos += _6.token.length()
+				_0 = _6.token
 			}
 		}
 		else 
@@ -3154,18 +3154,18 @@ Rule(linear_comment) {
 Rule(main) {
 	any _0 = NONE
 	bool success_1 = FALSE
-	Rule_result _2 = NONE
+	token _2 = NONE
 	bool success_3 = FALSE
-	token _4 = NONE
+	Rule_result _4 = NONE
 	bool success_5 = FALSE
 	Rule_result _6 = NONE
 	bool success_7 = FALSE
-	_2 = use(TOKEN_SEQUENCE)
-	if (!(_2.res))
+	if (!(CURRENT_TOKEN == AUTO_75))
 	{
-		if (!(CURRENT_TOKEN == AUTO_75))
+		_4 = spacemode(TOKEN_SEQUENCE)
+		if (!(_4.res))
 		{
-			_6 = spacemode(TOKEN_SEQUENCE)
+			_6 = use(TOKEN_SEQUENCE)
 			if (!(_6.res))
 			{
 				return {}
@@ -3179,17 +3179,17 @@ Rule(main) {
 		}
 		else 
 		{
-			_4 = CURRENT_TOKEN
 			success_5 = TRUE
-			pos++
-			_0 = _4
+			pos += _4.token.length()
+			_0 = _4.token
 		}
 	}
 	else 
 	{
+		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		pos += _2.token.length()
-		_0 = _2.token
+		pos++
+		_0 = _2
 	}
 	success_1 = TRUE
 }
@@ -3281,11 +3281,11 @@ Rule(Rule_rule) {
 	bool success_1 = FALSE
 	Rule_result _2 = NONE
 	bool success_3 = FALSE
-	token _4 = NONE
+	Rule_result _4 = NONE
 	bool success_5 = FALSE
 	token _6 = NONE
 	bool success_7 = FALSE
-	Rule_result _8 = NONE
+	token _8 = NONE
 	bool success_9 = FALSE
 	Rule_result _10 = NONE
 	bool success_11 = FALSE
@@ -3313,14 +3313,14 @@ Rule(Rule_rule) {
 	_2 = Rule_escaped(TOKEN_SEQUENCE)
 	if (!(_2.res))
 	{
-		if (!(CURRENT_TOKEN == AUTO_91))
+		_4 = linear_comment(TOKEN_SEQUENCE)
+		if (!(_4.res))
 		{
-			if (!(CURRENT_TOKEN == AUTO_75))
+			if (!(CURRENT_TOKEN == AUTO_91))
 			{
-				_8 = cll(TOKEN_SEQUENCE)
-				if (!(_8.res))
+				if (!(CURRENT_TOKEN == AUTO_75))
 				{
-					_10 = linear_comment(TOKEN_SEQUENCE)
+					_10 = cll(TOKEN_SEQUENCE)
 					if (!(_10.res))
 					{
 						auto begin_35 = pos
@@ -3433,9 +3433,10 @@ Rule(Rule_rule) {
 				}
 				else 
 				{
+					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					pos += _8.token.length()
-					_0 = _8.token
+					pos++
+					_0 = _8
 				}
 			}
 			else 
@@ -3448,10 +3449,9 @@ Rule(Rule_rule) {
 		}
 		else 
 		{
-			_4 = CURRENT_TOKEN
 			success_5 = TRUE
-			pos++
-			_0 = _4
+			pos += _4.token.length()
+			_0 = _4.token
 		}
 	}
 	else 

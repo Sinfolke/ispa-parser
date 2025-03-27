@@ -219,208 +219,208 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 		{
 			break;
 		}
-		_4 = OP(begin_208);
+		_4 = AUTO_99(begin_208);
 		if (!(_4.result))
 		{
-			_7 = ASSIGNMENT_OP(begin_208);
+			_7 = OP(begin_208);
 			if (!(_7.result))
 			{
-				_10 = COMPARE_OP(begin_208);
+				_10 = ASSIGNMENT_OP(begin_208);
 				if (!(_10.result))
 				{
-					_13 = LOGICAL_OP(begin_208);
+					_13 = COMPARE_OP(begin_208);
 					if (!(_13.result))
 					{
-						_16 = STRING(begin_208);
+						_16 = LOGICAL_OP(begin_208);
 						if (!(_16.result))
 						{
-							_19 = NUMBER(begin_208);
+							_19 = STRING(begin_208);
 							if (!(_19.result))
 							{
-								_22 = BOOLEAN(begin_208);
+								_22 = NUMBER(begin_208);
 								if (!(_22.result))
 								{
-									_25 = ID(begin_208);
+									_25 = AUTO_69(begin_208);
 									if (!(_25.result))
 									{
-										_28 = AUTO_1(begin_208);
+										_28 = AUTO_85(begin_208);
 										if (!(_28.result))
 										{
-											_31 = AUTO_3(begin_208);
+											_31 = AUTO_100(begin_208);
 											if (!(_31.result))
 											{
-												_34 = AUTO_4(begin_208);
+												_34 = AUTO_103(begin_208);
 												if (!(_34.result))
 												{
-													_37 = AUTO_8(begin_208);
+													_37 = AUTO_105(begin_208);
 													if (!(_37.result))
 													{
-														_40 = AUTO_11(begin_208);
+														_40 = AUTO_63(begin_208);
 														if (!(_40.result))
 														{
 															_43 = AUTO_12(begin_208);
 															if (!(_43.result))
 															{
-																_46 = AUTO_13(begin_208);
+																_46 = AUTO_64(begin_208);
 																if (!(_46.result))
 																{
-																	_49 = AUTO_14(begin_208);
+																	_49 = AUTO_65(begin_208);
 																	if (!(_49.result))
 																	{
-																		_52 = AUTO_15(begin_208);
+																		_52 = AUTO_11(begin_208);
 																		if (!(_52.result))
 																		{
-																			_55 = AUTO_18(begin_208);
+																			_55 = AUTO_8(begin_208);
 																			if (!(_55.result))
 																			{
-																				_58 = AUTO_19(begin_208);
+																				_58 = AUTO_14(begin_208);
 																				if (!(_58.result))
 																				{
-																					_61 = AUTO_20(begin_208);
+																					_61 = AUTO_40(begin_208);
 																					if (!(_61.result))
 																					{
-																						_64 = AUTO_21(begin_208);
+																						_64 = AUTO_66(begin_208);
 																						if (!(_64.result))
 																						{
-																							_67 = AUTO_22(begin_208);
+																							_67 = AUTO_13(begin_208);
 																							if (!(_67.result))
 																							{
-																								_70 = AUTO_23(begin_208);
+																								_70 = AUTO_18(begin_208);
 																								if (!(_70.result))
 																								{
-																									_73 = AUTO_24(begin_208);
+																									_73 = AUTO_19(begin_208);
 																									if (!(_73.result))
 																									{
-																										_76 = AUTO_25(begin_208);
+																										_76 = AUTO_67(begin_208);
 																										if (!(_76.result))
 																										{
-																											_79 = AUTO_26(begin_208);
+																											_79 = AUTO_93(begin_208);
 																											if (!(_79.result))
 																											{
-																												_82 = AUTO_39(begin_208);
+																												_82 = AUTO_15(begin_208);
 																												if (!(_82.result))
 																												{
-																													_85 = AUTO_40(begin_208);
+																													_85 = AUTO_20(begin_208);
 																													if (!(_85.result))
 																													{
-																														_88 = AUTO_41(begin_208);
+																														_88 = AUTO_21(begin_208);
 																														if (!(_88.result))
 																														{
-																															_91 = AUTO_47(begin_208);
+																															_91 = AUTO_22(begin_208);
 																															if (!(_91.result))
 																															{
-																																_94 = AUTO_52(begin_208);
+																																_94 = AUTO_23(begin_208);
 																																if (!(_94.result))
 																																{
-																																	_97 = AUTO_53(begin_208);
+																																	_97 = AUTO_24(begin_208);
 																																	if (!(_97.result))
 																																	{
-																																		_100 = AUTO_57(begin_208);
+																																		_100 = AUTO_25(begin_208);
 																																		if (!(_100.result))
 																																		{
-																																			_103 = AUTO_62(begin_208);
+																																			_103 = AUTO_41(begin_208);
 																																			if (!(_103.result))
 																																			{
-																																				_106 = AUTO_63(begin_208);
+																																				_106 = AUTO_70(begin_208);
 																																				if (!(_106.result))
 																																				{
-																																					_109 = AUTO_64(begin_208);
+																																					_109 = AUTO_86(begin_208);
 																																					if (!(_109.result))
 																																					{
-																																						_112 = AUTO_65(begin_208);
+																																						_112 = AUTO_26(begin_208);
 																																						if (!(_112.result))
 																																						{
-																																							_115 = AUTO_66(begin_208);
+																																							_115 = AUTO_39(begin_208);
 																																							if (!(_115.result))
 																																							{
-																																								_118 = AUTO_67(begin_208);
+																																								_118 = AUTO_52(begin_208);
 																																								if (!(_118.result))
 																																								{
-																																									_121 = AUTO_68(begin_208);
+																																									_121 = AUTO_53(begin_208);
 																																									if (!(_121.result))
 																																									{
-																																										_124 = AUTO_69(begin_208);
+																																										_124 = AUTO_68(begin_208);
 																																										if (!(_124.result))
 																																										{
-																																											_127 = AUTO_70(begin_208);
+																																											_127 = AUTO_98(begin_208);
 																																											if (!(_127.result))
 																																											{
-																																												_130 = AUTO_71(begin_208);
+																																												_130 = AUTO_102(begin_208);
 																																												if (!(_130.result))
 																																												{
-																																													_133 = AUTO_75(begin_208);
+																																													_133 = AUTO_104(begin_208);
 																																													if (!(_133.result))
 																																													{
-																																														_136 = AUTO_76(begin_208);
+																																														_136 = AUTO_1(begin_208);
 																																														if (!(_136.result))
 																																														{
-																																															_139 = AUTO_77(begin_208);
+																																															_139 = AUTO_3(begin_208);
 																																															if (!(_139.result))
 																																															{
-																																																_142 = AUTO_78(begin_208);
+																																																_142 = AUTO_4(begin_208);
 																																																if (!(_142.result))
 																																																{
-																																																	_145 = AUTO_79(begin_208);
+																																																	_145 = AUTO_47(begin_208);
 																																																	if (!(_145.result))
 																																																	{
-																																																		_148 = AUTO_80(begin_208);
+																																																		_148 = AUTO_57(begin_208);
 																																																		if (!(_148.result))
 																																																		{
-																																																			_151 = AUTO_81(begin_208);
+																																																			_151 = AUTO_62(begin_208);
 																																																			if (!(_151.result))
 																																																			{
-																																																				_154 = AUTO_82(begin_208);
+																																																				_154 = AUTO_71(begin_208);
 																																																				if (!(_154.result))
 																																																				{
-																																																					_157 = AUTO_83(begin_208);
+																																																					_157 = AUTO_75(begin_208);
 																																																					if (!(_157.result))
 																																																					{
-																																																						_160 = AUTO_84(begin_208);
+																																																						_160 = AUTO_76(begin_208);
 																																																						if (!(_160.result))
 																																																						{
-																																																							_163 = AUTO_85(begin_208);
+																																																							_163 = AUTO_77(begin_208);
 																																																							if (!(_163.result))
 																																																							{
-																																																								_166 = AUTO_86(begin_208);
+																																																								_166 = AUTO_78(begin_208);
 																																																								if (!(_166.result))
 																																																								{
-																																																									_169 = AUTO_90(begin_208);
+																																																									_169 = AUTO_79(begin_208);
 																																																									if (!(_169.result))
 																																																									{
-																																																										_172 = AUTO_91(begin_208);
+																																																										_172 = AUTO_80(begin_208);
 																																																										if (!(_172.result))
 																																																										{
-																																																											_175 = AUTO_93(begin_208);
+																																																											_175 = AUTO_81(begin_208);
 																																																											if (!(_175.result))
 																																																											{
-																																																												_178 = AUTO_95(begin_208);
+																																																												_178 = AUTO_82(begin_208);
 																																																												if (!(_178.result))
 																																																												{
-																																																													_181 = AUTO_97(begin_208);
+																																																													_181 = AUTO_83(begin_208);
 																																																													if (!(_181.result))
 																																																													{
-																																																														_184 = AUTO_98(begin_208);
+																																																														_184 = AUTO_84(begin_208);
 																																																														if (!(_184.result))
 																																																														{
-																																																															_187 = AUTO_99(begin_208);
+																																																															_187 = AUTO_90(begin_208);
 																																																															if (!(_187.result))
 																																																															{
-																																																																_190 = AUTO_100(begin_208);
+																																																																_190 = AUTO_91(begin_208);
 																																																																if (!(_190.result))
 																																																																{
-																																																																	_193 = AUTO_101(begin_208);
+																																																																	_193 = AUTO_95(begin_208);
 																																																																	if (!(_193.result))
 																																																																	{
-																																																																		_196 = AUTO_102(begin_208);
+																																																																		_196 = AUTO_97(begin_208);
 																																																																		if (!(_196.result))
 																																																																		{
-																																																																			_199 = AUTO_103(begin_208);
+																																																																			_199 = AUTO_101(begin_208);
 																																																																			if (!(_199.result))
 																																																																			{
-																																																																				_202 = AUTO_104(begin_208);
+																																																																				_202 = BOOLEAN(begin_208);
 																																																																				if (!(_202.result))
 																																																																				{
-																																																																					_205 = AUTO_105(begin_208);
+																																																																					_205 = ID(begin_208);
 																																																																					if (!(_205.result))
 																																																																					{
 																																																																						break;
@@ -1208,16 +1208,16 @@ Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 				_14 = expr(begin_29);
 				if (!(_14.result))
 				{
-					_17 = copiable_method_call(begin_29);
+					_17 = method_call(begin_29);
 					if (!(_17.result))
 					{
-						_20 = method_call(begin_29);
+						_20 = loop_while(begin_29);
 						if (!(_20.result))
 						{
-							_23 = loop_while(begin_29);
+							_23 = loop_for(begin_29);
 							if (!(_23.result))
 							{
-								_26 = loop_for(begin_29);
+								_26 = copiable_method_call(begin_29);
 								if (!(_26.result))
 								{
 									break;
@@ -1906,7 +1906,7 @@ Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iter
 							;
 							if (!success_35)
 							{
-								return {};
+								break;
 							}
 						}
 						else 
@@ -2477,13 +2477,13 @@ Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::ite
 	::Parser::bool_t success_7 = false;
 	::Parser::Rule_res _8;
 	::Parser::bool_t success_9 = false;
-	_2 = expr_group(pos);
+	_2 = cll_function_call(pos);
 	if (!(_2.result))
 	{
 		_4 = method_call(pos);
 		if (!(_4.result))
 		{
-			_6 = cll_function_call(pos);
+			_6 = expr_group(pos);
 			if (!(_6.result))
 			{
 				_8 = any_data(pos);
@@ -2636,13 +2636,13 @@ Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
 			_6 = expr_arithmetic(pos);
 			if (!(_6.result))
 			{
-				_8 = expr_group(pos);
+				_8 = cll_function_call(pos);
 				if (!(_8.result))
 				{
-					_10 = expr_expr_copiable_method_call(pos);
+					_10 = expr_group(pos);
 					if (!(_10.result))
 					{
-						_12 = cll_function_call(pos);
+						_12 = expr_expr_copiable_method_call(pos);
 						if (!(_12.result))
 						{
 							_14 = any_data(pos);
@@ -2816,7 +2816,7 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 	{
 		if (!(begin_15->name == Tokens::AUTO_71))
 		{
-			return {};
+			break;
 		}
 		else 
 		{
@@ -3451,7 +3451,7 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
 			_12 = cll_ternary(begin_14);
 			if (!(_12.result))
 			{
-				break;
+				return {};
 			}
 			else 
 			{
@@ -3823,7 +3823,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 			if (!(begin_12->name == Tokens::AUTO_71))
 			{
-				break;
+				return {};
 			}
 			_9 = *begin_12;
 			success_10 = true;
@@ -4001,47 +4001,49 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
+	::Parser::Rule_res _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
+	::Parser::Rule_res _8;
 	::Parser::bool_t success_9 = false;
 	::Parser::Rule_res _10;
 	::Parser::bool_t success_11 = false;
-	::Parser::Rule_res _12;
+	::Parser::Token _12;
 	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
+	::Parser::Token _14;
 	::Parser::bool_t success_15 = false;
-	if (!(pos->name == Tokens::BOOLEAN))
+	if (!(pos->name == Tokens::NUMBER))
 	{
-		if (!(pos->name == Tokens::NUMBER))
+		if (!(pos->name == Tokens::STRING))
 		{
-			if (!(pos->name == Tokens::STRING))
+			_6 = accessor(pos);
+			if (!(_6.result))
 			{
-				if (!(pos->name == Tokens::ID))
+				_8 = array(pos);
+				if (!(_8.result))
 				{
-					_10 = array(pos);
+					_10 = object(pos);
 					if (!(_10.result))
 					{
-						_12 = object(pos);
-						if (!(_12.result))
+						if (!(pos->name == Tokens::BOOLEAN))
 						{
-							_14 = accessor(pos);
-							if (!(_14.result))
+							if (!(pos->name == Tokens::ID))
 							{
 								return {};
 							}
 							else 
 							{
+								_14 = *pos;
 								success_15 = true;
-								std::advance(pos, _14.token.length());
-								_0 = _14.token;
+								pos++;
+								_0 = _14;
 							}
 						}
 						else 
 						{
+							_12 = *pos;
 							success_13 = true;
-							std::advance(pos, _12.token.length());
-							_0 = _12.token;
+							pos++;
+							_0 = _12;
 						}
 					}
 					else 
@@ -4053,18 +4055,16 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 				}
 				else 
 				{
-					_8 = *pos;
 					success_9 = true;
-					std::advance(pos, 1);
-					_0 = _8;
+					std::advance(pos, _8.token.length());
+					_0 = _8.token;
 				}
 			}
 			else 
 			{
-				_6 = *pos;
 				success_7 = true;
-				std::advance(pos, 1);
-				_0 = _6;
+				std::advance(pos, _6.token.length());
+				_0 = _6.token;
 			}
 		}
 		else 
@@ -4079,7 +4079,7 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 	{
 		_2 = *pos;
 		success_3 = true;
-		pos++;
+		std::advance(pos, 1);
 		_0 = _2;
 	}
 	success_1 = true;
@@ -4261,18 +4261,18 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::any_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
+	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
+	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
 	::Parser::Rule_res _6;
 	::Parser::bool_t success_7 = false;
-	_2 = use(pos);
-	if (!(_2.result))
+	if (!(pos->name == Tokens::AUTO_75))
 	{
-		if (!(pos->name == Tokens::AUTO_75))
+		_4 = spacemode(pos);
+		if (!(_4.result))
 		{
-			_6 = spacemode(pos);
+			_6 = use(pos);
 			if (!(_6.result))
 			{
 				return {};
@@ -4286,17 +4286,17 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 		}
 		else 
 		{
-			_4 = *pos;
 			success_5 = true;
-			std::advance(pos, 1);
-			_0 = _4;
+			std::advance(pos, _4.token.length());
+			_0 = _4.token;
 		}
 	}
 	else 
 	{
+		_2 = *pos;
 		success_3 = true;
-		std::advance(pos, _2.token.length());
-		_0 = _2.token;
+		std::advance(pos, 1);
+		_0 = _2;
 	}
 	success_1 = true;
 	return {true, ::Parser::Rule(in->startpos, in->start, pos->end, Rules::main)};
@@ -4394,11 +4394,11 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 	::Parser::bool_t success_1 = false;
 	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
+	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
 	::Parser::Token _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::Rule_res _8;
+	::Parser::Token _8;
 	::Parser::bool_t success_9 = false;
 	::Parser::Rule_res _10;
 	::Parser::bool_t success_11 = false;
@@ -4426,14 +4426,14 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 	_2 = Rule_escaped(pos);
 	if (!(_2.result))
 	{
-		if (!(pos->name == Tokens::AUTO_91))
+		_4 = linear_comment(pos);
+		if (!(_4.result))
 		{
-			if (!(pos->name == Tokens::AUTO_75))
+			if (!(pos->name == Tokens::AUTO_91))
 			{
-				_8 = cll(pos);
-				if (!(_8.result))
+				if (!(pos->name == Tokens::AUTO_75))
 				{
-					_10 = linear_comment(pos);
+					_10 = cll(pos);
 					if (!(_10.result))
 					{
 						auto begin_35 = pos;
@@ -4547,9 +4547,10 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 				}
 				else 
 				{
+					_8 = *pos;
 					success_9 = true;
-					std::advance(pos, _8.token.length());
-					_0 = _8.token;
+					std::advance(pos, 1);
+					_0 = _8;
 				}
 			}
 			else 
@@ -4562,10 +4563,9 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 		}
 		else 
 		{
-			_4 = *pos;
 			success_5 = true;
-			std::advance(pos, 1);
-			_0 = _4;
+			std::advance(pos, _4.token.length());
+			_0 = _4.token;
 		}
 	}
 	else 

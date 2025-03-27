@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     arr_t<std::string> fullname;
     arr_t<std::pair<std::string, arr_t<std::string>>> nested_rule_names;
     normalizeTree(tree, fullname, nested_rule_names);
-    sortByPriority(tree);            // sorts elements to get which should be placed on top. This ensures proper matching
+    sortByPriority(tree, tree);      // sorts elements to get which should be placed on top. This ensures proper matching
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     addSpaceToken(tree);
     replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
@@ -114,7 +114,6 @@ int main(int argc, char** argv) {
     // convert tree into IR
     IR::nested_rule_name nested_rule_names2;
     auto ir = treeToIr(tree, "", nested_rule_names2);
-    tree.clear();
     raiseVarsTop(ir);
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
@@ -123,7 +122,7 @@ int main(int argc, char** argv) {
 
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
-    auto tokenizator_code = getCodeForTokinizator(datablocks_tokens);
+    auto tokenizator_code = getCodeForTokinizator(tree, datablocks_tokens);
     raiseVarsTop(tokenizator_code.first);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR::ir&, IR::ir&, IR::node_ret_t&, const use_prop_t&>("convert");

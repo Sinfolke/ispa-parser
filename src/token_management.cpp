@@ -460,17 +460,24 @@ namespace Tokens {
 
         return where;
     }
-    Parser::Rule find_token_in_tree(Parser::Tree &tree, Parser::Rule id) {
+    Parser::Rule find_token_in_tree(Parser::Tree &tree, arr_t<std::string> names) {
         for (const auto &member : tree) {
             if (member.name != Parser::Rules::Rule)
                 continue;
             auto data = std::any_cast<obj_t>(member.data);
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
+            auto nested_name = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             //cpuf::printf("comparing %s with %s\n", std::any_cast<std::string>(name.data), std::any_cast<std::string>(id.data));
-            if (compare_id_rule(name, id))
-                return member;
+            if (name_str == names[0]) {
+                if (names.size() == 1) {
+                    return member;
+                }
+                names.erase(names.begin());
+                return find_token_in_tree(nested_name, names);
+            }
         }
-        //cpuf::printf("Token in tree not found, returning\n");
+        cpuf::printf("Not found: %s\n", names);
         return {};
     }
 
