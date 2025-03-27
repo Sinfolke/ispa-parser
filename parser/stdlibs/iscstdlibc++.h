@@ -113,16 +113,16 @@ class return_base_exception : public std::exception {
     }
 };
 template<typename RETURN_T>
-class _return {
+class node {
 public:
     std::size_t startpos = std::string::npos;
     const char* start = nullptr;
     const char* end = nullptr;
     RETURN_T name = RETURN_T::NONE;
     std::any data;
-    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
-    _return(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
-    _return() {}
+    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
+    node() {}
 
 
     /**
@@ -171,7 +171,7 @@ public:
 #endif
         return std::any_cast<T>(data);
     }
-    _return<RETURN_T> operator=(const _return<RETURN_T>& other) {
+    node<RETURN_T> operator=(const node<RETURN_T>& other) {
         startpos = other.startpos;
         start = other.start;
         end = other.end;
@@ -253,13 +253,13 @@ public:
 template<class RESULT_T>
 struct match_result {
     bool result = false;
-    _return<RESULT_T> token;
+    node<RESULT_T> token;
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::vector<_return<TOKEN_T>>;
+using TokenFlow = std::vector<node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::vector<_return<RULE_T>>;
+using Tree = std::vector<node<RULE_T>>;
 
 /**
  * @brief Join vector into string
@@ -373,7 +373,7 @@ public:
         tokens.append_range(input_tokens);
         return *this;
     }
-    Tokenizator_base& push(const _return<TOKEN_T>& input_token) {
+    Tokenizator_base& push(const node<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
         return *this;
     }

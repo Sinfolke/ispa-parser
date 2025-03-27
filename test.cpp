@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 int main() {
@@ -11,4 +12,7 @@ int main() {
     const char* str = temp.c_str();
     tokenizator.makeTokens(str);
     parser.main(tokenizator.tokens.begin());
+    for (auto token : tokenizator.tokens) {
+        std::cout << "name: " << Parser::TokenstoString(token.name) << std::endl;
+    }
 }

@@ -549,6 +549,38 @@ void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &ind
 void addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
 }
+void addStandardFunctions(std::ostringstream &out) {
+    out << 
+"bool " << global::namespace_name << R"(::Tokenizator::makeTokensFromFile(const char* pos) {
+    std::ifstream file(pos, std::ios::in | std::ios::binary);  // Open the file in binary mode as well for safety
+    if (!file) {
+        return 1;
+    }
+
+    std::string str;
+    file.seekg(0, std::ios::end);
+    size_t fileSize = file.tellg();
+    str.reserve(fileSize);  // Reserve enough space for the string
+
+    file.seekg(0, std::ios::beg);
+    str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    makeTokens(str.c_str());
+    return 0;
+})";
+}
+void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
+    // Implement method call conversion with proper indentation
+    out << "std::string " << global::namespace_name << "::TokenstoString(Tokens token) {\n";
+    out << "\tswitch (token) {\n";
+    out << "\t\tcase Tokens::NONE:" << " return \"NONE\";\n";
+    for (auto token : tokens) {
+        out << "\t\tcase Tokens::" << token << ":" << " return \"" << token << "\";\n";
+    }
+    out << "\t}\n";
+    out << "\treturn \"NONE\";\n";
+    out << "}\n";
+}
 void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
     out << "\nvoid " << global::namespace_name << "::Tokenizator::makeTokens(const char* pos) {\n";
     out << "\tthis->str = pos;\n";
@@ -559,7 +591,7 @@ void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::var
     out << "}\n";
     identLevel--;
 }
-extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::node_ret_t& tokenizator_access_var, const use_prop_t &use) {
+extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, const use_prop_t &use) {
     std::ostringstream ss;
     std::stack<std::string> current_pos_counter;
     int identLevel = 0;
@@ -569,6 +601,8 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
     addHeader(ss);
+    addTokensToString(tokens, ss);
+    addStandardFunctions(ss);
     addTokenizator_codeHeader(ss, identLevel);
     tokenizator_code.elements.erase(tokenizator_code.elements.begin());
     tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);

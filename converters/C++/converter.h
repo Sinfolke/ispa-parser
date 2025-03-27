@@ -25,6 +25,3 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
 std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter);
 void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter);
 void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-void printIR(const IR::ir& representation, std::ostringstream &out, int &indentLevel);
-void outputIRToFile(IR::ir representation, std::string filename);
-void outputIRToConsole(const IR::ir& representation);

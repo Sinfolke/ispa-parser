@@ -6,6 +6,8 @@
 #include <list>
 #include <unordered_map>
 #include <iscstdlibc++.h>
+#include <fstream>
+#include <iterator>
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif
@@ -39,11 +41,13 @@ namespace Parser {
 	enum class Rules {
 		NONE, accessor_group, accessor_element, accessor_char, accessor_all, accessor, cll, cll_block, cll_template, cll_csupport_types, cll_type, cll_type_abstract, cll_if, cll_ternary, expr, expr_logical, expr_compare, expr_arithmetic, expr_for_arithmetic, expr_group, expr_expr_copiable_method_call, function_body_call, function_body_decl, function_arguments, function_parameters, cll_function_call, function_decl, loop_while, loop_for, method_call, copiable_method_call, var_refer, cll_var, array, object, any_data, spacemode, name, linear_comment, main, use, use_unit, Rule, Rule_rule, Rule_other, Rule_qualifier, Rule_group, Rule_csequence, Rule_csequence_symbol, Rule_csequence_escape, Rule_csequence_diapason, Rule_data_block, Rule_data_block_inclosed_map, Rule_data_block_key, Rule_escaped, Rule_nested_rule, Rule_hex, Rule_bin
 	};
-	using Rule = ISPA_STD::_return<Rules>;
+	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
-	using Token = ISPA_STD::_return<Tokens>;
+	using Token = ISPA_STD::node<Tokens>;
 	using Token_res = ISPA_STD::match_result<Tokens>;
+	using TokenFlow = arr_t<Token>;
 	using Tree = ISPA_STD::Tree<Rules>;
+	std::string TokenstoString(Tokens token);
 	class Tokenizator {
 		private:
 			const char* str;
@@ -121,6 +125,8 @@ namespace Parser {
 			using AUTO_104_data = ::Parser::str_t;
 			using AUTO_105_data = ::Parser::str_t;
 			arr_t<Token> tokens;
+// returns 1 if failed to open the file
+			bool makeTokensFromFile(const char*);
 			void makeTokens(const char*);
 			Token_res OP(const char*);
 			Token_res ASSIGNMENT_OP(const char*);

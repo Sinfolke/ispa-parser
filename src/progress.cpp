@@ -403,8 +403,7 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
 
             // found not same part, call this function to determine which should go before
             auto res = sortPriority(tree, first_rules[i], second_rules[i]);       
-            cpuf::printf("return %d\n", (int) res);
-            return res;     
+            return res;
         }
 
         // first_token = processNestedRuleHelper(first_nested_name, first_ruleother_data, first_token);
@@ -414,7 +413,6 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         
 
         // rules are same, do nothing
-        cpuf::printf("return 0[2]\n");
         return 0;
     }
     // if non above is true but the value kind is same, remain values in their order
@@ -432,9 +430,9 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         return 1;
     // any goes the last one
     if (first.name == Parser::Rules::Rule_any)
-        return 1;
-    else if (second.name == Parser::Rules::Rule_any)
         return 0;
+    else if (second.name == Parser::Rules::Rule_any)
+        return 1;
     // literals go before identifier
     if (first.name == Parser::Rules::Rule_other && (second.name == Parser::Rules::string || second.name == Parser::Rules::Rule_csequence_escape))
         return 1;

@@ -1,5 +1,101 @@
 #include "Parser.h"
+std::string Parser::TokenstoString(Tokens token) {
+	switch (token) {
+		case Tokens::NONE: return "NONE";
+		case Tokens::OP: return "OP";
+		case Tokens::ASSIGNMENT_OP: return "ASSIGNMENT_OP";
+		case Tokens::COMPARE_OP: return "COMPARE_OP";
+		case Tokens::LOGICAL_OP: return "LOGICAL_OP";
+		case Tokens::LOGICAL_NOT: return "LOGICAL_NOT";
+		case Tokens::LOGICAL_AND: return "LOGICAL_AND";
+		case Tokens::LOGICAL_OR: return "LOGICAL_OR";
+		case Tokens::STRING: return "STRING";
+		case Tokens::NUMBER: return "NUMBER";
+		case Tokens::BOOLEAN: return "BOOLEAN";
+		case Tokens::END: return "END";
+		case Tokens::NEWLINE: return "NEWLINE";
+		case Tokens::ID: return "ID";
+		case Tokens::AUTO_1: return "AUTO_1";
+		case Tokens::AUTO_3: return "AUTO_3";
+		case Tokens::AUTO_4: return "AUTO_4";
+		case Tokens::AUTO_8: return "AUTO_8";
+		case Tokens::AUTO_11: return "AUTO_11";
+		case Tokens::AUTO_12: return "AUTO_12";
+		case Tokens::AUTO_13: return "AUTO_13";
+		case Tokens::AUTO_14: return "AUTO_14";
+		case Tokens::AUTO_15: return "AUTO_15";
+		case Tokens::AUTO_18: return "AUTO_18";
+		case Tokens::AUTO_19: return "AUTO_19";
+		case Tokens::AUTO_20: return "AUTO_20";
+		case Tokens::AUTO_21: return "AUTO_21";
+		case Tokens::AUTO_22: return "AUTO_22";
+		case Tokens::AUTO_23: return "AUTO_23";
+		case Tokens::AUTO_24: return "AUTO_24";
+		case Tokens::AUTO_25: return "AUTO_25";
+		case Tokens::AUTO_26: return "AUTO_26";
+		case Tokens::AUTO_39: return "AUTO_39";
+		case Tokens::AUTO_40: return "AUTO_40";
+		case Tokens::AUTO_41: return "AUTO_41";
+		case Tokens::AUTO_47: return "AUTO_47";
+		case Tokens::AUTO_52: return "AUTO_52";
+		case Tokens::AUTO_53: return "AUTO_53";
+		case Tokens::AUTO_57: return "AUTO_57";
+		case Tokens::AUTO_62: return "AUTO_62";
+		case Tokens::AUTO_63: return "AUTO_63";
+		case Tokens::AUTO_64: return "AUTO_64";
+		case Tokens::AUTO_65: return "AUTO_65";
+		case Tokens::AUTO_66: return "AUTO_66";
+		case Tokens::AUTO_67: return "AUTO_67";
+		case Tokens::AUTO_68: return "AUTO_68";
+		case Tokens::AUTO_69: return "AUTO_69";
+		case Tokens::AUTO_70: return "AUTO_70";
+		case Tokens::AUTO_71: return "AUTO_71";
+		case Tokens::AUTO_75: return "AUTO_75";
+		case Tokens::AUTO_76: return "AUTO_76";
+		case Tokens::AUTO_77: return "AUTO_77";
+		case Tokens::AUTO_78: return "AUTO_78";
+		case Tokens::AUTO_79: return "AUTO_79";
+		case Tokens::AUTO_80: return "AUTO_80";
+		case Tokens::AUTO_81: return "AUTO_81";
+		case Tokens::AUTO_82: return "AUTO_82";
+		case Tokens::AUTO_83: return "AUTO_83";
+		case Tokens::AUTO_84: return "AUTO_84";
+		case Tokens::AUTO_85: return "AUTO_85";
+		case Tokens::AUTO_86: return "AUTO_86";
+		case Tokens::AUTO_90: return "AUTO_90";
+		case Tokens::AUTO_91: return "AUTO_91";
+		case Tokens::AUTO_93: return "AUTO_93";
+		case Tokens::AUTO_95: return "AUTO_95";
+		case Tokens::AUTO_97: return "AUTO_97";
+		case Tokens::AUTO_98: return "AUTO_98";
+		case Tokens::AUTO_99: return "AUTO_99";
+		case Tokens::AUTO_100: return "AUTO_100";
+		case Tokens::AUTO_101: return "AUTO_101";
+		case Tokens::AUTO_102: return "AUTO_102";
+		case Tokens::AUTO_103: return "AUTO_103";
+		case Tokens::AUTO_104: return "AUTO_104";
+		case Tokens::AUTO_105: return "AUTO_105";
+		case Tokens::__WHITESPACE: return "__WHITESPACE";
+	}
+	return "NONE";
+}
+bool Parser::Tokenizator::makeTokensFromFile(const char* pos) {
+    std::ifstream file(pos, std::ios::in | std::ios::binary);  // Open the file in binary mode as well for safety
+    if (!file) {
+        return 1;
+    }
 
+    std::string str;
+    file.seekg(0, std::ios::end);
+    size_t fileSize = file.tellg();
+    str.reserve(fileSize);  // Reserve enough space for the string
+
+    file.seekg(0, std::ios::beg);
+    str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    makeTokens(str.c_str());
+    return 0;
+}
 void Parser::Tokenizator::makeTokens(const char* pos) {
 	this->str = pos;
 	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> shadow_209;
@@ -219,208 +315,208 @@ void Parser::Tokenizator::makeTokens(const char* pos) {
 		{
 			break;
 		}
-		_4 = AUTO_99(begin_208);
+		_4 = OP(begin_208);
 		if (!(_4.result))
 		{
-			_7 = OP(begin_208);
+			_7 = ASSIGNMENT_OP(begin_208);
 			if (!(_7.result))
 			{
-				_10 = ASSIGNMENT_OP(begin_208);
+				_10 = COMPARE_OP(begin_208);
 				if (!(_10.result))
 				{
-					_13 = COMPARE_OP(begin_208);
+					_13 = LOGICAL_OP(begin_208);
 					if (!(_13.result))
 					{
-						_16 = LOGICAL_OP(begin_208);
+						_16 = STRING(begin_208);
 						if (!(_16.result))
 						{
-							_19 = STRING(begin_208);
+							_19 = NUMBER(begin_208);
 							if (!(_19.result))
 							{
-								_22 = NUMBER(begin_208);
+								_22 = AUTO_69(begin_208);
 								if (!(_22.result))
 								{
-									_25 = AUTO_69(begin_208);
+									_25 = AUTO_85(begin_208);
 									if (!(_25.result))
 									{
-										_28 = AUTO_85(begin_208);
+										_28 = AUTO_100(begin_208);
 										if (!(_28.result))
 										{
-											_31 = AUTO_100(begin_208);
+											_31 = AUTO_103(begin_208);
 											if (!(_31.result))
 											{
-												_34 = AUTO_103(begin_208);
+												_34 = AUTO_105(begin_208);
 												if (!(_34.result))
 												{
-													_37 = AUTO_105(begin_208);
+													_37 = AUTO_63(begin_208);
 													if (!(_37.result))
 													{
-														_40 = AUTO_63(begin_208);
+														_40 = AUTO_12(begin_208);
 														if (!(_40.result))
 														{
-															_43 = AUTO_12(begin_208);
+															_43 = AUTO_64(begin_208);
 															if (!(_43.result))
 															{
-																_46 = AUTO_64(begin_208);
+																_46 = AUTO_65(begin_208);
 																if (!(_46.result))
 																{
-																	_49 = AUTO_65(begin_208);
+																	_49 = AUTO_11(begin_208);
 																	if (!(_49.result))
 																	{
-																		_52 = AUTO_11(begin_208);
+																		_52 = AUTO_8(begin_208);
 																		if (!(_52.result))
 																		{
-																			_55 = AUTO_8(begin_208);
+																			_55 = AUTO_14(begin_208);
 																			if (!(_55.result))
 																			{
-																				_58 = AUTO_14(begin_208);
+																				_58 = AUTO_40(begin_208);
 																				if (!(_58.result))
 																				{
-																					_61 = AUTO_40(begin_208);
+																					_61 = AUTO_66(begin_208);
 																					if (!(_61.result))
 																					{
-																						_64 = AUTO_66(begin_208);
+																						_64 = AUTO_13(begin_208);
 																						if (!(_64.result))
 																						{
-																							_67 = AUTO_13(begin_208);
+																							_67 = AUTO_18(begin_208);
 																							if (!(_67.result))
 																							{
-																								_70 = AUTO_18(begin_208);
+																								_70 = AUTO_19(begin_208);
 																								if (!(_70.result))
 																								{
-																									_73 = AUTO_19(begin_208);
+																									_73 = AUTO_67(begin_208);
 																									if (!(_73.result))
 																									{
-																										_76 = AUTO_67(begin_208);
+																										_76 = AUTO_93(begin_208);
 																										if (!(_76.result))
 																										{
-																											_79 = AUTO_93(begin_208);
+																											_79 = AUTO_15(begin_208);
 																											if (!(_79.result))
 																											{
-																												_82 = AUTO_15(begin_208);
+																												_82 = AUTO_20(begin_208);
 																												if (!(_82.result))
 																												{
-																													_85 = AUTO_20(begin_208);
+																													_85 = AUTO_21(begin_208);
 																													if (!(_85.result))
 																													{
-																														_88 = AUTO_21(begin_208);
+																														_88 = AUTO_22(begin_208);
 																														if (!(_88.result))
 																														{
-																															_91 = AUTO_22(begin_208);
+																															_91 = AUTO_23(begin_208);
 																															if (!(_91.result))
 																															{
-																																_94 = AUTO_23(begin_208);
+																																_94 = AUTO_24(begin_208);
 																																if (!(_94.result))
 																																{
-																																	_97 = AUTO_24(begin_208);
+																																	_97 = AUTO_25(begin_208);
 																																	if (!(_97.result))
 																																	{
-																																		_100 = AUTO_25(begin_208);
+																																		_100 = AUTO_41(begin_208);
 																																		if (!(_100.result))
 																																		{
-																																			_103 = AUTO_41(begin_208);
+																																			_103 = AUTO_70(begin_208);
 																																			if (!(_103.result))
 																																			{
-																																				_106 = AUTO_70(begin_208);
+																																				_106 = AUTO_86(begin_208);
 																																				if (!(_106.result))
 																																				{
-																																					_109 = AUTO_86(begin_208);
+																																					_109 = AUTO_26(begin_208);
 																																					if (!(_109.result))
 																																					{
-																																						_112 = AUTO_26(begin_208);
+																																						_112 = AUTO_39(begin_208);
 																																						if (!(_112.result))
 																																						{
-																																							_115 = AUTO_39(begin_208);
+																																							_115 = AUTO_52(begin_208);
 																																							if (!(_115.result))
 																																							{
-																																								_118 = AUTO_52(begin_208);
+																																								_118 = AUTO_53(begin_208);
 																																								if (!(_118.result))
 																																								{
-																																									_121 = AUTO_53(begin_208);
+																																									_121 = AUTO_68(begin_208);
 																																									if (!(_121.result))
 																																									{
-																																										_124 = AUTO_68(begin_208);
+																																										_124 = AUTO_98(begin_208);
 																																										if (!(_124.result))
 																																										{
-																																											_127 = AUTO_98(begin_208);
+																																											_127 = AUTO_102(begin_208);
 																																											if (!(_127.result))
 																																											{
-																																												_130 = AUTO_102(begin_208);
+																																												_130 = AUTO_104(begin_208);
 																																												if (!(_130.result))
 																																												{
-																																													_133 = AUTO_104(begin_208);
+																																													_133 = AUTO_1(begin_208);
 																																													if (!(_133.result))
 																																													{
-																																														_136 = AUTO_1(begin_208);
+																																														_136 = AUTO_3(begin_208);
 																																														if (!(_136.result))
 																																														{
-																																															_139 = AUTO_3(begin_208);
+																																															_139 = AUTO_4(begin_208);
 																																															if (!(_139.result))
 																																															{
-																																																_142 = AUTO_4(begin_208);
+																																																_142 = AUTO_47(begin_208);
 																																																if (!(_142.result))
 																																																{
-																																																	_145 = AUTO_47(begin_208);
+																																																	_145 = AUTO_57(begin_208);
 																																																	if (!(_145.result))
 																																																	{
-																																																		_148 = AUTO_57(begin_208);
+																																																		_148 = AUTO_62(begin_208);
 																																																		if (!(_148.result))
 																																																		{
-																																																			_151 = AUTO_62(begin_208);
+																																																			_151 = AUTO_71(begin_208);
 																																																			if (!(_151.result))
 																																																			{
-																																																				_154 = AUTO_71(begin_208);
+																																																				_154 = AUTO_75(begin_208);
 																																																				if (!(_154.result))
 																																																				{
-																																																					_157 = AUTO_75(begin_208);
+																																																					_157 = AUTO_76(begin_208);
 																																																					if (!(_157.result))
 																																																					{
-																																																						_160 = AUTO_76(begin_208);
+																																																						_160 = AUTO_77(begin_208);
 																																																						if (!(_160.result))
 																																																						{
-																																																							_163 = AUTO_77(begin_208);
+																																																							_163 = AUTO_78(begin_208);
 																																																							if (!(_163.result))
 																																																							{
-																																																								_166 = AUTO_78(begin_208);
+																																																								_166 = AUTO_79(begin_208);
 																																																								if (!(_166.result))
 																																																								{
-																																																									_169 = AUTO_79(begin_208);
+																																																									_169 = AUTO_80(begin_208);
 																																																									if (!(_169.result))
 																																																									{
-																																																										_172 = AUTO_80(begin_208);
+																																																										_172 = AUTO_81(begin_208);
 																																																										if (!(_172.result))
 																																																										{
-																																																											_175 = AUTO_81(begin_208);
+																																																											_175 = AUTO_82(begin_208);
 																																																											if (!(_175.result))
 																																																											{
-																																																												_178 = AUTO_82(begin_208);
+																																																												_178 = AUTO_83(begin_208);
 																																																												if (!(_178.result))
 																																																												{
-																																																													_181 = AUTO_83(begin_208);
+																																																													_181 = AUTO_84(begin_208);
 																																																													if (!(_181.result))
 																																																													{
-																																																														_184 = AUTO_84(begin_208);
+																																																														_184 = AUTO_90(begin_208);
 																																																														if (!(_184.result))
 																																																														{
-																																																															_187 = AUTO_90(begin_208);
+																																																															_187 = AUTO_91(begin_208);
 																																																															if (!(_187.result))
 																																																															{
-																																																																_190 = AUTO_91(begin_208);
+																																																																_190 = AUTO_95(begin_208);
 																																																																if (!(_190.result))
 																																																																{
-																																																																	_193 = AUTO_95(begin_208);
+																																																																	_193 = AUTO_97(begin_208);
 																																																																	if (!(_193.result))
 																																																																	{
-																																																																		_196 = AUTO_97(begin_208);
+																																																																		_196 = AUTO_101(begin_208);
 																																																																		if (!(_196.result))
 																																																																		{
-																																																																			_199 = AUTO_101(begin_208);
+																																																																			_199 = BOOLEAN(begin_208);
 																																																																			if (!(_199.result))
 																																																																			{
-																																																																				_202 = BOOLEAN(begin_208);
+																																																																				_202 = ID(begin_208);
 																																																																				if (!(_202.result))
 																																																																				{
-																																																																					_205 = ID(begin_208);
+																																																																					_205 = AUTO_99(begin_208);
 																																																																					if (!(_205.result))
 																																																																					{
 																																																																						break;

@@ -36,6 +36,8 @@ std::string createLibrary() {
     res += "#include <list>\n";
     res += "#include <unordered_map>\n";
     res += "#include <iscstdlibc++.h>\n";
+    res += "#include <fstream>\n";
+    res += "#include <iterator>\n";
     for (auto [macro, deftype] : macros) {
         auto actual_name = corelib::text::ToUpper(global::namespace_name) + "_" + macro;
         
@@ -97,11 +99,17 @@ std::string getTypesFromStdlib() {
     // res += "\ttypedef ISC_STD::_return<Tokens> Token;\n";
     // res += "\ttypedef ISC_STD::match_result<Tokens> Token_res;\n";
     // res += "\ttypedef ISC_STD::Tree<Rules> Tree;\n";
-    res += "\tusing Rule = ISPA_STD::_return<Rules>;\n";
+    res += "\tusing Rule = ISPA_STD::node<Rules>;\n";
     res += "\tusing Rule_res = ISPA_STD::match_result<Rules>;\n";
-    res += "\tusing Token = ISPA_STD::_return<Tokens>;\n";
+    res += "\tusing Token = ISPA_STD::node<Tokens>;\n";
     res += "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
+    res += "\tusing TokenFlow = arr_t<Token>;\n";
     res += "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
+    return res;
+}
+std::string createToStringFunction() {
+    std::string res;
+    res += "\tstd::string TokenstoString(Tokens token);\n";
     return res;
 }
 std::string convert_inclosed_map(IR::inclosed_map map) {
@@ -132,6 +140,8 @@ std::string create_tokenizator_header(std::list<std::string> tokens, std::list<s
     std::string res = "\tclass Tokenizator {\n\t\tprivate:\n\t\t\tconst char* str;\n\t\tpublic:\n";
     res += write_data_block(dtb);
     res += "\t\t\tarr_t<Token> tokens;\n";
+    res += "// returns 1 if failed to open the file\n";
+    res += "\t\t\tbool makeTokensFromFile(const char*);\n";
     res += "\t\t\tvoid makeTokens(const char*);\n";
     for (auto name : tokens) {
         res += "\t\t\tToken_res " + name + "(const char*);\n";
@@ -157,6 +167,7 @@ extern "C" std::string convert_header(std::list<std::string> tokens, std::list<s
     res += createTokensEnum(tokens);
     res += createRulesEnum(rules);
     res += getTypesFromStdlib();
+    res += createToStringFunction();
     res += create_tokenizator_header(tokens, datablocks_tokens);
     res += create_parser_header(rules, datablocks_rules);
     res += close_library();
