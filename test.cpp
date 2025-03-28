@@ -5,14 +5,10 @@
 int main() {
     Parser::Tokenizator tokenizator;
     Parser::Parser parser;
-    std::ifstream file("parser/parser/Rule.isc");
-    std::stringstream ss;
-    ss << file.rdbuf();
-    std::string temp = ss.str();
-    const char* str = temp.c_str();
-    tokenizator.makeTokens(str);
+    tokenizator.makeTokensFromFile("parser/parser/Rule.isc");
     parser.main(tokenizator.tokens.begin());
     for (auto token : tokenizator.tokens) {
-        std::cout << "name: " << Parser::TokenstoString(token.name) << std::endl;
+        std::cout << Parser::TokenstoString(token.name) << ", ";
     }
+    std::cout << std::endl;
 }

@@ -8,7 +8,7 @@ Rule:
     ;
     #rule:
 
-        (( group | csequence | STRING | accessor | hex | bin | other ) qualifier?) | escaped | any | op | cll | linear_comment
+        (( group | csequence | STRING | accessor | hex | bin | other ) qualifier?) | escaped | any | op | cll | LINEAR_COMMENT
 
         data: 
             val: %1

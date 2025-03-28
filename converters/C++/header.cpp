@@ -140,7 +140,7 @@ std::string create_tokenizator_header(std::list<std::string> tokens, std::list<s
     std::string res = "\tclass Tokenizator {\n\t\tprivate:\n\t\t\tconst char* str;\n\t\tpublic:\n";
     res += write_data_block(dtb);
     res += "\t\t\tarr_t<Token> tokens;\n";
-    res += "// returns 1 if failed to open the file\n";
+    res += "\t\t\t// returns 1 if failed to open the file\n";
     res += "\t\t\tbool makeTokensFromFile(const char*);\n";
     res += "\t\t\tvoid makeTokens(const char*);\n";
     for (auto name : tokens) {

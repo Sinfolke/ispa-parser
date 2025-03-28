@@ -5,6 +5,9 @@ spacemode mixed;
 END: [;\n];
 STRICT_END: ';';
 NEWLINE: [\n];
+LINEAR_COMMENT:
+    '//' [^\n]
+;
 ID: 
     ([0-9]* [a-zA-Z_] [a-zA-Z0-9_]*)
     data: $1;
@@ -18,10 +21,7 @@ name:
 
     data: %2;
 ;
-linear_comment:
-    '//' [^\n]
-; 
-main: use | Rule | spacemode;
+main: use | Rule | spacemode | name;
 
 use: 
     'use' #unit (',' #unit)*

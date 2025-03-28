@@ -416,8 +416,8 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         return 0;
     }
     // if non above is true but the value kind is same, remain values in their order
-    //if (first.name == second.name)
-    //    return 0;
+    if (first.name == second.name)
+       return 0;
     // string goes before csequence
     if (first.name == Parser::Rules::string && second.name == Parser::Rules::Rule_csequence)
         return 0;

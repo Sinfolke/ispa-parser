@@ -292,6 +292,7 @@ size_t skip_list(const char*& in, const char* text);
 // Skip spaces
 size_t skip_spaces(const char*& in);
 
+std::string readFileToString(const char* path, bool &success);
 
 template <typename Iterator, typename Tokens>
 size_t skip_spaces(Iterator& pos) {

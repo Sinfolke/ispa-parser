@@ -551,22 +551,13 @@ void addHeader(std::ostringstream &out) {
 }
 void addStandardFunctions(std::ostringstream &out) {
     out << 
-"bool " << global::namespace_name << R"(::Tokenizator::makeTokensFromFile(const char* pos) {
-    std::ifstream file(pos, std::ios::in | std::ios::binary);  // Open the file in binary mode as well for safety
-    if (!file) {
-        return 1;
-    }
-
-    std::string str;
-    file.seekg(0, std::ios::end);
-    size_t fileSize = file.tellg();
-    str.reserve(fileSize);  // Reserve enough space for the string
-
-    file.seekg(0, std::ios::beg);
-    str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
+"bool " << global::namespace_name << R"(::Tokenizator::makeTokensFromFile(const char* path) {
+    bool success;
+    auto str = ISPA_STD::readFileToString(path, success);
+    if (!success)
+        return 0;
     makeTokens(str.c_str());
-    return 0;
+    return 1;
 })";
 }
 void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {

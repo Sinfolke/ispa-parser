@@ -32,10 +32,12 @@
 
     Add remove of unused variables (required IR optimization)
 
-    Add not adding shadow variable when add value is character and the result is string
+    Add proper handle of accessor in rule_op
 
   Code improvements:
+
     Encapsulate IR.cpp into a class
+
     Encapsulate converter.cpp into a class
 
 ### Parser syntax

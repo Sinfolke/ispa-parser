@@ -1263,8 +1263,15 @@ IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, IR::ir &member, in
         }
         first = false;
     }
-
     if (is_negative) {
+        if (qualifier_char == '+' || qualifier_char == '*')
+            expr.insert(expr.end(), {
+                {IR::condition_types::AND}, {IR::condition_types::CURRENT_CHARACTER}, {IR::condition_types::NOT_EQUAL}, {IR::condition_types::CHARACTER, '\0'}, 
+            });
+        else
+            expr.insert(expr.end(), {
+                {IR::condition_types::OR}, {IR::condition_types::CURRENT_CHARACTER}, {IR::condition_types::EQUAL}, {IR::condition_types::CHARACTER, '\0'}, 
+            });
         expr.push_back({IR::condition_types::GROUP_CLOSE});
     }
     int size = member.size();
