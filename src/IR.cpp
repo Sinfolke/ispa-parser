@@ -169,7 +169,7 @@ char getEscapedChar(char in) {
     }
 }
 
-IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
+IR::member createDefaultCall(arr_t<IR::member> &block, IR::variable var, const std::string &name, IR::ir &member, arr_t<IR::expr> &expr) {
     auto function_call = IR::function_call {
         name,
         {{IR::var_assign_values::TOKEN_SEQUENCE}},
@@ -180,8 +180,9 @@ IR::member createDefaultCall(arr_t<IR::member> &block, const IR::variable var, c
         IR::var_assign_types::ASSIGN,
         { IR::var_assign_values::FUNCTION_CALL, function_call }
     };
+    var.property_access = {"status"};
     expr = {
-        {IR::condition_types::SUCCESS_CHECK, var.name}
+        {IR::condition_types::VARIABLE, var}
     };
     return {IR::types::ASSIGN_VARIABLE, var_assign};
 }
@@ -1428,7 +1429,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         // remove variable assignemnt
         block.back().type = IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
         block.back().value = var.name;
-        var.property_access = {"token"};
+        var.property_access = {"node"};
         block.erase(block.begin());
         arr_t<IR::expr> expr;
         auto call = createDefaultCall(block, var, name_str, member, expr);
@@ -1452,7 +1453,7 @@ IR::node_ret_t process_Rule_other(const Parser::Rule &rule, IR::ir &member, int 
         } else {
             block.back().type = IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
             block.back().value = var.name;
-            var.property_access = {"token"};
+            var.property_access = {"node"};
             block.erase(block.begin()); // remove variable assignment
             arr_t<IR::expr> expr;
             auto call = createDefaultCall(block, var, name_str, member, expr);

@@ -21,7 +21,6 @@ namespace global {
     bool add_semicolon;
     bool has_data_block;
     bool isToken;
-    bool void_token = false;
 }
 size_t count_strlen(const char* str) {
     size_t count = 0;
@@ -274,7 +273,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return res;
     } else if (type == IR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
-        return std::any_cast<std::string>(data) + ".result";
+        return std::any_cast<std::string>(data) + ".status";
     } else if (type == IR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
@@ -290,7 +289,7 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
-            return current_pos_counter.top() + "->name " + op + " " + "Tokens::" + dt.name;
+            return current_pos_counter.top() + "->name() " + op + " " + "Tokens::" + dt.name;
         } else {
             return "*" + current_pos_counter.top();
         }
@@ -437,12 +436,12 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::RULE_END:
         if (global::isToken) {
-            out << "\treturn {true, ::" << global::namespace_name << "::Token(in - str, in, pos, Tokens::" << global::rule_prev_name;
+            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(pos), in, pos, Tokens::" << global::rule_prev_name;
             if (global::has_data_block)
                 out << ", data";
             out << ")};\n";
         } else {
-            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos, in->start, pos->end, Rules::" << global::rule_prev_name;
+            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), Rules::" << global::rule_prev_name;
             if (global::has_data_block)
                 out << ", data";
             out << ")};\n";
@@ -485,9 +484,9 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
         if (global::isToken) {
-            out << current_pos_counter.top() << " += " + var + ".token.length()";
+            out << current_pos_counter.top() << " += " + var + ".node.length()";
         } else {
-            out << "std::advance(" << current_pos_counter.top() << ", " << var << ".token.length())";
+            out << "std::advance(" << current_pos_counter.top() << ", " << var << ".node.length())";
         }
         break;
     }
@@ -506,10 +505,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "continue";
         break;
     case IR::types::EXIT:
-        out << "return";
-        if (!global::void_token)
-            out << " {}";
-        out << ';';
+        out << "return {};";
         break;
     case IR::types::SKIP_SPACES:
         if (global::isToken)            
@@ -549,17 +545,6 @@ void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &ind
 void addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
 }
-void addStandardFunctions(std::ostringstream &out) {
-    out << 
-"bool " << global::namespace_name << R"(::Tokenizator::makeTokensFromFile(const char* path) {
-    bool success;
-    auto str = ISPA_STD::readFileToString(path, success);
-    if (!success)
-        return 0;
-    makeTokens(str.c_str());
-    return 1;
-})";
-}
 void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
     out << "std::string " << global::namespace_name << "::TokenstoString(Tokens token) {\n";
@@ -573,12 +558,11 @@ void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     out << "}\n";
 }
 void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "\nvoid " << global::namespace_name << "::Tokenizator::makeTokens(const char* pos) {\n";
-    out << "\tthis->str = pos;\n";
+    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Tokenizator::makeToken() {\n";
     identLevel++;
 }
 void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
-    out << "\tthis->tokens = " << var.name << ";\n";
+    out << "\treturn " << var.name << ";\n";
     out << "}\n";
     identLevel--;
 }
@@ -586,22 +570,21 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     std::ostringstream ss;
     std::stack<std::string> current_pos_counter;
     int identLevel = 0;
-    current_pos_counter.push("pos");
     global::use = use;
     global::pos_counter = 0;
     global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
     addHeader(ss);
     addTokensToString(tokens, ss);
-    addStandardFunctions(ss);
     addTokenizator_codeHeader(ss, identLevel);
+    current_pos_counter.push("_in");
     tokenizator_code.elements.erase(tokenizator_code.elements.begin());
     tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
-    global::void_token = true;
     global::isToken = true;
     convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
-    global::void_token = false;
     global::isToken = false;
+    current_pos_counter.pop();
+    current_pos_counter.push("pos");
     addTokenizator_codeBottom(ss, identLevel, tokenizator_access_var.var);
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();

@@ -19,10 +19,7 @@
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
-namespace Parser {
-    enum class Tokens;
-    std::string TokenstoString(Tokens token);
-}
+
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -52,8 +49,8 @@ namespace Parser {
 #define ISC_STD_LIBMARK \
     "iscstdlibc++ " TOSTRING(_ISC_STD_LIB_VER) "." TOSTRING(_ISC_STD_LIB_SUBVER) ": "
 #define _ISC_INTERNAL_ERROR_MARK \
-        "NOTE: this exception is likely an internal error of the ISPA generator and is not on the user side.\n" \
-        "Please, show the developer this issue (" _ISC_GITHUB ")\n" \
+        "NOTE: this exception is likely an internal error of the ISC compiler and is not on the user side.\n" \
+        "Please, show up the developer this issue (" _ISC_GITHUB ")\n" \
         "If this issue persist you may try to recompile the project by another version (try newer if your's is too old and vise versa)" \
 //#define _ISC_STD_LIB_CPP
 
@@ -124,30 +121,29 @@ class return_base_exception : public std::exception {
 };
 template<typename RETURN_T>
 class node {
-    std::size_t _startpos = std::string::npos;
-    const char* _start = nullptr;
-    const char* _end = nullptr;
-    RETURN_T _name = RETURN_T::NONE;
-    std::any _data;
-    bool _empty = true;
-    public:
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : _startpos(startpos), _start(start), _end(end), _name(name), _empty(false) {}
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _name(name), _data(data), _empty(false) {}
+public:
+    std::size_t startpos = std::string::npos;
+    const char* start = nullptr;
+    const char* end = nullptr;
+    RETURN_T name = RETURN_T::NONE;
+    std::any data;
+    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
     node() {}
 
 
     /**
-     * @brief Returns the number of line of the current token or rule. Note it assume the start pointer is still valid
+     * @brief Returns the number of line of the current token or rule
      * 
      * @return std::size_t 
      */
     std::size_t line() const {
-        if (_startpos == std::string::npos || _start == nullptr)
+        if (startpos == std::string::npos)
             throw return_base_exception("line");
         std::size_t count = 0;
         std::size_t escaptions = 0;
-        for (std::size_t i = _startpos; i >= 0; --i) {
-            if (*(_start - i) == '\n') count++;
+        for (std::size_t i = startpos; i >= 0; --i) {
+            if (*(start - i) == '\n') count++;
         }
         return count;
     }
@@ -157,22 +153,24 @@ class node {
      * @return long long 
      */
     std::size_t endpos() const {
-        if (_startpos == std::string::npos || _end == nullptr || _start == nullptr)
+        if (startpos == std::string::npos)
             throw return_base_exception("endpos");
-        return _startpos + (_end - _start);
+        return startpos + (end - start);
     }
     std::size_t length() const {
-        if (_start == nullptr || _end == nullptr)
+        if (startpos == std::string::npos)
             throw return_base_exception("length");
-        return _end - _start;
+        return end - start;
+    }
+    bool empty() const noexcept {
+        return startpos == std::string::npos;
     }
     void clear() {
-        _startpos = std::string::npos;
-        _start = nullptr;
-        _end = nullptr;
-        _name = RETURN_T::NONE;
-        _data = {};
-        _empty = true;
+        startpos = std::string::npos;
+        start = nullptr;
+        end = nullptr;
+        name = RETURN_T::NONE;
+        data = {};
     }
     template<typename T>
     T as() {
@@ -185,61 +183,28 @@ class node {
             exit(1);
         }
 #endif
-        return std::any_cast<T>(_data);
+        return std::any_cast<T>(data);
     }
     node<RETURN_T>& operator=(const node<RETURN_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
-        _startpos = other._startpos;
-        _start = other._start;
-        _end = other._end;
-        _name = other._name;
-        _data = other._data;
-        _empty = other._empty;
+    
+        if (other.empty()) {
+            clear();
+        } else {
+            startpos = other.startpos;
+            start = other.start;
+            end = other.end;
+            name = other.name;
+            data = other.data;
+        }
         return *this;
     }
-    /**
-     * whether token is empty
-     */
-    auto empty() {
-        return _empty;
-    }
-    /**
-     * get start position 
-     */
-    auto startpos() {
-        return _startpos;
-    }
-    /**
-     * Get start pointer of string. Note it might be not be valid until now
-     */
-    auto start() {
-        return _start;
-    }
-    /**
-     * Get end pointer of string. Note it might be not be valid until now
-     */
-    auto end() {
-        return _end;
-    }
-    /**
-     * Get name enum of this node
-     */
-    auto name() {
-        return _name;
-    }
-    /**
-     * get data of this node
-     */
-    auto data() {
-        return _data;
-    }
-
 };
 template<class RESULT_T>
 struct match_result {
-    bool status = false;
-    node<RESULT_T> node;
+    bool result = false;
+    node<RESULT_T> token;
 };
 
 template<class TOKEN_T>
@@ -284,7 +249,7 @@ std::string readFileToString(const char* path, bool &success);
 template <typename Iterator, typename Tokens>
 size_t skip_spaces(Iterator& pos) {
     auto prev = pos;
-    while (pos->name() == Tokens::__WHITESPACE)
+    while (pos->name == Tokens::__WHITESPACE)
         ++pos;
     
     return std::distance(prev, pos);  // Works for any iterator
@@ -292,9 +257,10 @@ size_t skip_spaces(Iterator& pos) {
 
 template<class TOKEN_T>
 class Tokenizator_base {
-protected:
+private:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
+protected:
 /* internal integration functionality */
     /**
      * @brief Get the current position in the text (compares first input point with the current)
@@ -307,9 +273,24 @@ protected:
     }
 public:
     /**
+     * Accamulate tokens (saving in this class) and return their reference
+     */
+    virtual TokenFlow<TOKEN_T>& makeTokens() {
+        if (_in == nullptr)
+            throw Tokenizator_No_Input_exception();
+        node<TOKEN_T> result;
+        while (*_in != '\0') {
+            result = getToken();
+            if (result.empty())
+                break;
+            push(result);
+        }
+        return tokens;
+    };
+    /**
      * Get one token
      */
-    virtual node<TOKEN_T> makeToken() = 0;
+    virtual node<TOKEN_T> getToken() = 0;
     // constructors
 
     explicit Tokenizator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
@@ -357,24 +338,22 @@ public:
      * @param in the input string
      * Get tokens from std::string
      */
-    TokenFlow<TOKEN_T>& makeTokens(const std::string& in) {
+    TokenFlow<TOKEN_T> makeTokens(const std::string& in) {
         _in = in.c_str();
         makeTokens();
-        return tokens;
     }
     /**
      * @param in the input C string
      * Get tokens from C string
      */
-    TokenFlow<TOKEN_T>& makeTokens(const char*& in) {
+    TokenFlow<TOKEN_T> makeTokens(const char*& in) {
         _in = in;
         makeTokens();
-        return tokens;
     }
     /**
      * Get tokens from file by path. Note std::runtime_error is thrown if failed to open the file
      */
-    TokenFlow<TOKEN_T>& makeTokensFromFile(const char* path) {
+    TokenFlow<TOKEN_T> makeTokensFromFile(const char* path) {
         std::ifstream file(path, std::ios::in | std::ios::binary);  // Open the file in binary mode as well for safety
         if (!file) {
             throw std::runtime_error(std::string("Failed to open file '") + path + "'");
@@ -387,63 +366,52 @@ public:
     
         file.seekg(0, std::ios::beg);
         str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-        makeTokens(str);
-        return tokens;
+        return str;
     }
 
-    /**
-     * Accamulate tokens (saving in this class) and return their reference
-     */
-    TokenFlow<TOKEN_T>& makeTokens() {
-        if (_in == nullptr)
-            throw Tokenizator_No_Input_exception();
-        node<TOKEN_T> result;
-        while (*_in != '\0') {
-            result = makeToken();
-            if (result.empty())
-                break;
-            push(result);
-        }
-        return tokens;
-    };
     /**
      * @param input_tokens the input tokens
      * Push flow of tokens
      */
-    void push(const TokenFlow<TOKEN_T>& input_tokens) {
+    Tokenizator_base& push(const TokenFlow<TOKEN_T>& input_tokens) {
         tokens.append_range(input_tokens);
+        return *this;
     }
     /**
      * @param input_token the input token
      * Push a token
      */
-    void push(const node<TOKEN_T>& input_token) {
+    Tokenizator_base& push(const node<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
+        return *this;
     }
     /**
      * @param tokenizator the tokenizator with tokens
      * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Tokenizator_No_Tokens_exception is raised 
      */
-    void push(const Tokenizator_base& tokenizator) {
+    Tokenizator_base& push(const Tokenizator_base& tokenizator) {
         if (tokenizator.hasTokenFlow())
             tokens.push_back(tokenizator.tokens);
         else
             throw Tokenizator_No_Tokens_exception();
+        return *this;
     }
     /**
      * Pop the last token
      */
-    void pop() {
+    Tokenizator_base& pop() {
         tokens.pop_back();
+        return *this;
     }
     /**
      * @param n the amount of tokens to pop
      * Pop a specific amount of tokens
      */
-    void pop(const std::size_t& n) {
+    Tokenizator_base& pop(const std::size_t& n) {
         if (n > tokens.size())
             throw std::length_error(ISC_STD_LIBMARK "Tokenizator_base::pop(): the number of elements to pop is higher actual size");
         tokens.erase(tokens.end() - n, tokens.end());
+        return *this;
     }
 
     Tokenizator_base& operator=(const Tokenizator_base& tokenizator) {

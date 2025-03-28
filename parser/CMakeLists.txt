@@ -7,14 +7,15 @@ set(CMAKE_CXX_EXTENSIONS NO)
 file(GLOB_RECURSE parser_sources CONFIGURE_DEPENDS "src/*.cpp")
 add_library(parser STATIC ${parser_sources})
 add_library(parser_stdlib STATIC stdlibs/iscstdlibc++.cpp)
-target_include_directories(parser PUBLIC include stdlibs)
+target_include_directories(parser PUBLIC include stdlibs/old)
+target_include_directories(parser_stdlib PUBLIC stdlibs/old)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_definitions(__LIBC)
 endif()
 
 # Create an interface library to hold common properties
 add_library(parser_test_common INTERFACE)
-target_include_directories(parser_test_common INTERFACE include stdlibs tests/lib)
+target_include_directories(parser_test_common INTERFACE include stdlibs/old tests/lib)
 target_compile_definitions(parser_test_common INTERFACE __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries(parser_test_common INTERFACE parser parser_stdlib)
 

@@ -46,12 +46,12 @@ namespace Parser {
 	using Token = ISPA_STD::node<Tokens>;
 	using Token_res = ISPA_STD::match_result<Tokens>;
 	using TokenFlow = arr_t<Token>;
-	using Tree = ISPA_STD::Tree<Rules>;
+	using Tree = arr_t<Rules>;
 	std::string TokenstoString(Tokens token);
-	class Tokenizator {
-		private:
-			const char* str;
+	class Tokenizator : public ISPA_STD::Tokenizator_base<Tokens> {
 		public:
+			Token makeToken();
+		private:
 			using OP_data = ::Parser::str_t;
 			using ASSIGNMENT_OP_data = ::Parser::Token;
 			using COMPARE_OP_data = ::Parser::str_t;
@@ -122,10 +122,6 @@ namespace Parser {
 			using AUTO_101_data = ::Parser::str_t;
 			using AUTO_102_data = ::Parser::str_t;
 			using AUTO_103_data = ::Parser::str_t;
-			arr_t<Token> tokens;
-			// returns 1 if failed to open the file
-			bool makeTokensFromFile(const char*);
-			void makeTokens(const char*);
 			Token_res OP(const char*);
 			Token_res ASSIGNMENT_OP(const char*);
 			Token_res COMPARE_OP(const char*);

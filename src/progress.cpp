@@ -552,7 +552,7 @@ void addSpaceToken(Parser::Tree &tree) {
     });
     auto Rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
         { "val", csequence },
-        { "qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier, '*') }
+        { "qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier, '+') }
     });
     auto token = Tokens::make_rule(Parser::Rules::Rule, obj_t {
         {"name", Tokens::make_rule(Parser::Rules::id, std::string("__WHITESPACE"))},
@@ -617,6 +617,7 @@ std::pair<std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair
 
 std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(Parser::Tree &tree, std::list<std::pair<IR::data_block, std::string>> token_data_block) {
     arr_t<Parser::Rule> rule_op;
+    token_data_block.push_back({{}, "__WHITESPACE"});
     for (auto &[data_block, name] : token_data_block) {
         auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other(name, {name}));
         auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
@@ -631,14 +632,7 @@ std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(Parser::Tree &tree, std:
     });
     arr_t<Parser::Rule> rule_op2 = {rule_op_rule_rule};
     sortByPriorityHelper(tree, rule_op2);
-    auto rule_group = Tokens::make_rule(Parser::Rules::Rule_group, obj_t {
-        {"val", rule_op2},
-        {"variable", std::any()}
-    });
-    auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-        {"val", rule_group},
-        {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier, '+')}
-    });
+    rule_op_rule_rule = rule_op2[0];
     // auto rule = Tokens::make_rule(Parser::Rules::Rule, obj_t {
     //     {"name", Tokens::make_rule(Parser::Rules::id, std::string("makeTokens"))},
     //     {"rule", arr_t<Parser::Rule>{rule_rule}},
@@ -657,23 +651,8 @@ std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(Parser::Tree &tree, std:
     bool insideLoop = false;
     std::string fullname = "makeTokens";
     IR::node_ret_t success_var;
-    ruleToIr(rule_rule, code, variable_count, true, {}, elements, groups, vars, insideLoop, fullname, success_var);
-    // get position of the loop
-    size_t i = 0;
-    for (; i < code.elements.size(); i++) {
-        if (code.elements[i].type == IR::types::WHILE) {
-            break;
-        }
-    }
-    // insert some custom checks inside
-    auto expr = arr_t<IR::expr> {
-        {IR::condition_types::CURRENT_CHARACTER}, {IR::condition_types::EQUAL}, {IR::condition_types::CHARACTER, '\0'},
-    };
-    auto block = arr_t<IR::member> {{IR::types::BREAK_LOOP}};
-    auto loop = std::any_cast<IR::condition>(code.elements[i].value);
-    loop.block.insert(loop.block.begin(), {IR::types::IF, IR::condition {expr, block}});
-    code.elements[i].value = loop;
-    code.push_begin({IR::types::TOKEN, std::string("makeTokens")});
+    ruleToIr(rule_op_rule_rule, code, variable_count, true, {}, elements, groups, vars, insideLoop, fullname, success_var);
+    code.push_begin({IR::types::TOKEN, std::string("getToken")});
     code.push({IR::types::RULE_END});
     return {code, success_var};
 }
