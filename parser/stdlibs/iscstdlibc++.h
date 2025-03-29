@@ -19,10 +19,6 @@
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
-namespace Parser {
-    enum class Tokens;
-    std::string TokenstoString(Tokens token);
-}
 #ifndef STRINGIFY
 /**
  * @brief does #x

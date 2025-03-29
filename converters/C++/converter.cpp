@@ -550,7 +550,7 @@ void addHeader(std::ostringstream &out) {
 }
 void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
-    out << "std::string " << global::namespace_name << "::TokenstoString(Tokens token) {\n";
+    out << "std::string " << global::namespace_name << "::TokensToString(Tokens token) {\n";
     out << "\tswitch (token) {\n";
     out << "\t\tcase Tokens::NONE:" << " return \"NONE\";\n";
     for (auto token : tokens) {

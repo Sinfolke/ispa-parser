@@ -1,7 +1,0 @@
-cll_if: 
-    'if' expr cll_block
-    data:
-        expr: %2
-        block: %3
-    ;
-;

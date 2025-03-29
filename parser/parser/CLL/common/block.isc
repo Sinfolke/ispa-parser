@@ -1,5 +1,0 @@
-cll_block:
-    '{' Rule.rule* '}'
-
-    data: %2;
-;

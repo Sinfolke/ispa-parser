@@ -109,7 +109,7 @@ std::string getTypesFromStdlib() {
 }
 std::string createToStringFunction() {
     std::string res;
-    res += "\tstd::string TokenstoString(Tokens token);\n";
+    res += "\tstd::string TokensToString(Tokens token);\n";
     return res;
 }
 std::string convert_inclosed_map(IR::inclosed_map map) {

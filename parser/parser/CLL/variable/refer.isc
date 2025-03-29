@@ -1,9 +1,0 @@
-var_refer:
-    ('++' | '--')? ID ('[' expr ']')? ('++' | '--')?
-    data:
-        name: %1
-        brace_expression: $2>%2
-        pre: $1
-        post: $3
-    ;
-;

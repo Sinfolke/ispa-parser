@@ -1,7 +1,0 @@
-cll_template:
-    cll_type (',' cll_type)*
-    data: 
-        first: %1
-        second: %3
-    ;
-;

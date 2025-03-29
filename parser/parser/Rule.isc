@@ -1,21 +1,21 @@
- Rule:
+Rule:
     ID ':' #rule* #data_block #nested_rule* STRICT_END
     data:
         name: %1
         rule: %3
         data_block: %4
-        nestedRules: %5 
+        nested_rules: %5 
     ;
     #rule:
 
-        (( group | csequence | STRING | accessor | hex | bin | other ) qualifier?) | escaped | any | op | cll | LINEAR_COMMENT
+        group | name | CSEQUENCE | STRING | HEX | BIN | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
 
         data: 
             val: %1
             qualifier: %2
         ;
     ;
-    #other:
+    #name:
         '#'? ID ('.' ID)*
 
         data:
@@ -24,78 +24,75 @@
             nested_name: $1>%2
         ;
     ;
-    #op:
-        '|'
-    ;
-    #qualifier:
-        ('?' | '+' | '*')
-        data: $1;
-    ;
     #group:
-        ('&' method_call | ID )? '(' rule* ')'
+        ('&' ID )? '(' rule* ')'
 
         data: 
             variable: $1>%1
             val: %4
         ;
     ;
-    #csequence:
-        '[' '^'? &dt ( #escape | #SYMBOL | #diapason )* ']'
-        data:
-            _not: %2
-            val: dt
-        ;
-        #SYMBOL:
-            ('\\'   |   '\\]' |  [^\]])
-
-            data: $1; 
-        ;
-        #escape:
-            // some escape chars like \s, \d
-            '\\' \s0 (.)
-
-            data: $1;
-        ;
-        #diapason:
-            ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
-            data: [from, to];
-        ;
-    ;
-    #any:
-        '.'
+    #nested_rule: 
+        '#' \s0 (Rule)
+        data: $1;
     ;
     #data_block:
-        [\r\n]+ 'data' ':' any_data | #inclosed_map ';'
-        data: %4;
+        '{' any_data | #key+ '}'
+        data: %2;
 
-        #inclosed_map:
-            key+
-            data: %1;
-        ;
         #key:
-            [\n\r]+ &name(ID) ':' &dt (cll_ternary | expr)
+            [\n\r]+ &name(ID) ':' &dt (expr)
             data:
                 name: name
                 val: dt
             ;
         ;
     ;
-    #escaped:
+    #OP:
+        '|'
+    ;
+    #QUANITIFIER:
+        ('?' | '+' | '*')
+        data: $1;
+    ;
+
+    #CSEQUENCE:
+        '[' '^'? &dt ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
+        data:
+            _not: %2
+            val: dt
+        ;
+        #SYMBOL:
+            ('\\' | '\\]' |  [^\]])
+
+            data: $1; 
+        ;
+        #ESCAPE:
+            // some escape chars like \s, \d
+            '\\' \s0 (.)
+
+            data: $1;
+        ;
+        #DIAPASON:
+            ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
+            data: [from, to];
+        ;
+    ;
+    #ANY:
+        '.'
+    ;
+    #ESCAPED:
         '\\' \s0 (.) \s0 NUMBER?
         data:
             c: $1
             num: %3
         ;
     ;
-    #nested_rule: 
-        [\r\n]+ '#' \s0 (Rule)
-        data: $1;
-    ;
-    #hex:
+    #HEX:
         '0x' [0-9A-Fa-f]+
         data: %2;
     ;
-    #bin:
+    #BIN:
         '0b' [01]+
         data: %2;
     ;

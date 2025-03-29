@@ -1,14 +1,14 @@
 #include "Parser.h"
-std::string Parser::TokenstoString(Tokens token) {
+std::string Parser::TokensToString(Tokens token) {
 	switch (token) {
 		case Tokens::NONE: return "NONE";
-		case Tokens::OP: return "OP";
-		case Tokens::ASSIGNMENT_OP: return "ASSIGNMENT_OP";
-		case Tokens::COMPARE_OP: return "COMPARE_OP";
-		case Tokens::LOGICAL_OP: return "LOGICAL_OP";
-		case Tokens::LOGICAL_NOT: return "LOGICAL_NOT";
-		case Tokens::LOGICAL_AND: return "LOGICAL_AND";
-		case Tokens::LOGICAL_OR: return "LOGICAL_OR";
+		case Tokens::cll_OP: return "cll_OP";
+		case Tokens::cll_ASSIGNMENT_OP: return "cll_ASSIGNMENT_OP";
+		case Tokens::cll_COMPARE_OP: return "cll_COMPARE_OP";
+		case Tokens::cll_LOGICAL_OP: return "cll_LOGICAL_OP";
+		case Tokens::cll_LOGICAL_NOT: return "cll_LOGICAL_NOT";
+		case Tokens::cll_LOGICAL_AND: return "cll_LOGICAL_AND";
+		case Tokens::cll_LOGICAL_OR: return "cll_LOGICAL_OR";
 		case Tokens::STRING: return "STRING";
 		case Tokens::NUMBER: return "NUMBER";
 		case Tokens::BOOLEAN: return "BOOLEAN";
@@ -16,63 +16,49 @@ std::string Parser::TokenstoString(Tokens token) {
 		case Tokens::NEWLINE: return "NEWLINE";
 		case Tokens::LINEAR_COMMENT: return "LINEAR_COMMENT";
 		case Tokens::ID: return "ID";
-		case Tokens::Rule_csequence_SYMBOL: return "Rule_csequence_SYMBOL";
+		case Tokens::Rule_OP: return "Rule_OP";
+		case Tokens::Rule_QUANITIFIER: return "Rule_QUANITIFIER";
+		case Tokens::Rule_CSEQUENCE: return "Rule_CSEQUENCE";
+		case Tokens::Rule_CSEQUENCE_SYMBOL: return "Rule_CSEQUENCE_SYMBOL";
+		case Tokens::Rule_CSEQUENCE_ESCAPE: return "Rule_CSEQUENCE_ESCAPE";
+		case Tokens::Rule_CSEQUENCE_DIAPASON: return "Rule_CSEQUENCE_DIAPASON";
+		case Tokens::Rule_ANY: return "Rule_ANY";
+		case Tokens::Rule_ESCAPED: return "Rule_ESCAPED";
+		case Tokens::Rule_HEX: return "Rule_HEX";
+		case Tokens::Rule_BIN: return "Rule_BIN";
+		case Tokens::AUTO_0: return "AUTO_0";
 		case Tokens::AUTO_1: return "AUTO_1";
+		case Tokens::AUTO_2: return "AUTO_2";
 		case Tokens::AUTO_3: return "AUTO_3";
 		case Tokens::AUTO_4: return "AUTO_4";
-		case Tokens::AUTO_8: return "AUTO_8";
+		case Tokens::AUTO_5: return "AUTO_5";
+		case Tokens::AUTO_6: return "AUTO_6";
+		case Tokens::AUTO_7: return "AUTO_7";
 		case Tokens::AUTO_9: return "AUTO_9";
-		case Tokens::AUTO_10: return "AUTO_10";
-		case Tokens::AUTO_11: return "AUTO_11";
+		case Tokens::AUTO_14: return "AUTO_14";
 		case Tokens::AUTO_15: return "AUTO_15";
-		case Tokens::AUTO_17: return "AUTO_17";
-		case Tokens::AUTO_18: return "AUTO_18";
-		case Tokens::AUTO_19: return "AUTO_19";
-		case Tokens::AUTO_20: return "AUTO_20";
-		case Tokens::AUTO_21: return "AUTO_21";
 		case Tokens::AUTO_22: return "AUTO_22";
-		case Tokens::AUTO_23: return "AUTO_23";
-		case Tokens::AUTO_24: return "AUTO_24";
-		case Tokens::AUTO_25: return "AUTO_25";
-		case Tokens::AUTO_26: return "AUTO_26";
-		case Tokens::AUTO_39: return "AUTO_39";
+		case Tokens::AUTO_27: return "AUTO_27";
+		case Tokens::AUTO_28: return "AUTO_28";
+		case Tokens::AUTO_33: return "AUTO_33";
+		case Tokens::AUTO_35: return "AUTO_35";
 		case Tokens::AUTO_40: return "AUTO_40";
-		case Tokens::AUTO_41: return "AUTO_41";
+		case Tokens::AUTO_42: return "AUTO_42";
+		case Tokens::AUTO_43: return "AUTO_43";
+		case Tokens::AUTO_44: return "AUTO_44";
+		case Tokens::AUTO_45: return "AUTO_45";
+		case Tokens::AUTO_46: return "AUTO_46";
 		case Tokens::AUTO_47: return "AUTO_47";
+		case Tokens::AUTO_48: return "AUTO_48";
+		case Tokens::AUTO_51: return "AUTO_51";
 		case Tokens::AUTO_52: return "AUTO_52";
 		case Tokens::AUTO_53: return "AUTO_53";
+		case Tokens::AUTO_54: return "AUTO_54";
+		case Tokens::AUTO_55: return "AUTO_55";
+		case Tokens::AUTO_56: return "AUTO_56";
 		case Tokens::AUTO_57: return "AUTO_57";
-		case Tokens::AUTO_62: return "AUTO_62";
-		case Tokens::AUTO_63: return "AUTO_63";
-		case Tokens::AUTO_64: return "AUTO_64";
-		case Tokens::AUTO_65: return "AUTO_65";
-		case Tokens::AUTO_66: return "AUTO_66";
-		case Tokens::AUTO_67: return "AUTO_67";
-		case Tokens::AUTO_68: return "AUTO_68";
-		case Tokens::AUTO_69: return "AUTO_69";
-		case Tokens::AUTO_73: return "AUTO_73";
-		case Tokens::AUTO_74: return "AUTO_74";
-		case Tokens::AUTO_75: return "AUTO_75";
-		case Tokens::AUTO_76: return "AUTO_76";
-		case Tokens::AUTO_77: return "AUTO_77";
-		case Tokens::AUTO_78: return "AUTO_78";
-		case Tokens::AUTO_79: return "AUTO_79";
-		case Tokens::AUTO_80: return "AUTO_80";
-		case Tokens::AUTO_81: return "AUTO_81";
-		case Tokens::AUTO_82: return "AUTO_82";
-		case Tokens::AUTO_85: return "AUTO_85";
-		case Tokens::AUTO_86: return "AUTO_86";
-		case Tokens::AUTO_88: return "AUTO_88";
-		case Tokens::AUTO_90: return "AUTO_90";
-		case Tokens::AUTO_92: return "AUTO_92";
-		case Tokens::AUTO_93: return "AUTO_93";
-		case Tokens::AUTO_94: return "AUTO_94";
-		case Tokens::AUTO_95: return "AUTO_95";
-		case Tokens::AUTO_96: return "AUTO_96";
-		case Tokens::AUTO_97: return "AUTO_97";
-		case Tokens::AUTO_98: return "AUTO_98";
-		case Tokens::AUTO_99: return "AUTO_99";
-		case Tokens::AUTO_100: return "AUTO_100";
+		case Tokens::AUTO_58: return "AUTO_58";
+		case Tokens::AUTO_59: return "AUTO_59";
 		case Tokens::__WHITESPACE: return "__WHITESPACE";
 	}
 	return "NONE";
@@ -197,349 +183,181 @@ Parser::Token Parser::Tokenizator::makeToken() {
 	::Parser::bool_t success_115 = false;
 	::Parser::Token_res _116;
 	::Parser::bool_t success_117 = false;
-	::Parser::Token_res _118;
-	::Parser::bool_t success_119 = false;
-	::Parser::Token_res _120;
-	::Parser::bool_t success_121 = false;
-	::Parser::Token_res _122;
-	::Parser::bool_t success_123 = false;
-	::Parser::Token_res _124;
-	::Parser::bool_t success_125 = false;
-	::Parser::Token_res _126;
-	::Parser::bool_t success_127 = false;
-	::Parser::Token_res _128;
-	::Parser::bool_t success_129 = false;
-	::Parser::Token_res _130;
-	::Parser::bool_t success_131 = false;
-	::Parser::Token_res _132;
-	::Parser::bool_t success_133 = false;
-	::Parser::Token_res _134;
-	::Parser::bool_t success_135 = false;
-	::Parser::Token_res _136;
-	::Parser::bool_t success_137 = false;
-	::Parser::Token_res _138;
-	::Parser::bool_t success_139 = false;
-	::Parser::Token_res _140;
-	::Parser::bool_t success_141 = false;
-	::Parser::Token_res _142;
-	::Parser::bool_t success_143 = false;
-	::Parser::Token_res _144;
-	::Parser::bool_t success_145 = false;
-	_2 = OP(_in);
+	_2 = cll_OP(_in);
 	if (!(_2.status))
 	{
-		_4 = ASSIGNMENT_OP(_in);
+		_4 = cll_ASSIGNMENT_OP(_in);
 		if (!(_4.status))
 		{
-			_6 = COMPARE_OP(_in);
+			_6 = cll_COMPARE_OP(_in);
 			if (!(_6.status))
 			{
-				_8 = LOGICAL_OP(_in);
+				_8 = cll_LOGICAL_OP(_in);
 				if (!(_8.status))
 				{
-					_10 = LOGICAL_NOT(_in);
+					_10 = cll_LOGICAL_NOT(_in);
 					if (!(_10.status))
 					{
-						_12 = LOGICAL_AND(_in);
+						_12 = cll_LOGICAL_AND(_in);
 						if (!(_12.status))
 						{
-							_14 = LOGICAL_OR(_in);
+							_14 = cll_LOGICAL_OR(_in);
 							if (!(_14.status))
 							{
-								_16 = AUTO_63(_in);
+								_16 = AUTO_42(_in);
 								if (!(_16.status))
 								{
-									_18 = AUTO_8(_in);
+									_18 = AUTO_43(_in);
 									if (!(_18.status))
 									{
-										_20 = AUTO_64(_in);
+										_20 = AUTO_44(_in);
 										if (!(_20.status))
 										{
-											_22 = AUTO_65(_in);
+											_22 = AUTO_27(_in);
 											if (!(_22.status))
 											{
-												_24 = AUTO_18(_in);
+												_24 = AUTO_45(_in);
 												if (!(_24.status))
 												{
-													_26 = AUTO_10(_in);
+													_26 = AUTO_1(_in);
 													if (!(_26.status))
 													{
-														_28 = AUTO_15(_in);
+														_28 = AUTO_46(_in);
 														if (!(_28.status))
 														{
-															_30 = AUTO_40(_in);
+															_30 = AUTO_2(_in);
 															if (!(_30.status))
 															{
-																_32 = AUTO_66(_in);
+																_32 = AUTO_3(_in);
 																if (!(_32.status))
 																{
-																	_34 = AUTO_9(_in);
+																	_34 = AUTO_4(_in);
 																	if (!(_34.status))
 																	{
-																		_36 = AUTO_17(_in);
+																		_36 = AUTO_5(_in);
 																		if (!(_36.status))
 																		{
-																			_38 = AUTO_19(_in);
+																			_38 = AUTO_6(_in);
 																			if (!(_38.status))
 																			{
-																				_40 = AUTO_67(_in);
+																				_40 = AUTO_7(_in);
 																				if (!(_40.status))
 																				{
-																					_42 = AUTO_88(_in);
+																					_42 = AUTO_28(_in);
 																					if (!(_42.status))
 																					{
-																						_44 = AUTO_11(_in);
+																						_44 = AUTO_47(_in);
 																						if (!(_44.status))
 																						{
-																							_46 = AUTO_20(_in);
+																							_46 = LINEAR_COMMENT(_in);
 																							if (!(_46.status))
 																							{
-																								_48 = AUTO_21(_in);
+																								_48 = Rule_ESCAPED(_in);
 																								if (!(_48.status))
 																								{
-																									_50 = AUTO_22(_in);
+																									_50 = Rule_HEX(_in);
 																									if (!(_50.status))
 																									{
-																										_52 = AUTO_23(_in);
+																										_52 = Rule_BIN(_in);
 																										if (!(_52.status))
 																										{
-																											_54 = AUTO_24(_in);
+																											_54 = AUTO_9(_in);
 																											if (!(_54.status))
 																											{
-																												_56 = AUTO_25(_in);
+																												_56 = AUTO_14(_in);
 																												if (!(_56.status))
 																												{
-																													_58 = AUTO_41(_in);
+																													_58 = AUTO_15(_in);
 																													if (!(_58.status))
 																													{
-																														_60 = AUTO_68(_in);
+																														_60 = AUTO_22(_in);
 																														if (!(_60.status))
 																														{
-																															_62 = LINEAR_COMMENT(_in);
+																															_62 = Rule_OP(_in);
 																															if (!(_62.status))
 																															{
-																																_64 = AUTO_26(_in);
+																																_64 = AUTO_0(_in);
 																																if (!(_64.status))
 																																{
-																																	_66 = AUTO_39(_in);
+																																	_66 = AUTO_33(_in);
 																																	if (!(_66.status))
 																																	{
-																																		_68 = AUTO_52(_in);
+																																		_68 = AUTO_35(_in);
 																																		if (!(_68.status))
 																																		{
-																																			_70 = AUTO_53(_in);
+																																			_70 = AUTO_40(_in);
 																																			if (!(_70.status))
 																																			{
-																																				_72 = AUTO_93(_in);
+																																				_72 = AUTO_48(_in);
 																																				if (!(_72.status))
 																																				{
-																																					_74 = AUTO_97(_in);
+																																					_74 = AUTO_51(_in);
 																																					if (!(_74.status))
 																																					{
-																																						_76 = AUTO_99(_in);
+																																						_76 = AUTO_52(_in);
 																																						if (!(_76.status))
 																																						{
-																																							_78 = AUTO_1(_in);
+																																							_78 = AUTO_53(_in);
 																																							if (!(_78.status))
 																																							{
-																																								_80 = AUTO_3(_in);
+																																								_80 = AUTO_54(_in);
 																																								if (!(_80.status))
 																																								{
-																																									_82 = AUTO_4(_in);
+																																									_82 = AUTO_55(_in);
 																																									if (!(_82.status))
 																																									{
-																																										_84 = AUTO_47(_in);
+																																										_84 = AUTO_56(_in);
 																																										if (!(_84.status))
 																																										{
 																																											_86 = AUTO_57(_in);
 																																											if (!(_86.status))
 																																											{
-																																												_88 = AUTO_62(_in);
+																																												_88 = AUTO_59(_in);
 																																												if (!(_88.status))
 																																												{
-																																													_90 = AUTO_69(_in);
+																																													_90 = __WHITESPACE(_in);
 																																													if (!(_90.status))
 																																													{
-																																														_92 = AUTO_73(_in);
+																																														_92 = NUMBER(_in);
 																																														if (!(_92.status))
 																																														{
-																																															_94 = AUTO_74(_in);
+																																															_94 = END(_in);
 																																															if (!(_94.status))
 																																															{
-																																																_96 = AUTO_75(_in);
+																																																_96 = AUTO_58(_in);
 																																																if (!(_96.status))
 																																																{
-																																																	_98 = AUTO_76(_in);
+																																																	_98 = NEWLINE(_in);
 																																																	if (!(_98.status))
 																																																	{
-																																																		_100 = AUTO_77(_in);
+																																																		_100 = STRING(_in);
 																																																		if (!(_100.status))
 																																																		{
-																																																			_102 = AUTO_78(_in);
+																																																			_102 = BOOLEAN(_in);
 																																																			if (!(_102.status))
 																																																			{
-																																																				_104 = AUTO_79(_in);
+																																																				_104 = ID(_in);
 																																																				if (!(_104.status))
 																																																				{
-																																																					_106 = AUTO_80(_in);
+																																																					_106 = Rule_QUANITIFIER(_in);
 																																																					if (!(_106.status))
 																																																					{
-																																																						_108 = AUTO_81(_in);
+																																																						_108 = Rule_CSEQUENCE_SYMBOL(_in);
 																																																						if (!(_108.status))
 																																																						{
-																																																							_110 = AUTO_82(_in);
+																																																							_110 = Rule_CSEQUENCE_ESCAPE(_in);
 																																																							if (!(_110.status))
 																																																							{
-																																																								_112 = AUTO_85(_in);
+																																																								_112 = Rule_CSEQUENCE(_in);
 																																																								if (!(_112.status))
 																																																								{
-																																																									_114 = AUTO_86(_in);
+																																																									_114 = Rule_ANY(_in);
 																																																									if (!(_114.status))
 																																																									{
-																																																										_116 = AUTO_90(_in);
+																																																										_116 = Rule_CSEQUENCE_DIAPASON(_in);
 																																																										if (!(_116.status))
 																																																										{
-																																																											_118 = AUTO_92(_in);
-																																																											if (!(_118.status))
-																																																											{
-																																																												_120 = AUTO_96(_in);
-																																																												if (!(_120.status))
-																																																												{
-																																																													_122 = __WHITESPACE(_in);
-																																																													if (!(_122.status))
-																																																													{
-																																																														_124 = AUTO_98(_in);
-																																																														if (!(_124.status))
-																																																														{
-																																																															_126 = NUMBER(_in);
-																																																															if (!(_126.status))
-																																																															{
-																																																																_128 = END(_in);
-																																																																if (!(_128.status))
-																																																																{
-																																																																	_130 = AUTO_95(_in);
-																																																																	if (!(_130.status))
-																																																																	{
-																																																																		_132 = AUTO_100(_in);
-																																																																		if (!(_132.status))
-																																																																		{
-																																																																			_134 = NEWLINE(_in);
-																																																																			if (!(_134.status))
-																																																																			{
-																																																																				_136 = STRING(_in);
-																																																																				if (!(_136.status))
-																																																																				{
-																																																																					_138 = BOOLEAN(_in);
-																																																																					if (!(_138.status))
-																																																																					{
-																																																																						_140 = ID(_in);
-																																																																						if (!(_140.status))
-																																																																						{
-																																																																							_142 = Rule_csequence_SYMBOL(_in);
-																																																																							if (!(_142.status))
-																																																																							{
-																																																																								_144 = AUTO_94(_in);
-																																																																								if (!(_144.status))
-																																																																								{
-																																																																									return {};
-																																																																								}
-																																																																								else 
-																																																																								{
-																																																																									success_145 = true;
-																																																																									_in += _144.node.length();
-																																																																									_0 = _144.node;
-																																																																								}
-																																																																							}
-																																																																							else 
-																																																																							{
-																																																																								success_143 = true;
-																																																																								_in += _142.node.length();
-																																																																								_0 = _142.node;
-																																																																							}
-																																																																						}
-																																																																						else 
-																																																																						{
-																																																																							success_141 = true;
-																																																																							_in += _140.node.length();
-																																																																							_0 = _140.node;
-																																																																						}
-																																																																					}
-																																																																					else 
-																																																																					{
-																																																																						success_139 = true;
-																																																																						_in += _138.node.length();
-																																																																						_0 = _138.node;
-																																																																					}
-																																																																				}
-																																																																				else 
-																																																																				{
-																																																																					success_137 = true;
-																																																																					_in += _136.node.length();
-																																																																					_0 = _136.node;
-																																																																				}
-																																																																			}
-																																																																			else 
-																																																																			{
-																																																																				success_135 = true;
-																																																																				_in += _134.node.length();
-																																																																				_0 = _134.node;
-																																																																			}
-																																																																		}
-																																																																		else 
-																																																																		{
-																																																																			success_133 = true;
-																																																																			_in += _132.node.length();
-																																																																			_0 = _132.node;
-																																																																		}
-																																																																	}
-																																																																	else 
-																																																																	{
-																																																																		success_131 = true;
-																																																																		_in += _130.node.length();
-																																																																		_0 = _130.node;
-																																																																	}
-																																																																}
-																																																																else 
-																																																																{
-																																																																	success_129 = true;
-																																																																	_in += _128.node.length();
-																																																																	_0 = _128.node;
-																																																																}
-																																																															}
-																																																															else 
-																																																															{
-																																																																success_127 = true;
-																																																																_in += _126.node.length();
-																																																																_0 = _126.node;
-																																																															}
-																																																														}
-																																																														else 
-																																																														{
-																																																															success_125 = true;
-																																																															_in += _124.node.length();
-																																																															_0 = _124.node;
-																																																														}
-																																																													}
-																																																													else 
-																																																													{
-																																																														success_123 = true;
-																																																														_in += _122.node.length();
-																																																														_0 = _122.node;
-																																																													}
-																																																												}
-																																																												else 
-																																																												{
-																																																													success_121 = true;
-																																																													_in += _120.node.length();
-																																																													_0 = _120.node;
-																																																												}
-																																																											}
-																																																											else 
-																																																											{
-																																																												success_119 = true;
-																																																												_in += _118.node.length();
-																																																												_0 = _118.node;
-																																																											}
+																																																											return {};
 																																																										}
 																																																										else 
 																																																										{
@@ -950,364 +768,7 @@ Parser::Token Parser::Tokenizator::makeToken() {
 	ISPA_STD::skip_spaces(_in);
 	return _0;
 }
-Parser::Rule_res Parser::Parser::accessor_group(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == Tokens::AUTO_4))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::NUMBER))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos++;
-	accessor_group_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::accessor_group, data)};
-}
-Parser::Rule_res Parser::Parser::accessor_element(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == Tokens::AUTO_1))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::NUMBER))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos++;
-	accessor_element_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::accessor_element, data)};
-}
-Parser::Rule_res Parser::Parser::accessor_char(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == Tokens::AUTO_81))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::NUMBER))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos++;
-	accessor_char_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::accessor_char, data)};
-}
-Parser::Rule_res Parser::Parser::accessor_all(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	_2 = accessor_group(pos);
-	if (!(_2.status))
-	{
-		_4 = accessor_element(pos);
-		if (!(_4.status))
-		{
-			_6 = accessor_char(pos);
-			if (!(_6.status))
-			{
-				return {};
-			}
-			else 
-			{
-				success_7 = true;
-				std::advance(pos, _6.node.length());
-				_0 = _6.node;
-			}
-		}
-		else 
-		{
-			success_5 = true;
-			std::advance(pos, _4.node.length());
-			_0 = _4.node;
-		}
-	}
-	else 
-	{
-		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
-	}
-	success_1 = true;
-	accessor_all_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::accessor_all, data)};
-}
-Parser::Rule_res Parser::Parser::accessor(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Token> shadow_6;
-	::Parser::Rule_res _7;
-	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	_0 = accessor_all(pos);
-	if (!(_0.status))
-	{
-		return {};
-	}
-	success_1 = true;
-	std::advance(pos, _0.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_10 = pos;
-	while (1)
-	{
-		if (!(begin_10->name() == Tokens::AUTO_3))
-		{
-			break;
-		}
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		shadow_6.push_back(_4);
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_7 = accessor_all(begin_10);
-		if (!(_7.status))
-		{
-			break;
-		}
-		success_8 = true;
-		std::advance(begin_10, _7.node.length());
-		shadow_9.push_back(_7.node);
-	}
-	if (success_5 && success_8)
-	{
-		success_3 = true;
-		pos = begin_10;
-	}
-	accessor_data data;
-	data.second = shadow_9;
-	data.first = _0.node;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::accessor, data)};
-}
-Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_34 = false;
-	::Parser::arr_t<::Parser::Rule> _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Rule> _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Rule_res _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_10;
-	::Parser::Rule_res _11;
-	::Parser::bool_t success_12 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_13;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_16;
-	::Parser::Rule_res _17;
-	::Parser::bool_t success_18 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_19;
-	::Parser::Rule_res _20;
-	::Parser::bool_t success_21 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_22;
-	::Parser::Rule_res _23;
-	::Parser::bool_t success_24 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_25;
-	::Parser::Rule_res _26;
-	::Parser::bool_t success_27 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_28;
-	::Parser::Token _30;
-	::Parser::bool_t success_31 = false;
-	::Parser::arr_t<::Parser::Token> shadow_32;
-	if (!(pos->name() == Tokens::AUTO_4))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_33 = pos;
-	while (1)
-	{
-		auto begin_29 = begin_33;
-		_8 = cll_var(begin_29);
-		if (!(_8.status))
-		{
-			_11 = cll_if(begin_29);
-			if (!(_11.status))
-			{
-				_14 = expr(begin_29);
-				if (!(_14.status))
-				{
-					_17 = loop_while(begin_29);
-					if (!(_17.status))
-					{
-						_20 = loop_for(begin_29);
-						if (!(_20.status))
-						{
-							_23 = copiable_method_call(begin_29);
-							if (!(_23.status))
-							{
-								_26 = method_call(begin_29);
-								if (!(_26.status))
-								{
-									break;
-								}
-								else 
-								{
-									success_27 = true;
-									std::advance(begin_29, _26.node.length());
-									shadow_28.push_back(_26.node);
-									_6.push_back(_26.node);
-								}
-							}
-							else 
-							{
-								success_24 = true;
-								std::advance(begin_29, _23.node.length());
-								shadow_25.push_back(_23.node);
-								_6.push_back(_23.node);
-							}
-						}
-						else 
-						{
-							success_21 = true;
-							std::advance(begin_29, _20.node.length());
-							shadow_22.push_back(_20.node);
-							_6.push_back(_20.node);
-						}
-					}
-					else 
-					{
-						success_18 = true;
-						std::advance(begin_29, _17.node.length());
-						shadow_19.push_back(_17.node);
-						_6.push_back(_17.node);
-					}
-				}
-				else 
-				{
-					success_15 = true;
-					std::advance(begin_29, _14.node.length());
-					shadow_16.push_back(_14.node);
-					_6.push_back(_14.node);
-				}
-			}
-			else 
-			{
-				success_12 = true;
-				std::advance(begin_29, _11.node.length());
-				shadow_13.push_back(_11.node);
-				_6.push_back(_11.node);
-			}
-		}
-		else 
-		{
-			success_9 = true;
-			std::advance(begin_29, _8.node.length());
-			shadow_10.push_back(_8.node);
-			_6.push_back(_8.node);
-		}
-		success_7 = true;
-		_4 = _6;
-		if (success_7)
-		{
-			success_5 = true;
-			begin_33 = begin_29;
-		}
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		if (!(begin_33->name() == Tokens::END))
-		{
-			break;
-		}
-		_30 = *begin_33;
-		success_31 = true;
-		begin_33++;
-		shadow_32.push_back(_30);
-		success_34 = true;
-	}
-	if (!success_34)
-	{
-		return {};
-	}
-	if (success_5 && success_31)
-	{
-		success_3 = true;
-		pos = begin_33;
-	}
-	cll_data data = _4;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll, data)};
-}
-Parser::Rule_res Parser::Parser::cll_block(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::arr_t<::Parser::Token> shadow_4;
-	::Parser::Token _5;
-	::Parser::bool_t success_6 = false;
-	if (!(pos->name() == Tokens::AUTO_57))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	while (pos->name() == Tokens::AUTO_73)
-	{
-		_2 = *pos;
-		success_3 = true;
-		pos++;
-		shadow_4.push_back(_2);
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_62))
-	{
-		return {};
-	}
-	_5 = *pos;
-	success_6 = true;
-	pos++;
-	cll_block_data data = shadow_4;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_block, data)};
-}
-Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_OP(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1321,77 +782,17 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 	::Parser::bool_t success_9 = false;
 	::Parser::str_t _10;
 	::Parser::bool_t success_11 = false;
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::str_t _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::str_t _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::str_t _18;
-	::Parser::bool_t success_19 = false;
-	::Parser::str_t _20;
-	::Parser::bool_t success_21 = false;
-	if (!(!std::strncmp(pos, "<<", 2)))
+	if (!(*(pos + 0) == '+'))
 	{
-		if (!(!std::strncmp(pos, ">>", 2)))
+		if (!(*(pos + 0) == '-'))
 		{
-			if (!(*(pos + 0) == '+'))
+			if (!(*(pos + 0) == '*'))
 			{
-				if (!(*(pos + 0) == '-'))
+				if (!(*(pos + 0) == '/'))
 				{
-					if (!(*(pos + 0) == '*'))
+					if (!(*(pos + 0) == '%'))
 					{
-						if (!(*(pos + 0) == '/'))
-						{
-							if (!(*(pos + 0) == '%'))
-							{
-								if (!(*(pos + 0) == '&'))
-								{
-									if (!(*(pos + 0) == '|'))
-									{
-										if (!(*(pos + 0) == '^'))
-										{
-											return {};
-										}
-										else 
-										{
-											_20 += ::Parser::str_t(pos, 1);
-											success_21 = true;
-											pos += 1;
-											_0 += _20;
-										}
-									}
-									else 
-									{
-										_18 += ::Parser::str_t(pos, 1);
-										success_19 = true;
-										pos += 1;
-										_0 += _18;
-									}
-								}
-								else 
-								{
-									_16 += ::Parser::str_t(pos, 1);
-									success_17 = true;
-									pos += 1;
-									_0 += _16;
-								}
-							}
-							else 
-							{
-								_14 += ::Parser::str_t(pos, 1);
-								success_15 = true;
-								pos += 1;
-								_0 += _14;
-							}
-						}
-						else 
-						{
-							_12 += ::Parser::str_t(pos, 1);
-							success_13 = true;
-							pos += 1;
-							_0 += _12;
-						}
+						return {};
 					}
 					else 
 					{
@@ -1419,47 +820,47 @@ Parser::Token_res Parser::Tokenizator::OP(const char* pos) {
 		}
 		else 
 		{
-			_4 += ::Parser::str_t(pos, 2);
+			_4 += ::Parser::str_t(pos, 1);
 			success_5 = true;
-			pos += 2;
+			pos += 1;
 			_0 += _4;
 		}
 	}
 	else 
 	{
-		_2 += ::Parser::str_t(pos, 2);
+		_2 += ::Parser::str_t(pos, 1);
 		success_3 = true;
-		pos += 2;
+		pos += 1;
 		_0 += _2;
 	}
 	success_1 = true;
-	OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::OP, data)};
+	cll_OP_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::ASSIGNMENT_OP(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_ASSIGNMENT_OP(const char* pos) {
 	auto in = pos;
 	::Parser::Token_res _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token_res _2;
+	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	_0 = OP(pos);
+	_0 = cll_OP(pos);
 	if (_0.status)
 	{
 		success_1 = true;
 		pos += _0.node.length();
 	}
 	ISPA_STD::skip_spaces(pos);
-	_2 = AUTO_47(pos);
-	if (!(_2.status))
+	if (!(*(pos + 0) == '='))
 	{
 		return {};
 	}
+	_2 += ::Parser::str_t(pos, 1);
 	success_3 = true;
-	pos += _2.node.length();
-	ASSIGNMENT_OP_data data = _0.node;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::ASSIGNMENT_OP, data)};
+	pos += 1;
+	cll_ASSIGNMENT_OP_data data = _0.node;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_ASSIGNMENT_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_COMPARE_OP(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1537,10 +938,10 @@ Parser::Token_res Parser::Tokenizator::COMPARE_OP(const char* pos) {
 		_0 += _2;
 	}
 	success_1 = true;
-	COMPARE_OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::COMPARE_OP, data)};
+	cll_COMPARE_OP_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_COMPARE_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_LOGICAL_OP(const char* pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -1548,10 +949,10 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Token_res _4;
 	::Parser::bool_t success_5 = false;
-	_2 = LOGICAL_AND(pos);
+	_2 = cll_LOGICAL_AND(pos);
 	if (!(_2.status))
 	{
-		_4 = LOGICAL_OR(pos);
+		_4 = cll_LOGICAL_OR(pos);
 		if (!(_4.status))
 		{
 			return {};
@@ -1570,10 +971,10 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OP(const char* pos) {
 		_0 = _2.node;
 	}
 	success_1 = true;
-	LOGICAL_OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::LOGICAL_OP, data)};
+	cll_LOGICAL_OP_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_LOGICAL_OP, data)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_LOGICAL_NOT(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1603,9 +1004,9 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_NOT(const char* pos) {
 		_0 += _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::LOGICAL_NOT)};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_LOGICAL_NOT)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_LOGICAL_AND(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1635,9 +1036,9 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_AND(const char* pos) {
 		_0 += _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::LOGICAL_AND)};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_LOGICAL_AND)};
 }
-Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* pos) {
+Parser::Token_res Parser::Tokenizator::cll_LOGICAL_OR(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1667,276 +1068,9 @@ Parser::Token_res Parser::Tokenizator::LOGICAL_OR(const char* pos) {
 		_0 += _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::LOGICAL_OR)};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::cll_LOGICAL_OR)};
 }
-Parser::Rule_res Parser::Parser::cll_template(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Token> shadow_6;
-	::Parser::Rule_res _7;
-	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	_0 = cll_type(pos);
-	if (!(_0.status))
-	{
-		return {};
-	}
-	success_1 = true;
-	std::advance(pos, _0.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_10 = pos;
-	while (1)
-	{
-		if (!(begin_10->name() == Tokens::AUTO_69))
-		{
-			break;
-		}
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		shadow_6.push_back(_4);
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_7 = cll_type(begin_10);
-		if (!(_7.status))
-		{
-			break;
-		}
-		success_8 = true;
-		std::advance(begin_10, _7.node.length());
-		shadow_9.push_back(_7.node);
-	}
-	if (success_5 && success_8)
-	{
-		success_3 = true;
-		pos = begin_10;
-	}
-	cll_template_data data;
-	data.second = shadow_9;
-	data.first = _0.node;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_template, data)};
-}
-Parser::Rule_res Parser::Parser::cll_csupport_types(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::any_t _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::any_t _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::any_t _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Token _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Token _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::Token _16;
-	::Parser::bool_t success_17 = false;
-	::Parser::bool_t success_19 = false;
-	::Parser::Token _20;
-	::Parser::bool_t success_21 = false;
-	::Parser::Token _22;
-	::Parser::bool_t success_23 = false;
-	::Parser::any_t _27;
-	::Parser::bool_t success_28 = false;
-	::Parser::any_t _29;
-	::Parser::bool_t success_30 = false;
-	::Parser::Token _31;
-	::Parser::bool_t success_32 = false;
-	::Parser::Token _33;
-	::Parser::bool_t success_34 = false;
-	::Parser::bool_t success_36 = false;
-	::Parser::Token _37;
-	::Parser::bool_t success_38 = false;
-	::Parser::Token _39;
-	::Parser::bool_t success_40 = false;
-	auto begin_26 = pos;
-	do
-	{
-		if (begin_26->name() == Tokens::AUTO_8)
-		{
-			_4 = *begin_26;
-			success_5 = true;
-			begin_26++;
-		}
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		auto begin_25 = begin_26;
-		if (!(begin_25->name() == Tokens::AUTO_9))
-		{
-			if (!(begin_25->name() == Tokens::AUTO_10))
-			{
-				if (!(begin_25->name() == Tokens::AUTO_11))
-				{
-					if (!(begin_25->name() == Tokens::AUTO_17))
-					{
-						auto begin_24 = begin_25;
-						do
-						{
-							if (!(begin_24->name() == Tokens::AUTO_17))
-							{
-								break;
-							}
-							_20 = *begin_24;
-							success_21 = true;
-							begin_24++;
-							ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-							if (!(begin_24->name() == Tokens::AUTO_17))
-							{
-								break;
-							}
-							_22 = *begin_24;
-							success_23 = true;
-							begin_24++;
-						}
-						while(0)
-;
-						if (success_21 && success_23)
-						{
-							success_19 = true;
-							begin_25 = begin_24;
-						}
-						;
-						if (!success_19)
-						{
-							break;
-						}
-					}
-					else 
-					{
-						_16 = *begin_25;
-						success_17 = true;
-						std::advance(begin_25, 1);
-						_8 = _16;
-					}
-				}
-				else 
-				{
-					_14 = *begin_25;
-					success_15 = true;
-					std::advance(begin_25, 1);
-					_8 = _14;
-				}
-			}
-			else 
-			{
-				_12 = *begin_25;
-				success_13 = true;
-				begin_25++;
-				_8 = _12;
-			}
-		}
-		else 
-		{
-			_10 = *begin_25;
-			success_11 = true;
-			begin_25++;
-			_8 = _10;
-		}
-		success_9 = true;
-		if (success_9)
-		{
-			success_7 = true;
-			begin_26 = begin_25;
-		}
-	}
-	while(0)
-;
-	if (success_7)
-	{
-		success_3 = true;
-		pos = begin_26;
-	}
-	;
-	if (!success_3)
-	{
-		auto begin_42 = pos;
-		do
-		{
-			if (!(begin_42->name() == Tokens::AUTO_15))
-			{
-				if (!(begin_42->name() == Tokens::AUTO_18))
-				{
-					auto begin_41 = begin_42;
-					do
-					{
-						if (!(begin_41->name() == Tokens::AUTO_17))
-						{
-							break;
-						}
-						_37 = *begin_41;
-						success_38 = true;
-						begin_41++;
-						ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-						if (!(begin_41->name() == Tokens::AUTO_18))
-						{
-							break;
-						}
-						_39 = *begin_41;
-						success_40 = true;
-						begin_41++;
-					}
-					while(0)
-;
-					if (success_38 && success_40)
-					{
-						success_36 = true;
-						begin_42 = begin_41;
-					}
-					;
-					if (!success_36)
-					{
-						break;
-					}
-				}
-				else 
-				{
-					_33 = *begin_42;
-					success_34 = true;
-					std::advance(begin_42, 1);
-					_29 = _33;
-				}
-			}
-			else 
-			{
-				_31 = *begin_42;
-				success_32 = true;
-				std::advance(begin_42, 1);
-				_29 = _31;
-			}
-			success_30 = true;
-		}
-		while(0)
-;
-		if (success_30)
-		{
-			success_28 = true;
-			pos = begin_42;
-		}
-		;
-		if (!success_28)
-		{
-			return {};
-		}
-		else 
-		{
-			_0 = _27;
-		}
-	}
-	success_1 = true;
-	cll_csupport_types_data data;
-	data.templ = _20;
-	data.type = _4;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_csupport_types, data)};
-}
-Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_type(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::any_t _0;
 	::Parser::bool_t success_1 = false;
@@ -1963,28 +1097,28 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 	::Parser::Rule_res _25;
 	::Parser::bool_t success_26 = false;
 	auto begin_28 = pos;
-	if (!(begin_28->name() == Tokens::AUTO_19))
+	if (!(begin_28->name() == Tokens::AUTO_1))
 	{
-		if (!(begin_28->name() == Tokens::AUTO_20))
+		if (!(begin_28->name() == Tokens::AUTO_2))
 		{
-			if (!(begin_28->name() == Tokens::AUTO_21))
+			if (!(begin_28->name() == Tokens::AUTO_3))
 			{
-				if (!(begin_28->name() == Tokens::AUTO_22))
+				if (!(begin_28->name() == Tokens::AUTO_4))
 				{
-					if (!(begin_28->name() == Tokens::AUTO_23))
+					if (!(begin_28->name() == Tokens::AUTO_5))
 					{
 						auto begin_20 = begin_28;
 						do
 						{
-							if (!(begin_20->name() == Tokens::AUTO_24))
+							if (!(begin_20->name() == Tokens::AUTO_6))
 							{
-								return {};
+								break;
 							}
 							_16 = *begin_20;
 							success_17 = true;
 							begin_20++;
 							ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-							_18 = cll_template(begin_20);
+							_18 = cll_cll_template(begin_20);
 							if (!(_18.status))
 							{
 								break;
@@ -2005,7 +1139,7 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 							auto begin_27 = begin_28;
 							do
 							{
-								if (!(begin_27->name() == Tokens::AUTO_25))
+								if (!(begin_27->name() == Tokens::AUTO_7))
 								{
 									break;
 								}
@@ -2013,10 +1147,10 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 								success_24 = true;
 								begin_27++;
 								ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-								_25 = cll_template(begin_27);
+								_25 = cll_cll_template(begin_27);
 								if (!(_25.status))
 								{
-									return {};
+									break;
 								}
 								success_26 = true;
 								std::advance(begin_27, _25.node.length());
@@ -2080,44 +1214,62 @@ Parser::Rule_res Parser::Parser::cll_type_abstract(::Parser::arr_t<Token>::itera
 		success_1 = true;
 		pos = begin_28;
 	}
-	cll_type_abstract_data data;
+	cll_type_data data;
 	data.templ = _23;
 	data.type = _16;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_type_abstract, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_type, data)};
 }
-Parser::Rule_res Parser::Parser::cll_type(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_cll_template(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
-	::Parser::Rule _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
+	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	_2 = cll_csupport_types(pos);
-	if (!(_2.status))
+	::Parser::arr_t<::Parser::Token> shadow_6;
+	::Parser::Rule_res _7;
+	::Parser::bool_t success_8 = false;
+	::Parser::arr_t<::Parser::Rule> shadow_9;
+	_0 = cll_type(pos);
+	if (!(_0.status))
 	{
-		_4 = cll_type_abstract(pos);
-		if (!(_4.status))
-		{
-			return {};
-		}
-		else 
-		{
-			success_5 = true;
-			std::advance(pos, _4.node.length());
-			_0 = _4.node;
-		}
-	}
-	else 
-	{
-		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
+		return {};
 	}
 	success_1 = true;
-	cll_type_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_type, data)};
+	std::advance(pos, _0.node.length());
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_10 = pos;
+	while (1)
+	{
+		if (!(begin_10->name() == Tokens::AUTO_48))
+		{
+			break;
+		}
+		_4 = *begin_10;
+		success_5 = true;
+		begin_10++;
+		shadow_6.push_back(_4);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		_7 = cll_type(begin_10);
+		if (!(_7.status))
+		{
+			break;
+		}
+		success_8 = true;
+		std::advance(begin_10, _7.node.length());
+		shadow_9.push_back(_7.node);
+	}
+	if (success_5 && success_8)
+	{
+		success_3 = true;
+		pos = begin_10;
+	}
+	cll_cll_template_data data;
+	data.second = shadow_9;
+	data.first = _0.node;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_cll_template, data)};
 }
 Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
@@ -2127,7 +1279,7 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::bool_t success_3 = false;
 	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_26))
+	if (!(pos->name() == Tokens::AUTO_9))
 	{
 		return {};
 	}
@@ -2135,7 +1287,7 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = expr(pos);
+	_2 = cll_expr(pos);
 	if (!(_2.status))
 	{
 		return {};
@@ -2156,391 +1308,154 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::arr_t<Token>::iterator pos) {
 
 	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_if, data)};
 }
-Parser::Rule_res Parser::Parser::cll_ternary(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_variable(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
-	::Parser::Rule_res _0;
+	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
+	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
 	::Parser::Token _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::Rule_res _8;
-	::Parser::bool_t success_9 = false;
-	_0 = expr(pos);
-	if (!(_0.status))
+	::Parser::Token _9;
+	::Parser::bool_t success_10 = false;
+	::Parser::bool_t success_12 = false;
+	::Parser::Token _13;
+	::Parser::bool_t success_14 = false;
+	::Parser::Rule_res _15;
+	::Parser::bool_t success_16 = false;
+	::Parser::Token _17;
+	::Parser::bool_t success_18 = false;
+	::Parser::Token _20;
+	::Parser::bool_t success_21 = false;
+	::Parser::Token _22;
+	::Parser::bool_t success_23 = false;
+	::Parser::Token _24;
+	::Parser::bool_t success_25 = false;
+	::Parser::Token _26;
+	::Parser::bool_t success_27 = false;
+	auto begin_8 = pos;
+	do
 	{
-		return {};
-	}
-	success_1 = true;
-	std::advance(pos, _0.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_74))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_4 = expr(pos);
-	if (!(_4.status))
-	{
-		return {};
-	}
-	success_5 = true;
-	std::advance(pos, _4.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_92))
-	{
-		return {};
-	}
-	_6 = *pos;
-	success_7 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_8 = expr(pos);
-	if (!(_8.status))
-	{
-		return {};
-	}
-	success_9 = true;
-	std::advance(pos, _8.node.length());
-	cll_ternary_data data;
-	data.second = _8.node;
-	data.first = _4.node;
-	data.cond = _0.node;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_ternary, data)};
-}
-Parser::Rule_res Parser::Parser::expr_logical(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Rule _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Rule_res _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
-	::Parser::Rule_res _16;
-	::Parser::bool_t success_17 = false;
-	_2 = expr_compare(pos);
-	if (!(_2.status))
-	{
-		_4 = expr_arithmetic(pos);
-		if (!(_4.status))
+		if (!(begin_8->name() == Tokens::AUTO_14))
 		{
-			_6 = expr_for_arithmetic(pos);
-			if (!(_6.status))
+			if (!(begin_8->name() == Tokens::AUTO_15))
 			{
-				return {};
+				break;
 			}
 			else 
 			{
+				_6 = *begin_8;
 				success_7 = true;
-				std::advance(pos, _6.node.length());
-				_0 = _6.node;
+				begin_8++;
+				_2 = _6;
 			}
 		}
 		else 
 		{
+			_4 = *begin_8;
 			success_5 = true;
-			std::advance(pos, _4.node.length());
-			_0 = _4.node;
+			begin_8++;
+			_2 = _4;
 		}
-	}
-	else 
-	{
 		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
+		_0 = _2;
 	}
-	success_1 = true;
+	while(0)
+;
+	if (success_3)
+	{
+		success_1 = true;
+		pos = begin_8;
+	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::LOGICAL_OP))
+	if (!(pos->name() == Tokens::ID))
 	{
 		return {};
 	}
-	_8 = *pos;
-	success_9 = true;
+	_9 = *pos;
+	success_10 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_12 = expr_compare(pos);
-	if (!(_12.status))
+	auto begin_19 = pos;
+	do
 	{
-		_14 = expr_arithmetic(pos);
-		if (!(_14.status))
-		{
-			_16 = expr_for_arithmetic(pos);
-			if (!(_16.status))
-			{
-				return {};
-			}
-			else 
-			{
-				success_17 = true;
-				std::advance(pos, _16.node.length());
-				_10 = _16.node;
-			}
-		}
-		else 
-		{
-			success_15 = true;
-			std::advance(pos, _14.node.length());
-			_10 = _14.node;
-		}
-	}
-	else 
-	{
-		success_13 = true;
-		std::advance(pos, _12.node.length());
-		_10 = _12.node;
-	}
-	success_11 = true;
-	expr_logical_data data;
-	data.right = _10;
-	data.op = _8;
-	data.left = _0;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_logical, data)};
-}
-Parser::Rule_res Parser::Parser::expr_compare(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Token> shadow_6;
-	::Parser::Rule_res _7;
-	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	_0 = expr_arithmetic(pos);
-	if (!(_0.status))
-	{
-		return {};
-	}
-	success_1 = true;
-	std::advance(pos, _0.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_10 = pos;
-	while (1)
-	{
-		if (!(begin_10->name() == Tokens::COMPARE_OP))
+		if (!(begin_19->name() == Tokens::AUTO_33))
 		{
 			break;
 		}
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		shadow_6.push_back(_4);
+		_13 = *begin_19;
+		success_14 = true;
+		begin_19++;
 		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_7 = expr_arithmetic(begin_10);
-		if (!(_7.status))
+		_15 = cll_expr(begin_19);
+		if (!(_15.status))
 		{
 			break;
 		}
-		success_8 = true;
-		std::advance(begin_10, _7.node.length());
-		shadow_9.push_back(_7.node);
-		success_11 = true;
-	}
-	if (!success_11)
-	{
-		return {};
-	}
-	if (success_5 && success_8)
-	{
-		success_3 = true;
-		pos = begin_10;
-	}
-	expr_compare_data data;
-	data.sequence = shadow_9;
-	data.operators = shadow_6;
-	data.first = _0.node;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_compare, data)};
-}
-Parser::Rule_res Parser::Parser::expr_arithmetic(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Token> shadow_6;
-	::Parser::Rule_res _7;
-	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	_0 = expr_for_arithmetic(pos);
-	if (!(_0.status))
-	{
-		return {};
-	}
-	success_1 = true;
-	std::advance(pos, _0.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_10 = pos;
-	while (1)
-	{
-		if (!(begin_10->name() == Tokens::OP))
-		{
-			break;
-		}
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		shadow_6.push_back(_4);
+		success_16 = true;
+		std::advance(begin_19, _15.node.length());
 		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_7 = expr_for_arithmetic(begin_10);
-		if (!(_7.status))
+		if (!(begin_19->name() == Tokens::AUTO_35))
 		{
 			break;
 		}
-		success_8 = true;
-		std::advance(begin_10, _7.node.length());
-		shadow_9.push_back(_7.node);
-		success_11 = true;
+		_17 = *begin_19;
+		success_18 = true;
+		begin_19++;
 	}
-	if (!success_11)
+	while(0)
+;
+	if (success_14 && success_16 && success_18)
 	{
-		return {};
+		success_12 = true;
+		pos = begin_19;
 	}
-	if (success_5 && success_8)
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_28 = pos;
+	do
 	{
-		success_3 = true;
-		pos = begin_10;
+		if (!(begin_28->name() == Tokens::AUTO_14))
+		{
+			if (!(begin_28->name() == Tokens::AUTO_15))
+			{
+				break;
+			}
+			else 
+			{
+				_26 = *begin_28;
+				success_27 = true;
+				begin_28++;
+				_22 = _26;
+			}
+		}
+		else 
+		{
+			_24 = *begin_28;
+			success_25 = true;
+			begin_28++;
+			_22 = _24;
+		}
+		success_23 = true;
+		_20 = _22;
 	}
-	expr_arithmetic_data data;
-	data.sequence = shadow_9;
-	data.operators = shadow_6;
-	data.first = _0.node;
+	while(0)
+;
+	if (success_23)
+	{
+		success_21 = true;
+		pos = begin_28;
+	}
+	cll_variable_data data;
+	data.post = _20;
+	data.pre = _0;
+	data.brace_expression = _15.node;
+	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_arithmetic, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_variable, data)};
 }
-Parser::Rule_res Parser::Parser::expr_for_arithmetic(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Rule_res _8;
-	::Parser::bool_t success_9 = false;
-	_2 = expr_group(pos);
-	if (!(_2.status))
-	{
-		_4 = cll_function_call(pos);
-		if (!(_4.status))
-		{
-			_6 = method_call(pos);
-			if (!(_6.status))
-			{
-				_8 = any_data(pos);
-				if (!(_8.status))
-				{
-					return {};
-				}
-				else 
-				{
-					success_9 = true;
-					std::advance(pos, _8.node.length());
-					_0 = _8.node;
-				}
-			}
-			else 
-			{
-				success_7 = true;
-				std::advance(pos, _6.node.length());
-				_0 = _6.node;
-			}
-		}
-		else 
-		{
-			success_5 = true;
-			std::advance(pos, _4.node.length());
-			_0 = _4.node;
-		}
-	}
-	else 
-	{
-		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
-	}
-	success_1 = true;
-	expr_for_arithmetic_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_for_arithmetic, data)};
-}
-Parser::Rule_res Parser::Parser::expr_group(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	if (!(pos->name() == Tokens::AUTO_78))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_4 = cll_ternary(pos);
-	if (!(_4.status))
-	{
-		_6 = expr(pos);
-		if (!(_6.status))
-		{
-			return {};
-		}
-		else 
-		{
-			success_7 = true;
-			std::advance(pos, _6.node.length());
-			_2 = _6.node;
-		}
-	}
-	else 
-	{
-		success_5 = true;
-		std::advance(pos, _4.node.length());
-		_2 = _4.node;
-	}
-	success_3 = true;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
-	{
-		return {};
-	}
-	_8 = *pos;
-	success_9 = true;
-	pos++;
-	expr_group_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_group, data)};
-}
-Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_function_body_call(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -2548,7 +1463,7 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_78))
+	if (!(pos->name() == Tokens::AUTO_53))
 	{
 		return {};
 	}
@@ -2556,7 +1471,7 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = copiable_method_call(pos);
+	_2 = cll_function_arguments(pos);
 	if (!(_2.status))
 	{
 		return {};
@@ -2564,110 +1479,17 @@ Parser::Rule_res Parser::Parser::expr_expr_copiable_method_call(::Parser::arr_t<
 	success_3 = true;
 	std::advance(pos, _2.node.length());
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
+	if (!(pos->name() == Tokens::AUTO_54))
 	{
 		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
 	pos++;
-	expr_expr_copiable_method_call_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr_expr_copiable_method_call, data)};
+	cll_function_body_call_data data = _2.node;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_body_call, data)};
 }
-Parser::Rule_res Parser::Parser::expr(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Rule_res _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Rule_res _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Rule_res _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Rule_res _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
-	_2 = expr_logical(pos);
-	if (!(_2.status))
-	{
-		_4 = expr_compare(pos);
-		if (!(_4.status))
-		{
-			_6 = expr_arithmetic(pos);
-			if (!(_6.status))
-			{
-				_8 = expr_group(pos);
-				if (!(_8.status))
-				{
-					_10 = expr_expr_copiable_method_call(pos);
-					if (!(_10.status))
-					{
-						_12 = cll_function_call(pos);
-						if (!(_12.status))
-						{
-							_14 = any_data(pos);
-							if (!(_14.status))
-							{
-								return {};
-							}
-							else 
-							{
-								success_15 = true;
-								std::advance(pos, _14.node.length());
-								_0 = _14.node;
-							}
-						}
-						else 
-						{
-							success_13 = true;
-							std::advance(pos, _12.node.length());
-							_0 = _12.node;
-						}
-					}
-					else 
-					{
-						success_11 = true;
-						std::advance(pos, _10.node.length());
-						_0 = _10.node;
-					}
-				}
-				else 
-				{
-					success_9 = true;
-					std::advance(pos, _8.node.length());
-					_0 = _8.node;
-				}
-			}
-			else 
-			{
-				success_7 = true;
-				std::advance(pos, _6.node.length());
-				_0 = _6.node;
-			}
-		}
-		else 
-		{
-			success_5 = true;
-			std::advance(pos, _4.node.length());
-			_0 = _4.node;
-		}
-	}
-	else 
-	{
-		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
-	}
-	success_1 = true;
-	expr_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::expr, data)};
-}
-Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_function_body_decl(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -2675,7 +1497,7 @@ Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iter
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_78))
+	if (!(pos->name() == Tokens::AUTO_53))
 	{
 		return {};
 	}
@@ -2683,7 +1505,7 @@ Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iter
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = function_arguments(pos);
+	_2 = cll_function_parameters(pos);
 	if (!(_2.status))
 	{
 		return {};
@@ -2691,51 +1513,17 @@ Parser::Rule_res Parser::Parser::function_body_call(::Parser::arr_t<Token>::iter
 	success_3 = true;
 	std::advance(pos, _2.node.length());
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
+	if (!(pos->name() == Tokens::AUTO_54))
 	{
 		return {};
 	}
 	_4 = *pos;
 	success_5 = true;
 	pos++;
-	function_body_call_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::function_body_call, data)};
+	cll_function_body_decl_data data = _2.node;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_body_decl, data)};
 }
-Parser::Rule_res Parser::Parser::function_body_decl(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_78))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = function_parameters(pos);
-	if (!(_2.status))
-	{
-		return {};
-	}
-	success_3 = true;
-	std::advance(pos, _2.node.length());
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
-	{
-		return {};
-	}
-	_4 = *pos;
-	success_5 = true;
-	pos++;
-	function_body_decl_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::function_body_decl, data)};
-}
-Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_function_arguments(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
 	::Parser::any_t _2;
@@ -2779,7 +1567,7 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 	auto begin_15 = begin_17;
 	while (1)
 	{
-		if (!(begin_15->name() == Tokens::AUTO_69))
+		if (!(begin_15->name() == Tokens::AUTO_48))
 		{
 			break;
 		}
@@ -2805,13 +1593,13 @@ Parser::Rule_res Parser::Parser::function_arguments(::Parser::arr_t<Token>::iter
 		success_1 = true;
 		pos = begin_17;
 	}
-	function_arguments_data data;
+	cll_function_arguments_data data;
 	data.second = shadow_16;
 	data.first = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::function_arguments, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_arguments, data)};
 }
-Parser::Rule_res Parser::Parser::function_parameters(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_function_parameters(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
 	::Parser::Token _2;
@@ -2835,7 +1623,7 @@ Parser::Rule_res Parser::Parser::function_parameters(::Parser::arr_t<Token>::ite
 	auto begin_12 = begin_13;
 	while (1)
 	{
-		if (!(begin_12->name() == Tokens::AUTO_69))
+		if (!(begin_12->name() == Tokens::AUTO_48))
 		{
 			break;
 		}
@@ -2863,13 +1651,13 @@ Parser::Rule_res Parser::Parser::function_parameters(::Parser::arr_t<Token>::ite
 		success_1 = true;
 		pos = begin_13;
 	}
-	function_parameters_data data;
+	cll_function_parameters_data data;
 	data.second = shadow_11;
 	data.first = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::function_parameters, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_parameters, data)};
 }
-Parser::Rule_res Parser::Parser::cll_function_call(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_cll_function_call(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -2883,20 +1671,20 @@ Parser::Rule_res Parser::Parser::cll_function_call(::Parser::arr_t<Token>::itera
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = function_body_call(pos);
+	_2 = cll_function_body_call(pos);
 	if (!(_2.status))
 	{
 		return {};
 	}
 	success_3 = true;
 	std::advance(pos, _2.node.length());
-	cll_function_call_data data;
+	cll_cll_function_call_data data;
 	data.body = _2.node;
 	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_call, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_cll_function_call, data)};
 }
-Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_function_decl(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -2912,7 +1700,7 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 	::Parser::bool_t success_11 = false;
 	::Parser::Rule_res _12;
 	::Parser::bool_t success_13 = false;
-	if (!(pos->name() == Tokens::AUTO_39))
+	if (!(pos->name() == Tokens::AUTO_22))
 	{
 		return {};
 	}
@@ -2940,7 +1728,7 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 		pos = begin_8;
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_9 = function_body_decl(pos);
+	_9 = cll_function_body_decl(pos);
 	if (!(_9.status))
 	{
 		return {};
@@ -2967,22 +1755,295 @@ Parser::Rule_res Parser::Parser::function_decl(::Parser::arr_t<Token>::iterator 
 		success_11 = true;
 		pos = begin_14;
 	}
-	function_decl_data data;
+	cll_function_decl_data data;
 	data.value = val;
 	data.name = _2;
 	data.type = shadow_6;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::function_decl, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_decl, data)};
 }
-Parser::Rule_res Parser::Parser::loop_while(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_expr_logical(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
-	::Parser::Token _0;
+	::Parser::Rule _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
 	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_40))
+	::Parser::Rule_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Token _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::Rule _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::Rule_res _12;
+	::Parser::bool_t success_13 = false;
+	::Parser::Rule_res _14;
+	::Parser::bool_t success_15 = false;
+	::Parser::Rule_res _16;
+	::Parser::bool_t success_17 = false;
+	_2 = cll_expr_compare(pos);
+	if (!(_2.status))
+	{
+		_4 = cll_expr_arithmetic(pos);
+		if (!(_4.status))
+		{
+			_6 = cll_expr_value(pos);
+			if (!(_6.status))
+			{
+				return {};
+			}
+			else 
+			{
+				success_7 = true;
+				std::advance(pos, _6.node.length());
+				_0 = _6.node;
+			}
+		}
+		else 
+		{
+			success_5 = true;
+			std::advance(pos, _4.node.length());
+			_0 = _4.node;
+		}
+	}
+	else 
+	{
+		success_3 = true;
+		std::advance(pos, _2.node.length());
+		_0 = _2.node;
+	}
+	success_1 = true;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::cll_LOGICAL_OP))
+	{
+		return {};
+	}
+	_8 = *pos;
+	success_9 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	_12 = cll_expr_compare(pos);
+	if (!(_12.status))
+	{
+		_14 = cll_expr_arithmetic(pos);
+		if (!(_14.status))
+		{
+			_16 = cll_expr_value(pos);
+			if (!(_16.status))
+			{
+				return {};
+			}
+			else 
+			{
+				success_17 = true;
+				std::advance(pos, _16.node.length());
+				_10 = _16.node;
+			}
+		}
+		else 
+		{
+			success_15 = true;
+			std::advance(pos, _14.node.length());
+			_10 = _14.node;
+		}
+	}
+	else 
+	{
+		success_13 = true;
+		std::advance(pos, _12.node.length());
+		_10 = _12.node;
+	}
+	success_11 = true;
+	cll_expr_logical_data data;
+	data.right = _10;
+	data.op = _8;
+	data.left = _0;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_logical, data)};
+}
+Parser::Rule_res Parser::Parser::cll_expr_compare(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Rule_res _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_11 = false;
+	::Parser::Token _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::arr_t<::Parser::Token> shadow_6;
+	::Parser::Rule_res _7;
+	::Parser::bool_t success_8 = false;
+	::Parser::arr_t<::Parser::Rule> shadow_9;
+	_0 = cll_expr_arithmetic(pos);
+	if (!(_0.status))
+	{
+		return {};
+	}
+	success_1 = true;
+	std::advance(pos, _0.node.length());
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_10 = pos;
+	while (1)
+	{
+		if (!(begin_10->name() == Tokens::cll_COMPARE_OP))
+		{
+			break;
+		}
+		_4 = *begin_10;
+		success_5 = true;
+		begin_10++;
+		shadow_6.push_back(_4);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		_7 = cll_expr_arithmetic(begin_10);
+		if (!(_7.status))
+		{
+			break;
+		}
+		success_8 = true;
+		std::advance(begin_10, _7.node.length());
+		shadow_9.push_back(_7.node);
+		success_11 = true;
+	}
+	if (!success_11)
+	{
+		return {};
+	}
+	if (success_5 && success_8)
+	{
+		success_3 = true;
+		pos = begin_10;
+	}
+	cll_expr_compare_data data;
+	data.sequence = shadow_9;
+	data.operators = shadow_6;
+	data.first = _0.node;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_compare, data)};
+}
+Parser::Rule_res Parser::Parser::cll_expr_arithmetic(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Rule_res _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_11 = false;
+	::Parser::Token _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::arr_t<::Parser::Token> shadow_6;
+	::Parser::Rule_res _7;
+	::Parser::bool_t success_8 = false;
+	::Parser::arr_t<::Parser::Rule> shadow_9;
+	_0 = cll_expr_value(pos);
+	if (!(_0.status))
+	{
+		return {};
+	}
+	success_1 = true;
+	std::advance(pos, _0.node.length());
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_10 = pos;
+	while (1)
+	{
+		if (!(begin_10->name() == Tokens::cll_OP))
+		{
+			break;
+		}
+		_4 = *begin_10;
+		success_5 = true;
+		begin_10++;
+		shadow_6.push_back(_4);
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		_7 = cll_expr_value(begin_10);
+		if (!(_7.status))
+		{
+			return {};
+		}
+		success_8 = true;
+		std::advance(begin_10, _7.node.length());
+		shadow_9.push_back(_7.node);
+		success_11 = true;
+	}
+	if (!success_11)
+	{
+		return {};
+	}
+	if (success_5 && success_8)
+	{
+		success_3 = true;
+		pos = begin_10;
+	}
+	cll_expr_arithmetic_data data;
+	data.sequence = shadow_9;
+	data.operators = shadow_6;
+	data.first = _0.node;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_arithmetic, data)};
+}
+Parser::Rule_res Parser::Parser::cll_expr_value(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Rule _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Rule_res _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Rule_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Rule_res _8;
+	::Parser::bool_t success_9 = false;
+	_2 = cll_expr_group(pos);
+	if (!(_2.status))
+	{
+		_4 = cll_variable(pos);
+		if (!(_4.status))
+		{
+			_6 = cll_cll_function_call(pos);
+			if (!(_6.status))
+			{
+				_8 = any_data(pos);
+				if (!(_8.status))
+				{
+					return {};
+				}
+				else 
+				{
+					success_9 = true;
+					std::advance(pos, _8.node.length());
+					_0 = _8.node;
+				}
+			}
+			else 
+			{
+				success_7 = true;
+				std::advance(pos, _6.node.length());
+				_0 = _6.node;
+			}
+		}
+		else 
+		{
+			success_5 = true;
+			std::advance(pos, _4.node.length());
+			_0 = _4.node;
+		}
+	}
+	else 
+	{
+		success_3 = true;
+		std::advance(pos, _2.node.length());
+		_0 = _2.node;
+	}
+	success_1 = true;
+	cll_expr_value_data data = _0;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_value, data)};
+}
+Parser::Rule_res Parser::Parser::cll_expr_group(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token _4;
+	::Parser::bool_t success_5 = false;
+	if (!(pos->name() == Tokens::AUTO_53))
 	{
 		return {};
 	}
@@ -2990,7 +2051,204 @@ Parser::Rule_res Parser::Parser::loop_while(::Parser::arr_t<Token>::iterator pos
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = expr(pos);
+	_2 = cll_expr(pos);
+	if (!(_2.status))
+	{
+		return {};
+	}
+	success_3 = true;
+	std::advance(pos, _2.node.length());
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::AUTO_54))
+	{
+		return {};
+	}
+	_4 = *pos;
+	success_5 = true;
+	pos++;
+	cll_expr_group_data data = _2.node;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_group, data)};
+}
+Parser::Rule_res Parser::Parser::cll_expr(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Rule _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Rule_res _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Rule_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Rule_res _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::Rule_res _10;
+	::Parser::bool_t success_11 = false;
+	_2 = cll_expr_logical(pos);
+	if (!(_2.status))
+	{
+		_4 = cll_expr_compare(pos);
+		if (!(_4.status))
+		{
+			_6 = cll_expr_arithmetic(pos);
+			if (!(_6.status))
+			{
+				_8 = cll_expr_group(pos);
+				if (!(_8.status))
+				{
+					_10 = cll_expr_value(pos);
+					if (!(_10.status))
+					{
+						return {};
+					}
+					else 
+					{
+						success_11 = true;
+						std::advance(pos, _10.node.length());
+						_0 = _10.node;
+					}
+				}
+				else 
+				{
+					success_9 = true;
+					std::advance(pos, _8.node.length());
+					_0 = _8.node;
+				}
+			}
+			else 
+			{
+				success_7 = true;
+				std::advance(pos, _6.node.length());
+				_0 = _6.node;
+			}
+		}
+		else 
+		{
+			success_5 = true;
+			std::advance(pos, _4.node.length());
+			_0 = _4.node;
+		}
+	}
+	else 
+	{
+		success_3 = true;
+		std::advance(pos, _2.node.length());
+		_0 = _2.node;
+	}
+	success_1 = true;
+	cll_expr_data data = _0;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr, data)};
+}
+Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Rule_res _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Token _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_5 = false;
+	::Parser::Token _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Rule_res _8;
+	::Parser::bool_t success_9 = false;
+	_0 = cll_type(pos);
+	if (_0.status)
+	{
+		success_1 = true;
+		std::advance(pos, _0.node.length());
+	}
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::ID))
+	{
+		return {};
+	}
+	_2 = *pos;
+	success_3 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_10 = pos;
+	do
+	{
+		if (!(begin_10->name() == Tokens::cll_ASSIGNMENT_OP))
+		{
+			break;
+		}
+		_6 = *begin_10;
+		success_7 = true;
+		begin_10++;
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		_8 = cll_expr(begin_10);
+		if (!(_8.status))
+		{
+			break;
+		}
+		success_9 = true;
+		std::advance(begin_10, _8.node.length());
+	}
+	while(0)
+;
+	if (success_7 && success_9)
+	{
+		success_5 = true;
+		pos = begin_10;
+	}
+	cll_var_data data;
+	data.value = _8.node;
+	data.op = _6;
+	data.id = _2;
+	data.type = _0.node;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_var, data)};
+}
+Parser::Rule_res Parser::Parser::cll_block(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token _4;
+	::Parser::bool_t success_5 = false;
+	if (!(pos->name() == Tokens::AUTO_56))
+	{
+		return {};
+	}
+	_0 = *pos;
+	success_1 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	_2 = Rule_rule(pos);
+	while (_2.status)
+	{
+		success_3 = true;
+		std::advance(pos, _2.node.length());
+		_2 = Rule_rule(pos);
+	}
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::AUTO_57))
+	{
+		return {};
+	}
+	_4 = *pos;
+	success_5 = true;
+	pos++;
+	cll_block_data data = _2.node;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_block, data)};
+}
+Parser::Rule_res Parser::Parser::cll_loop_while(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Rule_res _4;
+	::Parser::bool_t success_5 = false;
+	if (!(pos->name() == Tokens::AUTO_27))
+	{
+		return {};
+	}
+	_0 = *pos;
+	success_1 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	_2 = cll_expr(pos);
 	if (!(_2.status))
 	{
 		return {};
@@ -3005,13 +2263,13 @@ Parser::Rule_res Parser::Parser::loop_while(::Parser::arr_t<Token>::iterator pos
 	}
 	success_5 = true;
 	std::advance(pos, _4.node.length());
-	loop_while_data data;
+	cll_loop_while_data data;
 	data.block = _4.node;
 	data.expr = _2.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::loop_while, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_loop_while, data)};
 }
-Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll_loop_for(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -3037,7 +2295,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	::Parser::bool_t success_22 = false;
 	::Parser::Rule_res _23;
 	::Parser::bool_t success_24 = false;
-	if (!(pos->name() == Tokens::AUTO_41))
+	if (!(pos->name() == Tokens::AUTO_28))
 	{
 		return {};
 	}
@@ -3045,7 +2303,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_78))
+	if (!(pos->name() == Tokens::AUTO_53))
 	{
 		return {};
 	}
@@ -3056,7 +2314,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	auto begin_12 = pos;
 	do
 	{
-		_8 = expr(begin_12);
+		_8 = cll_expr(begin_12);
 		if (!(_8.status))
 		{
 			_10 = cll_var(begin_12);
@@ -3088,7 +2346,7 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 		pos = begin_12;
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_90))
+	if (!(pos->name() == Tokens::AUTO_40))
 	{
 		return {};
 	}
@@ -3096,14 +2354,14 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	success_14 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_15 = expr(pos);
+	_15 = cll_expr(pos);
 	if (_15.status)
 	{
 		success_16 = true;
 		std::advance(pos, _15.node.length());
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_90))
+	if (!(pos->name() == Tokens::AUTO_40))
 	{
 		return {};
 	}
@@ -3111,14 +2369,14 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	success_18 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_19 = expr(pos);
+	_19 = cll_expr(pos);
 	if (_19.status)
 	{
 		success_20 = true;
 		std::advance(pos, _19.node.length());
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
+	if (!(pos->name() == Tokens::AUTO_54))
 	{
 		return {};
 	}
@@ -3133,320 +2391,101 @@ Parser::Rule_res Parser::Parser::loop_for(::Parser::arr_t<Token>::iterator pos) 
 	}
 	success_24 = true;
 	std::advance(pos, _23.node.length());
-	loop_for_data data;
+	cll_loop_for_data data;
 	data.block = _21;
 	data.end = _17;
 	data.cond = _13;
 	data.decl = _6;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::loop_for, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_loop_for, data)};
 }
-Parser::Rule_res Parser::Parser::method_call(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::cll(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::Rule _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_11 = false;
-	::Parser::Token _4;
+	::Parser::Rule_res _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::arr_t<::Parser::Token> shadow_6;
-	::Parser::Rule_res _7;
-	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	if (!(pos->name() == Tokens::ID))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_10 = pos;
-	while (1)
-	{
-		if (!(begin_10->name() == Tokens::AUTO_86))
-		{
-			break;
-		}
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		shadow_6.push_back(_4);
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_7 = cll_function_call(begin_10);
-		if (!(_7.status))
-		{
-			break;
-		}
-		success_8 = true;
-		std::advance(begin_10, _7.node.length());
-		shadow_9.push_back(_7.node);
-		success_11 = true;
-	}
-	if (!success_11)
-	{
-		return {};
-	}
-	if (success_5 && success_8)
-	{
-		success_3 = true;
-		pos = begin_10;
-	}
-	method_call_data data;
-	data.call = shadow_9;
-	data.object = _0;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::method_call, data)};
-}
-Parser::Rule_res Parser::Parser::copiable_method_call(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == Tokens::AUTO_47))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_2 = method_call(pos);
-	if (!(_2.status))
-	{
-		return {};
-	}
-	success_3 = true;
-	std::advance(pos, _2.node.length());
-	copiable_method_call_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::copiable_method_call, data)};
-}
-Parser::Rule_res Parser::Parser::var_refer(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
+	::Parser::Rule_res _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::Token _9;
-	::Parser::bool_t success_10 = false;
-	::Parser::bool_t success_12 = false;
-	::Parser::Token _13;
-	::Parser::bool_t success_14 = false;
-	::Parser::Rule_res _15;
-	::Parser::bool_t success_16 = false;
-	::Parser::Token _17;
-	::Parser::bool_t success_18 = false;
-	::Parser::Token _20;
-	::Parser::bool_t success_21 = false;
-	::Parser::Token _22;
-	::Parser::bool_t success_23 = false;
-	::Parser::Token _24;
-	::Parser::bool_t success_25 = false;
-	::Parser::Token _26;
-	::Parser::bool_t success_27 = false;
-	auto begin_8 = pos;
-	do
-	{
-		if (!(begin_8->name() == Tokens::AUTO_52))
-		{
-			if (!(begin_8->name() == Tokens::AUTO_53))
-			{
-				break;
-			}
-			else 
-			{
-				_6 = *begin_8;
-				success_7 = true;
-				begin_8++;
-				_2 = _6;
-			}
-		}
-		else 
-		{
-			_4 = *begin_8;
-			success_5 = true;
-			begin_8++;
-			_2 = _4;
-		}
-		success_3 = true;
-		_0 = _2;
-	}
-	while(0)
-;
-	if (success_3)
-	{
-		success_1 = true;
-		pos = begin_8;
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::ID))
-	{
-		return {};
-	}
-	_9 = *pos;
-	success_10 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_19 = pos;
-	do
-	{
-		if (!(begin_19->name() == Tokens::AUTO_80))
-		{
-			break;
-		}
-		_13 = *begin_19;
-		success_14 = true;
-		begin_19++;
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_15 = expr(begin_19);
-		if (!(_15.status))
-		{
-			break;
-		}
-		success_16 = true;
-		std::advance(begin_19, _15.node.length());
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		if (!(begin_19->name() == Tokens::AUTO_82))
-		{
-			break;
-		}
-		_17 = *begin_19;
-		success_18 = true;
-		begin_19++;
-	}
-	while(0)
-;
-	if (success_14 && success_16 && success_18)
-	{
-		success_12 = true;
-		pos = begin_19;
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_28 = pos;
-	do
-	{
-		if (!(begin_28->name() == Tokens::AUTO_52))
-		{
-			if (!(begin_28->name() == Tokens::AUTO_53))
-			{
-				break;
-			}
-			else 
-			{
-				_26 = *begin_28;
-				success_27 = true;
-				begin_28++;
-				_22 = _26;
-			}
-		}
-		else 
-		{
-			_24 = *begin_28;
-			success_25 = true;
-			begin_28++;
-			_22 = _24;
-		}
-		success_23 = true;
-		_20 = _22;
-	}
-	while(0)
-;
-	if (success_23)
-	{
-		success_21 = true;
-		pos = begin_28;
-	}
-	var_refer_data data;
-	data.post = _20;
-	data.pre = _0;
-	data.brace_expression = _15.node;
-	data.name = _2;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::var_refer, data)};
-}
-Parser::Rule_res Parser::Parser::cll_var(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Rule _8;
+	::Parser::Rule_res _8;
 	::Parser::bool_t success_9 = false;
 	::Parser::Rule_res _10;
 	::Parser::bool_t success_11 = false;
 	::Parser::Rule_res _12;
 	::Parser::bool_t success_13 = false;
-	_0 = cll_type(pos);
-	if (_0.status)
-	{
-		success_1 = true;
-		std::advance(pos, _0.node.length());
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::ID))
+	::Parser::Token _14;
+	::Parser::bool_t success_15 = false;
+	if (!(pos->name() == Tokens::AUTO_0))
 	{
 		return {};
 	}
-	_2 = *pos;
-	success_3 = true;
+	_0 = *pos;
+	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_14 = pos;
-	do
+	_4 = cll_if(pos);
+	if (!(_4.status))
 	{
-		if (!(begin_14->name() == Tokens::ASSIGNMENT_OP))
+		_6 = cll_var(pos);
+		if (!(_6.status))
 		{
-			break;
-		}
-		_6 = *begin_14;
-		success_7 = true;
-		begin_14++;
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_10 = expr(begin_14);
-		if (!(_10.status))
-		{
-			_12 = cll_ternary(begin_14);
-			if (!(_12.status))
+			_8 = cll_expr(pos);
+			if (!(_8.status))
 			{
-				break;
+				_10 = cll_loop_while(pos);
+				if (!(_10.status))
+				{
+					_12 = cll_loop_for(pos);
+					if (!(_12.status))
+					{
+						return {};
+					}
+					else 
+					{
+						success_13 = true;
+						std::advance(pos, _12.node.length());
+						_2 = _12.node;
+					}
+				}
+				else 
+				{
+					success_11 = true;
+					std::advance(pos, _10.node.length());
+					_2 = _10.node;
+				}
 			}
 			else 
 			{
-				success_13 = true;
-				std::advance(begin_14, _12.node.length());
-				_8 = _12.node;
+				success_9 = true;
+				std::advance(pos, _8.node.length());
+				_2 = _8.node;
 			}
 		}
 		else 
 		{
-			success_11 = true;
-			std::advance(begin_14, _10.node.length());
-			_8 = _10.node;
+			success_7 = true;
+			std::advance(pos, _6.node.length());
+			_2 = _6.node;
 		}
-		success_9 = true;
 	}
-	while(0)
-;
-	if (success_7 && success_9)
+	else 
 	{
 		success_5 = true;
-		pos = begin_14;
+		std::advance(pos, _4.node.length());
+		_2 = _4.node;
 	}
-	cll_var_data data;
-	data.value = _8;
-	data.op = _6;
-	data.id = _2;
-	data.type = _0.node;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_var, data)};
+	success_3 = true;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::END))
+	{
+		return {};
+	}
+	_14 = *pos;
+	success_15 = true;
+	pos++;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll)};
 }
 Parser::Token_res Parser::Tokenizator::STRING(const char* pos) {
 	auto in = pos;
@@ -3572,7 +2611,7 @@ Parser::Token_res Parser::Tokenizator::NUMBER(const char* pos) {
 	{
 		if (!(*(begin_15 + 0) == '.' || *(begin_15 + 0) == ','))
 		{
-			break;
+			return {};
 		}
 		_10 += ::Parser::str_t(begin_15, 1);
 		success_11 = true;
@@ -3662,7 +2701,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::arr_t<::Parser::Token> shadow_11;
 	::Parser::Token _14;
 	::Parser::bool_t success_15 = false;
-	if (!(pos->name() == Tokens::AUTO_80))
+	if (!(pos->name() == Tokens::AUTO_33))
 	{
 		return {};
 	}
@@ -3685,7 +2724,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 			std::advance(begin_12, _6.node.length());
 			shadow_8.push_back(_6.node);
 			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-			if (!(begin_12->name() == Tokens::AUTO_69))
+			if (!(begin_12->name() == Tokens::AUTO_48))
 			{
 				break;
 			}
@@ -3708,7 +2747,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::arr_t<Token>::iterator pos) {
 		pos = begin_13;
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_82))
+	if (!(pos->name() == Tokens::AUTO_35))
 	{
 		return {};
 	}
@@ -3746,7 +2785,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::bool_t success_26 = false;
 	::Parser::Token _28;
 	::Parser::bool_t success_29 = false;
-	if (!(pos->name() == Tokens::AUTO_57))
+	if (!(pos->name() == Tokens::AUTO_56))
 	{
 		return {};
 	}
@@ -3765,7 +2804,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		success_5 = true;
 		std::advance(begin_27, _4.node.length());
 		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		if (!(begin_27->name() == Tokens::AUTO_92))
+		if (!(begin_27->name() == Tokens::AUTO_59))
 		{
 			break;
 		}
@@ -3784,7 +2823,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		auto begin_24 = begin_27;
 		while (1)
 		{
-			if (!(begin_24->name() == Tokens::AUTO_69))
+			if (!(begin_24->name() == Tokens::AUTO_48))
 			{
 				break;
 			}
@@ -3802,7 +2841,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			begin_24++;
 			shadow_17.push_back(_15);
 			ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-			if (!(begin_24->name() == Tokens::AUTO_92))
+			if (!(begin_24->name() == Tokens::AUTO_59))
 			{
 				break;
 			}
@@ -3826,7 +2865,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 			begin_27 = begin_24;
 		}
 		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		if (!(begin_27->name() == Tokens::AUTO_90))
+		if (!(begin_27->name() == Tokens::AUTO_40))
 		{
 			break;
 		}
@@ -3842,7 +2881,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::arr_t<Token>::iterator pos) {
 		pos = begin_27;
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_62))
+	if (!(pos->name() == Tokens::AUTO_57))
 	{
 		return {};
 	}
@@ -3873,8 +2912,6 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 	::Parser::bool_t success_11 = false;
 	::Parser::Token _12;
 	::Parser::bool_t success_13 = false;
-	::Parser::Rule_res _14;
-	::Parser::bool_t success_15 = false;
 	_2 = array(pos);
 	if (!(_2.status))
 	{
@@ -3889,23 +2926,13 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::arr_t<Token>::iterator pos) 
 					{
 						if (!(pos->name() == Tokens::ID))
 						{
-							_14 = accessor(pos);
-							if (!(_14.status))
-							{
-								return {};
-							}
-							else 
-							{
-								success_15 = true;
-								std::advance(pos, _14.node.length());
-								_0 = _14.node;
-							}
+							return {};
 						}
 						else 
 						{
 							_12 = *pos;
 							success_13 = true;
-							std::advance(pos, 1);
+							pos++;
 							_0 = _12;
 						}
 					}
@@ -4054,7 +3081,7 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 	::Parser::bool_t success_7 = false;
 	::Parser::Token _8;
 	::Parser::bool_t success_9 = false;
-	if (!(pos->name() == Tokens::AUTO_63))
+	if (!(pos->name() == Tokens::AUTO_42))
 	{
 		return {};
 	}
@@ -4062,11 +3089,11 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::arr_t<Token>::iterator pos)
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_64))
+	if (!(pos->name() == Tokens::AUTO_43))
 	{
-		if (!(pos->name() == Tokens::AUTO_65))
+		if (!(pos->name() == Tokens::AUTO_44))
 		{
-			if (!(pos->name() == Tokens::AUTO_66))
+			if (!(pos->name() == Tokens::AUTO_45))
 			{
 				return {};
 			}
@@ -4103,7 +3130,7 @@ Parser::Rule_res Parser::Parser::name(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == Tokens::AUTO_67))
+	if (!(pos->name() == Tokens::AUTO_46))
 	{
 		return {};
 	}
@@ -4123,7 +3150,7 @@ Parser::Rule_res Parser::Parser::name(::Parser::arr_t<Token>::iterator pos) {
 }
 Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
-	::Parser::any_t _0;
+	::Parser::Rule _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = false;
@@ -4131,7 +3158,7 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::bool_t success_5 = false;
 	::Parser::Rule_res _6;
 	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
+	::Parser::Rule_res _8;
 	::Parser::bool_t success_9 = false;
 	_2 = spacemode(pos);
 	if (!(_2.status))
@@ -4142,16 +3169,16 @@ Parser::Rule_res Parser::Parser::main(::Parser::arr_t<Token>::iterator pos) {
 			_6 = use(pos);
 			if (!(_6.status))
 			{
-				if (!(pos->name() == Tokens::AUTO_73))
+				_8 = Rule(pos);
+				if (!(_8.status))
 				{
 					return {};
 				}
 				else 
 				{
-					_8 = *pos;
 					success_9 = true;
-					pos++;
-					_0 = _8;
+					std::advance(pos, _8.node.length());
+					_0 = _8.node;
 				}
 			}
 			else 
@@ -4216,7 +3243,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::arr_t<Token>::iterator pos) {
 	::Parser::Rule_res _9;
 	::Parser::bool_t success_10 = false;
 	::Parser::arr_t<::Parser::Rule> shadow_11;
-	if (!(pos->name() == Tokens::AUTO_68))
+	if (!(pos->name() == Tokens::AUTO_47))
 	{
 		return {};
 	}
@@ -4235,7 +3262,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::arr_t<Token>::iterator pos) {
 	auto begin_12 = pos;
 	while (1)
 	{
-		if (!(begin_12->name() == Tokens::AUTO_69))
+		if (!(begin_12->name() == Tokens::AUTO_48))
 		{
 			break;
 		}
@@ -4268,7 +3295,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 	auto in = pos;
 	::Parser::any_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Rule_res _2;
+	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
 	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
@@ -4276,148 +3303,100 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 	::Parser::bool_t success_7 = false;
 	::Parser::Token _8;
 	::Parser::bool_t success_9 = false;
+	::Parser::Token _10;
 	::Parser::bool_t success_11 = false;
-	::Parser::any_t _12;
+	::Parser::Token _12;
 	::Parser::bool_t success_13 = false;
-	::Parser::any_t _14;
+	::Parser::Rule_res _14;
 	::Parser::bool_t success_15 = false;
 	::Parser::Rule_res _16;
 	::Parser::bool_t success_17 = false;
-	::Parser::Rule_res _18;
+	::Parser::Token _18;
 	::Parser::bool_t success_19 = false;
-	::Parser::Token _20;
+	::Parser::Rule_res _20;
 	::Parser::bool_t success_21 = false;
-	::Parser::Rule_res _22;
+	::Parser::Token _22;
 	::Parser::bool_t success_23 = false;
-	::Parser::Rule_res _24;
+	::Parser::Token _24;
 	::Parser::bool_t success_25 = false;
-	::Parser::Rule_res _26;
-	::Parser::bool_t success_27 = false;
-	::Parser::Rule_res _28;
-	::Parser::bool_t success_29 = false;
-	::Parser::Rule_res _31;
-	::Parser::bool_t success_32 = false;
-	::Parser::Rule_res _34;
-	::Parser::bool_t success_35 = false;
-	_2 = Rule_escaped(pos);
-	if (!(_2.status))
+	if (!(pos->name() == Tokens::Rule_HEX))
 	{
-		if (!(pos->name() == Tokens::LINEAR_COMMENT))
+		if (!(pos->name() == Tokens::Rule_BIN))
 		{
-			if (!(pos->name() == Tokens::AUTO_86))
+			if (!(pos->name() == Tokens::Rule_ESCAPED))
 			{
-				if (!(pos->name() == Tokens::AUTO_73))
+				if (!(pos->name() == Tokens::Rule_ANY))
 				{
-					auto begin_33 = pos;
-					do
+					if (!(pos->name() == Tokens::cll_OP))
 					{
-						auto begin_30 = begin_33;
-						_16 = expr_group(begin_30);
-						if (!(_16.status))
+						if (!(pos->name() == Tokens::LINEAR_COMMENT))
 						{
-							_18 = Rule_csequence(begin_30);
-							if (!(_18.status))
+							_14 = cll_expr_group(pos);
+							if (!(_14.status))
 							{
-								if (!(begin_30->name() == Tokens::STRING))
+								_16 = Rule_name(pos);
+								if (!(_16.status))
 								{
-									_22 = accessor(begin_30);
-									if (!(_22.status))
+									if (!(pos->name() == Tokens::Rule_CSEQUENCE))
 									{
-										_24 = Rule_hex(begin_30);
-										if (!(_24.status))
+										_20 = cll(pos);
+										if (!(_20.status))
 										{
-											_26 = Rule_bin(begin_30);
-											if (!(_26.status))
+											if (!(pos->name() == Tokens::STRING))
 											{
-												_28 = Rule_other(begin_30);
-												if (!(_28.status))
-												{
-													break;
-												}
-												else 
-												{
-													success_29 = true;
-													std::advance(begin_30, _28.node.length());
-													_14 = _28.node;
-												}
+												return {};
 											}
 											else 
 											{
-												success_27 = true;
-												std::advance(begin_30, _26.node.length());
-												_14 = _26.node;
+												_22 = *pos;
+												success_23 = true;
+												pos++;
+												_0 = _22;
 											}
 										}
 										else 
 										{
-											success_25 = true;
-											std::advance(begin_30, _24.node.length());
-											_14 = _24.node;
+											success_21 = true;
+											std::advance(pos, _20.node.length());
+											_0 = _20.node;
 										}
 									}
 									else 
 									{
-										success_23 = true;
-										std::advance(begin_30, _22.node.length());
-										_14 = _22.node;
+										_18 = *pos;
+										success_19 = true;
+										std::advance(pos, 1);
+										_0 = _18;
 									}
 								}
 								else 
 								{
-									_20 = *begin_30;
-									success_21 = true;
-									std::advance(begin_30, 1);
-									_14 = _20;
+									success_17 = true;
+									std::advance(pos, _16.node.length());
+									_0 = _16.node;
 								}
 							}
 							else 
 							{
-								success_19 = true;
-								std::advance(begin_30, _18.node.length());
-								_14 = _18.node;
+								success_15 = true;
+								std::advance(pos, _14.node.length());
+								_0 = _14.node;
 							}
 						}
 						else 
 						{
-							success_17 = true;
-							std::advance(begin_30, _16.node.length());
-							_14 = _16.node;
-						}
-						success_15 = true;
-						if (success_15)
-						{
+							_12 = *pos;
 							success_13 = true;
-							begin_33 = begin_30;
-						}
-						ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-						_31 = Rule_qualifier(begin_33);
-						if (_31.status)
-						{
-							success_32 = true;
-							std::advance(begin_33, _31.node.length());
+							pos++;
+							_0 = _12;
 						}
 					}
-					while(0)
-;
-					if (success_13)
+					else 
 					{
+						_10 = *pos;
 						success_11 = true;
-						pos = begin_33;
-					}
-					;
-					if (!success_11)
-					{
-						_34 = cll(pos);
-						if (!(_34.status))
-						{
-							return {};
-						}
-						else 
-						{
-							success_35 = true;
-							std::advance(pos, _34.node.length());
-							_0 = _34.node;
-						}
+						std::advance(pos, 1);
+						_0 = _10;
 					}
 				}
 				else 
@@ -4432,7 +3411,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 			{
 				_6 = *pos;
 				success_7 = true;
-				std::advance(pos, 1);
+				pos++;
 				_0 = _6;
 			}
 		}
@@ -4440,24 +3419,32 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::arr_t<Token>::iterator pos)
 		{
 			_4 = *pos;
 			success_5 = true;
-			std::advance(pos, 1);
+			pos++;
 			_0 = _4;
 		}
 	}
 	else 
 	{
+		_2 = *pos;
 		success_3 = true;
-		std::advance(pos, _2.node.length());
-		_0 = _2.node;
+		pos++;
+		_0 = _2;
 	}
 	success_1 = true;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (pos->name() == Tokens::Rule_QUANITIFIER)
+	{
+		_24 = *pos;
+		success_25 = true;
+		pos++;
+	}
 	Rule_rule_data data;
-	data.qualifier = _12;
-	data.val = _14;
+	data.qualifier = _24;
+	data.val = _0;
 
 	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_rule, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos) {
+Parser::Rule_res Parser::Parser::Rule_name(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
@@ -4470,7 +3457,7 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 	::Parser::Token _9;
 	::Parser::bool_t success_10 = false;
 	::Parser::arr_t<::Parser::Token> shadow_11;
-	if (pos->name() == Tokens::AUTO_96)
+	if (pos->name() == Tokens::AUTO_55)
 	{
 		_0 = *pos;
 		success_1 = true;
@@ -4488,7 +3475,7 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 	auto begin_12 = pos;
 	while (1)
 	{
-		if (!(begin_12->name() == Tokens::AUTO_86))
+		if (!(begin_12->name() == Tokens::AUTO_51))
 		{
 			break;
 		}
@@ -4511,156 +3498,307 @@ Parser::Rule_res Parser::Parser::Rule_other(::Parser::arr_t<Token>::iterator pos
 		success_5 = true;
 		pos = begin_12;
 	}
-	Rule_other_data data;
+	Rule_name_data data;
 	data.nested_name = shadow_11;
 	data.name = _2;
 	data.is_nested = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_other, data)};
-}
-Parser::Rule_res Parser::Parser::Rule_qualifier(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	auto begin_10 = pos;
-	if (!(begin_10->name() == Tokens::AUTO_74))
-	{
-		if (!(begin_10->name() == Tokens::AUTO_75))
-		{
-			if (!(begin_10->name() == Tokens::AUTO_76))
-			{
-				return {};
-			}
-			else 
-			{
-				_8 = *begin_10;
-				success_9 = true;
-				begin_10++;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = *begin_10;
-			success_7 = true;
-			begin_10++;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = *begin_10;
-		success_5 = true;
-		begin_10++;
-		_2 = _4;
-	}
-	success_3 = true;
-	_0 = _2;
-	if (success_3)
-	{
-		success_1 = true;
-		pos = begin_10;
-	}
-	Rule_qualifier_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_qualifier, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_name, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_group(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
 	::Parser::Token _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::any_t _4;
+	::Parser::Token _4;
 	::Parser::bool_t success_5 = false;
-	::Parser::Rule_res _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
+	::Parser::Token _7;
+	::Parser::bool_t success_8 = false;
+	::Parser::Rule_res _9;
+	::Parser::bool_t success_10 = false;
 	::Parser::Token _11;
 	::Parser::bool_t success_12 = false;
-	::Parser::Rule_res _13;
-	::Parser::bool_t success_14 = false;
-	::Parser::Token _15;
-	::Parser::bool_t success_16 = false;
-	auto begin_10 = pos;
+	auto begin_6 = pos;
 	do
 	{
-		if (!(begin_10->name() == Tokens::AUTO_77))
+		if (!(begin_6->name() == Tokens::AUTO_52))
+		{
+			return {};
+		}
+		_2 = *begin_6;
+		success_3 = true;
+		begin_6++;
+		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+		if (!(begin_6->name() == Tokens::ID))
 		{
 			break;
 		}
-		_2 = *begin_10;
-		success_3 = true;
-		begin_10++;
-		ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-		_6 = method_call(begin_10);
-		if (!(_6.status))
-		{
-			if (!(begin_10->name() == Tokens::ID))
-			{
-				break;
-			}
-			else 
-			{
-				_8 = *begin_10;
-				success_9 = true;
-				begin_10++;
-				_4 = _8;
-			}
-		}
-		else 
-		{
-			success_7 = true;
-			std::advance(begin_10, _6.node.length());
-			_4 = _6.node;
-		}
+		_4 = *begin_6;
 		success_5 = true;
+		begin_6++;
 	}
 	while(0)
 ;
 	if (success_3 && success_5)
 	{
 		success_1 = true;
-		pos = begin_10;
+		pos = begin_6;
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_78))
+	if (!(pos->name() == Tokens::AUTO_53))
+	{
+		return {};
+	}
+	_7 = *pos;
+	success_8 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	_9 = Rule_rule(pos);
+	while (_9.status)
+	{
+		success_10 = true;
+		std::advance(pos, _9.node.length());
+		_9 = Rule_rule(pos);
+	}
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::AUTO_54))
 	{
 		return {};
 	}
 	_11 = *pos;
 	success_12 = true;
 	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_13 = Rule_rule(pos);
-	while (_13.status)
-	{
-		success_14 = true;
-		std::advance(pos, _13.node.length());
-		_13 = Rule_rule(pos);
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_79))
-	{
-		return {};
-	}
-	_15 = *pos;
-	success_16 = true;
-	pos++;
 	Rule_group_data data;
-	data.val = _13.node;
+	data.val = _9.node;
 	data.variable = _2;
 
 	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_group, data)};
 }
-Parser::Token_res Parser::Tokenizator::Rule_csequence_SYMBOL(const char* pos) {
+Parser::Rule_res Parser::Parser::Rule_nested_rule(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Rule_res _4;
+	::Parser::bool_t success_5 = false;
+	if (!(pos->name() == Tokens::AUTO_55))
+	{
+		return {};
+	}
+	_0 = *pos;
+	success_1 = true;
+	pos++;
+	auto begin_6 = pos;
+	_4 = Rule(begin_6);
+	if (!(_4.status))
+	{
+		return {};
+	}
+	success_5 = true;
+	std::advance(begin_6, _4.node.length());
+	_2 = _4.node;
+	if (success_5)
+	{
+		success_3 = true;
+		pos = begin_6;
+	}
+	Rule_nested_rule_data data = _2;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_nested_rule, data)};
+}
+Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::arr_t<::Parser::Token> shadow_2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token name;
+	::Parser::bool_t success_4 = false;
+	::Parser::Token _5;
+	::Parser::bool_t success_6 = false;
+	::Parser::Token _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::Rule dt;
+	::Parser::bool_t success_10 = false;
+	::Parser::Rule_res _11;
+	::Parser::bool_t success_12 = false;
+	while (pos->name() == Tokens::AUTO_58)
+	{
+		_0 = *pos;
+		success_1 = true;
+		pos++;
+		shadow_2.push_back(_0);
+		success_3 = true;
+	}
+	if (!success_3)
+	{
+		return {};
+	}
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_7 = pos;
+	if (!(begin_7->name() == Tokens::ID))
+	{
+		return {};
+	}
+	_5 = *begin_7;
+	success_6 = true;
+	begin_7++;
+	name = _5;
+	if (success_6)
+	{
+		success_4 = true;
+		pos = begin_7;
+	}
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::AUTO_59))
+	{
+		return {};
+	}
+	_8 = *pos;
+	success_9 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	auto begin_13 = pos;
+	_11 = cll_expr(begin_13);
+	if (!(_11.status))
+	{
+		return {};
+	}
+	success_12 = true;
+	std::advance(begin_13, _11.node.length());
+	dt = _11.node;
+	if (success_12)
+	{
+		success_10 = true;
+		pos = begin_13;
+	}
+	Rule_data_block_key_data data;
+	data.val = dt;
+	data.name = name;
+
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block_key, data)};
+}
+Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterator pos) {
+	auto in = pos;
+	::Parser::Token _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Rule _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Rule_res _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Rule_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Token _8;
+	::Parser::bool_t success_9 = false;
+	if (!(pos->name() == Tokens::AUTO_56))
+	{
+		return {};
+	}
+	_0 = *pos;
+	success_1 = true;
+	pos++;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	_4 = any_data(pos);
+	if (!(_4.status))
+	{
+		_6 = Rule_data_block_key(pos);
+		if (!(_6.status))
+		{
+			return {};
+		}
+		else 
+		{
+			success_7 = true;
+			std::advance(pos, _6.node.length());
+			_2 = _6.node;
+		}
+	}
+	else 
+	{
+		success_5 = true;
+		std::advance(pos, _4.node.length());
+		_2 = _4.node;
+	}
+	success_3 = true;
+	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	if (!(pos->name() == Tokens::AUTO_57))
+	{
+		return {};
+	}
+	_8 = *pos;
+	success_9 = true;
+	pos++;
+	Rule_data_block_data data = _2;
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block, data)};
+}
+Parser::Token_res Parser::Tokenizator::Rule_OP(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == '|'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_OP)};
+}
+Parser::Token_res Parser::Tokenizator::Rule_QUANITIFIER(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _8;
+	::Parser::bool_t success_9 = false;
+	auto begin_10 = pos;
+	if (!(*(begin_10 + 0) == '?'))
+	{
+		if (!(*(begin_10 + 0) == '+'))
+		{
+			if (!(*(begin_10 + 0) == '*'))
+			{
+				return {};
+			}
+			else 
+			{
+				_8 += ::Parser::str_t(begin_10, 1);
+				success_9 = true;
+				begin_10 += 1;
+				_2 += _8;
+			}
+		}
+		else 
+		{
+			_6 += ::Parser::str_t(begin_10, 1);
+			success_7 = true;
+			begin_10 += 1;
+			_2 += _6;
+		}
+	}
+	else 
+	{
+		_4 += ::Parser::str_t(begin_10, 1);
+		success_5 = true;
+		begin_10 += 1;
+		_2 += _4;
+	}
+	success_3 = true;
+	_0 += _2;
+	if (success_3)
+	{
+		success_1 = true;
+		pos = begin_10;
+	}
+	Rule_QUANITIFIER_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_QUANITIFIER, data)};
+}
+Parser::Token_res Parser::Tokenizator::Rule_CSEQUENCE_SYMBOL(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -4711,85 +3849,85 @@ Parser::Token_res Parser::Tokenizator::Rule_csequence_SYMBOL(const char* pos) {
 		success_1 = true;
 		pos = begin_10;
 	}
-	Rule_csequence_SYMBOL_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_csequence_SYMBOL, data)};
+	Rule_CSEQUENCE_SYMBOL_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_CSEQUENCE_SYMBOL, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_csequence_escape(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_CSEQUENCE_ESCAPE(const char* pos) {
 	auto in = pos;
-	::Parser::Token _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
+	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
+	::Parser::str_t _4;
 	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_93))
+	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
 		return {};
 	}
-	_0 = *pos;
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos++;
+	pos += 1;
 	auto begin_6 = pos;
-	if (!(begin_6->name() == Tokens::AUTO_94))
+	if (*(begin_6 + 0) == '\0')
 	{
 		return {};
 	}
-	_4 = *begin_6;
+	_4 += ::Parser::str_t(begin_6, 1);
 	success_5 = true;
-	begin_6++;
-	_2 = _4;
+	begin_6 += 1;
+	_2 += _4;
 	if (success_5)
 	{
 		success_3 = true;
 		pos = begin_6;
 	}
-	Rule_csequence_escape_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_csequence_escape, data)};
+	Rule_CSEQUENCE_ESCAPE_data data = _2;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_CSEQUENCE_ESCAPE, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_csequence_diapason(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_CSEQUENCE_DIAPASON(const char* pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
 	::Parser::Token from;
 	::Parser::bool_t success_2 = false;
-	::Parser::Token _3;
+	::Parser::Token_res _3;
 	::Parser::bool_t success_4 = false;
-	::Parser::Token _6;
+	::Parser::str_t _6;
 	::Parser::bool_t success_7 = false;
 	::Parser::Token to;
 	::Parser::bool_t success_8 = false;
-	::Parser::Token _9;
+	::Parser::Token_res _9;
 	::Parser::bool_t success_10 = false;
 	auto begin_12 = pos;
 	auto begin_5 = begin_12;
-	if (!(begin_5->name() == Tokens::Rule_csequence_SYMBOL))
+	_3 = Rule_CSEQUENCE_SYMBOL(begin_5);
+	if (!(_3.status))
 	{
 		return {};
 	}
-	_3 = *begin_5;
 	success_4 = true;
-	begin_5++;
-	from = _3;
+	begin_5 += _3.node.length();
+	from = _3.node;
 	if (success_4)
 	{
 		success_2 = true;
 		begin_12 = begin_5;
 	}
-	if (!(begin_12->name() == Tokens::AUTO_85))
+	if (!(*(begin_12 + 0) == '-'))
 	{
 		return {};
 	}
-	_6 = *begin_12;
+	_6 += ::Parser::str_t(begin_12, 1);
 	success_7 = true;
-	begin_12++;
+	begin_12 += 1;
 	auto begin_11 = begin_12;
-	if (!(begin_11->name() == Tokens::Rule_csequence_SYMBOL))
+	_9 = Rule_CSEQUENCE_SYMBOL(begin_11);
+	if (!(_9.status))
 	{
 		return {};
 	}
-	_9 = *begin_11;
 	success_10 = true;
-	begin_11++;
-	to = _9;
+	begin_11 += _9.node.length();
+	to = _9.node;
 	if (success_10)
 	{
 		success_8 = true;
@@ -4800,84 +3938,85 @@ Parser::Rule_res Parser::Parser::Rule_csequence_diapason(::Parser::arr_t<Token>:
 		success_1 = true;
 		pos = begin_12;
 	}
-	Rule_csequence_diapason_data data = {from,to};
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_csequence_diapason, data)};
+	Rule_CSEQUENCE_DIAPASON_data data = {from,to};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_CSEQUENCE_DIAPASON, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_CSEQUENCE(const char* pos) {
 	auto in = pos;
-	::Parser::Token _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
+	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::arr_t<::Parser::arr_t<::Parser::any_t>> shadow_17;
-	::Parser::arr_t<::Parser::any_t> dt;
+	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> shadow_17;
+	::Parser::arr_t<::Parser::Token> dt;
 	::Parser::bool_t success_4 = false;
-	::Parser::arr_t<::Parser::any_t> _5;
+	::Parser::arr_t<::Parser::Token> _5;
 	::Parser::bool_t success_6 = false;
-	::Parser::Rule_res _7;
+	::Parser::Token_res _7;
 	::Parser::bool_t success_8 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_9;
-	::Parser::Token _10;
+	::Parser::arr_t<::Parser::Token> shadow_9;
+	::Parser::Token_res _10;
 	::Parser::bool_t success_11 = false;
 	::Parser::arr_t<::Parser::Token> shadow_12;
-	::Parser::Rule_res _13;
+	::Parser::Token_res _13;
 	::Parser::bool_t success_14 = false;
-	::Parser::arr_t<::Parser::Rule> shadow_15;
-	::Parser::Token _18;
+	::Parser::arr_t<::Parser::Token> shadow_15;
+	::Parser::str_t _18;
 	::Parser::bool_t success_19 = false;
-	if (!(pos->name() == Tokens::AUTO_80))
+	if (!(*(pos + 0) == '['))
 	{
 		return {};
 	}
-	_0 = *pos;
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (pos->name() == Tokens::AUTO_81)
+	pos += 1;
+	ISPA_STD::skip_spaces(pos);
+	if (*(pos + 0) == '^')
 	{
-		_2 = *pos;
+		_2 += ::Parser::str_t(pos, 1);
 		success_3 = true;
-		pos++;
+		pos += 1;
 	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
+	ISPA_STD::skip_spaces(pos);
 	auto begin_16 = pos;
 	while (1)
 	{
-		_7 = Rule_csequence_escape(begin_16);
+		_7 = Rule_CSEQUENCE_ESCAPE(begin_16);
 		if (!(_7.status))
 		{
-			if (!(begin_16->name() == Tokens::Rule_csequence_SYMBOL))
+			_10 = Rule_CSEQUENCE_SYMBOL(begin_16);
+			if (!(_10.status))
 			{
-				_13 = Rule_csequence_diapason(begin_16);
+				_13 = Rule_CSEQUENCE_DIAPASON(begin_16);
 				if (!(_13.status))
 				{
-					return {};
+					break;
 				}
 				else 
 				{
 					success_14 = true;
-					std::advance(begin_16, _13.node.length());
+					begin_16 += _13.node.length();
 					shadow_15.push_back(_13.node);
 					_5.push_back(_13.node);
 				}
 			}
 			else 
 			{
-				_10 = *begin_16;
 				success_11 = true;
-				std::advance(begin_16, 1);
-				shadow_12.push_back(_10);
-				_5.push_back(_10);
+				begin_16 += _10.node.length();
+				shadow_12.push_back(_10.node);
+				_5.push_back(_10.node);
 			}
 		}
 		else 
 		{
 			success_8 = true;
-			std::advance(begin_16, _7.node.length());
+			begin_16 += _7.node.length();
 			shadow_9.push_back(_7.node);
 			_5.push_back(_7.node);
 		}
 		success_6 = true;
+		dt = _5;
 		shadow_17.push_back(dt);
 	}
 	if (success_6)
@@ -4885,364 +4024,133 @@ Parser::Rule_res Parser::Parser::Rule_csequence(::Parser::arr_t<Token>::iterator
 		success_4 = true;
 		pos = begin_16;
 	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_82))
+	ISPA_STD::skip_spaces(pos);
+	if (!(*(pos + 0) == ']'))
 	{
 		return {};
 	}
-	_18 = *pos;
+	_18 += ::Parser::str_t(pos, 1);
 	success_19 = true;
-	pos++;
-	Rule_csequence_data data;
+	pos += 1;
+	Rule_CSEQUENCE_data data;
 	data.val = dt;
 	data._not = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_csequence, data)};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_CSEQUENCE, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_data_block_inclosed_map(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_ANY(const char* pos) {
 	auto in = pos;
-	::Parser::Rule_res _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_2 = false;
-	_0 = Rule_data_block_key(pos);
-	while (_0.status)
-	{
-		success_1 = true;
-		std::advance(pos, _0.node.length());
-		_0 = Rule_data_block_key(pos);
-		success_2 = true;
-	}
-	if (!success_2)
+	if (!(*(pos + 0) == '.'))
 	{
 		return {};
 	}
-	Rule_data_block_inclosed_map_data data = _0.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block_inclosed_map, data)};
-}
-Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::arr_t<::Parser::Token> shadow_2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token name;
-	::Parser::bool_t success_4 = false;
-	::Parser::Token _5;
-	::Parser::bool_t success_6 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Rule dt;
-	::Parser::bool_t success_10 = false;
-	::Parser::Rule _11;
-	::Parser::bool_t success_12 = false;
-	::Parser::Rule_res _13;
-	::Parser::bool_t success_14 = false;
-	::Parser::Rule_res _15;
-	::Parser::bool_t success_16 = false;
-	while (pos->name() == Tokens::AUTO_95)
-	{
-		_0 = *pos;
-		success_1 = true;
-		pos++;
-		shadow_2.push_back(_0);
-		success_3 = true;
-	}
-	if (!success_3)
-	{
-		return {};
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_7 = pos;
-	if (!(begin_7->name() == Tokens::ID))
-	{
-		return {};
-	}
-	_5 = *begin_7;
-	success_6 = true;
-	begin_7++;
-	name = _5;
-	if (success_6)
-	{
-		success_4 = true;
-		pos = begin_7;
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_92))
-	{
-		return {};
-	}
-	_8 = *pos;
-	success_9 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	auto begin_17 = pos;
-	_13 = cll_ternary(begin_17);
-	if (!(_13.status))
-	{
-		_15 = expr(begin_17);
-		if (!(_15.status))
-		{
-			return {};
-		}
-		else 
-		{
-			success_16 = true;
-			std::advance(begin_17, _15.node.length());
-			_11 = _15.node;
-		}
-	}
-	else 
-	{
-		success_14 = true;
-		std::advance(begin_17, _13.node.length());
-		_11 = _13.node;
-	}
-	success_12 = true;
-	dt = _11;
-	if (success_12)
-	{
-		success_10 = true;
-		pos = begin_17;
-	}
-	Rule_data_block_key_data data;
-	data.val = dt;
-	data.name = name;
-
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block_key, data)};
-}
-Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::arr_t<::Parser::Token> shadow_2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Rule _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::Rule_res _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::Rule_res _12;
-	::Parser::bool_t success_13 = false;
-	::Parser::Token _14;
-	::Parser::bool_t success_15 = false;
-	while (pos->name() == Tokens::AUTO_95)
-	{
-		_0 = *pos;
-		success_1 = true;
-		pos++;
-		shadow_2.push_back(_0);
-		success_3 = true;
-	}
-	if (!success_3)
-	{
-		return {};
-	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_88))
-	{
-		return {};
-	}
-	_4 = *pos;
-	success_5 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_92))
-	{
-		return {};
-	}
-	_6 = *pos;
-	success_7 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	_10 = any_data(pos);
-	if (!(_10.status))
-	{
-		_12 = Rule_data_block_inclosed_map(pos);
-		if (!(_12.status))
-		{
-			return {};
-		}
-		else 
-		{
-			success_13 = true;
-			std::advance(pos, _12.node.length());
-			_8 = _12.node;
-		}
-	}
-	else 
-	{
-		success_11 = true;
-		std::advance(pos, _10.node.length());
-		_8 = _10.node;
-	}
-	success_9 = true;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_90))
-	{
-		return {};
-	}
-	_14 = *pos;
-	success_15 = true;
-	pos++;
-	Rule_data_block_data data = _8;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block, data)};
-}
-Parser::Rule_res Parser::Parser::Rule_escaped(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _7;
-	::Parser::bool_t success_8 = false;
-	if (!(pos->name() == Tokens::AUTO_93))
-	{
-		return {};
-	}
-	_0 = *pos;
+	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	pos++;
-	auto begin_6 = pos;
-	if (!(begin_6->name() == Tokens::AUTO_94))
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_ANY)};
+}
+Parser::Token_res Parser::Tokenizator::Rule_ESCAPED(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Token_res _7;
+	::Parser::bool_t success_8 = false;
+	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
 		return {};
 	}
-	_4 = *begin_6;
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	auto begin_6 = pos;
+	if (*(begin_6 + 0) == '\0')
+	{
+		return {};
+	}
+	_4 += ::Parser::str_t(begin_6, 1);
 	success_5 = true;
-	begin_6++;
-	_2 = _4;
+	begin_6 += 1;
+	_2 += _4;
 	if (success_5)
 	{
 		success_3 = true;
 		pos = begin_6;
 	}
-	if (pos->name() == Tokens::NUMBER)
+	_7 = NUMBER(pos);
+	if (_7.status)
 	{
-		_7 = *pos;
 		success_8 = true;
-		pos++;
+		pos += _7.node.length();
 	}
-	Rule_escaped_data data;
+	Rule_ESCAPED_data data;
 	data.num = _2;
 	data.c = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_escaped, data)};
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_ESCAPED, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_nested_rule(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_HEX(const char* pos) {
 	auto in = pos;
-	::Parser::Token _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::arr_t<::Parser::Token> shadow_2;
+	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::Token _8;
-	::Parser::bool_t success_9 = false;
-	while (pos->name() == Tokens::AUTO_95)
-	{
-		_0 = *pos;
-		success_1 = true;
-		pos++;
-		shadow_2.push_back(_0);
-		success_3 = true;
-	}
-	if (!success_3)
+	::Parser::bool_t success_4 = false;
+	if (!(!std::strncmp(pos + 0, "0x", 2)))
 	{
 		return {};
 	}
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_96))
-	{
-		return {};
-	}
-	_4 = *pos;
-	success_5 = true;
-	pos++;
-	auto begin_10 = pos;
-	if (!(begin_10->name() == Tokens::AUTO_73))
-	{
-		return {};
-	}
-	_8 = *begin_10;
-	success_9 = true;
-	begin_10++;
-	_6 = _8;
-	if (success_9)
-	{
-		success_7 = true;
-		pos = begin_10;
-	}
-	Rule_nested_rule_data data = _6;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_nested_rule, data)};
-}
-Parser::Rule_res Parser::Parser::Rule_hex(::Parser::arr_t<Token>::iterator pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::arr_t<::Parser::Token> shadow_4;
-	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_97))
-	{
-		return {};
-	}
-	_0 = *pos;
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	while (pos->name() == Tokens::AUTO_98)
+	pos += 2;
+	ISPA_STD::skip_spaces(pos);
+	while ((*(pos + 0)>='0' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f'))
 	{
-		_2 = *pos;
+		_2 += ::Parser::str_t(pos, 1);
 		success_3 = true;
-		pos++;
-		shadow_4.push_back(_2);
-		success_5 = true;
+		pos += 1;
+		success_4 = true;
 	}
-	if (!success_5)
+	if (!success_4)
 	{
 		return {};
 	}
-	Rule_hex_data data = shadow_4;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_hex, data)};
+	Rule_HEX_data data = _2;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_HEX, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_bin(::Parser::arr_t<Token>::iterator pos) {
+Parser::Token_res Parser::Tokenizator::Rule_BIN(const char* pos) {
 	auto in = pos;
-	::Parser::Token _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::Token _2;
+	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::arr_t<::Parser::Token> shadow_4;
-	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == Tokens::AUTO_99))
+	::Parser::bool_t success_4 = false;
+	if (!(!std::strncmp(pos + 0, "0b", 2)))
 	{
 		return {};
 	}
-	_0 = *pos;
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos++;
-	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	while (pos->name() == Tokens::AUTO_100)
+	pos += 2;
+	ISPA_STD::skip_spaces(pos);
+	while (*(pos + 0) == '0' || *(pos + 0) == '1')
 	{
-		_2 = *pos;
+		_2 += ::Parser::str_t(pos, 1);
 		success_3 = true;
-		pos++;
-		shadow_4.push_back(_2);
-		success_5 = true;
+		pos += 1;
+		success_4 = true;
 	}
-	if (!success_5)
+	if (!success_4)
 	{
 		return {};
 	}
-	Rule_bin_data data = shadow_4;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_bin, data)};
+	Rule_BIN_data data = _2;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::Rule_BIN, data)};
 }
 Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 	auto in = pos;
@@ -5266,7 +4174,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 	success_1 = true;
 	pos++;
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_92))
+	if (!(pos->name() == Tokens::AUTO_59))
 	{
 		return {};
 	}
@@ -5298,7 +4206,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 		_8 = Rule_nested_rule(pos);
 	}
 	ISPA_STD::skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
-	if (!(pos->name() == Tokens::AUTO_90))
+	if (!(pos->name() == Tokens::AUTO_40))
 	{
 		return {};
 	}
@@ -5313,35 +4221,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::arr_t<Token>::iterator pos) {
 
 	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_1(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '%'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_1_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_1, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_3(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '>'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_3_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_3, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_4(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_0(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5352,108 +4232,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_4(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_4_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_4, data)};
+	AUTO_0_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_0, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_8(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "unsigned", 8)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 8);
-	success_1 = true;
-	pos += 8;
-	AUTO_8_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_8, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_9(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "char", 4)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	AUTO_9_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_9, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_10(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "short", 5)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 5;
-	AUTO_10_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_10, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_11(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "int", 3)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	AUTO_11_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_11, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_15(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "float", 5)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 5;
-	AUTO_15_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_15, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_17(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "long", 4)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	AUTO_17_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_17, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_18(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "double", 6)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 6);
-	success_1 = true;
-	pos += 6;
-	AUTO_18_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_18, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_19(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_1(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5464,10 +4246,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_19(const char* pos) {
 	_0 += ::Parser::str_t(pos, 4);
 	success_1 = true;
 	pos += 4;
-	AUTO_19_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_19, data)};
+	AUTO_1_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_1, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_20(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_2(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5478,10 +4260,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_20(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_20_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_20, data)};
+	AUTO_2_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_2, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_21(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_3(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5492,10 +4274,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_21(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_21_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_21, data)};
+	AUTO_3_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_3, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_22(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_4(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5506,10 +4288,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_22(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_22_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_22, data)};
+	AUTO_4_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_4, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_23(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_5(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5520,10 +4302,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_23(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_23_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_23, data)};
+	AUTO_5_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_5, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_24(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_6(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5534,10 +4316,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_24(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_24_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_24, data)};
+	AUTO_6_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_6, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_25(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_7(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5548,10 +4330,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_25(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_25_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_25, data)};
+	AUTO_7_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_7, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_26(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_9(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5562,66 +4344,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_26(const char* pos) {
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
 	pos += 2;
-	AUTO_26_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_26, data)};
+	AUTO_9_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_9, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_39(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "fn", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	AUTO_39_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_39, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_40(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "while", 5)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 5;
-	AUTO_40_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_40, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_41(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "for", 3)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	AUTO_41_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_41, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_47(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '='))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_47_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_47, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_52(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_14(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5632,10 +4358,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_52(const char* pos) {
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
 	pos += 2;
-	AUTO_52_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_52, data)};
+	AUTO_14_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_14, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_53(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_15(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5646,234 +4372,52 @@ Parser::Token_res Parser::Tokenizator::AUTO_53(const char* pos) {
 	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
 	pos += 2;
-	AUTO_53_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_53, data)};
+	AUTO_15_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_15, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_57(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_22(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '{'))
+	if (!(!std::strncmp(pos + 0, "fn", 2)))
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 1);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 1;
-	AUTO_57_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_57, data)};
+	pos += 2;
+	AUTO_22_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_22, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_62(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_27(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '}'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_62_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_62, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_63(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "spacemode", 9)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 9);
-	success_1 = true;
-	pos += 9;
-	AUTO_63_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_63, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_64(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "skipped", 7)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 7);
-	success_1 = true;
-	pos += 7;
-	AUTO_64_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_64, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_65(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "allowed", 7)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 7);
-	success_1 = true;
-	pos += 7;
-	AUTO_65_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_65, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_66(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "mixed", 5)))
+	if (!(!std::strncmp(pos + 0, "while", 5)))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
 	pos += 5;
-	AUTO_66_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_66, data)};
+	AUTO_27_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_27, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_67(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_28(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "name", 4)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	AUTO_67_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_67, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_68(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "use", 3)))
+	if (!(!std::strncmp(pos + 0, "for", 3)))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	AUTO_68_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_68, data)};
+	AUTO_28_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_28, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_69(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ','))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_69_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_69, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_73(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '|'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_73_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_73, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_74(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '?'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_74_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_74, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_75(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '+'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_75_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_75, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_76(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '*'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_76_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_76, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_77(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '&'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_77_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_77, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_78(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '('))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_78_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_78, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_79(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ')'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_79_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_79, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_80(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_33(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5884,24 +4428,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_80(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_80_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_80, data)};
+	AUTO_33_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_33, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_81(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '^'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_81_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_81, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_82(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_35(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5912,52 +4442,10 @@ Parser::Token_res Parser::Tokenizator::AUTO_82(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_82_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_82, data)};
+	AUTO_35_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_35, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_85(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '-'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_85_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_85, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_86(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '.'))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 1);
-	success_1 = true;
-	pos += 1;
-	AUTO_86_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_86, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_88(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "data", 4)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	AUTO_88_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_88, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_90(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_40(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -5968,66 +4456,164 @@ Parser::Token_res Parser::Tokenizator::AUTO_90(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_90_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_90, data)};
+	AUTO_40_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_40, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_92(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_42(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ':'))
+	if (!(!std::strncmp(pos + 0, "spacemode", 9)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 9);
+	success_1 = true;
+	pos += 9;
+	AUTO_42_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_42, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_43(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "skipped", 7)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 7);
+	success_1 = true;
+	pos += 7;
+	AUTO_43_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_43, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_44(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "allowed", 7)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 7);
+	success_1 = true;
+	pos += 7;
+	AUTO_44_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_44, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_45(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "mixed", 5)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 5);
+	success_1 = true;
+	pos += 5;
+	AUTO_45_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_45, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_46(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "name", 4)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 4);
+	success_1 = true;
+	pos += 4;
+	AUTO_46_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_46, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_47(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(!std::strncmp(pos + 0, "use", 3)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 3);
+	success_1 = true;
+	pos += 3;
+	AUTO_47_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_47, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_48(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == ','))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_92_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_92, data)};
+	AUTO_48_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_48, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_93(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_51(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "\\", 1)))
+	if (!(*(pos + 0) == '.'))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_93_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_93, data)};
+	AUTO_51_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_51, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_94(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_52(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (*(pos + 0) == '\0')
+	if (!(*(pos + 0) == '&'))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_94_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_94, data)};
+	AUTO_52_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_52, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_95(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_53(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '\r' || *(pos + 0) == '\n'))
+	if (!(*(pos + 0) == '('))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_95_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_95, data)};
+	AUTO_53_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_53, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_96(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_54(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == ')'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	AUTO_54_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_54, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_55(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -6038,64 +4624,64 @@ Parser::Token_res Parser::Tokenizator::AUTO_96(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_96_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_96, data)};
+	AUTO_55_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_55, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_97(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_56(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "0x", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	AUTO_97_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_97, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_98(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!((*(pos + 0)>='0' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f')))
+	if (!(*(pos + 0) == '{'))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_98_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_98, data)};
+	AUTO_56_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_56, data)};
 }
-Parser::Token_res Parser::Tokenizator::AUTO_99(const char* pos) {
+Parser::Token_res Parser::Tokenizator::AUTO_57(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "0b", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	AUTO_99_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_99, data)};
-}
-Parser::Token_res Parser::Tokenizator::AUTO_100(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '0' || *(pos + 0) == '1'))
+	if (!(*(pos + 0) == '}'))
 	{
 		return {};
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	AUTO_100_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_100, data)};
+	AUTO_57_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_57, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_58(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == '\n' || *(pos + 0) == '\r'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	AUTO_58_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_58, data)};
+}
+Parser::Token_res Parser::Tokenizator::AUTO_59(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == ':'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	AUTO_59_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(pos), in, pos, Tokens::AUTO_59, data)};
 }
 Parser::Token_res Parser::Tokenizator::__WHITESPACE(const char* pos) {
 	auto in = pos;

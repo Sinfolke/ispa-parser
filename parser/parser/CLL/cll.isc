@@ -1,6 +1,0 @@
-cll:
-    // copiable_method_call does not require braces here
-    '$' ((cll_var | cll_if | expr | copiable_method_call | method_call | loop_while | loop_for) END )+ 
-
-    data: $2;
-;
