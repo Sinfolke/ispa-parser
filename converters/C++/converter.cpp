@@ -16,7 +16,8 @@ namespace global {
     std::list<std::string> dynamic_pos_counter;
     std::stack<size_t> pos_counter_stack;
     use_prop_t use;
-    std::string rule_prev_name;
+    std::pair<std::string, arr_t<std::string>> rule_prev_name;
+    std::string rule_prev_name_str;
     std::string namespace_name;
     bool add_semicolon;
     bool has_data_block;
@@ -397,7 +398,7 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
 std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter) {
     // Implement method call conversion with proper indentation
     std::string res;
-    res += global::rule_prev_name + "_data data";
+    res += global::rule_prev_name_str + "_data data";
     if (dtb.is_inclosed_map) {
         res += ";";
         res += "\n";
@@ -420,28 +421,30 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     {
     case IR::types::RULE:
         global::has_data_block = false;
-        global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << std::any_cast<std::string>(mem.value) << "(::" << global::namespace_name << "::arr_t<Token>::iterator pos) {\n";
+        global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
+        global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
+        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << global::rule_prev_name_str << "(::" << global::namespace_name << "::arr_t<Token>::iterator pos) {\n";
         out << "\tauto in = pos;" ;
         indentLevel++;
         global::isToken = false;
         break;
     case IR::types::TOKEN:
         global::has_data_block = false;
-        global::rule_prev_name = std::any_cast<std::string>(mem.value);
-        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << std::any_cast<std::string>(mem.value) << "(const char* pos) {\n";
+        global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
+        global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
+        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << global::rule_prev_name_str << "(const char* pos) {\n";
         out << "\tauto in = pos";
         indentLevel++;
         global::isToken = true;
         break;
     case IR::types::RULE_END:
         if (global::isToken) {
-            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(pos), in, pos, Tokens::" << global::rule_prev_name;
+            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(pos), in, pos, Tokens::" << global::rule_prev_name_str;
             if (global::has_data_block)
                 out << ", data";
             out << ")};\n";
         } else {
-            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), Rules::" << global::rule_prev_name;
+            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), Rules::" << global::rule_prev_name_str;
             if (global::has_data_block)
                 out << ", data";
             out << ")};\n";

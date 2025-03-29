@@ -1,4 +1,4 @@
-Rule:
+ Rule:
     ID ':' #rule* #data_block #nested_rule* STRICT_END
     data:
         name: %1
@@ -40,12 +40,12 @@ Rule:
         ;
     ;
     #csequence:
-        '[' '^'? &dt ( #escape | #symbol | #diapason )* ']'
+        '[' '^'? &dt ( #escape | #SYMBOL | #diapason )* ']'
         data:
             _not: %2
             val: dt
         ;
-        #symbol:
+        #SYMBOL:
             ('\\'   |   '\\]' |  [^\]])
 
             data: $1; 
@@ -57,7 +57,7 @@ Rule:
             data: $1;
         ;
         #diapason:
-            ( &from (symbol) \s0 '-' \s0 &to (symbol))
+            ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
             data: [from, to];
         ;
     ;
@@ -92,7 +92,7 @@ Rule:
         data: $1;
     ;
     #hex:
-        '0x' [1-9A-Fa-f]+
+        '0x' [0-9A-Fa-f]+
         data: %2;
     ;
     #bin:

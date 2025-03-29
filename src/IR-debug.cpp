@@ -348,11 +348,11 @@ namespace IR {
         switch (mem.type)
         {
         case types::RULE:
-            out << "Rule(" << std::any_cast<std::string>(mem.value) << ") {";
+            out << "Rule(" << corelib::text::join(std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value).second, "_") << ") {";
             indentLevel++;
             break;
         case types::TOKEN:
-            out << "Token(" << std::any_cast<std::string>(mem.value) << ") {";
+            out << "Token(" << corelib::text::join(std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value).second, "_") << ") {";
             indentLevel++;
             break;
         case types::RULE_END:

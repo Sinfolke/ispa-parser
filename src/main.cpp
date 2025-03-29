@@ -112,8 +112,8 @@ int main(int argc, char** argv) {
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
-    IR::nested_rule_name nested_rule_names2;
-    auto ir = treeToIr(tree, "", nested_rule_names2);
+    arr_t<std::string> fullname_arr;
+    auto ir = treeToIr(tree, "", fullname_arr);
     raiseVarsTop(ir);
     // Output to file
     IR::outputIRToFile(ir, "output_ir.txt");
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
 
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
-    auto tokenizator_code = getCodeForTokinizator(tree, datablocks_tokens);
+    auto tokenizator_code = getCodeForTokinizator(tree, ir);
     raiseVarsTop(tokenizator_code.first);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR::ir&, IR::ir&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, const use_prop_t&>("convert");

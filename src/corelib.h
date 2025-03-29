@@ -53,22 +53,21 @@ namespace corelib {
     namespace sort {
         template<typename Iterator, typename Compare>
         void bubbleSort(Iterator begin, Iterator end, Compare compare) {
-            bool swapped;
-            auto n = std::distance(begin, end);
-            for (decltype(n) i = 0; i < n - 1; ++i) {
-                swapped = false;
-                for (decltype(n) j = 0; j < n - i - 1; ++j) {
-                    auto current = std::next(begin, j);
-                    auto next = std::next(begin, j + 1);
-                    if (compare(*next, *current)) {
-                        std::iter_swap(current, next);
+            std::size_t n = std::distance(begin, end);
+            if (n == 0) return;  // Prevent infinite loop on empty range
+        
+            for (std::size_t i = 0; i < n - 1; ++i) {
+                bool swapped = false;
+                for (auto it = begin; std::next(it) != std::prev(end, i); ++it) {
+                    auto next_it = std::next(it);
+                    if (compare(*next_it, *it)) {
+                        std::iter_swap(it, next_it);
                         swapped = true;
                     }
                 }
-                if (!swapped) {
-                    break;
-                }
+                if (!swapped) break;  // Stop early if no swaps occurred
             }
-        }        
+        }
+        
     }
 }

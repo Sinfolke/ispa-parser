@@ -461,6 +461,8 @@ namespace Tokens {
         return where;
     }
     Parser::Rule find_token_in_tree(Parser::Tree &tree, arr_t<std::string> names) {
+        if (names.empty())
+            return {};
         for (const auto &member : tree) {
             if (member.name != Parser::Rules::Rule)
                 continue;
@@ -477,7 +479,7 @@ namespace Tokens {
                 return find_token_in_tree(nested_name, names);
             }
         }
-        cpuf::printf("Not found: %s\n", names);
+        cpuf::printf("Not found: %$\n", names);
         return {};
     }
 

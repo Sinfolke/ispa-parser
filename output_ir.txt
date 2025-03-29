@@ -210,16 +210,16 @@ Rule(cll) {
 				_14 = expr(TOKEN_SEQUENCE)
 				if (!(_14.status))
 				{
-					_17 = method_call(TOKEN_SEQUENCE)
+					_17 = loop_while(TOKEN_SEQUENCE)
 					if (!(_17.status))
 					{
-						_20 = loop_while(TOKEN_SEQUENCE)
+						_20 = loop_for(TOKEN_SEQUENCE)
 						if (!(_20.status))
 						{
-							_23 = loop_for(TOKEN_SEQUENCE)
+							_23 = copiable_method_call(TOKEN_SEQUENCE)
 							if (!(_23.status))
 							{
-								_26 = copiable_method_call(TOKEN_SEQUENCE)
+								_26 = method_call(TOKEN_SEQUENCE)
 								if (!(_26.status))
 								{
 									break
@@ -906,7 +906,7 @@ Rule(cll_csupport_types) {
 					
 					if (!success_36)
 					{
-						return {}
+						break
 					}
 				}
 				else 
@@ -989,7 +989,7 @@ Rule(cll_type_abstract) {
 						{
 							if (!(CURRENT_TOKEN == AUTO_24))
 							{
-								break
+								return {}
 							}
 							_16 = CURRENT_TOKEN
 							success_17 = TRUE
@@ -1026,7 +1026,7 @@ Rule(cll_type_abstract) {
 								_25 = cll_template(TOKEN_SEQUENCE)
 								if (!(_25.status))
 								{
-									break
+									return {}
 								}
 								success_26 = TRUE
 								begin_27 += _25.token.length()
@@ -1195,7 +1195,7 @@ Rule(cll_ternary) {
 	success_5 = TRUE
 	pos += _4.token.length()
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_95))
+	if (!(CURRENT_TOKEN == AUTO_92))
 	{
 		return {}
 	}
@@ -1394,7 +1394,7 @@ Rule(expr_arithmetic) {
 	{
 		if (!(CURRENT_TOKEN == OP))
 		{
-			return {}
+			break
 		}
 		_4 = CURRENT_TOKEN
 		success_5 = TRUE
@@ -1437,13 +1437,13 @@ Rule(expr_for_arithmetic) {
 	bool success_7 = FALSE
 	Rule_result _8 = NONE
 	bool success_9 = FALSE
-	_2 = cll_function_call(TOKEN_SEQUENCE)
+	_2 = expr_group(TOKEN_SEQUENCE)
 	if (!(_2.status))
 	{
-		_4 = method_call(TOKEN_SEQUENCE)
+		_4 = cll_function_call(TOKEN_SEQUENCE)
 		if (!(_4.status))
 		{
-			_6 = expr_group(TOKEN_SEQUENCE)
+			_6 = method_call(TOKEN_SEQUENCE)
 			if (!(_6.status))
 			{
 				_8 = any_data(TOKEN_SEQUENCE)
@@ -1590,13 +1590,13 @@ Rule(expr) {
 			_6 = expr_arithmetic(TOKEN_SEQUENCE)
 			if (!(_6.status))
 			{
-				_8 = cll_function_call(TOKEN_SEQUENCE)
+				_8 = expr_group(TOKEN_SEQUENCE)
 				if (!(_8.status))
 				{
-					_10 = expr_group(TOKEN_SEQUENCE)
+					_10 = expr_expr_copiable_method_call(TOKEN_SEQUENCE)
 					if (!(_10.status))
 					{
-						_12 = expr_expr_copiable_method_call(TOKEN_SEQUENCE)
+						_12 = cll_function_call(TOKEN_SEQUENCE)
 						if (!(_12.status))
 						{
 							_14 = any_data(TOKEN_SEQUENCE)
@@ -1818,7 +1818,7 @@ Rule(function_parameters) {
 	{
 		if (!(CURRENT_TOKEN == AUTO_69))
 		{
-			return {}
+			break
 		}
 		_6 = CURRENT_TOKEN
 		success_7 = TRUE
@@ -2059,7 +2059,7 @@ Rule(loop_for) {
 		pos = begin_12
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_93))
+	if (!(CURRENT_TOKEN == AUTO_90))
 	{
 		return {}
 	}
@@ -2074,7 +2074,7 @@ Rule(loop_for) {
 		pos += _15.token.length()
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_93))
+	if (!(CURRENT_TOKEN == AUTO_90))
 	{
 		return {}
 	}
@@ -2133,7 +2133,7 @@ Rule(method_call) {
 	auto begin_10 = pos
 	while (1)
 	{
-		if (!(CURRENT_TOKEN == AUTO_89))
+		if (!(CURRENT_TOKEN == AUTO_86))
 		{
 			break
 		}
@@ -2419,165 +2419,66 @@ Token(STRING) {
 	bool success_9 = FALSE
 	str _10 = NONE
 	bool success_11 = FALSE
-	str _12 = NONE
-	bool success_13 = FALSE
-	str _15 = NONE
-	bool success_16 = FALSE
-	str _18 = NONE
-	bool success_19 = FALSE
-	str _20 = NONE
-	bool success_21 = FALSE
-	str _22 = NONE
-	bool success_23 = FALSE
-	str _24 = NONE
-	bool success_25 = FALSE
-	str _26 = NONE
-	bool success_27 = FALSE
-	str _28 = NONE
-	bool success_29 = FALSE
-	str _31 = NONE
-	bool success_32 = FALSE
-	auto begin_17 = pos
-	do
+	str _13 = NONE
+	bool success_14 = FALSE
+	auto begin_15 = pos
+	if (!(*pos == '\''))
 	{
-		if (!(*pos == '\''))
+		return {}
+	}
+	_2 += CURRENT_POS_SEQUENCE
+	success_3 = TRUE
+	begin_15++
+	skipspaces(pos)
+	auto begin_12 = begin_15
+	while (1)
+	{
+		if (!(!STRNCMP(pos, "\\'")))
 		{
-			break
-		}
-		_4 += CURRENT_POS_SEQUENCE
-		success_5 = TRUE
-		begin_17++
-		skipspaces(pos)
-		auto begin_14 = begin_17
-		while (1)
-		{
-			if (!(!STRNCMP(pos, "\\'")))
+			if (!(!(*pos == '\'' || *pos == '\0')))
 			{
-				if (!(!(*pos == '\'' || *pos == '\0')))
-				{
-					break
-				}
-				else 
-				{
-					_12 += CURRENT_POS_SEQUENCE
-					success_13 = TRUE
-					begin_14++
-					_8 += _12
-				}
+				break
 			}
 			else 
 			{
 				_10 += CURRENT_POS_SEQUENCE
 				success_11 = TRUE
-				begin_14++
-				_8 += _10
+				begin_12++
+				_6 += _10
 			}
-			success_9 = TRUE
-			_6 += _8
-		}
-		if (success_9)
-		{
-			success_7 = TRUE
-			begin_17 = begin_14
-		}
-		skipspaces(pos)
-		if (!(*pos == '\''))
-		{
-			break
-		}
-		_15 += CURRENT_POS_SEQUENCE
-		success_16 = TRUE
-		begin_17++
-		_2 += _4
-		_2 += _6
-		_2 += _15
-	}	while(0)
-
-	if (success_5 && success_16)
-	{
-		success_3 = TRUE
-		pos = begin_17
-	}
-	
-	if (!success_3)
-	{
-		auto begin_33 = pos
-		do
-		{
-			if (!(*pos == '"'))
-			{
-				break
-			}
-			_20 += CURRENT_POS_SEQUENCE
-			success_21 = TRUE
-			begin_33++
-			skipspaces(pos)
-			auto begin_30 = begin_33
-			while (1)
-			{
-				if (!(!STRNCMP(pos, "\\"")))
-				{
-					if (!(!(*pos == '"' || *pos == '\0')))
-					{
-						break
-					}
-					else 
-					{
-						_28 += CURRENT_POS_SEQUENCE
-						success_29 = TRUE
-						begin_30++
-						_24 += _28
-					}
-				}
-				else 
-				{
-					_26 += CURRENT_POS_SEQUENCE
-					success_27 = TRUE
-					begin_30++
-					_24 += _26
-				}
-				success_25 = TRUE
-				_22 += _24
-			}
-			if (success_25)
-			{
-				success_23 = TRUE
-				begin_33 = begin_30
-			}
-			skipspaces(pos)
-			if (!(*pos == '"'))
-			{
-				break
-			}
-			_31 += CURRENT_POS_SEQUENCE
-			success_32 = TRUE
-			begin_33++
-			_18 += _20
-			_18 += _22
-			_18 += _31
-		}		while(0)
-
-		if (success_21 && success_32)
-		{
-			success_19 = TRUE
-			pos = begin_33
-		}
-		
-		if (!success_19)
-		{
-			return {}
 		}
 		else 
 		{
-			_0 += _18
+			_8 += CURRENT_POS_SEQUENCE
+			success_9 = TRUE
+			begin_12++
+			_6 += _8
 		}
+		success_7 = TRUE
+		_4 += _6
 	}
-	else 
+	if (success_7)
 	{
-		_0 += _2
+		success_5 = TRUE
+		begin_15 = begin_12
 	}
-	success_1 = TRUE
-	data = _6 # str
+	skipspaces(pos)
+	if (!(*pos == '\''))
+	{
+		return {}
+	}
+	_13 += CURRENT_POS_SEQUENCE
+	success_14 = TRUE
+	begin_15++
+	_0 += _2
+	_0 += _4
+	_0 += _13
+	if (success_3 && success_14)
+	{
+		success_1 = TRUE
+		pos = begin_15
+	}
+	data = _4 # str
 }
 Token(NUMBER) {
 	str _0 = NONE
@@ -2811,7 +2712,7 @@ Rule(object) {
 		success_5 = TRUE
 		begin_27 += _4.token.length()
 		skipspaces(TOKEN_SEQUENCE)
-		if (!(CURRENT_TOKEN == AUTO_95))
+		if (!(CURRENT_TOKEN == AUTO_92))
 		{
 			break
 		}
@@ -2848,7 +2749,7 @@ Rule(object) {
 			begin_24++
 			shadow_17.push(_15)
 			skipspaces(TOKEN_SEQUENCE)
-			if (!(CURRENT_TOKEN == AUTO_95))
+			if (!(CURRENT_TOKEN == AUTO_92))
 			{
 				break
 			}
@@ -2872,7 +2773,7 @@ Rule(object) {
 			begin_27 = begin_24
 		}
 		skipspaces(TOKEN_SEQUENCE)
-		if (!(CURRENT_TOKEN == AUTO_93))
+		if (!(CURRENT_TOKEN == AUTO_90))
 		{
 			break
 		}
@@ -2904,45 +2805,44 @@ Rule(object) {
 Rule(any_data) {
 	any _0 = NONE
 	bool success_1 = FALSE
-	token _2 = NONE
+	Rule_result _2 = NONE
 	bool success_3 = FALSE
-	token _4 = NONE
+	Rule_result _4 = NONE
 	bool success_5 = FALSE
-	Rule_result _6 = NONE
+	token _6 = NONE
 	bool success_7 = FALSE
-	Rule_result _8 = NONE
+	token _8 = NONE
 	bool success_9 = FALSE
-	Rule_result _10 = NONE
+	token _10 = NONE
 	bool success_11 = FALSE
 	token _12 = NONE
 	bool success_13 = FALSE
-	token _14 = NONE
+	Rule_result _14 = NONE
 	bool success_15 = FALSE
-	if (!(CURRENT_TOKEN == NUMBER))
+	_2 = array(TOKEN_SEQUENCE)
+	if (!(_2.status))
 	{
-		if (!(CURRENT_TOKEN == STRING))
+		_4 = object(TOKEN_SEQUENCE)
+		if (!(_4.status))
 		{
-			_6 = accessor(TOKEN_SEQUENCE)
-			if (!(_6.status))
+			if (!(CURRENT_TOKEN == NUMBER))
 			{
-				_8 = array(TOKEN_SEQUENCE)
-				if (!(_8.status))
+				if (!(CURRENT_TOKEN == BOOLEAN))
 				{
-					_10 = object(TOKEN_SEQUENCE)
-					if (!(_10.status))
+					if (!(CURRENT_TOKEN == STRING))
 					{
-						if (!(CURRENT_TOKEN == BOOLEAN))
+						if (!(CURRENT_TOKEN == ID))
 						{
-							if (!(CURRENT_TOKEN == ID))
+							_14 = accessor(TOKEN_SEQUENCE)
+							if (!(_14.status))
 							{
 								return {}
 							}
 							else 
 							{
-								_14 = CURRENT_TOKEN
 								success_15 = TRUE
-								pos++
-								_0 = _14
+								pos += _14.token.length()
+								_0 = _14.node
 							}
 						}
 						else 
@@ -2955,39 +2855,40 @@ Rule(any_data) {
 					}
 					else 
 					{
+						_10 = CURRENT_TOKEN
 						success_11 = TRUE
-						pos += _10.token.length()
-						_0 = _10.node
+						pos++
+						_0 = _10
 					}
 				}
 				else 
 				{
+					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					pos += _8.token.length()
-					_0 = _8.node
+					pos++
+					_0 = _8
 				}
 			}
 			else 
 			{
+				_6 = CURRENT_TOKEN
 				success_7 = TRUE
-				pos += _6.token.length()
-				_0 = _6.node
+				pos++
+				_0 = _6
 			}
 		}
 		else 
 		{
-			_4 = CURRENT_TOKEN
 			success_5 = TRUE
-			pos++
-			_0 = _4
+			pos += _4.token.length()
+			_0 = _4.node
 		}
 	}
 	else 
 	{
-		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		pos++
-		_0 = _2
+		pos += _2.token.length()
+		_0 = _2.node
 	}
 	success_1 = TRUE
 	data = _0 # any
@@ -3154,32 +3055,33 @@ Rule(name) {
 Rule(main) {
 	any _0 = NONE
 	bool success_1 = FALSE
-	token _2 = NONE
+	Rule_result _2 = NONE
 	bool success_3 = FALSE
 	Rule_result _4 = NONE
 	bool success_5 = FALSE
 	Rule_result _6 = NONE
 	bool success_7 = FALSE
-	Rule_result _8 = NONE
+	token _8 = NONE
 	bool success_9 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_73))
+	_2 = spacemode(TOKEN_SEQUENCE)
+	if (!(_2.status))
 	{
-		_4 = spacemode(TOKEN_SEQUENCE)
+		_4 = name(TOKEN_SEQUENCE)
 		if (!(_4.status))
 		{
-			_6 = name(TOKEN_SEQUENCE)
+			_6 = use(TOKEN_SEQUENCE)
 			if (!(_6.status))
 			{
-				_8 = use(TOKEN_SEQUENCE)
-				if (!(_8.status))
+				if (!(CURRENT_TOKEN == AUTO_73))
 				{
 					return {}
 				}
 				else 
 				{
+					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					pos += _8.token.length()
-					_0 = _8.node
+					pos++
+					_0 = _8
 				}
 			}
 			else 
@@ -3198,10 +3100,9 @@ Rule(main) {
 	}
 	else 
 	{
-		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		pos++
-		_0 = _2
+		pos += _2.token.length()
+		_0 = _2.node
 	}
 	success_1 = TRUE
 }
@@ -3299,18 +3200,18 @@ Rule(Rule_rule) {
 	bool success_7 = FALSE
 	token _8 = NONE
 	bool success_9 = FALSE
-	Rule_result _10 = NONE
 	bool success_11 = FALSE
+	any _12 = NONE
 	bool success_13 = FALSE
 	any _14 = NONE
 	bool success_15 = FALSE
-	any _16 = NONE
+	Rule_result _16 = NONE
 	bool success_17 = FALSE
 	Rule_result _18 = NONE
 	bool success_19 = FALSE
-	Rule_result _20 = NONE
+	token _20 = NONE
 	bool success_21 = FALSE
-	token _22 = NONE
+	Rule_result _22 = NONE
 	bool success_23 = FALSE
 	Rule_result _24 = NONE
 	bool success_25 = FALSE
@@ -3318,128 +3219,128 @@ Rule(Rule_rule) {
 	bool success_27 = FALSE
 	Rule_result _28 = NONE
 	bool success_29 = FALSE
-	Rule_result _30 = NONE
-	bool success_31 = FALSE
-	Rule_result _33 = NONE
-	bool success_34 = FALSE
+	Rule_result _31 = NONE
+	bool success_32 = FALSE
+	Rule_result _34 = NONE
+	bool success_35 = FALSE
 	_2 = Rule_escaped(TOKEN_SEQUENCE)
 	if (!(_2.status))
 	{
 		if (!(CURRENT_TOKEN == LINEAR_COMMENT))
 		{
-			if (!(CURRENT_TOKEN == AUTO_89))
+			if (!(CURRENT_TOKEN == AUTO_86))
 			{
 				if (!(CURRENT_TOKEN == AUTO_73))
 				{
-					_10 = cll(TOKEN_SEQUENCE)
-					if (!(_10.status))
+					auto begin_33 = pos
+					do
 					{
-						auto begin_35 = pos
-						do
+						auto begin_30 = begin_33
+						_16 = expr_group(TOKEN_SEQUENCE)
+						if (!(_16.status))
 						{
-							auto begin_32 = begin_35
-							_18 = expr_group(TOKEN_SEQUENCE)
+							_18 = Rule_csequence(TOKEN_SEQUENCE)
 							if (!(_18.status))
 							{
-								_20 = Rule_csequence(TOKEN_SEQUENCE)
-								if (!(_20.status))
+								if (!(CURRENT_TOKEN == STRING))
 								{
-									if (!(CURRENT_TOKEN == STRING))
+									_22 = accessor(TOKEN_SEQUENCE)
+									if (!(_22.status))
 									{
-										_24 = accessor(TOKEN_SEQUENCE)
+										_24 = Rule_hex(TOKEN_SEQUENCE)
 										if (!(_24.status))
 										{
-											_26 = Rule_hex(TOKEN_SEQUENCE)
+											_26 = Rule_bin(TOKEN_SEQUENCE)
 											if (!(_26.status))
 											{
-												_28 = Rule_bin(TOKEN_SEQUENCE)
+												_28 = Rule_other(TOKEN_SEQUENCE)
 												if (!(_28.status))
 												{
-													_30 = Rule_other(TOKEN_SEQUENCE)
-													if (!(_30.status))
-													{
-														break
-													}
-													else 
-													{
-														success_31 = TRUE
-														begin_32 += _30.token.length()
-														_16 = _30.node
-													}
+													break
 												}
 												else 
 												{
 													success_29 = TRUE
-													begin_32 += _28.token.length()
-													_16 = _28.node
+													begin_30 += _28.token.length()
+													_14 = _28.node
 												}
 											}
 											else 
 											{
 												success_27 = TRUE
-												begin_32 += _26.token.length()
-												_16 = _26.node
+												begin_30 += _26.token.length()
+												_14 = _26.node
 											}
 										}
 										else 
 										{
 											success_25 = TRUE
-											begin_32 += _24.token.length()
-											_16 = _24.node
+											begin_30 += _24.token.length()
+											_14 = _24.node
 										}
 									}
 									else 
 									{
-										_22 = CURRENT_TOKEN
 										success_23 = TRUE
-										begin_32++
-										_16 = _22
+										begin_30 += _22.token.length()
+										_14 = _22.node
 									}
 								}
 								else 
 								{
+									_20 = CURRENT_TOKEN
 									success_21 = TRUE
-									begin_32 += _20.token.length()
-									_16 = _20.node
+									begin_30++
+									_14 = _20
 								}
 							}
 							else 
 							{
 								success_19 = TRUE
-								begin_32 += _18.token.length()
-								_16 = _18.node
+								begin_30 += _18.token.length()
+								_14 = _18.node
 							}
+						}
+						else 
+						{
 							success_17 = TRUE
-							if (success_17)
-							{
-								success_15 = TRUE
-								begin_35 = begin_32
-							}
-							skipspaces(TOKEN_SEQUENCE)
-							_33 = Rule_qualifier(TOKEN_SEQUENCE)
-							if (_33.status)
-							{
-								success_34 = TRUE
-								begin_35 += _33.token.length()
-							}
-						}						while(0)
-
+							begin_30 += _16.token.length()
+							_14 = _16.node
+						}
+						success_15 = TRUE
 						if (success_15)
 						{
 							success_13 = TRUE
-							pos = begin_35
+							begin_33 = begin_30
 						}
-						
-						if (!success_13)
+						skipspaces(TOKEN_SEQUENCE)
+						_31 = Rule_qualifier(TOKEN_SEQUENCE)
+						if (_31.status)
+						{
+							success_32 = TRUE
+							begin_33 += _31.token.length()
+						}
+					}					while(0)
+
+					if (success_13)
+					{
+						success_11 = TRUE
+						pos = begin_33
+					}
+					
+					if (!success_11)
+					{
+						_34 = cll(TOKEN_SEQUENCE)
+						if (!(_34.status))
 						{
 							return {}
 						}
-					}
-					else 
-					{
-						success_11 = TRUE
-						pos += _10.token.length()
-						_0 = _10.node
+						else 
+						{
+							success_35 = TRUE
+							pos += _34.token.length()
+							_0 = _34.node
+						}
 					}
 				}
 				else 
@@ -3474,8 +3375,8 @@ Rule(Rule_rule) {
 	}
 	success_1 = TRUE
 	data = 
-		qualifier: _14 # any
-		val: _16 # any
+		qualifier: _12 # any
+		val: _14 # any
 	;
 }
 Rule(Rule_other) {
@@ -3490,7 +3391,7 @@ Rule(Rule_other) {
 	token _9 = NONE
 	bool success_10 = FALSE
 	array shadow_11 = NONE
-	if (CURRENT_TOKEN == AUTO_99)
+	if (CURRENT_TOKEN == AUTO_96)
 	{
 		_0 = CURRENT_TOKEN
 		success_1 = TRUE
@@ -3508,7 +3409,7 @@ Rule(Rule_other) {
 	auto begin_12 = pos
 	while (1)
 	{
-		if (!(CURRENT_TOKEN == AUTO_89))
+		if (!(CURRENT_TOKEN == AUTO_86))
 		{
 			break
 		}
@@ -3674,57 +3575,57 @@ Rule(Rule_group) {
 		variable: _2 # token
 	;
 }
-Rule(Rule_csequence_symbol) {
-	token _0 = NONE
+Token(Rule_csequence_SYMBOL) {
+	str _0 = NONE
 	bool success_1 = FALSE
-	token _2 = NONE
+	str _2 = NONE
 	bool success_3 = FALSE
-	token _4 = NONE
+	str _4 = NONE
 	bool success_5 = FALSE
-	token _6 = NONE
+	str _6 = NONE
 	bool success_7 = FALSE
-	token _8 = NONE
+	str _8 = NONE
 	bool success_9 = FALSE
 	auto begin_10 = pos
-	if (!(CURRENT_TOKEN == AUTO_83))
+	if (!(!STRNCMP(pos, "\\]")))
 	{
-		if (!(CURRENT_TOKEN == AUTO_84))
+		if (!(!STRNCMP(pos, "\\")))
 		{
-			if (!(CURRENT_TOKEN == AUTO_96))
+			if (!(!(*pos == ']' || *pos == '\0')))
 			{
 				return {}
 			}
 			else 
 			{
-				_8 = CURRENT_TOKEN
+				_8 += CURRENT_POS_SEQUENCE
 				success_9 = TRUE
 				begin_10++
-				_2 = _8
+				_2 += _8
 			}
 		}
 		else 
 		{
-			_6 = CURRENT_TOKEN
+			_6 += CURRENT_POS_SEQUENCE
 			success_7 = TRUE
 			begin_10++
-			_2 = _6
+			_2 += _6
 		}
 	}
 	else 
 	{
-		_4 = CURRENT_TOKEN
+		_4 += CURRENT_POS_SEQUENCE
 		success_5 = TRUE
 		begin_10++
-		_2 = _4
+		_2 += _4
 	}
 	success_3 = TRUE
-	_0 = _2
+	_0 += _2
 	if (success_3)
 	{
 		success_1 = TRUE
 		pos = begin_10
 	}
-	data = _0 # token
+	data = _0 # str
 }
 Rule(Rule_csequence_escape) {
 	token _0 = NONE
@@ -3733,7 +3634,7 @@ Rule(Rule_csequence_escape) {
 	bool success_3 = FALSE
 	token _4 = NONE
 	bool success_5 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_96))
+	if (!(CURRENT_TOKEN == AUTO_93))
 	{
 		return {}
 	}
@@ -3741,7 +3642,7 @@ Rule(Rule_csequence_escape) {
 	success_1 = TRUE
 	pos++
 	auto begin_6 = pos
-	if (!(CURRENT_TOKEN == AUTO_97))
+	if (!(CURRENT_TOKEN == AUTO_94))
 	{
 		return {}
 	}
@@ -3758,32 +3659,32 @@ Rule(Rule_csequence_escape) {
 }
 Rule(Rule_csequence_diapason) {
 	bool success_1 = FALSE
-	rule from = NONE
+	token from = NONE
 	bool success_2 = FALSE
-	Rule_result _3 = NONE
+	token _3 = NONE
 	bool success_4 = FALSE
 	token _6 = NONE
 	bool success_7 = FALSE
-	rule to = NONE
+	token to = NONE
 	bool success_8 = FALSE
-	Rule_result _9 = NONE
+	token _9 = NONE
 	bool success_10 = FALSE
 	auto begin_12 = pos
 	auto begin_5 = begin_12
-	_3 = Rule_csequence_symbol(TOKEN_SEQUENCE)
-	if (!(_3.status))
+	if (!(CURRENT_TOKEN == Rule_csequence_SYMBOL))
 	{
 		return {}
 	}
+	_3 = CURRENT_TOKEN
 	success_4 = TRUE
-	begin_5 += _3.token.length()
-	from = _3.node
+	begin_5++
+	from = _3
 	if (success_4)
 	{
 		success_2 = TRUE
 		begin_12 = begin_5
 	}
-	if (!(CURRENT_TOKEN == AUTO_88))
+	if (!(CURRENT_TOKEN == AUTO_85))
 	{
 		return {}
 	}
@@ -3791,14 +3692,14 @@ Rule(Rule_csequence_diapason) {
 	success_7 = TRUE
 	begin_12++
 	auto begin_11 = begin_12
-	_9 = Rule_csequence_symbol(TOKEN_SEQUENCE)
-	if (!(_9.status))
+	if (!(CURRENT_TOKEN == Rule_csequence_SYMBOL))
 	{
 		return {}
 	}
+	_9 = CURRENT_TOKEN
 	success_10 = TRUE
-	begin_11 += _9.token.length()
-	to = _9.node
+	begin_11++
+	to = _9
 	if (success_10)
 	{
 		success_8 = TRUE
@@ -3824,7 +3725,7 @@ Rule(Rule_csequence) {
 	Rule_result _7 = NONE
 	bool success_8 = FALSE
 	array shadow_9 = NONE
-	Rule_result _10 = NONE
+	token _10 = NONE
 	bool success_11 = FALSE
 	array shadow_12 = NONE
 	Rule_result _13 = NONE
@@ -3853,13 +3754,12 @@ Rule(Rule_csequence) {
 		_7 = Rule_csequence_escape(TOKEN_SEQUENCE)
 		if (!(_7.status))
 		{
-			_10 = Rule_csequence_symbol(TOKEN_SEQUENCE)
-			if (!(_10.status))
+			if (!(CURRENT_TOKEN == Rule_csequence_SYMBOL))
 			{
 				_13 = Rule_csequence_diapason(TOKEN_SEQUENCE)
 				if (!(_13.status))
 				{
-					break
+					return {}
 				}
 				else 
 				{
@@ -3871,10 +3771,11 @@ Rule(Rule_csequence) {
 			}
 			else 
 			{
+				_10 = CURRENT_TOKEN
 				success_11 = TRUE
-				begin_16 += _10.token.length()
-				shadow_12.push(_10.node)
-				_5.push(_10.node)
+				begin_16++
+				shadow_12.push(_10)
+				_5.push(_10)
 			}
 		}
 		else 
@@ -3885,7 +3786,6 @@ Rule(Rule_csequence) {
 			_5.push(_7.node)
 		}
 		success_6 = TRUE
-		dt = _5
 		shadow_17.push(dt)
 	}
 	if (success_6)
@@ -3943,7 +3843,7 @@ Rule(Rule_data_block_key) {
 	bool success_14 = FALSE
 	Rule_result _15 = NONE
 	bool success_16 = FALSE
-	while (CURRENT_TOKEN == AUTO_98)
+	while (CURRENT_TOKEN == AUTO_95)
 	{
 		_0 = CURRENT_TOKEN
 		success_1 = TRUE
@@ -3971,7 +3871,7 @@ Rule(Rule_data_block_key) {
 		pos = begin_7
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_95))
+	if (!(CURRENT_TOKEN == AUTO_92))
 	{
 		return {}
 	}
@@ -4030,7 +3930,7 @@ Rule(Rule_data_block) {
 	bool success_13 = FALSE
 	token _14 = NONE
 	bool success_15 = FALSE
-	while (CURRENT_TOKEN == AUTO_98)
+	while (CURRENT_TOKEN == AUTO_95)
 	{
 		_0 = CURRENT_TOKEN
 		success_1 = TRUE
@@ -4043,7 +3943,7 @@ Rule(Rule_data_block) {
 		return {}
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_91))
+	if (!(CURRENT_TOKEN == AUTO_88))
 	{
 		return {}
 	}
@@ -4051,7 +3951,7 @@ Rule(Rule_data_block) {
 	success_5 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_95))
+	if (!(CURRENT_TOKEN == AUTO_92))
 	{
 		return {}
 	}
@@ -4082,7 +3982,7 @@ Rule(Rule_data_block) {
 	}
 	success_9 = TRUE
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_93))
+	if (!(CURRENT_TOKEN == AUTO_90))
 	{
 		return {}
 	}
@@ -4100,7 +4000,7 @@ Rule(Rule_escaped) {
 	bool success_5 = FALSE
 	token _7 = NONE
 	bool success_8 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_96))
+	if (!(CURRENT_TOKEN == AUTO_93))
 	{
 		return {}
 	}
@@ -4108,7 +4008,7 @@ Rule(Rule_escaped) {
 	success_1 = TRUE
 	pos++
 	auto begin_6 = pos
-	if (!(CURRENT_TOKEN == AUTO_97))
+	if (!(CURRENT_TOKEN == AUTO_94))
 	{
 		return {}
 	}
@@ -4143,7 +4043,7 @@ Rule(Rule_nested_rule) {
 	bool success_7 = FALSE
 	token _8 = NONE
 	bool success_9 = FALSE
-	while (CURRENT_TOKEN == AUTO_98)
+	while (CURRENT_TOKEN == AUTO_95)
 	{
 		_0 = CURRENT_TOKEN
 		success_1 = TRUE
@@ -4156,7 +4056,7 @@ Rule(Rule_nested_rule) {
 		return {}
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_99))
+	if (!(CURRENT_TOKEN == AUTO_96))
 	{
 		return {}
 	}
@@ -4186,7 +4086,7 @@ Rule(Rule_hex) {
 	bool success_3 = FALSE
 	array shadow_4 = NONE
 	bool success_5 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_100))
+	if (!(CURRENT_TOKEN == AUTO_97))
 	{
 		return {}
 	}
@@ -4194,7 +4094,7 @@ Rule(Rule_hex) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	while (CURRENT_TOKEN == AUTO_101)
+	while (CURRENT_TOKEN == AUTO_98)
 	{
 		_2 = CURRENT_TOKEN
 		success_3 = TRUE
@@ -4215,7 +4115,7 @@ Rule(Rule_bin) {
 	bool success_3 = FALSE
 	array shadow_4 = NONE
 	bool success_5 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_102))
+	if (!(CURRENT_TOKEN == AUTO_99))
 	{
 		return {}
 	}
@@ -4223,7 +4123,7 @@ Rule(Rule_bin) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	while (CURRENT_TOKEN == AUTO_103)
+	while (CURRENT_TOKEN == AUTO_100)
 	{
 		_2 = CURRENT_TOKEN
 		success_3 = TRUE
@@ -4258,7 +4158,7 @@ Rule(Rule) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_95))
+	if (!(CURRENT_TOKEN == AUTO_92))
 	{
 		return {}
 	}
@@ -4290,7 +4190,7 @@ Rule(Rule) {
 		_8 = Rule_nested_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_93))
+	if (!(CURRENT_TOKEN == AUTO_90))
 	{
 		return {}
 	}
@@ -4820,31 +4720,7 @@ Token(AUTO_82) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_83) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(!(*pos == ']' || *pos == '\0')))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
-	data = _0 # str
-}
-Token(AUTO_84) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "\\]")))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
-	data = _0 # str
-}
-Token(AUTO_88) {
+Token(AUTO_85) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '-'))
@@ -4856,7 +4732,7 @@ Token(AUTO_88) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_89) {
+Token(AUTO_86) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '.'))
@@ -4868,7 +4744,7 @@ Token(AUTO_89) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_91) {
+Token(AUTO_88) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(!STRNCMP(pos, "data")))
@@ -4880,7 +4756,7 @@ Token(AUTO_91) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_93) {
+Token(AUTO_90) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == ';'))
@@ -4892,7 +4768,7 @@ Token(AUTO_93) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_95) {
+Token(AUTO_92) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == ':'))
@@ -4904,7 +4780,7 @@ Token(AUTO_95) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_96) {
+Token(AUTO_93) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(!STRNCMP(pos, "\\")))
@@ -4916,7 +4792,7 @@ Token(AUTO_96) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_97) {
+Token(AUTO_94) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (*pos == '\0')
@@ -4928,7 +4804,7 @@ Token(AUTO_97) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_98) {
+Token(AUTO_95) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '\r' || *pos == '\n'))
@@ -4940,7 +4816,7 @@ Token(AUTO_98) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_99) {
+Token(AUTO_96) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '#'))
@@ -4952,7 +4828,7 @@ Token(AUTO_99) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_100) {
+Token(AUTO_97) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(!STRNCMP(pos, "0x")))
@@ -4964,10 +4840,10 @@ Token(AUTO_100) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_101) {
+Token(AUTO_98) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!((*pos>='1' && *pos<='9') || (*pos>='A' && *pos<='F') || (*pos>='a' && *pos<='f')))
+	if (!((*pos>='0' && *pos<='9') || (*pos>='A' && *pos<='F') || (*pos>='a' && *pos<='f')))
 	{
 		return {}
 	}
@@ -4976,7 +4852,7 @@ Token(AUTO_101) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_102) {
+Token(AUTO_99) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(!STRNCMP(pos, "0b")))
@@ -4988,7 +4864,7 @@ Token(AUTO_102) {
 	pos++
 	data = _0 # str
 }
-Token(AUTO_103) {
+Token(AUTO_100) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	if (!(*pos == '0' || *pos == '1'))
