@@ -156,7 +156,7 @@ std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &
     return res;
 }
 std::string create_tokenizator_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
-    std::string res = "\tclass Tokenizator : public ISPA_STD::Tokenizator_base<Tokens> {\n";
+    std::string res = "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n";
     res += "\t\tpublic:\n";
     res += "\t\t\tToken makeToken(const char*& pos);\n";
     res += addStandardFunctions();
@@ -169,10 +169,13 @@ std::string create_tokenizator_header(std::list<std::string> tokens, std::list<s
     return res;
 }
 std::string create_parser_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
-    std::string res = "\tclass Parser {\n\t\tpublic:\n";
+    std::string res = "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n";
+    res += "\t\tpublic:\n";
+    res += "\t\t\tRule_res getRule();\n";
+    res += "\t\tprivate:\n";
     res += write_data_block(dtb);
     for (auto name : tokens) {
-        res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::arr_t<Token>::iterator pos);\n";
+        res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::TokenFlow::iterator pos);\n";
     }
     res += "\t};\n";
     return res;

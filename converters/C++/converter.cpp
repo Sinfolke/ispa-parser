@@ -423,7 +423,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
         global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
-        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << global::rule_prev_name_str << "(::" << global::namespace_name << "::arr_t<Token>::iterator pos) {\n";
+        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << global::rule_prev_name_str << "(::" << global::namespace_name << "::TokenFlow::iterator pos) {\n";
         out << "\tauto in = pos;" ;
         indentLevel++;
         global::isToken = false;
@@ -432,7 +432,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         global::has_data_block = false;
         global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
         global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
-        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Tokenizator::" << global::rule_prev_name_str << "(const char* pos) {\n";
+        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Lexer::" << global::rule_prev_name_str << "(const char* pos) {\n";
         out << "\tauto in = pos";
         indentLevel++;
         global::isToken = true;
@@ -512,9 +512,9 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::SKIP_SPACES:
         if (global::isToken)            
-            out << "ISPA_STD::skip_spaces(" << current_pos_counter.top() << ")";
+            out << "skip_spaces(" << current_pos_counter.top() << ")";
         else
-            out << "ISPA_STD::skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
+            out << "skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
         break;
     case IR::types::DATA_BLOCK:
         global::has_data_block = true;
@@ -560,12 +560,12 @@ void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     out << "\treturn \"NONE\";\n";
     out << "}\n";
 }
-void addStandardFunctions(std::ostringstream &out) {
-    out << "void " + global::namespace_name + R"(::Tokenizator::printTokens(std::ostream& os, bool sensitiveInfo) {
+void addStandardFunctionsLexer(std::ostringstream &out) {
+    out << "void " + global::namespace_name + R"(::Lexer::printTokens(std::ostream& os, bool sensitiveInfo) {
     for (const auto& token : tokens)
         printToken(os, token, sensitiveInfo);
 })";
-    out << '\n' << "void " + global::namespace_name + R"(::Tokenizator::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
+    out << '\n' << "void " + global::namespace_name + R"(::Lexer::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
     os << TokensToString(token.name()) << ": ";
 
     if (token.data().type() == typeid(str_t)) {
@@ -618,13 +618,20 @@ void addStandardFunctions(std::ostringstream &out) {
 })";
     out << "\n";
 }
+void addStandardFunctionsParser(std::ostringstream &out) {
+    out << global::namespace_name <<  "::Rule_res " << global::namespace_name << R"(::Parser::getRule() {
+    return main(pos);
+})";
+    out << '\n';
+}
 
 
-void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Tokenizator::makeToken(const char*& pos) {\n";
+
+void addLexer_codeHeader(std::ostringstream &out, int &identLevel) {
+    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
     identLevel++;
 }
-void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
+void addLexer_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
     out << "\treturn " << var.name << ";\n";
     out << "}\n";
     identLevel--;
@@ -638,16 +645,17 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
     addHeader(ss);
-    addStandardFunctions(ss);
+    addStandardFunctionsLexer(ss);
+    addStandardFunctionsParser(ss);
     addTokensToString(tokens, ss);
-    addTokenizator_codeHeader(ss, identLevel);
+    addLexer_codeHeader(ss, identLevel);
     current_pos_counter.push("pos");
     tokenizator_code.elements.erase(tokenizator_code.elements.begin());
     tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
     global::isToken = true;
     convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
     global::isToken = false;
-    addTokenizator_codeBottom(ss, identLevel, tokenizator_access_var.var);
+    addLexer_codeBottom(ss, identLevel, tokenizator_access_var.var);
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();
 }

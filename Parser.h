@@ -36,10 +36,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, STRING, NUMBER, BOOLEAN, END, NEWLINE, LINEAR_COMMENT, ID, Rule_OP, Rule_QUANITIFIER, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_ANY, Rule_NOSPACE, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_9, AUTO_14, AUTO_15, AUTO_22, AUTO_27, AUTO_28, AUTO_33, AUTO_35, AUTO_40, AUTO_42, AUTO_43, AUTO_44, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_51, AUTO_52, AUTO_53, AUTO_54, AUTO_55, AUTO_56, AUTO_57, AUTO_58, AUTO_59, __WHITESPACE
+		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, STRING, NUMBER, BOOLEAN, END, NEWLINE, LINEAR_COMMENT, ID, Rule_OP, Rule_QUANITIFIER, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_ANY, Rule_NOSPACE, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_9, AUTO_14, AUTO_15, AUTO_22, AUTO_27, AUTO_28, AUTO_33, AUTO_35, AUTO_40, AUTO_42, AUTO_43, AUTO_44, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_51, AUTO_52, AUTO_53, AUTO_54, AUTO_55, AUTO_56, AUTO_57, AUTO_58, AUTO_59, AUTO_60, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, cll, cll_type, cll_template, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, spacemode, name, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_nested_rule, Rule_data_block, Rule_data_block_key
+		NONE, cll, cll_type, cll_template, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, spacemode, name, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_keyvalue, Rule_value, Rule_nested_rule, Rule_data_block, Rule_data_block_key
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -48,7 +48,7 @@ namespace Parser {
 	using TokenFlow = arr_t<Token>;
 	using Tree = arr_t<Rules>;
 	std::string TokensToString(Tokens token);
-	class Tokenizator : public ISPA_STD::Tokenizator_base<Tokens> {
+	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
 			Token makeToken(const char*& pos);
 
@@ -125,6 +125,7 @@ namespace Parser {
 			using AUTO_57_data = ::Parser::str_t;
 			using AUTO_58_data = ::Parser::str_t;
 			using AUTO_59_data = ::Parser::str_t;
+			using AUTO_60_data = ::Parser::str_t;
 			Token_res cll_OP(const char*);
 			Token_res cll_ASSIGNMENT_OP(const char*);
 			Token_res cll_COMPARE_OP(const char*);
@@ -183,10 +184,13 @@ namespace Parser {
 			Token_res AUTO_57(const char*);
 			Token_res AUTO_58(const char*);
 			Token_res AUTO_59(const char*);
+			Token_res AUTO_60(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
-	class Parser {
+	class Parser : public ISPA_STD::Parser_base<Tokens, Rules> {
 		public:
+			Rule_res getRule();
+		private:
 			struct cll_type_data {
 				::Parser::Token templ;
 				::Parser::Token type;
@@ -278,18 +282,18 @@ namespace Parser {
 				::Parser::Rule first;
 			};
 			struct Rule_rule_data {
-				::Parser::Token qualifier;
-				::Parser::any_t val;
+				::Parser::Rule val;
+				::Parser::any_t quantifier;
+				::Parser::Rule variable;
 			};
 			struct Rule_name_data {
 				::Parser::arr_t<::Parser::Token> nested_name;
 				::Parser::Token name;
 				::Parser::Token is_nested;
 			};
-			struct Rule_group_data {
-				::Parser::Rule val;
-				::Parser::Token variable;
-			};
+			using Rule_group_data = ::Parser::Rule;
+			using Rule_keyvalue_data = ::Parser::Token;
+			using Rule_value_data = ::Parser::Token;
 			using Rule_nested_rule_data = ::Parser::Rule;
 			struct Rule_data_block_key_data {
 				::Parser::Rule val;
@@ -302,42 +306,44 @@ namespace Parser {
 				::Parser::Rule rule;
 				::Parser::Token name;
 			};
-			Rule_res cll(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_type(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_template(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_if(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_variable(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_function_body_call(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_function_body_decl(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_function_arguments(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_function_parameters(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_cll_function_call(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_function_decl(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr_logical(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr_compare(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr_arithmetic(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr_value(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_expr_group(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_var(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_block(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_loop_while(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_loop_for(::Parser::arr_t<Token>::iterator pos);
-			Rule_res array(::Parser::arr_t<Token>::iterator pos);
-			Rule_res object(::Parser::arr_t<Token>::iterator pos);
-			Rule_res any_data(::Parser::arr_t<Token>::iterator pos);
-			Rule_res spacemode(::Parser::arr_t<Token>::iterator pos);
-			Rule_res name(::Parser::arr_t<Token>::iterator pos);
-			Rule_res main(::Parser::arr_t<Token>::iterator pos);
-			Rule_res use(::Parser::arr_t<Token>::iterator pos);
-			Rule_res use_unit(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_rule(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_name(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_group(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_nested_rule(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_data_block(::Parser::arr_t<Token>::iterator pos);
-			Rule_res Rule_data_block_key(::Parser::arr_t<Token>::iterator pos);
+			Rule_res cll(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_type(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_template(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_if(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_variable(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_function_body_call(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_function_body_decl(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_function_arguments(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_function_parameters(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_cll_function_call(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_function_decl(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_logical(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_compare(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_arithmetic(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_value(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_group(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_var(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_block(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_loop_while(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_loop_for(::Parser::TokenFlow::iterator pos);
+			Rule_res array(::Parser::TokenFlow::iterator pos);
+			Rule_res object(::Parser::TokenFlow::iterator pos);
+			Rule_res any_data(::Parser::TokenFlow::iterator pos);
+			Rule_res spacemode(::Parser::TokenFlow::iterator pos);
+			Rule_res name(::Parser::TokenFlow::iterator pos);
+			Rule_res main(::Parser::TokenFlow::iterator pos);
+			Rule_res use(::Parser::TokenFlow::iterator pos);
+			Rule_res use_unit(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_rule(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_name(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_group(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_keyvalue(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_value(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_nested_rule(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_data_block(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_data_block_key(::Parser::TokenFlow::iterator pos);
 	};
 
 } // Parser

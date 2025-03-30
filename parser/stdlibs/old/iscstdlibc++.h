@@ -256,7 +256,7 @@ size_t skip_spaces(Iterator& pos) {
 }
 
 template<class TOKEN_T>
-class Tokenizator_base {
+class Lexer_base {
 private:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
@@ -293,23 +293,23 @@ public:
     virtual node<TOKEN_T> getToken() = 0;
     // constructors
 
-    explicit Tokenizator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
-    explicit Tokenizator_base(char*& in) : _in(in) {}
-    explicit Tokenizator_base(const char*& in) : _in(const_cast<char*>(in)) {}
-    explicit Tokenizator_base() {}
+    explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
+    explicit Lexer_base(char*& in) : _in(in) {}
+    explicit Lexer_base(const char*& in) : _in(const_cast<char*>(in)) {}
+    explicit Lexer_base() {}
 
     bool hasInput() {
         return _in != nullptr;
     }
-    Tokenizator_base& setinput(const std::string& in) {
+    Lexer_base& setinput(const std::string& in) {
         _in = in.c_str();
         return *this;
     }
-    Tokenizator_base& setinput(char*& in) {
+    Lexer_base& setinput(char*& in) {
         _in = in;
         return *this;
     }
-    Tokenizator_base& setinput(const char*& in) {
+    Lexer_base& setinput(const char*& in) {
         _in = in;
         return *this;
     }
@@ -373,7 +373,7 @@ public:
      * @param input_tokens the input tokens
      * Push flow of tokens
      */
-    Tokenizator_base& push(const TokenFlow<TOKEN_T>& input_tokens) {
+    Lexer_base& push(const TokenFlow<TOKEN_T>& input_tokens) {
         tokens.append_range(input_tokens);
         return *this;
     }
@@ -381,7 +381,7 @@ public:
      * @param input_token the input token
      * Push a token
      */
-    Tokenizator_base& push(const node<TOKEN_T>& input_token) {
+    Lexer_base& push(const node<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
         return *this;
     }
@@ -389,7 +389,7 @@ public:
      * @param tokenizator the tokenizator with tokens
      * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Tokenizator_No_Tokens_exception is raised 
      */
-    Tokenizator_base& push(const Tokenizator_base& tokenizator) {
+    Lexer_base& push(const Lexer_base& tokenizator) {
         if (tokenizator.hasTokenFlow())
             tokens.push_back(tokenizator.tokens);
         else
@@ -399,7 +399,7 @@ public:
     /**
      * Pop the last token
      */
-    Tokenizator_base& pop() {
+    Lexer_base& pop() {
         tokens.pop_back();
         return *this;
     }
@@ -407,22 +407,22 @@ public:
      * @param n the amount of tokens to pop
      * Pop a specific amount of tokens
      */
-    Tokenizator_base& pop(const std::size_t& n) {
+    Lexer_base& pop(const std::size_t& n) {
         if (n > tokens.size())
             throw std::length_error(ISC_STD_LIBMARK "Tokenizator_base::pop(): the number of elements to pop is higher actual size");
         tokens.erase(tokens.end() - n, tokens.end());
         return *this;
     }
 
-    Tokenizator_base& operator=(const Tokenizator_base& tokenizator) {
+    Lexer_base& operator=(const Lexer_base& tokenizator) {
         tokens = tokenizator.tokens;
         _in = tokenizator._in;
         return *this;
     }
-    bool operator==(const Tokenizator_base& tokenizator) {
+    bool operator==(const Lexer_base& tokenizator) {
         return tokens == tokenizator.tokens;
     }
-    bool operator!=(const Tokenizator_base& tokenizator) {
+    bool operator!=(const Lexer_base& tokenizator) {
         return tokens != tokenizator.tokens;
     }
 };
@@ -441,7 +441,7 @@ public:
     virtual node<RULE_T> getRule(size_t &tokensConsumed) = 0;
     // Constructors
     Parser_base() {}
-    Parser_base(const Tokenizator_base<TOKEN_T>& tokenizator) {
+    Parser_base(const Lexer_base<TOKEN_T>& tokenizator) {
         if (tokenizator.hasTokenFlow()) {
             tokens = tokenizator.tokens;
         } else if (tokenizator.hasInput()) {
@@ -451,16 +451,16 @@ public:
         }
     }
     Parser_base(const std::string& in) {
-        auto r = Tokenizator_base<TOKEN_T>().makeTokens(in);
+        auto r = Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }
     Parser_base(const char* const in) {
-        auto r = Tokenizator_base<TOKEN_T>().makeTokens(in);
+        auto r = Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }
 
     // Parsing methods
-    Tree<RULE_T> parse(const Tokenizator_base<TOKEN_T>& tokenizator) {
+    Tree<RULE_T> parse(const Lexer_base<TOKEN_T>& tokenizator) {
         if (tokenizator.hasTokenFlow()) {
             tokens = tokenizator.tokens;
         } else if (tokenizator.hasInput()) {
@@ -471,11 +471,11 @@ public:
         return parse();
     }
     Tree<RULE_T> parse(const std::string& in) {
-        tokens = Tokenizator_base<TOKEN_T>().makeToken(in);
+        tokens = Lexer_base<TOKEN_T>().makeToken(in);
         return parse();
     }
     Tree<RULE_T> parse(const char* const in) {
-        tokens = Tokenizator_base<TOKEN_T>().makeToken(in);
+        tokens = Lexer_base<TOKEN_T>().makeToken(in);
         return parse();
     }
     void clearInput() {

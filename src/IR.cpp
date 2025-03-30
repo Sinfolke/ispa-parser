@@ -1596,7 +1596,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
             },
             convert_op_rule(rules, variable_count, var, qualifier_char, fullname, isToken, fullname_arr, elements, groups, vars, insideLoop),
         };
-        auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
+        auto v = !success_var.shadow_var.name.empty() && var.type.type != IR::var_types::STRING ? success_var.shadow_var : success_var.var;
         auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
         if (!v.name.empty()) {
             cond.else_block = {{
@@ -1638,7 +1638,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                 if (var.type.type == IR::var_types::ARRAY) {
                     val.else_block.push_back({IR::types::METHOD_CALL, IR::method_call { var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, success_var.var}}}}}});
                 } else {
-                    auto v = !success_var.shadow_var.name.empty() ? success_var.shadow_var : success_var.var;
+                    auto v = !success_var.shadow_var.name.empty() && var.type.type != IR::var_types::STRING ? success_var.shadow_var : success_var.var;
                     auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
                     val.else_block.push_back({
                         IR::types::ASSIGN_VARIABLE,

@@ -256,9 +256,9 @@ struct match_result {
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::vector<node<TOKEN_T>>;
+using TokenFlow = std::list<node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::vector<node<RULE_T>>;
+using Tree = std::list<node<RULE_T>>;
 
 /**
  * @brief Join vector into string
@@ -278,33 +278,9 @@ std::string join(const std::vector<T>& vec, const std::string& del = "") {
     str += vec.back();
     return str;
 }
-/**
- * @brief Skip a specific amount of symbols
- * 
- * @param in 
- * @param text 
- * @return size_t 
- */
-size_t skipup(const char*& in, const char* text);
-// Skip a list of symbols
-size_t skip_list(const char*& in, const char* text);
-// Skip spaces
-size_t skip_spaces(const char*& in);
-// get file content into std::string
-std::string readFileToString(const char* path, bool &success);
-
-// skip spaces for tokens
-template <typename Iterator, typename Tokens>
-size_t skip_spaces(Iterator& pos) {
-    auto prev = pos;
-    while (pos->name() == Tokens::__WHITESPACE)
-        ++pos;
-    
-    return std::distance(prev, pos);  // Works for any iterator
-}
 
 template<class TOKEN_T>
-class Tokenizator_base {
+class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
@@ -318,6 +294,19 @@ protected:
     std::size_t getCurrentPos(const char* in) {
         return in - _in;
     }
+    /**
+     * @brief skip the spaces
+     * 
+     * @param in the input
+     * @return std::size_t
+     */
+    std::size_t skip_spaces(const char*& in) {
+        auto prev = in;
+        while(isspace(*in))
+            in++;
+        
+        return in - prev;
+    }
 public:
     /**
      * Get one token
@@ -325,23 +314,23 @@ public:
     virtual node<TOKEN_T> makeToken(const char*& pos) = 0;
     // constructors
 
-    explicit Tokenizator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
-    explicit Tokenizator_base(char*& in) : _in(in) {}
-    explicit Tokenizator_base(const char*& in) : _in(const_cast<char*>(in)) {}
-    explicit Tokenizator_base() {}
+    explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
+    explicit Lexer_base(char*& in) : _in(in) {}
+    explicit Lexer_base(const char*& in) : _in(const_cast<char*>(in)) {}
+    explicit Lexer_base() {}
 
     bool hasInput() {
         return _in != nullptr;
     }
-    Tokenizator_base& setinput(const std::string& in) {
+    Lexer_base& setinput(const std::string& in) {
         _in = in.c_str();
         return *this;
     }
-    Tokenizator_base& setinput(char*& in) {
+    Lexer_base& setinput(char*& in) {
         _in = in;
         return *this;
     }
-    Tokenizator_base& setinput(const char*& in) {
+    Lexer_base& setinput(const char*& in) {
         _in = in;
         return *this;
     }
@@ -438,7 +427,7 @@ public:
      * @param tokenizator the tokenizator with tokens
      * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Tokenizator_No_Tokens_exception is raised 
      */
-    void push(const Tokenizator_base& tokenizator) {
+    void push(const Lexer_base& tokenizator) {
         if (tokenizator.hasTokenFlow())
             tokens.push_back(tokenizator.tokens);
         else
@@ -460,15 +449,15 @@ public:
         tokens.erase(tokens.end() - n, tokens.end());
     }
 
-    Tokenizator_base& operator=(const Tokenizator_base& tokenizator) {
+    Lexer_base& operator=(const Lexer_base& tokenizator) {
         tokens = tokenizator.tokens;
         _in = tokenizator._in;
         return *this;
     }
-    bool operator==(const Tokenizator_base& tokenizator) {
+    bool operator==(const Lexer_base& tokenizator) {
         return tokens == tokenizator.tokens;
     }
-    bool operator!=(const Tokenizator_base& tokenizator) {
+    bool operator!=(const Lexer_base& tokenizator) {
         return tokens != tokenizator.tokens;
     }
 };
@@ -476,56 +465,67 @@ public:
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
 class Parser_base {
-private:
-    TokenFlow<TOKEN_T> tokens;
+protected:
+    TokenFlow<TOKEN_T>* tokens = nullptr;
     Tree<RULE_T> tree;
+    typename TokenFlow<TOKEN_T>::iterator pos;
+    // skip spaces for tokens
+    template <typename Iterator, typename Tokens>
+    size_t skip_spaces(Iterator& pos) {
+        auto prev = pos;
+        while (pos->name() == Tokens::__WHITESPACE)
+            ++pos;
+        
+        return std::distance(prev, pos);
+    }
+
 public:
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 
      * 
      */
-    virtual node<RULE_T> getRule(size_t &tokensConsumed) = 0;
+    virtual match_result<RULE_T> getRule() = 0;
     // Constructors
     Parser_base() {}
-    Parser_base(const Tokenizator_base<TOKEN_T>& tokenizator) {
+    Parser_base(const Lexer_base<TOKEN_T>& tokenizator) {
         if (tokenizator.hasTokenFlow()) {
-            tokens = tokenizator.tokens;
+            tokens = &tokenizator.tokens;
         } else if (tokenizator.hasInput()) {
-            tokens = tokenizator.makeTokens();
+            tokens = &tokenizator.makeTokens();
         } else {
             throw Tokenizator_No_Tokens_exception();
         }
     }
     Parser_base(const std::string& in) {
-        auto r = Tokenizator_base<TOKEN_T>().makeTokens(in);
+        auto r = &Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }
     Parser_base(const char* const in) {
-        auto r = Tokenizator_base<TOKEN_T>().makeTokens(in);
+        auto r = &Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }
 
     // Parsing methods
-    Tree<RULE_T> parse(const Tokenizator_base<TOKEN_T>& tokenizator) {
+    Tree<RULE_T> parse(const Lexer_base<TOKEN_T>& tokenizator) {
         if (tokenizator.hasTokenFlow()) {
-            tokens = tokenizator.tokens;
+            tokens = &tokenizator.tokens;
         } else if (tokenizator.hasInput()) {
-            tokens = tokenizator.makeTokens();
+            tokens = &tokenizator.makeTokens();
         } else {
             throw Tokenizator_No_Tokens_exception();
         }
         return parse();
     }
     Tree<RULE_T> parse(const std::string& in) {
-        tokens = Tokenizator_base<TOKEN_T>().makeToken(in);
+        tokens = &Lexer_base<TOKEN_T>().makeToken(in);
         return parse();
     }
     Tree<RULE_T> parse(const char* const in) {
-        tokens = Tokenizator_base<TOKEN_T>().makeToken(in);
+        tokens = &Lexer_base<TOKEN_T>().makeToken(in);
         return parse();
     }
     void clearInput() {
-        tokens.clear();
+        tokens = nullptr;
     }
     /**
      * @brief Parser the tokens and get the tree
@@ -533,8 +533,13 @@ public:
      * @return Tree<RULE_T> 
      */
     Tree<RULE_T> parse() {
-        while(!tokens.empty()) {
-            tree.push_back(getRule());
+        pos = tokens->begin();
+        while(pos != tokens->end()) {
+            auto res = getRule();
+            if (!res.status)
+                break;
+            tree.push_back(res.token);
+            pos += res.token.length();
         }
     }
 };

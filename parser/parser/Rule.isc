@@ -8,11 +8,12 @@ Rule:
     ;
     #rule:
 
-        group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
+        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
 
         data: 
-            val: %1
-            qualifier: %2
+            variable: %1
+            val: %2
+            quantifier: %3
         ;
     ;
     #name:
@@ -25,12 +26,17 @@ Rule:
         ;
     ;
     #group:
-        ('&' ID )? '(' rule* ')'
+        '(' rule* ')'
 
-        data: 
-            variable: $1>%1
-            val: %4
-        ;
+        data: %2;
+    ;
+    #keyvalue:
+        '@' ID
+        data: %2;
+    ;
+    #value:
+        '&' ID
+        data: %2;
     ;
     #nested_rule: 
         '#' \s0 (Rule)
