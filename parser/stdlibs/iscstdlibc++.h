@@ -148,6 +148,23 @@ class node {
         return count;
     }
     /**
+     * @brief Returns the position in line of token. Note it assume the start pointer is still valid
+     * 
+     * @return std::size_t 
+     */
+    std::size_t positionInLine() const {
+        if (_startpos == std::string::npos || _start == nullptr)
+            throw return_base_exception("positionInLine");
+        size_t count = 0;
+        for (size_t i = 0; i < _startpos; i++) {
+            if (*(_start + i) == '\n')
+                count = 0;
+            else
+                count++;
+        }
+        return count;
+    }
+    /**
      * @brief Get the end position based on startpos and length
      * 
      * @return long long 
@@ -197,37 +214,37 @@ class node {
     /**
      * whether token is empty
      */
-    auto empty() {
+    auto empty() const {
         return _empty;
     }
     /**
      * get start position 
      */
-    auto startpos() {
+    auto startpos() const {
         return _startpos;
     }
     /**
      * Get start pointer of string. Note it might be not be valid until now
      */
-    auto start() {
+    auto start() const {
         return _start;
     }
     /**
      * Get end pointer of string. Note it might be not be valid until now
      */
-    auto end() {
+    auto end() const {
         return _end;
     }
     /**
      * Get name enum of this node
      */
-    auto name() {
+    auto name() const {
         return _name;
     }
     /**
      * get data of this node
      */
-    auto data() {
+    auto data() const {
         return _data;
     }
 
@@ -298,14 +315,14 @@ protected:
      * @param txt 
      * @return std::size_t 
      */
-    std::size_t getCurrentPos(const char*const& txt) {
-        return _in - txt;
+    std::size_t getCurrentPos(const char* in) {
+        return in - _in;
     }
 public:
     /**
      * Get one token
      */
-    virtual node<TOKEN_T> makeToken() = 0;
+    virtual node<TOKEN_T> makeToken(const char*& pos) = 0;
     // constructors
 
     explicit Tokenizator_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
@@ -394,8 +411,9 @@ public:
         if (_in == nullptr)
             throw Tokenizator_No_Input_exception();
         node<TOKEN_T> result;
-        while (*_in != '\0') {
-            result = makeToken();
+        const char* pos = _in;
+        while (*pos != '\0') {
+            result = makeToken(pos);
             if (result.empty())
                 break;
             push(result);

@@ -369,7 +369,7 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
     if (first.name == Parser::Rules::string && second.name == Parser::Rules::string) {
         // if first value size is lower second, put the second before
         // this ensure correct match of values
-        return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size(); 
+        return std::any_cast<std::string>(first.data).size() < std::any_cast<std::string>(second.data).size(); 
     }
     // here is same as with strings
     if (first.name == Parser::Rules::Rule_bin && second.name == Parser::Rules::Rule_bin) {

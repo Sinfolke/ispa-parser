@@ -31,14 +31,14 @@ cll:
     ;
     
     #type:
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' cll_template) | ('obj' cll_template) )
+        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' template) | ('obj' template) )
         data:
             type: %1
             templ: %2
         ;
     ;
-    #cll_template:
-        cll_type (',' cll_type)*
+    #template:
+        type (',' type)*
         data: 
             first: %1
             second: %3

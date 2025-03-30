@@ -8,7 +8,7 @@ Rule:
     ;
     #rule:
 
-        group | name | CSEQUENCE | STRING | HEX | BIN | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
+        group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
 
         data: 
             val: %1
@@ -81,8 +81,11 @@ Rule:
     #ANY:
         '.'
     ;
+    #NOSPACE:
+        '\\s0'
+    ;
     #ESCAPED:
-        '\\' \s0 (.) \s0 NUMBER?
+        '\\' \s0 (.) \s0
         data:
             c: $1
             num: %3

@@ -1604,7 +1604,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                 IR::variable_assign 
                 {
                     var.name,
-                    assign_type,
+                    IR::var_assign_types::ASSIGN,
                     IR::assign {
                         IR::var_assign_values::VARIABLE,
                         v
@@ -1626,6 +1626,11 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                     auto el = new_ir.elements[j];
                     erase_indices.push_back(j);
                     if (el.type != IR::types::SKIP_SPACES) {
+                        if (el.type == IR::types::ASSIGN_VARIABLE) {
+                            auto assignment = std::any_cast<IR::variable_assign>(el.value);
+                            assignment.assign_type = IR::var_assign_types::ASSIGN;
+                            el.value = assignment;
+                        }
                         val.else_block.push_back(el);
                     }
                 }
@@ -1640,7 +1645,7 @@ arr_t<IR::member> convert_op_rule(arr_t<Parser::Rule> &rules, int &variable_coun
                         IR::variable_assign 
                         {
                             var.name,
-                            assign_type,
+                            IR::var_assign_types::ASSIGN,
                             IR::assign {
                                 IR::var_assign_values::VARIABLE,
                                 v

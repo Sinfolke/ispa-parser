@@ -36,10 +36,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, STRING, NUMBER, BOOLEAN, END, NEWLINE, LINEAR_COMMENT, ID, Rule_OP, Rule_QUANITIFIER, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_ANY, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_9, AUTO_14, AUTO_15, AUTO_22, AUTO_27, AUTO_28, AUTO_33, AUTO_35, AUTO_40, AUTO_42, AUTO_43, AUTO_44, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_51, AUTO_52, AUTO_53, AUTO_54, AUTO_55, AUTO_56, AUTO_57, AUTO_58, AUTO_59, __WHITESPACE
+		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, STRING, NUMBER, BOOLEAN, END, NEWLINE, LINEAR_COMMENT, ID, Rule_OP, Rule_QUANITIFIER, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_ANY, Rule_NOSPACE, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_9, AUTO_14, AUTO_15, AUTO_22, AUTO_27, AUTO_28, AUTO_33, AUTO_35, AUTO_40, AUTO_42, AUTO_43, AUTO_44, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_51, AUTO_52, AUTO_53, AUTO_54, AUTO_55, AUTO_56, AUTO_57, AUTO_58, AUTO_59, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, cll, cll_type, cll_cll_template, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, spacemode, name, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_nested_rule, Rule_data_block, Rule_data_block_key
+		NONE, cll, cll_type, cll_template, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, spacemode, name, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_nested_rule, Rule_data_block, Rule_data_block_key
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -50,7 +50,21 @@ namespace Parser {
 	std::string TokensToString(Tokens token);
 	class Tokenizator : public ISPA_STD::Tokenizator_base<Tokens> {
 		public:
-			Token makeToken();
+			Token makeToken(const char*& pos);
+
+            /**
+             * @param os the output stream
+             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
+             * Print the tokens into an output stream
+             */
+            void printTokens(std::ostream& os, bool sentitiveInfo = false);
+            /**
+             * @param os the output stream
+             * @param token the token to print
+             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
+             * Prints a single token into an output stream
+             */
+            void printToken(std::ostream& os, const Token& token, bool sensitiveInfo = false);
 		private:
 			using cll_OP_data = ::Parser::str_t;
 			using cll_ASSIGNMENT_OP_data = ::Parser::Token;
@@ -132,6 +146,7 @@ namespace Parser {
 			Token_res Rule_CSEQUENCE_ESCAPE(const char*);
 			Token_res Rule_CSEQUENCE_DIAPASON(const char*);
 			Token_res Rule_ANY(const char*);
+			Token_res Rule_NOSPACE(const char*);
 			Token_res Rule_ESCAPED(const char*);
 			Token_res Rule_HEX(const char*);
 			Token_res Rule_BIN(const char*);
@@ -176,7 +191,7 @@ namespace Parser {
 				::Parser::Token templ;
 				::Parser::Token type;
 			};
-			struct cll_cll_template_data {
+			struct cll_template_data {
 				::Parser::arr_t<::Parser::Rule> second;
 				::Parser::Rule first;
 			};
@@ -282,14 +297,14 @@ namespace Parser {
 			};
 			using Rule_data_block_data = ::Parser::Rule;
 			struct Rule_data {
-				::Parser::Rule nestedRules;
+				::Parser::Rule nested_rules;
 				::Parser::Rule data_block;
 				::Parser::Rule rule;
 				::Parser::Token name;
 			};
 			Rule_res cll(::Parser::arr_t<Token>::iterator pos);
 			Rule_res cll_type(::Parser::arr_t<Token>::iterator pos);
-			Rule_res cll_cll_template(::Parser::arr_t<Token>::iterator pos);
+			Rule_res cll_template(::Parser::arr_t<Token>::iterator pos);
 			Rule_res cll_if(::Parser::arr_t<Token>::iterator pos);
 			Rule_res cll_variable(::Parser::arr_t<Token>::iterator pos);
 			Rule_res cll_function_body_call(::Parser::arr_t<Token>::iterator pos);

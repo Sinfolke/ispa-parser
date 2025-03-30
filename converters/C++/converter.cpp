@@ -439,7 +439,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     case IR::types::RULE_END:
         if (global::isToken) {
-            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(pos), in, pos, Tokens::" << global::rule_prev_name_str;
+            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(in), in, pos, Tokens::" << global::rule_prev_name_str;
             if (global::has_data_block)
                 out << ", data";
             out << ")};\n";
@@ -560,8 +560,68 @@ void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     out << "\treturn \"NONE\";\n";
     out << "}\n";
 }
+void addStandardFunctions(std::ostringstream &out) {
+    out << "void " + global::namespace_name + R"(::Tokenizator::printTokens(std::ostream& os, bool sensitiveInfo) {
+    for (const auto& token : tokens)
+        printToken(os, token, sensitiveInfo);
+})";
+    out << '\n' << "void " + global::namespace_name + R"(::Tokenizator::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
+    os << TokensToString(token.name()) << ": ";
+
+    if (token.data().type() == typeid(str_t)) {
+        os << '"' << std::any_cast<str_t>(token.data()) << '"';
+    } else if (token.data().type() == typeid(num_t)) {
+        os << std::any_cast<num_t>(token.data());
+    } else if (token.data().type() == typeid(bool_t)) {
+        os << std::boolalpha << std::any_cast<bool_t>(token.data());
+    } else if (token.data().type() == typeid(Token)) {
+        os << "{ ";
+        printToken(os, std::any_cast<Token>(token.data())); // Recursive call
+        os << " }";
+    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<Token>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printToken(os, *it);
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<str_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<str_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << '"' << *it << '"';
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<num_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<num_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::boolalpha << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    }
+    os << " # " << token.startpos();
+    if (sensitiveInfo)
+        os << ", line " << token.line() << ", pos " << token.positionInLine();
+    os << '\n';
+})";
+    out << "\n";
+}
+
+
 void addTokenizator_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Tokenizator::makeToken() {\n";
+    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Tokenizator::makeToken(const char*& pos) {\n";
     identLevel++;
 }
 void addTokenizator_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
@@ -578,16 +638,15 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
     addHeader(ss);
+    addStandardFunctions(ss);
     addTokensToString(tokens, ss);
     addTokenizator_codeHeader(ss, identLevel);
-    current_pos_counter.push("_in");
+    current_pos_counter.push("pos");
     tokenizator_code.elements.erase(tokenizator_code.elements.begin());
     tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
     global::isToken = true;
     convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
     global::isToken = false;
-    current_pos_counter.pop();
-    current_pos_counter.push("pos");
     addTokenizator_codeBottom(ss, identLevel, tokenizator_access_var.var);
     convertMembers(ir.elements, ss, identLevel, current_pos_counter);
     return ss.str();

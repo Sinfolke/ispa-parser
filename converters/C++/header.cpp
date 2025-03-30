@@ -112,6 +112,25 @@ std::string createToStringFunction() {
     res += "\tstd::string TokensToString(Tokens token);\n";
     return res;
 }
+std::string addStandardFunctions() {
+    std::string res;
+    res += R"(
+            /**
+             * @param os the output stream
+             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
+             * Print the tokens into an output stream
+             */
+            void printTokens(std::ostream& os, bool sentitiveInfo = false);
+            /**
+             * @param os the output stream
+             * @param token the token to print
+             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
+             * Prints a single token into an output stream
+             */
+            void printToken(std::ostream& os, const Token& token, bool sensitiveInfo = false);)";
+    res += "\n";
+    return res;
+}
 std::string convert_inclosed_map(IR::inclosed_map map) {
     std::string res;
     for (auto [key, value] : map) {
@@ -139,7 +158,8 @@ std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &
 std::string create_tokenizator_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
     std::string res = "\tclass Tokenizator : public ISPA_STD::Tokenizator_base<Tokens> {\n";
     res += "\t\tpublic:\n";
-    res += "\t\t\tToken makeToken();\n";
+    res += "\t\t\tToken makeToken(const char*& pos);\n";
+    res += addStandardFunctions();
     res += "\t\tprivate:\n";
     res += write_data_block(dtb);
     for (auto name : tokens) {

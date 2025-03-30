@@ -7,12 +7,10 @@ int main() {
     Parser::Parser parser;
     tokenizator.makeTokensFromFile("parser/parser/Rule.isc");
     std::ofstream ofile("tokens");
-    for (auto token : tokenizator.getTokens()) {
-        ofile << Parser::TokensToString(token.name()) << ": ";
-        if (token.data().type() == typeid(Parser::str_t)) {
-            ofile << '"' << std::any_cast<Parser::str_t>(token.data()) << '"';
-        }
-        ofile << '\n';
+    if (!ofile) {
+        std::cerr << "could not open token file\n";
+        exit(1);
     }
+    tokenizator.printTokens(ofile);
     std::cout << std::endl;
 }
