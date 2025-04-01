@@ -623,7 +623,7 @@ Rule(cll_variable) {
 		skipspaces(TOKEN_SEQUENCE)
 		if (!(CURRENT_TOKEN == AUTO_27))
 		{
-			return {}
+			break
 		}
 		_17 = CURRENT_TOKEN
 		success_18 = TRUE
@@ -2502,10 +2502,10 @@ Rule(Rule_rule) {
 	auto begin_8 = pos
 	do
 	{
-		_4 = Rule_keyvalue(TOKEN_SEQUENCE)
+		_4 = Rule_value(TOKEN_SEQUENCE)
 		if (!(_4.status))
 		{
-			_6 = cll_expr_value(TOKEN_SEQUENCE)
+			_6 = Rule_keyvalue(TOKEN_SEQUENCE)
 			if (!(_6.status))
 			{
 				break
@@ -2543,7 +2543,7 @@ Rule(Rule_rule) {
 				_17 = cll(TOKEN_SEQUENCE)
 				if (!(_17.status))
 				{
-					_19 = cll_expr_group(TOKEN_SEQUENCE)
+					_19 = Rule_group(TOKEN_SEQUENCE)
 					if (!(_19.status))
 					{
 						if (!(CURRENT_TOKEN == LINEAR_COMMENT))
@@ -2556,9 +2556,9 @@ Rule(Rule_rule) {
 									{
 										if (!(CURRENT_TOKEN == Rule_ANY))
 										{
-											if (!(CURRENT_TOKEN == STRING))
+											if (!(CURRENT_TOKEN == Rule_OP))
 											{
-												if (!(CURRENT_TOKEN == cll_OP))
+												if (!(CURRENT_TOKEN == STRING))
 												{
 													return {}
 												}

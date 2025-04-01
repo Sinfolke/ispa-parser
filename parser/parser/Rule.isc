@@ -47,7 +47,7 @@ Rule:
         data: %2;
 
         #key:
-            [\n\r]+ &name(ID) ':' &dt (expr)
+            [\n\r]+ &name(ID) ':' &dt (cll.expr)
             data:
                 name: name
                 val: dt

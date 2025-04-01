@@ -59,9 +59,9 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
                     rule_name.assign(fullname.begin(), fullname.end());
                 }
                 rule_name.push_back(std::any_cast<std::string>(name.data));
-                for (auto &nested : nested_rules) {
-                    rule_name.push_back(std::any_cast<std::string>(nested.data));
-                }
+            }
+            for (auto &nested : nested_rules) {
+                rule_name.push_back(std::any_cast<std::string>(nested.data));
             }
             rule.data = rule_other(std::any_cast<std::string>(name.data), rule_name);
             assign_back = true;
@@ -152,6 +152,8 @@ void normalizeRule(Parser::Rule &member, arr_t<std::string> &fullname, arr_t<std
 
 void normalizeTree(Parser::Tree &tree, arr_t<std::string> &fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
     for (auto &member : tree) {
+        if (fullname.empty())
+            nested_rule_names.clear();
         if (member.name == Parser::Rules::Rule || !fullname.empty()) {
             normalizeRule(member, fullname, nested_rule_names);
         }

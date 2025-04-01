@@ -218,6 +218,8 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::bool_t success_95 = false;
 	::Parser::Token_res _96;
 	::Parser::bool_t success_97 = false;
+	::Parser::Token_res _98;
+	::Parser::bool_t success_99 = false;
 	_2 = Rule_ESCAPED(pos);
 	if (!(_2.status))
 	{
@@ -257,112 +259,122 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 													_26 = AUTO_19(pos);
 													if (!(_26.status))
 													{
-														_28 = Rule_NOSPACE(pos);
+														_28 = cll_OP(pos);
 														if (!(_28.status))
 														{
-															_30 = AUTO_20(pos);
+															_30 = Rule_NOSPACE(pos);
 															if (!(_30.status))
 															{
-																_32 = AUTO_38(pos);
+																_32 = AUTO_20(pos);
 																if (!(_32.status))
 																{
-																	_34 = AUTO_6(pos);
+																	_34 = AUTO_38(pos);
 																	if (!(_34.status))
 																	{
-																		_36 = AUTO_7(pos);
+																		_36 = AUTO_6(pos);
 																		if (!(_36.status))
 																		{
-																			_38 = AUTO_14(pos);
+																			_38 = AUTO_7(pos);
 																			if (!(_38.status))
 																			{
-																				_40 = AUTO_1(pos);
+																				_40 = AUTO_14(pos);
 																				if (!(_40.status))
 																				{
-																					_42 = AUTO_47(pos);
+																					_42 = AUTO_1(pos);
 																					if (!(_42.status))
 																					{
-																						_44 = AUTO_0(pos);
+																						_44 = AUTO_47(pos);
 																						if (!(_44.status))
 																						{
-																							_46 = AUTO_46(pos);
+																							_46 = AUTO_0(pos);
 																							if (!(_46.status))
 																							{
-																								_48 = AUTO_43(pos);
+																								_48 = AUTO_46(pos);
 																								if (!(_48.status))
 																								{
-																									_50 = AUTO_44(pos);
+																									_50 = AUTO_43(pos);
 																									if (!(_50.status))
 																									{
-																										_52 = AUTO_39(pos);
+																										_52 = AUTO_44(pos);
 																										if (!(_52.status))
 																										{
-																											_54 = Rule_ANY(pos);
+																											_54 = AUTO_39(pos);
 																											if (!(_54.status))
 																											{
 																												_56 = AUTO_42(pos);
 																												if (!(_56.status))
 																												{
-																													_58 = AUTO_51(pos);
+																													_58 = Rule_ANY(pos);
 																													if (!(_58.status))
 																													{
-																														_60 = AUTO_32(pos);
+																														_60 = AUTO_51(pos);
 																														if (!(_60.status))
 																														{
-																															_62 = AUTO_45(pos);
+																															_62 = AUTO_32(pos);
 																															if (!(_62.status))
 																															{
-																																_64 = AUTO_25(pos);
+																																_64 = AUTO_45(pos);
 																																if (!(_64.status))
 																																{
-																																	_66 = AUTO_27(pos);
+																																	_66 = AUTO_25(pos);
 																																	if (!(_66.status))
 																																	{
-																																		_68 = AUTO_48(pos);
+																																		_68 = AUTO_27(pos);
 																																		if (!(_68.status))
 																																		{
-																																			_70 = Rule_OP(pos);
+																																			_70 = AUTO_48(pos);
 																																			if (!(_70.status))
 																																			{
-																																				_72 = AUTO_49(pos);
+																																				_72 = Rule_OP(pos);
 																																				if (!(_72.status))
 																																				{
-																																					_74 = __WHITESPACE(pos);
+																																					_74 = AUTO_49(pos);
 																																					if (!(_74.status))
 																																					{
-																																						_76 = END(pos);
+																																						_76 = __WHITESPACE(pos);
 																																						if (!(_76.status))
 																																						{
-																																							_78 = NEWLINE(pos);
+																																							_78 = AUTO_50(pos);
 																																							if (!(_78.status))
 																																							{
-																																								_80 = STRING(pos);
+																																								_80 = END(pos);
 																																								if (!(_80.status))
 																																								{
-																																									_82 = ID(pos);
+																																									_82 = NEWLINE(pos);
 																																									if (!(_82.status))
 																																									{
-																																										_84 = Rule_QUANTIFIER(pos);
+																																										_84 = STRING(pos);
 																																										if (!(_84.status))
 																																										{
-																																											_86 = BOOLEAN(pos);
+																																											_86 = ID(pos);
 																																											if (!(_86.status))
 																																											{
 																																												_88 = cll_TYPE(pos);
 																																												if (!(_88.status))
 																																												{
-																																													_90 = cll_LOGICAL_NOT(pos);
+																																													_90 = cll_COMPARE_OP(pos);
 																																													if (!(_90.status))
 																																													{
-																																														_92 = AUTO_50(pos);
+																																														_92 = cll_LOGICAL_OP(pos);
 																																														if (!(_92.status))
 																																														{
-																																															_94 = cll_LOGICAL_OP(pos);
+																																															_94 = cll_LOGICAL_NOT(pos);
 																																															if (!(_94.status))
 																																															{
-																																																_96 = cll_COMPARE_OP(pos);
+																																																_96 = BOOLEAN(pos);
 																																																if (!(_96.status))
 																																																{
-																																																	return {};
+																																																	_98 = Rule_QUANTIFIER(pos);
+																																																	if (!(_98.status))
+																																																	{
+																																																		return {};
+																																																	}
+																																																	else 
+																																																	{
+																																																		success_99 = true;
+																																																		pos += _98.node.length();
+																																																		_0 = _98.node;
+																																																	}
 																																																}
 																																																else 
 																																																{
@@ -1352,7 +1364,7 @@ Parser::Rule_res Parser::Parser::cll_variable(::Parser::TokenFlow::iterator pos)
 		skip_spaces<::Parser::arr_t<::Parser::Token>::iterator, ::Parser::Tokens>(pos);
 		if (!(begin_19->name() == Tokens::AUTO_27))
 		{
-			return {};
+			break;
 		}
 		_17 = *begin_19;
 		success_18 = true;
@@ -3306,10 +3318,10 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::TokenFlow::iterator pos) {
 	auto begin_8 = pos;
 	do
 	{
-		_4 = Rule_keyvalue(begin_8);
+		_4 = Rule_value(begin_8);
 		if (!(_4.status))
 		{
-			_6 = cll_expr_value(begin_8);
+			_6 = Rule_keyvalue(begin_8);
 			if (!(_6.status))
 			{
 				break;
@@ -3348,7 +3360,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::TokenFlow::iterator pos) {
 				_17 = cll(pos);
 				if (!(_17.status))
 				{
-					_19 = cll_expr_group(pos);
+					_19 = Rule_group(pos);
 					if (!(_19.status))
 					{
 						if (!(pos->name() == Tokens::LINEAR_COMMENT))
@@ -3361,9 +3373,9 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::TokenFlow::iterator pos) {
 									{
 										if (!(pos->name() == Tokens::Rule_ANY))
 										{
-											if (!(pos->name() == Tokens::STRING))
+											if (!(pos->name() == Tokens::Rule_OP))
 											{
-												if (!(pos->name() == Tokens::cll_OP))
+												if (!(pos->name() == Tokens::STRING))
 												{
 													return {};
 												}

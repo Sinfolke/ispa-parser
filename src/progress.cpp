@@ -685,12 +685,11 @@ void accamulateUsePlaces(arr_t<Parser::Rule>& rules, use_place_t &use_places, st
         auto val = std::any_cast<Parser::Rule>(corelib::map::get(dt, "val"));
         if (val.name == Parser::Rules::Rule_other) {
             auto data = std::any_cast<rule_other>(val.data);
-            auto ptr = std::find_if(use_places.begin(), use_places.end(), [&data](use_place_t_part part1) {
+            auto ptr = std::find_if(use_places.begin(), use_places.end(), [&data](const use_place_t_part &part1) {
                 return part1.first == data.second;
             });
-            cpuf::printf("pushing to %$ the %$\n", data.second, fullname, fullname);
             if (ptr != use_places.end()) {
-                ptr->second.insert(fullname);
+                ptr->second.push_back(fullname);
             } else {
                 use_places.push_back({data.second, {fullname}});
             }
@@ -704,8 +703,7 @@ void accamulateUsePlaces(arr_t<Parser::Rule>& rules, use_place_t &use_places, st
         }
     }
 }
-use_place_t getUsePlacesTable(Parser::Tree &tree, std::vector<std::string> fullname) {
-    use_place_t use_places;
+void getUsePlacesTable(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> fullname) {
     for (auto el : tree) {
         if (el.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(el.data);
@@ -715,12 +713,10 @@ use_place_t getUsePlacesTable(Parser::Tree &tree, std::vector<std::string> fulln
             auto nested_rules = std::any_cast<arr_t<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             fullname.push_back(name_str);
             accamulateUsePlaces(rules, use_places, fullname);
-            auto new_useplaces_table = getUsePlacesTable(nested_rules, fullname);
-            use_places.insert(use_places.end(), new_useplaces_table.begin(), new_useplaces_table.end());
+            getUsePlacesTable(nested_rules, use_places, fullname);
             fullname.pop_back();
         }
     }
-    return use_places;
 }
 std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(Parser::Tree &tree, use_place_t use_places, IR::ir ir) {
     arr_t<Parser::Rule> rule_op;
@@ -734,10 +730,7 @@ std::pair<IR::ir, IR::node_ret_t> getCodeForTokinizator(Parser::Tree &tree, use_
                 if (data_in_use_place != use_places.end()) {
                     bool add = false;
                     for (auto &fullname : data_in_use_place->second) {
-                        auto token = Tokens::find_token_in_tree(tree, fullname);
-                        auto token_data = std::any_cast<obj_t>(token.data);
-                        auto token_name = std::any_cast<Parser::Rule>(corelib::map::get(token_data, "name"));
-                        if (corelib::text::isLower(std::any_cast<std::string>(token_name.data))) {
+                        if (corelib::text::isLower(fullname.back())) {
                             add = true;
                             break;
                         }

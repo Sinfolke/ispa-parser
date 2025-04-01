@@ -110,7 +110,8 @@ int main(int argc, char** argv) {
     addSpaceToken(tree);
     replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
-    auto use_places = getUsePlacesTable(tree, {});
+    use_place_t use_places;
+    getUsePlacesTable(tree, use_places, {});
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
     arr_t<std::string> fullname_arr;
