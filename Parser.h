@@ -48,6 +48,7 @@ namespace Parser {
 	using TokenFlow = arr_t<Token>;
 	using Tree = arr_t<Rules>;
 	std::string TokensToString(Tokens token);
+	std::string RulesToString(Rules rule);
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
 			Token makeToken(const char*& pos);
@@ -187,6 +188,7 @@ namespace Parser {
 		public:
 			Rule_res getRule();
 		private:
+			void parseFromInput();
 			struct cll_if_data {
 				::Parser::Rule block;
 				::Parser::Rule expr;

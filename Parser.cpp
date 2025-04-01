@@ -57,6 +57,75 @@ void Parser::Lexer::printToken(std::ostream& os, const Token& token, bool sensit
 Parser::Rule_res Parser::Parser::getRule() {
     return main(pos);
 }
+void Parser::Parser::parseFromInput() {
+        Lexer lexer;
+
+        if (parallel_parsing) {
+            TokenFlow tokens;
+            std::mutex mtx;
+            std::condition_variable cv;
+            bool done = false;
+
+            // Token accumulation thread
+            std::future<void> token_future = std::async(std::launch::async, [&]() {
+                while (true) {
+                    auto token = lexer.makeToken(input);  // Generate one token
+                    if (token.empty()) {
+                        // parsing has finished
+                        std::lock_guard<std::mutex> lock(mtx);
+                        done = true;
+                        cv.notify_one();
+                        return;
+                    }
+                    input += token.length();
+                    {
+                        std::lock_guard<std::mutex> lock(mtx);
+                        tokens.push_back(token);
+                    }
+                    // notify new token added
+                    cv.notify_one();
+                }
+            });
+
+            // Parsing loop
+            while (true) {
+                std::unique_lock<std::mutex> lock(mtx);
+                cv.wait(lock, [&]() { return !tokens.empty() || done; });
+
+                if (tokens.empty() && done) break; // no tokens anymore and lexical analyzation has finished
+
+                auto rule_res = getRule();
+                if (rule_res.status) {
+                    // push parsed rule to tree
+                    tree.push_back(rule_res.node);
+                    tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
+                }
+            }
+
+            // Ensure token accamulation is completed
+            token_future.get();
+        } else {
+            // single thread parsing
+            TokenFlow tokens;
+            while (true) {
+                // Accumulate tokens (at least 10) before parsing
+                for (int i = 0; i < 10; i++) {
+                    auto token = lexer.makeToken(input);  // Generate one token
+                    if (token.empty()) break;
+                    tokens.push_back(token);
+                }
+                if (tokens.empty()) return; // parsing has finished
+
+                // parse the tokens and consume used one
+                pos = tokens.begin();
+                auto rule_res = getRule();
+                if (rule_res.status) {
+                    tree.push_back(rule_res.node);
+                    tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
+                }
+            }
+        }
+    }
 std::string Parser::TokensToString(Tokens token) {
 	switch (token) {
 		case Tokens::NONE: return "NONE";
@@ -115,6 +184,47 @@ std::string Parser::TokensToString(Tokens token) {
 		case Tokens::AUTO_50: return "AUTO_50";
 		case Tokens::AUTO_51: return "AUTO_51";
 		case Tokens::__WHITESPACE: return "__WHITESPACE";
+	}
+	return "NONE";
+}
+std::string Parser::RulesToString(Rules rule) {
+	switch (rule) {
+		case Rules::NONE: return "NONE";
+		case Rules::cll: return "cll";
+		case Rules::cll_if: return "cll_if";
+		case Rules::cll_variable: return "cll_variable";
+		case Rules::cll_function_body_call: return "cll_function_body_call";
+		case Rules::cll_function_body_decl: return "cll_function_body_decl";
+		case Rules::cll_function_arguments: return "cll_function_arguments";
+		case Rules::cll_function_parameters: return "cll_function_parameters";
+		case Rules::cll_cll_function_call: return "cll_cll_function_call";
+		case Rules::cll_function_decl: return "cll_function_decl";
+		case Rules::cll_expr: return "cll_expr";
+		case Rules::cll_expr_logical: return "cll_expr_logical";
+		case Rules::cll_expr_compare: return "cll_expr_compare";
+		case Rules::cll_expr_arithmetic: return "cll_expr_arithmetic";
+		case Rules::cll_expr_value: return "cll_expr_value";
+		case Rules::cll_expr_group: return "cll_expr_group";
+		case Rules::cll_var: return "cll_var";
+		case Rules::cll_block: return "cll_block";
+		case Rules::cll_loop_while: return "cll_loop_while";
+		case Rules::cll_loop_for: return "cll_loop_for";
+		case Rules::array: return "array";
+		case Rules::object: return "object";
+		case Rules::any_data: return "any_data";
+		case Rules::spacemode: return "spacemode";
+		case Rules::main: return "main";
+		case Rules::use: return "use";
+		case Rules::use_unit: return "use_unit";
+		case Rules::Rule: return "Rule";
+		case Rules::Rule_rule: return "Rule_rule";
+		case Rules::Rule_name: return "Rule_name";
+		case Rules::Rule_group: return "Rule_group";
+		case Rules::Rule_keyvalue: return "Rule_keyvalue";
+		case Rules::Rule_value: return "Rule_value";
+		case Rules::Rule_nested_rule: return "Rule_nested_rule";
+		case Rules::Rule_data_block: return "Rule_data_block";
+		case Rules::Rule_data_block_key: return "Rule_data_block_key";
 	}
 	return "NONE";
 }
@@ -782,7 +892,7 @@ Parser::Token_res Parser::Lexer::cll_OP(const char* pos) {
 	}
 	success_1 = true;
 	cll_OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_OP, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_OP, data)};
 }
 Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
 	auto in = pos;
@@ -805,7 +915,7 @@ Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
 	success_3 = true;
 	pos += 1;
 	cll_ASSIGNMENT_OP_data data = _0.node;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_ASSIGNMENT_OP, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_ASSIGNMENT_OP, data)};
 }
 Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
 	auto in = pos;
@@ -886,7 +996,7 @@ Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
 	}
 	success_1 = true;
 	cll_COMPARE_OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_COMPARE_OP, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_COMPARE_OP, data)};
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_OP(const char* pos) {
 	auto in = pos;
@@ -919,7 +1029,7 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_OP(const char* pos) {
 	}
 	success_1 = true;
 	cll_LOGICAL_OP_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_LOGICAL_OP, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_LOGICAL_OP, data)};
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_NOT(const char* pos) {
 	auto in = pos;
@@ -951,7 +1061,7 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_NOT(const char* pos) {
 		_0 = _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_LOGICAL_NOT)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_LOGICAL_NOT)};
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
 	auto in = pos;
@@ -983,7 +1093,7 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
 		_0 = _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_LOGICAL_AND)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_LOGICAL_AND)};
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 	auto in = pos;
@@ -1015,7 +1125,7 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 		_0 = _2;
 	}
 	success_1 = true;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_LOGICAL_OR)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_LOGICAL_OR)};
 }
 Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 	auto in = pos;
@@ -1165,7 +1275,7 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 	data.templ = _23;
 	data.type = _16;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_TYPE, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_TYPE, data)};
 }
 Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	auto in = pos;
@@ -1234,7 +1344,7 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	data.second = shadow_10;
 	data.first = _2.node;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::cll_TEMPLATE, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::cll_TEMPLATE, data)};
 }
 Parser::Rule_res Parser::Parser::cll_if(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1271,7 +1381,7 @@ Parser::Rule_res Parser::Parser::cll_if(::Parser::TokenFlow::iterator pos) {
 	data.block = _4.node;
 	data.expr = _2.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_if, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_if, data)};
 }
 Parser::Rule_res Parser::Parser::cll_variable(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1418,7 +1528,7 @@ Parser::Rule_res Parser::Parser::cll_variable(::Parser::TokenFlow::iterator pos)
 	data.brace_expression = _15.node;
 	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_variable, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_variable, data)};
 }
 Parser::Rule_res Parser::Parser::cll_function_body_call(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1452,7 +1562,7 @@ Parser::Rule_res Parser::Parser::cll_function_body_call(::Parser::TokenFlow::ite
 	success_5 = true;
 	pos++;
 	cll_function_body_call_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_body_call, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_function_body_call, data)};
 }
 Parser::Rule_res Parser::Parser::cll_function_body_decl(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1486,7 +1596,7 @@ Parser::Rule_res Parser::Parser::cll_function_body_decl(::Parser::TokenFlow::ite
 	success_5 = true;
 	pos++;
 	cll_function_body_decl_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_body_decl, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_function_body_decl, data)};
 }
 Parser::Rule_res Parser::Parser::cll_function_arguments(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1562,7 +1672,7 @@ Parser::Rule_res Parser::Parser::cll_function_arguments(::Parser::TokenFlow::ite
 	data.second = shadow_16;
 	data.first = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_arguments, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_function_arguments, data)};
 }
 Parser::Rule_res Parser::Parser::cll_function_parameters(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1620,7 +1730,7 @@ Parser::Rule_res Parser::Parser::cll_function_parameters(::Parser::TokenFlow::it
 	data.second = shadow_11;
 	data.first = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_parameters, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_function_parameters, data)};
 }
 Parser::Rule_res Parser::Parser::cll_cll_function_call(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1647,7 +1757,7 @@ Parser::Rule_res Parser::Parser::cll_cll_function_call(::Parser::TokenFlow::iter
 	data.body = _2.node;
 	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_cll_function_call, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_cll_function_call, data)};
 }
 Parser::Rule_res Parser::Parser::cll_function_decl(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1725,7 +1835,7 @@ Parser::Rule_res Parser::Parser::cll_function_decl(::Parser::TokenFlow::iterator
 	data.name = _2;
 	data.type = shadow_6;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_function_decl, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_function_decl, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr_logical(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1825,7 +1935,7 @@ Parser::Rule_res Parser::Parser::cll_expr_logical(::Parser::TokenFlow::iterator 
 	data.op = _8;
 	data.left = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_logical, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr_logical, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr_compare(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1883,7 +1993,7 @@ Parser::Rule_res Parser::Parser::cll_expr_compare(::Parser::TokenFlow::iterator 
 	data.operators = shadow_6;
 	data.first = _0.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_compare, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr_compare, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr_arithmetic(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1941,7 +2051,7 @@ Parser::Rule_res Parser::Parser::cll_expr_arithmetic(::Parser::TokenFlow::iterat
 	data.operators = shadow_6;
 	data.first = _0.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_arithmetic, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr_arithmetic, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr_value(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -1998,7 +2108,7 @@ Parser::Rule_res Parser::Parser::cll_expr_value(::Parser::TokenFlow::iterator po
 	}
 	success_1 = true;
 	cll_expr_value_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_value, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr_value, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr_group(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2032,7 +2142,7 @@ Parser::Rule_res Parser::Parser::cll_expr_group(::Parser::TokenFlow::iterator po
 	success_5 = true;
 	pos++;
 	cll_expr_group_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr_group, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr_group, data)};
 }
 Parser::Rule_res Parser::Parser::cll_expr(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2101,7 +2211,7 @@ Parser::Rule_res Parser::Parser::cll_expr(::Parser::TokenFlow::iterator pos) {
 	}
 	success_1 = true;
 	cll_expr_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_expr, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_expr, data)};
 }
 Parser::Rule_res Parser::Parser::cll_var(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2161,7 +2271,7 @@ Parser::Rule_res Parser::Parser::cll_var(::Parser::TokenFlow::iterator pos) {
 	data.id = _2;
 	data.type = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_var, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_var, data)};
 }
 Parser::Rule_res Parser::Parser::cll_block(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2195,7 +2305,7 @@ Parser::Rule_res Parser::Parser::cll_block(::Parser::TokenFlow::iterator pos) {
 	success_5 = true;
 	pos++;
 	cll_block_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_block, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_block, data)};
 }
 Parser::Rule_res Parser::Parser::cll_loop_while(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2232,7 +2342,7 @@ Parser::Rule_res Parser::Parser::cll_loop_while(::Parser::TokenFlow::iterator po
 	data.block = _4.node;
 	data.expr = _2.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_loop_while, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_loop_while, data)};
 }
 Parser::Rule_res Parser::Parser::cll_loop_for(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2362,7 +2472,7 @@ Parser::Rule_res Parser::Parser::cll_loop_for(::Parser::TokenFlow::iterator pos)
 	data.cond = _13;
 	data.decl = _6;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll_loop_for, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll_loop_for, data)};
 }
 Parser::Rule_res Parser::Parser::cll(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2450,7 +2560,7 @@ Parser::Rule_res Parser::Parser::cll(::Parser::TokenFlow::iterator pos) {
 	_14 = *pos;
 	success_15 = true;
 	pos++;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::cll)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::cll)};
 }
 Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 	auto in = pos;
@@ -2558,7 +2668,7 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 		pos = begin_21;
 	}
 	STRING_data data = _4;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::STRING, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::STRING, data)};
 }
 Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 	auto in = pos;
@@ -2639,7 +2749,7 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 	data.main = _4;
 	data.sign = _0;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::NUMBER, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::NUMBER, data)};
 }
 Parser::Token_res Parser::Lexer::BOOLEAN(const char* pos) {
 	auto in = pos;
@@ -2681,7 +2791,7 @@ Parser::Token_res Parser::Lexer::BOOLEAN(const char* pos) {
 		pos = begin_7;
 	}
 	BOOLEAN_data data = d;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::BOOLEAN, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::BOOLEAN, data)};
 }
 Parser::Rule_res Parser::Parser::array(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2751,7 +2861,7 @@ Parser::Rule_res Parser::Parser::array(::Parser::TokenFlow::iterator pos) {
 	success_15 = true;
 	pos++;
 	array_data data = shadow_11;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::array, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::array, data)};
 }
 Parser::Rule_res Parser::Parser::object(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2890,7 +3000,7 @@ Parser::Rule_res Parser::Parser::object(::Parser::TokenFlow::iterator pos) {
 	data.value = _8.node;
 	data.key = _4.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::object, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::object, data)};
 }
 Parser::Rule_res Parser::Parser::any_data(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -2971,7 +3081,7 @@ Parser::Rule_res Parser::Parser::any_data(::Parser::TokenFlow::iterator pos) {
 	}
 	success_1 = true;
 	any_data_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::any_data, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::any_data, data)};
 }
 Parser::Token_res Parser::Lexer::END(const char* pos) {
 	auto in = pos;
@@ -2984,7 +3094,7 @@ Parser::Token_res Parser::Lexer::END(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::END)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::END)};
 }
 Parser::Token_res Parser::Lexer::NEWLINE(const char* pos) {
 	auto in = pos;
@@ -2997,7 +3107,7 @@ Parser::Token_res Parser::Lexer::NEWLINE(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::NEWLINE)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::NEWLINE)};
 }
 Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	auto in = pos;
@@ -3020,7 +3130,7 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	_2 += ::Parser::str_t(pos, 1);
 	success_3 = true;
 	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::LINEAR_COMMENT)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::LINEAR_COMMENT)};
 }
 Parser::Token_res Parser::Lexer::ID(const char* pos) {
 	auto in = pos;
@@ -3053,7 +3163,7 @@ Parser::Token_res Parser::Lexer::ID(const char* pos) {
 		pos = begin_6;
 	}
 	ID_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::ID, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::ID, data)};
 }
 Parser::Rule_res Parser::Parser::spacemode(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3108,7 +3218,7 @@ Parser::Rule_res Parser::Parser::spacemode(::Parser::TokenFlow::iterator pos) {
 	}
 	success_3 = true;
 	spacemode_data data = _0;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::spacemode, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::spacemode, data)};
 }
 Parser::Token_res Parser::Lexer::NAME(const char* pos) {
 	auto in = pos;
@@ -3132,7 +3242,7 @@ Parser::Token_res Parser::Lexer::NAME(const char* pos) {
 	success_3 = true;
 	pos += _2.node.length();
 	NAME_data data = _2.node;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::NAME, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::NAME, data)};
 }
 Parser::Rule_res Parser::Parser::main(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3188,7 +3298,7 @@ Parser::Rule_res Parser::Parser::main(::Parser::TokenFlow::iterator pos) {
 		_0 = _2.node;
 	}
 	success_1 = true;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::main)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::main)};
 }
 Parser::Rule_res Parser::Parser::use_unit(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3214,7 +3324,7 @@ Parser::Rule_res Parser::Parser::use_unit(::Parser::TokenFlow::iterator pos) {
 	data.value = _2.node;
 	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::use_unit, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::use_unit, data)};
 }
 Parser::Rule_res Parser::Parser::use(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3275,7 +3385,7 @@ Parser::Rule_res Parser::Parser::use(::Parser::TokenFlow::iterator pos) {
 	data.second = shadow_11;
 	data.first = _2.node;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::use, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::use, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_rule(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3484,7 +3594,7 @@ Parser::Rule_res Parser::Parser::Rule_rule(::Parser::TokenFlow::iterator pos) {
 	data.val = _0;
 	data._variable = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_rule, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_rule, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_name(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3545,7 +3655,7 @@ Parser::Rule_res Parser::Parser::Rule_name(::Parser::TokenFlow::iterator pos) {
 	data.name = _2;
 	data.is_nested = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_name, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_name, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_group(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3579,7 +3689,7 @@ Parser::Rule_res Parser::Parser::Rule_group(::Parser::TokenFlow::iterator pos) {
 	success_5 = true;
 	pos++;
 	Rule_group_data data = _2.node;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_group, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_group, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_keyvalue(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3603,7 +3713,7 @@ Parser::Rule_res Parser::Parser::Rule_keyvalue(::Parser::TokenFlow::iterator pos
 	success_3 = true;
 	pos++;
 	Rule_keyvalue_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_keyvalue, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_keyvalue, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_value(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3627,7 +3737,7 @@ Parser::Rule_res Parser::Parser::Rule_value(::Parser::TokenFlow::iterator pos) {
 	success_3 = true;
 	pos++;
 	Rule_value_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_value, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_value, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_nested_rule(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3659,7 +3769,7 @@ Parser::Rule_res Parser::Parser::Rule_nested_rule(::Parser::TokenFlow::iterator 
 		pos = begin_6;
 	}
 	Rule_nested_rule_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_nested_rule, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_nested_rule, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3731,7 +3841,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block_key(::Parser::TokenFlow::iterat
 	data.val = dt;
 	data.name = name;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block_key, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_data_block_key, data)};
 }
 Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -3784,7 +3894,7 @@ Parser::Rule_res Parser::Parser::Rule_data_block(::Parser::TokenFlow::iterator p
 	success_9 = true;
 	pos++;
 	Rule_data_block_data data = _2;
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule_data_block, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_data_block, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_OP(const char* pos) {
 	auto in = pos;
@@ -3797,7 +3907,7 @@ Parser::Token_res Parser::Lexer::Rule_OP(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_OP)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_OP)};
 }
 Parser::Token_res Parser::Lexer::Rule_QUANTIFIER(const char* pos) {
 	auto in = pos;
@@ -3851,7 +3961,7 @@ Parser::Token_res Parser::Lexer::Rule_QUANTIFIER(const char* pos) {
 		pos = begin_10;
 	}
 	Rule_QUANTIFIER_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_QUANTIFIER, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_QUANTIFIER, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_SYMBOL(const char* pos) {
 	auto in = pos;
@@ -3905,7 +4015,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_SYMBOL(const char* pos) {
 		pos = begin_10;
 	}
 	Rule_CSEQUENCE_SYMBOL_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_CSEQUENCE_SYMBOL, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE_SYMBOL, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_ESCAPE(const char* pos) {
 	auto in = pos;
@@ -3937,7 +4047,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_ESCAPE(const char* pos) {
 		pos = begin_6;
 	}
 	Rule_CSEQUENCE_ESCAPE_data data = _2;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_CSEQUENCE_ESCAPE, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE_ESCAPE, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_DIAPASON(const char* pos) {
 	auto in = pos;
@@ -3994,7 +4104,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_DIAPASON(const char* pos) {
 		pos = begin_12;
 	}
 	Rule_CSEQUENCE_DIAPASON_data data = {from,to};
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_CSEQUENCE_DIAPASON, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE_DIAPASON, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 	auto in = pos;
@@ -4091,7 +4201,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 	data.val = dt;
 	data._not = _2;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_CSEQUENCE, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_ANY(const char* pos) {
 	auto in = pos;
@@ -4104,7 +4214,7 @@ Parser::Token_res Parser::Lexer::Rule_ANY(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_ANY)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_ANY)};
 }
 Parser::Token_res Parser::Lexer::Rule_NOSPACE(const char* pos) {
 	auto in = pos;
@@ -4117,7 +4227,7 @@ Parser::Token_res Parser::Lexer::Rule_NOSPACE(const char* pos) {
 	_0 += ::Parser::str_t(pos, 3);
 	success_1 = true;
 	pos += 3;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_NOSPACE)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_NOSPACE)};
 }
 Parser::Token_res Parser::Lexer::Rule_ESCAPED(const char* pos) {
 	auto in = pos;
@@ -4152,7 +4262,7 @@ Parser::Token_res Parser::Lexer::Rule_ESCAPED(const char* pos) {
 	data.num = _2;
 	data.c = _2;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_ESCAPED, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_ESCAPED, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_HEX(const char* pos) {
 	auto in = pos;
@@ -4181,7 +4291,7 @@ Parser::Token_res Parser::Lexer::Rule_HEX(const char* pos) {
 		return {};
 	}
 	Rule_HEX_data data = _2;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_HEX, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_HEX, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_BIN(const char* pos) {
 	auto in = pos;
@@ -4210,7 +4320,7 @@ Parser::Token_res Parser::Lexer::Rule_BIN(const char* pos) {
 		return {};
 	}
 	Rule_BIN_data data = _2;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::Rule_BIN, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_BIN, data)};
 }
 Parser::Rule_res Parser::Parser::Rule(::Parser::TokenFlow::iterator pos) {
 	auto in = pos;
@@ -4279,7 +4389,7 @@ Parser::Rule_res Parser::Parser::Rule(::Parser::TokenFlow::iterator pos) {
 	data.rule = _4.node;
 	data.name = _0;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), Rules::Rule, data)};
+	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_0(const char* pos) {
 	auto in = pos;
@@ -4293,7 +4403,7 @@ Parser::Token_res Parser::Lexer::AUTO_0(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_0_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_0, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_0, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
 	auto in = pos;
@@ -4307,7 +4417,7 @@ Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	AUTO_1_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_1, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_1, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_6(const char* pos) {
 	auto in = pos;
@@ -4321,7 +4431,7 @@ Parser::Token_res Parser::Lexer::AUTO_6(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	AUTO_6_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_6, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_6, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
 	auto in = pos;
@@ -4335,7 +4445,7 @@ Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	AUTO_7_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_7, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_7, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_14(const char* pos) {
 	auto in = pos;
@@ -4349,7 +4459,7 @@ Parser::Token_res Parser::Lexer::AUTO_14(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	AUTO_14_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_14, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_14, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_19(const char* pos) {
 	auto in = pos;
@@ -4363,7 +4473,7 @@ Parser::Token_res Parser::Lexer::AUTO_19(const char* pos) {
 	success_1 = true;
 	pos += 5;
 	AUTO_19_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_19, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_19, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_20(const char* pos) {
 	auto in = pos;
@@ -4377,7 +4487,7 @@ Parser::Token_res Parser::Lexer::AUTO_20(const char* pos) {
 	success_1 = true;
 	pos += 3;
 	AUTO_20_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_20, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_20, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_25(const char* pos) {
 	auto in = pos;
@@ -4391,7 +4501,7 @@ Parser::Token_res Parser::Lexer::AUTO_25(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_25_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_25, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_25, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_27(const char* pos) {
 	auto in = pos;
@@ -4405,7 +4515,7 @@ Parser::Token_res Parser::Lexer::AUTO_27(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_27_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_27, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_27, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_32(const char* pos) {
 	auto in = pos;
@@ -4419,7 +4529,7 @@ Parser::Token_res Parser::Lexer::AUTO_32(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_32_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_32, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_32, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_34(const char* pos) {
 	auto in = pos;
@@ -4433,7 +4543,7 @@ Parser::Token_res Parser::Lexer::AUTO_34(const char* pos) {
 	success_1 = true;
 	pos += 9;
 	AUTO_34_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_34, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_34, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_35(const char* pos) {
 	auto in = pos;
@@ -4447,7 +4557,7 @@ Parser::Token_res Parser::Lexer::AUTO_35(const char* pos) {
 	success_1 = true;
 	pos += 7;
 	AUTO_35_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_35, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_35, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_36(const char* pos) {
 	auto in = pos;
@@ -4461,7 +4571,7 @@ Parser::Token_res Parser::Lexer::AUTO_36(const char* pos) {
 	success_1 = true;
 	pos += 7;
 	AUTO_36_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_36, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_36, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_37(const char* pos) {
 	auto in = pos;
@@ -4475,7 +4585,7 @@ Parser::Token_res Parser::Lexer::AUTO_37(const char* pos) {
 	success_1 = true;
 	pos += 5;
 	AUTO_37_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_37, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_37, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_38(const char* pos) {
 	auto in = pos;
@@ -4489,7 +4599,7 @@ Parser::Token_res Parser::Lexer::AUTO_38(const char* pos) {
 	success_1 = true;
 	pos += 3;
 	AUTO_38_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_38, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_38, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_39(const char* pos) {
 	auto in = pos;
@@ -4503,7 +4613,7 @@ Parser::Token_res Parser::Lexer::AUTO_39(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_39_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_39, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_39, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_42(const char* pos) {
 	auto in = pos;
@@ -4517,7 +4627,7 @@ Parser::Token_res Parser::Lexer::AUTO_42(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_42_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_42, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_42, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_43(const char* pos) {
 	auto in = pos;
@@ -4531,7 +4641,7 @@ Parser::Token_res Parser::Lexer::AUTO_43(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_43_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_43, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_43, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_44(const char* pos) {
 	auto in = pos;
@@ -4545,7 +4655,7 @@ Parser::Token_res Parser::Lexer::AUTO_44(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_44_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_44, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_44, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_45(const char* pos) {
 	auto in = pos;
@@ -4559,7 +4669,7 @@ Parser::Token_res Parser::Lexer::AUTO_45(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_45_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_45, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_45, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_46(const char* pos) {
 	auto in = pos;
@@ -4573,7 +4683,7 @@ Parser::Token_res Parser::Lexer::AUTO_46(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_46_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_46, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_46, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_47(const char* pos) {
 	auto in = pos;
@@ -4587,7 +4697,7 @@ Parser::Token_res Parser::Lexer::AUTO_47(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_47_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_47, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_47, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_48(const char* pos) {
 	auto in = pos;
@@ -4601,7 +4711,7 @@ Parser::Token_res Parser::Lexer::AUTO_48(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_48_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_48, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_48, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_49(const char* pos) {
 	auto in = pos;
@@ -4615,7 +4725,7 @@ Parser::Token_res Parser::Lexer::AUTO_49(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_49_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_49, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_49, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_50(const char* pos) {
 	auto in = pos;
@@ -4629,7 +4739,7 @@ Parser::Token_res Parser::Lexer::AUTO_50(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_50_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_50, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_50, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_51(const char* pos) {
 	auto in = pos;
@@ -4643,7 +4753,7 @@ Parser::Token_res Parser::Lexer::AUTO_51(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	AUTO_51_data data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::AUTO_51, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::AUTO_51, data)};
 }
 Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	auto in = pos;
@@ -4661,5 +4771,5 @@ Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	{
 		return {};
 	}
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, Tokens::__WHITESPACE)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::__WHITESPACE)};
 }

@@ -16,6 +16,10 @@
 #include <cctype>
 #include <cstring>
 #include <fstream>
+#include <thread>
+#include <future>
+#include <mutex>
+#include <condition_variable>
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
@@ -73,16 +77,22 @@ namespace ISPA_STD {
  * @brief An error thrown when you're trying to access some features required with tokens only
  * 
  */
-class Tokenizator_No_Tokens_exception : public std::exception {
+class Lexer_No_Tokens_exception : public std::exception {
     public:
     const char* what() const noexcept override {
-        return ISC_STD_LIBMARK "Tokenizator_No_Tokens_exception: the tokenizator has no tokens but some operation required them";
+        return ISC_STD_LIBMARK "Lexer_No_Tokens_exception: the tokenizator has no tokens but some operation required them";
     }
 };
-class Tokenizator_No_Input_exception : public std::exception {
+class Lexer_No_Input_exception : public std::exception {
     public:
     const char* what() const noexcept override {
-        return ISC_STD_LIBMARK "Tokenizator_No_Input_exception: the tokenizator has no input provided but the operation required it";
+        return ISC_STD_LIBMARK "Lexer_No_Input_exception: the tokenizator has no input provided but the operation required it";
+    }
+};
+class Parser_No_Input_exception : public std::exception {
+    public:
+    const char* what() const noexcept override {
+        return ISC_STD_LIBMARK "Parser_No_Input_exception: the parser has no input provided but the operation required it";
     }
 };
 class return_base_exception : public std::exception {
@@ -121,14 +131,15 @@ class return_base_exception : public std::exception {
 template<typename RETURN_T>
 class node {
     std::size_t _startpos = std::string::npos;
+    std::size_t _length = std::string::npos;
     const char* _start = nullptr;
     const char* _end = nullptr;
     RETURN_T _name = RETURN_T::NONE;
     std::any _data;
     bool _empty = true;
     public:
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : _startpos(startpos), _start(start), _end(end), _name(name), _empty(false) {}
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _name(name), _data(data), _empty(false) {}
+    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, RETURN_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _name(name), _empty(false) {}
+    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, RETURN_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _name(name), _data(data), _empty(false) {}
     node() {}
 
 
@@ -174,13 +185,9 @@ class node {
             throw return_base_exception("endpos");
         return _startpos + (_end - _start);
     }
-    std::size_t length() const {
-        if (_start == nullptr || _end == nullptr)
-            throw return_base_exception("length");
-        return _end - _start;
-    }
     void clear() {
         _startpos = std::string::npos;
+        _length = std::string::npos;
         _start = nullptr;
         _end = nullptr;
         _name = RETURN_T::NONE;
@@ -204,6 +211,7 @@ class node {
         if (this == &other)  // Protect against self-assignment
             return *this;
         _startpos = other._startpos;
+        _length = other._length;
         _start = other._start;
         _end = other._end;
         _name = other._name;
@@ -222,6 +230,12 @@ class node {
      */
     auto startpos() const {
         return _startpos;
+    }
+    /**
+     * get length of the node
+     */
+    std::size_t length() const {
+        return _length;
     }
     /**
      * Get start pointer of string. Note it might be not be valid until now
@@ -319,7 +333,7 @@ public:
     explicit Lexer_base(const char*& in) : _in(const_cast<char*>(in)) {}
     explicit Lexer_base() {}
 
-    bool hasInput() {
+    bool hasInput() const {
         return _in != nullptr;
     }
     Lexer_base& setinput(const std::string& in) {
@@ -334,13 +348,13 @@ public:
         _in = in;
         return *this;
     }
-    bool hasTokens() {
+    bool hasTokens() const {
         return tokens.size() > 0;
     }
     /**
      * Get tokens as copy
      */
-    TokenFlow<TOKEN_T> getTokens() {
+    TokenFlow<TOKEN_T> getTokens() const {
         return tokens;
     }
     /**
@@ -352,7 +366,7 @@ public:
     /**
      * Clear tokens
      */
-    void clearTokens() {
+    void clearTokens() const {
         tokens.clear();
     }
     /**
@@ -398,7 +412,7 @@ public:
      */
     TokenFlow<TOKEN_T>& makeTokens() {
         if (_in == nullptr)
-            throw Tokenizator_No_Input_exception();
+            throw Lexer_No_Input_exception();
         node<TOKEN_T> result;
         const char* pos = _in;
         while (*pos != '\0') {
@@ -425,13 +439,13 @@ public:
     }
     /**
      * @param tokenizator the tokenizator with tokens
-     * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Tokenizator_No_Tokens_exception is raised 
+     * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Lexer_No_Tokens_exception is raised 
      */
     void push(const Lexer_base& tokenizator) {
         if (tokenizator.hasTokenFlow())
             tokens.push_back(tokenizator.tokens);
         else
-            throw Tokenizator_No_Tokens_exception();
+            throw Lexer_No_Tokens_exception();
     }
     /**
      * Pop the last token
@@ -465,8 +479,21 @@ public:
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
 class Parser_base {
+private:
+
+    void parseFromTokens() {
+        pos = tokens->begin();
+        while(pos != tokens->end()) {
+            auto res = getRule();
+            if (!res.status)
+                break;
+            tree.push_back(res.node);
+            std::advance(pos, res.node.length());
+        }
+    }
 protected:
     TokenFlow<TOKEN_T>* tokens = nullptr;
+    const char* input;
     Tree<RULE_T> tree;
     typename TokenFlow<TOKEN_T>::iterator pos;
     // skip spaces for tokens
@@ -478,8 +505,9 @@ protected:
         
         return std::distance(prev, pos);
     }
-
+    virtual void parseFromInput() = 0;
 public:
+    bool parallel_parsing = false;
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 
      * 
@@ -487,13 +515,13 @@ public:
     virtual match_result<RULE_T> getRule() = 0;
     // Constructors
     Parser_base() {}
-    Parser_base(const Lexer_base<TOKEN_T>& tokenizator) {
-        if (tokenizator.hasTokenFlow()) {
-            tokens = &tokenizator.tokens;
-        } else if (tokenizator.hasInput()) {
-            tokens = &tokenizator.makeTokens();
+    Parser_base(const Lexer_base<TOKEN_T>& lexer) {
+        if (lexer.hasTokenFlow()) {
+            tokens = &lexer.tokens;
+        } else if (lexer.hasInput()) {
+            tokens = &lexer.makeTokens();
         } else {
-            throw Tokenizator_No_Tokens_exception();
+            throw Lexer_No_Tokens_exception();
         }
     }
     Parser_base(const std::string& in) {
@@ -506,22 +534,22 @@ public:
     }
 
     // Parsing methods
-    Tree<RULE_T> parse(const Lexer_base<TOKEN_T>& tokenizator) {
-        if (tokenizator.hasTokenFlow()) {
-            tokens = &tokenizator.tokens;
-        } else if (tokenizator.hasInput()) {
-            tokens = &tokenizator.makeTokens();
+    Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
+        if (lexer.hasTokens()) {
+            tokens = &lexer.getTokensReference();
+        } else if (lexer.hasInput()) {
+            tokens = &lexer.makeTokens();
         } else {
-            throw Tokenizator_No_Tokens_exception();
+            throw Lexer_No_Tokens_exception();
         }
         return parse();
     }
-    Tree<RULE_T> parse(const std::string& in) {
-        tokens = &Lexer_base<TOKEN_T>().makeToken(in);
+    Tree<RULE_T>& parse(const std::string& in) {
+        input = in.c_str();
         return parse();
     }
-    Tree<RULE_T> parse(const char* const in) {
-        tokens = &Lexer_base<TOKEN_T>().makeToken(in);
+    Tree<RULE_T>& parse(const char* const in) {
+        input = in;
         return parse();
     }
     void clearInput() {
@@ -532,15 +560,15 @@ public:
      * 
      * @return Tree<RULE_T> 
      */
-    Tree<RULE_T> parse() {
-        pos = tokens->begin();
-        while(pos != tokens->end()) {
-            auto res = getRule();
-            if (!res.status)
-                break;
-            tree.push_back(res.token);
-            pos += res.token.length();
+    Tree<RULE_T>& parse() {
+        if (input != nullptr) {
+            parseFromInput();
+        } else if (tokens != nullptr) {
+            parseFromTokens();
+        } else {
+            throw Parser_No_Input_exception();
         }
+        return tree;
     }
 };
 

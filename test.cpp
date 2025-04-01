@@ -13,4 +13,12 @@ int main() {
     }
     lexer.printTokens(ofile);
     std::cout << std::endl;
+    std::ifstream file("parser/parser/Rule.isc");
+    if (!file.is_open()) {
+        std::cerr << "could not open input file\n";
+        exit(1);
+    }
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    auto tree = parser.parse(buffer.str());
 }

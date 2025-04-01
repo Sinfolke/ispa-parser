@@ -110,6 +110,7 @@ std::string getTypesFromStdlib() {
 std::string createToStringFunction() {
     std::string res;
     res += "\tstd::string TokensToString(Tokens token);\n";
+    res += "\tstd::string RulesToString(Rules rule);\n";
     return res;
 }
 std::string addStandardFunctions() {
@@ -173,6 +174,7 @@ std::string create_parser_header(std::list<std::string> tokens, std::list<std::p
     res += "\t\tpublic:\n";
     res += "\t\t\tRule_res getRule();\n";
     res += "\t\tprivate:\n";
+    res += "\t\t\tvoid parseFromInput();\n";
     res += write_data_block(dtb);
     for (auto name : tokens) {
         res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::TokenFlow::iterator pos);\n";
