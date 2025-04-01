@@ -110,6 +110,7 @@ int main(int argc, char** argv) {
     addSpaceToken(tree);
     replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     inlineTokens(tree);              // inline tokens to make sure that every token is used only once
+    auto use_places = getUsePlacesTable(tree, {});
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
     arr_t<std::string> fullname_arr;
@@ -122,7 +123,7 @@ int main(int argc, char** argv) {
 
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
-    auto tokenizator_code = getCodeForTokinizator(tree, ir);
+    auto tokenizator_code = getCodeForTokinizator(tree, use_places, ir);
     raiseVarsTop(tokenizator_code.first);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR::ir&, IR::ir&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, const use_prop_t&>("convert");

@@ -8,10 +8,10 @@ Rule:
     ;
     #rule:
 
-        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANITIFIER?
+        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANTIFIER?
 
         data: 
-            variable: %1
+            _variable: %1
             val: %2
             quantifier: %3
         ;
@@ -57,7 +57,7 @@ Rule:
     #OP:
         '|'
     ;
-    #QUANITIFIER:
+    #QUANTIFIER:
         ('?' | '+' | '*')
         data: $1;
     ;

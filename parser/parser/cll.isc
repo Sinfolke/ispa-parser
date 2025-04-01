@@ -30,18 +30,18 @@ cll:
         '||' | 'or'
     ;
     
-    #type:
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' template) | ('obj' template) )
+    #TYPE:
+        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' TEMPLATE) | ('obj' TEMPLATE) )
         data:
             type: %1
             templ: %2
         ;
     ;
-    #template:
-        type (',' type)*
+    #TEMPLATE:
+        '<' TYPE (',' TYPE)* '>'
         data: 
-            first: %1
-            second: %3
+            first: %2
+            second: %4
         ;
     ;
     #if: 
@@ -139,7 +139,7 @@ cll:
         ;
     ;
     #var: 
-        type? ID (ASSIGNMENT_OP expr)?
+        TYPE? ID (ASSIGNMENT_OP expr)?
 
         data:
             type: %1
@@ -153,14 +153,14 @@ cll:
         data: %2;
     ;
     #loop_while:
-        'while' expr cll_block
+        'while' expr block
         data:
             expr: %2
             block: %3
         ;
     ;
     #loop_for: 
-        'for' '(' (expr | var)? ';' expr? ';' expr? ')' cll_block
+        'for' '(' (expr | var)? ';' expr? ';' expr? ')' block
         data:
             decl: %3
             cond: %5
