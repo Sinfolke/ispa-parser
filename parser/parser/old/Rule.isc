@@ -1,5 +1,5 @@
 Rule:
-    ID ':' #rule* #data_block #nested_rule* STRICT_END
+    ID ':' #rule+ #data_block? #nested_rule* STRICT_END
     data:
         name: %1
         rule: %3

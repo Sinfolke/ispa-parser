@@ -3365,12 +3365,13 @@ Rule(Rule) {
 	bool success_3 = FALSE
 	Rule_result _4 = NONE
 	bool success_5 = FALSE
-	Rule_result _6 = NONE
-	bool success_7 = FALSE
-	Rule_result _8 = NONE
-	bool success_9 = FALSE
-	token _10 = NONE
-	bool success_11 = FALSE
+	bool success_6 = FALSE
+	Rule_result _7 = NONE
+	bool success_8 = FALSE
+	Rule_result _9 = NONE
+	bool success_10 = FALSE
+	token _11 = NONE
+	bool success_12 = FALSE
 	if (!(CURRENT_TOKEN == ID))
 	{
 		return {}
@@ -3393,34 +3394,38 @@ Rule(Rule) {
 		success_5 = TRUE
 		pos += _4.token.length()
 		_4 = Rule_rule(TOKEN_SEQUENCE)
+		success_6 = TRUE
 	}
-	skipspaces(TOKEN_SEQUENCE)
-	_6 = Rule_data_block(TOKEN_SEQUENCE)
-	if (!(_6.status))
+	if (!success_6)
 	{
 		return {}
 	}
-	success_7 = TRUE
-	pos += _6.token.length()
 	skipspaces(TOKEN_SEQUENCE)
-	_8 = Rule_nested_rule(TOKEN_SEQUENCE)
-	while (_8.status)
+	_7 = Rule_data_block(TOKEN_SEQUENCE)
+	if (_7.status)
 	{
-		success_9 = TRUE
-		pos += _8.token.length()
-		_8 = Rule_nested_rule(TOKEN_SEQUENCE)
+		success_8 = TRUE
+		pos += _7.token.length()
+	}
+	skipspaces(TOKEN_SEQUENCE)
+	_9 = Rule_nested_rule(TOKEN_SEQUENCE)
+	while (_9.status)
+	{
+		success_10 = TRUE
+		pos += _9.token.length()
+		_9 = Rule_nested_rule(TOKEN_SEQUENCE)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == AUTO_32))
 	{
 		return {}
 	}
-	_10 = CURRENT_TOKEN
-	success_11 = TRUE
+	_11 = CURRENT_TOKEN
+	success_12 = TRUE
 	pos++
 	data = 
-		nested_rules: _8.node # rule
-		data_block: _6.node # rule
+		nested_rules: _9.node # rule
+		data_block: _7.node # rule
 		rule: _4.node # rule
 		name: _0 # token
 	;

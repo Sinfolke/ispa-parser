@@ -514,7 +514,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         if (global::isToken)            
             out << "skip_spaces(" << current_pos_counter.top() << ")";
         else
-            out << "skip_spaces<::" << global::namespace_name << "::arr_t<::" << global::namespace_name << "::Token>::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
+            out << "skip_spaces<::" << global::namespace_name << "::TokenFlow::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
         break;
     case IR::types::DATA_BLOCK:
         global::has_data_block = true;

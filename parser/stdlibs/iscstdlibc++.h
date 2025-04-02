@@ -131,7 +131,7 @@ class return_base_exception : public std::exception {
 template<typename RETURN_T>
 class node {
     std::size_t _startpos = std::string::npos;
-    std::size_t _length = std::string::npos;
+    std::size_t _length = 0;
     const char* _start = nullptr;
     const char* _end = nullptr;
     RETURN_T _name = RETURN_T::NONE;
@@ -187,7 +187,7 @@ class node {
     }
     void clear() {
         _startpos = std::string::npos;
-        _length = std::string::npos;
+        _length = 0;
         _start = nullptr;
         _end = nullptr;
         _name = RETURN_T::NONE;
@@ -493,7 +493,7 @@ private:
     }
 protected:
     TokenFlow<TOKEN_T>* tokens = nullptr;
-    const char* input;
+    const char* input = nullptr;
     Tree<RULE_T> tree;
     typename TokenFlow<TOKEN_T>::iterator pos;
     // skip spaces for tokens

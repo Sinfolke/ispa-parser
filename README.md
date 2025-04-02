@@ -39,4 +39,4 @@
   see ```concepts/syntax```
 
 ### Latest commit changes
-  - Implementation of IR optimizations
+  - Testing of parser output

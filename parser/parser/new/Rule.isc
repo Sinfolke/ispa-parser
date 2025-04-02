@@ -1,0 +1,108 @@
+Rule:
+    @name ID ':' @rule #rule+ @data_block #data_block? @nested_rule #nested_rule* STRICT_END
+    data:
+        name: %1
+        rule: %3
+        data_block: %4
+        nested_rules: %5 
+    ;
+    #rule:
+
+        @_variable(keyvalue | value)? @val group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @quanitfier QUANTIFIER?
+
+        data: 
+            _variable: %1
+            val: %2
+            quantifier: %3
+        ;
+    ;
+    #name:
+        @is_nested '#'? @name ID ('.' @nested_name ID)*
+
+        data:
+            is_nested: %1
+            name: %2
+            nested_name: $1>%2
+        ;
+    ;
+    #group:
+        '(' rule* ')'
+
+        data: %2;
+    ;
+    #keyvalue:
+        '@' ID
+        data: %2;
+    ;
+    #value:
+        '&' ID
+        data: %2;
+    ;
+    #nested_rule: 
+        '#' \s0 (Rule)
+        data: $1;
+    ;
+    #data_block:
+        '{' any_data | #key+ '}'
+        data: %2;
+
+        #key:
+            [\n\r]+ &name(ID) ':' &dt (cll.expr)
+            data:
+                name: name
+                val: dt
+            ;
+        ;
+    ;
+    #OP:
+        '|'
+    ;
+    #QUANTIFIER:
+        ('?' | '+' | '*')
+        data: $1;
+    ;
+
+    #CSEQUENCE:
+        '[' '^'? &dt ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
+        data:
+            _not: %2
+            val: dt
+        ;
+        #SYMBOL:
+            ('\\' | '\\]' |  [^\]])
+
+            data: $1; 
+        ;
+        #ESCAPE:
+            // some escape chars like \s, \d
+            '\\' \s0 (.)
+
+            data: $1;
+        ;
+        #DIAPASON:
+            ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
+            data: [from, to];
+        ;
+    ;
+    #ANY:
+        '.'
+    ;
+    #NOSPACE:
+        '\\s0'
+    ;
+    #ESCAPED:
+        '\\' \s0 (.) \s0
+        data:
+            c: $1
+            num: %3
+        ;
+    ;
+    #HEX:
+        '0x' [0-9A-Fa-f]+
+        data: %2;
+    ;
+    #BIN:
+        '0b' [01]+
+        data: %2;
+    ;
+;
