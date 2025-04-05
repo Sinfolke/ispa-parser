@@ -86,6 +86,11 @@ namespace corelib::text {
             c = toupper(c);
         return str; 
     }
+    std::string ToLower(std::string str) {
+        for (auto &c : str)
+            c = tolower(c);
+        return str; 
+    }
 }
 namespace corelib::text {
     std::string join(const std::vector<std::string> &elements, const std::string &delimiter) {

@@ -21,6 +21,7 @@ NAME:
 
     data: %2;
 ;
+AT: '@';
 main: use | Rule | spacemode | NAME;
 
 use: 

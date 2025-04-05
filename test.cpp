@@ -5,7 +5,7 @@
 int main() {
     Parser::Lexer lexer;
     Parser::Parser parser;
-    lexer.makeTokensFromFile("parser/parser/Rule.isc");
+    lexer.makeTokensFromFile("parser/parser/new/Rule.isc");
     std::ofstream ofile("tokens");
     if (!ofile) {
         std::cerr << "could not open token file\n";
@@ -13,12 +13,8 @@ int main() {
     }
     lexer.printTokens(ofile);
     std::cout << std::endl;
-    std::ifstream file("parser/parser/Rule.isc");
-    if (!file.is_open()) {
-        std::cerr << "could not open input file\n";
-        exit(1);
+    auto tree = parser.parse(lexer);
+    for (auto &el : tree) {
+        std::cout << Parser::RulesToString(el.name()) << std::endl;
     }
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    auto tree = parser.parse(buffer.str());
 }

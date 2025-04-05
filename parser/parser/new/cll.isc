@@ -100,9 +100,12 @@ cll:
         ;
     ;
     #expr: 
-        #logical | #compare | #arithmetic | #group | #value
+        #logical | #compare | #arithmetic | #group | #value | #RULE_VALUE
 
         data: %1;
+        #RULE_VALUE:
+            '@'
+        ;
         #logical:
             compare | arithmetic | value LOGICAL_OP compare | arithmetic | value
             data:

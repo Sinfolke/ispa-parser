@@ -20,6 +20,7 @@ namespace corelib {
         bool isLower(const char* str);
         bool isLower(const std::string str);
         std::string ToUpper(std::string str);
+        std::string ToLower(std::string str);
         std::string join(const std::vector<std::string> &elements, const std::string &delimiter);
     }
     namespace map {

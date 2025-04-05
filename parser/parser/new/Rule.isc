@@ -1,83 +1,77 @@
 Rule:
-    @name ID ':' @rule #rule+ @data_block #data_block? @nested_rule #nested_rule* STRICT_END
-    data:
-        name: %1
-        rule: %3
-        data_block: %4
-        nested_rules: %5 
-    ;
+    @ ID ':' @ #rule+ @ #data_block? @ #nested_rule* STRICT_END
+
+    @{ name, rule, data_block, nested_rules } 
+
     #rule:
 
-        @_variable(keyvalue | value)? @val group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @quanitfier QUANTIFIER?
+        @(keyvalue | value)? @ group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ QUANTIFIER?
 
-        data: 
-            _variable: %1
-            val: %2
-            quantifier: %3
-        ;
+        @{ prefix, val, quantifier }
     ;
     #name:
-        @is_nested '#'? @name ID ('.' @nested_name ID)*
+        @ '#'? @ ID ('.' @ ID)*
 
-        data:
-            is_nested: %1
-            name: %2
-            nested_name: $1>%2
-        ;
+        @{ is_nested, name, nested_name }
     ;
     #group:
-        '(' rule* ')'
+        '(' @ rule* ')'
 
-        data: %2;
+        {@}
     ;
     #keyvalue:
-        '@' ID
-        data: %2;
+        '@' (\s0 @ ID)?
+        {@}
     ;
     #value:
-        '&' ID
-        data: %2;
+        '&' @ ID
+        {@}
     ;
     #nested_rule: 
-        '#' \s0 (Rule)
-        data: $1;
+        '#' \s0 @ Rule
+        {@}
     ;
     #data_block:
-        '{' any_data | #key+ '}'
-        data: %2;
-
-        #key:
-            [\n\r]+ &name(ID) ':' &dt (cll.expr)
-            data:
-                name: name
-                val: dt
+        @ #templated_datablock | #regular_datablock
+        {@}
+        #regular_datablock:
+            '{' @ any_data | #key+ '}'
+            {@}
+            #key:
+                [\n\r]+ &name(ID) ':' &dt(cll.expr)
+                {
+                    name = name
+                    val = dt
+                }
             ;
+        ;
+        #templated_datablock:
+            '@' '{' (@ ID (',' @ ID)*)? }
+            @{ first_name, second_name }
         ;
     ;
     #OP:
         '|'
     ;
     #QUANTIFIER:
-        ('?' | '+' | '*')
-        data: $1;
+        @('?' | '+' | '*')
+        {@}
     ;
 
     #CSEQUENCE:
-        '[' '^'? &dt ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
+        '[' &_not '^'? &dt ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
         data:
-            _not: %2
-            val: dt
+            _not = _not
+            val = dt
         ;
         #SYMBOL:
-            ('\\' | '\\]' |  [^\]])
-
-            data: $1; 
+            @('\\' | '\\]' |  [^\]])
+            {@}
         ;
         #ESCAPE:
             // some escape chars like \s, \d
-            '\\' \s0 (.)
-
-            data: $1;
+            '\\' \s0 @ (.)
+            {@}
         ;
         #DIAPASON:
             ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
@@ -91,18 +85,15 @@ Rule:
         '\\s0'
     ;
     #ESCAPED:
-        '\\' \s0 (.) \s0
-        data:
-            c: $1
-            num: %3
-        ;
+        '\\' \s0 @(.) \s0
+        {@}
     ;
     #HEX:
-        '0x' [0-9A-Fa-f]+
-        data: %2;
+        '0x' @[0-9A-Fa-f]+
+        {@}
     ;
     #BIN:
-        '0b' [01]+
-        data: %2;
+        '0b' @[01]+
+        {@}
     ;
 ;

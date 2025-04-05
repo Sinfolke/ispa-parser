@@ -63,7 +63,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
             for (auto &nested : nested_rules) {
                 rule_name.push_back(std::any_cast<std::string>(nested.data));
             }
-            rule.data = rule_other(std::any_cast<std::string>(name.data), rule_name);
+            rule.data = rule_other {std::any_cast<std::string>(name.data), rule_name, false };
             assign_back = true;
         }
 

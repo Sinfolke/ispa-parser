@@ -102,8 +102,8 @@ int main(int argc, char** argv) {
     */
 
     auto use = accamulate_use_data_to_map(tree);
-    arr_t<std::string> fullname;
-    arr_t<std::pair<std::string, arr_t<std::string>>> nested_rule_names;
+    std::vector<std::string> fullname;
+    std::vector<std::pair<std::string, std::vector<std::string>>> nested_rule_names;
     normalizeTree(tree, fullname, nested_rule_names);
     sortByPriority(tree, tree);      // sorts elements to get which should be placed on top. This ensures proper matching
     literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
@@ -114,22 +114,22 @@ int main(int argc, char** argv) {
     getUsePlacesTable(tree, use_places, {});
     auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
-    arr_t<std::string> fullname_arr;
-    auto ir = treeToIr(tree, "", fullname_arr);
-    raiseVarsTop(ir);
+    IR ir(tree);
+    ir.makeIR();
+    ir.optimizeIR();
     // Output to file
-    IR::outputIRToFile(ir, "output_ir.txt");
+    ir.outputIRToFile("output_ir.txt");
     /*
         CONVERTION IS GOING HERE
 
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
-    auto tokenizator_code = getCodeForTokinizator(tree, use_places, ir);
-    raiseVarsTop(tokenizator_code.first);
+    auto lexer_code = getCodeForLexer(tree, use_places, ir);
+    cpuf::printf("size: %d\n", lexer_code.first.size());
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto convert_fun = converter.loadfun<std::string, const IR::ir&, IR::ir&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, const use_prop_t&>("convert");
-    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, std::list<std::pair<IR::data_block, std::string>>, std::list<std::pair<IR::data_block, std::string>>, use_prop_t>("convert_header");
-    auto content = convert_fun(ir, tokenizator_code.first, tokenizator_code.second, tokens, rules, use);
+    auto convert_fun = converter.loadfun<std::string, const IR&, IR&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, const use_prop_t&>("convert");
+    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, use_prop_t>("convert_header");
+    auto content = convert_fun(ir, lexer_code.first, lexer_code.second, tokens, rules, datablocks_tokens, datablocks_rules, use);
     auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
     std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
     if (!cpp)

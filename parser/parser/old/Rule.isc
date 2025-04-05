@@ -11,7 +11,7 @@ Rule:
         (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANTIFIER?
 
         data: 
-            _variable: %1
+            prefix: %1
             val: %2
             quantifier: %3
         ;
@@ -31,7 +31,7 @@ Rule:
         data: %2;
     ;
     #keyvalue:
-        '@' ID
+        AT (\s0 ID)?
         data: %2;
     ;
     #value:
@@ -43,14 +43,25 @@ Rule:
         data: $1;
     ;
     #data_block:
-        '{' any_data | #key+ '}'
-        data: %2;
+        #templated_datablock | #regular_datablock
+        data: %1;
 
-        #key:
-            [\n\r]+ &name(ID) ':' &dt (cll.expr)
+        #regular_datablock:
+            '{' any_data | #key+ '}'
+            data: %2;
+            #key:
+                [\n\r]+ &name(ID) '=' &dt (cll.expr)
+                data:
+                    name: name
+                    val: dt
+                ;
+            ;
+        ;
+        #templated_datablock:
+            AT '{' (&first_name (ID) (',' &second_name (ID))*)? '}'
             data:
-                name: name
-                val: dt
+                first_name: first_name
+                second_name: second_name
             ;
         ;
     ;
@@ -92,10 +103,7 @@ Rule:
     ;
     #ESCAPED:
         '\\' \s0 (.) \s0
-        data:
-            c: $1
-            num: %3
-        ;
+        data: $1;
     ;
     #HEX:
         '0x' [0-9A-Fa-f]+

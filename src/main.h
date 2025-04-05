@@ -31,7 +31,5 @@
 #include <parser.h>
 #include <convertion.h>
 #include <treeNormalizer.h>
-#include <IR.h>
-#include <IR-debug.h>
-#include <IR-optimizations.h>
+#include <IR/IR.h>
 void printHelp();

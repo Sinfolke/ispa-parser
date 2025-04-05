@@ -100,7 +100,7 @@ cll:
         ;
     ;
     #expr: 
-        #logical | #compare | #arithmetic | #group | #value
+        #logical | #compare | #arithmetic | #group | #value | AT
 
         data: %1;
         #logical:

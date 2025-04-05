@@ -1,6 +1,6 @@
 
 #include <list>
-#include <IR.h>
+#include <IR/IR.h>
 #include <string>
 #include <list>
 #include <any>
@@ -103,8 +103,8 @@ std::string getTypesFromStdlib() {
     res += "\tusing Rule_res = ISPA_STD::match_result<Rules>;\n";
     res += "\tusing Token = ISPA_STD::node<Tokens>;\n";
     res += "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
-    res += "\tusing TokenFlow = arr_t<Token>;\n";
-    res += "\tusing Tree = arr_t<Rules>;\n";
+    res += "\tusing TokenFlow = ISPA_STD::TokenFlow<Tokens>;\n";
+    res += "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
     return res;
 }
 std::string createToStringFunction() {
@@ -143,9 +143,9 @@ std::string convert_inclosed_map(IR::inclosed_map map) {
 std::string convert_single_assignment_data(IR::var_type type, std::string name) {
     return "\t\t\tusing " + name + "_data = " + convert_var_type(type.type, type.templ) + ";\n";
 }
-std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &dtb) {
+std::string write_data_block(data_block_t &dtb) {
     std::string res;
-    for (auto [block, name] : dtb) {
+    for (auto [name, block] : dtb) {
         if (block.is_inclosed_map) {
             res += "\t\t\tstruct " + name + "_data {\n";
             res += convert_inclosed_map(std::any_cast<IR::inclosed_map>(block.value.data));
@@ -156,34 +156,47 @@ std::string write_data_block(std::list<std::pair<IR::data_block, std::string>> &
     }
     return res;
 }
-std::string create_tokenizator_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
+std::string createTypesNamespace(data_block_t dtb_token, data_block_t dtb_rule) {
+    std::string res = "\tnamespace Types {\n";
+    res += write_data_block(dtb_token);
+    res += write_data_block(dtb_rule);
+    res += "\t}\n";
+    return res;
+}
+std::string create_tokenizator_header(std::list<std::string> tokens, data_block_t dtb) {
     std::string res = "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n";
     res += "\t\tpublic:\n";
     res += "\t\t\tToken makeToken(const char*& pos);\n";
     res += addStandardFunctions();
     res += "\t\tprivate:\n";
-    res += write_data_block(dtb);
     for (auto name : tokens) {
         res += "\t\t\tToken_res " + name + "(const char*);\n";
     }
     res += "\t};\n";
     return res;
 }
-std::string create_parser_header(std::list<std::string> tokens, std::list<std::pair<IR::data_block, std::string>> dtb) {
+std::string create_parser_header(std::list<std::string> tokens, data_block_t dtb) {
     std::string res = "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n";
-    res += "\t\tpublic:\n";
-    res += "\t\t\tRule_res getRule();\n";
     res += "\t\tprivate:\n";
-    res += "\t\t\tvoid parseFromInput();\n";
-    res += write_data_block(dtb);
+    res += "\t\t\tRule_res getRule();\n";
     for (auto name : tokens) {
         res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::TokenFlow::iterator pos);\n";
     }
     res += "\t};\n";
     return res;
 }
-
-extern "C" std::string convert_header(std::list<std::string> tokens, std::list<std::string> rules, std::list<std::pair<IR::data_block, std::string>> datablocks_tokens, std::list<std::pair<IR::data_block, std::string>> datablocks_rules, use_prop_t use) {
+std::string create_get_namespace(data_block_t tokens_dtb, data_block_t rules_dtb) {
+    std::string res = "\n\tnamespace get {\n";
+    for (auto [name, block] : tokens_dtb) {
+        res += "\t\t::" + global::namespace_name + "::" + "Types::" + name + "_data " + name + "(::" + global::namespace_name + "::Token &token);\n";
+    }
+    for (auto [name, block] : rules_dtb) {
+        res += "\t\t::" + global::namespace_name + "::" + "Types::" + name + "_data " + name + "(::" + global::namespace_name + "::Rule &rule);\n";
+    }
+    res += "\t}\n";
+    return res;
+}
+extern "C" std::string convert_header(std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, use_prop_t use) {
     std::string res;
     res += createLibrary();
     res += createNamespace(use);
@@ -192,6 +205,8 @@ extern "C" std::string convert_header(std::list<std::string> tokens, std::list<s
     res += createRulesEnum(rules);
     res += getTypesFromStdlib();
     res += createToStringFunction();
+    res += createTypesNamespace(datablocks_tokens, datablocks_rules);
+    res += create_get_namespace(datablocks_tokens, datablocks_rules);
     res += create_tokenizator_header(tokens, datablocks_tokens);
     res += create_parser_header(rules, datablocks_rules);
     res += close_library();

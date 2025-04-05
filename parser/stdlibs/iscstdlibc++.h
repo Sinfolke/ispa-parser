@@ -270,28 +270,9 @@ struct match_result {
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::list<node<TOKEN_T>>;
+using TokenFlow = std::vector<node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::list<node<RULE_T>>;
-
-/**
- * @brief Join vector into string
- * 
- * @tparam T 
- * @param vec
- * @param del
- * @return std::string 
- */
-template<typename T>
-std::string join(const std::vector<T>& vec, const std::string& del = "") {
-    std::string str;
-    for (size_t i = 0; i < vec.size() - 1; ++i) {
-        str += vec[i];
-        str += del;
-    }
-    str += vec.back();
-    return str;
-}
+using Tree = std::deque<node<RULE_T>>;
 
 template<class TOKEN_T>
 class Lexer_base {
@@ -485,15 +466,16 @@ private:
         pos = tokens->begin();
         while(pos != tokens->end()) {
             auto res = getRule();
-            if (!res.status)
+            if (!res.status) {
+                printf("stopped at %ld\n", pos - tokens->begin());
                 break;
+            }
             tree.push_back(res.node);
             std::advance(pos, res.node.length());
         }
     }
 protected:
     TokenFlow<TOKEN_T>* tokens = nullptr;
-    const char* input = nullptr;
     Tree<RULE_T> tree;
     typename TokenFlow<TOKEN_T>::iterator pos;
     // skip spaces for tokens
@@ -505,7 +487,6 @@ protected:
         
         return std::distance(prev, pos);
     }
-    virtual void parseFromInput() = 0;
 public:
     bool parallel_parsing = false;
     /**
@@ -524,15 +505,9 @@ public:
             throw Lexer_No_Tokens_exception();
         }
     }
-    Parser_base(const std::string& in) {
-        auto r = &Lexer_base<TOKEN_T>().makeTokens(in);
-        tokens = r;
+    Parser_base(const TokenFlow<TOKEN_T>& tokens) {
+        this->tokens = tokens; 
     }
-    Parser_base(const char* const in) {
-        auto r = &Lexer_base<TOKEN_T>().makeTokens(in);
-        tokens = r;
-    }
-
     // Parsing methods
     Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {
@@ -544,13 +519,15 @@ public:
         }
         return parse();
     }
-    Tree<RULE_T>& parse(const std::string& in) {
-        input = in.c_str();
+    Tree<RULE_T>& parse(TokenFlow<TOKEN_T>& tokens) {
+        this->tokens = &tokens;
         return parse();
     }
-    Tree<RULE_T>& parse(const char* const in) {
-        input = in;
-        return parse();
+    void setInput(Lexer_base<TOKEN_T> &lexer) {
+        tokens = &lexer.getTokensReference();
+    }
+    void setInput(TokenFlow<TOKEN_T>& tokens) {
+        this->tokens = &tokens;
     }
     void clearInput() {
         tokens = nullptr;
@@ -561,13 +538,10 @@ public:
      * @return Tree<RULE_T> 
      */
     Tree<RULE_T>& parse() {
-        if (input != nullptr) {
-            parseFromInput();
-        } else if (tokens != nullptr) {
+        if (tokens != nullptr)
             parseFromTokens();
-        } else {
+        else
             throw Parser_No_Input_exception();
-        }
         return tree;
     }
 };

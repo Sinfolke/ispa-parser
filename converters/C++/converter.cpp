@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <iomanip>
 #include <stack>
-#include <IR.h>
+#include <IR/IR.h>
 #include <logging.h>
 #include <converter.h>
 #include <logging.h>
@@ -359,7 +359,6 @@ std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std:
     global::pos_counter = 0;
     return result;
 }
-
 void convertBlock(arr_t<IR::member> block, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
@@ -367,7 +366,6 @@ void convertBlock(arr_t<IR::member> block, std::ostringstream &out, int &indentL
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-
 void convertCondition(IR::condition cond, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     out << convertExpression(cond.expression, true, current_pos_counter);
     convertBlock(cond.block, out, indentLevel, current_pos_counter);
@@ -398,7 +396,7 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
 std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter) {
     // Implement method call conversion with proper indentation
     std::string res;
-    res += global::rule_prev_name_str + "_data data";
+    res += "Types::" + global::rule_prev_name_str + "_data data";
     if (dtb.is_inclosed_map) {
         res += ";";
         res += "\n";
@@ -541,7 +539,7 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
     global::add_semicolon = true;
 }
 
-void convertMembers(arr_t<IR::member> members, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void convertMembers(const arr_t<IR::member> &members, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
     for (auto mem : members)
         convertMember(mem, out, indentLevel, current_pos_counter);
 }
@@ -635,79 +633,90 @@ void addStandardFunctionsParser(std::ostringstream &out) {
     return main(pos);
 })";
     out << '\n';
-    out << "void " << global::namespace_name << R"(::Parser::parseFromInput() {
-        Lexer lexer;
+//     out << "void " << global::namespace_name << R"(::Parser::parseFromInput() {
+//         Lexer lexer;
 
-        if (parallel_parsing) {
-            TokenFlow tokens;
-            std::mutex mtx;
-            std::condition_variable cv;
-            bool done = false;
+//         if (parallel_parsing) {
+//             TokenFlow tokens;
+//             std::mutex mtx;
+//             std::condition_variable cv;
+//             bool done = false;
 
-            // Token accumulation thread
-            std::future<void> token_future = std::async(std::launch::async, [&]() {
-                while (true) {
-                    auto token = lexer.makeToken(input);  // Generate one token
-                    if (token.empty()) {
-                        // parsing has finished
-                        std::lock_guard<std::mutex> lock(mtx);
-                        done = true;
-                        cv.notify_one();
-                        return;
-                    }
-                    input += token.length();
-                    {
-                        std::lock_guard<std::mutex> lock(mtx);
-                        tokens.push_back(token);
-                    }
-                    // notify new token added
-                    cv.notify_one();
-                }
-            });
+//             // Token accumulation thread
+//             std::future<void> token_future = std::async(std::launch::async, [&]() {
+//                 while (true) {
+//                     auto token = lexer.makeToken(input);  // Generate one token
+//                     if (token.empty()) {
+//                         // parsing has finished
+//                         std::lock_guard<std::mutex> lock(mtx);
+//                         done = true;
+//                         cv.notify_one();
+//                         return;
+//                     }
+//                     input += token.length();
+//                     {
+//                         std::lock_guard<std::mutex> lock(mtx);
+//                         tokens.push_back(token);
+//                     }
+//                     // notify new token added
+//                     cv.notify_one();
+//                 }
+//             });
 
-            // Parsing loop
-            while (true) {
-                std::unique_lock<std::mutex> lock(mtx);
-                cv.wait(lock, [&]() { return !tokens.empty() || done; });
+//             // Parsing loop
+//             while (true) {
+//                 std::unique_lock<std::mutex> lock(mtx);
+//                 cv.wait(lock, [&]() { return !tokens.empty() || done; });
 
-                if (tokens.empty() && done) break; // no tokens anymore and lexical analyzation has finished
+//                 if (tokens.empty() && done) break; // no tokens anymore and lexical analyzation has finished
 
-                auto rule_res = getRule();
-                if (rule_res.status) {
-                    // push parsed rule to tree
-                    tree.push_back(rule_res.node);
-                    tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
-                }
-            }
+//                 auto rule_res = getRule();
+//                 if (rule_res.status) {
+//                     // push parsed rule to tree
+//                     tree.push_back(rule_res.node);
+//                     tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
+//                 }
+//             }
 
-            // Ensure token accamulation is completed
-            token_future.get();
-        } else {
-            // single thread parsing
-            TokenFlow tokens;
-            while (true) {
-                // Accumulate tokens (at least 10) before parsing
-                for (int i = 0; i < 10; i++) {
-                    auto token = lexer.makeToken(input);  // Generate one token
-                    if (token.empty()) break;
-                    tokens.push_back(token);
-                }
-                if (tokens.empty()) return; // parsing has finished
+//             // Ensure token accamulation is completed
+//             token_future.get();
+//         } else {
+//             // single thread parsing
+//             TokenFlow tokens;
+//             while (true) {
+//                 // Accumulate tokens (at least 10) before parsing
+//                 for (int i = 0; i < 10; i++) {
+//                     auto token = lexer.makeToken(input);  // Generate one token
+//                     if (token.empty()) break;
+//                     tokens.push_back(token);
+//                 }
+//                 if (tokens.empty()) return; // parsing has finished
 
-                // parse the tokens and consume used one
-                pos = tokens.begin();
-                auto rule_res = getRule();
-                if (rule_res.status) {
-                    tree.push_back(rule_res.node);
-                    tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
-                }
-            }
-        }
-    })";
-    out << "\n";
+//                 // parse the tokens and consume used one
+//                 pos = tokens.begin();
+//                 auto rule_res = getRule();
+//                 if (rule_res.status) {
+//                     tree.push_back(rule_res.node);
+//                     tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
+//                 }
+//             }
+//         }
+// })";
+//     out << "\n";
 }
 
-
+void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
+    for (const auto &[name, dtb] : datablocks_tokens) {
+        out << "::" << global::namespace_name << "::Types::" << name << "_data " << global::namespace_name << "::get::" << name << "(::" << global::namespace_name << "::Token &token) {\n";
+        out << "\treturn std::any_cast<Types::" << name << "_data>(token.data());";
+        out << "\n}\n";
+    }
+    for (const auto &[name, dtb] : datablocks_rules) {
+        out << "::" << global::namespace_name << "::Types::" << name << "_data " << global::namespace_name << "::get::" << name << "(::" << global::namespace_name << "::Rule &rule) {\n";
+        out << "\treturn std::any_cast<Types::" << name << "_data>(rule.data());";
+        out << "\n}\n";
+    }
+}
 
 void addLexer_codeHeader(std::ostringstream &out, int &identLevel) {
     out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
@@ -718,7 +727,7 @@ void addLexer_codeBottom(std::ostringstream &out, int &identLevel, IR::variable 
     out << "}\n";
     identLevel--;
 }
-extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, const use_prop_t &use) {
+extern "C" std::string convert(const IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use) {
     std::ostringstream ss;
     std::stack<std::string> current_pos_counter;
     int identLevel = 0;
@@ -731,14 +740,15 @@ extern "C" std::string convert(const IR::ir &ir, IR::ir &tokenizator_code, IR::n
     addStandardFunctionsParser(ss);
     addTokensToString(tokens, ss);
     addRulesToString(rules, ss);
+    addGetFunctions(ss, datablocks_tokens, datablocks_rules);
     addLexer_codeHeader(ss, identLevel);
     current_pos_counter.push("pos");
-    tokenizator_code.elements.erase(tokenizator_code.elements.begin());
-    tokenizator_code.elements.erase(tokenizator_code.elements.end() - 1);
     global::isToken = true;
-    convertMembers(tokenizator_code.elements, ss, identLevel, current_pos_counter);
+    lexer_code.pop_begin();
+    lexer_code.pop();
+    convertMembers(lexer_code.getDataRef(), ss, identLevel, current_pos_counter);
     global::isToken = false;
     addLexer_codeBottom(ss, identLevel, tokenizator_access_var.var);
-    convertMembers(ir.elements, ss, identLevel, current_pos_counter);
+    convertMembers(ir.getData(), ss, identLevel, current_pos_counter);
     return ss.str();
 }
