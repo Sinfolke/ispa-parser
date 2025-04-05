@@ -2014,10 +2014,14 @@ void IR::treeToIr(Parser::Tree &tree) {
         auto data_block = std::any_cast<Parser::Rule>(corelib::map::get(data, "data_block"));
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         isToken = corelib::text::isUpper(name);
+        cpuf::printf("Rule: %s, isToken: %d\n", name, (int) isToken);
         fullname.push_back(name);
-        if (!nested_rules.empty())
-            treeToIr(nested_rules);
-
+        IR new_ir(tree);
+        new_ir.proceed(*this);
+        if (!nested_rules.empty()) {
+            new_ir.treeToIr(nested_rules);
+            add(new_ir);
+        }
         auto values = rulesToIr(rules);
         if (!values.data.empty() && values.data.back().type == IR::types::SKIP_SPACES)
             values.pop(); // remove skip of spaces at the end

@@ -13,4 +13,4 @@ std::pair<std::list<std::string>, std::list<std::string>> getTokenAndRuleNames(P
 use_prop_t accamulate_use_data_to_map(Parser::Tree use);
 void getUsePlacesTable(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> fullname);
 std::pair<data_block_t, data_block_t> get_data_blocks(const IR &ir);
-std::pair<IR, IR::node_ret_t> getCodeForLexer(Parser::Tree &tree, use_place_t use_places, IR ir);
+lexer_code getCodeForLexer(Parser::Tree &tree, use_place_t use_places, IR ir);

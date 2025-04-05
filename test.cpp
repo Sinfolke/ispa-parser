@@ -15,6 +15,6 @@ int main() {
     std::cout << std::endl;
     auto tree = parser.parse(lexer);
     for (auto &el : tree) {
-        std::cout << Parser::RulesToString(el.name()) << std::endl;
+        std::cout << Parser::RulesToString(el.name()) << std::endl;\
     }
 }

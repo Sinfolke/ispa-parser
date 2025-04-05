@@ -718,7 +718,7 @@ void getUsePlacesTable(Parser::Tree &tree, use_place_t &use_places, std::vector<
         }
     }
 }
-std::pair<IR, IR::node_ret_t> getCodeForLexer(Parser::Tree &tree, use_place_t use_places, IR ir) {
+lexer_code getCodeForLexer(Parser::Tree &tree, use_place_t use_places, IR ir) {
     std::vector<Parser::Rule> rule_op;
     for (auto &el : ir.getData()) {
         if (el.type == IR::types::TOKEN) {
@@ -773,6 +773,5 @@ std::pair<IR, IR::node_ret_t> getCodeForLexer(Parser::Tree &tree, use_place_t us
     code.push_begin({IR::types::TOKEN});
     code.push({IR::types::RULE});
     code.optimizeIR();
-    cpuf::printf("size: %d\n", code.size());
     return {code, success_var[0]};
 }

@@ -75,6 +75,10 @@ namespace Parser {
 			using Rule_CSEQUENCE_SYMBOL_data = ::Parser::str_t;
 			using Rule_CSEQUENCE_ESCAPE_data = ::Parser::str_t;
 			using Rule_CSEQUENCE_DIAPASON_data = ::Parser::arr_t<::Parser::any_t>;
+			struct Rule_CSEQUENCE_data {
+				::Parser::Token val;
+				::Parser::str_t _not;
+			};
 			using Rule_ESCAPED_data = ::Parser::str_t;
 			using Rule_HEX_data = ::Parser::str_t;
 			using Rule_BIN_data = ::Parser::str_t;
@@ -209,10 +213,6 @@ namespace Parser {
 				::Parser::Token first_name;
 			};
 			using Rule_data_block_data = ::Parser::Rule;
-			struct Rule_CSEQUENCE_data {
-				::Parser::Token val;
-				::Parser::str_t _not;
-			};
 			struct Rule_data {
 				::Parser::Rule nested_rules;
 				::Parser::Rule data_block;
@@ -237,6 +237,7 @@ namespace Parser {
 		::Parser::Types::Rule_CSEQUENCE_SYMBOL_data Rule_CSEQUENCE_SYMBOL(::Parser::Token &token);
 		::Parser::Types::Rule_CSEQUENCE_ESCAPE_data Rule_CSEQUENCE_ESCAPE(::Parser::Token &token);
 		::Parser::Types::Rule_CSEQUENCE_DIAPASON_data Rule_CSEQUENCE_DIAPASON(::Parser::Token &token);
+		::Parser::Types::Rule_CSEQUENCE_data Rule_CSEQUENCE(::Parser::Token &token);
 		::Parser::Types::Rule_ESCAPED_data Rule_ESCAPED(::Parser::Token &token);
 		::Parser::Types::Rule_HEX_data Rule_HEX(::Parser::Token &token);
 		::Parser::Types::Rule_BIN_data Rule_BIN(::Parser::Token &token);
@@ -300,7 +301,6 @@ namespace Parser {
 		::Parser::Types::Rule_data_block_regular_datablock_data Rule_data_block_regular_datablock(::Parser::Rule &rule);
 		::Parser::Types::Rule_data_block_templated_datablock_data Rule_data_block_templated_datablock(::Parser::Rule &rule);
 		::Parser::Types::Rule_data_block_data Rule_data_block(::Parser::Rule &rule);
-		::Parser::Types::Rule_CSEQUENCE_data Rule_CSEQUENCE(::Parser::Rule &rule);
 		::Parser::Types::Rule_data Rule(::Parser::Rule &rule);
 	}
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {

@@ -3163,7 +3163,7 @@ Token(Rule_CSEQUENCE_DIAPASON) {
 	}
 	data = [from,to,] # array
 }
-Rule(Rule_CSEQUENCE) {
+Token(Rule_CSEQUENCE) {
 	str _0 = NONE
 	bool success_1 = FALSE
 	str _2 = NONE
@@ -3172,11 +3172,11 @@ Rule(Rule_CSEQUENCE) {
 	bool success_4 = FALSE
 	token _5 = NONE
 	bool success_6 = FALSE
-	token _7 = NONE
+	Token_result _7 = NONE
 	bool success_8 = FALSE
-	token _9 = NONE
+	Token_result _9 = NONE
 	bool success_10 = FALSE
-	token _11 = NONE
+	Token_result _11 = NONE
 	bool success_12 = FALSE
 	str _14 = NONE
 	bool success_15 = FALSE
@@ -3187,7 +3187,7 @@ Rule(Rule_CSEQUENCE) {
 	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
 	pos++
-	skipspaces(TOKEN_SEQUENCE)
+	skipspaces(pos)
 	if (!(*pos == '^'))
 	{
 		return {}
@@ -3195,38 +3195,38 @@ Rule(Rule_CSEQUENCE) {
 	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
 	pos++
-	skipspaces(TOKEN_SEQUENCE)
+	skipspaces(pos)
 	auto begin_13 = pos
-	if (!(CURRENT_TOKEN == Rule_CSEQUENCE_ESCAPE))
+	_7 = Rule_CSEQUENCE_ESCAPE(TOKEN_SEQUENCE)
+	if (!(_7.status))
 	{
-		if (!(CURRENT_TOKEN == Rule_CSEQUENCE_DIAPASON))
+		_9 = Rule_CSEQUENCE_DIAPASON(TOKEN_SEQUENCE)
+		if (!(_9.status))
 		{
-			if (!(CURRENT_TOKEN == Rule_CSEQUENCE_SYMBOL))
+			_11 = Rule_CSEQUENCE_SYMBOL(TOKEN_SEQUENCE)
+			if (!(_11.status))
 			{
 				return {}
 			}
 			else 
 			{
-				_11 = CURRENT_TOKEN
 				success_12 = TRUE
-				begin_13++
-				_5 = _11
+				begin_13 += _11.token.length()
+				_5 = _11.node
 			}
 		}
 		else 
 		{
-			_9 = CURRENT_TOKEN
 			success_10 = TRUE
-			begin_13++
-			_5 = _9
+			begin_13 += _9.token.length()
+			_5 = _9.node
 		}
 	}
 	else 
 	{
-		_7 = CURRENT_TOKEN
 		success_8 = TRUE
-		begin_13++
-		_5 = _7
+		begin_13 += _7.token.length()
+		_5 = _7.node
 	}
 	success_6 = TRUE
 	dt = _5
@@ -3235,7 +3235,7 @@ Rule(Rule_CSEQUENCE) {
 		success_4 = TRUE
 		pos = begin_13
 	}
-	skipspaces(TOKEN_SEQUENCE)
+	skipspaces(pos)
 	if (!(*pos == ']'))
 	{
 		return {}

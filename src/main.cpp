@@ -125,11 +125,10 @@ int main(int argc, char** argv) {
     */
     auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
     auto lexer_code = getCodeForLexer(tree, use_places, ir);
-    cpuf::printf("size: %d\n", lexer_code.first.size());
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto convert_fun = converter.loadfun<std::string, const IR&, IR&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, const use_prop_t&>("convert");
     auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, use_prop_t>("convert_header");
-    auto content = convert_fun(ir, lexer_code.first, lexer_code.second, tokens, rules, datablocks_tokens, datablocks_rules, use);
+    auto content = convert_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use);
     auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
     std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
     if (!cpp)

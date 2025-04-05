@@ -22,3 +22,8 @@ struct data_block_part {
     IR::data_block value;
 };
 using data_block_t = std::vector<data_block_part>;
+struct lexer_code {
+    IR code;
+    IR::node_ret_t success_var;
+    lexer_code(IR code, IR::node_ret_t success_var) : code(code), success_var(success_var) {}
+};

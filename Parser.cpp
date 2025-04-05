@@ -207,6 +207,9 @@ std::string Parser::RulesToString(Rules rule) {
 ::Parser::Types::Rule_CSEQUENCE_DIAPASON_data Parser::get::Rule_CSEQUENCE_DIAPASON(::Parser::Token &token) {
 	return std::any_cast<Types::Rule_CSEQUENCE_DIAPASON_data>(token.data());
 }
+::Parser::Types::Rule_CSEQUENCE_data Parser::get::Rule_CSEQUENCE(::Parser::Token &token) {
+	return std::any_cast<Types::Rule_CSEQUENCE_data>(token.data());
+}
 ::Parser::Types::Rule_ESCAPED_data Parser::get::Rule_ESCAPED(::Parser::Token &token) {
 	return std::any_cast<Types::Rule_ESCAPED_data>(token.data());
 }
@@ -396,9 +399,6 @@ std::string Parser::RulesToString(Rules rule) {
 ::Parser::Types::Rule_data_block_data Parser::get::Rule_data_block(::Parser::Rule &rule) {
 	return std::any_cast<Types::Rule_data_block_data>(rule.data());
 }
-::Parser::Types::Rule_CSEQUENCE_data Parser::get::Rule_CSEQUENCE(::Parser::Rule &rule) {
-	return std::any_cast<Types::Rule_CSEQUENCE_data>(rule.data());
-}
 ::Parser::Types::Rule_data Parser::get::Rule(::Parser::Rule &rule) {
 	return std::any_cast<Types::Rule_data>(rule.data());
 }
@@ -504,154 +504,166 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::bool_t success_97 = false;
 	::Parser::Token_res _98;
 	::Parser::bool_t success_99 = false;
+	::Parser::Token_res _100;
+	::Parser::bool_t success_101 = false;
 	_2 = Rule_ESCAPED(pos);
 	if (!(_2.status))
 	{
-		_4 = NUMBER(pos);
+		_4 = Rule_CSEQUENCE(pos);
 		if (!(_4.status))
 		{
-			_6 = cll_ASSIGNMENT_OP(pos);
+			_6 = NUMBER(pos);
 			if (!(_6.status))
 			{
-				_8 = NAME(pos);
+				_8 = cll_ASSIGNMENT_OP(pos);
 				if (!(_8.status))
 				{
-					_10 = LINEAR_COMMENT(pos);
+					_10 = NAME(pos);
 					if (!(_10.status))
 					{
-						_12 = Rule_BIN(pos);
+						_12 = LINEAR_COMMENT(pos);
 						if (!(_12.status))
 						{
-							_14 = Rule_HEX(pos);
+							_14 = Rule_BIN(pos);
 							if (!(_14.status))
 							{
-								_16 = AUTO_34(pos);
+								_16 = Rule_HEX(pos);
 								if (!(_16.status))
 								{
-									_18 = AUTO_35(pos);
+									_18 = AUTO_19(pos);
 									if (!(_18.status))
 									{
-										_20 = AUTO_36(pos);
+										_20 = AUTO_20(pos);
 										if (!(_20.status))
 										{
-											_22 = AUTO_37(pos);
+											_22 = cll_OP(pos);
 											if (!(_22.status))
 											{
-												_24 = AUTO_19(pos);
+												_24 = AUTO_34(pos);
 												if (!(_24.status))
 												{
-													_26 = Rule_NOSPACE(pos);
+													_26 = AUTO_35(pos);
 													if (!(_26.status))
 													{
-														_28 = cll_OP(pos);
+														_28 = AUTO_36(pos);
 														if (!(_28.status))
 														{
-															_30 = AUTO_20(pos);
+															_30 = AUTO_37(pos);
 															if (!(_30.status))
 															{
-																_32 = AUTO_38(pos);
+																_32 = Rule_NOSPACE(pos);
 																if (!(_32.status))
 																{
-																	_34 = AUTO_6(pos);
+																	_34 = AUTO_38(pos);
 																	if (!(_34.status))
 																	{
-																		_36 = AUTO_7(pos);
+																		_36 = AUTO_6(pos);
 																		if (!(_36.status))
 																		{
-																			_38 = AUTO_14(pos);
+																			_38 = AUTO_7(pos);
 																			if (!(_38.status))
 																			{
-																				_40 = AUTO_1(pos);
+																				_40 = AUTO_14(pos);
 																				if (!(_40.status))
 																				{
-																					_42 = AUTO_46(pos);
+																					_42 = AUTO_1(pos);
 																					if (!(_42.status))
 																					{
-																						_44 = AUTO_0(pos);
+																						_44 = AUTO_46(pos);
 																						if (!(_44.status))
 																						{
-																							_46 = AUTO_45(pos);
+																							_46 = AUTO_0(pos);
 																							if (!(_46.status))
 																							{
-																								_48 = AUTO_43(pos);
+																								_48 = AUTO_45(pos);
 																								if (!(_48.status))
 																								{
-																									_50 = AUTO_44(pos);
+																									_50 = AUTO_43(pos);
 																									if (!(_50.status))
 																									{
-																										_52 = AUTO_52(pos);
+																										_52 = AUTO_44(pos);
 																										if (!(_52.status))
 																										{
-																											_54 = AUTO_42(pos);
+																											_54 = AUTO_52(pos);
 																											if (!(_54.status))
 																											{
-																												_56 = Rule_ANY(pos);
+																												_56 = AUTO_42(pos);
 																												if (!(_56.status))
 																												{
-																													_58 = AUTO_40(pos);
+																													_58 = Rule_ANY(pos);
 																													if (!(_58.status))
 																													{
-																														_60 = AUTO_32(pos);
+																														_60 = AUTO_40(pos);
 																														if (!(_60.status))
 																														{
-																															_62 = AUTO_50(pos);
+																															_62 = AUTO_32(pos);
 																															if (!(_62.status))
 																															{
-																																_64 = AT(pos);
+																																_64 = AUTO_50(pos);
 																																if (!(_64.status))
 																																{
-																																	_66 = AUTO_25(pos);
+																																	_66 = AT(pos);
 																																	if (!(_66.status))
 																																	{
-																																		_68 = AUTO_27(pos);
+																																		_68 = AUTO_25(pos);
 																																		if (!(_68.status))
 																																		{
-																																			_70 = AUTO_51(pos);
+																																			_70 = AUTO_27(pos);
 																																			if (!(_70.status))
 																																			{
-																																				_72 = Rule_OP(pos);
+																																				_72 = AUTO_51(pos);
 																																				if (!(_72.status))
 																																				{
-																																					_74 = AUTO_53(pos);
+																																					_74 = Rule_OP(pos);
 																																					if (!(_74.status))
 																																					{
-																																						_76 = __WHITESPACE(pos);
+																																						_76 = AUTO_53(pos);
 																																						if (!(_76.status))
 																																						{
-																																							_78 = END(pos);
+																																							_78 = __WHITESPACE(pos);
 																																							if (!(_78.status))
 																																							{
-																																								_80 = AUTO_49(pos);
+																																								_80 = END(pos);
 																																								if (!(_80.status))
 																																								{
-																																									_82 = NEWLINE(pos);
+																																									_82 = AUTO_49(pos);
 																																									if (!(_82.status))
 																																									{
-																																										_84 = STRING(pos);
+																																										_84 = NEWLINE(pos);
 																																										if (!(_84.status))
 																																										{
-																																											_86 = ID(pos);
+																																											_86 = STRING(pos);
 																																											if (!(_86.status))
 																																											{
-																																												_88 = cll_TYPE(pos);
+																																												_88 = ID(pos);
 																																												if (!(_88.status))
 																																												{
-																																													_90 = cll_COMPARE_OP(pos);
+																																													_90 = cll_TYPE(pos);
 																																													if (!(_90.status))
 																																													{
-																																														_92 = cll_LOGICAL_OP(pos);
+																																														_92 = cll_COMPARE_OP(pos);
 																																														if (!(_92.status))
 																																														{
-																																															_94 = cll_LOGICAL_NOT(pos);
+																																															_94 = cll_LOGICAL_OP(pos);
 																																															if (!(_94.status))
 																																															{
-																																																_96 = BOOLEAN(pos);
+																																																_96 = cll_LOGICAL_NOT(pos);
 																																																if (!(_96.status))
 																																																{
-																																																	_98 = Rule_QUANTIFIER(pos);
+																																																	_98 = BOOLEAN(pos);
 																																																	if (!(_98.status))
 																																																	{
-																																																		return {};
+																																																		_100 = Rule_QUANTIFIER(pos);
+																																																		if (!(_100.status))
+																																																		{
+																																																			return {};
+																																																		}
+																																																		else 
+																																																		{
+																																																			success_101 = true;
+																																																			pos += _100.node.length();
+																																																			_0 = _100.node;
+																																																		}
 																																																	}
 																																																	else 
 																																																	{
@@ -4282,7 +4294,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_DIAPASON(const char* pos) {
 	Types::Rule_CSEQUENCE_DIAPASON_data data = {from,to};
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE_DIAPASON, data)};
 }
-Parser::Rule_res Parser::Parser::Rule_CSEQUENCE(::Parser::TokenFlow::iterator pos) {
+Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
@@ -4292,11 +4304,11 @@ Parser::Rule_res Parser::Parser::Rule_CSEQUENCE(::Parser::TokenFlow::iterator po
 	::Parser::bool_t success_4 = false;
 	::Parser::Token _5;
 	::Parser::bool_t success_6 = false;
-	::Parser::Token _7;
+	::Parser::Token_res _7;
 	::Parser::bool_t success_8 = false;
-	::Parser::Token _9;
+	::Parser::Token_res _9;
 	::Parser::bool_t success_10 = false;
-	::Parser::Token _11;
+	::Parser::Token_res _11;
 	::Parser::bool_t success_12 = false;
 	::Parser::str_t _14;
 	::Parser::bool_t success_15 = false;
@@ -4306,47 +4318,47 @@ Parser::Rule_res Parser::Parser::Rule_CSEQUENCE(::Parser::TokenFlow::iterator po
 	}
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
-	std::advance(pos, 1);
-	skip_spaces<::Parser::TokenFlow::iterator, ::Parser::Tokens>(pos);
+	pos += 1;
+	skip_spaces(pos);
 	if (!(*(pos + 0) == '^'))
 	{
 		return {};
 	}
 	_2 += ::Parser::str_t(pos, 1);
 	success_3 = true;
-	std::advance(pos, 1);
-	skip_spaces<::Parser::TokenFlow::iterator, ::Parser::Tokens>(pos);
+	pos += 1;
+	skip_spaces(pos);
 	auto begin_13 = pos;
-	if (!(begin_13->name() == Tokens::Rule_CSEQUENCE_ESCAPE))
+	_7 = Rule_CSEQUENCE_ESCAPE(begin_13);
+	if (!(_7.status))
 	{
-		if (!(begin_13->name() == Tokens::Rule_CSEQUENCE_DIAPASON))
+		_9 = Rule_CSEQUENCE_DIAPASON(begin_13);
+		if (!(_9.status))
 		{
-			if (!(begin_13->name() == Tokens::Rule_CSEQUENCE_SYMBOL))
+			_11 = Rule_CSEQUENCE_SYMBOL(begin_13);
+			if (!(_11.status))
 			{
 				return {};
 			}
 			else 
 			{
-				_11 = *begin_13;
 				success_12 = true;
-				begin_13++;
-				_5 = _11;
+				begin_13 += _11.node.length();
+				_5 = _11.node;
 			}
 		}
 		else 
 		{
-			_9 = *begin_13;
 			success_10 = true;
-			begin_13++;
-			_5 = _9;
+			begin_13 += _9.node.length();
+			_5 = _9.node;
 		}
 	}
 	else 
 	{
-		_7 = *begin_13;
 		success_8 = true;
-		begin_13++;
-		_5 = _7;
+		begin_13 += _7.node.length();
+		_5 = _7.node;
 	}
 	success_6 = true;
 	dt = _5;
@@ -4355,19 +4367,19 @@ Parser::Rule_res Parser::Parser::Rule_CSEQUENCE(::Parser::TokenFlow::iterator po
 		success_4 = true;
 		pos = begin_13;
 	}
-	skip_spaces<::Parser::TokenFlow::iterator, ::Parser::Tokens>(pos);
+	skip_spaces(pos);
 	if (!(*(pos + 0) == ']'))
 	{
 		return {};
 	}
 	_14 += ::Parser::str_t(pos, 1);
 	success_15 = true;
-	std::advance(pos, 1);
+	pos += 1;
 	Types::Rule_CSEQUENCE_data data;
 	data.val = dt;
 	data._not = _2;
 
-	return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::Rule_CSEQUENCE, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, Tokens::Rule_CSEQUENCE, data)};
 }
 Parser::Token_res Parser::Lexer::Rule_ANY(const char* pos) {
 	auto in = pos;
