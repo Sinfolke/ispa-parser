@@ -75,17 +75,17 @@ private:
     void convert_single_assignment_data(std::ostringstream &out, IR::var_type type, std::string name);
     void write_data_block(std::ostringstream &out, data_block_t dtb);
     void createTypesNamespace(std::ostringstream &out);
-    void create_tokenizator_header(std::ostringstream &out);
+    void create_lexer_header(std::ostringstream &out);
     void create_parser_header(std::ostringstream &out);
     void create_get_namespace(std::ostringstream &out);
     void outputHeader(std::ostringstream &out);
 public:
     Converter(
-        IR&& ir, IR& lexer_code, const node_ret_t &lexer_code_access_var, const std::vector<std::string>& tokens, const std::vector<std::string>& rules,
+        IR& ir, arr_t<IR::member>&& data, IR& lexer_code, const node_ret_t &lexer_code_access_var, const std::vector<std::string>& tokens, const std::vector<std::string>& rules,
         const data_block_t& data_block_tokens, const data_block_t& data_block_rules, use_prop_t use
     )
     : IR(*ir.getTree()),
-    data(std::move(ir.getDataRef())), // now move or reference the already moved IR data
+    data(data),
     lexer_code(lexer_code),
     lexer_code_access_var(lexer_code_access_var),
     tokens(tokens),

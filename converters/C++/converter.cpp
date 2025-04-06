@@ -55,7 +55,7 @@ std::string Converter::convert_var_type(IR::var_types type, std::vector<IR::var_
     if (type == IR::var_types::ARRAY) {
         if (data.empty())
             data.push_back({IR::var_types::ANY});
-        std::string t = "::" + namespace_name + "::std::vector";
+        std::string t = "::" + namespace_name + "::arr_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
@@ -170,7 +170,7 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
         {
             auto dt = std::any_cast<double>(data);
             char sign = dt >= 0 ? '+' : '-';
-            dt = abs(dt);
+            dt = std::abs(dt);
             if (dt == 0)
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
@@ -578,11 +578,11 @@ void Converter::addRulesToString(std::vector<std::string> rules, std::ostringstr
     out << "}\n";
 }
 void Converter::addStandardFunctionsLexer(std::ostringstream &out) {
-    out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostringstream& os, bool sensitiveInfo) {
+    out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostream& os, bool sensitiveInfo) {
     for (const auto& token : tokens)
         printToken(os, token, sensitiveInfo);
 })";
-    out << '\n' << "void " + namespace_name + R"(::Lexer::printToken(std::ostringstream& os, const Token& token, bool sensitiveInfo) {
+    out << '\n' << "void " + namespace_name + R"(::Lexer::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
     os << TokensToString(token.name()) << ": ";
 
     if (token.data().type() == typeid(str_t)) {
@@ -595,33 +595,33 @@ void Converter::addStandardFunctionsLexer(std::ostringstream &out) {
         os << "{ ";
         printToken(os, std::any_cast<Token>(token.data())); // Recursive call
         os << " }";
-    } else if (token.data().type() == typeid(std::vector<Token>)) { // Handle array of tokens
+    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
         os << "[ ";
-        auto arr = std::any_cast<std::vector<Token>>(token.data());
+        auto arr = std::any_cast<arr_t<Token>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             printToken(os, *it);
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(std::vector<str_t>)) {
+    } else if (token.data().type() == typeid(arr_t<str_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<std::vector<str_t>>(token.data());
+        auto arr = std::any_cast<arr_t<str_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << '"' << *it << '"';
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(std::vector<num_t>)) {
+    } else if (token.data().type() == typeid(arr_t<num_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<std::vector<num_t>>(token.data());
+        auto arr = std::any_cast<arr_t<num_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << *it;
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(std::vector<bool_t>)) {
+    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<std::vector<bool_t>>(token.data());
+        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << std::boolalpha << *it;
             if (std::next(it) != arr.end()) os << ", ";
@@ -735,17 +735,36 @@ void Converter::addLexer_codeBottom(std::ostringstream &out, IR::variable var) {
     indentLevel--;
 }
 void Converter::outputIRToFile(std::string filename) {
-    std::ostringstream ss;
 
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        throw std::runtime_error("Unable to open file for writing: " + filename);
+    std::ofstream cpp(filename + ".cpp");
+    std::ofstream h(filename + ".h");
+    if (!cpp) {
+        throw std::runtime_error("Unable to open file for writing: " + filename + ".cpp");
     }
-    file << ss.str();
+    if (!h) {
+        throw std::runtime_error("Unable to open file for writing: " + filename + ".h");
+    }
+    std::ostringstream cpp_ss, h_ss;
+    printIR(cpp_ss);
+    outputHeader(h_ss);
+    cpp << cpp_ss.str();
+    h << h_ss.str();
 }
 void Converter::outputIRToConsole() {
     std::ostringstream ss;
     printIR(ss);
     std::cout << ss.str() << '\n';
+}
+extern "C" Converter* getConverter(
+    IR& ir, 
+    IR& lexer_code, 
+    const IR::node_ret_t &lexer_code_access_var, 
+    const std::vector<std::string>& tokens,
+    const std::vector<std::string>& rules,
+    const data_block_t& data_block_tokens, 
+    const data_block_t& data_block_rules, 
+    use_prop_t use
+) {
+    return new Converter(ir, std::move(ir.getDataRef()), lexer_code, lexer_code_access_var, tokens, rules, data_block_tokens, data_block_rules, use);
 }
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

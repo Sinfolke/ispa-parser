@@ -101,14 +101,15 @@ int main(int argc, char** argv) {
     */
     Tree tree(std::move(rawTree));
     tree.normalize(); // normalize tree
-    auto use = tree.accamulate_use_data_to_map();
-    auto use_places = tree.getUsePlacesTable();
-    auto [tokens, rules] = tree.getTokenAndRuleNames();
-    tree.sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
     tree.literalsToToken();     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+    tree.sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
     tree.addSpaceToken();
     tree.replaceDublications();          // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     tree.inlineTokens();                 // inline tokens to make sure that every token is used only once
+
+    auto use = tree.accamulate_use_data_to_map();
+    auto use_places = tree.getUsePlacesTable();
+    auto [tokens, rules] = tree.getTokenAndRuleNames();
 
     // convert tree into IR
     IR ir(tree.getRawTree());
@@ -122,19 +123,10 @@ int main(int argc, char** argv) {
     */
     auto [datablocks_tokens, datablocks_rules] = tree.get_data_blocks(ir);
     auto lexer_code = tree.getCodeForLexer(use_places, ir);
-    dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto convert_fun = converter.loadfun<std::string, const IR&, IR&, IR::node_ret_t&, std::vector<std::string>, std::vector<std::string>, data_block_t, data_block_t, const use_prop_t&>("convert");
-    auto convert_header_fun = converter.loadfun<std::string, std::vector<std::string>, std::vector<std::string>, data_block_t, data_block_t, use_prop_t>("convert_header");
-    auto content = convert_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use);
-    auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
-    std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");
-    if (!cpp)
-        throw Error("Failed open output file");
-    cpp << content;
-    std::ofstream header(std::any_cast<std::string>(use["name"].data) + ".h");
-    if (!header)
-        throw Error("Failed open output file");
-    header << header_content;
+    dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    auto converter_fun = converter_dlib.loadfun<IR*, IR&, IR&, const IR::node_ret_t &, const std::vector<std::string>&, const std::vector<std::string>&, data_block_t&, data_block_t&, use_prop_t>("getConverter");
+    auto converter = converter_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use);
+    converter->outputIRToFile(std::any_cast<std::string>(use["name"].data));
     // write to file
     // invoke convertion
     //convert(tree, converter);

@@ -116,18 +116,18 @@ void Converter::addStandardFunctions(std::ostringstream &out) {
 void Converter::convert_inclosed_map(std::ostringstream &out, IR::inclosed_map map) {
     for (auto [key, value] : map) {
         auto [expr, type] = value;
-        out << "\t\t\t\t" << convert_var_type(type.type, type.templ) << " " << key << ";\n";
+        out << "\t\t\t" << convert_var_type(type.type, type.templ) << " " << key << ";\n";
     }
 }
 void Converter::convert_single_assignment_data(std::ostringstream &out, IR::var_type type, std::string name) {
-    out << "\t\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
+    out << "\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
 }
 void Converter::write_data_block(std::ostringstream &out, data_block_t dtb) {
     for (auto [name, block] : dtb) {
         if (block.is_inclosed_map) {
-            out << "\t\t\tstruct " + name + "_data {\n";
+            out << "\t\tstruct " + name + "_data {\n";
             convert_inclosed_map(out, std::any_cast<IR::inclosed_map>(block.value.data));
-            out << "\t\t\t};\n";
+            out << "\t\t};\n";
         } else {
             convert_single_assignment_data(out, block.assign_type, name);
         }
@@ -139,7 +139,7 @@ void Converter::createTypesNamespace(std::ostringstream &out) {
     write_data_block(out, data_block_rules); 
     out << "\t}\n";
 }
-void Converter::create_tokenizator_header(std::ostringstream &out) {
+void Converter::create_lexer_header(std::ostringstream &out) {
     out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tToken makeToken(const char*& pos);\n";
@@ -154,7 +154,7 @@ void Converter::create_parser_header(std::ostringstream &out) {
     out << "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n"
         << "\t\tprivate:\n"
         << "\t\t\tRule_res getRule();\n";
-    for (auto name : tokens) {
+    for (auto name : rules) {
         out << "\t\t\tRule_res " << name << "(::" << namespace_name << "::TokenFlow::iterator pos);\n";
     }
     out << "\t};\n";
@@ -180,7 +180,7 @@ void Converter::outputHeader(std::ostringstream &out) {
     createToStringFunction(out);
     createTypesNamespace(out);
     create_get_namespace(out);
-    create_tokenizator_header(out);
+    create_lexer_header(out);
     create_parser_header(out);
     close_library(out);
 }

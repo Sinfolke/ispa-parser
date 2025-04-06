@@ -2200,11 +2200,11 @@ Rule(spacemode) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	if (!(CURRENT_TOKEN == AUTO_35))
+	if (!(CURRENT_TOKEN == AUTO_37))
 	{
 		if (!(CURRENT_TOKEN == AUTO_36))
 		{
-			if (!(CURRENT_TOKEN == AUTO_37))
+			if (!(CURRENT_TOKEN == AUTO_35))
 			{
 				return {}
 			}
@@ -3621,7 +3621,7 @@ Token(AUTO_34) {
 Token(AUTO_35) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "allowed")))
+	if (!(!STRNCMP(pos, "mixed")))
 	{
 		return {}
 	}
@@ -3645,7 +3645,7 @@ Token(AUTO_36) {
 Token(AUTO_37) {
 	str _0 = NONE
 	bool success_1 = FALSE
-	if (!(!STRNCMP(pos, "mixed")))
+	if (!(!STRNCMP(pos, "allowed")))
 	{
 		return {}
 	}
