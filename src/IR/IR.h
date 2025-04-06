@@ -4,6 +4,7 @@
 #include <list>
 #include <algorithm>
 #include <stack>
+#include <unordered_set>
 #include <exe_export.h>
 class EXPORT IR {
     public:
