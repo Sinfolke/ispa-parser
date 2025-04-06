@@ -28,8 +28,8 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const ::Parser::Rule data, int tabs);
 // void printData(const std::unordered_map<const char*, std::any> data, int tabs);
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
-Parser::Tree tree;
 int main(int argc, char** argv) {
+    Parser::Tree rawTree;
     init();
     Args args(argc, argv);
 
@@ -65,7 +65,6 @@ int main(int argc, char** argv) {
     // get tree from sources
     if (!args.unnamed().size() && !args.has("dir"))
         throw UError("No input files");
-    
     for (const auto file : args.unnamed()) {
         cpuf::printf("file: %$\n", file);
         std::string fileContent;
@@ -78,7 +77,7 @@ int main(int argc, char** argv) {
         Parser::Parser parser(fileContent.c_str());
         auto current_tree = parser.parse();
         // assign tree
-        tree.insert(tree.end(), current_tree.begin(), current_tree.end());
+        rawTree.insert(rawTree.end(), current_tree.begin(), current_tree.end());
     }
     if (args.has("dir")) {
         for (const auto dirPath : args.get("dir").values) {
@@ -88,8 +87,8 @@ int main(int argc, char** argv) {
                 std::string content = corelib::file::readFile(file);
                 Parser::Parser parser(content.c_str());
                 auto current_tree = parser.parse();
-                tree.push_back(Tokens::make_rule(Parser::Rules::id, file));
-                tree.insert(tree.end(), current_tree.begin(), current_tree.end());
+                rawTree.push_back(Tokens::make_rule(Parser::Rules::id, file));
+                rawTree.insert(rawTree.end(), current_tree.begin(), current_tree.end());
             }
         }
     }
@@ -100,21 +99,19 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
+    Tree tree(std::move(rawTree));
+    tree.normalize(); // normalize tree
+    auto use = tree.accamulate_use_data_to_map();
+    auto use_places = tree.getUsePlacesTable();
+    auto [tokens, rules] = tree.getTokenAndRuleNames();
+    tree.sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
+    tree.literalsToToken();     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+    tree.addSpaceToken();
+    tree.replaceDublications();          // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
+    tree.inlineTokens();                 // inline tokens to make sure that every token is used only once
 
-    auto use = accamulate_use_data_to_map(tree);
-    std::vector<std::string> fullname;
-    std::vector<std::pair<std::string, std::vector<std::string>>> nested_rule_names;
-    normalizeTree(tree, fullname, nested_rule_names);
-    sortByPriority(tree, tree);      // sorts elements to get which should be placed on top. This ensures proper matching
-    literalsToToken(tree, tree);     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
-    addSpaceToken(tree);
-    replaceDublications(tree);       // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
-    inlineTokens(tree);              // inline tokens to make sure that every token is used only once
-    use_place_t use_places;
-    getUsePlacesTable(tree, use_places, {});
-    auto [tokens, rules] = getTokenAndRuleNames(tree, "");
     // convert tree into IR
-    IR ir(tree);
+    IR ir(tree.getRawTree());
     ir.makeIR();
     ir.optimizeIR();
     // Output to file
@@ -123,11 +120,11 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    auto [datablocks_tokens, datablocks_rules] = get_data_blocks(ir);
-    auto lexer_code = getCodeForLexer(tree, use_places, ir);
+    auto [datablocks_tokens, datablocks_rules] = tree.get_data_blocks(ir);
+    auto lexer_code = tree.getCodeForLexer(use_places, ir);
     dlib converter(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto convert_fun = converter.loadfun<std::string, const IR&, IR&, IR::node_ret_t&, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, const use_prop_t&>("convert");
-    auto convert_header_fun = converter.loadfun<std::string, std::list<std::string>, std::list<std::string>, data_block_t, data_block_t, use_prop_t>("convert_header");
+    auto convert_fun = converter.loadfun<std::string, const IR&, IR&, IR::node_ret_t&, std::vector<std::string>, std::vector<std::string>, data_block_t, data_block_t, const use_prop_t&>("convert");
+    auto convert_header_fun = converter.loadfun<std::string, std::vector<std::string>, std::vector<std::string>, data_block_t, data_block_t, use_prop_t>("convert_header");
     auto content = convert_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use);
     auto header_content = convert_header_fun(tokens, rules, datablocks_tokens, datablocks_rules, use);
     std::ofstream cpp(std::any_cast<std::string>(use["name"].data) + ".cpp");

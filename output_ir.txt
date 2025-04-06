@@ -68,7 +68,7 @@ Token(cll_OP) {
 Token(cll_ASSIGNMENT_OP) {
 	Token_result _0 = NONE
 	bool success_1 = FALSE
-	str _2 = NONE
+	Token_result _2 = NONE
 	bool success_3 = FALSE
 	_0 = cll_OP(TOKEN_SEQUENCE)
 	if (_0.status)
@@ -77,13 +77,13 @@ Token(cll_ASSIGNMENT_OP) {
 		pos += _0.token.length()
 	}
 	skipspaces(pos)
-	if (!(*pos == '='))
+	_2 = AUTO_50(TOKEN_SEQUENCE)
+	if (!(_2.status))
 	{
 		return {}
 	}
-	_2 += CURRENT_POS_SEQUENCE
 	success_3 = TRUE
-	pos++
+	pos += _2.token.length()
 	data = _0.node # token
 }
 Token(cll_COMPARE_OP) {
@@ -1349,10 +1349,11 @@ Rule(cll_var) {
 Rule(cll_block) {
 	token _0 = NONE
 	bool success_1 = FALSE
-	Rule_result _2 = NONE
+	token _2 = NONE
 	bool success_3 = FALSE
-	token _4 = NONE
-	bool success_5 = FALSE
+	array shadow_4 = NONE
+	token _5 = NONE
+	bool success_6 = FALSE
 	if (!(CURRENT_TOKEN == AUTO_51))
 	{
 		return {}
@@ -1361,22 +1362,22 @@ Rule(cll_block) {
 	success_1 = TRUE
 	pos++
 	skipspaces(TOKEN_SEQUENCE)
-	_2 = Rule_rule(TOKEN_SEQUENCE)
-	while (_2.status)
+	while (CURRENT_TOKEN == AUTO_42)
 	{
+		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		pos += _2.token.length()
-		_2 = Rule_rule(TOKEN_SEQUENCE)
+		pos++
+		shadow_4.push(_2)
 	}
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == AUTO_53))
 	{
 		return {}
 	}
-	_4 = CURRENT_TOKEN
-	success_5 = TRUE
+	_5 = CURRENT_TOKEN
+	success_6 = TRUE
 	pos++
-	data = _2.node # rule
+	data = shadow_4 # array
 }
 Rule(cll_loop_while) {
 	token _0 = NONE
@@ -2275,7 +2276,7 @@ Rule(main) {
 	bool success_5 = FALSE
 	Rule_result _6 = NONE
 	bool success_7 = FALSE
-	Rule_result _8 = NONE
+	token _8 = NONE
 	bool success_9 = FALSE
 	_2 = spacemode(TOKEN_SEQUENCE)
 	if (!(_2.status))
@@ -2285,16 +2286,16 @@ Rule(main) {
 			_6 = use(TOKEN_SEQUENCE)
 			if (!(_6.status))
 			{
-				_8 = Rule(TOKEN_SEQUENCE)
-				if (!(_8.status))
+				if (!(CURRENT_TOKEN == AUTO_42))
 				{
 					return {}
 				}
 				else 
 				{
+					_8 = CURRENT_TOKEN
 					success_9 = TRUE
-					pos += _8.token.length()
-					_0 = _8.node
+					pos++
+					_0 = _8
 				}
 			}
 			else 
@@ -2469,7 +2470,7 @@ Rule(Rule_rule) {
 	skipspaces(TOKEN_SEQUENCE)
 	if (!(CURRENT_TOKEN == Rule_NOSPACE))
 	{
-		if (!(CURRENT_TOKEN == Rule_ANY))
+		if (!(CURRENT_TOKEN == AUTO_42))
 		{
 			if (!(CURRENT_TOKEN == Rule_OP))
 			{
@@ -2744,9 +2745,9 @@ Rule(Rule_value) {
 Rule(Rule_nested_rule) {
 	token _0 = NONE
 	bool success_1 = FALSE
-	rule _2 = NONE
+	token _2 = NONE
 	bool success_3 = FALSE
-	Rule_result _4 = NONE
+	token _4 = NONE
 	bool success_5 = FALSE
 	if (!(CURRENT_TOKEN == AUTO_46))
 	{
@@ -2756,20 +2757,20 @@ Rule(Rule_nested_rule) {
 	success_1 = TRUE
 	pos++
 	auto begin_6 = pos
-	_4 = Rule(TOKEN_SEQUENCE)
-	if (!(_4.status))
+	if (!(CURRENT_TOKEN == AUTO_42))
 	{
 		return {}
 	}
+	_4 = CURRENT_TOKEN
 	success_5 = TRUE
-	begin_6 += _4.token.length()
-	_2 = _4.node
+	begin_6++
+	_2 = _4
 	if (success_5)
 	{
 		success_3 = TRUE
 		pos = begin_6
 	}
-	data = _2 # rule
+	data = _2 # token
 }
 Rule(Rule_data_block_regular_datablock_key) {
 	token _0 = NONE
@@ -3227,7 +3228,7 @@ Token(Rule_CSEQUENCE_DIAPASON) {
 	data = [from,to,] # array
 }
 Token(Rule_CSEQUENCE) {
-	str _0 = NONE
+	Token_result _0 = NONE
 	bool success_1 = FALSE
 	str _2 = NONE
 	bool success_3 = FALSE
@@ -3244,15 +3245,16 @@ Token(Rule_CSEQUENCE) {
 	Token_result _13 = NONE
 	bool success_14 = FALSE
 	array shadow_15 = NONE
-	str _17 = NONE
+	Token_result _17 = NONE
 	bool success_18 = FALSE
-	if (!(*pos == '['))
+	array shadow_19 = NONE
+	_0 = AUTO_25(TOKEN_SEQUENCE)
+	if (!(_0.status))
 	{
 		return {}
 	}
-	_0 += CURRENT_POS_SEQUENCE
 	success_1 = TRUE
-	pos++
+	pos += _0.token.length()
 	skipspaces(pos)
 	if (*pos == '^')
 	{
@@ -3304,28 +3306,18 @@ Token(Rule_CSEQUENCE) {
 		pos = begin_16
 	}
 	skipspaces(pos)
-	if (!(*pos == ']'))
+	_17 = AUTO_27(TOKEN_SEQUENCE)
+	if (!(_17.status))
 	{
 		return {}
 	}
-	_17 += CURRENT_POS_SEQUENCE
 	success_18 = TRUE
-	pos++
+	pos += _17.token.length()
+	shadow_19.push(_17.node)
 	data = 
 		val: dt # array
 		_not: _2 # str
 	;
-}
-Token(Rule_ANY) {
-	str _0 = NONE
-	bool success_1 = FALSE
-	if (!(*pos == '.'))
-	{
-		return {}
-	}
-	_0 += CURRENT_POS_SEQUENCE
-	success_1 = TRUE
-	pos++
 }
 Token(Rule_NOSPACE) {
 	str _0 = NONE

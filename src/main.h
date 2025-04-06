@@ -22,7 +22,7 @@
 #include <cpuf/constexpr>
 
 #include <logging.h>
-#include <progress.h>
+#include <tree.h>
 #include <corelib.h>
 #include <token_management.h>
 #include <init.h>
@@ -30,6 +30,5 @@
 #include <args.h>
 #include <parser.h>
 #include <convertion.h>
-#include <treeNormalizer.h>
 #include <IR/IR.h>
 void printHelp();

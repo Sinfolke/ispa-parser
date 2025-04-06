@@ -28,12 +28,6 @@
 
     Add proper handle of accessor in rule_op
 
-  Code improvements:
-
-    Encapsulate converter.cpp into a class extends IR.cpp with custom virtual output methods
-
-    Encapsulate progress.cpp into a class
-
 ### Parser syntax
   
   see ```concepts/syntax```

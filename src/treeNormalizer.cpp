@@ -2,9 +2,12 @@
 #include <internal_types.h>
 #include <token_management.h>
 #include <corelib.h>
-#include <treeNormalizer.h>
-
-void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
+#include <parser.h>
+#include <internal_types.h>
+#include <corelib.h>
+#include <algorithm>
+#include <tree.h>
+void Tree::normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
     arr_t<Parser::Rule> ops;
     Parser::Rule prev_rule;
     bool in_op = false, prev_op = false;
@@ -115,7 +118,7 @@ void normalizeHelper(arr_t<Parser::Rule> &rules, arr_t<std::string> fullname, ar
         rules.push_back(new_token);
     }
 }
-void getNestedNames(arr_t<Parser::Rule> &nested_rules, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names, arr_t<std::string> &fullname) {
+void Tree::getNestedNames(arr_t<Parser::Rule> &nested_rules, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names, arr_t<std::string> &fullname) {
     for (auto &el : nested_rules) {
         auto data = std::any_cast<Parser::Rule>(el.data);
         auto val = std::any_cast<obj_t>(data.data);
@@ -126,7 +129,7 @@ void getNestedNames(arr_t<Parser::Rule> &nested_rules, arr_t<std::pair<std::stri
         fullname.pop_back();
     }
 }
-void normalizeRule(Parser::Rule &member, arr_t<std::string> &fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
+void Tree::normalizeRule(Parser::Rule &member, arr_t<std::string> &fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
     obj_t data;
     if (!fullname.empty()) {
         data = std::any_cast<obj_t>(std::any_cast<Parser::Rule>(member.data).data);
@@ -141,7 +144,7 @@ void normalizeRule(Parser::Rule &member, arr_t<std::string> &fullname, arr_t<std
     fullname.push_back(name_str);
     getNestedNames(nested_rules, nested_rule_names, fullname);
     normalizeHelper(rules, fullname, nested_rule_names);
-    normalizeTree(nested_rules, fullname, nested_rule_names);
+    normalizeTreeHelper(nested_rules, fullname, nested_rule_names);
     fullname.pop_back();
     corelib::map::set(data, "rule", std::any(rules));
     corelib::map::set(data, "nestedRules", std::any(nested_rules));
@@ -150,7 +153,7 @@ void normalizeRule(Parser::Rule &member, arr_t<std::string> &fullname, arr_t<std
         member.name = Parser::Rules::Rule;
 }
 
-void normalizeTree(Parser::Tree &tree, arr_t<std::string> &fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
+void Tree::normalizeTreeHelper(Parser::Tree &tree, arr_t<std::string> &fullname, arr_t<std::pair<std::string, arr_t<std::string>>> &nested_rule_names) {
     for (auto &member : tree) {
         if (fullname.empty())
             nested_rule_names.clear();
@@ -158,4 +161,9 @@ void normalizeTree(Parser::Tree &tree, arr_t<std::string> &fullname, arr_t<std::
             normalizeRule(member, fullname, nested_rule_names);
         }
     }
+}
+void Tree::normalize() {
+    arr_t<std::string> fullname;
+    arr_t<std::pair<std::string, arr_t<std::string>>> nested_rule_names;
+    normalizeTreeHelper(tree, fullname, nested_rule_names);
 }
