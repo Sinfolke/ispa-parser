@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
     auto lexer_code = tree.getCodeForLexer(use_places, ir);
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto converter_fun = converter_dlib.loadfun<IR*, IR&, IR&, const IR::node_ret_t &, const std::vector<std::string>&, const std::vector<std::string>&, data_block_t&, data_block_t&, use_prop_t>("getConverter");
-    auto converter = converter_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use);
+    auto converter = std::unique_ptr<IR>(converter_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use));
     converter->outputIRToFile(std::any_cast<std::string>(use["name"].data));
     // write to file
     // invoke convertion
