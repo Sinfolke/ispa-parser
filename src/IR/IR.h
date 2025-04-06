@@ -120,23 +120,23 @@ class IR {
         // output functions:
         std::string generateVariableName();
         std::string convert_var_type(var_types type);
-        std::string convert_var_assing_values(var_assign_values value, std::any data, std::stack<std::string> &current_pos_counter);
+        std::string convert_var_assing_values(var_assign_values value, std::any data);
         std::string convert_var_assing_types(var_assign_types type);
-        std::string conditionTypesToString(condition_types type, std::any data, std::stack<std::string> &current_pos_counter);
-        std::string convertFunctionCall(function_call call, std::stack<std::string> &current_pos_counter);
-        std::string convertAssign(assign asgn, std::stack<std::string> &current_pos_counter);
-        std::string convertAccessor(accessor acc, std::stack<std::string> &current_pos_counter);
-        void convertVariable(variable var, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        std::string convertExpression(std::vector<expr> expression, bool with_braces, std::stack<std::string> &current_pos_counter);
-        void convertBlock(std::vector<IR::member> block, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        void convertCondition(condition cond, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        void convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        std::string convertMethodCall(method_call method, std::stack<std::string> &current_pos_counter);
-        std::string convertDataBlock(data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter);
-        void convertMember(const member& mem, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        void convertMembers(std::vector<member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        void convertMembers(std::deque<member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter);
-        void printIR(std::ostream& out, int &indentLevel);
+        std::string conditionTypesToString(condition_types type, std::any data);
+        std::string convertFunctionCall(function_call call);
+        std::string convertAssign(assign asgn);
+        std::string convertAccessor(accessor acc);
+        void convertVariable(variable var, std::ostream& out);
+        std::string convertExpression(std::vector<expr> expression, bool with_braces);
+        void convertBlock(std::vector<IR::member> block, std::ostream& out);
+        void convertCondition(condition cond, std::ostream& out);
+        void convertAssignVariable(variable_assign var, std::ostream &out);
+        std::string convertMethodCall(method_call method);
+        std::string convertDataBlock(data_block dtb);
+        void convertMember(const member& mem, std::ostream& out);
+        void convertMembers(std::vector<member> members, std::ostream& out);
+        void convertMembers(std::deque<member> members, std::ostream& out);
+        void printIR(std::ostream& out);
         // other functions
         std::string getErrorName(Parser::Rule rule);
         IR::variable createSuccessVariable();
@@ -207,35 +207,35 @@ class IR {
         std::vector<IR::member> data;
         std::vector<node_ret_t> success_vars;
         const std::vector<Parser::Rule>* rules;
-        Parser::Tree* tree;
+        const Parser::Tree* tree;
+        // data for output
+        std::stack<std::string> current_pos_counter;
+        size_t indentLevel = 0;
         // helper functions
         void erase_begin();
         // convertion
         void ruleToIr(Parser::Rule &rule_rule, char custom_qualifier = -1);
         IR rulesToIr(std::vector<Parser::Rule> rules);
-        IR treeToIr(Parser::Tree &tree, std::string nested_name, std::vector<std::string> &fullname_arr);
-        void treeToIr(Parser::Tree &tree);
+        void treeToIr(const Parser::Tree &tree);
         // optimizations
         void getVariablesToTable(std::vector<IR::member> &data, size_t &i, std::list<IR::member>& table);
         size_t getBegin(size_t& i);
         void insertVariablesOnTop(std::list<IR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        IR(Parser::Tree &tree) : tree(&tree), rules(nullptr) {}
-        IR(Parser::Tree *&tree) : tree(tree), rules(nullptr) {}
-        IR(Parser::Tree &tree, const std::vector<Parser::Rule> &rules) : tree(&tree), rules(&rules) {}
-        IR(Parser::Tree *&tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
+        IR(const Parser::Tree &tree) : tree(&tree), rules(nullptr) {}
+        IR(const Parser::Tree *&tree) : tree(tree), rules(nullptr) {}
+        IR(const Parser::Tree &tree, const std::vector<Parser::Rule> &rules) : tree(&tree), rules(&rules) {}
+        IR(const Parser::Tree *&tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
         IR(IR &ir) : tree(ir.tree), rules(nullptr), data(ir.data) {}
-        IR& operator=(const IR&) = default;
-        IR& operator=(IR&&) = default;
-        ~IR() = default;
         // get functions
         auto getData() const -> const std::vector<IR::member>&;
         auto getDataRef() -> std::vector<IR::member>&;
+        auto getTree() -> const Parser::Tree*;
         auto makeIR() -> std::vector<node_ret_t>;
         void optimizeIR();
-        void outputIRToFile(std::string filename);
-        void outputIRToConsole();
+        virtual void outputIRToFile(std::string filename);
+        virtual void outputIRToConsole();
         void add(IR &repr);
         void add(std::vector<member> repr);
         void push(member member);
@@ -246,4 +246,5 @@ class IR {
         void pop();
         size_t size();
         bool empty();
+        void setIsToken(bool isToken);
 };

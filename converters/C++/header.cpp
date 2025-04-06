@@ -7,13 +7,8 @@
 #include <logging.h>
 #include <converter.h>
 #include <unordered_map>
-namespace global
-{
-    extern std::string namespace_name;
-}
 
-std::string createLibrary() {
-    std::string res;
+void Converter::createLibrary(std::ostringstream& out) {
     std::unordered_map<std::string, std::string> macros = {
         {"BOOL_TYPE", "bool"},
         {"NUM_TYPE", "double"},
@@ -22,100 +17,87 @@ std::string createLibrary() {
         {"ARR_TYPE", "std::list"},
         {"OBJ_TYPE", "std::unordered_map"}
     };
+    
     std::unordered_map<std::string, std::string> push_methods {
         { "std::stack", "push" },
         { "std::queue", "push" },
         { "std::priority_queue", "push" },
-
     };
-    res += "#pragma once\n";
-    res += "#ifndef " + corelib::text::ToUpper(global::namespace_name) + "\n";
-    res += "#define " + corelib::text::ToUpper(global::namespace_name) + "\n";
-    res += "\n";
-    res += "#include <string>\n";
-    res += "#include <list>\n";
-    res += "#include <unordered_map>\n";
-    res += "#include <iscstdlibc++.h>\n";
-    res += "#include <fstream>\n";
-    res += "#include <iterator>\n";
-    for (auto [macro, deftype] : macros) {
-        auto actual_name = corelib::text::ToUpper(global::namespace_name) + "_" + macro;
-        
-        res += "#ifndef " + actual_name + "\n";
-        res += "#define " + actual_name + " " + deftype + "\n";
-        res += "#endif\n";
-    }
-    return res;
-}
-std::string close_library() {
-    std::string res;
-    res += "\n} // " + global::namespace_name + "\n"; // close enum
-    res += "\n\n#endif // " + corelib::text::ToUpper(global::namespace_name) + "\n"; // close header
-    return res;
-}
-std::string createNamespace(use_prop_t use) {
-    std::string res = "namespace ";
-    res += std::any_cast<std::string>(use["name"].data);
-    res += " {\n";
-    return res;
-}
-std::string createTypes() {
-    std::string res;
-    res += "\tusing str_t = " + corelib::text::ToUpper(global::namespace_name) + "_STR_TYPE;\n";
-    res += "\tusing num_t = " + corelib::text::ToUpper(global::namespace_name) + "_NUM_TYPE;\n";
-    res += "\tusing bool_t = " + corelib::text::ToUpper(global::namespace_name) + "_BOOL_TYPE;\n";
-    res += "\tusing any_t = " + corelib::text::ToUpper(global::namespace_name) + "_ANY_TYPE;\n";
-    res += "\ttemplate<typename T>\n";
-    res += "\tusing arr_t = " + corelib::text::ToUpper(global::namespace_name) + "_ARR_TYPE<T>;\n";
-    res += "\ttemplate<typename Key, typename Value>\n";
-    res += "\tusing obj_t = " + corelib::text::ToUpper(global::namespace_name) + "_OBJ_TYPE<Key, Value>;\n";
-    return res;
-}
-void writeEnum(std::string &res, std::list<std::string> enm) {
-    res += "\t\tNONE, ";
-    for (auto el : enm) {
-        res += el;
-        res += ", ";
-    }
-    if (res.size())
-        res.erase(res.size() - 2);
 
-    res += "\n\t};\n";
+    out << "#pragma once\n";
+    out << "#ifndef " << corelib::text::ToUpper(namespace_name) << "\n";
+    out << "#define " << corelib::text::ToUpper(namespace_name) << "\n\n";
+
+    out << "#include <string>\n";
+    out << "#include <list>\n";
+    out << "#include <unordered_map>\n";
+    out << "#include <iscstdlibc++.h>\n";
+    out << "#include <fstream>\n";
+    out << "#include <iterator>\n\n";
+
+    for (auto [macro, deftype] : macros) {
+        auto actual_name = corelib::text::ToUpper(namespace_name) + "_" + macro;
+        
+        out << "#ifndef " << actual_name << "\n";
+        out << "#define " << actual_name << " " << deftype << "\n";
+        out << "#endif\n";
+    }
 }
-std::string createTokensEnum(std::list<std::string> tokens) {
-    std::string res = "\tenum class Tokens {\n";
-    writeEnum(res, tokens);
-    return res;
+
+void Converter::close_library(std::ostringstream &out) {
+    out << "\n} // " << namespace_name << "\n"; // close enum
+    out << "\n\n#endif // " << corelib::text::ToUpper(namespace_name) << "\n"; // close header
 }
-std::string createRulesEnum(std::list<std::string> rules) {
-    std::string res = "\tenum class Rules {\n";
-    writeEnum(res, rules);
-    return res;
+void Converter::createNamespace(std::ostringstream &out) {
+    out << "namespace " << namespace_name << " {\n";
 }
-std::string getTypesFromStdlib() {
-    std::string res;
-    // res += "\ttypedef ISC_STD::_return<Rules> Rule;\n";
-    // res += "\ttypedef ISC_STD::match_result<Rules> Rule_res;\n";
-    // res += "\ttypedef ISC_STD::_return<Tokens> Token;\n";
-    // res += "\ttypedef ISC_STD::match_result<Tokens> Token_res;\n";
-    // res += "\ttypedef ISC_STD::Tree<Rules> Tree;\n";
-    res += "\tusing Rule = ISPA_STD::node<Rules>;\n";
-    res += "\tusing Rule_res = ISPA_STD::match_result<Rules>;\n";
-    res += "\tusing Token = ISPA_STD::node<Tokens>;\n";
-    res += "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
-    res += "\tusing TokenFlow = ISPA_STD::TokenFlow<Tokens>;\n";
-    res += "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
-    return res;
+void Converter::createTypes(std::ostringstream &out) {
+    const auto ns = corelib::text::ToUpper(namespace_name);
+
+    out << "\tusing str_t = " << ns << "_STR_TYPE;\n";
+    out << "\tusing num_t = " << ns << "_NUM_TYPE;\n";
+    out << "\tusing bool_t = " << ns << "_BOOL_TYPE;\n";
+    out << "\tusing any_t = " << ns << "_ANY_TYPE;\n";
+    out << "\ttemplate<typename T>\n";
+    out << "\tusing arr_t = " << ns << "_ARR_TYPE<T>;\n";
+    out << "\ttemplate<typename Key, typename Value>\n";
+    out << "\tusing obj_t = " << ns << "_OBJ_TYPE<Key, Value>;\n";
 }
-std::string createToStringFunction() {
-    std::string res;
-    res += "\tstd::string TokensToString(Tokens token);\n";
-    res += "\tstd::string RulesToString(Rules rule);\n";
-    return res;
+
+void Converter::writeEnum(std::ostringstream& out, const std::vector<std::string>& enm) {
+    out << "\t\tNONE";
+
+    for (const auto& el : enm) {
+        out << ", " << el;
+    }
 }
-std::string addStandardFunctions() {
-    std::string res;
-    res += R"(
+
+void Converter::createTokensEnum(std::ostringstream &out) {
+    out << "\tenum class Tokens {\n";
+    writeEnum(out, tokens);
+    out << "\n\t};\n";
+}
+
+void Converter::createRulesEnum(std::ostringstream &out) {
+    out << "\tenum class Rules {\n";
+    writeEnum(out, rules);
+    out << "\n\t};\n";
+}
+void Converter::getTypesFromStdlib(std::ostringstream& out) {
+    out << "\tusing Rule = ISPA_STD::node<Rules>;\n";
+    out << "\tusing Rule_res = ISPA_STD::match_result<Rules>;\n";
+    out << "\tusing Token = ISPA_STD::node<Tokens>;\n";
+    out << "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
+    out << "\tusing TokenFlow = ISPA_STD::TokenFlow<Tokens>;\n";
+    out << "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
+}
+
+void Converter::createToStringFunction(std::ostringstream &out) {
+    out << "\tstd::string TokensToString(Tokens token);\n";
+    out << "\tstd::string RulesToString(Rules rule);\n";
+}
+void Converter::addStandardFunctions(std::ostringstream &out) {
+    out << R"(
             /**
              * @param os the output stream
              * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
@@ -129,86 +111,76 @@ std::string addStandardFunctions() {
              * Prints a single token into an output stream
              */
             void printToken(std::ostream& os, const Token& token, bool sensitiveInfo = false);)";
-    res += "\n";
-    return res;
+    out << "\n";
 }
-std::string convert_inclosed_map(IR::inclosed_map map) {
-    std::string res;
+void Converter::convert_inclosed_map(std::ostringstream &out, IR::inclosed_map map) {
     for (auto [key, value] : map) {
         auto [expr, type] = value;
-        res += "\t\t\t\t" + convert_var_type(type.type, type.templ) + " " + key + ";\n";
+        out << "\t\t\t\t" << convert_var_type(type.type, type.templ) << " " << key << ";\n";
     }
-    return res;
 }
-std::string convert_single_assignment_data(IR::var_type type, std::string name) {
-    return "\t\t\tusing " + name + "_data = " + convert_var_type(type.type, type.templ) + ";\n";
+void Converter::convert_single_assignment_data(std::ostringstream &out, IR::var_type type, std::string name) {
+    out << "\t\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
 }
-std::string write_data_block(data_block_t &dtb) {
-    std::string res;
+void Converter::write_data_block(std::ostringstream &out, data_block_t dtb) {
     for (auto [name, block] : dtb) {
         if (block.is_inclosed_map) {
-            res += "\t\t\tstruct " + name + "_data {\n";
-            res += convert_inclosed_map(std::any_cast<IR::inclosed_map>(block.value.data));
-            res += "\t\t\t};\n";
+            out << "\t\t\tstruct " + name + "_data {\n";
+            convert_inclosed_map(out, std::any_cast<IR::inclosed_map>(block.value.data));
+            out << "\t\t\t};\n";
         } else {
-            res += convert_single_assignment_data(block.assign_type, name);
+            convert_single_assignment_data(out, block.assign_type, name);
         }
     }
-    return res;
 }
-std::string createTypesNamespace(data_block_t dtb_token, data_block_t dtb_rule) {
-    std::string res = "\tnamespace Types {\n";
-    res += write_data_block(dtb_token);
-    res += write_data_block(dtb_rule);
-    res += "\t}\n";
-    return res;
+void Converter::createTypesNamespace(std::ostringstream &out) {
+    out << "\tnamespace Types {\n"; 
+    write_data_block(out, data_block_tokens); 
+    write_data_block(out, data_block_rules); 
+    out << "\t}\n";
 }
-std::string create_tokenizator_header(std::list<std::string> tokens, data_block_t dtb) {
-    std::string res = "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n";
-    res += "\t\tpublic:\n";
-    res += "\t\t\tToken makeToken(const char*& pos);\n";
-    res += addStandardFunctions();
-    res += "\t\tprivate:\n";
+void Converter::create_tokenizator_header(std::ostringstream &out) {
+    out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
+        << "\t\tpublic:\n"
+        << "\t\t\tToken makeToken(const char*& pos);\n";
+    addStandardFunctions(out);
+    out << "\t\tprivate:\n";
     for (auto name : tokens) {
-        res += "\t\t\tToken_res " + name + "(const char*);\n";
+        out << "\t\t\tToken_res " << name << "(const char*);\n";
     }
-    res += "\t};\n";
-    return res;
+    out << "\t};\n";
 }
-std::string create_parser_header(std::list<std::string> tokens, data_block_t dtb) {
-    std::string res = "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n";
-    res += "\t\tprivate:\n";
-    res += "\t\t\tRule_res getRule();\n";
+void Converter::create_parser_header(std::ostringstream &out) {
+    out << "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n"
+        << "\t\tprivate:\n"
+        << "\t\t\tRule_res getRule();\n";
     for (auto name : tokens) {
-        res += "\t\t\tRule_res " + name + "(::" + global::namespace_name + "::TokenFlow::iterator pos);\n";
+        out << "\t\t\tRule_res " << name << "(::" << namespace_name << "::TokenFlow::iterator pos);\n";
     }
-    res += "\t};\n";
-    return res;
+    out << "\t};\n";
 }
-std::string create_get_namespace(data_block_t tokens_dtb, data_block_t rules_dtb) {
-    std::string res = "\n\tnamespace get {\n";
-    for (auto [name, block] : tokens_dtb) {
-        res += "\t\t::" + global::namespace_name + "::" + "Types::" + name + "_data " + name + "(::" + global::namespace_name + "::Token &token);\n";
+void Converter::create_get_namespace(std::ostringstream &out) {
+    out << "\n\tnamespace get {\n";
+    for (auto [name, block] : data_block_tokens) {
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data " << name << "(::" << namespace_name << "::Token &token);\n";
     }
-    for (auto [name, block] : rules_dtb) {
-        res += "\t\t::" + global::namespace_name + "::" + "Types::" + name + "_data " + name + "(::" + global::namespace_name + "::Rule &rule);\n";
+    for (auto [name, block] : data_block_rules) {
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data " << name << "(::" << namespace_name << "::Rule &rule);\n";
     }
-    res += "\t}\n";
-    return res;
+    out << "\t}\n";
 }
-extern "C" std::string convert_header(std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, use_prop_t use) {
+void Converter::outputHeader(std::ostringstream &out) {
     std::string res;
-    res += createLibrary();
-    res += createNamespace(use);
-    res += createTypes();
-    res += createTokensEnum(tokens);
-    res += createRulesEnum(rules);
-    res += getTypesFromStdlib();
-    res += createToStringFunction();
-    res += createTypesNamespace(datablocks_tokens, datablocks_rules);
-    res += create_get_namespace(datablocks_tokens, datablocks_rules);
-    res += create_tokenizator_header(tokens, datablocks_tokens);
-    res += create_parser_header(rules, datablocks_rules);
-    res += close_library();
-    return res;
+    createLibrary(out);
+    createNamespace(out);
+    createTypes(out);
+    createTokensEnum(out);
+    createRulesEnum(out);
+    getTypesFromStdlib(out);
+    createToStringFunction(out);
+    createTypesNamespace(out);
+    create_get_namespace(out);
+    create_tokenizator_header(out);
+    create_parser_header(out);
+    close_library(out);
 }

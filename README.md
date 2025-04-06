@@ -30,9 +30,9 @@
 
   Code improvements:
 
-    Encapsulate IR.cpp into a class
+    Encapsulate converter.cpp into a class extends IR.cpp with custom virtual output methods
 
-    Encapsulate converter.cpp into a class
+    Encapsulate progress.cpp into a class
 
 ### Parser syntax
   

@@ -409,7 +409,7 @@ bool sortPriority(Parser::Tree &tree, Parser::Rule first, Parser::Rule second) {
         auto first_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_token_data, "rule"));
         auto second_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_token_data, "rule"));
         if (first_rules.size() != second_rules.size())
-            return first_rules.size() > second_rules.size(); // bigger rule should go before smaller
+            return first_rules.size() < second_rules.size(); // bigger rule should go after smaller
         for (int i = 0; i < first_rules.size(); i++) {
             auto first_rules_data = std::any_cast<obj_t>(first_rules[i].data);
             auto second_rules_data = std::any_cast<obj_t>(second_rules[i].data);
@@ -769,6 +769,7 @@ lexer_code getCodeForLexer(Parser::Tree &tree, use_place_t use_places, IR ir) {
     // auto rule_data = std::any_cast<obj_t>(rule.data);
     // auto new_rule_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(rule_data, "rule"))[0];
     IR code(tree, rule_op2);
+    code.setIsToken(true);
     auto success_var = code.makeIR();
     code.push_begin({IR::types::TOKEN});
     code.push({IR::types::RULE});

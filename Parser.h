@@ -59,7 +59,7 @@ namespace Parser {
 				::Parser::str_t type;
 			};
 			struct cll_TEMPLATE_data {
-				::Parser::Token second;
+				::Parser::arr_t<::Parser::Token> second;
 				::Parser::Token first;
 			};
 			using STRING_data = ::Parser::str_t;
@@ -76,7 +76,7 @@ namespace Parser {
 			using Rule_CSEQUENCE_ESCAPE_data = ::Parser::str_t;
 			using Rule_CSEQUENCE_DIAPASON_data = ::Parser::arr_t<::Parser::any_t>;
 			struct Rule_CSEQUENCE_data {
-				::Parser::Token val;
+				::Parser::arr_t<::Parser::Token> val;
 				::Parser::str_t _not;
 			};
 			using Rule_ESCAPED_data = ::Parser::str_t;
@@ -121,11 +121,11 @@ namespace Parser {
 			using cll_function_body_call_data = ::Parser::Rule;
 			using cll_function_body_decl_data = ::Parser::Rule;
 			struct cll_function_arguments_data {
-				::Parser::Token second;
+				::Parser::arr_t<::Parser::Token> second;
 				::Parser::any_t first;
 			};
 			struct cll_function_parameters_data {
-				::Parser::Token second;
+				::Parser::arr_t<::Parser::Token> second;
 				::Parser::Token first;
 			};
 			struct cll_cll_function_call_data {
@@ -135,7 +135,7 @@ namespace Parser {
 			struct cll_function_decl_data {
 				::Parser::Rule value;
 				::Parser::Token name;
-				::Parser::Token type;
+				::Parser::arr_t<::Parser::Token> type;
 			};
 			struct cll_expr_logical_data {
 				::Parser::Rule right;
@@ -143,13 +143,13 @@ namespace Parser {
 				::Parser::Rule left;
 			};
 			struct cll_expr_compare_data {
-				::Parser::Rule sequence;
-				::Parser::Token operators;
+				::Parser::arr_t<::Parser::Rule> sequence;
+				::Parser::arr_t<::Parser::Token> operators;
 				::Parser::Rule first;
 			};
 			struct cll_expr_arithmetic_data {
-				::Parser::Rule sequence;
-				::Parser::Token operators;
+				::Parser::arr_t<::Parser::Rule> sequence;
+				::Parser::arr_t<::Parser::Token> operators;
 				::Parser::Rule first;
 			};
 			using cll_expr_value_data = ::Parser::Rule;
@@ -172,10 +172,10 @@ namespace Parser {
 				::Parser::Token cond;
 				::Parser::Rule decl;
 			};
-			using array_data = ::Parser::Rule;
+			using array_data = ::Parser::arr_t<::Parser::Rule>;
 			struct object_data {
-				::Parser::Token values;
-				::Parser::Token keys;
+				::Parser::arr_t<::Parser::Token> values;
+				::Parser::arr_t<::Parser::Token> keys;
 				::Parser::Rule value;
 				::Parser::Rule key;
 			};
@@ -186,7 +186,7 @@ namespace Parser {
 				::Parser::Token name;
 			};
 			struct use_data {
-				::Parser::Rule second;
+				::Parser::arr_t<::Parser::Rule> second;
 				::Parser::Rule first;
 			};
 			struct Rule_rule_data {
@@ -195,7 +195,7 @@ namespace Parser {
 				::Parser::Rule prefix;
 			};
 			struct Rule_name_data {
-				::Parser::Token nested_name;
+				::Parser::arr_t<::Parser::Token> nested_name;
 				::Parser::Token name;
 				::Parser::Token is_nested;
 			};

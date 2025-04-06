@@ -45,7 +45,7 @@ std::string IR::convert_var_type(var_types type) {
 }
 
 
-std::string IR::convert_var_assing_values(var_assign_values value, std::any data, std::stack<std::string> &current_pos_counter) {
+std::string IR::convert_var_assing_values(var_assign_values value, std::any data) {
     switch (value) {
         case var_assign_values::STRING:
             //cpuf::printf("on String\n");
@@ -80,7 +80,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
             auto arr = std::any_cast<IR::array>(data);
             std::string res = "[";
             for (auto &el : arr) {
-                res += convertAssign(el, current_pos_counter);
+                res += convertAssign(el);
                 res += ',';
             }
             res += ']';
@@ -94,7 +94,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
             for (auto [key, value] : obj) {
                 res += key;
                 res += ": ";
-                res += convertAssign(value, current_pos_counter);
+                res += convertAssign(value);
                 res += ",";
             }
             res += "}";
@@ -102,12 +102,12 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         }
         case var_assign_values::ACCESSOR: 
             //cpuf::printf("accessor\n");
-            return convertAccessor(std::any_cast<accessor>(data), current_pos_counter);
+            return convertAccessor(std::any_cast<accessor>(data));
         case var_assign_values::FUNCTION_CALL:
-            return convertFunctionCall(std::any_cast<function_call>(data), current_pos_counter);
+            return convertFunctionCall(std::any_cast<function_call>(data));
         case var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false, current_pos_counter);
+            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false);
         case var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -148,7 +148,7 @@ std::string IR::convert_var_assing_types(var_assign_types type) {
         default: return "="; // Handle unknown values
     }
 }
-std::string IR::conditionTypesToString(condition_types type, std::any data, std::stack<std::string> &current_pos_counter) {
+std::string IR::conditionTypesToString(condition_types type, std::any data) {
     if (type == condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
@@ -187,15 +187,15 @@ std::string IR::conditionTypesToString(condition_types type, std::any data, std:
         return std::string("0b") + std::any_cast<std::string>(data);
     } else if (type == condition_types::ANY_DATA) {
         auto dt = std::any_cast<assign>(data);
-        return convert_var_assing_values(dt.kind, dt.data, current_pos_counter);
+        return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == condition_types::METHOD_CALL) {
-        return convertMethodCall(std::any_cast<method_call>(data), current_pos_counter);
+        return convertMethodCall(std::any_cast<method_call>(data));
     } else if (type == IR::condition_types::FUNCTION_CALL) {
-        return convertFunctionCall( std::any_cast<function_call>(data), current_pos_counter);
+        return convertFunctionCall( std::any_cast<function_call>(data));
     } else if (type == IR::condition_types::CURRENT_TOKEN) {
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
-            auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
+            auto op = conditionTypesToString(dt.op, std::any());
             return "CURRENT_TOKEN " + op + " " + dt.name;
         } else {
             return "CURRENT_TOKEN";
@@ -215,21 +215,21 @@ std::string IR::conditionTypesToString(condition_types type, std::any data, std:
     };
     return condTypesMap.at(type);
 }
-std::string IR::convertFunctionCall(function_call call, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertFunctionCall(function_call call) {
     std::string res = call.name + "(";
     for (auto param : call.params) {
-        res += convertAssign(param, current_pos_counter);
+        res += convertAssign(param);
     }
     res += ')';
     return res;
 }
-std::string IR::convertAssign(assign asgn, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertAssign(assign asgn) {
     if (asgn.kind == var_assign_values::FUNCTION_CALL)
-        return convertFunctionCall(std::any_cast<function_call>(asgn.data), current_pos_counter);
-    return convert_var_assing_values(asgn.kind, asgn.data, current_pos_counter);
+        return convertFunctionCall(std::any_cast<function_call>(asgn.data));
+    return convert_var_assing_values(asgn.kind, asgn.data);
 }
 
-std::string IR::convertAccessor(accessor acc, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertAccessor(accessor acc) {
     std::string str;
     bool first = true;
     for (auto el : acc.elements) {
@@ -257,11 +257,11 @@ std::string IR::convertAccessor(accessor acc, std::stack<std::string> &current_p
     str += '\n';
     return str;
 }
-void IR::convertVariable(variable var, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
-    out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value, current_pos_counter);
+void IR::convertVariable(variable var, std::ostream& out) {
+    out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
 }
 
-std::string IR::convertExpression(std::vector<expr> expression, bool with_braces, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertExpression(std::vector<expr> expression, bool with_braces) {
     std::string result;
     if (with_braces)
         result += '(';
@@ -274,48 +274,48 @@ std::string IR::convertExpression(std::vector<expr> expression, bool with_braces
             current.id == IR::condition_types::NOT_EQUAL
             ) {
             result += ' ';
-            result += conditionTypesToString(current.id, current.value, current_pos_counter);
+            result += conditionTypesToString(current.id, current.value);
             result += ' ';
         } else {
-            result += conditionTypesToString(current.id, current.value, current_pos_counter);
+            result += conditionTypesToString(current.id, current.value);
         }
     }
     if (with_braces)
         result += ")\n";
     return result;
 }
-void IR::convertBlock(std::vector<IR::member> block, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void IR::convertBlock(std::vector<IR::member> block, std::ostream& out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
-    convertMembers(block, out, indentLevel, current_pos_counter);
+    convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void IR::convertCondition(condition cond, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
-    out << convertExpression(cond.expression, true, current_pos_counter);
-    convertBlock(cond.block, out, indentLevel, current_pos_counter);
+void IR::convertCondition(condition cond, std::ostream& out) {
+    out << convertExpression(cond.expression, true);
+    convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
         out << "\n" << std::string(indentLevel, '\t') << "else \n";
-        convertBlock(cond.else_block, out, indentLevel, current_pos_counter);
+        convertBlock(cond.else_block, out);
     }
 }
 
 
-void IR::convertAssignVariable(variable_assign var, std::ostream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
-    out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value, current_pos_counter);
+void IR::convertAssignVariable(variable_assign var, std::ostream &out) {
+    out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 
-std::string IR::convertMethodCall(method_call method, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertMethodCall(method_call method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
         res += '.';
-        res += convertFunctionCall(call, current_pos_counter);
+        res += convertFunctionCall(call);
     }
     return res;
 }
 
-std::string IR::convertDataBlock(data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter) {
+std::string IR::convertDataBlock(data_block dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "data = ";
@@ -325,21 +325,21 @@ std::string IR::convertDataBlock(data_block dtb, int indentLevel, std::stack<std
             res += std::string(indentLevel + 1, '\t');
             res += key;
             res += ": ";
-            res += convertExpression(value.first, false, current_pos_counter);
+            res += convertExpression(value.first, false);
             res += " # ";
             res += convert_var_type(value.second.type);
             res += '\n';
         }
         res += std::string(indentLevel, '\t') + ";";
     } else {
-        res += convertAssign(std::any_cast<assign>(dtb.value), current_pos_counter);
+        res += convertAssign(std::any_cast<assign>(dtb.value));
         res += " # ";
         res += convert_var_type(dtb.assign_type.type);
     }
     return res;
 }
 
-void IR::convertMember(const member& mem, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void IR::convertMember(const member& mem, std::ostream& out) {
     if (mem.type != types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
@@ -357,24 +357,24 @@ void IR::convertMember(const member& mem, std::ostream& out, int &indentLevel, s
         indentLevel--;
         break;
     case types::VARIABLE:
-        convertVariable(std::any_cast<variable>(mem.value), out, indentLevel, current_pos_counter);
+        convertVariable(std::any_cast<variable>(mem.value), out);
         break;
     case types::METHOD_CALL:
-        out << convertMethodCall(std::any_cast<method_call>(mem.value), current_pos_counter);
+        out << convertMethodCall(std::any_cast<method_call>(mem.value));
         break;
     case types::IF:
         out << "if ";
-        convertCondition(std::any_cast<condition>(mem.value), out, indentLevel, current_pos_counter);
+        convertCondition(std::any_cast<condition>(mem.value), out);
         break;
     case types::WHILE:
         out << "while ";
-        convertCondition(std::any_cast<condition>(mem.value), out, indentLevel, current_pos_counter);
+        convertCondition(std::any_cast<condition>(mem.value), out);
         break;
     case types::DOWHILE:
         out << "do\n";
-        convertBlock(std::any_cast<condition>(mem.value).block, out, indentLevel, current_pos_counter);
+        convertBlock(std::any_cast<condition>(mem.value).block, out);
         out << std::string(indentLevel, '\t') << "while";
-        out << convertExpression(std::any_cast<condition>(mem.value).expression, true, current_pos_counter);
+        out << convertExpression(std::any_cast<condition>(mem.value).expression, true);
         break;
     case types::INCREASE_POS_COUNTER:
         out << current_pos_counter.top() << "++";
@@ -387,10 +387,10 @@ void IR::convertMember(const member& mem, std::ostream& out, int &indentLevel, s
     case IR::types::RESET_POS_COUNTER:
         break;
     case types::ACCESSOR:
-        out << convertAccessor(std::any_cast<accessor>(mem.value), current_pos_counter);
+        out << convertAccessor(std::any_cast<accessor>(mem.value));
         break;
     case types::ASSIGN_VARIABLE:
-        convertAssignVariable(std::any_cast<variable_assign>(mem.value), out, indentLevel, current_pos_counter);
+        convertAssignVariable(std::any_cast<variable_assign>(mem.value), out);
         break;
     case types::BREAK_LOOP:
         out << "break";
@@ -408,7 +408,7 @@ void IR::convertMember(const member& mem, std::ostream& out, int &indentLevel, s
             out << "skipspaces(TOKEN_SEQUENCE)";
         break;
     case types::DATA_BLOCK:
-        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value), indentLevel, current_pos_counter);
+        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value));
         break;
     case types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
@@ -427,19 +427,18 @@ void IR::convertMember(const member& mem, std::ostream& out, int &indentLevel, s
     out << '\n';
 }
 
-void IR::convertMembers(std::vector<member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void IR::convertMembers(std::vector<member> members, std::ostream& out) {
     for (auto mem : members)
-        convertMember(mem, out, indentLevel, current_pos_counter);
+        convertMember(mem, out);
 }
-void IR::convertMembers(std::deque<member> members, std::ostream& out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void IR::convertMembers(std::deque<member> members, std::ostream& out) {
     for (auto mem : members)
-        convertMember(mem, out, indentLevel, current_pos_counter);
+        convertMember(mem, out);
 }
-void IR::printIR(std::ostream& out, int &indentLevel) {
-    std::stack<std::string> current_pos_counter;
+void IR::printIR(std::ostream& out) {
     current_pos_counter.push("pos");
     for (const auto& mem : data) {
-        convertMember(mem, out, indentLevel, current_pos_counter);
+        convertMember(mem, out);
     }
 }
 
@@ -447,7 +446,7 @@ void IR::outputIRToFile(std::string filename) {
     int identLevel = 0;
     std::ofstream file(filename);
     if (file.is_open()) {
-        printIR(file, identLevel);
+        printIR(file);
         file.close();
     } else {
         std::cerr << "Unable to open file " << filename << "\n";
@@ -456,5 +455,5 @@ void IR::outputIRToFile(std::string filename) {
 
 void IR::outputIRToConsole() {
     int identLevel = 0;
-    printIR(std::cout, identLevel);
+    printIR(std::cout);
 }

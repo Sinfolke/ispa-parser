@@ -11,19 +11,7 @@
 #include <logging.h>
 #include <converter.h>
 #include <logging.h>
-namespace global {
-    size_t pos_counter;
-    std::list<std::string> dynamic_pos_counter;
-    std::stack<size_t> pos_counter_stack;
-    use_prop_t use;
-    std::pair<std::string, arr_t<std::string>> rule_prev_name;
-    std::string rule_prev_name_str;
-    std::string namespace_name;
-    bool add_semicolon;
-    bool has_data_block;
-    bool isToken;
-}
-size_t count_strlen(const char* str) {
+static size_t count_strlen(const char* str) {
     size_t count = 0;
     for (const char* pos = str; *pos; pos++) {
         if (*pos == '\\' && *(pos - 1) != '\\') {
@@ -33,7 +21,7 @@ size_t count_strlen(const char* str) {
     }
     return count;
 }
-std::string format_str(std::string str) {
+static std::string format_str(std::string str) {
     std::string res;
     for (auto &c : str) {
         if (c == '"') {
@@ -44,7 +32,7 @@ std::string format_str(std::string str) {
     }
     return res;
 }
-std::string getCharFromEscaped(char in, bool string) {
+static std::string getCharFromEscaped(char in, bool string) {
     if (in == '"')
         return string ? "\\\"" : "\"";
     if (in == '\'')
@@ -63,11 +51,11 @@ std::string getCharFromEscaped(char in, bool string) {
     default: return std::string(1, in);      // Return the character itself if not an escape sequence
     }
 }
-std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
+std::string Converter::convert_var_type(IR::var_types type, std::vector<IR::var_type> data) {
     if (type == IR::var_types::ARRAY) {
         if (data.empty())
             data.push_back({IR::var_types::ANY});
-        std::string t = "::" + global::namespace_name + "::arr_t";
+        std::string t = "::" + namespace_name + "::std::vector";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
@@ -79,7 +67,7 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         if (data.size() < 2) {
             data.push_back({IR::var_types::ANY});
         }
-        std::string t = "::" + global::namespace_name + "::obj_t";
+        std::string t = "::" + namespace_name + "::obj_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ", ";
@@ -100,13 +88,13 @@ std::string convert_var_type(IR::var_types type, arr_t<IR::var_type> data) {
         {IR::var_types::LONGLONG, "long long"}, {IR::var_types::ULONGLONG, "unsigned long long"}
     };
     if (type < IR::var_types::CHAR)
-        return "::" + global::namespace_name + "::" + typesMap.at(type);
+        return "::" + namespace_name + "::" + typesMap.at(type);
     else
         return typesMap.at(type);
 }
 
 
-std::string convert_var_assing_values(IR::var_assign_values value, std::any data, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convert_var_assing_values(IR::var_assign_values value, std::any data) {
     switch (value) {
         case IR::var_assign_values::STRING:
             //cpuf::printf("on String\n");
@@ -141,7 +129,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
             auto arr = std::any_cast<IR::array>(data);
             std::string res = "{";
             for (auto &el : arr) {
-                res += convertAssign(el, current_pos_counter);
+                res += convertAssign(el);
                 res += ',';
             }
             if (res.size() > 1)
@@ -159,7 +147,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
                 res += "{";
                 res += key;
                 res += ", ";
-                res += convertAssign(value, current_pos_counter);
+                res += convertAssign(value);
                 res += "},";
             }
             if (res.size() > 1) {
@@ -174,10 +162,10 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
             return "";
             throw Error("Accessor cannot be here\n");
         case IR::var_assign_values::FUNCTION_CALL:
-            return convertFunctionCall(std::any_cast<IR::function_call>(data), current_pos_counter);
+            return convertFunctionCall(std::any_cast<IR::function_call>(data));
         case IR::var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<arr_t<IR::expr>>(data), false, current_pos_counter);
+            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false);
         case IR::var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -199,13 +187,13 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
             return current_pos_counter.top();
         case IR::var_assign_values::CURRENT_POS_SEQUENCE:
         {
-            std::string count_str = std::to_string(global::pos_counter_stack.top() + 1);
-            if (global::dynamic_pos_counter.size()) {
-                for (auto el : global::dynamic_pos_counter)
+            std::string count_str = std::to_string(pos_counter_stack.top() + 1);
+            if (dynamic_pos_counter.size()) {
+                for (auto el : dynamic_pos_counter)
                     count_str += " + " + el;
             }
-            global::dynamic_pos_counter = {};
-            return "::" + global::namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
+            dynamic_pos_counter = {};
+            return "::" + namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
         }
         case IR::var_assign_values::CURRENT_TOKEN:
             return "*" + current_pos_counter.top();
@@ -216,7 +204,7 @@ std::string convert_var_assing_values(IR::var_assign_values value, std::any data
     }
 }
 
-std::string convert_var_assing_types(IR::var_assign_types value) {
+std::string Converter::convert_var_assing_types(IR::var_assign_types value) {
     switch (value) {
         case IR::var_assign_types::ASSIGN:    return "=";
         case IR::var_assign_types::ADD:       return "+=";
@@ -228,13 +216,13 @@ std::string convert_var_assing_types(IR::var_assign_types value) {
     }
 }
 
-std::string conditionTypesToString(IR::condition_types type, std::any data, std::stack<std::string> &current_pos_counter) {
+std::string Converter::conditionTypesToString(IR::condition_types type, std::any data) {
     if (type == IR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
     } else if (type == IR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ")";
+        return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
     } else if (type == IR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -246,11 +234,11 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         auto dt = std::any_cast<IR::strncmp>(data);
         std::string val;
         if (dt.is_string) {
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " +  std::to_string(global::pos_counter) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
-            global::pos_counter += count_strlen(dt.value.name.c_str()) - 1;
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " +  std::to_string(pos_counter) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
+            pos_counter += count_strlen(dt.value.name.c_str()) - 1;
         } else {
-            global::dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(global::pos_counter) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
+            dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
     } else if (type == IR::condition_types::STRNCMP_PREV) {
@@ -259,9 +247,9 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         std::string val;
         if (dt.is_string) {
             val = std::string("!std::strncmp(" + current_pos_counter.top() + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
-            global::pos_counter += count_strlen(dt.value.name.c_str()) - 1;
+            pos_counter += count_strlen(dt.value.name.c_str()) - 1;
         } else {
-            global::dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
+            dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
             val = std::string("!std::strncmp(" + current_pos_counter.top() + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
@@ -280,16 +268,16 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
         return std::string("0x") + std::any_cast<std::string>(data);
     } else if (type == IR::condition_types::ANY_DATA) {
         auto dt = std::any_cast<IR::assign>(data);
-        return convert_var_assing_values(dt.kind, dt.data, current_pos_counter);
+        return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == IR::condition_types::METHOD_CALL) {
-        return convertMethodCall(std::any_cast<IR::method_call>(data), current_pos_counter);
+        return convertMethodCall(std::any_cast<IR::method_call>(data));
     } else if (type == IR::condition_types::FUNCTION_CALL) {
-        return convertFunctionCall( std::any_cast<IR::function_call>(data), current_pos_counter);
+        return convertFunctionCall( std::any_cast<IR::function_call>(data));
     } else if (type == IR::condition_types::CURRENT_TOKEN) {
-        global::pos_counter++;
+        pos_counter++;
         if (data.has_value()) {
             auto dt = std::any_cast<IR::current_token>(data);
-            auto op = conditionTypesToString(dt.op, std::any(), current_pos_counter);
+            auto op = conditionTypesToString(dt.op, std::any());
             return current_pos_counter.top() + "->name() " + op + " " + "Tokens::" + dt.name;
         } else {
             return "*" + current_pos_counter.top();
@@ -309,33 +297,33 @@ std::string conditionTypesToString(IR::condition_types type, std::any data, std:
     };
     return condTypesMap.at(type);
 }
-std::string convertFunctionCall(IR::function_call call, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convertFunctionCall(IR::function_call call) {
     std::string res = call.name + "(";
     bool first = true;
     for (auto param : call.params) {
         if (!first)
             res += ", ";
-        res += convertAssign(param, current_pos_counter);
+        res += convertAssign(param);
         first = false;
     }
     res += ')';
     return res;
 }
-std::string convertAssign(IR::assign asgn, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convertAssign(IR::assign asgn) {
     if (asgn.kind == IR::var_assign_values::FUNCTION_CALL)
-        return convertFunctionCall(std::any_cast<IR::function_call>(asgn.data), current_pos_counter);
-    return convert_var_assing_values(asgn.kind, asgn.data, current_pos_counter);
+        return convertFunctionCall(std::any_cast<IR::function_call>(asgn.data));
+    return convert_var_assing_values(asgn.kind, asgn.data);
 }
-void convertVariable(IR::variable var, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void Converter::convertVariable(IR::variable var, std::ostringstream &out) {
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
     if (var.value.kind != IR::var_assign_values::NONE)
-        out << " = " << convertAssign(var.value, current_pos_counter);
+        out << " = " << convertAssign(var.value);
     out << ';';
 }
 
-std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convertExpression(std::vector<IR::expr> expression, bool with_braces) {
     std::string result;
-    global::pos_counter = 0;
+    pos_counter = 0;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
@@ -347,40 +335,40 @@ std::string convertExpression(arr_t<IR::expr> expression, bool with_braces, std:
             current.id == IR::condition_types::NOT_EQUAL
             ) {
             result += ' ';
-            result += conditionTypesToString(current.id, current.value, current_pos_counter);
+            result += conditionTypesToString(current.id, current.value);
             result += ' ';
         } else {
-            result += conditionTypesToString(current.id, current.value, current_pos_counter);
+            result += conditionTypesToString(current.id, current.value);
         }
     }
     if (with_braces)
         result += ")\n";
-    global::pos_counter_stack.push(global::pos_counter);
-    global::pos_counter = 0;
+    pos_counter_stack.push(pos_counter);
+    pos_counter = 0;
     return result;
 }
-void convertBlock(arr_t<IR::member> block, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void Converter::convertBlock(std::vector<IR::member> block, std::ostringstream &out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
-    convertMembers(block, out, indentLevel, current_pos_counter);
+    convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void convertCondition(IR::condition cond, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
-    out << convertExpression(cond.expression, true, current_pos_counter);
-    convertBlock(cond.block, out, indentLevel, current_pos_counter);
+void Converter::convertCondition(IR::condition cond, std::ostringstream &out) {
+    out << convertExpression(cond.expression, true);
+    convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
         out << "\n" << std::string(indentLevel, '\t') << "else \n";
-        convertBlock(cond.else_block, out, indentLevel, current_pos_counter);
+        convertBlock(cond.else_block, out);
     }
 }
 
 
-void convertAssignVariable(IR::variable_assign var, std::ostream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
-    out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value, current_pos_counter);
+void Converter::convertAssignVariable(IR::variable_assign var, std::ostringstream &out) {
+    out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 
-std::string convertMethodCall(IR::method_call method, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convertMethodCall(IR::method_call method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
@@ -388,62 +376,62 @@ std::string convertMethodCall(IR::method_call method, std::stack<std::string> &c
         if (call.name == "push")
             call.name = "push_back";
 
-        res += convertFunctionCall(call, current_pos_counter);
+        res += convertFunctionCall(call);
     }
     return res;
 }
 
-std::string convertDataBlock(IR::data_block dtb, int indentLevel, std::stack<std::string> &current_pos_counter) {
+std::string Converter::convertDataBlock(IR::data_block dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
-    res += "Types::" + global::rule_prev_name_str + "_data data";
+    res += "Types::" + rule_prev_name_str + "_data data";
     if (dtb.is_inclosed_map) {
         res += ";";
         res += "\n";
         for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.value.data)) {
-            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false, current_pos_counter) + ";\n";
+            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
         }
-        global::add_semicolon = false;
+        add_semicolon = false;
     } else {
         res += " = ";
-        res += convertAssign(std::any_cast<IR::assign>(dtb.value), current_pos_counter);
+        res += convertAssign(std::any_cast<IR::assign>(dtb.value));
         res += ";";
     }
     return res;
 }
 
-void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
     if (mem.type != IR::types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
     case IR::types::RULE:
-        global::has_data_block = false;
-        global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
-        global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
-        out << global::namespace_name << "::Rule_res " << global::namespace_name << "::Parser::" << global::rule_prev_name_str << "(::" << global::namespace_name << "::TokenFlow::iterator pos) {\n";
+        has_data_block = false;
+        rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
+        rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
+        out << namespace_name << "::Rule_res " << namespace_name << "::Parser::" << rule_prev_name_str << "(::" << namespace_name << "::TokenFlow::iterator pos) {\n";
         out << "\tauto in = pos;" ;
         indentLevel++;
-        global::isToken = false;
+        isToken = false;
         break;
     case IR::types::TOKEN:
-        global::has_data_block = false;
-        global::rule_prev_name = std::any_cast<std::pair<std::string, arr_t<std::string>>>(mem.value);
-        global::rule_prev_name_str = corelib::text::join(global::rule_prev_name.second, "_");
-        out << global::namespace_name << "::Token_res " << global::namespace_name << "::Lexer::" << global::rule_prev_name_str << "(const char* pos) {\n";
+        has_data_block = false;
+        rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
+        rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
+        out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
         out << "\tauto in = pos";
         indentLevel++;
-        global::isToken = true;
+        isToken = true;
         break;
     case IR::types::RULE_END:
-        if (global::isToken) {
-            out << "\treturn {true, ::" << global::namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, Tokens::" << global::rule_prev_name_str;
-            if (global::has_data_block)
+        if (isToken) {
+            out << "\treturn {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, Tokens::" << rule_prev_name_str;
+            if (has_data_block)
                 out << ", data";
             out << ")};\n";
         } else {
-            out << "\treturn {true, ::" << global::namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::" << global::rule_prev_name_str;
-            if (global::has_data_block)
+            out << "\treturn {true, ::" << namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::" << rule_prev_name_str;
+            if (has_data_block)
                 out << ", data";
             out << ")};\n";
         }
@@ -452,39 +440,39 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         indentLevel--;
         break;
     case IR::types::VARIABLE:
-        convertVariable(std::any_cast<IR::variable>(mem.value), out, indentLevel, current_pos_counter);
+        convertVariable(std::any_cast<IR::variable>(mem.value), out);
         break;
     case IR::types::METHOD_CALL:
-        out << convertMethodCall(std::any_cast<IR::method_call>(mem.value), current_pos_counter);
+        out << convertMethodCall(std::any_cast<IR::method_call>(mem.value));
         break;
     case IR::types::IF:
         out << "if ";
-        convertCondition(std::any_cast<IR::condition>(mem.value), out, indentLevel, current_pos_counter);
+        convertCondition(std::any_cast<IR::condition>(mem.value), out);
         break;
     case IR::types::WHILE:
         out << "while ";
-        convertCondition(std::any_cast<IR::condition>(mem.value), out, indentLevel, current_pos_counter);
+        convertCondition(std::any_cast<IR::condition>(mem.value), out);
         break;
     case IR::types::DOWHILE:
         out << "do\n";
-        convertBlock(std::any_cast<IR::condition>(mem.value).block, out, indentLevel, current_pos_counter);
+        convertBlock(std::any_cast<IR::condition>(mem.value).block, out);
         out << '\n' << std::string(indentLevel, '\t') << "while";
-        out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true, current_pos_counter);
+        out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true);
         break;
     case IR::types::INCREASE_POS_COUNTER:
-        if (global::isToken) {
-            out << current_pos_counter.top() << " += " + std::to_string(global::pos_counter_stack.top() + 1);
+        if (isToken) {
+            out << current_pos_counter.top() << " += " + std::to_string(pos_counter_stack.top() + 1);
         } else {
-            if (global::pos_counter_stack.top() == 1)
+            if (pos_counter_stack.top() == 1)
                 out << current_pos_counter.top() << "++";
             else
-                out << "std::advance(" << current_pos_counter.top() << ", " << global::pos_counter_stack.top() + 1 << ")";
+                out << "std::advance(" << current_pos_counter.top() << ", " << pos_counter_stack.top() + 1 << ")";
         }
-        global::pos_counter_stack.pop();
+        pos_counter_stack.pop();
         break;
     case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
-        if (global::isToken) {
+        if (isToken) {
             out << current_pos_counter.top() << " += " + var + ".node.length()";
         } else {
             out << "std::advance(" << current_pos_counter.top() << ", " << var << ".node.length())";
@@ -492,12 +480,12 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         break;
     }
     case IR::types::RESET_POS_COUNTER:
-        global::pos_counter_stack.pop();
+        pos_counter_stack.pop();
         break;
     case IR::types::ACCESSOR:
         throw Error("Accessor cannot be here\n");
     case IR::types::ASSIGN_VARIABLE:
-        convertAssignVariable(std::any_cast<IR::variable_assign>(mem.value), out, indentLevel, current_pos_counter);
+        convertAssignVariable(std::any_cast<IR::variable_assign>(mem.value), out);
         break;
     case IR::types::BREAK_LOOP:
         out << "break";
@@ -509,14 +497,14 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         out << "return {};";
         break;
     case IR::types::SKIP_SPACES:
-        if (global::isToken)            
+        if (isToken)            
             out << "skip_spaces(" << current_pos_counter.top() << ")";
         else
-            out << "skip_spaces<::" << global::namespace_name << "::TokenFlow::iterator, ::" << global::namespace_name << "::Tokens>(pos)";
+            out << "skip_spaces<::" << namespace_name << "::TokenFlow::iterator, ::" << namespace_name << "::Tokens>(pos)";
         break;
     case IR::types::DATA_BLOCK:
-        global::has_data_block = true;
-        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value), indentLevel, current_pos_counter);
+        has_data_block = true;
+        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value));
         break;
     case IR::types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
@@ -533,22 +521,41 @@ void convertMember(const IR::member& mem, std::ostringstream &out, int &indentLe
         throw Error("Undefined IR member\n");
     }
     auto back = out.str().back();
-    if (back != '{' && back != '}' && back != ';' && global::add_semicolon)
+    if (back != '{' && back != '}' && back != ';' && add_semicolon)
         out << ";";
     out << "\n";
-    global::add_semicolon = true;
+    add_semicolon = true;
 }
 
-void convertMembers(const arr_t<IR::member> &members, std::ostringstream &out, int &indentLevel, std::stack<std::string> &current_pos_counter) {
+void Converter::convertMembers(const std::vector<IR::member> &members, std::ostringstream &out) {
     for (auto mem : members)
-        convertMember(mem, out, indentLevel, current_pos_counter);
+        convertMember(mem, out);
 }
-void addHeader(std::ostringstream &out) {
-    out << "#include \"" << std::any_cast<std::string>(global::use["name"].data) << ".h\"\n";
+void Converter::printIR(std::ostringstream &out) {
+    namespace_name = std::any_cast<std::string>(use["name"].data);
+
+    addHeader(out);
+    addStandardFunctionsLexer(out);
+    addStandardFunctionsParser(out);
+    addTokensToString(tokens, out);
+    addRulesToString(rules, out);
+    addGetFunctions(out, data_block_tokens, data_block_rules);
+    addLexer_codeHeader(out);
+    current_pos_counter.push("pos");
+    isToken = true;
+    lexer_code.pop_begin();
+    lexer_code.pop();
+    convertMembers(lexer_code.getDataRef(), out);
+    isToken = false;
+    addLexer_codeBottom(out,  lexer_code_access_var.var);
+    convertMembers(data, out);
 }
-void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
+void Converter::addHeader(std::ostringstream &out) {
+    out << "#include \"" << std::any_cast<std::string>(use["name"].data) << ".h\"\n";
+}
+void Converter::addTokensToString(std::vector<std::string> tokens, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
-    out << "std::string " << global::namespace_name << "::TokensToString(Tokens token) {\n";
+    out << "std::string " << namespace_name << "::TokensToString(Tokens token) {\n";
     out << "\tswitch (token) {\n";
     out << "\t\tcase Tokens::NONE:" << " return \"NONE\";\n";
     for (auto token : tokens) {
@@ -558,9 +565,9 @@ void addTokensToString(std::list<std::string> tokens, std::ostringstream &out) {
     out << "\treturn \"NONE\";\n";
     out << "}\n";
 }
-void addRulesToString(std::list<std::string> rules, std::ostringstream &out) {
+void Converter::addRulesToString(std::vector<std::string> rules, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
-    out << "std::string " << global::namespace_name << "::RulesToString(Rules rule) {\n";
+    out << "std::string " << namespace_name << "::RulesToString(Rules rule) {\n";
     out << "\tswitch (rule) {\n";
     out << "\t\tcase Rules::NONE:" << " return \"NONE\";\n";
     for (auto rule : rules) {
@@ -570,12 +577,12 @@ void addRulesToString(std::list<std::string> rules, std::ostringstream &out) {
     out << "\treturn \"NONE\";\n";
     out << "}\n";
 }
-void addStandardFunctionsLexer(std::ostringstream &out) {
-    out << "void " + global::namespace_name + R"(::Lexer::printTokens(std::ostream& os, bool sensitiveInfo) {
+void Converter::addStandardFunctionsLexer(std::ostringstream &out) {
+    out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostringstream& os, bool sensitiveInfo) {
     for (const auto& token : tokens)
         printToken(os, token, sensitiveInfo);
 })";
-    out << '\n' << "void " + global::namespace_name + R"(::Lexer::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
+    out << '\n' << "void " + namespace_name + R"(::Lexer::printToken(std::ostringstream& os, const Token& token, bool sensitiveInfo) {
     os << TokensToString(token.name()) << ": ";
 
     if (token.data().type() == typeid(str_t)) {
@@ -588,33 +595,33 @@ void addStandardFunctionsLexer(std::ostringstream &out) {
         os << "{ ";
         printToken(os, std::any_cast<Token>(token.data())); // Recursive call
         os << " }";
-    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
+    } else if (token.data().type() == typeid(std::vector<Token>)) { // Handle array of tokens
         os << "[ ";
-        auto arr = std::any_cast<arr_t<Token>>(token.data());
+        auto arr = std::any_cast<std::vector<Token>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             printToken(os, *it);
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(arr_t<str_t>)) {
+    } else if (token.data().type() == typeid(std::vector<str_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<arr_t<str_t>>(token.data());
+        auto arr = std::any_cast<std::vector<str_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << '"' << *it << '"';
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(arr_t<num_t>)) {
+    } else if (token.data().type() == typeid(std::vector<num_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<arr_t<num_t>>(token.data());
+        auto arr = std::any_cast<std::vector<num_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << *it;
             if (std::next(it) != arr.end()) os << ", ";
         }
         os << " ]";
-    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
+    } else if (token.data().type() == typeid(std::vector<bool_t>)) {
         os << "[ ";
-        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
+        auto arr = std::any_cast<std::vector<bool_t>>(token.data());
         for (auto it = arr.begin(); it != arr.end(); ++it) {
             os << std::boolalpha << *it;
             if (std::next(it) != arr.end()) os << ", ";
@@ -628,12 +635,12 @@ void addStandardFunctionsLexer(std::ostringstream &out) {
 })";
     out << "\n";
 }
-void addStandardFunctionsParser(std::ostringstream &out) {
-    out << global::namespace_name <<  "::Rule_res " << global::namespace_name << R"(::Parser::getRule() {
+void Converter::addStandardFunctionsParser(std::ostringstream &out) {
+    out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule() {
     return main(pos);
 })";
     out << '\n';
-//     out << "void " << global::namespace_name << R"(::Parser::parseFromInput() {
+//     out << "void " << namespace_name << R"(::Parser::parseFromInput() {
 //         Lexer lexer;
 
 //         if (parallel_parsing) {
@@ -705,50 +712,40 @@ void addStandardFunctionsParser(std::ostringstream &out) {
 //     out << "\n";
 }
 
-void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
+void Converter::addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
     for (const auto &[name, dtb] : datablocks_tokens) {
-        out << "::" << global::namespace_name << "::Types::" << name << "_data " << global::namespace_name << "::get::" << name << "(::" << global::namespace_name << "::Token &token) {\n";
+        out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
         out << "\treturn std::any_cast<Types::" << name << "_data>(token.data());";
         out << "\n}\n";
     }
     for (const auto &[name, dtb] : datablocks_rules) {
-        out << "::" << global::namespace_name << "::Types::" << name << "_data " << global::namespace_name << "::get::" << name << "(::" << global::namespace_name << "::Rule &rule) {\n";
+        out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
         out << "\treturn std::any_cast<Types::" << name << "_data>(rule.data());";
         out << "\n}\n";
     }
 }
 
-void addLexer_codeHeader(std::ostringstream &out, int &identLevel) {
-    out << "\n" << global::namespace_name << "::Token " << global::namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
-    identLevel++;
+void Converter::addLexer_codeHeader(std::ostringstream &out) {
+    out << "\n" << namespace_name << "::Token " << namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
+    indentLevel++;
 }
-void addLexer_codeBottom(std::ostringstream &out, int &identLevel, IR::variable var) {
+void Converter::addLexer_codeBottom(std::ostringstream &out, IR::variable var) {
     out << "\treturn " << var.name << ";\n";
     out << "}\n";
-    identLevel--;
+    indentLevel--;
 }
-extern "C" std::string convert(const IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use) {
+void Converter::outputIRToFile(std::string filename) {
     std::ostringstream ss;
-    std::stack<std::string> current_pos_counter;
-    int identLevel = 0;
-    global::use = use;
-    global::pos_counter = 0;
-    global::namespace_name = std::any_cast<std::string>(global::use["name"].data);
 
-    addHeader(ss);
-    addStandardFunctionsLexer(ss);
-    addStandardFunctionsParser(ss);
-    addTokensToString(tokens, ss);
-    addRulesToString(rules, ss);
-    addGetFunctions(ss, datablocks_tokens, datablocks_rules);
-    addLexer_codeHeader(ss, identLevel);
-    current_pos_counter.push("pos");
-    global::isToken = true;
-    lexer_code.pop_begin();
-    lexer_code.pop();
-    convertMembers(lexer_code.getDataRef(), ss, identLevel, current_pos_counter);
-    global::isToken = false;
-    addLexer_codeBottom(ss, identLevel, tokenizator_access_var.var);
-    convertMembers(ir.getData(), ss, identLevel, current_pos_counter);
-    return ss.str();
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open file for writing: " + filename);
+    }
+    file << ss.str();
 }
+void Converter::outputIRToConsole() {
+    std::ostringstream ss;
+    printIR(ss);
+    std::cout << ss.str() << '\n';
+}
+// IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

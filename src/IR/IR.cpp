@@ -51,6 +51,9 @@ const std::vector<IR::member>& IR::getData() const{
 std::vector<IR::member>& IR::getDataRef() {
     return data;
 }
+const Parser::Tree* IR::getTree() {
+    return tree;
+}
 void IR::erase_begin() {
     data.erase(data.begin());
 }
@@ -82,6 +85,9 @@ void IR::update(IR &ir) {
     vars.insert(vars.end(), ir.vars.begin(), ir.vars.end());
     elements.insert(elements.end(), ir.elements.begin(), ir.elements.end());
     groups.insert(groups.end(), ir.groups.begin(), ir.groups.end());
+}
+void IR::setIsToken(bool isToken) {
+    this->isToken = isToken;
 }
 IR::variable createEmptyVariable(std::string name) {
     IR::variable var {
@@ -1256,7 +1262,6 @@ IR::node_ret_t IR::processGroup(Parser::Rule rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
     auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-
     // create variable with name of "var" or with auto-generated one
     auto var = (!variable.empty() && variable.name == Parser::Rules::id) ?
                         createEmptyVariable(std::any_cast<std::string>(variable.data)) :
@@ -1930,7 +1935,7 @@ void IR::ruleToIr(Parser::Rule &rule_rule, char custom_qualifier) {
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
-    char qualifier_char = '\0';
+    qualifier_char = '\0';
     if (custom_qualifier != -1) {
         qualifier_char = custom_qualifier;
     } else if (qualifier.data.has_value()) {
@@ -1986,6 +1991,7 @@ void IR::ruleToIr(Parser::Rule &rule_rule, char custom_qualifier) {
     else if (!success_var.var.name.empty()) {
         elements.push_back(success_var.var);
     }
+    qualifier_char = '\0';
     if (addSpaceSkip)
         push({IR::types::SKIP_SPACES, isToken});
     vars.push_back(success_var.var);
@@ -2002,7 +2008,7 @@ IR IR::rulesToIr(std::vector<Parser::Rule> rules) {
     return result;
 }
 
-void IR::treeToIr(Parser::Tree &tree) {
+void IR::treeToIr(const Parser::Tree &tree) {
     for (auto &el : tree) {
         if (el.name == Parser::Rules::id)
             cpuf::printf("file: %s\n", std::any_cast<std::string>(el.data));

@@ -430,8 +430,8 @@ namespace Tokens {
         return true;
     }
     // compares the token with rules and return an index where match discovered
-    std::list<int> find_token_in_rule(Parser::Tree &token_rule, Parser::Tree &rules) {
-        std::list<int> where;
+    std::vector<int> find_token_in_rule(const Parser::Tree &token_rule, const Parser::Tree &rules) {
+        std::vector<int> where;
 
         if (token_rule.size() > rules.size()) // never match
             return {};
@@ -460,7 +460,7 @@ namespace Tokens {
 
         return where;
     }
-    Parser::Rule find_token_in_tree(Parser::Tree &tree, arr_t<std::string> names) {
+    Parser::Rule find_token_in_tree(const Parser::Tree &tree, arr_t<std::string> names) {
         if (names.empty())
             return {};
         for (const auto &member : tree) {
