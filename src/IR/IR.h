@@ -4,7 +4,8 @@
 #include <list>
 #include <algorithm>
 #include <stack>
-class IR {
+#include <exe_export.h>
+class EXPORT IR {
     public:
         enum class types {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
