@@ -80,13 +80,7 @@ set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 17)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 17)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 # add converter library
-if(WIN32)
-    file(GLOB_RECURSE SHARED_SOURCES external/cpuf/*.cpp)
-    list(APPEND SHARED_SOURCES ${SRC_DIR}/logging.cpp ${SRC_DIR}/corelib.cpp)
-else()
-    set(SHARED_SOURCES "")
-endif()
-add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp ${SHARED_SOURCES})
+add_library(ispa-converter-cpp SHARED converters/C++/converter.cpp converters/C++/header.cpp)
 
 target_include_directories(ispa-converter-cpp PRIVATE include src external parser/include parser/stdlibs/old converters/C++)
 #create interface for tests
