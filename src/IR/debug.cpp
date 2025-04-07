@@ -401,6 +401,9 @@ void IR::convertMember(const member& mem, std::ostream& out) {
     case types::EXIT:
         out << "return {}";
         break;
+    case types::ERROR:
+        out << "error" << std::any_cast<std::string>(mem.value) << '\n';
+        break;
     case types::SKIP_SPACES:
         if (std::any_cast<bool>(mem.value)) // isToken
             out << "skipspaces(pos)";

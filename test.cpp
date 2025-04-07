@@ -12,6 +12,10 @@ int main() {
         exit(1);
     }
     lexer.printTokens(ofile);
+    auto errors = lexer.getErrors();
+    for (auto error : errors) {
+        printf("%zu:%zu: %s\n", error.line, error.column, error.message.c_str());
+    }
     std::cout << std::endl;
     auto tree = parser.parse(lexer);
     for (auto &el : tree) {

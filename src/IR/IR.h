@@ -12,7 +12,7 @@ class EXPORT IR {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
             METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
             ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER, 
-            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP
+            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERROR
         };
         enum class condition_types {
             GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -153,13 +153,13 @@ class EXPORT IR {
         IR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
         IR::var_type deduceVarTypeByValue(Parser::Rule mem);
         // convertion functions helpers
-        void addPostLoopCheck(const IR::variable &var);
-        void handle_plus_qualifier(IR::condition loop);
+        void addPostLoopCheck(const Parser::Rule &rule, const IR::variable &var, bool addError = true);
+        void handle_plus_qualifier(const Parser::Rule &rule, IR::condition loop, bool addError = true);
         IR::member createDefaultCall(std::vector<IR::member> &block, IR::variable var, const std::string &name, std::vector<IR::expr> &expr);
         IR::variable add_shadow_variable(std::vector<IR::member> &block, const IR::variable &var);
-        IR::variable pushBasedOnQualifier(std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, bool add_shadow_var = true);
-        IR::variable pushBasedOnQualifier_Rule_other(std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, bool add_shadow_var = false);
-        IR::variable affectIrByQuantifier(const IR::variable &var);
+        IR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, bool add_shadow_var = true);
+        IR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, bool add_shadow_var = false);
+        IR::variable affectIrByQuantifier(const Parser::Rule &rule, const IR::variable &var);
         IR::assign TreeAnyDataToIR(const Parser::Rule &value);
         IR::function_call TreeFunctionToIR(const Parser::Rule &rule);
         IR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
@@ -201,7 +201,7 @@ class EXPORT IR {
         bool isToken;
         bool insideLoop = false;
         bool addSpaceSkip = false;
-        char qualifier_char = '\0';
+        char quantifier_char = '\0';
         std::vector<std::string> fullname;
         std::vector<IR::variable> elements;
         std::vector<var_group> groups;

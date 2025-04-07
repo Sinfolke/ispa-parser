@@ -128,53 +128,22 @@ class return_base_exception : public std::exception {
         return mes.c_str();
     }
 };
-template<typename RETURN_T>
+template<typename NODE_T>
 class node {
     std::size_t _startpos = std::string::npos;
     std::size_t _length = 0;
+    std::size_t _line;
+    std::size_t _column;
     const char* _start = nullptr;
     const char* _end = nullptr;
-    RETURN_T _name = RETURN_T::NONE;
+    NODE_T _name = NODE_T::NONE;
     std::any _data;
     bool _empty = true;
-    public:
-    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, RETURN_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _name(name), _empty(false) {}
-    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, RETURN_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _name(name), _data(data), _empty(false) {}
+public:
+    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _empty(false) {}
+    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
     node() {}
 
-
-    /**
-     * @brief Returns the number of line of the current token or rule. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
-     */
-    std::size_t line() const {
-        if (_startpos == std::string::npos || _start == nullptr)
-            throw return_base_exception("line");
-        std::size_t count = 0;
-        std::size_t escaptions = 0;
-        for (std::size_t i = _startpos; i >= 0; --i) {
-            if (*(_start - i) == '\n') count++;
-        }
-        return count;
-    }
-    /**
-     * @brief Returns the position in line of token. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
-     */
-    std::size_t positionInLine() const {
-        if (_startpos == std::string::npos || _start == nullptr)
-            throw return_base_exception("positionInLine");
-        size_t count = 0;
-        for (size_t i = 0; i < _startpos; i++) {
-            if (*(_start + i) == '\n')
-                count = 0;
-            else
-                count++;
-        }
-        return count;
-    }
     /**
      * @brief Get the end position based on startpos and length
      * 
@@ -187,10 +156,12 @@ class node {
     }
     void clear() {
         _startpos = std::string::npos;
+        _line = 0;
+        _column = 0;
         _length = 0;
         _start = nullptr;
         _end = nullptr;
-        _name = RETURN_T::NONE;
+        _name = NODE_T::NONE;
         _data = {};
         _empty = true;
     }
@@ -207,10 +178,12 @@ class node {
 #endif
         return std::any_cast<T>(_data);
     }
-    node<RETURN_T>& operator=(const node<RETURN_T>& other) {
+    node<NODE_T>& operator=(const node<NODE_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
         _startpos = other._startpos;
+        _line = other._line;
+        _column = other._column;
         _length = other._length;
         _start = other._start;
         _end = other._end;
@@ -230,6 +203,18 @@ class node {
      */
     auto startpos() const {
         return _startpos;
+    }
+    /**
+     * get line
+     */
+    auto line() const {
+        return _line;
+    }
+    /**
+     * get column
+     */
+    auto column() const {
+        return _column;
     }
     /**
      * get length of the node
@@ -273,12 +258,20 @@ template<class TOKEN_T>
 using TokenFlow = std::vector<node<TOKEN_T>>;
 template<class RULE_T>
 using Tree = std::deque<node<RULE_T>>;
-
+struct error {
+    std::size_t pos;
+    std::size_t line;
+    std::size_t column;
+    std::string message;
+};
+using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
 class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
+    std::vector<error> errors;
+    ErrorController error_controller;
 /* internal integration functionality */
     /**
      * @brief Get the current position in the text (compares first input point with the current)
@@ -301,6 +294,35 @@ protected:
             in++;
         
         return in - prev;
+    }
+        /**
+     * @brief Returns the number of line of the current token or rule. Note it assume the start pointer is still valid
+     * 
+     * @return std::size_t 
+     */
+    std::size_t __line(const char* pos) const {
+        std::size_t count = 0;
+        std::size_t escaptions = 0;
+        for (char* in = const_cast<char*>(_in); in < pos; in++) {
+            if (*in == '\n') count++;
+        }
+        return count;
+    }
+    /**
+     * @brief Returns the position in line of token. Note it assume the start pointer is still valid
+     * 
+     * @return std::size_t 
+     */
+    std::size_t __column(const char* pos) const {
+        std::size_t count = 0;
+        std::size_t escaptions = 0;
+        for (char* in = const_cast<char*>(_in); in < pos; in++) {
+            if (*in == '\n') 
+                count = 0;
+            else 
+                count++;
+        }
+        return count;
     }
 public:
     /**
@@ -398,11 +420,20 @@ public:
         const char* pos = _in;
         while (*pos != '\0') {
             result = makeToken(pos);
-            if (result.empty())
-                break;
-            push(result);
+            if (result.empty()) {
+                if (!error_controller.empty()) {
+                    errors.push_back(error_controller.begin()->second);
+                    pos++;
+                }
+            } else {
+                push(result);
+            }
+            error_controller.clear();
         }
         return tokens;
+    };
+    auto& getErrors() const {
+        return errors;
     };
     /**
      * @param input_tokens the input tokens
@@ -477,6 +508,8 @@ private:
 protected:
     TokenFlow<TOKEN_T>* tokens = nullptr;
     Tree<RULE_T> tree;
+    std::vector<error> errors;
+    ErrorController error_controller;
     typename TokenFlow<TOKEN_T>::iterator pos;
     // skip spaces for tokens
     template <typename Iterator, typename Tokens>

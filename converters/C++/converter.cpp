@@ -46,8 +46,27 @@ static std::string getCharFromEscaped(char in, bool string) {
     case '\b': return "\\b";  // Backspace
     case '\f': return "\\f";  // Form feed (new page)
     case '\v': return "\\v";  // Vertical tab
-    case '\\': return "\\";   // Backslash
+    case '\\': return "\\\\";   // Backslash
     case '\0': return "\\0";  // end of string
+    default: return std::string(1, in);      // Return the character itself if not an escape sequence
+    }
+}
+static std::string getCharFromEscapedAsStr(char in, bool string) {
+    if (in == '"')
+        return string ? "\\\"" : "\"";
+    if (in == '\'')
+        return string ? "'" : "\\'";
+    switch (in)
+    {
+    case '\n': return "n";  // Newline
+    case '\r': return "r";  // Carriage return
+    case '\t': return "t";  // Horizontal tab
+    case '\a': return "a";  // Bell (alert)
+    case '\b': return "b";  // Backspace
+    case '\f': return "f";  // Form feed (new page)
+    case '\v': return "v";  // Vertical tab
+    case '\\': return "\\\\";   // Backslash
+    case '\0': return "0";  // end of string
     default: return std::string(1, in);      // Return the character itself if not an escape sequence
     }
 }
@@ -425,12 +444,12 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         break;
     case IR::types::RULE_END:
         if (isToken) {
-            out << "\treturn {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, Tokens::" << rule_prev_name_str;
+            out << "\treturn {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), Tokens::" << rule_prev_name_str;
             if (has_data_block)
                 out << ", data";
             out << ")};\n";
         } else {
-            out << "\treturn {true, ::" << namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), Rules::" << rule_prev_name_str;
+            out << "\treturn {true, ::" << namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), std::distance(in, pos), pos->line(), pos->column(), Rules::" << rule_prev_name_str;
             if (has_data_block)
                 out << ", data";
             out << ")};\n";
@@ -495,6 +514,20 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         break;
     case IR::types::EXIT:
         out << "return {};";
+        break;
+    case IR::types::ERROR:
+        if (isToken) {
+            out << "error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), \"Expected ";
+            for (auto &c : std::any_cast<std::string>(mem.value)) {
+                out << getCharFromEscapedAsStr(c, true);
+            }
+            out << "\"};";
+        } else {
+            out << "error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), \"Expected ";
+            for (auto &c : std::any_cast<std::string>(mem.value))
+                out << getCharFromEscapedAsStr(c, true);
+            out << "\"};";
+        }
         break;
     case IR::types::SKIP_SPACES:
         if (isToken)            
@@ -578,11 +611,11 @@ void Converter::addRulesToString(std::vector<std::string> rules, std::ostringstr
     out << "}\n";
 }
 void Converter::addStandardFunctionsLexer(std::ostringstream &out) {
-    out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostream& os, bool sensitiveInfo) {
+    out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
-        printToken(os, token, sensitiveInfo);
+        printToken(os, token);
 })";
-    out << '\n' << "void " + namespace_name + R"(::Lexer::printToken(std::ostream& os, const Token& token, bool sensitiveInfo) {
+    out << '\n' << "void " + namespace_name + R"(::Lexer::printToken(std::ostream& os, const Token& token) {
     os << TokensToString(token.name()) << ": ";
 
     if (token.data().type() == typeid(str_t)) {
@@ -629,8 +662,6 @@ void Converter::addStandardFunctionsLexer(std::ostringstream &out) {
         os << " ]";
     }
     os << " # " << token.startpos();
-    if (sensitiveInfo)
-        os << ", line " << token.line() << ", pos " << token.positionInLine();
     os << '\n';
 })";
     out << "\n";

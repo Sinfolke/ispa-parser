@@ -200,7 +200,7 @@ namespace Parser {
 			::Parser::Token name;
 			::Parser::Token is_nested;
 		};
-		using Rule_group_data = ::Parser::Rule;
+		using Rule_group_data = ::Parser::arr_t<::Parser::Rule>;
 		using Rule_keyvalue_data = ::Parser::Token;
 		using Rule_value_data = ::Parser::Token;
 		using Rule_nested_rule_data = ::Parser::Token;
@@ -215,9 +215,9 @@ namespace Parser {
 		};
 		using Rule_data_block_data = ::Parser::Rule;
 		struct Rule_data {
-			::Parser::Rule nested_rules;
+			::Parser::arr_t<::Parser::Rule> nested_rules;
 			::Parser::Rule data_block;
-			::Parser::Rule rule;
+			::Parser::arr_t<::Parser::Rule> rule;
 			::Parser::Token name;
 		};
 	}
@@ -310,17 +310,15 @@ namespace Parser {
 
             /**
              * @param os the output stream
-             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
              * Print the tokens into an output stream
              */
-            void printTokens(std::ostream& os, bool sentitiveInfo = false);
+            void printTokens(std::ostream& os);
             /**
              * @param os the output stream
              * @param token the token to print
-             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
              * Prints a single token into an output stream
              */
-            void printToken(std::ostream& os, const Token& token, bool sensitiveInfo = false);
+            void printToken(std::ostream& os, const Token& token);
 		private:
 			Token_res cll_OP(const char*);
 			Token_res cll_ASSIGNMENT_OP(const char*);

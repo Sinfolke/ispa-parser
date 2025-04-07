@@ -101,11 +101,11 @@ int main(int argc, char** argv) {
     */
     Tree tree(std::move(rawTree));
     tree.normalize(); // normalize tree
-    tree.literalsToToken();     // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     tree.sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
+    tree.literalsToToken();                // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
     tree.addSpaceToken();
-    tree.replaceDublications();          // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
-    tree.inlineTokens();                 // inline tokens to make sure that every token is used only once
+    tree.replaceDublications();            // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
+    tree.inlineTokens();                   // inline tokens to make sure that every token is used only once
 
     auto use = tree.accamulate_use_data_to_map();
     auto use_places = tree.getUsePlacesTable();

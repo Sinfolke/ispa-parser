@@ -119,16 +119,16 @@ class return_base_exception : public std::exception {
         return mes.c_str();
     }
 };
-template<typename RETURN_T>
+template<typename NODE_T>
 class node {
 public:
     std::size_t startpos = std::string::npos;
     const char* start = nullptr;
     const char* end = nullptr;
-    RETURN_T name = RETURN_T::NONE;
+    NODE_T name = NODE_T::NONE;
     std::any data;
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name) : startpos(startpos), start(start), end(end), name(name) {}
-    node(const std::size_t startpos, const char* start, const char* end, RETURN_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
+    node(const std::size_t startpos, const char* start, const char* end, NODE_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    node(const std::size_t startpos, const char* start, const char* end, NODE_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
     node() {}
 
 
@@ -169,23 +169,19 @@ public:
         startpos = std::string::npos;
         start = nullptr;
         end = nullptr;
-        name = RETURN_T::NONE;
+        name = NODE_T::NONE;
         data = {};
     }
     template<typename T>
     T as() {
 #ifdef DEBUG
         if (!data.has_value()) {
-           std::cerr << "iscstdlibc++: No value in data\n";
-           exit(1);
-        } else if (data.type() != typeid(T)) {
-            std::cerr << "iscstdlibc++: Data type mismatch. Expected: " << typeid(T).name() << " but got: " << data.type().name() << "\n";
-            exit(1);
+            throw std::runtime_error("iscstdlibc++: No value in data");
         }
 #endif
         return std::any_cast<T>(data);
     }
-    node<RETURN_T>& operator=(const node<RETURN_T>& other) {
+    node<NODE_T>& operator=(const node<NODE_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
     

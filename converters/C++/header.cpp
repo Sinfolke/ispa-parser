@@ -100,17 +100,15 @@ void Converter::addStandardFunctions(std::ostringstream &out) {
     out << R"(
             /**
              * @param os the output stream
-             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
              * Print the tokens into an output stream
              */
-            void printTokens(std::ostream& os, bool sentitiveInfo = false);
+            void printTokens(std::ostream& os);
             /**
              * @param os the output stream
              * @param token the token to print
-             * @param sensitiveInfo - whether print such info as line number and position in line. These methods require the start pointer to be valid
              * Prints a single token into an output stream
              */
-            void printToken(std::ostream& os, const Token& token, bool sensitiveInfo = false);)";
+            void printToken(std::ostream& os, const Token& token);)";
     out << "\n";
 }
 void Converter::convert_inclosed_map(std::ostringstream &out, IR::inclosed_map map) {
