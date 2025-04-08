@@ -790,7 +790,7 @@ lexer_code Tree::getCodeForLexer(use_place_t use_places, const IR &ir) {
     code.setIsToken(true);
     auto success_var = code.makeIR();
     code.push_begin({IR::types::TOKEN});
-    code.push({IR::types::RULE});
+    code.push({IR::types::RULE_END});
     code.optimizeIR();
     return {code, success_var[0]};
 }

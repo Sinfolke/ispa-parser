@@ -301,7 +301,7 @@ protected:
      * @return std::size_t 
      */
     std::size_t __line(const char* pos) const {
-        std::size_t count = 0;
+        std::size_t count = 1;
         std::size_t escaptions = 0;
         for (char* in = const_cast<char*>(_in); in < pos; in++) {
             if (*in == '\n') count++;
@@ -314,7 +314,7 @@ protected:
      * @return std::size_t 
      */
     std::size_t __column(const char* pos) const {
-        std::size_t count = 0;
+        std::size_t count = 1;
         std::size_t escaptions = 0;
         for (char* in = const_cast<char*>(_in); in < pos; in++) {
             if (*in == '\n') 

@@ -12,7 +12,7 @@ ID:
     ([a-zA-Z_] [a-zA-Z0-9_]*)
     data: $1;
 ;
-spacemode:
+SPACEMODE:
     "spacemode" "mixed" | "skipped" | "allowed"
     data: %1;
 ;
@@ -22,7 +22,7 @@ NAME:
     data: %2;
 ;
 AT: '@';
-main: use | Rule | spacemode | NAME;
+main: use | Rule | SPACEMODE | NAME;
 
 use: 
     'use' #unit (',' #unit)*

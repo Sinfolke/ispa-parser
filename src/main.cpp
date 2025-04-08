@@ -108,8 +108,6 @@ int main(int argc, char** argv) {
     tree.inlineTokens();                   // inline tokens to make sure that every token is used only once
 
     auto use = tree.accamulate_use_data_to_map();
-    auto use_places = tree.getUsePlacesTable();
-    auto [tokens, rules] = tree.getTokenAndRuleNames();
 
     // convert tree into IR
     IR ir(tree.getRawTree());
@@ -121,21 +119,9 @@ int main(int argc, char** argv) {
         CONVERTION IS GOING HERE
 
     */
-    auto [datablocks_tokens, datablocks_rules] = tree.get_data_blocks(ir);
-    auto lexer_code = tree.getCodeForLexer(use_places, ir);
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto converter_fun = converter_dlib.loadfun<IR*, IR&, IR&, const IR::node_ret_t &, const std::vector<std::string>&, const std::vector<std::string>&, data_block_t&, data_block_t&, use_prop_t>("getConverter");
-    auto converter = std::unique_ptr<IR>(converter_fun(ir, lexer_code.code, lexer_code.success_var, tokens, rules, datablocks_tokens, datablocks_rules, use));
-    converter->outputIRToFile(std::any_cast<std::string>(use["name"].data));
-    // write to file
-    // invoke convertion
-    //convert(tree, converter);
-    // begin convertion here
-    // tokens must not be repeated. If a specific token already matches current literal, that token should be used in place of literal
-    // if no tokens match current literal, a new token should be added that matches that literal and replace every place that kind of literal is used
-    // 1. get source dir
-    // 2. merge sources
-    // 3. separate tokens and rules
-    // 4. redirect to generator
+    auto converter_fun = converter_dlib.loadfun<Converter_base*, IR&, Tree&>("getConverter");
+    auto converter = std::unique_ptr<Converter_base>(converter_fun(ir, tree));
+    converter->outputIR(std::any_cast<std::string>(use["name"].data));
     return 0;
 }

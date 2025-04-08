@@ -564,23 +564,27 @@ void Converter::convertMembers(const std::vector<IR::member> &members, std::ostr
     for (auto mem : members)
         convertMember(mem, out);
 }
+void Converter::convertLexerCode(const std::vector<IR::member> &members, std::ostringstream &out) {
+    isToken = true;
+    if (!members.empty()) {
+        for (auto it = members.begin() + 1; it != members.end() - 1; it++) {
+            auto mem = *it;
+            convertMember(mem, out);
+        }
+    }
+    isToken = false;
+}
 void Converter::printIR(std::ostringstream &out) {
-    namespace_name = std::any_cast<std::string>(use["name"].data);
-
     addHeader(out);
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
     addTokensToString(tokens, out);
     addRulesToString(rules, out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
-    addLexer_codeHeader(out);
+    addLexerCode_Header(out);
     current_pos_counter.push("pos");
-    isToken = true;
-    lexer_code.pop_begin();
-    lexer_code.pop();
-    convertMembers(lexer_code.getDataRef(), out);
-    isToken = false;
-    addLexer_codeBottom(out,  lexer_code_access_var.var);
+    convertLexerCode(lexer_code.getDataRef(), out);
+    addLexerCode_Bottom(out,  lexer_code_access_var.var);
     convertMembers(data, out);
 }
 void Converter::addHeader(std::ostringstream &out) {
@@ -756,17 +760,17 @@ void Converter::addGetFunctions(std::ostringstream &out, data_block_t datablocks
     }
 }
 
-void Converter::addLexer_codeHeader(std::ostringstream &out) {
+void Converter::addLexerCode_Header(std::ostringstream &out) {
     out << "\n" << namespace_name << "::Token " << namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
     indentLevel++;
 }
-void Converter::addLexer_codeBottom(std::ostringstream &out, IR::variable var) {
+void Converter::addLexerCode_Bottom(std::ostringstream &out, IR::variable var) {
     out << "\treturn " << var.name << ";\n";
     out << "}\n";
     indentLevel--;
 }
-void Converter::outputIRToFile(std::string filename) {
-
+void Converter::outputIR(std::string filename) {
+    namespace_name = filename;
     std::ofstream cpp(filename + ".cpp");
     std::ofstream h(filename + ".h");
     if (!cpp) {
@@ -781,21 +785,7 @@ void Converter::outputIRToFile(std::string filename) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-void Converter::outputIRToConsole() {
-    std::ostringstream ss;
-    printIR(ss);
-    std::cout << ss.str() << '\n';
-}
-extern "C" Converter* getConverter(
-    IR& ir, 
-    IR& lexer_code, 
-    const IR::node_ret_t &lexer_code_access_var, 
-    const std::vector<std::string>& tokens,
-    const std::vector<std::string>& rules,
-    const data_block_t& data_block_tokens, 
-    const data_block_t& data_block_rules, 
-    use_prop_t use
-) {
-    return new Converter(ir, std::move(ir.getDataRef()), lexer_code, lexer_code_access_var, tokens, rules, data_block_tokens, data_block_rules, use);
+extern "C" Converter_base* getConverter(IR& ir, Tree& tree) {
+    return new Converter(ir, tree);
 }
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

@@ -7,10 +7,12 @@
 #include <unordered_map>
 #include <internal_types.h>
 #include <IR/IR.h>
+#include <tree.h>
 #include <corelib.h>
 #include <stack>
 #include <logging.h>
-class Converter : public IR {
+#include <converter_base.h>
+class Converter : public Converter_base {
 private:
     // private variables used for convertion
     size_t pos_counter = 0;
@@ -18,21 +20,13 @@ private:
     std::stack<size_t> pos_counter_stack;
     std::stack<std::string> current_pos_counter;
     std::vector<std::string> dynamic_pos_counter = {};
-    use_prop_t use;
     std::pair<std::string, std::vector<std::string>> rule_prev_name;
     std::string rule_prev_name_str;
     std::string namespace_name;
     bool add_semicolon;
     bool has_data_block;
     bool isToken;
-    // data
-    std::vector<IR::member> data;
-    IR lexer_code;
-    const node_ret_t lexer_code_access_var;
-    const data_block_t data_block_tokens;
-    const data_block_t data_block_rules;
-    const std::vector<std::string> tokens;
-    const std::vector<std::string> rules;
+
     
     // cpp output functions
     std::string convert_var_type(IR::var_types type, std::vector<IR::var_type> data);
@@ -50,6 +44,7 @@ private:
     std::string convertDataBlock(IR::data_block dtb);
     void convertMember(const IR::member& mem, std::ostringstream &out);
     void convertMembers(const std::vector<IR::member> &members, std::ostringstream &out);
+    void convertLexerCode(const std::vector<IR::member> &members, std::ostringstream &out);
     void printIR(std::ostringstream& out);
     void addHeader(std::ostringstream &out);
     void addTokensToString(std::vector<std::string> tokens, std::ostringstream &out);
@@ -57,8 +52,8 @@ private:
     void addStandardFunctionsLexer(std::ostringstream &out);
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules);
-    void addLexer_codeHeader(std::ostringstream &out);
-    void addLexer_codeBottom(std::ostringstream &out, IR::variable var);
+    void addLexerCode_Header(std::ostringstream &out);
+    void addLexerCode_Bottom(std::ostringstream &out, IR::variable var);
 
     // header output functions
     void createLibrary(std::ostringstream& out);
@@ -80,20 +75,7 @@ private:
     void create_get_namespace(std::ostringstream &out);
     void outputHeader(std::ostringstream &out);
 public:
-    Converter(
-        IR& ir, arr_t<IR::member>&& data, IR& lexer_code, const node_ret_t &lexer_code_access_var, const std::vector<std::string>& tokens, const std::vector<std::string>& rules,
-        const data_block_t& data_block_tokens, const data_block_t& data_block_rules, use_prop_t use
-    )
-    : IR(*ir.getTree()),
-    data(data),
-    lexer_code(lexer_code),
-    lexer_code_access_var(lexer_code_access_var),
-    tokens(tokens),
-    rules(rules),
-    data_block_tokens(data_block_tokens),
-    data_block_rules(data_block_rules),
-    use(use)
-    {}
-    void outputIRToFile(std::string filename);
-    void outputIRToConsole();
+    Converter(IR &ir, Tree &tree) : Converter_base(ir, tree) {}
+    ~Converter() {}
+    void outputIR(std::string filename);
 };

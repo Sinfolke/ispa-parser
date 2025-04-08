@@ -201,6 +201,7 @@ class EXPORT IR {
         bool isToken;
         bool insideLoop = false;
         bool addSpaceSkip = false;
+        bool isFirst = true;
         char quantifier_char = '\0';
         std::vector<std::string> fullname;
         std::vector<IR::variable> elements;
@@ -226,10 +227,10 @@ class EXPORT IR {
         void raiseVarsTop();
     public:
         IR(const Parser::Tree &tree) : tree(&tree), rules(nullptr) {}
-        IR(const Parser::Tree *&tree) : tree(tree), rules(nullptr) {}
+        IR(const Parser::Tree *tree) : tree(tree), rules(nullptr) {}
         IR(const Parser::Tree &tree, const std::vector<Parser::Rule> &rules) : tree(&tree), rules(&rules) {}
-        IR(const Parser::Tree *&tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
-        IR(IR &ir) : tree(ir.tree), rules(nullptr), data(ir.data) {}
+        IR(const Parser::Tree *tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
+        IR(IR &ir) : tree(ir.tree), rules(nullptr) {}
         // get functions
         auto getData() const -> const std::vector<IR::member>&;
         auto getDataRef() -> std::vector<IR::member>&;
