@@ -157,9 +157,9 @@ class EXPORT IR {
         void handle_plus_qualifier(const Parser::Rule &rule, IR::condition loop, bool addError = true);
         IR::member createDefaultCall(std::vector<IR::member> &block, IR::variable var, const std::string &name, std::vector<IR::expr> &expr);
         IR::variable add_shadow_variable(std::vector<IR::member> &block, const IR::variable &var);
-        IR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, bool add_shadow_var = true);
-        IR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, bool add_shadow_var = false);
-        IR::variable affectIrByQuantifier(const Parser::Rule &rule, const IR::variable &var);
+        IR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, char quantifier, bool add_shadow_var = true);
+        IR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, char quantifier, bool add_shadow_var = false);
+        IR::variable affectIrByQuantifier(const Parser::Rule &rule, const IR::variable &var, char quantifier);
         IR::assign TreeAnyDataToIR(const Parser::Rule &value);
         IR::function_call TreeFunctionToIR(const Parser::Rule &rule);
         IR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
@@ -184,16 +184,16 @@ class EXPORT IR {
         void process_cll_var(const Parser::Rule &rule);
         IR::condition process_cll_cond(const Parser::Rule &rule);
         // main convertion functions
-        IR::node_ret_t processGroup(Parser::Rule rule);
-        IR::node_ret_t processRuleCsequence(const Parser::Rule &rule);
-        IR::node_ret_t processString(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_hex(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_bin(const Parser::Rule &rule);
-        IR::node_ret_t processAccessor(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_other(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_any(const Parser::Rule &rule);
-        IR::node_ret_t process_Rule_op(const Parser::Rule &rule);
+        IR::node_ret_t processGroup(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t processString(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t processAccessor(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_other(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_any(const Parser::Rule &rule, char quantifier);
+        IR::node_ret_t process_Rule_op(const Parser::Rule &rule, char quantifier);
         IR::node_ret_t process_cll(const Parser::Rule &rule);
     protected:
         // data
@@ -202,14 +202,13 @@ class EXPORT IR {
         bool insideLoop = false;
         bool addSpaceSkip = false;
         bool isFirst = true;
-        char quantifier_char = '\0';
         std::vector<std::string> fullname;
         std::vector<IR::variable> elements;
         std::vector<var_group> groups;
         std::vector<IR::variable> vars;
         std::vector<IR::member> data;
         std::vector<node_ret_t> success_vars;
-        const std::vector<Parser::Rule>* rules;
+        const std::vector<Parser::Rule>* rules = nullptr;
         const Parser::Tree* tree;
         // data for output
         std::stack<std::string> current_pos_counter;
@@ -217,8 +216,8 @@ class EXPORT IR {
         // helper functions
         void erase_begin();
         // convertion
-        void ruleToIr(Parser::Rule &rule_rule, char custom_qualifier = -1);
-        IR rulesToIr(std::vector<Parser::Rule> rules);
+        void ruleToIr(const Parser::Rule &rule_rule, char custom_qualifier = -1);
+        auto rulesToIr(const std::vector<Parser::Rule> &rules) -> IR;
         void treeToIr(const Parser::Tree &tree);
         // optimizations
         void getVariablesToTable(std::vector<IR::member> &data, size_t &i, std::list<IR::member>& table);
@@ -226,11 +225,11 @@ class EXPORT IR {
         void insertVariablesOnTop(std::list<IR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        IR(const Parser::Tree &tree) : tree(&tree), rules(nullptr) {}
-        IR(const Parser::Tree *tree) : tree(tree), rules(nullptr) {}
+        IR(const Parser::Tree &tree) : tree(&tree) {}
+        IR(const Parser::Tree *tree) : tree(tree) {}
         IR(const Parser::Tree &tree, const std::vector<Parser::Rule> &rules) : tree(&tree), rules(&rules) {}
         IR(const Parser::Tree *tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
-        IR(IR &ir) : tree(ir.tree), rules(nullptr) {}
+        IR(IR &ir) : tree(ir.tree), data(std::move(ir.data)) {}
         // get functions
         auto getData() const -> const std::vector<IR::member>&;
         auto getDataRef() -> std::vector<IR::member>&;

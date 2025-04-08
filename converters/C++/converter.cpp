@@ -65,7 +65,7 @@ static std::string getCharFromEscapedAsStr(char in, bool string) {
     case '\b': return "b";  // Backspace
     case '\f': return "f";  // Form feed (new page)
     case '\v': return "v";  // Vertical tab
-    case '\\': return "\\\\";   // Backslash
+    case '\\': return "\\";   // Backslash
     case '\0': return "0";  // end of string
     default: return std::string(1, in);      // Return the character itself if not an escape sequence
     }
@@ -516,18 +516,11 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         out << "return {};";
         break;
     case IR::types::ERROR:
-        if (isToken) {
-            out << "error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), \"Expected ";
-            for (auto &c : std::any_cast<std::string>(mem.value)) {
-                out << getCharFromEscapedAsStr(c, true);
-            }
-            out << "\"};";
-        } else {
-            out << "error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), \"Expected ";
-            for (auto &c : std::any_cast<std::string>(mem.value))
-                out << getCharFromEscapedAsStr(c, true);
-            out << "\"};";
+        out << "reportError(pos, \"";
+        for (auto &c : std::any_cast<std::string>(mem.value)) {
+            out << getCharFromEscapedAsStr(c, true);
         }
+        out << "\");";
         break;
     case IR::types::SKIP_SPACES:
         if (isToken)            

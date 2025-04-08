@@ -119,7 +119,7 @@ namespace Parser {
 		using cll_function_body_call_data = ::Parser::Rule;
 		using cll_function_body_decl_data = ::Parser::Rule;
 		struct cll_function_arguments_data {
-			::Parser::arr_t<::Parser::Token> second;
+			::Parser::arr_t<::Parser::arr_t<::Parser::Token>> second;
 			::Parser::any_t first;
 		};
 		struct cll_function_parameters_data {

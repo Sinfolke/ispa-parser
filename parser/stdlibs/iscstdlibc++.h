@@ -324,6 +324,10 @@ protected:
         }
         return count;
     }
+    void reportError(const char* pos, std::string mes) {
+        if (error_controller.count(pos - _in) == 0)
+            error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
+    }
 public:
     /**
      * Get one token
@@ -519,6 +523,10 @@ protected:
             ++pos;
         
         return std::distance(prev, pos);
+    }
+    void reportError(typename TokenFlow<TOKEN_T>::iterator pos, std::string msg) {
+        if (error_controller.count(pos - tokens->begin()))
+            error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), "Expected" + msg};
     }
 public:
     bool parallel_parsing = false;
