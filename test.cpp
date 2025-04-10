@@ -14,11 +14,15 @@ int main() {
     lexer.printTokens(ofile);
     auto errors = lexer.getErrors();
     for (auto error : errors) {
-        printf("%zu:%zu: %s\n", error.line, error.column, error.message.c_str());
+        printf("Lexer: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }
     std::cout << std::endl;
     auto tree = parser.parse(lexer);
     for (auto &el : tree) {
         std::cout << Parser::RulesToString(el.name()) << std::endl;\
+    }
+    auto parser_errors = parser.getErrors();
+    for (auto error : parser_errors) {
+        printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }
 }

@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
     tree.addSpaceToken();
     tree.replaceDublications();            // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
     tree.inlineTokens();                   // inline tokens to make sure that every token is used only once
-
+    tree.resolveConflicts();
     auto use = tree.accamulate_use_data_to_map();
 
     // convert tree into IR

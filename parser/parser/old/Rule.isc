@@ -8,7 +8,7 @@ Rule:
     ;
     #rule:
 
-        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll QUANTIFIER?
+        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll quantifier?
 
         data: 
             prefix: %1
@@ -68,8 +68,8 @@ Rule:
     #OP:
         '|'
     ;
-    #QUANTIFIER:
-        ('?' | '+' | '*')
+    #quantifier:
+        ('?' | PLUS | MULTIPLE)
         data: $1;
     ;
 

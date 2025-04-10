@@ -1997,7 +1997,7 @@ void IR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
     else if (!success_var.var.name.empty()) {
         elements.push_back(success_var.var);
     }
-    if (addSpaceSkip)
+    if (addSpaceSkip && isToken)
         push({IR::types::SKIP_SPACES, isToken});
     vars.push_back(success_var.var);
     vars.push_back(success_var.svar);

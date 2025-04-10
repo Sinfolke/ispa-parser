@@ -36,6 +36,7 @@ namespace Parser {
     Rule_nested_rule,
     Rule_hex,
     Rule_bin,
+    Rule_not,
 
     cll_type_abstract,
 

@@ -40,6 +40,9 @@ class Tree {
     use_prop_t get_use_data(const Parser::Rule &use);
     void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &use_places, std::vector<std::string> &fullname);
     void getUsePlacesTableHelper(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> &fullname);
+    void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
+    void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
+    void resolveConflicts(Parser::Tree &tree);
     public:
         Tree(Parser::Tree &&tree) : tree(std::move(tree)) {}
         Tree(Parser::Tree &tree) : tree(tree) {}
@@ -56,4 +59,5 @@ class Tree {
         auto getUsePlacesTable() -> use_place_t;
         auto get_data_blocks(const IR &ir) -> std::pair<data_block_t, data_block_t>;
         auto getCodeForLexer(use_place_t use_places, const IR &ir) -> lexer_code;
+        void resolveConflicts();
 };

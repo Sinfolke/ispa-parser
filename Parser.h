@@ -37,10 +37,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, cll_TYPE, cll_TEMPLATE, STRING, NUMBER, BOOLEAN, END, NEWLINE, LINEAR_COMMENT, ID, SPACEMODE, NAME, AT, Rule_OP, Rule_QUANTIFIER, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_NOSPACE, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_6, AUTO_7, AUTO_14, AUTO_19, AUTO_20, AUTO_25, AUTO_27, AUTO_32, AUTO_34, AUTO_36, AUTO_38, AUTO_39, AUTO_40, AUTO_41, AUTO_42, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_49, __WHITESPACE
+		NONE, cll_OP, cll_ASSIGNMENT_OP, cll_COMPARE_OP, cll_LOGICAL_OP, cll_LOGICAL_NOT, cll_LOGICAL_AND, cll_LOGICAL_OR, cll_TYPE, cll_TEMPLATE, STRING, NUMBER, BOOLEAN, END, NEWLINE, PLUS, MINUS, DIVIDE, MULTIPLE, MODULO, LINEAR_COMMENT, ID, SPACEMODE, NAME, AT, Rule_OP, Rule_CSEQUENCE, Rule_CSEQUENCE_SYMBOL, Rule_CSEQUENCE_ESCAPE, Rule_CSEQUENCE_DIAPASON, Rule_NOSPACE, Rule_ESCAPED, Rule_HEX, Rule_BIN, AUTO_0, AUTO_1, AUTO_6, AUTO_7, AUTO_14, AUTO_19, AUTO_20, AUTO_25, AUTO_27, AUTO_32, AUTO_34, AUTO_36, AUTO_38, AUTO_39, AUTO_40, AUTO_41, AUTO_42, AUTO_45, AUTO_46, AUTO_47, AUTO_48, AUTO_49, AUTO_50, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, cll, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_keyvalue, Rule_value, Rule_nested_rule, Rule_data_block, Rule_data_block_regular_datablock, Rule_data_block_regular_datablock_key, Rule_data_block_templated_datablock
+		NONE, cll, cll_if, cll_variable, cll_function_body_call, cll_function_body_decl, cll_function_arguments, cll_function_parameters, cll_cll_function_call, cll_function_decl, cll_expr, cll_expr_logical, cll_expr_compare, cll_expr_arithmetic, cll_expr_term, cll_expr_value, cll_expr_group, cll_var, cll_block, cll_loop_while, cll_loop_for, array, object, any_data, main, use, use_unit, Rule, Rule_rule, Rule_name, Rule_group, Rule_keyvalue, Rule_value, Rule_nested_rule, Rule_data_block, Rule_data_block_regular_datablock, Rule_data_block_regular_datablock_key, Rule_data_block_templated_datablock, Rule_quantifier
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -73,7 +73,6 @@ namespace Parser {
 		using ID_data = ::Parser::str_t;
 		using SPACEMODE_data = ::Parser::str_t;
 		using NAME_data = ::Parser::Token;
-		using Rule_QUANTIFIER_data = ::Parser::str_t;
 		using Rule_CSEQUENCE_SYMBOL_data = ::Parser::str_t;
 		using Rule_CSEQUENCE_ESCAPE_data = ::Parser::str_t;
 		using Rule_CSEQUENCE_DIAPASON_data = ::Parser::arr_t<::Parser::any_t>;
@@ -106,6 +105,7 @@ namespace Parser {
 		using AUTO_47_data = ::Parser::str_t;
 		using AUTO_48_data = ::Parser::str_t;
 		using AUTO_49_data = ::Parser::str_t;
+		using AUTO_50_data = ::Parser::str_t;
 		struct cll_if_data {
 			::Parser::Rule block;
 			::Parser::Rule expr;
@@ -141,11 +141,16 @@ namespace Parser {
 			::Parser::Rule left;
 		};
 		struct cll_expr_compare_data {
-			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::arr_t<::Parser::Token>> sequence;
 			::Parser::arr_t<::Parser::Token> operators;
 			::Parser::Rule first;
 		};
 		struct cll_expr_arithmetic_data {
+			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::Token> operators;
+			::Parser::Rule first;
+		};
+		struct cll_expr_term_data {
 			::Parser::arr_t<::Parser::Rule> sequence;
 			::Parser::arr_t<::Parser::Token> operators;
 			::Parser::Rule first;
@@ -210,6 +215,7 @@ namespace Parser {
 			::Parser::Token first_name;
 		};
 		using Rule_data_block_data = ::Parser::Rule;
+		using Rule_quantifier_data = ::Parser::Token;
 		struct Rule_data {
 			::Parser::arr_t<::Parser::Rule> nested_rules;
 			::Parser::Rule data_block;
@@ -231,7 +237,6 @@ namespace Parser {
 		::Parser::Types::ID_data ID(::Parser::Token &token);
 		::Parser::Types::SPACEMODE_data SPACEMODE(::Parser::Token &token);
 		::Parser::Types::NAME_data NAME(::Parser::Token &token);
-		::Parser::Types::Rule_QUANTIFIER_data Rule_QUANTIFIER(::Parser::Token &token);
 		::Parser::Types::Rule_CSEQUENCE_SYMBOL_data Rule_CSEQUENCE_SYMBOL(::Parser::Token &token);
 		::Parser::Types::Rule_CSEQUENCE_ESCAPE_data Rule_CSEQUENCE_ESCAPE(::Parser::Token &token);
 		::Parser::Types::Rule_CSEQUENCE_DIAPASON_data Rule_CSEQUENCE_DIAPASON(::Parser::Token &token);
@@ -261,6 +266,7 @@ namespace Parser {
 		::Parser::Types::AUTO_47_data AUTO_47(::Parser::Token &token);
 		::Parser::Types::AUTO_48_data AUTO_48(::Parser::Token &token);
 		::Parser::Types::AUTO_49_data AUTO_49(::Parser::Token &token);
+		::Parser::Types::AUTO_50_data AUTO_50(::Parser::Token &token);
 		::Parser::Types::cll_if_data cll_if(::Parser::Rule &rule);
 		::Parser::Types::cll_variable_data cll_variable(::Parser::Rule &rule);
 		::Parser::Types::cll_function_body_call_data cll_function_body_call(::Parser::Rule &rule);
@@ -272,6 +278,7 @@ namespace Parser {
 		::Parser::Types::cll_expr_logical_data cll_expr_logical(::Parser::Rule &rule);
 		::Parser::Types::cll_expr_compare_data cll_expr_compare(::Parser::Rule &rule);
 		::Parser::Types::cll_expr_arithmetic_data cll_expr_arithmetic(::Parser::Rule &rule);
+		::Parser::Types::cll_expr_term_data cll_expr_term(::Parser::Rule &rule);
 		::Parser::Types::cll_expr_value_data cll_expr_value(::Parser::Rule &rule);
 		::Parser::Types::cll_expr_group_data cll_expr_group(::Parser::Rule &rule);
 		::Parser::Types::cll_expr_data cll_expr(::Parser::Rule &rule);
@@ -294,6 +301,7 @@ namespace Parser {
 		::Parser::Types::Rule_data_block_regular_datablock_data Rule_data_block_regular_datablock(::Parser::Rule &rule);
 		::Parser::Types::Rule_data_block_templated_datablock_data Rule_data_block_templated_datablock(::Parser::Rule &rule);
 		::Parser::Types::Rule_data_block_data Rule_data_block(::Parser::Rule &rule);
+		::Parser::Types::Rule_quantifier_data Rule_quantifier(::Parser::Rule &rule);
 		::Parser::Types::Rule_data Rule(::Parser::Rule &rule);
 	}
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
@@ -326,13 +334,17 @@ namespace Parser {
 			Token_res BOOLEAN(const char*);
 			Token_res END(const char*);
 			Token_res NEWLINE(const char*);
+			Token_res PLUS(const char*);
+			Token_res MINUS(const char*);
+			Token_res DIVIDE(const char*);
+			Token_res MULTIPLE(const char*);
+			Token_res MODULO(const char*);
 			Token_res LINEAR_COMMENT(const char*);
 			Token_res ID(const char*);
 			Token_res SPACEMODE(const char*);
 			Token_res NAME(const char*);
 			Token_res AT(const char*);
 			Token_res Rule_OP(const char*);
-			Token_res Rule_QUANTIFIER(const char*);
 			Token_res Rule_CSEQUENCE(const char*);
 			Token_res Rule_CSEQUENCE_SYMBOL(const char*);
 			Token_res Rule_CSEQUENCE_ESCAPE(const char*);
@@ -363,6 +375,7 @@ namespace Parser {
 			Token_res AUTO_47(const char*);
 			Token_res AUTO_48(const char*);
 			Token_res AUTO_49(const char*);
+			Token_res AUTO_50(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
 	class Parser : public ISPA_STD::Parser_base<Tokens, Rules> {
@@ -381,6 +394,7 @@ namespace Parser {
 			Rule_res cll_expr_logical(::Parser::TokenFlow::iterator pos);
 			Rule_res cll_expr_compare(::Parser::TokenFlow::iterator pos);
 			Rule_res cll_expr_arithmetic(::Parser::TokenFlow::iterator pos);
+			Rule_res cll_expr_term(::Parser::TokenFlow::iterator pos);
 			Rule_res cll_expr_value(::Parser::TokenFlow::iterator pos);
 			Rule_res cll_expr_group(::Parser::TokenFlow::iterator pos);
 			Rule_res cll_var(::Parser::TokenFlow::iterator pos);
@@ -404,6 +418,7 @@ namespace Parser {
 			Rule_res Rule_data_block_regular_datablock(::Parser::TokenFlow::iterator pos);
 			Rule_res Rule_data_block_regular_datablock_key(::Parser::TokenFlow::iterator pos);
 			Rule_res Rule_data_block_templated_datablock(::Parser::TokenFlow::iterator pos);
+			Rule_res Rule_quantifier(::Parser::TokenFlow::iterator pos);
 	};
 
 } // Parser

@@ -21,7 +21,7 @@ NAME:
 
     data: %2;
 ;
-main: use | Rule | spacemode | NAME;
+main: use | Rule | SPACEMODE | NAME;
 
 use: 
     'use' #unit (',' #unit)*

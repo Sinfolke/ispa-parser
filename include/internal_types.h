@@ -27,3 +27,10 @@ struct lexer_code {
     IR::node_ret_t success_var;
     lexer_code(IR code, IR::node_ret_t success_var) : code(code), success_var(success_var) {}
 };
+struct Conflict {
+    std::vector<Parser::Rule>* lhs_rule;
+    std::vector<Parser::Rule>* rhs_rule;
+    std::vector<Parser::Rule>::iterator lhs_it;
+    std::vector<Parser::Rule>::iterator rhs_it;
+};
+using ConflictsList = std::vector<Conflict>;

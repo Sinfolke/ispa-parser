@@ -502,11 +502,17 @@ private:
         while(pos != tokens->end()) {
             auto res = getRule();
             if (!res.status) {
-                printf("stopped at %ld\n", pos - tokens->begin());
+                // if (!error_controller.empty())
+                //     errors.push_back(error_controller.begin()->second);
+                for (auto el : error_controller) {
+                    printf("Parser: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
+                }
                 break;
+            } else {
+                tree.push_back(res.node);
+                std::advance(pos, res.node.length());
             }
-            tree.push_back(res.node);
-            std::advance(pos, res.node.length());
+            error_controller.clear();
         }
     }
 protected:
@@ -525,11 +531,10 @@ protected:
         return std::distance(prev, pos);
     }
     void reportError(typename TokenFlow<TOKEN_T>::iterator pos, std::string msg) {
-        if (error_controller.count(pos - tokens->begin()))
-            error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), "Expected" + msg};
+        if (error_controller.count(pos - tokens->begin()) == 0)
+            error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
 public:
-    bool parallel_parsing = false;
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 
      * 
@@ -572,6 +577,9 @@ public:
     }
     void clearInput() {
         tokens = nullptr;
+    }
+    auto getErrors() {
+        return errors;
     }
     /**
      * @brief Parser the tokens and get the tree

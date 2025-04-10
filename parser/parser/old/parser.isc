@@ -5,6 +5,12 @@ spacemode mixed;
 END: [;\n];
 STRICT_END: ';';
 NEWLINE: [\n];
+
+PLUS:     '+';
+MINUS:    '-';
+DIVIDE:   '/';
+MULTIPLE: '*';
+MODULO:   '%';
 LINEAR_COMMENT:
     '//' [^\n]
 ;
