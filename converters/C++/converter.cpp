@@ -515,7 +515,7 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
     case IR::types::EXIT:
         out << "return {};";
         break;
-    case IR::types::ERROR:
+    case IR::types::ERR:
         out << "reportError(pos, \"";
         for (auto &c : std::any_cast<std::string>(mem.value)) {
             out << getCharFromEscapedAsStr(c, true);

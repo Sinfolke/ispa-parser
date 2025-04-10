@@ -785,7 +785,7 @@ lexer_code Tree::getCodeForLexer(use_place_t use_places, const IR &ir) {
 
     // auto rule_data = std::any_cast<obj_t>(rule.data);
     // auto new_rule_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(rule_data, "rule"))[0];
-    IR code(tree, rule_op2);
+    IR code(this->tree, rule_op2);
     code.setIsToken(true);
     auto success_var = code.makeIR();
     code.push_begin({IR::types::TOKEN});

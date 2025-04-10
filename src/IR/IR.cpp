@@ -4,6 +4,11 @@
 #include <corelib.h>
 #include <parser.h>
 #include <cpuf/hex.h>
+IR::IR(const Parser::Tree &tree) : tree(&tree) {}
+IR::IR(const Parser::Tree *tree) : tree(tree) {}
+IR::IR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules) : tree(&tree), rules(&rules) {}
+IR::IR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules) : tree(tree), rules(&rules) {}
+IR::IR(IR& ir) : tree(ir.tree), data(std::move(ir.data)) {}
 // a structure used to cout
 void IR::add(IR &repr) {
     data.insert(data.end(), repr.data.begin(), repr.data.end());
@@ -242,7 +247,7 @@ IR::variable IR::createSuccessVariable() {
 void IR::addPostLoopCheck(const Parser::Rule &rule, const IR::variable &var, bool addError) {
     std::vector<IR::member> block = {{ IR::types::EXIT }};
     if (addError && !isFirst) {
-        block.insert(block.begin(), { IR::types::ERROR, getErrorName(rule)});
+        block.insert(block.begin(), { IR::types::ERR, getErrorName(rule)});
     }
     IR::condition check_cond = {
         { 
@@ -387,7 +392,7 @@ IR::variable IR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::
             // add exit statement
             std::vector<IR::member> blk = {{IR::types::EXIT}};
             if (!isFirst) {
-                blk.insert(blk.begin(), {IR::types::ERROR, getErrorName(rule)});
+                blk.insert(blk.begin(), {IR::types::ERR, getErrorName(rule)});
             }
             push({IR::types::IF, IR::condition{expr, blk}});
             add(block);
@@ -429,7 +434,7 @@ IR::variable IR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::
             // add exit statement
             std::vector<IR::member> blk = {{IR::types::EXIT}};
             if (!isFirst) {
-                blk.insert(blk.begin(), {IR::types::ERROR, getErrorName(rule)});
+                blk.insert(blk.begin(), {IR::types::ERR, getErrorName(rule)});
             }
             push({IR::types::IF, IR::condition{expr, blk}});
             add(block);
@@ -1685,7 +1690,7 @@ IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifie
     var.type = {IR::var_types::STRING};
     std::vector<IR::member> block = {{IR::types::EXIT}};
     if (!isFirst) {
-        block.insert(block.begin(), {IR::types::ERROR, getErrorName(rule)});
+        block.insert(block.begin(), {IR::types::ERR, getErrorName(rule)});
     }
     auto block_after = createDefaultBlock(var, svar);
     push({IR::types::VARIABLE, var});
@@ -1703,7 +1708,7 @@ IR::node_ret_t IR::process_Rule_any(const Parser::Rule &rule, char quantifier) {
     std::vector<IR::expr> expression;
     std::vector<IR::member> block = {{IR::types::EXIT}};
     if (!isFirst) {
-        block.insert(block.begin(), {IR::types::ERROR, getErrorName(rule)});
+        block.insert(block.begin(), {IR::types::ERR, getErrorName(rule)});
     }
     std::vector<IR::member> block_after = createDefaultBlock(var, svar);
     expression = {

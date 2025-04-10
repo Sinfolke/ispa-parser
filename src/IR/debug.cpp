@@ -401,7 +401,7 @@ void IR::convertMember(const member& mem, std::ostream& out) {
     case types::EXIT:
         out << "return {}";
         break;
-    case types::ERROR:
+    case types::ERR:
         out << "error" << std::any_cast<std::string>(mem.value) << '\n';
         break;
     case types::SKIP_SPACES:

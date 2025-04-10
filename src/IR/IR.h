@@ -5,14 +5,19 @@
 #include <algorithm>
 #include <stack>
 #include <unordered_set>
-#include <exe_export.h>
-class EXPORT IR {
+#include <any>
+#include <vector>
+#include <list>
+#include <unordered_map>
+#include <string>
+#include <utility>
+class IR {
     public:
         enum class types {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
             METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
             ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER, 
-            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERROR
+            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR
         };
         enum class condition_types {
             GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -225,11 +230,12 @@ class EXPORT IR {
         void insertVariablesOnTop(std::list<IR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        IR(const Parser::Tree &tree) : tree(&tree) {}
-        IR(const Parser::Tree *tree) : tree(tree) {}
-        IR(const Parser::Tree &tree, const std::vector<Parser::Rule> &rules) : tree(&tree), rules(&rules) {}
-        IR(const Parser::Tree *tree, const std::vector<Parser::Rule> &rules) : tree(tree), rules(&rules) {}
-        IR(IR &ir) : tree(ir.tree), data(std::move(ir.data)) {}
+        IR(const Parser::Tree &tree);
+        IR(const Parser::Tree *tree);
+        IR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules);
+        IR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules);
+        IR(IR& ir);
+
         // get functions
         auto getData() const -> const std::vector<IR::member>&;
         auto getDataRef() -> std::vector<IR::member>&;
