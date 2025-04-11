@@ -39,6 +39,7 @@ class Tree {
     std::pair<std::vector<std::string>, std::vector<std::string>> getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::string nested_name);
     use_prop_t get_use_data(const Parser::Rule &use);
     void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &use_places, std::vector<std::string> &fullname);
+    std::vector<Parser::Rule>* getRuleOtherRules(const Parser::Rule &rule);
     void getUsePlacesTableHelper(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> &fullname);
     void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
     void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);

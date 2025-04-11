@@ -33,8 +33,8 @@ namespace corelib {
             return false;
         }
         template<typename T>
-        T get(std::unordered_map<const char*, T> map, const char* key) {
-            for (const auto& pair : map) {
+        T& get(std::unordered_map<const char*, T> &map, const char* key) {
+            for (auto& pair : map) {
                 if (!strcmp(pair.first, key))
                     return pair.second;
             }

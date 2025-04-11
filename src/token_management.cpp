@@ -451,27 +451,27 @@ namespace Tokens {
 
         return where;
     }
-    Parser::Rule find_token_in_tree(const Parser::Tree &tree, std::vector<std::string> names) {
+    Parser::Rule* find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos) {
         if (names.empty())
-            return {};
-        for (const auto &member : tree) {
+            return nullptr;
+        for (auto &member : tree) {
             if (member.name != Parser::Rules::Rule)
                 continue;
-            auto data = std::any_cast<obj_t>(member.data);
-            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-            auto name_str = std::any_cast<std::string>(name.data);
-            auto nested_name = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+            auto &data = std::any_cast<obj_t&>(member.data);
+            auto &name = std::any_cast<Parser::Rule&>(corelib::map::get(data, "name"));
+            auto &name_str = std::any_cast<std::string&>(name.data);
+            auto &nested_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "nestedRules"));
             //cpuf::printf("comparing %s with %s\n", std::any_cast<std::string>(name.data), std::any_cast<std::string>(id.data));
-            if (name_str == names[0]) {
-                if (names.size() == 1) {
-                    return member;
+            if (name_str == names[pos]) {
+                if (pos == names.size() - 1) {
+                    return &member;
                 }
-                names.erase(names.begin());
-                return find_token_in_tree(nested_name, names);
+                pos++;
+                return find_token_in_tree(nested_rules, names, pos);
             }
         }
         cpuf::printf("Not found: %$\n", names);
-        return {};
+        return nullptr;
     }
 
 }

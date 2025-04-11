@@ -41,5 +41,5 @@ namespace Tokens {
     bool compare_rules(const std::vector<Parser::Rule> &first, const std::vector<Parser::Rule> &second);
     bool compare_token_with_rules(const Parser::Tree &first, const Parser::Tree &second);
     std::vector<int> find_token_in_rule(const Parser::Tree &token_rule, const Parser::Tree &rules);
-    Parser::Rule find_token_in_tree(const Parser::Tree &tree, std::vector<std::string> names);
+    Parser::Rule* find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos = 0);
 }

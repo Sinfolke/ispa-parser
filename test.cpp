@@ -25,4 +25,7 @@ int main() {
     for (auto error : parser_errors) {
         printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }
+    for (auto member : tree) {
+        printf("name: %s\n", Parser::RulesToString(member.name()).c_str());
+    }
 }

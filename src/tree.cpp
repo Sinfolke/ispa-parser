@@ -403,11 +403,11 @@ bool Tree::sortPriority(Parser::Rule first, Parser::Rule second) {
         auto second_data = std::any_cast<rule_other>(second.data);
         auto first_token = Tokens::find_token_in_tree(tree, first_data.fullname);
         auto second_token = Tokens::find_token_in_tree(tree, second_data.fullname);
-        if (!first_token.data.has_value() || !second_token.data.has_value()) {
+        if (first_token == nullptr || second_token == nullptr || !first_token->data.has_value() || !second_token->data.has_value()) {
             return 0;
         }
-        auto first_token_data = std::any_cast<obj_t>(first_token.data);
-        auto second_token_data = std::any_cast<obj_t>(second_token.data);
+        auto first_token_data = std::any_cast<obj_t>(first_token->data);
+        auto second_token_data = std::any_cast<obj_t>(second_token->data);
 
         auto first_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_token_data, "rule"));
         auto second_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_token_data, "rule"));
@@ -471,10 +471,10 @@ bool Tree::sortPriority(Parser::Rule first, Parser::Rule second) {
     if (first.name == Parser::Rules::Rule_other) {
         auto first_data = std::any_cast<rule_other>(first.data);
         auto first_token = Tokens::find_token_in_tree(tree, first_data.fullname);
-        if (!first_token.data.has_value()) {
+        if (first_token == nullptr || !first_token->data.has_value()) {
             return 0;
         }
-        auto first_token_data = std::any_cast<obj_t>(first_token.data);
+        auto first_token_data = std::any_cast<obj_t>(first_token->data);
         auto first_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_token_data, "rule"));
 
         auto first_rules_data = std::any_cast<obj_t>(first_rules[0].data);
@@ -483,10 +483,10 @@ bool Tree::sortPriority(Parser::Rule first, Parser::Rule second) {
     } else if (second.name == Parser::Rules::Rule_other) {
         auto second_data = std::any_cast<rule_other>(second.data);
         auto second_token = Tokens::find_token_in_tree(tree, second_data.fullname);
-        if (!second_token.data.has_value()) {
+        if (second_token == nullptr || !second_token->data.has_value()) {
             return 0;
         }
-        auto second_token_data = std::any_cast<obj_t>(second_token.data);
+        auto second_token_data = std::any_cast<obj_t>(second_token->data);
         auto second_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_token_data, "rule"));
 
         auto second_rules_data = std::any_cast<obj_t>(second_rules[0].data);
@@ -793,66 +793,182 @@ lexer_code Tree::getCodeForLexer(use_place_t use_places, const IR &ir) {
     code.optimizeIR();
     return {code, success_var[0]};
 }
+std::vector<Parser::Rule>* Tree::getRuleOtherRules(const Parser::Rule &rule) {
+    auto data = std::any_cast<rule_other>(rule.data);
+    auto *token = Tokens::find_token_in_tree(tree, data.fullname);
+    if (token == nullptr)
+        return nullptr;
+    auto &token_data = std::any_cast<obj_t&>(token->data);
+    auto &rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(token_data, "rule"));
+    return &rules;
+}
 void Tree::getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &conflict_list) {
     if (rules.empty())
         return;
-    for (auto it = rules.begin(); it != rules.end() - 1; it++) {
-        auto current_rule_rule = *it;
-        auto next_rule_rule = *(it + 1);
-        Parser::Rule current, next;
-        if (current_rule_rule.name == Parser::Rules::Rule_rule) {
-            auto data = std::any_cast<obj_t>(current_rule_rule.data);
-            current = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-        }
-        if (next_rule_rule.name == Parser::Rules::Rule_rule) {
-            auto data = std::any_cast<obj_t>(next_rule_rule.data);
-            next = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-        }
-        if (current.name != Parser::Rules::Rule_other || next.name != Parser::Rules::Rule_other)
-            continue;
-        
-        auto current_data = std::any_cast<rule_other>(current.data);
-        auto next_data = std::any_cast<rule_other>(next.data);
-        auto current_rule = Tokens::find_token_in_tree(tree, current_data.fullname);
-        auto next_rule = Tokens::find_token_in_tree(tree, next_data.fullname);
 
-        auto current_rule_data = std::any_cast<obj_t>(current_rule.data);
-        auto current_rule_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(current_rule_data, "rule"));
-        auto next_rule_data = std::any_cast<obj_t>(next_rule.data);
-        auto next_rule_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(next_rule_data, "rule"));
-        if (current_rule_rules.empty() || next_rule_rules.empty())
-            continue;
-        
-        if (!Tokens::compare_rule(current_rule_rules[0], next_rule_rules[0]))
-            continue;
-        
-        std::vector<Parser::Rule>::iterator current_rule_it = current_rule_rules.begin();
-        std::vector<Parser::Rule>::iterator next_rule_it = next_rule_rules.begin();
-        if (current_rule_rules.size() > next_rule_rules.size())
-            continue; // first rule is bigger next, no conflicts possible
-        while (current_rule_it != current_rule_rules.end() && next_rule_it != next_rule_rules.end() && Tokens::compare_rule(*current_rule_it, *next_rule_it))
-        {
-            ++current_rule_it;
-            ++next_rule_it;
+    for (auto it = rules.begin(); it != rules.end() - 1; it++) {
+        const auto& current_rule_rule = *it;
+        bool optional_quantifier = true;
+        for (auto next_it = it + 1; next_it != rules.end() && optional_quantifier; next_it++) {
+            Parser::Rule current, next;
+            const auto& next_rule_rule = *next_it;
+            if (current_rule_rule.name == Parser::Rules::Rule_rule) {
+                auto data = std::any_cast<obj_t>(current_rule_rule.data);
+                current = std::any_cast<Parser::Rule&>(corelib::map::get(data, "val"));
+
+            }
+            if (next_rule_rule.name == Parser::Rules::Rule_rule) {
+                auto data = std::any_cast<obj_t>(next_rule_rule.data);
+                next = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+                auto quantifier_rule = std::any_cast<Parser::Rule>(corelib::map::get(data, "qualifier"));
+                auto quantifier_char = '\0';
+                if (quantifier_rule.data.has_value()) {
+                    quantifier_char = std::any_cast<char>(quantifier_rule.data);
+                }
+                optional_quantifier = quantifier_char == '?' || quantifier_char == '*';
+            }
+            if (current.name != Parser::Rules::Rule_other || next.name != Parser::Rules::Rule_other)
+                break;
+            auto& current_data = std::any_cast<rule_other&>(current.data);
+            auto& next_data = std::any_cast<rule_other&>(next.data);
+            cpuf::printf("%$ with %$\n", current_data.fullname, next_data.fullname);
+            auto current_rule = Tokens::find_token_in_tree(tree, current_data.fullname);
+            auto next_rule = Tokens::find_token_in_tree(tree, next_data.fullname);
+            if (current_rule == nullptr || next_rule == nullptr)
+                continue;
+            auto& current_rule_data = std::any_cast<obj_t&>(current_rule->data);
+            auto& next_rule_data = std::any_cast<obj_t&>(next_rule->data);
+    
+            auto current_rule_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(current_rule_data, "rule"));
+            auto next_rule_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(next_rule_data, "rule"));
+    
+            if (current_rule_rules.empty() || next_rule_rules.empty())
+                continue;
+            // cpuf::printf("current_rule: \n");
+            // for (auto rule : current_rule_rules) {
+            //     auto data = std::any_cast<obj_t>(rule.data);
+            //     auto currentx = std::any_cast<Parser::Rule&>(corelib::map::get(data, "val"));
+            //     cpuf::printf("\t%s",Parser::RulesToString(currentx.name));
+            //     if (currentx.name == Parser::Rules::Rule_other) {
+            //         auto other = std::any_cast<rule_other>(currentx.data);
+            //         cpuf::printf(": %$\n", other.fullname);
+            //     }
+            //     cpuf::printf("\n");
+            // }
+            // cpuf::printf("next_rule: \n");
+            // for (auto rule : next_rule_rules) {
+            //     auto data = std::any_cast<obj_t>(rule.data);
+            //     auto currentx = std::any_cast<Parser::Rule&>(corelib::map::get(data, "val"));
+            //     cpuf::printf("\t%s",Parser::RulesToString(currentx.name));
+            //     if (currentx.name == Parser::Rules::Rule_other) {
+            //         auto other = std::any_cast<rule_other>(currentx.data);
+            //         cpuf::printf(": %$\n", other.fullname);
+            //     }
+            //     cpuf::printf("\n");
+            // }
+            // continue;
+            if (!Tokens::compare_rule(current_rule_rules[0], next_rule_rules[0])) {
+                Parser::Rule currentx, nextx;
+                if (current_rule_rules[0].name == Parser::Rules::Rule_rule) {
+                    auto data = std::any_cast<obj_t>(current_rule_rules[0].data);
+                    currentx = std::any_cast<Parser::Rule&>(corelib::map::get(data, "val"));
+
+                }
+                if (next_rule_rules[0].name == Parser::Rules::Rule_rule) {
+                    auto data = std::any_cast<obj_t>(next_rule_rules[0].data);
+                    nextx = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+                }
+                cpuf::printf("current_rule_rules[0]: %s, next_rule_rules[0]: %s\n", Parser::RulesToString(currentx.name), Parser::RulesToString(nextx.name));
+                cpuf:printf("First Compare unsucess\n");
+                continue;
+            }
+    
+            using iterator = std::vector<Parser::Rule>::iterator;
+            struct point { iterator pos, end; };
+    
+            std::stack<point> current_rule_stack;
+            std::stack<point> next_rule_stack;
+    
+            std::stack<std::vector<Parser::Rule>*> current_rule_vector_stack;
+            std::stack<std::vector<Parser::Rule>*> next_rule_vector_stack;
+    
+            current_rule_stack.push({current_rule_rules.begin() + 1, current_rule_rules.end()});
+            next_rule_stack.push({next_rule_rules.begin() + 1, next_rule_rules.end()});
+    
+            bool conflict_found = false, success_rule_found = true;
+    
+            while (true) {
+                if (current_rule_stack.top().pos == current_rule_stack.top().end) {
+                    if (current_rule_stack.size() > 1) {
+                        current_rule_vector_stack.pop();
+                        current_rule_stack.pop();
+                        continue;
+                    } else break;
+                }
+                if (next_rule_stack.top().pos == next_rule_stack.top().end) {
+                    if (next_rule_stack.size() > 1) {
+                        next_rule_vector_stack.pop();
+                        next_rule_stack.pop();
+                        continue;
+                    } else break;
+                }
+    
+                auto current_it = current_rule_stack.top().pos++;
+                auto next_it = next_rule_stack.top().pos++;
+    
+                auto& first_data = std::any_cast<obj_t&>(current_it->data);
+                auto& second_data = std::any_cast<obj_t&>(next_it->data);
+    
+                auto& first_data_rule = std::any_cast<Parser::Rule&>(corelib::map::get(first_data, "val"));
+                auto& second_data_rule = std::any_cast<Parser::Rule&>(corelib::map::get(second_data, "val"));
+    
+                if (first_data_rule.name == Parser::Rules::Rule_other) {
+                    auto *rule = getRuleOtherRules(first_data_rule);
+                    if (rule == nullptr) {
+                        success_rule_found = false;
+                        break;
+                    }
+                    current_rule_vector_stack.push(rule);
+                    current_rule_stack.push({current_rule_vector_stack.top()->begin(), current_rule_vector_stack.top()->end()});
+                }
+                if (second_data_rule.name == Parser::Rules::Rule_other) {
+                    auto *rule = getRuleOtherRules(second_data_rule);
+                    if (rule == nullptr) {
+                        success_rule_found = false;
+                        break;
+                    }
+                    next_rule_vector_stack.push(rule);
+                    next_rule_stack.push({next_rule_vector_stack.top()->begin(), next_rule_vector_stack.top()->end()});
+                }
+    
+                if (!Tokens::compare_rule(*current_it, *next_it)) {
+                    conflict_found = true;
+                    break;
+                }
+            }
+            if (!success_rule_found || !conflict_found)
+                break;
+    
+            conflict_list.push_back({ current_rule_vector_stack.top(), next_rule_vector_stack.top(), current_rule_stack.top().pos, next_rule_stack.top().pos });
         }
-        if (next_rule_it == next_rule_rules.end())
-            continue;   // same rules
-        conflict_list.push_back({&current_rule_rules, &next_rule_rules, current_rule_it, next_rule_it});
+
     }
 }
 void Tree::resolveConflictsHelper(const std::vector<Parser::Rule> &rules) {
     ConflictsList conflict_list;
+    cpuf::printf("In resolve conflicts helper\n");
     getConflictsTableForRule(rules, conflict_list);
+    cpuf::printf("conflicts_list_size: %$\n", conflict_list.size());
     for (auto [lhs_rule_p, rhs_rule_p, lhs_it, rhs_it] : conflict_list) {
         lhs_rule_p->insert(lhs_it, Tokens::make_rule(Parser::Rules::Rule_not, *rhs_it));
     }
 }
 void Tree::resolveConflicts(Parser::Tree &tree) {
-    for (auto node : tree) {
-        if (node.name != Parser::Rules::Rule)
+    for (auto member : tree) {
+        if (member.name != Parser::Rules::Rule)
             continue;
         
-        auto data = std::any_cast<obj_t>(node.data);
+        auto data = std::any_cast<obj_t>(member.data);
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
         auto name_str = std::any_cast<std::string>(name.data);
         auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
