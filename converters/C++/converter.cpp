@@ -32,44 +32,7 @@ static std::string format_str(std::string str) {
     }
     return res;
 }
-static std::string getCharFromEscaped(char in, bool string) {
-    if (in == '"')
-        return string ? "\\\"" : "\"";
-    if (in == '\'')
-        return string ? "'" : "\\'";
-    switch (in)
-    {
-    case '\n': return "\\n";  // Newline
-    case '\r': return "\\r";  // Carriage return
-    case '\t': return "\\t";  // Horizontal tab
-    case '\a': return "\\a";  // Bell (alert)
-    case '\b': return "\\b";  // Backspace
-    case '\f': return "\\f";  // Form feed (new page)
-    case '\v': return "\\v";  // Vertical tab
-    case '\\': return "\\\\";   // Backslash
-    case '\0': return "\\0";  // end of string
-    default: return std::string(1, in);      // Return the character itself if not an escape sequence
-    }
-}
-static std::string getCharFromEscapedAsStr(char in, bool string) {
-    if (in == '"')
-        return string ? "\\\"" : "\"";
-    if (in == '\'')
-        return string ? "'" : "\\'";
-    switch (in)
-    {
-    case '\n': return "n";  // Newline
-    case '\r': return "r";  // Carriage return
-    case '\t': return "t";  // Horizontal tab
-    case '\a': return "a";  // Bell (alert)
-    case '\b': return "b";  // Backspace
-    case '\f': return "f";  // Form feed (new page)
-    case '\v': return "v";  // Vertical tab
-    case '\\': return "\\";   // Backslash
-    case '\0': return "0";  // end of string
-    default: return std::string(1, in);      // Return the character itself if not an escape sequence
-    }
-}
+
 std::string Converter::convert_var_type(IR::var_types type, std::vector<IR::var_type> data) {
     if (type == IR::var_types::ARRAY) {
         if (data.empty())
@@ -238,7 +201,7 @@ std::string Converter::convert_var_assing_types(IR::var_assign_types value) {
 std::string Converter::conditionTypesToString(IR::condition_types type, std::any data) {
     if (type == IR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
-        return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
+        return std::string("'") + corelib::text::getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
     } else if (type == IR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
@@ -518,7 +481,7 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
     case IR::types::ERR:
         out << "reportError(pos, \"";
         for (auto &c : std::any_cast<std::string>(mem.value)) {
-            out << getCharFromEscapedAsStr(c, true);
+            out << corelib::text::getCharFromEscapedAsStr(c, true);
         }
         out << "\");";
         break;

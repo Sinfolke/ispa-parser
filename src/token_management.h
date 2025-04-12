@@ -3,7 +3,12 @@
 #include <internal_types.h>
 #include <list>
 namespace Tokens {
-    Parser::Rule singleRuleToToken(const Parser::Rule &input);
+    std::vector<Parser::Rule> getValueFromGroup(const Parser::Rule &rule);
+    Parser::Rule getValueFromRule_rule(const Parser::Rule &rule);
+    Parser::Rule getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule &quantifier);
+    bool compare_rule_matching(const Parser::Rule &first, const Parser::Rule &second);
+    bool compare_rule_matching(std::vector<Parser::Rule>::iterator first_it, std::vector<Parser::Rule>::iterator second_it);
+    Parser::Rule singleRuleToToken(const Parser::Rule &input, size_t &count);
     Parser::Rule make_rule();
     Parser::Rule make_rule(Parser::Rules name);
     Parser::Rule make_rule(Parser::Rules name, std::any data);

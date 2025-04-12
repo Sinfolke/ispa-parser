@@ -91,6 +91,44 @@ namespace corelib::text {
             c = tolower(c);
         return str; 
     }
+    std::string getCharFromEscaped(char in, bool string) {
+        if (in == '"')
+            return string ? "\\\"" : "\"";
+        if (in == '\'')
+            return string ? "'" : "\\'";
+        switch (in)
+        {
+        case '\n': return "\\n";  // Newline
+        case '\r': return "\\r";  // Carriage return
+        case '\t': return "\\t";  // Horizontal tab
+        case '\a': return "\\a";  // Bell (alert)
+        case '\b': return "\\b";  // Backspace
+        case '\f': return "\\f";  // Form feed (new page)
+        case '\v': return "\\v";  // Vertical tab
+        case '\\': return "\\\\";   // Backslash
+        case '\0': return "\\0";  // end of string
+        default: return std::string(1, in);      // Return the character itself if not an escape sequence
+        }
+    }
+    std::string getCharFromEscapedAsStr(char in, bool string) {
+        if (in == '"')
+            return string ? "\\\"" : "\"";
+        if (in == '\'')
+            return string ? "'" : "\\'";
+        switch (in)
+        {
+        case '\n': return "n";  // Newline
+        case '\r': return "r";  // Carriage return
+        case '\t': return "t";  // Horizontal tab
+        case '\a': return "a";  // Bell (alert)
+        case '\b': return "b";  // Backspace
+        case '\f': return "f";  // Form feed (new page)
+        case '\v': return "v";  // Vertical tab
+        case '\\': return "\\";   // Backslash
+        case '\0': return "0";  // end of string
+        default: return std::string(1, in);      // Return the character itself if not an escape sequence
+        }
+    }
 }
 namespace corelib::text {
     std::string join(const std::vector<std::string> &elements, const std::string &delimiter) {

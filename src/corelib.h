@@ -22,6 +22,8 @@ namespace corelib {
         std::string ToUpper(std::string str);
         std::string ToLower(std::string str);
         std::string join(const std::vector<std::string> &elements, const std::string &delimiter);
+        std::string getCharFromEscaped(char in, bool string);
+        std::string getCharFromEscapedAsStr(char in, bool string);
     }
     namespace map {
         template<typename T>

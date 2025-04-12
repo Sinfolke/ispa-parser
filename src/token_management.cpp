@@ -7,11 +7,25 @@
 #include <any>
 #include <list>
 #include <forward_list>
-
-static size_t count = 0;
-
 namespace Tokens {
-    ::Parser::Rule singleRuleToToken(const Parser::Rule &input) {
+    std::vector<Parser::Rule> getValueFromGroup(const Parser::Rule &rule) {
+        if (!rule.data.has_value())
+            return {};
+        auto data = std::any_cast<obj_t>(rule.data);
+        auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
+        return val;
+    }
+    Parser::Rule getValueFromRule_rule(const Parser::Rule &rule) {
+        auto data = std::any_cast<obj_t>(rule.data);
+        return std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+    }
+    Parser::Rule getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule &quantifier) {
+        auto data = std::any_cast<obj_t>(rule.data);
+        quantifier = std::any_cast<Parser::Rule>(corelib::map::get(data, "qualifier"));
+        return std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+    }
+
+    ::Parser::Rule singleRuleToToken(const Parser::Rule &input, size_t &count) {
         // Construct a token here
         ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 
             obj_t {
@@ -39,7 +53,6 @@ namespace Tokens {
                 { "qualifier", Parser::Rule() }
             }
         )};
-
         obj_t data {
             { "name", make_rule(Parser::Rules::id, std::string("AUTO_") + std::to_string(count++)) },
             { "rule", rule },
@@ -58,9 +71,82 @@ namespace Tokens {
     Parser::Rule make_rule(Parser::Rules name, std::any data) {
         return {0, nullptr, nullptr, name, data};
     };
+    bool compare_rule_matching(const Parser::Rule &first, const Parser::Rule &second) {
+        if (first.name == Parser::Rules::Rule_op && second.name == Parser::Rules::Rule_op) {
+            auto first_options = std::any_cast<std::vector<Parser::Rule>>(first.data);
+            auto second_options = std::any_cast<std::vector<Parser::Rule>>(second.data);
+
+            for (auto &opt1 : first_options) {
+                for (auto &opt2 : second_options) {
+                    if (!compare_rule_matching(opt1, opt2))
+                        return false;
+                }
+            }
+            return true;
+        }
+        switch (first.name)
+        {
+            case Parser::Rules::Rule_op:
+            {
+                if (!first.data.has_value())
+                    return false;
+                auto options = std::any_cast<std::vector<Parser::Rule>>(first.data);
+                for (auto &rule : options) {
+                    if (!compare_rule_matching(rule, second))
+                        return false;
+                }
+                return true;
+            }
+            case Parser::Rules::Rule_group:
+            {
+                if (!first.data.has_value())
+                    return false;
+                
+                auto data = std::any_cast<obj_t>(first.data);
+                auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
+                if (val.size() > 1)
+                    return false;
+                
+                return compare_rule_matching(val[0], second);
+            }
+        }
+        if (second.name == Parser::Rules::Rule_op || second.name == Parser::Rules::Rule_group) {
+            return compare_rule_matching(second, first);
+        } else {
+            return compare_rule(first, second);
+        }
+    }
+    bool compare_rule_matching(std::vector<Parser::Rule>::iterator first_it, std::vector<Parser::Rule>::iterator second_it) {
+        Parser::Rule first, second;
+        if (first_it->name == Parser::Rules::Rule_rule) {
+            auto rule1 = std::any_cast<obj_t&>(first_it->data);
+            first = std::any_cast<Parser::Rule&>(corelib::map::get(rule1, "val"));
+        } else first = *first_it;
+        if (second_it->name == Parser::Rules::Rule_rule) {
+            auto rule1 = std::any_cast<obj_t&>(second_it->data);
+            second = std::any_cast<Parser::Rule&>(corelib::map::get(rule1, "val"));
+        } else second = *second_it;
+        return compare_rule_matching(first, second);
+    }
     bool compare_rule(const Parser::Rule &first, const Parser::Rule &second) {
-        if (first.name != second.name)
+
+        if (first.name != second.name) {
+            // group
+            if (first.name == Parser::Rules::Rule_group) {
+                auto values = getValueFromGroup(first);
+                if (values.size() > 1)
+                    return false;
+                return compare_rule(values[0], second);
+            } else if (second.name == Parser::Rules::Rule_group) {
+                auto values = getValueFromGroup(second);
+                if (values.size() > 1)
+                    return false;
+                return compare_rule(first, values[0]);
+            }
+
+            
             return false;
+        }
         switch (first.name)
         {
             case Parser::Rules::string:
