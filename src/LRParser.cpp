@@ -63,65 +63,25 @@ LRParser::InitialItemSet LRParser::construct_initial_item_set() {
     construct_initial_item_set(tree->getRawTree(), initial_item_set, fullname);
     return initial_item_set;
 }
-void LRParser::constructFirstSet(std::vector<std::string> name, const std::vector<Parser::Rule>& rules) {
+std::vector<std::vector<std::string>> LRParser::constructFirstSet(const std::vector<Parser::Rule>& rules, size_t pos) {
 
     if (rules.empty())
-        return;
-
-    bool changed = true;
-    while (changed) {
-        changed = false;
-
-        for (auto rule : rules) {
-            std::vector<Parser::Rule> sequence;
-
-            // Extract full RHS sequence
-            if (rule.name == Parser::Rules::Rule_rule) {
-                sequence = {Tokens::getValueFromRule_rule(rule)};
-            } else {
-                sequence = {rule};
-            }
-
-            bool nullable = true;
-
-            for (auto &symbol : sequence) {
-                if (symbol.name == Parser::Rules::Rule_rule) {
-                    symbol = Tokens::getValueFromRule_rule(symbol);
-                }
-
-                auto ro = std::any_cast<rule_other>(symbol.data);
-                std::string sym_name = corelib::text::join(ro.fullname, "_");
-                std::string lhs_name = corelib::text::join(name, "_");
-
-                if (!corelib::text::isUpper(ro.name)) {
-                    // Terminal: add to FIRST(lhs)
-                    if (first[lhs_name].insert(ro.name).second)
-                        changed = true;
-                    nullable = false;
-                    break;
-                } else {
-                    // Non-terminal: add its FIRST (excluding ε)
-                    for (const auto &item : first[sym_name]) {
-                        if (item != "ε") {
-                            if (first[lhs_name].insert(item).second)
-                                changed = true;
-                        }
-                    }
-
-                    // If this symbol cannot derive ε, break
-                    if (first[sym_name].count("ε") == 0) {
-                        nullable = false;
-                        break;
-                    }
-                }
-            }
-
-            // If all symbols are nullable, add ε
-            if (nullable) {
-                if (first[corelib::text::join(name, "_")].insert("ε").second)
-                    changed = true;
-            }
-        }
+        return {{"ε"}};
+    Parser::Rule first_rule_rule;
+    if (rules[pos].name == Parser::Rules::Rule_rule) {
+        first_rule_rule = Tokens::getValueFromRule_rule(rules[pos]);
+    } else first_rule_rule = rules[0];
+    auto first_ro = std::any_cast<rule_other>(first_rule_rule.data);
+    if (corelib::text::isUpper(first_ro.name)) {
+        // terminal
+        return {first_ro.fullname};
+    } else {
+        auto rule_data = Tokens::find_token_in_tree(tree->getRawTree(), first_ro.fullname);
+        if (rule_data == nullptr)
+            throw Error("Failed construct FirstSet: non-terminal not found\n");
+        auto data = std::any_cast<obj_t>(rule_data->data);
+        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
+        return constructFirstSet(rules);
     }
 }
 
@@ -138,7 +98,8 @@ void LRParser::constructFirstSet(Parser::Tree &tree, std::vector<std::string> &f
         if (corelib::text::isUpper(name_str) && name_str != "S'")
             continue;
         fullname.push_back(name_str);
-        constructFirstSet(fullname, rules);
+        auto f = constructFirstSet(rules);
+        first[corelib::text::join(fullname, "_")] = f;
         fullname.pop_back();
     }
 }
@@ -146,83 +107,17 @@ void LRParser::constructFirstSet() {
     std::vector<std::string> fullname;
     constructFirstSet(tree->getRawTree(), fullname);
 }
-void LRParser::constructFollowSet(std::vector<std::string> name, const std::vector<Parser::Rule>& rules) {
+void LRParser::constructFollowSet(std::vector<std::string> &name, const std::vector<Parser::Rule>& rules) {
     if (rules.empty())
         return;
-
-    bool changed = true;
-    while (changed) {
-        changed = false;
-
-        for (auto rule : rules) {
-            std::vector<Parser::Rule> sequence;
-
-            // Extract full sequence of symbols in RHS
-            if (rule.name == Parser::Rules::Rule_rule) {
-                sequence = {Tokens::getValueFromRule_rule(rule)};
-            } else {
-                sequence = {rule};
-            }
-
-            for (size_t i = 0; i < sequence.size(); ++i) {
-                Parser::Rule current_rule = sequence[i];
-                if (current_rule.name == Parser::Rules::Rule_rule) {
-                    current_rule = Tokens::getValueFromRule_rule(current_rule);
-                }
-
-                auto current_symbol = std::any_cast<rule_other>(current_rule.data);
-
-                // Only process non-terminals
-                if (!corelib::text::isUpper(current_symbol.name))
-                    continue;
-
-                std::string curr_name = corelib::text::join(current_symbol.fullname, "_");
-
-                bool nullable = true;
-
-                // Process all symbols following current_symbol
-                for (size_t j = i + 1; j < sequence.size(); ++j) {
-                    Parser::Rule next_rule = sequence[j];
-                    if (next_rule.name == Parser::Rules::Rule_rule) {
-                        next_rule = Tokens::getValueFromRule_rule(next_rule);
-                    }
-
-                    auto next_symbol = std::any_cast<rule_other>(next_rule.data);
-                    std::string next_name = corelib::text::join(next_symbol.fullname, "_");
-
-                    if (!corelib::text::isUpper(next_symbol.name)) {
-                        if (follow[curr_name].insert(next_symbol.name).second)
-                            changed = true;
-                        nullable = false;
-                        break;
-                    } else {
-                        for (const auto &item : first[next_name]) {
-                            if (item != "ε" && follow[curr_name].insert(item).second)
-                                changed = true;
-                        }
-
-                        if (first[next_name].count("ε") == 0) {
-                            nullable = false;
-                            break;
-                        }
-                    }
-                }
-
-                // If nothing follows or everything that follows is nullable
-                if (nullable) {
-                    std::string lhs_name = corelib::text::join(name, "_");
-                    for (const auto &item : follow[lhs_name]) {
-                        if (follow[curr_name].insert(item).second)
-                            changed = true;
-                    }
-                }
-            }
-        }
-    }
+    follow[corelib::text::join(name, "_")] = constructFirstSet(rules, 1)[0];
 }
 
-void LRParser::constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname) {
-    follow["S'"].insert("$");  // Add $ to FOLLOW(S')
+void LRParser::constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::string> &nonterminals) {
+    follow["S'"].push_back("$");  // Add $ to FOLLOW(S')
+    for (auto nonterminal : nonterminals) {
+        follow[nonterminal] = {"ε"};
+    }
     for (auto &member : tree) {
         if (member.name != Parser::Rules::Rule)
             continue;
@@ -246,9 +141,9 @@ void LRParser::constructFollowSet(Parser::Tree &tree, std::vector<std::string> &
     }
 }
 
-void LRParser::constructFollowSet() {
+void LRParser::constructFollowSet(std::vector<std::string> &nonterminals) {
     std::vector<std::string> fullname;
-    constructFollowSet(tree->getRawTree(), fullname);
+    constructFollowSet(tree->getRawTree(), fullname, nonterminals);
 }
 
 
@@ -383,9 +278,9 @@ void LRParser::build() {
     initial_item_set = construct_initial_item_set();
     canonical_item_set = construct_cannonical_collections_of_items();
     rule_index = 0;
-    constructFirstSet();
-    constructFollowSet();
     auto [tokens, rules] = tree->getTokenAndRuleNames();
+    constructFirstSet();
+    constructFollowSet(rules);
     size_t I = 0;
     for (const auto &item_set : canonical_item_set) {
         for (const auto &rule : item_set) {
@@ -394,7 +289,6 @@ void LRParser::build() {
                 if (rule.lhs == std::vector<std::string>{"S'"} && rule.rhs.size() == 1) {
                     action_table[I]["$"] = Action{Action_type::ACCEPT, 0};
                 } else {
-                    
                     std::string lhs_key = corelib::text::join(rule.lhs, "_");
                     cpuf::printf("follow[%s], size(): %$\n", lhs_key, follow[lhs_key].size());
                     for (const auto& follow_token : follow[lhs_key]) {

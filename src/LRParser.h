@@ -39,8 +39,8 @@ public:
     };
     using CanonicalItem = std::vector<CanonicalEl>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
-    using First = std::unordered_map<std::string, std::unordered_set<std::string>>;
-    using Follow = std::unordered_map<std::string, std::unordered_set<std::string>>;
+    using First = std::unordered_map<std::string, std::vector<std::vector<std::string>>>;
+    using Follow = std::unordered_map<std::string, std::vector<std::string>>;
 private:
     Tree *tree;
     ActionTable action_table;
@@ -56,12 +56,12 @@ private:
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     auto construct_initial_item_set() -> InitialItemSet;
-    void constructFirstSet(std::vector<std::string> name, const std::vector<Parser::Rule>& rules);
+    std::vector<std::vector<std::string>> constructFirstSet(const std::vector<Parser::Rule>& rules, size_t pos = 0);
     void constructFirstSet(Parser::Tree &tree, std::vector<std::string> &fullname);
     void constructFirstSet();
-    void constructFollowSet(std::vector<std::string> name, const std::vector<Parser::Rule>& rules);
-    void constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname);
-    void constructFollowSet();
+    void constructFollowSet(std::vector<std::string> &name, const std::vector<Parser::Rule>& rules);
+    void constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::string> &nonterminals);
+    void constructFollowSet(std::vector<std::string> &nonterminals);
     void create_item_collection(CanonicalItem &closure, const ItemSet &item);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     size_t find_goto_state(const CanonicalItem &item_set, const rule_other &symbol);

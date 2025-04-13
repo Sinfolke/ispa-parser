@@ -1,5 +1,7 @@
 Action Table:
 State Token          Action    Next State
+7     AUTO_0         REDUCE    1         
+6     AUTO_1         REDUCE    2         
 5     NUMBER         SHIFT     1         
 4     NUMBER         SHIFT     6         
 3     AUTO_0         SHIFT     5         
