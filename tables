@@ -1,0 +1,14 @@
+Action Table:
+State Token          Action    Next State
+5     NUMBER         SHIFT     1         
+4     NUMBER         SHIFT     6         
+3     AUTO_0         SHIFT     5         
+2     $              ACCEPT    0         
+1     AUTO_1         SHIFT     4         
+0     NUMBER         SHIFT     1         
+
+Goto Table:
+State Non-Terminal        Next State  
+5     term                7           
+0     term                3           
+0     main                2           

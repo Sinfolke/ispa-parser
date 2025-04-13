@@ -1,19 +1,19 @@
 #include <IR/IR.h>
 #include <cstdint>
 #include <cpuf/printf.h>
-void IR::getVariablesToTable(std::vector<IR::member> &data, size_t &i, std::list<IR::member>& table) {
+void LLIR::getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::list<LLIR::member>& table) {
     for (; i < data.size(); i++) {
         auto el = data[i];
-        if (el.type == IR::types::RULE_END) {
+        if (el.type == LLIR::types::RULE_END) {
             i++;
             return;
         }
-        if (el.type == IR::types::VARIABLE) {
+        if (el.type == LLIR::types::VARIABLE) {
             table.push_back(el);
             data.erase(data.begin() + i);
             i--;
-        } else if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
-            auto block = std::any_cast<IR::condition>(el.value);
+        } else if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
+            auto block = std::any_cast<LLIR::condition>(el.value);
             size_t block_begin = 0;
             size_t else_block_begin = 0;
             getVariablesToTable(block.block, block_begin, table);
@@ -23,23 +23,23 @@ void IR::getVariablesToTable(std::vector<IR::member> &data, size_t &i, std::list
     }
 }
 
-size_t IR::getBegin(size_t& i) {
+size_t LLIR::getBegin(size_t& i) {
     for (;i < data.size(); i++) {
-        if (data[i].type == IR::types::RULE || data[i].type == IR::types::TOKEN) {
+        if (data[i].type == LLIR::types::RULE || data[i].type == LLIR::types::TOKEN) {
             return i + 1;
         }
     }
     return UINT64_MAX;
 }
 
-void IR::insertVariablesOnTop(std::list<IR::member>& table, size_t begin) {
+void LLIR::insertVariablesOnTop(std::list<LLIR::member>& table, size_t begin) {
     for (auto& el : table) {
         data.insert(data.begin() + begin++, el);
     }
 }
 
-void IR::raiseVarsTop() {
-    std::list<IR::member> table;
+void LLIR::raiseVarsTop() {
+    std::list<LLIR::member> table;
 
     for (size_t i = 0; i < data.size(); i++) {
         auto begin = getBegin(i);

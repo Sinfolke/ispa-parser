@@ -5,16 +5,16 @@ class Converter_base {
     protected:
         // data
         use_prop_t use;
-        std::vector<IR::member> data;
+        std::vector<LLIR::member> data;
         std::vector<std::string> tokens;
         std::vector<std::string> rules;
         data_block_t data_block_tokens;
         data_block_t data_block_rules;        
-        IR lexer_code;
-        IR::node_ret_t lexer_code_access_var;
+        LLIR lexer_code;
+        LLIR::node_ret_t lexer_code_access_var;
 
     public:
-        Converter_base(IR &ir, Tree &tree) : lexer_code(tree.getRawTree()) {
+        Converter_base(LLIR &ir, Tree &tree) : lexer_code(tree.getRawTree()) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer(use_places, ir);
             auto [tokens, rules] = tree.getTokenAndRuleNames();

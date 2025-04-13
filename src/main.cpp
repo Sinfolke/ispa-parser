@@ -109,19 +109,25 @@ int main(int argc, char** argv) {
     tree.resolveConflicts();
     auto use = tree.accamulate_use_data_to_map();
 
-    // convert tree into IR
-    IR ir(tree.getRawTree());
-    ir.makeIR();
-    ir.optimizeIR();
-    // Output to file
-    ir.outputIRToFile("output_ir.txt");
-    /*
-        CONVERTION IS GOING HERE
+    // // convert tree into IR
+    // IR ir(tree.getRawTree());
+    // ir.makeIR();
+    // ir.optimizeIR();
+    // // Output to file
+    // ir.outputIRToFile("output_ir.txt");
+    // /*
+    //     CONVERTION IS GOING HERE
 
-    */
-    dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto converter_fun = converter_dlib.loadfun<Converter_base*, IR&, Tree&>("getConverter");
-    auto converter = std::unique_ptr<Converter_base>(converter_fun(ir, tree));
-    converter->outputIR(std::any_cast<std::string>(use["name"].data));
+    // */
+    // dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    // auto converter_fun = converter_dlib.loadfun<Converter_base*, IR&, Tree&>("getConverter");
+    // auto converter = std::unique_ptr<Converter_base>(converter_fun(ir, tree));
+    // converter->outputIR(std::any_cast<std::string>(use["name"].data));
+
+    // IR test
+    LRParser ir(tree);
+    ir.build();
+    ir.printTables("tables");
+    ir.printCanonicalCollection("canonical_collection\n");
     return 0;
 }

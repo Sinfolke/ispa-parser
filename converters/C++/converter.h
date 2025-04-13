@@ -29,22 +29,22 @@ private:
 
     
     // cpp output functions
-    std::string convert_var_type(IR::var_types type, std::vector<IR::var_type> data);
-    std::string convert_var_assing_values(IR::var_assign_values value, std::any data);
-    std::string convert_var_assing_types(IR::var_assign_types value);
-    std::string conditionTypesToString(IR::condition_types type, std::any data);
-    std::string convertFunctionCall(IR::function_call call);
-    std::string convertAssign(IR::assign asgn);
-    void convertVariable(IR::variable var, std::ostringstream &out);
-    std::string convertExpression(std::vector<IR::expr> expression, bool with_braces);
-    void convertBlock(std::vector<IR::member> block, std::ostringstream &out);
-    void convertCondition(IR::condition cond, std::ostringstream &out);
-    void convertAssignVariable(IR::variable_assign var, std::ostringstream &out);
-    std::string convertMethodCall(IR::method_call method);
-    std::string convertDataBlock(IR::data_block dtb);
-    void convertMember(const IR::member& mem, std::ostringstream &out);
-    void convertMembers(const std::vector<IR::member> &members, std::ostringstream &out);
-    void convertLexerCode(const std::vector<IR::member> &members, std::ostringstream &out);
+    std::string convert_var_type(LLIR::var_types type, std::vector<LLIR::var_type> data);
+    std::string convert_var_assing_values(LLIR::var_assign_values value, std::any data);
+    std::string convert_var_assing_types(LLIR::var_assign_types value);
+    std::string conditionTypesToString(LLIR::condition_types type, std::any data);
+    std::string convertFunctionCall(LLIR::function_call call);
+    std::string convertAssign(LLIR::assign asgn);
+    void convertVariable(LLIR::variable var, std::ostringstream &out);
+    std::string convertExpression(std::vector<LLIR::expr> expression, bool with_braces);
+    void convertBlock(std::vector<LLIR::member> block, std::ostringstream &out);
+    void convertCondition(LLIR::condition cond, std::ostringstream &out);
+    void convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out);
+    std::string convertMethodCall(LLIR::method_call method);
+    std::string convertDataBlock(LLIR::data_block dtb);
+    void convertMember(const LLIR::member& mem, std::ostringstream &out);
+    void convertMembers(const std::vector<LLIR::member> &members, std::ostringstream &out);
+    void convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out);
     void printIR(std::ostringstream& out);
     void addHeader(std::ostringstream &out);
     void addTokensToString(std::vector<std::string> tokens, std::ostringstream &out);
@@ -53,7 +53,7 @@ private:
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules);
     void addLexerCode_Header(std::ostringstream &out);
-    void addLexerCode_Bottom(std::ostringstream &out, IR::variable var);
+    void addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var);
 
     // header output functions
     void createLibrary(std::ostringstream& out);
@@ -66,8 +66,8 @@ private:
     void getTypesFromStdlib(std::ostringstream& out);
     void createToStringFunction(std::ostringstream &out);
     void addStandardFunctions(std::ostringstream &out);
-    void convert_inclosed_map(std::ostringstream &out, IR::inclosed_map map);
-    void convert_single_assignment_data(std::ostringstream &out, IR::var_type type, std::string name);
+    void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map);
+    void convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name);
     void write_data_block(std::ostringstream &out, data_block_t dtb);
     void createTypesNamespace(std::ostringstream &out);
     void create_lexer_header(std::ostringstream &out);
@@ -75,7 +75,7 @@ private:
     void create_get_namespace(std::ostringstream &out);
     void outputHeader(std::ostringstream &out);
 public:
-    Converter(IR &ir, Tree &tree) : Converter_base(ir, tree) {}
+    Converter(LLIR &ir, Tree &tree) : Converter_base(ir, tree) {}
     ~Converter() {}
     void outputIR(std::string filename);
 };

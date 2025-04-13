@@ -29,7 +29,7 @@ std::string getCharFromEscaped(char in, bool string) {
     default: return std::string(1, in);      // Return the character itself if not an escape sequence
     }
 }
-std::string IR::convert_var_type(var_types type) {
+std::string LLIR::convert_var_type(var_types type) {
     static const std::unordered_map<var_types, std::string> typesMap = {
         {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
         {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},
@@ -45,7 +45,7 @@ std::string IR::convert_var_type(var_types type) {
 }
 
 
-std::string IR::convert_var_assing_values(var_assign_values value, std::any data) {
+std::string LLIR::convert_var_assing_values(var_assign_values value, std::any data) {
     switch (value) {
         case var_assign_values::STRING:
             //cpuf::printf("on String\n");
@@ -65,7 +65,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         case var_assign_values::VARIABLE:
         {
             //cpuf::printf("on ID\n");
-            auto dt = std::any_cast<IR::variable>(data);
+            auto dt = std::any_cast<LLIR::variable>(data);
             std::string res = dt.name;
             for (auto el : dt.property_access)
                 res += "." + el;
@@ -77,7 +77,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         case var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
-            auto arr = std::any_cast<IR::array>(data);
+            auto arr = std::any_cast<LLIR::array>(data);
             std::string res = "[";
             for (auto &el : arr) {
                 res += convertAssign(el);
@@ -89,7 +89,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         case var_assign_values::OBJECT:
         {
             //cpuf::printf("on object\n");
-            auto obj = std::any_cast<IR::object>(data);
+            auto obj = std::any_cast<LLIR::object>(data);
             std::string res = "{";
             for (auto [key, value] : obj) {
                 res += key;
@@ -107,7 +107,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
             return convertFunctionCall(std::any_cast<function_call>(data));
         case var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false);
+            return convertExpression(std::any_cast<std::vector<LLIR::expr>>(data), false);
         case var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -118,7 +118,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         }
         case var_assign_values::PROPERTY:
         {
-            auto dt = std::any_cast<IR::property>(data);
+            auto dt = std::any_cast<LLIR::property>(data);
             std::string res = dt.obj;
             for (auto el : dt.properties) {
                 res += "." + el;
@@ -137,7 +137,7 @@ std::string IR::convert_var_assing_values(var_assign_values value, std::any data
         default: return "NONE"; // Handle unknown values
     }
 }
-std::string IR::convert_var_assing_types(var_assign_types type) {
+std::string LLIR::convert_var_assing_types(var_assign_types type) {
     switch (type) {
         case var_assign_types::ASSIGN:    return "=";
         case var_assign_types::ADD:       return "+=";
@@ -148,7 +148,7 @@ std::string IR::convert_var_assing_types(var_assign_types type) {
         default: return "="; // Handle unknown values
     }
 }
-std::string IR::conditionTypesToString(condition_types type, std::any data) {
+std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     if (type == condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
@@ -163,7 +163,7 @@ std::string IR::conditionTypesToString(condition_types type, std::any data) {
         return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
     } else if (type == condition_types::STRNCMP || type == condition_types::STRNCMP_PREV) {
         //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<IR::strncmp>(data);
+        auto dt = std::any_cast<LLIR::strncmp>(data);
         if (dt.is_string) {
             return std::string("!STRNCMP(pos, \"") + dt.value.name + std::string("\")");
         } else {
@@ -171,7 +171,7 @@ std::string IR::conditionTypesToString(condition_types type, std::any data) {
         }
     } else if (type == condition_types::VARIABLE) {
         //cpuf::printf("variable\n");   
-        auto dt = std::any_cast<IR::variable>(data);
+        auto dt = std::any_cast<LLIR::variable>(data);
         std::string res = dt.name;
         for (auto el : dt.property_access)
             res += "." + el;
@@ -190,11 +190,11 @@ std::string IR::conditionTypesToString(condition_types type, std::any data) {
         return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == condition_types::METHOD_CALL) {
         return convertMethodCall(std::any_cast<method_call>(data));
-    } else if (type == IR::condition_types::FUNCTION_CALL) {
+    } else if (type == LLIR::condition_types::FUNCTION_CALL) {
         return convertFunctionCall( std::any_cast<function_call>(data));
-    } else if (type == IR::condition_types::CURRENT_TOKEN) {
+    } else if (type == LLIR::condition_types::CURRENT_TOKEN) {
         if (data.has_value()) {
-            auto dt = std::any_cast<IR::current_token>(data);
+            auto dt = std::any_cast<LLIR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any());
             return "CURRENT_TOKEN " + op + " " + dt.name;
         } else {
@@ -215,7 +215,7 @@ std::string IR::conditionTypesToString(condition_types type, std::any data) {
     };
     return condTypesMap.at(type);
 }
-std::string IR::convertFunctionCall(function_call call) {
+std::string LLIR::convertFunctionCall(function_call call) {
     std::string res = call.name + "(";
     for (auto param : call.params) {
         res += convertAssign(param);
@@ -223,13 +223,13 @@ std::string IR::convertFunctionCall(function_call call) {
     res += ')';
     return res;
 }
-std::string IR::convertAssign(assign asgn) {
+std::string LLIR::convertAssign(assign asgn) {
     if (asgn.kind == var_assign_values::FUNCTION_CALL)
         return convertFunctionCall(std::any_cast<function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
 }
 
-std::string IR::convertAccessor(accessor acc) {
+std::string LLIR::convertAccessor(accessor acc) {
     std::string str;
     bool first = true;
     for (auto el : acc.elements) {
@@ -257,21 +257,21 @@ std::string IR::convertAccessor(accessor acc) {
     str += '\n';
     return str;
 }
-void IR::convertVariable(variable var, std::ostream& out) {
+void LLIR::convertVariable(variable var, std::ostream& out) {
     out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
 }
 
-std::string IR::convertExpression(std::vector<expr> expression, bool with_braces) {
+std::string LLIR::convertExpression(std::vector<expr> expression, bool with_braces) {
     std::string result;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
         expr current = expression[i];
         if (
-            current.id == IR::condition_types::AND || 
-            current.id == IR::condition_types::OR || 
-            current.id == IR::condition_types::EQUAL ||
-            current.id == IR::condition_types::NOT_EQUAL
+            current.id == LLIR::condition_types::AND || 
+            current.id == LLIR::condition_types::OR || 
+            current.id == LLIR::condition_types::EQUAL ||
+            current.id == LLIR::condition_types::NOT_EQUAL
             ) {
             result += ' ';
             result += conditionTypesToString(current.id, current.value);
@@ -284,14 +284,14 @@ std::string IR::convertExpression(std::vector<expr> expression, bool with_braces
         result += ")\n";
     return result;
 }
-void IR::convertBlock(std::vector<IR::member> block, std::ostream& out) {
+void LLIR::convertBlock(std::vector<LLIR::member> block, std::ostream& out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void IR::convertCondition(condition cond, std::ostream& out) {
+void LLIR::convertCondition(condition cond, std::ostream& out) {
     out << convertExpression(cond.expression, true);
     convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
@@ -301,11 +301,11 @@ void IR::convertCondition(condition cond, std::ostream& out) {
 }
 
 
-void IR::convertAssignVariable(variable_assign var, std::ostream &out) {
+void LLIR::convertAssignVariable(variable_assign var, std::ostream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 
-std::string IR::convertMethodCall(method_call method) {
+std::string LLIR::convertMethodCall(method_call method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
@@ -315,7 +315,7 @@ std::string IR::convertMethodCall(method_call method) {
     return res;
 }
 
-std::string IR::convertDataBlock(data_block dtb) {
+std::string LLIR::convertDataBlock(data_block dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "data = ";
@@ -339,7 +339,7 @@ std::string IR::convertDataBlock(data_block dtb) {
     return res;
 }
 
-void IR::convertMember(const member& mem, std::ostream& out) {
+void LLIR::convertMember(const member& mem, std::ostream& out) {
     if (mem.type != types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
@@ -379,12 +379,12 @@ void IR::convertMember(const member& mem, std::ostream& out) {
     case types::INCREASE_POS_COUNTER:
         out << current_pos_counter.top() << "++";
         break;
-    case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+    case LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
         out << current_pos_counter.top() << " += " << var << ".token.length()";
         break;
     }
-    case IR::types::RESET_POS_COUNTER:
+    case LLIR::types::RESET_POS_COUNTER:
         break;
     case types::ACCESSOR:
         out << convertAccessor(std::any_cast<accessor>(mem.value));
@@ -411,7 +411,7 @@ void IR::convertMember(const member& mem, std::ostream& out) {
             out << "skipspaces(TOKEN_SEQUENCE)";
         break;
     case types::DATA_BLOCK:
-        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value));
+        out << convertDataBlock(std::any_cast<LLIR::data_block>(mem.value));
         break;
     case types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
@@ -430,22 +430,22 @@ void IR::convertMember(const member& mem, std::ostream& out) {
     out << '\n';
 }
 
-void IR::convertMembers(std::vector<member> members, std::ostream& out) {
+void LLIR::convertMembers(std::vector<member> members, std::ostream& out) {
     for (auto mem : members)
         convertMember(mem, out);
 }
-void IR::convertMembers(std::deque<member> members, std::ostream& out) {
+void LLIR::convertMembers(std::deque<member> members, std::ostream& out) {
     for (auto mem : members)
         convertMember(mem, out);
 }
-void IR::printIR(std::ostream& out) {
+void LLIR::printIR(std::ostream& out) {
     current_pos_counter.push("pos");
     for (const auto& mem : data) {
         convertMember(mem, out);
     }
 }
 
-void IR::outputIRToFile(std::string filename) {
+void LLIR::outputIRToFile(std::string filename) {
     int identLevel = 0;
     std::ofstream file(filename);
     if (file.is_open()) {
@@ -456,7 +456,7 @@ void IR::outputIRToFile(std::string filename) {
     }
 }
 
-void IR::outputIRToConsole() {
+void LLIR::outputIRToConsole() {
     int identLevel = 0;
     printIR(std::cout);
 }

@@ -55,7 +55,7 @@ class Tree {
     public:
         Tree(Parser::Tree &&tree) : tree(std::move(tree)) {}
         Tree(Parser::Tree &tree) : tree(tree) {}
-        auto getRawTree() -> const Parser::Tree&;
+        auto getRawTree() -> Parser::Tree&;
 
         void normalize();
         void replaceDublications();
@@ -66,7 +66,7 @@ class Tree {
         auto getTokenAndRuleNames() -> std::pair<std::vector<std::string>, std::vector<std::string>>;
         auto accamulate_use_data_to_map() -> use_prop_t;
         auto getUsePlacesTable() -> use_place_t;
-        auto get_data_blocks(const IR &ir) -> std::pair<data_block_t, data_block_t>;
-        auto getCodeForLexer(use_place_t use_places, const IR &ir) -> lexer_code;
+        auto get_data_blocks(const LLIR &ir) -> std::pair<data_block_t, data_block_t>;
+        auto getCodeForLexer(use_place_t use_places, const LLIR &ir) -> lexer_code;
         void resolveConflicts();
 };

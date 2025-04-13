@@ -33,21 +33,21 @@ static std::string format_str(std::string str) {
     return res;
 }
 
-std::string Converter::convert_var_type(IR::var_types type, std::vector<IR::var_type> data) {
-    if (type == IR::var_types::ARRAY) {
+std::string Converter::convert_var_type(LLIR::var_types type, std::vector<LLIR::var_type> data) {
+    if (type == LLIR::var_types::ARRAY) {
         if (data.empty())
-            data.push_back({IR::var_types::ANY});
+            data.push_back({LLIR::var_types::ANY});
         std::string t = "::" + namespace_name + "::arr_t";
         t += "<";
         t += convert_var_type(data[0].type, data[0].templ);
         t += ">";
         return t;
-    } else if (type == IR::var_types::OBJECT) {
+    } else if (type == LLIR::var_types::OBJECT) {
         if (data.size() < 1) {
-            data.push_back({IR::var_types::ANY});
+            data.push_back({LLIR::var_types::ANY});
         }
         if (data.size() < 2) {
-            data.push_back({IR::var_types::ANY});
+            data.push_back({LLIR::var_types::ANY});
         }
         std::string t = "::" + namespace_name + "::obj_t";
         t += "<";
@@ -57,34 +57,34 @@ std::string Converter::convert_var_type(IR::var_types type, std::vector<IR::var_
         t += ">";
         return t;
     }
-    static const std::unordered_map<IR::var_types, std::string> typesMap = {
-        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool_t"}, 
-        {IR::var_types::STRING, "str_t"}, {IR::var_types::NUMBER, "num_t"},
-        {IR::var_types::FUNCTION, "function"},
-        {IR::var_types::ANY, "any_t"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
-        {IR::var_types::Rule_result, "Rule_res"}, {IR::var_types::Token_result, "Token_res"},
-        {IR::var_types::CHAR, "char"}, {IR::var_types::UCHAR, "unsigned char"}, 
-        {IR::var_types::SHORT, "short"}, {IR::var_types::USHORT, "unsigned short"},
-        {IR::var_types::INT, "int"}, {IR::var_types::UINT, "unsigned int"},
-        {IR::var_types::LONG, "long"}, {IR::var_types::ULONG, "unsigned long"},
-        {IR::var_types::LONGLONG, "long long"}, {IR::var_types::ULONGLONG, "unsigned long long"}
+    static const std::unordered_map<LLIR::var_types, std::string> typesMap = {
+        {LLIR::var_types::UNDEFINED, "UNDEF"}, {LLIR::var_types::BOOLEAN, "bool_t"}, 
+        {LLIR::var_types::STRING, "str_t"}, {LLIR::var_types::NUMBER, "num_t"},
+        {LLIR::var_types::FUNCTION, "function"},
+        {LLIR::var_types::ANY, "any_t"}, {LLIR::var_types::Rule, "Rule"}, {LLIR::var_types::Token, "Token"},
+        {LLIR::var_types::Rule_result, "Rule_res"}, {LLIR::var_types::Token_result, "Token_res"},
+        {LLIR::var_types::CHAR, "char"}, {LLIR::var_types::UCHAR, "unsigned char"}, 
+        {LLIR::var_types::SHORT, "short"}, {LLIR::var_types::USHORT, "unsigned short"},
+        {LLIR::var_types::INT, "int"}, {LLIR::var_types::UINT, "unsigned int"},
+        {LLIR::var_types::LONG, "long"}, {LLIR::var_types::ULONG, "unsigned long"},
+        {LLIR::var_types::LONGLONG, "long long"}, {LLIR::var_types::ULONGLONG, "unsigned long long"}
     };
-    if (type < IR::var_types::CHAR)
+    if (type < LLIR::var_types::CHAR)
         return "::" + namespace_name + "::" + typesMap.at(type);
     else
         return typesMap.at(type);
 }
 
 
-std::string Converter::convert_var_assing_values(IR::var_assign_values value, std::any data) {
+std::string Converter::convert_var_assing_values(LLIR::var_assign_values value, std::any data) {
     switch (value) {
-        case IR::var_assign_values::STRING:
+        case LLIR::var_assign_values::STRING:
             //cpuf::printf("on String\n");
             return std::string(1, '"') + format_str(std::any_cast<std::string>(data)) + std::string(1, '"');
-        case IR::var_assign_values::VAR_REFER:
+        case LLIR::var_assign_values::VAR_REFER:
         {
             //cpuf::printf("ON var_refer\n");
-            auto dt = std::any_cast<IR::var_refer>(data);
+            auto dt = std::any_cast<LLIR::var_refer>(data);
             std::string res;
             if (dt.pre_increament)
                 res += "++";
@@ -93,22 +93,22 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
                 res += "++";
             return res;
         }
-        case IR::var_assign_values::VARIABLE:
+        case LLIR::var_assign_values::VARIABLE:
         {
             //cpuf::printf("on ID\n");
-            auto dt = std::any_cast<IR::variable>(data);
+            auto dt = std::any_cast<LLIR::variable>(data);
             std::string res = dt.name;
             for (auto el : dt.property_access)
                 res += "." + el;
             return res;
         }
-        case IR::var_assign_values::INT:
+        case LLIR::var_assign_values::INT:
             //cpuf::printf("on INT\n");
             return std::any_cast<std::string>(data);
-        case IR::var_assign_values::ARRAY:
+        case LLIR::var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
-            auto arr = std::any_cast<IR::array>(data);
+            auto arr = std::any_cast<LLIR::array>(data);
             std::string res = "{";
             for (auto &el : arr) {
                 res += convertAssign(el);
@@ -120,10 +120,10 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
                 res += '}';
             return res;
         }
-        case IR::var_assign_values::OBJECT:
+        case LLIR::var_assign_values::OBJECT:
         {
             //cpuf::printf("on object\n");
-            auto obj = std::any_cast<IR::object>(data);
+            auto obj = std::any_cast<LLIR::object>(data);
             std::string res = "{";
             for (auto [key, value] : obj) {
                 res += "{";
@@ -139,16 +139,16 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
             }
             return res;
         }
-        case IR::var_assign_values::ACCESSOR: 
+        case LLIR::var_assign_values::ACCESSOR: 
             //cpuf::printf("accessor\n");
             return "";
             throw Error("Accessor cannot be here\n");
-        case IR::var_assign_values::FUNCTION_CALL:
-            return convertFunctionCall(std::any_cast<IR::function_call>(data));
-        case IR::var_assign_values::EXPR:
+        case LLIR::var_assign_values::FUNCTION_CALL:
+            return convertFunctionCall(std::any_cast<LLIR::function_call>(data));
+        case LLIR::var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false);
-        case IR::var_assign_values::CURRENT_POS:
+            return convertExpression(std::any_cast<std::vector<LLIR::expr>>(data), false);
+        case LLIR::var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
             char sign = dt >= 0 ? '+' : '-';
@@ -159,15 +159,15 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
         }
     }
     switch (value) {
-        case IR::var_assign_values::NONE:
+        case LLIR::var_assign_values::NONE:
             return "NONE";
-        case IR::var_assign_values::_TRUE:
+        case LLIR::var_assign_values::_TRUE:
             return "true";
-        case IR::var_assign_values::_FALSE:
+        case LLIR::var_assign_values::_FALSE:
             return "false";
-        case IR::var_assign_values::CURRENT_POS_COUNTER:
+        case LLIR::var_assign_values::CURRENT_POS_COUNTER:
             return current_pos_counter.top();
-        case IR::var_assign_values::CURRENT_POS_SEQUENCE:
+        case LLIR::var_assign_values::CURRENT_POS_SEQUENCE:
         {
             std::string count_str = std::to_string(pos_counter_stack.top() + 1);
             if (dynamic_pos_counter.size()) {
@@ -177,43 +177,43 @@ std::string Converter::convert_var_assing_values(IR::var_assign_values value, st
             dynamic_pos_counter = {};
             return "::" + namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
         }
-        case IR::var_assign_values::CURRENT_TOKEN:
+        case LLIR::var_assign_values::CURRENT_TOKEN:
             return "*" + current_pos_counter.top();
-        case IR::var_assign_values::TOKEN_SEQUENCE:
+        case LLIR::var_assign_values::TOKEN_SEQUENCE:
             return current_pos_counter.top();
         default:
             return "NONE";
     }
 }
 
-std::string Converter::convert_var_assing_types(IR::var_assign_types value) {
+std::string Converter::convert_var_assing_types(LLIR::var_assign_types value) {
     switch (value) {
-        case IR::var_assign_types::ASSIGN:    return "=";
-        case IR::var_assign_types::ADD:       return "+=";
-        case IR::var_assign_types::SUBSTR:    return "-=";
-        case IR::var_assign_types::MULTIPLY:  return "*=";
-        case IR::var_assign_types::DIVIDE:    return "/=";
-        case IR::var_assign_types::MODULO:    return "%=";
+        case LLIR::var_assign_types::ASSIGN:    return "=";
+        case LLIR::var_assign_types::ADD:       return "+=";
+        case LLIR::var_assign_types::SUBSTR:    return "-=";
+        case LLIR::var_assign_types::MULTIPLY:  return "*=";
+        case LLIR::var_assign_types::DIVIDE:    return "/=";
+        case LLIR::var_assign_types::MODULO:    return "%=";
         default: return "="; // Handle unknown values
     }
 }
 
-std::string Converter::conditionTypesToString(IR::condition_types type, std::any data) {
-    if (type == IR::condition_types::CHARACTER) {
+std::string Converter::conditionTypesToString(LLIR::condition_types type, std::any data) {
+    if (type == LLIR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + corelib::text::getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
-    } else if (type == IR::condition_types::CURRENT_CHARACTER) {
+    } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
-    } else if (type == IR::condition_types::NUMBER) {
+    } else if (type == LLIR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
-    } else if (type == IR::condition_types::STRING) {
+    } else if (type == LLIR::condition_types::STRING) {
         //cpuf::printf("string\n");
         return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
-    } else if (type == IR::condition_types::STRNCMP) {
+    } else if (type == LLIR::condition_types::STRNCMP) {
         //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<IR::strncmp>(data);
+        auto dt = std::any_cast<LLIR::strncmp>(data);
         std::string val;
         if (dt.is_string) {
             val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " +  std::to_string(pos_counter) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
@@ -223,9 +223,9 @@ std::string Converter::conditionTypesToString(IR::condition_types type, std::any
             val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
-    } else if (type == IR::condition_types::STRNCMP_PREV) {
+    } else if (type == LLIR::condition_types::STRNCMP_PREV) {
         //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<IR::strncmp>(data);
+        auto dt = std::any_cast<LLIR::strncmp>(data);
         std::string val;
         if (dt.is_string) {
             val = std::string("!std::strncmp(" + current_pos_counter.top() + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
@@ -235,51 +235,51 @@ std::string Converter::conditionTypesToString(IR::condition_types type, std::any
             val = std::string("!std::strncmp(" + current_pos_counter.top() + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
-    } else if (type == IR::condition_types::VARIABLE) {
+    } else if (type == LLIR::condition_types::VARIABLE) {
         //cpuf::printf("variable\n");   
-        auto dt = std::any_cast<IR::variable>(data);
+        auto dt = std::any_cast<LLIR::variable>(data);
         std::string res = dt.name;
         for (auto el : dt.property_access)
             res += "." + el;
         return res;
-    } else if (type == IR::condition_types::SUCCESS_CHECK) {
+    } else if (type == LLIR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
         return std::any_cast<std::string>(data) + ".status";
-    } else if (type == IR::condition_types::HEX) {
+    } else if (type == LLIR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
-    } else if (type == IR::condition_types::ANY_DATA) {
-        auto dt = std::any_cast<IR::assign>(data);
+    } else if (type == LLIR::condition_types::ANY_DATA) {
+        auto dt = std::any_cast<LLIR::assign>(data);
         return convert_var_assing_values(dt.kind, dt.data);
-    } else if (type == IR::condition_types::METHOD_CALL) {
-        return convertMethodCall(std::any_cast<IR::method_call>(data));
-    } else if (type == IR::condition_types::FUNCTION_CALL) {
-        return convertFunctionCall( std::any_cast<IR::function_call>(data));
-    } else if (type == IR::condition_types::CURRENT_TOKEN) {
+    } else if (type == LLIR::condition_types::METHOD_CALL) {
+        return convertMethodCall(std::any_cast<LLIR::method_call>(data));
+    } else if (type == LLIR::condition_types::FUNCTION_CALL) {
+        return convertFunctionCall( std::any_cast<LLIR::function_call>(data));
+    } else if (type == LLIR::condition_types::CURRENT_TOKEN) {
         pos_counter++;
         if (data.has_value()) {
-            auto dt = std::any_cast<IR::current_token>(data);
+            auto dt = std::any_cast<LLIR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any());
             return current_pos_counter.top() + "->name() " + op + " " + "Tokens::" + dt.name;
         } else {
             return "*" + current_pos_counter.top();
         }
     }
-    static const std::unordered_map<IR::condition_types, std::string> condTypesMap = {
-        {IR::condition_types::GROUP_OPEN, "("}, {IR::condition_types::GROUP_CLOSE, ")"},
-        {IR::condition_types::AND, "&&"}, {IR::condition_types::OR, "||"}, {IR::condition_types::NOT, "!"},
-        {IR::condition_types::EQUAL, "=="}, {IR::condition_types::NOT_EQUAL, "!="},
-        {IR::condition_types::HIGHER, ">"}, {IR::condition_types::LOWER, "<"},
-        {IR::condition_types::HIGHER_OR_EQUAL, ">="}, {IR::condition_types::LOWER_OR_EQUAL, "<="},
-        {IR::condition_types::LEFT_BITWISE, "<<"}, {IR::condition_types::RIGHT_BITWISE, ">>"},
-        {IR::condition_types::BITWISE_AND, "&"}, {IR::condition_types::BITWISE_ANDR, "^"},
-        {IR::condition_types::ADD, "+"}, {IR::condition_types::SUBSTR, "-"},
-        {IR::condition_types::MULTIPLY, "*"}, {IR::condition_types::DIVIDE, "/"},
-        {IR::condition_types::MODULO, "%"}, 
+    static const std::unordered_map<LLIR::condition_types, std::string> condTypesMap = {
+        {LLIR::condition_types::GROUP_OPEN, "("}, {LLIR::condition_types::GROUP_CLOSE, ")"},
+        {LLIR::condition_types::AND, "&&"}, {LLIR::condition_types::OR, "||"}, {LLIR::condition_types::NOT, "!"},
+        {LLIR::condition_types::EQUAL, "=="}, {LLIR::condition_types::NOT_EQUAL, "!="},
+        {LLIR::condition_types::HIGHER, ">"}, {LLIR::condition_types::LOWER, "<"},
+        {LLIR::condition_types::HIGHER_OR_EQUAL, ">="}, {LLIR::condition_types::LOWER_OR_EQUAL, "<="},
+        {LLIR::condition_types::LEFT_BITWISE, "<<"}, {LLIR::condition_types::RIGHT_BITWISE, ">>"},
+        {LLIR::condition_types::BITWISE_AND, "&"}, {LLIR::condition_types::BITWISE_ANDR, "^"},
+        {LLIR::condition_types::ADD, "+"}, {LLIR::condition_types::SUBSTR, "-"},
+        {LLIR::condition_types::MULTIPLY, "*"}, {LLIR::condition_types::DIVIDE, "/"},
+        {LLIR::condition_types::MODULO, "%"}, 
     };
     return condTypesMap.at(type);
 }
-std::string Converter::convertFunctionCall(IR::function_call call) {
+std::string Converter::convertFunctionCall(LLIR::function_call call) {
     std::string res = call.name + "(";
     bool first = true;
     for (auto param : call.params) {
@@ -291,30 +291,30 @@ std::string Converter::convertFunctionCall(IR::function_call call) {
     res += ')';
     return res;
 }
-std::string Converter::convertAssign(IR::assign asgn) {
-    if (asgn.kind == IR::var_assign_values::FUNCTION_CALL)
-        return convertFunctionCall(std::any_cast<IR::function_call>(asgn.data));
+std::string Converter::convertAssign(LLIR::assign asgn) {
+    if (asgn.kind == LLIR::var_assign_values::FUNCTION_CALL)
+        return convertFunctionCall(std::any_cast<LLIR::function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
 }
-void Converter::convertVariable(IR::variable var, std::ostringstream &out) {
+void Converter::convertVariable(LLIR::variable var, std::ostringstream &out) {
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
-    if (var.value.kind != IR::var_assign_values::NONE)
+    if (var.value.kind != LLIR::var_assign_values::NONE)
         out << " = " << convertAssign(var.value);
     out << ';';
 }
 
-std::string Converter::convertExpression(std::vector<IR::expr> expression, bool with_braces) {
+std::string Converter::convertExpression(std::vector<LLIR::expr> expression, bool with_braces) {
     std::string result;
     pos_counter = 0;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
-        IR::expr current = expression[i];
+        LLIR::expr current = expression[i];
         if (
-            current.id == IR::condition_types::AND || 
-            current.id == IR::condition_types::OR || 
-            current.id == IR::condition_types::EQUAL ||
-            current.id == IR::condition_types::NOT_EQUAL
+            current.id == LLIR::condition_types::AND || 
+            current.id == LLIR::condition_types::OR || 
+            current.id == LLIR::condition_types::EQUAL ||
+            current.id == LLIR::condition_types::NOT_EQUAL
             ) {
             result += ' ';
             result += conditionTypesToString(current.id, current.value);
@@ -329,14 +329,14 @@ std::string Converter::convertExpression(std::vector<IR::expr> expression, bool 
     pos_counter = 0;
     return result;
 }
-void Converter::convertBlock(std::vector<IR::member> block, std::ostringstream &out) {
+void Converter::convertBlock(std::vector<LLIR::member> block, std::ostringstream &out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void Converter::convertCondition(IR::condition cond, std::ostringstream &out) {
+void Converter::convertCondition(LLIR::condition cond, std::ostringstream &out) {
     out << convertExpression(cond.expression, true);
     convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
@@ -346,11 +346,11 @@ void Converter::convertCondition(IR::condition cond, std::ostringstream &out) {
 }
 
 
-void Converter::convertAssignVariable(IR::variable_assign var, std::ostringstream &out) {
+void Converter::convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 
-std::string Converter::convertMethodCall(IR::method_call method) {
+std::string Converter::convertMethodCall(LLIR::method_call method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
@@ -363,31 +363,31 @@ std::string Converter::convertMethodCall(IR::method_call method) {
     return res;
 }
 
-std::string Converter::convertDataBlock(IR::data_block dtb) {
+std::string Converter::convertDataBlock(LLIR::data_block dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "Types::" + rule_prev_name_str + "_data data";
     if (dtb.is_inclosed_map) {
         res += ";";
         res += "\n";
-        for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.value.data)) {
+        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.value.data)) {
             res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
         }
         add_semicolon = false;
     } else {
         res += " = ";
-        res += convertAssign(std::any_cast<IR::assign>(dtb.value));
+        res += convertAssign(std::any_cast<LLIR::assign>(dtb.value));
         res += ";";
     }
     return res;
 }
 
-void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
-    if (mem.type != IR::types::RULE_END)
+void Converter::convertMember(const LLIR::member& mem, std::ostringstream &out) {
+    if (mem.type != LLIR::types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
-    case IR::types::RULE:
+    case LLIR::types::RULE:
         has_data_block = false;
         rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
         rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
@@ -396,7 +396,7 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         indentLevel++;
         isToken = false;
         break;
-    case IR::types::TOKEN:
+    case LLIR::types::TOKEN:
         has_data_block = false;
         rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
         rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
@@ -405,7 +405,7 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         indentLevel++;
         isToken = true;
         break;
-    case IR::types::RULE_END:
+    case LLIR::types::RULE_END:
         if (isToken) {
             out << "\treturn {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), Tokens::" << rule_prev_name_str;
             if (has_data_block)
@@ -421,27 +421,27 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         out << "}";
         indentLevel--;
         break;
-    case IR::types::VARIABLE:
-        convertVariable(std::any_cast<IR::variable>(mem.value), out);
+    case LLIR::types::VARIABLE:
+        convertVariable(std::any_cast<LLIR::variable>(mem.value), out);
         break;
-    case IR::types::METHOD_CALL:
-        out << convertMethodCall(std::any_cast<IR::method_call>(mem.value));
+    case LLIR::types::METHOD_CALL:
+        out << convertMethodCall(std::any_cast<LLIR::method_call>(mem.value));
         break;
-    case IR::types::IF:
+    case LLIR::types::IF:
         out << "if ";
-        convertCondition(std::any_cast<IR::condition>(mem.value), out);
+        convertCondition(std::any_cast<LLIR::condition>(mem.value), out);
         break;
-    case IR::types::WHILE:
+    case LLIR::types::WHILE:
         out << "while ";
-        convertCondition(std::any_cast<IR::condition>(mem.value), out);
+        convertCondition(std::any_cast<LLIR::condition>(mem.value), out);
         break;
-    case IR::types::DOWHILE:
+    case LLIR::types::DOWHILE:
         out << "do\n";
-        convertBlock(std::any_cast<IR::condition>(mem.value).block, out);
+        convertBlock(std::any_cast<LLIR::condition>(mem.value).block, out);
         out << '\n' << std::string(indentLevel, '\t') << "while";
-        out << convertExpression(std::any_cast<IR::condition>(mem.value).expression, true);
+        out << convertExpression(std::any_cast<LLIR::condition>(mem.value).expression, true);
         break;
-    case IR::types::INCREASE_POS_COUNTER:
+    case LLIR::types::INCREASE_POS_COUNTER:
         if (isToken) {
             out << current_pos_counter.top() << " += " + std::to_string(pos_counter_stack.top() + 1);
         } else {
@@ -452,7 +452,7 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         }
         pos_counter_stack.pop();
         break;
-    case IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+    case LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
         if (isToken) {
             out << current_pos_counter.top() << " += " + var + ".node.length()";
@@ -461,46 +461,46 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
         }
         break;
     }
-    case IR::types::RESET_POS_COUNTER:
+    case LLIR::types::RESET_POS_COUNTER:
         pos_counter_stack.pop();
         break;
-    case IR::types::ACCESSOR:
+    case LLIR::types::ACCESSOR:
         throw Error("Accessor cannot be here\n");
-    case IR::types::ASSIGN_VARIABLE:
-        convertAssignVariable(std::any_cast<IR::variable_assign>(mem.value), out);
+    case LLIR::types::ASSIGN_VARIABLE:
+        convertAssignVariable(std::any_cast<LLIR::variable_assign>(mem.value), out);
         break;
-    case IR::types::BREAK_LOOP:
+    case LLIR::types::BREAK_LOOP:
         out << "break";
         break;
-    case IR::types::CONTINUE_LOOP:
+    case LLIR::types::CONTINUE_LOOP:
         out << "continue";
         break;
-    case IR::types::EXIT:
+    case LLIR::types::EXIT:
         out << "return {};";
         break;
-    case IR::types::ERR:
+    case LLIR::types::ERR:
         out << "reportError(pos, \"";
         for (auto &c : std::any_cast<std::string>(mem.value)) {
             out << corelib::text::getCharFromEscapedAsStr(c, true);
         }
         out << "\");";
         break;
-    case IR::types::SKIP_SPACES:
+    case LLIR::types::SKIP_SPACES:
         if (isToken)            
             out << "skip_spaces(" << current_pos_counter.top() << ")";
         else
             out << "skip_spaces<::" << namespace_name << "::TokenFlow::iterator, ::" << namespace_name << "::Tokens>(pos)";
         break;
-    case IR::types::DATA_BLOCK:
+    case LLIR::types::DATA_BLOCK:
         has_data_block = true;
-        out << convertDataBlock(std::any_cast<IR::data_block>(mem.value));
+        out << convertDataBlock(std::any_cast<LLIR::data_block>(mem.value));
         break;
-    case IR::types::PUSH_POS_COUNTER: {
+    case LLIR::types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
         current_pos_counter.push(std::any_cast<std::string>(mem.value));
         break;
     }
-    case IR::types::POP_POS_COUNTER: {
+    case LLIR::types::POP_POS_COUNTER: {
         auto el = current_pos_counter.top();
         current_pos_counter.pop();
         out << current_pos_counter.top() << " = " << el;
@@ -516,11 +516,11 @@ void Converter::convertMember(const IR::member& mem, std::ostringstream &out) {
     add_semicolon = true;
 }
 
-void Converter::convertMembers(const std::vector<IR::member> &members, std::ostringstream &out) {
+void Converter::convertMembers(const std::vector<LLIR::member> &members, std::ostringstream &out) {
     for (auto mem : members)
         convertMember(mem, out);
 }
-void Converter::convertLexerCode(const std::vector<IR::member> &members, std::ostringstream &out) {
+void Converter::convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out) {
     isToken = true;
     if (!members.empty()) {
         for (auto it = members.begin() + 1; it != members.end() - 1; it++) {
@@ -720,7 +720,7 @@ void Converter::addLexerCode_Header(std::ostringstream &out) {
     out << "\n" << namespace_name << "::Token " << namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
     indentLevel++;
 }
-void Converter::addLexerCode_Bottom(std::ostringstream &out, IR::variable var) {
+void Converter::addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var) {
     out << "\treturn " << var.name << ";\n";
     out << "}\n";
     indentLevel--;
@@ -741,7 +741,7 @@ void Converter::outputIR(std::string filename) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" Converter_base* getConverter(IR& ir, Tree& tree) {
+extern "C" Converter_base* getConverter(LLIR& ir, Tree& tree) {
     return new Converter(ir, tree);
 }
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

@@ -4,63 +4,63 @@
 #include <corelib.h>
 #include <parser.h>
 #include <cpuf/hex.h>
-IR::IR(const Parser::Tree &tree) : tree(&tree) {}
-IR::IR(const Parser::Tree *tree) : tree(tree) {}
-IR::IR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules) : tree(&tree), rules(&rules) {}
-IR::IR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules) : tree(tree), rules(&rules) {}
-IR::IR(IR& ir) : tree(ir.tree), data(std::move(ir.data)) {}
+LLIR::LLIR(const Parser::Tree &tree) : tree(&tree) {}
+LLIR::LLIR(const Parser::Tree *tree) : tree(tree) {}
+LLIR::LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules) : tree(&tree), rules(&rules) {}
+LLIR::LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules) : tree(tree), rules(&rules) {}
+LLIR::LLIR(LLIR& ir) : tree(ir.tree), data(std::move(ir.data)) {}
 // a structure used to cout
-void IR::add(IR &repr) {
+void LLIR::add(LLIR &repr) {
     data.insert(data.end(), repr.data.begin(), repr.data.end());
 }
-void IR::add(std::vector<IR::member> repr) {
+void LLIR::add(std::vector<LLIR::member> repr) {
     data.insert(data.end(), repr.begin(), repr.end());
 }
-void IR::push(IR::member member) {
+void LLIR::push(LLIR::member member) {
     data.push_back(member);
 }
-void IR::pop() {
+void LLIR::pop() {
     data.pop_back();
 };
-void IR::push_begin(IR::member member) {
+void LLIR::push_begin(LLIR::member member) {
     data.insert(data.begin(), member);
 }
-void IR::pop_begin() {
+void LLIR::pop_begin() {
     data.erase(data.begin());
 };
-size_t IR::size() {
+size_t LLIR::size() {
     return data.size();
 }
-bool IR::empty() {
+bool LLIR::empty() {
     return data.empty();
 }
-auto IR::makeIR() -> std::vector<IR::node_ret_t> {
+auto LLIR::makeIR() -> std::vector<LLIR::node_ret_t> {
     if (rules == nullptr) {
         treeToIr(*tree);
     } else {
-        IR ir = rulesToIr(*rules);
+        LLIR ir = rulesToIr(*rules);
         update(ir);
         data = ir.data;
         success_vars = ir.success_vars;
     }
     return success_vars;
 }
-void IR::optimizeIR() {
+void LLIR::optimizeIR() {
     raiseVarsTop();
 }
-const std::vector<IR::member>& IR::getData() const{
+const std::vector<LLIR::member>& LLIR::getData() const{
     return data;
 }
-std::vector<IR::member>& IR::getDataRef() {
+std::vector<LLIR::member>& LLIR::getDataRef() {
     return data;
 }
-const Parser::Tree* IR::getTree() {
+const Parser::Tree* LLIR::getTree() {
     return tree;
 }
-void IR::erase_begin() {
+void LLIR::erase_begin() {
     data.erase(data.begin());
 }
-void IR::clear_thread() {
+void LLIR::clear_thread() {
     groups.clear();
     elements.clear();
     variable_count = 0;
@@ -70,7 +70,7 @@ void IR::clear_thread() {
     success_vars.clear();
     vars.clear();
 }
-void IR::proceed(IR& ir) {
+void LLIR::proceed(LLIR& ir) {
     variable_count = ir.variable_count;
     isToken = ir.isToken;
     insideLoop = ir.insideLoop;
@@ -79,7 +79,7 @@ void IR::proceed(IR& ir) {
     vars = ir.vars;
     isFirst = ir.isFirst;
 }
-void IR::update(IR &ir) {
+void LLIR::update(LLIR &ir) {
     variable_count = ir.variable_count;
     isToken = ir.isToken;
     insideLoop = ir.insideLoop;
@@ -88,21 +88,21 @@ void IR::update(IR &ir) {
     elements.insert(elements.end(), ir.elements.begin(), ir.elements.end());
     groups.insert(groups.end(), ir.groups.begin(), ir.groups.end());
 }
-void IR::setIsToken(bool isToken) {
+void LLIR::setIsToken(bool isToken) {
     this->isToken = isToken;
 }
-IR::variable createEmptyVariable(std::string name) {
-    IR::variable var {
+LLIR::variable createEmptyVariable(std::string name) {
+    LLIR::variable var {
         name,
-        {IR::var_types::UNDEFINED},
-        IR::var_assign_values::NONE,
+        {LLIR::var_types::UNDEFINED},
+        LLIR::var_assign_values::NONE,
     };
     return var;
 }
-std::string IR::generateVariableName() {
+std::string LLIR::generateVariableName() {
     return std::string("_") + std::to_string(variable_count++);
 }
-std::string IR::getErrorName(Parser::Rule rule) {
+std::string LLIR::getErrorName(Parser::Rule rule) {
     if (rule.name == Parser::Rules::Rule_rule) {
         auto data = rule.as<obj_t>();
         rule = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
@@ -212,11 +212,11 @@ std::string IR::getErrorName(Parser::Rule rule) {
             throw Error("Get name of undefined rule '%s'", Parser::RulesToString(rule.name));
     }
 }
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<IR::member>>::value || std::is_same<T, std::deque<IR::member>>::value, int> = 0>
+template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
 void processExitStatements(T &values) {
     for (auto &el : values) {
-        if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
-            auto &condition = std::any_cast<IR::condition&>(el.value); // Avoid unnecessary copies
+        if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
+            auto &condition = std::any_cast<LLIR::condition&>(el.value); // Avoid unnecessary copies
 
             // Process the block and else block of the condition recursively
             processExitStatements(condition.block);
@@ -224,10 +224,10 @@ void processExitStatements(T &values) {
 
             // Ensure that any EXIT statements within the blocks are replaced with BREAK_LOOP
             for (auto &unit : condition.block) {
-                if (unit.type == IR::types::EXIT) {
-                    unit.type = IR::types::BREAK_LOOP; // Replacing EXIT with BREAK_LOOP
-                } else if (unit.type == IR::types::IF || unit.type == IR::types::WHILE || unit.type == IR::types::DOWHILE) {
-                    auto &cond = std::any_cast<IR::condition&>(unit.value);
+                if (unit.type == LLIR::types::EXIT) {
+                    unit.type = LLIR::types::BREAK_LOOP; // Replacing EXIT with BREAK_LOOP
+                } else if (unit.type == LLIR::types::IF || unit.type == LLIR::types::WHILE || unit.type == LLIR::types::DOWHILE) {
+                    auto &cond = std::any_cast<LLIR::condition&>(unit.value);
 
                     processExitStatements(cond.block); // Recursive call on nested blocks
                     processExitStatements(cond.else_block); // Recursive call on else blocks
@@ -238,81 +238,81 @@ void processExitStatements(T &values) {
 }
 
 
-IR::variable IR::createSuccessVariable() {
-    IR::variable var = createEmptyVariable("success" + generateVariableName());
-    var.type = {IR::var_types::BOOLEAN};
-    var.value = {IR::var_assign_values::_FALSE};
+LLIR::variable LLIR::createSuccessVariable() {
+    LLIR::variable var = createEmptyVariable("success" + generateVariableName());
+    var.type = {LLIR::var_types::BOOLEAN};
+    var.value = {LLIR::var_assign_values::_FALSE};
     return var;
 }
 
-void IR::addPostLoopCheck(const Parser::Rule &rule, const IR::variable &var, bool addError) {
-    std::vector<IR::member> block = {{ IR::types::EXIT }};
+void LLIR::addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var, bool addError) {
+    std::vector<LLIR::member> block = {{ LLIR::types::EXIT }};
     if (addError && !isFirst) {
-        block.insert(block.begin(), { IR::types::ERR, getErrorName(rule)});
+        block.insert(block.begin(), { LLIR::types::ERR, getErrorName(rule)});
     }
-    IR::condition check_cond = {
+    LLIR::condition check_cond = {
         { 
-            {IR::condition_types::NOT}, 
-            { IR::condition_types::VARIABLE, var },
+            {LLIR::condition_types::NOT}, 
+            { LLIR::condition_types::VARIABLE, var },
         },
         block
     };
-    push({IR::types::IF, check_cond});
+    push({LLIR::types::IF, check_cond});
 }
-void IR::handle_plus_qualifier(const Parser::Rule &rule, IR::condition loop, bool addError) {
-    IR::variable var = createSuccessVariable();
-    loop.block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
-    push({IR::types::VARIABLE, var});
-    push({IR::types::WHILE, loop});
+void LLIR::handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError) {
+    LLIR::variable var = createSuccessVariable();
+    loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::WHILE, loop});
     addPostLoopCheck(rule, var, addError);
 }
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<IR::member>>::value || std::is_same<T, std::deque<IR::member>>::value, int> = 0>
+template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
 void replaceToPrevChar(T &elements, int i) {
     for (; i < elements.size(); i++) {
         auto &el = elements[i];
-        if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
+        if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
             // replace CURRENT_CHARACTER to PREV_CHARACTER
-            auto val = std::any_cast<IR::condition>(el.value);
+            auto val = std::any_cast<LLIR::condition>(el.value);
             for (auto &expr : val.expression) {
-                if (expr.id == IR::condition_types::STRNCMP) {
-                    expr.id = IR::condition_types::STRNCMP_PREV;
+                if (expr.id == LLIR::condition_types::STRNCMP) {
+                    expr.id = LLIR::condition_types::STRNCMP_PREV;
                 }
 
             }
             replaceToPrevChar(val.block, 0);
-            if (el.type == IR::types::IF)
+            if (el.type == LLIR::types::IF)
                 replaceToPrevChar(val.else_block, 0);
             elements[i].value = val;
         }
     }
 }
-std::vector<IR::member> createDefaultBlock(IR::variable var, IR::variable svar) {
+std::vector<LLIR::member> createDefaultBlock(LLIR::variable var, LLIR::variable svar) {
     return {
-        {IR::types::ASSIGN_VARIABLE, IR::variable_assign {var.name, IR::var_assign_types::ADD, IR::var_assign_values::CURRENT_POS_SEQUENCE}},
-        {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}},
-        {IR::types::INCREASE_POS_COUNTER}
+        {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
+        {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
+        {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-std::vector<IR::member> createDefaultBlock(IR::variable svar) {
+std::vector<LLIR::member> createDefaultBlock(LLIR::variable svar) {
     return {
-        {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}},
-        {IR::types::INCREASE_POS_COUNTER}
+        {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
+        {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-std::vector<IR::member> createDefaultBlock() {
+std::vector<LLIR::member> createDefaultBlock() {
     return {
-        {IR::types::INCREASE_POS_COUNTER}
+        {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<IR::member>>::value || std::is_same<T, std::deque<IR::member>>::value, int> = 0>
-void replace_exit_to_unsuccess(T &elements, IR::variable svar) {
+template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
+void replace_exit_to_unsuccess(T &elements, LLIR::variable svar) {
     for (auto &el : elements) {
-        if (el.type == IR::types::IF) {
-            auto block = std::any_cast<IR::condition>(el.value).block;
+        if (el.type == LLIR::types::IF) {
+            auto block = std::any_cast<LLIR::condition>(el.value).block;
             replace_exit_to_unsuccess(block, svar);
             el.value = block;
-        } else if (el.type == IR::types::EXIT) {
-            el = {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, {IR::var_assign_values::_FALSE}}};
+        } else if (el.type == LLIR::types::EXIT) {
+            el = {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, {LLIR::var_assign_values::_FALSE}}};
         }
     }
 }
@@ -333,38 +333,38 @@ char getEscapedChar(char in) {
     }
 }
 
-IR::member IR::createDefaultCall(std::vector<IR::member> &block, IR::variable var, const std::string &name, std::vector<IR::expr> &expr) {
-    auto function_call = IR::function_call {
+LLIR::member LLIR::createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr) {
+    auto function_call = LLIR::function_call {
         name,
-        {{IR::var_assign_values::TOKEN_SEQUENCE}},
+        {{LLIR::var_assign_values::TOKEN_SEQUENCE}},
         
     };
-    auto var_assign = IR::variable_assign {
+    auto var_assign = LLIR::variable_assign {
         var.name, 
-        IR::var_assign_types::ASSIGN,
-        { IR::var_assign_values::FUNCTION_CALL, function_call }
+        LLIR::var_assign_types::ASSIGN,
+        { LLIR::var_assign_values::FUNCTION_CALL, function_call }
     };
     var.property_access = {"status"};
     expr = {
-        {IR::condition_types::VARIABLE, var}
+        {LLIR::condition_types::VARIABLE, var}
     };
-    return {IR::types::ASSIGN_VARIABLE, var_assign};
+    return {LLIR::types::ASSIGN_VARIABLE, var_assign};
 }
-IR::variable IR::add_shadow_variable(std::vector<IR::member> &block, const IR::variable &var) {
-    IR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
+LLIR::variable LLIR::add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var) {
+    LLIR::variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
     auto type = var.type;
-    if (type.type == IR::var_types::Rule_result)
-        type.type = IR::var_types::Rule;
-    else if (type.type == IR::var_types::Token_result)
-        type.type = IR::var_types::Token;
-    shadow_var.type = {IR::var_types::ARRAY, {type}};
-    push({IR::types::VARIABLE, shadow_var});
-    block.push_back({IR::types::METHOD_CALL, IR::method_call { shadow_var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, var}}}}}});
+    if (type.type == LLIR::var_types::Rule_result)
+        type.type = LLIR::var_types::Rule;
+    else if (type.type == LLIR::var_types::Token_result)
+        type.type = LLIR::var_types::Token;
+    shadow_var.type = {LLIR::var_types::ARRAY, {type}};
+    push({LLIR::types::VARIABLE, shadow_var});
+    block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { shadow_var.name, {LLIR::function_call {"push", {LLIR::assign {LLIR::var_assign_values::VARIABLE, var}}}}}});
     return shadow_var;
 }
-IR::variable IR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
-    IR::variable shadow_variable;
+    LLIR::variable shadow_variable;
     if ((insideLoop || quantifier == '+' || quantifier == '*') && add_shadow_var) {
        shadow_variable = add_shadow_variable(block, var);
        add_shadow_var = false;
@@ -378,33 +378,33 @@ IR::variable IR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::
         case '*': {
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
-            push({IR::types::WHILE, IR::condition{expr, block}});
+            push({LLIR::types::WHILE, LLIR::condition{expr, block}});
             //member.push(pop);
             break;
         }
         case '?':
-            push({IR::types::IF, IR::condition{expr, block}});
+            push({LLIR::types::IF, LLIR::condition{expr, block}});
             break;
         default:
             // add the negative into condition
-            expr.insert(expr.begin(), {IR::condition_types::NOT});
-            expr.insert(expr.begin() + 1, {IR::condition_types::GROUP_OPEN});
-            expr.push_back({IR::condition_types::GROUP_CLOSE});
+            expr.insert(expr.begin(), {LLIR::condition_types::NOT});
+            expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
+            expr.push_back({LLIR::condition_types::GROUP_CLOSE});
             // add exit statement
-            std::vector<IR::member> blk = {{IR::types::EXIT}};
+            std::vector<LLIR::member> blk = {{LLIR::types::EXIT}};
             if (!isFirst) {
-                blk.insert(blk.begin(), {IR::types::ERR, getErrorName(rule)});
+                blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
             }
-            push({IR::types::IF, IR::condition{expr, blk}});
+            push({LLIR::types::IF, LLIR::condition{expr, blk}});
             add(block);
             break;
     }
     return shadow_variable;
 }
 // function to push based on qualifier for Rule_other
-IR::variable IR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
-    IR::variable shadow_variable;
+    LLIR::variable shadow_variable;
     if (insideLoop|| quantifier == '+' || quantifier == '*') {
         shadow_variable = add_shadow_variable(block, var);
         add_shadow_var = false;
@@ -414,76 +414,76 @@ IR::variable IR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
-            handle_plus_qualifier(rule, IR::condition {expr, block});
+            handle_plus_qualifier(rule, LLIR::condition {expr, block});
             break;
         case '*': {
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
-            push({IR::types::WHILE, IR::condition{expr, block}});
+            push({LLIR::types::WHILE, LLIR::condition{expr, block}});
             break;
         }
         case '?':
-            push({IR::types::IF, IR::condition{expr, block}});
+            push({LLIR::types::IF, LLIR::condition{expr, block}});
             break;
         default:
         {
             // add the negative into condition
-            expr.insert(expr.begin(), {IR::condition_types::NOT});
-            expr.insert(expr.begin() + 1, {IR::condition_types::GROUP_OPEN});
-            expr.push_back({IR::condition_types::GROUP_CLOSE});
+            expr.insert(expr.begin(), {LLIR::condition_types::NOT});
+            expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
+            expr.push_back({LLIR::condition_types::GROUP_CLOSE});
             // add exit statement
-            std::vector<IR::member> blk = {{IR::types::EXIT}};
+            std::vector<LLIR::member> blk = {{LLIR::types::EXIT}};
             if (!isFirst) {
-                blk.insert(blk.begin(), {IR::types::ERR, getErrorName(rule)});
+                blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
             }
-            push({IR::types::IF, IR::condition{expr, blk}});
+            push({LLIR::types::IF, LLIR::condition{expr, blk}});
             add(block);
             break;
         }
     }
     return shadow_variable;
 }
-IR::variable IR::affectIrByQuantifier(const Parser::Rule &rule, const IR::variable &var, char quantifier) {
-    IR::variable shadow_var;
+LLIR::variable LLIR::affectIrByQuantifier(const Parser::Rule &rule, const LLIR::variable &var, char quantifier) {
+    LLIR::variable shadow_var;
     if (quantifier == '*' || quantifier == '+') {
-        IR::condition loop = { { { IR::condition_types::NUMBER, (long long) 1 } }, {} };
+        LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
         loop.block = data;
         data.clear();
         processExitStatements(loop.block);
-        if (var.type.type != IR::var_types::UNDEFINED && var.type.type != IR::var_types::STRING)
+        if (var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING)
             shadow_var = add_shadow_variable(loop.block, var);
         if (quantifier == '+') {
             handle_plus_qualifier(rule, loop);
         } else {
-            push({IR::types::WHILE, loop});
+            push({LLIR::types::WHILE, loop});
         }
     } else if (quantifier == '?') {
-        IR::condition loop = { { {IR::condition_types::NUMBER, (long long) 0} } };
+        LLIR::condition loop = { { {LLIR::condition_types::NUMBER, (long long) 0} } };
         loop.block = data;
         data.clear();
         processExitStatements(loop.block);
-        if (insideLoop && var.type.type != IR::var_types::UNDEFINED) {
+        if (insideLoop && var.type.type != LLIR::var_types::UNDEFINED) {
             shadow_var = add_shadow_variable(loop.block, var);
         }
-        push({ IR::types::DOWHILE, loop });
+        push({ LLIR::types::DOWHILE, loop });
     }
     return shadow_var;
 }
-IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
+LLIR::assign LLIR::TreeAnyDataToIR(const Parser::Rule &value) {
     auto val = std::any_cast<Parser::Rule>(value.data);
-    IR::assign newval;
+    LLIR::assign newval;
     switch (val.name)
     {
     case Parser::Rules::string:
         //cpuf::printf("string, type: %s\n", val.data.type().name());
-        newval.kind = IR::var_assign_values::STRING;
+        newval.kind = LLIR::var_assign_values::STRING;
         newval.data = std::any_cast<std::string>(val.data);
         break;
     case Parser::Rules::var_refer:
     {        
         //cpuf::printf("var_refer\n");
-        IR::var_refer refer;
+        LLIR::var_refer refer;
         //cpuf::printf("1\n");
         auto data = std::any_cast<obj_t>(val.data);
         //cpuf::printf("2\n");
@@ -498,7 +498,7 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
         refer.post_increament = post;
         refer.name = name_str;
         // skip brace expression for now as it is not used in rules for parser
-        newval.kind = IR::var_assign_values::VAR_REFER;
+        newval.kind = LLIR::var_assign_values::VAR_REFER;
         newval.data = refer;
         break;
     }
@@ -508,7 +508,7 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
         //cpuf::printf("boolean\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto val = std::any_cast<int>(corelib::map::get(data, "val"));
-        newval.kind = val ? IR::var_assign_values::_TRUE : IR::var_assign_values::_FALSE;
+        newval.kind = val ? LLIR::var_assign_values::_TRUE : LLIR::var_assign_values::_FALSE;
         break;
     }
     case Parser::Rules::number: 
@@ -516,7 +516,7 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
         //cpuf::printf("number\n");
         auto data = std::any_cast<obj_t>(val.data);
         auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
-        newval.kind = IR::var_assign_values::NUMBER;
+        newval.kind = LLIR::var_assign_values::NUMBER;
         newval.data = full;
         break;
     }
@@ -524,11 +524,11 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
     {
         //cpuf::printf("array\n");
         auto data = std::any_cast<std::vector<Parser::Rule>>(val.data);
-        IR::array arr;
+        LLIR::array arr;
         for (auto &el : data) {
             arr.push_back(TreeAnyDataToIR(el));
         }
-        newval.kind = IR::var_assign_values::ARRAY;
+        newval.kind = LLIR::var_assign_values::ARRAY;
         newval.data = arr;
         break;
     }
@@ -543,7 +543,7 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
         
         keys.insert(keys.begin(), key);
         values.insert(values.begin(), value);
-        IR::object obj;
+        LLIR::object obj;
         for (int i = 0; i < keys.size(); i++) {
             auto key = keys[i];
             auto value = values[i];
@@ -551,7 +551,7 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
             auto value_data = TreeAnyDataToIR(value);
             obj[strkey] = value_data;
         }
-        newval.kind = IR::var_assign_values::OBJECT;
+        newval.kind = LLIR::var_assign_values::OBJECT;
         newval.data = obj;
         break;
     }
@@ -565,8 +565,8 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
         for (auto &el : second) {
             el = std::any_cast<Parser::Rule>(el.data);
         }
-        IR::accessor mem = {second};
-        newval.kind = IR::var_assign_values::ACCESSOR;
+        LLIR::accessor mem = {second};
+        newval.kind = LLIR::var_assign_values::ACCESSOR;
         newval.data = mem;
         break;
     }
@@ -576,13 +576,13 @@ IR::assign IR::TreeAnyDataToIR(const Parser::Rule &value) {
     }
     return newval;
 }
-IR::function_call IR::TreeFunctionToIR(const Parser::Rule &rule) {
-    IR::function_call call;
+LLIR::function_call LLIR::TreeFunctionToIR(const Parser::Rule &rule) {
+    LLIR::function_call call;
     auto data = std::any_cast<obj_t>(rule.data);
     call.name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name"))).data);
     auto body = std::any_cast<Parser::Rule>(corelib::map::get(data, "body")); 
     auto params = std::any_cast<std::vector<Parser::Rule>>(std::any_cast<Parser::Rule>(body.data).data);
-    std::vector<IR::assign> new_params;
+    std::vector<LLIR::assign> new_params;
     for (auto arg : params) {
         new_params.push_back(TreeAnyDataToIR(arg));
     }
@@ -590,21 +590,21 @@ IR::function_call IR::TreeFunctionToIR(const Parser::Rule &rule) {
     return call;
 }
 
-IR::method_call IR::TreeMethodCallToIR(const Parser::Rule &rule) {
-    IR::method_call method_call;
+LLIR::method_call LLIR::TreeMethodCallToIR(const Parser::Rule &rule) {
+    LLIR::method_call method_call;
     auto var_rule_data = std::any_cast<obj_t>(rule.data);
     auto id = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "object"));
     auto call = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(var_rule_data, "call"));
     method_call.var_name = std::any_cast<std::string>(id.data);
-    std::vector<IR::function_call> calls;
+    std::vector<LLIR::function_call> calls;
     for (auto cl : call) {
         calls.push_back(TreeFunctionToIR(cl));
     }
     method_call.calls = calls;
     return method_call;
 }
-IR::var_type IR::deduceVarTypeByValue(Parser::Rule mem) {
-    IR::var_type type;
+LLIR::var_type LLIR::deduceVarTypeByValue(Parser::Rule mem) {
+    LLIR::var_type type;
     if (mem.name == Parser::Rules::Rule_rule) {
         auto memdata = std::any_cast<obj_t>(mem.data);
         mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
@@ -613,40 +613,40 @@ IR::var_type IR::deduceVarTypeByValue(Parser::Rule mem) {
         auto data = std::any_cast<obj_t>(mem.data);
         auto group = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
         if (group.size() == 0) {
-            return {IR::var_types::UNDEFINED};
+            return {LLIR::var_types::UNDEFINED};
         } else {
             if (group.size() > 1) {
                 for (auto i = 0; i < group.size(); i++) {
-                    if (deduceVarTypeByValue(group[i]).type != IR::var_types::STRING)
-                        return {IR::var_types::UNDEFINED};
+                    if (deduceVarTypeByValue(group[i]).type != LLIR::var_types::STRING)
+                        return {LLIR::var_types::UNDEFINED};
                 }
-                return {IR::var_types::STRING};
+                return {LLIR::var_types::STRING};
             }
 
             return deduceVarTypeByValue(group[0]);
         }
     } else if (mem.name == Parser::Rules::Rule_op) {
-        IR::var_type type = {IR::var_types::UNDEFINED};
+        LLIR::var_type type = {LLIR::var_types::UNDEFINED};
         auto val = std::any_cast<std::vector<Parser::Rule>>(mem.data);
         if (val.size() == 0)
-            return {IR::var_types::UNDEFINED};
+            return {LLIR::var_types::UNDEFINED};
         for (auto el : val) {
             auto el_data = std::any_cast<obj_t>(el.data);
             auto el_val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-            if (type.type == IR::var_types::UNDEFINED) {
+            if (type.type == LLIR::var_types::UNDEFINED) {
                 type = deduceVarTypeByValue(el_val);
             } else if (deduceVarTypeByValue(el_val).type != type.type) {
-                return {IR::var_types::ANY};
+                return {LLIR::var_types::ANY};
             }
         }
         return type;
     } else if (mem.name == Parser::Rules::Rule_other) {
         auto data = std::any_cast<rule_other>(mem.data);
-        return corelib::text::isUpper(data.name) ? IR::var_type {IR::var_types::Token} : IR::var_type {IR::var_types::Rule};
+        return corelib::text::isUpper(data.name) ? LLIR::var_type {LLIR::var_types::Token} : LLIR::var_type {LLIR::var_types::Rule};
     }
-    return {IR::var_types::STRING};
+    return {LLIR::var_types::STRING};
 }
-IR::var_type IR::cllTreeCsupportTypeToIR(const Parser::Rule &rule) {
+LLIR::var_type LLIR::cllTreeCsupportTypeToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     bool is_unsigned = std::any_cast<bool>(corelib::map::get(data, "is_unsigned"));
     auto val = std::any_cast<std::string>(corelib::map::get(data, "val"));
@@ -657,31 +657,31 @@ IR::var_type IR::cllTreeCsupportTypeToIR(const Parser::Rule &rule) {
     //     cpuf::printf("4\n");
     //     templ_val = std::any_cast<std::vector<Parser::Rule>>(templ.data);
     // }
-    IR::var_types result;
+    LLIR::var_types result;
     if (val == "char")
-        result = IR::var_types::CHAR;
+        result = LLIR::var_types::CHAR;
     else if (val == "short")
-        result = IR::var_types::SHORT;
+        result = LLIR::var_types::SHORT;
     else if (val == "int")
-        result = IR::var_types::INT;
+        result = LLIR::var_types::INT;
     else if (val == "long")
-        result = IR::var_types::LONG;
+        result = LLIR::var_types::LONG;
     else if (val == "long long")
-        result = IR::var_types::LONGLONG;
+        result = LLIR::var_types::LONGLONG;
     
     if (is_unsigned)
-        result = static_cast<IR::var_types>(static_cast<int>(result) + 1); // result++
+        result = static_cast<LLIR::var_types>(static_cast<int>(result) + 1); // result++
     return { result };
     throw Error("Undefined csupport type");
 }
-IR::var_type IR::cllTreeTypeToIR(const Parser::Rule &rule) {
+LLIR::var_type LLIR::cllTreeTypeToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<Parser::Rule>(rule.data);
     if (data.name == Parser::Rules::cll_csupport_types)
         return cllTreeCsupportTypeToIR(data);
     else
         return cllTreeAbstactTypeToIR(data);
 }
-IR::var_type IR::cllTreeAbstactTypeToIR(const Parser::Rule &rule) {
+LLIR::var_type LLIR::cllTreeAbstactTypeToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto val = std::any_cast<std::string>(corelib::map::get(data, "type"));
     auto templ = std::any_cast<Parser::Rule>(corelib::map::get(data, "template"));
@@ -690,116 +690,116 @@ IR::var_type IR::cllTreeAbstactTypeToIR(const Parser::Rule &rule) {
         templ_val = std::any_cast<std::vector<Parser::Rule>>(templ.data);
     }
     if (val == "var" || val == "any")
-        return {IR::var_types::ANY, {}};
+        return {LLIR::var_types::ANY, {}};
     else if (val == "str")
-        return {IR::var_types::STRING, {}};
+        return {LLIR::var_types::STRING, {}};
     else if (val == "bool")
-        return {IR::var_types::BOOLEAN, {}};
+        return {LLIR::var_types::BOOLEAN, {}};
     else if (val == "num")
-        return {IR::var_types::NUMBER, {}};
+        return {LLIR::var_types::NUMBER, {}};
     else if (val == "arr") {
-        IR::var_types type = IR::var_types::ARRAY;
-        IR::var_type _template = cllTreeTypeToIR(templ_val[0]);
+        LLIR::var_types type = LLIR::var_types::ARRAY;
+        LLIR::var_type _template = cllTreeTypeToIR(templ_val[0]);
         return {type, {_template}};
     } else if (val == "obj") {        
-        IR::var_types type = IR::var_types::OBJECT;
-        IR::var_type _template1 = cllTreeTypeToIR(templ_val[0]);
-        IR::var_type _template2 = cllTreeTypeToIR(templ_val[1]);
+        LLIR::var_types type = LLIR::var_types::OBJECT;
+        LLIR::var_type _template1 = cllTreeTypeToIR(templ_val[0]);
+        LLIR::var_type _template2 = cllTreeTypeToIR(templ_val[1]);
         return {type, {_template1, _template2}};
     }
     throw Error("undefined abstract type");
 }
-IR::var_assign_types IR::TreeOpToIR(const Parser::Rule &rule) {
+LLIR::var_assign_types LLIR::TreeOpToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<Parser::Rule>(rule.data);
     if (!data.data.has_value())
-        return IR::var_assign_types::ASSIGN;
+        return LLIR::var_assign_types::ASSIGN;
     auto val = std::any_cast<std::string>(data.data);
     if (val == ">>")
-        return IR::var_assign_types::BITWISE_RIGHTSHFT;
+        return LLIR::var_assign_types::BITWISE_RIGHTSHFT;
     if (val == "<<")
-        return IR::var_assign_types::BITWISE_LEFTSHIFT;
+        return LLIR::var_assign_types::BITWISE_LEFTSHIFT;
     // all other is single character so can use switch
     switch (val[0]) {
         case '+':
-            return IR::var_assign_types::ADD;
+            return LLIR::var_assign_types::ADD;
         case '-':
-            return IR::var_assign_types::SUBSTR;
+            return LLIR::var_assign_types::SUBSTR;
         case '*':
-            return IR::var_assign_types::MULTIPLY;
+            return LLIR::var_assign_types::MULTIPLY;
         case '/':
-            return IR::var_assign_types::DIVIDE;
+            return LLIR::var_assign_types::DIVIDE;
         case '%':
-            return IR::var_assign_types::MODULO;
+            return LLIR::var_assign_types::MODULO;
         case '&':
-            return IR::var_assign_types::BITWISE_AND;
+            return LLIR::var_assign_types::BITWISE_AND;
         case '|':
-            return IR::var_assign_types::BITWISE_OR;
+            return LLIR::var_assign_types::BITWISE_OR;
         case '^':
-            return IR::var_assign_types::BITWISE_ANDR;
+            return LLIR::var_assign_types::BITWISE_ANDR;
     }
     throw Error("Undefined operator");
 }
-IR::expr IR::TreeOpToExpr(const Parser::Rule &rule) {
+LLIR::expr LLIR::TreeOpToExpr(const Parser::Rule &rule) {
     auto data = std::any_cast<std::string>(rule.data);
     if (data == ">>")
-        return {IR::condition_types::RIGHT_BITWISE};
+        return {LLIR::condition_types::RIGHT_BITWISE};
     if (data == "<<")
-        return {IR::condition_types::LEFT_BITWISE};
+        return {LLIR::condition_types::LEFT_BITWISE};
     // all other is single character so can use switch
     switch (data[0]) {
         case '+':
-            return {IR::condition_types::ADD};
+            return {LLIR::condition_types::ADD};
         case '-':
-            return {IR::condition_types::SUBSTR};
+            return {LLIR::condition_types::SUBSTR};
         case '*':
-            return {IR::condition_types::MULTIPLY};
+            return {LLIR::condition_types::MULTIPLY};
         case '/':
-            return {IR::condition_types::DIVIDE};
+            return {LLIR::condition_types::DIVIDE};
         case '%':
-            return {IR::condition_types::MODULO};
+            return {LLIR::condition_types::MODULO};
         case '&':
-            return {IR::condition_types::BITWISE_AND};
+            return {LLIR::condition_types::BITWISE_AND};
         case '|':
-            return {IR::condition_types::BITWISE_OR};
+            return {LLIR::condition_types::BITWISE_OR};
         case '^':
-            return {IR::condition_types::BITWISE_ANDR};
+            return {LLIR::condition_types::BITWISE_ANDR};
         default:
             throw Error("Undefined operator");
     }
 }
-IR::expr IR::TreeCompareOpToExpr(const Parser::Rule &rule) {
+LLIR::expr LLIR::TreeCompareOpToExpr(const Parser::Rule &rule) {
     auto data = std::any_cast<std::string>(rule.data);
     if (data == "==")
-        return {IR::condition_types::EQUAL};
+        return {LLIR::condition_types::EQUAL};
     if (data == "!=")
-        return {IR::condition_types::NOT_EQUAL};
+        return {LLIR::condition_types::NOT_EQUAL};
     if (data == ">")
-        return {IR::condition_types::HIGHER};
+        return {LLIR::condition_types::HIGHER};
     if (data == "<")
-        return {IR::condition_types::LOWER};
+        return {LLIR::condition_types::LOWER};
     if (data == ">=")
-        return {IR::condition_types::HIGHER_OR_EQUAL};
+        return {LLIR::condition_types::HIGHER_OR_EQUAL};
     if (data == "<=")
-        return {IR::condition_types::LOWER_OR_EQUAL};
+        return {LLIR::condition_types::LOWER_OR_EQUAL};
     throw Error("undefined compare operator");
 }
-IR::expr IR::TreeLogicalOpToIR(const Parser::Rule &rule) {
+LLIR::expr LLIR::TreeLogicalOpToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<Parser::Rule>(rule.data);
     if (data.name == Parser::Rules::logical_and)
-        return {IR::condition_types::AND};
+        return {LLIR::condition_types::AND};
     else if (data.name == Parser::Rules::logical_or)
-        return {IR::condition_types::OR};
+        return {LLIR::condition_types::OR};
     throw Error("undefined logical operator");
 }
-IR::var_assign_types IR::TreeAssignmentOpToIR(const Parser::Rule &rule) {
+LLIR::var_assign_types LLIR::TreeAssignmentOpToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<Parser::Rule>(rule.data);
     if (!data.data.has_value())
-        return IR::var_assign_types::ASSIGN;
+        return LLIR::var_assign_types::ASSIGN;
     auto v = TreeOpToIR(data);
-    v = static_cast<IR::var_assign_types>(static_cast<int>(v) + static_cast<int>(IR::var_assign_types::ASSIGN));
+    v = static_cast<LLIR::var_assign_types>(static_cast<int>(v) + static_cast<int>(LLIR::var_assign_types::ASSIGN));
     return v;
 }
-IR::var_assign_types IR::TreeOperatorsToIR(const Parser::Rule &rule) {
+LLIR::var_assign_types LLIR::TreeOperatorsToIR(const Parser::Rule &rule) {
     if (rule.name == Parser::Rules::op)
         return TreeOpToIR(rule);
     else if (rule.name == Parser::Rules::assignment_op)
@@ -807,17 +807,17 @@ IR::var_assign_types IR::TreeOperatorsToIR(const Parser::Rule &rule) {
     else
         throw Error("Undefined operator");
 }
-std::vector<IR::expr> IR::TreeExprGroupToIR(const Parser::Rule &rule) {
-    std::vector<IR::expr> expr;
+std::vector<LLIR::expr> LLIR::TreeExprGroupToIR(const Parser::Rule &rule) {
+    std::vector<LLIR::expr> expr;
     auto data = std::any_cast<Parser::Rule>(rule.data);
     auto expression = TreeExprToIR(data);
-    expr.push_back({IR::condition_types::GROUP_OPEN});
+    expr.push_back({LLIR::condition_types::GROUP_OPEN});
     expr.insert(expr.end(), expression.begin(), expression.end());
-    expr.push_back({IR::condition_types::GROUP_CLOSE});
+    expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     return expr;
 }
-std::vector<IR::expr> IR::TreeExprArithmetic_forToIR(const Parser::Rule &rule) {
-    std::vector<IR::expr> expr;
+std::vector<LLIR::expr> LLIR::TreeExprArithmetic_forToIR(const Parser::Rule &rule) {
+    std::vector<LLIR::expr> expr;
     auto data = std::any_cast<Parser::Rule>(rule.data);
     switch (data.name)
     {
@@ -828,13 +828,13 @@ std::vector<IR::expr> IR::TreeExprArithmetic_forToIR(const Parser::Rule &rule) {
         break;
     }
     case Parser::Rules::method_call:
-        expr.push_back({IR::condition_types::METHOD_CALL, TreeMethodCallToIR(data)});
+        expr.push_back({LLIR::condition_types::METHOD_CALL, TreeMethodCallToIR(data)});
         break;
     case Parser::Rules::cll_function_call:
-        expr.push_back({IR::condition_types::FUNCTION_CALL, TreeFunctionToIR(data)});
+        expr.push_back({LLIR::condition_types::FUNCTION_CALL, TreeFunctionToIR(data)});
         break;
     case Parser::Rules::any_data:
-        expr.push_back({IR::condition_types::ANY_DATA, TreeAnyDataToIR(data)});
+        expr.push_back({LLIR::condition_types::ANY_DATA, TreeAnyDataToIR(data)});
         break;
     default:
         throw Error("Undefined data in arithmetic_for %s", Parser::RulesToString(data.name));
@@ -842,13 +842,13 @@ std::vector<IR::expr> IR::TreeExprArithmetic_forToIR(const Parser::Rule &rule) {
     }
     return expr;
 }
-std::vector<IR::expr> IR::TreeExprArithmeticToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprArithmeticToIR(const Parser::Rule &rule) {
     // if (rule.name == Parser::Rules::cll_function_call)
     auto data = std::any_cast<obj_t>(rule.data);
     auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
     auto operators = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "operators"));
     auto sequence = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "sequence"));
-    std::vector<IR::expr> cond;
+    std::vector<LLIR::expr> cond;
     auto res = TreeExprArithmetic_forToIR(first);
     cond.insert(cond.end(), res.begin(), res.end());
     for (int i = 0; i < operators.size(); i++) {
@@ -858,7 +858,7 @@ std::vector<IR::expr> IR::TreeExprArithmeticToIR(const Parser::Rule &rule) {
     }
     return cond;
 }
-std::vector<IR::expr> IR::TreeExprCompareToIR_unit(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprCompareToIR_unit(const Parser::Rule &rule) {
     switch (rule.name)
     {
     case Parser::Rules::expr_arithmetic:
@@ -872,13 +872,13 @@ std::vector<IR::expr> IR::TreeExprCompareToIR_unit(const Parser::Rule &rule) {
         break;
     }
 }
-std::vector<IR::expr> IR::TreeExprCompareToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprCompareToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
     auto operators = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "operators"));
     auto sequence = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "sequence"));
 
-    std::vector<IR::expr> cond;
+    std::vector<LLIR::expr> cond;
     auto res = TreeExprCompareToIR_unit(first);
     cond.insert(cond.end(), res.begin(), res.end());
     for (int i = 0; i < operators.size(); i++) {
@@ -888,7 +888,7 @@ std::vector<IR::expr> IR::TreeExprCompareToIR(const Parser::Rule &rule) {
     }
     return cond;
 }
-std::vector<IR::expr> IR::TreeExprLogicalUnitToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprLogicalUnitToIR(const Parser::Rule &rule) {
     switch (rule.name)
     {
     case Parser::Rules::expr_compare:
@@ -901,13 +901,13 @@ std::vector<IR::expr> IR::TreeExprLogicalUnitToIR(const Parser::Rule &rule) {
         throw Error("Undefined unit\n");
     }
 } 
-std::vector<IR::expr> IR::TreeExprLogicalToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprLogicalToIR(const Parser::Rule &rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto left = std::any_cast<Parser::Rule>(corelib::map::get(data, "left"));
     auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "op"));
     auto right = std::any_cast<Parser::Rule>(corelib::map::get(data, "right"));
 
-    std::vector<IR::expr> cond;
+    std::vector<LLIR::expr> cond;
     auto left_res = TreeExprLogicalUnitToIR(left);
     auto op_res = TreeLogicalOpToIR(op);
     auto rigth_res = TreeExprLogicalUnitToIR(right);
@@ -916,7 +916,7 @@ std::vector<IR::expr> IR::TreeExprLogicalToIR(const Parser::Rule &rule) {
     cond.insert(cond.end(), rigth_res.begin(), rigth_res.end());
     return cond;
 }
-std::vector<IR::expr> IR::TreeExprToIR(const Parser::Rule &expr) {
+std::vector<LLIR::expr> LLIR::TreeExprToIR(const Parser::Rule &expr) {
     auto val = std::any_cast<Parser::Rule>(expr.data);
     switch(val.name) {
         case Parser::Rules::expr_logical:
@@ -928,17 +928,17 @@ std::vector<IR::expr> IR::TreeExprToIR(const Parser::Rule &expr) {
         case Parser::Rules::expr_group:
             return TreeExprGroupToIR(val);
         case Parser::Rules::cll_function_call:
-            return {{IR::condition_types::FUNCTION_CALL, TreeFunctionToIR(val)}};
+            return {{LLIR::condition_types::FUNCTION_CALL, TreeFunctionToIR(val)}};
         case Parser::Rules::any_data:
-            return {{IR::condition_types::ANY_DATA, TreeAnyDataToIR(val)}};
+            return {{LLIR::condition_types::ANY_DATA, TreeAnyDataToIR(val)}};
         case Parser::Rules::method_call:
-            return {{IR::condition_types::METHOD_CALL, TreeMethodCallToIR(val)}};
+            return {{LLIR::condition_types::METHOD_CALL, TreeMethodCallToIR(val)}};
     }
     throw Error("Undefined tree unit: %s", Parser::RulesToString(val.name));
 }
 
 // Function to compare two `templ` arrays
-bool IR::compare_templ(const std::vector<IR::var_type>& templ1, const std::vector<IR::var_type>& templ2) {
+bool LLIR::compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2) {
     if (templ1.size() != templ2.size()) return false;
 
     for (size_t i = 0; i < templ1.size(); ++i) {
@@ -947,10 +947,10 @@ bool IR::compare_templ(const std::vector<IR::var_type>& templ1, const std::vecto
     }
     return true;
 }
-bool IR::compare_types(std::list<IR::var_type> types) {
+bool LLIR::compare_types(std::list<LLIR::var_type> types) {
     if (types.empty())
         return false;
-    IR::var_type first_type = types.front();
+    LLIR::var_type first_type = types.front();
     bool is_same = true;
     bool begin = true;
     for (auto el : types) {
@@ -965,13 +965,13 @@ bool IR::compare_types(std::list<IR::var_type> types) {
     }
     return is_same;
 }
-IR::variable IR::getElementbyAccessor(IR::accessor &accessor, bool is_match_rule) {
+LLIR::variable LLIR::getElementbyAccessor(LLIR::accessor &accessor, bool is_match_rule) {
     enum class accessor_states {
         GROUP, ELEMENT, CHAR, UNKNOWN
     };
     accessor_states state = accessor_states::UNKNOWN;
-    IR::variable* elements_pointer = nullptr;
-    IR::var_group* group_pointer = nullptr; 
+    LLIR::variable* elements_pointer = nullptr;
+    LLIR::var_group* group_pointer = nullptr; 
     for (auto &unit : accessor.elements) {
         auto num = std::any_cast<Parser::Rule>(unit.data);
         auto num_data = std::any_cast<obj_t>(num.data);
@@ -1024,9 +1024,9 @@ IR::variable IR::getElementbyAccessor(IR::accessor &accessor, bool is_match_rule
     }
     return state == accessor_states::ELEMENT ? *elements_pointer : group_pointer->var;
 }
-void IR::inlineExprAccessor(IR::assign &data) {
-    if (data.kind == IR::var_assign_values::ACCESSOR) {
-        auto accessor = std::any_cast<IR::accessor>(data.data);
+void LLIR::inlineExprAccessor(LLIR::assign &data) {
+    if (data.kind == LLIR::var_assign_values::ACCESSOR) {
+        auto accessor = std::any_cast<LLIR::accessor>(data.data);
         if (accessor.elements[0].name == Parser::Rules::accessors_char) {
             if (accessor.elements.size() > 1)
                 throw Error("Cannot refer subaccessor for accessor '^");
@@ -1034,50 +1034,50 @@ void IR::inlineExprAccessor(IR::assign &data) {
             auto num = std::any_cast<Parser::Rule>(accessor.elements[0].data);
             auto num_data = std::any_cast<obj_t>(num.data);
             auto num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n")) - 1;
-            data.kind = IR::var_assign_values::CURRENT_POS;
+            data.kind = LLIR::var_assign_values::CURRENT_POS;
             data.data = num_main;
             return;
         }
         // a regular accessor
         auto var = getElementbyAccessor(accessor, false);
-        data.kind = IR::var_assign_values::VARIABLE;
+        data.kind = LLIR::var_assign_values::VARIABLE;
         data.data = var;
-    } else if (data.kind == IR::var_assign_values::EXPR) {
-        auto dt = std::any_cast<std::vector<IR::expr>>(data.data);
+    } else if (data.kind == LLIR::var_assign_values::EXPR) {
+        auto dt = std::any_cast<std::vector<LLIR::expr>>(data.data);
         inlineExprAccessor(dt);
         data.data = dt;
 
     }
 }
-void IR::inlineExprAccessor(std::vector<IR::expr> &expr) {
+void LLIR::inlineExprAccessor(std::vector<LLIR::expr> &expr) {
     for (auto &unit : expr) {
-        if (unit.id == IR::condition_types::ANY_DATA) {
-            auto data = std::any_cast<IR::assign>(unit.value);
+        if (unit.id == LLIR::condition_types::ANY_DATA) {
+            auto data = std::any_cast<LLIR::assign>(unit.value);
             inlineExprAccessor(data);
             unit.value = data;
         }
     }
 }
-void IR::inlineAccessors(std::vector<IR::member> &values) {
+void LLIR::inlineAccessors(std::vector<LLIR::member> &values) {
     if (values.empty() || elements.empty())
         return;
     for (auto it = values.begin(); it != values.end(); it++) {
         auto el = *it;
-        if (el.type == IR::types::ACCESSOR) {
-            auto accessor = std::any_cast<IR::accessor>(el.value);
+        if (el.type == LLIR::types::ACCESSOR) {
+            auto accessor = std::any_cast<LLIR::accessor>(el.value);
             auto var = getElementbyAccessor(accessor, true);
-            std::vector<IR::expr> expr = {
-                {IR::condition_types::STRNCMP, IR::strncmp{0, var}}
+            std::vector<LLIR::expr> expr = {
+                {LLIR::condition_types::STRNCMP, LLIR::strncmp{0, var}}
             };
             // go to reverse to get names of var and svar
             bool insideLoop;
-            IR::variable accessor_var, accessor_shadow, accessor_svar;
+            LLIR::variable accessor_var, accessor_shadow, accessor_svar;
             for (auto reverse_it = std::make_reverse_iterator(it + 1); reverse_it != values.rend(); reverse_it++) {
-                if (reverse_it->type == IR::types::INSIDE_LOOP) {
+                if (reverse_it->type == LLIR::types::INSIDE_LOOP) {
                     insideLoop = true;
                     reverse_it = std::make_reverse_iterator(values.erase(std::prev(reverse_it.base())));
-                } else if (reverse_it->type == IR::types::VARIABLE) {
-                    auto data = std::any_cast<IR::variable>(reverse_it->value);
+                } else if (reverse_it->type == LLIR::types::VARIABLE) {
+                    auto data = std::any_cast<LLIR::variable>(reverse_it->value);
                     if (accessor_svar.name.empty()) {
                         accessor_svar = data;
                     } else if (accessor_shadow.name.empty()) {
@@ -1092,51 +1092,51 @@ void IR::inlineAccessors(std::vector<IR::member> &values) {
                 throw Error("Cannot find variable and success variable for accessor");
             // replace accessor with rule
             it = values.erase(it); // Erase the accessor element and update iterator
-            std::vector<IR::member> block = createDefaultBlock(accessor_var, accessor_svar);
-            IR result_rule(tree);
+            std::vector<LLIR::member> block = createDefaultBlock(accessor_var, accessor_svar);
+            LLIR result_rule(tree);
             result_rule.proceed(*this);
             pushBasedOnQualifier(Tokens::make_rule(Parser::Rules::accessor), expr, block, accessor_var, accessor_svar, false);
             // replace_exit_to_unsuccess(result_rule.elements, accessor_svar);
             it = values.insert(it, result_rule.data.begin(), result_rule.data.end()); // Insert new elements and update iterator
             if (it != values.end())
                 std::advance(it, result_rule.elements.size() - 1); // Move iterator past the newly inserted elements
-        } else if (el.type == IR::types::IF || el.type == IR::types::WHILE || el.type == IR::types::DOWHILE) {
-            auto dt = std::any_cast<IR::condition>(el.value);
+        } else if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
+            auto dt = std::any_cast<LLIR::condition>(el.value);
             inlineExprAccessor(dt.expression);
             inlineAccessors(dt.block);
             it->value = dt;
-        } else if (el.type == IR::types::VARIABLE) {
-            auto data = std::any_cast<IR::variable>(el.value);
+        } else if (el.type == LLIR::types::VARIABLE) {
+            auto data = std::any_cast<LLIR::variable>(el.value);
             inlineExprAccessor(data.value);
             it->value = data;
-        } else if (el.type == IR::types::ASSIGN_VARIABLE) {
-            auto data = std::any_cast<IR::variable_assign>(el.value);
+        } else if (el.type == LLIR::types::ASSIGN_VARIABLE) {
+            auto data = std::any_cast<LLIR::variable_assign>(el.value);
             inlineExprAccessor(data.value);
             it->value = data;
         }
     }
 }
-IR::var_type IR::deduceTypeFromAnyData(const Parser::Rule &value) {
+LLIR::var_type LLIR::deduceTypeFromAnyData(const Parser::Rule &value) {
     auto val = std::any_cast<Parser::Rule>(value.data);
-    IR::var_type type;
+    LLIR::var_type type;
     switch (val.name)
     {
     case Parser::Rules::string:
-        type.type = IR::var_types::STRING;
+        type.type = LLIR::var_types::STRING;
         break;
     case Parser::Rules::var_refer:
     {        
-        IR::var_refer refer;
+        LLIR::var_refer refer;
         auto data = std::any_cast<obj_t>(val.data);
         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
         auto name_str = std::any_cast<std::string>(name.data);
-        auto var = std::find_if(vars.begin(), vars.end(), [&name_str](const IR::variable var) {return var.name == name_str;});
+        auto var = std::find_if(vars.begin(), vars.end(), [&name_str](const LLIR::variable var) {return var.name == name_str;});
         if (var == vars.end())
             throw Error("Requested variable in expression could not be found: %s", name_str);
-        if (var->type.type == IR::var_types::Token_result) {
-            type.type = IR::var_types::Token;
-        } else if (var->type.type == IR::var_types::Rule_result) {
-            type.type = IR::var_types::Rule;
+        if (var->type.type == LLIR::var_types::Token_result) {
+            type.type = LLIR::var_types::Token;
+        } else if (var->type.type == LLIR::var_types::Rule_result) {
+            type.type = LLIR::var_types::Rule;
         } else {
             type = var->type;
         }
@@ -1144,27 +1144,27 @@ IR::var_type IR::deduceTypeFromAnyData(const Parser::Rule &value) {
     }
     case Parser::Rules::boolean: 
     {
-        type.type = IR::var_types::BOOLEAN;
+        type.type = LLIR::var_types::BOOLEAN;
         break;
     }
     case Parser::Rules::number: 
     {
         
-        type.type = IR::var_types::NUMBER;
+        type.type = LLIR::var_types::NUMBER;
         break;
     }
     case Parser::Rules::array:
     {
         //cpuf::printf("array\n");
         auto data = std::any_cast<std::vector<Parser::Rule>>(val.data);
-        std::list<IR::var_type> types;
+        std::list<LLIR::var_type> types;
         
         for (auto &el : data) {
             types.push_back(deduceTypeFromAnyData(el));
         }
         bool is_same = compare_types(types);
-        type.type = IR::var_types::ARRAY;
-        type.templ = {is_same ? types.front() : IR::var_type {IR::var_types::ANY}};
+        type.type = LLIR::var_types::ARRAY;
+        type.templ = {is_same ? types.front() : LLIR::var_type {LLIR::var_types::ANY}};
         break;
     }
     case Parser::Rules::object:
@@ -1178,7 +1178,7 @@ IR::var_type IR::deduceTypeFromAnyData(const Parser::Rule &value) {
         
         keys.insert(keys.begin(), key);
         values.insert(values.begin(), value);
-        std::list <IR::var_type> types;
+        std::list <LLIR::var_type> types;
         for (int i = 0; i < keys.size(); i++) {
             auto key = keys[i];
             auto value = values[i];
@@ -1186,24 +1186,24 @@ IR::var_type IR::deduceTypeFromAnyData(const Parser::Rule &value) {
             types.push_back(type);
         }
         bool is_same = compare_types(types);
-        type.type = IR::var_types::OBJECT;
-        type.templ = {is_same ? std::vector<IR::var_type> {{IR::var_types::STRING}, types.front()} : std::vector<IR::var_type> {{IR::var_types::STRING}, {IR::var_types::ANY}}};
+        type.type = LLIR::var_types::OBJECT;
+        type.templ = {is_same ? std::vector<LLIR::var_type> {{LLIR::var_types::STRING}, types.front()} : std::vector<LLIR::var_type> {{LLIR::var_types::STRING}, {LLIR::var_types::ANY}}};
         break;
     }
     case Parser::Rules::accessor:
     {
         //cpuf::printf("accessor\n");
-        auto accessor = std::any_cast<IR::accessor>(TreeAnyDataToIR(value).data);
+        auto accessor = std::any_cast<LLIR::accessor>(TreeAnyDataToIR(value).data);
         auto name = getElementbyAccessor(accessor, false);
-        auto var = std::find_if(vars.begin(), vars.end(), [&name](const IR::variable var) {
+        auto var = std::find_if(vars.begin(), vars.end(), [&name](const LLIR::variable var) {
             return var.name == name.name;
         });
         if (var == vars.end())
             throw Error("Requested variable in expression could not be found: %s", name.name);
-        if (var->type.type == IR::var_types::Token_result) {
-            type.type = IR::var_types::Token;
-        } else if (var->type.type == IR::var_types::Rule_result) {
-            type.type = IR::var_types::Rule;
+        if (var->type.type == LLIR::var_types::Token_result) {
+            type.type = LLIR::var_types::Token;
+        } else if (var->type.type == LLIR::var_types::Rule_result) {
+            type.type = LLIR::var_types::Rule;
         } else {
             type = var->type;
         }
@@ -1215,7 +1215,7 @@ IR::var_type IR::deduceTypeFromAnyData(const Parser::Rule &value) {
     }
     return type;
 }
-IR::var_type IR::deduceTypeFromExpr(const Parser::Rule &expr) {
+LLIR::var_type LLIR::deduceTypeFromExpr(const Parser::Rule &expr) {
     switch (expr.name) {
         // case Parser::Rules::expr_logical:
         //     return exprLogicalDeduceType(data);
@@ -1231,13 +1231,13 @@ IR::var_type IR::deduceTypeFromExpr(const Parser::Rule &expr) {
             throw Error("Undefined expression unit: %s", Parser::RulesToString(expr.name));
     }
 }
-IR::data_block IR::TreeDataBlockToIR(const Parser::Rule &rule) {
+LLIR::data_block LLIR::TreeDataBlockToIR(const Parser::Rule &rule) {
     auto val = std::any_cast<Parser::Rule>(rule.data);
-    IR::data_block datablock;
+    LLIR::data_block datablock;
     if (val.name == Parser::Rules::Rule_data_block_inclosed_map) {
         // inclosed map
         datablock.is_inclosed_map = true;
-        IR::inclosed_map map;
+        LLIR::inclosed_map map;
         auto keys = std::any_cast<std::vector<Parser::Rule>>(val.data);
         for (auto &key : keys) {
             auto data = std::any_cast<obj_t>(key.data);
@@ -1249,7 +1249,7 @@ IR::data_block IR::TreeDataBlockToIR(const Parser::Rule &rule) {
                 map[std::any_cast<std::string>(k.data)] = {expr, deduceTypeFromExpr(std::any_cast<Parser::Rule>(v.data))};
             } 
         }
-        datablock.value = {IR::var_assign_values::INCLOSED_MAP, map};
+        datablock.value = {LLIR::var_assign_values::INCLOSED_MAP, map};
     } else if (val.name == Parser::Rules::any_data) {
         datablock.is_inclosed_map = false;
         datablock.value = TreeAnyDataToIR(val);
@@ -1258,7 +1258,7 @@ IR::data_block IR::TreeDataBlockToIR(const Parser::Rule &rule) {
     } else throw Error("Undefined data block val\n");
     return datablock;
 }
-IR::node_ret_t IR::processGroup(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("group\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto variable = corelib::map::get(data, "variable").has_value() ? std::any_cast<Parser::Rule>(corelib::map::get(data, "variable")) : Parser::Rule();
@@ -1276,44 +1276,44 @@ IR::node_ret_t IR::processGroup(const Parser::Rule &rule, char quantifier) {
     groups.push_back({var, elements.size(), elements.size() + values.elements.size() - 1});
     update(values);
     var.type = {deduceVarTypeByValue(rule)};
-    if ((quantifier == '*' || quantifier == '+') && var.type.type != IR::var_types::UNDEFINED && var.type.type != IR::var_types::STRING) {
+    if ((quantifier == '*' || quantifier == '+') && var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING) {
         var.type.templ = {{var.type.type}};
-        var.type.type = IR::var_types::ARRAY;
+        var.type.type = LLIR::var_types::ARRAY;
     }
-    std::vector<IR::member> var_members;
-    auto switch_type = var.type.type == IR::var_types::ARRAY ? var.type.templ[0].type : var.type.type;
+    std::vector<LLIR::member> var_members;
+    auto switch_type = var.type.type == LLIR::var_types::ARRAY ? var.type.templ[0].type : var.type.type;
     switch (switch_type) {
-        case IR::var_types::STRING:
+        case LLIR::var_types::STRING:
             // it is a string so add all values
             for (auto node : values.success_vars) {
                 if (node.var.name == "" && node.svar.name == "")
                     continue;
                 var_members.push_back(
                     {
-                        IR::types::ASSIGN_VARIABLE, 
-                        IR::variable_assign {var.name, IR::var_assign_types::ADD, IR::assign { IR::var_assign_values::VARIABLE, node.var }}
+                        LLIR::types::ASSIGN_VARIABLE, 
+                        LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::assign { LLIR::var_assign_values::VARIABLE, node.var }}
                     }
                 );
             }
             break;
-        case IR::var_types::Token:
-        case IR::var_types::Rule:
+        case LLIR::var_types::Token:
+        case LLIR::var_types::Rule:
             // it is token so perform a single assign
-            var_members.push_back( IR::member
+            var_members.push_back( LLIR::member
                 {
-                    IR::types::ASSIGN_VARIABLE,
-                    IR::variable_assign {var.name, IR::var_assign_types::ASSIGN, IR::assign { IR::var_assign_values::VARIABLE,  values.success_vars[0].var }}
+                    LLIR::types::ASSIGN_VARIABLE,
+                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VARIABLE,  values.success_vars[0].var }}
                 }
             );
             var.type = values.success_vars[0].var.type;
-            if (var.type.type == IR::var_types::Rule_result)
-                var.type.type = IR::var_types::Rule;
-            else if (var.type.type == IR::var_types::Token_result)
-                var.type.type = IR::var_types::Token;
+            if (var.type.type == LLIR::var_types::Rule_result)
+                var.type.type = LLIR::var_types::Rule;
+            else if (var.type.type == LLIR::var_types::Token_result)
+                var.type.type = LLIR::var_types::Token;
             break;
     }
     std::string begin_var_name = "begin" + generateVariableName();
-    std::vector<IR::expr> svar_expr = {};
+    std::vector<LLIR::expr> svar_expr = {};
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     if (!values.success_vars.empty()) {
         bool first = true;
@@ -1321,9 +1321,9 @@ IR::node_ret_t IR::processGroup(const Parser::Rule &rule, char quantifier) {
             if (el.qualifier == '*' || el.qualifier == '?' || el.svar.name.empty())
                 continue;
             if (!first)
-                svar_expr.push_back({IR::condition_types::AND});
+                svar_expr.push_back({LLIR::condition_types::AND});
 
-            svar_expr.push_back({IR::condition_types::VARIABLE, el.svar});
+            svar_expr.push_back({LLIR::condition_types::VARIABLE, el.svar});
             first = false;
         }
     }
@@ -1332,26 +1332,26 @@ IR::node_ret_t IR::processGroup(const Parser::Rule &rule, char quantifier) {
     //         svar_expr.push_back({IR::condition_types::AND});
     //     svar_expr.push_back({IR::condition_types::VARIABLE, node_ret[i].svar});
     // }
-    std::vector<IR::member> svar_cond;
+    std::vector<LLIR::member> svar_cond;
     if (svar_expr.empty()) {
         svar_cond = {
-            {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}},
-            {IR::types::POP_POS_COUNTER}
+            {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
+            {LLIR::types::POP_POS_COUNTER}
         };
     } else {
         svar_cond = {{
-            IR::types::IF,
-            IR::condition {
+            LLIR::types::IF,
+            LLIR::condition {
                 svar_expr,
                 {
-                    {IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}},
-                    {IR::types::POP_POS_COUNTER}
+                    {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
+                    {LLIR::types::POP_POS_COUNTER}
                 }
             }
         }};
     }
 
-    if (!values.data.empty() && values.data.back().type == IR::types::SKIP_SPACES) {
+    if (!values.data.empty() && values.data.back().type == LLIR::types::SKIP_SPACES) {
         values.pop();
     }
     values.add(var_members);
@@ -1360,25 +1360,25 @@ IR::node_ret_t IR::processGroup(const Parser::Rule &rule, char quantifier) {
     if (!shadow_var.name.empty()) {
         groups.back().var = shadow_var;
     }
-    if (var.type.type != IR::var_types::UNDEFINED) {
-        push({IR::types::VARIABLE, var});
+    if (var.type.type != LLIR::var_types::UNDEFINED) {
+        push({LLIR::types::VARIABLE, var});
     }
-    push({IR::types::VARIABLE, svar});
-    push({IR::types::PUSH_POS_COUNTER, begin_var_name});
+    push({LLIR::types::VARIABLE, svar});
+    push({LLIR::types::PUSH_POS_COUNTER, begin_var_name});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) 
     {
-        IR::method_call method_call = TreeMethodCallToIR(std::any_cast<Parser::Rule>(variable.data));
+        LLIR::method_call method_call = TreeMethodCallToIR(std::any_cast<Parser::Rule>(variable.data));
         add(values);
-        push({IR::types::METHOD_CALL, method_call});
+        push({LLIR::types::METHOD_CALL, method_call});
     } else {
         add(values);
     }
     add(svar_cond);
-    if (var.type.type == IR::var_types::UNDEFINED)
-        return IR::node_ret_t {svar, {}, {}, quantifier};
-    return IR::node_ret_t {svar, var, shadow_var, quantifier};
+    if (var.type.type == LLIR::var_types::UNDEFINED)
+        return LLIR::node_ret_t {svar, {}, {}, quantifier};
+    return LLIR::node_ret_t {svar, var, shadow_var, quantifier};
 }
-IR::node_ret_t IR::processRuleCsequence(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::processRuleCsequence(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("csequence\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
@@ -1386,14 +1386,14 @@ IR::node_ret_t IR::processRuleCsequence(const Parser::Rule &rule, char quantifie
 
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    var.type = {IR::var_types::STRING};
+    var.type = {LLIR::var_types::STRING};
     bool is_negative = false;
-    std::vector<IR::expr> expr;
+    std::vector<LLIR::expr> expr;
 
     if (_not) {
         expr = {
-            {IR::condition_types::NOT},
-            {IR::condition_types::GROUP_OPEN}
+            {LLIR::condition_types::NOT},
+            {LLIR::condition_types::GROUP_OPEN}
         };
         is_negative = true;
     }
@@ -1401,7 +1401,7 @@ IR::node_ret_t IR::processRuleCsequence(const Parser::Rule &rule, char quantifie
     bool first = true;
     for (auto &value : values) {
         if (!first)
-            expr.push_back({IR::condition_types::OR});
+            expr.push_back({LLIR::condition_types::OR});
 
         switch (value.name) {
             case Parser::Rules::Rule_csequence_diapason: {
@@ -1409,30 +1409,30 @@ IR::node_ret_t IR::processRuleCsequence(const Parser::Rule &rule, char quantifie
                 auto first = std::any_cast<std::string>(range_data[0].data)[0];
                 auto second = std::any_cast<std::string>(range_data[1].data)[0];
                 expr.insert(expr.end(), {
-                    {IR::condition_types::GROUP_OPEN},
-                    {IR::condition_types::CURRENT_CHARACTER},
-                    {IR::condition_types::HIGHER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, first},
-                    {IR::condition_types::AND},
-                    {IR::condition_types::CURRENT_CHARACTER},
-                    {IR::condition_types::LOWER_OR_EQUAL},
-                    {IR::condition_types::CHARACTER, second},
-                    {IR::condition_types::GROUP_CLOSE}
+                    {LLIR::condition_types::GROUP_OPEN},
+                    {LLIR::condition_types::CURRENT_CHARACTER},
+                    {LLIR::condition_types::HIGHER_OR_EQUAL},
+                    {LLIR::condition_types::CHARACTER, first},
+                    {LLIR::condition_types::AND},
+                    {LLIR::condition_types::CURRENT_CHARACTER},
+                    {LLIR::condition_types::LOWER_OR_EQUAL},
+                    {LLIR::condition_types::CHARACTER, second},
+                    {LLIR::condition_types::GROUP_CLOSE}
                 });
                 break;
             }
             case Parser::Rules::Rule_csequence_escape:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::CURRENT_CHARACTER},
-                    {IR::condition_types::EQUAL},
-                    {IR::condition_types::CHARACTER, getEscapedChar(std::any_cast<std::string>(value.data)[0])}
+                    {LLIR::condition_types::CURRENT_CHARACTER},
+                    {LLIR::condition_types::EQUAL},
+                    {LLIR::condition_types::CHARACTER, getEscapedChar(std::any_cast<std::string>(value.data)[0])}
                 });
                 break;
             case Parser::Rules::Rule_csequence_symbol:
                 expr.insert(expr.end(), {
-                    {IR::condition_types::CURRENT_CHARACTER},
-                    {IR::condition_types::EQUAL},
-                    {IR::condition_types::CHARACTER, (char) std::any_cast<std::string>(value.data)[0]}
+                    {LLIR::condition_types::CURRENT_CHARACTER},
+                    {LLIR::condition_types::EQUAL},
+                    {LLIR::condition_types::CHARACTER, (char) std::any_cast<std::string>(value.data)[0]}
                 });
                 break;
             default:
@@ -1443,56 +1443,56 @@ IR::node_ret_t IR::processRuleCsequence(const Parser::Rule &rule, char quantifie
     if (is_negative) {
         if (quantifier == '+' || quantifier == '*')
             expr.insert(expr.end(), {
-                {IR::condition_types::AND}, {IR::condition_types::CURRENT_CHARACTER}, {IR::condition_types::NOT_EQUAL}, {IR::condition_types::CHARACTER, '\0'}, 
+                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::CHARACTER, '\0'}, 
             });
-        expr.push_back({IR::condition_types::GROUP_CLOSE});
+        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
-    std::vector<IR::member> block = createDefaultBlock(var, svar);
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
+    std::vector<LLIR::member> block = createDefaultBlock(var, svar);
     pushBasedOnQualifier(rule, expr, block, var, svar, quantifier, false);
     return {svar, var, {}, quantifier};
 }
-IR::node_ret_t IR::processString(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::processString(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     auto data = std::any_cast<std::string>(rule.data);
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    var.type = {IR::var_types::STRING};
-    std::vector<IR::expr> expr;
+    var.type = {LLIR::var_types::STRING};
+    std::vector<LLIR::expr> expr;
     if (data.size() == 0)
         return {};
     if (data.size() == 1) {
         // micro optimization - compare as single character for single character strings
         expr = {
-            {IR::condition_types::CURRENT_CHARACTER},
-            {IR::condition_types::EQUAL},
-            {IR::condition_types::CHARACTER, data[0]}
+            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::EQUAL},
+            {LLIR::condition_types::CHARACTER, data[0]}
         };
     } else {
         expr = {
-            {IR::condition_types::STRNCMP, IR::strncmp{1, data}}
+            {LLIR::condition_types::STRNCMP, LLIR::strncmp{1, data}}
         };
     }
 
-    std::vector<IR::member> block = createDefaultBlock(var, svar);
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
+    std::vector<LLIR::member> block = createDefaultBlock(var, svar);
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
     pushBasedOnQualifier(rule, expr, block, var, svar, quantifier, false);
     return {svar, var, {}, quantifier};
 }
-IR::node_ret_t IR::process_Rule_hex(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_hex(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("hex\n");
     auto data = std::any_cast<std::string>(rule.data);
-    std::vector<IR::expr> expr = {};
+    std::vector<LLIR::expr> expr = {};
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    var.type = {IR::var_types::STRING};
-    std::vector<IR::member> block = createDefaultBlock(var, svar);
+    var.type = {LLIR::var_types::STRING};
+    std::vector<LLIR::member> block = createDefaultBlock(var, svar);
     bool is_first = true, is_negative = false;
     if (quantifier == '\0') {
-        expr.push_back({IR::condition_types::NOT});
-        expr.push_back({IR::condition_types::GROUP_OPEN});
+        expr.push_back({LLIR::condition_types::NOT});
+        expr.push_back({LLIR::condition_types::GROUP_OPEN});
         is_negative = true;
     }
     if (data.size() % 2 != 0)
@@ -1500,35 +1500,35 @@ IR::node_ret_t IR::process_Rule_hex(const Parser::Rule &rule, char quantifier) {
     for (int i = 0; i < data.size(); i += 2) {
         std::string hex(data.data() + i, 2);
         if (!is_first)
-            expr.push_back({IR::condition_types::AND});
+            expr.push_back({LLIR::condition_types::AND});
         is_first = false;
-        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
-        expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::HEX, hex});
+        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER});
+        expr.push_back({LLIR::condition_types::EQUAL});
+        expr.push_back({LLIR::condition_types::HEX, hex});
     }
     if (is_negative) {
-        expr.push_back({IR::condition_types::GROUP_CLOSE});
+        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
     //cpuf::printf("hex_open\n");
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
     auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, quantifier, false);
     return {svar, var, shadow_var, quantifier};
 }
-IR::node_ret_t IR::process_Rule_bin(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_bin(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("hex\n");
     auto data = std::any_cast<std::string>(rule.data);
-    std::vector<IR::expr> expr = {};
+    std::vector<LLIR::expr> expr = {};
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    std::vector<IR::member> block = {
-        {IR::types::ASSIGN_VARIABLE, IR::variable_assign {var.name, IR::var_assign_types::ADD, IR::var_assign_values::CURRENT_POS_SEQUENCE}},
-        {IR::types::INCREASE_POS_COUNTER},
+    std::vector<LLIR::member> block = {
+        {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
+        {LLIR::types::INCREASE_POS_COUNTER},
     };
     bool is_first = true, is_negative = false;
     if (quantifier == '\0') {
-        expr.push_back({IR::condition_types::NOT});
-        expr.push_back({IR::condition_types::GROUP_OPEN});
+        expr.push_back({LLIR::condition_types::NOT});
+        expr.push_back({LLIR::condition_types::GROUP_OPEN});
         is_negative = true;
     }
     while (data.size() % 8 != 0)
@@ -1538,21 +1538,21 @@ IR::node_ret_t IR::process_Rule_bin(const Parser::Rule &rule, char quantifier) {
         auto as_hex = hex::from_binary(bin);
         as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
         if (!is_first)
-            expr.push_back({IR::condition_types::AND});
+            expr.push_back({LLIR::condition_types::AND});
         is_first = false;
-        expr.push_back({IR::condition_types::CURRENT_CHARACTER});
-        expr.push_back({IR::condition_types::EQUAL});
-        expr.push_back({IR::condition_types::HEX, as_hex});
+        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER});
+        expr.push_back({LLIR::condition_types::EQUAL});
+        expr.push_back({LLIR::condition_types::HEX, as_hex});
     }
     if (is_negative) {
-        expr.push_back({IR::condition_types::GROUP_CLOSE});
+        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
     auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, quantifier, false);
     return {svar, var, shadow_var, quantifier};
 }
-IR::node_ret_t IR::processAccessor(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::processAccessor(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("accessor\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
@@ -1564,19 +1564,19 @@ IR::node_ret_t IR::processAccessor(const Parser::Rule &rule, char quantifier) {
     for (auto &el : second) {
         el = std::any_cast<Parser::Rule>(el.data);
     }
-    auto mem = IR::member {
-        IR::types::ACCESSOR,
-        IR::accessor { second, quantifier }
+    auto mem = LLIR::member {
+        LLIR::types::ACCESSOR,
+        LLIR::accessor { second, quantifier }
     };
     if (insideLoop)
-        push({IR::types::INSIDE_LOOP});
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, shadow_var});
-    push({IR::types::VARIABLE, svar});
+        push({LLIR::types::INSIDE_LOOP});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, shadow_var});
+    push({LLIR::types::VARIABLE, svar});
     push(mem);
     return {svar, var, shadow_var};
 }
-IR::node_ret_t IR::process_Rule_other(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_other(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("Rule_other");
     auto name = std::any_cast<rule_other>(rule.data);
     auto name_str = corelib::text::join(name.fullname, "_");
@@ -1584,25 +1584,25 @@ IR::node_ret_t IR::process_Rule_other(const Parser::Rule &rule, char quantifier)
 
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    IR::variable shadow_var;
+    LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.name);
     if (!isToken && isCallingToken) {
-        var.type.type = IR::var_types::Token;
+        var.type.type = LLIR::var_types::Token;
     } else {
-        var.type = isCallingToken ? IR::var_type {IR::var_types::Token_result} : IR::var_type {IR::var_types::Rule_result};
+        var.type = isCallingToken ? LLIR::var_type {LLIR::var_types::Token_result} : LLIR::var_type {LLIR::var_types::Rule_result};
     }
     auto block = createDefaultBlock(var, svar);
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
     if (isToken) {
         // if (!isCallingToken)
         //     throw Error("Cannot call rule from token");
         // remove variable assignemnt
-        block.back().type = IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
+        block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
         block.back().value = var.name;
         var.property_access = {"node"};
         block.erase(block.begin());
-        std::vector<IR::expr> expr;
+        std::vector<LLIR::expr> expr;
         auto call = createDefaultCall(block, var, name_str, expr);
         push(call);
         shadow_var = pushBasedOnQualifier_Rule_other(rule, expr, block, var, svar, call, quantifier);
@@ -1610,23 +1610,23 @@ IR::node_ret_t IR::process_Rule_other(const Parser::Rule &rule, char quantifier)
     } else {
         if (isCallingToken) {
             block[0] = {
-                IR::types::ASSIGN_VARIABLE, 
-                IR::variable_assign {
+                LLIR::types::ASSIGN_VARIABLE, 
+                LLIR::variable_assign {
                     var.name,
-                    IR::var_assign_types::ASSIGN,
-                    IR::var_assign_values::CURRENT_TOKEN
+                    LLIR::var_assign_types::ASSIGN,
+                    LLIR::var_assign_values::CURRENT_TOKEN
                 }
             };
-            std::vector<IR::expr> expr = {
-                {IR::condition_types::CURRENT_TOKEN, IR::current_token {IR::condition_types::EQUAL, name_str}},
+            std::vector<LLIR::expr> expr = {
+                {LLIR::condition_types::CURRENT_TOKEN, LLIR::current_token {LLIR::condition_types::EQUAL, name_str}},
             };
             shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, quantifier);
         } else {
-            block.back().type = IR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
+            block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
             block.back().value = var.name;
             var.property_access = {"node"};
             block.erase(block.begin()); // remove variable assignment
-            std::vector<IR::expr> expr;
+            std::vector<LLIR::expr> expr;
             auto call = createDefaultCall(block, var, name_str, expr);
             push(call);
             shadow_var = pushBasedOnQualifier_Rule_other(rule, expr, block, var, svar, call, quantifier);
@@ -1636,7 +1636,7 @@ IR::node_ret_t IR::process_Rule_other(const Parser::Rule &rule, char quantifier)
     }
     return {svar, var, shadow_var, quantifier};
 }
-IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_escaped(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("Rule_escaped\n");
     auto data = std::any_cast<obj_t>(rule.data);
     auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
@@ -1650,7 +1650,7 @@ IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifie
         num_main = -1;
     }
 
-    std::vector<IR::expr> expression;
+    std::vector<LLIR::expr> expression;
     if (quantifier != '\0')
         UWarning(std::string("Qualifier '%c' after \\") + c + std::string(" ignored"), quantifier, c).print();
     switch (c[0]) {
@@ -1660,7 +1660,7 @@ IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifie
             if (data.size() > 0) {
                 // remove previous skip of spaces if it does exists
                 for (auto rit = this->data.rbegin(); rit != this->data.rend(); rit++) {
-                    if (rit->type == IR::types::SKIP_SPACES) {
+                    if (rit->type == LLIR::types::SKIP_SPACES) {
                         this->data.erase(rit.base());
                         break;
                     }
@@ -1675,9 +1675,9 @@ IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifie
             }
             //cpuf::printf("ON_EXPRESSION\n");
             expression = {
-                {IR::condition_types::CURRENT_CHARACTER},
-                {IR::condition_types::NOT_EQUAL},
-                {IR::condition_types::CHARACTER, ' '}
+                {LLIR::condition_types::CURRENT_CHARACTER},
+                {LLIR::condition_types::NOT_EQUAL},
+                {LLIR::condition_types::CHARACTER, ' '}
             };
             break;
         default:
@@ -1688,51 +1688,51 @@ IR::node_ret_t IR::process_Rule_escaped(const Parser::Rule &rule, char quantifie
 
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    var.type = {IR::var_types::STRING};
-    std::vector<IR::member> block = {{IR::types::EXIT}};
+    var.type = {LLIR::var_types::STRING};
+    std::vector<LLIR::member> block = {{LLIR::types::EXIT}};
     if (!isFirst) {
-        block.insert(block.begin(), {IR::types::ERR, getErrorName(rule)});
+        block.insert(block.begin(), {LLIR::types::ERR, getErrorName(rule)});
     }
     auto block_after = createDefaultBlock(var, svar);
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
-    push({IR::types::IF, IR::condition{expression, block}});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
+    push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
     //cpuf::printf("escaped_close\n");
     return {svar, var, {}, quantifier};
 }
-IR::node_ret_t IR::process_Rule_any(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_any(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("Rule_any\n");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    var.type = {IR::var_types::STRING};
-    std::vector<IR::expr> expression;
-    std::vector<IR::member> block = {{IR::types::EXIT}};
+    var.type = {LLIR::var_types::STRING};
+    std::vector<LLIR::expr> expression;
+    std::vector<LLIR::member> block = {{LLIR::types::EXIT}};
     if (!isFirst) {
-        block.insert(block.begin(), {IR::types::ERR, getErrorName(rule)});
+        block.insert(block.begin(), {LLIR::types::ERR, getErrorName(rule)});
     }
-    std::vector<IR::member> block_after = createDefaultBlock(var, svar);
+    std::vector<LLIR::member> block_after = createDefaultBlock(var, svar);
     expression = {
-        {IR::condition_types::CURRENT_CHARACTER},
-        {IR::condition_types::EQUAL},
-        {IR::condition_types::CHARACTER, '\0'}
+        {LLIR::condition_types::CURRENT_CHARACTER},
+        {LLIR::condition_types::EQUAL},
+        {LLIR::condition_types::CHARACTER, '\0'}
     };
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
-    push({IR::types::IF, IR::condition{expression, block}});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
+    push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
     return {svar, var};
 }
-std::vector<IR::member> IR::convert_op_rule(std::vector<Parser::Rule> &rules, size_t index, IR::variable &var, IR::variable &svar) {
+std::vector<LLIR::member> LLIR::convert_op_rule(std::vector<Parser::Rule> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) {
     if (index >= rules.size()) {
-        return {{IR::types::EXIT}};
+        return {{LLIR::types::EXIT}};
     }
 
-    IR::node_ret_t success_var;
-    std::vector<std::vector<IR::member>> blocks;
-    std::vector<std::vector<IR::expr>> conditions;
+    LLIR::node_ret_t success_var;
+    std::vector<std::vector<LLIR::member>> blocks;
+    std::vector<std::vector<LLIR::expr>> conditions;
     auto rule = rules[index++];
-    IR new_ir(tree);
+    LLIR new_ir(tree);
     new_ir.proceed(*this);
     auto rule_data = std::any_cast<obj_t>(rule.data);
     auto rule_val = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
@@ -1764,65 +1764,65 @@ std::vector<IR::member> IR::convert_op_rule(std::vector<Parser::Rule> &rules, si
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
     if (rule_val.name == Parser::Rules::Rule_group || rule_val.name == Parser::Rules::accessor) {
-        new_ir.data.back().type = IR::types::RESET_POS_COUNTER; // remove space skip
-        auto cond = IR::condition {
-            std::vector<IR::expr> {
-                {IR::condition_types::NOT}, {IR::condition_types::VARIABLE, success_var.svar}
+        new_ir.data.back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
+        auto cond = LLIR::condition {
+            std::vector<LLIR::expr> {
+                {LLIR::condition_types::NOT}, {LLIR::condition_types::VARIABLE, success_var.svar}
             },
             convert_op_rule(rules, index, var, svar),
         };
-        auto v = !success_var.shadow_var.name.empty() && var.type.type != IR::var_types::STRING ? success_var.shadow_var : success_var.var;
-        auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
+        auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
+        auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
         if (!v.name.empty()) {
             cond.else_block = {{
-                IR::types::ASSIGN_VARIABLE,
-                IR::variable_assign 
+                LLIR::types::ASSIGN_VARIABLE,
+                LLIR::variable_assign 
                 {
                     var.name,
-                    IR::var_assign_types::ASSIGN,
-                    IR::assign {
-                        IR::var_assign_values::VARIABLE,
+                    LLIR::var_assign_types::ASSIGN,
+                    LLIR::assign {
+                        LLIR::var_assign_values::VARIABLE,
                         v
                     }
                 }
             }};
         } 
-        new_ir.push({IR::types::IF, cond});
+        new_ir.push({LLIR::types::IF, cond});
     } else {
         replaceToPrevChar(new_ir.data, 0);
         for (int i = 0; i < new_ir.data.size(); i++) {
             auto &el = new_ir.data[i];
-            if (el.type == IR::types::IF) {
-                auto val = std::any_cast<IR::condition>(el.value);
+            if (el.type == LLIR::types::IF) {
+                auto val = std::any_cast<LLIR::condition>(el.value);
                 // get recursively nested block
                 val.block = convert_op_rule(rules, index, var, svar);
                 // change condition and remove it's content into else blocks
                 for (int j = i + 1; j < new_ir.data.size(); j++) {
                     auto el = new_ir.data[j];
                     erase_indices.push_back(j);
-                    if (el.type != IR::types::SKIP_SPACES) {
-                        if (el.type == IR::types::ASSIGN_VARIABLE) {
-                            auto assignment = std::any_cast<IR::variable_assign>(el.value);
-                            assignment.assign_type = IR::var_assign_types::ASSIGN;
+                    if (el.type != LLIR::types::SKIP_SPACES) {
+                        if (el.type == LLIR::types::ASSIGN_VARIABLE) {
+                            auto assignment = std::any_cast<LLIR::variable_assign>(el.value);
+                            assignment.assign_type = LLIR::var_assign_types::ASSIGN;
                             el.value = assignment;
                         }
                         val.else_block.push_back(el);
                     }
                 }
                 // push into else block an assignment to variable
-                if (var.type.type == IR::var_types::ARRAY) {
-                    val.else_block.push_back({IR::types::METHOD_CALL, IR::method_call { var.name, {IR::function_call {"push", {IR::assign {IR::var_assign_values::VARIABLE, success_var.var}}}}}});
+                if (var.type.type == LLIR::var_types::ARRAY) {
+                    val.else_block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { var.name, {LLIR::function_call {"push", {LLIR::assign {LLIR::var_assign_values::VARIABLE, success_var.var}}}}}});
                 } else {
-                    auto v = !success_var.shadow_var.name.empty() && var.type.type != IR::var_types::STRING ? success_var.shadow_var : success_var.var;
-                    auto assign_type = v.type.type == IR::var_types::STRING ? IR::var_assign_types::ADD : IR::var_assign_types::ASSIGN;
+                    auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
+                    auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
                     val.else_block.push_back({
-                        IR::types::ASSIGN_VARIABLE,
-                        IR::variable_assign 
+                        LLIR::types::ASSIGN_VARIABLE,
+                        LLIR::variable_assign 
                         {
                             var.name,
-                            IR::var_assign_types::ASSIGN,
-                            IR::assign {
-                                IR::var_assign_values::VARIABLE,
+                            LLIR::var_assign_types::ASSIGN,
+                            LLIR::assign {
+                                LLIR::var_assign_values::VARIABLE,
                                 v
                             }
                         }
@@ -1842,7 +1842,7 @@ std::vector<IR::member> IR::convert_op_rule(std::vector<Parser::Rule> &rules, si
     return new_ir.data;
 }
 
-IR::node_ret_t IR::process_Rule_op(const Parser::Rule &rule, char quantifier) {
+LLIR::node_ret_t LLIR::process_Rule_op(const Parser::Rule &rule, char quantifier) {
     // cpuf::printf("Rule_op\n");
     auto rules = std::any_cast<std::vector<Parser::Rule>>(rule.data);
     auto var = createEmptyVariable(generateVariableName());
@@ -1850,12 +1850,12 @@ IR::node_ret_t IR::process_Rule_op(const Parser::Rule &rule, char quantifier) {
     auto block = createDefaultBlock(var, svar);
     // Add success variable
     var.type = {deduceVarTypeByValue(rule)};
-    if (insideLoop && var.type.type != IR::var_types::STRING) {
+    if (insideLoop && var.type.type != LLIR::var_types::STRING) {
         var.type.templ = {{var.type.type}};
-        var.type.type = IR::var_types::ARRAY;
+        var.type.type = LLIR::var_types::ARRAY;
     }
-    push({IR::types::VARIABLE, var});
-    push({IR::types::VARIABLE, svar});
+    push({LLIR::types::VARIABLE, var});
+    push({LLIR::types::VARIABLE, svar});
     // Convert rules into IR
     // for (auto rule : op) {
     //     auto rule_data = std::any_cast<obj_t>(rule.data);
@@ -1875,7 +1875,7 @@ IR::node_ret_t IR::process_Rule_op(const Parser::Rule &rule, char quantifier) {
     add(block);
     return {svar, var, {}, quantifier};
 }
-void IR::process_cll_var(const Parser::Rule &rule) {
+void LLIR::process_cll_var(const Parser::Rule &rule) {
     // get data section
     auto data = std::any_cast<obj_t>(rule.data);
     auto type = std::any_cast<Parser::Rule>(corelib::map::get(data, "type"));
@@ -1884,43 +1884,43 @@ void IR::process_cll_var(const Parser::Rule &rule) {
     auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "operator"));
     auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
 
-    IR::var_type ir_type;
-    IR::var_assign_types assign_types;
-    IR::assign assign;
+    LLIR::var_type ir_type;
+    LLIR::var_assign_types assign_types;
+    LLIR::assign assign;
     if (type.data.has_value()) {
         ir_type = cllTreeTypeToIR(type);
     }
     if (op.data.has_value()) {
         assign_types = TreeOpToIR(op);
         if (value.name == Parser::Rules::expr)
-            assign = {IR::var_assign_values::EXPR, TreeExprToIR(value)};
+            assign = {LLIR::var_assign_values::EXPR, TreeExprToIR(value)};
         // else
         //     assign = TreeTernaryToIR(value);
     }
     if (type.data.has_value()) {
-        IR::variable var = {name_str, ir_type, assign};
-        push({IR::types::VARIABLE, var});
+        LLIR::variable var = {name_str, ir_type, assign};
+        push({LLIR::types::VARIABLE, var});
         vars.push_back(var);
     } else {
-        push({IR::types::ASSIGN_VARIABLE, IR::variable_assign {name_str, assign_types, assign}});
+        push({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {name_str, assign_types, assign}});
     }
 }
-IR::condition IR::process_cll_cond(const Parser::Rule &rule) {
+LLIR::condition LLIR::process_cll_cond(const Parser::Rule &rule) {
     auto data = std::any_cast<obj_t>(rule.data);
     auto expr = std::any_cast<Parser::Rule>(corelib::map::get(data, "expr"));
     auto block = std::any_cast<Parser::Rule>(corelib::map::get(data, "block"));
     auto block_data = std::any_cast<std::vector<Parser::Rule>>(block.data);
     auto block_ir = rulesToIr(block_data);
     variable_count = block_ir.variable_count;
-    IR::condition cond;
+    LLIR::condition cond;
     cond.expression = TreeExprToIR(expr);
     cond.block.assign(block_ir.data.begin(), block_ir.data.end());
     return cond;
 }
-IR::node_ret_t IR::process_cll(const Parser::Rule &rule) {
+LLIR::node_ret_t LLIR::process_cll(const Parser::Rule &rule) {
     addSpaceSkip = false;
     auto rule_val = std::any_cast<Parser::Rule>(rule.data);
-    IR::condition cond;
+    LLIR::condition cond;
     switch (rule_val.name)
     {
     case Parser::Rules::cll_var:
@@ -1928,12 +1928,12 @@ IR::node_ret_t IR::process_cll(const Parser::Rule &rule) {
         break;
     case Parser::Rules::cll_if:
         cond = process_cll_cond(rule_val);
-        push({IR::types::IF, cond});
+        push({LLIR::types::IF, cond});
         break;
     case Parser::Rules::loop_while:
     {
         cond = process_cll_cond(rule_val);
-        push({IR::types::WHILE, cond});
+        push({LLIR::types::WHILE, cond});
         break;
     }
     default:
@@ -1942,7 +1942,7 @@ IR::node_ret_t IR::process_cll(const Parser::Rule &rule) {
     return {{}, {}};
 }
 
-void IR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
+void LLIR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
     auto rule_data = std::any_cast<obj_t>(rule_rule.data);
     auto rule = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "val"));
     auto qualifier = std::any_cast<Parser::Rule>(corelib::map::get(rule_data, "qualifier"));
@@ -1957,7 +1957,7 @@ void IR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
         //return;
     }
     addSpaceSkip = true;
-    IR::node_ret_t success_var;
+    LLIR::node_ret_t success_var;
     switch (rule.name) {
         case Parser::Rules::Rule_group: 
             success_var = processGroup(rule, quantifier_char);
@@ -2004,14 +2004,14 @@ void IR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
         elements.push_back(success_var.var);
     }
     if (addSpaceSkip && isToken)
-        push({IR::types::SKIP_SPACES, isToken});
+        push({LLIR::types::SKIP_SPACES, isToken});
     vars.push_back(success_var.var);
     vars.push_back(success_var.svar);
     vars.push_back(success_var.shadow_var);
     success_vars.push_back(success_var);
 }
-IR IR::rulesToIr(const std::vector<Parser::Rule> &rules) {
-    IR result(tree);
+LLIR LLIR::rulesToIr(const std::vector<Parser::Rule> &rules) {
+    LLIR result(tree);
     result.proceed(*this);
     for (const auto &rule : rules) {
         result.ruleToIr(rule);
@@ -2019,7 +2019,7 @@ IR IR::rulesToIr(const std::vector<Parser::Rule> &rules) {
     return result;
 }
 
-void IR::treeToIr(const Parser::Tree &tree) {
+void LLIR::treeToIr(const Parser::Tree &tree) {
     for (auto &el : tree) {
         if (el.name == Parser::Rules::id)
             cpuf::printf("file: %s\n", std::any_cast<std::string>(el.data));
@@ -2032,22 +2032,22 @@ void IR::treeToIr(const Parser::Tree &tree) {
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         isToken = corelib::text::isUpper(name);
         fullname.push_back(name);
-        IR new_ir(tree);
+        LLIR new_ir(tree);
         new_ir.proceed(*this);
         if (!nested_rules.empty()) {
             new_ir.treeToIr(nested_rules);
             add(new_ir);
         }
         auto values = rulesToIr(rules);
-        if (!values.data.empty() && values.data.back().type == IR::types::SKIP_SPACES)
+        if (!values.data.empty() && values.data.back().type == LLIR::types::SKIP_SPACES)
             values.pop(); // remove skip of spaces at the end
         update(values);
         inlineAccessors(values.data);
-        push({ isToken ? IR::types::TOKEN : IR::types::RULE, std::pair<std::string, std::vector<std::string>> {name, fullname}});  
+        push({ isToken ? LLIR::types::TOKEN : LLIR::types::RULE, std::pair<std::string, std::vector<std::string>> {name, fullname}});  
         add(values);
         if (data_block.data.has_value())
-            push({IR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
-        push({IR::types::RULE_END});
+            push({LLIR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
+        push({LLIR::types::RULE_END});
         fullname.pop_back();
         clear_thread();
     }

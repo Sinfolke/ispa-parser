@@ -1,0 +1,27 @@
+I0:
+	S' → • { main } 
+	main → • { term } { AUTO_0 } { term } 
+	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+
+I1:
+	term → { NUMBER } • { AUTO_1 } { NUMBER } 
+
+I2:
+	S' → { main } • 
+
+I3:
+	main → { term } • { AUTO_0 } { term } 
+
+I4:
+	term → { NUMBER } { AUTO_1 } • { NUMBER } 
+
+I5:
+	main → { term } { AUTO_0 } • { term } 
+	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+
+I6:
+	term → { NUMBER } { AUTO_1 } { NUMBER } • 
+
+I7:
+	main → { term } { AUTO_0 } { term } • 
+

@@ -111,20 +111,20 @@ void Converter::addStandardFunctions(std::ostringstream &out) {
             void printToken(std::ostream& os, const Token& token);)";
     out << "\n";
 }
-void Converter::convert_inclosed_map(std::ostringstream &out, IR::inclosed_map map) {
+void Converter::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) {
     for (auto [key, value] : map) {
         auto [expr, type] = value;
         out << "\t\t\t" << convert_var_type(type.type, type.templ) << " " << key << ";\n";
     }
 }
-void Converter::convert_single_assignment_data(std::ostringstream &out, IR::var_type type, std::string name) {
+void Converter::convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) {
     out << "\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
 }
 void Converter::write_data_block(std::ostringstream &out, data_block_t dtb) {
     for (auto [name, block] : dtb) {
         if (block.is_inclosed_map) {
             out << "\t\tstruct " + name + "_data {\n";
-            convert_inclosed_map(out, std::any_cast<IR::inclosed_map>(block.value.data));
+            convert_inclosed_map(out, std::any_cast<LLIR::inclosed_map>(block.value.data));
             out << "\t\t};\n";
         } else {
             convert_single_assignment_data(out, block.assign_type, name);

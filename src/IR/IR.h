@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <string>
 #include <utility>
-class IR {
+class LLIR {
     public:
         enum class types {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
@@ -42,7 +42,7 @@ class IR {
             ASSIGN_BITWISE_AND, ASSIGN_BITWISE_OR, ASSIGN_BITWISE_ANDR, ASSIGN_BITWISE_RIGHTSHFT, ASSIGN_BITWISE_LEFTSHIFT
         };
         struct var_type {
-            var_types type = IR::var_types::UNDEFINED;
+            var_types type = LLIR::var_types::UNDEFINED;
             std::vector<var_type> templ = {};
         };
         struct member {
@@ -103,22 +103,22 @@ class IR {
         };
         struct strncmp {
             bool is_string;
-            IR::variable value;
+            LLIR::variable value;
         };
-        using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<IR::expr>, var_type>>;
+        using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<LLIR::expr>, var_type>>;
         struct data_block {
             assign value;
-            IR::var_type assign_type;
+            LLIR::var_type assign_type;
             bool is_inclosed_map;
         };
         struct node_ret_t {
-            IR::variable svar;
-            IR::variable var;
-            IR::variable shadow_var = {};
+            LLIR::variable svar;
+            LLIR::variable var;
+            LLIR::variable shadow_var = {};
             char qualifier;
         };
         struct var_group {
-            IR::variable var;
+            LLIR::variable var;
             size_t begin;
             size_t end;
         };
@@ -135,7 +135,7 @@ class IR {
         std::string convertAccessor(accessor acc);
         void convertVariable(variable var, std::ostream& out);
         std::string convertExpression(std::vector<expr> expression, bool with_braces);
-        void convertBlock(std::vector<IR::member> block, std::ostream& out);
+        void convertBlock(std::vector<LLIR::member> block, std::ostream& out);
         void convertCondition(condition cond, std::ostream& out);
         void convertAssignVariable(variable_assign var, std::ostream &out);
         std::string convertMethodCall(method_call method);
@@ -146,60 +146,60 @@ class IR {
         void printIR(std::ostream& out);
         // other functions
         std::string getErrorName(Parser::Rule rule);
-        IR::variable createSuccessVariable();
-        bool compare_templ(const std::vector<IR::var_type>& templ1, const std::vector<IR::var_type>& templ2);
-        bool compare_types(std::list<IR::var_type> types);
-        IR::variable getElementbyAccessor(IR::accessor &accessor, bool is_match_rule);
-        void inlineExprAccessor(IR::assign &data);
-        void inlineExprAccessor(std::vector<IR::expr> &expr);
-        void inlineAccessors(std::vector<IR::member> &values);
-        IR::var_type deduceTypeFromAnyData(const Parser::Rule &value);
-        IR::var_type deduceTypeFromExpr(const Parser::Rule &expr);
-        IR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
-        IR::var_type deduceVarTypeByValue(Parser::Rule mem);
+        LLIR::variable createSuccessVariable();
+        bool compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2);
+        bool compare_types(std::list<LLIR::var_type> types);
+        LLIR::variable getElementbyAccessor(LLIR::accessor &accessor, bool is_match_rule);
+        void inlineExprAccessor(LLIR::assign &data);
+        void inlineExprAccessor(std::vector<LLIR::expr> &expr);
+        void inlineAccessors(std::vector<LLIR::member> &values);
+        LLIR::var_type deduceTypeFromAnyData(const Parser::Rule &value);
+        LLIR::var_type deduceTypeFromExpr(const Parser::Rule &expr);
+        LLIR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
+        LLIR::var_type deduceVarTypeByValue(Parser::Rule mem);
         // convertion functions helpers
-        void addPostLoopCheck(const Parser::Rule &rule, const IR::variable &var, bool addError = true);
-        void handle_plus_qualifier(const Parser::Rule &rule, IR::condition loop, bool addError = true);
-        IR::member createDefaultCall(std::vector<IR::member> &block, IR::variable var, const std::string &name, std::vector<IR::expr> &expr);
-        IR::variable add_shadow_variable(std::vector<IR::member> &block, const IR::variable &var);
-        IR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, char quantifier, bool add_shadow_var = true);
-        IR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<IR::expr> &expr, std::vector<IR::member> &block, const IR::variable &var, const IR::variable &svar, const IR::member &call, char quantifier, bool add_shadow_var = false);
-        IR::variable affectIrByQuantifier(const Parser::Rule &rule, const IR::variable &var, char quantifier);
-        IR::assign TreeAnyDataToIR(const Parser::Rule &value);
-        IR::function_call TreeFunctionToIR(const Parser::Rule &rule);
-        IR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
-        IR::var_type cllTreeCsupportTypeToIR(const Parser::Rule &rule);
-        IR::var_type cllTreeTypeToIR(const Parser::Rule &rule);
-        IR::var_type cllTreeAbstactTypeToIR(const Parser::Rule &rule);
-        IR::var_assign_types TreeOpToIR(const Parser::Rule &rule);
-        IR::expr TreeOpToExpr(const Parser::Rule &rule);
-        IR::expr TreeCompareOpToExpr(const Parser::Rule &rule);
-        IR::expr TreeLogicalOpToIR(const Parser::Rule &rule);
-        IR::var_assign_types TreeAssignmentOpToIR(const Parser::Rule &rule);
-        IR::var_assign_types TreeOperatorsToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprGroupToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprArithmetic_forToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprArithmeticToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprCompareToIR_unit(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprCompareToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprLogicalUnitToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprLogicalToIR(const Parser::Rule &rule);
-        std::vector<IR::expr> TreeExprToIR(const Parser::Rule &expr);
-        std::vector<IR::member> convert_op_rule(std::vector<Parser::Rule> &rules, size_t index, IR::variable &var, IR::variable &svar);
+        void addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var, bool addError = true);
+        void handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError = true);
+        LLIR::member createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr);
+        LLIR::variable add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var);
+        LLIR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true);
+        LLIR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false);
+        LLIR::variable affectIrByQuantifier(const Parser::Rule &rule, const LLIR::variable &var, char quantifier);
+        LLIR::assign TreeAnyDataToIR(const Parser::Rule &value);
+        LLIR::function_call TreeFunctionToIR(const Parser::Rule &rule);
+        LLIR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
+        LLIR::var_type cllTreeCsupportTypeToIR(const Parser::Rule &rule);
+        LLIR::var_type cllTreeTypeToIR(const Parser::Rule &rule);
+        LLIR::var_type cllTreeAbstactTypeToIR(const Parser::Rule &rule);
+        LLIR::var_assign_types TreeOpToIR(const Parser::Rule &rule);
+        LLIR::expr TreeOpToExpr(const Parser::Rule &rule);
+        LLIR::expr TreeCompareOpToExpr(const Parser::Rule &rule);
+        LLIR::expr TreeLogicalOpToIR(const Parser::Rule &rule);
+        LLIR::var_assign_types TreeAssignmentOpToIR(const Parser::Rule &rule);
+        LLIR::var_assign_types TreeOperatorsToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprGroupToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprArithmetic_forToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprArithmeticToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprCompareToIR_unit(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprCompareToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprLogicalUnitToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprLogicalToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprToIR(const Parser::Rule &expr);
+        std::vector<LLIR::member> convert_op_rule(std::vector<Parser::Rule> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar);
         void process_cll_var(const Parser::Rule &rule);
-        IR::condition process_cll_cond(const Parser::Rule &rule);
+        LLIR::condition process_cll_cond(const Parser::Rule &rule);
         // main convertion functions
-        IR::node_ret_t processGroup(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t processRuleCsequence(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t processString(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_hex(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_bin(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t processAccessor(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_other(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_any(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_Rule_op(const Parser::Rule &rule, char quantifier);
-        IR::node_ret_t process_cll(const Parser::Rule &rule);
+        LLIR::node_ret_t processGroup(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t processRuleCsequence(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t processString(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_hex(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_bin(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t processAccessor(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_other(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_any(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_Rule_op(const Parser::Rule &rule, char quantifier);
+        LLIR::node_ret_t process_cll(const Parser::Rule &rule);
     protected:
         // data
         size_t variable_count = 0;
@@ -208,10 +208,10 @@ class IR {
         bool addSpaceSkip = false;
         bool isFirst = true;
         std::vector<std::string> fullname;
-        std::vector<IR::variable> elements;
+        std::vector<LLIR::variable> elements;
         std::vector<var_group> groups;
-        std::vector<IR::variable> vars;
-        std::vector<IR::member> data;
+        std::vector<LLIR::variable> vars;
+        std::vector<LLIR::member> data;
         std::vector<node_ret_t> success_vars;
         const std::vector<Parser::Rule>* rules = nullptr;
         const Parser::Tree* tree;
@@ -222,34 +222,34 @@ class IR {
         void erase_begin();
         // convertion
         void ruleToIr(const Parser::Rule &rule_rule, char custom_qualifier = -1);
-        auto rulesToIr(const std::vector<Parser::Rule> &rules) -> IR;
+        auto rulesToIr(const std::vector<Parser::Rule> &rules) -> LLIR;
         void treeToIr(const Parser::Tree &tree);
         // optimizations
-        void getVariablesToTable(std::vector<IR::member> &data, size_t &i, std::list<IR::member>& table);
+        void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::list<LLIR::member>& table);
         size_t getBegin(size_t& i);
-        void insertVariablesOnTop(std::list<IR::member>& table, size_t begin);
+        void insertVariablesOnTop(std::list<LLIR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        IR(const Parser::Tree &tree);
-        IR(const Parser::Tree *tree);
-        IR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules);
-        IR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules);
-        IR(IR& ir);
+        LLIR(const Parser::Tree &tree);
+        LLIR(const Parser::Tree *tree);
+        LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules);
+        LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules);
+        LLIR(LLIR& ir);
 
         // get functions
-        auto getData() const -> const std::vector<IR::member>&;
-        auto getDataRef() -> std::vector<IR::member>&;
+        auto getData() const -> const std::vector<LLIR::member>&;
+        auto getDataRef() -> std::vector<LLIR::member>&;
         auto getTree() -> const Parser::Tree*;
         auto makeIR() -> std::vector<node_ret_t>;
         void optimizeIR();
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();
-        void add(IR &repr);
+        void add(LLIR &repr);
         void add(std::vector<member> repr);
         void push(member member);
         void push_begin(member member);
-        void proceed(IR& ir);
-        void update(IR& ir);
+        void proceed(LLIR& ir);
+        void update(LLIR& ir);
         void pop_begin();
         void pop();
         size_t size();

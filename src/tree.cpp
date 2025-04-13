@@ -8,7 +8,7 @@
 #include <cpuf/printf.h>
 #include <list>
 #include <IR/IR.h>
-const Parser::Tree& Tree::getRawTree() {
+Parser::Tree& Tree::getRawTree() {
     return tree;
 }
 void Tree::getReplacedTree(std::vector<Parser::Rule> &rules, std::string name) {
@@ -704,33 +704,33 @@ use_place_t Tree::getUsePlacesTable() {
     getUsePlacesTableHelper(tree, use_places, fullname);
     return use_places;
 }
-std::pair<data_block_t, data_block_t> Tree::get_data_blocks(const IR &ir) {
+std::pair<data_block_t, data_block_t> Tree::get_data_blocks(const LLIR &ir) {
     data_block_t datablocks_tokens;
     data_block_t datablocks_rules;
     bool isToken;
     std::string name;
     for (auto el : ir.getData()) {
-        if (el.type == IR::types::TOKEN) {
+        if (el.type == LLIR::types::TOKEN) {
             name = corelib::text::join(std::any_cast<std::pair<std::string, std::vector<std::string>>>(el.value).second, "_");
             isToken = true;
-        } else if (el.type == IR::types::RULE) {
+        } else if (el.type == LLIR::types::RULE) {
             name = corelib::text::join(std::any_cast<std::pair<std::string, std::vector<std::string>>>(el.value).second, "_");
             isToken = false;
-        } else if (el.type == IR::types::DATA_BLOCK) {
+        } else if (el.type == LLIR::types::DATA_BLOCK) {
             if (isToken)
-                datablocks_tokens.push_back({name, std::any_cast<IR::data_block>(el.value)});
+                datablocks_tokens.push_back({name, std::any_cast<LLIR::data_block>(el.value)});
             else
-                datablocks_rules.push_back({name, std::any_cast<IR::data_block>(el.value)});
+                datablocks_rules.push_back({name, std::any_cast<LLIR::data_block>(el.value)});
         }
     }
     return {datablocks_tokens, datablocks_rules};
 }
 
 
-lexer_code Tree::getCodeForLexer(use_place_t use_places, const IR &ir) {
+lexer_code Tree::getCodeForLexer(use_place_t use_places, const LLIR &ir) {
     std::vector<Parser::Rule> rule_op;
     for (auto &el : ir.getData()) {
-        if (el.type == IR::types::TOKEN) {
+        if (el.type == LLIR::types::TOKEN) {
             auto name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(el.value);
             if (name.second.size() > 1) { // this is nested rule
                 auto data_in_use_place = std::find_if(use_places.begin(), use_places.end(), [&name](use_place_t_part &part) {
@@ -777,11 +777,11 @@ lexer_code Tree::getCodeForLexer(use_place_t use_places, const IR &ir) {
 
     // auto rule_data = std::any_cast<obj_t>(rule.data);
     // auto new_rule_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(rule_data, "rule"))[0];
-    IR code(this->tree, rule_op2);
+    LLIR code(this->tree, rule_op2);
     code.setIsToken(true);
     auto success_var = code.makeIR();
-    code.push_begin({IR::types::TOKEN});
-    code.push({IR::types::RULE_END});
+    code.push_begin({LLIR::types::TOKEN});
+    code.push({LLIR::types::RULE_END});
     code.optimizeIR();
     return {code, success_var[0]};
 }
@@ -888,9 +888,10 @@ void Tree::getConflictsTableForRule(const std::vector<Parser::Rule> &rules, Conf
                 }
                 vstack.push(rule);
                 stack.push({vstack.top()->begin(), vstack.top()->end()});
+                return true;
             };
             auto process_csequence_with_string = [](const Parser::Rule &csequence_rule, const Parser::Rule &str_rule) -> std::pair<bool /*loop status*/, bool /*conflict_found*/> {
-                auto csequence_data = std::any_cast<obj_t>(rule.data);
+                auto csequence_data = std::any_cast<obj_t>(csequence_rule.data);
                 auto csequence_not = std::any_cast<bool>(corelib::map::get(csequence_data, "not"));
                 auto csequence = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(csequence_data, "val"));
                 auto str_data = std::any_cast<std::string>(str_rule.data);
@@ -921,6 +922,7 @@ void Tree::getConflictsTableForRule(const std::vector<Parser::Rule> &rules, Conf
                 } else {
                     throw Error("Undefiened csequene symbol type\n");
                 }
+                return {0, 0};
             };
             while (true) {
                 auto pop_res1 = pop_rules_stack_on_end(current_rule_vector_stack, current_rule_stack);
