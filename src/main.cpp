@@ -128,6 +128,6 @@ int main(int argc, char** argv) {
     LRParser ir(tree);
     ir.build();
     ir.printTables("tables");
-    ir.printCanonicalCollection("canonical_collection\n");
+    ir.printCanonicalCollection("canonical_collection");
     return 0;
 }
