@@ -110,42 +110,114 @@ void LRParser::constructFirstSet() {
 void LRParser::constructFollowSet(std::vector<std::string> &name, const std::vector<Parser::Rule>& rules) {
     if (rules.empty())
         return;
+
+    // Assuming 'constructFirstSet' returns a vector, use the first rule's FIRST set
     follow[corelib::text::join(name, "_")] = constructFirstSet(rules, 1)[0];
 }
 
 void LRParser::constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::string> &nonterminals) {
-    follow["S'"].push_back("$");  // Add $ to FOLLOW(S')
-    for (auto nonterminal : nonterminals) {
-        follow[nonterminal] = {"ε"};
-    }
-    for (auto &member : tree) {
-        if (member.name != Parser::Rules::Rule)
-            continue;
-        
-        auto data = std::any_cast<obj_t>(member.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+    // Start symbol FOLLOW set always includes "$"
+    follow["S'"].push_back("$");
 
-        // Do not include tokens
-        if (corelib::text::isUpper(name_str) && name_str != "S'")
-            continue;
-        
-        fullname.push_back(name_str);
-        
-        // Construct FOLLOW set for current rule set
-        constructFollowSet(fullname, rules);
-        
-        fullname.pop_back();
+    // Initialize FOLLOW sets for all nonterminals
+    for (const auto &nt : nonterminals) {
+        if (follow.find(nt) == follow.end()) {
+            follow[nt] = {};
+        }
     }
+
+    bool changed;
+    do {
+        changed = false;
+        
+        // Iterate through all the nodes in the parse tree
+        for (const auto &member : tree) {
+            if (member.name != Parser::Rules::Rule)
+                continue;
+
+            auto data = std::any_cast<obj_t>(member.data);
+            auto rule = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            std::string lhs = std::any_cast<std::string>(rule.data);
+
+            // Only process non-terminals (skip terminals)
+            if (corelib::text::isUpper(lhs) && lhs != "S'")
+                continue;
+
+            const auto &rule_bodies = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
+            size_t i = 0;
+            for (const auto &body : rule_bodies) {
+                Parser::Rule current_rule_rule;
+                
+                if (body.name == Parser::Rules::Rule_rule) {
+                    current_rule_rule = Tokens::getValueFromRule_rule(body);
+                } else {
+                    current_rule_rule = body;
+                }
+
+                auto current = std::any_cast<rule_other>(current_rule_rule.data);
+
+                // If the current symbol is a terminal (not a non-terminal), skip it
+                if (!corelib::text::isLower(current.name))
+                    continue;
+
+                if (i + 1 < rule_bodies.size()) {
+                    // If not the last symbol, look at the next symbol
+                    Parser::Rule next_rule_rule;
+                    if (rule_bodies[i + 1].name == Parser::Rules::Rule_rule) {
+                        next_rule_rule = Tokens::getValueFromRule_rule(rule_bodies[i + 1]);
+                    } else {
+                        next_rule_rule = rule_bodies[i + 1];
+                    }
+
+                    auto next = std::any_cast<rule_other>(next_rule_rule.data);
+                    std::string next_symbol = corelib::text::join(next.fullname, "_");
+
+                    if (corelib::text::isUpper(next.name)) {
+                        // If it's a terminal, add it to the FOLLOW set of the current symbol
+                        auto &follow_data = follow[corelib::text::join(current.fullname, "_")];
+                        if (std::find(follow_data.begin(), follow_data.end(), next_symbol) == follow_data.end()) {
+                            follow_data.push_back(next_symbol);
+                            changed = true;
+                        }
+                    } else {
+                        // If it's a non-terminal, add its FIRST set (excluding ε) to the FOLLOW set
+                        for (const auto &f : first[next_symbol]) {
+                            if (f[0] != "ε" && std::find(follow[corelib::text::join(current.fullname, "_")].begin(), follow[corelib::text::join(current.fullname, "_")].end(), corelib::text::join(f, "_")) == follow[corelib::text::join(current.fullname, "_")].end()) {
+                                follow[corelib::text::join(current.fullname, "_")].push_back(corelib::text::join(f, "_"));
+                                changed = true;
+                            }
+                        }
+
+                        // If FIRST(next) contains ε, also add FOLLOW(lhs) to FOLLOW(current)
+                        if (std::find(first[next_symbol].begin(), first[next_symbol].end(), std::vector<std::string>{std::string("ε")}) != first[next_symbol].end()) {
+                            for (const auto &f : follow[lhs]) {
+                                if (std::find(follow[corelib::text::join(current.fullname, "_")].begin(), follow[corelib::text::join(current.fullname, "_")].end(), f) == follow[corelib::text::join(current.fullname, "_")].end()) {
+                                    follow[corelib::text::join(current.fullname, "_")].push_back(f);
+                                    changed = true;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // If it's the last symbol, add FOLLOW(lhs) to FOLLOW(current)
+                    for (const auto &f : follow[lhs]) {
+                        if (std::find(follow[corelib::text::join(current.fullname, "_")].begin(), follow[corelib::text::join(current.fullname, "_")].end(), f) == follow[corelib::text::join(current.fullname, "_")].end()) {
+                            follow[corelib::text::join(current.fullname, "_")].push_back(f);
+                            changed = true;
+                        }
+                    }
+                }
+
+                i++; // Move to the next symbol in the rule body
+            }
+        }
+    } while (changed); // Repeat until no changes
 }
 
 void LRParser::constructFollowSet(std::vector<std::string> &nonterminals) {
     std::vector<std::string> fullname;
     constructFollowSet(tree->getRawTree(), fullname, nonterminals);
 }
-
 
 void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item) {
     CanonicalEl new_item{item.first, {}, 0, rule_index++};
@@ -278,41 +350,66 @@ void LRParser::build() {
     initial_item_set = construct_initial_item_set();
     canonical_item_set = construct_cannonical_collections_of_items();
     rule_index = 0;
+
     auto [tokens, rules] = tree->getTokenAndRuleNames();
     constructFirstSet();
     constructFollowSet(rules);
+
     size_t I = 0;
-    for (const auto &item_set : canonical_item_set) {
-        for (const auto &rule : item_set) {
-            // Dot is at the end: Reduce or Accept
+    for (const auto& item_set : canonical_item_set) {
+        for (const auto& rule : item_set) {
+            // Dot is at the end → Reduce or Accept
             if (rule.dot_pos >= rule.rhs.size()) {
+                std::string lhs_key = corelib::text::join(rule.lhs, "_");
+
+                // Accept condition: augmented rule with start symbol
                 if (rule.lhs == std::vector<std::string>{"S'"} && rule.rhs.size() == 1) {
                     action_table[I]["$"] = Action{Action_type::ACCEPT, 0};
-                } else {
-                    std::string lhs_key = corelib::text::join(rule.lhs, "_");
-                    cpuf::printf("follow[%s], size(): %$\n", lhs_key, follow[lhs_key].size());
-                    for (const auto& follow_token : follow[lhs_key]) {
+                    continue;
+                }
+
+                // Reduce: only insert reduce if no conflicting shift action exists
+                for (const auto& follow_token : follow[lhs_key]) {
+                    // Only insert reduce if no SHIFT action is already present
+                    if (action_table[I].count(follow_token) == 0) {
                         action_table[I][follow_token] = Action{Action_type::REDUCE, rule.rule_index};
+                    } else {
+                        // Shift/Reduce conflict warning (can be logged or handled)
+                        const auto& existing = action_table[I][follow_token];
+                        if (existing.type == Action_type::SHIFT) {
+                            // Optional: log shift/reduce conflict for diagnostics
+                            cpuf::printf("Conflict: SHIFT/REDUCE on state % for token %\n", I, follow_token);
+                        }
                     }
                 }
             }
             // Dot is before a symbol
             else {
-                const auto &next = rule.rhs[rule.dot_pos];
-                size_t next_state = find_goto_state(item_set, next); // this computes goto(I, X)
+                const auto& next = rule.rhs[rule.dot_pos];
+                size_t next_state = find_goto_state(item_set, next); // goto(I, X)
 
                 if (corelib::text::isLower(next.name)) {
                     // Non-terminal → GOTO
                     goto_table[I][corelib::text::join(next.fullname, "_")] = next_state;
                 } else {
-                    // Terminal → SHIFT
-                    action_table[I][corelib::text::join(next.fullname, "_")] = Action{Action_type::SHIFT, next_state};
+                    // Terminal → SHIFT (unconditionally)
+                    std::string token_name = corelib::text::join(next.fullname, "_");
+                    if (action_table[I].count(token_name) == 0) {
+                        action_table[I][token_name] = Action{Action_type::SHIFT, next_state};
+                    } else {
+                        // Optional: warn if double SHIFT or SHIFT/REDUCE
+                        const auto& existing = action_table[I][token_name];
+                        if (existing.type != Action_type::SHIFT || existing.state != next_state) {
+                            cpuf::printf("Conflict: Duplicate or incompatible SHIFT at state % for token %\n", I, token_name);
+                        }
+                    }
                 }
             }
         }
         I++;
     }
 }
+
 void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
     size_t count = 0;
     for (const auto &item_set : canonical_item_set) {
