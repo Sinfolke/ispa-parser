@@ -56,12 +56,11 @@ private:
     void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname);
     void transform(Parser::Tree &tree, std::vector<std::string> &fullname);
 
-
     void addAugmentedRule();
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     auto construct_initial_item_set() -> InitialItemSet;
-    std::vector<std::vector<std::string>> constructFirstSet(const std::vector<Parser::Rule>& rules, size_t pos = 0);
+    auto constructFirstSet(const std::vector<Parser::Rule>& rules, size_t pos = 0) -> std::vector<std::vector<std::string>>;
     void constructFirstSet(Parser::Tree &tree, std::vector<std::string> &fullname);
     void constructFirstSet();
     void constructFollowSet(std::vector<std::string> &name, const std::vector<Parser::Rule>& rules);
@@ -69,7 +68,7 @@ private:
     void constructFollowSet(std::vector<std::string> &nonterminals);
     void create_item_collection(CanonicalItem &closure, const ItemSet &item);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
-    size_t find_goto_state(const CanonicalItem &item_set, const rule_other &symbol);
+    auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
     // debug
     void formatCanonicalItemSet(std::ostringstream &oss);
     auto formatActionTable() const -> std::string;

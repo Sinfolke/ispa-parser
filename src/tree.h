@@ -24,6 +24,7 @@ class Tree {
         // replace dublications functions
         void getReplacedTree(std::vector<Parser::Rule>& rules, std::string name);
         void replaceDublicationsHelper(Parser::Tree &tree);
+        void removeEmptyRule(Parser::Tree &tree);
         // inline tokens functions
         void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::vector<std::vector<std::string>>& table_key, std::vector<Parser::Rule>& table_value, std::vector<std::string> nested);
         Parser::Rule find_key_in_table_by_name(const std::vector<std::vector<std::string>>& table_key,  const std::vector<Parser::Rule>& table_value, const std::vector<std::string>& name);
@@ -59,6 +60,7 @@ class Tree {
 
         auto begin() -> Parser::Tree::iterator;
         auto end() -> Parser::Tree::iterator;
+        void removeEmptyRule();
         void normalize();
         void replaceDublications();
         void inlineTokens();

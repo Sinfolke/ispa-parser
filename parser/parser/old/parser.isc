@@ -1,5 +1,4 @@
 use end_of_rule: [ END, STRICT_END, NEWLINE ];
-use comment: linear_comment;
 use name: "Parser";
 spacemode mixed;
 END: [;\n];

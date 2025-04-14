@@ -69,6 +69,31 @@ void Tree::replaceDublicationsHelper(Parser::Tree &tree) {
 void Tree::replaceDublications() {
     replaceDublicationsHelper(tree);
 }
+void Tree::removeEmptyRule(Parser::Tree &tree) {
+    for (auto it = tree.begin(); it != tree.end(); it++) {
+        auto member = *it;
+        if (member.name != Parser::Rules::Rule)
+            continue;
+        if (!member.data.has_value()) {
+            continue;
+        }
+        auto data = std::any_cast<obj_t>(member.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
+        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+        // do not include tokens
+        if (rules.empty()) {
+            it = tree.erase(it);
+        }
+        removeEmptyRule(nested_rules);
+        corelib::map::set(data, "nestedRules", std::any(nested_rules));
+        it->data = data;
+    }
+}
+void Tree::removeEmptyRule() {
+    removeEmptyRule(tree);
+}
 void Tree::accumulateInlineNamesAndRemove(Parser::Tree& tree,
                                     std::vector<std::vector<std::string>>& table_key, 
                                     std::vector<Parser::Rule>& table_value, 
