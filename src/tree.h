@@ -57,6 +57,8 @@ class Tree {
         Tree(Parser::Tree &tree) : tree(tree) {}
         auto getRawTree() -> Parser::Tree&;
 
+        auto begin() -> Parser::Tree::iterator;
+        auto end() -> Parser::Tree::iterator;
         void normalize();
         void replaceDublications();
         void inlineTokens();

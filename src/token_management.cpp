@@ -24,7 +24,9 @@ namespace Tokens {
         quantifier = std::any_cast<Parser::Rule>(corelib::map::get(data, "qualifier"));
         return std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
     }
-
+    Parser::Rule make_id(std::string name) {
+        return make_rule(Parser::Rules::id, name);
+    }
     ::Parser::Rule singleRuleToToken(const Parser::Rule &input, size_t &count) {
         // Construct a token here
         ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 

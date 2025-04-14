@@ -11,6 +11,12 @@
 Parser::Tree& Tree::getRawTree() {
     return tree;
 }
+Parser::Tree::iterator Tree::begin() {
+    return tree.begin();
+}
+Parser::Tree::iterator Tree::end() {
+    return tree.end();
+}
 void Tree::getReplacedTree(std::vector<Parser::Rule> &rules, std::string name) {
     // Create a copy of the rules to avoid modifying the original while iterating
     for (auto& member : tree) {

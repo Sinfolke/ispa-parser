@@ -52,6 +52,11 @@ private:
     First first;
     Follow follow;
     size_t rule_index = 0;
+
+    void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname);
+    void transform(Parser::Tree &tree, std::vector<std::string> &fullname);
+
+
     void addAugmentedRule();
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
@@ -73,8 +78,9 @@ public:
     LRParser(Tree *tree) : tree(tree) {}
     LRParser(Tree &tree) : tree(&tree) {}
 
-    auto begin() -> Parser::Tree::iterator;
-    auto end() -> Parser::Tree::iterator;
+    // transform rules to approaritate form for LR parser
+    void transform();
+    // build action and goto table
     void build();
         // debug
 
