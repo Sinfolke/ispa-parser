@@ -1,47 +1,53 @@
 I0:
 	__start → • { main } 
 	main → • { __q0 } { AUTO_0 } { __q0 } 
-	__q0 → • 
-	__q0 → • { __q0_tail } 
-	__q0_tail → • { term } { __q0_tail } 
-	term → • { NUMBER } { AUTO_1 } { NUMBER } 
-	__q0_tail → • 
+	__q0 → • { term } { __q0_tail } 
+	term → • { NUMBER } 
+	term → • { term } 
+	term → • { AUTO_1 } 
 
 I1:
-	term → { NUMBER } • { AUTO_1 } { NUMBER } 
+	term → { AUTO_1 } • 
 
 I2:
-	main → { __q0 } • { AUTO_0 } { __q0 } 
+	term → { NUMBER } • 
 
 I3:
-	__q0 → { __q0_tail } • 
+	main → { __q0 } • { AUTO_0 } { __q0 } 
 
 I4:
 	__start → { main } • 
 
 I5:
-	__q0_tail → { term } • { __q0_tail } 
-	__q0_tail → • { term } { __q0_tail } 
-	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+	__q0 → { term } • { __q0_tail } 
+	term → { term } • 
 	__q0_tail → • 
+	__q0_tail → • { term } { __q0 } 
+	term → • { NUMBER } 
+	term → • { term } 
+	term → • { AUTO_1 } 
 
 I6:
-	term → { NUMBER } { AUTO_1 } • { NUMBER } 
+	main → { __q0 } { AUTO_0 } • { __q0 } 
+	__q0 → • { term } { __q0_tail } 
+	term → • { NUMBER } 
+	term → • { term } 
+	term → • { AUTO_1 } 
 
 I7:
-	main → { __q0 } { AUTO_0 } • { __q0 } 
-	__q0 → • 
-	__q0 → • { __q0_tail } 
-	__q0_tail → • { term } { __q0_tail } 
-	term → • { NUMBER } { AUTO_1 } { NUMBER } 
-	__q0_tail → • 
+	__q0 → { term } { __q0_tail } • 
 
 I8:
-	__q0_tail → { term } { __q0_tail } • 
+	__q0_tail → { term } • { __q0 } 
+	term → { term } • 
+	__q0 → • { term } { __q0_tail } 
+	term → • { NUMBER } 
+	term → • { term } 
+	term → • { AUTO_1 } 
 
 I9:
-	term → { NUMBER } { AUTO_1 } { NUMBER } • 
+	main → { __q0 } { AUTO_0 } { __q0 } • 
 
 I10:
-	main → { __q0 } { AUTO_0 } { __q0 } • 
+	__q0_tail → { term } { __q0 } • 
 

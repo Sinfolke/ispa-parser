@@ -39,8 +39,8 @@ public:
     };
     using CanonicalItem = std::vector<CanonicalEl>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
-    using First = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>, VectorHash>;
-    using Follow = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>, VectorHash>;
+    using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>, VectorHash>;
+    using Follow = First;
 private:
     Tree *tree;
     ActionTable action_table;
@@ -60,17 +60,14 @@ private:
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     auto construct_initial_item_set() -> InitialItemSet;
-    auto constructFirstSet(const std::vector<Parser::Rule>& rules, size_t pos = 0) -> std::vector<std::vector<std::string>>;
-    void constructFirstSet(Parser::Tree &tree, std::vector<std::string> &fullname);
+    auto constructFirstSet(const std::vector<std::vector<rule_other>>& options, std::set<std::vector<std::string>> &visited) -> std::set<std::vector<std::string>>;
     void constructFirstSet();
-    void constructFollowSet(std::vector<std::string> &fullname, std::vector<Parser::Rule> &rule_bodies, bool &changed);
-    void constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname, bool &changed);
-    void constructFollowSet(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::string> &nonterminals);
-    void constructFollowSet(std::vector<std::string> &nonterminals);
+    void constructFollowSet();
     void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
     // debug
+    void formatFirstOrFollowSet(std::ostringstream &oss, First &set);
     void formatCanonicalItemSet(std::ostringstream &oss);
     auto formatActionTable() const -> std::string;
     auto formatGotoTable() const -> std::string;
@@ -88,4 +85,7 @@ public:
     void printTables(const std::string& filename);
     // print cannonical collection
     void printCanonicalCollection(const std::string &fileName);
+
+    void printFirstSet(const std::string &fileName);
+    void printFollowSet(const std::string &fileName);
 };

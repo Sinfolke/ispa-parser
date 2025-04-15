@@ -1,29 +1,36 @@
 Action Table:
 State Token          Action    Next State
-10    $              REDUCE    1         
-8     NUMBER         REDUCE    4         
-8     AUTO_0         REDUCE    4         
-7     NUMBER         REDUCE    10        
-7     AUTO_0         REDUCE    10        
-6     NUMBER         SHIFT     9         
-5     AUTO_0         REDUCE    9         
-5     NUMBER         SHIFT     1         
+10    $              REDUCE    12        
+9     $              REDUCE    1         
+8     AUTO_1         SHIFT     1         
+8     NUMBER         SHIFT     2         
+8     AUTO_0         REDUCE    14        
+8     $              REDUCE    14        
+7     AUTO_0         REDUCE    2         
+7     $              REDUCE    2         
+6     AUTO_1         SHIFT     1         
+6     NUMBER         SHIFT     2         
+5     AUTO_1         SHIFT     1         
+5     NUMBER         SHIFT     2         
+5     AUTO_0         REDUCE    4         
+5     $              REDUCE    4         
 4     $              ACCEPT    0         
-3     NUMBER         REDUCE    3         
-3     AUTO_0         REDUCE    3         
-2     AUTO_0         SHIFT     7         
-1     AUTO_1         SHIFT     6         
-0     NUMBER         REDUCE    2         
-0     AUTO_0         REDUCE    2         
+3     AUTO_0         SHIFT     6         
+2     AUTO_0         REDUCE    3         
+2     $              REDUCE    3         
+1     AUTO_0         REDUCE    7         
+1     $              REDUCE    7         
+0     AUTO_1         SHIFT     1         
+0     NUMBER         SHIFT     2         
 
 Goto Table:
 State Non-Terminal        Next State  
-7     term                5           
-7     __q0_tail           3           
-7     __q0                10          
-5     term                5           
-5     __q0_tail           8           
+8     term                5           
+8     __q0                10          
+6     term                5           
+6     __q0                9           
+5     term                8           
+5     __q0_tail           7           
 0     term                5           
-0     __q0_tail           3           
-0     __q0                2           
+0     __q0                3           
 0     main                4           

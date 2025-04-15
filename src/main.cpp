@@ -124,5 +124,7 @@ int main(int argc, char** argv) {
     ir.build();
     ir.printTables("tables");
     ir.printCanonicalCollection("canonical_collection");
+    ir.printFirstSet("first_set");
+    ir.printFollowSet("follow_set");
     return 0;
 }
