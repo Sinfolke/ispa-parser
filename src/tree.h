@@ -53,9 +53,23 @@ class Tree {
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
         void resolveConflicts(Parser::Tree &tree);
+        void constructor() {
+            normalize();                       // normalize tree
+            sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
+            literalsToToken();                // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
+            addSpaceToken();
+            replaceDublications();            // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
+            inlineTokens();                   // inline tokens to make sure that every token is used only once
+        }
     public:
-        Tree(Parser::Tree &&tree) : tree(std::move(tree)) {}
-        Tree(Parser::Tree &tree) : tree(tree) {}
+        Tree(Parser::Tree &&tree, bool rawAssign = false) : tree(std::move(tree)) {
+            if (!rawAssign)
+                constructor();
+        }
+        Tree(Parser::Tree &tree, bool rawAssign = false) : tree(tree) {
+            if (!rawAssign)
+                constructor();
+        }
         auto getRawTree() -> Parser::Tree&;
 
         auto begin() -> Parser::Tree::iterator;

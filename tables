@@ -1,17 +1,29 @@
 Action Table:
 State Token          Action    Next State
-7     $              REDUCE    1         
-6     NUMBER         REDUCE    2         
-6     AUTO_0         REDUCE    2         
+10    $              REDUCE    1         
+8     NUMBER         REDUCE    4         
+8     AUTO_0         REDUCE    4         
+7     NUMBER         REDUCE    10        
+7     AUTO_0         REDUCE    10        
+6     NUMBER         SHIFT     9         
+5     AUTO_0         REDUCE    9         
 5     NUMBER         SHIFT     1         
-4     NUMBER         SHIFT     6         
-3     AUTO_0         SHIFT     5         
-2     $              ACCEPT    0         
-1     AUTO_1         SHIFT     4         
-0     NUMBER         SHIFT     1         
+4     $              ACCEPT    0         
+3     NUMBER         REDUCE    3         
+3     AUTO_0         REDUCE    3         
+2     AUTO_0         SHIFT     7         
+1     AUTO_1         SHIFT     6         
+0     NUMBER         REDUCE    2         
+0     AUTO_0         REDUCE    2         
 
 Goto Table:
 State Non-Terminal        Next State  
-5     term                7           
-0     term                3           
-0     main                2           
+7     term                5           
+7     __q0_tail           3           
+7     __q0                10          
+5     term                5           
+5     __q0_tail           8           
+0     term                5           
+0     __q0_tail           3           
+0     __q0                2           
+0     main                4           

@@ -1,27 +1,47 @@
 I0:
-	S' → • { main } 
-	main → • { term } { AUTO_0 } { term } 
+	__start → • { main } 
+	main → • { __q0 } { AUTO_0 } { __q0 } 
+	__q0 → • 
+	__q0 → • { __q0_tail } 
+	__q0_tail → • { term } { __q0_tail } 
 	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+	__q0_tail → • 
 
 I1:
 	term → { NUMBER } • { AUTO_1 } { NUMBER } 
 
 I2:
-	S' → { main } • 
+	main → { __q0 } • { AUTO_0 } { __q0 } 
 
 I3:
-	main → { term } • { AUTO_0 } { term } 
+	__q0 → { __q0_tail } • 
 
 I4:
-	term → { NUMBER } { AUTO_1 } • { NUMBER } 
+	__start → { main } • 
 
 I5:
-	main → { term } { AUTO_0 } • { term } 
+	__q0_tail → { term } • { __q0_tail } 
+	__q0_tail → • { term } { __q0_tail } 
 	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+	__q0_tail → • 
 
 I6:
-	term → { NUMBER } { AUTO_1 } { NUMBER } • 
+	term → { NUMBER } { AUTO_1 } • { NUMBER } 
 
 I7:
-	main → { term } { AUTO_0 } { term } • 
+	main → { __q0 } { AUTO_0 } • { __q0 } 
+	__q0 → • 
+	__q0 → • { __q0_tail } 
+	__q0_tail → • { term } { __q0_tail } 
+	term → • { NUMBER } { AUTO_1 } { NUMBER } 
+	__q0_tail → • 
+
+I8:
+	__q0_tail → { term } { __q0_tail } • 
+
+I9:
+	term → { NUMBER } { AUTO_1 } { NUMBER } • 
+
+I10:
+	main → { __q0 } { AUTO_0 } { __q0 } • 
 

@@ -31,3 +31,13 @@ struct lexer_code {
     LLIR::node_ret_t success_var;
     lexer_code(LLIR code, LLIR::node_ret_t success_var) : code(code), success_var(success_var) {}
 };
+struct VectorHash {
+    template <typename T>
+    size_t operator () (const std::vector<T>& vec) const {
+        size_t seed = 0;
+        for (const auto& elem : vec) {
+            seed ^= std::hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
