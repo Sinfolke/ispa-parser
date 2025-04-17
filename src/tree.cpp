@@ -709,14 +709,7 @@ void Tree::accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &us
         auto val = std::any_cast<Parser::Rule>(corelib::map::get(dt, "val"));
         if (val.name == Parser::Rules::Rule_other) {
             auto data = std::any_cast<rule_other>(val.data);
-            auto ptr = std::find_if(use_places.begin(), use_places.end(), [&data](const use_place_t_part &part1) {
-                return part1.first == data.fullname;
-            });
-            if (ptr != use_places.end()) {
-                ptr->second.push_back(fullname);
-            } else {
-                use_places.push_back({data.fullname, {fullname}});
-            }
+            use_places[data.fullname].push_back(fullname);
         } else if (val.name == Parser::Rules::Rule_group) {
             auto data = std::any_cast<obj_t>(val.data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
@@ -742,7 +735,7 @@ void Tree::getUsePlacesTableHelper(Parser::Tree &tree, use_place_t &use_places, 
         }
     }
 }
-use_place_t Tree::getUsePlacesTable() {
+Tree::use_place_t Tree::getUsePlacesTable() {
     use_place_t use_places;
     std::vector<std::string> fullname;
     getUsePlacesTableHelper(tree, use_places, fullname);
@@ -770,7 +763,7 @@ std::pair<data_block_t, data_block_t> Tree::get_data_blocks(const LLIR &ir) {
     return {datablocks_tokens, datablocks_rules};
 }
 
-void Tree::getTokensForLexer(Parser::Tree &tree, use_place_t use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname) {
+void Tree::getTokensForLexer(Parser::Tree &tree, use_place_t &use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname) {
     for (auto &member : tree) {
         if (member.name != Parser::Rules::Rule) 
             continue;
@@ -779,20 +772,20 @@ void Tree::getTokensForLexer(Parser::Tree &tree, use_place_t use_places, std::ve
         auto name_str = std::any_cast<std::string>(name.data);
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         fullname.push_back(name_str);
-        if (fullname.size() != 1) {
-            auto data_in_use_place = std::find_if(use_places.begin(), use_places.end(), [&fullname](use_place_t_part &part) {
-                return part.first == fullname;
-            });
+        if (fullname.size() != 1 && corelib::text::isUpper(name_str)) {
+            auto data_in_use_place = use_places.find(fullname);
             if (data_in_use_place != use_places.end()) {
                 bool add = false;
-                for (auto &fullname : data_in_use_place->second) {
-                    if (corelib::text::isLower(fullname.back())) {
+                for (auto &fn : data_in_use_place->second) {
+                    if (corelib::text::isLower(fn.back())) {
                         add = true;
                         break;
                     }
                 }
-                if (!add)
+                if (!add) {
+                    fullname.pop_back();
                     continue;
+                }
             } else {
                 cpuf::printf("could not find data for %$\n", fullname);
             }

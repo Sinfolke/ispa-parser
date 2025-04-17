@@ -60,6 +60,9 @@ void LLConverter::outputHeader(std::ostringstream &out) {
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
     create_parser_header(out);
+    writeRules(out);
+    close_parser_header(out);
+    close_library(out, namespace_name);
 }
 void LLConverter::convertVariable(LLIR::variable var, std::ostringstream &out) {
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
@@ -334,21 +337,18 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
 void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
     out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::lazy_iterator &pos) {
     return main(pos);
-})";
-    out << '\n';
+})" << '\n';
     out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::iterator &pos) {
-        return main(pos);
-    })";
+    return main(pos);
+})" << '\n';
     out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
-        Lexer lexer(tokens);
-        auto pos = Lexer::iterator(&lexer, text);
-        parseFromPos(pos);
-})";
+    auto pos = Lexer::iterator(lexer);
+    parseFromPos(pos);
+})" << '\n';
     out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
-        Lexer lexer;
-        auto pos = Lexer::lazy_iterator(&lexer, text);
-        parseFromPos(pos);
-    })";
+    auto pos = Lexer::lazy_iterator(lexer, text);
+    parseFromPos(pos);
+})" << '\n';
 //     out << "void " << namespace_name << R"(::Parser::parseFromInput() {
 //         Lexer lexer;
 

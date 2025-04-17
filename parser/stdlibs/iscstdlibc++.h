@@ -132,12 +132,12 @@ template<typename NODE_T>
 class node {
     std::size_t _startpos = std::string::npos;
     std::size_t _length = 0;
-    std::size_t _line;
-    std::size_t _column;
+    std::size_t _line = 0;
+    std::size_t _column = 0;
     const char* _start = nullptr;
     const char* _end = nullptr;
     NODE_T _name = NODE_T::NONE;
-    std::any _data;
+    std::any _data = {};
     bool _empty = true;
 public:
     node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _empty(false) {}
@@ -332,11 +332,89 @@ protected:
 public:
     /**
      * A lazy iterator (accamulates only tokens that currently are accessed).
-     * Be aware it acts independently of the lexer class and may cause additional overhead.
-     * It does not save tokens for Lexer_base::iterator
+     * Be aware it acts independently of the lexer class and does not accamulate tokens for it
+     * If you pass in parser class the input string a lazy iterator is going to be used and no tokens to lexer accamulated otherwise if you accamulate tokens in lexer class
+     * and pass it in to parser class your tokens will be saved until clean
      */
-    class lazy_iterator;
-    class iterator;
+    class lazy_iterator {
+        Lexer_base<TOKEN_T>* owner = nullptr;
+        std::deque<node<TOKEN_T>> tokens;
+        const char* pos = nullptr;
+        size_t counter = 0;
+        public:
+            lazy_iterator(const Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {}
+            lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in) : owner(owner), pos(in) {}
+            bool isEnd() {
+                return tokens[0].empty();
+            }
+            void operator=(lazy_iterator iterator) {
+                // add only first token that currently may be accessed
+                // ommit others
+                tokens.push_back(iterator.tokens[0]);
+                pos = iterator.pos;
+                counter = iterator.counter;
+            }
+            void operator+=(size_t count) {
+                tokens.erase(tokens.begin() + count);
+                counter += count;
+            }
+            auto operator-(lazy_iterator iterator) {
+                return counter - iterator.counter;
+            }
+            node<TOKEN_T>& operator*() {
+                if (tokens.empty())
+                    tokens.push_back(owner->makeToken(pos));
+                return tokens[0];
+            }    
+            lazy_iterator& operator++() {
+                this->operator+=(1);
+                return *this;
+            }
+            node<TOKEN_T>* operator->() {
+                if (tokens.empty())
+                    tokens.push_back(owner->makeToken(pos));
+                return &tokens[0];
+            }
+            auto getCounter() {
+                return counter;
+            }
+    };
+    /**
+     * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
+     * If you need to iterate through tokens after parsing, first accamulate tokens, then run parsing.
+     */
+    class iterator {
+        Lexer_base<TOKEN_T>* owner = nullptr;
+        typename TokenFlow<TOKEN_T>::iterator pos;
+        public:
+            iterator(const Lexer_base<TOKEN_T> &owner) : owner(&owner), pos(owner->tokens.begin()) {}
+            iterator(Lexer_base<TOKEN_T>* owner) : owner(owner), pos(owner->tokens.begin()) {}
+            bool isEnd() {
+                return pos->empty();
+            }
+            void operator=(iterator iterator) {
+                pos = iterator.pos;
+            }
+            void operator+=(size_t count) {
+                pos += count;
+            }
+            auto operator-(iterator iterator) {
+                return pos - iterator.pos;
+            }
+            node<TOKEN_T>& operator*() {
+                return *pos;
+            }    
+            lazy_iterator& operator++() {
+                this->operator+=(1);
+                return *this;
+            }
+            node<TOKEN_T>* operator->() {
+                return &(*pos);
+            }
+            auto distance() {
+                return pos - owner->tokens.begin();
+            }
+    };
     /**
      * Get one token
      */
@@ -346,6 +424,7 @@ public:
     explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
     explicit Lexer_base(char*& in) : _in(in) {}
     explicit Lexer_base(const char*& in) : _in(const_cast<char*>(in)) {}
+    explicit Lexer_base(TokenFlow<TOKEN_T> &tokens) : tokens(tokens) {}
     explicit Lexer_base() {}
 
     bool hasInput() const {
@@ -442,6 +521,7 @@ public:
             }
             error_controller.clear();
         }
+        push(node<TOKEN_T>());
         return tokens;
     };
     auto& getErrors() const {
@@ -499,87 +579,13 @@ public:
         return tokens != tokenizator.tokens;
     }
 };
-template<class TOKEN_T>
-class Lexer_base<TOKEN_T>::lazy_iterator {
-    Lexer_base<TOKEN_T>* owner = nullptr;
-    std::deque<node<TOKEN_T>> tokens;
-    const char* pos = nullptr;
-    size_t counter = 0;
-    public:
-        lazy_iterator(Lexer_base<TOKEN_T> *owner, const char* in) : owner(owner), pos(in) {}
-        void operator=(lazy_iterator iterator) {
-            // add only first token that currently may be accessed
-            // ommit others
-            tokens.push_back(iterator.tokens[0]);
-            pos = iterator.pos;
-            counter = iterator.counter;
-        }
-        void operator+=(size_t count) {
-            tokens.erase(tokens.begin() + count);
-            counter += count;
-        }
-        auto operator-(lazy_iterator iterator) {
-            return counter - iterator.counter;
-        }
-        node<TOKEN_T>& operator*() {
-            if (tokens.empty())
-                tokens.push_back(owner->makeToken(pos));
-            return tokens[0];
-        }    
-        lazy_iterator& operator++() {
-            this->operator+=(1);
-            return *this;
-        }
-        node<TOKEN_T>* operator->() {
-            if (tokens.empty())
-                tokens.push_back(owner->makeToken(pos));
-            return &tokens[0];
-        }
-        auto getCounter() {
-            return counter;
-        }
-};
-/**
- * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
- * If you need to iterate through tokens after parsing, first accamulate tokens, then run parsing.
- */
-template<class TOKEN_T>
-class Lexer_base<TOKEN_T>::iterator {
-    Lexer_base<TOKEN_T>* owner = nullptr;
-    const char* pos;
-    const char* in;
-    public:
-        iterator(Lexer_base<TOKEN_T> *owner, const char* in) : owner(owner), pos(in), in(in) {}
-        void operator=(iterator iterator) {
-            pos = iterator.pos;
-        }
-        void operator+=(size_t count) {
-            pos += count;
-        }
-        auto operator-(iterator iterator) {
-            return pos - iterator.pos;
-        }
-        node<TOKEN_T> operator*() {
-            return owner->tokens[0];
-        }    
-        lazy_iterator& operator++() {
-            this->operator+=(1);
-            return *this;
-        }
-        node<TOKEN_T>* operator->() {
-            return &owner->tokens[0];
-        }
-        auto distance() {
-            return pos - in;
-        }
-};
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
 class Parser_base {
-private:
+protected:
     template<class T>
     void parseFromPos(T& pos) {
-        while(pos != tokens->end()) {
+        while(!pos.isEnd()) {
             auto res = getRule(pos);
             if (!res.status) {
                 // if (!error_controller.empty())
@@ -595,8 +601,7 @@ private:
             error_controller.clear();
         }
     }
-protected:
-    TokenFlow<TOKEN_T>* tokens = nullptr;
+    Lexer_base<TOKEN_T>* lexer = nullptr;
     const char* text = nullptr;
     Tree<RULE_T> tree;
     std::vector<error> errors;
@@ -625,29 +630,20 @@ public:
      */
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
-    virtual void parseFromTokens();
-    virtual void lazyParse();
+    virtual void parseFromTokens() = 0;
+    virtual void lazyParse() = 0;
     // Constructors
     Parser_base() {}
     Parser_base(const Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens())
-            tokens = &lexer.tokens;
-    }
-    Parser_base(const TokenFlow<TOKEN_T>& tokens) {
-        if (!tokens.empty())
-            this->tokens = tokens; 
+            this->lexer = &lexer;
     }
     Parser_base(const char* text) : text(text) {}
     // Parsing methods
     Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {
-            tokens = &lexer.getTokensReference();
+            this->lexer = &lexer;
         }
-        return parse();
-    }
-    Tree<RULE_T>& parse(TokenFlow<TOKEN_T>& tokens) {
-        if (!tokens.empty())
-            this->tokens = &tokens;
         return parse();
     }
     Tree<RULE_T>& parse(const char* text) {
@@ -656,17 +652,13 @@ public:
     }
     void setInput(Lexer_base<TOKEN_T> &lexer) {
         if (!lexer.hasTokens())
-            tokens = &lexer.getTokensReference();
-    }
-    void setInput(TokenFlow<TOKEN_T>& tokens) {
-        if (!tokens.empty())
-            this->tokens = &tokens;
+            this->lexer = &lexer;
     }
     void setInput(const char* text) {
         this->text = text;
     }
     void clearInput() {
-        tokens = nullptr;
+        lexer = nullptr;
         text = nullptr;
     }
     auto getErrors() {
@@ -678,12 +670,11 @@ public:
      * @return Tree<RULE_T> 
      */
     Tree<RULE_T>& parse() {
-        if (tokens != nullptr)
+        if (lexer != nullptr) {
             parseFromTokens();
-        else if (text != nullptr)
+        } else if (text != nullptr) {
             lazyParse();
-        else 
-            throw Parser_No_Input_exception();
+        } else  throw Parser_No_Input_exception();
         return tree;
     }
 };

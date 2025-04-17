@@ -19,8 +19,7 @@ struct rule_other {
         return lhs.fullname < rhs.fullname;
     }
 };
-using use_place_t_part = std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>>;
-using use_place_t = std::vector<use_place_t_part>;
+
 struct data_block_part {
     std::string name;
     LLIR::data_block value;
