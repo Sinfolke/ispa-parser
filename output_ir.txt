@@ -2623,7 +2623,7 @@ Token(AT) {
 Rule(main) {
 	any _0 = NONE
 	bool success_1 = FALSE
-	token _2 = NONE
+	Rule_result _2 = NONE
 	bool success_3 = FALSE
 	Rule_result _4 = NONE
 	bool success_5 = FALSE
@@ -2631,7 +2631,8 @@ Rule(main) {
 	bool success_7 = FALSE
 	token _8 = NONE
 	bool success_9 = FALSE
-	if (!(CURRENT_TOKEN == AUTO_38))
+	_2 = Rule(TOKEN_SEQUENCE)
+	if (!(_2.status))
 	{
 		_4 = use(TOKEN_SEQUENCE)
 		if (!(_4.status))
@@ -2667,10 +2668,9 @@ Rule(main) {
 	}
 	else 
 	{
-		_2 = CURRENT_TOKEN
 		success_3 = TRUE
-		pos++
-		_0 = _2
+		pos += _2.token.length()
+		_0 = _2.node
 	}
 	success_1 = TRUE
 }

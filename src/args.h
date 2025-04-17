@@ -1,61 +1,40 @@
 #pragma once
 #include <vector>
 #include <stdexcept>
-#include <cstring>
+#include <string>
 #include <unordered_map>
-#include <map>
+#include <functional>
 #include <logging.h>
-class Arg;
-enum class listener_cmd {
-    SUCCESS = 0,
-    STOP_PARSING,
-    CONTINUE_PARSING_AT,
-    CONTINUE_PARSING_AT_ID,
-    ABORT,
-};
-struct listener_return_t {
-    listener_cmd command;
-    const char* arg1;
-};
-
-#define ND [[nodiscard]]
-typedef listener_return_t (*listenerf)(const Arg& arg);
 class Arg {
     public:
-        const char* prefix;
-        std::vector<const char*> values;
-        ND bool empty() const;
-        ND bool isBool() const;
-        void clear();
-        ND const char* first() const;
-        ND const char* _0() const;
-        ND const char* last() const;
-        ND const char* operator[](const int v) const;
-
+    bool isBool = false;
+    std::vector<std::string> values;
+    bool empty() const;
+    void clear();
+    Arg(bool isBool, const std::vector<std::string> &values) : isBool(isBool), values(values) {}
+    Arg(bool isBool) : isBool(isBool) {}
+    Arg() {}
+    const std::string& first() const;
+    const std::string& _0() const;
+    const std::string& last() const;
+    const std::string& operator[](int v) const;
 };
+
 class Args {
-    private:
-        int argc;
-        char** argv;
-        std::vector<Arg> args;
-        std::vector<const char*> _unnamed;
-        std::unordered_map<std::string, std::function<void(Arg&)>> listeners;
-        std::unordered_map<const char*, listenerf> listeners_parsed;
-        std::unordered_map<const char*, listenerf> listeners_unparsed;
-        void invokeListeners();
-    public:
-        Args(int argc, char** argv) : argc(argc), argv(argv) {}
-        /**
-         * @brief Provide the input argc and argv
-         * 
-         * @param argc 
-         * @param argv 
-         */
-        void init(int argc, char** argv);
-        void on(const char* prefix, const std::function<void(Arg&)>& func);
-        bool has(const char* prefix);
-        Arg get(const char* prefix);
-        void parse();
-        ND Arg& operator[](const int& id);
-        ND std::vector<const char*> unnamed(void);
+private:
+    int argc;
+    char** argv;
+    std::unordered_map<std::string, Arg> args;
+    std::vector<std::string> _unnamed;
+public:
+    Args(int argc, char** argv) : argc(argc), argv(argv) {}
+    void init(int argc, char** argv);
+    auto has(const std::string& prefix) -> bool;
+    auto get(const std::string& prefix) -> Arg&;
+    void parse();
+    auto begin() -> std::unordered_map<std::string, Arg>::iterator;
+    auto end() -> std::unordered_map<std::string, Arg>::iterator;
+
+    Arg& operator[](const std::string& id);
+    std::vector<std::string> unnamed();
 };

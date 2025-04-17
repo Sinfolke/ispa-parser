@@ -1,7 +1,8 @@
 #pragma once
 #include <IR/IR.h>
+#include <LRParser.h>
 #include <tree.h>
-class Converter_base {
+class LLConverter_base {
     protected:
         // data
         use_prop_t use;
@@ -14,9 +15,9 @@ class Converter_base {
         LLIR::node_ret_t lexer_code_access_var;
 
     public:
-        Converter_base(LLIR &ir, Tree &tree) : lexer_code(tree.getRawTree()) {
+        LLConverter_base(LLIR &ir, Tree &tree) : lexer_code(tree.getRawTree()) {
             auto use_places = tree.getUsePlacesTable();
-            auto lc = tree.getCodeForLexer(use_places, ir);
+            auto lc = tree.getCodeForLexer(use_places);
             auto [tokens, rules] = tree.getTokenAndRuleNames();
             auto [data_block_tokens, data_block_rules] = tree.get_data_blocks(ir);
             this->tokens = tokens;
@@ -29,4 +30,20 @@ class Converter_base {
             this->data = std::move(ir.getDataRef());
         }
         virtual void outputIR(std::string filename) = 0;
+};
+class LRConverter_base {
+    protected:
+        // data
+        use_prop_t use;
+        LRParser data;        
+        LLIR lexer_code;
+        Tree* tree;
+    public:
+        LRConverter_base(LRParser &data, Tree &tree) : lexer_code(tree.getRawTree()), data(data), tree(&tree) {
+            auto use_places = tree.getUsePlacesTable();
+            auto lc = tree.getCodeForLexer(use_places);
+            this->lexer_code = std::move(lc.code);
+            this->use = tree.accamulate_use_data_to_map();
+        }
+        virtual void output(std::string filename) = 0;
 };

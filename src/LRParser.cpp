@@ -1,12 +1,98 @@
 #include <LRParser.h>
+static size_t compute_group_length(const std::vector<Parser::Rule> &group) {
+    size_t count = 0;
+    for (auto &rule_rule : group) {
+        Parser::Rule quantifier;
+        auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
+        if (rule.name == Parser::Rules::Rule_group && !quantifier.data.has_value()) {
+            auto val = Tokens::getValueFromGroup(rule);
+            count += compute_group_length(val);
+        } else count++;
+    }
+    return count;
+};
+auto LRParser::getActionTable() const -> const ActionTable& {
+    return action_table;
+}
+auto LRParser::getGotoTable() const -> const GotoTable& {
+    return goto_table;
+}
+auto LRParser::getRulesTable() const -> const Rules& {
+    return rules;
+}
+auto LRParser::getMaxStatesCount() const -> size_t {
+    size_t max_state = 0;
+    for (const auto& [state, _] : action_table) {
+        max_state = std::max(max_state, state);
+    }
+    return max_state;
+}
+auto LRParser::getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const -> void {
+    for (auto el : tree) {
+        if (el.name != Parser::Rules::Rule)
+            continue;
 
+        auto data = std::any_cast<obj_t>(el.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
+        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+        fullname.push_back(name_str);
+        if (corelib::text::isUpper(name_str)) {
+            names.push_back(fullname);
+        }
+        fullname.pop_back();
+    }
+}
+auto LRParser::getTerminalNames() const ->  std::vector<std::vector<std::string>> {
+    std::vector<std::vector<std::string>> names;
+    std::vector<std::string> fullname;
+    getTerminalNames(tree->getRawTree(), names, fullname);
+    return names;
+}
+auto LRParser::getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const -> void {
+    for (auto el : tree) {
+        if (el.name != Parser::Rules::Rule)
+            continue;
+
+        auto data = std::any_cast<obj_t>(el.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
+        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+        fullname.push_back(name_str);
+        if (corelib::text::isLower(name_str)) {
+            names.push_back(fullname);
+        }
+        fullname.pop_back();
+    }
+}
+auto LRParser::getNonTerminalNames() const ->  std::vector<std::vector<std::string>> {
+    std::vector<std::vector<std::string>> names;
+    std::vector<std::string> fullname;
+    getTerminalNames(tree->getRawTree(), names, fullname);
+    return names;
+}
+auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
+    switch (type) {
+        case Action_type::SHIFT:
+            return "SHIFT";
+        case Action_type::REDUCE:
+            return "REDUCE";
+        case Action_type::ERROR:
+            return "ERROR";
+        case Action_type::ACCEPT:
+            return "ACCEPT";
+    }
+    throw Error("Undefined action type");
+}
 void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements) {
     for (size_t i = 0; i < rules.size(); i++) {
         auto &rule_rule = rules[i];
         Parser::Rule quantifier;
         char quantifier_char = '\0';
         auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
-        if (!quantifier.empty()) {
+        if (quantifier.data.has_value()) {
             quantifier_char = std::any_cast<char>(quantifier.data);
         }
 
@@ -25,6 +111,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
 
             if (quantifier_char == '\0') {
                 // Replace current rule with expanded group
+                cpuf::printf("inlining group\n");
                 rules.erase(rules.begin() + i);
                 rules.insert(rules.begin() + i, val.begin(), val.end());
                 i += val.size() - 2;
@@ -101,36 +188,79 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         case Parser::Rules::Rule_op:
         {
             cpuf::printf("Replacing rule_op\n");
+        
             auto val = std::any_cast<std::vector<Parser::Rule>>(rule.data);
-            transform_helper(tree, val, fullname, replacements); // process internal ops/groups
-
+        
             std::string push_name;
-            auto val_it = val.begin();
-
+            std::vector<Parser::Rule>::iterator val_it;
+            std::vector<std::pair<size_t, size_t>> group_pos = {};
+            size_t _count = 0;
             if (rules.size() == 1) {
-                rules[i] = val[0];
-                val_it++;
+                size_t count = 0;
+                bool is_first_group = false;
+        
+                for (auto rule_rule : val) {
+                    Parser::Rule quantifier;
+                    auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
+                    if (rule.name == Parser::Rules::Rule_group && quantifier.empty()) {
+                        if (count == 0)
+                            is_first_group = true;
+        
+                        auto group_val = Tokens::getValueFromGroup(rule);
+                        auto len = compute_group_length(group_val);
+                        group_pos.push_back({count, len});
+                        count += len;
+                        continue;
+                    }
+                    count++;
+                }        
+                transform_helper(tree, val, fullname, replacements); // process internal ops/groups
+                val_it = val.begin();
+                if (is_first_group) {
+                    auto [pos, len] = group_pos[0];
+                    group_pos.erase(group_pos.begin());
+        
+                    rules.erase(rules.begin() + i);
+        
+                    for (int j = 0; j < len; j++, val_it++, _count++) {
+                        rules.insert(rules.begin() + i + j, *val_it);
+                    }
+                } else {
+                    rules[i] = val[0];
+                    val_it++;
+                }
+        
                 push_name = fullname.back();
             } else {
                 push_name = "__rop" + std::to_string(i);
                 auto new_fullname = fullname;
                 new_fullname.back() = push_name;
+                
                 rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                     {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {push_name, new_fullname, true})},
                     {"qualifier", Parser::Rule()}
                 });
-                cpuf::printf("Unrolling to subrule, new_name: %s\n", push_name.c_str());
+        
+                transform_helper(tree, val, fullname, replacements); // process internal ops/groups
+                val_it = val.begin();
             }
-
-            for (; val_it != val.end(); val_it++) {
+            for (; val_it != val.end(); val_it++, _count++) {
+                auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<size_t, size_t> &unit) {return unit.first == _count;});
+                std::vector<Parser::Rule> values;
+                if (group != group_pos.end()) {
+                    for (size_t i = 0; i < group->second && val_it != val.end(); i++, _count++, val_it++) {
+                        values.push_back(*val_it);
+                    }
+                    val_it--;
+                } else values.push_back(*val_it);
                 tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                     {"name", Tokens::make_rule(Parser::Rules::Rule_other, push_name)},
-                    {"rule", std::vector<Parser::Rule>{ *val_it }},
+                    {"rule", values},
                     {"nestedRules", std::vector<Parser::Rule>{}}
                 }));
             }
             continue;
-        }
+        }        
         default:
             break;
         }
@@ -275,11 +405,47 @@ void LRParser::transform(Parser::Tree &tree, std::vector<std::string> &fullname,
         fullname.pop_back();
     }
 }
+// void LRParser::debug(Parser::Tree &tree, std::vector<std::string> &fullname) {
+//     size_t size = tree.size();
+//     for (size_t i = 0; i < size; i++) {
+//         auto &member = tree[i];
+//         if (member.name != Parser::Rules::Rule)
+//             continue;
+//         if (!member.data.has_value()) {
+//             continue;
+//         }
+//         auto data = std::any_cast<obj_t&>(member.data);
+//         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+//         auto name_str = std::any_cast<std::string>(name.data);
+//         auto rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "rule"));
+//         auto nested_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "nestedRules"));
+//         // do not include tokens
+//         if (corelib::text::isUpper(name_str))
+//             continue;
+//         fullname.push_back(name_str);
+//         cpuf::printf("%$: ", fullname);
+//         for (auto rule_rule : rules) {
+//             if (!rule_rule.data.has_value())
+//                 continue;
+//             auto rule = Tokens::getValueFromRule_rule(rule_rule);
+//             if (rule.name != Parser::Rules::Rule_other) {
+//                 cpuf::printf("<%s>", Parser::RulesToString(rule_rule.name));
+//                 continue;
+//             }
+//             auto ro = std::any_cast<rule_other>(rule.data);
+//             cpuf::printf("%$ ", ro.fullname);
+//         }
+//         cpuf::printf("\n");
+//         debug(nested_rules, fullname);
+//         fullname.pop_back();
+//     }
+// }
 void LRParser::transform() {
     tree->removeEmptyRule();
     std::vector<std::string> fullname;
     std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> replacements;
     transform(tree->getRawTree(), fullname, replacements);
+    // debug(tree->getRawTree(), fullname);
 }
 
 void LRParser::addAugmentedRule() {
@@ -335,38 +501,55 @@ LRParser::InitialItemSet LRParser::construct_initial_item_set() {
     construct_initial_item_set(tree->getRawTree(), initial_item_set, fullname);
     return initial_item_set;
 }
-std::set<std::vector<std::string>> LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& options, std::set<std::vector<std::string>> &visited) {
-    std::set<std::vector<std::string>> result;
-    for (auto &option : options) {
-        if (option.empty()) {
-            result.insert({"ε"});
-            continue;
-        }
-        for (auto rule : option) {
-            if (visited.count(rule.fullname))
-                continue;
-            visited.insert(rule.fullname);
-            if (corelib::text::isUpper(rule.name)) {
-                result.insert(rule.fullname);
-            } else {
-                auto res = constructFirstSet(initial_item_set[rule.fullname], visited);
-                result.insert(res.begin(), res.end());
-                if (res.count({"ε"}))
-                    continue;
-            }
-            break;
-        }
+void LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& options) {
 
+    // Start with an initial assumption: all First sets are empty
+    for (auto &option : options) {
+        for (auto rule : option) {
+            first[rule.fullname] = {};  // Initialize empty set for each rule
+        }
     }
-    return result;
+
+    bool changed;
+
+    // Continue until no changes occur in the First sets
+    do {
+        changed = false;
+
+        for (auto &option : options) {
+            for (auto &rule : option) {
+                auto &firstSetForRule = first[rule.fullname];
+
+                if (corelib::text::isUpper(rule.name)) {
+                    // Non-terminal: expand its First set
+                    auto &nextSet = first[rule.fullname]; // First set of the current rule
+                    size_t initialSize = firstSetForRule.size();
+
+                    // Recursively add First set of the rule
+                    firstSetForRule.insert(nextSet.begin(), nextSet.end());
+
+                    // If the set size changed, mark that we need another iteration
+                    if (firstSetForRule.size() > initialSize) {
+                        changed = true;
+                    }
+                } else {
+                    // Terminal: directly add to the First set
+                    if (firstSetForRule.find(rule.fullname) == firstSetForRule.end()) {
+                        firstSetForRule.insert(rule.fullname); // Add terminal
+                        changed = true;
+                    }
+                }
+            }
+        }
+    } while (changed);
 }
 
 void LRParser::constructFirstSet() {
-    std::set<std::vector<std::string>> visited;
+    // Assuming initial_item_set is properly structured
     for (auto &el : initial_item_set) {
         auto name = el.first;
         auto itemSet = el.second;
-        first[name] = constructFirstSet(itemSet, visited);
+        constructFirstSet(itemSet);  // Recurse through all initial items
     }
 }
 void LRParser::constructFollowSet() {
@@ -423,7 +606,6 @@ void LRParser::constructFollowSet() {
 void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name) {
     for (const auto& rhs_group : item) {
         CanonicalEl new_item;
-
         // Create LHS rule_other
         rule_other lhs;
         lhs.name = lhs_name.back();  // Use last component as rule name
@@ -554,9 +736,20 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     }
 
     // Step 4: If not, add it (only do this if building dynamically — otherwise error)
-    throw std::runtime_error("GOTO leads to non-existent state. Should be precomputed.");
+    throw Error("GOTO leads to non-existent state. Should be precomputed.");
 }
-
+std::vector<std::string> LRParser::getLookaheadToken(const CanonicalEl& rule) {
+    // Get the lookahead token after the dot
+    if (rule.dot_pos < rule.rhs.size()) {
+        const auto& next = rule.rhs[rule.dot_pos];
+        if (corelib::text::isLower(next.name)) {
+            // If it’s a terminal symbol
+            return next.fullname;
+        }
+    }
+    // If no valid lookahead token, return a default (e.g., "$")
+    return {"$"};
+}
 void LRParser::build() {
     addAugmentedRule();
     initial_item_set = construct_initial_item_set();
@@ -564,8 +757,8 @@ void LRParser::build() {
     rule_index = 0;
     constructFirstSet();
     constructFollowSet();
-    auto [tokens, rules] = tree->getTokenAndRuleNames();
     size_t I = 0;
+
     for (const auto& item_set : canonical_item_set) {
         for (const auto& rule : item_set) {
             // Dot is at the end → Reduce or Accept
@@ -578,18 +771,37 @@ void LRParser::build() {
                 }
 
                 // Reduce: only insert reduce if no conflicting shift action exists
-                for (const auto& follow_token : follow[rule.lhs.fullname]) {
-                    // Only insert reduce if no SHIFT action is already present
-                    auto key = corelib::text::join(follow_token, "_");
-                    if (action_table[I].count(key) == 0) {
-                        action_table[I][key] = Action{Action_type::REDUCE, rule.rule_index};
-                    } else {
-                        // Shift/Reduce conflict warning (can be logged or handled)
-                        const auto& existing = action_table[I][key];
-                        if (existing.type == Action_type::SHIFT) {
-                            // Optional: log shift/reduce conflict for diagnostics
-                            cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, follow_token);
+                // Use the lookahead token for LR(1)
+                auto lookahead = getLookaheadToken(rule); // Define a function to get the lookahead token
+                auto key = corelib::text::join(lookahead, "_");
+                size_t reduce_index = 0;
+                if (action_table[I].count(key) == 0) {
+                    // No existing shift, safe to reduce
+                    auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
+                        if (rule.lhs.fullname != el.first)
+                            return false;
+                        auto &rhs = el.second.second;
+                        if (rhs.size() != rule.rhs.size())
+                            return false;
+                        for (size_t i = 0; i < rhs.size(); i++) {
+                            if (rhs[i].fullname != rule.rhs[i].fullname) 
+                                return false;
                         }
+                        return true;
+                    });
+                    if (found_rhs != rules.end()) {
+                        reduce_index = found_rhs - rules.begin();
+                    } else {
+                        rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
+                        reduce_index = rules.size() - 1;
+                    }
+                    action_table[I][key] = Action{Action_type::REDUCE, reduce_index};
+                } else {
+                    // Shift/Reduce conflict warning (can be logged or handled)
+                    const auto& existing = action_table[I][key];
+                    if (existing.type == Action_type::SHIFT) {
+                        // Conflict resolution (log or handle)
+                        cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
                     }
                 }
             }
@@ -619,6 +831,7 @@ void LRParser::build() {
         I++;
     }
 }
+
 void LRParser::formatFirstOrFollowSet(std::ostringstream &oss, First &set) {
     for (auto &el : set) {
         oss << corelib::text::join(el.first, "_") << ": " << '{';
@@ -655,6 +868,23 @@ void LRParser::printFollowSet(const std::string &fileName) {
         outFile.close();
     } else {
         std::cerr << "Failed to open the file for writing: " << fileName << "\n";
+    }
+}
+void LRParser::formatRulesTable(std::ostringstream& oss) {
+    oss << "Rules:\n";
+    for (const auto& rule : rules) {
+        const auto& rule_name_parts = rule.first;
+        const auto& lhs = corelib::text::join(rule_name_parts, "_");
+
+        const size_t rule_index = rule.second.first;
+        const auto& body = rule.second.second;
+
+        oss << '\t' << rule_index << ": " << lhs << " → ";
+
+        for (const auto& token : body) {
+            oss << corelib::text::join(token.fullname, "_") << " ";
+        }
+        oss << '\n';
     }
 }
 void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
@@ -795,9 +1025,11 @@ void LRParser::printTables(const std::string& filename) {
     // Format the Action Table and Goto Table
     std::string action_table_str = formatActionTable();
     std::string goto_table_str = formatGotoTable();
+    std::ostringstream out;
+    formatRulesTable(out);
 
     // Write both tables to the file
-    out_file << action_table_str << "\n" << goto_table_str;
+    out_file << action_table_str << "\n" << goto_table_str << "\n" << out.str();
 
     out_file.close();
 }

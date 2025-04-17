@@ -264,6 +264,7 @@ struct error {
     std::size_t column;
     std::string message;
 };
+
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
 class Lexer_base {
@@ -329,6 +330,13 @@ protected:
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
 public:
+    /**
+     * A lazy iterator (accamulates only tokens that currently are accessed).
+     * Be aware it acts independently of the lexer class and may cause additional overhead.
+     * It does not save tokens for Lexer_base::iterator
+     */
+    class lazy_iterator;
+    class iterator;
     /**
      * Get one token
      */
@@ -491,36 +499,108 @@ public:
         return tokens != tokenizator.tokens;
     }
 };
-
+template<class TOKEN_T>
+class Lexer_base<TOKEN_T>::lazy_iterator {
+    Lexer_base<TOKEN_T>* owner = nullptr;
+    std::deque<node<TOKEN_T>> tokens;
+    const char* pos = nullptr;
+    size_t counter = 0;
+    public:
+        lazy_iterator(Lexer_base<TOKEN_T> *owner, const char* in) : owner(owner), pos(in) {}
+        void operator=(lazy_iterator iterator) {
+            // add only first token that currently may be accessed
+            // ommit others
+            tokens.push_back(iterator.tokens[0]);
+            pos = iterator.pos;
+            counter = iterator.counter;
+        }
+        void operator+=(size_t count) {
+            tokens.erase(tokens.begin() + count);
+            counter += count;
+        }
+        auto operator-(lazy_iterator iterator) {
+            return counter - iterator.counter;
+        }
+        node<TOKEN_T>& operator*() {
+            if (tokens.empty())
+                tokens.push_back(owner->makeToken(pos));
+            return tokens[0];
+        }    
+        lazy_iterator& operator++() {
+            this->operator+=(1);
+            return *this;
+        }
+        node<TOKEN_T>* operator->() {
+            if (tokens.empty())
+                tokens.push_back(owner->makeToken(pos));
+            return &tokens[0];
+        }
+        auto getCounter() {
+            return counter;
+        }
+};
+/**
+ * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
+ * If you need to iterate through tokens after parsing, first accamulate tokens, then run parsing.
+ */
+template<class TOKEN_T>
+class Lexer_base<TOKEN_T>::iterator {
+    Lexer_base<TOKEN_T>* owner = nullptr;
+    const char* pos;
+    const char* in;
+    public:
+        iterator(Lexer_base<TOKEN_T> *owner, const char* in) : owner(owner), pos(in), in(in) {}
+        void operator=(iterator iterator) {
+            pos = iterator.pos;
+        }
+        void operator+=(size_t count) {
+            pos += count;
+        }
+        auto operator-(iterator iterator) {
+            return pos - iterator.pos;
+        }
+        node<TOKEN_T> operator*() {
+            return owner->tokens[0];
+        }    
+        lazy_iterator& operator++() {
+            this->operator+=(1);
+            return *this;
+        }
+        node<TOKEN_T>* operator->() {
+            return &owner->tokens[0];
+        }
+        auto distance() {
+            return pos - in;
+        }
+};
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
 class Parser_base {
 private:
-
-    void parseFromTokens() {
-        pos = tokens->begin();
+    template<class T>
+    void parseFromPos(T& pos) {
         while(pos != tokens->end()) {
-            auto res = getRule();
+            auto res = getRule(pos);
             if (!res.status) {
                 // if (!error_controller.empty())
                 //     errors.push_back(error_controller.begin()->second);
                 for (auto el : error_controller) {
-                    printf("Parser: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
+                    printf("Parser[error controller]: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
                 }
                 break;
             } else {
                 tree.push_back(res.node);
-                std::advance(pos, res.node.length());
+                pos += res.node.length();
             }
             error_controller.clear();
         }
     }
 protected:
     TokenFlow<TOKEN_T>* tokens = nullptr;
+    const char* text = nullptr;
     Tree<RULE_T> tree;
     std::vector<error> errors;
     ErrorController error_controller;
-    typename TokenFlow<TOKEN_T>::iterator pos;
     // skip spaces for tokens
     template <typename Iterator, typename Tokens>
     size_t skip_spaces(Iterator& pos) {
@@ -530,53 +610,64 @@ protected:
         
         return std::distance(prev, pos);
     }
-    void reportError(typename TokenFlow<TOKEN_T>::iterator pos, std::string msg) {
-        if (error_controller.count(pos - tokens->begin()) == 0)
-            error_controller[pos - tokens->begin()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
+    void reportError(typename Lexer_base<TOKEN_T>::lazy_iterator pos, std::string msg) {
+        if (error_controller.count(pos.getCounter()) == 0)
+            error_controller[pos.getCounter()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
+    }
+    void reportError(typename Lexer_base<TOKEN_T>::iterator pos, std::string msg) {
+        if (error_controller.count(pos.distance()) == 0)
+            error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
 public:
     /**
      * @brief Your parsed Tree. The Tree is std::vector. 
      * 
      */
-    virtual match_result<RULE_T> getRule() = 0;
+    virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
+    virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
+    virtual void parseFromTokens();
+    virtual void lazyParse();
     // Constructors
     Parser_base() {}
     Parser_base(const Lexer_base<TOKEN_T>& lexer) {
-        if (lexer.hasTokenFlow()) {
+        if (lexer.hasTokens())
             tokens = &lexer.tokens;
-        } else if (lexer.hasInput()) {
-            tokens = &lexer.makeTokens();
-        } else {
-            throw Lexer_No_Tokens_exception();
-        }
     }
     Parser_base(const TokenFlow<TOKEN_T>& tokens) {
-        this->tokens = tokens; 
+        if (!tokens.empty())
+            this->tokens = tokens; 
     }
+    Parser_base(const char* text) : text(text) {}
     // Parsing methods
     Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {
             tokens = &lexer.getTokensReference();
-        } else if (lexer.hasInput()) {
-            tokens = &lexer.makeTokens();
-        } else {
-            throw Lexer_No_Tokens_exception();
         }
         return parse();
     }
     Tree<RULE_T>& parse(TokenFlow<TOKEN_T>& tokens) {
-        this->tokens = &tokens;
+        if (!tokens.empty())
+            this->tokens = &tokens;
+        return parse();
+    }
+    Tree<RULE_T>& parse(const char* text) {
+        this->text = text;
         return parse();
     }
     void setInput(Lexer_base<TOKEN_T> &lexer) {
-        tokens = &lexer.getTokensReference();
+        if (!lexer.hasTokens())
+            tokens = &lexer.getTokensReference();
     }
     void setInput(TokenFlow<TOKEN_T>& tokens) {
-        this->tokens = &tokens;
+        if (!tokens.empty())
+            this->tokens = &tokens;
+    }
+    void setInput(const char* text) {
+        this->text = text;
     }
     void clearInput() {
         tokens = nullptr;
+        text = nullptr;
     }
     auto getErrors() {
         return errors;
@@ -589,7 +680,9 @@ public:
     Tree<RULE_T>& parse() {
         if (tokens != nullptr)
             parseFromTokens();
-        else
+        else if (text != nullptr)
+            lazyParse();
+        else 
             throw Parser_No_Input_exception();
         return tree;
     }

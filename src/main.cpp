@@ -3,10 +3,6 @@ void printHelp() {
     cpuf::printf(R"(
 usage: 
     [parameters] [individual files]
-    Generally you can pass in --dir parameter to make the program parse every file in specified directory.
-    Every parameter not being an argument is considered individual file to be parsed.
-    %sNote that parameters with one '-' considered without arguments, and with -- considered with arguments%s
-
     -help show this help message
     -version show version
     --dir specify the directories where to locate sources
@@ -18,10 +14,11 @@ std::forward_list<const char*> parameters_required {
     "lang"
 };
 std::forward_list<const char*> parameters_with_arguments {
-    "lang"
+    "lang", "a"
 };
 std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
-    { "lang", 1 }
+    { "lang", 1 },
+    { "a", 1 }
 };
 // void printData(const char* data, int tabs);
 // void printData(const std::string data, int tabs);
@@ -32,23 +29,17 @@ int main(int argc, char** argv) {
     Parser::Tree rawTree;
     init();
     Args args(argc, argv);
+    args.parse();
 
     // Register listener for --help
-    args.on("help", [](Arg&) {
+    if (args.has("help")) {
         printHelp();
-        exit(0);
-    });
-    args.on("help-lang", [](Arg&) {
-        cpuf::printf(R"(
-        "cpp" - C++
-        )");
-        cpuf::printf("\n");
-    });
-    args.on("version", [](Arg&) {
+        return 0;
+    }
+    if (args.has("version")) {
         cpuf::printf("%$\n", PROGRAM_VERSION);
-        exit(0);
-    });
-    args.parse();
+        return 0;
+    }
     // throw error if required argument missing or not having parameters
     for (auto& el : parameters_required) {
         if (!args.has(el))
@@ -102,29 +93,37 @@ int main(int argc, char** argv) {
     Tree tree(std::move(rawTree));
     //tree.resolveConflicts();
     auto use = tree.accamulate_use_data_to_map();
+    dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    cpuf::printf("type: %s\n", use["name"].data.type().name());
+    auto name = std::any_cast<std::string>(use["name"].data);
+    if (!args.get("a").empty() && args.get("a").values[0] == "LR") {
+        LRParser LRIR(tree);
+        LRIR.transform();
+        LRIR.build();
+        LRIR.printTables("tables");
+        LRIR.printCanonicalCollection("canonical_collection.txt");
+        LRIR.printFirstSet("first_set.txt");
+        LRIR.printFollowSet("follow_set.txt");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
+        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
+        converter->output(name);
+    } else {
+        LLIR ir(tree.getRawTree());
+        ir.makeIR();
+        ir.optimizeIR();
+        // Output to file
+        ir.outputIRToFile("output_ir.txt");
+        /*
+            CONVERTION IS GOING HERE
+    
+        */
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR&, Tree&>("getLLConverter");
+        auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
+        converter->outputIR(name);
+    
+        // IR test
+    }
 
-    // // convert tree into IR
-    // IR ir(tree.getRawTree());
-    // ir.makeIR();
-    // ir.optimizeIR();
-    // // Output to file
-    // ir.outputIRToFile("output_ir.txt");
-    // /*
-    //     CONVERTION IS GOING HERE
 
-    // */
-    // dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    // auto converter_fun = converter_dlib.loadfun<Converter_base*, IR&, Tree&>("getConverter");
-    // auto converter = std::unique_ptr<Converter_base>(converter_fun(ir, tree));
-    // converter->outputIR(std::any_cast<std::string>(use["name"].data));
-
-    // IR test
-    LRParser ir(tree);
-    ir.transform();
-    ir.build();
-    ir.printTables("tables");
-    ir.printCanonicalCollection("canonical_collection");
-    ir.printFirstSet("first_set");
-    ir.printFollowSet("follow_set");
     return 0;
 }

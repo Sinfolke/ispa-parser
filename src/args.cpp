@@ -1,103 +1,90 @@
 #include <args.h>
-ND bool Arg::empty() const {
-    return prefix == nullptr;
+#include <cstring>
+
+bool Arg::empty() const {
+    return values.empty() && !isBool;
 }
-ND bool Arg::isBool() const {
-    return values.empty();
-}
-void Arg::clear() {
-    prefix = nullptr;
-    values.clear();
-}
-ND const char* Arg::first() const {
+const std::string& Arg::first() const {
     return values[0];
 }
-ND const char* Arg::_0() const {
+const std::string& Arg::_0() const {
     return values[0];
 }
-ND const char* Arg::last() const {
+const std::string& Arg::last() const {
     return values.back();
 }
-ND const char* Arg::operator[](const int v) const {
+const std::string& Arg::operator[](int v) const {
     return values[v];
 }
-
+auto Args::begin() -> std::unordered_map<std::string, Arg>::iterator {
+    return args.begin();
+}
+auto Args::end() -> std::unordered_map<std::string, Arg>::iterator {
+    return args.end();
+}
 void Args::init(int argc, char** argv) {
 #ifdef _WIN32
-    // windows does also provide the executable execute name/path
     argc--;
     argv++;
 #endif
     this->argc = argc;
     this->argv = argv;
+}
 
-}
-void Args::on(const char* prefix, const std::function<void(Arg&)>& func) 
-{
-    listeners[prefix] = func;
-}
 void Args::parse() {
-        Arg currentArg;
-        bool hasArguments = false;
-        for (int i = 1; i < argc; ++i) { // Start from 1 to skip program name
-            const char* current = argv[i];
-            if (current[0] == '-') { // Prefix found
-                if (!currentArg.empty()) {
-                    args.push_back(currentArg);
-                    currentArg.clear();
-                }
-                if (current[1] == '-') {
-                    hasArguments = true;
-                    currentArg.prefix = &current[2];
+    if (!args.empty())
+        throw Error("Already parsed arguments");
+    _unnamed.clear();
+
+    std::string currentPrefix;
+    for (int i = 1; i < argc; ++i) {
+        std::string current(argv[i]);
+
+        if (!current.empty() && current[0] == '-') {
+            // It's a new named argument
+            if (current.size() > 1 && current[1] == '-') {
+                currentPrefix = current.substr(2);
+            } else {
+                currentPrefix = current.substr(1);
+            }
+
+            // Look ahead for a value
+            if ((i + 1) < argc) {
+                std::string next(argv[i + 1]);
+                if (!next.empty() && next[0] != '-') {
+                    if (next.front() == '"' && next.back() == '"' && next.length() > 1) {
+                        next = next.substr(1, next.length() - 2);
+                    }
+                    args[currentPrefix].values.push_back(next);
+                    ++i; // Consume the value
                 } else {
-                    hasArguments = false;
-                    currentArg.prefix = &current[1];
+                    args[currentPrefix].isBool = true; // Register a bool-style argument
                 }
             } else {
-                if (!hasArguments || currentArg.empty()) {
-                    _unnamed.push_back(current);
-                } else {
-                    currentArg.values.push_back(current);
-                }
+                args[currentPrefix].isBool = true; // Register a bool-style argument
             }
-        }
-        if (!currentArg.empty()) {
-            args.push_back(currentArg);
-        }
-        invokeListeners();
-    }
-ND bool Args::has(const char* prefix)
-{
-    for (auto& arg : args) {
-        if (!strcmp(arg.prefix, prefix)) {
-            return true;
+
+        } else {
+            // This is an unnamed value
+            _unnamed.push_back(current);
         }
     }
-    return false;
 }
-ND Arg Args::get(const char* prefix)
-{
-    for (auto& arg : args) {
-        if (!strcmp(arg.prefix, prefix)) {
-            return arg;
-        }
-    }
-    return {};
+
+bool Args::has(const std::string& prefix) {
+    return args.count(prefix);
 }
-ND Arg& Args::operator[](const int& id) {
-    if (args.size() < id)
-        throw std::out_of_range("Args::operator[]: out of range");
-    return args[id];
+
+Arg &Args::get(const std::string& prefix) {
+    auto f = args.find(prefix);
+    
+    return args[prefix];
 }
-ND std::vector<const char*> Args::unnamed(void) {
+
+Arg &Args::operator[](const std::string& prefix) {
+    return args[prefix];
+}
+
+std::vector<std::string> Args::unnamed() {
     return _unnamed;
-};
-void Args::invokeListeners()
-{
-    for (auto& arg : args) {
-        auto it = listeners.find(arg.prefix);
-        if (it != listeners.end()) {
-            it->second(arg);
-        }
-    }
 }

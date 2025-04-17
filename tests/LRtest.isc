@@ -1,3 +1,4 @@
+use name: "Expr_parser";
 main: term+ '+' term+;
 term: (term '*' term) | NUMBER;
 NUMBER: [0-9]+;

@@ -50,16 +50,20 @@ void Tree::getReplacedTree(std::vector<Parser::Rule> &rules, std::string name) {
 }
 
 // Function to replace all duplicate tokens in the parse tree
-void Tree::replaceDublicationsHelper(Parser::Tree &tree) {
+void Tree::replaceDublicationsHelper(Parser::Tree &tree, bool global) {
     for (auto& member : tree) {
         if (member.name == Parser::Rules::Rule) {
             auto data = std::any_cast<obj_t>(member.data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
             auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-            replaceDublicationsHelper(nested_rules);
+            if (name_str == "main" && global) {
+                continue;
+            }
+            replaceDublicationsHelper(nested_rules, false);
             // Get replaced tree and update the member's rules
-            getReplacedTree(rules, std::any_cast<std::string>(name.data));
+            getReplacedTree(rules, name_str);
             corelib::map::set(data, "rule", std::any(rules));
             corelib::map::set(data, "nestedRules", std::any(nested_rules));
             member.data = data;
@@ -104,9 +108,13 @@ void Tree::accumulateInlineNamesAndRemove(Parser::Tree& tree,
             auto data = std::any_cast<obj_t>(member.data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
             auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-
-            nested.push_back(std::any_cast<std::string>(name.data));
+            if (nested.size() == 0 && name_str == "main") {
+                it++;
+                continue;
+            }
+            nested.push_back(name_str);
 
             if (rules.size() == 1) {
                 auto first = rules[0];
@@ -231,9 +239,12 @@ void Tree::inlineTokensHelper(Parser::Tree &tree, const std::vector<std::vector<
             auto data = std::any_cast<obj_t>(member.data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+            auto name_str = std::any_cast<std::string>(name.data);
             auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
             //cpuf::printf("Rule: %s\n", std::any_cast<std::string>(name.data));
-            nested.push_back(std::any_cast<std::string>(name.data));
+            nested.push_back(name_str);
+            if (name_str == "main" && nested.size() == 1)
+                continue;
             inline_Rule_rule(rules, table_key, table_value, nested);
             inlineTokensHelper(nested_rules, table_key, table_value, nested);
             nested.pop_back();
@@ -692,6 +703,8 @@ use_prop_t Tree::accamulate_use_data_to_map() {
 }
 void Tree::accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &use_places, std::vector<std::string> &fullname) {
     for (auto &el : rules) {
+        if (!el.data.has_value())
+            continue;
         auto dt = std::any_cast<obj_t>(el.data);
         auto val = std::any_cast<Parser::Rule>(corelib::map::get(dt, "val"));
         if (val.name == Parser::Rules::Rule_other) {
@@ -757,41 +770,49 @@ std::pair<data_block_t, data_block_t> Tree::get_data_blocks(const LLIR &ir) {
     return {datablocks_tokens, datablocks_rules};
 }
 
-
-lexer_code Tree::getCodeForLexer(use_place_t use_places, const LLIR &ir) {
-    std::vector<Parser::Rule> rule_op;
-    for (auto &el : ir.getData()) {
-        if (el.type == LLIR::types::TOKEN) {
-            auto name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(el.value);
-            if (name.second.size() > 1) { // this is nested rule
-                auto data_in_use_place = std::find_if(use_places.begin(), use_places.end(), [&name](use_place_t_part &part) {
-                    return part.first == name.second;
-                });
-                if (data_in_use_place != use_places.end()) {
-                    bool add = false;
-                    for (auto &fullname : data_in_use_place->second) {
-                        if (corelib::text::isLower(fullname.back())) {
-                            add = true;
-                            break;
-                        }
+void Tree::getTokensForLexer(Parser::Tree &tree, use_place_t use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname) {
+    for (auto &member : tree) {
+        if (member.name != Parser::Rules::Rule) 
+            continue;
+        auto data = std::any_cast<obj_t>(member.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
+        fullname.push_back(name_str);
+        if (fullname.size() != 1) {
+            auto data_in_use_place = std::find_if(use_places.begin(), use_places.end(), [&fullname](use_place_t_part &part) {
+                return part.first == fullname;
+            });
+            if (data_in_use_place != use_places.end()) {
+                bool add = false;
+                for (auto &fullname : data_in_use_place->second) {
+                    if (corelib::text::isLower(fullname.back())) {
+                        add = true;
+                        break;
                     }
-                    if (!add)
-                        continue;
-                } else {
-                    cpuf::printf("could not find data for %$\n", name.second);
                 }
+                if (!add)
+                    continue;
+            } else {
+                cpuf::printf("could not find data for %$\n", fullname);
             }
 
             // if not found fall back to add the token
-            auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other {name.first, name.second});
+            auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other {name_str, fullname});
             auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
                 {"val", _rule_other},
                 {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
             });
             rule_op.push_back(rule_rule);
         }
-
+        getTokensForLexer(nested_rules, use_places, rule_op, fullname);
+        fullname.pop_back();
     }
+}
+lexer_code Tree::getCodeForLexer(use_place_t use_places) {
+    std::vector<Parser::Rule> rule_op;
+    std::vector<std::string> fullname;
+    getTokensForLexer(tree, use_places, rule_op, fullname);
     auto rule_op_rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
         {"val", Tokens::make_rule(Parser::Rules::Rule_op, rule_op)},
         {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}

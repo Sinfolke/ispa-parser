@@ -23,7 +23,7 @@ class Tree {
         void normalizeTreeHelper(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
         // replace dublications functions
         void getReplacedTree(std::vector<Parser::Rule>& rules, std::string name);
-        void replaceDublicationsHelper(Parser::Tree &tree);
+        void replaceDublicationsHelper(Parser::Tree &tree, bool global = true);
         void removeEmptyRule(Parser::Tree &tree);
         // inline tokens functions
         void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::vector<std::vector<std::string>>& table_key, std::vector<Parser::Rule>& table_value, std::vector<std::string> nested);
@@ -48,7 +48,7 @@ class Tree {
         std::pair<std::vector<std::string>, std::vector<std::string>> getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::string nested_name);
         use_prop_t get_use_data(const Parser::Rule &use);
         void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &use_places, std::vector<std::string> &fullname);
-        std::vector<Parser::Rule>* getRuleOtherRules(const Parser::Rule &rule);
+        void getTokensForLexer(Parser::Tree &tree, use_place_t use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname);
         void getUsePlacesTableHelper(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> &fullname);
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
@@ -85,6 +85,6 @@ class Tree {
         auto accamulate_use_data_to_map() -> use_prop_t;
         auto getUsePlacesTable() -> use_place_t;
         auto get_data_blocks(const LLIR &ir) -> std::pair<data_block_t, data_block_t>;
-        auto getCodeForLexer(use_place_t use_places, const LLIR &ir) -> lexer_code;
+        auto getCodeForLexer(use_place_t use_places) -> lexer_code;
         void resolveConflicts();
 };

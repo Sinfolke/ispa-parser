@@ -1,0 +1,55 @@
+// Entry point
+use name: "Expr_parser";
+main: expr;
+
+// Expression handles everything
+expr:
+    (expr '+' term)
+  | (expr '-' term)
+  | (expr '||' expr)
+  | (expr '&&' expr)
+  | (expr '==' expr)
+  | (expr '!=' expr)
+  | (expr '<' expr)
+  | (expr '>' expr)
+  | (expr '<=' expr)
+  | (expr '>=' expr)
+  | term
+  | (expr '?' expr ':' expr)
+  | (ID '=' expr)
+  ;
+
+// Term for multiplicative and bit operations
+term:
+    (term '*' power)
+  | (term '/' power)
+  | (term '%' power)
+  | power
+  ;
+
+// Power operator (right-associative)
+power:
+    (factor '^' power)
+  | factor
+  ;
+
+// Factor includes grouping, literals, identifiers, etc.
+factor:
+    ('+' factor)
+  | ('-' factor)
+  | ('!' factor)
+  | ('(' expr ')')
+  | (ID '[' expr ']')
+  | (ID '(' arg_list? ')')
+  | NUMBER
+  | ID
+  ;
+
+// Argument list for function calls
+arg_list:
+    expr (',' expr)*
+  ;
+
+// Lexical rules
+ID: [a-zA-Z_][a-zA-Z0-9_]*;
+NUMBER: [0-9]+;

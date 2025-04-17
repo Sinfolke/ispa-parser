@@ -379,49 +379,7 @@ namespace Parser {
 			Token_res __WHITESPACE(const char*);
 	};
 	class Parser : public ISPA_STD::Parser_base<Tokens, Rules> {
-		private:
-			Rule_res getRule();
-			Rule_res cll(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_if(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_variable(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_function_body_call(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_function_body_decl(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_function_arguments(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_function_parameters(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_cll_function_call(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_function_decl(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_logical(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_compare(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_arithmetic(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_term(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_value(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_expr_group(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_var(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_block(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_loop_while(::Parser::TokenFlow::iterator pos);
-			Rule_res cll_loop_for(::Parser::TokenFlow::iterator pos);
-			Rule_res array(::Parser::TokenFlow::iterator pos);
-			Rule_res object(::Parser::TokenFlow::iterator pos);
-			Rule_res any_data(::Parser::TokenFlow::iterator pos);
-			Rule_res main(::Parser::TokenFlow::iterator pos);
-			Rule_res use(::Parser::TokenFlow::iterator pos);
-			Rule_res use_unit(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_rule(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_name(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_group(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_keyvalue(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_value(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_nested_rule(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_data_block(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_data_block_regular_datablock(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_data_block_regular_datablock_key(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_data_block_templated_datablock(::Parser::TokenFlow::iterator pos);
-			Rule_res Rule_quantifier(::Parser::TokenFlow::iterator pos);
-	};
-
-} // Parser
-
-
-#endif // PARSER
+		Rule_res getRule(Lexer::lazy_iterator&);
+		Rule_res getRule(Lexer::iterator&);
+		void parseFromTokens();
+		void lazyParse();

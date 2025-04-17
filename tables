@@ -1,36 +1,627 @@
 Action Table:
 State Token          Action    Next State
-10    $              REDUCE    12        
-9     $              REDUCE    1         
-8     AUTO_1         SHIFT     1         
-8     NUMBER         SHIFT     2         
-8     AUTO_0         REDUCE    14        
-8     $              REDUCE    14        
-7     AUTO_0         REDUCE    2         
-7     $              REDUCE    2         
-6     AUTO_1         SHIFT     1         
-6     NUMBER         SHIFT     2         
-5     AUTO_1         SHIFT     1         
-5     NUMBER         SHIFT     2         
-5     AUTO_0         REDUCE    4         
+53    AUTO_25        SHIFT     8         
+53    AUTO_12        SHIFT     2         
+53    $              REDUCE    35        
+53    AUTO_0         SHIFT     24        
+53    AUTO_2         SHIFT     25        
+53    AUTO_10        SHIFT     1         
+53    AUTO_7         SHIFT     26        
+53    AUTO_5         SHIFT     10        
+53    AUTO_23        SHIFT     7         
+53    AUTO_3         SHIFT     9         
+53    AUTO_6         SHIFT     11        
+53    AUTO_15        SHIFT     3         
+53    ID             SHIFT     12        
+53    AUTO_22        SHIFT     6         
+53    AUTO_17        SHIFT     4         
+53    AUTO_21        SHIFT     5         
+52    $              REDUCE    34        
+51    AUTO_25        SHIFT     8         
+51    AUTO_12        SHIFT     2         
+51    AUTO_22        SHIFT     6         
+51    AUTO_10        SHIFT     1         
+51    $              REDUCE    0         
+51    AUTO_21        SHIFT     5         
+51    AUTO_17        SHIFT     4         
+51    ID             SHIFT     12        
+51    AUTO_15        SHIFT     3         
+51    AUTO_6         SHIFT     11        
+51    AUTO_23        SHIFT     7         
+51    AUTO_5         SHIFT     10        
+51    AUTO_3         SHIFT     9         
+50    $              REDUCE    33        
+49    $              REDUCE    32        
+48    $              REDUCE    31        
+47    $              REDUCE    30        
+46    AUTO_25        SHIFT     8         
+46    AUTO_10        SHIFT     1         
+46    AUTO_2         SHIFT     25        
+46    AUTO_12        SHIFT     2         
+46    AUTO_0         SHIFT     24        
+46    $              REDUCE    17        
+46    AUTO_7         SHIFT     26        
+46    AUTO_5         SHIFT     10        
+46    AUTO_23        SHIFT     7         
+46    AUTO_3         SHIFT     9         
+46    AUTO_6         SHIFT     11        
+46    AUTO_15        SHIFT     3         
+46    AUTO_26        SHIFT     30        
+46    ID             SHIFT     12        
+46    AUTO_22        SHIFT     6         
+46    AUTO_17        SHIFT     4         
+46    AUTO_21        SHIFT     5         
+45    $              REDUCE    29        
+44    AUTO_24        SHIFT     29        
+44    $              REDUCE    28        
+44    AUTO_16        SHIFT     28        
+43    $              REDUCE    27        
+42    $              REDUCE    26        
+41    $              REDUCE    25        
+40    AUTO_25        SHIFT     8         
+40    AUTO_12        SHIFT     2         
+40    $              REDUCE    24        
+40    AUTO_0         SHIFT     24        
+40    AUTO_2         SHIFT     25        
+40    AUTO_10        SHIFT     1         
+40    AUTO_7         SHIFT     26        
+40    AUTO_5         SHIFT     10        
+40    AUTO_23        SHIFT     7         
+40    AUTO_3         SHIFT     9         
+40    AUTO_6         SHIFT     11        
+40    AUTO_15        SHIFT     3         
+40    ID             SHIFT     12        
+40    AUTO_22        SHIFT     6         
+40    AUTO_17        SHIFT     4         
+40    AUTO_21        SHIFT     5         
+39    AUTO_25        SHIFT     8         
+39    AUTO_12        SHIFT     2         
+39    $              REDUCE    23        
+39    AUTO_0         SHIFT     24        
+39    AUTO_2         SHIFT     25        
+39    AUTO_10        SHIFT     1         
+39    AUTO_7         SHIFT     26        
+39    AUTO_5         SHIFT     10        
+39    AUTO_23        SHIFT     7         
+39    AUTO_3         SHIFT     9         
+39    AUTO_6         SHIFT     11        
+39    AUTO_15        SHIFT     3         
+39    ID             SHIFT     12        
+39    AUTO_22        SHIFT     6         
+39    AUTO_17        SHIFT     4         
+39    AUTO_21        SHIFT     5         
+38    AUTO_25        SHIFT     8         
+38    AUTO_10        SHIFT     1         
+38    AUTO_2         SHIFT     25        
+38    AUTO_12        SHIFT     2         
+38    AUTO_0         SHIFT     24        
+38    $              REDUCE    17        
+38    AUTO_7         SHIFT     26        
+38    AUTO_5         SHIFT     10        
+38    AUTO_23        SHIFT     7         
+38    AUTO_3         SHIFT     9         
+38    AUTO_6         SHIFT     11        
+38    AUTO_15        SHIFT     3         
+38    AUTO_1         SHIFT     51        
+38    ID             SHIFT     12        
+38    AUTO_22        SHIFT     6         
+38    AUTO_17        SHIFT     4         
+38    AUTO_21        SHIFT     5         
+37    AUTO_25        SHIFT     8         
+37    AUTO_10        SHIFT     1         
+37    AUTO_21        SHIFT     5         
+37    AUTO_11        SHIFT     41        
+37    ID             SHIFT     12        
+37    AUTO_12        SHIFT     2         
+37    $              REDUCE    22        
+37    AUTO_0         SHIFT     24        
+37    AUTO_4         SHIFT     42        
+37    AUTO_2         SHIFT     25        
+37    AUTO_7         SHIFT     26        
+37    AUTO_5         SHIFT     10        
+37    AUTO_23        SHIFT     7         
+37    AUTO_3         SHIFT     9         
+37    AUTO_6         SHIFT     11        
+37    AUTO_15        SHIFT     3         
+37    AUTO_22        SHIFT     6         
+37    AUTO_17        SHIFT     4         
+36    $              REDUCE    21        
+35    ID             SHIFT     50        
+34    AUTO_25        SHIFT     8         
+34    AUTO_10        SHIFT     1         
+34    AUTO_5         SHIFT     10        
+34    AUTO_24        SHIFT     49        
+34    AUTO_23        SHIFT     7         
+34    AUTO_2         SHIFT     25        
+34    AUTO_12        SHIFT     2         
+34    AUTO_0         SHIFT     24        
+34    $              REDUCE    17        
+34    AUTO_7         SHIFT     26        
+34    AUTO_3         SHIFT     9         
+34    AUTO_6         SHIFT     11        
+34    AUTO_15        SHIFT     3         
+34    ID             SHIFT     12        
+34    AUTO_22        SHIFT     6         
+34    AUTO_17        SHIFT     4         
+34    AUTO_21        SHIFT     5         
+33    AUTO_12        SHIFT     2         
+33    AUTO_25        SHIFT     8         
+33    AUTO_10        SHIFT     1         
+33    AUTO_22        SHIFT     6         
+33    AUTO_15        SHIFT     3         
+33    AUTO_6         SHIFT     11        
+33    AUTO_3         SHIFT     9         
+33    $              REDUCE    0         
+33    AUTO_21        SHIFT     5         
+33    AUTO_17        SHIFT     4         
+33    AUTO_5         SHIFT     10        
+33    AUTO_23        SHIFT     43        
+33    ID             SHIFT     12        
+32    AUTO_12        SHIFT     2         
+32    AUTO_25        SHIFT     8         
+32    AUTO_10        SHIFT     1         
+32    AUTO_22        SHIFT     6         
+32    AUTO_15        SHIFT     3         
+32    AUTO_6         SHIFT     11        
+32    AUTO_3         SHIFT     9         
+32    $              REDUCE    0         
+32    AUTO_21        SHIFT     5         
+32    AUTO_17        SHIFT     4         
+32    AUTO_5         SHIFT     10        
+32    AUTO_23        SHIFT     43        
+32    ID             SHIFT     12        
+31    $              REDUCE    20        
+30    AUTO_25        SHIFT     8         
+30    AUTO_12        SHIFT     2         
+30    AUTO_22        SHIFT     6         
+30    AUTO_10        SHIFT     1         
+30    $              REDUCE    0         
+30    AUTO_21        SHIFT     5         
+30    AUTO_17        SHIFT     4         
+30    ID             SHIFT     12        
+30    AUTO_15        SHIFT     3         
+30    AUTO_6         SHIFT     11        
+30    AUTO_23        SHIFT     7         
+30    AUTO_5         SHIFT     10        
+30    AUTO_3         SHIFT     9         
+29    $              REDUCE    19        
+12    $              REDUCE    10        
+11    $              REDUCE    9         
+10    AUTO_25        SHIFT     8         
+10    AUTO_12        SHIFT     2         
+10    AUTO_22        SHIFT     6         
+10    AUTO_10        SHIFT     1         
+10    $              REDUCE    0         
+10    AUTO_21        SHIFT     5         
+10    AUTO_17        SHIFT     4         
+10    ID             SHIFT     12        
+10    AUTO_15        SHIFT     3         
+10    AUTO_6         SHIFT     11        
+10    AUTO_23        SHIFT     7         
+10    AUTO_5         SHIFT     10        
+10    AUTO_3         SHIFT     9         
+9     $              REDUCE    8         
+8     $              REDUCE    7         
+7     $              REDUCE    6         
+6     $              REDUCE    5         
+5     AUTO_25        SHIFT     8         
+5     AUTO_12        SHIFT     2         
+5     AUTO_22        SHIFT     6         
+5     AUTO_10        SHIFT     1         
+5     AUTO_21        SHIFT     5         
+5     AUTO_17        SHIFT     4         
+5     ID             SHIFT     12        
+5     AUTO_15        SHIFT     3         
+5     AUTO_6         SHIFT     11        
+5     AUTO_23        SHIFT     7         
+5     AUTO_5         SHIFT     10        
+5     AUTO_3         SHIFT     9         
 5     $              REDUCE    4         
-4     $              ACCEPT    0         
-3     AUTO_0         SHIFT     6         
-2     AUTO_0         REDUCE    3         
-2     $              REDUCE    3         
-1     AUTO_0         REDUCE    7         
-1     $              REDUCE    7         
-0     AUTO_1         SHIFT     1         
-0     NUMBER         SHIFT     2         
+4     AUTO_25        SHIFT     8         
+4     AUTO_12        SHIFT     2         
+4     AUTO_22        SHIFT     6         
+4     AUTO_10        SHIFT     1         
+4     $              REDUCE    0         
+4     AUTO_21        SHIFT     5         
+4     AUTO_17        SHIFT     4         
+4     ID             SHIFT     12        
+4     AUTO_15        SHIFT     3         
+4     AUTO_6         SHIFT     11        
+4     AUTO_23        SHIFT     7         
+4     AUTO_5         SHIFT     10        
+4     AUTO_3         SHIFT     9         
+3     $              REDUCE    3         
+2     $              REDUCE    2         
+1     $              REDUCE    1         
+0     AUTO_12        SHIFT     2         
+0     AUTO_25        SHIFT     8         
+0     AUTO_10        SHIFT     1         
+0     AUTO_22        SHIFT     6         
+0     $              REDUCE    0         
+0     AUTO_21        SHIFT     5         
+0     AUTO_17        SHIFT     4         
+0     ID             SHIFT     12        
+0     AUTO_15        SHIFT     3         
+0     AUTO_6         SHIFT     11        
+0     AUTO_23        SHIFT     7         
+0     AUTO_5         SHIFT     10        
+0     AUTO_3         SHIFT     9         
+13    $              REDUCE    11        
+14    $              REDUCE    12        
+15    AUTO_25        SHIFT     8         
+15    AUTO_12        SHIFT     2         
+15    $              REDUCE    13        
+15    AUTO_0         SHIFT     24        
+15    AUTO_2         SHIFT     25        
+15    AUTO_10        SHIFT     1         
+15    AUTO_7         SHIFT     26        
+15    AUTO_5         SHIFT     10        
+15    AUTO_23        SHIFT     7         
+15    AUTO_3         SHIFT     9         
+15    AUTO_6         SHIFT     11        
+15    AUTO_15        SHIFT     3         
+15    ID             SHIFT     12        
+15    AUTO_22        SHIFT     6         
+15    AUTO_17        SHIFT     4         
+15    AUTO_21        SHIFT     5         
+16    $              REDUCE    14        
+16    AUTO_24        SHIFT     29        
+16    AUTO_16        SHIFT     28        
+17    AUTO_26        SHIFT     30        
+17    $              ACCEPT    0         
+18    $              REDUCE    15        
+19    AUTO_25        SHIFT     8         
+19    AUTO_13        SHIFT     32        
+19    AUTO_14        SHIFT     33        
+19    AUTO_5         SHIFT     10        
+19    AUTO_23        SHIFT     7         
+19    AUTO_3         SHIFT     9         
+19    AUTO_6         SHIFT     11        
+19    AUTO_15        SHIFT     3         
+19    ID             SHIFT     12        
+19    AUTO_22        SHIFT     6         
+19    AUTO_17        SHIFT     4         
+19    AUTO_21        SHIFT     5         
+19    AUTO_10        SHIFT     1         
+19    $              REDUCE    16        
+19    AUTO_12        SHIFT     2         
+20    AUTO_25        SHIFT     8         
+20    AUTO_10        SHIFT     1         
+20    AUTO_18        SHIFT     35        
+20    AUTO_2         SHIFT     25        
+20    AUTO_12        SHIFT     2         
+20    AUTO_0         SHIFT     24        
+20    $              REDUCE    17        
+20    AUTO_7         SHIFT     26        
+20    AUTO_6         SHIFT     11        
+20    AUTO_3         SHIFT     9         
+20    AUTO_5         SHIFT     10        
+20    AUTO_23        SHIFT     7         
+20    AUTO_15        SHIFT     3         
+20    ID             SHIFT     12        
+20    AUTO_22        SHIFT     6         
+20    AUTO_17        SHIFT     4         
+20    AUTO_21        SHIFT     5         
+21    AUTO_26        SHIFT     30        
+21    $              REDUCE    18        
+22    AUTO_25        SHIFT     8         
+22    AUTO_10        SHIFT     1         
+22    AUTO_2         SHIFT     25        
+22    AUTO_12        SHIFT     2         
+22    AUTO_0         SHIFT     24        
+22    $              REDUCE    17        
+22    AUTO_7         SHIFT     26        
+22    AUTO_5         SHIFT     10        
+22    AUTO_23        SHIFT     7         
+22    AUTO_3         SHIFT     9         
+22    AUTO_6         SHIFT     11        
+22    AUTO_15        SHIFT     3         
+22    ID             SHIFT     12        
+22    AUTO_22        SHIFT     36        
+22    AUTO_17        SHIFT     4         
+22    AUTO_21        SHIFT     5         
+23    AUTO_25        SHIFT     8         
+23    AUTO_2         SHIFT     25        
+23    AUTO_10        SHIFT     1         
+23    AUTO_12        SHIFT     2         
+23    AUTO_0         SHIFT     24        
+23    $              REDUCE    17        
+23    AUTO_7         SHIFT     26        
+23    AUTO_5         SHIFT     10        
+23    AUTO_23        SHIFT     7         
+23    AUTO_3         SHIFT     9         
+23    AUTO_6         SHIFT     11        
+23    AUTO_15        SHIFT     3         
+23    ID             SHIFT     12        
+23    AUTO_22        SHIFT     6         
+23    AUTO_17        SHIFT     4         
+23    AUTO_21        SHIFT     5         
+24    AUTO_25        SHIFT     8         
+24    AUTO_12        SHIFT     2         
+24    AUTO_22        SHIFT     6         
+24    AUTO_10        SHIFT     1         
+24    $              REDUCE    0         
+24    AUTO_21        SHIFT     5         
+24    AUTO_17        SHIFT     4         
+24    ID             SHIFT     12        
+24    AUTO_15        SHIFT     3         
+24    AUTO_6         SHIFT     11        
+24    AUTO_23        SHIFT     7         
+24    AUTO_5         SHIFT     10        
+24    AUTO_3         SHIFT     9         
+25    AUTO_25        SHIFT     8         
+25    AUTO_12        SHIFT     2         
+25    AUTO_22        SHIFT     6         
+25    AUTO_10        SHIFT     1         
+25    $              REDUCE    0         
+25    AUTO_21        SHIFT     5         
+25    AUTO_17        SHIFT     4         
+25    ID             SHIFT     12        
+25    AUTO_15        SHIFT     3         
+25    AUTO_6         SHIFT     11        
+25    AUTO_23        SHIFT     7         
+25    AUTO_5         SHIFT     10        
+25    AUTO_3         SHIFT     9         
+26    AUTO_25        SHIFT     8         
+26    AUTO_12        SHIFT     2         
+26    AUTO_22        SHIFT     6         
+26    AUTO_10        SHIFT     1         
+26    $              REDUCE    0         
+26    AUTO_21        SHIFT     5         
+26    AUTO_17        SHIFT     4         
+26    ID             SHIFT     12        
+26    AUTO_15        SHIFT     3         
+26    AUTO_6         SHIFT     11        
+26    AUTO_23        SHIFT     7         
+26    AUTO_5         SHIFT     10        
+26    AUTO_3         SHIFT     9         
+27    AUTO_25        SHIFT     8         
+27    AUTO_10        SHIFT     1         
+27    AUTO_21        SHIFT     5         
+27    AUTO_11        SHIFT     41        
+27    ID             SHIFT     12        
+27    AUTO_4         SHIFT     42        
+27    AUTO_2         SHIFT     25        
+27    AUTO_12        SHIFT     2         
+27    AUTO_0         SHIFT     24        
+27    $              REDUCE    17        
+27    AUTO_7         SHIFT     26        
+27    AUTO_5         SHIFT     10        
+27    AUTO_23        SHIFT     7         
+27    AUTO_3         SHIFT     9         
+27    AUTO_6         SHIFT     11        
+27    AUTO_15        SHIFT     3         
+27    AUTO_22        SHIFT     6         
+27    AUTO_17        SHIFT     4         
+28    AUTO_12        SHIFT     2         
+28    AUTO_25        SHIFT     8         
+28    AUTO_10        SHIFT     1         
+28    AUTO_22        SHIFT     6         
+28    AUTO_15        SHIFT     3         
+28    AUTO_6         SHIFT     11        
+28    AUTO_3         SHIFT     9         
+28    $              REDUCE    0         
+28    AUTO_21        SHIFT     5         
+28    AUTO_17        SHIFT     4         
+28    AUTO_5         SHIFT     10        
+28    AUTO_23        SHIFT     43        
+28    ID             SHIFT     12        
 
 Goto Table:
 State Non-Terminal        Next State  
-8     term                5           
-8     __q0                10          
-6     term                5           
-6     __q0                9           
-5     term                8           
-5     __q0_tail           7           
-0     term                5           
-0     __q0                3           
-0     main                4           
+40    arg_list            14          
+40    __q2                13          
+40    factor              16          
+40    power               18          
+40    term                19          
+40    main                21          
+40    expr                27          
+38    arg_list            14          
+38    __q2                13          
+38    factor              16          
+38    power               18          
+38    term                19          
+38    main                21          
+38    expr                27          
+37    arg_list            14          
+37    __q2                13          
+37    factor              16          
+37    power               18          
+37    term                19          
+37    main                21          
+37    expr                27          
+32    term                19          
+32    expr                15          
+32    main                21          
+32    arg_list            14          
+32    __q2                13          
+32    factor              44          
+32    power               47          
+30    arg_list            14          
+30    __q2                13          
+30    factor              16          
+30    power               18          
+30    term                19          
+30    main                21          
+30    expr                46          
+28    term                19          
+28    expr                15          
+28    main                21          
+28    arg_list            14          
+28    __q2                13          
+28    factor              44          
+28    power               45          
+27    arg_list            14          
+27    __q2                13          
+27    factor              16          
+27    power               18          
+27    term                19          
+27    main                21          
+27    expr                27          
+26    arg_list            14          
+26    __q2                13          
+26    factor              16          
+26    power               18          
+26    term                19          
+26    main                21          
+26    expr                40          
+0     arg_list            14          
+0     __q2                13          
+0     factor              16          
+0     power               18          
+0     term                19          
+0     expr                15          
+0     main                17          
+33    term                19          
+33    expr                15          
+33    main                21          
+33    arg_list            14          
+33    __q2                13          
+33    factor              44          
+33    power               48          
+4     arg_list            14          
+4     __q2                13          
+4     factor              16          
+4     power               18          
+4     term                19          
+4     main                21          
+4     expr                20          
+46    arg_list            14          
+46    __q2                13          
+46    factor              16          
+46    power               18          
+46    term                19          
+46    main                21          
+46    expr                27          
+46    __grp1              52          
+17    __grp1              31          
+34    arg_list            14          
+34    __q2                13          
+34    factor              16          
+34    power               18          
+34    term                19          
+34    main                21          
+34    expr                27          
+5     arg_list            14          
+5     __q2                13          
+5     factor              16          
+5     power               18          
+5     term                19          
+5     main                21          
+5     expr                22          
+39    arg_list            14          
+39    __q2                13          
+39    factor              16          
+39    power               18          
+39    term                19          
+39    main                21          
+39    expr                27          
+10    arg_list            14          
+10    __q2                13          
+10    factor              16          
+10    power               18          
+10    term                19          
+10    main                21          
+10    expr                23          
+23    arg_list            14          
+23    __q2                13          
+23    factor              16          
+23    power               18          
+23    term                19          
+23    main                21          
+23    expr                37          
+15    arg_list            14          
+15    __q2                13          
+15    factor              16          
+15    power               18          
+15    term                19          
+15    main                21          
+15    expr                27          
+19    arg_list            14          
+19    __q2                13          
+19    factor              16          
+19    power               18          
+19    term                19          
+19    main                21          
+19    expr                34          
+20    arg_list            14          
+20    __q2                13          
+20    factor              16          
+20    power               18          
+20    term                19          
+20    main                21          
+20    expr                27          
+21    __grp1              31          
+51    arg_list            14          
+51    __q2                13          
+51    factor              16          
+51    power               18          
+51    term                19          
+51    main                21          
+51    expr                53          
+22    arg_list            14          
+22    __q2                13          
+22    factor              16          
+22    power               18          
+22    term                19          
+22    main                21          
+22    expr                27          
+53    arg_list            14          
+53    __q2                13          
+53    factor              16          
+53    power               18          
+53    term                19          
+53    main                21          
+53    expr                27          
+24    arg_list            14          
+24    __q2                13          
+24    factor              16          
+24    power               18          
+24    term                19          
+24    main                21          
+24    expr                38          
+25    arg_list            14          
+25    __q2                13          
+25    factor              16          
+25    power               18          
+25    term                19          
+25    main                21          
+25    expr                39          
+
+Rules:
+	0: __q2 → 
+	1: expr → AUTO_10 
+	1: expr → AUTO_12 
+	1: term → AUTO_15 
+	1: factor → AUTO_21 
+	1: factor → AUTO_22 
+	1: expr → AUTO_23 
+	1: factor → AUTO_25 
+	1: expr → AUTO_3 
+	1: expr → AUTO_6 
+	1: factor → ID 
+	1: factor → __q2 
+	1: __q2 → arg_list 
+	1: main → expr 
+	1: factor → factor 
+	1: term → power 
+	1: term → term 
+	1: expr → expr 
+	0: __grp1 → 
+	2: factor → factor AUTO_24 
+	2: arg_list → main __grp1 
+	3: factor → AUTO_21 expr AUTO_22 
+	3: expr → AUTO_5 expr expr 
+	3: expr → expr AUTO_2 expr 
+	3: expr → expr AUTO_7 expr 
+	3: expr → expr expr AUTO_11 
+	3: expr → expr expr AUTO_4 
+	1: factor → AUTO_23 
+	1: power → factor 
+	3: power → factor AUTO_16 power 
+	3: term → term AUTO_13 power 
+	3: term → term AUTO_14 power 
+	3: expr → term expr AUTO_24 
+	4: factor → AUTO_17 expr AUTO_18 ID 
+	3: __grp1 → AUTO_26 expr __grp1 
+	5: expr → expr AUTO_0 expr AUTO_1 expr 
