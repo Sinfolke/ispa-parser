@@ -70,7 +70,7 @@ auto LRParser::getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<s
 auto LRParser::getNonTerminalNames() const ->  std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> names;
     std::vector<std::string> fullname;
-    getTerminalNames(tree->getRawTree(), names, fullname);
+    getNonTerminalNames(tree->getRawTree(), names, fullname);
     return names;
 }
 auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
@@ -160,7 +160,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                         tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                             {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
                             {"rule", alt},
-                            {"nestedRules", std::vector<Parser::Rule>{}}
+                            {"nestedRules", std::vector<Parser::Rule>{}},
+                            {"data_block", Parser::Rule {}}
                         }));
                     }
 
@@ -180,7 +181,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                     {"name", Tokens::make_rule(Parser::Rules::id, quant_rule_name)},
                     {"rule", alt},
-                    {"nestedRules", std::vector<Parser::Rule>{}}
+                    {"nestedRules", std::vector<Parser::Rule>{}},
+                    {"data_block", Parser::Rule {}}
                 }));
             }
             continue;
@@ -256,7 +258,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                     {"name", Tokens::make_rule(Parser::Rules::Rule_other, push_name)},
                     {"rule", values},
-                    {"nestedRules", std::vector<Parser::Rule>{}}
+                    {"nestedRules", std::vector<Parser::Rule>{}},
+                    {"data_block", Parser::Rule {}}
                 }));
             }
             continue;
@@ -327,7 +330,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                     tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                         {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
                         {"rule", alt},
-                        {"nestedRules", std::vector<Parser::Rule>{}}
+                        {"nestedRules", std::vector<Parser::Rule>{}},
+                        {"data_block", Parser::Rule {}}
                     }));
                 }
 
@@ -361,7 +365,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                     tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                         {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
                         {"rule", alt},
-                        {"nestedRules", std::vector<Parser::Rule>{}}
+                        {"nestedRules", std::vector<Parser::Rule>{}},
+                        {"data_block", Parser::Rule {}}
                     }));
                 }
             }
@@ -370,7 +375,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                     {"name", Tokens::make_rule(Parser::Rules::id, quant_rule_name)},
                     {"rule", alt},
-                    {"nestedRules", std::vector<Parser::Rule>{}}
+                    {"nestedRules", std::vector<Parser::Rule>{}},
+                    {"data_block", Parser::Rule {}}
                 }));
             }
             new_fullname.back() = quant_rule_name;
@@ -458,7 +464,8 @@ void LRParser::addAugmentedRule() {
                 })
             }
         },
-        {"nestedRules", std::vector<Parser::Rule> {}}
+        {"nestedRules", std::vector<Parser::Rule> {}},
+        {"data_block", Parser::Rule {}}
     }));
 }
 // since map cannot store std::vector<std::string> as key use std::vector<std::pair>

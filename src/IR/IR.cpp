@@ -4,10 +4,12 @@
 #include <corelib.h>
 #include <parser.h>
 #include <cpuf/hex.h>
-LLIR::LLIR(const Parser::Tree &tree) : tree(&tree) {}
-LLIR::LLIR(const Parser::Tree *tree) : tree(tree) {}
-LLIR::LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules) : tree(&tree), rules(&rules) {}
-LLIR::LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules) : tree(tree), rules(&rules) {}
+LLIR::LLIR(const Parser::Tree &tree, bool tokensOnly, bool rulesOnly) : tree(&tree), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
+LLIR::LLIR(const Parser::Tree *tree, bool tokensOnly, bool rulesOnly) : tree(tree), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
+LLIR::LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules, bool tokensOnly, bool rulesOnly) 
+    : tree(&tree), rules(&rules), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
+LLIR::LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules, bool tokensOnly, bool rulesOnly) 
+    : tree(tree), rules(&rules), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
 LLIR::LLIR(LLIR& ir) : tree(ir.tree), data(std::move(ir.data)) {}
 // a structure used to cout
 void LLIR::add(LLIR &repr) {
@@ -2034,20 +2036,31 @@ void LLIR::treeToIr(const Parser::Tree &tree) {
         fullname.push_back(name);
         LLIR new_ir(tree);
         new_ir.proceed(*this);
+        bool to_add = true;
+        if (corelib::text::isLower(name)) {
+            if (tokensOnly)
+                to_add = false;
+        }
+        if (corelib::text::isUpper(name)) {
+            if (rulesOnly)
+                to_add = false;
+        }
         if (!nested_rules.empty()) {
             new_ir.treeToIr(nested_rules);
             add(new_ir);
         }
-        auto values = rulesToIr(rules);
-        if (!values.data.empty() && values.data.back().type == LLIR::types::SKIP_SPACES)
-            values.pop(); // remove skip of spaces at the end
-        update(values);
-        inlineAccessors(values.data);
-        push({ isToken ? LLIR::types::TOKEN : LLIR::types::RULE, std::pair<std::string, std::vector<std::string>> {name, fullname}});  
-        add(values);
-        if (data_block.data.has_value())
-            push({LLIR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
-        push({LLIR::types::RULE_END});
+        if (to_add) {
+            auto values = rulesToIr(rules);
+            if (!values.data.empty() && values.data.back().type == LLIR::types::SKIP_SPACES)
+                values.pop(); // remove skip of spaces at the end
+            update(values);
+            inlineAccessors(values.data);
+            push({ isToken ? LLIR::types::TOKEN : LLIR::types::RULE, std::pair<std::string, std::vector<std::string>> {name, fullname}});  
+            add(values);
+            if (data_block.data.has_value())
+                push({LLIR::types::DATA_BLOCK, TreeDataBlockToIR(data_block)});
+            push({LLIR::types::RULE_END});
+        }
         fullname.pop_back();
         clear_thread();
     }

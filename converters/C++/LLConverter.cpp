@@ -47,9 +47,12 @@ void LLConverter::writeRules(std::ostringstream &out) {
         }
     }
 }
-void LLConverter::outputHeader(std::ostringstream &out) {
+void LLConverter::outputHeader(std::ostringstream &out, const std::string &filename) {
     cpp_file = false;
+    namespace_name = filename;
     createLibrary(out, namespace_name);
+    createIncludes(out);
+    createDefaultTypes(out);
     createNamespace(out, namespace_name);
     createTypes(out, namespace_name);
     createTokensEnum(out, tokens);
@@ -237,8 +240,12 @@ void LLConverter::convertLexerCode(const std::vector<LLIR::member> &members, std
         }
     }
     isToken = false;
+}    void createDefaultTypes(std::stringstream &out);
+void LLConverter::convertData(std::ostringstream &out) {
+    convertMembers(data, out);
 }
-void LLConverter::printIR(std::ostringstream &out) {
+void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
+    namespace_name = filename;
     addHeader(out);
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
@@ -246,7 +253,6 @@ void LLConverter::printIR(std::ostringstream &out) {
     addRulesToString(rules, out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addLexerCode_Header(out);
-    current_pos_counter.push("pos");
     convertLexerCode(lexer_code.getDataRef(), out);
     addLexerCode_Bottom(out,  lexer_code_access_var.var);
     convertMembers(data, out);
@@ -444,7 +450,6 @@ void LLConverter::addLexerCode_Bottom(std::ostringstream &out, LLIR::variable va
     indentLevel--;
 }
 void LLConverter::outputIR(std::string filename) {
-    namespace_name = filename;
     std::ofstream cpp(filename + ".cpp");
     std::ofstream h(filename + ".h");
     if (!cpp) {
@@ -454,8 +459,8 @@ void LLConverter::outputIR(std::string filename) {
         throw std::runtime_error("Unable to open file for writing: " + filename + ".h");
     }
     std::ostringstream cpp_ss, h_ss;
-    printIR(cpp_ss);
-    outputHeader(h_ss);
+    printIR(cpp_ss, filename);
+    outputHeader(h_ss, filename);
     cpp << cpp_ss.str();
     h << h_ss.str();
 }

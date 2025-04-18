@@ -3,7 +3,9 @@
 class LLHeader : public LLStringConvertions {
     protected:
     // header output functions
+    void createIncludes(std::ostringstream &out);
     void createLibrary(std::ostringstream& out, std::string namespace_name);
+    void createDefaultTypes(std::ostringstream &out);
     void close_library(std::ostringstream &out, std::string namespace_name);
     void createNamespace(std::ostringstream &out, std::string namespace_name);
     void createTypes(std::ostringstream &out, std::string namespace_name);

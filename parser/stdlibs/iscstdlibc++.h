@@ -16,10 +16,9 @@
 #include <cctype>
 #include <cstring>
 #include <fstream>
-#include <thread>
-#include <future>
-#include <mutex>
-#include <condition_variable>
+#include <variant>
+#include <optional>
+#include <array>
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
@@ -581,7 +580,7 @@ public:
 };
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
-class Parser_base {
+class LLParser_base {
 protected:
     template<class T>
     void parseFromPos(T& pos) {
@@ -633,12 +632,12 @@ public:
     virtual void parseFromTokens() = 0;
     virtual void lazyParse() = 0;
     // Constructors
-    Parser_base() {}
-    Parser_base(const Lexer_base<TOKEN_T>& lexer) {
+    LLParser_base() {}
+    LLParser_base(const Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens())
             this->lexer = &lexer;
     }
-    Parser_base(const char* text) : text(text) {}
+    LLParser_base(const char* text) : text(text) {}
     // Parsing methods
     Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {
@@ -678,7 +677,57 @@ public:
         return tree;
     }
 };
+template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
+class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
+private:
+    std::deque<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    template <class IT>
+    void shift(IT& pos, size_t state) {
+        stack.push_back({pos->name(), state});
+        pos++;
+    }
+    template<class IT>
+    void reduce(IT &pos, size_t rules_id, const GotoTable &goto_table, const RulesTable rules_table) {
+        const auto &rule_data = rules_table[rules_id];
+        const auto &rule_name = rule_data.first;
+        const auto &reduce_size = rule_data.second;
+        if (stack.size() < reduce_size) {
+            throw std::runtime_error("Stack underflow during reduce");
+        }
+        stack.erase(stack.end() - reduce_size, stack.end());
+        const auto& goto_entry = goto_table[stack.back().second][static_cast<size_t>(rule_name)];
+        if (!goto_entry.has_value()) {
+            throw std::runtime_error("Invalid GOTO after reduction");
+        }
 
+        size_t next_state = goto_entry.value();
+        stack.push_back({rule_name, next_state});
+    } 
+protected:
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {};
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {};
+    template<class IT>
+    void parseFromPos(IT& pos, const ActionTable &action_table, const GotoTable &goto_table, RulesTable rules_table) {
+        stack.push_back({TOKEN_T::NONE, 0});
+        while(true) {
+            auto &current_state = stack.back().second;
+            auto &action = action_table[current_state][pos->name()];
+            if (action.has_value()) {
+                auto& act = action.value();
+                if (act.type == Action::SHIFT)
+                    shift(pos, action.state);
+                else if (act.type == Action::REDUCE)
+                    reduce(pos, action.state, goto_table, rules_table);
+                else if (act.type == Action::ACCEPT)
+                    break;
+                else
+                    throw std::runtime_error("Error state");
+            } else {
+                throw std::runtime_error("Action is not defined");
+            }
+        }
+    }
+};
 
 } // namespace __ISC_STD
 

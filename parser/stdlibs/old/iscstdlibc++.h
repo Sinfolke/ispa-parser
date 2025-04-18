@@ -425,7 +425,7 @@ public:
 
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
-class Parser_base {
+class LLParser_base {
 private:
     TokenFlow<TOKEN_T> tokens;
     Tree<RULE_T> tree;
@@ -436,8 +436,8 @@ public:
      */
     virtual node<RULE_T> getRule(size_t &tokensConsumed) = 0;
     // Constructors
-    Parser_base() {}
-    Parser_base(const Lexer_base<TOKEN_T>& tokenizator) {
+    LLParser_base() {}
+    LLParser_base(const Lexer_base<TOKEN_T>& tokenizator) {
         if (tokenizator.hasTokenFlow()) {
             tokens = tokenizator.tokens;
         } else if (tokenizator.hasInput()) {
@@ -446,11 +446,11 @@ public:
             throw Tokenizator_No_Tokens_exception();
         }
     }
-    Parser_base(const std::string& in) {
+    LLParser_base(const std::string& in) {
         auto r = Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }
-    Parser_base(const char* const in) {
+    LLParser_base(const char* const in) {
         auto r = Lexer_base<TOKEN_T>().makeTokens(in);
         tokens = r;
     }

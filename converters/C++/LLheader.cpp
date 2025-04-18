@@ -8,8 +8,23 @@
 #include <LLConverter.h>
 #include <LLHeader.h>
 #include <unordered_map>
-
+void LLHeader::createIncludes(std::ostringstream &out) {
+    out << "#include <string>\n";
+    out << "#include <list>\n";
+    out << "#include <unordered_map>\n";
+    out << "#include <iscstdlibc++.h>\n";
+    out << "#include <fstream>\n";
+    out << "#include <iterator>\n\n";
+}
 void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name) {
+
+
+    out << "#pragma once\n";
+    out << "#ifndef " << corelib::text::ToUpper(namespace_name) << "\n";
+    out << "#define " << corelib::text::ToUpper(namespace_name) << "\n\n";
+
+}
+void LLHeader::createDefaultTypes(std::ostringstream &out) {
     std::unordered_map<std::string, std::string> macros = {
         {"BOOL_TYPE", "bool"},
         {"NUM_TYPE", "double"},
@@ -18,23 +33,7 @@ void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name
         {"ARR_TYPE", "std::list"},
         {"OBJ_TYPE", "std::unordered_map"}
     };
-    
-    std::unordered_map<std::string, std::string> push_methods {
-        { "std::stack", "push" },
-        { "std::queue", "push" },
-        { "std::priority_queue", "push" },
-    };
 
-    out << "#pragma once\n";
-    out << "#ifndef " << corelib::text::ToUpper(namespace_name) << "\n";
-    out << "#define " << corelib::text::ToUpper(namespace_name) << "\n\n";
-
-    out << "#include <string>\n";
-    out << "#include <list>\n";
-    out << "#include <unordered_map>\n";
-    out << "#include <iscstdlibc++.h>\n";
-    out << "#include <fstream>\n";
-    out << "#include <iterator>\n\n";
 
     for (auto [macro, deftype] : macros) {
         auto actual_name = corelib::text::ToUpper(namespace_name) + "_" + macro;
@@ -44,7 +43,6 @@ void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name
         out << "#endif\n";
     }
 }
-
 void LLHeader::close_library(std::ostringstream &out, std::string namespace_name) {
     out << "\n} // " << namespace_name << "\n"; // close enum
     out << "\n\n#endif // " << corelib::text::ToUpper(namespace_name) << "\n"; // close header
@@ -154,7 +152,7 @@ void LLHeader::close_parser_header(std::ostringstream &out) {
     out << "\t};\n";
 }
 void LLHeader::create_parser_header(std::ostringstream &out) {
-    out << "\tclass Parser : public ISPA_STD::Parser_base<Tokens, Rules> {\n"
+    out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
         << "\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
         << "\t\tRule_res getRule(Lexer::iterator&);\n"
         << "\t\tvoid parseFromTokens();\n"

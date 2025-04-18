@@ -207,6 +207,8 @@ class LLIR {
         bool insideLoop = false;
         bool addSpaceSkip = false;
         bool isFirst = true;
+        bool tokensOnly = false;
+        bool rulesOnly = false;
         std::vector<std::string> fullname;
         std::vector<LLIR::variable> elements;
         std::vector<var_group> groups;
@@ -230,10 +232,10 @@ class LLIR {
         void insertVariablesOnTop(std::list<LLIR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        LLIR(const Parser::Tree &tree);
-        LLIR(const Parser::Tree *tree);
-        LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules);
-        LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules);
+        LLIR(const Parser::Tree &tree, bool tokensOnly = false, bool rulesOnly = false);
+        LLIR(const Parser::Tree *tree, bool tokensOnly = false, bool rulesOnly = false);
+        LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules, bool tokensOnly = false, bool rulesOnly = false);
+        LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules, bool tokensOnly = false, bool rulesOnly = false);
         LLIR(LLIR& ir);
 
         // get functions

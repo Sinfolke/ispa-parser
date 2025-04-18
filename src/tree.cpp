@@ -772,32 +772,40 @@ void Tree::getTokensForLexer(Parser::Tree &tree, use_place_t &use_places, std::v
         auto name_str = std::any_cast<std::string>(name.data);
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         fullname.push_back(name_str);
-        if (fullname.size() != 1 && corelib::text::isUpper(name_str)) {
-            auto data_in_use_place = use_places.find(fullname);
-            if (data_in_use_place != use_places.end()) {
+        if (corelib::text::isUpper(name_str)) {
+            if (fullname.size() != 1) {
+                auto data_in_use_place = use_places.find(fullname);
                 bool add = false;
-                for (auto &fn : data_in_use_place->second) {
-                    if (corelib::text::isLower(fn.back())) {
-                        add = true;
-                        break;
+                if (data_in_use_place != use_places.end()) {
+                    for (auto &fn : data_in_use_place->second) {
+                        if (corelib::text::isLower(fn.back())) {
+                            add = true;
+                            break;
+                        }
                     }
+                } else {
+                    cpuf::printf("could not find data for %$\n", fullname);
                 }
-                if (!add) {
-                    fullname.pop_back();
-                    continue;
+                if (add) {
+                    // if not found fall back to add the token
+                    auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other {name_str, fullname});
+                    auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                        {"val", _rule_other},
+                        {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
+                    });
+                    rule_op.push_back(rule_rule);
                 }
             } else {
-                cpuf::printf("could not find data for %$\n", fullname);
+                // if not found fall back to add the token
+                auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other {name_str, fullname});
+                auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    {"val", _rule_other},
+                    {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
+                });
+                rule_op.push_back(rule_rule);
             }
-
-            // if not found fall back to add the token
-            auto _rule_other = Tokens::make_rule(Parser::Rules::Rule_other, rule_other {name_str, fullname});
-            auto rule_rule = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                {"val", _rule_other},
-                {"qualifier", Tokens::make_rule(Parser::Rules::Rule_qualifier)}
-            });
-            rule_op.push_back(rule_rule);
         }
+
         getTokensForLexer(nested_rules, use_places, rule_op, fullname);
         fullname.pop_back();
     }

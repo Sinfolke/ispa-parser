@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iterator>
 
+#include <optional>
+
 #ifndef EXPR_PARSER_OBJ_TYPE
 #define EXPR_PARSER_OBJ_TYPE std::unordered_map
 #endif
@@ -28,6 +30,13 @@
 #define EXPR_PARSER_BOOL_TYPE bool
 #endif
 namespace Expr_parser {
+	struct Action {
+        enum Action_type {
+            SHIFT, REDUCE, ACCEPT, ERROR
+        };
+        Action_type type;
+        size_t state;
+    };
 	using str_t = EXPR_PARSER_STR_TYPE;
 	using num_t = EXPR_PARSER_NUM_TYPE;
 	using bool_t = EXPR_PARSER_BOOL_TYPE;
@@ -40,7 +49,7 @@ namespace Expr_parser {
 		NONE, ID, NUMBER, AUTO_0, AUTO_1, AUTO_2, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_10, AUTO_11, AUTO_12, AUTO_13, AUTO_14, AUTO_15, AUTO_16, AUTO_17, AUTO_18, AUTO_21, AUTO_22, AUTO_23, AUTO_24, AUTO_25, AUTO_26, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, main, expr, term, power, factor, arg_list, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, expr, term, term, term, term, term, power, __q2, __q2, factor, factor, factor, factor, factor, factor, factor, factor, factor, factor, factor, factor, __grp1, __grp1, __start
+		NONE, main, expr, term, power, factor, arg_list, __q2, __grp1, __start
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -50,6 +59,11 @@ namespace Expr_parser {
 	using Tree = ISPA_STD::Tree<Rules>;
 	std::string TokensToString(Tokens token);
 	std::string RulesToString(Rules rule);
+		using ActionTable = std::array<std::array<std::optional<::Expr_parser::Action>, 26>, 53>;
+		using GotoTable = std::array<std::array<std::optional<size_t>, 51>, 53>;
+		using RulesTable = std::array<std::pair<Rules, size_t>, 51>;
+	namespace Types {
+	}
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
 			Token makeToken(const char*& pos);
@@ -93,11 +107,11 @@ namespace Expr_parser {
 			Token_res AUTO_26(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
-	class Parser : public ISPA_STD::Parser_base<Tokens, Rules> {
-		Rule_res getRule(Lexer::lazy_iterator&);
-		Rule_res getRule(Lexer::iterator&);
-		void parseFromTokens();
-		void lazyParse();
+	class Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {
+		private:
+			static ActionTable action_table;
+			static GotoTable goto_table;
+			static RulesTable rules_table;
 	};
 
 } // Expr_parser

@@ -378,7 +378,7 @@ namespace Parser {
 			Token_res AUTO_50(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
-	class Parser : public ISPA_STD::Parser_base<Tokens, Rules> {
+	class Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {
 		Rule_res getRule(Lexer::lazy_iterator&);
 		Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();
