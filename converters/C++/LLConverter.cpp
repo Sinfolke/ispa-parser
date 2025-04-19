@@ -240,7 +240,7 @@ void LLConverter::convertLexerCode(const std::vector<LLIR::member> &members, std
         }
     }
     isToken = false;
-}    void createDefaultTypes(std::stringstream &out);
+}
 void LLConverter::convertData(std::ostringstream &out) {
     convertMembers(data, out);
 }
@@ -264,7 +264,6 @@ void LLConverter::addTokensToString(std::vector<std::string> tokens, std::ostrin
     // Implement method call conversion with proper indentation
     out << "std::string " << namespace_name << "::TokensToString(Tokens token) {\n";
     out << "\tswitch (token) {\n";
-    out << "\t\tcase Tokens::NONE:" << " return \"NONE\";\n";
     for (auto token : tokens) {
         out << "\t\tcase Tokens::" << token << ":" << " return \"" << token << "\";\n";
     }
@@ -276,7 +275,6 @@ void LLConverter::addRulesToString(std::vector<std::string> rules, std::ostrings
     // Implement method call conversion with proper indentation
     out << "std::string " << namespace_name << "::RulesToString(Rules rule) {\n";
     out << "\tswitch (rule) {\n";
-    out << "\t\tcase Rules::NONE:" << " return \"NONE\";\n";
     for (auto rule : rules) {
         out << "\t\tcase Rules::" << rule << ":" << " return \"" << rule << "\";\n";
     }
@@ -340,93 +338,29 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
 })";
     out << "\n";
 }
-void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
+void LLConverter::addGetRuleFunction(std::ostringstream &out) {
     out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::lazy_iterator &pos) {
-    return main(pos);
-})" << '\n';
-    out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::iterator &pos) {
-    return main(pos);
-})" << '\n';
+        return main(pos);
+    })" << '\n';
+        out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::iterator &pos) {
+        return main(pos);
+    })" << '\n';
+}
+void LLConverter::addparseFromFunctions(std::ostringstream &out) {
     out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
-    auto pos = Lexer::iterator(lexer);
-    parseFromPos(pos);
-})" << '\n';
-    out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
-    auto pos = Lexer::lazy_iterator(lexer, text);
-    parseFromPos(pos);
-})" << '\n';
-//     out << "void " << namespace_name << R"(::Parser::parseFromInput() {
-//         Lexer lexer;
-
-//         if (parallel_parsing) {
-//             TokenFlow tokens;
-//             std::mutex mtx;
-//             std::condition_variable cv;
-//             bool done = false;
-
-//             // Token accumulation thread
-//             std::future<void> token_future = std::async(std::launch::async, [&]() {
-//                 while (true) {
-//                     auto token = lexer.makeToken(input);  // Generate one token
-//                     if (token.empty()) {
-//                         // parsing has finished
-//                         std::lock_guard<std::mutex> lock(mtx);
-//                         done = true;
-//                         cv.notify_one();
-//                         return;
-//                     }
-//                     input += token.length();
-//                     {
-//                         std::lock_guard<std::mutex> lock(mtx);
-//                         tokens.push_back(token);
-//                     }
-//                     // notify new token added
-//                     cv.notify_one();
-//                 }
-//             });
-
-//             // Parsing loop
-//             while (true) {
-//                 std::unique_lock<std::mutex> lock(mtx);
-//                 cv.wait(lock, [&]() { return !tokens.empty() || done; });
-
-//                 if (tokens.empty() && done) break; // no tokens anymore and lexical analyzation has finished
-
-//                 auto rule_res = getRule();
-//                 if (rule_res.status) {
-//                     // push parsed rule to tree
-//                     tree.push_back(rule_res.node);
-//                     tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
-//                 }
-//             }
-
-//             // Ensure token accamulation is completed
-//             token_future.get();
-//         } else {
-//             // single thread parsing
-//             TokenFlow tokens;
-//             while (true) {
-//                 // Accumulate tokens (at least 10) before parsing
-//                 for (int i = 0; i < 10; i++) {
-//                     auto token = lexer.makeToken(input);  // Generate one token
-//                     if (token.empty()) break;
-//                     tokens.push_back(token);
-//                 }
-//                 if (tokens.empty()) return; // parsing has finished
-
-//                 // parse the tokens and consume used one
-//                 pos = tokens.begin();
-//                 auto rule_res = getRule();
-//                 if (rule_res.status) {
-//                     tree.push_back(rule_res.node);
-//                     tokens.erase(tokens.begin(), std::next(tokens.begin(), rule_res.node.length()));
-//                 }
-//             }
-//         }
-// })";
-//     out << "\n";
+        auto pos = Lexer::iterator(lexer);
+        parseFromPos(pos);
+    })" << '\n';
+        out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
+        auto pos = Lexer::lazy_iterator(lexer, text);
+        parseFromPos(pos);
+    })" << '\n';
 }
 
+void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
+    addGetRuleFunction(out);
+    addparseFromFunctions(out);
+}
 void LLConverter::addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
     for (const auto &[name, dtb] : datablocks_tokens) {
         out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";

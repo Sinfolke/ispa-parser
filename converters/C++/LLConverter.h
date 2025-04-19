@@ -43,6 +43,8 @@ public:
     void addTokensToString(std::vector<std::string> tokens, std::ostringstream &out);
     void addRulesToString(std::vector<std::string> rules, std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);
+    void addGetRuleFunction(std::ostringstream &out);
+    void addparseFromFunctions(std::ostringstream &out);
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules);
     void addLexerCode_Header(std::ostringstream &out);

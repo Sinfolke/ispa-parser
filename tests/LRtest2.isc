@@ -1,6 +1,5 @@
-// Entry point
-use name: "Expr_parser";
-main: expr;
+use name: "Parser";
+main: expr; // Entry point
 
 // Expression handles everything
 expr:

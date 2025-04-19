@@ -64,11 +64,11 @@ void LLHeader::createTypes(std::ostringstream &out, std::string namespace_name) 
 }
 
 void LLHeader::writeEnum(std::ostringstream& out, const std::vector<std::string>& enm) {
-    out << "\t\tNONE";
-
-    for (const auto& el : enm) {
-        out << ", " << el;
+    out << "\t\t";
+    for (auto it = enm.begin(); it != enm.end() - 1; it++) {
+        out << *it << ", ";
     }
+    out << *(enm.end() - 1);
 }
 
 void LLHeader::createTokensEnum(std::ostringstream &out, const std::vector<std::string>& tokens) {
@@ -141,13 +141,20 @@ void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<st
         << "\t\tpublic:\n"
         << "\t\t\tToken makeToken(const char*& pos);\n";
     addStandardFunctions(out);
+    addConstructorsLexer(out);
     out << "\t\tprivate:\n";
     for (auto name : tokens) {
         out << "\t\t\tToken_res " << name << "(const char*);\n";
     }
     out << "\t};\n";
 }
-
+void LLHeader::addConstructorsLexer(std::ostringstream &out) {
+    out << "\t\t"<< R"(Lexer(const std::string& in) : Lexer_base(in) {}
+        Lexer(char*& in) : Lexer_base(in) {}
+        Lexer(const char*& in) : Lexer_base(in) {}
+        Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
+        Lexer() {})";
+}
 void LLHeader::close_parser_header(std::ostringstream &out) {
     out << "\t};\n";
 }

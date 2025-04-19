@@ -16,9 +16,9 @@ public:
         Action_type type;
         size_t state;
     };
-
-    using ActionTable = std::unordered_map<size_t, std::unordered_map<std::string, Action>>;
-    using GotoTable = std::unordered_map<size_t, std::unordered_map<std::string, size_t>>;
+    
+    using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action, VectorHash>>;
+    using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t, VectorHash>>;
     using ItemSet = std::vector<std::vector<rule_other>>;
     using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<std::vector<rule_other>>, VectorHash>;
     struct CanonicalEl {
@@ -26,6 +26,7 @@ public:
         std::vector<rule_other> rhs;
         size_t dot_pos;
         size_t rule_index;
+        std::set<std::vector<std::string>> lookahead;
     
         // This is important for set/hash/set comparison
         bool operator==(const CanonicalEl other) const {
@@ -48,6 +49,7 @@ private:
     Tree *tree;
     ActionTable action_table;
     GotoTable goto_table;
+    Tree::use_place_t use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;
@@ -66,14 +68,15 @@ private:
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     auto construct_initial_item_set() -> InitialItemSet;
-    void constructFirstSet(const std::vector<std::vector<rule_other>>& options);
+    void constructFirstSet(const std::vector<std::vector<rule_other>>& options, const std::vector<std::string> &nonterminal, bool &changed);
     void constructFirstSet();
     void constructFollowSet();
+    void compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, CanonicalEl &new_item);
     void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
-    auto getLookaheadToken(const CanonicalEl& rule) -> std::vector<std::string>;
     // debug
+    void debug(Parser::Tree &tree, std::vector<std::string> &fullname);
     void formatFirstOrFollowSet(std::ostringstream &oss, First &set);
     void formatRulesTable(std::ostringstream& oss);
     void formatCanonicalItemSet(std::ostringstream &oss);
@@ -88,6 +91,8 @@ public:
     auto getGotoTable() const -> const GotoTable&;
     auto getRulesTable() const -> const Rules&; 
     static auto ActionTypeToString(const Action_type &type) -> std::string;
+    auto getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action, VectorHash>>;
+    auto getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t, VectorHash>>;
     // helper functions
     auto getMaxStatesCount() const -> size_t;
     auto getTerminalNames() const -> std::vector<std::vector<std::string>>;

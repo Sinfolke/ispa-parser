@@ -17,6 +17,8 @@ class LLConverter_base {
         LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::node_ret_t *access_var = nullptr) : lexer_code(tree.getRawTree()) {
             auto use_places = tree.getUsePlacesTable();
             auto [tokens, rules] = tree.getTokenAndRuleNames();
+            tokens.insert(tokens.begin(), {"NONE"});
+            rules.insert(rules.begin(), {"NONE"});
             auto [data_block_tokens, data_block_rules] = tree.get_data_blocks(ir);
             this->tokens = tokens;
             this->rules = rules;
@@ -34,6 +36,12 @@ class LLConverter_base {
             this->data = std::move(ir.getDataRef());
         }
         virtual void outputIR(std::string filename) = 0;
+        auto getDataBlockToken() {
+            return data_block_tokens;
+        }
+        auto getDataBlockRules() {
+            return data_block_rules;
+        }
 };
 class LRConverter_base {
     protected:

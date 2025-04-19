@@ -3,81 +3,67 @@ void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &nam
     out << "#include \"" << name << ".h\"\n";
 }
 void LRConverter::createActionTable(std::ostringstream &out) {
-    const auto &table = data->getActionTable();
-    const auto tokens = data->getTerminalNames(); // Ensure this returns a vector in the same order as indexing
-    max_terminals = tokens.size();
+    auto max_terminals = tokens.size(); // Ensure tokens are in the correct order
     out << namespace_name << "::ActionTable " << namespace_name << "::Parser::action_table = {{\n";
-
-    for (size_t state = 0; state < max_states; ++state) {
-        out << "  {{\n"; // Begin row
-        for (size_t t = 0; t < tokens.size(); ++t) {
-            std::string token = corelib::text::join(tokens[t], "_");
-            auto it_state = table.find(state);
-            if (it_state != table.end()) {
-                const auto& state_table = it_state->second;
-                auto it_action = state_table.find(token);
-                if (it_action != state_table.end()) {
-                    const auto& action = it_action->second;
-                    out << "\t::" << namespace_name << "::Action{::" << namespace_name << "::Action::" << LRParser::ActionTypeToString(action.type) << ", " << action.state << "},\n";
-                } else {
-                    out << "\tstd::nullopt,\n";
-                }
-            } else {
-                out << "\tstd::nullopt,\n";
-            }
+    // convert map of states to row map
+    const auto row_table = data->getActionTableAsRow();
+    for (size_t state = 0; state < row_table.size(); ++state) {
+        out << "\t{{";
+        const auto &value = row_table[state];
+        std::vector<std::string> row(max_terminals, "std::nullopt");
+        for (auto [name, action] : value) {
+            auto search_name = name;
+            if (search_name == std::vector<std::string>{"$"})
+                search_name = std::vector<std::string>{"NONE"};
+            auto find_it = std::find(tokens.begin(), tokens.end(), search_name);
+            if (find_it == tokens.end())
+                throw Error("Token '%$' in action table not found among 'tokens'", corelib::text::join(name, "_"));
+            auto index = find_it - tokens.begin();
+            row[index] = "std::make_optional(::" + namespace_name + "::Action{::" + namespace_name + "::Action::Action_type::" + LRParser::ActionTypeToString(action.type) + ", " + std::to_string(action.state) + "})";
         }
-        out << "\t}},\n"; // End row
+        out << row[0];
+        for (auto it = row.begin() + 1; it != row.end(); ++it) {
+            out << ", " << *it;
+        }
+        out << "}}";
+        if (state + 1 < row_table.size()) out << ",";
+        out << "\n";
     }
-
     out << "}};\n";
 }
 void LRConverter::createGotoTable(std::ostringstream &out) {
-    const auto &table = data->getGotoTable(); // GotoTable is unordered_map<size_t, unordered_map<string, size_t>>
-    const auto nonterminals = data->getNonTerminalNames(); // assume this returns std::vector<std::string> of all non-terminals
-    max_nonterminals = nonterminals.size();
-
-    // create mapping from non-terminal to column index
-    std::unordered_map<std::string, size_t> nt_index_map;
-    for (size_t i = 0; i < nonterminals.size(); ++i) {
-        nt_index_map[corelib::text::join(nonterminals[i], "_")] = i;
-    }
-
+    auto max_nonterminals = rules.size();
+    auto row_table = data->getGotoTableAsRow();
     out << namespace_name << "::GotoTable " << namespace_name << "::Parser::goto_table = {{\n";
-
-    for (size_t state = 0; state < max_states; ++state) {
+    for (size_t state = 0; state < row_table.size(); ++state) {
         out << "\t{{";
-        auto it = table.find(state);
-        if (it != table.end()) {
-            // temp row with all nullopt
-            std::vector<std::string> row(max_nonterminals, "std::nullopt");
-
-            for (const auto &[nt, next_state] : it->second) {
-                auto idx = nt_index_map[nt];
-                row[idx] = "std::make_optional(" + std::to_string(next_state) + ")";
-            }
-
-            for (size_t i = 0; i < max_nonterminals; ++i) {
-                out << row[i];
-                if (i + 1 < max_nonterminals)
-                    out << ", ";
-            }
-        } else {
-            // all nullopt for this row
-            for (size_t i = 0; i < max_nonterminals; ++i) {
-                out << "std::nullopt";
-                if (i + 1 < max_nonterminals)
-                    out << ", ";
-            }
+        const auto &value = row_table[state];
+        std::vector<std::string> row(max_nonterminals, "std::nullopt");
+        for (auto [name, new_state] : value) {
+            auto search_name = name;
+            if (search_name == std::vector<std::string>{"$"})
+                search_name = std::vector<std::string>{"NONE"};
+            auto find_it = std::find(rules.begin(), rules.end(), search_name);
+            if (find_it == rules.end())
+                throw Error("Token '%$' in goto table not found among 'rules'", corelib::text::join(name, "_"));
+            auto index = find_it - rules.begin();
+            row[index] = "std::make_optional(" + std::to_string(new_state) + ")";
         }
-        out << "}},\n";
+        out << row[0];
+        for (auto it = row.begin() + 1; it != row.end(); ++it) {
+            out << ", " << *it;
+        }
+        out << "}}";
+        if (state + 1 < row_table.size()) out << ",";
+        out << "\n";
     }
-
     out << "}};\n";
 }
 void LRConverter::createRulesTable(std::ostringstream &out) {
     auto rules = data->getRulesTable();
     out << namespace_name << "::RulesTable " << namespace_name << "::Parser::rules_table = {\n";
     out << "\t{\n";
+    out << "\t{::" << namespace_name << "::Rules::" << "NONE" << ", 0},\n";
     for (size_t i = 0; i < rules.size(); ++i) {
         const auto &rule = rules[i];
         out << "\t{::" << namespace_name << "::Rules::" << corelib::text::join(rule.first, "_") << ", " << rule.second.first << "}";
@@ -87,16 +73,30 @@ void LRConverter::createRulesTable(std::ostringstream &out) {
     out << "\t}\n";
     out << "};\n";
 }
+void LRConverter::addparseFromFunctions(std::ostringstream &out) {
+    out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
+        auto pos = Lexer::iterator(lexer);
+        parseFromPos(pos, action_table, goto_table, rules_table);
+    })" << '\n';
+        out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
+        if (lexer == nullptr) {
+            Lexer lexer(text);
+            auto pos = Lexer::lazy_iterator(lexer, text);
+            parseFromPos(pos, action_table, goto_table, rules_table);
+        } else {
+            auto pos = Lexer::lazy_iterator(lexer, text);
+            parseFromPos(pos, action_table, goto_table, rules_table);
+        }
+    })" << '\n';
+}
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    auto rules_fullname = data->getNonTerminalNames();
-    auto tokens_fullname = data->getTerminalNames();
     std::vector<std::string> tokens, rules;
-    std::for_each(tokens_fullname.begin(), tokens_fullname.end(), [&tokens](const auto &vec){
+    std::for_each(this->tokens.begin(), this->tokens.end(), [&tokens](const auto &vec){
         if (std::find(tokens.begin(), tokens.end(), corelib::text::join(vec, "_")) == tokens.end())
             tokens.push_back(corelib::text::join(vec, "_"));
     });
-    std::for_each(rules_fullname.begin(), rules_fullname.end(), [&rules](const auto &vec){
+    std::for_each(this->rules.begin(), this->rules.end(), [&rules](const auto &vec){
         if (std::find(rules.begin(), rules.end(), corelib::text::join(vec, "_")) == rules.end())
             rules.push_back(corelib::text::join(vec, "_"));
     });
@@ -104,13 +104,13 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     tokens_ir.makeIR();
     tokens_ir.optimizeIR();
     LLConverter converter(tokens_ir, *tree, &lexer_code, &success_var, filename);
-    auto datablocks = tree->get_data_blocks(tokens_ir);
-    data_block_tokens = datablocks.first;
-    data_block_rules = datablocks.second;
+    data_block_tokens = converter.getDataBlockToken();
+    data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);
     converter.addTokensToString(tokens, out);
     converter.addRulesToString(rules, out);
     converter.addStandardFunctionsLexer(out);
+    addparseFromFunctions(out);
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
     converter.convertLexerCode(lexer_code.getData(), out);
@@ -137,9 +137,9 @@ void LRConverter::createActionStruct(std::ostringstream &out) {
 }
 void LRConverter::createTableTypes(std::ostringstream &out) {
     out
-        << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< max_terminals << ">, " << max_states << ">;\n"
-        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << max_nonterminals << ">, " << max_states << ">;\n"
-        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << max_nonterminals << ">;\n"
+        << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
+        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states << ">;\n"
+        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules.size() << ">;\n"
     ;
 }
 void LRConverter::create_parser_header(std::ostringstream &out) {
@@ -149,15 +149,18 @@ void LRConverter::create_parser_header(std::ostringstream &out) {
         << "\t\t\tstatic GotoTable goto_table;\n"
         << "\t\t\tstatic RulesTable rules_table;\n";
 }
+void LRConverter::addStandardFunctionsParser(std::ostringstream &out) {
+    out 
+        << "\t\tvoid parseFromTokens();\n"
+        << "\t\tvoid lazyParse();\n";
+}
 void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) {
-    auto tokens_fullname = data->getTerminalNames();
-    auto rules_fullname = data->getNonTerminalNames();
     std::vector<std::string> tokens, rules;
-    std::for_each(tokens_fullname.begin(), tokens_fullname.end(), [&tokens](const auto &vec){
+    std::for_each(this->tokens.begin(), this->tokens.end(), [&tokens](const auto &vec){
         if (std::find(tokens.begin(), tokens.end(), corelib::text::join(vec, "_")) == tokens.end())
             tokens.push_back(corelib::text::join(vec, "_"));
     });
-    std::for_each(rules_fullname.begin(), rules_fullname.end(), [&rules](const auto &vec){
+    std::for_each(this->rules.begin(), this->rules.end(), [&rules](const auto &vec){
         if (std::find(rules.begin(), rules.end(), corelib::text::join(vec, "_")) == rules.end())
             rules.push_back(corelib::text::join(vec, "_"));
     });
@@ -177,12 +180,17 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) {
     // create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
     create_parser_header(out);
+    addStandardFunctionsParser(out);
     close_parser_header(out);
     close_library(out, namespace_name);
 }
 void LRConverter::output(std::string filename) {
     namespace_name = filename;
     std::ostringstream cpp_out, h_out;
+    tokens = data->getTerminalNames();
+    rules = data->getNonTerminalNames();
+    tokens.insert(tokens.begin(), {"NONE"});
+    rules.insert(rules.begin(), {"NONE"});
     outputIR(cpp_out, filename);
     outputHeader(h_out, filename);
     std::ofstream cpp(filename + ".cpp");

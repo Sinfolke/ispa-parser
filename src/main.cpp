@@ -94,7 +94,6 @@ int main(int argc, char** argv) {
     //tree.resolveConflicts();
     auto use = tree.accamulate_use_data_to_map();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    cpuf::printf("type: %s\n", use["name"].data.type().name());
     auto name = std::any_cast<std::string>(use["name"].data);
     if (!args.get("a").empty() && args.get("a").values[0] == "LR") {
         LRParser LRIR(tree);

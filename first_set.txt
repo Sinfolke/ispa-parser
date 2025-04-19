@@ -1,32 +1,5 @@
-AUTO_12: {}
-AUTO_11: {}
-AUTO_17: {}
-AUTO_22: {}
-__q2: {__q2, }
-AUTO_23: {}
-ID: {}
-AUTO_26: {}
-AUTO_1: {}
-AUTO_10: {}
-AUTO_18: {}
-arg_list: {arg_list, }
-AUTO_13: {}
-expr: {expr, }
-AUTO_25: {}
-main: {main, }
-AUTO_16: {}
-power: {power, }
-AUTO_7: {}
-term: {term, }
-AUTO_24: {}
-AUTO_14: {}
-factor: {factor, }
-AUTO_2: {}
-AUTO_4: {}
-AUTO_15: {}
-AUTO_21: {}
-AUTO_0: {}
-AUTO_3: {}
-__grp1: {__grp1, }
-AUTO_6: {}
-AUTO_5: {}
+__q0_tail: {NUMBER, ε, }
+term: {NUMBER, }
+__q0: {NUMBER, }
+main: {NUMBER, }
+__start: {NUMBER, }

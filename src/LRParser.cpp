@@ -86,6 +86,26 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
     }
     throw Error("Undefined action type");
 }
+auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action, VectorHash>> {
+    std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action, VectorHash>> row_table;
+    for (auto [state, value] : action_table) {
+        while(row_table.size() <= state) {
+            row_table.push_back({});
+        }
+        row_table[state] = value;
+    }
+    return row_table;
+}
+auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t, VectorHash>> {
+    std::vector<std::unordered_map<std::vector<std::string>, size_t, VectorHash>> row_table;
+    for (auto [state, value] : goto_table) {
+        while(row_table.size() <= state) {
+            row_table.push_back({});
+        }
+        row_table[state] = value;
+    }
+    return row_table;
+}
 void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements) {
     for (size_t i = 0; i < rules.size(); i++) {
         auto &rule_rule = rules[i];
@@ -111,7 +131,6 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
 
             if (quantifier_char == '\0') {
                 // Replace current rule with expanded group
-                cpuf::printf("inlining group\n");
                 rules.erase(rules.begin() + i);
                 rules.insert(rules.begin() + i, val.begin(), val.end());
                 i += val.size() - 2;
@@ -189,7 +208,6 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         }
         case Parser::Rules::Rule_op:
         {
-            cpuf::printf("Replacing rule_op\n");
         
             auto val = std::any_cast<std::vector<Parser::Rule>>(rule.data);
         
@@ -230,6 +248,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 } else {
                     rules[i] = val[0];
                     val_it++;
+                    _count++;
                 }
         
                 push_name = fullname.back();
@@ -411,47 +430,47 @@ void LRParser::transform(Parser::Tree &tree, std::vector<std::string> &fullname,
         fullname.pop_back();
     }
 }
-// void LRParser::debug(Parser::Tree &tree, std::vector<std::string> &fullname) {
-//     size_t size = tree.size();
-//     for (size_t i = 0; i < size; i++) {
-//         auto &member = tree[i];
-//         if (member.name != Parser::Rules::Rule)
-//             continue;
-//         if (!member.data.has_value()) {
-//             continue;
-//         }
-//         auto data = std::any_cast<obj_t&>(member.data);
-//         auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-//         auto name_str = std::any_cast<std::string>(name.data);
-//         auto rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "rule"));
-//         auto nested_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "nestedRules"));
-//         // do not include tokens
-//         if (corelib::text::isUpper(name_str))
-//             continue;
-//         fullname.push_back(name_str);
-//         cpuf::printf("%$: ", fullname);
-//         for (auto rule_rule : rules) {
-//             if (!rule_rule.data.has_value())
-//                 continue;
-//             auto rule = Tokens::getValueFromRule_rule(rule_rule);
-//             if (rule.name != Parser::Rules::Rule_other) {
-//                 cpuf::printf("<%s>", Parser::RulesToString(rule_rule.name));
-//                 continue;
-//             }
-//             auto ro = std::any_cast<rule_other>(rule.data);
-//             cpuf::printf("%$ ", ro.fullname);
-//         }
-//         cpuf::printf("\n");
-//         debug(nested_rules, fullname);
-//         fullname.pop_back();
-//     }
-// }
+void LRParser::debug(Parser::Tree &tree, std::vector<std::string> &fullname) {
+    size_t size = tree.size();
+    for (size_t i = 0; i < size; i++) {
+        auto &member = tree[i];
+        if (member.name != Parser::Rules::Rule)
+            continue;
+        if (!member.data.has_value()) {
+            continue;
+        }
+        auto data = std::any_cast<obj_t&>(member.data);
+        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
+        auto name_str = std::any_cast<std::string>(name.data);
+        auto rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "rule"));
+        auto nested_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "nestedRules"));
+        // do not include tokens
+        if (corelib::text::isUpper(name_str))
+            continue;
+        fullname.push_back(name_str);
+        cpuf::printf("%$: ", fullname);
+        for (auto rule_rule : rules) {
+            if (!rule_rule.data.has_value())
+                continue;
+            auto rule = Tokens::getValueFromRule_rule(rule_rule);
+            if (rule.name != Parser::Rules::Rule_other) {
+                cpuf::printf("<%s>", Parser::RulesToString(rule_rule.name));
+                continue;
+            }
+            auto ro = std::any_cast<rule_other>(rule.data);
+            cpuf::printf("%$ ", ro.fullname);
+        }
+        cpuf::printf("\n");
+        debug(nested_rules, fullname);
+        fullname.pop_back();
+    }
+}
 void LRParser::transform() {
     tree->removeEmptyRule();
     std::vector<std::string> fullname;
     std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> replacements;
     transform(tree->getRawTree(), fullname, replacements);
-    // debug(tree->getRawTree(), fullname);
+    debug(tree->getRawTree(), fullname);
 }
 
 void LRParser::addAugmentedRule() {
@@ -508,57 +527,85 @@ LRParser::InitialItemSet LRParser::construct_initial_item_set() {
     construct_initial_item_set(tree->getRawTree(), initial_item_set, fullname);
     return initial_item_set;
 }
-void LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& options) {
-
-    // Start with an initial assumption: all First sets are empty
+void LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& options, const std::vector<std::string> &nonterminal, bool &changed) {
     for (auto &option : options) {
-        for (auto rule : option) {
-            first[rule.fullname] = {};  // Initialize empty set for each rule
-        }
-    }
+        bool nullable_prefix = true;
+        for (auto &rule : option) {
+            auto &currentFirst = first[nonterminal];
 
-    bool changed;
-
-    // Continue until no changes occur in the First sets
-    do {
-        changed = false;
-
-        for (auto &option : options) {
-            for (auto &rule : option) {
-                auto &firstSetForRule = first[rule.fullname];
-
-                if (corelib::text::isUpper(rule.name)) {
-                    // Non-terminal: expand its First set
-                    auto &nextSet = first[rule.fullname]; // First set of the current rule
-                    size_t initialSize = firstSetForRule.size();
-
-                    // Recursively add First set of the rule
-                    firstSetForRule.insert(nextSet.begin(), nextSet.end());
-
-                    // If the set size changed, mark that we need another iteration
-                    if (firstSetForRule.size() > initialSize) {
-                        changed = true;
-                    }
+            if (corelib::text::isLower(rule.name)) {
+                // Nonterminal: take FIRST(rule.fullname)
+                cpuf::printf("[nonterminal %$] ", rule.fullname);
+                auto find = first.find(rule.fullname);
+                const auto &otherFirst = first[rule.fullname];
+                cpuf::printf("FIRST(%$) = ", rule.fullname);
+                for (const auto& el : otherFirst) {
+                    cpuf::printf("%$, ", el);
+                }
+                auto currentFirst_size = currentFirst.size();
+                currentFirst.insert(otherFirst.begin(), otherFirst.end());
+                if (currentFirst_size > currentFirst.size()) {
+                    changed = true;
+                    cpuf::printf("(changed), ");
                 } else {
-                    // Terminal: directly add to the First set
-                    if (firstSetForRule.find(rule.fullname) == firstSetForRule.end()) {
-                        firstSetForRule.insert(rule.fullname); // Add terminal
-                        changed = true;
+                    cpuf::printf("(not changed), ");
+                }
+                // Check if nullable
+                bool isNullable = false;
+                auto &rules = initial_item_set[rule.fullname];
+                for (const auto &r : rules) {
+                    if (r.empty()) {
+                        isNullable = true;
+                        cpuf::printf("(nullable), ");
+                        break;
                     }
                 }
+
+                if (!isNullable) {
+                    nullable_prefix = false;
+                    break;
+                }
+
+            } else {
+                // Terminal: add directly
+                cpuf::printf("[terminal %$] ", rule.fullname);
+                if (first[nonterminal].insert(rule.fullname).second) {
+                    cpuf::printf("(added), ");
+                    changed = true;
+                }
+
+                nullable_prefix = false;
+                break;
             }
         }
-    } while (changed);
-}
-
-void LRParser::constructFirstSet() {
-    // Assuming initial_item_set is properly structured
-    for (auto &el : initial_item_set) {
-        auto name = el.first;
-        auto itemSet = el.second;
-        constructFirstSet(itemSet);  // Recurse through all initial items
+        cpuf::printf("\n");
+        // If all symbols in this production were nullable
+        if (nullable_prefix) {
+            if (first[nonterminal].insert({"ε"}).second) // Or whatever symbol you use for ε
+                changed = true;
+        }
     }
 }
+void LRParser::constructFirstSet() {
+    bool changed;
+    do {
+        changed = false;
+        for (const auto &el : initial_item_set) {
+            const auto &nonterminal = el.first;
+            const auto &productions = el.second;
+            cpuf::printf("constructing first set for %$ -> ", nonterminal);
+            constructFirstSet(productions, nonterminal, changed);
+        }
+    } while (changed);
+    // final pass to ensure all nonterminals have a first set
+    for (const auto &el : initial_item_set) {
+        const auto &nonterminal = el.first;
+        const auto &productions = el.second;
+        cpuf::printf("constructing first set for %$ -> ", nonterminal);
+        constructFirstSet(productions, nonterminal, changed);
+    }
+}
+
 void LRParser::constructFollowSet() {
     follow[{"__start"}] = {{"$"}};
     bool hasChanges;
@@ -609,7 +656,55 @@ void LRParser::constructFollowSet() {
         }
     } while(hasChanges);
 }
-
+void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, CanonicalEl &new_item) {
+    size_t next_pos = new_item.dot_pos + 1;
+    // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
+    if (rhs_group.empty() || next_pos >= rhs_group.size()) {
+        // end of rule, compute lookahead of follow(current)
+        auto &lookahead = follow[lhs_name];
+        new_item.lookahead.insert(lookahead.begin(), lookahead.end());
+        return;
+    }
+    // check whether next symbol is terminal or non-terminal
+    bool epsilon_in_all = true;
+    for (size_t i = next_pos; i < rhs_group.size(); i++) {
+        auto &symbol = rhs_group[i];
+        if (corelib::text::isUpper(symbol.name)) {
+            // terminal
+            // cpuf::printf("[terminal] %$", symbol.fullname);
+            new_item.lookahead.insert(symbol.fullname);
+            epsilon_in_all = false;
+            break;
+        } else {
+            // non-terminal, insert FIRST of next symbol
+            auto &first_set = first[symbol.fullname];
+            bool has_espsilon = false;
+            // cpuf::printf("[non-terminal %$] ", symbol.fullname);
+            for (const auto& el : first_set) {
+                if (el == std::vector<std::string>{"ε"}) {
+                    has_espsilon = true;
+                    continue;
+                }
+                // cpuf::printf("%$, ", el);
+                new_item.lookahead.insert(el);
+            }
+            // If ε is in FIRST, add FOLLOW of LHS
+            if (!has_espsilon) {
+                epsilon_in_all = false;
+                break;
+            }
+        }
+    }
+    // If all symbols after dot can derive ε, add FOLLOW(lhs)
+    if (epsilon_in_all) {
+        const auto& follow_set = follow[lhs_name];
+        new_item.lookahead.insert(follow_set.begin(), follow_set.end());
+    }
+    // for (auto el : new_item.lookahead) {
+    //     cpuf::printf("%$, ", el);
+    // }
+    // cpuf::printf("\n");
+}
 void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name) {
     for (const auto& rhs_group : item) {
         CanonicalEl new_item;
@@ -622,7 +717,7 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
         new_item.rhs = rhs_group;
         new_item.dot_pos = 0;
         new_item.rule_index = rule_index++;
-
+        compute_cci_lookahead(rhs_group, lhs_name, new_item);
         // Avoid duplicate
         if (std::find(closure.begin(), closure.end(), new_item) != closure.end()) {
             continue;
@@ -666,16 +761,35 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
         CanonicalItem current = worklist.front();
         worklist.pop();
 
-        std::map<std::string, CanonicalItem> transitions;
+        // You likely need to aggregate per symbol with a merged lookahead set
+        std::unordered_map<std::vector<std::string>, CanonicalItem, VectorHash> transitions;
 
         for (const auto& item : current) {
             if (item.dot_pos < item.rhs.size()) {
-                const std::string& sym = item.rhs[item.dot_pos].name;
+                const auto& sym = item.rhs[item.dot_pos].fullname;
+
                 CanonicalEl advanced = item;
                 advanced.dot_pos++;
-                transitions[sym].push_back(advanced);
+                compute_cci_lookahead(advanced.rhs, advanced.lhs.fullname, advanced);
+
+                // Merge item into the transition set for this symbol
+                auto& itemset = transitions[sym];
+
+                // If an identical core+dot_pos exists but with different lookahead, merge
+                bool found = false;
+                for (auto& e : itemset) {
+                    if (e.lhs == advanced.lhs && e.rhs == advanced.rhs && e.dot_pos == advanced.dot_pos) {
+                        e.lookahead.insert(advanced.lookahead.begin(), advanced.lookahead.end());
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    itemset.push_back(advanced);
+                }
             }
         }
+
 
         for (auto& [sym, items] : transitions) {
             CanonicalItem closure = items;
@@ -701,8 +815,6 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 
     return cci;
 }
-
-
 
 
 size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) {
@@ -745,91 +857,79 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     // Step 4: If not, add it (only do this if building dynamically — otherwise error)
     throw Error("GOTO leads to non-existent state. Should be precomputed.");
 }
-std::vector<std::string> LRParser::getLookaheadToken(const CanonicalEl& rule) {
-    // Get the lookahead token after the dot
-    if (rule.dot_pos < rule.rhs.size()) {
-        const auto& next = rule.rhs[rule.dot_pos];
-        if (corelib::text::isLower(next.name)) {
-            // If it’s a terminal symbol
-            return next.fullname;
-        }
-    }
-    // If no valid lookahead token, return a default (e.g., "$")
-    return {"$"};
-}
 void LRParser::build() {
     addAugmentedRule();
+    use_places = tree->getUsePlacesTable();
     initial_item_set = construct_initial_item_set();
-    canonical_item_set = construct_cannonical_collections_of_items();
-    rule_index = 0;
     constructFirstSet();
     constructFollowSet();
-    size_t I = 0;
+    canonical_item_set = construct_cannonical_collections_of_items();
+    rule_index = 0;
 
+    size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         for (const auto& rule : item_set) {
             // Dot is at the end → Reduce or Accept
             if (rule.dot_pos >= rule.rhs.size()) {
-
                 // Accept condition: augmented rule with start symbol
                 if (rule.lhs.name == "__start" && rule.rhs.size() == 1) {
-                    action_table[I]["$"] = Action{Action_type::ACCEPT, 0};
+                    action_table[I][{"$"}] = Action{Action_type::ACCEPT, 0};
                     continue;
                 }
 
                 // Reduce: only insert reduce if no conflicting shift action exists
                 // Use the lookahead token for LR(1)
-                auto lookahead = getLookaheadToken(rule); // Define a function to get the lookahead token
-                auto key = corelib::text::join(lookahead, "_");
                 size_t reduce_index = 0;
-                if (action_table[I].count(key) == 0) {
-                    // No existing shift, safe to reduce
-                    auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
-                        if (rule.lhs.fullname != el.first)
-                            return false;
-                        auto &rhs = el.second.second;
-                        if (rhs.size() != rule.rhs.size())
-                            return false;
-                        for (size_t i = 0; i < rhs.size(); i++) {
-                            if (rhs[i].fullname != rule.rhs[i].fullname) 
+                cpuf::printf("Got lookahead for %$ -> ", rule.lhs.fullname);
+                for (auto lookahead : rule.lookahead) {
+                    cpuf::printf("%$, ", lookahead);
+                    if (action_table[I].count(lookahead) == 0) {
+                        // No existing shift, safe to reduce
+                        auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
+                            if (rule.lhs.fullname != el.first)
                                 return false;
+                            auto &rhs = el.second.second;
+                            if (rhs.size() != rule.rhs.size())
+                                return false;
+                            for (size_t i = 0; i < rhs.size(); i++) {
+                                if (rhs[i].fullname != rule.rhs[i].fullname) 
+                                    return false;
+                            }
+                            return true;
+                        });
+                        if (found_rhs != rules.end()) {
+                            reduce_index = found_rhs - rules.begin();
+                        } else {
+                            rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
+                            reduce_index = rules.size() - 1;
                         }
-                        return true;
-                    });
-                    if (found_rhs != rules.end()) {
-                        reduce_index = found_rhs - rules.begin();
+                        action_table[I][lookahead] = Action{Action_type::REDUCE, reduce_index};
                     } else {
-                        rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
-                        reduce_index = rules.size() - 1;
-                    }
-                    action_table[I][key] = Action{Action_type::REDUCE, reduce_index};
-                } else {
-                    // Shift/Reduce conflict warning (can be logged or handled)
-                    const auto& existing = action_table[I][key];
-                    if (existing.type == Action_type::SHIFT) {
-                        // Conflict resolution (log or handle)
-                        cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
+                        // Shift/Reduce conflict warning (can be logged or handled)
+                        const auto& existing = action_table[I][lookahead];
+                        if (existing.type == Action_type::SHIFT) {
+                            // Conflict resolution (log or handle)
+                            cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
+                        }
                     }
                 }
-            }
-            // Dot is before a symbol
-            else {
+                cpuf::printf("\n");
+            } else {            // Dot is before a symbol
                 const auto& next = rule.rhs[rule.dot_pos];
                 size_t next_state = find_goto_state(item_set, next); // goto(I, X)
-
+            
                 if (corelib::text::isLower(next.name)) {
                     // Non-terminal → GOTO
-                    goto_table[I][corelib::text::join(next.fullname, "_")] = next_state;
+                    goto_table[I][next.fullname] = next_state;
                 } else {
                     // Terminal → SHIFT (unconditionally)
-                    std::string token_name = corelib::text::join(next.fullname, "_");
-                    if (action_table[I].count(token_name) == 0) {
-                        action_table[I][token_name] = Action{Action_type::SHIFT, next_state};
+                    if (action_table[I].count(next.fullname) == 0) {
+                        action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
                     } else {
                         // Optional: warn if double SHIFT or SHIFT/REDUCE
-                        const auto& existing = action_table[I][token_name];
+                        const auto& existing = action_table[I][next.fullname];
                         if (existing.type != Action_type::SHIFT || existing.state != next_state) {
-                            cpuf::printf("Conflict: Duplicate or incompatible SHIFT at state %$ for token %$\n", I, token_name);
+                            cpuf::printf("Conflict: Duplicate or incompatible SHIFT at state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
                         }
                     }
                 }
@@ -838,6 +938,7 @@ void LRParser::build() {
         I++;
     }
 }
+
 
 void LRParser::formatFirstOrFollowSet(std::ostringstream &oss, First &set) {
     for (auto &el : set) {
@@ -911,11 +1012,9 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
                     oss << "• ";
                 }
                 if (i < item.rhs.size()) {
-                    oss << "{ ";
                     for (const auto &part : item.rhs[i].fullname) {
                         oss << part << " ";
                     }
-                    oss << "} ";
                 }
             }
 
@@ -961,7 +1060,7 @@ std::string LRParser::formatActionTable() const {
     for (const auto& state_entry : action_table) {
         size_t state = state_entry.first;
         for (const auto& token_entry : state_entry.second) {
-            const std::string& token = token_entry.first;
+            const std::string& token = corelib::text::join(token_entry.first, "_");
             const Action& action = token_entry.second;
 
             std::string action_str;
@@ -1007,7 +1106,7 @@ std::string LRParser::formatGotoTable() const {
     for (const auto& state_entry : goto_table) {
         size_t state = state_entry.first;
         for (const auto& non_terminal_entry : state_entry.second) {
-            const std::string& non_terminal = non_terminal_entry.first;
+            const std::string& non_terminal = corelib::text::join(non_terminal_entry.first, "_");
             size_t next_state = non_terminal_entry.second;
 
             oss << std::left

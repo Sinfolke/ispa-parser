@@ -337,42 +337,43 @@ public:
      */
     class lazy_iterator {
         Lexer_base<TOKEN_T>* owner = nullptr;
-        std::deque<node<TOKEN_T>> tokens;
+        node<TOKEN_T> current;
         const char* pos = nullptr;
         size_t counter = 0;
         public:
-            lazy_iterator(const Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {}
+            lazy_iterator(Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {}
             lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in) : owner(owner), pos(in) {}
             bool isEnd() {
-                return tokens[0].empty();
+                return current.empty();
             }
             void operator=(lazy_iterator iterator) {
                 // add only first token that currently may be accessed
                 // ommit others
-                tokens.push_back(iterator.tokens[0]);
+                current = iterator.current;
                 pos = iterator.pos;
                 counter = iterator.counter;
             }
             void operator+=(size_t count) {
-                tokens.erase(tokens.begin() + count);
+                current = owner->makeToken(pos);
                 counter += count;
             }
             auto operator-(lazy_iterator iterator) {
                 return counter - iterator.counter;
             }
             node<TOKEN_T>& operator*() {
-                if (tokens.empty())
-                    tokens.push_back(owner->makeToken(pos));
-                return tokens[0];
+                return current;
             }    
             lazy_iterator& operator++() {
                 this->operator+=(1);
                 return *this;
             }
+            lazy_iterator operator++(int) {
+                auto temp = *this;
+                this->operator+=(1);
+                return temp;
+            }
             node<TOKEN_T>* operator->() {
-                if (tokens.empty())
-                    tokens.push_back(owner->makeToken(pos));
-                return &tokens[0];
+                return &current;
             }
             auto getCounter() {
                 return counter;
@@ -403,10 +404,16 @@ public:
             node<TOKEN_T>& operator*() {
                 return *pos;
             }    
-            lazy_iterator& operator++() {
+            iterator& operator++() {
                 this->operator+=(1);
                 return *this;
             }
+            iterator operator++(int) {
+                auto temp = *this;
+                this->operator+=(1);
+                return temp;
+            }
+            
             node<TOKEN_T>* operator->() {
                 return &(*pos);
             }
@@ -686,8 +693,7 @@ private:
         stack.push_back({pos->name(), state});
         pos++;
     }
-    template<class IT>
-    void reduce(IT &pos, size_t rules_id, const GotoTable &goto_table, const RulesTable rules_table) {
+    void reduce(const size_t rules_id, const GotoTable &goto_table, const RulesTable rules_table) {
         const auto &rule_data = rules_table[rules_id];
         const auto &rule_name = rule_data.first;
         const auto &reduce_size = rule_data.second;
@@ -695,6 +701,8 @@ private:
             throw std::runtime_error("Stack underflow during reduce");
         }
         stack.erase(stack.end() - reduce_size, stack.end());
+        printf("Reduce: goto_table[%zu][%d]\n", (int) stack.back().second, (int) rule_name);
+        // Perform the reduction
         const auto& goto_entry = goto_table[stack.back().second][static_cast<size_t>(rule_name)];
         if (!goto_entry.has_value()) {
             throw std::runtime_error("Invalid GOTO after reduction");
@@ -704,26 +712,32 @@ private:
         stack.push_back({rule_name, next_state});
     } 
 protected:
-    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {};
-    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {};
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {
+        return {};
+    }
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {
+        return {};
+    }
     template<class IT>
     void parseFromPos(IT& pos, const ActionTable &action_table, const GotoTable &goto_table, RulesTable rules_table) {
         stack.push_back({TOKEN_T::NONE, 0});
         while(true) {
             auto &current_state = stack.back().second;
-            auto &action = action_table[current_state][pos->name()];
+            const auto &action = action_table[current_state][(size_t) pos->name()];
+            printf("Token name: %d\n", (int) pos->name());
             if (action.has_value()) {
                 auto& act = action.value();
+                printf("action: %d, next state: %zu\n", (int) act.type, act.state);
                 if (act.type == Action::SHIFT)
-                    shift(pos, action.state);
+                    shift(pos, act.state);
                 else if (act.type == Action::REDUCE)
-                    reduce(pos, action.state, goto_table, rules_table);
+                    reduce(act.state, goto_table, rules_table);
                 else if (act.type == Action::ACCEPT)
                     break;
                 else
                     throw std::runtime_error("Error state");
             } else {
-                throw std::runtime_error("Action is not defined");
+                throw std::runtime_error(("Action is not defined. stack size()" + std::to_string(stack.size())).c_str());
             }
         }
     }

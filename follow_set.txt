@@ -1,33 +1,8 @@
-AUTO_12: {$, }
-AUTO_11: {$, }
-AUTO_7: {expr, }
-AUTO_17: {expr, }
-AUTO_22: {$, }
-__q2: {$, }
-AUTO_23: {$, }
+NUMBER: {$, }
+__q0_tail: {$, }
+__q0: {$, AUTO_0, }
+term: {$, AUTO_0, AUTO_1, NUMBER, }
+AUTO_0: {NUMBER, }
+main: {$, }
+AUTO_1: {NUMBER, }
 __start: {$, }
-ID: {$, }
-AUTO_26: {expr, }
-AUTO_1: {expr, }
-AUTO_10: {$, }
-AUTO_18: {ID, }
-arg_list: {$, }
-AUTO_13: {power, }
-expr: {$, AUTO_0, AUTO_1, AUTO_11, AUTO_18, AUTO_2, AUTO_22, AUTO_24, AUTO_4, AUTO_7, __grp1, expr, }
-AUTO_25: {$, }
-main: {$, __grp1, }
-AUTO_16: {power, }
-power: {$, }
-term: {$, AUTO_13, AUTO_14, expr, }
-AUTO_24: {$, }
-AUTO_14: {power, }
-factor: {$, AUTO_16, AUTO_24, }
-AUTO_2: {expr, }
-AUTO_4: {$, }
-AUTO_15: {$, }
-AUTO_21: {$, expr, }
-AUTO_0: {expr, }
-AUTO_3: {$, }
-__grp1: {$, }
-AUTO_6: {$, }
-AUTO_5: {expr, }

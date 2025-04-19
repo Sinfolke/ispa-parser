@@ -16,12 +16,15 @@
 #include <LLConverter.h>
 class LRConverter : public LRConverter_base, public LLHeader {
 private:
-    size_t max_terminals, max_nonterminals, max_states;
+    size_t max_states;
     data_block_t data_block_tokens, data_block_rules;
+    std::vector<std::vector<std::string>> tokens, rules;
     // private variables used for convertion
     void addIncludesCpp(std::ostringstream &out, const std::string &name);
     void addIncludes_h(std::ostringstream &out);
     void createTableTypes(std::ostringstream &out);
+    void addparseFromFunctions(std::ostringstream &out);
+    void addStandardFunctionsParser(std::ostringstream &out);
     void create_parser_header(std::ostringstream &out);
     void createActionStruct(std::ostringstream &out);
     void createActionTable(std::ostringstream &out);

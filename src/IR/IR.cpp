@@ -1234,6 +1234,8 @@ LLIR::var_type LLIR::deduceTypeFromExpr(const Parser::Rule &expr) {
     }
 }
 LLIR::data_block LLIR::TreeDataBlockToIR(const Parser::Rule &rule) {
+    if (rule.empty())
+        return {};
     auto val = std::any_cast<Parser::Rule>(rule.data);
     LLIR::data_block datablock;
     if (val.name == Parser::Rules::Rule_data_block_inclosed_map) {
