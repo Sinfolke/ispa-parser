@@ -60,14 +60,13 @@ void LRConverter::createGotoTable(std::ostringstream &out) {
     out << "}};\n";
 }
 void LRConverter::createRulesTable(std::ostringstream &out) {
-    auto rules = data->getRulesTable();
+    rules_table = data->getRulesTable();
     out << namespace_name << "::RulesTable " << namespace_name << "::Parser::rules_table = {\n";
     out << "\t{\n";
-    out << "\t{::" << namespace_name << "::Rules::" << "NONE" << ", 0},\n";
-    for (size_t i = 0; i < rules.size(); ++i) {
-        const auto &rule = rules[i];
+    for (size_t i = 0; i < rules_table.size(); ++i) {
+        const auto &rule = rules_table[i];
         out << "\t{::" << namespace_name << "::Rules::" << corelib::text::join(rule.first, "_") << ", " << rule.second.first << "}";
-        if (i + 1 < rules.size()) out << ",";
+        if (i + 1 < rules_table.size()) out << ",";
         out << "\n";
     }
     out << "\t}\n";
@@ -138,8 +137,8 @@ void LRConverter::createActionStruct(std::ostringstream &out) {
 void LRConverter::createTableTypes(std::ostringstream &out) {
     out
         << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
-        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states << ">;\n"
-        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules.size() << ">;\n"
+        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
+        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
     ;
 }
 void LRConverter::create_parser_header(std::ostringstream &out) {

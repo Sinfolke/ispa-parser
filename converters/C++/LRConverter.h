@@ -19,6 +19,7 @@ private:
     size_t max_states;
     data_block_t data_block_tokens, data_block_rules;
     std::vector<std::vector<std::string>> tokens, rules;
+    LRParser::Rules rules_table;
     // private variables used for convertion
     void addIncludesCpp(std::ostringstream &out, const std::string &name);
     void addIncludes_h(std::ostringstream &out);

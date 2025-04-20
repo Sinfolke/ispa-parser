@@ -1,7 +1,6 @@
 I0:
 	__start → • main 
-	main → • __q0 AUTO_0 __q0 
-	__q0 → • term __q0_tail 
+	main → • term AUTO_0 term 
 	term → • NUMBER 
 	term → • term AUTO_1 term 
 
@@ -9,47 +8,27 @@ I1:
 	term → NUMBER • 
 
 I2:
-	__q0 → term • __q0_tail 
+	main → term • AUTO_0 term 
 	term → term • AUTO_1 term 
-	__q0_tail → • 
-	__q0_tail → • term __q0 
-	term → • NUMBER 
-	term → • term AUTO_1 term 
 
 I3:
-	main → __q0 • AUTO_0 __q0 
-
-I4:
 	__start → main • 
 
-I5:
-	__q0_tail → term • __q0 
-	term → term • AUTO_1 term 
-	__q0 → • term __q0_tail 
-	term → • NUMBER 
-	term → • term AUTO_1 term 
-
-I6:
+I4:
 	term → term AUTO_1 • term 
 	term → • NUMBER 
 	term → • term AUTO_1 term 
 
-I7:
-	__q0 → term __q0_tail • 
-
-I8:
-	main → __q0 AUTO_0 • __q0 
-	__q0 → • term __q0_tail 
+I5:
+	main → term AUTO_0 • term 
 	term → • NUMBER 
 	term → • term AUTO_1 term 
 
-I9:
-	__q0_tail → term __q0 • 
-
-I10:
+I6:
 	term → term AUTO_1 term • 
 	term → term • AUTO_1 term 
 
-I11:
-	main → __q0 AUTO_0 __q0 • 
+I7:
+	main → term AUTO_0 term • 
+	term → term • AUTO_1 term 
 

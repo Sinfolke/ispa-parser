@@ -1,5 +1,3 @@
-__q0_tail: {NUMBER, ε, }
 term: {NUMBER, }
-__q0: {NUMBER, }
 main: {NUMBER, }
 __start: {NUMBER, }

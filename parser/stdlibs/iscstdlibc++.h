@@ -341,8 +341,13 @@ public:
         const char* pos = nullptr;
         size_t counter = 0;
         public:
-            lazy_iterator(Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {}
-            lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in) : owner(owner), pos(in) {}
+            lazy_iterator(Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {
+                current = this->owner->makeToken(pos);
+            }
+            lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in) : owner(owner), pos(in) {
+                current = this->owner->makeToken(pos);
+            }
+            lazy_iterator(lazy_iterator &iterator) : owner(iterator.owner), pos(iterator.pos), counter(iterator.counter), current(iterator.current) {}
             bool isEnd() {
                 return current.empty();
             }
@@ -354,15 +359,16 @@ public:
                 counter = iterator.counter;
             }
             void operator+=(size_t count) {
-                current = owner->makeToken(pos);
+                while(count > 0 && !isEnd()) {
+                    current = owner->makeToken(pos);
+                    count--;
+                }
                 counter += count;
             }
             auto operator-(lazy_iterator iterator) {
                 return counter - iterator.counter;
             }
-            node<TOKEN_T>& operator*() {
-                return current;
-            }    
+
             lazy_iterator& operator++() {
                 this->operator+=(1);
                 return *this;
@@ -372,10 +378,13 @@ public:
                 this->operator+=(1);
                 return temp;
             }
+            node<TOKEN_T>& operator*() {
+                return current;
+            }
             node<TOKEN_T>* operator->() {
                 return &current;
             }
-            auto getCounter() {
+            auto distance() {
                 return counter;
             }
     };
@@ -687,7 +696,7 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 private:
-    std::deque<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
         stack.push_back({pos->name(), state});
@@ -724,7 +733,7 @@ protected:
         while(true) {
             auto &current_state = stack.back().second;
             const auto &action = action_table[current_state][(size_t) pos->name()];
-            printf("Token name: %d\n", (int) pos->name());
+            printf("Token name: %d, state: %zu\n", (int) pos->name(), current_state);
             if (action.has_value()) {
                 auto& act = action.value();
                 printf("action: %d, next state: %zu\n", (int) act.type, act.state);
@@ -740,6 +749,7 @@ protected:
                 throw std::runtime_error(("Action is not defined. stack size()" + std::to_string(stack.size())).c_str());
             }
         }
+        printf("Accepted. distance: %zu\n", pos.distance());
     }
 };
 

@@ -1,4 +1,4 @@
 use name: "Parser";
-main: term+ '+' term+;
+main: term '+' term;
 term: (term '*' term) | NUMBER;
 NUMBER: [0-9]+;

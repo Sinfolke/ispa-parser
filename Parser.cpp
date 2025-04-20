@@ -15,8 +15,6 @@ std::string Parser::RulesToString(Rules rule) {
 		case Rules::NONE: return "NONE";
 		case Rules::main: return "main";
 		case Rules::term: return "term";
-		case Rules::__q0_tail: return "__q0_tail";
-		case Rules::__q0: return "__q0";
 		case Rules::__start: return "__start";
 	}
 	return "NONE";
@@ -211,36 +209,25 @@ Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 }
 Parser::ActionTable Parser::Parser::action_table = {{
 	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 6}), std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 8}), std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt}},
+	{{std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 4}), std::nullopt}},
 	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::ACCEPT, 0}), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 6}), std::nullopt}},
 	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::nullopt, std::nullopt}},
 	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 5}), std::nullopt, std::nullopt}}
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 4}), std::nullopt}}
 }};
 Parser::GotoTable Parser::Parser::goto_table = {{
-	{{std::nullopt, std::make_optional(4), std::make_optional(2), std::nullopt, std::nullopt, std::make_optional(3), std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(5), std::make_optional(7), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(2), std::nullopt, std::nullopt, std::make_optional(9), std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(10), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(2), std::nullopt, std::nullopt, std::make_optional(11), std::nullopt, std::nullopt}}
+	{{std::nullopt, std::make_optional(3), std::make_optional(2), std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::make_optional(6), std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::make_optional(7), std::nullopt, std::nullopt}}
 }};
 Parser::RulesTable Parser::Parser::rules_table = {
 	{
-	{::Parser::Rules::NONE, 0},
 	{::Parser::Rules::term, 1},
-	{::Parser::Rules::__q0_tail, 0},
-	{::Parser::Rules::__q0, 2},
-	{::Parser::Rules::__q0_tail, 2},
 	{::Parser::Rules::term, 3},
 	{::Parser::Rules::main, 3}
 	}

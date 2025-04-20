@@ -597,13 +597,6 @@ void LRParser::constructFirstSet() {
             constructFirstSet(productions, nonterminal, changed);
         }
     } while (changed);
-    // final pass to ensure all nonterminals have a first set
-    for (const auto &el : initial_item_set) {
-        const auto &nonterminal = el.first;
-        const auto &productions = el.second;
-        cpuf::printf("constructing first set for %$ -> ", nonterminal);
-        constructFirstSet(productions, nonterminal, changed);
-    }
 }
 
 void LRParser::constructFollowSet() {
@@ -614,11 +607,12 @@ void LRParser::constructFollowSet() {
         for (auto &member : initial_item_set) {
             auto name = member.first;
             auto options = member.second;
-            if (corelib::text::isUpper(name.back()))
-                continue;
             for (auto rules : options) {
                 for (auto it = rules.begin(); it != rules.end(); it++) {
                     auto current = *it;
+                    if (corelib::text::isUpper(current.name)) {
+                        continue;
+                    }
                     if (it + 1 == rules.end()) {
                         if (follow[current.fullname].insert({"$"}).second) 
                             hasChanges = true;
@@ -857,6 +851,28 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     // Step 4: If not, add it (only do this if building dynamically — otherwise error)
     throw Error("GOTO leads to non-existent state. Should be precomputed.");
 }
+size_t LRParser::find_rules_index(const CanonicalEl &rule) {
+    size_t reduce_index;
+    auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
+        if (rule.lhs.fullname != el.first)
+            return false;
+        auto &rhs = el.second.second;
+        if (rhs.size() != rule.rhs.size())
+            return false;
+        for (size_t i = 0; i < rhs.size(); i++) {
+            if (rhs[i].fullname != rule.rhs[i].fullname) 
+                return false;
+        }
+        return true;
+    });
+    if (found_rhs != rules.end()) {
+        reduce_index = found_rhs - rules.begin();
+    } else {
+        rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
+        reduce_index = rules.size() - 1;
+    }
+    return reduce_index;
+}
 void LRParser::build() {
     addAugmentedRule();
     use_places = tree->getUsePlacesTable();
@@ -869,6 +885,9 @@ void LRParser::build() {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         for (const auto& rule : item_set) {
+            if (rule.rhs.empty()) {
+                
+            }
             // Dot is at the end → Reduce or Accept
             if (rule.dot_pos >= rule.rhs.size()) {
                 // Accept condition: augmented rule with start symbol
@@ -885,25 +904,7 @@ void LRParser::build() {
                     cpuf::printf("%$, ", lookahead);
                     if (action_table[I].count(lookahead) == 0) {
                         // No existing shift, safe to reduce
-                        auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
-                            if (rule.lhs.fullname != el.first)
-                                return false;
-                            auto &rhs = el.second.second;
-                            if (rhs.size() != rule.rhs.size())
-                                return false;
-                            for (size_t i = 0; i < rhs.size(); i++) {
-                                if (rhs[i].fullname != rule.rhs[i].fullname) 
-                                    return false;
-                            }
-                            return true;
-                        });
-                        if (found_rhs != rules.end()) {
-                            reduce_index = found_rhs - rules.begin();
-                        } else {
-                            rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
-                            reduce_index = rules.size() - 1;
-                        }
-                        action_table[I][lookahead] = Action{Action_type::REDUCE, reduce_index};
+                        action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                     } else {
                         // Shift/Reduce conflict warning (can be logged or handled)
                         const auto& existing = action_table[I][lookahead];

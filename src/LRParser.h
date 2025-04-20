@@ -75,6 +75,7 @@ private:
     void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
+    auto find_rules_index(const CanonicalEl &rule) -> size_t;
     // debug
     void debug(Parser::Tree &tree, std::vector<std::string> &fullname);
     void formatFirstOrFollowSet(std::ostringstream &oss, First &set);

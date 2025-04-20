@@ -1,8 +1,3 @@
-NUMBER: {$, }
-__q0_tail: {$, }
-__q0: {$, AUTO_0, }
-term: {$, AUTO_0, AUTO_1, NUMBER, }
-AUTO_0: {NUMBER, }
+term: {$, AUTO_0, AUTO_1, }
 main: {$, }
-AUTO_1: {NUMBER, }
 __start: {$, }
