@@ -41,37 +41,7 @@ namespace std {
             return seed;
         }
     };
-    template <>
-    struct hash<std::tuple<rule_other, std::vector<rule_other>, size_t>> {
-        std::size_t operator()(const std::tuple<rule_other, std::vector<rule_other>, size_t>& t) const {
-            const auto& [r1, rvec, rsize] = t;
-            std::size_t h = 0;
 
-            // Hash rule_other (assuming std::hash<rule_other> is defined)
-            h ^= std::hash<rule_other>{}(r1) + 0x9e3779b9 + (h << 6) + (h >> 2);
-
-            // Hash std::vector<rule_other>
-            for (const auto& r : rvec) {
-                h ^= std::hash<rule_other>{}(r) + 0x9e3779b9 + (h << 6) + (h >> 2);
-            }
-
-            // Hash size_t
-            h ^= std::hash<size_t>{}(rsize) + 0x9e3779b9 + (h << 6) + (h >> 2);
-
-            return h;
-        }
-    };
-    template <>
-    struct hash<std::set<std::tuple<rule_other, std::vector<rule_other>, size_t>>> {
-        size_t operator()(const std::set<std::tuple<rule_other, std::vector<rule_other>, size_t>>& s) const {
-            size_t hash_val = 0;
-            for (const auto& element : s) {
-                // Hash each element in the set (which is a tuple)
-                hash_val ^= std::hash<std::tuple<rule_other, std::vector<rule_other>, size_t>>{}(element) + 0x9e3779b9 + (hash_val << 6) + (hash_val >> 2);
-            }
-            return hash_val;
-        }
-    };
 }
 struct data_block_part {
     std::string name;
@@ -83,13 +53,28 @@ struct lexer_code {
     LLIR::node_ret_t success_var;
     lexer_code(LLIR code, LLIR::node_ret_t success_var) : code(code), success_var(success_var) {}
 };
-struct VectorHash {
+namespace std {
     template <typename T>
-    size_t operator () (const std::vector<T>& vec) const {
-        size_t seed = 0;
-        for (const auto& elem : vec) {
-            seed ^= std::hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    struct hash<vector<T>> {
+        size_t operator()(const vector<T>& vec) const noexcept {
+            size_t seed = vec.size();  // Start with size as base
+            for (const auto& elem : vec) {
+                // Combine element hash with seed using the same method as boost::hash_combine
+                seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+            return seed;
         }
-        return seed;
-    }
-};
+    };
+}
+namespace std {
+    template<typename T>
+    struct hash<unordered_set<T>> {
+        size_t operator()(const unordered_set<T>& set) const noexcept {
+            size_t seed = set.size();  // Include size in hash
+            for (const auto& elem : set) {
+                seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+            return seed;
+        }
+    };
+}

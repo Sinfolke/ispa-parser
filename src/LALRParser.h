@@ -1,8 +1,6 @@
 #include <LRParser.h>
 #include <internal_types.h>
 class LALRParser : public LRParser {
-private:
-
 protected:
     void build() override;
 public:

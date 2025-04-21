@@ -86,8 +86,8 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
     }
     throw Error("Undefined action type");
 }
-auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action, VectorHash>> {
-    std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action, VectorHash>> row_table;
+auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> {
+    std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> row_table;
     for (auto [state, value] : action_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -96,8 +96,8 @@ auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std
     }
     return row_table;
 }
-auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t, VectorHash>> {
-    std::vector<std::unordered_map<std::vector<std::string>, size_t, VectorHash>> row_table;
+auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t>> {
+    std::vector<std::unordered_map<std::vector<std::string>, size_t>> row_table;
     for (auto [state, value] : goto_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -106,7 +106,7 @@ auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::
     }
     return row_table;
 }
-void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements) {
+void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements) {
     for (size_t i = 0; i < rules.size(); i++) {
         auto &rule_rule = rules[i];
         Parser::Rule quantifier;
@@ -406,7 +406,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
     }
 }
 
-void LRParser::transform(Parser::Tree &tree, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements) {
+void LRParser::transform(Parser::Tree &tree, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements) {
     size_t size = tree.size();
     for (size_t i = 0; i < size; i++) {
         auto &member = tree[i];
@@ -470,11 +470,11 @@ void LRParser::debug(Parser::Tree &tree, std::vector<std::string> &fullname) {
 void LRParser::transform() {
     tree->removeEmptyRule();
     std::vector<std::string> fullname;
-    std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> replacements;
+    std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> replacements;
     transform(tree->getRawTree(), fullname, replacements);
     //debug(tree->getRawTree(), fullname);
 }
-void LRParser::getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>, VectorHash> &visited, size_t depth) {
+void LRParser::getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth) {
     for (const auto &r : *rule) {
         // Avoid re-expansion of already visited rules
         if (!corelib::text::isLower(r.name) || visited.count(r.fullname))
@@ -498,7 +498,7 @@ void LRParser::getPriorityTree(const std::vector<rule_other> *rule, std::unorder
 }
 
 void LRParser::getPriorityTree() {
-    std::unordered_set<std::vector<std::string>, VectorHash> visited;
+    std::unordered_set<std::vector<std::string>> visited;
 
     auto it = initial_item_set.find({"main"});
     if (it != initial_item_set.end()) {
@@ -698,7 +698,7 @@ void LRParser::constructFollowSet() {
         }
     } while(hasChanges);
 }
-void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, CanonicalEl &new_item) {
+void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item) {
     size_t next_pos = new_item.dot_pos + 1;
     // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
     if (rhs_group.empty() || next_pos >= rhs_group.size()) {
@@ -749,7 +749,7 @@ void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, c
 }
 void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name) {
     for (const auto& rhs_group : item) {
-        CanonicalEl new_item;
+        LR1Core new_item;
         // Create LHS rule_other
         rule_other lhs;
         lhs.name = lhs_name.back();  // Use last component as rule name
@@ -802,13 +802,13 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
         worklist.pop();
 
         // You likely need to aggregate per symbol with a merged lookahead set
-        std::unordered_map<std::vector<std::string>, CanonicalItem, VectorHash> transitions;
+        std::unordered_map<std::vector<std::string>, CanonicalItem> transitions;
 
         for (const auto& item : current) {
             if (item.dot_pos < item.rhs.size()) {
                 const auto& sym = item.rhs[item.dot_pos].fullname;
 
-                CanonicalEl advanced = item;
+                LR1Core advanced = item;
                 advanced.dot_pos++;
                 compute_cci_lookahead(advanced.rhs, advanced.lhs.fullname, advanced);
 
@@ -863,7 +863,7 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     // Step 1: Shift dot over symbol where possible
     for (const auto &item : item_set) {
         if (item.dot_pos < item.rhs.size() && item.rhs[item.dot_pos] == symbol) {
-            CanonicalEl shifted = item;
+            LR1Core shifted = item;
             shifted.dot_pos++;
             next_state.insert(shifted);
         }
@@ -893,7 +893,7 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     // Step 4: If not, add it (only do this if building dynamically — otherwise error)
     throw Error("GOTO leads to non-existent state. Should be precomputed.");
 }
-size_t LRParser::find_rules_index(const CanonicalEl &rule) {
+size_t LRParser::find_rules_index(const LR1Core &rule) {
     size_t reduce_index;
     auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
         if (rule.lhs.fullname != el.first)

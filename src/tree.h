@@ -14,7 +14,7 @@ class Tree {
         };
         using ConflictsList = std::vector<Conflict>;
         using use_place_t_part = std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>>;
-        using use_place_t = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>, VectorHash>;
+        using use_place_t = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
     private:
         Parser::Tree tree;
         size_t token_count = 0;
