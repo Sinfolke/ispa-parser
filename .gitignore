@@ -61,3 +61,6 @@ boost
 test
 tokens
 * copy
+perf*
+test_LL
+test_LR

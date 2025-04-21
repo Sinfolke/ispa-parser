@@ -25,8 +25,7 @@ public:
         rule_other lhs;
         std::vector<rule_other> rhs;
         size_t dot_pos;
-        size_t rule_index;
-        std::set<std::vector<std::string>> lookahead;
+        mutable std::set<std::vector<std::string>> lookahead;
     
         // This is important for set/hash/set comparison
         bool operator==(const CanonicalEl other) const {
@@ -39,12 +38,13 @@ public:
             return std::tie(lhs, rhs, dot_pos) < std::tie(other.lhs, other.rhs, other.dot_pos);
         }
     };
-    using CanonicalItem = std::vector<CanonicalEl>;
+    using CanonicalItem = std::set<CanonicalEl>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
     using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>, VectorHash>;
     using Follow = First;
     using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<rule_other>>>;
     using Rules = std::vector<Rules_part>;
+    using Priority = std::unordered_map<std::vector<std::string>, size_t, VectorHash>;
 private:
     Tree *tree;
     ActionTable action_table;
@@ -58,12 +58,15 @@ private:
     Follow follow;
 
     Rules rules;
+
+    Priority priority;
     size_t rule_index = 0;
     void getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements);
     void transform(Parser::Tree &tree, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements);
-
+    void getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>, VectorHash> &visited, size_t depth);
+    void getPriorityTree();
     void addAugmentedRule();
     void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);

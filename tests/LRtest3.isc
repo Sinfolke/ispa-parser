@@ -1,0 +1,14 @@
+use name: "Parser";
+main: expr;
+expr: 
+    (expr '+' expr)
+    | (expr '-' expr) 
+    | term
+    ;
+term: 
+    (NUMBER '*' NUMBER) 
+    | (NUMBER '/' NUMBER)
+    ;
+NUMBER: [0-9]+
+    data: %1;
+    ;

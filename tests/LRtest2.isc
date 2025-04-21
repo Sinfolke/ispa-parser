@@ -3,9 +3,7 @@ main: expr; // Entry point
 
 // Expression handles everything
 expr:
-    (expr '+' term)
-  | (expr '-' term)
-  | (expr '||' expr)
+  (expr '||' expr)
   | (expr '&&' expr)
   | (expr '==' expr)
   | (expr '!=' expr)
@@ -20,15 +18,9 @@ expr:
 
 // Term for multiplicative and bit operations
 term:
-    (term '*' power)
-  | (term '/' power)
-  | (term '%' power)
-  | power
-  ;
-
-// Power operator (right-associative)
-power:
-    (factor '^' power)
+    (term '*' factor)
+  | (term '/' factor)
+  | (term '%' factor)
   | factor
   ;
 

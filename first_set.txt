@@ -1,3 +1,4 @@
 term: {NUMBER, }
+expr: {NUMBER, }
 main: {NUMBER, }
 __start: {NUMBER, }

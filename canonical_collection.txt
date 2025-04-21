@@ -1,34 +1,62 @@
 I0:
-	__start → • main 
-	main → • term AUTO_0 term 
-	term → • NUMBER 
-	term → • term AUTO_1 term 
+	__start → • main ; lookahead: {$, }
+	expr → • expr AUTO_0 expr ; lookahead: {AUTO_0, }
+	expr → • expr AUTO_1 expr ; lookahead: {AUTO_1, }
+	expr → • term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	main → • expr ; lookahead: {$, }
+	term → • NUMBER AUTO_2 NUMBER ; lookahead: {AUTO_2, }
+	term → • NUMBER AUTO_3 NUMBER ; lookahead: {AUTO_3, }
 
 I1:
-	term → NUMBER • 
+	term → NUMBER • AUTO_2 NUMBER ; lookahead: {AUTO_2, NUMBER, }
+	term → NUMBER • AUTO_3 NUMBER ; lookahead: {AUTO_3, NUMBER, }
 
 I2:
-	main → term • AUTO_0 term 
-	term → term • AUTO_1 term 
+	expr → term • ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 
 I3:
-	__start → main • 
+	expr → expr • AUTO_0 expr ; lookahead: {AUTO_0, NUMBER, }
+	expr → expr • AUTO_1 expr ; lookahead: {AUTO_1, NUMBER, }
+	main → expr • ; lookahead: {$, }
 
 I4:
-	term → term AUTO_1 • term 
-	term → • NUMBER 
-	term → • term AUTO_1 term 
+	__start → main • ; lookahead: {$, }
 
 I5:
-	main → term AUTO_0 • term 
-	term → • NUMBER 
-	term → • term AUTO_1 term 
+	term → NUMBER AUTO_3 • NUMBER ; lookahead: {$, AUTO_3, NUMBER, }
 
 I6:
-	term → term AUTO_1 term • 
-	term → term • AUTO_1 term 
+	term → NUMBER AUTO_2 • NUMBER ; lookahead: {$, AUTO_2, NUMBER, }
 
 I7:
-	main → term AUTO_0 term • 
-	term → term • AUTO_1 term 
+	expr → • expr AUTO_0 expr ; lookahead: {AUTO_0, }
+	expr → • expr AUTO_1 expr ; lookahead: {AUTO_1, }
+	expr → expr AUTO_1 • expr ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	expr → • term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	term → • NUMBER AUTO_2 NUMBER ; lookahead: {AUTO_2, }
+	term → • NUMBER AUTO_3 NUMBER ; lookahead: {AUTO_3, }
+
+I8:
+	expr → • expr AUTO_0 expr ; lookahead: {AUTO_0, }
+	expr → expr AUTO_0 • expr ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	expr → • expr AUTO_1 expr ; lookahead: {AUTO_1, }
+	expr → • term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	term → • NUMBER AUTO_2 NUMBER ; lookahead: {AUTO_2, }
+	term → • NUMBER AUTO_3 NUMBER ; lookahead: {AUTO_3, }
+
+I9:
+	term → NUMBER AUTO_3 NUMBER • ; lookahead: {$, AUTO_3, NUMBER, }
+
+I10:
+	term → NUMBER AUTO_2 NUMBER • ; lookahead: {$, AUTO_2, NUMBER, }
+
+I11:
+	expr → expr • AUTO_0 expr ; lookahead: {AUTO_0, NUMBER, }
+	expr → expr • AUTO_1 expr ; lookahead: {AUTO_1, NUMBER, }
+	expr → expr AUTO_1 expr • ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+
+I12:
+	expr → expr • AUTO_0 expr ; lookahead: {AUTO_0, NUMBER, }
+	expr → expr AUTO_0 expr • ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	expr → expr • AUTO_1 expr ; lookahead: {AUTO_1, NUMBER, }
 

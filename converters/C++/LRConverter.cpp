@@ -108,6 +108,12 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     converter.addHeader(out);
     converter.addTokensToString(tokens, out);
     converter.addRulesToString(rules, out);
+    out << "std::string " << namespace_name << "::Parser::TokensToString(Tokens token) {\n"
+        << "\t\treturn ::" << namespace_name << "::TokensToString(token);\n"
+        << "\t}\n";
+    out << "std::string " << namespace_name << "::Parser::RulesToString(Rules rule) {\n"
+        << "\t\treturn ::" << namespace_name << "::RulesToString(rule);\n"
+        << "\t}\n";
     converter.addStandardFunctionsLexer(out);
     addparseFromFunctions(out);
     //converter.addStandardFunctionsParser();
@@ -146,7 +152,9 @@ void LRConverter::create_parser_header(std::ostringstream &out) {
         << "\t\tprivate:\n"
         << "\t\t\tstatic ActionTable action_table;\n"
         << "\t\t\tstatic GotoTable goto_table;\n"
-        << "\t\t\tstatic RulesTable rules_table;\n";
+        << "\t\t\tstatic RulesTable rules_table;\n"
+        << "\t\t\tstd::string TokensToString(Tokens token);\n"
+        << "\t\t\tstd::string RulesToString(Rules rule);\n";
 }
 void LRConverter::addStandardFunctionsParser(std::ostringstream &out) {
     out 

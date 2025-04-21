@@ -6,6 +6,8 @@ std::string Parser::TokensToString(Tokens token) {
 		case Tokens::NUMBER: return "NUMBER";
 		case Tokens::AUTO_0: return "AUTO_0";
 		case Tokens::AUTO_1: return "AUTO_1";
+		case Tokens::AUTO_2: return "AUTO_2";
+		case Tokens::AUTO_3: return "AUTO_3";
 		case Tokens::__WHITESPACE: return "__WHITESPACE";
 	}
 	return "NONE";
@@ -14,11 +16,18 @@ std::string Parser::RulesToString(Rules rule) {
 	switch (rule) {
 		case Rules::NONE: return "NONE";
 		case Rules::main: return "main";
+		case Rules::expr: return "expr";
 		case Rules::term: return "term";
 		case Rules::__start: return "__start";
 	}
 	return "NONE";
 }
+std::string Parser::Parser::TokensToString(Tokens token) {
+		return ::Parser::TokensToString(token);
+	}
+std::string Parser::Parser::RulesToString(Rules rule) {
+		return ::Parser::RulesToString(rule);
+	}
 void Parser::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
         printToken(os, token);
@@ -98,19 +107,43 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::bool_t success_7 = false;
 	::Parser::Token_res _8;
 	::Parser::bool_t success_9 = false;
+	::Parser::Token_res _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::Token_res _12;
+	::Parser::bool_t success_13 = false;
 	_2 = AUTO_0(pos);
 	if (!(_2.status))
 	{
 		_4 = AUTO_1(pos);
 		if (!(_4.status))
 		{
-			_6 = __WHITESPACE(pos);
+			_6 = AUTO_2(pos);
 			if (!(_6.status))
 			{
-				_8 = NUMBER(pos);
+				_8 = AUTO_3(pos);
 				if (!(_8.status))
 				{
-					return {};
+					_10 = __WHITESPACE(pos);
+					if (!(_10.status))
+					{
+						_12 = NUMBER(pos);
+						if (!(_12.status))
+						{
+							return {};
+						}
+						else 
+						{
+							success_13 = true;
+							pos += _12.node.length();
+							_0 = _12.node;
+						}
+					}
+					else 
+					{
+						success_11 = true;
+						pos += _10.node.length();
+						_0 = _10.node;
+					}
 				}
 				else 
 				{
@@ -159,7 +192,8 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 	{
 		return {};
 	}
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NUMBER)};
+	::Parser::Types::NUMBER_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NUMBER, data)};
 }
 Parser::Token_res Parser::Lexer::AUTO_0(const char* pos) {
 	auto in = pos;
@@ -179,7 +213,7 @@ Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '*'))
+	if (!(*(pos + 0) == '-'))
 	{
 		return {};
 	}
@@ -188,6 +222,34 @@ Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
 	pos += 1;
 	::Parser::Types::AUTO_1_data data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_1, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_2(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == '*'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	::Parser::Types::AUTO_2_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_2, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_3(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	if (!(*(pos + 0) == '/'))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 1);
+	success_1 = true;
+	pos += 1;
+	::Parser::Types::AUTO_3_data data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_3, data)};
 }
 Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	auto in = pos;
@@ -208,27 +270,38 @@ Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::__WHITESPACE)};
 }
 Parser::ActionTable Parser::Parser::action_table = {{
-	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 4}), std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::ACCEPT, 0}), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 4}), std::nullopt}}
+	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 6}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 5}), std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 0}), std::nullopt, std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 1}), std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 8}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 7}), std::nullopt, std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::ACCEPT, 0}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 9}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 10}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::nullopt, std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::nullopt, std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 4}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 8}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 7}), std::nullopt, std::nullopt, std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 5}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 8}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 7}), std::nullopt, std::nullopt, std::nullopt}}
 }};
 Parser::GotoTable Parser::Parser::goto_table = {{
-	{{std::nullopt, std::make_optional(3), std::make_optional(2), std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(6), std::nullopt, std::nullopt}},
-	{{std::nullopt, std::nullopt, std::make_optional(7), std::nullopt, std::nullopt}}
+	{{std::nullopt, std::make_optional(4), std::make_optional(3), std::make_optional(2), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::make_optional(11), std::make_optional(2), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
+	{{std::nullopt, std::nullopt, std::make_optional(12), std::make_optional(2), std::nullopt, std::nullopt, std::nullopt, std::nullopt}}
 }};
 Parser::RulesTable Parser::Parser::rules_table = {
 	{
-	{::Parser::Rules::term, 1},
+	{::Parser::Rules::expr, 1},
+	{::Parser::Rules::main, 1},
 	{::Parser::Rules::term, 3},
-	{::Parser::Rules::main, 3}
+	{::Parser::Rules::term, 3},
+	{::Parser::Rules::expr, 3},
+	{::Parser::Rules::expr, 3}
 	}
 };

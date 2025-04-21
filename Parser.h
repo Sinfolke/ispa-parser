@@ -46,10 +46,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, NUMBER, AUTO_0, AUTO_1, __WHITESPACE
+		NONE, NUMBER, AUTO_0, AUTO_1, AUTO_2, AUTO_3, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, main, term, __start
+		NONE, main, expr, term, __start
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -59,12 +59,15 @@ namespace Parser {
 	using Tree = ISPA_STD::Tree<Rules>;
 	std::string TokensToString(Tokens token);
 	std::string RulesToString(Rules rule);
-		using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 5>, 8>;
-		using GotoTable = std::array<std::array<std::optional<size_t>, 5>, 8>;
-		using RulesTable = std::array<std::pair<Rules, size_t>, 3>;
+		using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 7>, 13>;
+		using GotoTable = std::array<std::array<std::optional<size_t>, 8>, 13>;
+		using RulesTable = std::array<std::pair<Rules, size_t>, 6>;
 	namespace Types {
+		using NUMBER_data = ::Parser::str_t;
 		using AUTO_0_data = ::Parser::str_t;
 		using AUTO_1_data = ::Parser::str_t;
+		using AUTO_2_data = ::Parser::str_t;
+		using AUTO_3_data = ::Parser::str_t;
 	}
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
@@ -90,6 +93,8 @@ namespace Parser {
 			Token_res NUMBER(const char*);
 			Token_res AUTO_0(const char*);
 			Token_res AUTO_1(const char*);
+			Token_res AUTO_2(const char*);
+			Token_res AUTO_3(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
 	class Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {
@@ -97,6 +102,8 @@ namespace Parser {
 			static ActionTable action_table;
 			static GotoTable goto_table;
 			static RulesTable rules_table;
+			std::string TokensToString(Tokens token);
+			std::string RulesToString(Rules rule);
 		void parseFromTokens();
 		void lazyParse();
 	};

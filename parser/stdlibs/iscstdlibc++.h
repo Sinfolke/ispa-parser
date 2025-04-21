@@ -631,8 +631,8 @@ protected:
         return std::distance(prev, pos);
     }
     void reportError(typename Lexer_base<TOKEN_T>::lazy_iterator pos, std::string msg) {
-        if (error_controller.count(pos.getCounter()) == 0)
-            error_controller[pos.getCounter()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
+        if (error_controller.count(pos.distance()) == 0)
+            error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
     void reportError(typename Lexer_base<TOKEN_T>::iterator pos, std::string msg) {
         if (error_controller.count(pos.distance()) == 0)
@@ -710,7 +710,7 @@ private:
             throw std::runtime_error("Stack underflow during reduce");
         }
         stack.erase(stack.end() - reduce_size, stack.end());
-        printf("Reduce: goto_table[%zu][%d]\n", (int) stack.back().second, (int) rule_name);
+        printf("Reduce: goto_table[%d][%d]\n", (int) stack.back().second, (int) rule_name);
         // Perform the reduction
         const auto& goto_entry = goto_table[stack.back().second][static_cast<size_t>(rule_name)];
         if (!goto_entry.has_value()) {
@@ -727,13 +727,19 @@ protected:
     match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {
         return {};
     }
+    virtual std::string TokensToString(TOKEN_T token) = 0;
+    virtual std::string RulesToString(RULE_T rule) = 0;
     template<class IT>
     void parseFromPos(IT& pos, const ActionTable &action_table, const GotoTable &goto_table, RulesTable rules_table) {
         stack.push_back({TOKEN_T::NONE, 0});
         while(true) {
             auto &current_state = stack.back().second;
             const auto &action = action_table[current_state][(size_t) pos->name()];
-            printf("Token name: %d, state: %zu\n", (int) pos->name(), current_state);
+            printf("Token name: %s", TokensToString(pos->name()).c_str());
+            if (pos->data().has_value()) {
+                printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+            }
+            printf(", state: %zu\n", current_state);
             if (action.has_value()) {
                 auto& act = action.value();
                 printf("action: %d, next state: %zu\n", (int) act.type, act.state);
@@ -746,7 +752,7 @@ protected:
                 else
                     throw std::runtime_error("Error state");
             } else {
-                throw std::runtime_error(("Action is not defined. stack size()" + std::to_string(stack.size())).c_str());
+                throw std::runtime_error(("Action is not defined. stack size: " + std::to_string(stack.size())).c_str());
             }
         }
         printf("Accepted. distance: %zu\n", pos.distance());
