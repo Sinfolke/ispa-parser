@@ -95,10 +95,13 @@ int main(int argc, char** argv) {
     auto use = tree.accamulate_use_data_to_map();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto name = std::any_cast<std::string>(use["name"].data);
-    if (!args.get("a").empty() && args.get("a").values[0] == "LR") {
+    std::string algorithm = "LL";
+    if (!args.get("a").empty()) {
+        // if no argument is passed, use default
+        algorithm = args.get("a").first();
+    }
+    if (algorithm == "LR") {
         LRParser LRIR(tree);
-        LRIR.transform();
-        LRIR.build();
         LRIR.printTables("tables");
         LRIR.printCanonicalCollection("canonical_collection.txt");
         LRIR.printFirstSet("first_set.txt");
@@ -106,7 +109,16 @@ int main(int argc, char** argv) {
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
         converter->output(name);
-    } else {
+    } else if (algorithm == "LALR") {
+        LALRParser LALRIR(tree);
+        LALRIR.printTables("tables");
+        LALRIR.printCanonicalCollection("canonical_collection.txt");
+        LALRIR.printFirstSet("first_set.txt");
+        LALRIR.printFollowSet("follow_set.txt");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
+        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
+        converter->output(name);
+    } else if (algorithm == "LL") {
         LLIR ir(tree.getRawTree());
         ir.makeIR();
         ir.optimizeIR();
@@ -121,8 +133,8 @@ int main(int argc, char** argv) {
         converter->outputIR(name);
     
         // IR test
+    } else {
+        throw UError("Unknown algorithm '%s'", algorithm);
     }
-
-
     return 0;
 }

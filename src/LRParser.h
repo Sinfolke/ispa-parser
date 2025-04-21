@@ -45,7 +45,7 @@ public:
     using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<rule_other>>>;
     using Rules = std::vector<Rules_part>;
     using Priority = std::unordered_map<std::vector<std::string>, size_t, VectorHash>;
-private:
+protected:
     Tree *tree;
     ActionTable action_table;
     GotoTable goto_table;
@@ -60,7 +60,6 @@ private:
     Rules rules;
 
     Priority priority;
-    size_t rule_index = 0;
     void getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>, VectorHash> &replacements);
@@ -86,9 +85,27 @@ private:
     void formatCanonicalItemSet(std::ostringstream &oss);
     auto formatActionTable() const -> std::string;
     auto formatGotoTable() const -> std::string;
+    // transform rules to approaritate form for LR parser
+    void transform();
+    // build action and goto table
+    virtual void prepare();
+    virtual void build();
+    virtual void buildTable();
+    LRParser(Tree *tree, bool build_base = true) : tree(tree) {
+        if (build_base) {
+            transform();
+            build();
+        }
+    }
 public:
-    LRParser(Tree *tree) : tree(tree) {}
-    LRParser(Tree &tree) : tree(&tree) {}
+    LRParser(Tree *tree) : tree(tree) {
+        transform();
+        build();
+    }
+    LRParser(Tree &tree) : tree(&tree) {
+        transform();
+        build();
+    }
     // get data functions
 
     auto getActionTable() const -> const ActionTable&;
@@ -101,10 +118,7 @@ public:
     auto getMaxStatesCount() const -> size_t;
     auto getTerminalNames() const -> std::vector<std::vector<std::string>>;
     auto getNonTerminalNames() const ->  std::vector<std::vector<std::string>>;
-    // transform rules to approaritate form for LR parser
-    void transform();
-    // build action and goto table
-    void build();
+
         // debug
     // Method to print both Action and Goto tables into a single file
     void printTables(const std::string& filename);

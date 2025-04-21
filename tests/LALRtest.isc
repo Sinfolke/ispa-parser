@@ -1,0 +1,14 @@
+use name: "Parser";
+main: expr;
+
+// Expressions with precedence
+expr: term
+    | (expr '+' term)
+    | (expr '*' term)
+    ;
+
+// Terminals (operands)
+term: NUMBER;
+
+// Terminal for numeric values
+NUMBER: [0-9]+;

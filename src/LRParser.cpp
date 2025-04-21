@@ -915,18 +915,7 @@ size_t LRParser::find_rules_index(const CanonicalEl &rule) {
     }
     return reduce_index;
 }
-void LRParser::build() {
-
-
-    addAugmentedRule();
-    transform();
-    use_places = tree->getUsePlacesTable();
-    initial_item_set = construct_initial_item_set();
-    getPriorityTree();
-    constructFirstSet();
-    constructFollowSet();
-    canonical_item_set = construct_cannonical_collections_of_items();
-    rule_index = 0;
+void LRParser::buildTable() {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         for (const auto& rule : item_set) {
@@ -947,7 +936,7 @@ void LRParser::build() {
             // cpuf::printf("\n");
             // Dot is at the end → Reduce or Accept
             if (rule.rhs.size() == 1 && rule.lhs.fullname == rule.rhs[0].fullname) {
-                cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
+                // cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
                 continue;
             }
             if (rule.dot_pos >= rule.rhs.size()) {
@@ -984,12 +973,12 @@ void LRParser::build() {
                                     action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                                 }
                             }
-                            cpuf::printf("[%$ -> %$]Conflict: REDUCE/REDUCE on state %$ for token %$\n", 
-                                corelib::text::join(rule.lhs.fullname, "_"), 
-                                corelib::text::join(rules[find_rules_index(rule)].first, "_"), 
-                                I, 
-                                lookahead
-                            );
+                            // cpuf::printf("[%$ -> %$]Conflict: REDUCE/REDUCE on state %$ for token %$\n", 
+                            //     corelib::text::join(rule.lhs.fullname, "_"), 
+                            //     corelib::text::join(rules[find_rules_index(rule)].first, "_"), 
+                            //     I, 
+                            //     lookahead
+                            // );
                         }
                     }
                 }
@@ -1021,6 +1010,19 @@ void LRParser::build() {
         }
         I++;
     }
+}
+void LRParser::prepare() {
+    addAugmentedRule();
+    use_places = tree->getUsePlacesTable();
+    initial_item_set = construct_initial_item_set();
+    getPriorityTree();
+    constructFirstSet();
+    constructFollowSet();
+    canonical_item_set = construct_cannonical_collections_of_items();
+}
+void LRParser::build() {
+    prepare();
+    buildTable();
 }
 
 
