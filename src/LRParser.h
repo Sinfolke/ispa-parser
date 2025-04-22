@@ -90,9 +90,9 @@ protected:
     // transform rules to approaritate form for LR parser
     void transform();
     // build action and goto table
-    virtual void prepare();
-    virtual void build();
-    virtual void buildTable();
+    void prepare();
+    void build();
+    void buildTable();
     LRParser(Tree *tree, bool build_base = true) : tree(tree) {
         if (build_base) {
             transform();

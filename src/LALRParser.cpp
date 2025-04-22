@@ -61,7 +61,8 @@ void LALRParser::build() {
             state_mapping[old_state] = new_state;
             for (const auto& item : canonical_item_set[old_state]) {
                 auto& merged_items = merged_states.back();
-                auto it = std::find(merged_items.begin(), merged_items.end(), item);
+                
+                auto it = merged_items.find(item);
                 
                 if (it != merged_items.end()) {
                     it->lookahead.insert(item.lookahead.begin(), item.lookahead.end());
@@ -146,5 +147,9 @@ void LALRParser::build() {
     } while (changed);
 
     canonical_item_set = std::move(merged_states);
+    action_table.clear();
+    goto_table.clear();
+    rules.clear();
+    // rebuild table
     LRParser::buildTable();
 }

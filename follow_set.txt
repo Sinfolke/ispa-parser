@@ -1,4 +1,3 @@
-expr: {$, }
-term: {$, AUTO_0, AUTO_1, NUMBER, }
+expr: {$, AUTO_0, AUTO_1, NUMBER, }
 main: {$, }
 __start: {$, }
