@@ -352,18 +352,16 @@ public:
                 return current.empty();
             }
             void operator=(lazy_iterator iterator) {
-                // add only first token that currently may be accessed
-                // ommit others
                 current = iterator.current;
                 pos = iterator.pos;
                 counter = iterator.counter;
             }
             void operator+=(size_t count) {
+                counter += count;
                 while(count > 0 && !isEnd()) {
                     current = owner->makeToken(pos);
                     count--;
                 }
-                counter += count;
             }
             auto operator-(lazy_iterator iterator) {
                 return counter - iterator.counter;

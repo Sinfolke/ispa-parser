@@ -1,31 +1,35 @@
 Action Table:
 State Token          Action    Next State
-6     NUMBER         SHIFT     5         
-6     AUTO_1         SHIFT     2         
-5     NUMBER         REDUCE    3         
-5     AUTO_1         REDUCE    3         
-5     AUTO_0         REDUCE    3         
-5     $              REDUCE    3         
+8     AUTO_1         SHIFT     5         
+8     NUMBER         REDUCE    3         
+8     AUTO_0         REDUCE    3         
+8     $              REDUCE    3         
+7     NUMBER         REDUCE    2         
+7     AUTO_0         REDUCE    2         
+7     $              REDUCE    2         
+7     AUTO_1         SHIFT     5         
+6     NUMBER         SHIFT     1         
+5     NUMBER         SHIFT     1         
 4     $              ACCEPT    0         
-3     $              REDUCE    2         
-3     AUTO_0         SHIFT     1         
-2     NUMBER         REDUCE    1         
-2     AUTO_1         REDUCE    1         
-2     AUTO_0         REDUCE    1         
+3     AUTO_1         SHIFT     5         
+3     AUTO_0         SHIFT     6         
 2     $              REDUCE    1         
-1     NUMBER         SHIFT     0         
-0     NUMBER         REDUCE    0         
-0     AUTO_1         REDUCE    0         
-0     AUTO_0         REDUCE    0         
-0     $              REDUCE    0         
+1     NUMBER         REDUCE    0         
+1     AUTO_1         REDUCE    0         
+1     AUTO_0         REDUCE    0         
+1     $              REDUCE    0         
+0     NUMBER         SHIFT     1         
 
 Goto Table:
 State Non-Terminal        Next State  
-6     expr                3           
-6     main                4           
+6     term                8           
+5     term                7           
+0     expr                2           
+0     term                3           
+0     main                4           
 
 Rules:
-	3: expr → expr AUTO_0 NUMBER 
-	1: expr → AUTO_1 
+	1: term → NUMBER 
 	1: main → expr 
-	1: expr → NUMBER 
+	3: term → term AUTO_1 term 
+	3: expr → term AUTO_0 term 

@@ -49,7 +49,7 @@ namespace Parser {
 		NONE, NUMBER, AUTO_0, AUTO_1, __WHITESPACE
 	};
 	enum class Rules {
-		NONE, main, expr, __start
+		NONE, main, expr, term, __start
 	};
 	using Rule = ISPA_STD::node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -59,8 +59,8 @@ namespace Parser {
 	using Tree = ISPA_STD::Tree<Rules>;
 	std::string TokensToString(Tokens token);
 	std::string RulesToString(Rules rule);
-		using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 5>, 7>;
-		using GotoTable = std::array<std::array<std::optional<size_t>, 8>, 7>;
+		using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 5>, 9>;
+		using GotoTable = std::array<std::array<std::optional<size_t>, 6>, 9>;
 		using RulesTable = std::array<std::pair<Rules, size_t>, 4>;
 	namespace Types {
 		using AUTO_0_data = ::Parser::str_t;

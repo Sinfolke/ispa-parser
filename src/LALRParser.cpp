@@ -1,7 +1,43 @@
 #include <LALRParser.h>
-void identifyMergableStates() {}
+std::set<std::vector<std::string>> LALRParser::compute_first_sequence(const std::vector<rule_other>& beta, const std::set<std::vector<std::string>>& la) {
+    std::set<std::vector<std::string>> result;
+    bool epsilon_in_all = true;
+
+    for (const auto& sym : beta) {
+        const auto& f = first[sym.fullname];
+
+        std::set<std::vector<std::string>> temp;
+        for (const auto& prefix : result.empty() ? std::set<std::vector<std::string>>{{}} : result) {
+            for (const auto& x : f) {
+                if (x == std::vector<std::string>{"ε"}) continue;
+                auto next = prefix;
+                next.insert(next.end(), x.begin(), x.end());
+                temp.insert(std::move(next));
+            }
+        }
+        result = std::move(temp);
+
+        if (!f.count({"ε"})) {
+            epsilon_in_all = false;
+            break;
+        }
+    }
+
+    if (epsilon_in_all) {
+        for (const auto& prefix : result) {
+            for (const auto& x : la) {
+                auto next = prefix;
+                next.insert(next.end(), x.begin(), x.end());
+                result.insert(std::move(next));
+            }
+        }
+    }
+
+    return result;
+}
 void LALRParser::build() {
     LRParser::prepare(); // Standard LR preparation
+    LRParser::buildTable(); // Build the initial LR table
     
     // Step 1: Identify mergeable states (same LR(0) core)
     std::unordered_map<std::unordered_set<LR0Core>, std::vector<size_t>> core_to_states;
@@ -21,7 +57,6 @@ void LALRParser::build() {
         size_t new_state = merged_states.size();
         merged_states.emplace_back();
         
-        // Merge all items from all states sharing this core
         for (size_t old_state : states) {
             state_mapping[old_state] = new_state;
             for (const auto& item : canonical_item_set[old_state]) {
@@ -29,14 +64,15 @@ void LALRParser::build() {
                 auto it = std::find(merged_items.begin(), merged_items.end(), item);
                 
                 if (it != merged_items.end()) {
-                    // Merge lookaheads
                     it->lookahead.insert(item.lookahead.begin(), item.lookahead.end());
                 } else {
+                    // 👇 Add this line to ensure lookahead is computed for new item
                     merged_items.insert(item);
                 }
             }
         }
     }
+    
 
     // Step 3: Perform lookahead propagation
     bool changed;
@@ -66,18 +102,10 @@ void LALRParser::build() {
                 
                 // Case 1: β exists (β is not empty)
                 if (item.dot_pos + 1 < item.rhs.size()) {
-                    const auto& beta_first = item.rhs[item.dot_pos + 1];
-                    if (corelib::text::isUpper(beta_first.name)) {
-                        propagation_la.insert(beta_first.fullname);
-                    } else {
-                        // Get FIRST(beta_first) from precomputed first sets
-                        propagation_la.insert(first[beta_first.fullname].begin(), first[beta_first.fullname].end());
-                        if (first[beta_first.fullname].count({"ε"})) {
-                            // If β can derive ε, include original lookahead
-                            propagation_la.insert(item.lookahead.begin(), item.lookahead.end());
-                        }
-                    }
-                } 
+                    std::vector<rule_other> beta(item.rhs.begin() + item.dot_pos + 1, item.rhs.end());
+                    auto propagation_la = compute_first_sequence(beta, item.lookahead);
+                    
+                }
                 // Case 2: β is empty (B is last symbol)
                 else {
                     propagation_la = item.lookahead;
