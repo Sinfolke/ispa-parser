@@ -1,0 +1,14 @@
+// simple library for json parsing
+// this is templated library
+module json<NUMBER, STRING> -> main
+
+main: 
+    NUMBER | STRING | OBJECT | ARRAY
+;
+
+OBJECT:
+    '{' NUMBER | STRING '}'
+;
+ARRAY:
+    '[' NUMBER | STRING ']'
+;

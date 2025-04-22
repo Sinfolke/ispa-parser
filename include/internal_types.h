@@ -68,8 +68,8 @@ namespace std {
 }
 namespace std {
     template<typename T>
-    struct hash<unordered_set<T>> {
-        size_t operator()(const unordered_set<T>& set) const noexcept {
+    struct hash<set<T>> {
+        size_t operator()(const set<T>& set) const noexcept {
             size_t seed = set.size();  // Include size in hash
             for (const auto& elem : set) {
                 seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);

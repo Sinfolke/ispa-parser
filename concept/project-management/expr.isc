@@ -1,0 +1,7 @@
+module expr -> expr;
+from main import NUMBER, STRING
+expr: 
+    expr + expr 
+    | NUMBER
+    | STRING
+;

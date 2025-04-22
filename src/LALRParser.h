@@ -2,8 +2,9 @@
 #include <internal_types.h>
 class LALRParser : public LRParser {
 protected:
+    void rebuildActionTable(const std::vector<size_t>& state_mapping);
+    void rebuildGotoTable(const std::vector<size_t>& state_mapping);
     void build();
-    std::set<std::vector<std::string>> compute_first_sequence(const std::vector<rule_other>& beta, const std::set<std::vector<std::string>>& la);
 public:
     LALRParser(Tree *tree) : LRParser(tree, false) {
         LRParser::transform();

@@ -92,7 +92,7 @@ protected:
     // build action and goto table
     void prepare();
     void build();
-    void buildTable();
+    void buildTable(bool affect_goto = true);
     LRParser(Tree *tree, bool build_base = true) : tree(tree) {
         if (build_base) {
             transform();

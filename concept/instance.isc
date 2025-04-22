@@ -1,0 +1,82 @@
+
+// a build time tepmlate allows to placeholder rules
+// a templated rule cannot be referenced directly within grammar. To reference it should be inherrited until no template
+expr<ID, NUMBER>:
+    // since this expression is not mine i do not re-write it completely
+    // but the examples with detach would be shown with factor rule
+    (expr '||' expr)
+    | (expr '&&' expr)
+    | (expr '==' expr)
+    | (expr '!=' expr)
+    | (expr '<' expr)
+    | (expr '>' expr)
+    | (expr '<=' expr)
+    | (expr '>=' expr)
+    | term
+    | (expr '?' expr ':' expr)
+    | (ID '=' expr)
+
+    #term:
+        (term '*' factor)
+    | (term '/' factor)
+    | (term '%' factor)
+    | factor
+    ;
+
+    #factor:
+        addition
+        | substract
+        | negative
+        | group
+        | function_call
+        | variable
+        | NUMBER
+        ;
+    inline #addition:
+        ('+' factor)
+    ;
+    inline #substract:
+        ('-' factor)
+    ;
+    inline #negative:
+        ('!' factor)
+    ;
+    inline #group:
+        ('(' expr ')')
+    ;
+    inline #function_call:
+        (ID '(' arg_list? ')')
+    ;
+    inline #variable:
+        ID ('[' expr ']')?
+    ;
+    inline #arg_list:
+        expr (',' expr)*
+    ;
+;
+
+// instance
+expr : expr<ID, NUMBER>:
+    // we can detach particular rules
+    // this will remove them and their reference within other rules
+    // this way we can remove from grammar what we do not need
+    // detach may be only on top of a rule
+    detach function_call, 
+           variable
+    detach arg_list
+
+    // if to define rhs for this rule it will override the base rule matching
+    expr '||' expr
+    // override particular rule to change their behaviour 
+    #addition:
+        factor '+' factor
+    ;
+;
+expr : expr<>: // this is construct to provide arguments from global place. E.G if you have globally ID and template name is ID then for this template ID will be choosen
+
+;
+// assign a rule another rule. It may be rule without template but often templated one
+expression = expr<ID, NUMBER>;
+
+ID: [a-zA-Z0-9]+;
+NUMBER: [0-9]+;

@@ -1,0 +1,9 @@
+module main -> main; // define rule to use on direct module refer
+                     // this is necessary for module main to know entry point
+import expr; // namespaced import
+from expr import *;  // import everything
+from expr import expr // selective import
+main: expr;
+
+NUMBER: [0-9]+;
+STRING: '"' [^"]* '"';

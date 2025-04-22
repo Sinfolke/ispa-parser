@@ -1,155 +1,111 @@
 #include <LALRParser.h>
-std::set<std::vector<std::string>> LALRParser::compute_first_sequence(const std::vector<rule_other>& beta, const std::set<std::vector<std::string>>& la) {
-    std::set<std::vector<std::string>> result;
-    bool epsilon_in_all = true;
+void LALRParser::rebuildActionTable(const std::vector<size_t>& state_mapping) {
+    ActionTable new_action_table;
 
-    for (const auto& sym : beta) {
-        const auto& f = first[sym.fullname];
-
-        std::set<std::vector<std::string>> temp;
-        for (const auto& prefix : result.empty() ? std::set<std::vector<std::string>>{{}} : result) {
-            for (const auto& x : f) {
-                if (x == std::vector<std::string>{"ε"}) continue;
-                auto next = prefix;
-                next.insert(next.end(), x.begin(), x.end());
-                temp.insert(std::move(next));
+    for (size_t i = 0; i < action_table.size(); ++i) {
+        size_t new_state = state_mapping[i];
+        for (auto& [sym, action] : action_table[i]) {
+            if (action.type == Action_type::SHIFT) {
+                action.state = state_mapping[action.state];
             }
-        }
-        result = std::move(temp);
-
-        if (!f.count({"ε"})) {
-            epsilon_in_all = false;
-            break;
+            // Use new_state as the target
+            new_action_table[new_state][sym] = std::move(action);
         }
     }
 
-    if (epsilon_in_all) {
-        for (const auto& prefix : result) {
-            for (const auto& x : la) {
-                auto next = prefix;
-                next.insert(next.end(), x.begin(), x.end());
-                result.insert(std::move(next));
-            }
-        }
-    }
-
-    return result;
+    action_table = std::move(new_action_table);
 }
+
+
+void LALRParser::rebuildGotoTable(const std::vector<size_t>& state_mapping) {
+    GotoTable new_goto_table;
+
+    for (size_t i = 0; i < goto_table.size(); ++i) {
+        size_t new_from_state = state_mapping[i];
+        for (auto& [nonterminal, next_state] : goto_table[i]) {
+            size_t new_to_state = state_mapping[next_state];
+            new_goto_table[new_from_state][nonterminal] = new_to_state;
+        }
+    }
+
+    goto_table = std::move(new_goto_table);
+}
+
+
 void LALRParser::build() {
     LRParser::prepare(); // Standard LR preparation
     LRParser::buildTable(); // Build the initial LR table
     
-    // Step 1: Identify mergeable states (same LR(0) core)
-    std::unordered_map<std::unordered_set<LR0Core>, std::vector<size_t>> core_to_states;
-    for (size_t i = 0; i < canonical_item_set.size(); ++i) {
-        std::unordered_set<LR0Core> core;
-        for (const auto& item : canonical_item_set[i]) {
-            core.insert({item.lhs, item.rhs, item.dot_pos});
+    // identify merge states
+    std::unordered_map<CanonicalItem, std::vector<size_t>> core_to_states;
+    size_t i = 0;
+    for (auto item : canonical_item_set) {
+        CanonicalItem core;
+        for (auto& el : item) {
+            core.insert(el);
         }
-        core_to_states[core].push_back(i);
+        core_to_states[core].push_back(i++);
+
     }
 
     // Step 2: Create merged states
     CanonicalItemSet merged_states;
     std::vector<size_t> state_mapping(canonical_item_set.size());
     
-    for (const auto& [core, states] : core_to_states) {
-        size_t new_state = merged_states.size();
+    for (const auto &[core, states] : core_to_states) {
+        auto new_state = merged_states.size();
         merged_states.emplace_back();
-        
-        for (size_t old_state : states) {
-            state_mapping[old_state] = new_state;
-            for (const auto& item : canonical_item_set[old_state]) {
-                auto& merged_items = merged_states.back();
-                
-                auto it = merged_items.find(item);
-                
-                if (it != merged_items.end()) {
-                    it->lookahead.insert(item.lookahead.begin(), item.lookahead.end());
-                } else {
-                    // 👇 Add this line to ensure lookahead is computed for new item
-                    merged_items.insert(item);
-                }
-            }
-        }
-    }
-    
-
-    // Step 3: Perform lookahead propagation
-    bool changed;
-    do {
-        changed = false;
-        
-        // First build a mapping of all kernel items to their states
-        std::map<LR0Core, std::vector<std::pair<size_t, LR1Core*>>> item_to_state;
-        for (size_t state_id = 0; state_id < merged_states.size(); ++state_id) {
-            for (auto& item : merged_states[state_id]) {
-                LR0Core core{item.lhs, item.rhs, item.dot_pos};
-                item_to_state[core].push_back(std::pair<size_t, LR1Core*> {state_id, const_cast<LR1Core*>(&item)});
-            }
-        }
-
-
-        // Then propagate lookaheads
-        for (size_t state_id = 0; state_id < merged_states.size(); ++state_id) {
-            for (auto& item : merged_states[state_id]) {
-                if (item.dot_pos >= item.rhs.size()) continue;  // Skip completed items
-                
-                auto next_sym = item.rhs[item.dot_pos];
-                if (!corelib::text::isUpper(next_sym.name)) continue;  // Only propagate through non-terminals
-
-                // Compute lookaheads to propagate (FIRST(βa) where item is [A→α·Bβ, a])
-                std::set<std::vector<std::string>> propagation_la;
-                
-                // Case 1: β exists (β is not empty)
-                if (item.dot_pos + 1 < item.rhs.size()) {
-                    std::vector<rule_other> beta(item.rhs.begin() + item.dot_pos + 1, item.rhs.end());
-                    auto propagation_la = compute_first_sequence(beta, item.lookahead);
-                    
-                }
-                // Case 2: β is empty (B is last symbol)
-                else {
-                    propagation_la = item.lookahead;
-                }
-                auto prod = initial_item_set.find(next_sym.fullname);
-                if (prod == initial_item_set.end()) continue;  // No productions for this non-terminal
-                const auto& productions = prod->second;
-                for (const auto& prod : productions) {
-                    // Create successor core [B→·γ]
-                    LR0Core successor_core;
-                    successor_core.lhs = next_sym;
-                    successor_core.rhs = prod;
-                    successor_core.dot_pos = 0;
-                    
-                    // Find all matching items in the goto state
-                    auto it = item_to_state.find(successor_core);
-                    if (it != item_to_state.end()) {
-                        for (auto& state_item_pair : it->second) {
-                            size_t target_state_id = state_item_pair.first;
-                            LR1Core* target_item = state_item_pair.second;
-                            
-                            // Verify this is in the correct goto state
-                            if (goto_table[state_id].count(next_sym.fullname) && 
-                                goto_table[state_id][next_sym.fullname] == target_state_id) {
-                                // Propagate lookaheads
-                                for (const auto& la : propagation_la) {
-                                    if (target_item->lookahead.insert(la).second) {
-                                        changed = true;
-                                    }
-                                }
-                            }
+        bool conflict = false;
+        for (size_t s : states) {
+            for (const auto& item : canonical_item_set[s]) {
+                for (auto el : core) {
+                    for (const auto& la : item.lookahead) {
+                        if (el.lookahead.count(la)) {
+                            conflict = true;
                         }
+                    } 
+                }
+
+            }
+        }
+        if (!conflict) {
+            for (auto old_state : states) {
+                state_mapping[old_state] = new_state;
+                if (old_state == states[0]) continue;
+                for (auto& item : canonical_item_set[old_state]) {
+                    auto& merged_items = merged_states.back();
+                    
+                    auto it = merged_items.find(item);
+                    if (it != merged_items.end()) {
+                        it->lookahead.insert(item.lookahead.begin(), item.lookahead.end());
+                    } else {
+                        // 👇 Add this line to ensure lookahead is computed for new item
+                        merged_items.insert(item);
                     }
                 }
-    
             }
+        } else {
+            // ⚠️ Conflict: do not merge — assign each state its own slot
+            for (auto old_state : states) {
+                size_t new_state = merged_states.size();
+                merged_states.push_back(canonical_item_set[old_state]);
+                state_mapping[old_state] = new_state;
+            }
+            //cpuf::printf("Conflict in merging states %$ -> %$\n", states[0], states[1]);
         }
-    } while (changed);
 
-    canonical_item_set = std::move(merged_states);
-    action_table.clear();
-    goto_table.clear();
-    rules.clear();
-    // rebuild table
-    LRParser::buildTable();
+    }
+    std::unordered_map<size_t, size_t> compact_state_map;
+    size_t compact_index = 0;
+    
+    for (auto& idx : state_mapping) {
+        if (!compact_state_map.count(idx)) {
+            compact_state_map[idx] = compact_index++;
+        }
+        idx = compact_state_map[idx];
+    }
+    
+    // rebuild action table
+    rebuildActionTable(state_mapping);
+    rebuildGotoTable(state_mapping);
 }

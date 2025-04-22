@@ -868,9 +868,8 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
             next_state.insert(shifted);
         }
     }
-
-    // Step 2: Compute closure of this new state
     CanonicalItem closure = next_state;
+    // Step 2: Compute closure of this new state
     for (const auto &item : next_state) {
         if (item.dot_pos < item.rhs.size()) {
             const auto &next_sym = item.rhs[item.dot_pos];
@@ -883,6 +882,7 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
             }
         }
     }
+
 
     // Step 3: Check if this closure already exists in canonical set
     auto it = std::find(canonical_item_set.begin(), canonical_item_set.end(), closure);
@@ -915,7 +915,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-void LRParser::buildTable() {
+void LRParser::buildTable(bool affect_goto) {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         for (const auto& rule : item_set) {
@@ -989,7 +989,8 @@ void LRParser::buildTable() {
             
                 if (corelib::text::isLower(next.name)) {
                     // Non-terminal → GOTO
-                    goto_table[I][next.fullname] = next_state;
+                    if (affect_goto)
+                        goto_table[I][next.fullname] = next_state;
                 } else {
                     // Terminal → SHIFT (unconditionally)
                     if (action_table[I].count(next.fullname) == 0) {
