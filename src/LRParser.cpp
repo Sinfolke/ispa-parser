@@ -84,7 +84,7 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
         case Action_type::ACCEPT:
             return "ACCEPT";
     }
-    throw Error("Undefined action type");
+    throw Error("Undefined action type: %$", (int) type);
 }
 auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> {
     std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> row_table;
@@ -275,6 +275,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                         values.push_back(*val_it);
                     }
                     val_it--;
+                    _count--;
                 } else values.push_back(*val_it);
                 tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
                     {"name", Tokens::make_rule(Parser::Rules::Rule_other, push_name)},
@@ -915,9 +916,12 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-void LRParser::buildTable(bool affect_goto) {
+void LRParser::buildTable(bool resolve_conflicts) {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
+        const LR1Core* prev_rule = nullptr;
+        Conflict conflict;
+        bool got_conflict = false;
         for (const auto& rule : item_set) {
             // cpuf::printf("I%$: %$ → ", I, rule.lhs.fullname);
             // for (size_t j = 0; j < rule.rhs.size(); ++j) {
@@ -957,29 +961,45 @@ void LRParser::buildTable(bool affect_goto) {
                         action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                     } else {
                         // Shift/Reduce conflict warning (can be logged or handled)
-                        const auto& existing = action_table[I][lookahead];
-                        if (existing.type == Action_type::SHIFT) {
-                            // Conflict resolution (log or handle)
-                            //cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
-                            // do nothing because prefer shift over reduce
-                        } else if (existing.type == Action_type::REDUCE) {
-                            // Multiple reductions possible
-                            auto existing_rule_reduce_name = rules[existing.state].first;
-                            if (rule.lhs.fullname != existing_rule_reduce_name) {
-                                // rules not same so do resolve conflict
-                                auto current_priority = priority[rule.lhs.fullname];
-                                auto existing_priority = priority[existing_rule_reduce_name];
-                                if (current_priority > existing_priority) {
-                                    action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
+                        if (resolve_conflicts) {
+                            const auto& existing = action_table[I][lookahead];
+                            if (existing.type == Action_type::SHIFT) {
+                                // Conflict resolution (log or handle)
+                                //cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
+                                // do nothing because prefer shift over reduce
+                            } else if (existing.type == Action_type::REDUCE) {
+                                // Multiple reductions possible
+                                auto existing_rule_reduce_name = rules[existing.state].first;
+                                if (rule.lhs.fullname != existing_rule_reduce_name) {
+                                    // rules not same so do resolve conflict
+                                    auto current_priority = priority[rule.lhs.fullname];
+                                    auto existing_priority = priority[existing_rule_reduce_name];
+                                    if (current_priority > existing_priority) {
+                                        action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
+                                    }
                                 }
+                                // cpuf::printf("[%$ -> %$]Conflict: REDUCE/REDUCE on state %$ for token %$\n", 
+                                //     corelib::text::join(rule.lhs.fullname, "_"), 
+                                //     corelib::text::join(rules[find_rules_index(rule)].first, "_"), 
+                                //     I, 
+                                //     lookahead
+                                // );
                             }
-                            // cpuf::printf("[%$ -> %$]Conflict: REDUCE/REDUCE on state %$ for token %$\n", 
-                            //     corelib::text::join(rule.lhs.fullname, "_"), 
-                            //     corelib::text::join(rules[find_rules_index(rule)].first, "_"), 
-                            //     I, 
-                            //     lookahead
-                            // );
+                        } else {
+                            if (got_conflict) {
+                                conflict.conflicts.push_back(Action{Action_type::REDUCE, find_rules_index(rule)});
+                            } else {
+                                if (prev_rule) {
+                                    conflict.item.push_back(*prev_rule);
+                                }
+                                conflict.item.push_back(rule);
+                                conflict.place = &action_table[I][lookahead];
+                                conflict.conflicts = {*conflict.place, Action{Action_type::REDUCE, find_rules_index(rule)}};
+                                got_conflict = true;
+                            }
+
                         }
+
                     }
                 }
                 // cpuf::printf("\n");
@@ -989,8 +1009,7 @@ void LRParser::buildTable(bool affect_goto) {
             
                 if (corelib::text::isLower(next.name)) {
                     // Non-terminal → GOTO
-                    if (affect_goto)
-                        goto_table[I][next.fullname] = next_state;
+                    goto_table[I][next.fullname] = next_state;
                 } else {
                     // Terminal → SHIFT (unconditionally)
                     if (action_table[I].count(next.fullname) == 0) {
@@ -998,17 +1017,42 @@ void LRParser::buildTable(bool affect_goto) {
                     } else {
                         // Optional: warn if double SHIFT or SHIFT/REDUCE
                         const auto& existing = action_table[I][next.fullname];
-                        if (existing.type == Action_type::REDUCE || existing.state != next_state) {
-                            //cpuf::printf("SHIFT/REDUCE Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
-                            // prefer shift over reduce
-                            action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
-                        } else if (existing.type == Action_type::SHIFT && existing.state != next_state) {
-                            cpuf::printf("SHIFT/SHIFT Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
+                        if (existing.type == Action_type::SHIFT && existing.state == next_state) {
+                            continue;
                         }
+                        if (resolve_conflicts) {
+                            if (existing.type == Action_type::REDUCE || existing.state != next_state) {
+                                //cpuf::printf("SHIFT/REDUCE Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
+                                // prefer shift over reduce
+                                action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
+                            } else if (existing.type == Action_type::SHIFT && existing.state != next_state) {
+                                cpuf::printf("SHIFT/SHIFT Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
+                            }
+                        } else {
+                            if (got_conflict) {
+                                conflict.conflicts.push_back(Action{Action_type::SHIFT, next_state});
+                            } else {
+                                if (prev_rule) {
+                                    conflict.item.push_back(*prev_rule);
+                                    conflict.conflicts.push_back(action_table[I][prev_rule->lhs.fullname]);
+                                    cpuf::printf("action_table[%$][%$] = %$ %$\n", I, corelib::text::join(next.fullname, "_"), "SHIFT", action_table[I][prev_rule->lhs.fullname].state);
+                                }
+                                conflict.item.push_back(rule);
+                                conflict.place = &action_table[I][next.fullname];
+                                conflict.conflicts.push_back(Action{Action_type::SHIFT, next_state});
+                                got_conflict = true;
+                            }
+                        }
+
                     }
                 }
+                prev_rule = &rule;
+            }
+            if (got_conflict) {
+                conflicts.push_back(conflict);
             }
         }
+
         I++;
     }
 }

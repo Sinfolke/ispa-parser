@@ -18,16 +18,16 @@ expr:
 
 // Term for multiplicative and bit operations
 term:
-    (term '*' factor)
-  | (term '/' factor)
-  | (term '%' factor)
+    (term '+' factor)
+  | (term '-' factor)
   | factor
   ;
 
 // Factor includes grouping, literals, identifiers, etc.
 factor:
-    ('+' factor)
-  | ('-' factor)
+    ('*' factor)
+  | ('/' factor)
+  | ('%' factor)
   | ('!' factor)
   | ('(' expr ')')
   | (ID '[' expr ']')

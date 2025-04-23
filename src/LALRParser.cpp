@@ -30,7 +30,20 @@ void LALRParser::rebuildGotoTable(const std::vector<size_t>& state_mapping) {
 
     goto_table = std::move(new_goto_table);
 }
-
+std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRParser::getActionType(const LR1Core& item, size_t state) {
+    // Check if the item is in the action table
+    std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> action_types;
+    auto it = action_table.find(state);
+    if (it != action_table.end()) {
+        for (auto lookahead : item.lookahead) {
+            auto action_it = it->second.find(lookahead);
+            if (action_it != it->second.end()) {
+                action_types.push_back({lookahead, action_it->second.type});
+            }
+        }
+    }
+    return action_types;
+}
 
 void LALRParser::build() {
     LRParser::prepare(); // Standard LR preparation
@@ -58,14 +71,29 @@ void LALRParser::build() {
         bool conflict = false;
         for (size_t s : states) {
             for (const auto& item : canonical_item_set[s]) {
+                // We assume that `core` is a collection of items or states to check for conflict
                 for (auto el : core) {
+                    // Check if the lookahead of `item` and `el` intersect
                     for (const auto& la : item.lookahead) {
+                        // Look for conflicts
                         if (el.lookahead.count(la)) {
-                            conflict = true;
+                            // Case where both have the same lookahead, we need to check their actions
+                            auto item_actions = getActionType(item, s);
+                            auto el_actions = getActionType(el, s);
+                            // Check if the actions are the same
+                            for (const auto& [lookahead, action] : item_actions) {
+                                auto it = std::find_if(el_actions.begin(), el_actions.end(), [&lookahead](const auto& pair) { return pair.first == lookahead; });
+                                if (it != el_actions.end()) {
+                                    // Check if the actions are different
+                                    if (action != it->second) {
+                                        conflict = true;
+                                        break;
+                                    }
+                                }
+                            }
                         }
-                    } 
+                    }
                 }
-
             }
         }
         if (!conflict) {

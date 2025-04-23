@@ -4,7 +4,8 @@ class LALRParser : public LRParser {
 protected:
     void rebuildActionTable(const std::vector<size_t>& state_mapping);
     void rebuildGotoTable(const std::vector<size_t>& state_mapping);
-    void build();
+    std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> getActionType(const LR1Core& item, size_t state);
+            void build();
 public:
     LALRParser(Tree *tree) : LRParser(tree, false) {
         LRParser::transform();

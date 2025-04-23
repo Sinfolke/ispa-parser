@@ -32,5 +32,6 @@
 #include <IR/IR.h>
 #include <LRParser.h>
 #include <LALRParser.h>
+#include <ELRParser.h>
 #include <converter_base.h>
 void printHelp();

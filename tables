@@ -1,31 +1,680 @@
 Action Table:
 State Token          Action    Next State
-6     $              REDUCE    3         
-6     AUTO_0         REDUCE    3         
-6     AUTO_1         REDUCE    3         
-6     NUMBER         REDUCE    3         
-5     NUMBER         SHIFT     6         
-4     $              ACCEPT    0         
-3     $              REDUCE    2         
-3     AUTO_0         REDUCE    2         
-3     AUTO_1         REDUCE    2         
-3     NUMBER         REDUCE    2         
-2     $              REDUCE    1         
-2     AUTO_0         REDUCE    1         
-2     AUTO_1         REDUCE    1         
-2     NUMBER         REDUCE    1         
-1     AUTO_0         SHIFT     5         
+56    NUMBER         REDUCE    28        
+56    ID             REDUCE    28        
+56    AUTO_23        REDUCE    28        
+56    AUTO_22        REDUCE    28        
+56    AUTO_20        REDUCE    28        
+56    AUTO_19        REDUCE    28        
+56    AUTO_21        REDUCE    28        
+56    AUTO_17        REDUCE    28        
+56    $              REDUCE    28        
+55    AUTO_8         SHIFT     20        
+55    AUTO_6         SHIFT     22        
+55    AUTO_4         SHIFT     24        
+55    AUTO_9         SHIFT     25        
+55    AUTO_3         SHIFT     26        
+55    AUTO_2         SHIFT     27        
+55    AUTO_0         SHIFT     28        
+55    AUTO_5         SHIFT     23        
+55    AUTO_23        SHIFT     53        
+55    AUTO_7         SHIFT     21        
+55    $              REDUCE    21        
+54    ID             REDUCE    27        
+54    AUTO_9         SHIFT     25        
+54    AUTO_8         SHIFT     20        
+54    NUMBER         REDUCE    27        
+54    AUTO_6         SHIFT     22        
+54    AUTO_7         SHIFT     21        
+54    AUTO_5         SHIFT     23        
+54    AUTO_0         SHIFT     28        
+54    $              REDUCE    27        
+54    AUTO_1         REDUCE    27        
+54    AUTO_4         SHIFT     24        
+54    AUTO_2         SHIFT     27        
+54    AUTO_14        REDUCE    27        
+54    AUTO_22        REDUCE    27        
+54    AUTO_17        REDUCE    27        
+54    AUTO_21        REDUCE    27        
+54    AUTO_3         SHIFT     26        
+54    AUTO_18        REDUCE    27        
+54    AUTO_19        REDUCE    27        
+54    AUTO_20        REDUCE    27        
+54    AUTO_23        REDUCE    27        
+53    NUMBER         SHIFT     1         
+53    AUTO_22        SHIFT     2         
+53    AUTO_20        SHIFT     3         
+53    AUTO_19        SHIFT     7         
+53    AUTO_21        SHIFT     4         
+53    AUTO_17        SHIFT     5         
+53    ID             SHIFT     10        
+52    AUTO_23        REDUCE    26        
+52    $              REDUCE    26        
+51    NUMBER         REDUCE    25        
+51    ID             REDUCE    25        
+51    AUTO_20        REDUCE    25        
+51    AUTO_19        REDUCE    25        
+51    AUTO_21        REDUCE    25        
+51    AUTO_17        REDUCE    25        
+51    AUTO_16        REDUCE    25        
+51    AUTO_22        REDUCE    25        
+51    AUTO_15        REDUCE    25        
+51    $              REDUCE    25        
+50    NUMBER         REDUCE    24        
+50    ID             REDUCE    24        
+50    AUTO_22        REDUCE    24        
+50    AUTO_20        REDUCE    24        
+50    AUTO_19        REDUCE    24        
+50    AUTO_21        REDUCE    24        
+50    AUTO_17        REDUCE    24        
+50    AUTO_14        REDUCE    24        
+50    AUTO_13        REDUCE    24        
+50    $              REDUCE    24        
+49    NUMBER         SHIFT     1         
+49    AUTO_22        SHIFT     2         
+49    AUTO_20        SHIFT     3         
+49    AUTO_19        SHIFT     7         
+49    AUTO_21        SHIFT     4         
+49    AUTO_17        SHIFT     5         
+49    ID             SHIFT     10        
+48    ID             REDUCE    23        
+48    AUTO_9         SHIFT     25        
+48    AUTO_8         SHIFT     20        
+48    NUMBER         REDUCE    23        
+48    AUTO_6         SHIFT     22        
+48    AUTO_7         SHIFT     21        
+48    AUTO_5         SHIFT     23        
+48    AUTO_3         SHIFT     26        
+48    $              REDUCE    23        
+48    AUTO_0         SHIFT     28        
+48    AUTO_1         REDUCE    23        
+48    AUTO_10        REDUCE    23        
+48    AUTO_4         SHIFT     24        
+48    AUTO_2         SHIFT     27        
+48    AUTO_14        REDUCE    23        
+48    AUTO_22        REDUCE    23        
+48    AUTO_17        REDUCE    23        
+48    AUTO_21        REDUCE    23        
+48    AUTO_18        REDUCE    23        
+48    AUTO_19        REDUCE    23        
+48    AUTO_20        REDUCE    23        
+48    AUTO_23        REDUCE    23        
+47    AUTO_16        REDUCE    22        
+46    AUTO_8         SHIFT     20        
+46    AUTO_6         SHIFT     22        
+46    AUTO_4         SHIFT     24        
+46    AUTO_9         SHIFT     25        
+46    AUTO_3         SHIFT     26        
+46    AUTO_2         SHIFT     27        
+46    AUTO_0         SHIFT     28        
+46    AUTO_5         SHIFT     23        
+46    AUTO_23        SHIFT     53        
+46    AUTO_7         SHIFT     21        
+46    $              REDUCE    21        
+45    AUTO_16        SHIFT     51        
+44    AUTO_14        SHIFT     50        
+44    AUTO_8         SHIFT     20        
+44    AUTO_7         SHIFT     21        
+44    AUTO_6         SHIFT     22        
+44    AUTO_5         SHIFT     23        
+44    AUTO_4         SHIFT     24        
+44    AUTO_9         SHIFT     25        
+44    AUTO_3         SHIFT     26        
+44    AUTO_2         SHIFT     27        
+44    AUTO_0         SHIFT     28        
+43    AUTO_8         SHIFT     20        
+43    AUTO_7         SHIFT     21        
+43    AUTO_6         SHIFT     22        
+43    AUTO_5         SHIFT     23        
+43    AUTO_4         SHIFT     24        
+43    AUTO_9         SHIFT     25        
+43    AUTO_3         SHIFT     26        
+43    AUTO_2         SHIFT     27        
+43    AUTO_1         SHIFT     49        
+43    AUTO_0         SHIFT     28        
+42    ID             REDUCE    20        
+42    AUTO_9         SHIFT     25        
+42    AUTO_8         SHIFT     20        
+42    NUMBER         REDUCE    20        
+42    AUTO_6         SHIFT     22        
+42    AUTO_7         SHIFT     21        
+42    AUTO_5         SHIFT     23        
+42    AUTO_0         SHIFT     28        
+42    AUTO_1         REDUCE    20        
+42    $              REDUCE    20        
+42    AUTO_4         SHIFT     24        
+42    AUTO_2         SHIFT     27        
+42    AUTO_14        REDUCE    20        
+42    AUTO_22        REDUCE    20        
+42    AUTO_17        REDUCE    20        
+42    AUTO_21        REDUCE    20        
+42    AUTO_3         SHIFT     26        
+42    AUTO_18        REDUCE    20        
+42    AUTO_19        REDUCE    20        
+42    AUTO_20        REDUCE    20        
+42    AUTO_23        REDUCE    20        
+41    ID             REDUCE    19        
+41    AUTO_9         SHIFT     25        
+41    AUTO_8         SHIFT     20        
+41    NUMBER         REDUCE    19        
+41    AUTO_6         SHIFT     22        
+41    AUTO_7         SHIFT     21        
+41    AUTO_5         SHIFT     23        
+41    AUTO_0         SHIFT     28        
+41    AUTO_1         REDUCE    19        
+41    AUTO_3         SHIFT     26        
+41    AUTO_22        REDUCE    19        
+41    AUTO_17        REDUCE    19        
+41    AUTO_21        REDUCE    19        
+41    $              REDUCE    19        
+41    AUTO_4         SHIFT     24        
+41    AUTO_2         SHIFT     27        
+41    AUTO_14        REDUCE    19        
+41    AUTO_18        REDUCE    19        
+41    AUTO_19        REDUCE    19        
+41    AUTO_20        REDUCE    19        
+41    AUTO_23        REDUCE    19        
+40    ID             REDUCE    18        
+40    AUTO_23        REDUCE    18        
+40    AUTO_21        REDUCE    18        
+40    AUTO_20        REDUCE    18        
+40    AUTO_19        REDUCE    18        
+40    AUTO_18        REDUCE    18        
+40    AUTO_0         SHIFT     28        
+40    AUTO_1         REDUCE    18        
+40    AUTO_3         SHIFT     26        
+40    AUTO_9         SHIFT     25        
+40    AUTO_22        REDUCE    18        
+40    AUTO_17        REDUCE    18        
+40    NUMBER         REDUCE    18        
+40    AUTO_6         SHIFT     22        
+40    AUTO_5         SHIFT     23        
+40    AUTO_7         SHIFT     21        
+40    $              REDUCE    18        
+40    AUTO_8         SHIFT     20        
+40    AUTO_2         SHIFT     27        
+40    AUTO_4         SHIFT     24        
+40    AUTO_14        REDUCE    18        
+39    ID             REDUCE    17        
+39    AUTO_9         SHIFT     25        
+39    AUTO_8         SHIFT     20        
+39    NUMBER         REDUCE    17        
+39    AUTO_6         SHIFT     22        
+39    AUTO_7         SHIFT     21        
+39    AUTO_5         SHIFT     23        
+39    AUTO_23        REDUCE    17        
+39    AUTO_0         SHIFT     28        
+39    AUTO_1         REDUCE    17        
+39    AUTO_3         SHIFT     26        
+39    AUTO_22        REDUCE    17        
+39    AUTO_17        REDUCE    17        
+39    AUTO_21        REDUCE    17        
+39    AUTO_18        REDUCE    17        
+39    $              REDUCE    17        
+39    AUTO_2         SHIFT     27        
+39    AUTO_4         SHIFT     24        
+39    AUTO_14        REDUCE    17        
+39    AUTO_19        REDUCE    17        
+39    AUTO_20        REDUCE    17        
+38    ID             REDUCE    16        
+38    AUTO_9         SHIFT     25        
+38    AUTO_8         SHIFT     20        
+38    NUMBER         REDUCE    16        
+38    AUTO_6         SHIFT     22        
+38    AUTO_23        REDUCE    16        
+38    AUTO_0         SHIFT     28        
+38    AUTO_1         REDUCE    16        
+38    AUTO_3         SHIFT     26        
+38    AUTO_22        REDUCE    16        
+38    AUTO_17        REDUCE    16        
+38    AUTO_21        REDUCE    16        
+38    AUTO_18        REDUCE    16        
+38    AUTO_7         SHIFT     21        
+38    AUTO_5         SHIFT     23        
+38    $              REDUCE    16        
+38    AUTO_2         SHIFT     27        
+38    AUTO_4         SHIFT     24        
+38    AUTO_14        REDUCE    16        
+38    AUTO_19        REDUCE    16        
+38    AUTO_20        REDUCE    16        
+37    ID             REDUCE    15        
+37    AUTO_9         SHIFT     25        
+37    AUTO_8         SHIFT     20        
+37    AUTO_23        REDUCE    15        
+37    AUTO_21        REDUCE    15        
+37    AUTO_0         SHIFT     28        
+37    AUTO_1         REDUCE    15        
+37    AUTO_3         SHIFT     26        
+37    AUTO_22        REDUCE    15        
+37    AUTO_17        REDUCE    15        
+37    AUTO_18        REDUCE    15        
+37    AUTO_7         SHIFT     21        
+37    AUTO_5         SHIFT     23        
+37    NUMBER         REDUCE    15        
+37    AUTO_6         SHIFT     22        
+37    AUTO_19        REDUCE    15        
+37    $              REDUCE    15        
+37    AUTO_2         SHIFT     27        
+37    AUTO_4         SHIFT     24        
+37    AUTO_14        REDUCE    15        
+37    AUTO_20        REDUCE    15        
+36    ID             REDUCE    14        
+36    AUTO_9         SHIFT     25        
+36    AUTO_8         SHIFT     20        
+36    AUTO_23        REDUCE    14        
+36    AUTO_21        REDUCE    14        
+36    AUTO_20        REDUCE    14        
+36    AUTO_0         SHIFT     28        
+36    AUTO_1         REDUCE    14        
+36    AUTO_3         SHIFT     26        
+36    AUTO_22        REDUCE    14        
+36    AUTO_17        REDUCE    14        
+36    AUTO_18        REDUCE    14        
+36    NUMBER         REDUCE    14        
+36    AUTO_6         SHIFT     22        
+36    AUTO_19        REDUCE    14        
+36    AUTO_5         SHIFT     23        
+36    AUTO_7         SHIFT     21        
+36    $              REDUCE    14        
+36    AUTO_2         SHIFT     27        
+36    AUTO_4         SHIFT     24        
+36    AUTO_14        REDUCE    14        
+35    ID             REDUCE    13        
+35    AUTO_9         SHIFT     25        
+35    AUTO_23        REDUCE    13        
+35    AUTO_21        REDUCE    13        
+35    AUTO_20        REDUCE    13        
+35    AUTO_19        REDUCE    13        
+35    AUTO_0         SHIFT     28        
+35    AUTO_1         REDUCE    13        
+35    AUTO_3         SHIFT     26        
+35    AUTO_22        REDUCE    13        
+35    AUTO_17        REDUCE    13        
+35    AUTO_18        REDUCE    13        
+35    NUMBER         REDUCE    13        
+35    AUTO_6         SHIFT     22        
+35    AUTO_5         SHIFT     23        
+35    AUTO_7         SHIFT     21        
+35    $              REDUCE    13        
+35    AUTO_8         SHIFT     20        
+35    AUTO_2         SHIFT     27        
+35    AUTO_4         SHIFT     24        
+35    AUTO_14        REDUCE    13        
+34    NUMBER         REDUCE    12        
+34    AUTO_22        REDUCE    12        
+34    AUTO_20        REDUCE    12        
+34    AUTO_19        REDUCE    12        
+34    AUTO_21        REDUCE    12        
+34    AUTO_17        REDUCE    12        
+34    AUTO_12        REDUCE    12        
+34    ID             REDUCE    12        
+34    AUTO_11        REDUCE    12        
+34    $              REDUCE    12        
+33    NUMBER         REDUCE    11        
+33    AUTO_22        REDUCE    11        
+33    AUTO_20        REDUCE    11        
+33    AUTO_19        REDUCE    11        
+33    AUTO_21        REDUCE    11        
+33    AUTO_17        REDUCE    11        
+33    AUTO_12        REDUCE    11        
+33    ID             REDUCE    11        
+33    AUTO_11        REDUCE    11        
+33    $              REDUCE    11        
+32    NUMBER         REDUCE    10        
+32    ID             REDUCE    10        
+32    AUTO_22        REDUCE    10        
+32    AUTO_20        REDUCE    10        
+32    AUTO_19        REDUCE    10        
+32    AUTO_18        REDUCE    10        
+32    AUTO_21        REDUCE    10        
+32    AUTO_17        REDUCE    10        
+32    $              REDUCE    10        
+31    NUMBER         SHIFT     1         
+31    AUTO_22        SHIFT     2         
+31    AUTO_20        SHIFT     3         
+31    AUTO_19        SHIFT     7         
+31    AUTO_21        SHIFT     4         
+31    AUTO_17        SHIFT     5         
+31    ID             SHIFT     10        
+30    NUMBER         SHIFT     1         
+30    AUTO_22        SHIFT     2         
+30    AUTO_20        SHIFT     3         
+30    AUTO_19        SHIFT     7         
+30    AUTO_21        SHIFT     4         
+30    AUTO_17        SHIFT     5         
+30    ID             SHIFT     10        
+30    AUTO_16        REDUCE    9         
+29    NUMBER         SHIFT     1         
+29    AUTO_22        SHIFT     2         
+29    AUTO_20        SHIFT     3         
+29    AUTO_19        SHIFT     7         
+29    AUTO_21        SHIFT     4         
+29    AUTO_17        SHIFT     5         
+29    ID             SHIFT     10        
+12    AUTO_13        SHIFT     29        
+12    NUMBER         REDUCE    4         
+12    ID             REDUCE    4         
+12    AUTO_15        SHIFT     30        
+12    AUTO_22        REDUCE    4         
+12    AUTO_20        REDUCE    4         
+12    AUTO_19        REDUCE    4         
+12    AUTO_21        REDUCE    4         
+12    AUTO_17        REDUCE    4         
+12    $              REDUCE    4         
+11    $              ACCEPT    0         
+10    AUTO_13        SHIFT     29        
+10    NUMBER         REDUCE    4         
+10    ID             REDUCE    4         
+10    AUTO_20        REDUCE    4         
+10    AUTO_19        REDUCE    4         
+10    AUTO_21        REDUCE    4         
+10    AUTO_17        REDUCE    4         
+10    $              REDUCE    4         
+10    AUTO_15        SHIFT     30        
+10    AUTO_22        REDUCE    4         
+10    AUTO_10        SHIFT     31        
+9     NUMBER         REDUCE    3         
+9     AUTO_22        REDUCE    3         
+9     AUTO_20        REDUCE    3         
+9     AUTO_19        REDUCE    3         
+9     AUTO_21        REDUCE    3         
+9     AUTO_17        REDUCE    3         
+9     AUTO_12        REDUCE    3         
+9     ID             REDUCE    3         
+9     AUTO_11        REDUCE    3         
+9     $              REDUCE    3         
+8     AUTO_8         SHIFT     20        
+8     $              REDUCE    2         
+8     AUTO_7         SHIFT     21        
+8     AUTO_6         SHIFT     22        
+8     AUTO_5         SHIFT     23        
+8     AUTO_4         SHIFT     24        
+8     AUTO_9         SHIFT     25        
+8     AUTO_3         SHIFT     26        
+8     AUTO_2         SHIFT     27        
+8     AUTO_0         SHIFT     28        
+7     NUMBER         SHIFT     1         
+7     ID             SHIFT     12        
+7     AUTO_22        SHIFT     2         
+7     AUTO_20        SHIFT     3         
+7     AUTO_19        SHIFT     7         
+7     AUTO_21        SHIFT     4         
+7     AUTO_17        SHIFT     5         
+6     AUTO_11        SHIFT     18        
+6     ID             REDUCE    1         
+6     AUTO_9         REDUCE    1         
+6     AUTO_8         REDUCE    1         
+6     NUMBER         REDUCE    1         
+6     AUTO_6         REDUCE    1         
+6     AUTO_7         REDUCE    1         
+6     AUTO_5         REDUCE    1         
+6     AUTO_12        SHIFT     17        
+6     $              REDUCE    1         
+6     AUTO_0         REDUCE    1         
+6     AUTO_1         REDUCE    1         
+6     AUTO_4         REDUCE    1         
+6     AUTO_2         REDUCE    1         
+6     AUTO_14        REDUCE    1         
+6     AUTO_22        REDUCE    1         
+6     AUTO_17        REDUCE    1         
+6     AUTO_21        REDUCE    1         
+6     AUTO_3         REDUCE    1         
+6     AUTO_18        REDUCE    1         
+6     AUTO_19        REDUCE    1         
+6     AUTO_20        REDUCE    1         
+6     AUTO_23        REDUCE    1         
+5     NUMBER         SHIFT     1         
+5     AUTO_22        SHIFT     2         
+5     AUTO_20        SHIFT     3         
+5     AUTO_19        SHIFT     7         
+5     AUTO_21        SHIFT     4         
+5     AUTO_17        SHIFT     5         
+5     ID             SHIFT     10        
+4     NUMBER         SHIFT     1         
+4     ID             SHIFT     12        
+4     AUTO_22        SHIFT     2         
+4     AUTO_20        SHIFT     3         
+4     AUTO_19        SHIFT     7         
+4     AUTO_21        SHIFT     4         
+4     AUTO_17        SHIFT     5         
+3     NUMBER         SHIFT     1         
+3     ID             SHIFT     12        
+3     AUTO_22        SHIFT     2         
+3     AUTO_20        SHIFT     3         
+3     AUTO_19        SHIFT     7         
+3     AUTO_21        SHIFT     4         
+3     AUTO_17        SHIFT     5         
+2     NUMBER         SHIFT     1         
+2     ID             SHIFT     12        
+2     AUTO_22        SHIFT     2         
+2     AUTO_20        SHIFT     3         
+2     AUTO_19        SHIFT     7         
+2     AUTO_21        SHIFT     4         
+2     AUTO_17        SHIFT     5         
+1     NUMBER         REDUCE    0         
+1     ID             REDUCE    0         
+1     AUTO_22        REDUCE    0         
+1     AUTO_20        REDUCE    0         
+1     AUTO_19        REDUCE    0         
+1     AUTO_21        REDUCE    0         
+1     AUTO_17        REDUCE    0         
 1     $              REDUCE    0         
-0     AUTO_1         SHIFT     3         
-0     NUMBER         SHIFT     2         
+0     NUMBER         SHIFT     1         
+0     AUTO_22        SHIFT     2         
+0     AUTO_20        SHIFT     3         
+0     AUTO_19        SHIFT     7         
+0     AUTO_21        SHIFT     4         
+0     AUTO_17        SHIFT     5         
+0     ID             SHIFT     10        
+13    NUMBER         REDUCE    5         
+13    ID             REDUCE    5         
+13    AUTO_22        REDUCE    5         
+13    AUTO_20        REDUCE    5         
+13    AUTO_19        REDUCE    5         
+13    AUTO_21        REDUCE    5         
+13    AUTO_17        REDUCE    5         
+13    $              REDUCE    5         
+14    NUMBER         REDUCE    6         
+14    ID             REDUCE    6         
+14    AUTO_22        REDUCE    6         
+14    AUTO_20        REDUCE    6         
+14    AUTO_19        REDUCE    6         
+14    AUTO_21        REDUCE    6         
+14    AUTO_17        REDUCE    6         
+14    $              REDUCE    6         
+15    NUMBER         REDUCE    7         
+15    ID             REDUCE    7         
+15    AUTO_22        REDUCE    7         
+15    AUTO_20        REDUCE    7         
+15    AUTO_19        REDUCE    7         
+15    AUTO_21        REDUCE    7         
+15    AUTO_17        REDUCE    7         
+15    $              REDUCE    7         
+16    AUTO_8         SHIFT     20        
+16    AUTO_7         SHIFT     21        
+16    AUTO_6         SHIFT     22        
+16    AUTO_5         SHIFT     23        
+16    AUTO_18        SHIFT     32        
+16    AUTO_4         SHIFT     24        
+16    AUTO_9         SHIFT     25        
+16    AUTO_3         SHIFT     26        
+16    AUTO_2         SHIFT     27        
+16    AUTO_0         SHIFT     28        
+17    NUMBER         SHIFT     1         
+17    ID             SHIFT     12        
+17    AUTO_22        SHIFT     2         
+17    AUTO_20        SHIFT     3         
+17    AUTO_19        SHIFT     7         
+17    AUTO_21        SHIFT     4         
+17    AUTO_17        SHIFT     5         
+18    NUMBER         SHIFT     1         
+18    ID             SHIFT     12        
+18    AUTO_22        SHIFT     2         
+18    AUTO_20        SHIFT     3         
+18    AUTO_19        SHIFT     7         
+18    AUTO_21        SHIFT     4         
+18    AUTO_17        SHIFT     5         
+19    NUMBER         REDUCE    8         
+19    ID             REDUCE    8         
+19    AUTO_22        REDUCE    8         
+19    AUTO_20        REDUCE    8         
+19    AUTO_19        REDUCE    8         
+19    AUTO_21        REDUCE    8         
+19    AUTO_17        REDUCE    8         
+19    $              REDUCE    8         
+20    NUMBER         SHIFT     1         
+20    AUTO_22        SHIFT     2         
+20    AUTO_20        SHIFT     3         
+20    AUTO_19        SHIFT     7         
+20    AUTO_21        SHIFT     4         
+20    AUTO_17        SHIFT     5         
+20    ID             SHIFT     10        
+21    NUMBER         SHIFT     1         
+21    AUTO_22        SHIFT     2         
+21    AUTO_20        SHIFT     3         
+21    AUTO_19        SHIFT     7         
+21    AUTO_21        SHIFT     4         
+21    AUTO_17        SHIFT     5         
+21    ID             SHIFT     10        
+22    NUMBER         SHIFT     1         
+22    AUTO_22        SHIFT     2         
+22    AUTO_20        SHIFT     3         
+22    AUTO_19        SHIFT     7         
+22    AUTO_21        SHIFT     4         
+22    AUTO_17        SHIFT     5         
+22    ID             SHIFT     10        
+23    NUMBER         SHIFT     1         
+23    AUTO_22        SHIFT     2         
+23    AUTO_20        SHIFT     3         
+23    AUTO_19        SHIFT     7         
+23    AUTO_21        SHIFT     4         
+23    AUTO_17        SHIFT     5         
+23    ID             SHIFT     10        
+24    NUMBER         SHIFT     1         
+24    AUTO_22        SHIFT     2         
+24    AUTO_20        SHIFT     3         
+24    AUTO_19        SHIFT     7         
+24    AUTO_21        SHIFT     4         
+24    AUTO_17        SHIFT     5         
+24    ID             SHIFT     10        
+25    NUMBER         SHIFT     1         
+25    AUTO_22        SHIFT     2         
+25    AUTO_20        SHIFT     3         
+25    AUTO_19        SHIFT     7         
+25    AUTO_21        SHIFT     4         
+25    AUTO_17        SHIFT     5         
+25    ID             SHIFT     10        
+26    NUMBER         SHIFT     1         
+26    AUTO_22        SHIFT     2         
+26    AUTO_20        SHIFT     3         
+26    AUTO_19        SHIFT     7         
+26    AUTO_21        SHIFT     4         
+26    AUTO_17        SHIFT     5         
+26    ID             SHIFT     10        
+27    NUMBER         SHIFT     1         
+27    AUTO_22        SHIFT     2         
+27    AUTO_20        SHIFT     3         
+27    AUTO_19        SHIFT     7         
+27    AUTO_21        SHIFT     4         
+27    AUTO_17        SHIFT     5         
+27    ID             SHIFT     10        
+28    NUMBER         SHIFT     1         
+28    AUTO_22        SHIFT     2         
+28    AUTO_20        SHIFT     3         
+28    AUTO_19        SHIFT     7         
+28    AUTO_21        SHIFT     4         
+28    AUTO_17        SHIFT     5         
+28    ID             SHIFT     10        
 
 Goto Table:
 State Non-Terminal        Next State  
-0     main                4           
-0     expr                1           
+30    factor              9           
+30    __q2                45          
+30    expr                46          
+30    term                6           
+30    arg_list            47          
+28    factor              9           
+28    term                6           
+28    expr                43          
+27    factor              9           
+27    term                6           
+27    expr                42          
+55    __grp1              56          
+26    factor              9           
+26    term                6           
+26    expr                41          
+25    factor              9           
+25    term                6           
+25    expr                40          
+29    factor              9           
+29    term                6           
+29    expr                44          
+0     factor              9           
+0     term                6           
+0     expr                8           
+0     main                11          
+31    factor              9           
+31    term                6           
+31    expr                48          
+2     factor              13          
+3     factor              14          
+4     factor              15          
+46    __grp1              52          
+17    factor              33          
+5     factor              9           
+5     term                6           
+5     expr                16          
+18    factor              34          
+7     factor              19          
+49    factor              9           
+49    term                6           
+49    expr                54          
+20    factor              9           
+20    term                6           
+20    expr                35          
+21    factor              9           
+21    term                6           
+21    expr                36          
+22    factor              9           
+22    term                6           
+22    expr                37          
+23    factor              9           
+23    term                6           
+23    expr                38          
+53    factor              9           
+53    term                6           
+53    expr                55          
+24    factor              9           
+24    term                6           
+24    expr                39          
 
 Rules:
+	1: factor → NUMBER 
+	1: expr → term 
 	1: main → expr 
-	1: expr → NUMBER 
-	1: expr → AUTO_1 
-	3: expr → expr AUTO_0 NUMBER 
+	1: term → factor 
+	1: factor → ID 
+	2: factor → AUTO_22 factor 
+	2: factor → AUTO_20 factor 
+	2: factor → AUTO_21 factor 
+	2: factor → AUTO_19 factor 
+	0: __q2 → 
+	3: factor → AUTO_17 expr AUTO_18 
+	3: term → term AUTO_12 factor 
+	3: term → term AUTO_11 factor 
+	3: expr → expr AUTO_8 expr 
+	3: expr → expr AUTO_7 expr 
+	3: expr → expr AUTO_6 expr 
+	3: expr → expr AUTO_5 expr 
+	3: expr → expr AUTO_4 expr 
+	3: expr → expr AUTO_9 expr 
+	3: expr → expr AUTO_3 expr 
+	3: expr → expr AUTO_2 expr 
+	0: __grp1 → 
+	1: __q2 → arg_list 
+	3: expr → ID AUTO_10 expr 
+	4: factor → ID AUTO_13 expr AUTO_14 
+	4: factor → ID AUTO_15 __q2 AUTO_16 
+	2: arg_list → expr __grp1 
+	5: expr → expr AUTO_0 expr AUTO_1 expr 
+	3: __grp1 → AUTO_23 expr __grp1 

@@ -11,16 +11,11 @@ public:
     enum class Action_type {
         SHIFT, REDUCE, ACCEPT, ERROR 
     };
-
     struct Action {
         Action_type type;
         size_t state;
     };
-    
-    using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
-    using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
-    using ItemSet = std::vector<std::vector<rule_other>>;
-    using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<std::vector<rule_other>>>;
+
     struct LR0Core {
         rule_other lhs;
         std::vector<rule_other> rhs;
@@ -40,13 +35,25 @@ public:
     struct LR1Core : public LR0Core {
         mutable std::set<std::vector<std::string>> lookahead;
     };
+    struct Conflict {
+        std::vector<LR1Core> item;
+        Action* place;
+        std::vector<Action> conflicts;
+    };
+        
+    using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
+    using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
+    using ItemSet = std::vector<std::vector<rule_other>>;
+    using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<std::vector<rule_other>>>;
     using CanonicalItem = std::set<LR1Core>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
+
     using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
     using Follow = First;
     using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<rule_other>>>;
     using Rules = std::vector<Rules_part>;
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
+    using Conflicts = std::vector<Conflict>;
 protected:
     Tree *tree;
     ActionTable action_table;
@@ -62,6 +69,7 @@ protected:
     Rules rules;
 
     Priority priority;
+    Conflicts conflicts;
     void getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements);
@@ -92,7 +100,7 @@ protected:
     // build action and goto table
     void prepare();
     void build();
-    void buildTable(bool affect_goto = true);
+    void buildTable(bool resolve_conflicts = true);
     LRParser(Tree *tree, bool build_base = true) : tree(tree) {
         if (build_base) {
             transform();

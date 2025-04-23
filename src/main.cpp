@@ -118,6 +118,11 @@ int main(int argc, char** argv) {
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
         converter->output(name);
+    } else if (algorithm == "ELR") {
+        ELRParser ELRIR(tree);
+        ELRIR.printCanonicalCollection("canonical_collection.txt");
+        ELRIR.printNfa("nfa");
+        ELRIR.printDfa("dfa");
     } else if (algorithm == "LL") {
         LLIR ir(tree.getRawTree());
         ir.makeIR();
