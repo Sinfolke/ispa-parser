@@ -1,4 +1,10 @@
 #include <ELRParser.h>
+bool ELRParser::isELR() const {
+    return true;
+}
+const std::vector<ELRParser::DFA_state>& ELRParser::getDFA() const {
+    return dfa_states;
+}
 std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
     std::set<size_t> closure = states;
     std::queue<size_t> work;
@@ -24,11 +30,11 @@ void ELRParser::build() {
     prepare();
     buildTable(false);
     // build nfa
-    for (const auto &[items, place, conflicts, state] : conflicts) {
+    for (auto &[items, place, conflicts, state] : conflicts) {
         if (items.size() == 2) {
             auto item = items[0];
             auto next = items[1];
-            if (item.rhs == next.rhs) {
+            if (item.rhs == next.rhs && item.dot_pos == next.dot_pos) {
                 // resolve conflict by picking shift over reduce. If reduce/reduce conflict report it
                 if (conflicts[0].type == Action_type::REDUCE && conflicts[1].type == Action_type::REDUCE) {
                     cpuf::printf("Insoluble REDUCE/REDUCE conflict in NFA for rule %$\n", corelib::text::join(item.lhs.fullname, "_"));
@@ -40,14 +46,41 @@ void ELRParser::build() {
                 continue;
             }
         }
-        size_t start_state = nfa_states.size();
+        bool to_continue = false;
+        for (auto it = conflicts.begin(); it != conflicts.end(); it++) {
+            auto conflict = *it;
+            for (auto it2 = conflicts.begin(); it2 != conflicts.end(); it2++) {
+                const auto conflict2 = *it2;
+                if (it == it2)
+                    continue;
+                if (conflict.type == Action_type::REDUCE && conflict2.type == Action_type::REDUCE) {
+                    cpuf::printf("Insoluble REDUCE/REDUCE conflict in NFA\n");
+                    to_continue = true;
+                }
+            }
+        }
+        if (to_continue)
+            continue;
+        std::sort(conflicts.begin(), conflicts.end(), [](const Action &a, const Action &b) {
+            if (a.type == Action_type::REDUCE && b.type != Action_type::REDUCE) {
+                return true;  // REDUCE comes before anything else
+            }
+            if (a.type != Action_type::REDUCE && b.type == Action_type::REDUCE) {
+                return false; // SHIFT comes after REDUCE
+            }
+            return false;
+        });
+        std::sort(items.begin(), items.end(), [](const LR1Core &first, const LR1Core &second) {
+            return first.dot_pos > second.dot_pos;
+        });
         nfa_states.emplace_back(); // Start state
-        nfa_states[start_state].is_starting_state = true; // first item is starting state
+        nfa_states[nfa_states.size() - 1].is_starting_state = true; // first item is starting state
         for (size_t i = 0; i < items.size(); ++i) {
+            size_t start_state = nfa_states.size() - 1;
             const auto &item = items[i];
             if (i + 1 < items.size()) {
                 const auto &next = items[i + 1];
-                if (item.rhs == next.rhs) {
+                if (item.rhs == next.rhs && item.dot_pos == next.dot_pos) {
                     cpuf::printf("Insoluble high ambiguity in NFA for rule %$ and %$. Rhs: ", corelib::text::join(item.lhs.fullname, "_"), corelib::text::join(next.lhs.fullname, "_"));
                     for (auto el : item.rhs) {
                         cpuf::printf("%$ ", corelib::text::join(el.fullname, "_"));
@@ -59,7 +92,8 @@ void ELRParser::build() {
                     cpuf::printf("\n");
                 }
             }
-            size_t current = start_state;
+            auto current = start_state;
+            nfa_states[current].reduce_action = conflicts[i]; // correct one-to-one mapping
             for (size_t j = item.dot_pos - 2; j < item.rhs.size(); ++j) {
                 auto sym = item.rhs[j];
                 size_t next = nfa_states.size();
@@ -68,7 +102,7 @@ void ELRParser::build() {
                     // terminal, just push
                     nfa_states[current].transitions[sym.fullname].push_back(next);
                 } else {
-                    // non terminal, untoll using first set
+                    // non terminal, unroll using first set
                     auto f = first[sym.fullname];
                     for (const auto &token : f) {
                         nfa_states[current].transitions[token].push_back(next);
@@ -77,7 +111,6 @@ void ELRParser::build() {
                 current = next;
 
             }
-            nfa_states[current].reduce_action = conflicts[i]; // correct one-to-one mapping
         }
         
         
@@ -85,12 +118,17 @@ void ELRParser::build() {
     // build dfa based on nfa
     if (nfa_states.empty()) // return if nfa is empty
         return;
+
     std::unordered_map<std::set<size_t>, size_t> dfa_state_map;
     std::queue<std::set<size_t>> worklist;
-    std::set<size_t> start_set = {0};
-    start_set = epsilon_closure(start_set);
+    std::set<size_t> start_set = {};
+
+
+    start_set = epsilon_closure(start_set); // Get ε-closure of the start states
     dfa_states.push_back({start_set});
     dfa_state_map[start_set] = 0;
+    worklist.push(start_set);
+    // Collect all starting NFA states (accounting for ε-closure)
     for (size_t i = 0; i < nfa_states.size(); ++i) {
         if (nfa_states[i].is_starting_state) {
             worklist.push({i});
@@ -105,33 +143,30 @@ void ELRParser::build() {
 
         // Populate symbol_to_nfa_targets for all transitions in the current NFA set
         for (size_t state : current_set) {
-            cpuf::printf("state %$, transitions size: %$\n", state, nfa_states[state].transitions.size());
             for (const auto& [symbol, targets] : nfa_states[state].transitions) {
-                cpuf::printf("processing %$ for symbol %$, targets: %$:", state, symbol, targets);
-                if (!symbol.empty()) { // Exclude ε-transitions here
+                if (!symbol.empty()) { // Exclude ε-transitions
                     symbol_to_nfa_targets[symbol].insert(targets.begin(), targets.end());
                 }
             }
         }
 
-        // Process each symbol and its target set
+        // Process each symbol and its target set (for SHIFT actions)
         for (const auto& [symbol, target_set] : symbol_to_nfa_targets) {
-            // Compute ε-closure of the target set
             std::set<size_t> closure = epsilon_closure(target_set);
 
+            // If the target set is not already a DFA state, add it
             if (!dfa_state_map.count(closure)) {
-                // New DFA state
                 size_t new_dfa_index = dfa_states.size();
                 dfa_states.push_back({closure});
                 dfa_state_map[closure] = new_dfa_index;
                 worklist.push(closure);
             }
 
-            // Add transition to the current DFA state
+            // Add transition for the current DFA state on this symbol
             dfa_states[current_dfa_index].transitions[symbol] = dfa_state_map[closure];
         }
 
-        // Resolve reduce actions: only assign if all underlying NFA states agree
+        // Resolve REDUCE actions: assign if all underlying NFA states agree
         std::optional<Action> reduce_action;
         for (size_t state : current_set) {
             if (nfa_states[state].reduce_action.has_value()) {
@@ -143,15 +178,15 @@ void ELRParser::build() {
                     if (current_action.type != new_action.type || current_action.state != new_action.state) {
                         // Conflict: different action types or states
                         cpuf::printf("Conflict in DFA state %$ between actions %$ and %$\n", current_dfa_index, LRParser::ActionTypeToString(current_action.type), LRParser::ActionTypeToString(new_action.type));
-                        // Handle conflict resolution here; prefer one action or leave unresolved
-                        reduce_action.reset(); // Reset to no action if conflict cannot be resolved
+                        // Handle conflict resolution here
+                        reduce_action.reset(); // Reset if the conflict cannot be resolved
                         break;
                     }
                 }
             }
         }
         // Assign the resolved reduce action to the DFA state
-        dfa_states[current_dfa_index].reduce_action = reduce_action;
+        dfa_states[current_dfa_index].action = reduce_action;
     }
 }
 
@@ -208,9 +243,9 @@ void ELRParser::printDfa(const std::string filename) {
             out << " }--> " << target << "\n";
         }
 
-        if (state.reduce_action.has_value()) {
+        if (state.action.has_value()) {
             out << " ["
-                << LRParser::ActionTypeToString(state.reduce_action.value().type) << " " << state.reduce_action.value().state
+                << LRParser::ActionTypeToString(state.action.value().type) << " " << state.action.value().state
                 << "]\n";
         }
         out << "\n";

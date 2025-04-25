@@ -100,8 +100,8 @@ protected:
     void transform();
     // build action and goto table
     void prepare();
-    virtual void build();
     void buildTable(bool resolve_conflicts = true);
+    virtual void build();
     LRParser(Tree *tree, bool build_immediately = true) : tree(tree) {
         if (build_immediately) {
             transform();
@@ -119,7 +119,7 @@ public:
         build();
     }
     // get data functions
-
+    virtual bool isELR() const;
     auto getActionTable() const -> const ActionTable&;
     auto getGotoTable() const -> const GotoTable&;
     auto getRulesTable() const -> const Rules&; 

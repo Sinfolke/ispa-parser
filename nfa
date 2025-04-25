@@ -1,10 +1,10 @@
 State 0:
-  --{ AUTO_0, }--> 1
-[SHIFT 7]
+  --{ AUTO_1, }--> 1
+[REDUCE 2]
 
 State 1:
   --{ NUMBER, }--> 2
 
 State 2:
-[REDUCE 5]
+[SHIFT 5]
 

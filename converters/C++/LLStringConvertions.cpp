@@ -21,27 +21,29 @@ static std::string format_str(std::string str) {
     }
     return res;
 }
-std::string LLStringConvertions::convert_var_type(LLIR::var_types type, std::vector<LLIR::var_type> data) {
+std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, const std::vector<LLIR::var_type> &data) const {
     if (type == LLIR::var_types::ARRAY) {
+        std::vector<LLIR::var_type> type = data;
         if (data.empty())
-            data.push_back({LLIR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         std::string t = "::" + namespace_name + "::arr_t";
         t += "<";
-        t += convert_var_type(data[0].type, data[0].templ);
+        t += convert_var_type(type[0].type, type[0].templ);
         t += ">";
         return t;
     } else if (type == LLIR::var_types::OBJECT) {
+        std::vector<LLIR::var_type> type = data;
         if (data.size() < 1) {
-            data.push_back({LLIR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         }
         if (data.size() < 2) {
-            data.push_back({LLIR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         }
         std::string t = "::" + namespace_name + "::obj_t";
         t += "<";
-        t += convert_var_type(data[0].type, data[0].templ);
+        t += convert_var_type(type[0].type, type[0].templ);
         t += ", ";
-        t += convert_var_type(data[1].type, data[1].templ);
+        t += convert_var_type(type[1].type, type[1].templ);
         t += ">";
         return t;
     }
@@ -64,7 +66,7 @@ std::string LLStringConvertions::convert_var_type(LLIR::var_types type, std::vec
 }
 
 
-std::string LLStringConvertions::convert_var_assing_values(LLIR::var_assign_values value, std::any data) {
+std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assign_values &value, const std::any &data) {
     switch (value) {
         case LLIR::var_assign_values::STRING:
             //cpuf::printf("on String\n");
@@ -174,7 +176,7 @@ std::string LLStringConvertions::convert_var_assing_values(LLIR::var_assign_valu
     }
 }
 
-std::string LLStringConvertions::convert_var_assing_types(LLIR::var_assign_types value) {
+std::string LLStringConvertions::convert_var_assing_types(const LLIR::var_assign_types &value) const {
     switch (value) {
         case LLIR::var_assign_types::ASSIGN:    return "=";
         case LLIR::var_assign_types::ADD:       return "+=";
@@ -186,7 +188,7 @@ std::string LLStringConvertions::convert_var_assing_types(LLIR::var_assign_types
     }
 }
 
-std::string LLStringConvertions::conditionTypesToString(LLIR::condition_types type, std::any data) {
+std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_types &type, const std::any &data) {
     if (type == LLIR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + corelib::text::getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
@@ -267,7 +269,7 @@ std::string LLStringConvertions::conditionTypesToString(LLIR::condition_types ty
     };
     return condTypesMap.at(type);
 }
-std::string LLStringConvertions::convertFunctionCall(LLIR::function_call call) {
+std::string LLStringConvertions::convertFunctionCall(const LLIR::function_call &call) {
     std::string res = call.name + "(";
     bool first = true;
     for (auto param : call.params) {
@@ -279,13 +281,43 @@ std::string LLStringConvertions::convertFunctionCall(LLIR::function_call call) {
     res += ')';
     return res;
 }
-std::string LLStringConvertions::convertAssign(LLIR::assign asgn) {
+std::string LLStringConvertions::convertAssign(const LLIR::assign &asgn) {
     if (asgn.kind == LLIR::var_assign_values::FUNCTION_CALL)
         return convertFunctionCall(std::any_cast<LLIR::function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
 }
+std::string LLStringConvertions::convertMethodCall(const LLIR::method_call &method) {
+    // Implement method call conversion with proper indentation
+    std::string res = method.var_name;
+    for (auto call : method.calls) {
+        res += '.';
+        if (call.name == "push")
+            call.name = "push_back";
 
-std::string LLStringConvertions::convertExpression(std::vector<LLIR::expr> expression, bool with_braces) {
+        res += convertFunctionCall(call);
+    }
+    return res;
+}
+
+std::string LLStringConvertions::convertDataBlock(const LLIR::data_block &dtb) {
+    // Implement method call conversion with proper indentation
+    std::string res;
+    res += "::" + namespace_name + "::Types::" + rule_prev_name_str + "_data data";
+    if (dtb.is_inclosed_map) {
+        res += ";";
+        res += "\n";
+        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.value.data)) {
+            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
+        }
+        add_semicolon = false;
+    } else {
+        res += " = ";
+        res += convertAssign(std::any_cast<LLIR::assign>(dtb.value));
+        res += ";";
+    }
+    return res;
+}
+std::string LLStringConvertions::convertExpression(const std::vector<LLIR::expr> &expression, bool with_braces) {
     std::string result;
     pos_counter = 0;
     if (with_braces)
@@ -310,36 +342,4 @@ std::string LLStringConvertions::convertExpression(std::vector<LLIR::expr> expre
     pos_counter_stack.push(pos_counter);
     pos_counter = 0;
     return result;
-}
-
-std::string LLStringConvertions::convertMethodCall(LLIR::method_call method) {
-    // Implement method call conversion with proper indentation
-    std::string res = method.var_name;
-    for (auto call : method.calls) {
-        res += '.';
-        if (call.name == "push")
-            call.name = "push_back";
-
-        res += convertFunctionCall(call);
-    }
-    return res;
-}
-
-std::string LLStringConvertions::convertDataBlock(LLIR::data_block dtb) {
-    // Implement method call conversion with proper indentation
-    std::string res;
-    res += "::" + namespace_name + "::Types::" + rule_prev_name_str + "_data data";
-    if (dtb.is_inclosed_map) {
-        res += ";";
-        res += "\n";
-        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.value.data)) {
-            res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
-        }
-        add_semicolon = false;
-    } else {
-        res += " = ";
-        res += convertAssign(std::any_cast<LLIR::assign>(dtb.value));
-        res += ";";
-    }
-    return res;
 }

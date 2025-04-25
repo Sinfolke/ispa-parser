@@ -1,8 +1,4 @@
-expr: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-factor: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-term: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-arg_list: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-__q2: {ε, }
-main: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-__grp1: {AUTO_23, ε, }
-__start: {AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
+expr: {NUMBER, }
+term: {NUMBER, }
+main: {NUMBER, }
+__start: {NUMBER, }

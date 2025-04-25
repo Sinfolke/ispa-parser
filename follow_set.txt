@@ -1,8 +1,4 @@
-factor: {$, AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-__q2: {AUTO_16, }
-term: {$, AUTO_11, AUTO_12, AUTO_17, AUTO_19, AUTO_20, AUTO_21, AUTO_22, ID, NUMBER, }
-arg_list: {$, }
-expr: {$, AUTO_0, AUTO_1, AUTO_14, AUTO_17, AUTO_18, AUTO_19, AUTO_2, AUTO_20, AUTO_21, AUTO_22, AUTO_23, AUTO_3, AUTO_4, AUTO_5, AUTO_6, AUTO_7, AUTO_8, AUTO_9, ID, NUMBER, }
+expr: {$, }
+term: {$, AUTO_0, AUTO_1, NUMBER, }
 main: {$, }
-__grp1: {$, AUTO_23, }
 __start: {$, }

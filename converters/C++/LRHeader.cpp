@@ -1,0 +1,51 @@
+#include <LRHeader.h>
+void LRHeader::addIncludes_h(std::ostringstream &out) const {
+    out << "#include <optional>\n\n";
+}
+void LRHeader::createActionStruct(std::ostringstream &out, bool hasDFA) const {
+    out << "\t" << R"(struct Action {
+        enum Action_type {
+            SHIFT, REDUCE, ACCEPT, ERROR
+        };
+        Action_type type;
+        size_t state;
+    };
+)";
+    if (hasDFA) {
+    out << "\t" << R"(struct DFA_Action {
+        enum Action_type {
+            SHIFT, REDUCE, GOTO
+        };
+        Action_type type;
+        size_t state;
+    };
+)";
+    }
+}
+void LRHeader::createTableTypes(std::ostringstream &out, size_t DFA_size) const {
+    out
+        << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
+        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
+        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
+    ;
+    if (DFA_size) {
+        out << "\t\tusing DFATable = std::array<std::array<DFA_Action, " << tokens.size() << ">, " << DFA_size << ">;\n";
+    }
+}
+void LRHeader::create_parser_header(std::ostringstream &out, bool hasDFA) const {
+    out << "\tclass Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {\n"
+        << "\t\tprivate:\n"
+        << "\t\t\tstatic ActionTable action_table;\n"
+        << "\t\t\tstatic GotoTable goto_table;\n"
+        << "\t\t\tstatic RulesTable rules_table;\n";
+    if (hasDFA)
+        out << "\t\t\tstatic DFATable dfa_table;\n";
+    out
+        << "\t\t\tstd::string TokensToString(Tokens token);\n"
+        << "\t\t\tstd::string RulesToString(Rules rule);\n";
+}
+void LRHeader::addStandardFunctionsParser(std::ostringstream &out) const {
+    out 
+        << "\t\tvoid parseFromTokens();\n"
+        << "\t\tvoid lazyParse();\n";
+}

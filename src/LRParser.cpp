@@ -45,7 +45,7 @@ auto LRParser::getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std:
         fullname.pop_back();
     }
 }
-auto LRParser::getTerminalNames() const ->  std::vector<std::vector<std::string>> {
+auto LRParser::getTerminalNames() const -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> names;
     std::vector<std::string> fullname;
     getTerminalNames(tree->getRawTree(), names, fullname);
@@ -69,7 +69,7 @@ auto LRParser::getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<s
         fullname.pop_back();
     }
 }
-auto LRParser::getNonTerminalNames() const ->  std::vector<std::vector<std::string>> {
+auto LRParser::getNonTerminalNames() const -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> names;
     std::vector<std::string> fullname;
     getNonTerminalNames(tree->getRawTree(), names, fullname);
@@ -107,6 +107,9 @@ auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::
         row_table[state] = value;
     }
     return row_table;
+}
+bool LRParser::isELR() const {
+    return false;
 }
 void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements) {
     for (size_t i = 0; i < rules.size(); i++) {
@@ -923,8 +926,6 @@ void LRParser::buildTable(bool resolve_conflicts) {
     for (const auto& item_set : canonical_item_set) {
         const LR1Core* prev_rule = nullptr;
         Action* prev_action = nullptr;
-        bool got_conflict = false;
-        Conflict conflict;
         for (const auto& rule : item_set) {
             // cpuf::printf("I%$: %$ → ", I, rule.lhs.fullname);
             // for (size_t j = 0; j < rule.rhs.size(); ++j) {
@@ -942,12 +943,11 @@ void LRParser::buildTable(bool resolve_conflicts) {
             // }
             // cpuf::printf("\n");
 
-            // Dot is at the end → Reduce or Accept
             if (rule.rhs.size() == 1 && rule.lhs.fullname == rule.rhs[0].fullname) {
                 // cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
                 continue;
             }
-
+            // Dot is at the end → Reduce or Accept
             if (rule.dot_pos >= rule.rhs.size()) {
                 // Accept condition: augmented rule with start symbol
                 if (rule.lhs.name == "__start" && rule.rhs.size() == 1) {
@@ -959,7 +959,6 @@ void LRParser::buildTable(bool resolve_conflicts) {
                 // Use the lookahead token for LR(1)
                 // cpuf::printf("Got lookahead for %$ -> ", rule.lhs.fullname);
                 for (auto lookahead : rule.lookahead) {
-                    // cpuf::printf("%$, ", lookahead);
                     if (action_table[I].count(lookahead) == 0) {
                         // No existing shift, safe to reduce
                         action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
@@ -1026,11 +1025,7 @@ void LRParser::buildTable(bool resolve_conflicts) {
             } else { // Dot is before a symbol
                 const auto& next = rule.rhs[rule.dot_pos];
                 size_t next_state = find_goto_state(item_set, next); // goto(I, X)
-
-                if (corelib::text::isLower(next.name)) {
-                    // Non-terminal → GOTO
-                    goto_table[I][next.fullname] = next_state;
-                } else {
+                if (corelib::text::isUpper(next.name)) {
                     // Terminal → SHIFT (unconditionally)
                     if (action_table[I].count(next.fullname) == 0) {
                         action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
@@ -1080,21 +1075,23 @@ void LRParser::buildTable(bool resolve_conflicts) {
                             }
                         }
                     }
+                    prev_action = &action_table[I][next.fullname];
+                } else {// Non-terminal → GOTO
+                    goto_table[I][next.fullname] = next_state;
                 }
-                prev_action = &action_table[I][next.fullname];
             }
             prev_rule = &rule;
         }
         I++;
     }
 
-    for (auto &conflict : conflicts) {
-        cpuf::printf("Conflict in state %$:", conflict.state);
-        for (auto conf : conflict.conflicts) {
-            cpuf::printf("[%$ %$], item size: %$", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
-        }
-        cpuf::printf("\n");
-    }
+    // for (auto &conflict : conflicts) {
+    //     cpuf::printf("Conflict in state %$:", conflict.state);
+    //     for (auto conf : conflict.conflicts) {
+    //         cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
+    //     }
+    //     cpuf::printf("\n");
+    // }
 }
 
 void LRParser::prepare() {

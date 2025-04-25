@@ -1,8 +1,8 @@
 #include <LRConverter.h>
-void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) {
+void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }
-void LRConverter::createActionTable(std::ostringstream &out) {
+void LRConverter::createActionTable(std::ostringstream &out) const {
     auto max_terminals = tokens.size(); // Ensure tokens are in the correct order
     out << namespace_name << "::ActionTable " << namespace_name << "::Parser::action_table = {{\n";
     // convert map of states to row map
@@ -11,7 +11,7 @@ void LRConverter::createActionTable(std::ostringstream &out) {
         out << "\t{{";
         const auto &value = row_table[state];
         std::vector<std::string> row(max_terminals, "std::nullopt");
-        for (auto [name, action] : value) {
+        for (const auto &[name, action] : value) {
             auto search_name = name;
             if (search_name == std::vector<std::string>{"$"})
                 search_name = std::vector<std::string>{"NONE"};
@@ -31,7 +31,7 @@ void LRConverter::createActionTable(std::ostringstream &out) {
     }
     out << "}};\n";
 }
-void LRConverter::createGotoTable(std::ostringstream &out) {
+void LRConverter::createGotoTable(std::ostringstream &out) const {
     auto max_nonterminals = rules.size();
     auto row_table = data->getGotoTableAsRow();
     out << namespace_name << "::GotoTable " << namespace_name << "::Parser::goto_table = {{\n";
@@ -72,7 +72,23 @@ void LRConverter::createRulesTable(std::ostringstream &out) {
     out << "\t}\n";
     out << "};\n";
 }
-void LRConverter::addparseFromFunctions(std::ostringstream &out) {
+void LRConverter::createDFATable(std::ostringstream &out) const {
+    if (!data->isELR()) {
+        return;
+    }
+    auto dt = reinterpret_cast<const ELRParser*>(data);
+    const auto &dfa = dt->getDFA();
+    out << namespace_name << "::DFATable " << namespace_name << "::Parser::dfa_table = {\n";
+    out << "\t{\n";
+    for (const auto &[nfa_states, transitions, action] : dfa) {
+        for (const auto &[name, go_state] : transitions) {
+            
+        }
+    }
+    out << "\t}\n";
+    out << "};\n";
+}
+void LRConverter::addparseFromFunctions(std::ostringstream &out) const {
     out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
         auto pos = Lexer::iterator(lexer);
         parseFromPos(pos, action_table, goto_table, rules_table);
@@ -125,43 +141,9 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     createActionTable(out);
     createGotoTable(out);
     createRulesTable(out);
+    createDFATable(out);
 }
-void LRConverter::addIncludes_h(std::ostringstream &out) {
-    out << "#include <optional>\n\n";
-}
-void LRConverter::createActionStruct(std::ostringstream &out) {
-    out << "\t" << R"(struct Action {
-        enum Action_type {
-            SHIFT, REDUCE, ACCEPT, ERROR
-        };
-        Action_type type;
-        size_t state;
-    };
-)";
-
-}
-void LRConverter::createTableTypes(std::ostringstream &out) {
-    out
-        << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
-        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
-        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
-    ;
-}
-void LRConverter::create_parser_header(std::ostringstream &out) {
-    out << "\tclass Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {\n"
-        << "\t\tprivate:\n"
-        << "\t\t\tstatic ActionTable action_table;\n"
-        << "\t\t\tstatic GotoTable goto_table;\n"
-        << "\t\t\tstatic RulesTable rules_table;\n"
-        << "\t\t\tstd::string TokensToString(Tokens token);\n"
-        << "\t\t\tstd::string RulesToString(Rules rule);\n";
-}
-void LRConverter::addStandardFunctionsParser(std::ostringstream &out) {
-    out 
-        << "\t\tvoid parseFromTokens();\n"
-        << "\t\tvoid lazyParse();\n";
-}
-void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) {
+void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) const {
     std::vector<std::string> tokens, rules;
     std::for_each(this->tokens.begin(), this->tokens.end(), [&tokens](const auto &vec){
         if (std::find(tokens.begin(), tokens.end(), corelib::text::join(vec, "_")) == tokens.end())
@@ -171,25 +153,29 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) {
         if (std::find(rules.begin(), rules.end(), corelib::text::join(vec, "_")) == rules.end())
             rules.push_back(corelib::text::join(vec, "_"));
     });
-    createLibrary(out, filename);
-    createIncludes(out);
-    addIncludes_h(out);
-    createDefaultTypes(out);
-    createNamespace(out, filename);
-    createActionStruct(out);
-    createTypes(out, filename);
-    createTokensEnum(out, tokens);
-    createRulesEnum(out, rules);
-    getTypesFromStdlib(out);
-    createToStringFunction(out);
-    createTableTypes(out);
-    createTypesNamespace(out, data_block_tokens, data_block_rules);
+    LLHeader::createLibrary(out, filename);
+    LLHeader::createIncludes(out);
+    LRHeader::addIncludes_h(out);
+    LLHeader::createDefaultTypes(out);
+    LLHeader::createNamespace(out, filename);
+    LRHeader::createActionStruct(out, data->isELR());
+    LLHeader::createTypes(out, filename);
+    LLHeader::createTokensEnum(out, tokens);
+    LLHeader::createRulesEnum(out, rules);
+    LLHeader::getTypesFromStdlib(out);
+    LLHeader::createToStringFunction(out);
+    if (data->isELR()) {
+        LRHeader::createTableTypes(out, reinterpret_cast<const ELRParser*>(data)->getDFA().size());
+    } else {
+        LRHeader::createTableTypes(out, 0);
+    }
+    LLHeader::createTypesNamespace(out, data_block_tokens, data_block_rules);
     // create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
-    create_lexer_header(out, tokens);
-    create_parser_header(out);
-    addStandardFunctionsParser(out);
-    close_parser_header(out);
-    close_library(out, namespace_name);
+    LLHeader::create_lexer_header(out, tokens);
+    LRHeader::create_parser_header(out, data->isELR());
+    LRHeader::addStandardFunctionsParser(out);
+    LLHeader::close_parser_header(out);
+    LLHeader::close_library(out, namespace_name);
 }
 void LRConverter::output(std::string filename) {
     namespace_name = filename;

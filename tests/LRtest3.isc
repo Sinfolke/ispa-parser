@@ -9,6 +9,7 @@ term:
     (NUMBER '*' NUMBER) 
     | (NUMBER '/' NUMBER)
     ;
-NUMBER: [0-9]+
+NUMBER: 
+    [0-9]+
     data: %1;
-    ;
+;
