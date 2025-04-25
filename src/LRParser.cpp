@@ -41,6 +41,7 @@ auto LRParser::getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std:
         if (corelib::text::isUpper(name_str)) {
             names.push_back(fullname);
         }
+        getTerminalNames(nested_rules, names, fullname);
         fullname.pop_back();
     }
 }
@@ -64,6 +65,7 @@ auto LRParser::getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<s
         if (corelib::text::isLower(name_str)) {
             names.push_back(fullname);
         }
+        getNonTerminalNames(nested_rules, names, fullname);
         fullname.pop_back();
     }
 }
@@ -920,8 +922,9 @@ void LRParser::buildTable(bool resolve_conflicts) {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         const LR1Core* prev_rule = nullptr;
-        Conflict conflict;
+        Action* prev_action = nullptr;
         bool got_conflict = false;
+        Conflict conflict;
         for (const auto& rule : item_set) {
             // cpuf::printf("I%$: %$ → ", I, rule.lhs.fullname);
             // for (size_t j = 0; j < rule.rhs.size(); ++j) {
@@ -938,11 +941,13 @@ void LRParser::buildTable(bool resolve_conflicts) {
             //     cpuf::printf("%$, ", lookahead);
             // }
             // cpuf::printf("\n");
+
             // Dot is at the end → Reduce or Accept
             if (rule.rhs.size() == 1 && rule.lhs.fullname == rule.rhs[0].fullname) {
                 // cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
                 continue;
             }
+
             if (rule.dot_pos >= rule.rhs.size()) {
                 // Accept condition: augmented rule with start symbol
                 if (rule.lhs.name == "__start" && rule.rhs.size() == 1) {
@@ -952,7 +957,6 @@ void LRParser::buildTable(bool resolve_conflicts) {
 
                 // Reduce: only insert reduce if no conflicting shift action exists
                 // Use the lookahead token for LR(1)
-                size_t reduce_index = 0;
                 // cpuf::printf("Got lookahead for %$ -> ", rule.lhs.fullname);
                 for (auto lookahead : rule.lookahead) {
                     // cpuf::printf("%$, ", lookahead);
@@ -960,11 +964,11 @@ void LRParser::buildTable(bool resolve_conflicts) {
                         // No existing shift, safe to reduce
                         action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                     } else {
-                        // Shift/Reduce conflict warning (can be logged or handled)
+                        // Shift/Reduce conflict warning
                         if (resolve_conflicts) {
                             const auto& existing = action_table[I][lookahead];
                             if (existing.type == Action_type::SHIFT) {
-                                // Conflict resolution (log or handle)
+                                // Conflict resolution
                                 //cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
                                 // do nothing because prefer shift over reduce
                             } else if (existing.type == Action_type::REDUCE) {
@@ -986,27 +990,43 @@ void LRParser::buildTable(bool resolve_conflicts) {
                                 // );
                             }
                         } else {
-                            if (got_conflict) {
-                                conflict.conflicts.push_back(Action{Action_type::REDUCE, find_rules_index(rule)});
-                            } else {
-                                if (prev_rule) {
-                                    conflict.item.push_back(*prev_rule);
-                                }
-                                conflict.item.push_back(rule);
-                                conflict.place = &action_table[I][lookahead];
-                                conflict.conflicts = {*conflict.place, Action{Action_type::REDUCE, find_rules_index(rule)}};
-                                got_conflict = true;
+                            // Always include the current action and the one already in the action table
+                            Conflict new_conflict;
+                            if (prev_rule) {
+                                new_conflict.item.push_back(*prev_rule);
                             }
+                            new_conflict.item.push_back(rule);
+                            new_conflict.place = &action_table[I][lookahead];
 
+                            // Add the existing action in the action table as a conflict
+                            const auto& existing = action_table[I][lookahead];
+                            new_conflict.conflicts.push_back(existing);
+
+                            // Add the current action
+                            new_conflict.conflicts.push_back(Action{Action_type::REDUCE, find_rules_index(rule)});
+                            new_conflict.state = I;
+
+                            // Check if this conflict already exists
+                            auto find_it = std::find_if(conflicts.begin(), conflicts.end(), [&I, &lookahead, this](const Conflict &c) {
+                                return c.state == I && c.place == &action_table[I].at(lookahead);
+                            });
+
+                            if (find_it != conflicts.end()) {
+                                // Add the current rule to the existing conflict
+                                find_it->item.push_back(rule);
+                                find_it->conflicts.push_back(Action{Action_type::REDUCE, find_rules_index(rule)});
+                            } else {
+                                // Add a new conflict
+                                conflicts.push_back(new_conflict);
+                            }
                         }
-
                     }
                 }
                 // cpuf::printf("\n");
-            } else {            // Dot is before a symbol
+            } else { // Dot is before a symbol
                 const auto& next = rule.rhs[rule.dot_pos];
                 size_t next_state = find_goto_state(item_set, next); // goto(I, X)
-            
+
                 if (corelib::text::isLower(next.name)) {
                     // Non-terminal → GOTO
                     goto_table[I][next.fullname] = next_state;
@@ -1015,11 +1035,12 @@ void LRParser::buildTable(bool resolve_conflicts) {
                     if (action_table[I].count(next.fullname) == 0) {
                         action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
                     } else {
-                        // Optional: warn if double SHIFT or SHIFT/REDUCE
                         const auto& existing = action_table[I][next.fullname];
                         if (existing.type == Action_type::SHIFT && existing.state == next_state) {
+                            // Avoid duplicate SHIFT actions
                             continue;
                         }
+
                         if (resolve_conflicts) {
                             if (existing.type == Action_type::REDUCE || existing.state != next_state) {
                                 //cpuf::printf("SHIFT/REDUCE Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
@@ -1029,33 +1050,53 @@ void LRParser::buildTable(bool resolve_conflicts) {
                                 cpuf::printf("SHIFT/SHIFT Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
                             }
                         } else {
-                            if (got_conflict) {
-                                conflict.conflicts.push_back(Action{Action_type::SHIFT, next_state});
+                            // Always include the current action and the one already in the action table
+                            Conflict new_conflict;
+                            if (prev_rule) {
+                                new_conflict.item.push_back(*prev_rule);
+                            }
+                            new_conflict.item.push_back(rule);
+                            new_conflict.place = &action_table[I][next.fullname];
+
+                            // Add the existing action in the action table as a conflict
+                            new_conflict.conflicts.push_back(existing);
+
+                            // Add the current action
+                            new_conflict.conflicts.push_back(Action{Action_type::SHIFT, next_state});
+                            new_conflict.state = I;
+
+                            // Check if this conflict already exists
+                            auto find_it = std::find_if(conflicts.begin(), conflicts.end(), [&I, &next, this](const Conflict &c) {
+                                return c.state == I && c.place == &action_table[I].at(next.fullname);
+                            });
+
+                            if (find_it != conflicts.end()) {
+                                // Add the current rule to the existing conflict
+                                find_it->item.push_back(rule);
+                                find_it->conflicts.push_back(Action{Action_type::SHIFT, next_state});
                             } else {
-                                if (prev_rule) {
-                                    conflict.item.push_back(*prev_rule);
-                                    conflict.conflicts.push_back(action_table[I][prev_rule->lhs.fullname]);
-                                    cpuf::printf("action_table[%$][%$] = %$ %$\n", I, corelib::text::join(next.fullname, "_"), "SHIFT", action_table[I][prev_rule->lhs.fullname].state);
-                                }
-                                conflict.item.push_back(rule);
-                                conflict.place = &action_table[I][next.fullname];
-                                conflict.conflicts.push_back(Action{Action_type::SHIFT, next_state});
-                                got_conflict = true;
+                                // Add a new conflict
+                                conflicts.push_back(new_conflict);
                             }
                         }
-
                     }
                 }
-                prev_rule = &rule;
+                prev_action = &action_table[I][next.fullname];
             }
-            if (got_conflict) {
-                conflicts.push_back(conflict);
-            }
+            prev_rule = &rule;
         }
-
         I++;
     }
+
+    for (auto &conflict : conflicts) {
+        cpuf::printf("Conflict in state %$:", conflict.state);
+        for (auto conf : conflict.conflicts) {
+            cpuf::printf("[%$ %$], item size: %$", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
+        }
+        cpuf::printf("\n");
+    }
 }
+
 void LRParser::prepare() {
     addAugmentedRule();
     use_places = tree->getUsePlacesTable();

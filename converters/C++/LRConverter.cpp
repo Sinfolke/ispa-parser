@@ -17,7 +17,7 @@ void LRConverter::createActionTable(std::ostringstream &out) {
                 search_name = std::vector<std::string>{"NONE"};
             auto find_it = std::find(tokens.begin(), tokens.end(), search_name);
             if (find_it == tokens.end())
-                throw Error("Token '%$' in action table not found among 'tokens'", corelib::text::join(name, "_"));
+                throw Error("Token '%$' in action table not found among 'tokens'. State '%$'", corelib::text::join(name, "_"), state);
             auto index = find_it - tokens.begin();
             row[index] = "std::make_optional(::" + namespace_name + "::Action{::" + namespace_name + "::Action::Action_type::" + LRParser::ActionTypeToString(action.type) + ", " + std::to_string(action.state) + "})";
         }

@@ -39,6 +39,7 @@ public:
         std::vector<LR1Core> item;
         Action* place;
         std::vector<Action> conflicts;
+        size_t state;
     };
         
     using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
@@ -99,13 +100,14 @@ protected:
     void transform();
     // build action and goto table
     void prepare();
-    void build();
+    virtual void build();
     void buildTable(bool resolve_conflicts = true);
-    LRParser(Tree *tree, bool build_base = true) : tree(tree) {
-        if (build_base) {
+    LRParser(Tree *tree, bool build_immediately = true) : tree(tree) {
+        if (build_immediately) {
             transform();
             build();
         }
+
     }
 public:
     LRParser(Tree *tree) : tree(tree) {

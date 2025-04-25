@@ -46,9 +46,6 @@ std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRPars
 }
 
 void LALRParser::build() {
-    LRParser::prepare(); // Standard LR preparation
-    LRParser::buildTable(); // Build the initial LR table
-    
     // identify merge states
     std::unordered_map<CanonicalItem, std::vector<size_t>> core_to_states;
     size_t i = 0;
