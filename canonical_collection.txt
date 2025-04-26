@@ -12,8 +12,8 @@ I2:
 	main → expr • ; lookahead: {$, }
 
 I3:
-	expr → term • AUTO_0 term ; lookahead: {AUTO_0, NUMBER, }
-	term → term • AUTO_1 term ; lookahead: {AUTO_1, NUMBER, }
+	expr → term • AUTO_0 term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	term → term • AUTO_1 term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 
 I4:
 	__start → main • ; lookahead: {$, }
@@ -24,15 +24,15 @@ I5:
 	term → term AUTO_1 • term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 
 I6:
-	expr → term AUTO_0 • term ; lookahead: {$, AUTO_0, NUMBER, }
+	expr → term AUTO_0 • term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 	term → • NUMBER ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 	term → • term AUTO_1 term ; lookahead: {AUTO_1, }
 
 I7:
-	term → term • AUTO_1 term ; lookahead: {AUTO_1, NUMBER, }
+	term → term • AUTO_1 term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 	term → term AUTO_1 term • ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 
 I8:
-	expr → term AUTO_0 term • ; lookahead: {$, AUTO_0, NUMBER, }
-	term → term • AUTO_1 term ; lookahead: {AUTO_1, NUMBER, }
+	expr → term AUTO_0 term • ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
+	term → term • AUTO_1 term ; lookahead: {$, AUTO_0, AUTO_1, NUMBER, }
 

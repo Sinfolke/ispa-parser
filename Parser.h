@@ -32,14 +32,7 @@
 namespace Parser {
 	struct Action {
         enum Action_type {
-            SHIFT, REDUCE, ACCEPT, ERROR
-        };
-        Action_type type;
-        size_t state;
-    };
-	struct DFA_Action {
-        enum Action_type {
-            SHIFT, REDUCE, GOTO
+            SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERROR 
         };
         Action_type type;
         size_t state;
@@ -66,10 +59,10 @@ namespace Parser {
 	using Tree = ISPA_STD::Tree<Rules>;
 	std::string TokensToString(Tokens token);
 	std::string RulesToString(Rules rule);
-		using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 5>, 9>;
-		using GotoTable = std::array<std::array<std::optional<size_t>, 6>, 9>;
-		using RulesTable = std::array<std::pair<Rules, size_t>, 4>;
-		using DFATable = std::array<std::array<DFA_Action, 5>, 3>;
+	using ActionTable = std::array<std::array<std::optional<::Parser::Action>, 5>, 9>;
+	using GotoTable = std::array<std::array<std::optional<size_t>, 6>, 9>;
+	using RulesTable = std::array<std::pair<Rules, size_t>, 4>;
+	using DFATable = std::array<std::pair<::Parser::Action, std::array<size_t, 5>>, 7>;
 	namespace Types {
 		using AUTO_0_data = ::Parser::str_t;
 		using AUTO_1_data = ::Parser::str_t;
@@ -101,7 +94,7 @@ namespace Parser {
 			Token_res AUTO_1(const char*);
 			Token_res __WHITESPACE(const char*);
 	};
-	class Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {
+	class Parser : public ISPA_STD::ELRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable, DFATable> {
 		private:
 			static ActionTable action_table;
 			static GotoTable goto_table;

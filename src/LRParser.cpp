@@ -81,10 +81,13 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
             return "SHIFT";
         case Action_type::REDUCE:
             return "REDUCE";
-        case Action_type::ERROR:
-            return "ERROR";
         case Action_type::ACCEPT:
             return "ACCEPT";
+        case Action_type::DFA_RESOLVE:
+            return "DFA_RESOLVE";
+        case Action_type::ERROR:
+            return "ERROR";
+
     }
     throw Error("Undefined action type: %$", (int) type);
 }
@@ -575,7 +578,9 @@ void LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& opt
         bool nullable_prefix = true;
         for (auto &rule : option) {
             auto &currentFirst = first[nonterminal];
-
+            if (rule.fullname == nonterminal) {
+                continue;
+            }
             if (corelib::text::isLower(rule.name)) {
                 // Nonterminal: take FIRST(rule.fullname)
                 // cpuf::printf("[nonterminal %$] ", rule.fullname);
@@ -650,9 +655,14 @@ void LRParser::constructFollowSet() {
         for (auto &member : initial_item_set) {
             auto name = member.first;
             auto options = member.second;
+            bool is_left_recursive = false;
             for (auto rules : options) {
+                if (rules.size() > 0 && name == rules.begin()->fullname) {
+                    is_left_recursive = true;
+                }
                 for (auto it = rules.begin(); it != rules.end(); it++) {
                     auto current = *it;
+
                     if (corelib::text::isUpper(current.name)) {
                         continue;
                     }
@@ -666,6 +676,11 @@ void LRParser::constructFollowSet() {
                             if (follow[name].insert(e).second)
                                 hasChanges = true;
                         }
+                    } else if (is_left_recursive && corelib::text::isLower(current.name)) {
+                        auto prev_size = follow[current.fullname].size();
+                        follow[current.fullname].insert(follow[name].begin(), follow[name].end());
+                        if (prev_size != follow[current.fullname].size())
+                            hasChanges = true;
                     }
                     if (it + 1 == rules.end()) {
                         if (follow[current.fullname].insert({"$"}).second) 
@@ -735,11 +750,6 @@ void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, c
                 }
                 // cpuf::printf("%$, ", el);
                 new_item.lookahead.insert(el);
-            }
-            // If ε is in FIRST, add FOLLOW of LHS
-            if (!has_espsilon) {
-                epsilon_in_all = false;
-                break;
             }
         }
     }
@@ -1085,13 +1095,13 @@ void LRParser::buildTable(bool resolve_conflicts) {
         I++;
     }
 
-    // for (auto &conflict : conflicts) {
-    //     cpuf::printf("Conflict in state %$:", conflict.state);
-    //     for (auto conf : conflict.conflicts) {
-    //         cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
-    //     }
-    //     cpuf::printf("\n");
-    // }
+    for (auto &conflict : conflicts) {
+        cpuf::printf("Conflict in state %$:", conflict.state);
+        for (auto conf : conflict.conflicts) {
+            cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
+        }
+        cpuf::printf("\n");
+    }
 }
 
 void LRParser::prepare() {
@@ -1235,21 +1245,7 @@ std::string LRParser::formatActionTable() const {
             const std::string& token = corelib::text::join(token_entry.first, "_");
             const Action& action = token_entry.second;
 
-            std::string action_str;
-            switch (action.type) {
-                case Action_type::SHIFT:
-                    action_str = "SHIFT";
-                    break;
-                case Action_type::REDUCE:
-                    action_str = "REDUCE";
-                    break;
-                case Action_type::ACCEPT:
-                    action_str = "ACCEPT";
-                    break;
-                case Action_type::ERROR:
-                    action_str = "ERROR";
-                    break;
-            }
+            std::string action_str = ActionTypeToString(action.type);
 
             oss << std::left
                 << std::setw(stateWidth) << state

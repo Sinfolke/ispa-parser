@@ -18,8 +18,8 @@ expr:
 
 // Term for multiplicative and bit operations
 term:
-    (term '+' factor)
-  | (term '-' factor)
+    (term '+' term)
+  | (term '-' term)
   | factor
   ;
 

@@ -1,15 +1,22 @@
 use name: "Parser";
 main: expr;
 expr: 
-    (expr '+' expr)
-    | (expr '-' expr) 
+    (expr '+' term)
+    | (expr '-' term)
     | term
     ;
+
 term: 
-    (NUMBER '*' NUMBER) 
-    | (NUMBER '/' NUMBER)
+    (term '*' factor)
+    | (term '/' factor)
+    | factor
     ;
+
+factor: 
+    NUMBER
+    | ('(' expr ')')
+    ;
+
 NUMBER: 
     [0-9]+
-    data: %1;
-;
+    ;

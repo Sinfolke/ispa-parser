@@ -80,19 +80,19 @@ void Parser::Lexer::printToken(std::ostream& os, const Token& token) {
     os << '\n';
 }
 void ::Parser::Parser::parseFromTokens() {
-        auto pos = Lexer::iterator(lexer);
-        parseFromPos(pos, action_table, goto_table, rules_table);
-    }
-void ::Parser::Parser::lazyParse() {
-        if (lexer == nullptr) {
-            Lexer lexer(text);
-            auto pos = Lexer::lazy_iterator(lexer, text);
-            parseFromPos(pos, action_table, goto_table, rules_table);
-        } else {
-            auto pos = Lexer::lazy_iterator(lexer, text);
-            parseFromPos(pos, action_table, goto_table, rules_table);
+            auto pos = Lexer::iterator(lexer);
+            parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
         }
-    }
+void ::Parser::Parser::lazyParse() {
+            if (lexer == nullptr) {
+                Lexer lexer(text);
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
+            } else {
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
+            }
+        }
 
 Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::Token _0;
@@ -222,8 +222,8 @@ Parser::ActionTable Parser::Parser::action_table = {{
 	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::ACCEPT, 0}), std::nullopt, std::nullopt, std::nullopt, std::nullopt}},
 	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
 	{{std::nullopt, std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 1}), std::nullopt, std::nullopt, std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 5}), std::nullopt}},
-	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::SHIFT, 5}), std::nullopt}}
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 2}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::DFA_RESOLVE, 0}), std::nullopt}},
+	{{std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::REDUCE, 3}), std::make_optional(::Parser::Action{::Parser::Action::Action_type::DFA_RESOLVE, 0}), std::nullopt}}
 }};
 Parser::GotoTable Parser::Parser::goto_table = {{
 	{{std::nullopt, std::make_optional(4), std::make_optional(2), std::make_optional(3), std::nullopt, std::nullopt}},
@@ -243,6 +243,11 @@ Parser::RulesTable Parser::Parser::rules_table = {
 	}
 };
 Parser::DFATable Parser::Parser::dfa_table = {
-	{
-	}
+	std::make_pair(::Parser::Action {::Parser::Action::REDUCE, 3}, std::array<size_t, 5> {0, 0, 2, 1, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::ERROR, 0}, std::array<size_t, 5> {0, 4, 0, 3, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::ERROR, 0}, std::array<size_t, 5> {0, 6, 0, 5, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::ERROR, 0}, std::array<size_t, 5> {0, 0, 0, 0, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::SHIFT, 5}, std::array<size_t, 5> {0, 0, 0, 0, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::ERROR, 0}, std::array<size_t, 5> {0, 0, 0, 0, 0}),
+	std::make_pair(::Parser::Action {::Parser::Action::SHIFT, 5}, std::array<size_t, 5> {0, 0, 0, 0, 0}),
 };

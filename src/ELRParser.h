@@ -10,11 +10,13 @@ class ELRParser : public LRParser {
             std::unordered_map<std::vector<std::string>, std::vector<size_t>> transitions;
             std::optional<Action> reduce_action;
             bool is_starting_state = false;
+            Action* place = nullptr;
         };
         struct DFA_state {
             std::set<size_t> nfa_states; // the NFA states this DFA state represents
             std::unordered_map<std::vector<std::string>, size_t> transitions;
             std::optional<Action> action; // optional
+            std::vector<Action*> places;
         };
         
         void printNfa(const std::string filename);

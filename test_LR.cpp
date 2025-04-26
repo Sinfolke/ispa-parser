@@ -4,5 +4,5 @@
 #include <sstream>
 int main() {
     Parser::Parser parser;
-    parser.parse("5 + 3");
+    parser.parse("1 + 2 * 3");
 }

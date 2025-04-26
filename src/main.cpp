@@ -120,7 +120,10 @@ int main(int argc, char** argv) {
         converter->output(name);
     } else if (algorithm == "ELR") {
         ELRParser ELRIR(tree);
+        ELRIR.printTables("tables");
         ELRIR.printCanonicalCollection("canonical_collection.txt");
+        ELRIR.printFirstSet("first_set.txt");
+        ELRIR.printFollowSet("follow_set.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");

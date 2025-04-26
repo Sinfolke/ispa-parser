@@ -75,6 +75,7 @@ void ELRParser::build() {
         });
         nfa_states.emplace_back(); // Start state
         nfa_states[nfa_states.size() - 1].is_starting_state = true; // first item is starting state
+        nfa_states[nfa_states.size() - 1].place = place;
         for (size_t i = 0; i < items.size(); ++i) {
             size_t start_state = nfa_states.size() - 1;
             const auto &item = items[i];
@@ -164,6 +165,7 @@ void ELRParser::build() {
 
             // Add transition for the current DFA state on this symbol
             dfa_states[current_dfa_index].transitions[symbol] = dfa_state_map[closure];
+
         }
 
         // Resolve REDUCE actions: assign if all underlying NFA states agree
@@ -184,9 +186,18 @@ void ELRParser::build() {
                     }
                 }
             }
+            dfa_states[current_dfa_index].places.push_back(nfa_states[state].place);
         }
         // Assign the resolved reduce action to the DFA state
         dfa_states[current_dfa_index].action = reduce_action;
+    }
+    for (size_t i = 0; i < dfa_states.size(); i++) {
+        for (auto place : dfa_states[i].places) {
+            if (place != nullptr) {
+                *place = {Action_type::DFA_RESOLVE, i};
+            }
+        }
+
     }
 }
 

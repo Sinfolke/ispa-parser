@@ -2,38 +2,33 @@
 void LRHeader::addIncludes_h(std::ostringstream &out) const {
     out << "#include <optional>\n\n";
 }
-void LRHeader::createActionStruct(std::ostringstream &out, bool hasDFA) const {
+void LRHeader::createActionStruct(std::ostringstream &out) const {
     out << "\t" << R"(struct Action {
         enum Action_type {
-            SHIFT, REDUCE, ACCEPT, ERROR
+            SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERROR 
         };
         Action_type type;
         size_t state;
     };
 )";
-    if (hasDFA) {
-    out << "\t" << R"(struct DFA_Action {
-        enum Action_type {
-            SHIFT, REDUCE, GOTO
-        };
-        Action_type type;
-        size_t state;
-    };
-)";
-    }
 }
 void LRHeader::createTableTypes(std::ostringstream &out, size_t DFA_size) const {
     out
-        << "\t\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
-        << "\t\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
-        << "\t\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
+        << "\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
+        << "\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
+        << "\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
     ;
     if (DFA_size) {
-        out << "\t\tusing DFATable = std::array<std::array<DFA_Action, " << tokens.size() << ">, " << DFA_size << ">;\n";
+        out << "\tusing DFATable = std::array<std::pair<::" << namespace_name << "::Action, std::array<size_t, " << tokens.size() << ">>, " << DFA_size << ">;\n";
     }
 }
 void LRHeader::create_parser_header(std::ostringstream &out, bool hasDFA) const {
-    out << "\tclass Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {\n"
+    if (hasDFA) {
+        out << "\tclass Parser : public ISPA_STD::ELRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable, DFATable> {\n";
+    } else {
+        out << "\tclass Parser : public ISPA_STD::LRParser_base<Tokens, Rules, Action, ActionTable, GotoTable, RulesTable> {\n";
+    }
+    out
         << "\t\tprivate:\n"
         << "\t\t\tstatic ActionTable action_table;\n"
         << "\t\t\tstatic GotoTable goto_table;\n"

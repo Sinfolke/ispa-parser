@@ -4,7 +4,19 @@ State 0:
 
 State 1:
   --{ NUMBER, }--> 2
+  --{ AUTO_1, }--> 2
 
 State 2:
+[SHIFT 5]
+
+State 3:
+  --{ AUTO_0, }--> 4
+[REDUCE 3]
+
+State 4:
+  --{ NUMBER, }--> 5
+  --{ AUTO_1, }--> 5
+
+State 5:
 [SHIFT 5]
 

@@ -78,31 +78,76 @@ void LRConverter::createDFATable(std::ostringstream &out) const {
     }
     auto dt = reinterpret_cast<const ELRParser*>(data);
     const auto &dfa = dt->getDFA();
+
     out << namespace_name << "::DFATable " << namespace_name << "::Parser::dfa_table = {\n";
-    out << "\t{\n";
-    for (const auto &[nfa_states, transitions, action] : dfa) {
-        for (const auto &[name, go_state] : transitions) {
-            
+
+    for (const auto &[nfa_states, transitions, action, place] : dfa) {
+        // Write Action
+        out << "\tstd::make_pair(::" << namespace_name << "::Action {";
+
+        if (action.has_value()) {
+            const auto &act = action.value();
+            out << "::" << namespace_name << "::Action::" << LRParser::ActionTypeToString(act.type) << ", " << act.state;
+        } else {
+            out << "::" << namespace_name << "::Action::ERROR, 0"; // Default Action if none (e.g., SHIFT 0)
         }
+
+        out << "}, std::array<size_t, " << tokens.size() << "> {";
+
+        // Write transitions array
+        for (size_t i = 0; i < tokens.size(); ++i) {
+            std::vector<std::string> search_token = tokens[i];
+            auto it = transitions.find(search_token);
+
+            if (it != transitions.end()) {
+                out << it->second;
+            } else {
+                out << "0"; // No transition, default 0
+            }
+
+            if (i + 1 != tokens.size()) {
+                out << ", ";
+            }
+        }
+
+        out << "}),\n";
     }
-    out << "\t}\n";
+
     out << "};\n";
 }
-void LRConverter::addparseFromFunctions(std::ostringstream &out) const {
-    out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
-        auto pos = Lexer::iterator(lexer);
-        parseFromPos(pos, action_table, goto_table, rules_table);
-    })" << '\n';
-        out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
-        if (lexer == nullptr) {
-            Lexer lexer(text);
-            auto pos = Lexer::lazy_iterator(lexer, text);
+void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) const {
+    if (hasDFA) {
+        out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
+            auto pos = Lexer::iterator(lexer);
+            parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
+        })" << '\n';
+            out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
+            if (lexer == nullptr) {
+                Lexer lexer(text);
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
+            } else {
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table, dfa_table);
+            }
+        })" << '\n';
+    } else {
+        out << "void ::" << namespace_name << R"(::Parser::parseFromTokens() {
+            auto pos = Lexer::iterator(lexer);
             parseFromPos(pos, action_table, goto_table, rules_table);
-        } else {
-            auto pos = Lexer::lazy_iterator(lexer, text);
-            parseFromPos(pos, action_table, goto_table, rules_table);
-        }
-    })" << '\n';
+        })" << '\n';
+            out << "void ::" << namespace_name << R"(::Parser::lazyParse() {
+            if (lexer == nullptr) {
+                Lexer lexer(text);
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table);
+            } else {
+                auto pos = Lexer::lazy_iterator(lexer, text);
+                parseFromPos(pos, action_table, goto_table, rules_table);
+            }
+        })" << '\n';
+    }
+
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
@@ -131,7 +176,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
         << "\t\treturn ::" << namespace_name << "::RulesToString(rule);\n"
         << "\t}\n";
     converter.addStandardFunctionsLexer(out);
-    addparseFromFunctions(out);
+    addparseFromFunctions(out, data->isELR());
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
     converter.convertLexerCode(lexer_code.getData(), out);
@@ -158,7 +203,7 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
     LRHeader::addIncludes_h(out);
     LLHeader::createDefaultTypes(out);
     LLHeader::createNamespace(out, filename);
-    LRHeader::createActionStruct(out, data->isELR());
+    LRHeader::createActionStruct(out);
     LLHeader::createTypes(out, filename);
     LLHeader::createTokensEnum(out, tokens);
     LLHeader::createRulesEnum(out, rules);

@@ -19,6 +19,7 @@
 #include <variant>
 #include <optional>
 #include <array>
+#include <queue>
 #ifndef _ISC_STD_LIB
 #define _ISC_STD_LIB
 
@@ -693,7 +694,7 @@ public:
 };
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
-private:
+protected:
     std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
@@ -717,8 +718,7 @@ private:
 
         size_t next_state = goto_entry.value();
         stack.push_back({rule_name, next_state});
-    } 
-protected:
+    }
     match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {
         return {};
     }
@@ -756,7 +756,94 @@ protected:
         printf("Accepted. distance: %zu\n", pos.distance());
     }
 };
+template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable, class DFATable>
+class ELRParser_base : public LRParser_base<TOKEN_T, RULE_T, Action, ActionTable, GotoTable, RulesTable> {
+private:
+    // cache tokens because of lazy iterator which makes tokens on dereference
+    std::queue<node<TOKEN_T>> dfa_token_cache;
+protected:
+    template <class IT>
+    void shift(IT& pos, size_t state) {
+        if (dfa_token_cache.empty()) {
+            this->stack.push_back({pos->name(), state});
+        } else {
+            this->stack.push_back({dfa_token_cache.front().name(), state});
+            dfa_token_cache.pop();
+        }
+        pos++;
+    }
+    template<class IT>
+    const std::optional<Action>& getAction(IT &pos, const ActionTable &action_table) {
+        auto &current_state = this->stack.back().second;
+        return dfa_token_cache.empty() ? action_table[current_state][(size_t) pos->name()] : action_table[current_state][(size_t) dfa_token_cache.back().name()];
+    }
+    template<class IT>
+    const Action* resolveDFA(IT pos, size_t dfa_index, const DFATable &dfa_table) {
+        const Action* initial_action = nullptr;
+        printf("Resolving conflict in DFA table\n");
+        for (size_t offset = 0;; offset++) {
+            dfa_token_cache.push(*pos++);
+            const auto &[action, table] = dfa_table[dfa_index];
+            const auto &go_state = table[(size_t) dfa_token_cache.back().name()];
+            if (initial_action == nullptr) {
+                initial_action = &action;
+            }
+            if (go_state == 0) {
+                if (action.type == Action::ERROR) {
+                    printf("Returning initial action %d, state %zu\n", (int) initial_action->type, initial_action->state);
+                    return initial_action;
+                }
+                printf("returning action %d, state %zu\n", (int) action.type, action.state);
+                return &action;
+            }
+            dfa_index = go_state;
 
+        }
+    }
+    template<class IT>
+    void peformAction(IT &pos, Action act, GotoTable goto_table, RulesTable rules_table, DFATable dfa_table) {
+        switch (act.type)
+        {
+        case Action::SHIFT:
+            shift(pos, act.state);
+            break;
+        case Action::REDUCE:
+            this->reduce(act.state, goto_table, rules_table);
+            break;
+        case Action::DFA_RESOLVE: {
+            const auto resolved = resolveDFA(pos, act.state, dfa_table);
+            if (!resolved) throw std::runtime_error("Unresolvable DFA lookahead");
+            peformAction(pos, *resolved, goto_table, rules_table, dfa_table);
+            break;
+        }
+        default:
+            throw std::runtime_error("Error action");
+        }
+    }
+    template<class IT>
+    void parseFromPos(IT& pos, const ActionTable &action_table, const GotoTable &goto_table, RulesTable rules_table, DFATable dfa_table) {
+        this->stack.push_back({TOKEN_T::NONE, 0});
+        while(true) {
+            auto &current_state = this->stack.back().second;
+            const auto &action = getAction(pos, action_table);
+            printf("Token name: %s", TokensToString(pos->name()).c_str());
+            if (pos->data().has_value()) {
+                printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+            }
+            printf(", state: %zu\n", current_state);
+            if (action.has_value()) {
+                auto& act = action.value();
+                printf("action: %d, next state: %zu\n", (int) act.type, act.state);
+                if (act.type == Action::ACCEPT)
+                    break;
+                peformAction(pos, act, goto_table, rules_table, dfa_table);
+            } else {
+                throw std::runtime_error(("Action is not defined. stack size: " + std::to_string(this->stack.size())).c_str());
+            }
+        }
+        printf("Accepted. distance: %zu\n", pos.distance());
+    }
+};
 } // namespace __ISC_STD
 
 #undef _ISC_GITHUB

@@ -35,7 +35,6 @@
 \.*
 #.ofc
 
-.admin
 ALL_BUILD.vcxproj
 ALL_BUILD.vcxproj.filters
 cmake_install.cmake

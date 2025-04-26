@@ -1,13 +1,13 @@
 Action Table:
 State Token          Action    Next State
-8     AUTO_1         SHIFT     5         
 8     NUMBER         REDUCE    3         
+8     AUTO_1         DFA_RESOLVE0         
 8     AUTO_0         REDUCE    3         
 8     $              REDUCE    3         
 7     NUMBER         REDUCE    2         
 7     AUTO_0         REDUCE    2         
 7     $              REDUCE    2         
-7     AUTO_1         SHIFT     5         
+7     AUTO_1         DFA_RESOLVE0         
 6     NUMBER         SHIFT     1         
 5     NUMBER         SHIFT     1         
 4     $              ACCEPT    0         

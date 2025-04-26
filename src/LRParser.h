@@ -9,7 +9,7 @@
 class LRParser {
 public:
     enum class Action_type {
-        SHIFT, REDUCE, ACCEPT, ERROR 
+        SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERROR 
     };
     struct Action {
         Action_type type;
@@ -37,7 +37,7 @@ public:
     };
     struct Conflict {
         std::vector<LR1Core> item;
-        Action* place;
+        Action* place = nullptr;
         std::vector<Action> conflicts;
         size_t state;
     };

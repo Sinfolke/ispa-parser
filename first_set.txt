@@ -1,4 +1,4 @@
-expr: {NUMBER, }
-term: {NUMBER, }
-main: {NUMBER, }
-__start: {NUMBER, }
+expr: {AUTO_1, NUMBER, }
+term: {AUTO_1, NUMBER, }
+main: {AUTO_1, NUMBER, }
+__start: {AUTO_1, NUMBER, }
