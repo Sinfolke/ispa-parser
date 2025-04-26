@@ -1,35 +1,812 @@
 Action Table:
 State Token          Action    Next State
-8     NUMBER         REDUCE    3         
-8     AUTO_1         DFA_RESOLVE0         
-8     AUTO_0         REDUCE    3         
-8     $              REDUCE    3         
-7     NUMBER         REDUCE    2         
-7     AUTO_0         REDUCE    2         
-7     $              REDUCE    2         
-7     AUTO_1         DFA_RESOLVE0         
-6     NUMBER         SHIFT     1         
-5     NUMBER         SHIFT     1         
-4     $              ACCEPT    0         
-3     AUTO_1         SHIFT     5         
-3     AUTO_0         SHIFT     6         
-2     $              REDUCE    1         
+56    ID             REDUCE    28        
+56    AUTO_9         REDUCE    28        
+56    AUTO_8         REDUCE    28        
+56    NUMBER         REDUCE    28        
+56    AUTO_6         REDUCE    28        
+56    AUTO_7         REDUCE    28        
+56    AUTO_5         REDUCE    28        
+56    AUTO_0         REDUCE    28        
+56    AUTO_11        REDUCE    28        
+56    $              REDUCE    28        
+56    AUTO_12        REDUCE    28        
+56    AUTO_17        REDUCE    28        
+56    AUTO_21        REDUCE    28        
+56    AUTO_3         REDUCE    28        
+56    AUTO_18        REDUCE    28        
+56    AUTO_19        REDUCE    28        
+56    AUTO_4         REDUCE    28        
+56    AUTO_2         REDUCE    28        
+56    AUTO_20        REDUCE    28        
+56    AUTO_23        REDUCE    28        
+55    AUTO_8         SHIFT     11        
+55    AUTO_6         SHIFT     13        
+55    AUTO_4         SHIFT     15        
+55    AUTO_9         SHIFT     16        
+55    AUTO_3         SHIFT     17        
+55    AUTO_2         SHIFT     18        
+55    AUTO_0         SHIFT     19        
+55    AUTO_5         SHIFT     14        
+55    AUTO_23        DFA_RESOLVE117       
+55    AUTO_7         SHIFT     12        
+55    $              REDUCE    21        
+54    ID             REDUCE    27        
+54    AUTO_9         DFA_RESOLVE116       
+54    AUTO_8         DFA_RESOLVE115       
+54    NUMBER         REDUCE    27        
+54    AUTO_6         DFA_RESOLVE113       
+54    AUTO_7         DFA_RESOLVE114       
+54    AUTO_5         DFA_RESOLVE112       
+54    AUTO_3         DFA_RESOLVE110       
+54    AUTO_23        REDUCE    27        
+54    AUTO_0         DFA_RESOLVE108       
+54    AUTO_1         REDUCE    27        
+54    AUTO_11        REDUCE    27        
+54    $              REDUCE    27        
+54    AUTO_12        REDUCE    27        
+54    AUTO_4         DFA_RESOLVE111       
+54    AUTO_2         DFA_RESOLVE109       
+54    AUTO_14        REDUCE    27        
+54    AUTO_22        REDUCE    27        
+54    AUTO_17        REDUCE    27        
+54    AUTO_21        REDUCE    27        
+54    AUTO_18        REDUCE    27        
+54    AUTO_19        REDUCE    27        
+54    AUTO_20        REDUCE    27        
+53    NUMBER         SHIFT     1         
+53    AUTO_21        SHIFT     2         
+53    ID             SHIFT     6         
+52    AUTO_23        REDUCE    26        
+52    $              REDUCE    26        
+51    AUTO_9         REDUCE    25        
+51    AUTO_8         REDUCE    25        
+51    NUMBER         REDUCE    25        
+51    AUTO_6         REDUCE    25        
+51    AUTO_7         REDUCE    25        
+51    AUTO_5         REDUCE    25        
+51    AUTO_3         REDUCE    25        
+51    AUTO_23        REDUCE    25        
+51    AUTO_21        REDUCE    25        
+51    AUTO_0         REDUCE    25        
+51    AUTO_1         REDUCE    25        
+51    AUTO_15        REDUCE    25        
+51    AUTO_11        REDUCE    25        
+51    $              REDUCE    25        
+51    AUTO_12        REDUCE    25        
+51    AUTO_4         REDUCE    25        
+51    AUTO_2         REDUCE    25        
+51    AUTO_14        REDUCE    25        
+51    ID             REDUCE    25        
+51    AUTO_16        REDUCE    25        
+51    AUTO_22        REDUCE    25        
+51    AUTO_17        REDUCE    25        
+51    AUTO_18        REDUCE    25        
+51    AUTO_19        REDUCE    25        
+51    AUTO_20        REDUCE    25        
+50    ID             REDUCE    24        
+50    AUTO_9         REDUCE    24        
+50    AUTO_8         REDUCE    24        
+50    NUMBER         REDUCE    24        
+50    AUTO_6         REDUCE    24        
+50    AUTO_7         REDUCE    24        
+50    AUTO_5         REDUCE    24        
+50    AUTO_3         REDUCE    24        
+50    AUTO_23        REDUCE    24        
+50    AUTO_0         REDUCE    24        
+50    AUTO_1         REDUCE    24        
+50    AUTO_11        REDUCE    24        
+50    $              REDUCE    24        
+50    AUTO_12        REDUCE    24        
+50    AUTO_13        REDUCE    24        
+50    AUTO_4         REDUCE    24        
+50    AUTO_2         REDUCE    24        
+50    AUTO_14        REDUCE    24        
+50    AUTO_22        REDUCE    24        
+50    AUTO_17        REDUCE    24        
+50    AUTO_21        REDUCE    24        
+50    AUTO_18        REDUCE    24        
+50    AUTO_19        REDUCE    24        
+50    AUTO_20        REDUCE    24        
+49    NUMBER         SHIFT     1         
+49    AUTO_21        SHIFT     2         
+49    ID             SHIFT     6         
+48    ID             REDUCE    23        
+48    AUTO_9         DFA_RESOLVE107       
+48    AUTO_8         DFA_RESOLVE106       
+48    NUMBER         REDUCE    23        
+48    AUTO_6         DFA_RESOLVE104       
+48    AUTO_7         DFA_RESOLVE105       
+48    AUTO_5         DFA_RESOLVE103       
+48    AUTO_3         DFA_RESOLVE101       
+48    AUTO_23        REDUCE    23        
+48    AUTO_0         DFA_RESOLVE99        
+48    AUTO_1         REDUCE    23        
+48    AUTO_10        REDUCE    23        
+48    AUTO_11        REDUCE    23        
+48    $              REDUCE    23        
+48    AUTO_12        REDUCE    23        
+48    AUTO_4         DFA_RESOLVE102       
+48    AUTO_2         DFA_RESOLVE100       
+48    AUTO_14        REDUCE    23        
+48    AUTO_22        REDUCE    23        
+48    AUTO_17        REDUCE    23        
+48    AUTO_21        REDUCE    23        
+48    AUTO_18        REDUCE    23        
+48    AUTO_19        REDUCE    23        
+48    AUTO_20        REDUCE    23        
+47    AUTO_16        REDUCE    22        
+46    AUTO_8         SHIFT     11        
+46    AUTO_6         SHIFT     13        
+46    AUTO_4         SHIFT     15        
+46    AUTO_9         SHIFT     16        
+46    AUTO_3         SHIFT     17        
+46    AUTO_2         SHIFT     18        
+46    AUTO_0         SHIFT     19        
+46    AUTO_5         SHIFT     14        
+46    AUTO_23        DFA_RESOLVE98        
+46    AUTO_7         SHIFT     12        
+46    $              REDUCE    21        
+45    AUTO_16        SHIFT     51        
+44    AUTO_14        SHIFT     50        
+44    AUTO_8         SHIFT     11        
+44    AUTO_7         SHIFT     12        
+44    AUTO_6         SHIFT     13        
+44    AUTO_5         SHIFT     14        
+44    AUTO_4         SHIFT     15        
+44    AUTO_9         SHIFT     16        
+44    AUTO_3         SHIFT     17        
+44    AUTO_2         SHIFT     18        
+44    AUTO_0         SHIFT     19        
+43    ID             REDUCE    20        
+43    AUTO_9         REDUCE    20        
+43    AUTO_8         REDUCE    20        
+43    NUMBER         REDUCE    20        
+43    AUTO_6         REDUCE    20        
+43    AUTO_7         REDUCE    20        
+43    AUTO_5         REDUCE    20        
+43    AUTO_3         REDUCE    20        
+43    AUTO_23        REDUCE    20        
+43    AUTO_21        REDUCE    20        
+43    AUTO_0         REDUCE    20        
+43    AUTO_1         REDUCE    20        
+43    AUTO_17        DFA_RESOLVE94        
+43    AUTO_22        REDUCE    20        
+43    AUTO_11        REDUCE    20        
+43    $              REDUCE    20        
+43    AUTO_12        REDUCE    20        
+43    AUTO_4         REDUCE    20        
+43    AUTO_2         REDUCE    20        
+43    AUTO_14        REDUCE    20        
+43    AUTO_18        DFA_RESOLVE95        
+43    AUTO_19        DFA_RESOLVE96        
+43    AUTO_20        DFA_RESOLVE97        
+42    ID             REDUCE    19        
+42    AUTO_9         REDUCE    19        
+42    AUTO_8         REDUCE    19        
+42    NUMBER         REDUCE    19        
+42    AUTO_6         REDUCE    19        
+42    AUTO_7         REDUCE    19        
+42    AUTO_5         REDUCE    19        
+42    AUTO_3         REDUCE    19        
+42    AUTO_23        REDUCE    19        
+42    AUTO_21        REDUCE    19        
+42    AUTO_18        DFA_RESOLVE91        
+42    AUTO_0         REDUCE    19        
+42    AUTO_1         REDUCE    19        
+42    AUTO_17        DFA_RESOLVE90        
+42    AUTO_22        REDUCE    19        
+42    AUTO_11        REDUCE    19        
+42    $              REDUCE    19        
+42    AUTO_12        REDUCE    19        
+42    AUTO_4         REDUCE    19        
+42    AUTO_2         REDUCE    19        
+42    AUTO_14        REDUCE    19        
+42    AUTO_19        DFA_RESOLVE92        
+42    AUTO_20        DFA_RESOLVE93        
+41    ID             REDUCE    18        
+41    AUTO_9         REDUCE    18        
+41    AUTO_8         REDUCE    18        
+41    NUMBER         REDUCE    18        
+41    AUTO_6         REDUCE    18        
+41    AUTO_7         REDUCE    18        
+41    AUTO_5         REDUCE    18        
+41    AUTO_3         REDUCE    18        
+41    AUTO_23        REDUCE    18        
+41    AUTO_21        REDUCE    18        
+41    AUTO_18        DFA_RESOLVE87        
+41    AUTO_19        DFA_RESOLVE88        
+41    AUTO_0         REDUCE    18        
+41    AUTO_1         REDUCE    18        
+41    AUTO_17        DFA_RESOLVE86        
+41    AUTO_22        REDUCE    18        
+41    AUTO_11        REDUCE    18        
+41    $              REDUCE    18        
+41    AUTO_12        REDUCE    18        
+41    AUTO_4         REDUCE    18        
+41    AUTO_2         REDUCE    18        
+41    AUTO_14        REDUCE    18        
+41    AUTO_20        DFA_RESOLVE89        
+40    ID             REDUCE    17        
+40    AUTO_9         REDUCE    17        
+40    AUTO_8         REDUCE    17        
+40    NUMBER         REDUCE    17        
+40    AUTO_6         REDUCE    17        
+40    AUTO_7         REDUCE    17        
+40    AUTO_5         REDUCE    17        
+40    AUTO_3         REDUCE    17        
+40    AUTO_23        REDUCE    17        
+40    AUTO_21        REDUCE    17        
+40    AUTO_18        DFA_RESOLVE83        
+40    AUTO_19        DFA_RESOLVE84        
+40    AUTO_20        DFA_RESOLVE85        
+40    AUTO_0         REDUCE    17        
+40    AUTO_1         REDUCE    17        
+40    AUTO_17        DFA_RESOLVE82        
+40    AUTO_22        REDUCE    17        
+40    AUTO_11        REDUCE    17        
+40    $              REDUCE    17        
+40    AUTO_12        REDUCE    17        
+40    AUTO_4         REDUCE    17        
+40    AUTO_2         REDUCE    17        
+40    AUTO_14        REDUCE    17        
+39    AUTO_8         SHIFT     11        
+39    AUTO_7         SHIFT     12        
+39    AUTO_6         SHIFT     13        
+39    AUTO_5         SHIFT     14        
+39    AUTO_4         SHIFT     15        
+39    AUTO_9         SHIFT     16        
+39    AUTO_3         SHIFT     17        
+39    AUTO_2         SHIFT     18        
+39    AUTO_1         SHIFT     49        
+39    AUTO_0         SHIFT     19        
+38    ID             REDUCE    16        
+38    AUTO_9         DFA_RESOLVE81        
+38    AUTO_8         DFA_RESOLVE80        
+38    NUMBER         REDUCE    16        
+38    AUTO_6         DFA_RESOLVE78        
+38    AUTO_7         DFA_RESOLVE79        
+38    AUTO_5         DFA_RESOLVE77        
+38    AUTO_3         DFA_RESOLVE75        
+38    AUTO_23        REDUCE    16        
+38    AUTO_0         DFA_RESOLVE73        
+38    AUTO_1         REDUCE    16        
+38    AUTO_11        REDUCE    16        
+38    $              REDUCE    16        
+38    AUTO_12        REDUCE    16        
+38    AUTO_4         DFA_RESOLVE76        
+38    AUTO_2         DFA_RESOLVE74        
+38    AUTO_14        REDUCE    16        
+38    AUTO_22        REDUCE    16        
+38    AUTO_17        REDUCE    16        
+38    AUTO_21        REDUCE    16        
+38    AUTO_18        REDUCE    16        
+38    AUTO_19        REDUCE    16        
+38    AUTO_20        REDUCE    16        
+37    ID             REDUCE    15        
+37    AUTO_9         DFA_RESOLVE72        
+37    AUTO_8         DFA_RESOLVE71        
+37    NUMBER         REDUCE    15        
+37    AUTO_6         DFA_RESOLVE69        
+37    AUTO_7         DFA_RESOLVE70        
+37    AUTO_5         DFA_RESOLVE68        
+37    AUTO_23        REDUCE    15        
+37    AUTO_0         DFA_RESOLVE64        
+37    AUTO_1         REDUCE    15        
+37    AUTO_3         DFA_RESOLVE66        
+37    AUTO_22        REDUCE    15        
+37    AUTO_17        REDUCE    15        
+37    AUTO_21        REDUCE    15        
+37    AUTO_11        REDUCE    15        
+37    $              REDUCE    15        
+37    AUTO_12        REDUCE    15        
+37    AUTO_4         DFA_RESOLVE67        
+37    AUTO_2         DFA_RESOLVE65        
+37    AUTO_14        REDUCE    15        
+37    AUTO_18        REDUCE    15        
+37    AUTO_19        REDUCE    15        
+37    AUTO_20        REDUCE    15        
+36    ID             REDUCE    14        
+36    AUTO_23        REDUCE    14        
+36    AUTO_21        REDUCE    14        
+36    AUTO_20        REDUCE    14        
+36    AUTO_19        REDUCE    14        
+36    AUTO_18        REDUCE    14        
+36    AUTO_22        REDUCE    14        
+36    AUTO_17        REDUCE    14        
+36    AUTO_0         DFA_RESOLVE55        
+36    AUTO_1         REDUCE    14        
+36    AUTO_3         DFA_RESOLVE57        
+36    AUTO_9         DFA_RESOLVE63        
+36    AUTO_14        REDUCE    14        
+36    AUTO_2         DFA_RESOLVE56        
+36    AUTO_4         DFA_RESOLVE58        
+36    NUMBER         REDUCE    14        
+36    AUTO_6         DFA_RESOLVE60        
+36    AUTO_5         DFA_RESOLVE59        
+36    AUTO_7         DFA_RESOLVE61        
+36    AUTO_8         DFA_RESOLVE62        
+36    AUTO_11        REDUCE    14        
+36    $              REDUCE    14        
+36    AUTO_12        REDUCE    14        
+35    ID             REDUCE    13        
+35    AUTO_9         DFA_RESOLVE54        
+35    AUTO_8         DFA_RESOLVE53        
+35    NUMBER         REDUCE    13        
+35    AUTO_6         DFA_RESOLVE51        
+35    AUTO_7         DFA_RESOLVE52        
+35    AUTO_5         DFA_RESOLVE50        
+35    AUTO_23        REDUCE    13        
+35    AUTO_21        REDUCE    13        
+35    AUTO_0         DFA_RESOLVE46        
+35    AUTO_1         REDUCE    13        
+35    AUTO_3         DFA_RESOLVE48        
+35    AUTO_22        REDUCE    13        
+35    AUTO_17        REDUCE    13        
+35    AUTO_18        REDUCE    13        
+35    AUTO_11        REDUCE    13        
+35    $              REDUCE    13        
+35    AUTO_12        REDUCE    13        
+35    AUTO_2         DFA_RESOLVE47        
+35    AUTO_4         DFA_RESOLVE49        
+35    AUTO_14        REDUCE    13        
+35    AUTO_19        REDUCE    13        
+35    AUTO_20        REDUCE    13        
+34    ID             REDUCE    12        
+34    AUTO_9         DFA_RESOLVE45        
+34    AUTO_8         DFA_RESOLVE44        
+34    NUMBER         REDUCE    12        
+34    AUTO_6         DFA_RESOLVE42        
+34    AUTO_23        REDUCE    12        
+34    AUTO_21        REDUCE    12        
+34    AUTO_20        REDUCE    12        
+34    AUTO_0         DFA_RESOLVE37        
+34    AUTO_1         REDUCE    12        
+34    AUTO_3         DFA_RESOLVE39        
+34    AUTO_22        REDUCE    12        
+34    AUTO_17        REDUCE    12        
+34    AUTO_18        REDUCE    12        
+34    AUTO_7         DFA_RESOLVE43        
+34    AUTO_5         DFA_RESOLVE41        
+34    AUTO_11        REDUCE    12        
+34    $              REDUCE    12        
+34    AUTO_12        REDUCE    12        
+34    AUTO_2         DFA_RESOLVE38        
+34    AUTO_4         DFA_RESOLVE40        
+34    AUTO_14        REDUCE    12        
+34    AUTO_19        REDUCE    12        
+33    ID             REDUCE    11        
+33    AUTO_9         DFA_RESOLVE36        
+33    AUTO_8         DFA_RESOLVE35        
+33    AUTO_23        REDUCE    11        
+33    AUTO_21        REDUCE    11        
+33    AUTO_20        REDUCE    11        
+33    AUTO_19        REDUCE    11        
+33    AUTO_0         DFA_RESOLVE28        
+33    AUTO_1         REDUCE    11        
+33    AUTO_3         DFA_RESOLVE30        
+33    AUTO_22        REDUCE    11        
+33    AUTO_17        REDUCE    11        
+33    AUTO_18        REDUCE    11        
+33    AUTO_7         DFA_RESOLVE34        
+33    AUTO_5         DFA_RESOLVE32        
+33    NUMBER         REDUCE    11        
+33    AUTO_6         DFA_RESOLVE33        
+33    AUTO_11        REDUCE    11        
+33    $              REDUCE    11        
+33    AUTO_12        REDUCE    11        
+33    AUTO_2         DFA_RESOLVE29        
+33    AUTO_4         DFA_RESOLVE31        
+33    AUTO_14        REDUCE    11        
+32    ID             REDUCE    10        
+32    AUTO_9         DFA_RESOLVE27        
+32    AUTO_8         DFA_RESOLVE26        
+32    AUTO_23        REDUCE    10        
+32    AUTO_21        REDUCE    10        
+32    AUTO_20        REDUCE    10        
+32    AUTO_19        REDUCE    10        
+32    AUTO_18        REDUCE    10        
+32    AUTO_0         DFA_RESOLVE19        
+32    AUTO_1         REDUCE    10        
+32    AUTO_3         DFA_RESOLVE21        
+32    AUTO_22        REDUCE    10        
+32    AUTO_17        REDUCE    10        
+32    NUMBER         REDUCE    10        
+32    AUTO_6         DFA_RESOLVE24        
+32    AUTO_5         DFA_RESOLVE23        
+32    AUTO_7         DFA_RESOLVE25        
+32    AUTO_11        REDUCE    10        
+32    $              REDUCE    10        
+32    AUTO_12        REDUCE    10        
+32    AUTO_2         DFA_RESOLVE20        
+32    AUTO_4         DFA_RESOLVE22        
+32    AUTO_14        REDUCE    10        
+31    ID             REDUCE    9         
+31    AUTO_9         DFA_RESOLVE18        
+31    AUTO_23        REDUCE    9         
+31    AUTO_21        REDUCE    9         
+31    AUTO_20        REDUCE    9         
+31    AUTO_19        REDUCE    9         
+31    AUTO_18        REDUCE    9         
+31    AUTO_22        REDUCE    9         
+31    AUTO_17        REDUCE    9         
+31    AUTO_0         DFA_RESOLVE10        
+31    AUTO_1         REDUCE    9         
+31    AUTO_3         DFA_RESOLVE12        
+31    NUMBER         REDUCE    9         
+31    AUTO_6         DFA_RESOLVE15        
+31    AUTO_5         DFA_RESOLVE14        
+31    AUTO_7         DFA_RESOLVE16        
+31    AUTO_8         DFA_RESOLVE17        
+31    AUTO_11        REDUCE    9         
+31    $              REDUCE    9         
+31    AUTO_12        REDUCE    9         
+31    AUTO_2         DFA_RESOLVE11        
+31    AUTO_4         DFA_RESOLVE13        
+31    AUTO_14        REDUCE    9         
+30    ID             REDUCE    8         
+30    AUTO_9         REDUCE    8         
+30    AUTO_8         REDUCE    8         
+30    NUMBER         REDUCE    8         
+30    AUTO_6         REDUCE    8         
+30    AUTO_7         REDUCE    8         
+30    AUTO_5         REDUCE    8         
+30    AUTO_3         REDUCE    8         
+30    AUTO_23        REDUCE    8         
+30    AUTO_11        DFA_RESOLVE8         
+30    AUTO_0         REDUCE    8         
+30    AUTO_1         REDUCE    8         
+30    $              REDUCE    8         
+30    AUTO_12        DFA_RESOLVE9         
+30    AUTO_4         REDUCE    8         
+30    AUTO_2         REDUCE    8         
+30    AUTO_14        REDUCE    8         
+30    AUTO_22        REDUCE    8         
+30    AUTO_17        REDUCE    8         
+30    AUTO_21        REDUCE    8         
+30    AUTO_18        REDUCE    8         
+30    AUTO_19        REDUCE    8         
+30    AUTO_20        REDUCE    8         
+29    AUTO_13        SHIFT     24        
+29    ID             REDUCE    4         
+29    AUTO_9         REDUCE    4         
+29    AUTO_8         REDUCE    4         
+29    NUMBER         REDUCE    4         
+29    AUTO_6         REDUCE    4         
+29    AUTO_7         REDUCE    4         
+29    AUTO_5         REDUCE    4         
+29    AUTO_3         REDUCE    4         
+29    AUTO_23        REDUCE    4         
+29    AUTO_0         REDUCE    4         
+29    AUTO_15        SHIFT     25        
+29    AUTO_1         REDUCE    4         
+29    AUTO_11        REDUCE    4         
+29    $              REDUCE    4         
+29    AUTO_12        REDUCE    4         
+29    AUTO_4         REDUCE    4         
+29    AUTO_2         REDUCE    4         
+29    AUTO_14        REDUCE    4         
+29    AUTO_22        REDUCE    4         
+29    AUTO_17        REDUCE    4         
+29    AUTO_21        REDUCE    4         
+29    AUTO_18        REDUCE    4         
+29    AUTO_19        REDUCE    4         
+29    AUTO_20        REDUCE    4         
+12    NUMBER         SHIFT     1         
+12    AUTO_21        SHIFT     2         
+12    ID             SHIFT     6         
+11    NUMBER         SHIFT     1         
+11    AUTO_21        SHIFT     2         
+11    ID             SHIFT     6         
+10    NUMBER         SHIFT     1         
+10    ID             SHIFT     29        
+10    AUTO_21        SHIFT     2         
+9     NUMBER         SHIFT     1         
+9     ID             SHIFT     29        
+9     AUTO_21        SHIFT     2         
+8     AUTO_8         SHIFT     11        
+8     AUTO_7         SHIFT     12        
+8     AUTO_6         SHIFT     13        
+8     AUTO_5         SHIFT     14        
+8     AUTO_4         SHIFT     15        
+8     AUTO_9         SHIFT     16        
+8     AUTO_3         SHIFT     17        
+8     AUTO_22        SHIFT     27        
+8     AUTO_2         SHIFT     18        
+8     AUTO_0         SHIFT     19        
+7     $              ACCEPT    0         
+6     AUTO_13        SHIFT     24        
+6     ID             REDUCE    4         
+6     AUTO_9         REDUCE    4         
+6     AUTO_8         REDUCE    4         
+6     NUMBER         REDUCE    4         
+6     AUTO_6         REDUCE    4         
+6     AUTO_7         REDUCE    4         
+6     AUTO_5         REDUCE    4         
+6     AUTO_3         REDUCE    4         
+6     AUTO_23        REDUCE    4         
+6     AUTO_10        SHIFT     26        
+6     AUTO_15        SHIFT     25        
+6     AUTO_1         REDUCE    4         
+6     AUTO_0         REDUCE    4         
+6     AUTO_11        REDUCE    4         
+6     $              REDUCE    4         
+6     AUTO_12        REDUCE    4         
+6     AUTO_4         REDUCE    4         
+6     AUTO_2         REDUCE    4         
+6     AUTO_14        REDUCE    4         
+6     AUTO_22        REDUCE    4         
+6     AUTO_17        REDUCE    4         
+6     AUTO_21        REDUCE    4         
+6     AUTO_18        REDUCE    4         
+6     AUTO_19        REDUCE    4         
+6     AUTO_20        REDUCE    4         
+5     ID             REDUCE    3         
+5     AUTO_9         REDUCE    3         
+5     AUTO_8         REDUCE    3         
+5     NUMBER         REDUCE    3         
+5     AUTO_6         REDUCE    3         
+5     AUTO_7         REDUCE    3         
+5     AUTO_5         REDUCE    3         
+5     AUTO_3         REDUCE    3         
+5     AUTO_23        REDUCE    3         
+5     AUTO_21        REDUCE    3         
+5     AUTO_18        DFA_RESOLVE3         
+5     AUTO_19        DFA_RESOLVE4         
+5     AUTO_20        DFA_RESOLVE5         
+5     AUTO_0         REDUCE    3         
+5     AUTO_1         REDUCE    3         
+5     AUTO_17        DFA_RESOLVE2         
+5     AUTO_22        REDUCE    3         
+5     AUTO_11        REDUCE    3         
+5     $              REDUCE    3         
+5     AUTO_12        REDUCE    3         
+5     AUTO_4         REDUCE    3         
+5     AUTO_2         REDUCE    3         
+5     AUTO_14        REDUCE    3         
+4     AUTO_8         SHIFT     11        
+4     $              REDUCE    2         
+4     AUTO_7         SHIFT     12        
+4     AUTO_6         SHIFT     13        
+4     AUTO_5         SHIFT     14        
+4     AUTO_4         SHIFT     15        
+4     AUTO_9         SHIFT     16        
+4     AUTO_3         SHIFT     17        
+4     AUTO_2         SHIFT     18        
+4     AUTO_0         SHIFT     19        
+3     ID             REDUCE    1         
+3     AUTO_9         REDUCE    1         
+3     AUTO_8         REDUCE    1         
+3     NUMBER         REDUCE    1         
+3     AUTO_6         REDUCE    1         
+3     AUTO_7         REDUCE    1         
+3     AUTO_5         REDUCE    1         
+3     AUTO_3         REDUCE    1         
+3     AUTO_23        REDUCE    1         
+3     AUTO_0         REDUCE    1         
+3     AUTO_1         REDUCE    1         
+3     AUTO_11        DFA_RESOLVE0         
+3     $              REDUCE    1         
+3     AUTO_12        DFA_RESOLVE1         
+3     AUTO_4         REDUCE    1         
+3     AUTO_2         REDUCE    1         
+3     AUTO_14        REDUCE    1         
+3     AUTO_22        REDUCE    1         
+3     AUTO_17        REDUCE    1         
+3     AUTO_21        REDUCE    1         
+3     AUTO_18        REDUCE    1         
+3     AUTO_19        REDUCE    1         
+3     AUTO_20        REDUCE    1         
+2     NUMBER         SHIFT     1         
+2     AUTO_21        SHIFT     2         
+2     ID             SHIFT     6         
+1     ID             REDUCE    0         
+1     AUTO_9         REDUCE    0         
+1     AUTO_8         REDUCE    0         
 1     NUMBER         REDUCE    0         
-1     AUTO_1         REDUCE    0         
+1     AUTO_6         REDUCE    0         
+1     AUTO_7         REDUCE    0         
+1     AUTO_5         REDUCE    0         
+1     AUTO_3         REDUCE    0         
+1     AUTO_23        REDUCE    0         
 1     AUTO_0         REDUCE    0         
+1     AUTO_1         REDUCE    0         
+1     AUTO_11        REDUCE    0         
 1     $              REDUCE    0         
+1     AUTO_12        REDUCE    0         
+1     AUTO_4         REDUCE    0         
+1     AUTO_2         REDUCE    0         
+1     AUTO_14        REDUCE    0         
+1     AUTO_22        REDUCE    0         
+1     AUTO_17        REDUCE    0         
+1     AUTO_21        REDUCE    0         
+1     AUTO_18        REDUCE    0         
+1     AUTO_19        REDUCE    0         
+1     AUTO_20        REDUCE    0         
 0     NUMBER         SHIFT     1         
+0     AUTO_21        SHIFT     2         
+0     ID             SHIFT     6         
+13    NUMBER         SHIFT     1         
+13    AUTO_21        SHIFT     2         
+13    ID             SHIFT     6         
+14    NUMBER         SHIFT     1         
+14    AUTO_21        SHIFT     2         
+14    ID             SHIFT     6         
+15    NUMBER         SHIFT     1         
+15    AUTO_21        SHIFT     2         
+15    ID             SHIFT     6         
+16    NUMBER         SHIFT     1         
+16    AUTO_21        SHIFT     2         
+16    ID             SHIFT     6         
+17    NUMBER         SHIFT     1         
+17    AUTO_21        SHIFT     2         
+17    ID             SHIFT     6         
+18    NUMBER         SHIFT     1         
+18    AUTO_21        SHIFT     2         
+18    ID             SHIFT     6         
+19    NUMBER         SHIFT     1         
+19    AUTO_21        SHIFT     2         
+19    ID             SHIFT     6         
+20    NUMBER         SHIFT     1         
+20    ID             SHIFT     29        
+20    AUTO_21        SHIFT     2         
+21    NUMBER         SHIFT     1         
+21    ID             SHIFT     29        
+21    AUTO_21        SHIFT     2         
+22    NUMBER         SHIFT     1         
+22    ID             SHIFT     29        
+22    AUTO_21        SHIFT     2         
+23    NUMBER         SHIFT     1         
+23    ID             SHIFT     29        
+23    AUTO_21        SHIFT     2         
+24    NUMBER         SHIFT     1         
+24    AUTO_21        SHIFT     2         
+24    ID             SHIFT     6         
+25    NUMBER         SHIFT     1         
+25    AUTO_21        SHIFT     2         
+25    ID             SHIFT     6         
+25    AUTO_16        REDUCE    5         
+26    NUMBER         SHIFT     1         
+26    AUTO_21        SHIFT     2         
+26    ID             SHIFT     6         
+27    ID             REDUCE    6         
+27    AUTO_9         REDUCE    6         
+27    AUTO_8         REDUCE    6         
+27    NUMBER         REDUCE    6         
+27    AUTO_6         REDUCE    6         
+27    AUTO_7         REDUCE    6         
+27    AUTO_5         REDUCE    6         
+27    AUTO_3         REDUCE    6         
+27    AUTO_23        REDUCE    6         
+27    AUTO_0         REDUCE    6         
+27    AUTO_1         REDUCE    6         
+27    AUTO_11        REDUCE    6         
+27    $              REDUCE    6         
+27    AUTO_12        REDUCE    6         
+27    AUTO_4         REDUCE    6         
+27    AUTO_2         REDUCE    6         
+27    AUTO_14        REDUCE    6         
+27    AUTO_22        REDUCE    6         
+27    AUTO_17        REDUCE    6         
+27    AUTO_21        REDUCE    6         
+27    AUTO_18        REDUCE    6         
+27    AUTO_19        REDUCE    6         
+27    AUTO_20        REDUCE    6         
+28    ID             REDUCE    7         
+28    AUTO_9         REDUCE    7         
+28    AUTO_8         REDUCE    7         
+28    NUMBER         REDUCE    7         
+28    AUTO_6         REDUCE    7         
+28    AUTO_7         REDUCE    7         
+28    AUTO_5         REDUCE    7         
+28    AUTO_3         REDUCE    7         
+28    AUTO_23        REDUCE    7         
+28    AUTO_11        DFA_RESOLVE6         
+28    AUTO_12        DFA_RESOLVE7         
+28    $              REDUCE    7         
+28    AUTO_0         REDUCE    7         
+28    AUTO_1         REDUCE    7         
+28    AUTO_4         REDUCE    7         
+28    AUTO_2         REDUCE    7         
+28    AUTO_14        REDUCE    7         
+28    AUTO_22        REDUCE    7         
+28    AUTO_17        REDUCE    7         
+28    AUTO_21        REDUCE    7         
+28    AUTO_18        REDUCE    7         
+28    AUTO_19        REDUCE    7         
+28    AUTO_20        REDUCE    7         
 
 Goto Table:
 State Non-Terminal        Next State  
-6     term                8           
-5     term                7           
-0     expr                2           
+55    __grp1              56          
+26    factor              5           
+26    term                3           
+26    expr                48          
+25    factor              5           
+25    __q2                45          
+25    expr                46          
+25    term                3           
+25    arg_list            47          
+53    factor              5           
+53    term                3           
+53    expr                55          
+24    factor              5           
+24    term                3           
+24    expr                44          
+23    factor              43          
+22    factor              42          
+21    factor              41          
+49    factor              5           
+49    term                3           
+49    expr                54          
+20    factor              40          
+0     factor              5           
 0     term                3           
-0     main                4           
+0     expr                4           
+0     main                7           
+13    factor              5           
+13    term                3           
+13    expr                33          
+2     factor              5           
+2     term                3           
+2     expr                8           
+15    factor              5           
+15    term                3           
+15    expr                35          
+9     term                28          
+9     factor              5           
+10    term                30          
+10    factor              5           
+11    factor              5           
+11    term                3           
+11    expr                31          
+12    factor              5           
+12    term                3           
+12    expr                32          
+14    factor              5           
+14    term                3           
+14    expr                34          
+16    factor              5           
+16    term                3           
+16    expr                36          
+46    __grp1              52          
+17    factor              5           
+17    term                3           
+17    expr                37          
+18    factor              5           
+18    term                3           
+18    expr                38          
+19    factor              5           
+19    term                3           
+19    expr                39          
 
 Rules:
-	1: term → NUMBER 
+	1: factor → NUMBER 
+	1: expr → term 
 	1: main → expr 
-	3: term → term AUTO_1 term 
-	3: expr → term AUTO_0 term 
+	1: term → factor 
+	1: factor → ID 
+	0: __q2 → 
+	3: factor → AUTO_21 expr AUTO_22 
+	3: term → term AUTO_12 term 
+	3: term → term AUTO_11 term 
+	3: expr → expr AUTO_8 expr 
+	3: expr → expr AUTO_7 expr 
+	3: expr → expr AUTO_6 expr 
+	3: expr → expr AUTO_5 expr 
+	3: expr → expr AUTO_4 expr 
+	3: expr → expr AUTO_9 expr 
+	3: expr → expr AUTO_3 expr 
+	3: expr → expr AUTO_2 expr 
+	3: factor → factor AUTO_20 factor 
+	3: factor → factor AUTO_19 factor 
+	3: factor → factor AUTO_18 factor 
+	3: factor → factor AUTO_17 factor 
+	0: __grp1 → 
+	1: __q2 → arg_list 
+	3: expr → ID AUTO_10 expr 
+	4: factor → ID AUTO_13 expr AUTO_14 
+	4: factor → ID AUTO_15 __q2 AUTO_16 
+	2: arg_list → expr __grp1 
+	5: expr → expr AUTO_0 expr AUTO_1 expr 
+	3: __grp1 → AUTO_23 expr __grp1 

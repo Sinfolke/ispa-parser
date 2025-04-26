@@ -25,10 +25,10 @@ term:
 
 // Factor includes grouping, literals, identifiers, etc.
 factor:
-    ('*' factor)
-  | ('/' factor)
-  | ('%' factor)
-  | ('!' factor)
+    (factor '*' factor)
+  | (factor '/' factor)
+  | (factor '%' factor)
+  | (factor '!' factor)
   | ('(' expr ')')
   | (ID '[' expr ']')
   | (ID '(' arg_list? ')')

@@ -122,17 +122,16 @@ void ELRParser::build() {
 
     std::unordered_map<std::set<size_t>, size_t> dfa_state_map;
     std::queue<std::set<size_t>> worklist;
-    std::set<size_t> start_set = {};
 
-
-    start_set = epsilon_closure(start_set); // Get ε-closure of the start states
-    dfa_states.push_back({start_set});
-    dfa_state_map[start_set] = 0;
-    worklist.push(start_set);
-    // Collect all starting NFA states (accounting for ε-closure)
     for (size_t i = 0; i < nfa_states.size(); ++i) {
         if (nfa_states[i].is_starting_state) {
-            worklist.push({i});
+            std::set<size_t> start = epsilon_closure({i});
+            if (!dfa_state_map.count(start)) {
+                size_t index = dfa_states.size();
+                dfa_states.push_back({start});
+                dfa_state_map[start] = index;
+                worklist.push(start);
+            }
         }
     }
     while (!worklist.empty()) {
@@ -186,6 +185,7 @@ void ELRParser::build() {
                     }
                 }
             }
+            // also for each state move nfa.place to dfa
             dfa_states[current_dfa_index].places.push_back(nfa_states[state].place);
         }
         // Assign the resolved reduce action to the DFA state
