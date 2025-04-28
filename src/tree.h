@@ -12,9 +12,13 @@ class Tree {
             std::vector<Parser::Rule>::iterator lhs_it;
             std::vector<Parser::Rule>::iterator rhs_it;
         };
+        struct Use_place {
+            size_t index;
+            std::vector<std::string> name; 
+        };
         using ConflictsList = std::vector<Conflict>;
-        using use_place_t_part = std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>>;
-        using use_place_t = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
+        using use_place_t_part = std::pair<std::vector<std::string>, std::vector<Use_place>>;
+        using use_place_table = std::unordered_map<std::vector<std::string>, std::vector<Use_place>>;
     private:
         Parser::Tree tree;
         size_t token_count = 0;
@@ -47,11 +51,11 @@ class Tree {
         void sortByPriority(Parser::Tree &tree);
 
         // other functions
-        std::pair<std::vector<std::string>, std::vector<std::string>> getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::string nested_name);
-        use_prop_t get_use_data(const Parser::Rule &use);
-        void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_t &use_places, std::vector<std::string> &fullname);
-        void getTokensForLexer(Parser::Tree &tree, use_place_t &use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname);
-        void getUsePlacesTableHelper(Parser::Tree &tree, use_place_t &use_places, std::vector<std::string> &fullname);
+        void getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::vector<std::vector<std::string>> &tokens, std::vector<std::vector<std::string>> &rules, std::unordered_set<std::vector<std::string>> &seen, std::vector<std::string> &fullname);   
+        auto get_use_data(const Parser::Rule &use) -> use_prop_t;
+        void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_table &use_places, std::vector<std::string> &fullname);
+        void getTokensForLexer(Parser::Tree &tree, use_place_table &use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname);
+        void getUsePlacesTableHelper(Parser::Tree &tree, use_place_table &use_places, std::vector<std::string> &fullname);
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
         void resolveConflicts(Parser::Tree &tree);
@@ -83,10 +87,10 @@ class Tree {
         void literalsToToken();
         void sortByPriority();
         void addSpaceToken();
-        auto getTokenAndRuleNames() -> std::pair<std::vector<std::string>, std::vector<std::string>>;
+        auto getTokenAndRuleNames() -> std::pair<std::vector<std::vector<std::string>>, std::vector<std::vector<std::string>>>;
         auto accamulate_use_data_to_map() -> use_prop_t;
-        auto getUsePlacesTable() -> use_place_t;
+        auto getUsePlacesTable() -> use_place_table;
         auto get_data_blocks(const LLIR &ir) -> std::pair<data_block_t, data_block_t>;
-        auto getCodeForLexer(use_place_t use_places) -> lexer_code;
+        auto getCodeForLexer(use_place_table use_places) -> lexer_code;
         void resolveConflicts();
 };

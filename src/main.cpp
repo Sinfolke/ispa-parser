@@ -102,19 +102,19 @@ int main(int argc, char** argv) {
     }
     if (algorithm == "LR") {
         LRParser LRIR(tree);
-        LRIR.printTables("tables");
+        // LRIR.printTables("tables");
         LRIR.printCanonicalCollection("canonical_collection.txt");
-        LRIR.printFirstSet("first_set.txt");
-        LRIR.printFollowSet("follow_set.txt");
+        // LRIR.printFirstSet("first_set.txt");
+        // LRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
         converter->output(name);
     } else if (algorithm == "LALR") {
         LALRParser LALRIR(tree);
-        LALRIR.printTables("tables");
-        LALRIR.printCanonicalCollection("canonical_collection.txt");
-        LALRIR.printFirstSet("first_set.txt");
-        LALRIR.printFollowSet("follow_set.txt");
+        // LALRIR.printTables("tables");
+        // LALRIR.printCanonicalCollection("canonical_collection.txt");
+        // LALRIR.printFirstSet("first_set.txt");
+        // LALRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
         converter->output(name);

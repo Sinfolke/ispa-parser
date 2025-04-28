@@ -59,7 +59,7 @@ protected:
     Tree *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    Tree::use_place_t use_places;
+    Tree::use_place_table use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;
@@ -71,14 +71,11 @@ protected:
 
     Priority priority;
     Conflicts conflicts;
-    void getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
-    void getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const;
     void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements);
     void transform(Parser::Tree &tree, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements);
     void getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
     void getPriorityTree();
     void addAugmentedRule();
-    void get_item_set(const Parser::Rule &rule, std::vector<rule_other> &item_set);
     void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     auto construct_initial_item_set() -> InitialItemSet;
     void constructFirstSet(const std::vector<std::vector<rule_other>>& options, const std::vector<std::string> &nonterminal, bool &changed);
@@ -89,6 +86,8 @@ protected:
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
     auto find_rules_index(const LR1Core &rule) -> size_t;
+    void resolveCertainConflict(const Conflict &conflict);
+    void resolveConflictsStatically();
     // debug
     void debug(Parser::Tree &tree, std::vector<std::string> &fullname);
     void formatFirstOrFollowSet(std::ostringstream &oss, First &set);
@@ -100,7 +99,7 @@ protected:
     void transform();
     // build action and goto table
     void prepare();
-    void buildTable(bool resolve_conflicts = true);
+    void buildTable();
     virtual void build();
     LRParser(Tree *tree, bool build_immediately = true) : tree(tree) {
         if (build_immediately) {
@@ -128,10 +127,8 @@ public:
     auto getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t>>;
     // helper functions
     auto getMaxStatesCount() const -> size_t;
-    auto getTerminalNames() const -> std::vector<std::vector<std::string>>;
-    auto getNonTerminalNames() const ->  std::vector<std::vector<std::string>>;
 
-        // debug
+    // debug
     // Method to print both Action and Goto tables into a single file
     void printTables(const std::string& filename);
     // print cannonical collection

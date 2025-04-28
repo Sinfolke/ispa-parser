@@ -40,8 +40,8 @@ public:
     void convertData(std::ostringstream &out);
     void printIR(std::ostringstream& out, const std::string &filename);
     void addHeader(std::ostringstream &out);
-    void addTokensToString(std::vector<std::string> tokens, std::ostringstream &out);
-    void addRulesToString(std::vector<std::string> rules, std::ostringstream &out);
+    void addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out);
+    void addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);
     void addGetRuleFunction(std::ostringstream &out);
     void addparseFromFunctions(std::ostringstream &out);

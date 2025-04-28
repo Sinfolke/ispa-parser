@@ -4,13 +4,10 @@
 #include <corelib.h>
 #include <parser.h>
 #include <cpuf/hex.h>
-LLIR::LLIR(const Parser::Tree &tree, bool tokensOnly, bool rulesOnly) : tree(&tree), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
-LLIR::LLIR(const Parser::Tree *tree, bool tokensOnly, bool rulesOnly) : tree(tree), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
-LLIR::LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules, bool tokensOnly, bool rulesOnly) 
-    : tree(&tree), rules(&rules), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
-LLIR::LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules, bool tokensOnly, bool rulesOnly) 
-    : tree(tree), rules(&rules), tokensOnly(tokensOnly), rulesOnly(rulesOnly) {}
-LLIR::LLIR(LLIR& ir) : tree(ir.tree), data(std::move(ir.data)) {}
+LLIR::LLIR(const Parser::Tree &tree, int tokensOnly) : tree(&tree), tokensOnly(tokensOnly) {}
+LLIR::LLIR(const Parser::Tree *tree, int tokensOnly) : tree(tree), tokensOnly(tokensOnly) {}
+LLIR::LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules, int tokensOnly) : tree(&tree), rules(&rules), tokensOnly(tokensOnly) {}
+LLIR::LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules, int tokensOnly) : tree(tree), rules(&rules), tokensOnly(tokensOnly) {}
 // a structure used to cout
 void LLIR::add(LLIR &repr) {
     data.insert(data.end(), repr.data.begin(), repr.data.end());
@@ -72,9 +69,10 @@ void LLIR::clear_thread() {
     success_vars.clear();
     vars.clear();
 }
-void LLIR::proceed(LLIR& ir) {
+void LLIR::proceed(const LLIR &ir) {
     variable_count = ir.variable_count;
     isToken = ir.isToken;
+    tokensOnly = ir.tokensOnly;
     insideLoop = ir.insideLoop;
     addSpaceSkip = ir.addSpaceSkip;
     fullname = ir.fullname;
@@ -83,7 +81,6 @@ void LLIR::proceed(LLIR& ir) {
 }
 void LLIR::update(LLIR &ir) {
     variable_count = ir.variable_count;
-    isToken = ir.isToken;
     insideLoop = ir.insideLoop;
     addSpaceSkip = ir.addSpaceSkip;
     vars.insert(vars.end(), ir.vars.begin(), ir.vars.end());
@@ -1956,10 +1953,6 @@ void LLIR::ruleToIr(const Parser::Rule &rule_rule, char custom_quantifier) {
     } else if (qualifier.data.has_value()) {
         quantifier_char = std::any_cast<char>(qualifier.data);
     }
-    if (!isToken && (rule.name != Parser::Rules::Rule_other && rule.name != Parser::Rules::Rule_group && rule.name != Parser::Rules::Rule_op && rule.name != Parser::Rules::cll && rule.name != Parser::Rules::linear_comment && rule.name != Parser::Rules::accessor)  ) {
-        //throw Error("Rule having literals. Name: %s", Parser::RulesToString(rule.name));
-        //return;
-    }
     addSpaceSkip = true;
     LLIR::node_ret_t success_var;
     switch (rule.name) {
@@ -2034,23 +2027,14 @@ void LLIR::treeToIr(const Parser::Tree &tree) {
         auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
         auto data_block = std::any_cast<Parser::Rule>(corelib::map::get(data, "data_block"));
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-        isToken = corelib::text::isUpper(name);
+        bool isToken = corelib::text::isUpper(name);
         fullname.push_back(name);
-        LLIR new_ir(tree);
-        new_ir.proceed(*this);
-        bool to_add = true;
-        if (corelib::text::isLower(name)) {
-            if (tokensOnly)
-                to_add = false;
+        bool to_add = false;
+        if (tokensOnly != -1 && ((isToken && tokensOnly) || (!isToken && !tokensOnly))) {
+            to_add = true;
         }
-        if (corelib::text::isUpper(name)) {
-            if (rulesOnly)
-                to_add = false;
-        }
-        if (!nested_rules.empty()) {
-            new_ir.treeToIr(nested_rules);
-            add(new_ir);
-        }
+        treeToIr(nested_rules);
+        this->isToken = isToken;
         if (to_add) {
             auto values = rulesToIr(rules);
             if (!values.data.empty() && values.data.back().type == LLIR::types::SKIP_SPACES)

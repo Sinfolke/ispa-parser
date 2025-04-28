@@ -120,16 +120,16 @@ class return_base_exception : public std::exception {
     }
 };
 template<typename NODE_T>
-class node {
+class Node {
 public:
     std::size_t startpos = std::string::npos;
     const char* start = nullptr;
     const char* end = nullptr;
     NODE_T name = NODE_T::NONE;
     std::any data;
-    node(const std::size_t startpos, const char* start, const char* end, NODE_T name) : startpos(startpos), start(start), end(end), name(name) {}
-    node(const std::size_t startpos, const char* start, const char* end, NODE_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
-    node() {}
+    Node(const std::size_t startpos, const char* start, const char* end, NODE_T name) : startpos(startpos), start(start), end(end), name(name) {}
+    Node(const std::size_t startpos, const char* start, const char* end, NODE_T name, std::any data) : startpos(startpos), start(start), end(end), name(name), data(data) {}
+    Node() {}
 
 
     /**
@@ -181,7 +181,7 @@ public:
 #endif
         return std::any_cast<T>(data);
     }
-    node<NODE_T>& operator=(const node<NODE_T>& other) {
+    Node<NODE_T>& operator=(const Node<NODE_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
     
@@ -200,13 +200,13 @@ public:
 template<class RESULT_T>
 struct match_result {
     bool result = false;
-    node<RESULT_T> token;
+    Node<RESULT_T> token;
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::vector<node<TOKEN_T>>;
+using TokenFlow = std::vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::vector<node<RULE_T>>;
+using Tree = std::vector<Node<RULE_T>>;
 
 /**
  * @brief Join vector into string
@@ -274,7 +274,7 @@ public:
     virtual TokenFlow<TOKEN_T>& makeTokens() {
         if (_in == nullptr)
             throw Tokenizator_No_Input_exception();
-        node<TOKEN_T> result;
+        Node<TOKEN_T> result;
         while (*_in != '\0') {
             result = getToken();
             if (result.empty())
@@ -286,7 +286,7 @@ public:
     /**
      * Get one token
      */
-    virtual node<TOKEN_T> getToken() = 0;
+    virtual Node<TOKEN_T> getToken() = 0;
     // constructors
 
     explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
@@ -377,7 +377,7 @@ public:
      * @param input_token the input token
      * Push a token
      */
-    Lexer_base& push(const node<TOKEN_T>& input_token) {
+    Lexer_base& push(const Node<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
         return *this;
     }
@@ -434,7 +434,7 @@ public:
      * @brief Your parsed Tree. The Tree is std::vector. 
      * 
      */
-    virtual node<RULE_T> getRule(size_t &tokensConsumed) = 0;
+    virtual Node<RULE_T> getRule(size_t &tokensConsumed) = 0;
     // Constructors
     LLParser_base() {}
     LLParser_base(const Lexer_base<TOKEN_T>& tokenizator) {

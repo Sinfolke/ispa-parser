@@ -129,7 +129,7 @@ class return_base_exception : public std::exception {
     }
 };
 template<typename NODE_T>
-class node {
+class Node {
     std::size_t _startpos = std::string::npos;
     std::size_t _length = 0;
     std::size_t _line = 0;
@@ -140,9 +140,9 @@ class node {
     std::any _data = {};
     bool _empty = true;
 public:
-    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _empty(false) {}
-    node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
-    node() {}
+    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _empty(false) {}
+    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
+    Node() {}
 
     /**
      * @brief Get the end position based on startpos and length
@@ -178,7 +178,7 @@ public:
 #endif
         return std::any_cast<T>(_data);
     }
-    node<NODE_T>& operator=(const node<NODE_T>& other) {
+    Node<NODE_T>& operator=(const Node<NODE_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
         _startpos = other._startpos;
@@ -251,13 +251,13 @@ public:
 template<class RESULT_T>
 struct match_result {
     bool status = false;
-    node<RESULT_T> node;
+    Node<RESULT_T> node;
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::vector<node<TOKEN_T>>;
+using TokenFlow = std::vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::deque<node<RULE_T>>;
+using Tree = std::deque<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
@@ -338,7 +338,7 @@ public:
      */
     class lazy_iterator {
         Lexer_base<TOKEN_T>* owner = nullptr;
-        node<TOKEN_T> current;
+        Node<TOKEN_T> current;
         const char* pos = nullptr;
         size_t counter = 0;
         public:
@@ -377,10 +377,10 @@ public:
                 this->operator+=(1);
                 return temp;
             }
-            node<TOKEN_T>& operator*() {
+            Node<TOKEN_T>& operator*() {
                 return current;
             }
-            node<TOKEN_T>* operator->() {
+            Node<TOKEN_T>* operator->() {
                 return &current;
             }
             auto distance() {
@@ -409,7 +409,7 @@ public:
             auto operator-(iterator iterator) {
                 return pos - iterator.pos;
             }
-            node<TOKEN_T>& operator*() {
+            Node<TOKEN_T>& operator*() {
                 return *pos;
             }    
             iterator& operator++() {
@@ -422,7 +422,7 @@ public:
                 return temp;
             }
             
-            node<TOKEN_T>* operator->() {
+            Node<TOKEN_T>* operator->() {
                 return &(*pos);
             }
             auto distance() {
@@ -432,7 +432,7 @@ public:
     /**
      * Get one token
      */
-    virtual node<TOKEN_T> makeToken(const char*& pos) = 0;
+    virtual Node<TOKEN_T> makeToken(const char*& pos) = 0;
     // constructors
 
     explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
@@ -521,7 +521,7 @@ public:
     TokenFlow<TOKEN_T>& makeTokens() {
         if (_in == nullptr)
             throw Lexer_No_Input_exception();
-        node<TOKEN_T> result;
+        Node<TOKEN_T> result;
         const char* pos = _in;
         while (*pos != '\0') {
             result = makeToken(pos);
@@ -535,7 +535,7 @@ public:
             }
             error_controller.clear();
         }
-        push(node<TOKEN_T>());
+        push(Node<TOKEN_T>());
         return tokens;
     };
     auto& getErrors() const {
@@ -552,7 +552,7 @@ public:
      * @param input_token the input token
      * Push a token
      */
-    void push(const node<TOKEN_T>& input_token) {
+    void push(const Node<TOKEN_T>& input_token) {
         tokens.push_back(input_token);
     }
     /**
@@ -760,25 +760,25 @@ template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class Go
 class ELRParser_base : public LRParser_base<TOKEN_T, RULE_T, Action, ActionTable, GotoTable, RulesTable> {
 private:
     // cache tokens because of lazy iterator which makes tokens on dereference
-    std::queue<node<TOKEN_T>> dfa_token_cache;
+    std::queue<Node<TOKEN_T>> dfa_token_cache;
 protected:
     template <class IT>
     void shift(IT& pos, size_t state) {
         if (dfa_token_cache.empty()) {
             this->stack.push_back({pos->name(), state});
+            pos++;
         } else {
             this->stack.push_back({dfa_token_cache.front().name(), state});
             dfa_token_cache.pop();
         }
-        pos++;
     }
     template<class IT>
     const std::optional<Action>& getAction(IT &pos, const ActionTable &action_table) {
         auto &current_state = this->stack.back().second;
-        return dfa_token_cache.empty() ? action_table[current_state][(size_t) pos->name()] : action_table[current_state][(size_t) dfa_token_cache.back().name()];
+        return dfa_token_cache.empty() ? action_table[current_state][(size_t) pos->name()] : action_table[current_state][(size_t) dfa_token_cache.front().name()];
     }
     template<class IT>
-    const Action* resolveDFA(IT pos, size_t dfa_index, const DFATable &dfa_table) {
+    const Action* resolveDFA(IT &pos, size_t dfa_index, const DFATable &dfa_table) {
         const Action* initial_action = nullptr;
         printf("Resolving conflict in DFA table\n");
         for (size_t offset = 0;; offset++) {

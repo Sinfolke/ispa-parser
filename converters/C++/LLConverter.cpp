@@ -46,6 +46,7 @@ void LLConverter::writeRules(std::ostringstream &out) {
             convertMember(member, out);
         }
     }
+    indentLevel = 1;
 }
 void LLConverter::outputHeader(std::ostringstream &out, const std::string &filename) {
     cpp_file = false;
@@ -260,23 +261,23 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
 void LLConverter::addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(use["name"].data) << ".h\"\n";
 }
-void LLConverter::addTokensToString(std::vector<std::string> tokens, std::ostringstream &out) {
+void LLConverter::addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
     out << "std::string " << namespace_name << "::TokensToString(Tokens token) {\n";
     out << "\tswitch (token) {\n";
     for (auto token : tokens) {
-        out << "\t\tcase Tokens::" << token << ":" << " return \"" << token << "\";\n";
+        out << "\t\tcase Tokens::" << corelib::text::join(token, "_") << ":" << " return \"" << corelib::text::join(token, "_") << "\";\n";
     }
     out << "\t}\n";
     out << "\treturn \"NONE\";\n";
     out << "}\n";
 }
-void LLConverter::addRulesToString(std::vector<std::string> rules, std::ostringstream &out) {
+void LLConverter::addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) {
     // Implement method call conversion with proper indentation
     out << "std::string " << namespace_name << "::RulesToString(Rules rule) {\n";
     out << "\tswitch (rule) {\n";
     for (auto rule : rules) {
-        out << "\t\tcase Rules::" << rule << ":" << " return \"" << rule << "\";\n";
+        out << "\t\tcase Rules::" << corelib::text::join(rule, "_") << ":" << " return \"" << corelib::text::join(rule, "_") << "\";\n";
     }
     out << "\t}\n";
     out << "\treturn \"NONE\";\n";

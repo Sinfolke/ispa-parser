@@ -7,8 +7,8 @@ class LLConverter_base {
         // data
         use_prop_t use;
         std::vector<LLIR::member> data;
-        std::vector<std::string> tokens;
-        std::vector<std::string> rules;
+        std::vector<std::vector<std::string>> tokens;
+        std::vector<std::vector<std::string>> rules;
         data_block_t data_block_tokens;
         data_block_t data_block_rules;        
         LLIR lexer_code;

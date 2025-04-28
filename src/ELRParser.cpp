@@ -15,106 +15,133 @@ std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
         work.pop();
         auto it = nfa_states[current].transitions.find({}); // Empty vector = ε-transition
         if (it != nfa_states[current].transitions.end()) {
-            for (size_t target : it->second) {
-                if (!closure.count(target)) {
-                    closure.insert(target);
-                    work.push(target);
-                }
+            if (!closure.count(it->second)) {
+                closure.insert(it->second);
+                work.push(it->second);
             }
         }
     }
     return closure;
 }
+ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::string> &fullname, std::unordered_set<std::vector<std::string>> &visited) {
+    if (visited.count(fullname))
+        return {};
+    visited.insert(fullname);
+    Lookahead_set lookahead_set;
+    for (const auto &place : use_places[fullname]) {
+        const auto &options = initial_item_set[place.name];
+        for (const auto &option : options) {
+            // get next symbol
+            for (auto it = option.begin(); it != option.end(); it++) {
+                const auto &rule = *it;
+                if (rule.fullname == fullname) {
+                    // found this rule, get all next possible symbols
+                    lookahead_set.emplace_back();
+                    for (auto it2 = it + 1; it2 != option.end(); it2++) {
+                        const auto &next_rule = *it2;
+                        if (corelib::text::isUpper(next_rule.name)) {
+                            lookahead_set.back().token_sequence.push_back(next_rule.fullname);
+                        } else {
+                            lookahead_set.back().nested.push_back(getLookeaheadSet(next_rule.fullname, visited));
+                            lookahead_set.back().token_sequence.push_back(&lookahead_set.back().nested.back());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return lookahead_set;
+}
+void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t nfa_initial_index, const Action& action) {
+    for (const auto &option : lookahead_set) {
+        size_t current = nfa_initial_index;
+        for (const auto &token : option.token_sequence) {
+            if (std::holds_alternative<std::vector<std::string>>(token)) {
+                // token, add
+                auto name = std::get<std::vector<std::string>>(token);
+                auto &current_nfa_state = nfa_states[current];
+                if (current_nfa_state.transitions.count(name)) {
+                    // already exists; jump to it's index to add one more alternative
+                    current = current_nfa_state.transitions[name];
+                } else {
+                    current = nfa_states.size();
+                    current_nfa_state.transitions[name] = current;
+                    nfa_states.emplace_back();
+                }
+            } else {
+                auto lookahead_set = std::get<Lookahead_set*>(token);
+                processLookaheadSet(*lookahead_set, current, action);
+            }
+        }
+        nfa_states[current].reduce_action = action;
+    }
+}
 void ELRParser::build() {
     transform();
     prepare();
-    buildTable(false);
+    buildTable();
     // build nfa
-    for (auto &[items, place, conflicts, state] : conflicts) {
-        if (items.size() == 2) {
-            auto item = items[0];
-            auto next = items[1];
-            if (item.rhs == next.rhs && item.dot_pos == next.dot_pos) {
-                // resolve conflict by picking shift over reduce. If reduce/reduce conflict report it
-                if (conflicts[0].type == Action_type::REDUCE && conflicts[1].type == Action_type::REDUCE) {
-                    cpuf::printf("Insoluble REDUCE/REDUCE conflict in NFA for rule %$\n", corelib::text::join(item.lhs.fullname, "_"));
-                } else if (conflicts[0].type == Action_type::SHIFT && conflicts[1].type == Action_type::REDUCE) {
-                    *place = conflicts[0];
-                } else {
-                    *place = conflicts[1];
-                }
-                continue;
-            }
-        }
-        bool to_continue = false;
-        for (auto it = conflicts.begin(); it != conflicts.end(); it++) {
-            auto conflict = *it;
-            for (auto it2 = conflicts.begin(); it2 != conflicts.end(); it2++) {
-                const auto conflict2 = *it2;
-                if (it == it2)
-                    continue;
-                if (conflict.type == Action_type::REDUCE && conflict2.type == Action_type::REDUCE) {
-                    cpuf::printf("Insoluble REDUCE/REDUCE conflict in NFA\n");
-                    to_continue = true;
-                }
-            }
-        }
-        if (to_continue)
-            continue;
-        std::sort(conflicts.begin(), conflicts.end(), [](const Action &a, const Action &b) {
-            if (a.type == Action_type::REDUCE && b.type != Action_type::REDUCE) {
-                return true;  // REDUCE comes before anything else
-            }
-            if (a.type != Action_type::REDUCE && b.type == Action_type::REDUCE) {
-                return false; // SHIFT comes after REDUCE
-            }
-            return false;
-        });
-        std::sort(items.begin(), items.end(), [](const LR1Core &first, const LR1Core &second) {
-            return first.dot_pos > second.dot_pos;
-        });
+    for (auto &conflict : conflicts) {
+        auto &[items, place, conflicts, state] = conflict;
+        if (items.size() != conflicts.size())
+            throw Error("Items size differce with conflicts size");
+        size_t nfa_state = nfa_states.size();
+        bool no_process_next = false;
         nfa_states.emplace_back(); // Start state
-        nfa_states[nfa_states.size() - 1].is_starting_state = true; // first item is starting state
-        nfa_states[nfa_states.size() - 1].place = place;
-        for (size_t i = 0; i < items.size(); ++i) {
-            size_t start_state = nfa_states.size() - 1;
+        nfa_states[nfa_state].is_starting_state = true; // first item is starting state
+        nfa_states[nfa_state].place = place;
+        for (size_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
-            if (i + 1 < items.size()) {
-                const auto &next = items[i + 1];
-                if (item.rhs == next.rhs && item.dot_pos == next.dot_pos) {
-                    cpuf::printf("Insoluble high ambiguity in NFA for rule %$ and %$. Rhs: ", corelib::text::join(item.lhs.fullname, "_"), corelib::text::join(next.lhs.fullname, "_"));
-                    for (auto el : item.rhs) {
-                        cpuf::printf("%$ ", corelib::text::join(el.fullname, "_"));
-                    }
-                    cpuf::printf(", ");
-                    for (auto el : next.rhs) {
-                        cpuf::printf("%$ ", corelib::text::join(el.fullname, "_"));
-                    }
-                    cpuf::printf("\n");
+            const auto &conflict = conflicts[i];
+            // register reduce action on place and shift action later on shift/reduce conflict
+            if (items.size() == 2) {
+                if (conflicts[0].type == Action_type::SHIFT && conflicts[1].type == Action_type::REDUCE) {
+                    nfa_states[nfa_state].reduce_action = conflicts[1];
+                    no_process_next = true;
+                } else if (conflicts[0].type == Action_type::REDUCE && conflicts[1].type == Action_type::SHIFT) {
+                    std::swap(conflicts[0], conflicts[1]);
+                    std::swap(items[0], items[1]);
+                    i--;
+                    continue;
                 }
             }
-            auto current = start_state;
-            nfa_states[current].reduce_action = conflicts[i]; // correct one-to-one mapping
-            for (size_t j = item.dot_pos - 2; j < item.rhs.size(); ++j) {
-                auto sym = item.rhs[j];
-                size_t next = nfa_states.size();
-                nfa_states.emplace_back();
-                if (corelib::text::isUpper(sym.name)) {
-                    // terminal, just push
-                    nfa_states[current].transitions[sym.fullname].push_back(next);
-                } else {
-                    // non terminal, unroll using first set
-                    auto f = first[sym.fullname];
-                    for (const auto &token : f) {
-                        nfa_states[current].transitions[token].push_back(next);
+            auto current = nfa_state;
+            if (conflict.type == Action_type::SHIFT) {
+                // handle shift action as defaultly in NFA
+                for (size_t j = item.dot_pos; j < item.rhs.size(); ++j) {
+                    auto sym = item.rhs[j];
+                    size_t next = nfa_states.size();
+                    nfa_states.emplace_back();
+                    if (corelib::text::isUpper(sym.name)) {
+                        // terminal, just push
+                        nfa_states[current].transitions[sym.fullname] = next;
+                    } else {
+                        // non terminal, unroll using first set
+                        auto f = first[sym.fullname];
+                        for (const auto &token : f) {
+                            if (token == std::vector<std::string>{"ε"}) {
+                                nfa_states[current].epsilon_transition = next;
+                                continue;
+                            }
+                            nfa_states[current].transitions[token] = next;
+                        }
                     }
+                    current = next;
                 }
-                current = next;
+                nfa_states[current].reduce_action = conflicts[i];
+            } else {
+                // reduce
+                // perform automatic conflict resolution based on following cotext of this rule
+                // 1. Get all possible next lookahead entries for this rule
+                cpuf::printf("REDUCE/REDUCE resolution for %$ on %$\n", state, nfa_state);
+                std::unordered_set<std::vector<std::string>> visited;
+                Lookahead_set lookahead_set = getLookeaheadSet(item.lhs.fullname, visited);
+                processLookaheadSet(lookahead_set, nfa_state, conflict);
 
             }
+            if (no_process_next)
+                break;
         }
-        
-        
     }
     // build dfa based on nfa
     if (nfa_states.empty()) // return if nfa is empty
@@ -143,9 +170,9 @@ void ELRParser::build() {
 
         // Populate symbol_to_nfa_targets for all transitions in the current NFA set
         for (size_t state : current_set) {
-            for (const auto& [symbol, targets] : nfa_states[state].transitions) {
+            for (const auto& [symbol, target] : nfa_states[state].transitions) {
                 if (!symbol.empty()) { // Exclude ε-transitions
-                    symbol_to_nfa_targets[symbol].insert(targets.begin(), targets.end());
+                    symbol_to_nfa_targets[symbol].insert(target);
                 }
             }
         }
@@ -210,12 +237,12 @@ void ELRParser::printNfa(const std::string filename) {
     for (size_t i = 0; i < nfa_states.size(); ++i) {
         out << "State " << i << ":\n";
         // Print transitions
-        for (const auto &[sym, targets] : nfa_states[i].transitions) {
-            for (size_t target : targets) {
-                out << "  --" << sym << "--> " << target << "\n";
-            }
+        for (const auto &[sym, target] : nfa_states[i].transitions) {
+            out << "\t--" << sym << "--> " << target << "\n";
         }
-
+        if (nfa_states[i].epsilon_transition != 0) {
+            out << "\tepsilon -> " << nfa_states[i].epsilon_transition << "\n";
+        }
         // Print reduce action if present
         if (nfa_states[i].reduce_action.has_value()) {
             const auto &action = nfa_states[i].reduce_action.value();

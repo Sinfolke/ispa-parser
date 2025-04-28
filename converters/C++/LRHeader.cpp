@@ -12,13 +12,13 @@ void LRHeader::createActionStruct(std::ostringstream &out) const {
     };
 )";
 }
-void LRHeader::createTableTypes(std::ostringstream &out, size_t DFA_size) const {
+void LRHeader::createTableTypes(std::ostringstream &out, long long DFA_size) const {
     out
         << "\tusing ActionTable = std::array<std::array<std::optional<::" << namespace_name << "::Action>, "<< tokens.size() << ">, " << max_states + 1 << ">;\n"
         << "\tusing GotoTable = std::array<std::array<std::optional<size_t>, " << rules.size() << ">, " << max_states + 1 << ">;\n"
         << "\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
     ;
-    if (DFA_size) {
+    if (DFA_size != -1) {
         out << "\tusing DFATable = std::array<std::pair<::" << namespace_name << "::Action, std::array<size_t, " << tokens.size() << ">>, " << DFA_size << ">;\n";
     }
 }

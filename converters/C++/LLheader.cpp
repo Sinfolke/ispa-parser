@@ -63,29 +63,29 @@ void LLHeader::createTypes(std::ostringstream &out, std::string namespace_name) 
     out << "\tusing obj_t = " << ns << "_OBJ_TYPE<Key, Value>;\n";
 }
 
-void LLHeader::writeEnum(std::ostringstream& out, const std::vector<std::string>& enm) const {
+void LLHeader::writeEnum(std::ostringstream& out, const std::vector<std::vector<std::string>>& enm) const {
     out << "\t\t";
     for (auto it = enm.begin(); it != enm.end() - 1; it++) {
-        out << *it << ", ";
+        out << corelib::text::join(*it, "_") << ", ";
     }
-    out << *(enm.end() - 1);
+    out << corelib::text::join(*(enm.end() - 1), "_");
 }
 
-void LLHeader::createTokensEnum(std::ostringstream &out, const std::vector<std::string>& tokens) const {
+void LLHeader::createTokensEnum(std::ostringstream &out, const std::vector<std::vector<std::string>>& tokens) const {
     out << "\tenum class Tokens {\n";
     writeEnum(out, tokens);
     out << "\n\t};\n";
 }
 
-void LLHeader::createRulesEnum(std::ostringstream &out, const std::vector<std::string>& rules) const {
+void LLHeader::createRulesEnum(std::ostringstream &out, const std::vector<std::vector<std::string>>& rules) const {
     out << "\tenum class Rules {\n";
     writeEnum(out, rules);
     out << "\n\t};\n";
 }
 void LLHeader::getTypesFromStdlib(std::ostringstream& out) const {
-    out << "\tusing Rule = ISPA_STD::node<Rules>;\n";
+    out << "\tusing Rule = ISPA_STD::Node<Rules>;\n";
     out << "\tusing Rule_res = ISPA_STD::match_result<Rules>;\n";
-    out << "\tusing Token = ISPA_STD::node<Tokens>;\n";
+    out << "\tusing Token = ISPA_STD::Node<Tokens>;\n";
     out << "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
     out << "\tusing TokenFlow = ISPA_STD::TokenFlow<Tokens>;\n";
     out << "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
@@ -136,7 +136,7 @@ void LLHeader::createTypesNamespace(std::ostringstream &out, const data_block_t 
     write_data_block(out, data_block_rules); 
     out << "\t}\n";
 }
-void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<std::string> &tokens) const {
+void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<std::vector<std::string>> &tokens) const {
     out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tToken makeToken(const char*& pos);\n";
@@ -144,7 +144,7 @@ void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<st
     addConstructorsLexer(out);
     out << "\t\tprivate:\n";
     for (auto name : tokens) {
-        out << "\t\t\tToken_res " << name << "(const char*);\n";
+        out << "\t\t\tToken_res " << corelib::text::join(name, "_") << "(const char*);\n";
     }
     out << "\t};\n";
 }

@@ -27,54 +27,6 @@ auto LRParser::getMaxStatesCount() const -> size_t {
     }
     return max_state;
 }
-auto LRParser::getTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const -> void {
-    for (auto el : tree) {
-        if (el.name != Parser::Rules::Rule)
-            continue;
-
-        auto data = std::any_cast<obj_t>(el.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-        fullname.push_back(name_str);
-        if (corelib::text::isUpper(name_str)) {
-            names.push_back(fullname);
-        }
-        getTerminalNames(nested_rules, names, fullname);
-        fullname.pop_back();
-    }
-}
-auto LRParser::getTerminalNames() const -> std::vector<std::vector<std::string>> {
-    std::vector<std::vector<std::string>> names;
-    std::vector<std::string> fullname;
-    getTerminalNames(tree->getRawTree(), names, fullname);
-    return names;
-}
-auto LRParser::getNonTerminalNames(Parser::Tree &tree, std::vector<std::vector<std::string>> &names, std::vector<std::string> &fullname) const -> void {
-    for (auto el : tree) {
-        if (el.name != Parser::Rules::Rule)
-            continue;
-
-        auto data = std::any_cast<obj_t>(el.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-        fullname.push_back(name_str);
-        if (corelib::text::isLower(name_str)) {
-            names.push_back(fullname);
-        }
-        getNonTerminalNames(nested_rules, names, fullname);
-        fullname.pop_back();
-    }
-}
-auto LRParser::getNonTerminalNames() const -> std::vector<std::vector<std::string>> {
-    std::vector<std::vector<std::string>> names;
-    std::vector<std::string> fullname;
-    getNonTerminalNames(tree->getRawTree(), names, fullname);
-    return names;
-}
 auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
     switch (type) {
         case Action_type::SHIFT:
@@ -310,8 +262,13 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         }
         // Quantifier handling
         if (quantifier_char != '\0') {
-            std::string quant_rule_name = "__q" + std::to_string(i);
+            std::string quant_rule_name;
             auto new_fullname = fullname;
+            if (fullname.size() == 1) {
+                quant_rule_name = fullname.back() + "__q" + std::to_string(i);
+            } else {
+                quant_rule_name = "__q" + std::to_string(i);
+            }
             new_fullname.back() = quant_rule_name;
             // Replace with reference to new quant rule
             rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
@@ -343,7 +300,6 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                         {"qualifier", Parser::Rule()}
                     })
                 });
-                new_fullname.back() = quant_rule_name;
                 std::vector<std::vector<Parser::Rule>> recurse_alternatives;
                 recurse_alternatives.push_back({Parser::Rule()});
                 recurse_alternatives.push_back({
@@ -430,11 +386,13 @@ void LRParser::transform(Parser::Tree &tree, std::vector<std::string> &fullname,
         auto rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "rule"));
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>&>(corelib::map::get(data, "nestedRules"));
         // do not include tokens
-        if (corelib::text::isUpper(name_str))
-            continue;
         fullname.push_back(name_str);
-        transform_helper(tree, rules, fullname, replacements);
         transform(nested_rules, fullname, replacements);
+        if (corelib::text::isUpper(name_str)) {
+            fullname.pop_back();
+            continue;
+        }
+        transform_helper(tree, rules, fullname, replacements);
         corelib::map::set(data, "rule", std::any(rules));
         corelib::map::set(data, "nestedRules", std::any(nested_rules));
         tree[i].data = data;
@@ -650,8 +608,14 @@ void LRParser::constructFirstSet() {
 void LRParser::constructFollowSet() {
     follow[{"__start"}] = {{"$"}};
     bool hasChanges;
+    bool prevDependedChanged;
+    std::vector<std::vector<std::string>> prev_depend;
+    std::vector<std::vector<std::string>> changed;
     do {
         hasChanges = false;
+        prevDependedChanged = false;
+        prev_depend.clear();
+        changed.clear();
         for (auto &member : initial_item_set) {
             auto name = member.first;
             auto options = member.second;
@@ -676,15 +640,21 @@ void LRParser::constructFollowSet() {
                             if (follow[name].insert(e).second)
                                 hasChanges = true;
                         }
+                        prev_depend.push_back(name);
                     } else if (is_left_recursive && corelib::text::isLower(current.name)) {
                         auto prev_size = follow[current.fullname].size();
                         follow[current.fullname].insert(follow[name].begin(), follow[name].end());
                         if (prev_size != follow[current.fullname].size())
                             hasChanges = true;
+                        prev_depend.push_back(current.fullname);
                     }
                     if (it + 1 == rules.end()) {
-                        if (follow[current.fullname].insert({"$"}).second) 
-                            hasChanges = true;
+                        // Add FOLLOW of LHS (the left-hand-side nonterminal)
+                        auto &f_lhs = follow[name];
+                        for (auto &sym : f_lhs) {
+                            if (follow[current.fullname].insert(sym).second)
+                                hasChanges = true;
+                        }
                     } else {
                         auto next = *(it + 1);
                         if (corelib::text::isUpper(next.name)) {
@@ -711,13 +681,26 @@ void LRParser::constructFollowSet() {
                                         hasChanges = true;
                                 }
                             }
+                            prev_depend.push_back(next.fullname);
                         }
                     }
                 }
 
             }
+            if (hasChanges) {
+                changed.push_back(name);
+            }
         }
-    } while(hasChanges);
+        if (!hasChanges) {
+            // slight optimization: perform check only if this could be last iteration
+            for (auto change_symbol : changed) {
+                if (std::find(prev_depend.begin(), prev_depend.end(), change_symbol) != prev_depend.end()) {
+                    prevDependedChanged = true;
+                    break;
+                }
+            }
+        }
+    } while(hasChanges || prevDependedChanged);
 }
 void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item) {
     size_t next_pos = new_item.dot_pos + 1;
@@ -931,7 +914,73 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-void LRParser::buildTable(bool resolve_conflicts) {
+bool isInUsePlace(const Tree::use_place_table &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
+    checked.insert(first);
+    auto find_it = use_places.find(first);
+    if (find_it == use_places.end())
+        return false;
+    const auto &[name, used_nonterminals] = *find_it;
+    for (auto [place, nonterminal] : used_nonterminals) {
+        if (nonterminal == second) {
+            return true;
+        } else if (checked.count(nonterminal) == 0 && isInUsePlace(use_places, nonterminal, second, checked)) {
+            return true;
+        }
+    }
+    return false;
+}
+void LRParser::resolveCertainConflict(const Conflict &conflict) {
+    auto &[item, place, conflicts, state] = conflict;
+    const Action* shift_place = nullptr;
+    bool reduce_conflict = false;
+    for (const auto &conflict : conflicts) {
+        if (conflict.type == Action_type::SHIFT)
+            shift_place = &conflict;
+        else if (conflict.type == Action_type::REDUCE) 
+            reduce_conflict = true;
+    }
+    if (shift_place != nullptr && reduce_conflict) {
+        // SHIFT/REDUCE conflict, prefer shift
+        *place = *shift_place;
+        return;
+    }
+    // resolve reduce/reduce conflict statically
+    // build small nested table
+    if (conflict.conflicts.size() > 2)
+        throw Error("Parser is unable to resolve 3 or more reduce/reduce conflicts\n");
+    const auto &first = item[0];
+    const auto &second = item[1];
+    if (!first.rhs.empty() && second.rhs.empty()) {
+        *place = conflicts[0];
+    } else if (first.rhs.empty() && !second.rhs.empty()) {
+        *place = conflicts[1];
+    } else if (first.rhs.empty() && second.rhs.empty()) {
+        throw Error("REDUCE/REDUCE conflict for two epsilon rules");
+    }
+    std::unordered_set<std::vector<std::string>> checked;
+    // check whether second rule is nested in first
+    if (isInUsePlace(use_places, first.lhs.fullname, second.lhs.fullname, checked)) {
+        *place = conflicts[0];
+    } else {
+        checked.clear();
+        if (isInUsePlace(use_places, second.lhs.fullname, first.lhs.fullname, checked)) {
+            *place = conflicts[1];
+        } else {
+            // both rules are not relative, use deepth
+            if (priority[first.lhs.fullname] > priority[second.lhs.fullname]) {
+                *place = conflicts[0];
+            } else {
+                *place = conflicts[1];
+            }
+        }
+    }
+}
+void LRParser::resolveConflictsStatically() {
+    for (const auto &conflict : conflicts) {
+        resolveCertainConflict(conflict);
+    }
+}
+void LRParser::buildTable() {
     size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         const LR1Core* prev_rule = nullptr;
@@ -974,31 +1023,9 @@ void LRParser::buildTable(bool resolve_conflicts) {
                         action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                     } else {
                         // Shift/Reduce conflict warning
-                        if (resolve_conflicts) {
-                            const auto& existing = action_table[I][lookahead];
-                            if (existing.type == Action_type::SHIFT) {
-                                // Conflict resolution
-                                //cpuf::printf("Conflict: SHIFT/REDUCE on state %$ for token %$\n", I, lookahead);
-                                // do nothing because prefer shift over reduce
-                            } else if (existing.type == Action_type::REDUCE) {
-                                // Multiple reductions possible
-                                auto existing_rule_reduce_name = rules[existing.state].first;
-                                if (rule.lhs.fullname != existing_rule_reduce_name) {
-                                    // rules not same so do resolve conflict
-                                    auto current_priority = priority[rule.lhs.fullname];
-                                    auto existing_priority = priority[existing_rule_reduce_name];
-                                    if (current_priority > existing_priority) {
-                                        action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
-                                    }
-                                }
-                                // cpuf::printf("[%$ -> %$]Conflict: REDUCE/REDUCE on state %$ for token %$\n", 
-                                //     corelib::text::join(rule.lhs.fullname, "_"), 
-                                //     corelib::text::join(rules[find_rules_index(rule)].first, "_"), 
-                                //     I, 
-                                //     lookahead
-                                // );
-                            }
-                        } else {
+                        const auto& existing = action_table[I][lookahead];
+                        auto rules_index = find_rules_index(rule);
+                        if (existing.type != Action_type::REDUCE || existing.state != rules_index) {
                             // Always include the current action and the one already in the action table
                             Conflict new_conflict;
                             if (prev_rule) {
@@ -1012,7 +1039,7 @@ void LRParser::buildTable(bool resolve_conflicts) {
                             new_conflict.conflicts.push_back(existing);
 
                             // Add the current action
-                            new_conflict.conflicts.push_back(Action{Action_type::REDUCE, find_rules_index(rule)});
+                            new_conflict.conflicts.push_back(Action{Action_type::REDUCE, rules_index});
                             new_conflict.state = I;
 
                             // Check if this conflict already exists
@@ -1029,6 +1056,7 @@ void LRParser::buildTable(bool resolve_conflicts) {
                                 conflicts.push_back(new_conflict);
                             }
                         }
+                        
                     }
                 }
                 // cpuf::printf("\n");
@@ -1041,21 +1069,8 @@ void LRParser::buildTable(bool resolve_conflicts) {
                         action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
                     } else {
                         const auto& existing = action_table[I][next.fullname];
-                        if (existing.type == Action_type::SHIFT && existing.state == next_state) {
+                        if (existing.type != Action_type::SHIFT || existing.state != next_state) {
                             // Avoid duplicate SHIFT actions
-                            continue;
-                        }
-
-                        if (resolve_conflicts) {
-                            if (existing.type == Action_type::REDUCE || existing.state != next_state) {
-                                //cpuf::printf("SHIFT/REDUCE Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
-                                // prefer shift over reduce
-                                action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
-                            } else if (existing.type == Action_type::SHIFT && existing.state != next_state) {
-                                cpuf::printf("SHIFT/SHIFT Conflict: on state %$ for token %$\n", I, corelib::text::join(next.fullname, "_"));
-                            }
-                        } else {
-                            // Always include the current action and the one already in the action table
                             Conflict new_conflict;
                             if (prev_rule) {
                                 new_conflict.item.push_back(*prev_rule);
@@ -1084,6 +1099,8 @@ void LRParser::buildTable(bool resolve_conflicts) {
                                 conflicts.push_back(new_conflict);
                             }
                         }
+
+                        
                     }
                     prev_action = &action_table[I][next.fullname];
                 } else {// Non-terminal → GOTO
@@ -1095,13 +1112,13 @@ void LRParser::buildTable(bool resolve_conflicts) {
         I++;
     }
 
-    for (auto &conflict : conflicts) {
-        cpuf::printf("Conflict in state %$:", conflict.state);
-        for (auto conf : conflict.conflicts) {
-            cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
-        }
-        cpuf::printf("\n");
-    }
+    // for (auto &conflict : conflicts) {
+    //     cpuf::printf("Conflict in state %$:", conflict.state);
+    //     for (auto conf : conflict.conflicts) {
+    //         cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
+    //     }
+    //     cpuf::printf("\n");
+    // }
 }
 
 void LRParser::prepare() {
@@ -1116,6 +1133,7 @@ void LRParser::prepare() {
 void LRParser::build() {
     prepare();
     buildTable();
+    resolveConflictsStatically();
 }
 
 
@@ -1180,10 +1198,9 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
         oss << "I" << count++ << ":\n";
         for (const auto &item : item_set) {
             // Print the LHS
-            for (const auto &lhs_part : item.lhs.fullname) {
-                oss << '\t' << lhs_part << " ";
-            }
-            oss << "→ ";
+            oss << '\t'
+                << corelib::text::join(item.lhs.fullname, "_")
+                << " → ";
 
             // Print RHS with dot position
             for (size_t i = 0; i <= item.rhs.size(); ++i) {

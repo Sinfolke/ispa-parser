@@ -151,15 +151,6 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    std::vector<std::string> tokens, rules;
-    std::for_each(this->tokens.begin(), this->tokens.end(), [&tokens](const auto &vec){
-        if (std::find(tokens.begin(), tokens.end(), corelib::text::join(vec, "_")) == tokens.end())
-            tokens.push_back(corelib::text::join(vec, "_"));
-    });
-    std::for_each(this->rules.begin(), this->rules.end(), [&rules](const auto &vec){
-        if (std::find(rules.begin(), rules.end(), corelib::text::join(vec, "_")) == rules.end())
-            rules.push_back(corelib::text::join(vec, "_"));
-    });
     LLIR tokens_ir(tree->getRawTree(), true);
     tokens_ir.makeIR();
     tokens_ir.optimizeIR();
@@ -189,15 +180,6 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     createDFATable(out);
 }
 void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) const {
-    std::vector<std::string> tokens, rules;
-    std::for_each(this->tokens.begin(), this->tokens.end(), [&tokens](const auto &vec){
-        if (std::find(tokens.begin(), tokens.end(), corelib::text::join(vec, "_")) == tokens.end())
-            tokens.push_back(corelib::text::join(vec, "_"));
-    });
-    std::for_each(this->rules.begin(), this->rules.end(), [&rules](const auto &vec){
-        if (std::find(rules.begin(), rules.end(), corelib::text::join(vec, "_")) == rules.end())
-            rules.push_back(corelib::text::join(vec, "_"));
-    });
     LLHeader::createLibrary(out, filename);
     LLHeader::createIncludes(out);
     LRHeader::addIncludes_h(out);
@@ -212,7 +194,7 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
     if (data->isELR()) {
         LRHeader::createTableTypes(out, reinterpret_cast<const ELRParser*>(data)->getDFA().size());
     } else {
-        LRHeader::createTableTypes(out, 0);
+        LRHeader::createTableTypes(out, -1);
     }
     LLHeader::createTypesNamespace(out, data_block_tokens, data_block_rules);
     // create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
@@ -225,10 +207,11 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
 void LRConverter::output(std::string filename) {
     namespace_name = filename;
     std::ostringstream cpp_out, h_out;
-    tokens = data->getTerminalNames();
-    rules = data->getNonTerminalNames();
+    auto  [tokens, rules] = tree->getTokenAndRuleNames();
     tokens.insert(tokens.begin(), {"NONE"});
     rules.insert(rules.begin(), {"NONE"});
+    this->tokens = tokens;
+    this->rules = rules;
     outputIR(cpp_out, filename);
     outputHeader(h_out, filename);
     std::ofstream cpp(filename + ".cpp");
