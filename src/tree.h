@@ -28,15 +28,14 @@ class Tree {
         void normalizeRule(Parser::Rule &member, std::vector<std::string> &fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
         void normalizeTreeHelper(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
         // replace dublications functions
-        void getReplacedTree(std::vector<Parser::Rule>& rules, std::string name);
-        void replaceDublicationsHelper(Parser::Tree &tree, bool global = true);
+        void getReplacedTree(Parser::Tree &tree, std::vector<Parser::Rule> &rules, const std::vector<std::string> &name, std::vector<std::string> fullname);
+        void replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string> fullname, bool global);
         void removeEmptyRule(Parser::Tree &tree);
         // inline tokens functions
-        void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::vector<std::vector<std::string>>& table_key, std::vector<Parser::Rule>& table_value, std::vector<std::string> nested);
-        Parser::Rule find_key_in_table_by_name(const std::vector<std::vector<std::string>>& table_key,  const std::vector<Parser::Rule>& table_value, const std::vector<std::string>& name);
-        void inlineTokensInTable(std::vector<std::vector<std::string>> &table_key, std::vector<Parser::Rule> &table_value);
-        void inline_Rule_rule(std::vector<Parser::Rule> &rules, const std::vector<std::vector<std::string>> &table_key, const std::vector<Parser::Rule> &table_value, std::vector<std::string> nested);
-        void inlineTokensHelper(Parser::Tree &tree, const std::vector<std::vector<std::string>> &table_key, const std::vector<Parser::Rule> &table_value, std::vector<std::string> nested);
+        void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
+        void inlineTokensInTable( std::unordered_map<std::vector<std::string>, Parser::Rule> &map);
+        void inline_Rule_rule(std::vector<Parser::Rule> &rules, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
+        void inlineTokensHelper(Parser::Tree &tree, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
         void inlineTokensHelper(Parser::Tree &tree);
         // literals to tokens functions
         std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier);
@@ -56,6 +55,7 @@ class Tree {
         void accamulateUsePlaces(std::vector<Parser::Rule>& rules, use_place_table &use_places, std::vector<std::string> &fullname);
         void getTokensForLexer(Parser::Tree &tree, use_place_table &use_places, std::vector<Parser::Rule> &rule_op, std::vector<std::string> &fullname);
         void getUsePlacesTableHelper(Parser::Tree &tree, use_place_table &use_places, std::vector<std::string> &fullname);
+        auto getFirstSet(const Parser::Rule &rule) -> std::vector<Parser::Rule>;
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
         void resolveConflicts(Parser::Tree &tree);
@@ -64,7 +64,7 @@ class Tree {
             sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
             literalsToToken();                // get tokens from literals (e.g from string, hex or binary). This ensure proper tokenization process
             addSpaceToken();
-            //replaceDublications();            // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
+            replaceDublications();            // replace dublicated tokens (e.g when token content is found somewhere else, replace it to token)
             inlineTokens();                   // inline tokens to make sure that every token is used only once
         }
     public:

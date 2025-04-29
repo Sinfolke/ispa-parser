@@ -22,6 +22,7 @@ int main() {
         std::cout << Parser::RulesToString(el.name()) << std::endl;\
     }
     auto parser_errors = parser.getErrors();
+    printf("errors size(): %zu, tree size: %zu\n", parser_errors.size(), tree.size());
     for (auto error : parser_errors) {
         printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }

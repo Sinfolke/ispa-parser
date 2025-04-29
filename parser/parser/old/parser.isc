@@ -9,7 +9,7 @@ DIVIDE:   '/';
 MULTIPLE: '*';
 MODULO:   '%';
 LINEAR_COMMENT:
-    '//' [^\n]
+    '//' [^\n]*
 ;
 ID: 
     ([a-zA-Z_] [a-zA-Z0-9_]*)

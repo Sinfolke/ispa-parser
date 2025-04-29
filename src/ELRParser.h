@@ -19,9 +19,10 @@ class ELRParser : public LRParser {
             std::unordered_map<std::vector<std::string>, size_t> transitions;
             std::optional<Action> action; // optional
             std::vector<Action*> places;
+            size_t epsilon_transition = 0;
         };
         struct LookaheadOption {
-            std::vector<std::variant<std::vector<std::string>, std::vector<LookaheadOption>*>> token_sequence; // one possible sequence
+            std::vector<std::variant<std::vector<std::string>, size_t>> token_sequence; // one possible sequence
             std::vector<std::vector<LookaheadOption>> nested;      // options after that
         };
         using Lookahead_set = std::vector<LookaheadOption>;

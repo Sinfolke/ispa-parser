@@ -26,7 +26,13 @@
 
     Add remove of unused variables (required IR optimization)
 
-    Add proper handle of accessor in rule_op
+    Add insertion of NOT when one rule shadows another
+
+    Add automatic generation of recovery by panic mode strategy
+
+    ? Add automatic generation of recovery by error production
+
+    ? Add automatic generation of error by phase level recovery 
 
 ### Parser syntax
   

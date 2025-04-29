@@ -43,7 +43,7 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::stri
                             lookahead_set.back().token_sequence.push_back(next_rule.fullname);
                         } else {
                             lookahead_set.back().nested.push_back(getLookeaheadSet(next_rule.fullname, visited));
-                            lookahead_set.back().token_sequence.push_back(&lookahead_set.back().nested.back());
+                            lookahead_set.back().token_sequence.push_back(lookahead_set.back().nested.size() - 1);
                         }
                     }
                 }
@@ -68,9 +68,9 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
                     current_nfa_state.transitions[name] = current;
                     nfa_states.emplace_back();
                 }
-            } else {
-                auto lookahead_set = std::get<Lookahead_set*>(token);
-                processLookaheadSet(*lookahead_set, current, action);
+            } else if (std::holds_alternative<size_t>(token)) {
+                auto nested_id = std::get<size_t>(token);
+                processLookaheadSet(option.nested[nested_id], current, action);
             }
         }
         nfa_states[current].reduce_action = action;
@@ -214,6 +214,10 @@ void ELRParser::build() {
             }
             // also for each state move nfa.place to dfa
             dfa_states[current_dfa_index].places.push_back(nfa_states[state].place);
+            if (dfa_states[current_dfa_index].epsilon_transition != 0 && nfa_states[state].epsilon_transition != 0) {
+                throw Error("Epsilon is already taken");
+            }
+            dfa_states[current_dfa_index].epsilon_transition = nfa_states[state].epsilon_transition;
         }
         // Assign the resolved reduce action to the DFA state
         dfa_states[current_dfa_index].action = reduce_action;
@@ -280,7 +284,9 @@ void ELRParser::printDfa(const std::string filename) {
             }
             out << " }--> " << target << "\n";
         }
-
+        if (state.epsilon_transition != 0) {
+            out << "epsilon -> " << state.epsilon_transition << '\n';
+        }
         if (state.action.has_value()) {
             out << " ["
                 << LRParser::ActionTypeToString(state.action.value().type) << " " << state.action.value().state

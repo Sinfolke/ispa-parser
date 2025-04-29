@@ -24,7 +24,7 @@ private:
     void createActionTable(std::ostringstream &out) const;
     void createGotoTable(std::ostringstream &out) const;
     void createRulesTable(std::ostringstream &out);
-    void createDFATable(std::ostringstream &out) const;
+    void createDFATable(std::ostringstream &out);
     void outputIR(std::ostringstream &out, std::string &filename);
     void outputHeader(std::ostringstream& out, std::string &filename) const;
 public:

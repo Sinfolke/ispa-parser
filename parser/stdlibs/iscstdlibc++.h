@@ -352,11 +352,11 @@ public:
             bool isEnd() {
                 return current.empty();
             }
-            void operator=(lazy_iterator iterator) {
-                current = iterator.current;
-                pos = iterator.pos;
-                counter = iterator.counter;
-            }
+            lazy_iterator& operator=(const lazy_iterator& other) {
+                owner = other.owner;
+                pos = other.pos;
+                return *this;
+            }  
             void operator+=(size_t count) {
                 counter += count;
                 while(count > 0 && !isEnd()) {
@@ -364,7 +364,7 @@ public:
                     count--;
                 }
             }
-            auto operator-(lazy_iterator iterator) {
+            auto operator-(const lazy_iterator &iterator) const {
                 return counter - iterator.counter;
             }
 
@@ -377,13 +377,21 @@ public:
                 this->operator+=(1);
                 return temp;
             }
-            Node<TOKEN_T>& operator*() {
+            size_t operator-(lazy_iterator iterator) {
+                return pos - iterator.pos;
+            }
+            lazy_iterator operator+(size_t count) const {
+                lazy_iterator temp = *this;
+                temp += count;
+                return temp;
+            }
+            const Node<TOKEN_T>& operator*() const {
                 return current;
             }
-            Node<TOKEN_T>* operator->() {
+            const Node<TOKEN_T>* operator->() const {
                 return &current;
             }
-            auto distance() {
+            auto distance() const {
                 return counter;
             }
     };
@@ -397,21 +405,16 @@ public:
         public:
             iterator(const Lexer_base<TOKEN_T> &owner) : owner(&owner), pos(owner->tokens.begin()) {}
             iterator(Lexer_base<TOKEN_T>* owner) : owner(owner), pos(owner->tokens.begin()) {}
-            bool isEnd() {
-                return pos->empty();
-            }
-            void operator=(iterator iterator) {
-                pos = iterator.pos;
-            }
+
+            iterator& operator=(const iterator& other) {
+                owner = other.owner;
+                pos = other.pos;
+                return *this;
+            }            
             void operator+=(size_t count) {
                 pos += count;
             }
-            auto operator-(iterator iterator) {
-                return pos - iterator.pos;
-            }
-            Node<TOKEN_T>& operator*() {
-                return *pos;
-            }    
+
             iterator& operator++() {
                 this->operator+=(1);
                 return *this;
@@ -421,11 +424,24 @@ public:
                 this->operator+=(1);
                 return temp;
             }
-            
-            Node<TOKEN_T>* operator->() {
+            size_t operator-(const iterator &iterator) const  {
+                return pos - iterator.pos;
+            }
+            iterator operator+(size_t count) const {
+                iterator temp = *this;
+                temp += count;
+                return temp;
+            }
+            bool isEnd() const {
+                return pos->empty();
+            }
+            Node<TOKEN_T>& operator*() const {
+                return *pos;
+            } 
+            Node<TOKEN_T>* operator->() const {
                 return &(*pos);
             }
-            auto distance() {
+            auto distance() const {
                 return pos - owner->tokens.begin();
             }
     };
@@ -597,13 +613,13 @@ public:
 template<class TOKEN_T, class RULE_T>
 class LLParser_base {
 protected:
-    template<class T>
-    void parseFromPos(T& pos) {
+    template<class IT>
+    void parseFromPos(IT& pos) {
         while(!pos.isEnd()) {
             auto res = getRule(pos);
             if (!res.status) {
-                // if (!error_controller.empty())
-                //     errors.push_back(error_controller.begin()->second);
+                if (!error_controller.empty())
+                    errors.push_back(error_controller.begin()->second);
                 for (auto el : error_controller) {
                     printf("Parser[error controller]: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
                 }
@@ -754,22 +770,30 @@ protected:
             }
         }
         printf("Accepted. distance: %zu\n", pos.distance());
+        stack.clear();
     }
 };
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable, class DFATable>
 class ELRParser_base : public LRParser_base<TOKEN_T, RULE_T, Action, ActionTable, GotoTable, RulesTable> {
 private:
     // cache tokens because of lazy iterator which makes tokens on dereference
-    std::queue<Node<TOKEN_T>> dfa_token_cache;
+    std::deque<Node<TOKEN_T>> dfa_token_cache;
 protected:
     template <class IT>
     void shift(IT& pos, size_t state) {
         if (dfa_token_cache.empty()) {
+            printf("Pushing directly\n");
             this->stack.push_back({pos->name(), state});
             pos++;
         } else {
+            printf("Pushing from DFA cache, next token: ");
+            printf("%s", TokensToString(pos->name()).c_str());
+            if (pos->data().has_value()) {
+                printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+            }
+            printf("\n");
             this->stack.push_back({dfa_token_cache.front().name(), state});
-            dfa_token_cache.pop();
+            dfa_token_cache.pop_back();
         }
     }
     template<class IT>
@@ -781,14 +805,22 @@ protected:
     const Action* resolveDFA(IT &pos, size_t dfa_index, const DFATable &dfa_table) {
         const Action* initial_action = nullptr;
         printf("Resolving conflict in DFA table\n");
+        size_t current_dfa_length = dfa_token_cache.size();
         for (size_t offset = 0;; offset++) {
-            dfa_token_cache.push(*pos++);
+            if (offset >= current_dfa_length)
+                dfa_token_cache.push_back(*pos++);
             const auto &[action, table] = dfa_table[dfa_index];
-            const auto &go_state = table[(size_t) dfa_token_cache.back().name()];
+            size_t i = 1;
+            while(table[i].first != dfa_token_cache[offset].name() && table[i].second != 0) i++;
+            const auto &go_state = table[i].second;
             if (initial_action == nullptr) {
                 initial_action = &action;
             }
             if (go_state == 0) {
+                if (table[0].second != 0) {
+                    dfa_index = table[0].second;
+                    continue;
+                }
                 if (action.type == Action::ERROR) {
                     printf("Returning initial action %d, state %zu\n", (int) initial_action->type, initial_action->state);
                     return initial_action;
@@ -826,11 +858,20 @@ protected:
         while(true) {
             auto &current_state = this->stack.back().second;
             const auto &action = getAction(pos, action_table);
-            printf("Token name: %s", TokensToString(pos->name()).c_str());
-            if (pos->data().has_value()) {
-                printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+            if (dfa_token_cache.empty()) {
+                printf("Token name: %s", TokensToString(pos->name()).c_str());
+                if (pos->data().has_value()) {
+                    printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+                }
+                printf(", state: %zu\n", current_state);
+            } else {
+                printf("Token name: %s", TokensToString(dfa_token_cache.front().name()).c_str());
+                if (pos->data().has_value()) {
+                    printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
+                }
+                printf(", state: %zu\n", current_state);
             }
-            printf(", state: %zu\n", current_state);
+
             if (action.has_value()) {
                 auto& act = action.value();
                 printf("action: %d, next state: %zu\n", (int) act.type, act.state);
@@ -842,6 +883,9 @@ protected:
             }
         }
         printf("Accepted. distance: %zu\n", pos.distance());
+        // clear
+        this->stack.clear();
+        dfa_token_cache.clear();
     }
 };
 } // namespace __ISC_STD

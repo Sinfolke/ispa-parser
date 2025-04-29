@@ -1022,7 +1022,6 @@ void LRParser::buildTable() {
                         // No existing shift, safe to reduce
                         action_table[I][lookahead] = Action{Action_type::REDUCE, find_rules_index(rule)};
                     } else {
-                        // Shift/Reduce conflict warning
                         const auto& existing = action_table[I][lookahead];
                         auto rules_index = find_rules_index(rule);
                         if (existing.type != Action_type::REDUCE || existing.state != rules_index) {
@@ -1112,13 +1111,13 @@ void LRParser::buildTable() {
         I++;
     }
 
-    // for (auto &conflict : conflicts) {
-    //     cpuf::printf("Conflict in state %$:", conflict.state);
-    //     for (auto conf : conflict.conflicts) {
-    //         cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
-    //     }
-    //     cpuf::printf("\n");
-    // }
+    for (auto &conflict : conflicts) {
+        cpuf::printf("Conflict in state %$:", conflict.state);
+        for (auto conf : conflict.conflicts) {
+            cpuf::printf("[%$ %$]", LRParser::ActionTypeToString(conf.type), conf.state, conflict.item.size());
+        }
+        cpuf::printf("\n");
+    }
 }
 
 void LRParser::prepare() {
@@ -1208,9 +1207,7 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
                     oss << "• ";
                 }
                 if (i < item.rhs.size()) {
-                    for (const auto &part : item.rhs[i].fullname) {
-                        oss << part << " ";
-                    }
+                    oss << corelib::text::join(item.rhs[i].fullname, "_") << ' ';
                 }
             }
             oss << "; lookahead: {";

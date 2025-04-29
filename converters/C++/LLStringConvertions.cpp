@@ -246,7 +246,6 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
     } else if (type == LLIR::condition_types::FUNCTION_CALL) {
         return convertFunctionCall( std::any_cast<LLIR::function_call>(data));
     } else if (type == LLIR::condition_types::CURRENT_TOKEN) {
-        pos_counter++;
         if (data.has_value()) {
             auto dt = std::any_cast<LLIR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any());

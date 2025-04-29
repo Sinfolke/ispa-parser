@@ -22,7 +22,7 @@ private:
     void outputHeader(std::ostringstream &out, const std::string &filename);
     
     // cpp output functions
-    void writeRules(std::ostringstream &out);
+    void writeRules(std::ostringstream &out, bool startName);
     void convertVariable(LLIR::variable var, std::ostringstream &out);
     void convertBlock(std::vector<LLIR::member> block, std::ostringstream &out);
     void convertCondition(LLIR::condition cond, std::ostringstream &out);

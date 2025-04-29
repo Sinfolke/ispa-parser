@@ -8,7 +8,7 @@ void LRConverter::createActionTable(std::ostringstream &out) const {
     // convert map of states to row map
     const auto row_table = data->getActionTableAsRow();
     for (size_t state = 0; state < row_table.size(); ++state) {
-        out << "\t{{";
+        out << "\t{{/*" << state << "*/";
         const auto &value = row_table[state];
         std::vector<std::string> row(max_terminals, "std::nullopt");
         for (const auto &[name, action] : value) {
@@ -19,7 +19,7 @@ void LRConverter::createActionTable(std::ostringstream &out) const {
             if (find_it == tokens.end())
                 throw Error("Token '%$' in action table not found among 'tokens'. State '%$'", corelib::text::join(name, "_"), state);
             auto index = find_it - tokens.begin();
-            row[index] = "std::make_optional(::" + namespace_name + "::Action{::" + namespace_name + "::Action::Action_type::" + LRParser::ActionTypeToString(action.type) + ", " + std::to_string(action.state) + "})";
+            row[index] = "/*" + corelib::text::join(search_name, "_") + "*/ std::make_optional(::" + namespace_name + "::Action{::" + namespace_name + "::Action::Action_type::" + LRParser::ActionTypeToString(action.type) + ", " + std::to_string(action.state) + "})";
         }
         out << row[0];
         for (auto it = row.begin() + 1; it != row.end(); ++it) {
@@ -72,7 +72,7 @@ void LRConverter::createRulesTable(std::ostringstream &out) {
     out << "\t}\n";
     out << "};\n";
 }
-void LRConverter::createDFATable(std::ostringstream &out) const {
+void LRConverter::createDFATable(std::ostringstream &out) {
     if (!data->isELR()) {
         return;
     }
@@ -80,8 +80,10 @@ void LRConverter::createDFATable(std::ostringstream &out) const {
     const auto &dfa = dt->getDFA();
 
     out << namespace_name << "::DFATable " << namespace_name << "::Parser::dfa_table = {\n";
-
-    for (const auto &[nfa_states, transitions, action, place] : dfa) {
+    max_dfa_token_map_size = std::max_element(dfa.begin(), dfa.end(), [](const ELRParser::DFA_state& state1, const ELRParser::DFA_state& state2) {
+        return state1.transitions.size() < state2.transitions.size();
+    })->transitions.size();    
+    for (const auto &[nfa_states, transitions, action, place, epsilon_transition] : dfa) {
         // Write Action
         out << "\tstd::make_pair(::" << namespace_name << "::Action {";
 
@@ -92,20 +94,24 @@ void LRConverter::createDFATable(std::ostringstream &out) const {
             out << "::" << namespace_name << "::Action::ERROR, 0"; // Default Action if none (e.g., SHIFT 0)
         }
 
-        out << "}, std::array<size_t, " << tokens.size() << "> {";
+        out << "}, std::array<std::pair<::" << namespace_name << "::Tokens, size_t>, " << max_dfa_token_map_size + 2 << "> {";
 
         // Write transitions array
-        for (size_t i = 0; i < tokens.size(); ++i) {
-            std::vector<std::string> search_token = tokens[i];
-            auto it = transitions.find(search_token);
-
-            if (it != transitions.end()) {
-                out << it->second;
-            } else {
-                out << "0"; // No transition, default 0
+        size_t i = 0;
+        for (const auto &[name, transition] : transitions) {
+            if (i == 0) {
+                out << "std::make_pair(::" << namespace_name << "::Tokens::NONE, " << epsilon_transition << "), ";
             }
-
+            out << "std::make_pair(::" << namespace_name << "::Tokens::" << corelib::text::join(name, "_") << ", " << transition << ')';
             if (i + 1 != tokens.size()) {
+                out << ", ";
+            }
+            i++;
+        }
+        while(max_dfa_token_map_size + 1 > i) {
+            out << "std::make_pair(::" << namespace_name << "::Tokens::NONE, 0)";
+            i++;
+            if (i < max_dfa_token_map_size + 1) {
                 out << ", ";
             }
         }

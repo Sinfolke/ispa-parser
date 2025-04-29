@@ -19,7 +19,7 @@ void LRHeader::createTableTypes(std::ostringstream &out, long long DFA_size) con
         << "\tusing RulesTable = std::array<std::pair<Rules, size_t>, " << rules_table.size() << ">;\n"
     ;
     if (DFA_size != -1) {
-        out << "\tusing DFATable = std::array<std::pair<::" << namespace_name << "::Action, std::array<size_t, " << tokens.size() << ">>, " << DFA_size << ">;\n";
+        out << "\tusing DFATable = std::array<std::pair<::" << namespace_name << "::Action, std::array<std::pair<::" << namespace_name << "::Tokens, size_t>, " << max_dfa_token_map_size + 2 << ">>, " << DFA_size << ">;\n";
     }
 }
 void LRHeader::create_parser_header(std::ostringstream &out, bool hasDFA) const {

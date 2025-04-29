@@ -2029,9 +2029,9 @@ void LLIR::treeToIr(const Parser::Tree &tree) {
         auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
         bool isToken = corelib::text::isUpper(name);
         fullname.push_back(name);
-        bool to_add = false;
-        if (tokensOnly != -1 && ((isToken && tokensOnly) || (!isToken && !tokensOnly))) {
-            to_add = true;
+        bool to_add = true;
+        if (tokensOnly != -1 && ((isToken && !tokensOnly) || (!isToken && tokensOnly))) {
+            to_add = false;
         }
         treeToIr(nested_rules);
         this->isToken = isToken;

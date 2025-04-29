@@ -1,12 +1,12 @@
 State 0:
-	--{ AUTO_35, }--> 1
+	--{ AUTO_48, }--> 1
 [REDUCE 5]
 
 State 1:
 	--{ ID, }--> 2
 
 State 2:
-	--{ AUTO_35, }--> 3
+	--{ AUTO_48, }--> 3
 	epsilon -> 3
 
 State 3:
@@ -41,7 +41,7 @@ State 11:
 [SHIFT 15]
 
 State 12:
-	--{ AUTO_28, }--> 13
+	--{ AUTO_47, }--> 13
 [REDUCE 9]
 
 State 13:
@@ -49,11 +49,11 @@ State 13:
 	--{ NUMBER, }--> 14
 	--{ ID, }--> 14
 	--{ BOOLEAN, }--> 14
-	--{ AUTO_28, }--> 14
+	--{ AUTO_47, }--> 14
 	epsilon -> 14
 
 State 14:
-	--{ AUTO_33, }--> 15
+	--{ AUTO_49, }--> 15
 
 State 15:
 [SHIFT 13]
@@ -74,14 +74,14 @@ State 19:
 [SHIFT 55]
 
 State 20:
-	--{ AUTO_35, }--> 21
+	--{ AUTO_48, }--> 21
 [REDUCE 5]
 
 State 21:
 	--{ ID, }--> 22
 
 State 22:
-	--{ AUTO_35, }--> 23
+	--{ AUTO_48, }--> 23
 	epsilon -> 23
 
 State 23:
@@ -100,13 +100,13 @@ State 26:
 State 27:
 	--{ cll, TYPE, }--> 28
 	--{ ID, }--> 28
+	--{ AUTO_39, }--> 28
 	--{ AUTO_20, }--> 28
 	--{ AUTO_19, }--> 28
-	--{ AUTO_15, }--> 28
 	--{ AUTO_1, }--> 28
 	--{ AT, }--> 28
 	epsilon -> 28
-[REDUCE 29]
+[REDUCE 32]
 
 State 28:
 	--{ END, }--> 29
@@ -115,1304 +115,1198 @@ State 29:
 [SHIFT 80]
 
 State 30:
-	--{ AUTO_40, }--> 31
-[REDUCE 33]
-
-State 31:
+	--{ AUTO_39, }--> 31
 [REDUCE 32]
 
+State 31:
+	--{ STRING, }--> 32
+	--{ AT, }--> 32
+	--{ AUTO_39, }--> 32
+	--{ BOOLEAN, }--> 32
+	--{ DIVIDE, }--> 32
+	--{ ID, }--> 32
+	--{ MINUS, }--> 32
+	--{ MODULO, }--> 32
+	--{ MULTIPLE, }--> 32
+	--{ AUTO_47, }--> 32
+	--{ AUTO_6, }--> 32
+	--{ NUMBER, }--> 32
+	--{ AUTO_7, }--> 32
+	--{ PLUS, }--> 32
+
 State 32:
-	--{ AT, }--> 33
-[REDUCE 33]
+	--{ AUTO_40, }--> 33
 
 State 33:
-	--{ ID, }--> 34
-	epsilon -> 34
+[SHIFT 93]
 
 State 34:
-[SHIFT 27]
+	--{ AUTO_40, }--> 35
+[REDUCE 36]
 
 State 35:
-	--{ AUTO_42, }--> 36
-	epsilon -> 36
-[REDUCE 47]
+[REDUCE 35]
 
 State 36:
-[SHIFT 117]
+	--{ AT, }--> 37
+[REDUCE 36]
 
 State 37:
-	--{ STRICT_END, }--> 38
-[REDUCE 47]
+	--{ ID, }--> 38
+	epsilon -> 38
 
 State 38:
-[REDUCE 46]
+[SHIFT 27]
 
 State 39:
-	--{ BOOLEAN, }--> 40
-[REDUCE 9]
+	--{ AUTO_32, }--> 40
+[REDUCE 47]
 
 State 40:
-[SHIFT 20]
+[REDUCE 46]
 
 State 41:
-	--{ ID, }--> 42
-[REDUCE 9]
+	--{ AUTO_42, }--> 42
+	epsilon -> 42
+[REDUCE 47]
 
 State 42:
-[SHIFT 18]
+[SHIFT 116]
 
 State 43:
-	--{ NUMBER, }--> 44
+	--{ BOOLEAN, }--> 44
 [REDUCE 9]
 
 State 44:
-[SHIFT 16]
+[SHIFT 20]
 
 State 45:
-	--{ STRING, }--> 46
+	--{ ID, }--> 46
 [REDUCE 9]
 
 State 46:
-[SHIFT 15]
+[SHIFT 18]
 
 State 47:
-	--{ AUTO_28, }--> 48
+	--{ NUMBER, }--> 48
 [REDUCE 9]
 
 State 48:
-	--{ STRING, }--> 49
-	--{ NUMBER, }--> 49
-	--{ ID, }--> 49
-	--{ BOOLEAN, }--> 49
-	--{ AUTO_28, }--> 49
-	epsilon -> 49
-
-State 49:
-	--{ AUTO_33, }--> 50
-
-State 50:
-[SHIFT 13]
-
-State 51:
-	--{ AUTO_38, }--> 52
-[REDUCE 57]
-
-State 52:
-	--{ ID, }--> 53
-
-State 53:
-	--{ AUTO_38, }--> 54
-	epsilon -> 54
-
-State 54:
-[SHIFT 122]
-
-State 55:
-	--{ ID, }--> 59
-	--{ AUTO_6, }--> 56
-[REDUCE 61]
-
-State 56:
-[REDUCE 13]
-
-State 57:
-	--{ AUTO_6, }--> 58
-[REDUCE 13]
-
-State 58:
-[REDUCE 13]
-
-State 59:
-	--{ ID, }--> 60
-	epsilon -> 60
-
-State 60:
-[SHIFT 129]
-
-State 61:
-	--{ STRING, }--> 62
-	--{ NUMBER, }--> 62
-	--{ ID, }--> 62
-	--{ BOOLEAN, }--> 62
-	--{ AUTO_7, }--> 62
-	--{ AUTO_3, }--> 62
-	--{ AUTO_28, }--> 62
-	--{ AUTO_2, }--> 62
-	--{ AUTO_15, }--> 62
-[REDUCE 69]
-
-State 62:
-[SHIFT 20]
-
-State 63:
-	--{ STRING, }--> 64
-	--{ NUMBER, }--> 64
-	--{ ID, }--> 64
-	--{ BOOLEAN, }--> 64
-	--{ AUTO_7, }--> 64
-	--{ AUTO_3, }--> 64
-	--{ AUTO_28, }--> 64
-	--{ AUTO_2, }--> 64
-	--{ AUTO_15, }--> 64
-[REDUCE 69]
-
-State 64:
-[SHIFT 125]
-
-State 65:
-	--{ STRING, }--> 66
-	--{ NUMBER, }--> 66
-	--{ ID, }--> 66
-	--{ BOOLEAN, }--> 66
-	--{ AUTO_7, }--> 66
-	--{ AUTO_3, }--> 66
-	--{ AUTO_28, }--> 66
-	--{ AUTO_2, }--> 66
-	--{ AUTO_15, }--> 66
-[REDUCE 69]
-
-State 66:
 [SHIFT 16]
 
-State 67:
-	--{ STRING, }--> 68
-	--{ NUMBER, }--> 68
-	--{ ID, }--> 68
-	--{ BOOLEAN, }--> 68
-	--{ AUTO_7, }--> 68
-	--{ AUTO_3, }--> 68
-	--{ AUTO_28, }--> 68
-	--{ AUTO_2, }--> 68
-	--{ AUTO_15, }--> 68
-[REDUCE 69]
+State 49:
+	--{ STRING, }--> 50
+[REDUCE 9]
 
-State 68:
+State 50:
 [SHIFT 15]
 
+State 51:
+	--{ AUTO_47, }--> 52
+[REDUCE 9]
+
+State 52:
+	--{ STRING, }--> 53
+	--{ NUMBER, }--> 53
+	--{ ID, }--> 53
+	--{ BOOLEAN, }--> 53
+	--{ AUTO_47, }--> 53
+	epsilon -> 53
+
+State 53:
+	--{ AUTO_49, }--> 54
+
+State 54:
+[SHIFT 13]
+
+State 55:
+	--{ AUTO_38, }--> 56
+[REDUCE 57]
+
+State 56:
+	--{ ID, }--> 57
+
+State 57:
+	--{ AUTO_38, }--> 58
+	epsilon -> 58
+
+State 58:
+[SHIFT 121]
+
+State 59:
+	--{ AUTO_39, }--> 62
+	--{ ID, }--> 60
+[REDUCE 61]
+
+State 60:
+	--{ AUTO_6, }--> 61
+[REDUCE 13]
+
+State 61:
+[REDUCE 13]
+
+State 62:
+	--{ STRING, }--> 63
+	--{ NUMBER, }--> 63
+	--{ ID, }--> 63
+	--{ BOOLEAN, }--> 63
+	--{ AUTO_47, }--> 63
+
+State 63:
+	--{ AUTO_40, }--> 64
+
+State 64:
+[SHIFT 126]
+
+State 65:
+	--{ ID, }--> 68
+[REDUCE 61]
+
+State 66:
+	--{ AUTO_6, }--> 67
+[REDUCE 13]
+
+State 67:
+[REDUCE 13]
+
+State 68:
+	--{ ID, }--> 69
+	epsilon -> 69
+
 State 69:
-	--{ AUTO_15, }--> 70
-[REDUCE 69]
+[SHIFT 128]
 
 State 70:
-	--{ STRING, }--> 71
-	--{ AT, }--> 71
-	--{ AUTO_2, }--> 71
-	--{ AUTO_3, }--> 71
-	--{ MINUS, }--> 71
-	--{ PLUS, }--> 71
-	--{ AUTO_7, }--> 71
-	--{ AUTO_15, }--> 71
-	--{ BOOLEAN, }--> 71
-	--{ DIVIDE, }--> 71
-	--{ ID, }--> 71
-	--{ MODULO, }--> 71
-	--{ AUTO_28, }--> 71
-	--{ MULTIPLE, }--> 71
-	--{ NUMBER, }--> 71
-
-State 71:
-	--{ AUTO_16, }--> 72
-
-State 72:
-[SHIFT 85]
-
-State 73:
-	--{ AUTO_2, }--> 74
+	--{ AUTO_47, }--> 73
+	--{ cll, COMPARE_OP, }--> 72
+	--{ cll, LOGICAL_OP, }--> 71
 [REDUCE 69]
 
+State 71:
+[REDUCE 69]
+
+State 72:
+[REDUCE 69]
+
+State 73:
+	--{ STRING, }--> 74
+	--{ NUMBER, }--> 74
+	--{ ID, }--> 74
+	--{ BOOLEAN, }--> 74
+	--{ AUTO_47, }--> 74
+	epsilon -> 74
+
 State 74:
-	--{ ID, }--> 75
+	--{ AUTO_49, }--> 75
 
 State 75:
-	--{ cll, ASSIGNMENT_OP, }--> 76
-	--{ AUTO_4, }--> 76
-	epsilon -> 76
+[SHIFT 13]
 
 State 76:
-	--{ AUTO_6, }--> 77
+	--{ AUTO_6, }--> 79
+	--{ cll, COMPARE_OP, }--> 78
+	--{ cll, LOGICAL_OP, }--> 77
+[REDUCE 69]
 
 State 77:
-[SHIFT 75]
+[REDUCE 69]
 
 State 78:
-	--{ AUTO_3, }--> 79
 [REDUCE 69]
 
 State 79:
-[SHIFT 102]
+	--{ ID, }--> 80
 
 State 80:
-	--{ AUTO_7, }--> 81
-[REDUCE 69]
+	--{ cll, ASSIGNMENT_OP, }--> 81
+	--{ AUTO_25, }--> 81
+	epsilon -> 81
 
 State 81:
-[SHIFT 74]
+	--{ AUTO_6, }--> 82
 
 State 82:
-	--{ AUTO_28, }--> 83
-[REDUCE 69]
+[SHIFT 75]
 
 State 83:
 	--{ STRING, }--> 84
 	--{ NUMBER, }--> 84
 	--{ ID, }--> 84
 	--{ BOOLEAN, }--> 84
-	--{ AUTO_28, }--> 84
-	epsilon -> 84
+	--{ AUTO_6, }--> 84
+	--{ AUTO_7, }--> 84
+	--{ AUTO_47, }--> 84
+	--{ AUTO_39, }--> 84
+[REDUCE 69]
 
 State 84:
-	--{ AUTO_33, }--> 85
-
-State 85:
-[SHIFT 13]
-
-State 86:
-	--{ END, }--> 87
-[REDUCE 74]
-
-State 87:
-[REDUCE 73]
-
-State 88:
-	--{ STRING, }--> 89
-	--{ NUMBER, }--> 89
-	--{ ID, }--> 89
-	--{ BOOLEAN, }--> 89
-	--{ AUTO_7, }--> 89
-	--{ AUTO_3, }--> 89
-	--{ AUTO_28, }--> 89
-	--{ AUTO_2, }--> 89
-	--{ AUTO_15, }--> 89
-[REDUCE 81]
-
-State 89:
 [SHIFT 20]
 
+State 85:
+	--{ STRING, }--> 86
+	--{ NUMBER, }--> 86
+	--{ ID, }--> 86
+	--{ BOOLEAN, }--> 86
+	--{ AUTO_6, }--> 86
+	--{ AUTO_7, }--> 86
+	--{ AUTO_47, }--> 86
+	--{ AUTO_39, }--> 86
+[REDUCE 69]
+
+State 86:
+[SHIFT 124]
+
+State 87:
+	--{ STRING, }--> 88
+	--{ NUMBER, }--> 88
+	--{ ID, }--> 88
+	--{ BOOLEAN, }--> 88
+	--{ AUTO_6, }--> 88
+	--{ AUTO_7, }--> 88
+	--{ AUTO_47, }--> 88
+	--{ AUTO_39, }--> 88
+[REDUCE 69]
+
+State 88:
+[SHIFT 16]
+
+State 89:
+	--{ STRING, }--> 90
+	--{ NUMBER, }--> 90
+	--{ ID, }--> 90
+	--{ BOOLEAN, }--> 90
+	--{ AUTO_6, }--> 90
+	--{ AUTO_7, }--> 90
+	--{ AUTO_47, }--> 90
+	--{ AUTO_39, }--> 90
+[REDUCE 69]
+
 State 90:
-	--{ STRING, }--> 91
-	--{ NUMBER, }--> 91
-	--{ ID, }--> 91
-	--{ BOOLEAN, }--> 91
-	--{ AUTO_7, }--> 91
-	--{ AUTO_3, }--> 91
-	--{ AUTO_28, }--> 91
-	--{ AUTO_2, }--> 91
-	--{ AUTO_15, }--> 91
-[REDUCE 81]
+[SHIFT 15]
 
 State 91:
-[SHIFT 125]
+	--{ AUTO_39, }--> 92
+[REDUCE 69]
 
 State 92:
 	--{ STRING, }--> 93
-	--{ NUMBER, }--> 93
-	--{ ID, }--> 93
+	--{ AT, }--> 93
+	--{ AUTO_39, }--> 93
 	--{ BOOLEAN, }--> 93
+	--{ DIVIDE, }--> 93
+	--{ ID, }--> 93
+	--{ MINUS, }--> 93
+	--{ MODULO, }--> 93
+	--{ MULTIPLE, }--> 93
+	--{ AUTO_47, }--> 93
+	--{ AUTO_6, }--> 93
+	--{ NUMBER, }--> 93
 	--{ AUTO_7, }--> 93
-	--{ AUTO_3, }--> 93
-	--{ AUTO_28, }--> 93
-	--{ AUTO_2, }--> 93
-	--{ AUTO_15, }--> 93
-[REDUCE 81]
+	--{ PLUS, }--> 93
 
 State 93:
-[SHIFT 16]
+	--{ AUTO_40, }--> 94
 
 State 94:
-	--{ STRING, }--> 95
-	--{ NUMBER, }--> 95
-	--{ ID, }--> 95
-	--{ BOOLEAN, }--> 95
-	--{ AUTO_7, }--> 95
-	--{ AUTO_3, }--> 95
-	--{ AUTO_28, }--> 95
-	--{ AUTO_2, }--> 95
-	--{ AUTO_15, }--> 95
-[REDUCE 81]
+[SHIFT 93]
 
 State 95:
-[SHIFT 15]
+	--{ AUTO_7, }--> 96
+[REDUCE 69]
 
 State 96:
-	--{ AUTO_15, }--> 97
-[REDUCE 81]
-
-State 97:
-	--{ STRING, }--> 98
-	--{ AT, }--> 98
-	--{ AUTO_2, }--> 98
-	--{ AUTO_3, }--> 98
-	--{ MINUS, }--> 98
-	--{ PLUS, }--> 98
-	--{ AUTO_7, }--> 98
-	--{ AUTO_15, }--> 98
-	--{ BOOLEAN, }--> 98
-	--{ DIVIDE, }--> 98
-	--{ ID, }--> 98
-	--{ MODULO, }--> 98
-	--{ AUTO_28, }--> 98
-	--{ MULTIPLE, }--> 98
-	--{ NUMBER, }--> 98
-
-State 98:
-	--{ AUTO_16, }--> 99
-
-State 99:
-[SHIFT 85]
-
-State 100:
-	--{ AUTO_2, }--> 101
-[REDUCE 81]
-
-State 101:
-	--{ ID, }--> 102
-
-State 102:
-	--{ cll, ASSIGNMENT_OP, }--> 103
-	--{ AUTO_4, }--> 103
-	epsilon -> 103
-
-State 103:
-	--{ AUTO_6, }--> 104
-
-State 104:
-[SHIFT 75]
-
-State 105:
-	--{ AUTO_3, }--> 106
-[REDUCE 81]
-
-State 106:
-[SHIFT 102]
-
-State 107:
-	--{ AUTO_7, }--> 108
-[REDUCE 81]
-
-State 108:
 [SHIFT 74]
 
+State 97:
+	--{ END, }--> 98
+[REDUCE 72]
+
+State 98:
+[REDUCE 71]
+
+State 99:
+	--{ cll, COMPARE_OP, }--> 103
+	--{ cll, LOGICAL_OP, }--> 102
+	--{ AUTO_27, }--> 101
+	--{ AUTO_40, }--> 100
+[REDUCE 74]
+
+State 100:
+[REDUCE 73]
+
+State 101:
+[REDUCE 73]
+
+State 102:
+[REDUCE 74]
+
+State 103:
+[REDUCE 74]
+
+State 104:
+	--{ cll, COMPARE_OP, }--> 108
+	--{ cll, LOGICAL_OP, }--> 107
+	--{ AUTO_27, }--> 106
+	--{ AUTO_40, }--> 105
+[REDUCE 74]
+
+State 105:
+[REDUCE 73]
+
+State 106:
+[REDUCE 73]
+
+State 107:
+[REDUCE 74]
+
+State 108:
+[REDUCE 74]
+
 State 109:
-	--{ AUTO_28, }--> 110
-[REDUCE 81]
+	--{ cll, COMPARE_OP, }--> 113
+	--{ cll, LOGICAL_OP, }--> 112
+	--{ AUTO_27, }--> 111
+	--{ AUTO_40, }--> 110
+[REDUCE 78]
 
 State 110:
-	--{ STRING, }--> 111
-	--{ NUMBER, }--> 111
-	--{ ID, }--> 111
-	--{ BOOLEAN, }--> 111
-	--{ AUTO_28, }--> 111
-	epsilon -> 111
+[REDUCE 77]
 
 State 111:
-	--{ AUTO_33, }--> 112
+[REDUCE 77]
 
 State 112:
-[SHIFT 13]
+[REDUCE 78]
 
 State 113:
-	--{ AT, }--> 114
-[REDUCE 33]
+[REDUCE 78]
 
 State 114:
-	--{ ID, }--> 115
-	epsilon -> 115
+	--{ cll, COMPARE_OP, }--> 118
+	--{ cll, LOGICAL_OP, }--> 117
+	--{ AUTO_27, }--> 116
+	--{ AUTO_40, }--> 115
+[REDUCE 78]
 
 State 115:
-[SHIFT 27]
+[REDUCE 77]
 
 State 116:
-	--{ AUTO_45, }--> 117
-[REDUCE 90]
+[REDUCE 77]
 
 State 117:
-	--{ AUTO_45, }--> 118
-	epsilon -> 118
+[REDUCE 78]
 
 State 118:
-[SHIFT 150]
+[REDUCE 78]
 
 State 119:
-	--{ AUTO_42, }--> 120
-[REDUCE 47]
+	--{ AUTO_47, }--> 122
+	--{ cll, COMPARE_OP, }--> 121
+	--{ cll, LOGICAL_OP, }--> 120
+[REDUCE 81]
 
 State 120:
-	--{ ID, }--> 121
+[REDUCE 81]
 
 State 121:
-[SHIFT 117]
+[REDUCE 81]
 
 State 122:
-	--{ AUTO_30, }--> 123
-[REDUCE 93]
+	--{ STRING, }--> 123
+	--{ NUMBER, }--> 123
+	--{ ID, }--> 123
+	--{ BOOLEAN, }--> 123
+	--{ AUTO_47, }--> 123
+	epsilon -> 123
 
 State 123:
-	--{ ID, }--> 124
+	--{ AUTO_49, }--> 124
 
 State 124:
-	--{ AUTO_31, }--> 125
+[SHIFT 13]
 
 State 125:
-	--{ STRING, }--> 126
-	--{ NUMBER, }--> 126
-	--{ ID, }--> 126
-	--{ BOOLEAN, }--> 126
-	--{ AUTO_28, }--> 126
-	--{ AUTO_25, }--> 126
+	--{ AUTO_6, }--> 128
+	--{ cll, COMPARE_OP, }--> 127
+	--{ cll, LOGICAL_OP, }--> 126
+[REDUCE 81]
 
 State 126:
-	--{ AUTO_30, }--> 127
-	epsilon -> 127
+[REDUCE 81]
 
 State 127:
-[SHIFT 155]
+[REDUCE 81]
 
 State 128:
 	--{ ID, }--> 129
-[REDUCE 61]
 
 State 129:
-	--{ ID, }--> 130
+	--{ cll, ASSIGNMENT_OP, }--> 130
+	--{ AUTO_25, }--> 130
 	epsilon -> 130
 
 State 130:
-[SHIFT 129]
+	--{ AUTO_6, }--> 131
 
 State 131:
-	--{ STRING, }--> 132
-	--{ NUMBER, }--> 132
-	--{ ID, }--> 132
-	--{ BOOLEAN, }--> 132
-	--{ AUTO_7, }--> 132
-	--{ AUTO_3, }--> 132
-	--{ AUTO_28, }--> 132
-	--{ AUTO_2, }--> 132
-	--{ AUTO_15, }--> 132
-[REDUCE 81]
-
-State 132:
-[SHIFT 20]
-
-State 133:
-	--{ STRING, }--> 134
-	--{ NUMBER, }--> 134
-	--{ ID, }--> 134
-	--{ BOOLEAN, }--> 134
-	--{ AUTO_7, }--> 134
-	--{ AUTO_3, }--> 134
-	--{ AUTO_28, }--> 134
-	--{ AUTO_2, }--> 134
-	--{ AUTO_15, }--> 134
-[REDUCE 81]
-
-State 134:
-[SHIFT 125]
-
-State 135:
-	--{ STRING, }--> 136
-	--{ NUMBER, }--> 136
-	--{ ID, }--> 136
-	--{ BOOLEAN, }--> 136
-	--{ AUTO_7, }--> 136
-	--{ AUTO_3, }--> 136
-	--{ AUTO_28, }--> 136
-	--{ AUTO_2, }--> 136
-	--{ AUTO_15, }--> 136
-[REDUCE 81]
-
-State 136:
-[SHIFT 16]
-
-State 137:
-	--{ STRING, }--> 138
-	--{ NUMBER, }--> 138
-	--{ ID, }--> 138
-	--{ BOOLEAN, }--> 138
-	--{ AUTO_7, }--> 138
-	--{ AUTO_3, }--> 138
-	--{ AUTO_28, }--> 138
-	--{ AUTO_2, }--> 138
-	--{ AUTO_15, }--> 138
-[REDUCE 81]
-
-State 138:
-[SHIFT 15]
-
-State 139:
-	--{ AUTO_15, }--> 140
-[REDUCE 81]
-
-State 140:
-	--{ STRING, }--> 141
-	--{ AT, }--> 141
-	--{ AUTO_2, }--> 141
-	--{ AUTO_3, }--> 141
-	--{ MINUS, }--> 141
-	--{ PLUS, }--> 141
-	--{ AUTO_7, }--> 141
-	--{ AUTO_15, }--> 141
-	--{ BOOLEAN, }--> 141
-	--{ DIVIDE, }--> 141
-	--{ ID, }--> 141
-	--{ MODULO, }--> 141
-	--{ AUTO_28, }--> 141
-	--{ MULTIPLE, }--> 141
-	--{ NUMBER, }--> 141
-
-State 141:
-	--{ AUTO_16, }--> 142
-
-State 142:
-[SHIFT 85]
-
-State 143:
-	--{ AUTO_2, }--> 144
-[REDUCE 81]
-
-State 144:
-	--{ ID, }--> 145
-
-State 145:
-	--{ cll, ASSIGNMENT_OP, }--> 146
-	--{ AUTO_4, }--> 146
-	epsilon -> 146
-
-State 146:
-	--{ AUTO_6, }--> 147
-
-State 147:
 [SHIFT 75]
 
-State 148:
-	--{ AUTO_3, }--> 149
+State 132:
+	--{ STRING, }--> 133
+	--{ NUMBER, }--> 133
+	--{ ID, }--> 133
+	--{ BOOLEAN, }--> 133
+	--{ AUTO_6, }--> 133
+	--{ AUTO_7, }--> 133
+	--{ AUTO_47, }--> 133
+	--{ AUTO_39, }--> 133
 [REDUCE 81]
 
-State 149:
-[SHIFT 102]
+State 133:
+[SHIFT 20]
 
-State 150:
-	--{ AUTO_7, }--> 151
+State 134:
+	--{ STRING, }--> 135
+	--{ NUMBER, }--> 135
+	--{ ID, }--> 135
+	--{ BOOLEAN, }--> 135
+	--{ AUTO_6, }--> 135
+	--{ AUTO_7, }--> 135
+	--{ AUTO_47, }--> 135
+	--{ AUTO_39, }--> 135
 [REDUCE 81]
 
-State 151:
+State 135:
+[SHIFT 124]
+
+State 136:
+	--{ STRING, }--> 137
+	--{ NUMBER, }--> 137
+	--{ ID, }--> 137
+	--{ BOOLEAN, }--> 137
+	--{ AUTO_6, }--> 137
+	--{ AUTO_7, }--> 137
+	--{ AUTO_47, }--> 137
+	--{ AUTO_39, }--> 137
+[REDUCE 81]
+
+State 137:
+[SHIFT 16]
+
+State 138:
+	--{ STRING, }--> 139
+	--{ NUMBER, }--> 139
+	--{ ID, }--> 139
+	--{ BOOLEAN, }--> 139
+	--{ AUTO_6, }--> 139
+	--{ AUTO_7, }--> 139
+	--{ AUTO_47, }--> 139
+	--{ AUTO_39, }--> 139
+[REDUCE 81]
+
+State 139:
+[SHIFT 15]
+
+State 140:
+	--{ AUTO_39, }--> 141
+[REDUCE 81]
+
+State 141:
+	--{ STRING, }--> 142
+	--{ AT, }--> 142
+	--{ AUTO_39, }--> 142
+	--{ BOOLEAN, }--> 142
+	--{ DIVIDE, }--> 142
+	--{ ID, }--> 142
+	--{ MINUS, }--> 142
+	--{ MODULO, }--> 142
+	--{ MULTIPLE, }--> 142
+	--{ AUTO_47, }--> 142
+	--{ AUTO_6, }--> 142
+	--{ NUMBER, }--> 142
+	--{ AUTO_7, }--> 142
+	--{ PLUS, }--> 142
+
+State 142:
+	--{ AUTO_40, }--> 143
+
+State 143:
+[SHIFT 93]
+
+State 144:
+	--{ AUTO_7, }--> 145
+[REDUCE 81]
+
+State 145:
 [SHIFT 74]
 
+State 146:
+	--{ AT, }--> 147
+[REDUCE 36]
+
+State 147:
+	--{ ID, }--> 148
+	epsilon -> 148
+
+State 148:
+[SHIFT 27]
+
+State 149:
+	--{ AUTO_45, }--> 150
+[REDUCE 89]
+
+State 150:
+	--{ AUTO_45, }--> 151
+	epsilon -> 151
+
+State 151:
+[SHIFT 149]
+
 State 152:
-	--{ AUTO_28, }--> 153
-[REDUCE 81]
+	--{ AUTO_42, }--> 153
+[REDUCE 47]
 
 State 153:
-	--{ STRING, }--> 154
-	--{ NUMBER, }--> 154
-	--{ ID, }--> 154
-	--{ BOOLEAN, }--> 154
-	--{ AUTO_28, }--> 154
-	epsilon -> 154
+	--{ AUTO_38, }--> 154
 
 State 154:
-	--{ AUTO_33, }--> 155
+[SHIFT 116]
 
 State 155:
-[SHIFT 13]
+	--{ AUTO_48, }--> 156
+[REDUCE 92]
 
 State 156:
-	--{ STRING, }--> 157
-	--{ NUMBER, }--> 157
 	--{ ID, }--> 157
-	--{ BOOLEAN, }--> 157
-	--{ AUTO_7, }--> 157
-	--{ AUTO_3, }--> 157
-	--{ AUTO_28, }--> 157
-	--{ AUTO_2, }--> 157
-	--{ AUTO_15, }--> 157
-[REDUCE 69]
 
 State 157:
-[SHIFT 20]
+	--{ AUTO_36, }--> 158
 
 State 158:
 	--{ STRING, }--> 159
 	--{ NUMBER, }--> 159
 	--{ ID, }--> 159
 	--{ BOOLEAN, }--> 159
-	--{ AUTO_7, }--> 159
-	--{ AUTO_3, }--> 159
-	--{ AUTO_28, }--> 159
-	--{ AUTO_2, }--> 159
-	--{ AUTO_15, }--> 159
-[REDUCE 69]
+	--{ AUTO_47, }--> 159
+	--{ AUTO_25, }--> 159
 
 State 159:
-[SHIFT 125]
+	--{ AUTO_48, }--> 160
+	epsilon -> 160
 
 State 160:
-	--{ STRING, }--> 161
-	--{ NUMBER, }--> 161
-	--{ ID, }--> 161
-	--{ BOOLEAN, }--> 161
-	--{ AUTO_7, }--> 161
-	--{ AUTO_3, }--> 161
-	--{ AUTO_28, }--> 161
-	--{ AUTO_2, }--> 161
-	--{ AUTO_15, }--> 161
-[REDUCE 69]
+[SHIFT 154]
 
 State 161:
-[SHIFT 16]
+	--{ AUTO_39, }--> 162
+[REDUCE 13]
 
 State 162:
 	--{ STRING, }--> 163
 	--{ NUMBER, }--> 163
 	--{ ID, }--> 163
 	--{ BOOLEAN, }--> 163
-	--{ AUTO_7, }--> 163
-	--{ AUTO_3, }--> 163
-	--{ AUTO_28, }--> 163
-	--{ AUTO_2, }--> 163
-	--{ AUTO_15, }--> 163
-[REDUCE 69]
+	--{ AUTO_47, }--> 163
 
 State 163:
-[SHIFT 15]
+	--{ AUTO_40, }--> 164
 
 State 164:
-	--{ AUTO_15, }--> 165
-[REDUCE 69]
+[SHIFT 126]
 
 State 165:
-	--{ STRING, }--> 166
-	--{ AT, }--> 166
-	--{ AUTO_2, }--> 166
-	--{ AUTO_3, }--> 166
-	--{ MINUS, }--> 166
-	--{ PLUS, }--> 166
-	--{ AUTO_7, }--> 166
-	--{ AUTO_15, }--> 166
-	--{ BOOLEAN, }--> 166
-	--{ DIVIDE, }--> 166
 	--{ ID, }--> 166
-	--{ MODULO, }--> 166
-	--{ AUTO_28, }--> 166
-	--{ MULTIPLE, }--> 166
-	--{ NUMBER, }--> 166
+[REDUCE 61]
 
 State 166:
-	--{ AUTO_16, }--> 167
+	--{ ID, }--> 167
+	epsilon -> 167
 
 State 167:
-[SHIFT 85]
+[SHIFT 128]
 
 State 168:
-	--{ AUTO_2, }--> 169
-[REDUCE 69]
+	--{ STRING, }--> 169
+	--{ NUMBER, }--> 169
+	--{ ID, }--> 169
+	--{ BOOLEAN, }--> 169
+	--{ AUTO_6, }--> 169
+	--{ AUTO_7, }--> 169
+	--{ AUTO_47, }--> 169
+	--{ AUTO_39, }--> 169
+[REDUCE 81]
 
 State 169:
-	--{ ID, }--> 170
+[SHIFT 20]
 
 State 170:
-	--{ cll, ASSIGNMENT_OP, }--> 171
-	--{ AUTO_4, }--> 171
-	epsilon -> 171
+	--{ STRING, }--> 171
+	--{ NUMBER, }--> 171
+	--{ ID, }--> 171
+	--{ BOOLEAN, }--> 171
+	--{ AUTO_6, }--> 171
+	--{ AUTO_7, }--> 171
+	--{ AUTO_47, }--> 171
+	--{ AUTO_39, }--> 171
+[REDUCE 81]
 
 State 171:
-	--{ AUTO_6, }--> 172
+[SHIFT 124]
 
 State 172:
-[SHIFT 75]
+	--{ STRING, }--> 173
+	--{ NUMBER, }--> 173
+	--{ ID, }--> 173
+	--{ BOOLEAN, }--> 173
+	--{ AUTO_6, }--> 173
+	--{ AUTO_7, }--> 173
+	--{ AUTO_47, }--> 173
+	--{ AUTO_39, }--> 173
+[REDUCE 81]
 
 State 173:
-	--{ AUTO_3, }--> 174
-[REDUCE 69]
+[SHIFT 16]
 
 State 174:
-[SHIFT 102]
+	--{ STRING, }--> 175
+	--{ NUMBER, }--> 175
+	--{ ID, }--> 175
+	--{ BOOLEAN, }--> 175
+	--{ AUTO_6, }--> 175
+	--{ AUTO_7, }--> 175
+	--{ AUTO_47, }--> 175
+	--{ AUTO_39, }--> 175
+[REDUCE 81]
 
 State 175:
-	--{ AUTO_7, }--> 176
-[REDUCE 69]
+[SHIFT 15]
 
 State 176:
-[SHIFT 74]
+	--{ AUTO_39, }--> 177
+[REDUCE 81]
 
 State 177:
-	--{ AUTO_28, }--> 178
-[REDUCE 69]
+	--{ STRING, }--> 178
+	--{ AT, }--> 178
+	--{ AUTO_39, }--> 178
+	--{ BOOLEAN, }--> 178
+	--{ DIVIDE, }--> 178
+	--{ ID, }--> 178
+	--{ MINUS, }--> 178
+	--{ MODULO, }--> 178
+	--{ MULTIPLE, }--> 178
+	--{ AUTO_47, }--> 178
+	--{ AUTO_6, }--> 178
+	--{ NUMBER, }--> 178
+	--{ AUTO_7, }--> 178
+	--{ PLUS, }--> 178
 
 State 178:
-	--{ STRING, }--> 179
-	--{ NUMBER, }--> 179
-	--{ ID, }--> 179
-	--{ BOOLEAN, }--> 179
-	--{ AUTO_28, }--> 179
-	epsilon -> 179
+	--{ AUTO_40, }--> 179
 
 State 179:
-	--{ AUTO_33, }--> 180
+[SHIFT 93]
 
 State 180:
-[SHIFT 13]
+	--{ AUTO_6, }--> 181
+[REDUCE 81]
 
 State 181:
 	--{ ID, }--> 182
-[REDUCE 29]
 
 State 182:
-	--{ ID, }--> 183
+	--{ cll, ASSIGNMENT_OP, }--> 183
+	--{ AUTO_25, }--> 183
 	epsilon -> 183
 
 State 183:
-[SHIFT 180]
+	--{ AUTO_6, }--> 184
 
 State 184:
-	--{ AUTO_48, }--> 185
-[REDUCE 105]
+[SHIFT 75]
 
 State 185:
-	--{ ID, }--> 186
+	--{ AUTO_7, }--> 186
+[REDUCE 81]
 
 State 186:
-	--{ AUTO_48, }--> 187
-	epsilon -> 187
+[SHIFT 74]
 
 State 187:
-[SHIFT 183]
+	--{ AUTO_47, }--> 188
+[REDUCE 81]
 
 State 188:
-	--{ AUTO_45, }--> 189
-[REDUCE 90]
+	--{ STRING, }--> 189
+	--{ NUMBER, }--> 189
+	--{ ID, }--> 189
+	--{ BOOLEAN, }--> 189
+	--{ AUTO_47, }--> 189
+	epsilon -> 189
 
 State 189:
-	--{ AUTO_45, }--> 190
-	epsilon -> 190
+	--{ AUTO_49, }--> 190
 
 State 190:
-[SHIFT 150]
+[SHIFT 13]
 
 State 191:
-	--{ AUTO_38, }--> 192
-[REDUCE 57]
+	--{ STRING, }--> 192
+	--{ NUMBER, }--> 192
+	--{ ID, }--> 192
+	--{ BOOLEAN, }--> 192
+	--{ AUTO_6, }--> 192
+	--{ AUTO_7, }--> 192
+	--{ AUTO_47, }--> 192
+	--{ AUTO_39, }--> 192
+[REDUCE 69]
 
 State 192:
-	--{ ID, }--> 193
+[SHIFT 20]
 
 State 193:
-	--{ AUTO_38, }--> 194
-	epsilon -> 194
+	--{ STRING, }--> 194
+	--{ NUMBER, }--> 194
+	--{ ID, }--> 194
+	--{ BOOLEAN, }--> 194
+	--{ AUTO_6, }--> 194
+	--{ AUTO_7, }--> 194
+	--{ AUTO_47, }--> 194
+	--{ AUTO_39, }--> 194
+[REDUCE 69]
 
 State 194:
-[SHIFT 122]
+[SHIFT 124]
 
 State 195:
-	--{ AT, }--> 196
-	epsilon -> 196
-[REDUCE 113]
+	--{ STRING, }--> 196
+	--{ NUMBER, }--> 196
+	--{ ID, }--> 196
+	--{ BOOLEAN, }--> 196
+	--{ AUTO_6, }--> 196
+	--{ AUTO_7, }--> 196
+	--{ AUTO_47, }--> 196
+	--{ AUTO_39, }--> 196
+[REDUCE 69]
 
 State 196:
-[SHIFT 27]
+[SHIFT 16]
 
 State 197:
-	--{ AUTO_18, }--> 198
-[REDUCE 113]
+	--{ STRING, }--> 198
+	--{ NUMBER, }--> 198
+	--{ ID, }--> 198
+	--{ BOOLEAN, }--> 198
+	--{ AUTO_6, }--> 198
+	--{ AUTO_7, }--> 198
+	--{ AUTO_47, }--> 198
+	--{ AUTO_39, }--> 198
+[REDUCE 69]
 
 State 198:
-[REDUCE 112]
+[SHIFT 15]
 
 State 199:
-	--{ AUTO_29, }--> 203
-	--{ AUTO_12, }--> 205
-	--{ AUTO_32, }--> 202
-	--{ AUTO_26, }--> 200
-[REDUCE 13]
+	--{ AUTO_39, }--> 200
+[REDUCE 69]
 
 State 200:
-	--{ AUTO_27, }--> 201
-[REDUCE 13]
+	--{ STRING, }--> 201
+	--{ AT, }--> 201
+	--{ AUTO_39, }--> 201
+	--{ BOOLEAN, }--> 201
+	--{ DIVIDE, }--> 201
+	--{ ID, }--> 201
+	--{ MINUS, }--> 201
+	--{ MODULO, }--> 201
+	--{ MULTIPLE, }--> 201
+	--{ AUTO_47, }--> 201
+	--{ AUTO_6, }--> 201
+	--{ NUMBER, }--> 201
+	--{ AUTO_7, }--> 201
+	--{ PLUS, }--> 201
 
 State 201:
-[REDUCE 13]
+	--{ AUTO_40, }--> 202
 
 State 202:
-[REDUCE 13]
+[SHIFT 93]
 
 State 203:
-	--{ AUTO_32, }--> 204
+	--{ AUTO_6, }--> 204
+[REDUCE 69]
 
 State 204:
-[REDUCE 13]
+	--{ ID, }--> 205
 
 State 205:
-[REDUCE 116]
+	--{ cll, ASSIGNMENT_OP, }--> 206
+	--{ AUTO_25, }--> 206
+	epsilon -> 206
 
 State 206:
-	--{ STRING, }--> 207
-	--{ NUMBER, }--> 207
-	--{ ID, }--> 207
-	--{ BOOLEAN, }--> 207
-	--{ AUTO_7, }--> 207
-	--{ AUTO_3, }--> 207
-	--{ AUTO_28, }--> 207
-	--{ AUTO_2, }--> 207
-	--{ AUTO_15, }--> 207
-[REDUCE 81]
+	--{ AUTO_6, }--> 207
 
 State 207:
-[SHIFT 20]
+[SHIFT 75]
 
 State 208:
-	--{ STRING, }--> 209
-	--{ NUMBER, }--> 209
-	--{ ID, }--> 209
-	--{ BOOLEAN, }--> 209
 	--{ AUTO_7, }--> 209
-	--{ AUTO_3, }--> 209
-	--{ AUTO_28, }--> 209
-	--{ AUTO_2, }--> 209
-	--{ AUTO_15, }--> 209
-[REDUCE 81]
+[REDUCE 69]
 
 State 209:
-[SHIFT 125]
+[SHIFT 74]
 
 State 210:
-	--{ STRING, }--> 211
-	--{ NUMBER, }--> 211
-	--{ ID, }--> 211
-	--{ BOOLEAN, }--> 211
-	--{ AUTO_7, }--> 211
-	--{ AUTO_3, }--> 211
-	--{ AUTO_28, }--> 211
-	--{ AUTO_2, }--> 211
-	--{ AUTO_15, }--> 211
-[REDUCE 81]
+	--{ AUTO_47, }--> 211
+[REDUCE 69]
 
 State 211:
-[SHIFT 16]
+	--{ STRING, }--> 212
+	--{ NUMBER, }--> 212
+	--{ ID, }--> 212
+	--{ BOOLEAN, }--> 212
+	--{ AUTO_47, }--> 212
+	epsilon -> 212
 
 State 212:
-	--{ STRING, }--> 213
-	--{ NUMBER, }--> 213
-	--{ ID, }--> 213
-	--{ BOOLEAN, }--> 213
-	--{ AUTO_7, }--> 213
-	--{ AUTO_3, }--> 213
-	--{ AUTO_28, }--> 213
-	--{ AUTO_2, }--> 213
-	--{ AUTO_15, }--> 213
-[REDUCE 81]
+	--{ AUTO_49, }--> 213
 
 State 213:
-[SHIFT 15]
+[SHIFT 13]
 
 State 214:
-	--{ AUTO_15, }--> 215
-[REDUCE 81]
+	--{ ID, }--> 215
+[REDUCE 32]
 
 State 215:
-	--{ STRING, }--> 216
-	--{ AT, }--> 216
-	--{ AUTO_2, }--> 216
-	--{ AUTO_3, }--> 216
-	--{ MINUS, }--> 216
-	--{ PLUS, }--> 216
-	--{ AUTO_7, }--> 216
-	--{ AUTO_15, }--> 216
-	--{ BOOLEAN, }--> 216
-	--{ DIVIDE, }--> 216
 	--{ ID, }--> 216
-	--{ MODULO, }--> 216
-	--{ AUTO_28, }--> 216
-	--{ MULTIPLE, }--> 216
-	--{ NUMBER, }--> 216
+	epsilon -> 216
 
 State 216:
-	--{ AUTO_16, }--> 217
+[SHIFT 179]
 
 State 217:
-[SHIFT 85]
+	--{ AUTO_48, }--> 218
+[REDUCE 104]
 
 State 218:
-	--{ AUTO_2, }--> 219
-[REDUCE 81]
+	--{ ID, }--> 219
 
 State 219:
-	--{ ID, }--> 220
+	--{ AUTO_48, }--> 220
+	epsilon -> 220
 
 State 220:
-	--{ cll, ASSIGNMENT_OP, }--> 221
-	--{ AUTO_4, }--> 221
-	epsilon -> 221
+[SHIFT 182]
 
 State 221:
-	--{ AUTO_6, }--> 222
+	--{ AUTO_45, }--> 222
+[REDUCE 89]
 
 State 222:
-[SHIFT 75]
+	--{ AUTO_45, }--> 223
+	epsilon -> 223
 
 State 223:
-	--{ AUTO_3, }--> 224
-[REDUCE 81]
+[SHIFT 149]
 
 State 224:
-[SHIFT 102]
+	--{ AUTO_38, }--> 225
+[REDUCE 57]
 
 State 225:
-	--{ AUTO_7, }--> 226
-[REDUCE 81]
+	--{ ID, }--> 226
 
 State 226:
-[SHIFT 74]
+	--{ AUTO_38, }--> 227
+	epsilon -> 227
 
 State 227:
-	--{ AUTO_28, }--> 228
-[REDUCE 81]
+[SHIFT 121]
 
 State 228:
-	--{ STRING, }--> 229
-	--{ NUMBER, }--> 229
-	--{ ID, }--> 229
-	--{ BOOLEAN, }--> 229
-	--{ AUTO_28, }--> 229
-	epsilon -> 229
+	--{ AUTO_49, }--> 229
+[REDUCE 112]
 
 State 229:
-	--{ AUTO_33, }--> 230
+[REDUCE 111]
 
 State 230:
-[SHIFT 13]
+	--{ AUTO_38, }--> 231
+[REDUCE 112]
 
 State 231:
-	--{ STRING, }--> 232
-	--{ NUMBER, }--> 232
-	--{ ID, }--> 232
-	--{ BOOLEAN, }--> 232
-	--{ AUTO_7, }--> 232
-	--{ AUTO_3, }--> 232
-	--{ AUTO_28, }--> 232
-	--{ AUTO_2, }--> 232
-	--{ AUTO_15, }--> 232
-[REDUCE 69]
+	--{ AUTO_38, }--> 232
+	epsilon -> 232
 
 State 232:
-[SHIFT 20]
+[SHIFT 192]
 
 State 233:
-	--{ STRING, }--> 234
-	--{ NUMBER, }--> 234
-	--{ ID, }--> 234
-	--{ BOOLEAN, }--> 234
-	--{ AUTO_7, }--> 234
-	--{ AUTO_3, }--> 234
-	--{ AUTO_28, }--> 234
-	--{ AUTO_2, }--> 234
-	--{ AUTO_15, }--> 234
-[REDUCE 69]
+	--{ AUTO_36, }--> 237
+	--{ AUTO_32, }--> 236
+	--{ AUTO_48, }--> 234
+[REDUCE 13]
 
 State 234:
-[SHIFT 125]
+	--{ AUTO_27, }--> 235
+[REDUCE 115]
 
 State 235:
-	--{ STRING, }--> 236
-	--{ NUMBER, }--> 236
-	--{ ID, }--> 236
-	--{ BOOLEAN, }--> 236
-	--{ AUTO_7, }--> 236
-	--{ AUTO_3, }--> 236
-	--{ AUTO_28, }--> 236
-	--{ AUTO_2, }--> 236
-	--{ AUTO_15, }--> 236
-[REDUCE 69]
+[REDUCE 13]
 
 State 236:
-[SHIFT 16]
+[REDUCE 13]
 
 State 237:
-	--{ STRING, }--> 238
-	--{ NUMBER, }--> 238
-	--{ ID, }--> 238
-	--{ BOOLEAN, }--> 238
-	--{ AUTO_7, }--> 238
-	--{ AUTO_3, }--> 238
-	--{ AUTO_28, }--> 238
-	--{ AUTO_2, }--> 238
-	--{ AUTO_15, }--> 238
-[REDUCE 69]
+	--{ AUTO_32, }--> 238
 
 State 238:
-[SHIFT 15]
+[REDUCE 13]
 
 State 239:
-	--{ AUTO_15, }--> 240
-[REDUCE 69]
+	--{ STRING, }--> 240
+	--{ NUMBER, }--> 240
+	--{ ID, }--> 240
+	--{ BOOLEAN, }--> 240
+	--{ AUTO_6, }--> 240
+	--{ AUTO_7, }--> 240
+	--{ AUTO_47, }--> 240
+	--{ AUTO_39, }--> 240
+[REDUCE 81]
 
 State 240:
-	--{ STRING, }--> 241
-	--{ AT, }--> 241
-	--{ AUTO_2, }--> 241
-	--{ AUTO_3, }--> 241
-	--{ MINUS, }--> 241
-	--{ PLUS, }--> 241
-	--{ AUTO_7, }--> 241
-	--{ AUTO_15, }--> 241
-	--{ BOOLEAN, }--> 241
-	--{ DIVIDE, }--> 241
-	--{ ID, }--> 241
-	--{ MODULO, }--> 241
-	--{ AUTO_28, }--> 241
-	--{ MULTIPLE, }--> 241
-	--{ NUMBER, }--> 241
-
-State 241:
-	--{ AUTO_16, }--> 242
-
-State 242:
-[SHIFT 85]
-
-State 243:
-	--{ AUTO_2, }--> 244
-[REDUCE 69]
-
-State 244:
-	--{ ID, }--> 245
-
-State 245:
-	--{ cll, ASSIGNMENT_OP, }--> 246
-	--{ AUTO_4, }--> 246
-	epsilon -> 246
-
-State 246:
-	--{ AUTO_6, }--> 247
-
-State 247:
-[SHIFT 75]
-
-State 248:
-	--{ AUTO_3, }--> 249
-[REDUCE 69]
-
-State 249:
-[SHIFT 102]
-
-State 250:
-	--{ AUTO_7, }--> 251
-[REDUCE 69]
-
-State 251:
-[SHIFT 74]
-
-State 252:
-	--{ AUTO_28, }--> 253
-[REDUCE 69]
-
-State 253:
-	--{ STRING, }--> 254
-	--{ NUMBER, }--> 254
-	--{ ID, }--> 254
-	--{ BOOLEAN, }--> 254
-	--{ AUTO_28, }--> 254
-	epsilon -> 254
-
-State 254:
-	--{ AUTO_33, }--> 255
-
-State 255:
-[SHIFT 13]
-
-State 256:
-	--{ STRING, }--> 257
-	--{ AUTO_2, }--> 257
-	--{ AUTO_3, }--> 257
-	--{ MINUS, }--> 257
-	--{ AUTO_15, }--> 257
-	--{ BOOLEAN, }--> 257
-	--{ DIVIDE, }--> 257
-	--{ ID, }--> 257
-	--{ MODULO, }--> 257
-	--{ AUTO_28, }--> 257
-	--{ MULTIPLE, }--> 257
-	--{ NUMBER, }--> 257
-	--{ AUTO_7, }--> 257
-	--{ PLUS, }--> 257
-[REDUCE 124]
-
-State 257:
-	--{ STRING, }--> 258
-	--{ NUMBER, }--> 258
-	--{ ID, }--> 258
-	--{ BOOLEAN, }--> 258
-	--{ AUTO_7, }--> 258
-	--{ AUTO_3, }--> 258
-	--{ AUTO_28, }--> 258
-	--{ AUTO_2, }--> 258
-	--{ AUTO_15, }--> 258
-
-State 258:
 [SHIFT 20]
 
-State 259:
-	--{ STRING, }--> 260
-	--{ AUTO_2, }--> 260
-	--{ AUTO_3, }--> 260
-	--{ MINUS, }--> 260
-	--{ AUTO_15, }--> 260
-	--{ BOOLEAN, }--> 260
-	--{ DIVIDE, }--> 260
-	--{ ID, }--> 260
-	--{ MODULO, }--> 260
-	--{ AUTO_28, }--> 260
-	--{ MULTIPLE, }--> 260
-	--{ NUMBER, }--> 260
-	--{ AUTO_7, }--> 260
-	--{ PLUS, }--> 260
-[REDUCE 124]
+State 241:
+	--{ STRING, }--> 242
+	--{ NUMBER, }--> 242
+	--{ ID, }--> 242
+	--{ BOOLEAN, }--> 242
+	--{ AUTO_6, }--> 242
+	--{ AUTO_7, }--> 242
+	--{ AUTO_47, }--> 242
+	--{ AUTO_39, }--> 242
+[REDUCE 81]
 
-State 260:
-	--{ STRING, }--> 261
-	--{ NUMBER, }--> 261
-	--{ ID, }--> 261
-	--{ BOOLEAN, }--> 261
-	--{ AUTO_7, }--> 261
-	--{ AUTO_3, }--> 261
-	--{ AUTO_28, }--> 261
-	--{ AUTO_2, }--> 261
-	--{ AUTO_15, }--> 261
+State 242:
+[SHIFT 124]
 
-State 261:
-[SHIFT 125]
+State 243:
+	--{ STRING, }--> 244
+	--{ NUMBER, }--> 244
+	--{ ID, }--> 244
+	--{ BOOLEAN, }--> 244
+	--{ AUTO_6, }--> 244
+	--{ AUTO_7, }--> 244
+	--{ AUTO_47, }--> 244
+	--{ AUTO_39, }--> 244
+[REDUCE 81]
 
-State 262:
-	--{ STRING, }--> 263
-	--{ AUTO_2, }--> 263
-	--{ AUTO_3, }--> 263
-	--{ MINUS, }--> 263
-	--{ AUTO_15, }--> 263
-	--{ BOOLEAN, }--> 263
-	--{ DIVIDE, }--> 263
-	--{ ID, }--> 263
-	--{ MODULO, }--> 263
-	--{ AUTO_28, }--> 263
-	--{ MULTIPLE, }--> 263
-	--{ NUMBER, }--> 263
-	--{ AUTO_7, }--> 263
-	--{ PLUS, }--> 263
-[REDUCE 124]
-
-State 263:
-	--{ STRING, }--> 264
-	--{ NUMBER, }--> 264
-	--{ ID, }--> 264
-	--{ BOOLEAN, }--> 264
-	--{ AUTO_7, }--> 264
-	--{ AUTO_3, }--> 264
-	--{ AUTO_28, }--> 264
-	--{ AUTO_2, }--> 264
-	--{ AUTO_15, }--> 264
-
-State 264:
+State 244:
 [SHIFT 16]
 
+State 245:
+	--{ STRING, }--> 246
+	--{ NUMBER, }--> 246
+	--{ ID, }--> 246
+	--{ BOOLEAN, }--> 246
+	--{ AUTO_6, }--> 246
+	--{ AUTO_7, }--> 246
+	--{ AUTO_47, }--> 246
+	--{ AUTO_39, }--> 246
+[REDUCE 81]
+
+State 246:
+[SHIFT 15]
+
+State 247:
+	--{ AUTO_47, }--> 250
+	--{ cll, COMPARE_OP, }--> 249
+	--{ cll, LOGICAL_OP, }--> 248
+[REDUCE 117]
+
+State 248:
+[REDUCE 81]
+
+State 249:
+[REDUCE 81]
+
+State 250:
+	--{ STRING, }--> 251
+	--{ NUMBER, }--> 251
+	--{ ID, }--> 251
+	--{ BOOLEAN, }--> 251
+	--{ AUTO_47, }--> 251
+	epsilon -> 251
+
+State 251:
+	--{ AUTO_49, }--> 252
+
+State 252:
+[SHIFT 13]
+
+State 253:
+	--{ AUTO_6, }--> 256
+	--{ cll, COMPARE_OP, }--> 255
+	--{ cll, LOGICAL_OP, }--> 254
+[REDUCE 117]
+
+State 254:
+[REDUCE 81]
+
+State 255:
+[REDUCE 81]
+
+State 256:
+	--{ ID, }--> 257
+
+State 257:
+	--{ cll, ASSIGNMENT_OP, }--> 258
+	--{ AUTO_25, }--> 258
+	epsilon -> 258
+
+State 258:
+	--{ AUTO_6, }--> 259
+
+State 259:
+[SHIFT 75]
+
+State 260:
+	--{ AUTO_39, }--> 261
+[REDUCE 81]
+
+State 261:
+	--{ STRING, }--> 262
+	--{ AT, }--> 262
+	--{ AUTO_39, }--> 262
+	--{ BOOLEAN, }--> 262
+	--{ DIVIDE, }--> 262
+	--{ ID, }--> 262
+	--{ MINUS, }--> 262
+	--{ MODULO, }--> 262
+	--{ MULTIPLE, }--> 262
+	--{ AUTO_47, }--> 262
+	--{ AUTO_6, }--> 262
+	--{ NUMBER, }--> 262
+	--{ AUTO_7, }--> 262
+	--{ PLUS, }--> 262
+
+State 262:
+	--{ AUTO_40, }--> 263
+
+State 263:
+[SHIFT 93]
+
+State 264:
+	--{ AUTO_7, }--> 265
+[REDUCE 81]
+
 State 265:
-	--{ STRING, }--> 266
-	--{ AUTO_2, }--> 266
-	--{ AUTO_3, }--> 266
-	--{ MINUS, }--> 266
-	--{ AUTO_15, }--> 266
-	--{ BOOLEAN, }--> 266
-	--{ DIVIDE, }--> 266
-	--{ ID, }--> 266
-	--{ MODULO, }--> 266
-	--{ AUTO_28, }--> 266
-	--{ MULTIPLE, }--> 266
-	--{ NUMBER, }--> 266
-	--{ AUTO_7, }--> 266
-	--{ PLUS, }--> 266
-[REDUCE 124]
+[SHIFT 74]
 
 State 266:
 	--{ STRING, }--> 267
 	--{ NUMBER, }--> 267
 	--{ ID, }--> 267
 	--{ BOOLEAN, }--> 267
+	--{ AUTO_6, }--> 267
 	--{ AUTO_7, }--> 267
-	--{ AUTO_3, }--> 267
-	--{ AUTO_28, }--> 267
-	--{ AUTO_2, }--> 267
-	--{ AUTO_15, }--> 267
+	--{ AUTO_47, }--> 267
+	--{ AUTO_39, }--> 267
+[REDUCE 69]
 
 State 267:
-[SHIFT 15]
+[SHIFT 20]
 
 State 268:
-	--{ DIVIDE, }--> 269
-[REDUCE 124]
+	--{ STRING, }--> 269
+	--{ NUMBER, }--> 269
+	--{ ID, }--> 269
+	--{ BOOLEAN, }--> 269
+	--{ AUTO_6, }--> 269
+	--{ AUTO_7, }--> 269
+	--{ AUTO_47, }--> 269
+	--{ AUTO_39, }--> 269
+[REDUCE 69]
 
 State 269:
-[SHIFT 81]
+[SHIFT 124]
 
 State 270:
-	--{ MINUS, }--> 271
-[REDUCE 124]
+	--{ STRING, }--> 271
+	--{ NUMBER, }--> 271
+	--{ ID, }--> 271
+	--{ BOOLEAN, }--> 271
+	--{ AUTO_6, }--> 271
+	--{ AUTO_7, }--> 271
+	--{ AUTO_47, }--> 271
+	--{ AUTO_39, }--> 271
+[REDUCE 69]
 
 State 271:
-[SHIFT 100]
+[SHIFT 16]
 
 State 272:
-	--{ MODULO, }--> 273
-[REDUCE 124]
+	--{ STRING, }--> 273
+	--{ NUMBER, }--> 273
+	--{ ID, }--> 273
+	--{ BOOLEAN, }--> 273
+	--{ AUTO_6, }--> 273
+	--{ AUTO_7, }--> 273
+	--{ AUTO_47, }--> 273
+	--{ AUTO_39, }--> 273
+[REDUCE 69]
 
 State 273:
-[SHIFT 101]
+[SHIFT 15]
 
 State 274:
-	--{ MULTIPLE, }--> 275
-[REDUCE 124]
+	--{ AUTO_47, }--> 277
+	--{ cll, COMPARE_OP, }--> 276
+	--{ cll, LOGICAL_OP, }--> 275
+[REDUCE 118]
 
 State 275:
-[SHIFT 103]
+[REDUCE 69]
 
 State 276:
-	--{ PLUS, }--> 277
-[REDUCE 124]
+[REDUCE 69]
 
 State 277:
-[SHIFT 87]
+	--{ STRING, }--> 278
+	--{ NUMBER, }--> 278
+	--{ ID, }--> 278
+	--{ BOOLEAN, }--> 278
+	--{ AUTO_47, }--> 278
+	epsilon -> 278
 
 State 278:
-	--{ AUTO_15, }--> 279
-[REDUCE 124]
+	--{ AUTO_49, }--> 279
 
 State 279:
-	--{ STRING, }--> 280
-	--{ AT, }--> 280
-	--{ AUTO_2, }--> 280
-	--{ AUTO_3, }--> 280
-	--{ MINUS, }--> 280
-	--{ PLUS, }--> 280
-	--{ AUTO_7, }--> 280
-	--{ AUTO_15, }--> 280
-	--{ BOOLEAN, }--> 280
-	--{ DIVIDE, }--> 280
-	--{ ID, }--> 280
-	--{ MODULO, }--> 280
-	--{ AUTO_28, }--> 280
-	--{ MULTIPLE, }--> 280
-	--{ NUMBER, }--> 280
+[SHIFT 13]
 
 State 280:
-	--{ AUTO_16, }--> 281
+	--{ AUTO_6, }--> 283
+	--{ cll, COMPARE_OP, }--> 282
+	--{ cll, LOGICAL_OP, }--> 281
+[REDUCE 118]
 
 State 281:
-[SHIFT 85]
+[REDUCE 69]
 
 State 282:
-	--{ AUTO_2, }--> 283
-[REDUCE 124]
+[REDUCE 69]
 
 State 283:
 	--{ ID, }--> 284
 
 State 284:
 	--{ cll, ASSIGNMENT_OP, }--> 285
-	--{ AUTO_4, }--> 285
+	--{ AUTO_25, }--> 285
 	epsilon -> 285
 
 State 285:
@@ -1422,405 +1316,640 @@ State 286:
 [SHIFT 75]
 
 State 287:
-	--{ AUTO_3, }--> 288
-[REDUCE 124]
+	--{ AUTO_39, }--> 288
+[REDUCE 69]
 
 State 288:
-[SHIFT 102]
+	--{ STRING, }--> 289
+	--{ AT, }--> 289
+	--{ AUTO_39, }--> 289
+	--{ BOOLEAN, }--> 289
+	--{ DIVIDE, }--> 289
+	--{ ID, }--> 289
+	--{ MINUS, }--> 289
+	--{ MODULO, }--> 289
+	--{ MULTIPLE, }--> 289
+	--{ AUTO_47, }--> 289
+	--{ AUTO_6, }--> 289
+	--{ NUMBER, }--> 289
+	--{ AUTO_7, }--> 289
+	--{ PLUS, }--> 289
 
 State 289:
-	--{ AUTO_7, }--> 290
-[REDUCE 124]
+	--{ AUTO_40, }--> 290
 
 State 290:
-[SHIFT 74]
+[SHIFT 93]
 
 State 291:
-	--{ AUTO_28, }--> 292
-[REDUCE 124]
+	--{ AUTO_7, }--> 292
+[REDUCE 69]
 
 State 292:
-	--{ STRING, }--> 293
-	--{ NUMBER, }--> 293
-	--{ ID, }--> 293
-	--{ BOOLEAN, }--> 293
-	--{ AUTO_28, }--> 293
-	epsilon -> 293
+[SHIFT 74]
 
 State 293:
-	--{ AUTO_33, }--> 294
+	--{ cll, COMPARE_OP, }--> 295
+	--{ cll, LOGICAL_OP, }--> 294
+[REDUCE 119]
 
 State 294:
-[SHIFT 13]
+[REDUCE 74]
 
 State 295:
-	--{ STRING, }--> 296
-	--{ AUTO_2, }--> 296
-	--{ AUTO_3, }--> 296
-	--{ MINUS, }--> 296
-	--{ AUTO_15, }--> 296
-	--{ BOOLEAN, }--> 296
-	--{ DIVIDE, }--> 296
-	--{ ID, }--> 296
-	--{ MODULO, }--> 296
-	--{ AUTO_28, }--> 296
-	--{ MULTIPLE, }--> 296
-	--{ NUMBER, }--> 296
-	--{ AUTO_7, }--> 296
-	--{ PLUS, }--> 296
-[REDUCE 125]
+[REDUCE 74]
 
 State 296:
-	--{ STRING, }--> 297
-	--{ NUMBER, }--> 297
-	--{ ID, }--> 297
-	--{ BOOLEAN, }--> 297
-	--{ AUTO_7, }--> 297
-	--{ AUTO_3, }--> 297
-	--{ AUTO_28, }--> 297
-	--{ AUTO_2, }--> 297
-	--{ AUTO_15, }--> 297
+	--{ cll, COMPARE_OP, }--> 298
+	--{ cll, LOGICAL_OP, }--> 297
+[REDUCE 119]
 
 State 297:
-[SHIFT 20]
+[REDUCE 74]
 
 State 298:
-	--{ STRING, }--> 299
-	--{ AUTO_2, }--> 299
-	--{ AUTO_3, }--> 299
-	--{ MINUS, }--> 299
-	--{ AUTO_15, }--> 299
-	--{ BOOLEAN, }--> 299
-	--{ DIVIDE, }--> 299
-	--{ ID, }--> 299
-	--{ MODULO, }--> 299
-	--{ AUTO_28, }--> 299
-	--{ MULTIPLE, }--> 299
-	--{ NUMBER, }--> 299
-	--{ AUTO_7, }--> 299
-	--{ PLUS, }--> 299
-[REDUCE 125]
+[REDUCE 74]
 
 State 299:
-	--{ STRING, }--> 300
-	--{ NUMBER, }--> 300
-	--{ ID, }--> 300
-	--{ BOOLEAN, }--> 300
-	--{ AUTO_7, }--> 300
-	--{ AUTO_3, }--> 300
-	--{ AUTO_28, }--> 300
-	--{ AUTO_2, }--> 300
-	--{ AUTO_15, }--> 300
+	--{ cll, COMPARE_OP, }--> 301
+	--{ cll, LOGICAL_OP, }--> 300
+[REDUCE 121]
 
 State 300:
-[SHIFT 125]
+[REDUCE 78]
 
 State 301:
-	--{ STRING, }--> 302
-	--{ AUTO_2, }--> 302
-	--{ AUTO_3, }--> 302
-	--{ MINUS, }--> 302
-	--{ AUTO_15, }--> 302
-	--{ BOOLEAN, }--> 302
-	--{ DIVIDE, }--> 302
-	--{ ID, }--> 302
-	--{ MODULO, }--> 302
-	--{ AUTO_28, }--> 302
-	--{ MULTIPLE, }--> 302
-	--{ NUMBER, }--> 302
-	--{ AUTO_7, }--> 302
-	--{ PLUS, }--> 302
-[REDUCE 125]
+[REDUCE 78]
 
 State 302:
-	--{ STRING, }--> 303
-	--{ NUMBER, }--> 303
-	--{ ID, }--> 303
-	--{ BOOLEAN, }--> 303
-	--{ AUTO_7, }--> 303
-	--{ AUTO_3, }--> 303
-	--{ AUTO_28, }--> 303
-	--{ AUTO_2, }--> 303
-	--{ AUTO_15, }--> 303
+	--{ cll, COMPARE_OP, }--> 304
+	--{ cll, LOGICAL_OP, }--> 303
+[REDUCE 121]
 
 State 303:
-[SHIFT 16]
+[REDUCE 78]
 
 State 304:
-	--{ STRING, }--> 305
-	--{ AUTO_2, }--> 305
-	--{ AUTO_3, }--> 305
-	--{ MINUS, }--> 305
-	--{ AUTO_15, }--> 305
-	--{ BOOLEAN, }--> 305
-	--{ DIVIDE, }--> 305
-	--{ ID, }--> 305
-	--{ MODULO, }--> 305
-	--{ AUTO_28, }--> 305
-	--{ MULTIPLE, }--> 305
-	--{ NUMBER, }--> 305
-	--{ AUTO_7, }--> 305
-	--{ PLUS, }--> 305
-[REDUCE 125]
+[REDUCE 78]
 
 State 305:
 	--{ STRING, }--> 306
+	--{ PLUS, }--> 306
 	--{ NUMBER, }--> 306
+	--{ MULTIPLE, }--> 306
+	--{ MODULO, }--> 306
+	--{ MINUS, }--> 306
 	--{ ID, }--> 306
+	--{ DIVIDE, }--> 306
 	--{ BOOLEAN, }--> 306
+	--{ AUTO_6, }--> 306
 	--{ AUTO_7, }--> 306
-	--{ AUTO_3, }--> 306
-	--{ AUTO_28, }--> 306
-	--{ AUTO_2, }--> 306
-	--{ AUTO_15, }--> 306
+	--{ AUTO_47, }--> 306
+	--{ AUTO_39, }--> 306
+[REDUCE 122]
 
 State 306:
-[SHIFT 15]
+	--{ STRING, }--> 307
+	--{ NUMBER, }--> 307
+	--{ ID, }--> 307
+	--{ BOOLEAN, }--> 307
+	--{ AUTO_6, }--> 307
+	--{ AUTO_7, }--> 307
+	--{ AUTO_47, }--> 307
+	--{ AUTO_39, }--> 307
 
 State 307:
-	--{ DIVIDE, }--> 308
-[REDUCE 125]
+[SHIFT 20]
 
 State 308:
-[SHIFT 81]
+	--{ STRING, }--> 309
+	--{ PLUS, }--> 309
+	--{ NUMBER, }--> 309
+	--{ MULTIPLE, }--> 309
+	--{ MODULO, }--> 309
+	--{ MINUS, }--> 309
+	--{ ID, }--> 309
+	--{ DIVIDE, }--> 309
+	--{ BOOLEAN, }--> 309
+	--{ AUTO_6, }--> 309
+	--{ AUTO_7, }--> 309
+	--{ AUTO_47, }--> 309
+	--{ AUTO_39, }--> 309
+[REDUCE 122]
 
 State 309:
-	--{ MINUS, }--> 310
-[REDUCE 125]
+	--{ STRING, }--> 310
+	--{ NUMBER, }--> 310
+	--{ ID, }--> 310
+	--{ BOOLEAN, }--> 310
+	--{ AUTO_6, }--> 310
+	--{ AUTO_7, }--> 310
+	--{ AUTO_47, }--> 310
+	--{ AUTO_39, }--> 310
 
 State 310:
-[SHIFT 100]
+[SHIFT 124]
 
 State 311:
+	--{ STRING, }--> 312
+	--{ PLUS, }--> 312
+	--{ NUMBER, }--> 312
+	--{ MULTIPLE, }--> 312
 	--{ MODULO, }--> 312
-[REDUCE 125]
+	--{ MINUS, }--> 312
+	--{ ID, }--> 312
+	--{ DIVIDE, }--> 312
+	--{ BOOLEAN, }--> 312
+	--{ AUTO_6, }--> 312
+	--{ AUTO_7, }--> 312
+	--{ AUTO_47, }--> 312
+	--{ AUTO_39, }--> 312
+[REDUCE 122]
 
 State 312:
-[SHIFT 101]
+	--{ STRING, }--> 313
+	--{ NUMBER, }--> 313
+	--{ ID, }--> 313
+	--{ BOOLEAN, }--> 313
+	--{ AUTO_6, }--> 313
+	--{ AUTO_7, }--> 313
+	--{ AUTO_47, }--> 313
+	--{ AUTO_39, }--> 313
 
 State 313:
-	--{ MULTIPLE, }--> 314
-[REDUCE 125]
+[SHIFT 16]
 
 State 314:
-[SHIFT 103]
+	--{ STRING, }--> 315
+	--{ PLUS, }--> 315
+	--{ NUMBER, }--> 315
+	--{ MULTIPLE, }--> 315
+	--{ MODULO, }--> 315
+	--{ MINUS, }--> 315
+	--{ ID, }--> 315
+	--{ DIVIDE, }--> 315
+	--{ BOOLEAN, }--> 315
+	--{ AUTO_6, }--> 315
+	--{ AUTO_7, }--> 315
+	--{ AUTO_47, }--> 315
+	--{ AUTO_39, }--> 315
+[REDUCE 122]
 
 State 315:
-	--{ PLUS, }--> 316
-[REDUCE 125]
+	--{ STRING, }--> 316
+	--{ NUMBER, }--> 316
+	--{ ID, }--> 316
+	--{ BOOLEAN, }--> 316
+	--{ AUTO_6, }--> 316
+	--{ AUTO_7, }--> 316
+	--{ AUTO_47, }--> 316
+	--{ AUTO_39, }--> 316
 
 State 316:
-[SHIFT 87]
+[SHIFT 15]
 
 State 317:
-	--{ AUTO_15, }--> 318
-[REDUCE 125]
+	--{ DIVIDE, }--> 318
+[REDUCE 122]
 
 State 318:
-	--{ STRING, }--> 319
-	--{ AT, }--> 319
-	--{ AUTO_2, }--> 319
-	--{ AUTO_3, }--> 319
-	--{ MINUS, }--> 319
-	--{ PLUS, }--> 319
-	--{ AUTO_7, }--> 319
-	--{ AUTO_15, }--> 319
-	--{ BOOLEAN, }--> 319
-	--{ DIVIDE, }--> 319
-	--{ ID, }--> 319
-	--{ MODULO, }--> 319
-	--{ AUTO_28, }--> 319
-	--{ MULTIPLE, }--> 319
-	--{ NUMBER, }--> 319
+[SHIFT 81]
 
 State 319:
-	--{ AUTO_16, }--> 320
+	--{ MINUS, }--> 320
+[REDUCE 122]
 
 State 320:
-[SHIFT 85]
+[SHIFT 100]
 
 State 321:
-	--{ AUTO_2, }--> 322
-[REDUCE 125]
+	--{ MODULO, }--> 322
+[REDUCE 122]
 
 State 322:
-	--{ ID, }--> 323
+[SHIFT 101]
 
 State 323:
-	--{ cll, ASSIGNMENT_OP, }--> 324
-	--{ AUTO_4, }--> 324
-	epsilon -> 324
+	--{ MULTIPLE, }--> 324
+[REDUCE 122]
 
 State 324:
-	--{ AUTO_6, }--> 325
-
-State 325:
-[SHIFT 75]
-
-State 326:
-	--{ AUTO_3, }--> 327
-[REDUCE 125]
-
-State 327:
 [SHIFT 102]
 
+State 325:
+	--{ PLUS, }--> 326
+[REDUCE 122]
+
+State 326:
+[SHIFT 86]
+
+State 327:
+	--{ AUTO_39, }--> 328
+[REDUCE 122]
+
 State 328:
+	--{ STRING, }--> 329
+	--{ AT, }--> 329
+	--{ AUTO_39, }--> 329
+	--{ BOOLEAN, }--> 329
+	--{ DIVIDE, }--> 329
+	--{ ID, }--> 329
+	--{ MINUS, }--> 329
+	--{ MODULO, }--> 329
+	--{ MULTIPLE, }--> 329
+	--{ AUTO_47, }--> 329
+	--{ AUTO_6, }--> 329
+	--{ NUMBER, }--> 329
 	--{ AUTO_7, }--> 329
-[REDUCE 125]
+	--{ PLUS, }--> 329
 
 State 329:
-[SHIFT 74]
+	--{ AUTO_40, }--> 330
 
 State 330:
-	--{ AUTO_28, }--> 331
-[REDUCE 125]
+[SHIFT 93]
 
 State 331:
-	--{ STRING, }--> 332
-	--{ NUMBER, }--> 332
-	--{ ID, }--> 332
-	--{ BOOLEAN, }--> 332
-	--{ AUTO_28, }--> 332
-	epsilon -> 332
+	--{ AUTO_6, }--> 332
+[REDUCE 122]
 
 State 332:
-	--{ AUTO_33, }--> 333
+	--{ ID, }--> 333
 
 State 333:
-[SHIFT 13]
+	--{ cll, ASSIGNMENT_OP, }--> 334
+	--{ AUTO_25, }--> 334
+	epsilon -> 334
 
 State 334:
-	--{ ID, }--> 335
-[REDUCE 61]
+	--{ AUTO_6, }--> 335
 
 State 335:
-	--{ ID, }--> 336
-	epsilon -> 336
+[SHIFT 75]
 
 State 336:
-[SHIFT 129]
+	--{ AUTO_7, }--> 337
+[REDUCE 122]
 
 State 337:
-	--{ AUTO_41, }--> 338
-[REDUCE 113]
+[SHIFT 74]
 
 State 338:
-	--{ ID, }--> 339
+	--{ AUTO_47, }--> 339
+[REDUCE 122]
 
 State 339:
-[SHIFT 27]
+	--{ STRING, }--> 340
+	--{ NUMBER, }--> 340
+	--{ ID, }--> 340
+	--{ BOOLEAN, }--> 340
+	--{ AUTO_47, }--> 340
+	epsilon -> 340
 
 State 340:
-[REDUCE 102]
+	--{ AUTO_49, }--> 341
 
 State 341:
-[REDUCE 102]
+[SHIFT 13]
 
 State 342:
-[REDUCE 102]
+	--{ STRING, }--> 343
+	--{ PLUS, }--> 343
+	--{ NUMBER, }--> 343
+	--{ MULTIPLE, }--> 343
+	--{ MODULO, }--> 343
+	--{ MINUS, }--> 343
+	--{ ID, }--> 343
+	--{ DIVIDE, }--> 343
+	--{ BOOLEAN, }--> 343
+	--{ AUTO_6, }--> 343
+	--{ AUTO_7, }--> 343
+	--{ AUTO_47, }--> 343
+	--{ AUTO_39, }--> 343
+[REDUCE 123]
 
 State 343:
-[REDUCE 102]
+	--{ STRING, }--> 344
+	--{ NUMBER, }--> 344
+	--{ ID, }--> 344
+	--{ BOOLEAN, }--> 344
+	--{ AUTO_6, }--> 344
+	--{ AUTO_7, }--> 344
+	--{ AUTO_47, }--> 344
+	--{ AUTO_39, }--> 344
 
 State 344:
-[REDUCE 102]
+[SHIFT 20]
 
 State 345:
-[REDUCE 102]
+	--{ STRING, }--> 346
+	--{ PLUS, }--> 346
+	--{ NUMBER, }--> 346
+	--{ MULTIPLE, }--> 346
+	--{ MODULO, }--> 346
+	--{ MINUS, }--> 346
+	--{ ID, }--> 346
+	--{ DIVIDE, }--> 346
+	--{ BOOLEAN, }--> 346
+	--{ AUTO_6, }--> 346
+	--{ AUTO_7, }--> 346
+	--{ AUTO_47, }--> 346
+	--{ AUTO_39, }--> 346
+[REDUCE 123]
 
 State 346:
-[REDUCE 102]
+	--{ STRING, }--> 347
+	--{ NUMBER, }--> 347
+	--{ ID, }--> 347
+	--{ BOOLEAN, }--> 347
+	--{ AUTO_6, }--> 347
+	--{ AUTO_7, }--> 347
+	--{ AUTO_47, }--> 347
+	--{ AUTO_39, }--> 347
 
 State 347:
-[REDUCE 102]
+[SHIFT 124]
 
 State 348:
-[REDUCE 102]
+	--{ STRING, }--> 349
+	--{ PLUS, }--> 349
+	--{ NUMBER, }--> 349
+	--{ MULTIPLE, }--> 349
+	--{ MODULO, }--> 349
+	--{ MINUS, }--> 349
+	--{ ID, }--> 349
+	--{ DIVIDE, }--> 349
+	--{ BOOLEAN, }--> 349
+	--{ AUTO_6, }--> 349
+	--{ AUTO_7, }--> 349
+	--{ AUTO_47, }--> 349
+	--{ AUTO_39, }--> 349
+[REDUCE 123]
 
 State 349:
-[REDUCE 102]
+	--{ STRING, }--> 350
+	--{ NUMBER, }--> 350
+	--{ ID, }--> 350
+	--{ BOOLEAN, }--> 350
+	--{ AUTO_6, }--> 350
+	--{ AUTO_7, }--> 350
+	--{ AUTO_47, }--> 350
+	--{ AUTO_39, }--> 350
 
 State 350:
-[REDUCE 102]
+[SHIFT 16]
 
 State 351:
-[REDUCE 102]
+	--{ STRING, }--> 352
+	--{ PLUS, }--> 352
+	--{ NUMBER, }--> 352
+	--{ MULTIPLE, }--> 352
+	--{ MODULO, }--> 352
+	--{ MINUS, }--> 352
+	--{ ID, }--> 352
+	--{ DIVIDE, }--> 352
+	--{ BOOLEAN, }--> 352
+	--{ AUTO_6, }--> 352
+	--{ AUTO_7, }--> 352
+	--{ AUTO_47, }--> 352
+	--{ AUTO_39, }--> 352
+[REDUCE 123]
 
 State 352:
-[REDUCE 102]
+	--{ STRING, }--> 353
+	--{ NUMBER, }--> 353
+	--{ ID, }--> 353
+	--{ BOOLEAN, }--> 353
+	--{ AUTO_6, }--> 353
+	--{ AUTO_7, }--> 353
+	--{ AUTO_47, }--> 353
+	--{ AUTO_39, }--> 353
 
 State 353:
-[REDUCE 102]
+[SHIFT 15]
 
 State 354:
-[REDUCE 102]
+	--{ DIVIDE, }--> 355
+[REDUCE 123]
 
 State 355:
-[REDUCE 102]
+[SHIFT 81]
 
 State 356:
-[REDUCE 102]
+	--{ MINUS, }--> 357
+[REDUCE 123]
 
 State 357:
-[REDUCE 102]
+[SHIFT 100]
 
 State 358:
-[REDUCE 102]
+	--{ MODULO, }--> 359
+[REDUCE 123]
 
 State 359:
-[REDUCE 102]
+[SHIFT 101]
 
 State 360:
-[REDUCE 102]
+	--{ MULTIPLE, }--> 361
+[REDUCE 123]
 
 State 361:
-[REDUCE 102]
+[SHIFT 102]
 
 State 362:
-[REDUCE 102]
+	--{ PLUS, }--> 363
+[REDUCE 123]
 
 State 363:
-[REDUCE 102]
+[SHIFT 86]
 
 State 364:
-[REDUCE 102]
+	--{ AUTO_39, }--> 365
+[REDUCE 123]
 
 State 365:
-	--{ AUTO_48, }--> 366
-[REDUCE 105]
+	--{ STRING, }--> 366
+	--{ AT, }--> 366
+	--{ AUTO_39, }--> 366
+	--{ BOOLEAN, }--> 366
+	--{ DIVIDE, }--> 366
+	--{ ID, }--> 366
+	--{ MINUS, }--> 366
+	--{ MODULO, }--> 366
+	--{ MULTIPLE, }--> 366
+	--{ AUTO_47, }--> 366
+	--{ AUTO_6, }--> 366
+	--{ NUMBER, }--> 366
+	--{ AUTO_7, }--> 366
+	--{ PLUS, }--> 366
 
 State 366:
-	--{ ID, }--> 367
+	--{ AUTO_40, }--> 367
 
 State 367:
-	--{ AUTO_48, }--> 368
-	epsilon -> 368
+[SHIFT 93]
 
 State 368:
-[SHIFT 183]
+	--{ AUTO_6, }--> 369
+[REDUCE 123]
 
 State 369:
-	--{ AUTO_30, }--> 370
-[REDUCE 93]
+	--{ ID, }--> 370
 
 State 370:
-	--{ ID, }--> 371
+	--{ cll, ASSIGNMENT_OP, }--> 371
+	--{ AUTO_25, }--> 371
+	epsilon -> 371
 
 State 371:
-	--{ AUTO_31, }--> 372
+	--{ AUTO_6, }--> 372
 
 State 372:
-	--{ STRING, }--> 373
-	--{ NUMBER, }--> 373
-	--{ ID, }--> 373
-	--{ BOOLEAN, }--> 373
-	--{ AUTO_28, }--> 373
-	--{ AUTO_25, }--> 373
+[SHIFT 75]
 
 State 373:
-	--{ AUTO_30, }--> 374
-	epsilon -> 374
+	--{ AUTO_7, }--> 374
+[REDUCE 123]
 
 State 374:
-[SHIFT 155]
+[SHIFT 74]
+
+State 375:
+	--{ AUTO_47, }--> 376
+[REDUCE 123]
+
+State 376:
+	--{ STRING, }--> 377
+	--{ NUMBER, }--> 377
+	--{ ID, }--> 377
+	--{ BOOLEAN, }--> 377
+	--{ AUTO_47, }--> 377
+	epsilon -> 377
+
+State 377:
+	--{ AUTO_49, }--> 378
+
+State 378:
+[SHIFT 13]
+
+State 379:
+	--{ ID, }--> 380
+[REDUCE 61]
+
+State 380:
+	--{ ID, }--> 381
+	epsilon -> 381
+
+State 381:
+[SHIFT 128]
+
+State 382:
+	--{ AUTO_38, }--> 383
+[REDUCE 112]
+
+State 383:
+	--{ AUTO_38, }--> 384
+	epsilon -> 384
+
+State 384:
+[SHIFT 192]
+
+State 385:
+[REDUCE 101]
+
+State 386:
+[REDUCE 101]
+
+State 387:
+[REDUCE 101]
+
+State 388:
+[REDUCE 101]
+
+State 389:
+[REDUCE 101]
+
+State 390:
+[REDUCE 101]
+
+State 391:
+[REDUCE 101]
+
+State 392:
+[REDUCE 101]
+
+State 393:
+[REDUCE 101]
+
+State 394:
+[REDUCE 101]
+
+State 395:
+[REDUCE 101]
+
+State 396:
+[REDUCE 101]
+
+State 397:
+[REDUCE 101]
+
+State 398:
+[REDUCE 101]
+
+State 399:
+[REDUCE 101]
+
+State 400:
+[REDUCE 101]
+
+State 401:
+[REDUCE 101]
+
+State 402:
+[REDUCE 101]
+
+State 403:
+[REDUCE 101]
+
+State 404:
+[REDUCE 101]
+
+State 405:
+	--{ AUTO_48, }--> 406
+[REDUCE 104]
+
+State 406:
+	--{ ID, }--> 407
+
+State 407:
+	--{ AUTO_48, }--> 408
+	epsilon -> 408
+
+State 408:
+[SHIFT 182]
+
+State 409:
+	--{ AUTO_48, }--> 410
+[REDUCE 92]
+
+State 410:
+	--{ ID, }--> 411
+
+State 411:
+	--{ AUTO_36, }--> 412
+
+State 412:
+	--{ STRING, }--> 413
+	--{ NUMBER, }--> 413
+	--{ ID, }--> 413
+	--{ BOOLEAN, }--> 413
+	--{ AUTO_47, }--> 413
+	--{ AUTO_25, }--> 413
+
+State 413:
+	--{ AUTO_48, }--> 414
+	epsilon -> 414
+
+State 414:
+[SHIFT 154]
 

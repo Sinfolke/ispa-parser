@@ -145,8 +145,6 @@ namespace Tokens {
                     return false;
                 return compare_rule(first, values[0]);
             }
-
-            
             return false;
         }
         switch (first.name)
@@ -515,11 +513,10 @@ namespace Tokens {
         if (token_rule.size() > rules.size()) // never match
             return {};
 
-        for (size_t i = 0; i <= rules.size() - token_rule.size(); ++i) {
+        for (size_t i = 0; i <= rules.size() - token_rule.size(); i++) {
             bool success = true;
-            int _where = i;
-
-            for (size_t j = 0; j < token_rule.size(); ++j) {
+            size_t j = 0;
+            for (; j < token_rule.size(); ++j) {
                 auto token_data = std::any_cast<obj_t>(token_rule[j].data);
                 auto token_val = std::any_cast<Parser::Rule>(corelib::map::get(token_data, "val"));
 
@@ -533,10 +530,10 @@ namespace Tokens {
             }
 
             if (success) {
-                where.push_back(_where);
+                where.push_back(i);
+                i += token_rule.size() - 1;
             }
         }
-
         return where;
     }
     Parser::Rule* find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos) {

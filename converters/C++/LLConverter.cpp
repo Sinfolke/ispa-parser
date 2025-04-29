@@ -33,20 +33,18 @@ static std::string format_str(std::string str) {
     return res;
 }
 
-void LLConverter::writeRules(std::ostringstream &out) {
+void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     bool isRule = false;
-    indentLevel = 2;
     for (auto &member : data) {
         if (member.type == LLIR::types::RULE) {
-            isRule = true;
+            isRule = startName;
         } else if (member.type == LLIR::types::TOKEN) {
-            isRule = false;
+            isRule = !startName;
         } 
         if (isRule) {
             convertMember(member, out);
         }
     }
-    indentLevel = 1;
 }
 void LLConverter::outputHeader(std::ostringstream &out, const std::string &filename) {
     cpp_file = false;
@@ -64,7 +62,9 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
     create_parser_header(out);
-    writeRules(out);
+    indentLevel = 2;
+    writeRules(out, true);
+    indentLevel = 1;
     close_parser_header(out);
     close_library(out, namespace_name);
 }
@@ -167,10 +167,8 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         pos_counter_stack.pop();
         break;
     case LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
-        if (isToken) {
-            auto var = std::any_cast<std::string>(mem.value);
-            out << current_pos_counter.top() << " += " + var + ".node.length()";
-        }
+        auto var = std::any_cast<std::string>(mem.value);
+        out << current_pos_counter.top() << " += " + var + ".node.length()";
         break;
     }
     case LLIR::types::RESET_POS_COUNTER:
@@ -256,7 +254,7 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
     addLexerCode_Header(out);
     convertLexerCode(lexer_code.getDataRef(), out);
     addLexerCode_Bottom(out,  lexer_code_access_var.var);
-    convertMembers(data, out);
+    writeRules(out, false);
 }
 void LLConverter::addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(use["name"].data) << ".h\"\n";
