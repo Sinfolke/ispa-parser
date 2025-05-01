@@ -1,425 +1,449 @@
 Action Table:
 State Token          Action    Next State
-213   cll_TYPE       REDUCE    146       
-213   ID             REDUCE    146       
-213   AUTO_47        REDUCE    146       
-213   AUTO_40        REDUCE    146       
-213   AUTO_39        REDUCE    146       
-213   END            REDUCE    146       
-213   AUTO_32        REDUCE    146       
-213   AT             REDUCE    146       
-212   AUTO_47        SHIFT     161       
+213   STRING         REDUCE    147       
+213   MULTIPLE       REDUCE    147       
+213   AT             REDUCE    147       
+213   END            REDUCE    147       
+213   AUTO_39        REDUCE    147       
+213   PLUS           REDUCE    147       
+213   AUTO_7         REDUCE    147       
+213   NUMBER         REDUCE    147       
+213   AUTO_47        REDUCE    147       
+213   AUTO_6         REDUCE    147       
+213   BOOLEAN        REDUCE    147       
+213   DIVIDE         REDUCE    147       
+213   AUTO_40        REDUCE    147       
+213   ID             REDUCE    147       
+213   AUTO_32        REDUCE    147       
+213   MINUS          REDUCE    147       
+213   MODULO         REDUCE    147       
+212   AUTO_47        SHIFT     162       
 211   AUTO_40        SHIFT     212       
-210   STRING         REDUCE    145       
-210   NUMBER         REDUCE    145       
-210   ID             REDUCE    145       
-210   BOOLEAN        REDUCE    145       
-210   AUTO_48        REDUCE    145       
-210   AUTO_47        REDUCE    145       
-210   AUTO_36        REDUCE    145       
-210   AUTO_32        REDUCE    145       
-210   AUTO_25        REDUCE    145       
-209   AUTO_39        SHIFT     93        
+210   STRING         REDUCE    146       
+210   NUMBER         REDUCE    146       
+210   ID             REDUCE    146       
+210   BOOLEAN        REDUCE    146       
+210   AUTO_48        REDUCE    146       
+210   AUTO_47        REDUCE    146       
+210   AUTO_36        REDUCE    146       
+210   AUTO_32        REDUCE    146       
+210   AUTO_25        REDUCE    146       
+210   AT             REDUCE    146       
+209   AUTO_39        SHIFT     92        
+209   AT             SHIFT     85        
 209   BOOLEAN        SHIFT     20        
 209   AUTO_47        SHIFT     13        
-209   AUTO_6         SHIFT     75        
+209   AUTO_6         SHIFT     76        
 209   NUMBER         SHIFT     16        
-209   MULTIPLE       SHIFT     102       
-209   AUTO_7         SHIFT     74        
-209   PLUS           SHIFT     86        
+209   MULTIPLE       SHIFT     103       
+209   AUTO_7         SHIFT     75        
+209   PLUS           SHIFT     87        
 209   STRING         SHIFT     15        
 209   AUTO_25        SHIFT     14        
-209   ID             SHIFT     124       
-209   DIVIDE         SHIFT     81        
-209   AUTO_40        REDUCE    138       
-209   AT             SHIFT     96        
-209   AUTO_32        REDUCE    138       
-209   MINUS          SHIFT     100       
-209   MODULO         SHIFT     101       
-208   AUTO_48        DFA_RESOLVE143       
-208   AUTO_32        REDUCE    92        
-207   ID             REDUCE    144       
-207   AUTO_49        REDUCE    144       
-207   AUTO_48        REDUCE    144       
-206   AUTO_40        REDUCE    143       
-206   AUTO_32        REDUCE    143       
+209   ID             SHIFT     125       
+209   DIVIDE         SHIFT     82        
+209   AUTO_40        REDUCE    139       
+209   AUTO_32        REDUCE    139       
+209   MINUS          SHIFT     101       
+209   MODULO         SHIFT     102       
+208   AUTO_48        DFA_RESOLVE159       
+208   AUTO_32        REDUCE    93        
+207   ID             REDUCE    145       
+207   AUTO_49        REDUCE    145       
+207   AUTO_48        REDUCE    145       
+206   AUTO_40        REDUCE    144       
+206   AUTO_32        REDUCE    144       
 205   AUTO_32        SHIFT     209       
-204   AUTO_49        REDUCE    142       
-204   AUTO_38        REDUCE    142       
-203   END            REDUCE    141       
-203   AUTO_49        REDUCE    141       
-203   AUTO_38        REDUCE    141       
-202   STRING         REDUCE    140       
-202   MULTIPLE       REDUCE    140       
-202   AT             REDUCE    140       
-202   AUTO_27        REDUCE    140       
-202   END            REDUCE    140       
-202   AUTO_39        REDUCE    140       
-202   PLUS           REDUCE    140       
-202   AUTO_7         REDUCE    140       
-202   NUMBER         REDUCE    140       
-202   AUTO_47        REDUCE    140       
-202   AUTO_6         REDUCE    140       
-202   BOOLEAN        REDUCE    140       
-202   DIVIDE         REDUCE    140       
-202   ID             REDUCE    140       
-202   AUTO_32        REDUCE    140       
-202   MINUS          REDUCE    140       
-202   MODULO         REDUCE    140       
+204   END            REDUCE    143       
+204   AUTO_49        REDUCE    143       
+203   AUTO_49        REDUCE    142       
+203   AT             REDUCE    142       
+202   STRING         REDUCE    141       
+202   AT             REDUCE    141       
+202   AUTO_27        REDUCE    141       
+202   AUTO_39        REDUCE    141       
+202   PLUS           REDUCE    141       
+202   AUTO_7         REDUCE    141       
+202   NUMBER         REDUCE    141       
+202   AUTO_47        REDUCE    141       
+202   AUTO_6         REDUCE    141       
+202   BOOLEAN        REDUCE    141       
+202   END            REDUCE    141       
+202   DIVIDE         REDUCE    141       
+202   ID             REDUCE    141       
+202   MINUS          REDUCE    141       
+202   MODULO         REDUCE    141       
+202   MULTIPLE       REDUCE    141       
 201   AUTO_47        SHIFT     13        
 201   AUTO_25        SHIFT     14        
 201   STRING         SHIFT     15        
 201   NUMBER         SHIFT     16        
 201   ID             SHIFT     18        
 201   BOOLEAN        SHIFT     20        
-200   STRING         REDUCE    139       
-200   AT             REDUCE    139       
-200   AUTO_39        REDUCE    139       
-200   AUTO_49        REDUCE    139       
-200   AUTO_46        REDUCE    139       
-200   PLUS           REDUCE    139       
-200   AUTO_7         REDUCE    139       
-200   NUMBER         REDUCE    139       
-200   AUTO_47        REDUCE    139       
-200   AUTO_6         REDUCE    139       
-200   BOOLEAN        REDUCE    139       
-200   DIVIDE         REDUCE    139       
-200   ID             REDUCE    139       
-200   MINUS          REDUCE    139       
-200   MODULO         REDUCE    139       
-200   MULTIPLE       REDUCE    139       
-199   AUTO_49        REDUCE    104       
-199   AUTO_48        DFA_RESOLVE142       
-198   AUTO_39        SHIFT     93        
+201   AT             SHIFT     21        
+200   STRING         REDUCE    140       
+200   AT             REDUCE    140       
+200   AUTO_39        REDUCE    140       
+200   AUTO_49        REDUCE    140       
+200   AUTO_46        REDUCE    140       
+200   PLUS           REDUCE    140       
+200   AUTO_7         REDUCE    140       
+200   NUMBER         REDUCE    140       
+200   AUTO_47        REDUCE    140       
+200   AUTO_6         REDUCE    140       
+200   BOOLEAN        REDUCE    140       
+200   DIVIDE         REDUCE    140       
+200   ID             REDUCE    140       
+200   MINUS          REDUCE    140       
+200   MODULO         REDUCE    140       
+200   MULTIPLE       REDUCE    140       
+199   AUTO_49        REDUCE    105       
+199   AUTO_48        DFA_RESOLVE158       
+198   AUTO_39        SHIFT     92        
+198   AT             SHIFT     85        
 198   BOOLEAN        SHIFT     20        
 198   AUTO_47        SHIFT     13        
-198   AUTO_6         SHIFT     75        
+198   AUTO_6         SHIFT     76        
 198   NUMBER         SHIFT     16        
-198   MULTIPLE       SHIFT     102       
-198   AUTO_7         SHIFT     74        
-198   PLUS           SHIFT     86        
+198   MULTIPLE       SHIFT     103       
+198   AUTO_7         SHIFT     75        
+198   PLUS           SHIFT     87        
 198   STRING         SHIFT     15        
 198   AUTO_25        SHIFT     14        
-198   ID             SHIFT     124       
-198   DIVIDE         SHIFT     81        
-198   AUTO_40        REDUCE    138       
-198   AT             SHIFT     96        
-198   AUTO_32        REDUCE    138       
-198   MINUS          SHIFT     100       
-198   MODULO         SHIFT     101       
-197   cll_LOGICAL_OP REDUCE    137       
-197   cll_COMPARE_OP REDUCE    137       
-197   STRING         REDUCE    137       
-197   MULTIPLE       REDUCE    137       
-197   MODULO         REDUCE    137       
-197   AUTO_27        REDUCE    137       
-197   END            REDUCE    137       
-197   AUTO_39        REDUCE    137       
-197   AUTO_49        REDUCE    137       
-197   PLUS           REDUCE    137       
-197   AUTO_7         REDUCE    137       
-197   NUMBER         REDUCE    137       
-197   AUTO_47        REDUCE    137       
-197   AUTO_6         REDUCE    137       
-197   BOOLEAN        REDUCE    137       
-197   DIVIDE         REDUCE    137       
-197   AUTO_40        REDUCE    137       
-197   ID             REDUCE    137       
-197   AUTO_32        REDUCE    137       
-197   MINUS          REDUCE    137       
-196   cll_LOGICAL_OP DFA_RESOLVE141       
-196   cll_COMPARE_OP DFA_RESOLVE140       
-196   STRING         DFA_RESOLVE139       
-196   MULTIPLE       DFA_RESOLVE136       
-196   MODULO         DFA_RESOLVE135       
-196   AUTO_27        DFA_RESOLVE122       
-196   END            DFA_RESOLVE132       
-196   AUTO_39        DFA_RESOLVE124       
-196   AUTO_49        DFA_RESOLVE127       
-196   PLUS           DFA_RESOLVE138       
-196   AUTO_7         DFA_RESOLVE129       
-196   NUMBER         DFA_RESOLVE137       
-196   AUTO_47        DFA_RESOLVE126       
-196   AUTO_6         DFA_RESOLVE128       
-196   BOOLEAN        DFA_RESOLVE130       
-196   DIVIDE         DFA_RESOLVE131       
-196   AUTO_40        DFA_RESOLVE125       
-196   ID             DFA_RESOLVE133       
-196   AUTO_32        DFA_RESOLVE123       
-196   MINUS          DFA_RESOLVE134       
-195   AUTO_48        REDUCE    135       
-195   AUTO_40        REDUCE    135       
-194   cll_LOGICAL_OP REDUCE    134       
-194   cll_COMPARE_OP REDUCE    134       
-194   STRING         REDUCE    134       
-194   MULTIPLE       REDUCE    134       
-194   MODULO         REDUCE    134       
-194   AUTO_27        REDUCE    134       
-194   END            REDUCE    134       
-194   AUTO_39        REDUCE    134       
-194   AUTO_49        REDUCE    134       
-194   PLUS           REDUCE    134       
-194   AUTO_7         REDUCE    134       
-194   NUMBER         REDUCE    134       
-194   AUTO_47        REDUCE    134       
-194   AUTO_6         REDUCE    134       
-194   BOOLEAN        REDUCE    134       
-194   DIVIDE         REDUCE    134       
-194   AUTO_40        REDUCE    134       
-194   ID             REDUCE    134       
-194   AUTO_32        REDUCE    134       
-194   MINUS          REDUCE    134       
-193   AUTO_49        REDUCE    133       
-192   AUTO_49        REDUCE    112       
-192   AUTO_38        DFA_RESOLVE121       
-191   AUTO_49        SHIFT     203       
+198   ID             SHIFT     125       
+198   DIVIDE         SHIFT     82        
+198   AUTO_40        REDUCE    139       
+198   AUTO_32        REDUCE    139       
+198   MINUS          SHIFT     101       
+198   MODULO         SHIFT     102       
+197   cll_LOGICAL_OP DFA_RESOLVE157       
+197   cll_COMPARE_OP DFA_RESOLVE156       
+197   STRING         DFA_RESOLVE155       
+197   MULTIPLE       DFA_RESOLVE152       
+197   MODULO         DFA_RESOLVE151       
+197   AT             DFA_RESOLVE137       
+197   AUTO_27        DFA_RESOLVE138       
+197   MINUS          DFA_RESOLVE150       
+197   AUTO_32        DFA_RESOLVE139       
+197   END            DFA_RESOLVE148       
+197   AUTO_39        DFA_RESOLVE140       
+197   AUTO_49        DFA_RESOLVE143       
+197   PLUS           DFA_RESOLVE154       
+197   AUTO_7         DFA_RESOLVE145       
+197   NUMBER         DFA_RESOLVE153       
+197   AUTO_47        DFA_RESOLVE142       
+197   AUTO_6         DFA_RESOLVE144       
+197   BOOLEAN        DFA_RESOLVE146       
+197   DIVIDE         DFA_RESOLVE147       
+197   AUTO_40        DFA_RESOLVE141       
+197   ID             DFA_RESOLVE149       
+196   cll_LOGICAL_OP REDUCE    137       
+196   cll_COMPARE_OP REDUCE    137       
+196   STRING         REDUCE    137       
+196   MULTIPLE       REDUCE    137       
+196   MODULO         REDUCE    137       
+196   AT             REDUCE    137       
+196   AUTO_27        REDUCE    137       
+196   MINUS          REDUCE    137       
+196   AUTO_32        REDUCE    137       
+196   END            REDUCE    137       
+196   AUTO_39        REDUCE    137       
+196   AUTO_49        REDUCE    137       
+196   PLUS           REDUCE    137       
+196   AUTO_7         REDUCE    137       
+196   NUMBER         REDUCE    137       
+196   AUTO_47        REDUCE    137       
+196   AUTO_6         REDUCE    137       
+196   BOOLEAN        REDUCE    137       
+196   DIVIDE         REDUCE    137       
+196   AUTO_40        REDUCE    137       
+196   ID             REDUCE    137       
+195   AUTO_48        REDUCE    136       
+195   AUTO_40        REDUCE    136       
+194   cll_LOGICAL_OP REDUCE    135       
+194   cll_COMPARE_OP REDUCE    135       
+194   STRING         REDUCE    135       
+194   MULTIPLE       REDUCE    135       
+194   MODULO         REDUCE    135       
+194   AT             REDUCE    135       
+194   AUTO_27        REDUCE    135       
+194   MINUS          REDUCE    135       
+194   AUTO_32        REDUCE    135       
+194   END            REDUCE    135       
+194   AUTO_39        REDUCE    135       
+194   AUTO_49        REDUCE    135       
+194   PLUS           REDUCE    135       
+194   AUTO_7         REDUCE    135       
+194   NUMBER         REDUCE    135       
+194   AUTO_47        REDUCE    135       
+194   AUTO_6         REDUCE    135       
+194   BOOLEAN        REDUCE    135       
+194   DIVIDE         REDUCE    135       
+194   AUTO_40        REDUCE    135       
+194   ID             REDUCE    135       
+193   AUTO_49        SHIFT     204       
+192   AUTO_49        REDUCE    134       
+191   AUTO_49        REDUCE    113       
+191   AUTO_41        SHIFT     26        
+191   AT             DFA_RESOLVE136       
 190   AUTO_27        SHIFT     202       
-189   STRING         REDUCE    132       
-189   AT             REDUCE    132       
-189   END            REDUCE    132       
-189   AUTO_39        REDUCE    132       
-189   PLUS           REDUCE    132       
-189   AUTO_7         REDUCE    132       
-189   NUMBER         REDUCE    132       
-189   AUTO_47        REDUCE    132       
-189   AUTO_6         REDUCE    132       
-189   BOOLEAN        REDUCE    132       
-189   DIVIDE         REDUCE    132       
-189   ID             REDUCE    132       
-189   AUTO_32        REDUCE    132       
-189   MINUS          REDUCE    132       
-189   MODULO         REDUCE    132       
-189   MULTIPLE       REDUCE    132       
-188   cll_LOGICAL_OP REDUCE    131       
-188   cll_COMPARE_OP REDUCE    131       
-188   STRING         REDUCE    131       
-188   MULTIPLE       REDUCE    131       
-188   MODULO         REDUCE    131       
-188   AUTO_25        REDUCE    131       
-188   MINUS          REDUCE    131       
-188   AUTO_32        REDUCE    131       
-188   END            REDUCE    131       
-188   AUTO_27        REDUCE    131       
-188   AUTO_39        REDUCE    131       
-188   AUTO_49        REDUCE    131       
-188   cll_ASSIGNMENT_OPREDUCE    131       
-188   PLUS           REDUCE    131       
-188   AUTO_7         REDUCE    131       
-188   NUMBER         REDUCE    131       
-188   AUTO_47        REDUCE    131       
-188   AUTO_6         REDUCE    131       
-188   BOOLEAN        REDUCE    131       
-188   DIVIDE         REDUCE    131       
-188   AUTO_40        REDUCE    131       
-188   ID             REDUCE    131       
-187   PLUS           REDUCE    130       
-187   MULTIPLE       REDUCE    130       
-187   ID             REDUCE    130       
-187   AUTO_50        REDUCE    130       
-187   AUTO_40        REDUCE    130       
-187   AUTO_38        REDUCE    130       
-187   AT             REDUCE    130       
-187   $              REDUCE    130       
-186   STRING         REDUCE    129       
-186   NUMBER         REDUCE    129       
-186   ID             REDUCE    129       
-186   BOOLEAN        REDUCE    129       
-186   AUTO_49        REDUCE    129       
-186   AUTO_48        REDUCE    129       
-186   AUTO_47        REDUCE    129       
-186   AUTO_36        REDUCE    129       
-186   AUTO_32        REDUCE    129       
-186   AUTO_25        REDUCE    129       
+189   STRING         REDUCE    133       
+189   AT             REDUCE    133       
+189   AUTO_39        REDUCE    133       
+189   PLUS           REDUCE    133       
+189   AUTO_7         REDUCE    133       
+189   BOOLEAN        REDUCE    133       
+189   END            REDUCE    133       
+189   DIVIDE         REDUCE    133       
+189   ID             REDUCE    133       
+189   MINUS          REDUCE    133       
+189   MODULO         REDUCE    133       
+189   MULTIPLE       REDUCE    133       
+189   AUTO_47        REDUCE    133       
+189   AUTO_6         REDUCE    133       
+189   NUMBER         REDUCE    133       
+188   cll_LOGICAL_OP REDUCE    132       
+188   cll_COMPARE_OP REDUCE    132       
+188   STRING         REDUCE    132       
+188   MULTIPLE       REDUCE    132       
+188   MODULO         REDUCE    132       
+188   AT             REDUCE    132       
+188   AUTO_27        REDUCE    132       
+188   AUTO_25        REDUCE    132       
+188   MINUS          REDUCE    132       
+188   AUTO_32        REDUCE    132       
+188   END            REDUCE    132       
+188   AUTO_39        REDUCE    132       
+188   AUTO_49        REDUCE    132       
+188   ID             REDUCE    132       
+188   DIVIDE         REDUCE    132       
+188   AUTO_40        REDUCE    132       
+188   cll_ASSIGNMENT_OPREDUCE    132       
+188   PLUS           REDUCE    132       
+188   AUTO_7         REDUCE    132       
+188   NUMBER         REDUCE    132       
+188   AUTO_47        REDUCE    132       
+188   AUTO_6         REDUCE    132       
+188   BOOLEAN        REDUCE    132       
+187   PLUS           REDUCE    131       
+187   MULTIPLE       REDUCE    131       
+187   ID             REDUCE    131       
+187   AUTO_49        REDUCE    131       
+187   AUTO_40        REDUCE    131       
+187   AUTO_38        REDUCE    131       
+187   QUESTION_MARK  REDUCE    131       
+187   AUTO_42        REDUCE    131       
+187   AUTO_32        REDUCE    131       
+187   AT             REDUCE    131       
+187   $              REDUCE    131       
+186   STRING         REDUCE    130       
+186   NUMBER         REDUCE    130       
+186   ID             REDUCE    130       
+186   BOOLEAN        REDUCE    130       
+186   AUTO_49        REDUCE    130       
+186   AUTO_48        REDUCE    130       
+186   AUTO_47        REDUCE    130       
+186   AUTO_36        REDUCE    130       
+186   AUTO_32        REDUCE    130       
+186   AUTO_25        REDUCE    130       
+186   AT             REDUCE    130       
 185   AUTO_36        SHIFT     201       
-184   ID             REDUCE    128       
-184   AUTO_45        REDUCE    128       
-183   BOOLEAN        SHIFT     20        
-183   AUTO_47        SHIFT     13        
-183   AUTO_6         SHIFT     75        
-183   NUMBER         SHIFT     16        
-183   MULTIPLE       SHIFT     102       
-183   AUTO_7         SHIFT     74        
-183   PLUS           SHIFT     86        
-183   STRING         SHIFT     15        
-183   AUTO_25        SHIFT     14        
-183   ID             SHIFT     124       
-183   DIVIDE         SHIFT     81        
-183   AT             SHIFT     96        
-183   MINUS          SHIFT     100       
-183   MODULO         SHIFT     101       
-183   AUTO_39        SHIFT     93        
+184   AT             SHIFT     85        
+184   BOOLEAN        SHIFT     20        
+184   AUTO_47        SHIFT     13        
+184   AUTO_6         SHIFT     76        
+184   NUMBER         SHIFT     16        
+184   MULTIPLE       SHIFT     103       
+184   AUTO_7         SHIFT     75        
+184   PLUS           SHIFT     87        
+184   STRING         SHIFT     15        
+184   AUTO_25        SHIFT     14        
+184   ID             SHIFT     125       
+184   DIVIDE         SHIFT     82        
+184   MINUS          SHIFT     101       
+184   MODULO         SHIFT     102       
+184   AUTO_39        SHIFT     92        
+183   ID             REDUCE    129       
+183   AUTO_45        REDUCE    129       
 182   ID             SHIFT     199       
-181   AUTO_49        REDUCE    127       
-181   AUTO_48        REDUCE    127       
-180   ID             REDUCE    126       
-180   AUTO_49        REDUCE    126       
-180   AUTO_47        REDUCE    126       
-180   $              REDUCE    126       
-179   ID             DFA_RESOLVE120       
-179   AUTO_39        REDUCE    61        
-178   AUTO_32        SHIFT     198       
-177   STRING         REDUCE    125       
-177   AT             REDUCE    125       
-177   AUTO_39        REDUCE    125       
-177   PLUS           REDUCE    125       
-177   AUTO_7         REDUCE    125       
-177   BOOLEAN        REDUCE    125       
+181   AUTO_49        REDUCE    128       
+181   AUTO_48        REDUCE    128       
+180   ID             REDUCE    127       
+180   AUTO_49        REDUCE    127       
+180   AUTO_42        REDUCE    127       
+180   AUTO_32        REDUCE    127       
+180   AUTO_47        REDUCE    127       
+180   $              REDUCE    127       
+179   AUTO_32        SHIFT     198       
+178   STRING         REDUCE    126       
+178   AT             REDUCE    126       
+178   AUTO_39        REDUCE    126       
+178   PLUS           REDUCE    126       
+178   AUTO_7         REDUCE    126       
+178   BOOLEAN        REDUCE    126       
+178   END            REDUCE    126       
+178   DIVIDE         REDUCE    126       
+178   ID             REDUCE    126       
+178   MINUS          REDUCE    126       
+178   MODULO         REDUCE    126       
+178   MULTIPLE       REDUCE    126       
+178   AUTO_47        REDUCE    126       
+178   AUTO_6         REDUCE    126       
+178   NUMBER         REDUCE    126       
+177   cll_LOGICAL_OP REDUCE    125       
+177   cll_COMPARE_OP REDUCE    125       
+177   MULTIPLE       DFA_RESOLVE130       
+177   MODULO         DFA_RESOLVE129       
 177   END            REDUCE    125       
-177   DIVIDE         REDUCE    125       
-177   ID             REDUCE    125       
-177   MINUS          REDUCE    125       
-177   MODULO         REDUCE    125       
-177   MULTIPLE       REDUCE    125       
-177   AUTO_47        REDUCE    125       
-177   AUTO_6         REDUCE    125       
-177   NUMBER         REDUCE    125       
+177   PLUS           DFA_RESOLVE131       
+177   AUTO_7         DFA_RESOLVE134       
+177   AT             DFA_RESOLVE122       
+177   AUTO_27        REDUCE    125       
+177   BOOLEAN        DFA_RESOLVE123       
+177   STRING         DFA_RESOLVE126       
+177   AUTO_25        SHIFT     14        
+177   MINUS          DFA_RESOLVE128       
+177   AUTO_32        REDUCE    125       
+177   AUTO_39        DFA_RESOLVE132       
+177   AUTO_49        REDUCE    125       
+177   DIVIDE         DFA_RESOLVE127       
+177   ID             DFA_RESOLVE124       
+177   AUTO_40        REDUCE    125       
+177   AUTO_6         DFA_RESOLVE133       
+177   NUMBER         DFA_RESOLVE125       
+177   AUTO_47        DFA_RESOLVE135       
 176   cll_LOGICAL_OP REDUCE    124       
 176   cll_COMPARE_OP REDUCE    124       
-176   STRING         REDUCE    124       
-176   MULTIPLE       REDUCE    124       
-176   MODULO         REDUCE    124       
-176   AT             REDUCE    124       
-176   AUTO_27        REDUCE    124       
-176   MINUS          REDUCE    124       
-176   AUTO_32        REDUCE    124       
+176   MULTIPLE       DFA_RESOLVE116       
+176   MODULO         DFA_RESOLVE115       
 176   END            REDUCE    124       
-176   AUTO_39        REDUCE    124       
+176   PLUS           DFA_RESOLVE117       
+176   AUTO_7         DFA_RESOLVE120       
+176   AT             DFA_RESOLVE108       
+176   AUTO_27        REDUCE    124       
+176   BOOLEAN        DFA_RESOLVE109       
+176   STRING         DFA_RESOLVE112       
+176   AUTO_25        SHIFT     14        
+176   MINUS          DFA_RESOLVE114       
+176   AUTO_32        REDUCE    124       
+176   AUTO_39        DFA_RESOLVE118       
 176   AUTO_49        REDUCE    124       
-176   PLUS           REDUCE    124       
-176   AUTO_7         REDUCE    124       
-176   NUMBER         REDUCE    124       
-176   AUTO_47        REDUCE    124       
-176   AUTO_6         REDUCE    124       
-176   BOOLEAN        REDUCE    124       
-176   DIVIDE         REDUCE    124       
+176   DIVIDE         DFA_RESOLVE113       
+176   ID             DFA_RESOLVE110       
 176   AUTO_40        REDUCE    124       
-176   ID             REDUCE    124       
+176   AUTO_6         DFA_RESOLVE119       
+176   NUMBER         DFA_RESOLVE111       
+176   AUTO_47        DFA_RESOLVE121       
 175   cll_LOGICAL_OP REDUCE    123       
 175   cll_COMPARE_OP REDUCE    123       
-175   MULTIPLE       DFA_RESOLVE114       
-175   MODULO         DFA_RESOLVE113       
-175   END            REDUCE    123       
-175   BOOLEAN        DFA_RESOLVE107       
-175   STRING         DFA_RESOLVE110       
-175   AUTO_25        SHIFT     14        
-175   MINUS          DFA_RESOLVE112       
-175   AUTO_32        REDUCE    123       
+175   STRING         REDUCE    123       
+175   MULTIPLE       REDUCE    123       
+175   MODULO         REDUCE    123       
+175   AT             REDUCE    123       
 175   AUTO_27        REDUCE    123       
-175   AUTO_39        DFA_RESOLVE116       
+175   MINUS          REDUCE    123       
+175   AUTO_32        REDUCE    123       
+175   END            REDUCE    123       
+175   AUTO_39        REDUCE    123       
 175   AUTO_49        REDUCE    123       
-175   DIVIDE         DFA_RESOLVE111       
-175   ID             DFA_RESOLVE108       
+175   PLUS           REDUCE    123       
+175   AUTO_7         REDUCE    123       
+175   NUMBER         REDUCE    123       
+175   AUTO_47        REDUCE    123       
+175   AUTO_6         REDUCE    123       
+175   BOOLEAN        REDUCE    123       
+175   DIVIDE         REDUCE    123       
 175   AUTO_40        REDUCE    123       
-175   AUTO_6         DFA_RESOLVE117       
-175   NUMBER         DFA_RESOLVE109       
-175   AUTO_47        DFA_RESOLVE119       
-175   PLUS           DFA_RESOLVE115       
-175   AUTO_7         DFA_RESOLVE118       
-174   cll_LOGICAL_OP REDUCE    122       
-174   cll_COMPARE_OP REDUCE    122       
-174   MULTIPLE       DFA_RESOLVE101       
-174   MODULO         DFA_RESOLVE100       
-174   END            REDUCE    122       
-174   BOOLEAN        DFA_RESOLVE94        
-174   STRING         DFA_RESOLVE97        
-174   AUTO_25        SHIFT     14        
-174   MINUS          DFA_RESOLVE99        
-174   AUTO_32        REDUCE    122       
-174   AUTO_27        REDUCE    122       
-174   AUTO_39        DFA_RESOLVE103       
-174   AUTO_49        REDUCE    122       
-174   DIVIDE         DFA_RESOLVE98        
-174   ID             DFA_RESOLVE95        
-174   AUTO_40        REDUCE    122       
-174   AUTO_6         DFA_RESOLVE104       
-174   NUMBER         DFA_RESOLVE96        
-174   AUTO_47        DFA_RESOLVE106       
-174   PLUS           DFA_RESOLVE102       
-174   AUTO_7         DFA_RESOLVE105       
-173   END            REDUCE    121       
-173   AUTO_49        REDUCE    121       
-173   AUTO_39        REDUCE    78        
-173   AUTO_7         REDUCE    78        
-173   BOOLEAN        REDUCE    78        
-173   AUTO_47        DFA_RESOLVE92        
-173   AUTO_6         DFA_RESOLVE93        
-173   NUMBER         REDUCE    78        
-173   STRING         REDUCE    78        
-173   cll_COMPARE_OP REDUCE    78        
-173   cll_LOGICAL_OP REDUCE    78        
-173   AUTO_27        REDUCE    121       
-173   AUTO_32        REDUCE    121       
-173   ID             REDUCE    78        
-173   AUTO_40        REDUCE    121       
-172   cll_COMPARE_OP SHIFT     131       
-171   cll_LOGICAL_OP REDUCE    120       
-171   AUTO_6         REDUCE    120       
-171   AUTO_47        REDUCE    120       
-171   AUTO_40        REDUCE    120       
-171   AUTO_49        REDUCE    120       
-171   AUTO_39        REDUCE    120       
+175   ID             REDUCE    123       
+174   cll_COMPARE_OP SHIFT     132       
+173   cll_LOGICAL_OP REDUCE    122       
+173   AUTO_6         REDUCE    122       
+173   AUTO_47        REDUCE    122       
+173   AUTO_40        REDUCE    122       
+173   AUTO_49        REDUCE    122       
+173   AUTO_39        REDUCE    122       
+173   END            REDUCE    122       
+173   AUTO_32        REDUCE    122       
+173   AUTO_27        REDUCE    122       
+172   END            REDUCE    121       
+172   AUTO_49        REDUCE    121       
+172   AT             REDUCE    79        
+172   AUTO_27        REDUCE    121       
+172   AUTO_39        REDUCE    79        
+172   AUTO_7         REDUCE    79        
+172   BOOLEAN        REDUCE    79        
+172   AUTO_40        REDUCE    121       
+172   ID             REDUCE    79        
+172   AUTO_47        DFA_RESOLVE106       
+172   AUTO_6         DFA_RESOLVE107       
+172   NUMBER         REDUCE    79        
+172   STRING         REDUCE    79        
+172   cll_COMPARE_OP REDUCE    79        
+172   cll_LOGICAL_OP REDUCE    79        
+172   AUTO_32        REDUCE    121       
 171   END            REDUCE    120       
-171   AUTO_32        REDUCE    120       
+171   AUTO_49        REDUCE    120       
+171   AT             REDUCE    73        
 171   AUTO_27        REDUCE    120       
+171   AUTO_39        REDUCE    73        
+171   AUTO_7         REDUCE    73        
+171   BOOLEAN        REDUCE    73        
+171   AUTO_40        REDUCE    120       
+171   ID             REDUCE    73        
+171   AUTO_47        DFA_RESOLVE104       
+171   AUTO_6         DFA_RESOLVE105       
+171   NUMBER         REDUCE    73        
+171   STRING         REDUCE    73        
+171   cll_COMPARE_OP REDUCE    73        
+171   cll_LOGICAL_OP REDUCE    73        
+171   AUTO_32        REDUCE    120       
 170   END            REDUCE    119       
 170   AUTO_49        REDUCE    119       
-170   AUTO_39        REDUCE    74        
-170   AUTO_7         REDUCE    74        
-170   BOOLEAN        REDUCE    74        
-170   AUTO_47        DFA_RESOLVE90        
-170   AUTO_6         DFA_RESOLVE91        
-170   NUMBER         REDUCE    74        
-170   STRING         REDUCE    74        
-170   cll_COMPARE_OP REDUCE    74        
-170   cll_LOGICAL_OP REDUCE    74        
 170   AUTO_27        REDUCE    119       
-170   AUTO_32        REDUCE    119       
-170   ID             REDUCE    74        
+170   cll_LOGICAL_OP REDUCE    75        
+170   cll_COMPARE_OP REDUCE    75        
+170   AT             DFA_RESOLVE95        
+170   BOOLEAN        DFA_RESOLVE96        
+170   MULTIPLE       SHIFT     103       
+170   AUTO_7         DFA_RESOLVE103       
+170   PLUS           SHIFT     87        
+170   STRING         DFA_RESOLVE99        
+170   AUTO_25        SHIFT     14        
 170   AUTO_40        REDUCE    119       
+170   ID             DFA_RESOLVE97        
+170   DIVIDE         SHIFT     82        
+170   AUTO_32        REDUCE    119       
+170   MINUS          SHIFT     101       
+170   MODULO         SHIFT     102       
+170   AUTO_39        DFA_RESOLVE102       
+170   AUTO_6         DFA_RESOLVE101       
+170   NUMBER         DFA_RESOLVE98        
+170   AUTO_47        DFA_RESOLVE100       
 169   END            REDUCE    118       
 169   AUTO_49        REDUCE    118       
 169   AUTO_27        REDUCE    118       
-169   cll_LOGICAL_OP REDUCE    69        
-169   cll_COMPARE_OP REDUCE    69        
-169   BOOLEAN        DFA_RESOLVE82        
-169   MULTIPLE       SHIFT     102       
-169   AUTO_7         DFA_RESOLVE89        
-169   PLUS           SHIFT     86        
-169   STRING         DFA_RESOLVE85        
+169   cll_LOGICAL_OP REDUCE    82        
+169   cll_COMPARE_OP REDUCE    82        
+169   AT             DFA_RESOLVE86        
+169   BOOLEAN        DFA_RESOLVE87        
+169   MULTIPLE       SHIFT     103       
+169   AUTO_7         DFA_RESOLVE94        
+169   PLUS           SHIFT     87        
+169   STRING         DFA_RESOLVE90        
 169   AUTO_25        SHIFT     14        
 169   AUTO_40        REDUCE    118       
-169   ID             DFA_RESOLVE83        
-169   DIVIDE         SHIFT     81        
+169   ID             DFA_RESOLVE88        
+169   DIVIDE         SHIFT     82        
 169   AUTO_32        REDUCE    118       
-169   MINUS          SHIFT     100       
-169   MODULO         SHIFT     101       
-169   AUTO_39        DFA_RESOLVE88        
-169   AUTO_6         DFA_RESOLVE87        
-169   NUMBER         DFA_RESOLVE84        
-169   AUTO_47        DFA_RESOLVE86        
-168   END            REDUCE    117       
-168   AUTO_49        REDUCE    117       
-168   AUTO_27        REDUCE    117       
-168   cll_LOGICAL_OP REDUCE    81        
-168   cll_COMPARE_OP REDUCE    81        
-168   BOOLEAN        DFA_RESOLVE74        
-168   MULTIPLE       SHIFT     102       
-168   AUTO_7         DFA_RESOLVE81        
-168   PLUS           SHIFT     86        
-168   STRING         DFA_RESOLVE77        
-168   AUTO_25        SHIFT     14        
-168   AUTO_40        REDUCE    117       
-168   ID             DFA_RESOLVE75        
-168   DIVIDE         SHIFT     81        
-168   AUTO_32        REDUCE    117       
-168   MINUS          SHIFT     100       
-168   MODULO         SHIFT     101       
-168   AUTO_39        DFA_RESOLVE80        
-168   AUTO_6         DFA_RESOLVE79        
-168   NUMBER         DFA_RESOLVE76        
-168   AUTO_47        DFA_RESOLVE78        
-167   ID             REDUCE    116       
-167   AUTO_39        REDUCE    116       
+169   MINUS          SHIFT     101       
+169   MODULO         SHIFT     102       
+169   AUTO_39        DFA_RESOLVE93        
+169   AUTO_6         DFA_RESOLVE92        
+169   NUMBER         DFA_RESOLVE89        
+169   AUTO_47        DFA_RESOLVE91        
+168   ID             REDUCE    117       
+168   AUTO_39        REDUCE    117       
+167   AUTO_48        SHIFT     195       
 166   cll_LOGICAL_OP REDUCE    13        
 166   cll_COMPARE_OP REDUCE    13        
 166   STRING         REDUCE    13        
@@ -429,12 +453,13 @@ State Token          Action    Next State
 166   $              REDUCE    13        
 166   PLUS           REDUCE    13        
 166   AUTO_7         REDUCE    13        
+166   AT             REDUCE    13        
 166   AUTO_27        REDUCE    13        
 166   MINUS          REDUCE    13        
 166   AUTO_32        REDUCE    13        
 166   AUTO_36        REDUCE    13        
 166   AUTO_39        REDUCE    13        
-166   AUTO_48        DFA_RESOLVE73        
+166   AUTO_48        DFA_RESOLVE85        
 166   AUTO_49        REDUCE    13        
 166   ID             REDUCE    13        
 166   DIVIDE         REDUCE    13        
@@ -443,434 +468,525 @@ State Token          Action    Next State
 166   AUTO_47        REDUCE    13        
 166   AUTO_6         REDUCE    13        
 166   BOOLEAN        REDUCE    13        
-165   AUTO_48        REDUCE    114       
-164   AUTO_48        SHIFT     195       
-163   AUTO_40        SHIFT     194       
-162   cll_ASSIGNMENT_OPREDUCE    113       
-162   ID             REDUCE    113       
-162   END            REDUCE    113       
-162   AUTO_32        REDUCE    113       
-162   AUTO_25        REDUCE    113       
-161   AUTO_38        DFA_RESOLVE72        
-161   AUTO_49        DFA_RESOLVE71        
-160   STRING         REDUCE    110       
-160   AT             REDUCE    110       
-160   AUTO_39        REDUCE    110       
-160   PLUS           REDUCE    110       
-160   AUTO_7         REDUCE    110       
-160   BOOLEAN        REDUCE    110       
-160   END            REDUCE    110       
-160   DIVIDE         REDUCE    110       
-160   ID             REDUCE    110       
-160   MINUS          REDUCE    110       
-160   MODULO         REDUCE    110       
-160   MULTIPLE       REDUCE    110       
-160   AUTO_47        REDUCE    110       
-160   AUTO_6         REDUCE    110       
-160   NUMBER         REDUCE    110       
+165   AUTO_48        REDUCE    115       
+164   AUTO_40        SHIFT     194       
+163   cll_ASSIGNMENT_OPREDUCE    114       
+163   ID             REDUCE    114       
+163   END            REDUCE    114       
+163   AUTO_25        REDUCE    114       
+162   AUTO_49        DFA_RESOLVE84        
+162   AUTO_41        SHIFT     26        
+162   AT             DFA_RESOLVE83        
+161   STRING         REDUCE    111       
+161   AT             REDUCE    111       
+161   AUTO_39        REDUCE    111       
+161   PLUS           REDUCE    111       
+161   AUTO_7         REDUCE    111       
+161   BOOLEAN        REDUCE    111       
+161   END            REDUCE    111       
+161   DIVIDE         REDUCE    111       
+161   ID             REDUCE    111       
+161   MINUS          REDUCE    111       
+161   MODULO         REDUCE    111       
+161   MULTIPLE       REDUCE    111       
+161   AUTO_47        REDUCE    111       
+161   AUTO_6         REDUCE    111       
+161   NUMBER         REDUCE    111       
+160   AT             SHIFT     85        
+160   BOOLEAN        SHIFT     20        
+160   AUTO_47        SHIFT     13        
+160   AUTO_6         SHIFT     76        
+160   NUMBER         SHIFT     16        
+160   MULTIPLE       SHIFT     103       
+160   AUTO_7         SHIFT     75        
+160   PLUS           SHIFT     87        
+160   STRING         SHIFT     15        
+160   AUTO_25        SHIFT     14        
+160   ID             SHIFT     125       
+160   DIVIDE         SHIFT     82        
+160   MINUS          SHIFT     101       
+160   MODULO         SHIFT     102       
+160   AUTO_39        SHIFT     92        
+159   AT             SHIFT     85        
 159   BOOLEAN        SHIFT     20        
 159   AUTO_47        SHIFT     13        
-159   AUTO_6         SHIFT     75        
+159   AUTO_6         SHIFT     76        
 159   NUMBER         SHIFT     16        
-159   MULTIPLE       SHIFT     102       
-159   AUTO_7         SHIFT     74        
-159   PLUS           SHIFT     86        
+159   MULTIPLE       SHIFT     103       
+159   AUTO_7         SHIFT     75        
+159   PLUS           SHIFT     87        
 159   STRING         SHIFT     15        
 159   AUTO_25        SHIFT     14        
-159   ID             SHIFT     124       
-159   DIVIDE         SHIFT     81        
-159   AT             SHIFT     96        
-159   MINUS          SHIFT     100       
-159   MODULO         SHIFT     101       
-159   AUTO_39        SHIFT     93        
-158   BOOLEAN        SHIFT     20        
-158   AUTO_47        SHIFT     13        
-158   AUTO_6         SHIFT     75        
-158   NUMBER         SHIFT     16        
-158   MULTIPLE       SHIFT     102       
-158   AUTO_7         SHIFT     74        
-158   PLUS           SHIFT     86        
-158   STRING         SHIFT     15        
-158   AUTO_25        SHIFT     14        
-158   ID             SHIFT     124       
-158   DIVIDE         SHIFT     81        
-158   AT             SHIFT     96        
-158   MINUS          SHIFT     100       
-158   MODULO         SHIFT     101       
-158   AUTO_39        SHIFT     93        
-157   AUTO_6         SHIFT     188       
-156   PLUS           REDUCE    57        
-156   MULTIPLE       REDUCE    57        
-156   AUTO_50        REDUCE    57        
-156   AUTO_40        REDUCE    57        
-156   AUTO_38        DFA_RESOLVE70        
-156   AT             REDUCE    57        
-156   $              REDUCE    57        
-155   AUTO_32        SHIFT     186       
-154   ID             SHIFT     185       
-153   AUTO_36        REDUCE    109       
+159   ID             SHIFT     125       
+159   DIVIDE         SHIFT     82        
+159   MINUS          SHIFT     101       
+159   MODULO         SHIFT     102       
+159   AUTO_39        SHIFT     92        
+158   AUTO_6         SHIFT     188       
+157   PLUS           REDUCE    58        
+157   MULTIPLE       REDUCE    58        
+157   AUTO_49        REDUCE    58        
+157   AUTO_40        REDUCE    58        
+157   AUTO_38        DFA_RESOLVE82        
+157   QUESTION_MARK  REDUCE    58        
+157   AUTO_42        REDUCE    58        
+157   AUTO_32        REDUCE    58        
+157   AT             REDUCE    58        
+157   $              REDUCE    58        
+156   AUTO_32        SHIFT     186       
+155   ID             SHIFT     185       
+154   AUTO_36        REDUCE    110       
+154   AUTO_42        REDUCE    110       
+154   AUTO_32        REDUCE    110       
+154   AT             REDUCE    110       
+154   $              REDUCE    110       
+153   ID             REDUCE    109       
+153   AUTO_42        REDUCE    109       
 153   AUTO_32        REDUCE    109       
-153   AT             REDUCE    109       
-153   $              REDUCE    109       
-152   AUTO_38        REDUCE    108       
 152   AUTO_42        REDUCE    108       
 152   AUTO_32        REDUCE    108       
-151   AUTO_42        REDUCE    107       
-151   AUTO_32        REDUCE    107       
-150   ID             REDUCE    106       
-150   AUTO_45        REDUCE    106       
-149   ID             REDUCE    89        
-149   AUTO_45        DFA_RESOLVE69        
-148   STRING         REDUCE    105       
-148   NUMBER         REDUCE    105       
-148   ID             REDUCE    105       
-148   BOOLEAN        REDUCE    105       
-148   AUTO_49        REDUCE    105       
-148   AUTO_47        REDUCE    105       
-148   $              REDUCE    105       
-147   AUTO_46        SHIFT     183       
-146   AUTO_49        REDUCE    104       
-146   AUTO_48        DFA_RESOLVE68        
-145   AUTO_49        SHIFT     180       
+151   AUTO_46        SHIFT     184       
+150   STRING         REDUCE    107       
+150   NUMBER         REDUCE    107       
+150   ID             REDUCE    107       
+150   BOOLEAN        REDUCE    107       
+150   AUTO_49        REDUCE    107       
+150   AUTO_42        REDUCE    107       
+150   AUTO_32        REDUCE    107       
+150   AT             REDUCE    107       
+150   AUTO_47        REDUCE    107       
+150   $              REDUCE    107       
+149   ID             REDUCE    106       
+149   AUTO_45        REDUCE    106       
+148   ID             REDUCE    89        
+148   AUTO_45        DFA_RESOLVE81        
+147   AUTO_49        REDUCE    105       
+147   AUTO_48        DFA_RESOLVE80        
+146   AUTO_49        SHIFT     180       
+145   AUTO_40        REDUCE    104       
+145   AT             REDUCE    104       
+144   PLUS           REDUCE    103       
+144   MULTIPLE       REDUCE    103       
+144   AUTO_49        REDUCE    103       
 144   AUTO_40        REDUCE    103       
+144   QUESTION_MARK  REDUCE    103       
+144   AUTO_42        REDUCE    103       
+144   AUTO_32        REDUCE    103       
 144   AT             REDUCE    103       
-143   PLUS           REDUCE    102       
-143   MULTIPLE       REDUCE    102       
-143   AUTO_50        REDUCE    102       
-143   AUTO_40        REDUCE    102       
-143   AT             REDUCE    102       
-143   $              REDUCE    102       
-142   cll_TYPE       SHIFT     95        
-142   ID             DFA_RESOLVE67        
-142   AUTO_39        REDUCE    32        
-141   cll_LOGICAL_OP REDUCE    101       
-141   cll_COMPARE_OP REDUCE    101       
-141   STRING         REDUCE    101       
-141   MULTIPLE       REDUCE    101       
-141   MODULO         REDUCE    101       
-141   AUTO_27        REDUCE    101       
-141   END            REDUCE    101       
-141   AUTO_39        REDUCE    101       
-141   AUTO_49        REDUCE    101       
-141   PLUS           REDUCE    101       
-141   AUTO_7         REDUCE    101       
-141   NUMBER         REDUCE    101       
-141   AUTO_47        REDUCE    101       
-141   AUTO_6         REDUCE    101       
-141   BOOLEAN        REDUCE    101       
-141   DIVIDE         REDUCE    101       
-141   AUTO_40        REDUCE    101       
-141   ID             REDUCE    101       
-141   AUTO_32        REDUCE    101       
-141   MINUS          REDUCE    101       
-140   AUTO_47        SHIFT     161       
-139   AUTO_40        SHIFT     176       
-138   AUTO_47        SHIFT     13        
-138   AUTO_7         SHIFT     74        
-138   AUTO_39        SHIFT     93        
-138   cll_COMPARE_OP SHIFT     131       
-138   AUTO_25        SHIFT     14        
-138   STRING         SHIFT     15        
-138   NUMBER         SHIFT     16        
-138   ID             SHIFT     124       
-138   AUTO_6         SHIFT     75        
-138   BOOLEAN        SHIFT     20        
-137   cll_LOGICAL_OP REDUCE    100       
-137   cll_COMPARE_OP REDUCE    100       
-137   STRING         REDUCE    100       
-137   MULTIPLE       REDUCE    100       
-137   MODULO         REDUCE    100       
-137   AUTO_27        REDUCE    100       
-137   END            REDUCE    100       
-137   AUTO_39        REDUCE    100       
-137   AUTO_49        REDUCE    100       
-137   PLUS           REDUCE    100       
-137   AUTO_7         REDUCE    100       
-137   NUMBER         REDUCE    100       
-137   AUTO_47        REDUCE    100       
-137   AUTO_6         REDUCE    100       
-137   BOOLEAN        REDUCE    100       
-137   DIVIDE         REDUCE    100       
-137   AUTO_40        REDUCE    100       
-137   ID             REDUCE    100       
-137   AUTO_32        REDUCE    100       
-137   MINUS          REDUCE    100       
-136   cll_LOGICAL_OP REDUCE    78        
-136   cll_COMPARE_OP REDUCE    78        
-136   STRING         REDUCE    78        
-136   NUMBER         REDUCE    78        
-136   ID             REDUCE    78        
-136   BOOLEAN        REDUCE    78        
-136   AUTO_6         REDUCE    78        
-136   AUTO_7         REDUCE    78        
-136   AUTO_47        REDUCE    78        
-136   AUTO_39        REDUCE    78        
-135   cll_LOGICAL_OP REDUCE    74        
-135   cll_COMPARE_OP REDUCE    74        
-135   STRING         REDUCE    74        
-135   NUMBER         REDUCE    74        
-135   ID             REDUCE    74        
-135   BOOLEAN        REDUCE    74        
-135   AUTO_6         REDUCE    74        
-135   AUTO_7         REDUCE    74        
-135   AUTO_47        REDUCE    74        
-135   AUTO_39        REDUCE    74        
-134   cll_LOGICAL_OP REDUCE    69        
-134   cll_COMPARE_OP REDUCE    69        
-134   BOOLEAN        DFA_RESOLVE59        
-134   MULTIPLE       SHIFT     102       
-134   AUTO_7         DFA_RESOLVE65        
-134   PLUS           SHIFT     86        
-134   STRING         DFA_RESOLVE62        
+144   $              REDUCE    103       
+143   AT             SHIFT     85        
+143   BOOLEAN        SHIFT     20        
+143   AUTO_47        SHIFT     13        
+143   AUTO_6         SHIFT     76        
+143   NUMBER         SHIFT     16        
+143   MULTIPLE       SHIFT     103       
+143   AUTO_7         SHIFT     75        
+143   PLUS           SHIFT     87        
+143   STRING         SHIFT     15        
+143   AUTO_25        SHIFT     14        
+143   ID             SHIFT     125       
+143   DIVIDE         SHIFT     82        
+143   MINUS          SHIFT     101       
+143   MODULO         SHIFT     102       
+143   AUTO_39        SHIFT     92        
+142   cll_LOGICAL_OP REDUCE    102       
+142   cll_COMPARE_OP REDUCE    102       
+142   STRING         REDUCE    102       
+142   MULTIPLE       REDUCE    102       
+142   MODULO         REDUCE    102       
+142   AT             REDUCE    102       
+142   AUTO_27        REDUCE    102       
+142   MINUS          REDUCE    102       
+142   AUTO_32        REDUCE    102       
+142   END            REDUCE    102       
+142   AUTO_39        REDUCE    102       
+142   AUTO_49        REDUCE    102       
+142   PLUS           REDUCE    102       
+142   AUTO_7         REDUCE    102       
+142   NUMBER         REDUCE    102       
+142   AUTO_47        REDUCE    102       
+142   AUTO_6         REDUCE    102       
+142   BOOLEAN        REDUCE    102       
+142   DIVIDE         REDUCE    102       
+142   AUTO_40        REDUCE    102       
+142   ID             REDUCE    102       
+141   AUTO_47        SHIFT     162       
+140   cll_TYPE       REDUCE    101       
+140   QUESTION_MARK  REDUCE    101       
+140   PLUS           REDUCE    101       
+140   $              REDUCE    101       
+140   AT             REDUCE    101       
+140   AUTO_1         REDUCE    101       
+140   AUTO_20        REDUCE    101       
+140   AUTO_32        REDUCE    101       
+140   AUTO_42        REDUCE    101       
+140   END            REDUCE    101       
+140   AUTO_19        REDUCE    101       
+140   AUTO_39        REDUCE    101       
+140   AUTO_49        REDUCE    101       
+140   AUTO_40        REDUCE    101       
+140   ID             REDUCE    101       
+140   MULTIPLE       REDUCE    101       
+139   AUTO_47        SHIFT     13        
+139   AUTO_7         SHIFT     75        
+139   AUTO_39        SHIFT     92        
+139   cll_COMPARE_OP SHIFT     132       
+139   AUTO_25        SHIFT     14        
+139   STRING         SHIFT     15        
+139   NUMBER         SHIFT     16        
+139   ID             SHIFT     125       
+139   AUTO_6         SHIFT     76        
+139   BOOLEAN        SHIFT     20        
+139   AT             SHIFT     21        
+138   cll_LOGICAL_OP REDUCE    100       
+138   cll_COMPARE_OP REDUCE    100       
+138   STRING         REDUCE    100       
+138   MULTIPLE       REDUCE    100       
+138   MODULO         REDUCE    100       
+138   AT             REDUCE    100       
+138   AUTO_27        REDUCE    100       
+138   MINUS          REDUCE    100       
+138   AUTO_32        REDUCE    100       
+138   END            REDUCE    100       
+138   AUTO_39        REDUCE    100       
+138   AUTO_49        REDUCE    100       
+138   PLUS           REDUCE    100       
+138   AUTO_7         REDUCE    100       
+138   NUMBER         REDUCE    100       
+138   AUTO_47        REDUCE    100       
+138   AUTO_6         REDUCE    100       
+138   BOOLEAN        REDUCE    100       
+138   DIVIDE         REDUCE    100       
+138   AUTO_40        REDUCE    100       
+138   ID             REDUCE    100       
+137   cll_LOGICAL_OP REDUCE    79        
+137   cll_COMPARE_OP REDUCE    79        
+137   STRING         REDUCE    79        
+137   NUMBER         REDUCE    79        
+137   ID             REDUCE    79        
+137   BOOLEAN        REDUCE    79        
+137   AUTO_6         REDUCE    79        
+137   AUTO_7         REDUCE    79        
+137   AUTO_47        REDUCE    79        
+137   AUTO_39        REDUCE    79        
+137   AT             REDUCE    79        
+136   cll_LOGICAL_OP REDUCE    73        
+136   cll_COMPARE_OP REDUCE    73        
+136   STRING         REDUCE    73        
+136   NUMBER         REDUCE    73        
+136   ID             REDUCE    73        
+136   BOOLEAN        REDUCE    73        
+136   AUTO_6         REDUCE    73        
+136   AUTO_7         REDUCE    73        
+136   AUTO_47        REDUCE    73        
+136   AUTO_39        REDUCE    73        
+136   AT             REDUCE    73        
+135   cll_LOGICAL_OP REDUCE    75        
+135   cll_COMPARE_OP REDUCE    75        
+135   AT             DFA_RESOLVE71        
+135   BOOLEAN        DFA_RESOLVE72        
+135   MULTIPLE       SHIFT     103       
+135   AUTO_7         DFA_RESOLVE78        
+135   PLUS           SHIFT     87        
+135   STRING         DFA_RESOLVE75        
+135   AUTO_25        SHIFT     14        
+135   ID             DFA_RESOLVE73        
+135   DIVIDE         SHIFT     82        
+135   MINUS          SHIFT     101       
+135   MODULO         SHIFT     102       
+135   AUTO_39        DFA_RESOLVE76        
+135   AUTO_6         DFA_RESOLVE77        
+135   NUMBER         DFA_RESOLVE74        
+135   AUTO_47        DFA_RESOLVE79        
+134   cll_LOGICAL_OP REDUCE    82        
+134   cll_COMPARE_OP REDUCE    82        
+134   AT             DFA_RESOLVE62        
+134   BOOLEAN        DFA_RESOLVE63        
+134   MULTIPLE       SHIFT     103       
+134   AUTO_7         DFA_RESOLVE69        
+134   PLUS           SHIFT     87        
+134   STRING         DFA_RESOLVE66        
 134   AUTO_25        SHIFT     14        
-134   ID             DFA_RESOLVE60        
-134   DIVIDE         SHIFT     81        
-134   MINUS          SHIFT     100       
-134   MODULO         SHIFT     101       
-134   AUTO_39        DFA_RESOLVE63        
-134   AUTO_6         DFA_RESOLVE64        
-134   NUMBER         DFA_RESOLVE61        
-134   AUTO_47        DFA_RESOLVE66        
-133   cll_LOGICAL_OP REDUCE    81        
-133   cll_COMPARE_OP REDUCE    81        
-133   BOOLEAN        DFA_RESOLVE51        
-133   MULTIPLE       SHIFT     102       
-133   AUTO_7         DFA_RESOLVE57        
-133   PLUS           SHIFT     86        
-133   STRING         DFA_RESOLVE54        
-133   AUTO_25        SHIFT     14        
-133   ID             DFA_RESOLVE52        
-133   DIVIDE         SHIFT     81        
-133   MINUS          SHIFT     100       
-133   MODULO         SHIFT     101       
-133   AUTO_39        DFA_RESOLVE55        
-133   AUTO_6         DFA_RESOLVE56        
-133   NUMBER         DFA_RESOLVE53        
-133   AUTO_47        DFA_RESOLVE58        
-132   cll_TYPE       REDUCE    99        
-132   PLUS           REDUCE    99        
-132   MULTIPLE       REDUCE    99        
-132   ID             REDUCE    99        
-132   END            REDUCE    99        
-132   AUTO_50        REDUCE    99        
-132   AUTO_40        REDUCE    99        
-132   AUTO_39        REDUCE    99        
-132   AUTO_20        REDUCE    99        
-132   AUTO_19        REDUCE    99        
-132   AUTO_1         REDUCE    99        
+134   ID             DFA_RESOLVE64        
+134   DIVIDE         SHIFT     82        
+134   MINUS          SHIFT     101       
+134   MODULO         SHIFT     102       
+134   AUTO_39        DFA_RESOLVE67        
+134   AUTO_6         DFA_RESOLVE68        
+134   NUMBER         DFA_RESOLVE65        
+134   AUTO_47        DFA_RESOLVE70        
+133   AUTO_40        SHIFT     175       
+132   cll_LOGICAL_OP REDUCE    99        
+132   cll_COMPARE_OP REDUCE    99        
+132   STRING         REDUCE    99        
 132   AT             REDUCE    99        
-132   $              REDUCE    99        
-131   cll_LOGICAL_OP REDUCE    98        
-131   cll_COMPARE_OP REDUCE    98        
-131   AUTO_27        REDUCE    98        
-131   AUTO_32        REDUCE    98        
-131   END            REDUCE    98        
-131   AUTO_39        REDUCE    98        
-131   AUTO_49        REDUCE    98        
-131   AUTO_7         REDUCE    98        
-131   BOOLEAN        REDUCE    98        
-131   AUTO_40        REDUCE    98        
-131   ID             REDUCE    98        
-131   AUTO_47        REDUCE    98        
-131   AUTO_6         REDUCE    98        
-131   NUMBER         REDUCE    98        
-131   STRING         REDUCE    98        
-130   BOOLEAN        SHIFT     20        
-130   AUTO_47        SHIFT     13        
-130   AUTO_6         SHIFT     75        
-130   NUMBER         SHIFT     16        
-130   MULTIPLE       SHIFT     102       
-130   STRING         SHIFT     15        
-130   AUTO_25        SHIFT     14        
-130   ID             SHIFT     124       
-130   DIVIDE         SHIFT     81        
-130   MINUS          SHIFT     100       
-130   MODULO         SHIFT     101       
-130   AUTO_39        SHIFT     93        
-130   PLUS           SHIFT     86        
-130   AUTO_7         SHIFT     74        
-129   ID             REDUCE    97        
-129   AUTO_39        REDUCE    97        
-128   ID             DFA_RESOLVE50        
-128   AUTO_39        REDUCE    61        
-127   cll_LOGICAL_OP REDUCE    96        
-127   cll_COMPARE_OP REDUCE    96        
-127   STRING         REDUCE    96        
-127   MULTIPLE       REDUCE    96        
-127   MODULO         REDUCE    96        
-127   AUTO_27        REDUCE    96        
-127   END            REDUCE    96        
-127   AUTO_39        REDUCE    96        
-127   AUTO_49        REDUCE    96        
-127   PLUS           REDUCE    96        
-127   AUTO_7         REDUCE    96        
-127   NUMBER         REDUCE    96        
-127   AUTO_47        REDUCE    96        
-127   AUTO_6         REDUCE    96        
-127   BOOLEAN        REDUCE    96        
-127   DIVIDE         REDUCE    96        
-127   AUTO_40        REDUCE    96        
-127   ID             REDUCE    96        
-127   AUTO_32        REDUCE    96        
-127   MINUS          REDUCE    96        
-58    AUTO_47        SHIFT     13        
-58    AUTO_25        SHIFT     14        
-58    STRING         SHIFT     15        
-58    NUMBER         SHIFT     16        
-58    ID             SHIFT     18        
-58    BOOLEAN        SHIFT     20        
-58    AUTO_45        SHIFT     112       
-57    $              REDUCE    43        
-56    AUTO_47        SHIFT     108       
+132   AUTO_27        REDUCE    99        
+132   AUTO_32        REDUCE    99        
+132   END            REDUCE    99        
+132   AUTO_39        REDUCE    99        
+132   AUTO_49        REDUCE    99        
+132   AUTO_7         REDUCE    99        
+132   BOOLEAN        REDUCE    99        
+132   AUTO_40        REDUCE    99        
+132   ID             REDUCE    99        
+132   AUTO_47        REDUCE    99        
+132   AUTO_6         REDUCE    99        
+132   NUMBER         REDUCE    99        
+131   AT             SHIFT     21        
+131   BOOLEAN        SHIFT     20        
+131   AUTO_47        SHIFT     13        
+131   AUTO_6         SHIFT     76        
+131   NUMBER         SHIFT     16        
+131   MULTIPLE       SHIFT     103       
+131   AUTO_7         SHIFT     75        
+131   PLUS           SHIFT     87        
+131   STRING         SHIFT     15        
+131   AUTO_25        SHIFT     14        
+131   ID             SHIFT     125       
+131   DIVIDE         SHIFT     82        
+131   MINUS          SHIFT     101       
+131   MODULO         SHIFT     102       
+131   AUTO_39        SHIFT     92        
+130   ID             REDUCE    98        
+130   AUTO_39        REDUCE    98        
+129   ID             DFA_RESOLVE61        
+129   AUTO_39        REDUCE    62        
+128   cll_LOGICAL_OP REDUCE    97        
+128   cll_COMPARE_OP REDUCE    97        
+128   STRING         REDUCE    97        
+128   MULTIPLE       REDUCE    97        
+128   MODULO         REDUCE    97        
+128   AT             REDUCE    97        
+128   AUTO_27        REDUCE    97        
+128   MINUS          REDUCE    97        
+128   AUTO_32        REDUCE    97        
+128   END            REDUCE    97        
+128   AUTO_39        REDUCE    97        
+128   AUTO_49        REDUCE    97        
+128   PLUS           REDUCE    97        
+128   AUTO_7         REDUCE    97        
+128   NUMBER         REDUCE    97        
+128   AUTO_47        REDUCE    97        
+128   AUTO_6         REDUCE    97        
+128   BOOLEAN        REDUCE    97        
+128   DIVIDE         REDUCE    97        
+128   AUTO_40        REDUCE    97        
+128   ID             REDUCE    97        
+127   AUTO_47        SHIFT     13        
+127   AUTO_25        SHIFT     14        
+127   STRING         SHIFT     15        
+127   NUMBER         SHIFT     16        
+127   ID             SHIFT     166       
+127   BOOLEAN        SHIFT     20        
+127   AT             SHIFT     21        
+58    AUTO_42        REDUCE    44        
+58    AUTO_32        REDUCE    44        
+58    $              REDUCE    44        
+57    AUTO_47        SHIFT     109       
+56    STRING         REDUCE    43        
+56    Rule_NOSPACE   REDUCE    43        
+56    $              REDUCE    43        
+56    LINEAR_COMMENT REDUCE    43        
+56    Rule_OP        REDUCE    43        
+56    Rule_ESCAPED   REDUCE    43        
+56    AUTO_32        REDUCE    43        
+56    AUTO_42        REDUCE    43        
+56    AT             REDUCE    43        
+56    AUTO_38        REDUCE    43        
+56    Rule_HEX       REDUCE    43        
+56    AUTO_39        REDUCE    43        
+56    AUTO_40        REDUCE    43        
+56    ID             REDUCE    43        
+56    AUTO_49        REDUCE    43        
+56    Rule_BIN       REDUCE    43        
+56    AUTO_0         REDUCE    43        
+56    Rule_CSEQUENCE REDUCE    43        
 55    STRING         REDUCE    42        
 55    Rule_NOSPACE   REDUCE    42        
 55    $              REDUCE    42        
 55    LINEAR_COMMENT REDUCE    42        
+55    Rule_OP        REDUCE    42        
+55    Rule_ESCAPED   REDUCE    42        
+55    AUTO_32        REDUCE    42        
+55    AUTO_42        REDUCE    42        
 55    AT             REDUCE    42        
 55    AUTO_38        REDUCE    42        
-55    AUTO_42        REDUCE    42        
+55    Rule_HEX       REDUCE    42        
+55    AUTO_39        REDUCE    42        
 55    AUTO_40        REDUCE    42        
 55    ID             REDUCE    42        
-55    AUTO_39        REDUCE    42        
-55    Rule_HEX       REDUCE    42        
+55    AUTO_49        REDUCE    42        
 55    Rule_BIN       REDUCE    42        
 55    AUTO_0         REDUCE    42        
 55    Rule_CSEQUENCE REDUCE    42        
-55    Rule_OP        REDUCE    42        
-55    Rule_ESCAPED   REDUCE    42        
-54    STRING         REDUCE    41        
-54    Rule_NOSPACE   REDUCE    41        
-54    $              REDUCE    41        
-54    LINEAR_COMMENT REDUCE    41        
-54    AT             REDUCE    41        
-54    AUTO_38        REDUCE    41        
-54    AUTO_42        REDUCE    41        
+54    PLUS           REDUCE    41        
+54    MULTIPLE       REDUCE    41        
+54    AUTO_49        REDUCE    41        
 54    AUTO_40        REDUCE    41        
-54    ID             REDUCE    41        
-54    AUTO_39        REDUCE    41        
-54    Rule_HEX       REDUCE    41        
-54    Rule_BIN       REDUCE    41        
-54    AUTO_0         REDUCE    41        
-54    Rule_CSEQUENCE REDUCE    41        
-54    Rule_OP        REDUCE    41        
-54    Rule_ESCAPED   REDUCE    41        
+54    QUESTION_MARK  REDUCE    41        
+54    AUTO_42        REDUCE    41        
+54    AUTO_32        REDUCE    41        
+54    AT             REDUCE    41        
+54    $              REDUCE    41        
 53    PLUS           REDUCE    40        
 53    MULTIPLE       REDUCE    40        
-53    AUTO_50        REDUCE    40        
+53    AUTO_49        REDUCE    40        
 53    AUTO_40        REDUCE    40        
+53    QUESTION_MARK  REDUCE    40        
+53    AUTO_42        REDUCE    40        
+53    AUTO_32        REDUCE    40        
 53    AT             REDUCE    40        
 53    $              REDUCE    40        
 52    PLUS           REDUCE    39        
 52    MULTIPLE       REDUCE    39        
-52    AUTO_50        REDUCE    39        
+52    AUTO_49        REDUCE    39        
 52    AUTO_40        REDUCE    39        
+52    QUESTION_MARK  REDUCE    39        
+52    AUTO_42        REDUCE    39        
+52    AUTO_32        REDUCE    39        
 52    AT             REDUCE    39        
 52    $              REDUCE    39        
 51    PLUS           REDUCE    38        
 51    MULTIPLE       REDUCE    38        
-51    AUTO_50        REDUCE    38        
+51    AUTO_49        REDUCE    38        
 51    AUTO_40        REDUCE    38        
+51    QUESTION_MARK  REDUCE    38        
+51    AUTO_42        REDUCE    38        
+51    AUTO_32        REDUCE    38        
 51    AT             REDUCE    38        
 51    $              REDUCE    38        
-50    PLUS           REDUCE    37        
-50    MULTIPLE       REDUCE    37        
-50    AUTO_50        REDUCE    37        
-50    AUTO_40        REDUCE    37        
-50    AT             REDUCE    37        
-50    $              REDUCE    37        
-49    AUTO_41        SHIFT     25        
-49    AT             DFA_RESOLVE13        
-49    AUTO_40        DFA_RESOLVE12        
+50    AUTO_41        SHIFT     26        
+50    AT             DFA_RESOLVE14        
+50    AUTO_40        DFA_RESOLVE13        
+49    PLUS           REDUCE    35        
+49    MULTIPLE       REDUCE    35        
+49    AUTO_49        REDUCE    35        
+49    AUTO_40        REDUCE    35        
+49    QUESTION_MARK  REDUCE    35        
+49    AUTO_42        REDUCE    35        
+49    AUTO_32        REDUCE    35        
+49    AT             REDUCE    35        
+49    $              REDUCE    35        
 48    PLUS           REDUCE    34        
 48    MULTIPLE       REDUCE    34        
-48    AUTO_50        REDUCE    34        
+48    AUTO_49        REDUCE    34        
 48    AUTO_40        REDUCE    34        
+48    QUESTION_MARK  REDUCE    34        
+48    AUTO_42        REDUCE    34        
+48    AUTO_32        REDUCE    34        
 48    AT             REDUCE    34        
 48    $              REDUCE    34        
-47    PLUS           REDUCE    33        
-47    MULTIPLE       REDUCE    33        
-47    AUTO_50        REDUCE    33        
-47    AUTO_40        REDUCE    33        
-47    AT             REDUCE    33        
-47    $              REDUCE    33        
-46    AUTO_20        SHIFT     103       
-46    AUTO_1         SHIFT     76        
-46    BOOLEAN        SHIFT     20        
-46    AUTO_47        SHIFT     13        
-46    AUTO_6         SHIFT     75        
-46    NUMBER         SHIFT     16        
-46    MULTIPLE       SHIFT     102       
-46    AUTO_7         SHIFT     74        
-46    PLUS           SHIFT     86        
-46    STRING         SHIFT     15        
-46    AUTO_25        SHIFT     14        
-46    ID             DFA_RESOLVE10        
-46    DIVIDE         SHIFT     81        
-46    AUTO_19        SHIFT     94        
-46    AUTO_39        DFA_RESOLVE11        
-46    cll_TYPE       SHIFT     95        
-46    MINUS          SHIFT     100       
-46    AT             SHIFT     96        
-46    MODULO         SHIFT     101       
+47    AUTO_20        SHIFT     104       
+47    AT             SHIFT     85        
+47    AUTO_1         SHIFT     77        
+47    BOOLEAN        SHIFT     20        
+47    AUTO_47        SHIFT     13        
+47    AUTO_6         SHIFT     76        
+47    NUMBER         SHIFT     16        
+47    MULTIPLE       SHIFT     103       
+47    AUTO_7         SHIFT     75        
+47    PLUS           SHIFT     87        
+47    STRING         SHIFT     15        
+47    AUTO_25        SHIFT     14        
+47    ID             DFA_RESOLVE11        
+47    DIVIDE         SHIFT     82        
+47    AUTO_19        SHIFT     96        
+47    AUTO_39        DFA_RESOLVE12        
+47    cll_TYPE       SHIFT     97        
+47    MINUS          SHIFT     101       
+47    MODULO         SHIFT     102       
+46    PLUS           REDUCE    32        
+46    MULTIPLE       REDUCE    32        
+46    AUTO_49        REDUCE    32        
+46    AUTO_40        REDUCE    32        
+46    QUESTION_MARK  REDUCE    32        
+46    AUTO_42        REDUCE    32        
+46    AUTO_32        REDUCE    32        
+46    AT             REDUCE    32        
+46    $              REDUCE    32        
 45    PLUS           REDUCE    31        
 45    MULTIPLE       REDUCE    31        
-45    AUTO_50        REDUCE    31        
+45    AUTO_49        REDUCE    31        
 45    AUTO_40        REDUCE    31        
+45    QUESTION_MARK  REDUCE    31        
+45    AUTO_42        REDUCE    31        
+45    AUTO_32        REDUCE    31        
 45    AT             REDUCE    31        
 45    $              REDUCE    31        
 44    PLUS           REDUCE    30        
 44    MULTIPLE       REDUCE    30        
-44    AUTO_50        REDUCE    30        
+44    AUTO_49        REDUCE    30        
 44    AUTO_40        REDUCE    30        
+44    QUESTION_MARK  REDUCE    30        
+44    AUTO_42        REDUCE    30        
+44    AUTO_32        REDUCE    30        
 44    AT             REDUCE    30        
 44    $              REDUCE    30        
 43    PLUS           REDUCE    29        
 43    MULTIPLE       REDUCE    29        
-43    AUTO_50        REDUCE    29        
+43    AUTO_49        REDUCE    29        
 43    AUTO_40        REDUCE    29        
+43    QUESTION_MARK  REDUCE    29        
+43    AUTO_42        REDUCE    29        
+43    AUTO_32        REDUCE    29        
 43    AT             REDUCE    29        
 43    $              REDUCE    29        
 42    PLUS           REDUCE    28        
 42    MULTIPLE       REDUCE    28        
-42    AUTO_50        REDUCE    28        
+42    AUTO_49        REDUCE    28        
 42    AUTO_40        REDUCE    28        
+42    QUESTION_MARK  REDUCE    28        
+42    AUTO_42        REDUCE    28        
+42    AUTO_32        REDUCE    28        
 42    AT             REDUCE    28        
 42    $              REDUCE    28        
 41    PLUS           REDUCE    27        
 41    MULTIPLE       REDUCE    27        
-41    AUTO_50        REDUCE    27        
+41    AUTO_49        REDUCE    27        
 41    AUTO_40        REDUCE    27        
+41    QUESTION_MARK  REDUCE    27        
+41    AUTO_42        REDUCE    27        
+41    AUTO_32        REDUCE    27        
 41    AT             REDUCE    27        
 41    $              REDUCE    27        
-40    PLUS           REDUCE    26        
-40    MULTIPLE       REDUCE    26        
-40    AUTO_50        REDUCE    26        
-40    AUTO_40        REDUCE    26        
-40    AT             REDUCE    26        
-40    $              REDUCE    26        
-39    ID             REDUCE    25        
-38    ID             SHIFT     73        
-37    PLUS           SHIFT     70        
-37    MULTIPLE       SHIFT     71        
-37    AUTO_50        SHIFT     69        
+40    ID             REDUCE    26        
+39    ID             SHIFT     74        
+38    PLUS           SHIFT     71        
+38    MULTIPLE       SHIFT     72        
+38    AUTO_49        REDUCE    25        
+38    AUTO_40        REDUCE    25        
+38    QUESTION_MARK  SHIFT     70        
+38    AUTO_42        REDUCE    25        
+38    AUTO_32        REDUCE    25        
+38    AT             REDUCE    25        
+38    $              REDUCE    25        
+37    ID             REDUCE    24        
+37    AUTO_49        REDUCE    24        
 37    AUTO_40        REDUCE    24        
+37    AUTO_42        REDUCE    24        
+37    AUTO_32        REDUCE    24        
 37    AT             REDUCE    24        
 37    $              REDUCE    24        
-36    ID             REDUCE    23        
-36    AUTO_40        REDUCE    23        
+36    AUTO_42        REDUCE    23        
+36    AUTO_32        REDUCE    23        
 36    AT             REDUCE    23        
 36    $              REDUCE    23        
-35    AT             REDUCE    22        
-35    $              REDUCE    22        
-34    $              REDUCE    17        
-34    AUTO_41        SHIFT     25        
-34    AT             DFA_RESOLVE9         
-33    AUTO_48        DFA_RESOLVE8         
-33    $              REDUCE    5         
-32    AUTO_48        SHIFT     65        
-31    AUTO_27        SHIFT     64        
-30    AUTO_36        SHIFT     63        
-29    AUTO_49        SHIFT     62        
+35    AUTO_42        REDUCE    18        
+35    AUTO_32        REDUCE    18        
+35    $              REDUCE    18        
+35    AUTO_41        SHIFT     26        
+35    AT             DFA_RESOLVE10        
+34    AUTO_48        DFA_RESOLVE9         
+34    $              REDUCE    5         
+33    AUTO_48        SHIFT     66        
+32    AUTO_27        SHIFT     65        
+31    AUTO_36        SHIFT     64        
+30    AUTO_49        SHIFT     63        
+29    AUTO_42        REDUCE    22        
+29    AUTO_32        REDUCE    22        
+29    AT             SHIFT     57        
+29    $              REDUCE    22        
+29    AUTO_47        SHIFT     59        
 12    AUTO_48        REDUCE    7         
 12    $              REDUCE    7         
 11    STRING         REDUCE    6         
@@ -879,10 +995,11 @@ State Token          Action    Next State
 11    BOOLEAN        REDUCE    6         
 11    AUTO_48        REDUCE    6         
 11    AUTO_25        REDUCE    6         
+11    AT             REDUCE    6         
 11    AUTO_47        REDUCE    6         
 11    $              REDUCE    6         
-10    AUTO_41        SHIFT     25        
-10    AT             SHIFT     27        
+10    AUTO_41        SHIFT     26        
+10    AT             SHIFT     28        
 9     AUTO_48        DFA_RESOLVE0         
 9     $              REDUCE    5         
 8     AUTO_48        REDUCE    4         
@@ -893,6 +1010,7 @@ State Token          Action    Next State
 8     NUMBER         SHIFT     16        
 8     ID             SHIFT     18        
 8     BOOLEAN        SHIFT     20        
+8     AT             SHIFT     21        
 7     AUTO_36        SHIFT     10        
 6     $              ACCEPT    0         
 5     $              REDUCE    3         
@@ -910,14 +1028,16 @@ State Token          Action    Next State
 13    NUMBER         SHIFT     16        
 13    ID             SHIFT     18        
 13    BOOLEAN        SHIFT     20        
+13    AT             SHIFT     21        
 13    AUTO_49        REDUCE    8         
 14    AUTO_25        SHIFT     14        
-14    STRING         DFA_RESOLVE4         
-14    NUMBER         DFA_RESOLVE3         
-14    ID             DFA_RESOLVE2         
-14    BOOLEAN        DFA_RESOLVE1         
-14    AUTO_47        DFA_RESOLVE5         
+14    STRING         DFA_RESOLVE5         
+14    NUMBER         DFA_RESOLVE4         
+14    ID             DFA_RESOLVE3         
+14    BOOLEAN        DFA_RESOLVE2         
+14    AUTO_47        DFA_RESOLVE6         
 14    AUTO_27        REDUCE    9         
+14    AT             DFA_RESOLVE1         
 15    cll_LOGICAL_OP REDUCE    10        
 15    cll_COMPARE_OP REDUCE    10        
 15    STRING         REDUCE    10        
@@ -927,6 +1047,7 @@ State Token          Action    Next State
 15    $              REDUCE    10        
 15    PLUS           REDUCE    10        
 15    AUTO_7         REDUCE    10        
+15    AT             REDUCE    10        
 15    AUTO_27        REDUCE    10        
 15    MINUS          REDUCE    10        
 15    AUTO_32        REDUCE    10        
@@ -950,6 +1071,7 @@ State Token          Action    Next State
 16    $              REDUCE    11        
 16    PLUS           REDUCE    11        
 16    AUTO_7         REDUCE    11        
+16    AT             REDUCE    11        
 16    AUTO_27        REDUCE    11        
 16    MINUS          REDUCE    11        
 16    AUTO_32        REDUCE    11        
@@ -973,6 +1095,7 @@ State Token          Action    Next State
 17    $              REDUCE    12        
 17    PLUS           REDUCE    12        
 17    AUTO_7         REDUCE    12        
+17    AT             REDUCE    12        
 17    AUTO_27        REDUCE    12        
 17    MINUS          REDUCE    12        
 17    AUTO_32        REDUCE    12        
@@ -996,6 +1119,7 @@ State Token          Action    Next State
 18    $              REDUCE    13        
 18    PLUS           REDUCE    13        
 18    AUTO_7         REDUCE    13        
+18    AT             REDUCE    13        
 18    AUTO_27        REDUCE    13        
 18    MINUS          REDUCE    13        
 18    AUTO_32        REDUCE    13        
@@ -1019,6 +1143,7 @@ State Token          Action    Next State
 19    $              REDUCE    14        
 19    PLUS           REDUCE    14        
 19    AUTO_7         REDUCE    14        
+19    AT             REDUCE    14        
 19    AUTO_27        REDUCE    14        
 19    MINUS          REDUCE    14        
 19    AUTO_32        REDUCE    14        
@@ -1042,6 +1167,7 @@ State Token          Action    Next State
 20    $              REDUCE    15        
 20    PLUS           REDUCE    15        
 20    AUTO_7         REDUCE    15        
+20    AT             REDUCE    15        
 20    AUTO_27        REDUCE    15        
 20    MINUS          REDUCE    15        
 20    AUTO_32        REDUCE    15        
@@ -1056,217 +1182,264 @@ State Token          Action    Next State
 20    AUTO_47        REDUCE    15        
 20    AUTO_6         REDUCE    15        
 20    BOOLEAN        REDUCE    15        
-21    ID             REDUCE    16        
-21    AUTO_48        REDUCE    16        
+21    cll_LOGICAL_OP REDUCE    16        
+21    cll_COMPARE_OP REDUCE    16        
+21    STRING         REDUCE    16        
+21    MULTIPLE       REDUCE    16        
+21    MODULO         REDUCE    16        
+21    END            REDUCE    16        
 21    $              REDUCE    16        
-22    ID             SHIFT     8         
-23    $              REDUCE    17        
-23    AUTO_41        SHIFT     25        
-23    AT             DFA_RESOLVE6         
-24    AUTO_40        REDUCE    18        
-24    AT             REDUCE    18        
+21    PLUS           REDUCE    16        
+21    AUTO_7         REDUCE    16        
+21    AT             REDUCE    16        
+21    AUTO_27        REDUCE    16        
+21    MINUS          REDUCE    16        
+21    AUTO_32        REDUCE    16        
+21    AUTO_36        REDUCE    16        
+21    AUTO_39        REDUCE    16        
+21    AUTO_48        REDUCE    16        
+21    AUTO_49        REDUCE    16        
+21    ID             REDUCE    16        
+21    DIVIDE         REDUCE    16        
+21    AUTO_40        REDUCE    16        
+21    NUMBER         REDUCE    16        
+21    AUTO_47        REDUCE    16        
+21    AUTO_6         REDUCE    16        
+21    BOOLEAN        REDUCE    16        
+22    ID             REDUCE    17        
+22    AUTO_48        REDUCE    17        
+22    $              REDUCE    17        
+23    ID             SHIFT     8         
+24    AUTO_42        REDUCE    18        
+24    AUTO_32        REDUCE    18        
 24    $              REDUCE    18        
-25    ID             SHIFT     36        
-26    AUTO_39        SHIFT     49        
-26    Rule_OP        SHIFT     53        
-26    Rule_NOSPACE   SHIFT     51        
-26    STRING         SHIFT     48        
-26    Rule_ESCAPED   SHIFT     52        
-26    Rule_CSEQUENCE SHIFT     47        
-26    Rule_BIN       SHIFT     45        
-26    AUTO_0         SHIFT     46        
-26    LINEAR_COMMENT SHIFT     44        
-26    AUTO_38        SHIFT     42        
-26    AUTO_42        SHIFT     39        
-26    Rule_HEX       SHIFT     50        
-26    ID             REDUCE    19        
-27    STRING         REDUCE    20        
-27    Rule_NOSPACE   REDUCE    20        
-27    $              REDUCE    20        
-27    LINEAR_COMMENT REDUCE    20        
-27    AT             REDUCE    20        
-27    AUTO_38        REDUCE    20        
-27    AUTO_42        REDUCE    20        
-27    AUTO_40        REDUCE    20        
-27    ID             DFA_RESOLVE7         
-27    AUTO_39        REDUCE    20        
-27    Rule_HEX       REDUCE    20        
-27    Rule_BIN       REDUCE    20        
-27    AUTO_0         REDUCE    20        
-27    Rule_CSEQUENCE REDUCE    20        
-27    Rule_OP        REDUCE    20        
-27    Rule_ESCAPED   REDUCE    20        
-28    AT             SHIFT     56        
+24    AUTO_41        SHIFT     26        
+24    AT             DFA_RESOLVE7         
+25    AUTO_49        REDUCE    19        
+25    AUTO_40        REDUCE    19        
+25    AUTO_42        REDUCE    19        
+25    AUTO_32        REDUCE    19        
+25    AT             REDUCE    19        
+25    $              REDUCE    19        
+26    ID             SHIFT     37        
+27    AUTO_39        SHIFT     50        
+27    Rule_OP        SHIFT     54        
+27    Rule_NOSPACE   SHIFT     52        
+27    STRING         SHIFT     49        
+27    Rule_ESCAPED   SHIFT     53        
+27    Rule_CSEQUENCE SHIFT     48        
+27    Rule_BIN       SHIFT     46        
+27    AUTO_0         SHIFT     47        
+27    LINEAR_COMMENT SHIFT     45        
+27    AUTO_38        SHIFT     43        
+27    AUTO_42        SHIFT     40        
+27    Rule_HEX       SHIFT     51        
+27    ID             REDUCE    20        
+28    STRING         REDUCE    21        
+28    Rule_NOSPACE   REDUCE    21        
 28    $              REDUCE    21        
-28    AUTO_47        SHIFT     58        
-59    $              REDUCE    44        
+28    LINEAR_COMMENT REDUCE    21        
+28    Rule_OP        REDUCE    21        
+28    Rule_ESCAPED   REDUCE    21        
+28    AUTO_32        REDUCE    21        
+28    AUTO_42        REDUCE    21        
+28    AT             REDUCE    21        
+28    AUTO_38        REDUCE    21        
+28    Rule_HEX       REDUCE    21        
+28    AUTO_39        REDUCE    21        
+28    AUTO_40        REDUCE    21        
+28    ID             DFA_RESOLVE8         
+28    AUTO_49        REDUCE    21        
+28    Rule_BIN       REDUCE    21        
+28    AUTO_0         REDUCE    21        
+28    Rule_CSEQUENCE REDUCE    21        
+59    AUTO_47        SHIFT     13        
+59    AUTO_25        SHIFT     14        
+59    STRING         SHIFT     15        
+59    NUMBER         SHIFT     16        
+59    ID             SHIFT     18        
+59    BOOLEAN        SHIFT     20        
+59    AT             SHIFT     21        
+59    AUTO_45        SHIFT     110       
+60    AUTO_42        REDUCE    45        
+60    AUTO_32        REDUCE    45        
 60    $              REDUCE    45        
-61    AUTO_32        DFA_RESOLVE14        
-61    AUTO_42        DFA_RESOLVE15        
-62    cll_LOGICAL_OP REDUCE    48        
-62    cll_COMPARE_OP REDUCE    48        
-62    STRING         REDUCE    48        
-62    MULTIPLE       REDUCE    48        
-62    MODULO         REDUCE    48        
-62    END            REDUCE    48        
-62    $              REDUCE    48        
-62    PLUS           REDUCE    48        
-62    AUTO_7         REDUCE    48        
-62    AUTO_27        REDUCE    48        
-62    MINUS          REDUCE    48        
-62    AUTO_32        REDUCE    48        
-62    AUTO_36        REDUCE    48        
-62    AUTO_39        REDUCE    48        
-62    AUTO_48        REDUCE    48        
-62    AUTO_49        REDUCE    48        
-62    ID             REDUCE    48        
-62    DIVIDE         REDUCE    48        
-62    AUTO_40        REDUCE    48        
-62    NUMBER         REDUCE    48        
-62    AUTO_47        REDUCE    48        
-62    AUTO_6         REDUCE    48        
-62    BOOLEAN        REDUCE    48        
-63    AUTO_47        SHIFT     13        
-63    AUTO_25        SHIFT     14        
-63    STRING         SHIFT     15        
-63    NUMBER         SHIFT     16        
-63    ID             SHIFT     18        
-63    BOOLEAN        SHIFT     20        
-64    cll_LOGICAL_OP REDUCE    49        
-64    cll_COMPARE_OP REDUCE    49        
-64    STRING         REDUCE    49        
-64    MULTIPLE       REDUCE    49        
-64    MODULO         REDUCE    49        
-64    END            REDUCE    49        
-64    $              REDUCE    49        
-64    PLUS           REDUCE    49        
-64    AUTO_7         REDUCE    49        
-64    AUTO_27        REDUCE    49        
-64    MINUS          REDUCE    49        
-64    AUTO_32        REDUCE    49        
-64    AUTO_36        REDUCE    49        
-64    AUTO_39        REDUCE    49        
-64    AUTO_48        REDUCE    49        
-64    AUTO_49        REDUCE    49        
-64    ID             REDUCE    49        
-64    DIVIDE         REDUCE    49        
-64    AUTO_40        REDUCE    49        
-64    NUMBER         REDUCE    49        
-64    AUTO_47        REDUCE    49        
-64    AUTO_6         REDUCE    49        
-64    BOOLEAN        REDUCE    49        
-65    AUTO_25        SHIFT     14        
-65    STRING         DFA_RESOLVE19        
-65    NUMBER         DFA_RESOLVE18        
-65    ID             DFA_RESOLVE17        
-65    BOOLEAN        DFA_RESOLVE16        
-65    AUTO_47        DFA_RESOLVE20        
-65    AUTO_27        REDUCE    9         
-66    ID             REDUCE    50        
-66    AUTO_48        REDUCE    50        
-66    $              REDUCE    50        
-67    AT             REDUCE    51        
+61    AUTO_42        REDUCE    46        
+61    AUTO_32        REDUCE    46        
+61    $              REDUCE    46        
+62    AUTO_32        DFA_RESOLVE15        
+62    AUTO_42        DFA_RESOLVE16        
+63    cll_LOGICAL_OP REDUCE    49        
+63    cll_COMPARE_OP REDUCE    49        
+63    STRING         REDUCE    49        
+63    MULTIPLE       REDUCE    49        
+63    MODULO         REDUCE    49        
+63    END            REDUCE    49        
+63    $              REDUCE    49        
+63    PLUS           REDUCE    49        
+63    AUTO_7         REDUCE    49        
+63    AT             REDUCE    49        
+63    AUTO_27        REDUCE    49        
+63    MINUS          REDUCE    49        
+63    AUTO_32        REDUCE    49        
+63    AUTO_36        REDUCE    49        
+63    AUTO_39        REDUCE    49        
+63    AUTO_48        REDUCE    49        
+63    AUTO_49        REDUCE    49        
+63    ID             REDUCE    49        
+63    DIVIDE         REDUCE    49        
+63    AUTO_40        REDUCE    49        
+63    NUMBER         REDUCE    49        
+63    AUTO_47        REDUCE    49        
+63    AUTO_6         REDUCE    49        
+63    BOOLEAN        REDUCE    49        
+64    AUTO_47        SHIFT     13        
+64    AUTO_25        SHIFT     14        
+64    STRING         SHIFT     15        
+64    NUMBER         SHIFT     16        
+64    ID             SHIFT     18        
+64    BOOLEAN        SHIFT     20        
+64    AT             SHIFT     21        
+65    cll_LOGICAL_OP REDUCE    50        
+65    cll_COMPARE_OP REDUCE    50        
+65    STRING         REDUCE    50        
+65    MULTIPLE       REDUCE    50        
+65    MODULO         REDUCE    50        
+65    END            REDUCE    50        
+65    $              REDUCE    50        
+65    PLUS           REDUCE    50        
+65    AUTO_7         REDUCE    50        
+65    AT             REDUCE    50        
+65    AUTO_27        REDUCE    50        
+65    MINUS          REDUCE    50        
+65    AUTO_32        REDUCE    50        
+65    AUTO_36        REDUCE    50        
+65    AUTO_39        REDUCE    50        
+65    AUTO_48        REDUCE    50        
+65    AUTO_49        REDUCE    50        
+65    ID             REDUCE    50        
+65    DIVIDE         REDUCE    50        
+65    AUTO_40        REDUCE    50        
+65    NUMBER         REDUCE    50        
+65    AUTO_47        REDUCE    50        
+65    AUTO_6         REDUCE    50        
+65    BOOLEAN        REDUCE    50        
+66    AUTO_25        SHIFT     14        
+66    STRING         DFA_RESOLVE21        
+66    NUMBER         DFA_RESOLVE20        
+66    ID             DFA_RESOLVE19        
+66    BOOLEAN        DFA_RESOLVE18        
+66    AUTO_47        DFA_RESOLVE22        
+66    AUTO_27        REDUCE    9         
+66    AT             DFA_RESOLVE17        
+67    ID             REDUCE    51        
+67    AUTO_48        REDUCE    51        
 67    $              REDUCE    51        
-68    STRING         REDUCE    52        
-68    Rule_NOSPACE   REDUCE    52        
-68    $              REDUCE    52        
-68    Rule_CSEQUENCE REDUCE    52        
-68    AUTO_0         REDUCE    52        
-68    LINEAR_COMMENT REDUCE    52        
-68    AT             REDUCE    52        
-68    AUTO_38        REDUCE    52        
-68    Rule_HEX       REDUCE    52        
-68    AUTO_39        REDUCE    52        
 68    AUTO_42        REDUCE    52        
-68    Rule_OP        REDUCE    52        
-68    Rule_ESCAPED   REDUCE    52        
-68    AUTO_50        REDUCE    52        
-68    AUTO_40        REDUCE    52        
-68    ID             REDUCE    52        
-68    MULTIPLE       REDUCE    52        
-68    PLUS           REDUCE    52        
-68    Rule_BIN       REDUCE    52        
-69    AUTO_40        REDUCE    53        
-69    AT             REDUCE    53        
+68    AUTO_32        REDUCE    52        
+68    AT             REDUCE    52        
+68    $              REDUCE    52        
+69    STRING         REDUCE    53        
+69    Rule_NOSPACE   REDUCE    53        
+69    QUESTION_MARK  REDUCE    53        
 69    $              REDUCE    53        
+69    Rule_CSEQUENCE REDUCE    53        
+69    AUTO_0         REDUCE    53        
+69    LINEAR_COMMENT REDUCE    53        
+69    Rule_OP        REDUCE    53        
+69    Rule_ESCAPED   REDUCE    53        
+69    AUTO_32        REDUCE    53        
+69    AUTO_42        REDUCE    53        
+69    AT             REDUCE    53        
+69    AUTO_38        REDUCE    53        
+69    Rule_HEX       REDUCE    53        
+69    AUTO_39        REDUCE    53        
+69    Rule_BIN       REDUCE    53        
+69    AUTO_49        REDUCE    53        
+69    AUTO_40        REDUCE    53        
+69    ID             REDUCE    53        
+69    MULTIPLE       REDUCE    53        
+69    PLUS           REDUCE    53        
+70    AUTO_49        REDUCE    54        
 70    AUTO_40        REDUCE    54        
+70    AUTO_42        REDUCE    54        
+70    AUTO_32        REDUCE    54        
 70    AT             REDUCE    54        
 70    $              REDUCE    54        
+71    AUTO_49        REDUCE    55        
 71    AUTO_40        REDUCE    55        
+71    AUTO_42        REDUCE    55        
+71    AUTO_32        REDUCE    55        
 71    AT             REDUCE    55        
 71    $              REDUCE    55        
+72    AUTO_49        REDUCE    56        
 72    AUTO_40        REDUCE    56        
+72    AUTO_42        REDUCE    56        
+72    AUTO_32        REDUCE    56        
 72    AT             REDUCE    56        
 72    $              REDUCE    56        
-73    PLUS           REDUCE    57        
-73    MULTIPLE       REDUCE    57        
-73    AUTO_50        REDUCE    57        
+73    AUTO_49        REDUCE    57        
 73    AUTO_40        REDUCE    57        
-73    AUTO_38        DFA_RESOLVE21        
+73    AUTO_42        REDUCE    57        
+73    AUTO_32        REDUCE    57        
 73    AT             REDUCE    57        
 73    $              REDUCE    57        
-74    cll_LOGICAL_OP REDUCE    58        
-74    cll_COMPARE_OP REDUCE    58        
-74    STRING         REDUCE    58        
-74    MULTIPLE       REDUCE    58        
-74    MODULO         REDUCE    58        
-74    AUTO_27        REDUCE    58        
-74    END            REDUCE    58        
-74    AUTO_39        REDUCE    58        
-74    AUTO_49        REDUCE    58        
 74    PLUS           REDUCE    58        
-74    AUTO_7         REDUCE    58        
-74    NUMBER         REDUCE    58        
-74    AUTO_47        REDUCE    58        
-74    AUTO_6         REDUCE    58        
-74    BOOLEAN        REDUCE    58        
-74    DIVIDE         REDUCE    58        
+74    MULTIPLE       REDUCE    58        
+74    AUTO_49        REDUCE    58        
 74    AUTO_40        REDUCE    58        
-74    ID             REDUCE    58        
+74    AUTO_38        DFA_RESOLVE23        
+74    QUESTION_MARK  REDUCE    58        
+74    AUTO_42        REDUCE    58        
 74    AUTO_32        REDUCE    58        
-74    MINUS          REDUCE    58        
-75    ID             SHIFT     122       
-76    BOOLEAN        SHIFT     20        
-76    AUTO_47        SHIFT     13        
-76    AUTO_6         SHIFT     75        
-76    NUMBER         SHIFT     16        
-76    MULTIPLE       SHIFT     102       
-76    AUTO_7         SHIFT     74        
-76    PLUS           SHIFT     86        
-76    STRING         SHIFT     15        
-76    AUTO_25        SHIFT     14        
-76    ID             SHIFT     124       
-76    DIVIDE         SHIFT     81        
-76    AT             SHIFT     96        
-76    MINUS          SHIFT     100       
-76    MODULO         SHIFT     101       
-76    AUTO_39        SHIFT     93        
-77    cll_LOGICAL_OP REDUCE    59        
-77    cll_COMPARE_OP REDUCE    59        
-77    STRING         REDUCE    59        
-77    MULTIPLE       REDUCE    59        
-77    MODULO         REDUCE    59        
-77    AUTO_27        REDUCE    59        
-77    END            REDUCE    59        
-77    AUTO_39        REDUCE    59        
-77    AUTO_49        REDUCE    59        
-77    PLUS           REDUCE    59        
-77    AUTO_7         REDUCE    59        
-77    NUMBER         REDUCE    59        
-77    AUTO_47        REDUCE    59        
-77    AUTO_6         REDUCE    59        
-77    BOOLEAN        REDUCE    59        
-77    DIVIDE         REDUCE    59        
-77    AUTO_40        REDUCE    59        
-77    ID             REDUCE    59        
-77    AUTO_32        REDUCE    59        
-77    MINUS          REDUCE    59        
+74    AT             REDUCE    58        
+74    $              REDUCE    58        
+75    cll_LOGICAL_OP REDUCE    59        
+75    cll_COMPARE_OP REDUCE    59        
+75    STRING         REDUCE    59        
+75    MULTIPLE       REDUCE    59        
+75    MODULO         REDUCE    59        
+75    AT             REDUCE    59        
+75    AUTO_27        REDUCE    59        
+75    MINUS          REDUCE    59        
+75    AUTO_32        REDUCE    59        
+75    END            REDUCE    59        
+75    AUTO_39        REDUCE    59        
+75    AUTO_49        REDUCE    59        
+75    PLUS           REDUCE    59        
+75    AUTO_7         REDUCE    59        
+75    NUMBER         REDUCE    59        
+75    AUTO_47        REDUCE    59        
+75    AUTO_6         REDUCE    59        
+75    BOOLEAN        REDUCE    59        
+75    DIVIDE         REDUCE    59        
+75    AUTO_40        REDUCE    59        
+75    ID             REDUCE    59        
+76    ID             SHIFT     123       
+77    AT             SHIFT     85        
+77    BOOLEAN        SHIFT     20        
+77    AUTO_47        SHIFT     13        
+77    AUTO_6         SHIFT     76        
+77    NUMBER         SHIFT     16        
+77    MULTIPLE       SHIFT     103       
+77    AUTO_7         SHIFT     75        
+77    PLUS           SHIFT     87        
+77    STRING         SHIFT     15        
+77    AUTO_25        SHIFT     14        
+77    ID             SHIFT     125       
+77    DIVIDE         SHIFT     82        
+77    MINUS          SHIFT     101       
+77    MODULO         SHIFT     102       
+77    AUTO_39        SHIFT     92        
 78    cll_LOGICAL_OP REDUCE    60        
 78    cll_COMPARE_OP REDUCE    60        
 78    STRING         REDUCE    60        
 78    MULTIPLE       REDUCE    60        
 78    MODULO         REDUCE    60        
+78    AT             REDUCE    60        
 78    AUTO_27        REDUCE    60        
+78    MINUS          REDUCE    60        
+78    AUTO_32        REDUCE    60        
 78    END            REDUCE    60        
 78    AUTO_39        REDUCE    60        
 78    AUTO_49        REDUCE    60        
@@ -1279,208 +1452,242 @@ State Token          Action    Next State
 78    DIVIDE         REDUCE    60        
 78    AUTO_40        REDUCE    60        
 78    ID             REDUCE    60        
-78    AUTO_32        REDUCE    60        
-78    MINUS          REDUCE    60        
-79    ID             SHIFT     125       
-80    cll_LOGICAL_OP REDUCE    13        
-80    cll_COMPARE_OP REDUCE    13        
-80    STRING         REDUCE    13        
-80    MULTIPLE       REDUCE    13        
-80    MODULO         REDUCE    13        
-80    END            REDUCE    13        
-80    $              REDUCE    13        
-80    PLUS           REDUCE    13        
-80    AUTO_7         REDUCE    13        
-80    AUTO_27        REDUCE    13        
-80    MINUS          REDUCE    13        
-80    AUTO_32        REDUCE    13        
-80    AUTO_36        REDUCE    13        
-80    AUTO_39        DFA_RESOLVE22        
-80    AUTO_48        REDUCE    13        
-80    AUTO_49        REDUCE    13        
-80    ID             DFA_RESOLVE23        
-80    DIVIDE         REDUCE    13        
-80    AUTO_40        REDUCE    13        
-80    NUMBER         REDUCE    13        
-80    AUTO_47        REDUCE    13        
-80    AUTO_6         REDUCE    13        
-80    BOOLEAN        REDUCE    13        
-81    cll_LOGICAL_OP REDUCE    62        
-81    cll_COMPARE_OP REDUCE    62        
-81    STRING         REDUCE    62        
-81    NUMBER         REDUCE    62        
-81    ID             REDUCE    62        
-81    BOOLEAN        REDUCE    62        
-81    AUTO_6         REDUCE    62        
-81    AUTO_7         REDUCE    62        
-81    AUTO_47        REDUCE    62        
-81    AUTO_39        REDUCE    62        
-82    cll_LOGICAL_OP SHIFT     130       
-82    cll_COMPARE_OP SHIFT     131       
-83    cll_LOGICAL_OP REDUCE    63        
-83    cll_COMPARE_OP REDUCE    63        
-83    STRING         REDUCE    63        
-83    MULTIPLE       REDUCE    63        
-83    MODULO         REDUCE    63        
-83    AUTO_27        REDUCE    63        
-83    END            REDUCE    63        
-83    AUTO_39        REDUCE    63        
-83    AUTO_49        REDUCE    63        
-83    PLUS           REDUCE    63        
-83    AUTO_7         REDUCE    63        
-83    NUMBER         REDUCE    63        
-83    AUTO_47        REDUCE    63        
-83    AUTO_6         REDUCE    63        
-83    BOOLEAN        REDUCE    63        
-83    DIVIDE         REDUCE    63        
-83    AUTO_40        REDUCE    63        
-83    ID             REDUCE    63        
-83    AUTO_32        REDUCE    63        
-83    MINUS          REDUCE    63        
+79    cll_LOGICAL_OP REDUCE    61        
+79    cll_COMPARE_OP REDUCE    61        
+79    STRING         REDUCE    61        
+79    MULTIPLE       REDUCE    61        
+79    MODULO         REDUCE    61        
+79    AT             REDUCE    61        
+79    AUTO_27        REDUCE    61        
+79    MINUS          REDUCE    61        
+79    AUTO_32        REDUCE    61        
+79    END            REDUCE    61        
+79    AUTO_39        REDUCE    61        
+79    AUTO_49        REDUCE    61        
+79    PLUS           REDUCE    61        
+79    AUTO_7         REDUCE    61        
+79    NUMBER         REDUCE    61        
+79    AUTO_47        REDUCE    61        
+79    AUTO_6         REDUCE    61        
+79    BOOLEAN        REDUCE    61        
+79    DIVIDE         REDUCE    61        
+79    AUTO_40        REDUCE    61        
+79    ID             REDUCE    61        
+80    ID             SHIFT     126       
+81    cll_LOGICAL_OP REDUCE    13        
+81    cll_COMPARE_OP REDUCE    13        
+81    STRING         REDUCE    13        
+81    MULTIPLE       REDUCE    13        
+81    MODULO         REDUCE    13        
+81    END            REDUCE    13        
+81    $              REDUCE    13        
+81    PLUS           REDUCE    13        
+81    AUTO_7         REDUCE    13        
+81    AT             REDUCE    13        
+81    AUTO_27        REDUCE    13        
+81    MINUS          REDUCE    13        
+81    AUTO_32        REDUCE    13        
+81    AUTO_36        REDUCE    13        
+81    AUTO_39        DFA_RESOLVE24        
+81    AUTO_48        REDUCE    13        
+81    AUTO_49        REDUCE    13        
+81    ID             DFA_RESOLVE25        
+81    DIVIDE         REDUCE    13        
+81    AUTO_40        REDUCE    13        
+81    NUMBER         REDUCE    13        
+81    AUTO_47        REDUCE    13        
+81    AUTO_6         REDUCE    13        
+81    BOOLEAN        REDUCE    13        
+82    cll_LOGICAL_OP REDUCE    63        
+82    cll_COMPARE_OP REDUCE    63        
+82    STRING         REDUCE    63        
+82    NUMBER         REDUCE    63        
+82    ID             REDUCE    63        
+82    BOOLEAN        REDUCE    63        
+82    AUTO_6         REDUCE    63        
+82    AUTO_7         REDUCE    63        
+82    AUTO_47        REDUCE    63        
+82    AUTO_39        REDUCE    63        
+82    AT             REDUCE    63        
+83    cll_LOGICAL_OP SHIFT     131       
+83    cll_COMPARE_OP SHIFT     132       
 84    END            REDUCE    64        
-85    END            REDUCE    65        
-86    cll_LOGICAL_OP REDUCE    66        
-86    cll_COMPARE_OP REDUCE    66        
-86    STRING         REDUCE    66        
-86    NUMBER         REDUCE    66        
-86    ID             REDUCE    66        
-86    BOOLEAN        REDUCE    66        
-86    AUTO_6         REDUCE    66        
-86    AUTO_7         REDUCE    66        
-86    AUTO_47        REDUCE    66        
-86    AUTO_39        REDUCE    66        
-87    END            REDUCE    67        
-88    END            SHIFT     132       
-89    cll_LOGICAL_OP REDUCE    69        
-89    cll_COMPARE_OP REDUCE    69        
-89    AUTO_39        DFA_RESOLVE30        
-89    AUTO_7         DFA_RESOLVE31        
-89    PLUS           SHIFT     86        
-89    MULTIPLE       SHIFT     102       
-89    MODULO         SHIFT     101       
-89    BOOLEAN        DFA_RESOLVE26        
-89    STRING         DFA_RESOLVE29        
-89    AUTO_25        SHIFT     14        
-89    MINUS          SHIFT     100       
-89    AUTO_32        REDUCE    68        
-89    END            REDUCE    68        
-89    AUTO_27        REDUCE    68        
-89    ID             DFA_RESOLVE27        
-89    DIVIDE         SHIFT     81        
-89    AUTO_40        REDUCE    68        
-89    AUTO_6         DFA_RESOLVE25        
-89    NUMBER         DFA_RESOLVE28        
-89    AUTO_47        DFA_RESOLVE24        
-89    AUTO_49        REDUCE    68        
-90    END            REDUCE    70        
-91    END            DFA_RESOLVE32        
-92    cll_LOGICAL_OP REDUCE    74        
-92    cll_COMPARE_OP REDUCE    74        
-92    AUTO_27        REDUCE    73        
-92    AUTO_32        REDUCE    73        
-92    END            REDUCE    73        
-92    AUTO_7         REDUCE    74        
-92    AUTO_49        REDUCE    73        
-92    AUTO_39        REDUCE    74        
-92    BOOLEAN        REDUCE    74        
-92    AUTO_40        REDUCE    73        
-92    ID             REDUCE    74        
-92    AUTO_47        DFA_RESOLVE33        
-92    AUTO_6         DFA_RESOLVE34        
-92    NUMBER         REDUCE    74        
-92    STRING         REDUCE    74        
-93    BOOLEAN        SHIFT     20        
-93    AUTO_47        SHIFT     13        
-93    AUTO_6         SHIFT     75        
-93    NUMBER         SHIFT     16        
-93    MULTIPLE       SHIFT     102       
-93    AUTO_7         SHIFT     74        
-93    PLUS           SHIFT     86        
-93    STRING         SHIFT     15        
+85    cll_LOGICAL_OP REDUCE    16        
+85    cll_COMPARE_OP REDUCE    16        
+85    STRING         REDUCE    16        
+85    MULTIPLE       REDUCE    16        
+85    MODULO         REDUCE    16        
+85    END            DFA_RESOLVE32        
+85    $              REDUCE    16        
+85    PLUS           REDUCE    16        
+85    AUTO_7         REDUCE    16        
+85    AT             REDUCE    16        
+85    AUTO_27        DFA_RESOLVE26        
+85    MINUS          REDUCE    16        
+85    AUTO_32        DFA_RESOLVE27        
+85    AUTO_36        REDUCE    16        
+85    AUTO_39        REDUCE    16        
+85    AUTO_48        REDUCE    16        
+85    AUTO_49        DFA_RESOLVE30        
+85    ID             REDUCE    16        
+85    DIVIDE         REDUCE    16        
+85    AUTO_40        DFA_RESOLVE28        
+85    NUMBER         REDUCE    16        
+85    AUTO_47        DFA_RESOLVE29        
+85    AUTO_6         DFA_RESOLVE31        
+85    BOOLEAN        REDUCE    16        
+86    END            DFA_RESOLVE33        
+87    cll_LOGICAL_OP REDUCE    68        
+87    cll_COMPARE_OP REDUCE    68        
+87    STRING         REDUCE    68        
+87    NUMBER         REDUCE    68        
+87    ID             REDUCE    68        
+87    BOOLEAN        REDUCE    68        
+87    AUTO_6         REDUCE    68        
+87    AUTO_7         REDUCE    68        
+87    AUTO_47        REDUCE    68        
+87    AUTO_39        REDUCE    68        
+87    AT             REDUCE    68        
+88    END            REDUCE    69        
+89    END            REDUCE    70        
+90    END            REDUCE    71        
+91    cll_LOGICAL_OP REDUCE    73        
+91    cll_COMPARE_OP REDUCE    73        
+91    STRING         REDUCE    73        
+91    AUTO_27        REDUCE    72        
+91    AT             REDUCE    73        
+91    AUTO_32        REDUCE    72        
+91    END            REDUCE    72        
+91    AUTO_7         REDUCE    73        
+91    AUTO_49        REDUCE    72        
+91    AUTO_39        REDUCE    73        
+91    BOOLEAN        REDUCE    73        
+91    AUTO_40        REDUCE    72        
+91    ID             REDUCE    73        
+91    AUTO_47        DFA_RESOLVE34        
+91    AUTO_6         DFA_RESOLVE35        
+91    NUMBER         REDUCE    73        
+92    AT             SHIFT     85        
+92    BOOLEAN        SHIFT     20        
+92    AUTO_47        SHIFT     13        
+92    AUTO_6         SHIFT     76        
+92    NUMBER         SHIFT     16        
+92    MULTIPLE       SHIFT     103       
+92    AUTO_7         SHIFT     75        
+92    PLUS           SHIFT     87        
+92    STRING         SHIFT     15        
+92    AUTO_25        SHIFT     14        
+92    ID             SHIFT     125       
+92    DIVIDE         SHIFT     82        
+92    MINUS          SHIFT     101       
+92    MODULO         SHIFT     102       
+92    AUTO_39        SHIFT     92        
+93    cll_LOGICAL_OP REDUCE    75        
+93    cll_COMPARE_OP REDUCE    75        
+93    AUTO_39        DFA_RESOLVE43        
+93    AUTO_7         DFA_RESOLVE44        
+93    PLUS           SHIFT     87        
+93    MULTIPLE       SHIFT     103       
+93    MODULO         SHIFT     102       
+93    AT             DFA_RESOLVE36        
+93    AUTO_27        REDUCE    74        
+93    BOOLEAN        DFA_RESOLVE39        
+93    STRING         DFA_RESOLVE42        
 93    AUTO_25        SHIFT     14        
-93    ID             SHIFT     124       
-93    DIVIDE         SHIFT     81        
-93    AT             SHIFT     96        
-93    MINUS          SHIFT     100       
-93    MODULO         SHIFT     101       
-93    AUTO_39        SHIFT     93        
-94    BOOLEAN        SHIFT     20        
-94    AUTO_47        SHIFT     13        
-94    AUTO_6         SHIFT     75        
-94    NUMBER         SHIFT     16        
-94    MULTIPLE       SHIFT     102       
-94    AUTO_7         SHIFT     74        
-94    PLUS           SHIFT     86        
-94    STRING         SHIFT     15        
-94    AUTO_25        SHIFT     14        
-94    ID             SHIFT     124       
-94    DIVIDE         SHIFT     81        
-94    AT             SHIFT     96        
-94    MINUS          SHIFT     100       
-94    MODULO         SHIFT     101       
-94    AUTO_39        SHIFT     93        
-95    ID             REDUCE    75        
-95    AUTO_39        REDUCE    75        
-96    AUTO_6         REDUCE    76        
-96    AUTO_49        REDUCE    76        
-96    AUTO_47        REDUCE    76        
-96    AUTO_40        REDUCE    76        
-96    END            REDUCE    76        
-96    AUTO_32        REDUCE    76        
-96    AUTO_27        REDUCE    76        
-97    cll_LOGICAL_OP REDUCE    78        
-97    cll_COMPARE_OP REDUCE    78        
-97    AUTO_27        REDUCE    77        
-97    AUTO_32        REDUCE    77        
-97    END            REDUCE    77        
-97    AUTO_7         REDUCE    78        
-97    AUTO_49        REDUCE    77        
-97    AUTO_39        REDUCE    78        
-97    BOOLEAN        REDUCE    78        
-97    AUTO_40        REDUCE    77        
-97    ID             REDUCE    78        
-97    AUTO_47        DFA_RESOLVE35        
-97    AUTO_6         DFA_RESOLVE36        
-97    NUMBER         REDUCE    78        
-97    STRING         REDUCE    78        
-98    AUTO_6         REDUCE    79        
-98    AUTO_49        REDUCE    79        
-98    AUTO_47        REDUCE    79        
-98    AUTO_40        REDUCE    79        
-98    END            REDUCE    79        
-98    AUTO_32        REDUCE    79        
-98    AUTO_27        REDUCE    79        
-99    cll_LOGICAL_OP REDUCE    81        
-99    cll_COMPARE_OP REDUCE    81        
-99    AUTO_39        DFA_RESOLVE43        
-99    AUTO_7         DFA_RESOLVE44        
-99    PLUS           SHIFT     86        
-99    MULTIPLE       SHIFT     102       
-99    MODULO         SHIFT     101       
-99    BOOLEAN        DFA_RESOLVE39        
-99    STRING         DFA_RESOLVE42        
-99    AUTO_25        SHIFT     14        
-99    MINUS          SHIFT     100       
-99    AUTO_32        REDUCE    80        
-99    END            REDUCE    80        
-99    AUTO_27        REDUCE    80        
-99    ID             DFA_RESOLVE40        
-99    DIVIDE         SHIFT     81        
-99    AUTO_40        REDUCE    80        
-99    AUTO_6         DFA_RESOLVE38        
-99    NUMBER         DFA_RESOLVE41        
-99    AUTO_47        DFA_RESOLVE37        
+93    MINUS          SHIFT     101       
+93    AUTO_32        REDUCE    74        
+93    END            REDUCE    74        
+93    DIVIDE         SHIFT     82        
+93    ID             DFA_RESOLVE40        
+93    AUTO_40        REDUCE    74        
+93    AUTO_6         DFA_RESOLVE38        
+93    NUMBER         DFA_RESOLVE41        
+93    AUTO_47        DFA_RESOLVE37        
+93    AUTO_49        REDUCE    74        
+94    END            SHIFT     140       
+95    cll_LOGICAL_OP REDUCE    76        
+95    cll_COMPARE_OP REDUCE    76        
+95    STRING         REDUCE    76        
+95    MULTIPLE       REDUCE    76        
+95    MODULO         REDUCE    76        
+95    AT             REDUCE    76        
+95    AUTO_27        REDUCE    76        
+95    MINUS          REDUCE    76        
+95    AUTO_32        REDUCE    76        
+95    END            REDUCE    76        
+95    AUTO_39        REDUCE    76        
+95    AUTO_49        REDUCE    76        
+95    PLUS           REDUCE    76        
+95    AUTO_7         REDUCE    76        
+95    NUMBER         REDUCE    76        
+95    AUTO_47        REDUCE    76        
+95    AUTO_6         REDUCE    76        
+95    BOOLEAN        REDUCE    76        
+95    DIVIDE         REDUCE    76        
+95    AUTO_40        REDUCE    76        
+95    ID             REDUCE    76        
+96    AT             SHIFT     85        
+96    BOOLEAN        SHIFT     20        
+96    AUTO_47        SHIFT     13        
+96    AUTO_6         SHIFT     76        
+96    NUMBER         SHIFT     16        
+96    MULTIPLE       SHIFT     103       
+96    AUTO_7         SHIFT     75        
+96    PLUS           SHIFT     87        
+96    STRING         SHIFT     15        
+96    AUTO_25        SHIFT     14        
+96    ID             SHIFT     125       
+96    DIVIDE         SHIFT     82        
+96    MINUS          SHIFT     101       
+96    MODULO         SHIFT     102       
+96    AUTO_39        SHIFT     92        
+97    ID             REDUCE    77        
+97    AUTO_39        REDUCE    77        
+98    cll_LOGICAL_OP REDUCE    79        
+98    cll_COMPARE_OP REDUCE    79        
+98    STRING         REDUCE    79        
+98    AUTO_27        REDUCE    78        
+98    AT             REDUCE    79        
+98    AUTO_32        REDUCE    78        
+98    END            REDUCE    78        
+98    AUTO_7         REDUCE    79        
+98    AUTO_49        REDUCE    78        
+98    AUTO_39        REDUCE    79        
+98    BOOLEAN        REDUCE    79        
+98    AUTO_40        REDUCE    78        
+98    ID             REDUCE    79        
+98    AUTO_47        DFA_RESOLVE45        
+98    AUTO_6         DFA_RESOLVE46        
+98    NUMBER         REDUCE    79        
+99    AUTO_6         REDUCE    80        
 99    AUTO_49        REDUCE    80        
+99    AUTO_47        REDUCE    80        
+99    AUTO_40        REDUCE    80        
+99    END            REDUCE    80        
+99    AUTO_32        REDUCE    80        
+99    AUTO_27        REDUCE    80        
 100   cll_LOGICAL_OP REDUCE    82        
 100   cll_COMPARE_OP REDUCE    82        
-100   STRING         REDUCE    82        
-100   NUMBER         REDUCE    82        
-100   ID             REDUCE    82        
-100   BOOLEAN        REDUCE    82        
-100   AUTO_6         REDUCE    82        
-100   AUTO_7         REDUCE    82        
-100   AUTO_47        REDUCE    82        
-100   AUTO_39        REDUCE    82        
+100   AUTO_39        DFA_RESOLVE54        
+100   AUTO_7         DFA_RESOLVE55        
+100   PLUS           SHIFT     87        
+100   MULTIPLE       SHIFT     103       
+100   MODULO         SHIFT     102       
+100   AT             DFA_RESOLVE47        
+100   AUTO_27        REDUCE    81        
+100   BOOLEAN        DFA_RESOLVE50        
+100   STRING         DFA_RESOLVE53        
+100   AUTO_25        SHIFT     14        
+100   MINUS          SHIFT     101       
+100   AUTO_32        REDUCE    81        
+100   END            REDUCE    81        
+100   DIVIDE         SHIFT     82        
+100   ID             DFA_RESOLVE51        
+100   AUTO_40        REDUCE    81        
+100   AUTO_6         DFA_RESOLVE49        
+100   NUMBER         DFA_RESOLVE52        
+100   AUTO_47        DFA_RESOLVE48        
+100   AUTO_49        REDUCE    81        
 101   cll_LOGICAL_OP REDUCE    83        
 101   cll_COMPARE_OP REDUCE    83        
 101   STRING         REDUCE    83        
@@ -1491,6 +1698,7 @@ State Token          Action    Next State
 101   AUTO_7         REDUCE    83        
 101   AUTO_47        REDUCE    83        
 101   AUTO_39        REDUCE    83        
+101   AT             REDUCE    83        
 102   cll_LOGICAL_OP REDUCE    84        
 102   cll_COMPARE_OP REDUCE    84        
 102   STRING         REDUCE    84        
@@ -1501,449 +1709,476 @@ State Token          Action    Next State
 102   AUTO_7         REDUCE    84        
 102   AUTO_47        REDUCE    84        
 102   AUTO_39        REDUCE    84        
-103   AUTO_39        SHIFT     142       
-104   cll_LOGICAL_OP REDUCE    85        
-104   cll_COMPARE_OP REDUCE    85        
-104   STRING         REDUCE    85        
-104   MULTIPLE       REDUCE    85        
-104   MODULO         REDUCE    85        
-104   AUTO_27        REDUCE    85        
-104   END            REDUCE    85        
-104   AUTO_39        REDUCE    85        
-104   AUTO_49        REDUCE    85        
-104   PLUS           REDUCE    85        
-104   AUTO_7         REDUCE    85        
-104   NUMBER         REDUCE    85        
-104   AUTO_47        REDUCE    85        
-104   AUTO_6         REDUCE    85        
-104   BOOLEAN        REDUCE    85        
-104   DIVIDE         REDUCE    85        
-104   AUTO_40        REDUCE    85        
-104   ID             REDUCE    85        
-104   AUTO_32        REDUCE    85        
-104   MINUS          REDUCE    85        
-105   AUTO_40        SHIFT     143       
-106   AUTO_41        SHIFT     25        
-106   AUTO_40        REDUCE    36        
-106   AT             DFA_RESOLVE45        
-107   AUTO_40        REDUCE    86        
-108   ID             SHIFT     146       
-108   AUTO_49        REDUCE    87        
+102   AT             REDUCE    84        
+103   cll_LOGICAL_OP REDUCE    85        
+103   cll_COMPARE_OP REDUCE    85        
+103   STRING         REDUCE    85        
+103   NUMBER         REDUCE    85        
+103   ID             REDUCE    85        
+103   BOOLEAN        REDUCE    85        
+103   AUTO_6         REDUCE    85        
+103   AUTO_7         REDUCE    85        
+103   AUTO_47        REDUCE    85        
+103   AUTO_39        REDUCE    85        
+103   AT             REDUCE    85        
+104   AUTO_39        SHIFT     143       
+105   cll_LOGICAL_OP REDUCE    86        
+105   cll_COMPARE_OP REDUCE    86        
+105   STRING         REDUCE    86        
+105   MULTIPLE       REDUCE    86        
+105   MODULO         REDUCE    86        
+105   AT             REDUCE    86        
+105   AUTO_27        REDUCE    86        
+105   MINUS          REDUCE    86        
+105   AUTO_32        REDUCE    86        
+105   END            REDUCE    86        
+105   AUTO_39        REDUCE    86        
+105   AUTO_49        REDUCE    86        
+105   PLUS           REDUCE    86        
+105   AUTO_7         REDUCE    86        
+105   NUMBER         REDUCE    86        
+105   AUTO_47        REDUCE    86        
+105   AUTO_6         REDUCE    86        
+105   BOOLEAN        REDUCE    86        
+105   DIVIDE         REDUCE    86        
+105   AUTO_40        REDUCE    86        
+105   ID             REDUCE    86        
+106   AUTO_40        SHIFT     144       
+107   AUTO_41        SHIFT     26        
+107   AUTO_40        REDUCE    37        
+107   AT             DFA_RESOLVE56        
+108   AUTO_40        REDUCE    87        
 109   ID             SHIFT     147       
-110   AUTO_49        SHIFT     148       
-111   AUTO_49        REDUCE    88        
-112   ID             REDUCE    89        
-112   AUTO_45        DFA_RESOLVE46        
-113   AUTO_49        REDUCE    90        
-114   AUTO_32        REDUCE    47        
-114   AUTO_42        DFA_RESOLVE47        
-115   AUTO_32        REDUCE    91        
-116   AUTO_38        SHIFT     152       
-117   AUTO_32        SHIFT     153       
-118   AUTO_48        DFA_RESOLVE48        
-118   AUTO_32        REDUCE    92        
-119   STRING         REDUCE    93        
-119   NUMBER         REDUCE    93        
-119   ID             REDUCE    93        
-119   BOOLEAN        REDUCE    93        
-119   AUTO_48        REDUCE    93        
-119   AUTO_47        REDUCE    93        
-119   AUTO_27        REDUCE    93        
-120   PLUS           REDUCE    94        
-120   MULTIPLE       REDUCE    94        
+109   AUTO_49        REDUCE    88        
+110   ID             REDUCE    89        
+110   AUTO_45        DFA_RESOLVE57        
+111   AUTO_49        REDUCE    90        
+112   AUTO_49        SHIFT     150       
+113   AUTO_49        REDUCE    91        
+114   ID             SHIFT     151       
+115   AUTO_32        REDUCE    48        
+115   AUTO_42        DFA_RESOLVE58        
+116   AUTO_32        REDUCE    92        
+117   ID             SHIFT     7         
+118   AUTO_32        SHIFT     154       
+119   AUTO_48        DFA_RESOLVE59        
+119   AUTO_32        REDUCE    93        
+120   STRING         REDUCE    94        
+120   NUMBER         REDUCE    94        
 120   ID             REDUCE    94        
-120   AUTO_50        REDUCE    94        
-120   AUTO_40        REDUCE    94        
-120   AUTO_38        REDUCE    94        
+120   BOOLEAN        REDUCE    94        
+120   AUTO_48        REDUCE    94        
+120   AUTO_47        REDUCE    94        
+120   AUTO_27        REDUCE    94        
 120   AT             REDUCE    94        
-120   $              REDUCE    94        
-121   ID             SHIFT     156       
-122   cll_ASSIGNMENT_OPSHIFT     158       
-122   AUTO_6         REDUCE    95        
-122   AUTO_25        SHIFT     159       
-122   END            REDUCE    95        
-122   AUTO_32        REDUCE    95        
-123   AUTO_47        SHIFT     161       
-124   cll_LOGICAL_OP REDUCE    13        
-124   cll_COMPARE_OP REDUCE    13        
-124   STRING         REDUCE    13        
-124   MULTIPLE       REDUCE    13        
-124   MODULO         REDUCE    13        
-124   END            REDUCE    13        
-124   $              REDUCE    13        
-124   PLUS           REDUCE    13        
-124   AUTO_7         REDUCE    13        
-124   AUTO_27        REDUCE    13        
-124   MINUS          REDUCE    13        
-124   AUTO_32        REDUCE    13        
-124   AUTO_36        REDUCE    13        
-124   AUTO_39        DFA_RESOLVE49        
-124   AUTO_48        REDUCE    13        
-124   AUTO_49        REDUCE    13        
-124   ID             REDUCE    13        
-124   DIVIDE         REDUCE    13        
-124   AUTO_40        REDUCE    13        
-124   NUMBER         REDUCE    13        
-124   AUTO_47        REDUCE    13        
-124   AUTO_6         REDUCE    13        
-124   BOOLEAN        REDUCE    13        
-125   cll_ASSIGNMENT_OPSHIFT     158       
-125   AUTO_6         REDUCE    95        
-125   AUTO_25        SHIFT     159       
-125   END            REDUCE    95        
-125   AUTO_32        REDUCE    95        
-126   AUTO_47        SHIFT     13        
-126   AUTO_25        SHIFT     14        
-126   STRING         SHIFT     15        
-126   NUMBER         SHIFT     16        
-126   ID             SHIFT     166       
-126   BOOLEAN        SHIFT     20        
+121   PLUS           REDUCE    95        
+121   MULTIPLE       REDUCE    95        
+121   ID             REDUCE    95        
+121   AUTO_49        REDUCE    95        
+121   AUTO_40        REDUCE    95        
+121   AUTO_38        REDUCE    95        
+121   QUESTION_MARK  REDUCE    95        
+121   AUTO_42        REDUCE    95        
+121   AUTO_32        REDUCE    95        
+121   AT             REDUCE    95        
+121   $              REDUCE    95        
+122   ID             SHIFT     157       
+123   cll_ASSIGNMENT_OPSHIFT     159       
+123   AUTO_25        SHIFT     160       
+123   END            REDUCE    96        
+123   AUTO_6         REDUCE    96        
+124   AUTO_47        SHIFT     162       
+125   cll_LOGICAL_OP REDUCE    13        
+125   cll_COMPARE_OP REDUCE    13        
+125   STRING         REDUCE    13        
+125   MULTIPLE       REDUCE    13        
+125   MODULO         REDUCE    13        
+125   END            REDUCE    13        
+125   $              REDUCE    13        
+125   PLUS           REDUCE    13        
+125   AUTO_7         REDUCE    13        
+125   AT             REDUCE    13        
+125   AUTO_27        REDUCE    13        
+125   MINUS          REDUCE    13        
+125   AUTO_32        REDUCE    13        
+125   AUTO_36        REDUCE    13        
+125   AUTO_39        DFA_RESOLVE60        
+125   AUTO_48        REDUCE    13        
+125   AUTO_49        REDUCE    13        
+125   ID             REDUCE    13        
+125   DIVIDE         REDUCE    13        
+125   AUTO_40        REDUCE    13        
+125   NUMBER         REDUCE    13        
+125   AUTO_47        REDUCE    13        
+125   AUTO_6         REDUCE    13        
+125   BOOLEAN        REDUCE    13        
+126   cll_ASSIGNMENT_OPSHIFT     159       
+126   AUTO_25        SHIFT     160       
+126   END            REDUCE    96        
+126   AUTO_6         REDUCE    96        
 
 Goto Table:
 State Non-Terminal        Next State  
 212   cll_block           213         
 209   cll___q4            211         
-209   cll_expr_value      99          
+209   cll_expr_value      100         
 209   array               17          
 209   object              19          
 209   cll_expr            206         
-209   cll_expr_compare    92          
-209   any_data            104         
-209   cll_cll_function_call83          
-209   cll_expr_arithmetic 97          
-209   cll_expr_term       89          
-209   cll_expr_logical    98          
-209   cll_expr___rop0     82          
-209   cll_expr_group      78          
-209   cll_variable        77          
-208   __grp3              210         
+209   cll_expr_compare    91          
+209   any_data            105         
+209   cll_cll_function_call95          
+209   cll_expr_arithmetic 98          
+209   cll_expr_term       93          
+209   cll_expr_logical    99          
+209   cll_expr___rop0     83          
+209   cll_expr_group      79          
+209   cll_variable        78          
+199   Rule_data_block___grp1207         
+107   Rule_value          25          
+107   Rule_keyvalue       27          
+107   Rule___q1_tail      145         
+107   Rule_rule           107         
+77    cll_variable        78          
+77    cll_expr_group      79          
+77    cll_expr___rop0     83          
+77    cll_expr_logical    99          
+77    cll_expr            124         
+77    cll_cll_function_call95          
+77    any_data            105         
+77    cll_expr_compare    91          
+77    cll_expr_term       93          
+77    cll_expr_arithmetic 98          
+77    object              19          
+77    cll_expr_value      100         
+77    array               17          
 201   object              19          
 201   array               17          
 201   any_data            208         
-199   Rule_data_block___grp1207         
-106   Rule_value          24          
-106   Rule_keyvalue       26          
-106   Rule___q1_tail      144         
-106   Rule_rule           106         
-99    cll_variable        77          
-99    cll_expr_group      78          
-99    cll_expr___grp1     141         
-99    cll_cll_function_call83          
-99    any_data            104         
-99    cll_expr_compare    135         
-99    cll_expr_term       134         
-99    cll_expr_arithmetic 136         
-99    cll_expr___rop0     138         
-99    object              19          
-99    cll_expr_value      133         
-99    array               17          
-158   cll_variable        77          
-158   cll_expr_group      78          
-158   cll_expr___rop0     82          
-158   cll_expr_logical    98          
-158   cll_expr_term       89          
-158   cll_expr_arithmetic 97          
-158   cll_cll_function_call83          
-158   any_data            104         
-158   cll_expr_compare    92          
-158   cll_expr            189         
-158   object              19          
-158   cll_expr_value      99          
-158   array               17          
-93    cll_variable        77          
-93    cll_expr_group      78          
-93    cll_expr___rop0     82          
-93    cll_expr_logical    98          
-93    cll_cll_function_call83          
-93    any_data            104         
-93    cll_expr            139         
-93    cll_expr_compare    92          
-93    cll_expr_term       89          
-93    cll_expr_arithmetic 97          
+74    Rule___grp2         121         
+62    Rule_nested_rule    115         
+62    Rule__q4_tail       116         
+62    Rule__q4            118         
+109   Rule_data_block___grp2146         
+47    cll_variable        78          
+47    cll_expr_group      79          
+47    any_data            105         
+47    cll_expr            90          
+47    cll_loop_while      84          
+47    cll_expr_compare    91          
+47    cll_if              89          
+47    cll_var             86          
+47    cll_expr_value      100         
+47    array               17          
+47    object              19          
+47    cll_cll_function_call95          
+47    __rop1              94          
+47    cll_expr___rop0     83          
+47    cll_expr_logical    99          
+47    cll_expr_arithmetic 98          
+47    cll___q0            80          
+47    cll_loop_for        88          
+47    cll_expr_term       93          
+93    cll_variable        78          
+93    cll_expr_group      79          
+93    cll_expr___grp1     138         
+93    cll_cll_function_call95          
+93    any_data            105         
+93    cll_expr_compare    136         
+93    cll_expr_term       135         
+93    cll_expr_arithmetic 137         
+93    cll_expr___rop0     139         
 93    object              19          
-93    cll_expr_value      99          
+93    cll_expr_value      134         
 93    array               17          
-89    cll_variable        77          
-89    cll_expr_group      78          
-89    cll_expr___grp1     137         
-89    cll_cll_function_call83          
-89    any_data            104         
-89    cll_expr_compare    135         
-89    cll_expr_term       134         
-89    cll_expr_arithmetic 136         
-89    cll_expr___rop0     138         
-89    object              19          
-89    cll_expr_value      133         
-89    array               17          
-76    cll_variable        77          
-76    cll_expr_group      78          
-76    cll_expr___rop0     82          
-76    cll_expr_logical    98          
-76    cll_expr            123         
-76    cll_cll_function_call83          
-76    any_data            104         
-76    cll_expr_compare    92          
-76    cll_expr_term       89          
-76    cll_expr_arithmetic 97          
-76    object              19          
-76    cll_expr_value      99          
-76    array               17          
-73    Rule___grp2         120         
-14    object              19          
-14    __grp0              31          
-14    array               17          
-14    any_data            32          
-94    cll_variable        77          
-94    cll_expr_group      78          
-94    cll_expr___rop0     82          
-94    cll_expr_logical    98          
-94    cll_expr            140         
-94    cll_cll_function_call83          
-94    any_data            104         
-94    cll_expr_compare    92          
-94    cll_expr_term       89          
-94    cll_expr_arithmetic 97          
-94    object              19          
-94    cll_expr_value      99          
-94    array               17          
-124   cll_function_body_call127         
-183   cll_variable        77          
-183   cll_expr_group      78          
-183   cll_expr___rop0     82          
-183   cll_expr_logical    98          
-183   cll_expr_term       89          
-183   cll_expr_arithmetic 97          
-183   object              19          
-183   cll_expr_value      99          
-183   array               17          
-183   cll_cll_function_call83          
-183   any_data            104         
-183   cll_expr_compare    92          
-183   cll_expr            200         
-61    Rule_nested_rule    114         
-61    Rule__q4_tail       115         
-61    Rule__q4            117         
-179   cll___q0_tail       129         
-49    Rule_value          24          
-49    Rule___q1           105         
-49    Rule_rule           106         
-49    Rule_keyvalue       26          
-49    Rule___q1_tail      107         
-108   Rule_data_block___grp2145         
-46    cll_variable        77          
-46    cll_expr_group      78          
-46    any_data            104         
-46    cll_expr            91          
-46    cll_loop_while      84          
-46    cll_expr_compare    92          
-46    cll_if              90          
-46    cll_var             85          
-46    cll_expr_value      99          
-46    array               17          
-46    object              19          
-46    cll_cll_function_call83          
-46    __rop1              88          
-46    cll_expr___rop0     82          
-46    cll_expr_logical    98          
-46    cll_expr_arithmetic 97          
-46    cll___q0            79          
-46    cll_loop_for        87          
-46    cll_expr_term       89          
-63    object              19          
-63    array               17          
-63    any_data            118         
-122   cll___grp2          157         
-58    array               17          
-58    Rule_data_block_regular_datablock___q0109         
-58    object              19          
-58    Rule_data_block___rop1110         
-58    any_data            111         
-58    Rule_data_block_regular_datablock_key113         
+34    __grp2              67          
+123   cll___grp2          158         
+100   cll_variable        78          
+100   cll_expr_group      79          
+100   cll_expr___grp1     142         
+100   cll_cll_function_call95          
+100   any_data            105         
+100   cll_expr_compare    136         
+100   cll_expr_term       135         
+100   cll_expr_arithmetic 137         
+100   cll_expr___rop0     139         
+100   object              19          
+100   cll_expr_value      134         
+100   array               17          
+159   cll_variable        78          
+159   cll_expr_group      79          
+159   cll_expr___rop0     83          
+159   cll_expr_logical    99          
+159   cll_expr_term       93          
+159   cll_expr_arithmetic 98          
+159   cll_cll_function_call95          
+159   any_data            105         
+159   cll_expr_compare    91          
+159   cll_expr            189         
+159   object              19          
+159   cll_expr_value      100         
+159   array               17          
+13    __grp1              30          
+13    object              19          
+13    array               17          
+13    any_data            31          
+131   cll_variable        78          
+131   cll_expr_group      79          
+131   cll_expr___rop0     174         
+131   cll_cll_function_call95          
+131   any_data            105         
+131   cll_expr___rop2     173         
+131   cll_expr_compare    171         
+131   cll_expr_term       170         
+131   cll_expr_arithmetic 172         
+131   object              19          
+131   cll_expr_value      169         
+131   array               17          
+59    array               17          
+59    Rule_data_block_regular_datablock___q0114         
+59    object              19          
+59    Rule_data_block___rop1112         
+59    any_data            111         
+59    Rule_data_block_regular_datablock_key113         
+50    Rule_value          25          
+50    Rule___q1           106         
+50    Rule_rule           107         
+50    Rule_keyvalue       27          
+50    Rule___q1_tail      108         
+177   cll_variable        78          
+177   cll_expr_group      79          
+177   cll_cll_function_call95          
+177   any_data            105         
+177   cll_expr_compare    136         
+177   cll_expr_term       135         
+177   cll_expr_arithmetic 137         
+177   cll_expr___grp1     197         
+177   cll_expr___rop0     139         
+177   object              19          
+177   cll_expr_value      134         
+177   array               17          
+1     use_unit            9           
+119   __grp3              156         
+64    object              19          
+64    array               17          
+64    any_data            119         
+191   cll___q1_tail       203         
+191   Rule_rule           191         
+191   Rule_value          25          
+191   Rule_keyvalue       27          
+27    Rule___rop1         38          
+27    Rule___q0           39          
+27    cll                 44          
+27    Rule_name           42          
+27    Rule_group          41          
+66    object              19          
+66    array               17          
+66    __grp0              120         
+66    any_data            33          
+125   cll_function_body_call128         
+184   cll_variable        78          
+184   cll_expr_group      79          
+184   cll_expr___rop0     83          
+184   cll_expr_logical    99          
+184   cll_expr_term       93          
+184   cll_expr_arithmetic 98          
+184   object              19          
+184   cll_expr_value      100         
+184   array               17          
+184   cll_cll_function_call95          
+184   any_data            105         
+184   cll_expr_compare    91          
+184   cll_expr            200         
+126   cll___grp2          163         
+92    cll_variable        78          
+92    cll_expr_group      79          
+92    cll_expr___rop0     83          
+92    cll_expr_logical    99          
+92    cll_cll_function_call95          
+92    any_data            105         
+92    cll_expr            133         
+92    cll_expr_compare    91          
+92    cll_expr_term       93          
+92    cll_expr_arithmetic 98          
+92    object              19          
+92    cll_expr_value      100         
+92    array               17          
+96    cll_variable        78          
+96    cll_expr_group      79          
+96    cll_expr___rop0     83          
+96    cll_expr_logical    99          
+96    cll_expr            141         
+96    cll_cll_function_call95          
+96    any_data            105         
+96    cll_expr_compare    91          
+96    cll_expr_term       93          
+96    cll_expr_arithmetic 98          
+96    object              19          
+96    cll_expr_value      100         
+96    array               17          
+38    Rule___q2           69          
+38    Rule_quantifier     73          
+9     __grp2              22          
 0     use                 2           
 0     Rule                4           
 0     main                6           
-118   __grp3              155         
-26    Rule___rop1         37          
-26    Rule___q0           38          
-26    cll                 43          
-26    Rule_name           41          
-26    Rule_group          40          
-27    Rule___grp1         54          
-37    Rule___q2           68          
-37    Rule_quantifier     72          
+127   cll_function_arguments164         
+127   cll___rop0          167         
+127   any_data            165         
+127   object              19          
+127   array               17          
+10    Rule_rule           24          
+10    Rule_value          25          
+10    Rule_keyvalue       27          
+10    Rule__q2            29          
+208   __grp3              210         
+81    cll_function_body_call128         
+81    cll___q0_tail       130         
+23    use_unit            34          
+14    object              19          
+14    __grp0              32          
+14    array               17          
+14    any_data            33          
+141   cll_block           178         
+24    Rule_rule           35          
+24    Rule__q2_tail       36          
+24    Rule_value          25          
+24    Rule_keyvalue       27          
+28    Rule___grp1         55          
+29    Rule_data_block     58          
+29    Rule_data_block_templated_datablock60          
+29    Rule_data_block_regular_datablock61          
+29    Rule__q3            62          
+147   Rule_data_block___grp1181         
+110   Rule_data_block_regular_datablock___q0_tail149         
+169   cll_variable        78          
+169   cll_expr_group      79          
+169   cll_expr___grp1     142         
+169   cll_cll_function_call95          
+169   any_data            105         
+169   cll_expr_compare    136         
+169   cll_expr_term       135         
+169   cll_expr_arithmetic 137         
+169   cll_expr___rop0     139         
+169   object              19          
+169   cll_expr_value      134         
+169   array               17          
+115   Rule__q4_tail       152         
+115   Rule_nested_rule    115         
+117   Rule                153         
+176   cll_variable        78          
+176   cll_expr_group      79          
+176   cll_cll_function_call95          
+176   any_data            105         
+176   cll_expr_compare    136         
+176   cll_expr_term       135         
+176   cll_expr_arithmetic 137         
+176   cll_expr___grp1     196         
+176   cll_expr___rop0     139         
+176   object              19          
+176   cll_expr_value      134         
+176   array               17          
+124   cll_block           161         
+129   cll___q0_tail       168         
+134   cll_variable        78          
+134   cll_expr_group      79          
+134   cll_expr___grp1     142         
+134   cll_cll_function_call95          
+134   any_data            105         
+134   cll_expr_compare    136         
+134   cll_expr_term       135         
+134   cll_expr_arithmetic 137         
+134   cll_expr___rop0     139         
+134   object              19          
+134   cll_expr_value      134         
+134   array               17          
 8     use___q1            11          
 8     any_data            12          
 8     object              19          
 8     array               17          
-126   cll_function_arguments163         
-126   cll___rop0          164         
-126   any_data            165         
-126   object              19          
-126   array               17          
-9     __grp2              21          
-80    cll_function_body_call127         
-80    cll___q0_tail       129         
+135   cll_variable        78          
+135   cll_expr_group      79          
+135   cll_expr___grp1     138         
+135   cll_cll_function_call95          
+135   any_data            105         
+135   cll_expr_compare    136         
+135   cll_expr_term       135         
+135   cll_expr_arithmetic 137         
+135   cll_expr___rop0     139         
+135   object              19          
+135   cll_expr_value      134         
+135   array               17          
+139   cll_variable        78          
+139   cll_expr_group      79          
+139   cll_cll_function_call95          
+139   any_data            105         
+139   cll_expr_term       176         
+139   object              19          
+139   cll_expr_value      177         
+139   array               17          
 198   cll___q4            205         
-198   cll_expr_value      99          
+198   cll_expr_value      100         
 198   array               17          
 198   object              19          
 198   cll_expr            206         
-198   cll_expr_compare    92          
-198   any_data            104         
-198   cll_cll_function_call83          
-198   cll_expr_arithmetic 97          
-198   cll_expr_term       89          
-198   cll_expr_logical    98          
-198   cll_expr___rop0     82          
-198   cll_expr_group      78          
-198   cll_variable        77          
-13    __grp1              29          
-13    object              19          
-13    array               17          
-13    any_data            30          
-140   cll_block           177         
-10    Rule_rule           23          
-10    Rule_value          24          
-10    Rule_keyvalue       26          
-10    Rule__q2            28          
-1     use_unit            9           
-128   cll___q0_tail       167         
-23    Rule_rule           34          
-23    Rule__q2_tail       35          
-23    Rule_value          24          
-23    Rule_keyvalue       26          
-28    Rule_data_block     57          
-28    Rule_data_block_templated_datablock59          
-28    Rule_data_block_regular_datablock60          
-28    Rule__q3            61          
-146   Rule_data_block___grp1181         
-33    __grp2              66          
-112   Rule_data_block_regular_datablock___q0_tail150         
-114   Rule__q4_tail       151         
-114   Rule_nested_rule    114         
-123   cll_block           160         
-125   cll___grp2          162         
-130   cll_variable        77          
-130   cll_expr_group      78          
-130   cll_expr___rop0     172         
-130   cll_cll_function_call83          
-130   any_data            104         
-130   cll_expr___rop2     171         
-130   cll_expr_compare    170         
-130   cll_expr_term       169         
-130   cll_expr_arithmetic 173         
-130   object              19          
-130   cll_expr_value      168         
-130   array               17          
-133   cll_variable        77          
-133   cll_expr_group      78          
-133   cll_expr___grp1     141         
-133   cll_cll_function_call83          
-133   any_data            104         
-133   cll_expr_compare    135         
-133   cll_expr_term       134         
-133   cll_expr_arithmetic 136         
-133   cll_expr___rop0     138         
-133   object              19          
-133   cll_expr_value      133         
-133   array               17          
-65    object              19          
-65    array               17          
-65    __grp0              119         
-65    any_data            32          
-192   cll___q1_tail       204         
-134   cll_variable        77          
-134   cll_expr_group      78          
-134   cll_expr___grp1     137         
-134   cll_cll_function_call83          
-134   any_data            104         
-134   cll_expr_compare    135         
-134   cll_expr_term       134         
-134   cll_expr_arithmetic 136         
-134   cll_expr___rop0     138         
-134   object              19          
-134   cll_expr_value      133         
-134   array               17          
-138   cll_variable        77          
-138   cll_expr_group      78          
-138   cll_cll_function_call83          
-138   any_data            104         
-138   cll_expr_term       175         
-138   object              19          
-138   cll_expr_value      174         
-138   array               17          
-142   cll___q0            79          
-142   cll_var             178         
-22    use_unit            33          
-149   Rule_data_block_regular_datablock___q0_tail184         
-156   Rule___grp2         187         
-159   cll_variable        77          
-159   cll_expr_group      78          
-159   cll_expr___rop0     82          
-159   cll_expr_logical    98          
-159   cll_expr_term       89          
-159   cll_expr_arithmetic 97          
-159   cll_cll_function_call83          
-159   any_data            104         
-159   cll_expr_compare    92          
-159   cll_expr            190         
-159   object              19          
-159   cll_expr_value      99          
-159   array               17          
-34    Rule__q2_tail       67          
-34    Rule_rule           34          
-34    Rule_value          24          
-34    Rule_keyvalue       26          
-161   cll___q1            191         
-161   cll___q1_tail       193         
-168   cll_variable        77          
-168   cll_expr_group      78          
-168   cll_expr___grp1     141         
-168   cll_cll_function_call83          
-168   any_data            104         
-168   cll_expr_compare    135         
-168   cll_expr_term       134         
-168   cll_expr_arithmetic 136         
-168   cll_expr___rop0     138         
-168   object              19          
-168   cll_expr_value      133         
-168   array               17          
-169   cll_variable        77          
-169   cll_expr_group      78          
-169   cll_expr___grp1     137         
-169   cll_cll_function_call83          
-169   any_data            104         
-169   cll_expr_compare    135         
-169   cll_expr_term       134         
-169   cll_expr_arithmetic 136         
-169   cll_expr___rop0     138         
-169   object              19          
-169   cll_expr_value      133         
-169   array               17          
-174   cll_variable        77          
-174   cll_expr_group      78          
-174   cll_cll_function_call83          
-174   any_data            104         
-174   cll_expr_compare    135         
-174   cll_expr_term       134         
-174   cll_expr_arithmetic 136         
-174   cll_expr___grp1     196         
-174   cll_expr___rop0     138         
-174   object              19          
-174   cll_expr_value      133         
-174   array               17          
-175   cll_variable        77          
-175   cll_expr_group      78          
-175   cll_cll_function_call83          
-175   any_data            104         
-175   cll_expr_compare    135         
-175   cll_expr_term       134         
-175   cll_expr_arithmetic 136         
-175   cll_expr___grp1     197         
-175   cll_expr___rop0     138         
-175   object              19          
-175   cll_expr_value      133         
-175   array               17          
+198   cll_expr_compare    91          
+198   any_data            105         
+198   cll_cll_function_call95          
+198   cll_expr_arithmetic 98          
+198   cll_expr_term       93          
+198   cll_expr_logical    99          
+198   cll_expr___rop0     83          
+198   cll_expr_group      79          
+198   cll_variable        78          
+143   cll_variable        78          
+143   cll_expr_group      79          
+143   cll_expr___rop0     83          
+143   cll_expr_logical    99          
+143   cll_expr            179         
+143   cll_cll_function_call95          
+143   any_data            105         
+143   cll_expr_compare    91          
+143   cll_expr_term       93          
+143   cll_expr_arithmetic 98          
+143   object              19          
+143   cll_expr_value      100         
+143   array               17          
+148   Rule_data_block_regular_datablock___q0_tail183         
+157   Rule___grp2         187         
+160   cll_variable        78          
+160   cll_expr_group      79          
+160   cll_expr___rop0     83          
+160   cll_expr_logical    99          
+160   cll_expr_term       93          
+160   cll_expr_arithmetic 98          
+160   cll_cll_function_call95          
+160   any_data            105         
+160   cll_expr_compare    91          
+160   cll_expr            190         
+160   object              19          
+160   cll_expr_value      100         
+160   array               17          
+35    Rule__q2_tail       68          
+35    Rule_rule           35          
+35    Rule_value          25          
+35    Rule_keyvalue       27          
+162   cll___q1            193         
+162   Rule_rule           191         
+162   cll___q1_tail       192         
+162   Rule_value          25          
+162   Rule_keyvalue       27          
+170   cll_variable        78          
+170   cll_expr_group      79          
+170   cll_expr___grp1     138         
+170   cll_cll_function_call95          
+170   any_data            105         
+170   cll_expr_compare    136         
+170   cll_expr_term       135         
+170   cll_expr_arithmetic 137         
+170   cll_expr___rop0     139         
+170   object              19          
+170   cll_expr_value      134         
+170   array               17          
 
 Rules:
 	1: main → use 
@@ -1962,6 +2197,7 @@ Rules:
 	1: any_data → ID 
 	1: any_data → object 
 	1: any_data → BOOLEAN 
+	1: any_data → AT 
 	3: use → AUTO_34 use_unit __grp2 
 	0: Rule__q2_tail → 
 	1: Rule_rule → Rule_value 
@@ -1999,7 +2235,7 @@ Rules:
 	3: __grp2 → AUTO_48 use_unit __grp2 
 	2: Rule__q2_tail → Rule_rule Rule__q2_tail 
 	3: Rule_rule → Rule_keyvalue Rule___rop1 Rule___q2 
-	1: Rule_quantifier → AUTO_50 
+	1: Rule_quantifier → QUESTION_MARK 
 	1: Rule_quantifier → PLUS 
 	1: Rule_quantifier → MULTIPLE 
 	1: Rule___q2 → Rule_quantifier 
@@ -2009,20 +2245,20 @@ Rules:
 	1: cll_expr_value → cll_expr_group 
 	0: cll___q0_tail → 
 	1: cll_expr___rop0 → DIVIDE 
-	1: cll_expr_value → cll_cll_function_call 
 	1: __rop1 → cll_loop_while 
+	1: cll_expr → AT 
 	1: __rop1 → cll_var 
+	1: cll_loop_for → cll_var 
 	1: cll_expr___rop0 → PLUS 
 	1: __rop1 → cll_loop_for 
-	1: cll_expr → cll_expr_term 
-	1: cll_expr___rop0 → cll_expr_term 
 	1: __rop1 → cll_if 
 	1: __rop1 → cll_expr 
-	1: cll_loop_for → cll_expr 
 	1: cll_expr → cll_expr_compare 
 	1: cll_expr___rop0 → cll_expr_compare 
+	1: cll_expr → cll_expr_term 
+	1: cll_expr___rop0 → cll_expr_term 
+	1: cll_expr_value → cll_cll_function_call 
 	1: cll___q0 → cll_TYPE 
-	1: cll_expr → AT 
 	1: cll_expr → cll_expr_arithmetic 
 	1: cll_expr___rop0 → cll_expr_arithmetic 
 	1: cll_expr → cll_expr_logical 
@@ -2034,8 +2270,8 @@ Rules:
 	1: cll_expr_value → any_data 
 	1: Rule___q1 → Rule___q1_tail 
 	0: Rule_data_block___grp2 → 
-	1: Rule_data_block___rop1 → any_data 
 	0: Rule_data_block_regular_datablock___q0_tail → 
+	1: Rule_data_block___rop1 → any_data 
 	1: Rule_data_block___rop1 → Rule_data_block_regular_datablock_key 
 	1: Rule__q4 → Rule__q4_tail 
 	0: __grp3 → 
@@ -2045,16 +2281,16 @@ Rules:
 	2: cll_cll_function_call → ID cll_function_body_call 
 	2: cll___q0 → ID cll___q0_tail 
 	2: cll_expr_compare → cll_expr___rop0 cll_COMPARE_OP 
-	3: cll → AUTO_0 __rop1 END 
 	2: cll_expr_arithmetic → cll_expr_term cll_expr___grp1 
+	3: cll → AUTO_0 __rop1 END 
 	2: cll_expr_term → cll_expr_value cll_expr___grp1 
 	3: Rule_group → AUTO_39 Rule___q1 AUTO_40 
 	2: Rule___q1_tail → Rule_rule Rule___q1_tail 
 	0: Rule_data_block___grp1 → 
-	3: Rule_data_block_regular_datablock → AUTO_47 Rule_data_block___rop1 AUTO_49 
 	2: Rule_data_block_regular_datablock___q0 → AUTO_45 Rule_data_block_regular_datablock___q0_tail 
+	3: Rule_data_block_regular_datablock → AUTO_47 Rule_data_block___rop1 AUTO_49 
 	2: Rule__q4_tail → Rule_nested_rule Rule__q4_tail 
-	2: Rule_nested_rule → AUTO_42 AUTO_38 
+	2: Rule_nested_rule → AUTO_42 Rule 
 	6: Rule → ID AUTO_36 Rule__q2 Rule__q3 Rule__q4 AUTO_32 
 	3: cll_if → AUTO_1 cll_expr cll_block 
 	0: cll___q1 → 
@@ -2066,11 +2302,11 @@ Rules:
 	1: cll_expr___rop2 → cll_expr_value 
 	1: cll_expr___rop2 → cll_expr_term 
 	1: cll_expr___rop2 → cll_expr_compare 
-	3: cll_expr_logical → cll_expr___rop0 cll_LOGICAL_OP cll_expr___rop2 
 	1: cll_expr___rop2 → cll_expr_arithmetic 
-	2: cll_expr___grp1 → cll_expr___rop0 cll_expr_value 
-	2: cll_expr___grp1 → cll_expr___rop0 cll_expr_term 
+	3: cll_expr_logical → cll_expr___rop0 cll_LOGICAL_OP cll_expr___rop2 
 	3: cll_expr_group → AUTO_39 cll_expr AUTO_40 
+	2: cll_expr___grp1 → cll_expr___rop0 cll_expr_term 
+	2: cll_expr___grp1 → cll_expr___rop0 cll_expr_value 
 	3: cll_loop_while → AUTO_19 cll_expr cll_block 
 	4: Rule_data_block_templated_datablock → AT AUTO_47 Rule_data_block___grp2 AUTO_49 
 	2: Rule_data_block___grp2 → ID Rule_data_block___grp1 
@@ -2082,14 +2318,14 @@ Rules:
 	1: cll___q1 → cll___q1_tail 
 	3: cll_function_body_call → AUTO_39 cll_function_arguments AUTO_40 
 	2: cll_function_arguments → cll___rop0 AUTO_48 
-	3: cll_expr___grp1 → cll_expr___rop0 cll_expr_value cll_expr___grp1 
 	3: cll_expr___grp1 → cll_expr___rop0 cll_expr_term cll_expr___grp1 
+	3: cll_expr___grp1 → cll_expr___rop0 cll_expr_value cll_expr___grp1 
 	0: cll___q4 → 
 	4: Rule_data_block_regular_datablock_key → Rule_data_block_regular_datablock___q0 ID AUTO_46 cll_expr 
 	3: cll___grp2 → AUTO_25 cll_expr AUTO_27 
+	2: cll___q1_tail → Rule_rule cll___q1_tail 
 	3: cll_block → AUTO_47 cll___q1 AUTO_49 
-	2: cll___q1_tail → AUTO_38 cll___q1_tail 
 	1: cll___q4 → cll_expr 
 	3: Rule_data_block___grp1 → AUTO_48 ID Rule_data_block___grp1 
 	5: __grp3 → AUTO_48 ID AUTO_36 any_data __grp3 
-	9: cll_loop_for → AUTO_20 AUTO_39 cll_var AUTO_32 cll___q4 AUTO_32 cll___q4 AUTO_40 cll_block 
+	9: cll_loop_for → AUTO_20 AUTO_39 cll_expr AUTO_32 cll___q4 AUTO_32 cll___q4 AUTO_40 cll_block 

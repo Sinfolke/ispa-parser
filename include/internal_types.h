@@ -78,3 +78,14 @@ namespace std {
         }
     };
 }
+namespace std {
+    template<typename T1, typename T2>
+    struct hash<std::pair<T1, T2>> {
+        std::size_t operator()(const std::pair<T1, T2>& p) const {
+            std::size_t h1 = std::hash<T1>{}(p.first);
+            std::size_t h2 = std::hash<T2>{}(p.second);
+            // Combine the hashes (standard way)
+            return h1 ^ (h2 << 1); // or use boost::hash_combine style if needed
+        }
+    };
+}

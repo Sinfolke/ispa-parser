@@ -39,8 +39,8 @@ Rule:
         data: %2;
     ;
     #nested_rule: 
-        '#' \s0 (Rule)
-        data: $1;
+        '#' \s0 Rule
+        data: %2;
     ;
     #data_block:
         #templated_datablock | #regular_datablock
@@ -69,8 +69,8 @@ Rule:
         '|'
     ;
     #quantifier:
-        ('?' | PLUS | MULTIPLE)
-        data: $1;
+        QUESTION_MARK | PLUS | MULTIPLE
+        data: %1;
     ;
 
     #CSEQUENCE:

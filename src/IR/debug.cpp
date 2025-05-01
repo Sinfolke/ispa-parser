@@ -424,6 +424,8 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
         out << current_pos_counter.top() << " = " << el;
         break;
     }
+    case types::EMPTY:
+        return;
     default:
         throw Error("Undefined IR member\n");
     }

@@ -15,6 +15,7 @@ void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <iscstdlibc++.h>\n";
     out << "#include <fstream>\n";
     out << "#include <iterator>\n\n";
+    out << "#include <iostream>\n";
 }
 void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name) const {
 

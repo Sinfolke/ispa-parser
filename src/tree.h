@@ -22,6 +22,38 @@ class Tree {
     private:
         Parser::Tree tree;
         size_t token_count = 0;
+        // production management
+        bool compare_string_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_hex_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_bin_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_accessor_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_accessor_internal(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_accessor_internal(const std::vector<Parser::Rule> &first, const std::vector<Parser::Rule> &second);
+        bool compare_booolean_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_array_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_object_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_number_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_id_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_op_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_other_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_escape_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_csequence_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_csequence_internal_dt(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_csequence_diapason_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_csequence_symbol_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_csequence_escape_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_group_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_cll_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_cll_function_call(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_cll_function_body(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_cll_function_arguments(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_any_data_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_method_call_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compareStringViewRule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compareStringRule(const Parser::Rule &first, const Parser::Rule &second);
+
+        bool checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited);
+        
         // treeNormalizer
         void normalizeHelper(std::vector<Parser::Rule> &rules, std::vector<std::string> fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
         void getNestedNames(std::vector<Parser::Rule> &nested_rules, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, std::vector<std::string> &fullname);
@@ -38,14 +70,14 @@ class Tree {
         void inlineTokensHelper(Parser::Tree &tree, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
         void inlineTokensHelper(Parser::Tree &tree);
         // literals to tokens functions
-        std::pair<Parser::Rule, Parser::Rule> getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier);
+        auto getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) -> std::pair<Parser::Rule, Parser::Rule>;
         bool checkRuleEscaped(const Parser::Rule &rule);
-        void getTokensFromRule_rule(Parser::Tree &tree, std::vector<Parser::Rule>& rule, bool is_not_rule_rule = false);
-        Parser::Tree getTokensFromRule(Parser::Rule &member);
-        void literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert);
+        void getTokensFromRule_rule(Parser::Tree &tree, std::vector<Parser::Rule>& rule, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated, bool is_not_rule_rule = false);
+        auto getTokensFromRule(Parser::Rule &member, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) -> Parser::Tree;
+        void literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated);
         // sort by priority functions
         bool processGroup_helper(Parser::Tree &tree, const std::vector<Parser::Rule>& group, const Parser::Rule &second);
-        bool sortPriority(Parser::Rule first, Parser::Rule second);
+        bool sortPriority(const Parser::Rule &first, const Parser::Rule &second);
         void sortByPriorityHelper(std::vector<Parser::Rule> &rules);
         void sortByPriority(Parser::Tree &tree);
 
@@ -76,6 +108,22 @@ class Tree {
             if (!rawAssign)
                 constructor();
         }
+        static auto getValueFromGroup(const Parser::Rule &rule) -> std::vector<Parser::Rule>;
+        static auto getValueFromGroup(const Parser::Rule &rule, std::any &variable) -> std::vector<Parser::Rule>;
+        static auto getValueFromRule_rule(const Parser::Rule &rule) -> Parser::Rule;
+        static auto getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule &quantifier) -> Parser::Rule;
+        static auto singleRuleToToken(const Parser::Rule &input, size_t &count) -> Parser::Rule;
+        static auto make_rule() -> Parser::Rule;
+        static auto make_rule(Parser::Rules name) -> Parser::Rule;
+        static auto make_rule(Parser::Rules name, std::any data) -> Parser::Rule;
+        bool compare_rule_matching(const Parser::Rule &first, const Parser::Rule &second, std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> &visited);
+        bool compare_rule(const Parser::Rule &first, const Parser::Rule &second);
+        bool compare_rules(const std::vector<Parser::Rule> &first, const std::vector<Parser::Rule> &second);
+        bool compare_token_with_rules(const Parser::Tree &first, const Parser::Tree &second);
+        auto find_token_in_rule(const Parser::Tree &token_rule, const Parser::Tree &rules) -> std::vector<int>;
+        static auto find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
+        auto find_token_in_tree(std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
+
         auto getRawTree() -> Parser::Tree&;
 
         auto begin() -> Parser::Tree::iterator;

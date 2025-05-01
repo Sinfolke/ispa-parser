@@ -95,13 +95,26 @@ void LLConverter::convertCondition(LLIR::condition cond, std::ostringstream &out
 void LLConverter::convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
-
-
+template<typename... Args>
+std::string dbg(const Args&... args) {
+    std::ostringstream oss;
+    oss << "\nstd::cout << \"";
+    (oss << ... << args);  // Fold expression (C++17)
+    oss << "\\n\";\n";
+    return oss.str();
+}
+std::string rawdbg(const std::string args) {
+    std::ostringstream oss;
+    oss << "\nstd::cout << " << args << ";\n";
+    return oss.str();
+}
 void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out) {
     if (cpp_file && (!isToken || mem.type == LLIR::types::RULE) && mem.type != LLIR::types::TOKEN) {
         isToken = false;
         return;
     }
+    if (mem.type == LLIR::types::EMPTY)
+        return;
     if (mem.type != LLIR::types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
@@ -114,8 +127,9 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
             out << "template <class IT>\n";
             out << std::string(indentLevel, '\t') << "::" << namespace_name << "::Rule_res " << rule_prev_name_str << "(IT pos) {\n";
             indentLevel++;
-            out << std::string(indentLevel, '\t') << "auto in = pos;" ;
+            out << std::string(indentLevel, '\t') << "auto in = pos;\n" << std::string(indentLevel, '\t') << "skip_spaces(" << current_pos_counter.top() << ");\n" ;
             isToken = false;
+            out << rawdbg("\"running \" << \"" + rule_prev_name_str + "\" << \", pos: \" << " + "pos->startpos() << \"\\n\"");
         }
         break;
     case LLIR::types::TOKEN:
@@ -128,6 +142,8 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         isToken = true;
         break;
     case LLIR::types::RULE_END:
+        if (!isToken)
+            out << dbg("success run ", rule_prev_name_str);
         if (isToken) {
             out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::" << namespace_name << "::Tokens::" << rule_prev_name_str;
             if (has_data_block)
@@ -157,11 +173,15 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         convertCondition(std::any_cast<LLIR::condition>(mem.value), out);
         break;
     case LLIR::types::DOWHILE:
+    {
         out << "do\n";
         convertBlock(std::any_cast<LLIR::condition>(mem.value).block, out);
         out << '\n' << std::string(indentLevel, '\t') << "while";
-        out << convertExpression(std::any_cast<LLIR::condition>(mem.value).expression, true);
+        auto expr = convertExpression(std::any_cast<LLIR::condition>(mem.value).expression, true);
+        expr.back() = ';';
+        out << expr;
         break;
+    }
     case LLIR::types::INCREASE_POS_COUNTER:
         out << current_pos_counter.top() << " += " + std::to_string(pos_counter_stack.top() + 1);
         pos_counter_stack.pop();
@@ -196,10 +216,7 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         out << "\");";
         break;
     case LLIR::types::SKIP_SPACES:
-        if (isToken)            
-            out << "skip_spaces(" << current_pos_counter.top() << ")";
-        else
-            out << "skip_spaces<::" << namespace_name << "::TokenFlow::iterator, ::" << namespace_name << "::Tokens>(pos)";
+        out << "skip_spaces(" << current_pos_counter.top() << ")";
         break;
     case LLIR::types::DATA_BLOCK:
         has_data_block = true;

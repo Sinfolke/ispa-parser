@@ -17,7 +17,7 @@ class LLIR {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
             METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
             ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER, 
-            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR
+            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR, EMPTY
         };
         enum class condition_types {
             GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
@@ -215,7 +215,7 @@ class LLIR {
         std::vector<LLIR::member> data;
         std::vector<node_ret_t> success_vars;
         const std::vector<Parser::Rule>* rules = nullptr;
-        const Parser::Tree* tree;
+        Parser::Tree* tree;
         // data for output
         std::stack<std::string> current_pos_counter;
         size_t indentLevel = 0;
@@ -224,6 +224,7 @@ class LLIR {
         // convertion
         void ruleToIr(const Parser::Rule &rule_rule, char custom_qualifier = -1);
         auto rulesToIr(const std::vector<Parser::Rule> &rules) -> LLIR;
+        auto rulesToIr(const std::vector<Parser::Rule> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr(const Parser::Tree &tree);
         // optimizations
         void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::list<LLIR::member>& table);
@@ -231,10 +232,10 @@ class LLIR {
         void insertVariablesOnTop(std::list<LLIR::member>& table, size_t begin);
         void raiseVarsTop();
     public:
-        LLIR(const Parser::Tree &tree, int tokensOnly = -1);
-        LLIR(const Parser::Tree *tree, int tokensOnly = -1);
-        LLIR(const Parser::Tree &tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
-        LLIR(const Parser::Tree *tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
+        LLIR(Parser::Tree &tree, int tokensOnly = -1);
+        LLIR(Parser::Tree *tree, int tokensOnly = -1);
+        LLIR(Parser::Tree &tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
+        LLIR(Parser::Tree *tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
 
         // get functions
         auto getData() const -> const std::vector<LLIR::member>&;

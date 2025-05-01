@@ -3,9 +3,9 @@ static size_t compute_group_length(const std::vector<Parser::Rule> &group) {
     size_t count = 0;
     for (auto &rule_rule : group) {
         Parser::Rule quantifier;
-        auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
+        auto rule = Tree::getValueFromRule_rule(rule_rule, quantifier);
         if (rule.name == Parser::Rules::Rule_group && !quantifier.data.has_value()) {
-            auto val = Tokens::getValueFromGroup(rule);
+            auto val = Tree::getValueFromGroup(rule);
             count += compute_group_length(val);
         } else count++;
     }
@@ -73,7 +73,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         char quantifier_char = '\0';
         if (!rule_rule.data.has_value())
             continue;
-        auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
+        auto rule = Tree::getValueFromRule_rule(rule_rule, quantifier);
         if (quantifier.data.has_value()) {
             quantifier_char = std::any_cast<char>(quantifier.data);
         }
@@ -81,7 +81,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         switch (rule.name) {
         case Parser::Rules::Rule_group:
         {
-            auto val = Tokens::getValueFromGroup(rule);
+            auto val = Tree::getValueFromGroup(rule);
 
             // Recursively process the group
             transform_helper(tree, val, fullname, replacements);
@@ -102,8 +102,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
             auto new_fullname = fullname;
             new_fullname.back() = quant_rule_name;
             // Replace with reference to new quant rule
-            rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
+            rules[i] = Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
                 {"qualifier", Parser::Rule()}
             });
 
@@ -122,8 +122,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                         new_alternatives.push_back(val);
                     }
                     new_alternatives.back().push_back({
-                        Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                            {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                        Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                            {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                             {"qualifier", Parser::Rule()}
                         })
                     });
@@ -132,14 +132,14 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                     recurse_alternatives.push_back({Parser::Rule()});
                     recurse_alternatives.push_back(val);
                     recurse_alternatives.back().push_back({
-                        Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                            {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                        Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                            {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                             {"qualifier", Parser::Rule()}
                         })
                     });
                     for (auto &alt : recurse_alternatives) {
-                        tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                            {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
+                        tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                            {"name", Tree::make_rule(Parser::Rules::id, recurse_name)},
                             {"rule", alt},
                             {"nestedRules", std::vector<Parser::Rule>{}},
                             {"data_block", Parser::Rule {}}
@@ -152,15 +152,15 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                     new_alternatives.push_back({Parser::Rule()});
                     new_alternatives.push_back(val);
                     new_alternatives.back().push_back(
-                        Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                            {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
+                        Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                            {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
                             {"qualifier", Parser::Rule()}
                         })
                     );
             }
             for (auto &alt : new_alternatives) {
-                tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                    {"name", Tokens::make_rule(Parser::Rules::id, quant_rule_name)},
+                tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                    {"name", Tree::make_rule(Parser::Rules::id, quant_rule_name)},
                     {"rule", alt},
                     {"nestedRules", std::vector<Parser::Rule>{}},
                     {"data_block", Parser::Rule {}}
@@ -183,12 +183,12 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         
                 for (auto rule_rule : val) {
                     Parser::Rule quantifier;
-                    auto rule = Tokens::getValueFromRule_rule(rule_rule, quantifier);
+                    auto rule = Tree::getValueFromRule_rule(rule_rule, quantifier);
                     if (rule.name == Parser::Rules::Rule_group && quantifier.empty()) {
                         if (count == 0)
                             is_first_group = true;
         
-                        auto group_val = Tokens::getValueFromGroup(rule);
+                        auto group_val = Tree::getValueFromGroup(rule);
                         auto len = compute_group_length(group_val);
                         group_pos.push_back({count, len});
                         count += len;
@@ -219,8 +219,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 auto new_fullname = fullname;
                 new_fullname.back() = push_name;
                 
-                rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                    {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {push_name, new_fullname, true})},
+                rules[i] = Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {push_name, new_fullname, true})},
                     {"qualifier", Parser::Rule()}
                 });
         
@@ -237,8 +237,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                     val_it--;
                     _count--;
                 } else values.push_back(*val_it);
-                tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                    {"name", Tokens::make_rule(Parser::Rules::Rule_other, push_name)},
+                tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                    {"name", Tree::make_rule(Parser::Rules::Rule_other, push_name)},
                     {"rule", values},
                     {"nestedRules", std::vector<Parser::Rule>{}},
                     {"data_block", Parser::Rule {}}
@@ -252,8 +252,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
         auto find = replacements.find(fullname);
         if (find != replacements.end()) {
             if (find->second.first == quantifier_char) {
-                rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                    {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {find->second.second.name, find->second.second.fullname, true})},
+                rules[i] = Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {find->second.second.name, find->second.second.fullname, true})},
                     {"qualifier", Parser::Rule()}
                 });
                 continue;
@@ -271,8 +271,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
             }
             new_fullname.back() = quant_rule_name;
             // Replace with reference to new quant rule
-            rules[i] = Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
+            rules[i] = Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {quant_rule_name, new_fullname, true})},
                 {"qualifier", Parser::Rule()}
             });
 
@@ -281,7 +281,7 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
             if (quantifier_char == '?') {
                 new_alternatives.push_back({Parser::Rule()});
                 new_alternatives.push_back({
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
                         {"val", rule},
                         {"qualifier", Parser::Rule()}
                     })
@@ -291,30 +291,30 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 std::string recurse_name = quant_rule_name + "_tail";
                 new_fullname.back() = recurse_name;
                 new_alternatives.push_back({
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
                         {"val", rule},
                         {"qualifier", Parser::Rule()}
                     }),
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                        {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                        {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                         {"qualifier", Parser::Rule()}
                     })
                 });
                 std::vector<std::vector<Parser::Rule>> recurse_alternatives;
                 recurse_alternatives.push_back({Parser::Rule()});
                 recurse_alternatives.push_back({
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
                         {"val", rule},
                         {"qualifier", Parser::Rule()}
                     }),
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                        {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                        {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                         {"qualifier", Parser::Rule()}
                     })
                 });
                 for (auto &alt : recurse_alternatives) {
-                    tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                        {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
+                    tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                        {"name", Tree::make_rule(Parser::Rules::id, recurse_name)},
                         {"rule", alt},
                         {"nestedRules", std::vector<Parser::Rule>{}},
                         {"data_block", Parser::Rule {}}
@@ -327,8 +327,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 // This is the initial entry point: optional ε and recursive call
                 new_alternatives.push_back({Parser::Rule()}); // ε
                 new_alternatives.push_back({
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                        {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                        {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                         {"qualifier", Parser::Rule()}
                     })
                 });
@@ -336,20 +336,20 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
                 // This is the recursive body: rule followed by recurse
                 std::vector<std::vector<Parser::Rule>> recurse_alternatives;
                 recurse_alternatives.push_back({
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
                         {"val", rule},
                         {"qualifier", Parser::Rule()}
                     }),
-                    Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                        {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
+                    Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                        {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {recurse_name, new_fullname, true})},
                         {"qualifier", Parser::Rule()}
                     })
                 });
                 recurse_alternatives.push_back({Parser::Rule()}); // ε to allow termination
             
                 for (auto &alt : recurse_alternatives) {
-                    tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                        {"name", Tokens::make_rule(Parser::Rules::id, recurse_name)},
+                    tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                        {"name", Tree::make_rule(Parser::Rules::id, recurse_name)},
                         {"rule", alt},
                         {"nestedRules", std::vector<Parser::Rule>{}},
                         {"data_block", Parser::Rule {}}
@@ -358,8 +358,8 @@ void LRParser::transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &r
             }
 
             for (auto &alt : new_alternatives) {
-                tree.push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-                    {"name", Tokens::make_rule(Parser::Rules::id, quant_rule_name)},
+                tree.push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+                    {"name", Tree::make_rule(Parser::Rules::id, quant_rule_name)},
                     {"rule", alt},
                     {"nestedRules", std::vector<Parser::Rule>{}},
                     {"data_block", Parser::Rule {}}
@@ -421,7 +421,7 @@ void LRParser::debug(Parser::Tree &tree, std::vector<std::string> &fullname) {
         for (auto rule_rule : rules) {
             if (!rule_rule.data.has_value())
                 continue;
-            auto rule = Tokens::getValueFromRule_rule(rule_rule);
+            auto rule = Tree::getValueFromRule_rule(rule_rule);
             if (rule.name != Parser::Rules::Rule_other) {
                 cpuf::printf("<%s>", Parser::RulesToString(rule_rule.name));
                 continue;
@@ -478,11 +478,11 @@ void LRParser::getPriorityTree() {
 }
 
 void LRParser::addAugmentedRule() {
-    tree->getRawTree().push_back(Tokens::make_rule(Parser::Rules::Rule, obj_t {
-        {"name", Tokens::make_rule(Parser::Rules::id, std::string("__start"))},
+    tree->getRawTree().push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+        {"name", Tree::make_rule(Parser::Rules::id, std::string("__start"))},
         {"rule", std::vector<Parser::Rule>{
-                Tokens::make_rule(Parser::Rules::Rule_rule, obj_t {
-                    {"val", Tokens::make_rule(Parser::Rules::Rule_other, rule_other {std::string("main"), {std::string("main")}})},
+                Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
+                    {"val", Tree::make_rule(Parser::Rules::Rule_other, rule_other {std::string("main"), {std::string("main")}})},
                     {"qualifier", Parser::Rule()}
                 })
             }
@@ -509,7 +509,7 @@ void LRParser::construct_initial_item_set(Parser::Tree &tree, InitialItemSet &in
         for (auto rule : rules) {
             if (!rule.data.has_value())
                 continue;
-            auto arule = Tokens::getValueFromRule_rule(rule);
+            auto arule = Tree::getValueFromRule_rule(rule);
             if (!arule.data.has_value() || arule.name == Parser::Rules::Rule_escaped)
                 continue;
             auto arule_data = std::any_cast<rule_other>(arule.data);

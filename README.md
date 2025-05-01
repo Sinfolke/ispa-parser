@@ -26,6 +26,7 @@
 
     Add remove of unused variables (required IR optimization)
 
+    Fix bug when variable in group assigned not shadow variable but base one
     Add insertion of NOT when one rule shadows another
 
     Add automatic generation of recovery by panic mode strategy

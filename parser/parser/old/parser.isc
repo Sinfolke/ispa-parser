@@ -3,6 +3,7 @@ END: [;\n];
 STRICT_END: ';';
 NEWLINE: [\n];
 
+QUESTION_MARK: '?';
 PLUS:     '+';
 MINUS:    '-';
 DIVIDE:   '/';

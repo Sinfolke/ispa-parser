@@ -637,13 +637,13 @@ protected:
     std::vector<error> errors;
     ErrorController error_controller;
     // skip spaces for tokens
-    template <typename Iterator, typename Tokens>
-    size_t skip_spaces(Iterator& pos) {
+    template <class IT>
+    size_t skip_spaces(IT& pos) {
         auto prev = pos;
-        while (pos->name() == Tokens::__WHITESPACE)
+        while (pos->name() == TOKEN_T::__WHITESPACE)
             ++pos;
         
-        return std::distance(prev, pos);
+        return pos - prev;
     }
     void reportError(typename Lexer_base<TOKEN_T>::lazy_iterator pos, std::string msg) {
         if (error_controller.count(pos.distance()) == 0)

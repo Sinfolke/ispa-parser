@@ -1,6 +1,5 @@
 #include <parser.h>
 #include <internal_types.h>
-#include <token_management.h>
 #include <corelib.h>
 #include <parser.h>
 #include <internal_types.h>
@@ -79,22 +78,22 @@ void Tree::normalizeHelper(std::vector<Parser::Rule> &rules, std::vector<std::st
         if (rule.name == Parser::Rules::Rule_op) {
             if (!in_op) {
                 in_op = true;
-                ops.push_back(Tokens::make_rule(Parser::Rules::Rule_rule, obj_t { {"val", prev_rule}, {"qualifier", Parser::Rule()} }));
+                ops.push_back(make_rule(Parser::Rules::Rule_rule, obj_t { {"val", prev_rule}, {"qualifier", Parser::Rule()} }));
                 begin = it - 1;
             }
             prev_op = true;
         } else if (prev_op) {
             // Add the current rule to the operator sequence
-            ops.push_back(Tokens::make_rule(Parser::Rules::Rule_rule, obj_t { {"val", rule}, {"qualifier", Parser::Rule()} }));
+            ops.push_back(make_rule(Parser::Rules::Rule_rule, obj_t { {"val", rule}, {"qualifier", Parser::Rule()} }));
             prev_op = false;
         } else if (in_op) {
             // Create a new combined rule for the operator sequence
-            auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
+            auto new_rule = make_rule(Parser::Rules::Rule_op, ops);
             obj_t new_rule_data = {
                 { "val", new_rule },
                 { "qualifier", Parser::Rule() }
             };
-            auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
+            auto new_token = make_rule(Parser::Rules::Rule_rule, new_rule_data);
 
             // Replace the operator sequence in rules
             it = rules.erase(begin, it);
@@ -108,12 +107,12 @@ void Tree::normalizeHelper(std::vector<Parser::Rule> &rules, std::vector<std::st
 
     // Handle remaining operator sequences at the end
     if (in_op && !ops.empty()) {
-        auto new_rule = Tokens::make_rule(Parser::Rules::Rule_op, ops);
+        auto new_rule = make_rule(Parser::Rules::Rule_op, ops);
         obj_t new_rule_data = {
             { "val", new_rule },
             { "qualifier", Parser::Rule() }
         };
-        auto new_token = Tokens::make_rule(Parser::Rules::Rule_rule, new_rule_data);
+        auto new_token = make_rule(Parser::Rules::Rule_rule, new_rule_data);
         rules.erase(begin, rules.end());
         rules.push_back(new_token);
     }

@@ -37,7 +37,7 @@ object:
     ;
 any_data: 
 
-    BOOLEAN | NUMBER | STRING | ID | array | object
+    BOOLEAN | NUMBER | STRING | ID | AT | array | object
     
     data: %1;
 ;
