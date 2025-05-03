@@ -1,5 +1,5 @@
 cll: 
-    '$' @ #var | #if | #expr | #loop_while | #loop_for END
+    '$' @ #_var | #_if | #expr | #loop_while | #loop_for END
     {@} 
 
     #OP:
@@ -41,12 +41,12 @@ cll:
 
         @{first, second}
     ;
-    #if: 
+    #_if: 
         'if' @ expr @ stmt
 
-        ${expr, stmt}
+        @{expr, stmt}
     ;
-    #variable:
+    #_variable:
         @ ('++' | '--')? @ ID ('[' @ expr ']')? @ ('++' | '--')?
 
         @{pre, name, brace_expression, pos}
@@ -87,7 +87,7 @@ cll:
         #logical:
             @ compare (@ LOGICAL_OP @ compare)*
 
-            {left, op, right}
+            @{left, op, right}
         ;
 
         #compare:
@@ -109,7 +109,7 @@ cll:
         ;
 
         #value:
-            @ group | variable | cll_function_call | any_data
+            @ group | _variable | cll_function_call | any_data
             {@}
         ;
 
@@ -118,7 +118,7 @@ cll:
             {@}
         ;
     ;
-    #var: 
+    #_var: 
         @ TYPE? @ ID @ (ASSIGNMENT_OP @ expr)?
 
         @{type, id, op, value}
@@ -133,7 +133,7 @@ cll:
         @{expr, stmt}
     ;
     #loop_for: 
-        'for' '(' @ (expr | var)? ';' @ expr? ';' @ expr? ')' @ stmt
+        'for' '(' @ (expr | _var)? ';' @ expr? ';' @ expr? ')' @ stmt
 
         @{decl, cond, end, stmt}
     ;
