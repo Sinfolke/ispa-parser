@@ -2931,6 +2931,7 @@ Rule(use) {
 }
 Rule(Rule_rule) {
 	rule _0 = NONE
+	rule prefix = NONE
 	bool success_1 = FALSE
 	bool success_3 = FALSE
 	rule _2 = NONE
@@ -2939,9 +2940,10 @@ Rule(Rule_rule) {
 	Rule_result _6 = NONE
 	bool success_7 = FALSE
 	any _8 = NONE
+	any val = NONE
 	bool success_9 = FALSE
-	token _10 = NONE
 	bool success_11 = FALSE
+	any _10 = NONE
 	token _12 = NONE
 	bool success_13 = FALSE
 	token _14 = NONE
@@ -2956,17 +2958,24 @@ Rule(Rule_rule) {
 	bool success_23 = FALSE
 	token _24 = NONE
 	bool success_25 = FALSE
-	Rule_result _26 = NONE
+	token _26 = NONE
 	bool success_27 = FALSE
-	token _28 = NONE
+	Rule_result _28 = NONE
 	bool success_29 = FALSE
-	Rule_result _30 = NONE
+	token _30 = NONE
 	bool success_31 = FALSE
 	Rule_result _32 = NONE
 	bool success_33 = FALSE
 	Rule_result _34 = NONE
 	bool success_35 = FALSE
-	success_35 = FALSE
+	rule _36 = NONE
+	rule quantifier = NONE
+	bool success_37 = FALSE
+	Rule_result _38 = NONE
+	bool success_39 = FALSE
+	success_39 = FALSE
+	success_37 = FALSE
+	success_13 = FALSE
 	success_11 = FALSE
 	success_9 = FALSE
 	success_3 = FALSE
@@ -3004,153 +3013,166 @@ Rule(Rule_rule) {
 	if (success_3)
 	{
 		success_1 = TRUE
-				pos = begin_2
+		prefix = _0
+		pos = begin_2
 	}
 	skipspaces(TOKEN_SEQUENCE)
+	auto begin_10 = pos
 	if (!(CURRENT_TOKEN == Rule_NOSPACE))
 	{
-		success_13 = FALSE
+		success_15 = FALSE
 		if (!(CURRENT_TOKEN == Rule_ESCAPED))
 		{
-			success_15 = FALSE
+			success_17 = FALSE
 			if (!(CURRENT_TOKEN == Rule_HEX))
 			{
-				success_17 = FALSE
+				success_19 = FALSE
 				if (!(CURRENT_TOKEN == Rule_BIN))
 				{
-					success_19 = FALSE
+					success_21 = FALSE
 					if (!(CURRENT_TOKEN == LINEAR_COMMENT))
 					{
-						success_21 = FALSE
+						success_23 = FALSE
 						if (!(CURRENT_TOKEN == Rule_OP))
 						{
-							success_23 = FALSE
+							success_25 = FALSE
 							if (!(CURRENT_TOKEN == Rule_CSEQUENCE))
 							{
-								success_25 = FALSE
+								success_27 = FALSE
 								if (!(CURRENT_TOKEN == AUTO_18))
 								{
-									success_27 = FALSE
-									_26 = Rule_group(TOKEN_SEQUENCE)
-									if (!(_26.status))
+									success_29 = FALSE
+									_28 = Rule_group(TOKEN_SEQUENCE)
+									if (!(_28.status))
 									{
-										success_29 = FALSE
+										success_31 = FALSE
 										if (!(CURRENT_TOKEN == STRING))
 										{
-											success_31 = FALSE
-											_30 = cll(TOKEN_SEQUENCE)
-											if (!(_30.status))
+											success_33 = FALSE
+											_32 = cll(TOKEN_SEQUENCE)
+											if (!(_32.status))
 											{
-												success_33 = FALSE
-												_32 = Rule_name(TOKEN_SEQUENCE)
-												if (!(_32.status))
+												success_35 = FALSE
+												_34 = Rule_name(TOKEN_SEQUENCE)
+												if (!(_34.status))
 												{
 													return {}
 												}
 												else 
 												{
-													success_33 = TRUE
-													pos += _32.token.length()
-													_8 = _32.node
+													success_35 = TRUE
+													begin_10 += _34.token.length()
+													_10 = _34.node
 												}
 											}
 											else 
 											{
-												success_31 = TRUE
-												pos += _30.token.length()
-												_8 = _30.node
+												success_33 = TRUE
+												begin_10 += _32.token.length()
+												_10 = _32.node
 											}
 										}
 										else 
 										{
-											_28 = CURRENT_TOKEN
-											success_29 = TRUE
-											pos++
-											_8 = _28
+											_30 = CURRENT_TOKEN
+											success_31 = TRUE
+											begin_10++
+											_10 = _30
 										}
 									}
 									else 
 									{
-										success_27 = TRUE
-										pos += _26.token.length()
-										_8 = _26.node
+										success_29 = TRUE
+										begin_10 += _28.token.length()
+										_10 = _28.node
 									}
 								}
 								else 
 								{
-									_24 = CURRENT_TOKEN
-									success_25 = TRUE
-									pos++
-									_8 = _24
+									_26 = CURRENT_TOKEN
+									success_27 = TRUE
+									begin_10++
+									_10 = _26
 								}
 							}
 							else 
 							{
-								_22 = CURRENT_TOKEN
-								success_23 = TRUE
-								pos++
-								_8 = _22
+								_24 = CURRENT_TOKEN
+								success_25 = TRUE
+								begin_10++
+								_10 = _24
 							}
 						}
 						else 
 						{
-							_20 = CURRENT_TOKEN
-							success_21 = TRUE
-							pos++
-							_8 = _20
+							_22 = CURRENT_TOKEN
+							success_23 = TRUE
+							begin_10++
+							_10 = _22
 						}
 					}
 					else 
 					{
-						_18 = CURRENT_TOKEN
-						success_19 = TRUE
-						pos++
-						_8 = _18
+						_20 = CURRENT_TOKEN
+						success_21 = TRUE
+						begin_10++
+						_10 = _20
 					}
 				}
 				else 
 				{
-					_16 = CURRENT_TOKEN
-					success_17 = TRUE
-					pos++
-					_8 = _16
+					_18 = CURRENT_TOKEN
+					success_19 = TRUE
+					begin_10++
+					_10 = _18
 				}
 			}
 			else 
 			{
-				_14 = CURRENT_TOKEN
-				success_15 = TRUE
-				pos++
-				_8 = _14
+				_16 = CURRENT_TOKEN
+				success_17 = TRUE
+				begin_10++
+				_10 = _16
 			}
 		}
 		else 
 		{
-			_12 = CURRENT_TOKEN
-			success_13 = TRUE
-			pos++
-			_8 = _12
+			_14 = CURRENT_TOKEN
+			success_15 = TRUE
+			begin_10++
+			_10 = _14
 		}
 	}
 	else 
 	{
-		_10 = CURRENT_TOKEN
-		success_11 = TRUE
-		pos++
-		_8 = _10
+		_12 = CURRENT_TOKEN
+		success_13 = TRUE
+		begin_10++
+		_10 = _12
 	}
-	success_9 = TRUE
-	skipspaces(TOKEN_SEQUENCE)
-	_34 = Rule_quantifier(TOKEN_SEQUENCE)
-	if (_34.status)
+	success_11 = TRUE
+	if (success_11)
 	{
-		success_35 = TRUE
-		pos += _34.token.length()
+		success_9 = TRUE
+		val = _8
+		pos = begin_10
 	}
+	skipspaces(TOKEN_SEQUENCE)
+	auto begin_38 = pos
+	_38 = Rule_quantifier(TOKEN_SEQUENCE)
+	if (_38.status)
+	{
+		success_39 = TRUE
+		begin_38 += _38.token.length()
+	}
+	_36 = _38.node
+	success_37 = TRUE
+	success_37 = TRUE
+	pos = begin_38
 	data = 
-		quantifier: _8 # any
-		val: _0 # rule
-		prefix: _2 # rule
+		quantifier: quantifier # rule
+		val: val # any
+		prefix: prefix # rule
 	;
 }
 Rule(Rule_name) {

@@ -7,30 +7,6 @@
 #include <list>
 #include <forward_list>
 #include <tree.h>
-std::vector<Parser::Rule> Tree::getValueFromGroup(const Parser::Rule &rule) {
-    if (!rule.data.has_value())
-        return {};
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-    return val;
-}
-std::vector<Parser::Rule> Tree::getValueFromGroup(const Parser::Rule &rule, std::any &variable) {
-    if (!rule.data.has_value())
-        return {};
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-    variable = corelib::map::get(data, "variable");
-    return val;
-}
-Parser::Rule Tree::getValueFromRule_rule(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    return std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-}
-Parser::Rule Tree::getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule &quantifier) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    quantifier = std::any_cast<Parser::Rule>(corelib::map::get(data, "qualifier"));
-    return std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-}
 ::Parser::Rule Tree::singleRuleToToken(const Parser::Rule &input, size_t &count) {
     // Construct a token here
     ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 
@@ -69,13 +45,22 @@ Parser::Rule Tree::getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule 
     return make_rule(Parser::Rules::Rule, data);
 }
 Parser::Rule Tree::make_rule() {
-    return {0, nullptr, nullptr, Parser::Rules::NONE};
+    return {0, nullptr, nullptr, 0, 0, 0, Parser::Rules::NONE};
 };
 Parser::Rule Tree::make_rule(Parser::Rules name) {
-    return {0, nullptr, nullptr, name};
+    return {0, nullptr, nullptr, 0, 0, 0, name};
 };
 Parser::Rule Tree::make_rule(Parser::Rules name, std::any data) {
-    return {0, nullptr, nullptr, name, data};
+    return {0, nullptr, nullptr, 0, 0, 0, name, data};
+};
+Parser::Rule Tree::make_token() {
+    return {0, nullptr, nullptr, 0, 0, 0, Parser::Rules::NONE};
+};
+Parser::Rule Tree::make_token(Parser::Tokens name) {
+    return {0, nullptr, nullptr, 0, 0, 0, name};
+};
+Parser::Rule Tree::make_token(Parser::Tokens name, std::any data) {
+    return {0, nullptr, nullptr, 0, 0, 0, name, data};
 };
 bool Tree::compare_rule_matching(const Parser::Rule &first, const Parser::Rule &second, std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> &visited) {
     if (first.name == Parser::Rules::Rule_rule && second.name == Parser::Rules::Rule_rule) {
@@ -108,13 +93,13 @@ bool Tree::compare_rule_matching(const Parser::Rule &first, const Parser::Rule &
     }
     if (first.name == Parser::Rules::Rule_other && second.name == Parser::Rules::Rule_other) {
         auto ro1 = std::any_cast<rule_other>(first.data);
-        auto prod1 = find_token_in_tree(tree, ro1.fullname);
+        auto prod1 = find_token_in_tree(treeMap, ro1.fullname);
         if (prod1 == nullptr)
             return false;
         auto data1 = std::any_cast<obj_t>(prod1->data);
         auto rules1 = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data1, "rule"));
         auto ro2 = std::any_cast<rule_other>(second.data);
-        auto prod2 = find_token_in_tree(tree, ro2.fullname);
+        auto prod2 = find_token_in_tree(treeMap, ro2.fullname);
         if (prod2 == nullptr)
             return false;
         auto data2 = std::any_cast<obj_t>(prod2->data);
@@ -146,7 +131,7 @@ bool Tree::compare_rule_matching(const Parser::Rule &first, const Parser::Rule &
         }
         if (first.name == Parser::Rules::Rule_other) {
             auto ro = std::any_cast<rule_other>(first.data);
-            auto prod = find_token_in_tree(tree, ro.fullname);
+            auto prod = find_token_in_tree(treeMap, ro.fullname);
             auto data = std::any_cast<obj_t>(prod->data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto dt = getValueFromRule_rule(rules[0]);
@@ -170,7 +155,7 @@ bool Tree::compare_rule_matching(const Parser::Rule &first, const Parser::Rule &
         }
         if (second.name == Parser::Rules::Rule_other) {
             auto ro = std::any_cast<rule_other>(second.data);
-            auto prod = find_token_in_tree(tree, ro.fullname);
+            auto prod = find_token_in_tree(treeMap, ro.fullname);
             auto data = std::any_cast<obj_t>(prod->data);
             auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
             auto dt = getValueFromRule_rule(rules[0]);
@@ -647,5 +632,5 @@ Parser::Rule* Tree::find_token_in_tree(Parser::Tree &tree, std::vector<std::stri
     return nullptr;
 }
 Parser::Rule* Tree::find_token_in_tree(std::vector<std::string> names, size_t pos) {
-    return Tree::find_token_in_tree(this->tree, names, pos);
+    return Tree::find_token_in_tree(this->treeMap, names, pos);
 }

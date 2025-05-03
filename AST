@@ -18,324 +18,154 @@
 						}
 						rule: [
 							{
-								quantifier: {
-									[
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "keyvalue" # 147
-
-													is_nested: NONE:  # 18446744073709551615
-
-												}
-											}
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											Rule_OP:  # 156
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "value" # 158
-
-													is_nested: NONE:  # 18446744073709551615
-
-												}
-											}
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-
-									]								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "group" # 168
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 174
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "name" # 176
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 181
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "CSEQUENCE" # 183
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 193
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "STRING" # 195
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 202
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "HEX" # 204
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 208
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "BIN" # 210
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 214
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "NOSPACE" # 216
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 224
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "ESCAPED" # 226
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 234
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "ANY" # 236
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 240
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "OP" # 242
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 245
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "LINEAR_COMMENT" # 247
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 262
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "cll" # 264
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "QUANTIFIER" # 270
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -361,59 +191,21 @@
 						}
 						rule: [
 							{
-								quantifier: 								STRING: "#" # 352
-
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "ID" # 359
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: {
-									[
-										{
-											quantifier: 											STRING: "." # 363
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "ID" # 369
-
-													is_nested: NONE:  # 18446744073709551615
-
-												}
-											}
-											val: 											NONE:  # 18446744073709551615
-
-											prefix: 											NONE:  # 18446744073709551615
-
-										}
-
-									]								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -433,32 +225,20 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "(" # 448
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "rule" # 454
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: 								STRING: ")" # 460
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -478,40 +258,13 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "@" # 511
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									[
-										{
-											quantifier: 											Rule_NOSPACE:  # 516
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "ID" # 522
-
-													is_nested: NONE:  # 18446744073709551615
-
-												}
-											}
-											val: 											NONE:  # 18446744073709551615
-
-											prefix: 											NONE:  # 18446744073709551615
-
-										}
-
-									]								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -531,25 +284,14 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "&" # 569
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "ID" # 575
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -569,32 +311,20 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "#" # 627
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_NOSPACE:  # 631
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "Rule" # 637
-
-										is_nested: NONE:  # 18446744073709551615
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -625,43 +355,21 @@
 												}
 												rule: [
 													{
-														quantifier: {
-															{
-																nested_name: [
-																]
-																name: ID: "ID" # 870
-
-																is_nested: NONE:  # 18446744073709551615
-
-															}
-														}
-														val: 														NONE:  # 18446744073709551615
-
+														quantifier: <UNDEF TYPE>
+														val: <UNDEF TYPE>
 														prefix: 														NONE:  # 18446744073709551615
 
 													}
 ,
 													{
-														quantifier: 														STRING: "=" # 873
-
+														quantifier: <UNDEF TYPE>
 														val: <UNDEF TYPE>
 														prefix: <UNDEF TYPE>
 													}
 ,
 													{
-														quantifier: {
-															{
-																nested_name: [
-																	ID: "expr" # 883
-																]
-																name: ID: "cll" # 879
-
-																is_nested: NONE:  # 18446744073709551615
-
-															}
-														}
-														val: 														NONE:  # 18446744073709551615
-
+														quantifier: <UNDEF TYPE>
+														val: <UNDEF TYPE>
 														prefix: 														NONE:  # 18446744073709551615
 
 													}
@@ -678,54 +386,32 @@
 										}									}
 									rule: [
 										{
-											quantifier: 											STRING: "{" # 788
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "any_data" # 794
-
-													is_nested: NONE:  # 18446744073709551615
-
-												}
-											}
-											val: 											NONE:  # 18446744073709551615
-
+											quantifier: <UNDEF TYPE>
+											val: <UNDEF TYPE>
 											prefix: 											NONE:  # 18446744073709551615
 
 										}
 ,
 										{
-											quantifier: 											Rule_OP:  # 803
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "key" # 806
-
-													is_nested: AUTO_17: "#" # 805
-
-												}
-											}
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: 											STRING: "}" # 811
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
@@ -750,79 +436,25 @@
 									}
 									rule: [
 										{
-											quantifier: 											STRING: "@" # 987
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: 											STRING: "{" # 991
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: {
-												[
-													{
-														quantifier: {
-															{
-																nested_name: [
-																]
-																name: ID: "ID" # 998
-
-																is_nested: NONE:  # 18446744073709551615
-
-															}
-														}
-														val: 														NONE:  # 18446744073709551615
-
-														prefix: 														NONE:  # 18446744073709551615
-
-													}
-,
-													{
-														quantifier: {
-															[
-																{
-																	quantifier: 																	STRING: "," # 1002
-
-																	val: <UNDEF TYPE>
-																	prefix: <UNDEF TYPE>
-																}
-,
-																{
-																	quantifier: {
-																		{
-																			nested_name: [
-																			]
-																			name: ID: "ID" # 1008
-
-																			is_nested: NONE:  # 18446744073709551615
-
-																		}
-																	}
-																	val: 																	NONE:  # 18446744073709551615
-
-																	prefix: 																	NONE:  # 18446744073709551615
-
-																}
-
-															]														}
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-
-												]											}
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: 											STRING: "}" # 1015
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
@@ -839,40 +471,20 @@
 							}						}
 						rule: [
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "templated_datablock" # 692
-
-										is_nested: AUTO_17: "#" # 691
-
-									}
-								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: 								Rule_OP:  # 712
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									{
-										nested_name: [
-										]
-										name: ID: "regular_datablock" # 715
-
-										is_nested: AUTO_17: "#" # 714
-
-									}
-								}
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -889,8 +501,7 @@
 						data_block: <UNDEF TYPE>
 						rule: [
 							{
-								quantifier: 								STRING: "|" # 1098
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -910,46 +521,8 @@
 							}						}
 						rule: [
 							{
-								quantifier: {
-									[
-										{
-											quantifier: 											STRING: "?" # 1138
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											Rule_OP:  # 1142
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											STRING: "+" # 1144
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											Rule_OP:  # 1148
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											STRING: "*" # 1150
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-
-									]								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -972,46 +545,8 @@
 										}									}
 									rule: [
 										{
-											quantifier: {
-												[
-													{
-														quantifier: 														STRING: "\\" # 1310
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														Rule_OP:  # 1315
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														STRING: "\\]" # 1317
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														Rule_OP:  # 1323
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														Rule_CSEQUENCE:  # 1325
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-
-												]											}
-											val: 											NONE:  # 18446744073709551615
-
+											quantifier: <UNDEF TYPE>
+											val: <UNDEF TYPE>
 											prefix: 											NONE:  # 18446744073709551615
 
 										}
@@ -1031,39 +566,26 @@
 										}									}
 									rule: [
 										{
-											quantifier: 											LINEAR_COMMENT:  # 1391
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: 											STRING: "\\" # 1437
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: 											Rule_NOSPACE:  # 1442
-
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
 ,
 										{
-											quantifier: {
-												[
-													{
-														quantifier: 														AUTO_18: "." # 1449
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-
-												]											}
-											val: 											NONE:  # 18446744073709551615
-
+											quantifier: <UNDEF TYPE>
+											val: <UNDEF TYPE>
 											prefix: 											NONE:  # 18446744073709551615
 
 										}
@@ -1088,64 +610,7 @@
 									}
 									rule: [
 										{
-											quantifier: {
-												[
-													{
-														quantifier: {
-															{
-																nested_name: [
-																]
-																name: ID: "SYMBOL" # 1517
-
-																is_nested: NONE:  # 18446744073709551615
-
-															}
-														}
-														val: 														NONE:  # 18446744073709551615
-
-														prefix: 														NONE:  # 18446744073709551615
-
-													}
-,
-													{
-														quantifier: 														Rule_NOSPACE:  # 1524
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														STRING: "-" # 1528
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: 														Rule_NOSPACE:  # 1532
-
-														val: <UNDEF TYPE>
-														prefix: <UNDEF TYPE>
-													}
-,
-													{
-														quantifier: {
-															{
-																nested_name: [
-																]
-																name: ID: "SYMBOL" # 1538
-
-																is_nested: NONE:  # 18446744073709551615
-
-															}
-														}
-														val: 														NONE:  # 18446744073709551615
-
-														prefix: 														NONE:  # 18446744073709551615
-
-													}
-
-												]											}
+											quantifier: <UNDEF TYPE>
 											val: <UNDEF TYPE>
 											prefix: <UNDEF TYPE>
 										}
@@ -1167,93 +632,27 @@
 						}
 						rule: [
 							{
-								quantifier: 								STRING: "[" # 1203
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								STRING: "^" # 1209
-
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: {
-									[
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "ESCAPE" # 1219
-
-													is_nested: AUTO_17: "#" # 1218
-
-												}
-											}
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											Rule_OP:  # 1226
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "SYMBOL" # 1229
-
-													is_nested: AUTO_17: "#" # 1228
-
-												}
-											}
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: 											Rule_OP:  # 1236
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-,
-										{
-											quantifier: {
-												{
-													nested_name: [
-													]
-													name: ID: "DIAPASON" # 1239
-
-													is_nested: AUTO_17: "#" # 1238
-
-												}
-											}
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-
-									]								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: 								STRING: "]" # 1251
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -1270,8 +669,7 @@
 						data_block: <UNDEF TYPE>
 						rule: [
 							{
-								quantifier: 								STRING: "." # 1609
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -1288,8 +686,7 @@
 						data_block: <UNDEF TYPE>
 						rule: [
 							{
-								quantifier: 								STRING: "\\s0" # 1644
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -1309,39 +706,26 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "\\" # 1682
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_NOSPACE:  # 1687
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: {
-									[
-										{
-											quantifier: 											AUTO_18: "." # 1693
-
-											val: <UNDEF TYPE>
-											prefix: <UNDEF TYPE>
-										}
-
-									]								}
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
 ,
 							{
-								quantifier: 								Rule_NOSPACE:  # 1696
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
@@ -1361,17 +745,14 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "0x" # 1740
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_CSEQUENCE:  # 1746
-
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -1391,17 +772,14 @@
 							}						}
 						rule: [
 							{
-								quantifier: 								STRING: "0b" # 1799
-
+								quantifier: <UNDEF TYPE>
 								val: <UNDEF TYPE>
 								prefix: <UNDEF TYPE>
 							}
 ,
 							{
-								quantifier: 								Rule_CSEQUENCE:  # 1805
-
-								val: 								NONE:  # 18446744073709551615
-
+								quantifier: <UNDEF TYPE>
+								val: <UNDEF TYPE>
 								prefix: 								NONE:  # 18446744073709551615
 
 							}
@@ -1425,91 +803,41 @@
 			}
 			rule: [
 				{
-					quantifier: {
-						{
-							nested_name: [
-							]
-							name: ID: "ID" # 13
-
-							is_nested: NONE:  # 18446744073709551615
-
-						}
-					}
-					val: 					NONE:  # 18446744073709551615
-
+					quantifier: <UNDEF TYPE>
+					val: <UNDEF TYPE>
 					prefix: 					NONE:  # 18446744073709551615
 
 				}
 ,
 				{
-					quantifier: 					STRING: ":" # 16
-
+					quantifier: <UNDEF TYPE>
 					val: <UNDEF TYPE>
 					prefix: <UNDEF TYPE>
 				}
 ,
 				{
-					quantifier: {
-						{
-							nested_name: [
-							]
-							name: ID: "rule" # 23
-
-							is_nested: AUTO_17: "#" # 22
-
-						}
-					}
-					val: 					NONE:  # 18446744073709551615
-
+					quantifier: <UNDEF TYPE>
+					val: <UNDEF TYPE>
 					prefix: 					NONE:  # 18446744073709551615
 
 				}
 ,
 				{
-					quantifier: {
-						{
-							nested_name: [
-							]
-							name: ID: "data_block" # 32
-
-							is_nested: AUTO_17: "#" # 31
-
-						}
-					}
-					val: 					NONE:  # 18446744073709551615
-
+					quantifier: <UNDEF TYPE>
+					val: <UNDEF TYPE>
 					prefix: 					NONE:  # 18446744073709551615
 
 				}
 ,
 				{
-					quantifier: {
-						{
-							nested_name: [
-							]
-							name: ID: "nested_rule" # 47
-
-							is_nested: AUTO_17: "#" # 46
-
-						}
-					}
-					val: 					NONE:  # 18446744073709551615
-
+					quantifier: <UNDEF TYPE>
+					val: <UNDEF TYPE>
 					prefix: 					NONE:  # 18446744073709551615
 
 				}
 ,
 				{
-					quantifier: {
-						{
-							nested_name: [
-							]
-							name: ID: "STRICT_END" # 60
-
-							is_nested: NONE:  # 18446744073709551615
-
-						}
-					}
+					quantifier: <UNDEF TYPE>
 					val: <UNDEF TYPE>
 					prefix: <UNDEF TYPE>
 				}

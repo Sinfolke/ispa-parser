@@ -28,7 +28,7 @@
 #include <init.h>
 
 #include <args.h>
-#include <parser.h>
+#include <Parser.h>
 #include <IR/IR.h>
 #include <LRParser.h>
 #include <LALRParser.h>

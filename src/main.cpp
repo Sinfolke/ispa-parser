@@ -26,7 +26,7 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const std::unordered_map<const char*, std::any> data, int tabs);
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 int main(int argc, char** argv) {
-    Parser::Tree rawTree;
+    std::vector<Parser::Rule> modules;
     init();
     Args args(argc, argv);
     args.parse();
@@ -65,10 +65,11 @@ int main(int argc, char** argv) {
             throw UError("Failed read file: %s", e.what());
         }
         // parse 
-        Parser::Parser parser(fileContent.c_str());
+        Parser::Parser parser;
+        parser.parse(fileContent.c_str());
         auto current_tree = parser.parse();
         // assign tree
-        rawTree.insert(rawTree.end(), current_tree.begin(), current_tree.end());
+        modules.push_back(current_tree);
     }
     if (args.has("dir")) {
         for (const auto dirPath : args.get("dir").values) {
@@ -76,10 +77,10 @@ int main(int argc, char** argv) {
             for (auto file : files) {
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
-                Parser::Parser parser(content.c_str());
+                Parser::Parser parser;
+                parser.parse(content.c_str());
                 auto current_tree = parser.parse();
-                rawTree.push_back(Tree::make_rule(Parser::Rules::id, file));
-                rawTree.insert(rawTree.end(), current_tree.begin(), current_tree.end());
+                modules.push_back(current_tree);
             }
         }
     }
@@ -90,11 +91,11 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
-    Tree tree(std::move(rawTree));
+    Tree tree(modules);
     //tree.resolveConflicts();
     auto use = tree.accamulate_use_data_to_map();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto name = std::any_cast<std::string>(use["name"].data);
+    auto name = std::any_cast<std::string>(use["name"].data());
     std::string algorithm = "LL";
     std::string opath;
     if (!args.get("a").empty()) {
@@ -139,17 +140,10 @@ int main(int argc, char** argv) {
         LLIR ir(tree.getRawTree());
         ir.makeIR();
         ir.optimizeIR();
-        // Output to file
         ir.outputIRToFile("output_ir.txt");
-        /*
-            CONVERTION IS GOING HERE
-    
-        */
         auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR&, Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
         converter->outputIR(output_path);
-    
-        // IR test
     } else {
         throw UError("Unknown algorithm '%s'", algorithm);
     }

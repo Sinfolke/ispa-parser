@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISPA)
 
-#enable_testing()
-add_subdirectory(parser)           # include parser
-#add_subdirectory(mod/converter-cpp)    # include c++ converter
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
 add_executable(ispa ${SOURCES})
@@ -72,12 +69,14 @@ set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_compile_definitions(PROGRAM_VERSION="0.1.0 beta")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
-include_directories(parser/include)
-include_directories(include parser/stdlibs/old)
-target_include_directories(ispa PRIVATE include src external parser/include converters)
+
+# Create an interface library to hold common properties
+include_directories(include parser parser/stdlibs)
+add_library(parser STATIC parser/Parser.cpp)
+
+target_include_directories(ispa PRIVATE include src external converters)
 set_target_properties(ispa PROPERTIES OUTPUT_NAME ispa)
-target_link_libraries(ispa PRIVATE parser parser_stdlib ispa-converter-cpp)
-target_compile_definitions(ispa PRIVATE BUILDING_EXE)
+target_link_libraries(ispa PRIVATE parser ispa-converter-cpp)
 
 # add converter library
 add_library(ispa-converter INTERFACE)

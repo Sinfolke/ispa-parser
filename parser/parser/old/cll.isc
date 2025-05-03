@@ -1,6 +1,7 @@
 cll: 
     '$' #var | #if | #expr | #loop_while | #loop_for END 
 
+    data: %2;
     #OP:
         '+' | '-' | '*' | '/' | '%'
 

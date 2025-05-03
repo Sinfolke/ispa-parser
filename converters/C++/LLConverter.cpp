@@ -129,7 +129,6 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
             indentLevel++;
             out << std::string(indentLevel, '\t') << "auto in = pos;\n" << std::string(indentLevel, '\t') << "skip_spaces(" << current_pos_counter.top() << ");\n" ;
             isToken = false;
-            out << rawdbg("\"running \" << \"" + rule_prev_name_str + "\" << \", pos: \" << " + "pos->startpos() << \"\\n\"");
         }
         break;
     case LLIR::types::TOKEN:
@@ -142,8 +141,6 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         isToken = true;
         break;
     case LLIR::types::RULE_END:
-        if (!isToken)
-            out << dbg("success run ", rule_prev_name_str);
         if (isToken) {
             out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::" << namespace_name << "::Tokens::" << rule_prev_name_str;
             if (has_data_block)
@@ -476,15 +473,27 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
 }
 void LLConverter::addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
     for (const auto &[name, dtb] : datablocks_tokens) {
-        out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
+        // const overload
+        out << "const ::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Token &token) {\n";
         out << "\tif (token.name() != ::" << namespace_name << "::Tokens::" << name << ") throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<Types::" << name << "_data>(token.data());";
+        out << "\treturn std::any_cast<const Types::" << name << "_data&>(token.data());";
+        out << "\n}\n";
+        // non const overload
+        out << "::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
+        out << "\tif (token.name() != ::" << namespace_name << "::Tokens::" << name << ") throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::" << name << ", \"" << namespace_name << "\");\n";
+        out << "\treturn std::any_cast<Types::" << name << "_data&>(token.data());";
         out << "\n}\n";
     }
     for (const auto &[name, dtb] : datablocks_rules) {
-        out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
+        // const overload
+        out << "const ::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Rule &rule) {\n";
         out << "\tif (rule.name() != ::" << namespace_name << "::Rules::" << name << ") throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<Types::" << name << "_data>(rule.data());";
+        out << "\treturn std::any_cast<const Types::" << name << "_data&>(rule.data());";
+        out << "\n}\n";
+        // non-const overload
+        out << "::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
+        out << "\tif (rule.name() != ::" << namespace_name << "::Rules::" << name << ") throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::" << name << ", \"" << namespace_name << "\");\n";
+        out << "\treturn std::any_cast<Types::" << name << "_data&>(rule.data());";
         out << "\n}\n";
     }
 }

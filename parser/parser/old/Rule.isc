@@ -8,12 +8,12 @@ Rule:
     ;
     #rule:
 
-        (keyvalue | value)? group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll quantifier?
+        &prefix(keyvalue | value)? &val(group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll) &quantifier(quantifier?)
 
         data: 
-            prefix: %1
-            val: %2
-            quantifier: %3
+            prefix: prefix
+            val: val
+            quantifier: quantifier
         ;
     ;
     #name:

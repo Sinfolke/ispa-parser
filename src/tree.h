@@ -1,6 +1,6 @@
 #pragma once
 #include <corelib.h>
-#include <parser.h>
+#include <Parser.h>
 #include <internal_types.h>
 #include <list>
 #include <IR/IR.h>
@@ -16,11 +16,21 @@ class Tree {
             size_t index;
             std::vector<std::string> name; 
         };
+        struct TreeMapMember {
+            Parser::arr_t<Parser::Rule> rules;
+            Parser::Types::Rule_data_block_data data_block;
+            std::vector<std::vector<std::string>> nested_rule_names;
+        };
+        struct Rule_op {
+            Parser::Rule prefix;
+            std::vector<Parser::Rule> options; 
+        };
         using ConflictsList = std::vector<Conflict>;
         using use_place_t_part = std::pair<std::vector<std::string>, std::vector<Use_place>>;
         using use_place_table = std::unordered_map<std::vector<std::string>, std::vector<Use_place>>;
+        using TreeMap = std::unordered_map<std::vector<std::string>, TreeMapMember>;
     private:
-        Parser::Tree tree;
+        TreeMap treeMap;
         size_t token_count = 0;
         // production management
         bool compare_string_rule(const Parser::Rule &first, const Parser::Rule &second);
@@ -55,10 +65,7 @@ class Tree {
         bool checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited);
         
         // treeNormalizer
-        void normalizeHelper(std::vector<Parser::Rule> &rules, std::vector<std::string> fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
-        void getNestedNames(std::vector<Parser::Rule> &nested_rules, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, std::vector<std::string> &fullname);
-        void normalizeRule(Parser::Rule &member, std::vector<std::string> &fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
-        void normalizeTreeHelper(Parser::Tree &tree, std::vector<std::string> &fullname, std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names);
+        void normalizeHelper(Parser::arr_t<Parser::Rule> &rules, std::vector<std::string> fullname, std::vector<std::vector<std::string>> &nested_rule_names);
         // replace dublications functions
         void getReplacedTree(Parser::Tree &tree, std::vector<Parser::Rule> &rules, const std::vector<std::string> &name, std::vector<std::string> fullname);
         void replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string> fullname, bool global);
@@ -90,6 +97,8 @@ class Tree {
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
         void resolveConflicts(Parser::Tree &tree);
+        void buildTreeMapFromRule(const Parser::Rule &rule, std::vector<std::string> &fullname);
+        void buildTreeMap(const std::vector<Parser::Rule> &modules);
         void constructor() {
             normalize();                       // normalize tree
             sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
@@ -99,11 +108,8 @@ class Tree {
             inlineTokens();                   // inline tokens to make sure that every token is used only once
         }
     public:
-        Tree(Parser::Tree &&tree, bool rawAssign = false) : tree(std::move(tree)) {
-            if (!rawAssign)
-                constructor();
-        }
-        Tree(Parser::Tree &tree, bool rawAssign = false) : tree(tree) {
+        Tree(const std::vector<Parser::Rule> &modules, bool rawAssign = false) {
+            buildTreeMap(modules);
             if (!rawAssign)
                 constructor();
         }
@@ -115,6 +121,9 @@ class Tree {
         static auto make_rule() -> Parser::Rule;
         static auto make_rule(Parser::Rules name) -> Parser::Rule;
         static auto make_rule(Parser::Rules name, std::any data) -> Parser::Rule;
+        static auto make_token() -> Parser::Token;
+        static auto make_token(Parser::Tokens name) -> Parser::Token;
+        static auto make_token(Parser::Tokens name, std::any data) -> Parser::Token;
         bool compare_rule_matching(const Parser::Rule &first, const Parser::Rule &second, std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> &visited);
         bool compare_rule(const Parser::Rule &first, const Parser::Rule &second);
         bool compare_rules(const std::vector<Parser::Rule> &first, const std::vector<Parser::Rule> &second);
@@ -123,10 +132,8 @@ class Tree {
         static auto find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
         auto find_token_in_tree(std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
 
-        auto getRawTree() -> Parser::Tree&;
+        auto getRawTree() -> TreeMap&;
 
-        auto begin() -> Parser::Tree::iterator;
-        auto end() -> Parser::Tree::iterator;
         void removeEmptyRule();
         void normalize();
         void replaceDublications();

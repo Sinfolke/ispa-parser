@@ -31,7 +31,7 @@ void LLHeader::createDefaultTypes(std::ostringstream &out) const {
         {"NUM_TYPE", "double"},
         {"STR_TYPE", "std::string"},
         {"ANY_TYPE", "std::any"},
-        {"ARR_TYPE", "std::list"},
+        {"ARR_TYPE", "std::vector"},
         {"OBJ_TYPE", "std::unordered_map"}
     };
 
@@ -214,10 +214,12 @@ void LLHeader::create_parser_header(std::ostringstream &out) const {
 void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const data_block_t &data_block_tokens, const data_block_t &data_block_rules) const {
     out << "\n\tnamespace get {\n";
     for (auto [name, block] : data_block_tokens) {
-        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data " << name << "(::" << namespace_name << "::Token &token);\n";
+        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(const ::" << namespace_name << "::Token &token);\n";
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(::" << namespace_name << "::Token &token);\n";
     }
     for (auto [name, block] : data_block_rules) {
-        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data " << name << "(::" << namespace_name << "::Rule &rule);\n";
+        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(const ::" << namespace_name << "::Rule &rule);\n";
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(::" << namespace_name << "::Rule &rule);\n";
     }
     out << "\t}\n";
 }

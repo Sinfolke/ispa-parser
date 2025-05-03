@@ -7,14 +7,38 @@
 #include <cpuf/printf.h>
 #include <list>
 #include <IR/IR.h>
-Parser::Tree& Tree::getRawTree() {
-    return tree;
+Tree::TreeMap& Tree::getRawTree() {
+    return treeMap;
 }
-Parser::Tree::iterator Tree::begin() {
-    return tree.begin();
+void Tree::buildTreeMapFromRule(const Parser::Rule &rule, std::vector<std::string> &fullname) {
+    // use or Rule
+    if (rule.name() == Parser::Rules::Rule) {
+        const auto &rule_data = Parser::get::Rule(rule);
+        fullname.push_back(Parser::get::ID(rule_data.name));
+        TreeMapMember member = {rule_data.rule, rule_data.data_block};
+        for (const auto &rule : rule_data.nested_rules) {
+            fullname.push_back(Parser::get::ID(Parser::get::Rule(rule).name));
+            member.nested_rule_names.push_back(fullname);
+            fullname.pop_back();
+            buildTreeMapFromRule(rule, fullname);
+        }
+        treeMap[fullname] = member;
+        fullname.pop_back();
+    }
 }
-Parser::Tree::iterator Tree::end() {
-    return tree.end();
+void Tree::buildTreeMap(const std::vector<Parser::Rule> &modules) {
+    for (const auto &md : modules) {
+        const auto &entries = Parser::get::main(md);
+        for (const auto &entry : entries) {
+            if (entry.type() == typeid(Parser::Rule)) {
+                const auto &rule = std::any_cast<const Parser::Rule&>(entry);
+                if (rule.name() == Parser::Rules::Rule) {
+                    std::vector<std::string> fullname;
+                    buildTreeMapFromRule(rule, fullname);
+                }
+            }
+        }
+    }
 }
 // checks rule points as result to a given name
 bool Tree::checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited) {
@@ -90,7 +114,7 @@ void Tree::replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string
             replaceDublicationsHelper(nested_rules, fullname, false);
             // Get replaced tree and update the member's rules
             std::vector<std::string> fullname_grt;
-            getReplacedTree(this->tree, rules, fullname, fullname_grt);
+            getReplacedTree(this->treeMap, rules, fullname, fullname_grt);
             corelib::map::set(data, "rule", std::any(rules));
             corelib::map::set(data, "nestedRules", std::any(nested_rules));
             member.data = data;
@@ -100,7 +124,7 @@ void Tree::replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string
 }
 void Tree::replaceDublications() {
     std::vector<std::string> fullname;
-    replaceDublicationsHelper(tree, fullname, true);
+    replaceDublicationsHelper(treeMap, fullname, true);
 }
 void Tree::removeEmptyRule(Parser::Tree &tree) {
     for (auto it = tree.begin(); it != tree.end(); it++) {
@@ -125,7 +149,7 @@ void Tree::removeEmptyRule(Parser::Tree &tree) {
     }
 }
 void Tree::removeEmptyRule() {
-    removeEmptyRule(tree);
+    removeEmptyRule(treeMap);
 }
 void Tree::accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested) {
     for (auto it = tree.begin(); it != tree.end(); ) {
@@ -277,7 +301,7 @@ void Tree::inlineTokensHelper(Parser::Tree &tree) {
     inlineTokensHelper(tree, map, {});
 }
 void Tree::inlineTokens() {
-    return inlineTokensHelper(tree);
+    return inlineTokensHelper(treeMap);
 }
 
 std::pair<Parser::Rule, Parser::Rule> Tree::getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) {
@@ -365,17 +389,17 @@ Parser::Tree Tree::getTokensFromRule(Parser::Rule &member, std::vector<std::pair
     auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
     auto nested_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
     if (corelib::text::isLower(name_str)) {
-        getTokensFromRule_rule(tree, rules, generated);
+        getTokensFromRule_rule(treeMap, rules, generated);
 
         // apply changes to map
         corelib::map::set(data, "rule", std::any(rules));
     }
 
-    literalsToTokenHelper(nested_rule, tree, generated);
+    literalsToTokenHelper(nested_rule, treeMap, generated);
     // apply changes to map
     corelib::map::set(data, "nestedRules", std::any(nested_rule));
     member.data = std::any(data); // apply changes to member
-    return tree;
+    return treeMap;
 }
 void Tree::literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated)  {
     Parser::Tree tokenSeq;
@@ -390,7 +414,7 @@ void Tree::literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, s
 }
 void Tree::literalsToToken() {
     std::vector<std::pair<Parser::Rule, Parser::Rule>> generated;
-    literalsToTokenHelper(tree, tree, generated);
+    literalsToTokenHelper(treeMap, treeMap, generated);
 }
 bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
     if (first.name == Parser::Rules::Rule_rule) {
@@ -615,7 +639,7 @@ void Tree::sortByPriority(Parser::Tree &tree)  {
     }
 }
 void Tree::sortByPriority() {
-    return sortByPriority(tree);
+    return sortByPriority(treeMap);
 }
 void Tree::addSpaceToken() {
     std::vector<Parser::Rule> chars = {
@@ -640,7 +664,7 @@ void Tree::addSpaceToken() {
         {"data_block", make_rule()},
         {"nestedRules", std::vector<Parser::Rule>()}
     });
-    tree.push_back(token);
+    treeMap.push_back(token);
 }
 void Tree::getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::vector<std::vector<std::string>> &tokens, std::vector<std::vector<std::string>> &rules, std::unordered_set<std::vector<std::string>> &seen, std::vector<std::string> &fullname) {   
     for (auto el : tree) {
@@ -675,7 +699,7 @@ std::pair<std::vector<std::vector<std::string>>, std::vector<std::vector<std::st
     std::vector<std::vector<std::string>> tokens;
     std::vector<std::vector<std::string>> rules;
     std::unordered_set<std::vector<std::string>> seen;
-    getTokenAndRuleNamesHelper(tree, tokens, rules, seen, fullname);
+    getTokenAndRuleNamesHelper(treeMap, tokens, rules, seen, fullname);
     return {tokens, rules};
 }
 use_prop_t Tree::get_use_data(const Parser::Rule &use) {
@@ -698,7 +722,7 @@ use_prop_t Tree::get_use_data(const Parser::Rule &use) {
 }
 use_prop_t Tree::accamulate_use_data_to_map() {
     use_prop_t result;
-    for (auto el : tree) {
+    for (auto el : treeMap) {
         if (el.name != Parser::Rules::use)
             continue;
         
@@ -748,7 +772,7 @@ void Tree::getUsePlacesTableHelper(Parser::Tree &tree, use_place_table &use_plac
 Tree::use_place_table Tree::getUsePlacesTable() {
     use_place_table use_places;
     std::vector<std::string> fullname;
-    getUsePlacesTableHelper(tree, use_places, fullname);
+    getUsePlacesTableHelper(treeMap, use_places, fullname);
     return use_places;
 }
 std::pair<data_block_t, data_block_t> Tree::get_data_blocks(const LLIR &ir) {
@@ -823,7 +847,7 @@ void Tree::getTokensForLexer(Parser::Tree &tree, use_place_table &use_places, st
 lexer_code Tree::getCodeForLexer(use_place_table use_places) {
     std::vector<Parser::Rule> rule_op;
     std::vector<std::string> fullname;
-    getTokensForLexer(tree, use_places, rule_op, fullname);
+    getTokensForLexer(treeMap, use_places, rule_op, fullname);
     auto rule_op_rule_rule = make_rule(Parser::Rules::Rule_rule, obj_t {
         {"val", make_rule(Parser::Rules::Rule_op, rule_op)},
         {"qualifier", make_rule(Parser::Rules::Rule_qualifier)}
@@ -840,7 +864,7 @@ lexer_code Tree::getCodeForLexer(use_place_table use_places) {
 
     // auto rule_data = std::any_cast<obj_t>(rule.data);
     // auto new_rule_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(rule_data, "rule"))[0];
-    LLIR code(this->tree, rule_op2);
+    LLIR code(this->treeMap, rule_op2);
     code.setIsToken(true);
     auto success_var = code.makeIR();
     code.pop(); // remove space skip
@@ -989,5 +1013,5 @@ void Tree::resolveConflicts(Parser::Tree &tree) {
     }
 }
 void Tree::resolveConflicts() {
-    resolveConflicts(tree);
+    resolveConflicts(treeMap);
 }

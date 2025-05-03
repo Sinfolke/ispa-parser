@@ -181,19 +181,6 @@ public:
         _data = {};
         _empty = true;
     }
-    template<typename T>
-    T as() {
-#ifdef DEBUG
-        if (!data.has_value()) {
-           std::cerr << "iscstdlibc++: No value in data\n";
-           exit(1);
-        } else if (data.type() != typeid(T)) {
-            std::cerr << "iscstdlibc++: Data type mismatch. Expected: " << typeid(T).name() << " but got: " << data.type().name() << "\n";
-            exit(1);
-        }
-#endif
-        return std::any_cast<T>(_data);
-    }
     Node<NODE_T>& operator=(const Node<NODE_T>& other) {
         if (this == &other)  // Protect against self-assignment
             return *this;
@@ -259,7 +246,7 @@ public:
     /**
      * get data of this node
      */
-    auto data() const {
+    auto& data() {
         return _data;
     }
 
