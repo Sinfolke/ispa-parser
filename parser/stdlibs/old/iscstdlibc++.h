@@ -86,7 +86,7 @@ class Tokenizator_No_Input_exception : public std::exception {
         return ISC_STD_LIBMARK "Tokenizator_No_Input_exception: the tokenizator has no input provided but the operation required it";
     }
 };
-class return_base_exception : public std::exception {
+class node_exception : public std::exception {
     private:
         std::string mes;
         void fill(const std::string& method) {
@@ -113,8 +113,8 @@ class return_base_exception : public std::exception {
             ;
         }
     public:
-        return_base_exception(const char* method) {  fill(method);  }
-        return_base_exception() {  fill();  }
+        node_exception(const char* method) {  fill(method);  }
+        node_exception() {  fill();  }
     const char* what() const noexcept override {
         return mes.c_str();
     }
@@ -139,7 +139,7 @@ public:
      */
     std::size_t line() const {
         if (startpos == std::string::npos)
-            throw return_base_exception("line");
+            throw node_exception("line");
         std::size_t count = 0;
         std::size_t escaptions = 0;
         for (std::size_t i = startpos; i >= 0; --i) {
@@ -154,12 +154,12 @@ public:
      */
     std::size_t endpos() const {
         if (startpos == std::string::npos)
-            throw return_base_exception("endpos");
+            throw node_exception("endpos");
         return startpos + (end - start);
     }
     std::size_t length() const {
         if (startpos == std::string::npos)
-            throw return_base_exception("length");
+            throw node_exception("length");
         return end - start;
     }
     bool empty() const noexcept {

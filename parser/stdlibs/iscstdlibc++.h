@@ -95,13 +95,13 @@ class Parser_No_Input_exception : public std::exception {
         return ISC_STD_LIBMARK "Parser_No_Input_exception: the parser has no input provided but the operation required it";
     }
 };
-class return_base_exception : public std::exception {
+class node_exception : public std::exception {
     private:
         std::string mes;
         void fill(const std::string& method) {
             mes.resize(94 + 2*6 + 453 + 109);
             mes = 
-            ISC_STD_LIBMARK "return_base_exception: the capture data has not been provided but called method '";
+            ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method '";
             mes += method;
             mes += 
             "' required it.\n"
@@ -114,7 +114,7 @@ class return_base_exception : public std::exception {
         }
         void fill() {
             mes = 
-            ISC_STD_LIBMARK "return_base_exception: the capture data has not been provided but called method required it.\n"
+            ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method required it.\n"
             _ISC_INTERNAL_ERROR_MARK "\n"
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
             "But their methods like line etc. require those properties." 
@@ -122,10 +122,26 @@ class return_base_exception : public std::exception {
             ;
         }
     public:
-        return_base_exception(const char* method) {  fill(method);  }
-        return_base_exception() {  fill();  }
+        node_exception(const char* method) {  fill(method);  }
+        node_exception() {  fill();  }
     const char* what() const noexcept override {
         return mes.c_str();
+    }
+};
+
+template<class TOKEN_T, const char* (*ToString)(TOKEN_T)>
+class bad_get : public std::bad_cast {
+    TOKEN_T required_name;
+    TOKEN_T get_name;
+    std::string message; // cache the message for `what()`
+public:
+    bad_get(TOKEN_T required_name, TOKEN_T get_name, std::string namespace_name = "<Parser>")
+        : required_name(required_name), get_name(get_name) {
+        message = std::string("Expected ") + namespace_name + "::get::" + ToString(required_name) + "(), but got " + namespace_name + "::get::" + ToString(get_name) + "()";
+    }
+
+    const char* what() const noexcept override {
+        return message.c_str();
     }
 };
 template<typename NODE_T>
@@ -151,7 +167,7 @@ public:
      */
     std::size_t endpos() const {
         if (_startpos == std::string::npos || _end == nullptr || _start == nullptr)
-            throw return_base_exception("endpos");
+            throw node_exception("endpos");
         return _startpos + (_end - _start);
     }
     void clear() {

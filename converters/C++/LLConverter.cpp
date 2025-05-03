@@ -57,7 +57,7 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createTokensEnum(out, tokens);
     createRulesEnum(out, rules);
     getTypesFromStdlib(out);
-    createToStringFunction(out);
+    createToStringFunction(tokens, rules, out);
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
@@ -265,8 +265,6 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
     addHeader(out);
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
-    addTokensToString(tokens, out);
-    addRulesToString(rules, out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addLexerCode_Header(out);
     convertLexerCode(lexer_code.getDataRef(), out);
@@ -276,28 +274,7 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
 void LLConverter::addHeader(std::ostringstream &out) {
     out << "#include \"" << std::any_cast<std::string>(use["name"].data) << ".h\"\n";
 }
-void LLConverter::addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) {
-    // Implement method call conversion with proper indentation
-    out << "std::string " << namespace_name << "::TokensToString(Tokens token) {\n";
-    out << "\tswitch (token) {\n";
-    for (auto token : tokens) {
-        out << "\t\tcase Tokens::" << corelib::text::join(token, "_") << ":" << " return \"" << corelib::text::join(token, "_") << "\";\n";
-    }
-    out << "\t}\n";
-    out << "\treturn \"NONE\";\n";
-    out << "}\n";
-}
-void LLConverter::addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) {
-    // Implement method call conversion with proper indentation
-    out << "std::string " << namespace_name << "::RulesToString(Rules rule) {\n";
-    out << "\tswitch (rule) {\n";
-    for (auto rule : rules) {
-        out << "\t\tcase Rules::" << corelib::text::join(rule, "_") << ":" << " return \"" << corelib::text::join(rule, "_") << "\";\n";
-    }
-    out << "\t}\n";
-    out << "\treturn \"NONE\";\n";
-    out << "}\n";
-}
+
 void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
     out << "void " + namespace_name + R"(::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
@@ -380,11 +357,13 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
 void LLConverter::addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
     for (const auto &[name, dtb] : datablocks_tokens) {
         out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
+        out << "\tif (token.name() != ::" << namespace_name << "::Tokens::" << name << ") throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::" << name << ", \"" << namespace_name << "\");\n";
         out << "\treturn std::any_cast<Types::" << name << "_data>(token.data());";
         out << "\n}\n";
     }
     for (const auto &[name, dtb] : datablocks_rules) {
         out << "::" << namespace_name << "::Types::" << name << "_data " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
+        out << "\tif (rule.name() != ::" << namespace_name << "::Rules::" << name << ") throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::" << name << ", \"" << namespace_name << "\");\n";
         out << "\treturn std::any_cast<Types::" << name << "_data>(rule.data());";
         out << "\n}\n";
     }

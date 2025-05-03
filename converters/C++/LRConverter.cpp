@@ -164,8 +164,6 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);
-    converter.addTokensToString(tokens, out);
-    converter.addRulesToString(rules, out);
     out << "std::string " << namespace_name << "::Parser::TokensToString(Tokens token) {\n"
         << "\t\treturn ::" << namespace_name << "::TokensToString(token);\n"
         << "\t}\n";
@@ -196,7 +194,7 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
     LLHeader::createTokensEnum(out, tokens);
     LLHeader::createRulesEnum(out, rules);
     LLHeader::getTypesFromStdlib(out);
-    LLHeader::createToStringFunction(out);
+    LLHeader::createToStringFunction(tokens, rules, out);
     if (data->isELR()) {
         LRHeader::createTableTypes(out, reinterpret_cast<const ELRParser*>(data)->getDFA().size());
     } else {

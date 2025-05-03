@@ -14,7 +14,9 @@ class LLHeader : public LLStringConvertions {
     void createTokensEnum(std::ostringstream &out, const std::vector<std::vector<std::string>> &tokens) const;
     void createRulesEnum(std::ostringstream &out, const std::vector<std::vector<std::string>> &rules) const;
     void getTypesFromStdlib(std::ostringstream& out) const;
-    void createToStringFunction(std::ostringstream &out) const;
+    void addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) const;
+    void addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const;
+    void createToStringFunction(const std::vector<std::vector<std::string>> &tokens, const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const;
     void addStandardFunctions(std::ostringstream &out) const;
     void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const;
     void convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const;

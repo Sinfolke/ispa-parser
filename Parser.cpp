@@ -66,341 +66,312 @@ void ::Parser::Parser::lazyParse() {
         auto pos = Lexer::lazy_iterator(lexer, text);
         parseFromPos(pos);
     }
-std::string Parser::TokensToString(Tokens token) {
-	switch (token) {
-		case Tokens::NONE: return "NONE";
-		case Tokens::cll_OP: return "cll_OP";
-		case Tokens::cll_ASSIGNMENT_OP: return "cll_ASSIGNMENT_OP";
-		case Tokens::cll_COMPARE_OP: return "cll_COMPARE_OP";
-		case Tokens::cll_LOGICAL_OP: return "cll_LOGICAL_OP";
-		case Tokens::cll_LOGICAL_NOT: return "cll_LOGICAL_NOT";
-		case Tokens::cll_LOGICAL_AND: return "cll_LOGICAL_AND";
-		case Tokens::cll_LOGICAL_OR: return "cll_LOGICAL_OR";
-		case Tokens::cll_TYPE: return "cll_TYPE";
-		case Tokens::cll_TEMPLATE: return "cll_TEMPLATE";
-		case Tokens::STRING: return "STRING";
-		case Tokens::NUMBER: return "NUMBER";
-		case Tokens::BOOLEAN: return "BOOLEAN";
-		case Tokens::END: return "END";
-		case Tokens::NEWLINE: return "NEWLINE";
-		case Tokens::QUESTION_MARK: return "QUESTION_MARK";
-		case Tokens::PLUS: return "PLUS";
-		case Tokens::MINUS: return "MINUS";
-		case Tokens::DIVIDE: return "DIVIDE";
-		case Tokens::MULTIPLE: return "MULTIPLE";
-		case Tokens::MODULO: return "MODULO";
-		case Tokens::LINEAR_COMMENT: return "LINEAR_COMMENT";
-		case Tokens::ID: return "ID";
-		case Tokens::SPACEMODE: return "SPACEMODE";
-		case Tokens::NAME: return "NAME";
-		case Tokens::AT: return "AT";
-		case Tokens::Rule_OP: return "Rule_OP";
-		case Tokens::Rule_CSEQUENCE: return "Rule_CSEQUENCE";
-		case Tokens::Rule_CSEQUENCE_SYMBOL: return "Rule_CSEQUENCE_SYMBOL";
-		case Tokens::Rule_CSEQUENCE_ESCAPE: return "Rule_CSEQUENCE_ESCAPE";
-		case Tokens::Rule_CSEQUENCE_DIAPASON: return "Rule_CSEQUENCE_DIAPASON";
-		case Tokens::Rule_NOSPACE: return "Rule_NOSPACE";
-		case Tokens::Rule_ESCAPED: return "Rule_ESCAPED";
-		case Tokens::Rule_HEX: return "Rule_HEX";
-		case Tokens::Rule_BIN: return "Rule_BIN";
-		case Tokens::AUTO_0: return "AUTO_0";
-		case Tokens::AUTO_1: return "AUTO_1";
-		case Tokens::AUTO_2: return "AUTO_2";
-		case Tokens::AUTO_3: return "AUTO_3";
-		case Tokens::AUTO_4: return "AUTO_4";
-		case Tokens::AUTO_5: return "AUTO_5";
-		case Tokens::AUTO_6: return "AUTO_6";
-		case Tokens::AUTO_7: return "AUTO_7";
-		case Tokens::AUTO_8: return "AUTO_8";
-		case Tokens::AUTO_9: return "AUTO_9";
-		case Tokens::AUTO_10: return "AUTO_10";
-		case Tokens::AUTO_11: return "AUTO_11";
-		case Tokens::AUTO_12: return "AUTO_12";
-		case Tokens::AUTO_13: return "AUTO_13";
-		case Tokens::AUTO_14: return "AUTO_14";
-		case Tokens::AUTO_15: return "AUTO_15";
-		case Tokens::AUTO_16: return "AUTO_16";
-		case Tokens::AUTO_17: return "AUTO_17";
-		case Tokens::AUTO_18: return "AUTO_18";
-		case Tokens::AUTO_19: return "AUTO_19";
-		case Tokens::AUTO_20: return "AUTO_20";
-		case Tokens::__WHITESPACE: return "__WHITESPACE";
-	}
-	return "NONE";
-}
-std::string Parser::RulesToString(Rules rule) {
-	switch (rule) {
-		case Rules::NONE: return "NONE";
-		case Rules::cll: return "cll";
-		case Rules::cll_if: return "cll_if";
-		case Rules::cll_variable: return "cll_variable";
-		case Rules::cll_function_body_call: return "cll_function_body_call";
-		case Rules::cll_function_body_decl: return "cll_function_body_decl";
-		case Rules::cll_function_arguments: return "cll_function_arguments";
-		case Rules::cll_function_parameters: return "cll_function_parameters";
-		case Rules::cll_cll_function_call: return "cll_cll_function_call";
-		case Rules::cll_function_decl: return "cll_function_decl";
-		case Rules::cll_expr: return "cll_expr";
-		case Rules::cll_expr_logical: return "cll_expr_logical";
-		case Rules::cll_expr_compare: return "cll_expr_compare";
-		case Rules::cll_expr_arithmetic: return "cll_expr_arithmetic";
-		case Rules::cll_expr_term: return "cll_expr_term";
-		case Rules::cll_expr_value: return "cll_expr_value";
-		case Rules::cll_expr_group: return "cll_expr_group";
-		case Rules::cll_var: return "cll_var";
-		case Rules::cll_block: return "cll_block";
-		case Rules::cll_loop_while: return "cll_loop_while";
-		case Rules::cll_loop_for: return "cll_loop_for";
-		case Rules::array: return "array";
-		case Rules::object: return "object";
-		case Rules::any_data: return "any_data";
-		case Rules::main: return "main";
-		case Rules::use: return "use";
-		case Rules::use_unit: return "use_unit";
-		case Rules::Rule: return "Rule";
-		case Rules::Rule_rule: return "Rule_rule";
-		case Rules::Rule_name: return "Rule_name";
-		case Rules::Rule_group: return "Rule_group";
-		case Rules::Rule_keyvalue: return "Rule_keyvalue";
-		case Rules::Rule_value: return "Rule_value";
-		case Rules::Rule_nested_rule: return "Rule_nested_rule";
-		case Rules::Rule_data_block: return "Rule_data_block";
-		case Rules::Rule_data_block_regular_datablock: return "Rule_data_block_regular_datablock";
-		case Rules::Rule_data_block_regular_datablock_key: return "Rule_data_block_regular_datablock_key";
-		case Rules::Rule_data_block_templated_datablock: return "Rule_data_block_templated_datablock";
-		case Rules::Rule_quantifier: return "Rule_quantifier";
-	}
-	return "NONE";
-}
 ::Parser::Types::cll_OP_data Parser::get::cll_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
 	return std::any_cast<Types::cll_OP_data>(token.data());
 }
 ::Parser::Types::cll_ASSIGNMENT_OP_data Parser::get::cll_ASSIGNMENT_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
 	return std::any_cast<Types::cll_ASSIGNMENT_OP_data>(token.data());
 }
 ::Parser::Types::cll_COMPARE_OP_data Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
 	return std::any_cast<Types::cll_COMPARE_OP_data>(token.data());
 }
 ::Parser::Types::cll_LOGICAL_OP_data Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
 	return std::any_cast<Types::cll_LOGICAL_OP_data>(token.data());
 }
 ::Parser::Types::cll_TYPE_data Parser::get::cll_TYPE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
 	return std::any_cast<Types::cll_TYPE_data>(token.data());
 }
 ::Parser::Types::cll_TEMPLATE_data Parser::get::cll_TEMPLATE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
 	return std::any_cast<Types::cll_TEMPLATE_data>(token.data());
 }
 ::Parser::Types::STRING_data Parser::get::STRING(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
 	return std::any_cast<Types::STRING_data>(token.data());
 }
 ::Parser::Types::NUMBER_data Parser::get::NUMBER(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
 	return std::any_cast<Types::NUMBER_data>(token.data());
 }
 ::Parser::Types::BOOLEAN_data Parser::get::BOOLEAN(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
 	return std::any_cast<Types::BOOLEAN_data>(token.data());
 }
 ::Parser::Types::ID_data Parser::get::ID(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
 	return std::any_cast<Types::ID_data>(token.data());
 }
 ::Parser::Types::SPACEMODE_data Parser::get::SPACEMODE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
 	return std::any_cast<Types::SPACEMODE_data>(token.data());
 }
 ::Parser::Types::NAME_data Parser::get::NAME(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
 	return std::any_cast<Types::NAME_data>(token.data());
 }
 ::Parser::Types::Rule_CSEQUENCE_SYMBOL_data Parser::get::Rule_CSEQUENCE_SYMBOL(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_CSEQUENCE_SYMBOL, "Parser");
 	return std::any_cast<Types::Rule_CSEQUENCE_SYMBOL_data>(token.data());
 }
 ::Parser::Types::Rule_CSEQUENCE_ESCAPE_data Parser::get::Rule_CSEQUENCE_ESCAPE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_CSEQUENCE_ESCAPE, "Parser");
 	return std::any_cast<Types::Rule_CSEQUENCE_ESCAPE_data>(token.data());
 }
 ::Parser::Types::Rule_CSEQUENCE_DIAPASON_data Parser::get::Rule_CSEQUENCE_DIAPASON(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_CSEQUENCE_DIAPASON, "Parser");
 	return std::any_cast<Types::Rule_CSEQUENCE_DIAPASON_data>(token.data());
 }
 ::Parser::Types::Rule_CSEQUENCE_data Parser::get::Rule_CSEQUENCE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_CSEQUENCE, "Parser");
 	return std::any_cast<Types::Rule_CSEQUENCE_data>(token.data());
 }
 ::Parser::Types::Rule_ESCAPED_data Parser::get::Rule_ESCAPED(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_ESCAPED, "Parser");
 	return std::any_cast<Types::Rule_ESCAPED_data>(token.data());
 }
 ::Parser::Types::Rule_HEX_data Parser::get::Rule_HEX(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_HEX, "Parser");
 	return std::any_cast<Types::Rule_HEX_data>(token.data());
 }
 ::Parser::Types::Rule_BIN_data Parser::get::Rule_BIN(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::Rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::Rule_BIN, "Parser");
 	return std::any_cast<Types::Rule_BIN_data>(token.data());
 }
 ::Parser::Types::AUTO_0_data Parser::get::AUTO_0(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
 	return std::any_cast<Types::AUTO_0_data>(token.data());
 }
 ::Parser::Types::AUTO_1_data Parser::get::AUTO_1(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
 	return std::any_cast<Types::AUTO_1_data>(token.data());
 }
 ::Parser::Types::AUTO_2_data Parser::get::AUTO_2(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
 	return std::any_cast<Types::AUTO_2_data>(token.data());
 }
 ::Parser::Types::AUTO_3_data Parser::get::AUTO_3(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
 	return std::any_cast<Types::AUTO_3_data>(token.data());
 }
 ::Parser::Types::AUTO_4_data Parser::get::AUTO_4(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
 	return std::any_cast<Types::AUTO_4_data>(token.data());
 }
 ::Parser::Types::AUTO_5_data Parser::get::AUTO_5(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
 	return std::any_cast<Types::AUTO_5_data>(token.data());
 }
 ::Parser::Types::AUTO_6_data Parser::get::AUTO_6(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
 	return std::any_cast<Types::AUTO_6_data>(token.data());
 }
 ::Parser::Types::AUTO_7_data Parser::get::AUTO_7(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
 	return std::any_cast<Types::AUTO_7_data>(token.data());
 }
 ::Parser::Types::AUTO_8_data Parser::get::AUTO_8(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
 	return std::any_cast<Types::AUTO_8_data>(token.data());
 }
 ::Parser::Types::AUTO_9_data Parser::get::AUTO_9(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
 	return std::any_cast<Types::AUTO_9_data>(token.data());
 }
 ::Parser::Types::AUTO_10_data Parser::get::AUTO_10(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
 	return std::any_cast<Types::AUTO_10_data>(token.data());
 }
 ::Parser::Types::AUTO_11_data Parser::get::AUTO_11(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
 	return std::any_cast<Types::AUTO_11_data>(token.data());
 }
 ::Parser::Types::AUTO_12_data Parser::get::AUTO_12(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
 	return std::any_cast<Types::AUTO_12_data>(token.data());
 }
 ::Parser::Types::AUTO_13_data Parser::get::AUTO_13(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
 	return std::any_cast<Types::AUTO_13_data>(token.data());
 }
 ::Parser::Types::AUTO_14_data Parser::get::AUTO_14(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
 	return std::any_cast<Types::AUTO_14_data>(token.data());
 }
 ::Parser::Types::AUTO_15_data Parser::get::AUTO_15(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
 	return std::any_cast<Types::AUTO_15_data>(token.data());
 }
 ::Parser::Types::AUTO_16_data Parser::get::AUTO_16(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
 	return std::any_cast<Types::AUTO_16_data>(token.data());
 }
 ::Parser::Types::AUTO_17_data Parser::get::AUTO_17(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
 	return std::any_cast<Types::AUTO_17_data>(token.data());
 }
 ::Parser::Types::AUTO_18_data Parser::get::AUTO_18(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
 	return std::any_cast<Types::AUTO_18_data>(token.data());
 }
 ::Parser::Types::AUTO_19_data Parser::get::AUTO_19(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
 	return std::any_cast<Types::AUTO_19_data>(token.data());
 }
 ::Parser::Types::AUTO_20_data Parser::get::AUTO_20(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
 	return std::any_cast<Types::AUTO_20_data>(token.data());
 }
 ::Parser::Types::cll_if_data Parser::get::cll_if(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_if, "Parser");
 	return std::any_cast<Types::cll_if_data>(rule.data());
 }
 ::Parser::Types::cll_variable_data Parser::get::cll_variable(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_variable, "Parser");
 	return std::any_cast<Types::cll_variable_data>(rule.data());
 }
 ::Parser::Types::cll_function_body_call_data Parser::get::cll_function_body_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
 	return std::any_cast<Types::cll_function_body_call_data>(rule.data());
 }
 ::Parser::Types::cll_function_body_decl_data Parser::get::cll_function_body_decl(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
 	return std::any_cast<Types::cll_function_body_decl_data>(rule.data());
 }
 ::Parser::Types::cll_function_arguments_data Parser::get::cll_function_arguments(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
 	return std::any_cast<Types::cll_function_arguments_data>(rule.data());
 }
 ::Parser::Types::cll_function_parameters_data Parser::get::cll_function_parameters(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_parameters) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_parameters, "Parser");
 	return std::any_cast<Types::cll_function_parameters_data>(rule.data());
 }
 ::Parser::Types::cll_cll_function_call_data Parser::get::cll_cll_function_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_cll_function_call, "Parser");
 	return std::any_cast<Types::cll_cll_function_call_data>(rule.data());
 }
 ::Parser::Types::cll_function_decl_data Parser::get::cll_function_decl(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
 	return std::any_cast<Types::cll_function_decl_data>(rule.data());
 }
 ::Parser::Types::cll_expr_logical_data Parser::get::cll_expr_logical(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
 	return std::any_cast<Types::cll_expr_logical_data>(rule.data());
 }
 ::Parser::Types::cll_expr_compare_data Parser::get::cll_expr_compare(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_compare) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_compare, "Parser");
 	return std::any_cast<Types::cll_expr_compare_data>(rule.data());
 }
 ::Parser::Types::cll_expr_arithmetic_data Parser::get::cll_expr_arithmetic(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
 	return std::any_cast<Types::cll_expr_arithmetic_data>(rule.data());
 }
 ::Parser::Types::cll_expr_term_data Parser::get::cll_expr_term(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
 	return std::any_cast<Types::cll_expr_term_data>(rule.data());
 }
 ::Parser::Types::cll_expr_value_data Parser::get::cll_expr_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
 	return std::any_cast<Types::cll_expr_value_data>(rule.data());
 }
 ::Parser::Types::cll_expr_group_data Parser::get::cll_expr_group(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
 	return std::any_cast<Types::cll_expr_group_data>(rule.data());
 }
 ::Parser::Types::cll_expr_data Parser::get::cll_expr(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr, "Parser");
 	return std::any_cast<Types::cll_expr_data>(rule.data());
 }
 ::Parser::Types::cll_var_data Parser::get::cll_var(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_var, "Parser");
 	return std::any_cast<Types::cll_var_data>(rule.data());
 }
 ::Parser::Types::cll_block_data Parser::get::cll_block(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_block, "Parser");
 	return std::any_cast<Types::cll_block_data>(rule.data());
 }
 ::Parser::Types::cll_loop_while_data Parser::get::cll_loop_while(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
 	return std::any_cast<Types::cll_loop_while_data>(rule.data());
 }
 ::Parser::Types::cll_loop_for_data Parser::get::cll_loop_for(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_for) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_for, "Parser");
 	return std::any_cast<Types::cll_loop_for_data>(rule.data());
 }
 ::Parser::Types::array_data Parser::get::array(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
 	return std::any_cast<Types::array_data>(rule.data());
 }
 ::Parser::Types::object_data Parser::get::object(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
 	return std::any_cast<Types::object_data>(rule.data());
 }
 ::Parser::Types::any_data_data Parser::get::any_data(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::any_data) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::any_data, "Parser");
 	return std::any_cast<Types::any_data_data>(rule.data());
 }
 ::Parser::Types::main_data Parser::get::main(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
 	return std::any_cast<Types::main_data>(rule.data());
 }
 ::Parser::Types::use_unit_data Parser::get::use_unit(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::use_unit, "Parser");
 	return std::any_cast<Types::use_unit_data>(rule.data());
 }
 ::Parser::Types::use_data Parser::get::use(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::use, "Parser");
 	return std::any_cast<Types::use_data>(rule.data());
 }
 ::Parser::Types::Rule_rule_data Parser::get::Rule_rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_rule, "Parser");
 	return std::any_cast<Types::Rule_rule_data>(rule.data());
 }
 ::Parser::Types::Rule_name_data Parser::get::Rule_name(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_name, "Parser");
 	return std::any_cast<Types::Rule_name_data>(rule.data());
 }
 ::Parser::Types::Rule_group_data Parser::get::Rule_group(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_group, "Parser");
 	return std::any_cast<Types::Rule_group_data>(rule.data());
 }
 ::Parser::Types::Rule_keyvalue_data Parser::get::Rule_keyvalue(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_keyvalue, "Parser");
 	return std::any_cast<Types::Rule_keyvalue_data>(rule.data());
 }
 ::Parser::Types::Rule_value_data Parser::get::Rule_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_value, "Parser");
 	return std::any_cast<Types::Rule_value_data>(rule.data());
 }
 ::Parser::Types::Rule_nested_rule_data Parser::get::Rule_nested_rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_nested_rule, "Parser");
 	return std::any_cast<Types::Rule_nested_rule_data>(rule.data());
 }
 ::Parser::Types::Rule_data_block_regular_datablock_key_data Parser::get::Rule_data_block_regular_datablock_key(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_data_block_regular_datablock_key, "Parser");
 	return std::any_cast<Types::Rule_data_block_regular_datablock_key_data>(rule.data());
 }
 ::Parser::Types::Rule_data_block_regular_datablock_data Parser::get::Rule_data_block_regular_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_data_block_regular_datablock, "Parser");
 	return std::any_cast<Types::Rule_data_block_regular_datablock_data>(rule.data());
 }
 ::Parser::Types::Rule_data_block_templated_datablock_data Parser::get::Rule_data_block_templated_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_data_block_templated_datablock, "Parser");
 	return std::any_cast<Types::Rule_data_block_templated_datablock_data>(rule.data());
 }
 ::Parser::Types::Rule_data_block_data Parser::get::Rule_data_block(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_data_block, "Parser");
 	return std::any_cast<Types::Rule_data_block_data>(rule.data());
 }
 ::Parser::Types::Rule_quantifier_data Parser::get::Rule_quantifier(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule_quantifier, "Parser");
 	return std::any_cast<Types::Rule_quantifier_data>(rule.data());
 }
 ::Parser::Types::Rule_data Parser::get::Rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::Rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::Rule, "Parser");
 	return std::any_cast<Types::Rule_data>(rule.data());
 }
 

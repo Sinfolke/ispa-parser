@@ -92,10 +92,31 @@ void LLHeader::getTypesFromStdlib(std::ostringstream& out) const {
     out << "\tusing RuleSeq = ISPA_STD::Seq<Rules>;\n";
     out << "\tusing TokenSeq = ISPA_STD::Seq<Tokens>;\n";
 }
-
-void LLHeader::createToStringFunction(std::ostringstream &out) const {
-    out << "\tstd::string TokensToString(Tokens token);\n";
-    out << "\tstd::string RulesToString(Rules rule);\n";
+void LLHeader::addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) const {
+    // Implement method call conversion with proper indentation
+    out << "\tconstexpr const char* TokensToString(Tokens token) {\n";
+    out << "\t\tswitch (token) {\n";
+    for (auto token : tokens) {
+        out << "\t\t\tcase Tokens::" << corelib::text::join(token, "_") << ":" << " return \"" << corelib::text::join(token, "_") << "\";\n";
+    }
+    out << "\t\t}\n";
+    out << "\t\treturn \"NONE\";\n";
+    out << "\t}\n";
+}
+void LLHeader::addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const {
+    // Implement method call conversion with proper indentation
+    out << "\tconstexpr const char* RulesToString(Rules rule) {\n";
+    out << "\t\tswitch (rule) {\n";
+    for (auto rule : rules) {
+        out << "\t\t\tcase Rules::" << corelib::text::join(rule, "_") << ":" << " return \"" << corelib::text::join(rule, "_") << "\";\n";
+    }
+    out << "\t\t}\n";
+    out << "\t\treturn \"NONE\";\n";
+    out << "\t}\n";
+}
+void LLHeader::createToStringFunction(const std::vector<std::vector<std::string>> &tokens, const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const {
+    addTokensToString(tokens, out);
+    addRulesToString(rules, out);
 }
 void LLHeader::addStandardFunctions(std::ostringstream &out) const {
     out << R"(
