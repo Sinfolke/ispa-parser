@@ -1,24 +1,25 @@
 cll: 
-    '$' #var | #if | #expr | #loop_while | #loop_for END 
+    '$' @ #var | #if | #expr | #loop_while | #loop_for END
+    {@} 
 
     #OP:
-        '+' | '-' | '*' | '/' | '%'
+        @ '+' | '-' | '*' | '/' | '%'
 
-        data: %1;
+        {@}
     ;
     #ASSIGNMENT_OP:
-        OP? '='
+        OP? @ '='
 
-        data: %1;
+        {@}
     ;
     #COMPARE_OP:
-        '==' | '!=' | '>' | '<' | '>=' | '<='
+        @ '==' | '!=' | '>' | '<' | '>=' | '<='
 
-        data: %1;
+        {@}
     ;
     #LOGICAL_OP:
-        LOGICAL_AND | LOGICAL_OR
-        data: %1;
+        @ LOGICAL_AND | LOGICAL_OR
+        {@}
     ;
     #LOGICAL_NOT:
         '!' | 'not'
@@ -31,144 +32,109 @@ cll:
     ;
     
     #TYPE:
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' TEMPLATE) | ('obj' TEMPLATE) )
-        data:
-            type: %1
-            templ: %2
-        ;
+        ( @ 'var' | 'num' | 'bool' | 'str' | (@ 'arr' @ TEMPLATE) | (@ 'obj' @ TEMPLATE) )
+
+        @{type, templ}
     ;
     #TEMPLATE:
-        '<' TYPE (',' TYPE)* '>'
-        data: 
-            first: %2
-            second: %4
-        ;
+        '<' @ TYPE (',' @ TYPE)* '>'
+
+        @{first, second}
     ;
     #if: 
-        'if' expr block
-        data:
-            expr: %2
-            block: %3
-        ;
+        'if' @ expr @ stmt
+
+        ${expr, stmt}
     ;
     #variable:
-        ('++' | '--')? ID ('[' expr ']')? ('++' | '--')?
-        data:
-            name: %2
-            brace_expression: $2>%2
-            pre: $1
-            post: $3
-        ;
+        @ ('++' | '--')? @ ID ('[' @ expr ']')? @ ('++' | '--')?
+
+        @{pre, name, brace_expression, pos}
     ;
     #function_body_call:
-        '(' function_arguments ')'
-        data: %2;
+        '(' @ function_arguments ')'
+
+        {@}
     ;
     #function_body_decl:
-        '(' function_parameters ')'
-        data: %2;
+        '(' @ function_parameters ')'
+        {@}
     ;
     #function_arguments:
-        (any_data | ID (',' any_data | ID)* )
+        (@ any_data | ID (',' @ any_data | ID)* )
 
-        data: 
-            first: %1
-            second: %3
-        ;
+        @{first, second}
     ;
     #function_parameters:
-        (ID (',' ID)* )
-        data: 
-            first: %1
-            second: %3
-        ;
+        (@ ID (',' @ ID)* )
+
+        @{first, second}
     ;
     #cll_function_call:
-        ID function_body_call
-        data:
-            name: %1
-            body: %2
-        ;
+        @ ID @ function_body_call
+
+        @{name, body}
     ;
     #function_decl: 
-        'fn' (ID+) function_body_decl &val(block)?
-
-        data:
-            type: %2
-            name: %3
-            value: val
-        ;
+        'fn' @ ID+ @ function_body_decl @ stmt?
+        
+        @{type, name, stmt}
     ;
     #expr: 
-        #logical | #compare | #arithmetic | #group | #value | #RULE_VALUE
+        @ #logical
+        {@}
 
-        data: %1;
-        #RULE_VALUE:
-            '@'
-        ;
         #logical:
-            compare | arithmetic | value LOGICAL_OP compare | arithmetic | value
-            data:
-                left: %1
-                op: %2
-                right: %3
-            ;
-        ;
-        #compare:
-            arithmetic (COMPARE_OP arithmetic)+
-            data:
-                first: %1
-                operators: %2
-                sequence: %3
-            ;
-        ;
-        #arithmetic:
-            value (OP value)+
-            data: 
-                first: %1
-                operators: %2
-                sequence: %3
-            ;
-        ;
-        #value:
-            group | variable | cll_function_call | any_data
+            @ compare (@ LOGICAL_OP @ compare)*
 
-            data: %1;
+            {left, op, right}
         ;
-        #group:
-            '(' expr ')'
+
+        #compare:
+            @ arithmetic (@ COMPARE_OP @ arithmetic)*
+
+            @{first, operators, sequence}
+        ;
+
+        #arithmetic:
+            @ term (@ PLUS | MINUS @ term)*
             
-            data: %2;
+            @{first, operators, sequence}
+        ;
+
+        #term:
+            @ value (@ MULTIPLE | DIVIDE | MODULO @ value)*  // TERM_OP = * / / % etc.
+
+            @{first, operators, sequence}
+        ;
+
+        #value:
+            @ group | variable | cll_function_call | any_data
+            {@}
+        ;
+
+        #group:
+            '(' @ expr ')'
+            {@}
         ;
     ;
     #var: 
-        TYPE? ID (ASSIGNMENT_OP expr)?
+        @ TYPE? @ ID @ (ASSIGNMENT_OP @ expr)?
 
-        data:
-            type: %1
-            id: %2
-            op: %3
-            value: %4
-        ;
+        @{type, id, op, value}
     ;
-    #block:
-        '{' Rule.rule* '}'
-        data: %2;
+    #stmt:
+        '{' @ Rule.rule* '}'
+        {@}
     ;
     #loop_while:
-        'while' expr block
-        data:
-            expr: %2
-            block: %3
-        ;
+        'while' @ expr stmt
+
+        @{expr, stmt}
     ;
     #loop_for: 
-        'for' '(' (expr | var)? ';' expr? ';' expr? ')' block
-        data:
-            decl: %3
-            cond: %5
-            end: %7
-            block: %9
-        ;
+        'for' '(' @ (expr | var)? ';' @ expr? ';' @ expr? ')' @ stmt
+
+        @{decl, cond, end, stmt}
     ;
 ;

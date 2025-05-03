@@ -31,7 +31,7 @@ cll:
     ;
     
     #TYPE:
-        ( 'var' | 'any' | 'num' | 'bool' | 'str' | ('arr' TEMPLATE) | ('obj' TEMPLATE) )
+        ( 'var' | 'num' | 'bool' | 'str' | ('arr' TEMPLATE) | ('obj' TEMPLATE) )
         data:
             type: %1
             templ: %2
@@ -100,12 +100,11 @@ cll:
         ;
     ;
     #expr: 
-        #logical | #compare | #arithmetic | #term | #value | AT
-
+        #logical | #compare
         data: %1;
 
         #logical:
-            compare | arithmetic | term | value LOGICAL_OP compare | arithmetic | term | value
+            compare (LOGICAL_OP compare)*
             data:
                 left: %1
                 op: %2
@@ -114,7 +113,7 @@ cll:
         ;
 
         #compare:
-            arithmetic | term (COMPARE_OP arithmetic | term)+
+            arithmetic (COMPARE_OP arithmetic)*
             data:
                 first: %1
                 operators: %2
@@ -123,7 +122,7 @@ cll:
         ;
 
         #arithmetic:
-            term (PLUS | MINUS term)+
+            term (PLUS | MINUS term)*
             data: 
                 first: %1
                 operators: %2
@@ -132,7 +131,7 @@ cll:
         ;
 
         #term:
-            value (MULTIPLE | DIVIDE | MODULO value)+  // TERM_OP = * / / % etc.
+            value (MULTIPLE | DIVIDE | MODULO value)*  // TERM_OP = * / / % etc.
             data:
                 first: %1
                 operators: %2

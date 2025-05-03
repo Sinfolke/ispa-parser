@@ -26,7 +26,9 @@ NAME:
     data: %2;
 ;
 AT: '@';
-main: use | Rule | SPACEMODE | NAME;
+main: (use | Rule | SPACEMODE | NAME)+
+    data: %1;
+;
 
 use: 
     'use' #unit (',' #unit)*

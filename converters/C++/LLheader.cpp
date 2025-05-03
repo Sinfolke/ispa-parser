@@ -89,7 +89,8 @@ void LLHeader::getTypesFromStdlib(std::ostringstream& out) const {
     out << "\tusing Token = ISPA_STD::Node<Tokens>;\n";
     out << "\tusing Token_res = ISPA_STD::match_result<Tokens>;\n";
     out << "\tusing TokenFlow = ISPA_STD::TokenFlow<Tokens>;\n";
-    out << "\tusing Tree = ISPA_STD::Tree<Rules>;\n";
+    out << "\tusing RuleSeq = ISPA_STD::Seq<Rules>;\n";
+    out << "\tusing TokenSeq = ISPA_STD::Seq<Tokens>;\n";
 }
 
 void LLHeader::createToStringFunction(std::ostringstream &out) const {

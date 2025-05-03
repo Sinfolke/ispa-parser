@@ -45,7 +45,7 @@ auto LLIR::makeIR() -> std::vector<LLIR::node_ret_t> {
     return success_vars;
 }
 void LLIR::optimizeIR() {
-    raiseVarsTop();
+    raiseVarsTop(data, data);
 }
 const std::vector<LLIR::member>& LLIR::getData() const{
     return data;
@@ -258,14 +258,13 @@ void LLIR::addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var,
     push({LLIR::types::IF, check_cond});
 }
 void LLIR::handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError) {
-    LLIR::variable var = createSuccessVariable();
+    auto var = createSuccessVariable();
     loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}});
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::WHILE, loop});
     addPostLoopCheck(rule, var, addError);
 }
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
-void replaceToPrevChar(T &elements, int i) {
+void LLIR::replaceToPrevChar(std::vector<LLIR::member> &elements, int i) {
     for (; i < elements.size(); i++) {
         auto &el = elements[i];
         if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
@@ -301,18 +300,6 @@ std::vector<LLIR::member> createDefaultBlock() {
     return {
         {LLIR::types::INCREASE_POS_COUNTER}
     };
-}
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
-void replace_exit_to_unsuccess(T &elements, LLIR::variable svar) {
-    for (auto &el : elements) {
-        if (el.type == LLIR::types::IF) {
-            auto block = std::any_cast<LLIR::condition>(el.value).block;
-            replace_exit_to_unsuccess(block, svar);
-            el.value = block;
-        } else if (el.type == LLIR::types::EXIT) {
-            el = {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, {LLIR::var_assign_values::_FALSE}}};
-        }
-    }
 }
 char getEscapedChar(char in) {
     switch (in)
@@ -452,6 +439,8 @@ LLIR::variable LLIR::affectIrByQuantifier(const Parser::Rule &rule, const LLIR::
         loop.block = data;
         data.clear();
         processExitStatements(loop.block);
+        // raiseVarsTop(data, loop.block, true, false, false);
+        // raiseVarsTop(data, loop.else_block, true, false, false);
         if (quantifier == '+') {
             handle_plus_qualifier(rule, loop);
         } else {
@@ -1320,6 +1309,7 @@ LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
     }
     std::string begin_var_name = "begin" + generateVariableName();
     std::vector<LLIR::expr> svar_expr = {};
+    std::vector<std::string> used_vars;
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     if (!values.success_vars.empty()) {
         bool first = true;
@@ -1328,7 +1318,7 @@ LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
                 continue;
             if (!first)
                 svar_expr.push_back({LLIR::condition_types::AND});
-
+            used_vars.push_back(el.svar.name);
             svar_expr.push_back({LLIR::condition_types::VARIABLE, el.svar});
             first = false;
         }
@@ -1344,6 +1334,9 @@ LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
     }
     values.add(var_members);
     auto shadow_var = values.affectIrByQuantifier(rule, var, quantifier);
+    for (auto svar : used_vars) {
+        raiseVarsTop(values.data, values.data, svar, true, false, true);
+    }
     std::vector<LLIR::member> svar_cond;
     if (svar_expr.empty()) {
         svar_cond = {
@@ -1385,6 +1378,9 @@ LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
     update(values);
     insideLoop = prev_insideLoop;
     push({LLIR::types::VARIABLE, svar});
+    if (fullname.back() == "STRING") {
+        cpuf::printf("svar.name: %s\n", svar.name);
+    }
     push({LLIR::types::PUSH_POS_COUNTER, begin_var_name});
     if (!variable.empty() && variable.name == Parser::Rules::method_call) 
     {

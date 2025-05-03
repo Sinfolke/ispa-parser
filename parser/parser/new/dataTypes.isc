@@ -1,43 +1,33 @@
 STRING:
-    ("'" (('\\' . ) | [^'] )* "'")
+    ('\'' @ (('\\' . ) | [^'] )* '\'')
 
-    data: $2;
+    {@}
 ;
 NUMBER:
 
-    [+-]? ( [0-9]+ ) ([.,] [0-9]+)?
+    @ [+-]? @ ( [0-9]+ ) @ ([.,] [0-9]+)?
     
-    
-    data:
-        sign: %1
-        main: %2
-        dec: %4
-    ;
+    @{sign, main, dec}
 ;
 BOOLEAN:
     &d('true' | 'false')
 
-    data: d;
+    {d}
 ;
 array: 
 
-    '[' ( (any_data ',')* )? ']'
+    '[' ( ( @ any_data ',')* )? ']'
 
-    data: $2>%2;
+    {@}
 
 object:
     '{'
-        ( any_data ':' any_data ( ',' ID ':' any_data )* ';' )?
+        ( @ any_data ':' @ any_data ( ',' @ ID ':' @ any_data )* ';' )?
     '}'
-    data:
-        key: $1>%1
-        value: $1>%3
-        keys: $2>%2
-        values: $2>%4
-    ;
+    @{key, value, keys, values}
 any_data: 
 
-    BOOLEAN | NUMBER | STRING | ID | array | object
+    @ BOOLEAN | NUMBER | STRING | ID | array | object
     
-    data: %1;
+    {@}
 ;

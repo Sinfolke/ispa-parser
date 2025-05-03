@@ -1,6 +1,5 @@
-use end_of_rule: [ END, STRICT_END, NEWLINE ];
-use comment: linear_comment;
-use name: "Parser";
+name: "Parser";
+
 spacemode mixed;
 END: [;\n];
 STRICT_END: ';';
@@ -9,19 +8,21 @@ LINEAR_COMMENT:
     '//' [^\n]*
 ;
 ID: 
-    ([a-zA-Z_] [a-zA-Z0-9_]*)
-    data: $1;
+    @ ([a-zA-Z_] [a-zA-Z0-9_]*)
+    {@}
 ;
 SPACEMODE:
-    "spacemode" "mixed" | "skipped" | "allowed"
-    data: %1;
+    "spacemode" @ "mixed" | "skipped" | "allowed"
+    {@}
 ;
 NAME:
-    "name" ID
+    "name" @ ID
 
-    data: %2;
+    {@}
 ;
-main: use | Rule | SPACEMODE | NAME;
+main: @ (use | Rule | SPACEMODE | NAME)+
+    {@}
+;
 
 use: 
     'use' #unit (',' #unit)*

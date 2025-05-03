@@ -392,25 +392,6 @@ void Tree::literalsToToken() {
     std::vector<std::pair<Parser::Rule, Parser::Rule>> generated;
     literalsToTokenHelper(tree, tree, generated);
 }
-bool Tree::processGroup_helper(Parser::Tree &tree, const std::vector<Parser::Rule>& group, const Parser::Rule &second) {
-    if (second.name == Parser::Rules::Rule_group) {
-        auto second_group = getValueFromGroup(second);
-        if (group.size() == second_group.size()) {
-            for (int i = 0; i < group.size(); i++) {
-                auto groupv = getValueFromRule_rule(group[i]);
-                auto second_groupv = getValueFromRule_rule(second_group[i]);
-                if (compare_rule(groupv, second_groupv))
-                    continue;
-                return sortPriority(groupv, second_groupv);
-            }
-        }
-        return group.size() > second_group.size();
-    }
-    if (group.size() > 1)
-        return 0;
-
-    return sortPriority(group[0], second);;
-}
 bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
     if (first.name == Parser::Rules::Rule_rule) {
         auto rule = getValueFromRule_rule(first);
@@ -441,12 +422,6 @@ bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
     } 
     if (first.name == Parser::Rules::Rule_hex && second.name == Parser::Rules::Rule_hex) {
         return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size();
-    }
-    if (first.name == Parser::Rules::Rule_group && second.name == Parser::Rules::Rule_group) {
-        auto first_data = std::any_cast<obj_t>(first.data);
-        auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_data, "val"));
-
-        return processGroup_helper(tree, val, second);
     }
     if (first.name == Parser::Rules::Rule_other && second.name == Parser::Rules::Rule_other) {
         auto first_data = std::any_cast<rule_other>(first.data);
@@ -495,19 +470,31 @@ bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
     
         // Rule: Longer sequence should go before shorter
         return first_val.size() > second_val.size(); // true if first should come first
+    }    
+    if (first.name == Parser::Rules::Rule_group && second.name == Parser::Rules::Rule_group) {
+        auto first_rules = getValueFromGroup(first);
+        auto second_rules = getValueFromGroup(second);
+        for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); i++) {
+            std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> visited;
+            if (compare_rule_matching(first_rules[i], second_rules[i], visited))
+                continue;
+            return sortPriority(first_rules[i], second_rules[i]);
+        }
+        // match by size
+        return first_rules.size() > second_rules.size();
     }
     if (first.name == Parser::Rules::Rule_group) {
-        auto first_data = std::any_cast<obj_t>(first.data);
-        auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_data, "val"));
-
-        return processGroup_helper(tree, val, second);
+        auto val = getValueFromGroup(first);
+        if (val.size() == 1)
+            return sortPriority(val[0], second);
+        return 0;
     } else if (second.name == Parser::Rules::Rule_group) {
-        auto second_data = std::any_cast<obj_t>(second.data);
-        auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_data, "val"));
-
-        return !processGroup_helper(tree, val, first);
+        auto val = getValueFromGroup(second);
+        if (val.size() == 1)
+            return sortPriority(first, val[0]);
+        return 0;
     }
-    // if non above is true but the value kind is same, remain values in their order
+
     if (first.name == Parser::Rules::Rule_other) {
         auto first_data = std::any_cast<rule_other>(first.data);
         auto first_token = find_token_in_tree(first_data.fullname);
@@ -545,8 +532,8 @@ bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
     }
     // Prioritization logic for different rule types
     const std::vector<Parser::Rules> priority_order = {
-        Parser::Rules::Rule_escaped,
         Parser::Rules::string,
+        Parser::Rules::Rule_escaped,
         Parser::Rules::Rule_csequence,
         Parser::Rules::Rule_bin,
         Parser::Rules::Rule_hex,

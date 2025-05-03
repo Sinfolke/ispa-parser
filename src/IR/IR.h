@@ -160,6 +160,7 @@ class LLIR {
         // convertion functions helpers
         void addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var, bool addError = true);
         void handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError = true);
+        void replaceToPrevChar(std::vector<LLIR::member> &elements, int i);
         LLIR::member createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr);
         LLIR::variable add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var);
         LLIR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true);
@@ -227,10 +228,10 @@ class LLIR {
         auto rulesToIr(const std::vector<Parser::Rule> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr(const Parser::Tree &tree);
         // optimizations
-        void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::list<LLIR::member>& table);
+        void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
         size_t getBegin(size_t& i);
-        void insertVariablesOnTop(std::list<LLIR::member>& table, size_t begin);
-        void raiseVarsTop();
+        void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table, size_t begin);
+        void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
     public:
         LLIR(Parser::Tree &tree, int tokensOnly = -1);
         LLIR(Parser::Tree *tree, int tokensOnly = -1);

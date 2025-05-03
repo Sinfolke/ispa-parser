@@ -76,7 +76,6 @@ class Tree {
         auto getTokensFromRule(Parser::Rule &member, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) -> Parser::Tree;
         void literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated);
         // sort by priority functions
-        bool processGroup_helper(Parser::Tree &tree, const std::vector<Parser::Rule>& group, const Parser::Rule &second);
         bool sortPriority(const Parser::Rule &first, const Parser::Rule &second);
         void sortByPriorityHelper(std::vector<Parser::Rule> &rules);
         void sortByPriority(Parser::Tree &tree);

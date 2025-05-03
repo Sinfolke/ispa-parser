@@ -50,7 +50,7 @@ Rule:
             '{' any_data | #key+ '}'
             data: %2;
             #key:
-                [\n\r]+ &name(ID) '=' &dt (cll.expr)
+                &name(ID) '=' &dt (cll.expr)
                 data:
                     name: name
                     val: dt

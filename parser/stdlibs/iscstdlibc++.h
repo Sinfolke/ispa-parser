@@ -257,7 +257,7 @@ struct match_result {
 template<class TOKEN_T>
 using TokenFlow = std::vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Tree = std::deque<Node<RULE_T>>;
+using Seq = std::vector<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
@@ -544,8 +544,8 @@ public:
             if (result.empty()) {
                 if (!error_controller.empty()) {
                     errors.push_back(error_controller.begin()->second);
-                    pos++;
                 }
+                pos++;
             } else {
                 push(result);
             }
@@ -615,25 +615,21 @@ class LLParser_base {
 protected:
     template<class IT>
     void parseFromPos(IT& pos) {
-        while(!pos.isEnd()) {
-            auto res = getRule(pos);
-            if (!res.status) {
-                if (!error_controller.empty())
-                    errors.push_back(error_controller.begin()->second);
-                for (auto el : error_controller) {
-                    printf("Parser[error controller]: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
-                }
-                break;
-            } else {
-                tree.push_back(res.node);
-                pos += res.node.length();
+        auto res = getRule(pos);
+        if (!res.status) {
+            if (!error_controller.empty())
+                errors.push_back(error_controller.begin()->second);
+            for (auto el : error_controller) {
+                printf("Parser[error controller]: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
             }
-            error_controller.clear();
+        } else {
+            tree = res.node;
         }
+        error_controller.clear();
     }
     Lexer_base<TOKEN_T>* lexer = nullptr;
     const char* text = nullptr;
-    Tree<RULE_T> tree;
+    Node<RULE_T> tree;
     std::vector<error> errors;
     ErrorController error_controller;
     // skip spaces for tokens
@@ -670,13 +666,13 @@ public:
     }
     LLParser_base(const char* text) : text(text) {}
     // Parsing methods
-    Tree<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
+    Node<RULE_T>& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {
             this->lexer = &lexer;
         }
         return parse();
     }
-    Tree<RULE_T>& parse(const char* text) {
+    Node<RULE_T>& parse(const char* text) {
         this->text = text;
         return parse();
     }
@@ -699,7 +695,7 @@ public:
      * 
      * @return Tree<RULE_T> 
      */
-    Tree<RULE_T>& parse() {
+    Node<RULE_T>& parse() {
         if (lexer != nullptr) {
             parseFromTokens();
         } else if (text != nullptr) {

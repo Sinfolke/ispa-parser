@@ -38,15 +38,12 @@ Rule:
             '{' @ any_data | #key+ '}'
             {@}
             #key:
-                [\n\r]+ &name(ID) ':' &dt(cll.expr)
-                {
-                    name = name
-                    val = dt
-                }
+                @ ID '=' @ cll.expr
+                @{name, dt}
             ;
         ;
         #templated_datablock:
-            '@' '{' (@ ID (',' @ ID)*)? }
+            '@' '{' (@ ID (',' @ ID)*)? '}'
             @{ first_name, second_name }
         ;
     ;
@@ -59,11 +56,8 @@ Rule:
     ;
 
     #CSEQUENCE:
-        '[' &_not '^'? &dt ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
-        data:
-            _not = _not
-            val = dt
-        ;
+        '[' @ '^'? @ ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
+        @{_not, val}
         #SYMBOL:
             @('\\' | '\\]' | [^\]])
             {@}
@@ -74,8 +68,8 @@ Rule:
             {@}
         ;
         #DIAPASON:
-            ( &from (SYMBOL) \s0 '-' \s0 &to (SYMBOL))
-            data: [from, to];
+            ( @ SYMBOL \s0 '-' \s0 @ SYMBOL)
+            @{from, to}
         ;
     ;
     #ANY:
