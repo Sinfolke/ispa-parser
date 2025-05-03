@@ -17,7 +17,8 @@ class LLHeader : public LLStringConvertions {
     void addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) const;
     void addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const;
     void createToStringFunction(const std::vector<std::vector<std::string>> &tokens, const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const;
-    void addStandardFunctions(std::ostringstream &out) const;
+    void addStandardFunctionsLexer(std::ostringstream &out) const;
+    void addStandardFunctionsParser(std::ostringstream &out) const;
     void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const;
     void convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const;
     void write_data_block(std::ostringstream &out, data_block_t dtb) const;

@@ -330,6 +330,126 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
     os << '\n';
 })";
     out << "\n";
+    out << "void ::" << namespace_name << "::Parser::printAST(std::ostream &os) {\n";
+    out << "\tsize_t indentLevel = 0;\n";
+    out << "\tprintRule(os, tree, indentLevel, false);\n";
+    out << "}\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Token &token, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "\tLexer::printToken(os, token);\n";
+    out << "}\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Rule &rule, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "\tprintRule(os, rule.data(), indentLevel, addSpaceOnBegin);\n";
+    out << "}\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const std::any &data, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "\tusing Token = ::" << namespace_name << "::Token;\n";
+    out << "\tusing Rule = ::" << namespace_name << "::Rule;\n\n";
+    
+    out << "\tif (addSpaceOnBegin) os << std::string(indentLevel, '\\t');\n\n";
+    
+    out << R"(if (data.type() == typeid(str_t)) {
+        os << '"' << std::any_cast<str_t>(data) << '"';
+    } else if (data.type() == typeid(num_t)) {
+        os << std::any_cast<num_t>(data);
+    } else if (data.type() == typeid(bool_t)) {
+        os << std::boolalpha << std::any_cast<bool_t>(data);
+    } else if (data.type() == typeid(Token)) {
+        os << std::string(indentLevel, '\t');
+        Lexer::printToken(os, std::any_cast<Token>(data));
+    } else if (data.type() == typeid(arr_t<Token>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<Token>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t');
+            Lexer::printToken(os, *it);
+        }
+        os << std::string(--indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(Rule)) {
+        os << "{\n";
+        indentLevel++;
+        printRule(os, std::any_cast<Rule>(data), indentLevel, true);
+        os << std::string(--indentLevel, '\t') << "}";
+    } else if (data.type() == typeid(arr_t<Rule>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<Rule>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printRule(os, *it, indentLevel, true);
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<str_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<str_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << '"' << *it << '"';
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<num_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<num_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << *it;
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<bool_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<bool_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << std::boolalpha << *it;
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(std::any)) {
+        printRule(os, std::any_cast<const std::any&>(data), indentLevel, addSpaceOnBegin);
+    } else if (data.type() == typeid(arr_t<std::any>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<const arr_t<std::any>&>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printRule(os, *it, indentLevel, true);
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    })";
+    
+    
+
+
+
+    for (auto data : data_block_rules) {
+        const auto &value = data.value;
+        if (!value.is_inclosed_map)
+            continue;
+        out << "\telse if (data.type() == typeid(Types::" << data.name << "_data)) {\n";
+        out << "\t\tos << \"{\\n\";\n";
+        out << "\t\tauto dt = std::any_cast<Types::" << data.name << "_data>(data);\n";
+        out << "indentLevel++;";
+        for (const auto &[name, key_data] : std::any_cast<LLIR::inclosed_map>(std::any_cast<LLIR::assign>(value.value).data)) {
+            out << "\t\tos << std::string(indentLevel, '\\t') << \"" << name << "\"<< \": \";\n";
+            out << "\t\tprintRule(os, dt." << name << ", indentLevel, false);\n";
+            out << "\t\tos << \"\\n\";\n";
+        }
+        out << "\t\tos << std::string(--indentLevel, '\\t') << \"}\\n\";\n";
+        out << "\t}\n";
+    }
+    out <<  "else os << \"<UNDEF TYPE>\";\n";
+    out << "}";
 }
 void LLConverter::addGetRuleFunction(std::ostringstream &out) {
     out << namespace_name <<  "::Rule_res " << namespace_name << R"(::Parser::getRule(Lexer::lazy_iterator &pos) {

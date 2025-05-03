@@ -118,19 +118,36 @@ void LLHeader::createToStringFunction(const std::vector<std::vector<std::string>
     addTokensToString(tokens, out);
     addRulesToString(rules, out);
 }
-void LLHeader::addStandardFunctions(std::ostringstream &out) const {
+void LLHeader::addStandardFunctionsLexer(std::ostringstream &out) const {
+    out << R"(
+        /**
+         * @param os the output stream
+         * Print the tokens into an output stream
+         */
+        void printTokens(std::ostream& os);
+        /**
+         * @param os the output stream
+         * @param token the token to print
+         * Prints a single token into an output stream
+         */
+        static void printToken(std::ostream& os, const Token& token);)";
+    out << "\n";
+}
+void LLHeader::addStandardFunctionsParser(std::ostringstream &out) const {
     out << R"(
             /**
              * @param os the output stream
-             * Print the tokens into an output stream
+             * Print the ast into output stream
              */
-            void printTokens(std::ostream& os);
+            void printAST(std::ostream& os);
             /**
              * @param os the output stream
-             * @param token the token to print
-             * Prints a single token into an output stream
+             * @param rule the rule to print
+             * Prints a single rule into an output stream
              */
-            void printToken(std::ostream& os, const Token& token);)";
+            static void printRule(std::ostream &os, const Token &token, size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const Rule &rule, size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);)";
     out << "\n";
 }
 void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const {
@@ -163,7 +180,7 @@ void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<st
     out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tToken makeToken(const char*& pos);\n";
-    addStandardFunctions(out);
+    addStandardFunctionsLexer(out);
     addConstructorsLexer(out);
     out << "\t\tprivate:\n";
     for (auto name : tokens) {
@@ -184,8 +201,13 @@ void LLHeader::close_parser_header(std::ostringstream &out) const {
 }
 void LLHeader::create_parser_header(std::ostringstream &out) const {
     out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
-        << "\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
-        << "\t\tRule_res getRule(Lexer::iterator&);\n"
+        << "\t\tpublic:";
+        addStandardFunctionsParser(out);
+    out << "\t\tprivate:"
+        << "\t\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
+        << "\t\t\tRule_res getRule(Lexer::iterator&);\n"
+        ;
+    out
         << "\t\tvoid parseFromTokens();\n"
         << "\t\tvoid lazyParse();\n";
 }

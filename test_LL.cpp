@@ -5,7 +5,7 @@
 int main() {
     Parser::Lexer lexer;
     Parser::Parser parser;
-    lexer.makeTokensFromFile("parser/parser/new/cll.isc");
+    lexer.makeTokensFromFile("parser/parser/new/Rule.isc");
     std::ofstream ofile("tokens");
     if (!ofile) {
         std::cerr << "could not open token file\n";
@@ -23,11 +23,6 @@ int main() {
     for (auto error : parser_errors) {
         printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }
-    auto main = Parser::get::main(tree);
-    for (auto el : main) {
-        if (el.type() == typeid(Parser::Rule)) {
-            auto e = std::any_cast<Parser::Rule>(el);
-            printf("tree member name: %s\n", Parser::RulesToString(e.name()));
-        }
-    }
+    std::ofstream file("AST");
+    parser.printAST(file);
 }
