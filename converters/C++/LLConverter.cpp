@@ -378,18 +378,18 @@ void LLConverter::addLexerCode_Bottom(std::ostringstream &out, LLIR::variable va
     out << "}\n";
     indentLevel--;
 }
-void LLConverter::outputIR(std::string filename) {
-    std::ofstream cpp(filename + ".cpp");
-    std::ofstream h(filename + ".h");
+void LLConverter::outputIR(std::filesystem::path name) {
+    std::ofstream cpp(name.string() + ".cpp");
+    std::ofstream h(name.string() + ".h");
     if (!cpp) {
-        throw std::runtime_error("Unable to open file for writing: " + filename + ".cpp");
+        throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".cpp");
     }
     if (!h) {
-        throw std::runtime_error("Unable to open file for writing: " + filename + ".h");
+        throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".h");
     }
     std::ostringstream cpp_ss, h_ss;
-    printIR(cpp_ss, filename);
-    outputHeader(h_ss, filename);
+    printIR(cpp_ss, name.filename());
+    outputHeader(h_ss, name.filename());
     cpp << cpp_ss.str();
     h << h_ss.str();
 }

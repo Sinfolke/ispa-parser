@@ -30,5 +30,5 @@ private:
 public:
     LRConverter(LRParser &parser, Tree &tree) : LRConverter_base(parser, tree) {}
     ~LRConverter() {}
-    void output(std::string filename);
+    void output(std::filesystem::path filename);
 };

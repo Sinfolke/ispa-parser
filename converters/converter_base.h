@@ -35,7 +35,7 @@ class LLConverter_base {
             this->use = tree.accamulate_use_data_to_map();
             this->data = std::move(ir.getDataRef());
         }
-        virtual void outputIR(std::string filename) = 0;
+        virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {
             return data_block_tokens;
         }
@@ -59,5 +59,5 @@ class LRConverter_base {
             success_var = lc.success_var;
             use = tree.accamulate_use_data_to_map();
         }
-        virtual void output(std::string filename) = 0;
+        virtual void output(std::filesystem::path filename) = 0;
 };

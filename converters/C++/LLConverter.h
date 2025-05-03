@@ -48,5 +48,5 @@ public:
     void addLexerCode_Header(std::ostringstream &out);
     void convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out);
     void addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var);
-    void outputIR(std::string filename);
+    void outputIR(std::filesystem::path filename);
 };

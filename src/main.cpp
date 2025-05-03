@@ -96,10 +96,16 @@ int main(int argc, char** argv) {
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto name = std::any_cast<std::string>(use["name"].data);
     std::string algorithm = "LL";
+    std::string opath;
     if (!args.get("a").empty()) {
         // if no argument is passed, use default
         algorithm = args.get("a").first();
     }
+    if (!args.get("o").empty()) {
+        opath = args.get("o").first();
+    }
+    std::filesystem::path output_path = opath;
+    output_path.append(name);
     if (algorithm == "LR") {
         LRParser LRIR(tree);
         // LRIR.printTables("tables");
@@ -108,7 +114,7 @@ int main(int argc, char** argv) {
         // LRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
-        converter->output(name);
+        converter->output(output_path);
     } else if (algorithm == "LALR") {
         LALRParser LALRIR(tree);
         // LALRIR.printTables("tables");
@@ -117,7 +123,7 @@ int main(int argc, char** argv) {
         // LALRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
-        converter->output(name);
+        converter->output(output_path);
     } else if (algorithm == "ELR") {
         ELRParser ELRIR(tree);
         ELRIR.printTables("tables");
@@ -128,7 +134,7 @@ int main(int argc, char** argv) {
         ELRIR.printDfa("dfa");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, tree));
-        converter->output(name);
+        converter->output(output_path);
     } else if (algorithm == "LL") {
         LLIR ir(tree.getRawTree());
         ir.makeIR();
@@ -141,7 +147,7 @@ int main(int argc, char** argv) {
         */
         auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR&, Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
-        converter->outputIR(name);
+        converter->outputIR(output_path);
     
         // IR test
     } else {

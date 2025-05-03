@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include <Parser.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -23,11 +23,11 @@ int main() {
     for (auto error : parser_errors) {
         printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
     }
-    auto main = Parser::get::Rule(tree);
-    // for (auto el : main) {
-    //     if (el.type() == typeid(Parser::Rule)) {
-    //         auto e = std::any_cast<Parser::Rule>(el);
-    //         printf("tree member name: %s\n", Parser::RulesToString(e.name()));
-    //     }
-    // }
+    auto main = Parser::get::main(tree);
+    for (auto el : main) {
+        if (el.type() == typeid(Parser::Rule)) {
+            auto e = std::any_cast<Parser::Rule>(el);
+            printf("tree member name: %s\n", Parser::RulesToString(e.name()));
+        }
+    }
 }

@@ -208,18 +208,18 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
     LLHeader::close_parser_header(out);
     LLHeader::close_library(out, namespace_name);
 }
-void LRConverter::output(std::string filename) {
-    namespace_name = filename;
+void LRConverter::output(std::filesystem::path name) {
+    namespace_name = name.filename();
     std::ostringstream cpp_out, h_out;
     auto  [tokens, rules] = tree->getTokenAndRuleNames();
     tokens.insert(tokens.begin(), {"NONE"});
     rules.insert(rules.begin(), {"NONE"});
     this->tokens = tokens;
     this->rules = rules;
-    outputIR(cpp_out, filename);
-    outputHeader(h_out, filename);
-    std::ofstream cpp(filename + ".cpp");
-    std::ofstream h(filename + ".h");
+    outputIR(cpp_out, namespace_name);
+    outputHeader(h_out, namespace_name);
+    std::ofstream cpp(name.string() + ".cpp");
+    std::ofstream h(name.string() + ".h");
     if (!cpp) {
         std::cerr << "Failed open file for writing\n";
         return;
