@@ -14,7 +14,7 @@ class LLConverter_base {
         LLIR lexer_code;
         LLIR::node_ret_t lexer_code_access_var;
     public:
-        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::node_ret_t *access_var = nullptr) : lexer_code(tree.getRawTree()) {
+        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::node_ret_t *access_var = nullptr) : lexer_code(tree.getTreeMap()) {
             auto use_places = tree.getUsePlacesTable();
             auto [tokens, rules] = tree.getTokenAndRuleNames();
             tokens.insert(tokens.begin(), {"NONE"});
@@ -52,7 +52,7 @@ class LRConverter_base {
         LLIR::node_ret_t success_var;
         Tree* tree;
     public:
-        LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree.getRawTree()), data(&data), tree(&tree) {
+        LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree.getTreeMap()), data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer(use_places);
             lexer_code = lc.code;

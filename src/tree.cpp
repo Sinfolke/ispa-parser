@@ -7,31 +7,93 @@
 #include <cpuf/printf.h>
 #include <list>
 #include <IR/IR.h>
-Tree::TreeMap& Tree::getRawTree() {
+Tree::TreeMap& Tree::getTreeMap() {
     return treeMap;
 }
-void Tree::buildTreeMapFromRule(const Parser::Rule &rule, std::vector<std::string> &fullname) {
+void Tree::reduceRuleToUniversal(Parser::Types::Rule_data &rule_data, TreeMapMember &member) {
+    // convert rule into an universal
+    for (auto rule_rule : rule_data.rule) {
+        auto &rule = Parser::get::Rule_rule(rule_rule);
+        UniversalRule new_rule;
+        if (rule.val.type() == typeid(Parser::Rule)) {
+            auto &val = std::any_cast<Parser::Rule&>(rule.val);
+            switch (val.name())
+            {
+            case Parser::Rules::Rule_name:
+                new_rule.name = UniversalRules::Rule_name;
+                break;
+            case Parser::Rules::Rule_group:
+                new_rule.name = UniversalRules::Rule_group;
+                break;
+            case Parser::Rules::Rule_data_block:
+                new_rule.name = UniversalRules::Rule_data_block;
+                break;
+            default:
+                throw Error("Undefined rule to be converted to universal rule");
+                break;
+            }
+            new_rule.rule_data = std::move(val);
+        } else {
+            auto &val = std::any_cast<Parser::Token&>(rule.val);
+            switch (val.name())
+            {
+            case Parser::Tokens::Rule_OP:
+                new_rule.name = UniversalRules::Rule_op;
+                break;
+            case Parser::Tokens::Rule_CSEQUENCE:
+                new_rule.name = UniversalRules::Rule_csequence;
+                break;
+            case Parser::Tokens::Rule_NOSPACE:
+                new_rule.name = UniversalRules::Rule_nospace;
+                break;
+            case Parser::Tokens::Rule_ESCAPED:
+                new_rule.name = UniversalRules::Rule_escaped;
+                break;
+            // !! TEMPORARY SOLUTION!
+            case Parser::Tokens::AUTO_18:
+                new_rule.name = UniversalRules::Rule_any;
+                break;
+            case Parser::Tokens::Rule_HEX:
+                new_rule.name = UniversalRules::Rule_hex;
+                break;
+            case Parser::Tokens::Rule_BIN:
+                new_rule.name = UniversalRules::Rule_bin;
+                break;
+            default:
+                throw Error("Undefined token to be converted to universal rule");
+                break;
+            }
+            new_rule.token_data = std::move(val);
+        }
+        new_rule.prefix = std::move(rule.prefix);
+        new_rule.quantifier = std::move(rule.quantifier);
+        member.rules.push_back(new_rule);
+    }
+}
+void Tree::buildTreeMapFromRule(Parser::Rule &rule, std::vector<std::string> &fullname) {
     // use or Rule
     if (rule.name() == Parser::Rules::Rule) {
-        const auto &rule_data = Parser::get::Rule(rule);
+        auto &rule_data = Parser::get::Rule(rule);
         fullname.push_back(Parser::get::ID(rule_data.name));
-        TreeMapMember member = {rule_data.rule, rule_data.data_block};
-        for (const auto &rule : rule_data.nested_rules) {
+        TreeMapMember member;
+        reduceRuleToUniversal(rule_data, member);
+        for (auto &rule : rule_data.nested_rules) {
             fullname.push_back(Parser::get::ID(Parser::get::Rule(rule).name));
             member.nested_rule_names.push_back(fullname);
             fullname.pop_back();
             buildTreeMapFromRule(rule, fullname);
         }
+        member.data_block = std::move(rule_data.data_block);
         treeMap[fullname] = member;
         fullname.pop_back();
     }
 }
-void Tree::buildTreeMap(const std::vector<Parser::Rule> &modules) {
-    for (const auto &md : modules) {
+void Tree::buildTreeMap(std::vector<Parser::Rule> &modules) {
+    for (auto &md : modules) {
         const auto &entries = Parser::get::main(md);
-        for (const auto &entry : entries) {
+        for (auto &entry : entries) {
             if (entry.type() == typeid(Parser::Rule)) {
-                const auto &rule = std::any_cast<const Parser::Rule&>(entry);
+                auto &rule = std::any_cast<Parser::Rule&>(entry);
                 if (rule.name() == Parser::Rules::Rule) {
                     std::vector<std::string> fullname;
                     buildTreeMapFromRule(rule, fullname);
@@ -126,30 +188,15 @@ void Tree::replaceDublications() {
     std::vector<std::string> fullname;
     replaceDublicationsHelper(treeMap, fullname, true);
 }
-void Tree::removeEmptyRule(Parser::Tree &tree) {
-    for (auto it = tree.begin(); it != tree.end(); it++) {
-        auto member = *it;
-        if (member.name != Parser::Rules::Rule)
-            continue;
-        if (!member.data.has_value()) {
-            continue;
-        }
-        auto data = std::any_cast<obj_t>(member.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-        auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-        // do not include tokens
-        if (rules.empty()) {
-            it = tree.erase(it);
-        }
-        removeEmptyRule(nested_rules);
-        corelib::map::set(data, "nestedRules", std::any(nested_rules));
-        it->data = data;
-    }
-}
 void Tree::removeEmptyRule() {
-    removeEmptyRule(treeMap);
+    for (auto it = treeMap.begin(); it != treeMap.end();) {
+        auto &[name, value] = *it;
+        if (value.rules.size() == 0) {
+            it = treeMap.erase(it);
+            continue;
+        }
+        it++;
+    }
 }
 void Tree::accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested) {
     for (auto it = tree.begin(); it != tree.end(); ) {

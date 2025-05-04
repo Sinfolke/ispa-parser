@@ -157,7 +157,7 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR tokens_ir(tree->getRawTree(), true);
+    LLIR tokens_ir(tree->getTreeMap(), true);
     tokens_ir.makeIR();
     tokens_ir.optimizeIR();
     LLConverter converter(tokens_ir, *tree, &lexer_code, &success_var, filename);

@@ -16,15 +16,22 @@ class Tree {
             size_t index;
             std::vector<std::string> name; 
         };
+        enum class UniversalRules {
+            Rule_name, Rule_group, Rule_data_block, Rule_op, Rule_csequence, Rule_any, Rule_nospace, Rule_escaped, Rule_hex, Rule_bin
+        };
+        struct UniversalRule {
+            UniversalRules name;
+            Parser::Rule prefix;
+            Parser::Rule quantifier;
+            Parser::Rule rule_data;
+            Parser::Token token_data;
+        };
         struct TreeMapMember {
-            Parser::arr_t<Parser::Rule> rules;
+            Parser::arr_t<UniversalRule> rules;
             Parser::Types::Rule_data_block_data data_block;
             std::vector<std::vector<std::string>> nested_rule_names;
         };
-        struct Rule_op {
-            Parser::Rule prefix;
-            std::vector<Parser::Rule> options; 
-        };
+
         using ConflictsList = std::vector<Conflict>;
         using use_place_t_part = std::pair<std::vector<std::string>, std::vector<Use_place>>;
         using use_place_table = std::unordered_map<std::vector<std::string>, std::vector<Use_place>>;
@@ -65,7 +72,10 @@ class Tree {
         bool checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited);
         
         // treeNormalizer
-        void normalizeHelper(Parser::arr_t<Parser::Rule> &rules, std::vector<std::string> fullname, std::vector<std::vector<std::string>> &nested_rule_names);
+        void reduceRuleToUniversal(Parser::Types::Rule_data &rule_data, TreeMapMember &member);
+        void buildTreeMapFromRule(Parser::Rule &rule, std::vector<std::string> &fullname);
+        void buildTreeMap(std::vector<Parser::Rule> &modules);
+        void normalizeHelper(Parser::arr_t<UniversalRule> &rules, std::vector<std::string> fullname, std::vector<std::vector<std::string>> &nested_rule_names);
         // replace dublications functions
         void getReplacedTree(Parser::Tree &tree, std::vector<Parser::Rule> &rules, const std::vector<std::string> &name, std::vector<std::string> fullname);
         void replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string> fullname, bool global);
@@ -97,8 +107,6 @@ class Tree {
         void getConflictsTableForRule(const std::vector<Parser::Rule> &rules, ConflictsList &table);
         void resolveConflictsHelper(const std::vector<Parser::Rule> &rules);
         void resolveConflicts(Parser::Tree &tree);
-        void buildTreeMapFromRule(const Parser::Rule &rule, std::vector<std::string> &fullname);
-        void buildTreeMap(const std::vector<Parser::Rule> &modules);
         void constructor() {
             normalize();                       // normalize tree
             sortByPriority();                 // sorts elements to get which should be placed on top. This ensures proper matching
@@ -113,10 +121,6 @@ class Tree {
             if (!rawAssign)
                 constructor();
         }
-        static auto getValueFromGroup(const Parser::Rule &rule) -> std::vector<Parser::Rule>;
-        static auto getValueFromGroup(const Parser::Rule &rule, std::any &variable) -> std::vector<Parser::Rule>;
-        static auto getValueFromRule_rule(const Parser::Rule &rule) -> Parser::Rule;
-        static auto getValueFromRule_rule(const Parser::Rule &rule, Parser::Rule &quantifier) -> Parser::Rule;
         static auto singleRuleToToken(const Parser::Rule &input, size_t &count) -> Parser::Rule;
         static auto make_rule() -> Parser::Rule;
         static auto make_rule(Parser::Rules name) -> Parser::Rule;
@@ -132,7 +136,7 @@ class Tree {
         static auto find_token_in_tree(Parser::Tree &tree, std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
         auto find_token_in_tree(std::vector<std::string> names, size_t pos = 0) -> Parser::Rule*;
 
-        auto getRawTree() -> TreeMap&;
+        auto getTreeMap() -> TreeMap&;
 
         void removeEmptyRule();
         void normalize();

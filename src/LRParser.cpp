@@ -438,7 +438,7 @@ void LRParser::transform() {
     tree->removeEmptyRule();
     std::vector<std::string> fullname;
     std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> replacements;
-    transform(tree->getRawTree(), fullname, replacements);
+    transform(tree->getTreeMap(), fullname, replacements);
     //debug(tree->getRawTree(), fullname);
 }
 void LRParser::getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth) {
@@ -478,7 +478,7 @@ void LRParser::getPriorityTree() {
 }
 
 void LRParser::addAugmentedRule() {
-    tree->getRawTree().push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
+    tree->getTreeMap().push_back(Tree::make_rule(Parser::Rules::Rule, obj_t {
         {"name", Tree::make_rule(Parser::Rules::id, std::string("__start"))},
         {"rule", std::vector<Parser::Rule>{
                 Tree::make_rule(Parser::Rules::Rule_rule, obj_t {
@@ -528,7 +528,7 @@ void LRParser::construct_initial_item_set(Parser::Tree &tree, InitialItemSet &in
 LRParser::InitialItemSet LRParser::construct_initial_item_set() {
     std::vector<std::string> fullname;
     InitialItemSet initial_item_set;
-    construct_initial_item_set(tree->getRawTree(), initial_item_set, fullname);
+    construct_initial_item_set(tree->getTreeMap(), initial_item_set, fullname);
     return initial_item_set;
 }
 void LRParser::constructFirstSet(const std::vector<std::vector<rule_other>>& options, const std::vector<std::string> &nonterminal, bool &changed) {

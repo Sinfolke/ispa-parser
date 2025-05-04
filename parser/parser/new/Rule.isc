@@ -5,7 +5,7 @@ Rule:
 
     #rule:
 
-        @(keyvalue | value)? @ group | name | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ QUANTIFIER?
+        @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ QUANTIFIER?
 
         @{ prefix, val, quantifier }
     ;
