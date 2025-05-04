@@ -87,6 +87,35 @@ int main(int argc, char** argv) {
     if (args.get("lang").values.size() > 1) {
         UWarning("Parameter 'lang' having more than 1 argument. Only first is used.").print();
     }
+    // pass through tree to get name, spacemode, use and TreeMap
+    std::unordered_map<std::vector<std::string>, TreeAPI::Rule> TreeMap;
+    for (auto md : modules) {
+        const auto &entrise = Parser::get::main(md);
+        for (auto entry : entrise) {
+            if (entry.type() == typeid(Parser::Rule)) {
+                auto t = std::any_cast<Parser::Rule&>(entry);
+                if (t.name() == Parser::Rules::Rule) {
+                    auto data = Parser::get::Rule(std::any_cast<Parser::Rule&>(entry));
+                    TreeAPI::createRules(data, TreeMap);
+                } else if (t.name() == Parser::Rules::use) {
+                    // accamulate use here
+                } else {
+                    throw Error("Undefined tree member");
+                }
+            } else if (entry.type() == typeid(Parser::Token)) {
+                // is token
+                auto t = std::any_cast<Parser::Token&>(entry);
+                if (t.name() == Parser::Tokens::SPACEMODE) {
+                    // handle spacemode
+                } else if (t.name() == Parser::Tokens::NAME) {
+                    // handle name
+                } else 
+                    throw Error("Undefined tree member");
+            } else {
+                throw Error("Undefined type for entry");
+            }
+        }
+    }
     /*
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW

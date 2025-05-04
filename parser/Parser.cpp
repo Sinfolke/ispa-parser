@@ -2530,7 +2530,7 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
 	::Parser::arr_t<::Parser::Token> _4;
-	::Parser::arr_t<::Parser::arr_t<::Parser::Token>> dt;
+	::Parser::arr_t<::Parser::Token> dt;
 	::Parser::bool_t success_5 = false;
 	::Parser::bool_t success_7 = false;
 	::Parser::arr_t<::Parser::Token> _6;
@@ -2607,13 +2607,11 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 			_6.push_back(_8.node);
 		}
 		success_7 = true;
-		_4 = _6;
-		shadow_17.push_back(_4);
 	}
 	if (success_7)
 	{
 		success_5 = true;
-		dt = shadow_17;
+		dt = _6;
 		pos = begin_6;
 	}
 	skip_spaces(pos);

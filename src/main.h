@@ -29,6 +29,7 @@
 
 #include <args.h>
 #include <Parser.h>
+#include <TreeAPI.h>
 #include <IR/IR.h>
 #include <LRParser.h>
 #include <LALRParser.h>

@@ -181,9 +181,9 @@ namespace Parser {
 		};
 		using Rule_CSEQUENCE_SYMBOL_data = ::Parser::str_t;
 		using Rule_CSEQUENCE_ESCAPE_data = ::Parser::str_t;
-		using Rule_CSEQUENCE_DIAPASON_data = ::Parser::arr_t<::Parser::any_t>;
+		using Rule_CSEQUENCE_DIAPASON_data = ::Parser::arr_t<::Parser::Token>;
 		struct Rule_CSEQUENCE_data {
-			::Parser::arr_t<::Parser::arr_t<::Parser::Token>> val;
+			::Parser::arr_t<::Parser::Token> val;
 			::Parser::str_t _not;
 		};
 		using Rule_ESCAPED_data = ::Parser::str_t;

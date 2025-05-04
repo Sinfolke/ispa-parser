@@ -43,7 +43,7 @@ namespace TreeAPI {
         return full;
     }
     double Number::getFullNumber() {
-        std::stod(main + '.' + dec);
+        return std::stod(main + '.' + dec);
     };
     unsigned Number::getMain() {
         return std::stoul(main);
@@ -118,20 +118,21 @@ namespace TreeAPI {
     rvalue& CllExprValue::getrvalue() {
         return std::get<rvalue>(value);
     };
-    bool RuleQuantifier::empty() const {
-        return quantifier == '\0';
-    }
     std::string::iterator RuleMemberHex::begin() {
         return hex_chars.begin();
     }
     std::string::iterator RuleMemberHex::end() {
         return hex_chars.end();
     }
-    std::vector<int>::iterator RuleMemberBin::begin() {
+    std::string::iterator RuleMemberBin::begin() {
         return bin_chars.begin();
     }
-    std::vector<int>::iterator RuleMemberBin::end() {
+    std::string::iterator RuleMemberBin::end() {
         return bin_chars.end();
+    }
+    void RulePrefix::clear() {
+        name = "";
+        is_key_value = false;
     }
     bool RuleMember::isName() const {
         return std::holds_alternative<RuleMemberName>(value);
@@ -160,7 +161,9 @@ namespace TreeAPI {
     bool RuleMember::isBin() const {
         return std::holds_alternative<RuleMemberBin>(value);
     }
-    
+    bool RuleMember::emptyQuantifier() const {
+        return quantifier == '\0';
+    }
     decltype(RuleMemberName::name)& RuleMember::getName() {
         return std::get<RuleMemberName>(value).name;
     }
@@ -225,5 +228,194 @@ namespace TreeAPI {
     
     TemplatedDataBlock& DataBlock::getTemplatedDataBlock() {
         return std::get<TemplatedDataBlock>(value);
+    }
+    /*
+        create RuleMember API from Rule_rule AST member
+    */
+    RuleMember createRuleMember(
+        const Parser::Rule &rule, std::vector<RuleMember> newRules, bool &in_op, bool &prev_op, bool &add_prev, 
+        const std::vector<std::string> &fullname, RulePrefix &ops_prefix, std::vector<RuleMember> &ops, 
+        std::vector<std::string> &nested_rule_names
+    ) {
+        RuleMember member;
+        bool addToOps;
+        if (in_op) {
+            addToOps = true;
+        }
+        const auto &rule_r = Parser::get::Rule_rule(rule);
+        member.prefix.is_key_value = rule_r.prefix.name() == Parser::Rules::Rule_keyvalue;
+        // get prefix
+        if (rule_r.prefix.name() == Parser::Rules::Rule_keyvalue) {
+            auto data = Parser::get::Rule_keyvalue(rule_r.prefix);
+            member.prefix.name = Parser::get::ID(data);
+        } else {
+            auto data = Parser::get::Rule_value(rule_r.prefix);
+            member.prefix.name = Parser::get::ID(data);
+        }
+        // get quantifier
+        if (!rule_r.quantifier.empty()) {
+            member.quantifier = std::any_cast<std::string>(Parser::get::Rule_quantifier(rule_r.quantifier))[0];
+        }
+
+        // get value
+        if (rule_r.val.type() == typeid(Parser::Rule)) {
+            const auto &token = std::any_cast<Parser::Token&>(rule_r.val);
+            switch (token.name()) {
+                case Parser::Tokens::Rule_OP:
+                    if (!in_op) {
+                        add_prev = true;
+                        in_op = true;
+                    }
+                    addToOps = false;
+                    prev_op = true;
+                    break;
+                case Parser::Tokens::Rule_NOSPACE:
+                    member.value = RuleMemberNospace();
+                    break;
+                // temporary solution
+                case Parser::Tokens::AUTO_18:
+                    member.value = RuleMemberAny();
+                    break;
+                case Parser::Tokens::Rule_CSEQUENCE:
+                {
+                    RuleMemberCsequence newCsequence;
+                    const auto &csequence_data = Parser::get::Rule_CSEQUENCE(token);
+                    if (!csequence_data._not.empty()) {
+                        newCsequence.negative = true;
+                    }
+                    for (const auto &data : csequence_data.val) {
+                        switch (data.name())
+                        {
+                        case Parser::Tokens::Rule_CSEQUENCE_SYMBOL:
+                            newCsequence.characters.push_back(Parser::get::Rule_CSEQUENCE_SYMBOL(data)[0]);
+                            break;
+                        case Parser::Tokens::Rule_CSEQUENCE_ESCAPE:
+                            newCsequence.characters.push_back(Parser::get::Rule_CSEQUENCE_ESCAPE(data)[0]);
+                            break;
+                        case Parser::Tokens::Rule_CSEQUENCE_DIAPASON:
+                        {
+                            const auto &diapason = Parser::get::Rule_CSEQUENCE_DIAPASON(data);
+                            newCsequence.diapasons.push_back({Parser::get::Rule_CSEQUENCE_SYMBOL(diapason[0])[0], Parser::get::Rule_CSEQUENCE_SYMBOL(diapason[1])[0]});
+                            break;
+                        }
+                        default:
+                            throw Error("Undefined CSEQUENCE type");
+                            break;
+                        }
+                    }
+                    member.value = newCsequence;
+                    break;
+                }
+                case Parser::Tokens::Rule_ESCAPED:
+                    member.value = RuleMemberEscaped(Parser::get::Rule_ESCAPED(token)[0]);
+                    break;
+                case Parser::Tokens::Rule_HEX:
+                    member.value = RuleMemberHex{Parser::get::Rule_HEX(token)};
+                    break;
+                case Parser::Tokens::Rule_BIN:
+                    member.value = RuleMemberBin{Parser::get::Rule_BIN(token)};
+                    break;
+                default:
+                    throw Error("Undefined Rule_rule member");
+            }
+        } else {
+            auto rule = std::any_cast<Parser::Rule>(rule_r.val);
+            switch (rule.name())
+            {
+            case Parser::Rules::Rule_name:
+            {
+                auto data = Parser::get::Rule_name(rule);
+
+                std::vector<std::string> rule_name;
+                // if (is_nested)
+                //     rule_name.assign(fullname.begin(), fullname.end());
+                // rule_name.push_back(std::any_cast<std::string>(name.data));
+                // for (auto &nested : nested_rule_names)
+                //     rule_name.push_back(std::any_cast<std::string>(nested.data));
+                
+                auto res = std::find(nested_rule_names.begin(), nested_rule_names.end(), Parser::get::ID(data.name));
+                if (res != nested_rule_names.end()) {
+                    rule_name = std::vector<std::string>{*res};
+                } else {
+                    if (!data.is_nested.empty()) {
+                        rule_name.assign(fullname.begin(), fullname.end());
+                    }
+                    rule_name.push_back(Parser::get::ID(data.name));
+                }
+                for (const auto &nested : data.nested_name) {
+                    rule_name.push_back(Parser::get::ID(nested));
+                }
+                member.value = RuleMemberName {rule_name};
+                break;
+            }
+            case Parser::Rules::Rule_group:
+            {
+                auto data = Parser::get::Rule_group(rule);
+                member.value = RuleMemberGroup{createRuleMembers(data, fullname, nested_rule_names)};
+            }
+            default:
+                throw Error("Undefined rule_rule member");
+                break;
+            }
+        }
+        if (addToOps) {
+            if (!prev_op) {
+                // flush
+                RuleMemberOp op {ops};
+                newRules.push_back(RuleMember {.prefix = ops_prefix, .value = op});
+                in_op = false;
+                ops.clear();
+            } else {
+                ops.push_back(member);
+                prev_op = false;
+            }
+
+        }
+        return member;
+    }
+    std::vector<RuleMember> createRuleMembers(const std::vector<Parser::Rule> rules, const std::vector<std::string> &fullname, std::vector<std::string> &nested_rule_names) {
+        bool in_op = false, prev_op = false, add_prev = false;
+        RulePrefix ops_prefix;
+        std::vector<RuleMember> ops;
+        std::vector<RuleMember> newRules;
+        for (auto it = rules.begin(); it != rules.end(); it++) {
+            auto member = createRuleMember(*it, newRules, in_op, prev_op, add_prev, fullname, ops_prefix, ops, nested_rule_names);
+            if (add_prev) {
+                in_op = true;
+                prev_op = true;
+                ops.push_back(newRules.back());
+                newRules.pop_back();
+                ops_prefix = ops.back().prefix;
+                ops.back().prefix.clear();
+            }
+            newRules.push_back(member);
+        }
+        return newRules;
+    }
+    static std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule) {
+        std::vector<std::string> names;
+        for (auto el : rule.nested_rules) {
+            auto nested_r = Parser::get::Rule(el);
+            names.push_back(Parser::get::ID(nested_r.name));
+        }
+        return names;
+    }
+    // build Tree API from AST
+    void createRules(const Parser::Types::Rule_data &rule, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, Rule> &TreeMap) {
+        std::vector<Rule> result;
+        Rule newRule;
+        std::vector<std::string> nested_rule_names = getNestedRuleNames(rule);
+        fullname.push_back(Parser::get::ID(rule.name));
+        newRule.members = createRuleMembers(rule.rule, fullname, nested_rule_names);
+        TreeMap[fullname] = newRule;
+        for (auto nested : rule.nested_rules) {
+            auto r = Parser::get::Rule(nested);
+            createRules(r, fullname, TreeMap);
+        }
+        fullname.pop_back();
+    }
+    void createRules(const Parser::Types::Rule_data &rule, std::unordered_map<std::vector<std::string>, Rule> &TreeMap) {
+        std::vector<std::string> fullname;
+        createRules(rule, fullname, TreeMap);
     }
 };
