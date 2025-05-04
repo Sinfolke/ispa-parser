@@ -491,23 +491,11 @@ namespace Parser {
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
 			Token makeToken(const char*& pos);
-
-        /**
-         * @param os the output stream
-         * Print the tokens into an output stream
-         */
-        void printTokens(std::ostream& os);
-        /**
-         * @param os the output stream
-         * @param token the token to print
-         * Prints a single token into an output stream
-         */
-        static void printToken(std::ostream& os, const Token& token);
-		Lexer(const std::string& in) : Lexer_base(in) {}
-        Lexer(char*& in) : Lexer_base(in) {}
-        Lexer(const char*& in) : Lexer_base(in) {}
-        Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
-        Lexer() {}
+			Lexer(const std::string& in) : Lexer_base(in) {}
+			Lexer(char*& in) : Lexer_base(in) {}
+			Lexer(const char*& in) : Lexer_base(in) {}
+			Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
+			Lexer() {}
 		private:
 			Token_res NONE(const char*);
 			Token_res END(const char*);
@@ -568,22 +556,8 @@ namespace Parser {
 			Token_res __WHITESPACE(const char*);
 	};
 	class Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {
-		public:
-            /**
-             * @param os the output stream
-             * Print the ast into output stream
-             */
-            void printAST(std::ostream& os);
-            /**
-             * @param os the output stream
-             * @param rule the rule to print
-             * Prints a single rule into an output stream
-             */
-            static void printRule(std::ostream &os, const Token &token, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const Rule &rule, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);
-		private:			Rule_res getRule(Lexer::lazy_iterator&);
-			Rule_res getRule(Lexer::iterator&);
+		Rule_res getRule(Lexer::lazy_iterator&);
+		Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();
 		void lazyParse();
 		template <class IT>

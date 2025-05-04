@@ -246,7 +246,10 @@ public:
     /**
      * get data of this node
      */
-    auto& data() {
+    const auto& data() const {
+        return _data;
+    }
+    auto & dataRef() {
         return _data;
     }
 

@@ -9,6 +9,7 @@ MINUS:    '-';
 DIVIDE:   '/';
 MULTIPLE: '*';
 MODULO:   '%';
+AT: '@';
 LINEAR_COMMENT:
     '//' [^\n]*
 ;
@@ -25,7 +26,6 @@ NAME:
 
     data: %2;
 ;
-AT: '@';
 main: (use | Rule | SPACEMODE | NAME)+
     data: %1;
 ;

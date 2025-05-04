@@ -61,7 +61,7 @@ cll:
         {@}
     ;
     #function_arguments:
-        (@ any_data | ID (',' @ any_data | ID)* )
+        (@ expr (',' @ expr)* )
 
         @{first, second}
     ;
@@ -70,7 +70,7 @@ cll:
 
         @{first, second}
     ;
-    #cll_function_call:
+    #function_call:
         @ ID @ function_body_call
 
         @{name, body}

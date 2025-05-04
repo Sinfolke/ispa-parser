@@ -11,27 +11,7 @@
 #include <logging.h>
 #include <LLConverter.h>
 #include <logging.h>
-static size_t count_strlen(const char* str) {
-    size_t count = 0;
-    for (const char* pos = str; *pos; pos++) {
-        if (*pos == '\\' && *(pos - 1) != '\\') {
-            continue;
-        }
-        count++;
-    }
-    return count;
-}
-static std::string format_str(std::string str) {
-    std::string res;
-    for (auto &c : str) {
-        if (c == '"') {
-            res += "\\\"";
-            continue;
-        }
-        res += c;
-    }
-    return res;
-}
+
 
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     bool isRule = false;

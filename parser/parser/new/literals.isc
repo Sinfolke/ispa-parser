@@ -27,7 +27,7 @@ object:
     @{key, value, keys, values}
 any_data: 
 
-    @ BOOLEAN | NUMBER | STRING | ID | array | object
+    @ BOOLEAN | NUMBER | STRING | ID | AT | array | object
     
     {@}
 ;
