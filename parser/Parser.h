@@ -172,7 +172,7 @@ namespace Parser {
 		using cll_COMPARE_OP_data = ::Parser::str_t;
 		using cll_LOGICAL_OP_data = ::Parser::Token;
 		struct cll_TYPE_data {
-			::Parser::str_t templ;
+			::Parser::Token templ;
 			::Parser::str_t type;
 		};
 		struct cll_TEMPLATE_data {

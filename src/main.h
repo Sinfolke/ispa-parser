@@ -30,6 +30,7 @@
 #include <args.h>
 #include <Parser.h>
 #include <TreeAPI.h>
+#include <AST.h>
 #include <IR/IR.h>
 #include <LRParser.h>
 #include <LALRParser.h>

@@ -1,0 +1,69 @@
+#pragma once
+#include <TreeAPI.h>
+#include <internal_types.h>
+/*
+    class to perfrom native pass through AST and convert into TreeAPI
+*/
+class AST {
+    public:        
+        enum class SpacemodeStates {
+            MIXED, MANUAL, SKIPPED 
+        };
+        using TreeMap = std::unordered_map<std::vector<std::string>, TreeAPI::Rule>;
+        using Use = std::unordered_map<std::string, TreeAPI::rvalue>;
+    private:
+        TreeMap tree_map;
+        Use use;
+        std::string name;
+        SpacemodeStates spacemode = SpacemodeStates::MIXED;
+        void constructor(const std::vector<Parser::Rule> &modules);
+        void constructor(const Parser::Rule &mod);
+    
+    protected:
+        // convertion functions & variables
+        std::vector<TreeAPI::RuleMember> newRules;
+        bool in_op;
+        bool prev_op;
+        bool add_prev;
+        std::vector<std::string> fullname;
+        std::vector<std::string> nested_rule_names;
+        TreeAPI::RulePrefix ops_prefix;
+        std::vector<TreeAPI::RuleMember> ops;
+
+        TreeAPI::Array createArray(const Parser::Rule &array);
+        TreeAPI::Object createObject(const Parser::Rule &object);
+        TreeAPI::String createString(const Parser::Token &token);
+        TreeAPI::Number createNumber(const Parser::Token &number);
+        TreeAPI::Boolean createBoolean(const Parser::Token boolean);
+        TreeAPI::rvalue createRvalue(const Parser::Rule &rule);
+        TreeAPI::CllFunctionArguments createCllFunctionArguments(const Parser::Rule &rule);
+        TreeAPI::CllFunctionCall createCllFunctionCall(const Parser::Rule &rule);
+        TreeAPI::CllVariable createCllVariable(const Parser::Rule &rule);
+        TreeAPI::CllCompareOp createCllCompareOp(const Parser::Token &token);
+        TreeAPI::CllLogicalOp createCllLogicalOp(const Parser::Token &token);
+        TreeAPI::CllExprValue createCllExprValue(const Parser::Rule logical);
+        TreeAPI::CllExprTerm createCllExprTerm(const Parser::Rule logical);
+        TreeAPI::CllExprAddition createCllExprAddition(const Parser::Rule logical);
+        TreeAPI::CllExprCompare createCllCompare(const Parser::Rule logical);
+        TreeAPI::CllExprLogical createCllExprLogical(const Parser::Rule logical);
+        TreeAPI::CllExpr createCllExpr(const Parser::Rule &expr);
+        TreeAPI::CllIf createCllIf(const Parser::Rule &cond);
+        TreeAPI::CllType createCllType(const Parser::Token &rule);
+        TreeAPI::CllVar createCllVar(const Parser::Rule &var);
+        TreeAPI::Cll convertCll(const Parser::Rule &cll);
+        TreeAPI::RuleMember createRuleMember(const Parser::Rule &rule);
+        std::vector<TreeAPI::RuleMember> createRuleMembers(const std::vector<Parser::Rule> rules);
+        std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule);
+        // build Tree API from AST
+        void createRules(const Parser::Types::Rule_data &rule);
+    public:
+        TreeMap &getTreeMap();
+        Use &getUse();
+
+        AST(const std::vector<Parser::Rule> &modules) {
+            constructor(modules);
+        }
+        AST(const Parser::Rule &mod) {
+            constructor(mod);
+        }
+};

@@ -3,6 +3,7 @@
 #include <Parser.h>
 #include <internal_types.h>
 #include <list>
+#include <AST.h>
 #include <IR/IR.h>
 class Tree {
     public:
@@ -37,7 +38,7 @@ class Tree {
         using use_place_table = std::unordered_map<std::vector<std::string>, std::vector<Use_place>>;
         using TreeMap = std::unordered_map<std::vector<std::string>, TreeMapMember>;
     private:
-        TreeMap treeMap;
+        AST ast;
         size_t token_count = 0;
         // production management
         bool compare_string_rule(const Parser::Rule &first, const Parser::Rule &second);
@@ -116,8 +117,7 @@ class Tree {
             inlineTokens();                   // inline tokens to make sure that every token is used only once
         }
     public:
-        Tree(const std::vector<Parser::Rule> &modules, bool rawAssign = false) {
-            buildTreeMap(modules);
+        Tree(const AST &ast, bool rawAssign = false) : ast(ast) {
             if (!rawAssign)
                 constructor();
         }

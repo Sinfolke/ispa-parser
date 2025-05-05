@@ -5,26 +5,26 @@
 #include <any>
 #include <unordered_map>
 #include <variant>
+#include <memory>
 #include <Parser.h>
 #include <logging.h>
 namespace TreeAPI {
     // forward declarations
     struct CllType;
-    struct CllStmt;
     struct CllFunctionArguments;
     struct CllFunctionParameters;
     struct CllExprCompare;
-    struct CllExprArithmetic;
+    struct CllExprAddition;
     struct CllExprTerm;
     struct CllExprValue;
     struct CllExprLogical;
     struct CllExprLogicalPart;
+    struct CllVariable;
     struct rvalue;
     struct RuleMember;
     using CllFunctionBodyCall = CllFunctionArguments;
     using CllFunctionBodyDecl = CllFunctionParameters;
     using CllExpr = CllExprLogical;
-    using CllExprGroup = CllExpr;
     struct String {
         std::string value;
         static size_t count_strlen(const std::string &str);
@@ -58,7 +58,7 @@ namespace TreeAPI {
         std::string value;
     };
     struct rvalue {
-        std::variant<String, Number, Boolean, Array, Object> value;
+        std::variant<String, Number, Boolean, Array, Object, At, ID> value;
         bool isString();
         bool isNumber();
         bool isBoolean();
@@ -69,14 +69,11 @@ namespace TreeAPI {
         String& getString();
         Number& getNumber();
         Boolean& getBoolean();
-        Array& getArray();
-        Object& getObject();
+        std::vector<rvalue>& getArray();
+        std::unordered_map<std::string, rvalue>& getObject();
         std::string& getID();
     };
     // cll
-    struct CllAssignmentOp {
-        char op;
-    };
     struct CllCompareOp {
         std::string op;
     };
@@ -84,18 +81,9 @@ namespace TreeAPI {
     struct CllLogicalOp {
         bool isAnd;
     };
-    struct CllTemplate {
-        std::vector<CllType> value;
-    };
     struct CllType {
         std::string type;
-        CllTemplate templ;
-    };
-    struct CllVariable {
-        bool pre_increament;
-        bool post_increament;
-        std::string name;
-        CllExpr braceExpression;
+        std::vector<CllType> templ;
     };
     struct CllFunctionArguments {
         std::vector<CllExpr> expr;
@@ -111,59 +99,48 @@ namespace TreeAPI {
         std::string name;
         CllFunctionBodyDecl body;
     };
+    
     struct CllExprValue {
-        std::variant<CllExprGroup, CllVariable, CllFunctionCall, rvalue> value;
+        std::variant<CllExprLogical, CllVariable, CllFunctionCall, rvalue> value;
         bool isGroup();
         bool isVariable();
         bool isFunctionCall();
         bool isrvalue();
-        CllExprGroup& getGroup();
+        CllExpr& getGroup();
         CllVariable& getVariable();
         CllFunctionCall& getFunctionCall();
         rvalue& getrvalue();
     };
-    struct CllExprTermPart {
-        CllExprValue left;
-        char op; // plus / minus
-        CllExprValue right;
-    };
     struct CllExprTerm {
-        std::vector<CllExprLogicalPart> value;
+        CllExprValue value;
+        std::vector<std::pair<char, CllExprValue>> rights;
     };
-    struct CllExprArithmeticPart {
-        CllExprTerm left;
-        char op; // plus / minus
-        CllExprTerm right;
-    };
-    struct CllExprArithmetic {
-        std::vector<CllExprArithmeticPart> value;
-    };
-    struct CllExprComparePart {
-        CllExprArithmetic left;
-        CllCompareOp op;
-        CllExprArithmetic right;
+    struct CllExprAddition {
+        CllExprTerm value;
+        std::vector<std::pair<char, CllExprTerm>> rights;
     };
     struct CllExprCompare {
-        std::vector<CllExprComparePart> value;
-    };
-    struct CllExprLogicalPart {
-        CllExprCompare left;
-        CllLogicalOp op;
-        CllExprCompare right;
+        CllExprAddition value;
+        std::vector<std::pair<CllCompareOp, CllExprAddition>> rights;
     };
     struct CllExprLogical {
-        std::vector<CllExprLogicalPart> value;
+        CllExprCompare value;
+        std::vector<std::pair<CllLogicalOp, CllExprCompare>> rights;
+    };
+    struct CllVariable {
+        char pre_increament = -1;
+        char post_increament = -1;
+        std::string name;
+        std::optional<std::unique_ptr<CllExpr>> braceExpression;
     };
     struct CllIf {
         CllExpr expr;
         std::vector<RuleMember> stmt;
     };
-
-
     struct CllVar {
         CllType type;
         std::string name;
-        CllAssignmentOp op;
+        std::string op;
         CllExpr value;
     };
     struct CllLoopWhile {
@@ -174,6 +151,12 @@ namespace TreeAPI {
     struct CllLoopFor {};
     struct Cll {
         std::variant<CllVar, CllIf, CllExpr> value;
+        bool isVar();
+        bool isIf();
+        bool isExpr();
+        CllVar &getVar();
+        CllIf &getIf();
+        CllExpr &getExpr();
     };
     struct RulePrefix {
         bool is_key_value;
@@ -215,7 +198,7 @@ namespace TreeAPI {
     struct RuleMember {
         RulePrefix prefix;
         char quantifier = '\0';
-        std::variant<RuleMemberName, RuleMemberGroup, RuleMemberOp, RuleMemberCsequence, RuleMemberAny, RuleMemberNospace, RuleMemberEscaped, RuleMemberHex, RuleMemberBin> value;
+        std::variant<RuleMemberName, RuleMemberGroup, RuleMemberOp, RuleMemberCsequence, RuleMemberAny, RuleMemberNospace, RuleMemberEscaped, RuleMemberHex, RuleMemberBin, Cll> value;
 
         bool isName() const;
         bool isGroup() const;
@@ -226,6 +209,7 @@ namespace TreeAPI {
         bool isEscaped() const;
         bool isHex() const;
         bool isBin() const;
+        bool isCll() const;
         bool emptyQuantifier() const;
         decltype(RuleMemberName::name)& getName();
         decltype(RuleMemberGroup::values)& getGroup();
@@ -234,6 +218,7 @@ namespace TreeAPI {
         decltype(RuleMemberEscaped::c)& getEscaped();
         RuleMemberHex& getHex();
         RuleMemberBin& getBin();
+        Cll& getCll();
     }; 
     struct RegularDataBlockWKeys {
         std::unordered_map<std::string, CllExpr> value;
@@ -264,14 +249,4 @@ namespace TreeAPI {
         std::vector<TreeAPI::RuleMember> members;
         TreeAPI::DataBlock data_block;
     };
-
-    // convertion functions
-    RuleMember createRuleMember(
-        const Parser::Rule &rule, std::vector<RuleMember> newRules, bool &in_op, bool &prev_op, bool &add_prev, 
-        const std::vector<std::string> &fullname, RulePrefix &ops_prefix, std::vector<RuleMember> &ops, 
-        std::vector<std::vector<std::string>> &nested_rule_names
-    );
-    // build Tree API from AST
-    void createRules(const Parser::Types::Rule_data &rule, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, Rule> &TreeMap);
-    void createRules(const Parser::Types::Rule_data &rule, std::unordered_map<std::vector<std::string>, Rule> &TreeMap);
 };

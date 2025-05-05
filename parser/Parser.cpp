@@ -2118,154 +2118,51 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 	auto in = pos;
-	::Parser::any_t _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	::Parser::any_t _2;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::str_t _6;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	::Parser::str_t _10;
-	::Parser::bool_t success_11 = false;
-	::Parser::bool_t success_13 = false;
-	::Parser::bool_t success_17 = false;
-	::Parser::bool_t success_15 = false;
-	::Parser::str_t _14;
-	::Parser::Token_res _16;
-	::Parser::bool_t success_19 = false;
-	::Parser::bool_t success_23 = false;
-	::Parser::bool_t success_21 = false;
-	::Parser::str_t _20;
-	::Parser::Token_res _22;
-	success_5 = false;
-	success_3 = false;
-	success_1 = false;
-	auto begin_2 = pos;
-	if (!(!std::strncmp(begin_2, "bool", 4)))
-	{
-		success_7 = false;
-		if (!(!std::strncmp(begin_2, "var", 3)))
-		{
-			success_9 = false;
-			if (!(!std::strncmp(begin_2, "str", 3)))
-			{
-				success_11 = false;
-				if (!(!std::strncmp(begin_2, "num", 3)))
-				{
-					success_15 = false;
-					success_17 = false;
-					success_13 = false;
-					auto begin_14 = begin_2;
-					do
-					{
-						if (!(!std::strncmp(begin_14 + 0, "obj", 3)))
-						{
-							break;
-						}
-						_14 += ::Parser::str_t(begin_14, 3);
-						success_15 = true;
-						begin_14 += 3;
-						skip_spaces(begin_14);
-						_16 = cll_TEMPLATE(begin_14);
-						if (!(_16.status))
-						{
-							reportError(pos, "template");
-							break;
-						}
-						success_17 = true;
-						begin_14 += _16.node.length();
-					}
-					while(0);
-					if (success_15 && success_17)
-					{
-						success_13 = true;
-						begin_2 = begin_14;
-					}
-					;
-					if (!success_13)
-					{
-						success_21 = false;
-						success_23 = false;
-						success_19 = false;
-						auto begin_20 = begin_2;
-						do
-						{
-							if (!(!std::strncmp(begin_20 + 0, "arr", 3)))
-							{
-								break;
-							}
-							_20 += ::Parser::str_t(begin_20, 3);
-							success_21 = true;
-							begin_20 += 3;
-							skip_spaces(begin_20);
-							_22 = cll_TEMPLATE(begin_20);
-							if (!(_22.status))
-							{
-								reportError(pos, "template");
-								break;
-							}
-							success_23 = true;
-							begin_20 += _22.node.length();
-						}
-						while(0);
-						if (success_21 && success_23)
-						{
-							success_19 = true;
-							begin_2 = begin_20;
-						}
-						;
-						if (!success_19)
-						{
-							return {};
-						}
-					}
-				}
-				else 
-				{
-					_10 = ::Parser::str_t(begin_2, 1);
-					success_11 = true;
-					begin_2 += 1;
-					_2 = _10;
-				}
-			}
-			else 
-			{
-				_8 = ::Parser::str_t(begin_2, 1);
-				success_9 = true;
-				begin_2 += 1;
-				_2 = _8;
-			}
-		}
-		else 
-		{
-			_6 = ::Parser::str_t(begin_2, 1);
-			success_7 = true;
-			begin_2 += 1;
-			_2 = _6;
-		}
-	}
-	else 
-	{
-		_4 = ::Parser::str_t(begin_2, 1);
-		success_5 = true;
-		begin_2 += 1;
-		_2 = _4;
-	}
-	success_3 = true;
-	if (success_3)
-	{
-		success_1 = true;
-		pos = begin_2;
-	}
-	::Parser::Types::cll_TYPE_data data;
-	data.templ = _20;
-	data.type = _14;
+	using namespace ::Parser;
 
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_TYPE, data)};
+	Types::cll_TYPE_data data;
+
+	constexpr struct {
+		const char* keyword;
+		size_t length;
+		Tokens token;
+		bool templated;
+	} type_keywords[] = {
+		{"bool", 4, Tokens::cll_TYPE, false},
+		{"var",  3, Tokens::cll_TYPE, false},
+		{"str",  3, Tokens::cll_TYPE, false},
+		{"num",  3, Tokens::cll_TYPE, false},
+		{"obj",  3, Tokens::cll_TYPE, true},
+		{"arr",  3, Tokens::cll_TYPE, true}
+	};
+
+	for (auto& type : type_keywords) {
+		if (!std::strncmp(pos, type.keyword, type.length)) {
+			const char* begin = pos;
+			pos += type.length;
+			skip_spaces(pos);
+
+			if (type.templated) {
+				auto templ_res = cll_TEMPLATE(pos);
+				if (!templ_res.status) {
+					reportError(in, "template");
+					return {};
+				}
+				data.templ = templ_res.node;
+				pos += templ_res.node.length();
+			}
+
+			data.type = str_t(begin, type.length);
+			return {
+				true,
+				Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), type.token, data)
+			};
+		}
+	}
+
+	return {};
 }
+
 Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;

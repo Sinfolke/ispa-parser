@@ -22,7 +22,7 @@ array:
 
 object:
     '{'
-        ( @ any_data ':' @ any_data ( ',' @ ID ':' @ any_data )* ';' )?
+        ( @ ID | NUMBER ':' @ any_data ( ',' @ ID ':' @ any_data )* ';' )?
     '}'
     @{key, value, keys, values}
 any_data: 
