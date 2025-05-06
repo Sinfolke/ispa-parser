@@ -70,33 +70,35 @@ class Tree {
         bool compareStringViewRule(const Parser::Rule &first, const Parser::Rule &second);
         bool compareStringRule(const Parser::Rule &first, const Parser::Rule &second);
 
-        bool checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited);
+        // bool checkForPointing(const std::vector<std::string> &name, const std::vector<Parser::Rule> &rules, std::unordered_set<std::vector<std::string>> &visited);
         
-        // treeNormalizer
-        void reduceRuleToUniversal(Parser::Types::Rule_data &rule_data, TreeMapMember &member);
-        void buildTreeMapFromRule(Parser::Rule &rule, std::vector<std::string> &fullname);
-        void buildTreeMap(std::vector<Parser::Rule> &modules);
-        void normalizeHelper(Parser::arr_t<UniversalRule> &rules, std::vector<std::string> fullname, std::vector<std::vector<std::string>> &nested_rule_names);
-        // replace dublications functions
-        void getReplacedTree(Parser::Tree &tree, std::vector<Parser::Rule> &rules, const std::vector<std::string> &name, std::vector<std::string> fullname);
-        void replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string> fullname, bool global);
-        void removeEmptyRule(Parser::Tree &tree);
-        // inline tokens functions
-        void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
-        void inlineTokensInTable( std::unordered_map<std::vector<std::string>, Parser::Rule> &map);
-        void inline_Rule_rule(std::vector<Parser::Rule> &rules, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
-        void inlineTokensHelper(Parser::Tree &tree, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
-        void inlineTokensHelper(Parser::Tree &tree);
+        // // treeNormalizer
+        // void reduceRuleToUniversal(Parser::Types::Rule_data &rule_data, TreeMapMember &member);
+        // void buildTreeMapFromRule(Parser::Rule &rule, std::vector<std::string> &fullname);
+        // void buildTreeMap(std::vector<Parser::Rule> &modules);
+        // void normalizeHelper(Parser::arr_t<UniversalRule> &rules, std::vector<std::string> fullname, std::vector<std::vector<std::string>> &nested_rule_names);
+        // // replace dublications functions
+        // void getReplacedTree(Parser::Tree &tree, std::vector<Parser::Rule> &rules, const std::vector<std::string> &name, std::vector<std::string> fullname);
+        // void replaceDublicationsHelper(Parser::Tree &tree, std::vector<std::string> fullname, bool global);
+        // void removeEmptyRule(Parser::Tree &tree);
+        // // inline tokens functions
+        // void accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
+        // void inlineTokensInTable( std::unordered_map<std::vector<std::string>, Parser::Rule> &map);
+        // void inline_Rule_rule(std::vector<Parser::Rule> &rules, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
+        // void inlineTokensHelper(Parser::Tree &tree, const std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested);
+        // void inlineTokensHelper(Parser::Tree &tree);
         // literals to tokens functions
-        auto getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) -> std::pair<Parser::Rule, Parser::Rule>;
-        bool checkRuleEscaped(const Parser::Rule &rule);
-        void getTokensFromRule_rule(Parser::Tree &tree, std::vector<Parser::Rule>& rule, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated, bool is_not_rule_rule = false);
-        auto getTokensFromRule(Parser::Rule &member, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) -> Parser::Tree;
-        void literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated);
+        
         // sort by priority functions
-        bool sortPriority(const Parser::Rule &first, const Parser::Rule &second);
-        void sortByPriorityHelper(std::vector<Parser::Rule> &rules);
-        void sortByPriority(Parser::Tree &tree);
+        bool sortPriority(TreeAPI::String &first, TreeAPI::String &second);
+        bool sortPriority(TreeAPI::RuleMemberBin &first, TreeAPI::RuleMemberBin second);
+        bool sortPriority(TreeAPI::RuleMemberHex &first, TreeAPI::RuleMemberHex &second);
+        bool sortPriority(TreeAPI::RuleMemberName &first, TreeAPI::RuleMemberName &second);
+        bool sortPriority(TreeAPI::RuleMemberCsequence &first, TreeAPI::RuleMemberCsequence &second);
+        bool sortPriority(TreeAPI::RuleMemberGroup &first, TreeAPI::RuleMemberGroup &second);
+        bool sortPriority(TreeAPI::RuleMemberOp &first, TreeAPI::RuleMemberOp &second);
+        bool sortPriority(TreeAPI::RuleMember &first, TreeAPI::RuleMember &second);        
+        void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
 
         // other functions
         void getTokenAndRuleNamesHelper(const Parser::Tree &tree, std::vector<std::vector<std::string>> &tokens, std::vector<std::vector<std::string>> &rules, std::unordered_set<std::vector<std::string>> &seen, std::vector<std::string> &fullname);   
@@ -139,6 +141,7 @@ class Tree {
         auto getTreeMap() -> TreeMap&;
 
         void removeEmptyRule();
+        void inlineSingleGroups();
         void normalize();
         void replaceDublications();
         void inlineTokens();

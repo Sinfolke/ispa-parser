@@ -41,11 +41,11 @@ class AST {
         TreeAPI::CllVariable createCllVariable(const Parser::Rule &rule);
         TreeAPI::CllCompareOp createCllCompareOp(const Parser::Token &token);
         TreeAPI::CllLogicalOp createCllLogicalOp(const Parser::Token &token);
-        TreeAPI::CllExprValue createCllExprValue(const Parser::Rule logical);
-        TreeAPI::CllExprTerm createCllExprTerm(const Parser::Rule logical);
-        TreeAPI::CllExprAddition createCllExprAddition(const Parser::Rule logical);
-        TreeAPI::CllExprCompare createCllCompare(const Parser::Rule logical);
-        TreeAPI::CllExprLogical createCllExprLogical(const Parser::Rule logical);
+        TreeAPI::CllExprValue createCllExprValue(const Parser::Rule &value);
+        TreeAPI::CllExprTerm createCllExprTerm(const Parser::Rule &term);
+        TreeAPI::CllExprAddition createCllExprAddition(const Parser::Rule &addition);
+        TreeAPI::CllExprCompare createCllExprCompare(const Parser::Rule &compare);
+        TreeAPI::CllExprLogical createCllExprLogical(const Parser::Rule &logical);
         TreeAPI::CllExpr createCllExpr(const Parser::Rule &expr);
         TreeAPI::CllIf createCllIf(const Parser::Rule &cond);
         TreeAPI::CllType createCllType(const Parser::Token &rule);
@@ -53,6 +53,7 @@ class AST {
         TreeAPI::Cll convertCll(const Parser::Rule &cll);
         TreeAPI::RuleMember createRuleMember(const Parser::Rule &rule);
         std::vector<TreeAPI::RuleMember> createRuleMembers(const std::vector<Parser::Rule> rules);
+        TreeAPI::DataBlock createDataBlock(const Parser::Rule &rule);
         std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule);
         // build Tree API from AST
         void createRules(const Parser::Types::Rule_data &rule);

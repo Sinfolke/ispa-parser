@@ -135,9 +135,7 @@ TreeAPI::CllVariable AST::createCllVariable(const Parser::Rule &rule) {
     TreeAPI::CllVariable newVar;
     const auto &var = Parser::get::cll_variable(rule);
     newVar.name = Parser::get::ID(var.name);
-    newVar.braceExpression = std::make_optional(
-        std::make_unique<TreeAPI::CllExpr>(createCllExpr(var.brace_expression))
-    );
+    newVar.braceExpression = std::make_optional(createCllExpr(var.brace_expression));
     
     if (!var.post.empty()) {
         newVar.post_increament = var.post.name() == Parser::Tokens::AUTO_10;
@@ -183,8 +181,8 @@ TreeAPI::CllExprValue AST::createCllExprValue(const Parser::Rule logical) {
     return result;
 }
 
-TreeAPI::CllExprTerm AST::createCllExprTerm(const Parser::Rule logical) {
-    auto data = Parser::get::cll_expr_term(logical);
+TreeAPI::CllExprTerm AST::createCllExprTerm(const Parser::Rule &term) {
+    auto data = Parser::get::cll_expr_term(term);
     TreeAPI::CllExprTerm result;
 
     result.value = createCllExprValue(data.first);
@@ -199,8 +197,8 @@ TreeAPI::CllExprTerm AST::createCllExprTerm(const Parser::Rule logical) {
     return result;
 }
 
-TreeAPI::CllExprAddition AST::createCllExprAddition(const Parser::Rule logical) {
-    auto data = Parser::get::cll_expr_arithmetic(logical);
+TreeAPI::CllExprAddition AST::createCllExprAddition(const Parser::Rule &addition) {
+    auto data = Parser::get::cll_expr_arithmetic(addition);
     TreeAPI::CllExprAddition result;
 
     result.value = createCllExprTerm(data.first);
@@ -215,8 +213,8 @@ TreeAPI::CllExprAddition AST::createCllExprAddition(const Parser::Rule logical) 
     return result;
 }
 
-TreeAPI::CllExprCompare AST::createCllCompare(const Parser::Rule logical) {
-    auto data = Parser::get::cll_expr_compare(logical);
+TreeAPI::CllExprCompare AST::createCllExprCompare(const Parser::Rule &compare) {
+    auto data = Parser::get::cll_expr_compare(compare);
     TreeAPI::CllExprCompare result;
 
     result.value = createCllExprAddition(data.first);
@@ -226,18 +224,18 @@ TreeAPI::CllExprCompare AST::createCllCompare(const Parser::Rule logical) {
     return result;
 }
 
-TreeAPI::CllExprLogical AST::createCllExprLogical(const Parser::Rule logical) {
+TreeAPI::CllExprLogical AST::createCllExprLogical(const Parser::Rule &logical) {
     auto data = Parser::get::cll_expr_logical(logical);
     TreeAPI::CllExprLogical result;
-    result.value = createCllCompare(data.left);
+    result.value = createCllExprCompare(data.left);
     for (size_t i = 0; i < data.op.size(); i++) {
-        result.rights.push_back(std::make_pair(createCllLogicalOp(data.op[i]), createCllCompare(data.right[i])));
+        result.rights.push_back(std::make_pair(createCllLogicalOp(data.op[i]), createCllExprCompare(data.right[i])));
     }
     return result;
 }
 
 TreeAPI::CllExpr AST::createCllExpr(const Parser::Rule &expr) {
-    return createCllExprLogical(Parser::get::cll_expr(expr));
+    return TreeAPI::CllExpr {createCllExprLogical(Parser::get::cll_expr(expr)) };
 }
 
 TreeAPI::CllIf AST::createCllIf(const Parser::Rule &cond) {
@@ -317,6 +315,9 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
     if (rule_r.val.type() == typeid(Parser::Rule)) {
         const auto &token = std::any_cast<Parser::Token&>(rule_r.val);
         switch (token.name()) {
+            case Parser::Tokens::STRING:
+                member.value = TreeAPI::String {Parser::get::STRING(token)};    
+            break;
             case Parser::Tokens::Rule_OP:
                 if (!in_op) {
                     add_prev = true;
@@ -459,12 +460,52 @@ static std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_dat
     }
     return names;
 }
+TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
+    TreeAPI::DataBlock data_block;
+    auto data = Parser::get::Rule_data_block(rule);
+    switch (data.name())
+    {
+    case Parser::Rules::Rule_data_block_regular_datablock:
+    {
+        auto rdbd = Parser::get::Rule_data_block_regular_datablock(data);
+        if (rdbd.type() == typeid(Parser::Rule)) {
+            data_block.value = TreeAPI::RegularDataBlock {createCllExpr(std::any_cast<Parser::Rule&>(data))};
+        } else {
+            // key-based data block
+            TreeAPI::RegularDataBlockWKeys result;
+            auto& keys = std::any_cast<Parser::arr_t<Parser::Rule>&>(data);
+            for (const auto &k : keys) {
+                const auto &key = Parser::get::Rule_data_block_regular_datablock_key(k);
+                result[name] = createCllExpr(key.val);
+            }
+            data_block.value = result;
+        }
+        break;
+    }
+    case Parser::Rules::Rule_data_block_templated_datablock:
+    {
+        TreeAPI::TemplatedDataBlock result;
+        const auto &tdbd = Parser::get::Rule_data_block_templated_datablock(data);
+        result.names.push_back(Parser::get::ID(tdbd.first_name));
+        for (const auto &name : tdbd.second_name) {
+            result.names.push_back(Parser::get::ID(name));
+        }
+        data_block.value = result;
+        break;
+    }
+    default:
+        throw Error("Undefined data block");
+        break;
+    }
+    return data_block;
+}
 // build Tree API from AST
 void AST::createRules(const Parser::Types::Rule_data &rule) {
     TreeAPI::Rule newRule;
     std::vector<std::string> nested_rule_names = getNestedRuleNames(rule);
     fullname.push_back(Parser::get::ID(rule.name));
     newRule.members = createRuleMembers(rule.rule);
+    newRule.data_block = createDataBlock(rule.data_block);
     tree_map[fullname] = std::move(newRule);
     for (auto nested : rule.nested_rules) {
         auto r = Parser::get::Rule(nested);

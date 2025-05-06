@@ -7,6 +7,26 @@
 #include <list>
 #include <forward_list>
 #include <tree.h>
+#include <TreeAPI.h>
+TreeAPI::CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val) {
+    TreeAPI::CllExprTerm term;
+    term.value = val;
+
+    TreeAPI::CllExprAddition addition;
+    addition.value = std::move(term);
+
+    TreeAPI::CllExprCompare compare;
+    compare.value = std::move(addition);
+
+    TreeAPI::CllExprLogical logical;
+    logical.value = std::move(compare);
+
+    TreeAPI::CllExpr expr;
+    expr.value = std::move(logical);
+
+    return expr;
+}
+
 ::Parser::Rule Tree::singleRuleToToken(const Parser::Rule &input, size_t &count) {
     // Construct a token here
     ::Parser::Rule numberRule = make_rule(Parser::Rules::number, 

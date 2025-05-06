@@ -94,29 +94,29 @@ namespace TreeAPI {
         return std::get<ID>(value).value;
     }
     bool CllExprValue::isGroup() {
-        return std::holds_alternative<CllExpr>(value);
+        return value.type() == typeid(CllExpr);
     }
     bool CllExprValue::isVariable() {
-        return std::holds_alternative<CllVariable>(value);
+        return value.type() == typeid(CllVariable);
     }
     bool CllExprValue::isFunctionCall() {
-        return std::holds_alternative<CllFunctionCall>(value);
+        return value.type() == typeid(CllFunctionCall);
     }
 
     bool CllExprValue::isrvalue() {
-        return std::holds_alternative<CllExprValue>(value);
+        return value.type() == typeid(CllExprValue);
     }
     CllExpr& CllExprValue::getGroup() {
-        return std::get<CllExpr>(value);
+        return std::any_cast<CllExpr&>(value);
     }
     CllVariable& CllExprValue::getVariable() {
-        return std::get<CllVariable>(value);
+        return std::any_cast<CllVariable&>(value);
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
-        return std::get<CllFunctionCall>(value);
+        return std::any_cast<CllFunctionCall&>(value);
     }
     rvalue& CllExprValue::getrvalue() {
-        return std::get<rvalue>(value);
+        return std::any_cast<rvalue&>(value);
     };
     bool TreeAPI::Cll::isVar() {
         return std::holds_alternative<CllVar>(value);
@@ -156,6 +156,9 @@ namespace TreeAPI {
         name = "";
         is_key_value = false;
     }
+    bool RuleMember::isString() const {
+        return std::holds_alternative<String>(value);
+    }
     bool RuleMember::isName() const {
         return std::holds_alternative<RuleMemberName>(value);
     }
@@ -188,6 +191,9 @@ namespace TreeAPI {
     }
     bool RuleMember::emptyQuantifier() const {
         return quantifier == '\0';
+    }
+    String& RuleMember::getString() {
+        return std::get<String>(value);
     }
     decltype(RuleMemberName::name)& RuleMember::getName() {
         return std::get<RuleMemberName>(value).name;
@@ -256,5 +262,222 @@ namespace TreeAPI {
     
     TemplatedDataBlock& DataBlock::getTemplatedDataBlock() {
         return std::get<TemplatedDataBlock>(value);
+    }
+    // operator== for rules
+        
+    bool operator==(const String &first, const String &second) {
+        return first.value == second.value;
+    }
+    // Comparison operator for Number
+    bool operator==(const TreeAPI::Number &lhs, const TreeAPI::Number &rhs) {
+        return lhs.sign == rhs.sign &&
+            lhs.main == rhs.main &&
+            lhs.dec == rhs.dec;
+    }
+
+    // Comparison operator for Boolean
+    bool operator==(const TreeAPI::Boolean &lhs, const TreeAPI::Boolean &rhs) {
+        return lhs.value == rhs.value;
+    }
+
+    // Comparison operator for Array
+    bool operator==(const TreeAPI::Array &lhs, const TreeAPI::Array &rhs) {
+        return lhs.value == rhs.value;
+    }
+
+    // Comparison operator for Object
+    bool operator==(const TreeAPI::Object &lhs, const TreeAPI::Object &rhs) {
+        return lhs.value == rhs.value;
+    }
+
+    // Comparison operator for ID
+    bool operator==(const TreeAPI::ID &lhs, const TreeAPI::ID &rhs) {
+        return lhs.value == rhs.value;
+    }
+
+    // Comparison operator for rvalue
+    bool operator==(const TreeAPI::rvalue &lhs, const TreeAPI::rvalue &rhs) {
+        return lhs.value == rhs.value;
+    }
+
+    // Comparison operator for CllCompareOp
+    bool operator==(const TreeAPI::CllCompareOp &lhs, const TreeAPI::CllCompareOp &rhs) {
+        return lhs.op == rhs.op;
+    }
+
+    // Comparison operator for CllLogicalOp
+    bool operator==(const TreeAPI::CllLogicalOp &lhs, const TreeAPI::CllLogicalOp &rhs) {
+        return lhs.isAnd == rhs.isAnd;
+    }
+
+    bool operator==(const CllType &lhs, const CllType &rhs) {
+        return lhs.type == rhs.type && lhs.templ == rhs.templ;
+    }
+    
+    bool operator==(const CllFunctionArguments &lhs, const CllFunctionArguments &rhs) {
+        return lhs.expr == rhs.expr;
+    }
+    
+    bool operator==(const CllFunctionParameters &lhs, const CllFunctionParameters &rhs) {
+        return lhs.names == rhs.names;
+    }
+    
+    // Comparison operator for CllFunctionCall
+    bool operator==(const TreeAPI::CllFunctionCall &lhs, const TreeAPI::CllFunctionCall &rhs) {
+        return lhs.name == rhs.name &&
+            lhs.body == rhs.body;
+    }
+
+    // Comparison operator for CllFunctionDecl
+    bool operator==(const TreeAPI::CllFunctionDecl &lhs, const TreeAPI::CllFunctionDecl &rhs) {
+        return lhs.name == rhs.name &&
+            lhs.body == rhs.body;
+    }
+    bool operator==(const CllExpr &lhs, const CllExpr &rhs) {
+        return lhs.value == rhs.value;
+    }
+    
+    bool operator==(const CllExprLogical &lhs, const CllExprLogical &rhs) {
+        return lhs.value == rhs.value && lhs.rights == rhs.rights;
+    }
+    
+    bool operator==(const CllExprCompare &lhs, const CllExprCompare &rhs) {
+        return lhs.value == rhs.value && lhs.rights == rhs.rights;
+    }
+    
+    bool operator==(const CllExprAddition &lhs, const CllExprAddition &rhs) {
+        return lhs.value == rhs.value && lhs.rights == rhs.rights;
+    }
+    
+    bool operator==(const CllExprTerm &lhs, const CllExprTerm &rhs) {
+        return lhs.value == rhs.value && lhs.rights == rhs.rights;
+    }
+    
+    bool operator==(const CllExprValue &lhs, const CllExprValue &rhs) {
+        return lhs.value.type() == rhs.value.type() && lhs.value == rhs.value;
+    }
+    
+    bool operator==(const CllVariable &lhs, const CllVariable &rhs) {
+        return lhs.pre_increament == rhs.pre_increament &&
+               lhs.post_increament == rhs.post_increament &&
+               lhs.name == rhs.name &&
+               lhs.braceExpression == rhs.braceExpression;
+    }
+    
+    bool operator==(const CllIf &lhs, const CllIf &rhs) {
+        return lhs.expr == rhs.expr && lhs.stmt == rhs.stmt;
+    }
+    
+    bool operator==(const CllVar &lhs, const CllVar &rhs) {
+        return lhs.type == rhs.type && lhs.name == rhs.name && lhs.op == rhs.op && lhs.value == rhs.value;
+    }
+    
+    bool operator==(const CllLoopWhile &lhs, const CllLoopWhile &rhs) {
+        return lhs.expr == rhs.expr && lhs.stmt == rhs.stmt;
+    }
+    
+    bool operator==(const DataBlock &lhs, const DataBlock &rhs) {
+        return lhs.value == rhs.value;
+    }
+    
+    bool operator==(const RegularDataBlockWKeys &lhs, const RegularDataBlockWKeys &rhs) {
+        return lhs.value == rhs.value;
+    }
+    
+    bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs) {
+        return lhs.names == rhs.names;
+    }
+    
+    bool operator==(const Rule &lhs, const Rule &rhs) {
+        return lhs.members == rhs.members && lhs.data_block == rhs.data_block;
+    }
+
+    bool operator==(const RulePrefix &first, const RulePrefix &second) {
+        return first.is_key_value == second.is_key_value && first.name == second.name;
+    }
+
+    bool operator==(const Cll &first, const Cll &second) {
+        return std::visit([](auto &&first, auto &&second) -> bool {
+            if constexpr (std::is_same_v<decltype(first), decltype(second)>) {
+                return first == second;
+            } else {
+                return false;
+            }
+        }, first.value, second.value);
+    }
+
+    bool operator==(const RuleMemberName &first, const RuleMemberName &second) {
+        return first.name == second.name;
+    }
+    
+    bool operator==(const RuleMemberGroup &first, const RuleMemberGroup &second) {
+        return first.values == second.values;
+    }
+    
+    bool operator==(const RuleMemberOp &first, const RuleMemberOp &second) {
+        return first.options == second.options;
+    }
+    
+    bool operator==(const RuleMemberCsequence &first, const RuleMemberCsequence &second) {
+        // Compare independently of character position in csequence
+        if (first.negative != second.negative || 
+            first.characters.size() != second.characters.size() || 
+            first.escaped.size() != second.escaped.size() || 
+            first.diapasons.size() != second.diapasons.size()) {
+            return false;
+        }
+        for (size_t i = 0; i < first.characters.size(); i++) {
+            if (std::find(second.characters.begin(), second.characters.end(), first.characters[i]) == second.characters.end()) {
+                return false;
+            }
+        }
+        for (size_t i = 0; i < first.escaped.size(); i++) {
+            if (std::find(second.escaped.begin(), second.escaped.end(), first.escaped[i]) == second.escaped.end()) {
+                return false;
+            }
+        }
+        for (size_t i = 0; i < first.diapasons.size(); i++) {
+            if (std::find_if(second.diapasons.begin(), second.diapasons.end(), 
+                             [&first, i](const std::pair<char, char> &pair) {
+                                 return pair.first == first.diapasons[i].first && pair.second == first.diapasons[i].second;
+                             }) == second.diapasons.end()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    bool operator==(const RuleMemberAny &first, const RuleMemberAny &second) {
+        return true; // Always equal
+    }
+    
+    bool operator==(const RuleMemberNospace &first, const RuleMemberNospace &second) {
+        return true; // Always equal
+    }
+    
+    bool operator==(const RuleMemberEscaped &first, const RuleMemberEscaped &second) {
+        return first.c == second.c;
+    }
+    
+    bool operator==(const RuleMemberHex &first, const RuleMemberHex &second) {
+        return first.hex_chars == second.hex_chars;
+    }
+    
+    bool operator==(const RuleMemberBin &first, const RuleMemberBin &second) {
+        return first.bin_chars == second.bin_chars;
+    }
+    
+    bool operator==(const RuleMember &first, const RuleMember &second) {
+        return std::visit([](auto &&lhs, auto &&rhs) -> bool {
+                if constexpr (std::is_same_v<decltype(lhs), decltype(rhs)>) {
+                    return lhs == rhs;
+                } else {
+                    return false;
+                }
+            }, first.value, second.value);
+    }
+    
+    bool RuleMember::fullCompare(const RuleMember &second) {
+        return *this == second && quantifier == second.quantifier && prefix == second.prefix && isAutoGenerated == second.isAutoGenerated && isInline == second.isInline;
     }
 };

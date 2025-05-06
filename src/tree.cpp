@@ -104,6 +104,18 @@ void Tree::removeEmptyRule() {
         it++;
     }
 }
+void Tree::inlineSingleGroups() {
+    for (auto &[name, value] : ast.getTreeMap()) {
+        for (auto &member : value.members) {
+            if (member.isGroup()) {
+                auto &grp = member.getGroup();
+                if (grp.size() == 1) {
+                    member.value = grp[0].value;
+                }
+            }
+        }
+    }
+}
 // void Tree::accumulateInlineNamesAndRemove(Parser::Tree& tree, std::unordered_map<std::vector<std::string>, Parser::Rule> &map, std::vector<std::string> nested) {
 //     for (auto it = tree.begin(); it != tree.end(); ) {
 //         auto member = *it;
@@ -256,343 +268,196 @@ void Tree::removeEmptyRule() {
 // void Tree::inlineTokens() {
 //     return inlineTokensHelper(treeMap);
 // }
+TreeAPI::CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val) {
+    TreeAPI::CllExprTerm term;
+    term.value = val;
 
-std::pair<Parser::Rule, Parser::Rule> Tree::getNewRuleAndToken(const Parser::Rule &val, const Parser::Rule &qualifier, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) {
-    auto newToken = singleRuleToToken(val, token_count);
-    auto newTokenData = std::any_cast<obj_t>(newToken.data);
-    auto newToken_name = std::any_cast<Parser::Rule>( corelib::map::get(newTokenData, "name") );
-    auto newToken_name_str = std::any_cast<std::string>(newToken_name.data);
-    auto Rule_other = make_rule(Parser::Rules::Rule_other, rule_other {newToken_name_str, {newToken_name_str}});
-    auto _rule = make_rule(Parser::Rules::Rule_rule, obj_t {
-        { "val", Rule_other  },
-        { "qualifier", qualifier }
-    });
-    generated.push_back({val, _rule});
-    return {newToken, _rule};
-}
-bool Tree::checkRuleEscaped(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto c = std::any_cast<std::string>(corelib::map::get(data, "c"));
-    auto num = std::any_cast<Parser::Rule>(corelib::map::get(data, "num"));
-    obj_t num_data;
-    double num_main;
-    if (num.data.has_value()) {
-        num_data = num.as<obj_t>();
-        num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n"));
-    } else {
-        num_main = -1;
-    }
-    if (c[0] == 's' && num_main == 0)
-        return 1;
-    return 0;
-}
-void Tree::getTokensFromRule_rule(Parser::Tree &tree, std::vector<Parser::Rule>& rule, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated, bool is_not_rule_rule) {
-    // is rule
-    for (auto &el : rule) {
-        obj_t el_data = std::any_cast<obj_t>(el.data);
-        Parser::Rule val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
-        Parser::Rule qualifier = std::any_cast<::Parser::Rule>(corelib::map::get(el_data, "qualifier"));
-        if (
-            val.name == Parser::Rules::string || val.name == Parser::Rules::Rule_hex || val.name == Parser::Rules::Rule_bin || 
-            val.name == Parser::Rules::Rule_csequence || val.name == Parser::Rules::Rule_escaped || val.name == Parser::Rules::Rule_any
-        )
-        {
-            // do not tokenize rule_escaped if it is \s0
-            if (val.name == Parser::Rules::Rule_escaped && checkRuleEscaped(val))
-                continue;
-            auto find_it = std::find_if(generated.begin(), generated.end(), [&val, this](std::pair<Parser::Rule, Parser::Rule> pair) {
-                return compare_rule(val, pair.first);
-            });
-            if (find_it != generated.end()) {
-                // use already created literal instead of token here
-                el = find_it->second;
-            } else {
-                // add new token instead of literal
-                auto [newToken, _rule] = getNewRuleAndToken(val, qualifier, generated);
-                tree.push_back(newToken);
-                // use token here instead of literal
-                el = _rule;
-            }
+    TreeAPI::CllExprAddition addition;
+    addition.value = std::move(term);
 
-        } else if (val.name == Parser::Rules::Rule_group) {
-            auto group_data = std::any_cast<obj_t>(val.data);
-            auto group_val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(group_data, "val"));
-            getTokensFromRule_rule(tree, group_val, generated);
-            corelib::map::set(group_data, "val", std::any(group_val));
-            val.data = std::any(group_data);
+    TreeAPI::CllExprCompare compare;
+    compare.value = std::move(addition);
 
-            corelib::map::set(el_data, "val", std::any(val));
-            el.data = std::any(el_data);
+    TreeAPI::CllExprLogical logical;
+    logical.value = std::move(compare);
 
-        } else if (val.name == Parser::Rules::Rule_op) {
-            auto rules = std::any_cast<std::vector<Parser::Rule>>(val.data);
-            getTokensFromRule_rule(tree, rules, generated);
-            val.data = rules;
+    TreeAPI::CllExpr expr;
+    expr.value = std::move(logical);
 
-            corelib::map::set(el_data, "val", std::any(val));
-            el.data = std::any(el_data);
-        }
-    }
-}
-Parser::Tree Tree::getTokensFromRule(Parser::Rule &member, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated) {
-    Parser::Tree tree;
-    auto data = std::any_cast<obj_t>(member.data);
-    auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-    auto name_str = std::any_cast<std::string>(name.data);
-    auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-    auto nested_rule = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-    if (corelib::text::isLower(name_str)) {
-        getTokensFromRule_rule(treeMap, rules, generated);
-
-        // apply changes to map
-        corelib::map::set(data, "rule", std::any(rules));
-    }
-
-    literalsToTokenHelper(nested_rule, treeMap, generated);
-    // apply changes to map
-    corelib::map::set(data, "nestedRules", std::any(nested_rule));
-    member.data = std::any(data); // apply changes to member
-    return treeMap;
-}
-void Tree::literalsToTokenHelper(Parser::Tree& tree, Parser::Tree &treeInsert, std::vector<std::pair<Parser::Rule, Parser::Rule>> &generated)  {
-    Parser::Tree tokenSeq;
-    for (auto& member : tree) {
-        if (member.name == Parser::Rules::Rule) {
-            Parser::Tree tokenseq = getTokensFromRule(member, generated);
-            tokenSeq.insert(tokenSeq.end(), tokenseq.begin(), tokenseq.end());
-        }
-    }
-    // Append tokenSeq to the existing tree
-    treeInsert.insert(treeInsert.end(), tokenSeq.begin(), tokenSeq.end());
+    return expr;
 }
 void Tree::literalsToToken() {
-    std::vector<std::pair<Parser::Rule, Parser::Rule>> generated;
-    literalsToTokenHelper(treeMap, treeMap, generated);
+    size_t count = 0;
+    std::unordered_map<TreeAPI::RuleMember, TreeAPI::RuleMember> generated;
+    auto &treeMap = ast.getTreeMap();
+    for (auto &[name, value] : treeMap) {
+        if (corelib::text::isLower(name.back())) {
+            for (auto &member : value.members) {
+                if (member.isString() || member.isHex() || member.isBin() || member.isEscaped() || member.isCsequence()) {
+                    auto find_it = generated.find(member);
+                    if (find_it != generated.end()) {
+                        member = find_it->second;
+                    } else {
+                        // create new Token
+                        auto [ptr_in_generated, inserted] = generated.emplace(member, TreeAPI::RuleMember{});
+                        auto copy = member;
+                        std::vector<std::string> new_name = {"AUTO_" + std::to_string(count)};
+                        member.value = TreeAPI::RuleMemberName {new_name};
+                        member.isAutoGenerated = true;
+                        TreeAPI::Rule newRule;
+                        // make the rule to store the data via @ <rule>
+                        copy.prefix.clear();
+                        copy.prefix.is_key_value = true;
+    
+                        // add data block
+                        newRule.data_block = TreeAPI::DataBlock {TreeAPI::RegularDataBlock {make_expr_from_value(TreeAPI::CllExprValue {TreeAPI::At()})}};
+                        // add copied member
+                        newRule.members = {copy};
+                        ptr_in_generated->second = member;
+                        treeMap[new_name] = newRule;
+                    }
+                }
+            }
+        }
+
+    }
 }
-bool Tree::sortPriority(const Parser::Rule &first, const Parser::Rule &second) {
-    if (first.name == Parser::Rules::Rule_rule) {
-        auto rule = getValueFromRule_rule(first);
-        return sortPriority(rule, second);
-    }
-    if (second.name == Parser::Rules::Rule_rule) {
-        auto rule = getValueFromRule_rule(second);
-        return sortPriority(first, rule);
-    }
-    if (first.name == Parser::Rules::string && second.name == Parser::Rules::string) {
-        // if first value size is lower second, put the second before
-        // this ensure correct match of values
-        auto first_str = std::any_cast<std::string>(first.data);
-        auto second_str = std::any_cast<std::string>(second.data);
-        size_t first_size = first_str.size();
-        size_t second_size = second_str.size();
+bool Tree::sortPriority(TreeAPI::String &first, TreeAPI::String &second) {
+    if (first.value.size() != second.value.size())
+        return first.value.size() > second.value.size();
+    return first.value > second.value;
+}
 
-        // Sort by descending size first (longer strings come first)
-        if (first_size != second_size) {
-            return first_size > second_size;  
-        }
+bool Tree::sortPriority(TreeAPI::RuleMemberBin &first, TreeAPI::RuleMemberBin second) {
+    return first.bin_chars.size() > second.bin_chars.size();
+}
 
-        return first_str > second_str;
-    }
-    // here is same as with strings
-    if (first.name == Parser::Rules::Rule_bin && second.name == Parser::Rules::Rule_bin) {
-        return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size();
-    } 
-    if (first.name == Parser::Rules::Rule_hex && second.name == Parser::Rules::Rule_hex) {
-        return std::any_cast<std::string>(first.data).size() > std::any_cast<std::string>(second.data).size();
-    }
-    if (first.name == Parser::Rules::Rule_other && second.name == Parser::Rules::Rule_other) {
-        auto first_data = std::any_cast<rule_other>(first.data);
-        auto second_data = std::any_cast<rule_other>(second.data);
-        auto first_token = find_token_in_tree(first_data.fullname);
-        auto second_token = find_token_in_tree(second_data.fullname);
-        if (first_token == nullptr || second_token == nullptr || !first_token->data.has_value() || !second_token->data.has_value()) {
-            return 0;
-        }
-        auto first_token_data = std::any_cast<obj_t>(first_token->data);
-        auto second_token_data = std::any_cast<obj_t>(second_token->data);
+bool Tree::sortPriority(TreeAPI::RuleMemberHex &first, TreeAPI::RuleMemberHex &second) {
+    return first.hex_chars.size() > second.hex_chars.size();
+}
 
-        auto first_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_token_data, "rule"));
-        auto second_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_token_data, "rule"));
-        for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); i++) {
-            auto first_rules_data = std::any_cast<obj_t>(first_rules[i].data);
-            auto second_rules_data = std::any_cast<obj_t>(second_rules[i].data);
-            auto first_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(first_rules_data, "val"));
-            auto second_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(second_rules_data, "val"));
-            // go to same part
-            std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> visited;
-            if (compare_rule_matching(first_rules_val, second_rules_val, visited))
-                continue;
-            // found not same part, call this function to determine which should go before
-            return sortPriority(first_rules[i], second_rules[i]);       
-        }
-        cpuf::printf("Comparing by size %$ and %$\n", first_data.fullname, second_data.fullname);
-        // rules are same, compare by size
-        return first_rules.size() > second_rules.size();
+bool Tree::sortPriority(TreeAPI::RuleMemberName &first, TreeAPI::RuleMemberName &second) {
+    auto &treeMap = ast.getTreeMap();
+    auto first_data = treeMap.find(first.name);
+    auto second_data = treeMap.find(second.name);
+    auto &first_rules = first_data->second.members;
+    auto &second_rules = second_data->second.members;
+    for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
+        if (first_rules[i] == second_rules[i])
+            continue;
+        return sortPriority(first_rules[i], second_rules[i]);
     }
-    if (first.name == Parser::Rules::Rule_csequence && second.name == Parser::Rules::Rule_csequence) {
-        auto first_data = std::any_cast<obj_t>(first.data);
-        auto second_data = std::any_cast<obj_t>(second.data);
-    
-        auto first_not = std::any_cast<bool>(corelib::map::get(first_data, "not"));
-        auto first_val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_data, "val"));
-    
-        auto second_not = std::any_cast<bool>(corelib::map::get(second_data, "not"));
-        auto second_val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_data, "val"));
-    
-        // Rule: Negative should go after non-negative
-        if (!first_not && second_not)
-            return true; // first < second → first comes first
-        if (first_not && !second_not)
-            return false; // second < first → second comes first
-    
-        // Rule: Longer sequence should go before shorter
-        return first_val.size() > second_val.size(); // true if first should come first
-    }    
-    if (first.name == Parser::Rules::Rule_group && second.name == Parser::Rules::Rule_group) {
-        auto first_rules = getValueFromGroup(first);
-        auto second_rules = getValueFromGroup(second);
-        for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); i++) {
-            std::unordered_set<std::pair<std::vector<std::string>, std::vector<std::string>>> visited;
-            if (compare_rule_matching(first_rules[i], second_rules[i], visited))
-                continue;
-            return sortPriority(first_rules[i], second_rules[i]);
-        }
-        // match by size
-        return first_rules.size() > second_rules.size();
+    return first_rules.size() > second_rules.size();
+}
+
+bool Tree::sortPriority(TreeAPI::RuleMemberCsequence &first, TreeAPI::RuleMemberCsequence &second) {
+    if (!first.negative && second.negative)
+        return true;
+    if (first.negative && !second.negative)
+        return false;
+    return first.characters.size() + first.escaped.size() + first.diapasons.size() >
+           second.characters.size() + second.escaped.size() + second.diapasons.size();
+}
+
+bool Tree::sortPriority(TreeAPI::RuleMemberGroup &first, TreeAPI::RuleMemberGroup &second) {
+    for (size_t i = 0; i < first.values.size() && i < second.values.size(); ++i) {
+        if (first.values[i] == second.values[i])
+            continue;
+        return sortPriority(first.values[i], second.values[i]);
     }
-    if (first.name == Parser::Rules::Rule_group) {
-        auto val = getValueFromGroup(first);
-        if (val.size() == 1)
-            return sortPriority(val[0], second);
-        return 0;
-    } else if (second.name == Parser::Rules::Rule_group) {
-        auto val = getValueFromGroup(second);
-        if (val.size() == 1)
-            return sortPriority(first, val[0]);
-        return 0;
+    return first.values.size() > second.values.size();
+}
+
+bool Tree::sortPriority(TreeAPI::RuleMemberOp &first, TreeAPI::RuleMemberOp &second) {
+    return sortPriority(first.options.back(), second.options.back());
+}
+
+enum class Types {
+    string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll
+};
+Types getTypes(const TreeAPI::String&) { return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberEscaped &) { return Types::Rule_escaped; }
+Types getTypes(const TreeAPI::RuleMemberCsequence &) { return Types::Rule_csequence; }
+Types getTypes(const TreeAPI::RuleMemberBin&) { return Types::Rule_bin; }
+Types getTypes(const TreeAPI::RuleMemberHex&) { return Types::Rule_hex; }
+Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
+Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
+// never meeted types
+Types getTypes(const TreeAPI::RuleMemberName&) { return Types::string; };
+Types getTypes(const TreeAPI::RuleMemberGroup &) { return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberNospace& ) {return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::string; }
+bool Tree::sortPriority(TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {
+    if (first.isName()) {
+        auto &dt = ast.getTreeMap()[first.getName()];
+        return sortPriority(dt.members[0], second);
     }
-
-    if (first.name == Parser::Rules::Rule_other) {
-        auto first_data = std::any_cast<rule_other>(first.data);
-        auto first_token = find_token_in_tree(first_data.fullname);
-        if (first_token == nullptr || !first_token->data.has_value()) {
-            return 0;
-        }
-        auto first_token_data = std::any_cast<obj_t>(first_token->data);
-        auto first_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(first_token_data, "rule"));
-
-        auto first_rules_data = std::any_cast<obj_t>(first_rules[0].data);
-        auto first_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(first_rules_data, "val"));
-        return sortPriority(first_rules[0], second);       
-    } else if (second.name == Parser::Rules::Rule_other) {
-        auto second_data = std::any_cast<rule_other>(second.data);
-        auto second_token = find_token_in_tree(second_data.fullname);
-        if (second_token == nullptr || !second_token->data.has_value()) {
-            return 0;
-        }
-        auto second_token_data = std::any_cast<obj_t>(second_token->data);
-        auto second_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(second_token_data, "rule"));
-
-        auto second_rules_data = std::any_cast<obj_t>(second_rules[0].data);
-        auto second_rules_val = std::any_cast<Parser::Rule>(corelib::map::get(second_rules_data, "val"));
-        return sortPriority(first, second_rules[0]);       
+    if (second.isName()) {
+        auto &dt = ast.getTreeMap()[second.getName()];
+        return sortPriority(first, dt.members[0]);
     }
-
-    if (first.name == Parser::Rules::Rule_op) {
-        auto dt = std::any_cast<std::vector<Parser::Rule>>(first.data);
-        std::sort(dt.begin(), dt.end(), [this](auto &first, auto &second) { return this->sortPriority(first, second); });
+    if (first.isGroup()) {
+        auto &dt = first.getGroup();
+        return sortPriority(dt[0], second);
+    }
+    if (second.isGroup()) {
+        auto &dt = second.getGroup();
+        return sortPriority(first, dt[0]);
+    }
+    if (first.isOp()) {
+        auto &dt = first.getOp();
         return sortPriority(dt.back(), second);
-    } else if (second.name == Parser::Rules::Rule_op) {
-        auto dt = std::any_cast<std::vector<Parser::Rule>>(second.data);
-        std::sort(dt.begin(), dt.end(), [this](auto &first, auto &second) { return this->sortPriority(first, second); });
-        return sortPriority(first, dt.back());
     }
-    // Prioritization logic for different rule types
-    const std::vector<Parser::Rules> priority_order = {
-        Parser::Rules::string,
-        Parser::Rules::Rule_escaped,
-        Parser::Rules::Rule_csequence,
-        Parser::Rules::Rule_bin,
-        Parser::Rules::Rule_hex,
-        Parser::Rules::Rule_other,
-        Parser::Rules::Rule_group,
-        Parser::Rules::Rule_any,
-    };
+    if (second.isOp()) {
+        auto &dt = second.getOp();
+        return sortPriority(first, dt[0]);
+    }
+    return std::visit([&](const auto &f, const auto &s) -> bool {
+        std::vector<Types> priority_order = {
+            Types::string,
+            Types::Rule_escaped,
+            Types::Rule_csequence,
+            Types::Rule_bin,
+            Types::Rule_hex,
+            Types::Rule_any,
+            Types::cll
+        };
     
-    auto first_pos = std::find(priority_order.begin(), priority_order.end(), first.name);
-    auto second_pos = std::find(priority_order.begin(), priority_order.end(), second.name);
-    
-    if (first_pos != priority_order.end() && second_pos != priority_order.end()) {
-        return first_pos < second_pos;
-    } else if (first_pos != priority_order.end()) {
-        return 1; // known comes before unknown
-    } else if (second_pos != priority_order.end()) {
-        return 0;
-    }
-    return 0;
+        auto first_pos = std::find(priority_order.begin(), priority_order.end(), getTypes(f));
+        auto second_pos = std::find(priority_order.begin(), priority_order.end(), getTypes(s));
+        if (first_pos != priority_order.end() && second_pos != priority_order.end()) {
+            return first_pos < second_pos;
+        } else if (first_pos != priority_order.end()) {
+            return true;  // known comes before unknown
+        } else if (second_pos != priority_order.end()) {
+            return false; // unknown comes after known
+        }
+        return false; // both unknown
+    }, first.value, second.value);
 }
-void Tree::sortByPriorityHelper(std::vector<Parser::Rule> &rules) {
-    bool apply_val = false;
-    for (int i = 0; i < rules.size(); i++) {
-        auto data = std::any_cast<obj_t>(rules[i].data);
-        auto val = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-        // apply the sort for groups
-        // note this does not have relation to the sortion itself
-        if (val.name == Parser::Rules::Rule_group) {
-            auto data = std::any_cast<obj_t>(val.data);
-            auto this_val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-            sortByPriorityHelper(this_val);
-            
-            // assign result to the current group value
-            corelib::map::set(data, "val", std::any(this_val));
-            val.data = data;
-            apply_val = true;
+void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
+    for (auto member : members) {
+        if (member.isGroup()) {
+            auto &data = member.getGroup();
+            sortByPriority(data);
         }
-
-        // sort process
-        if (val.name == Parser::Rules::Rule_op)
-        {
-            auto dt = std::any_cast<std::vector<Parser::Rule>>(val.data);
-            std::sort(dt.begin(), dt.end(), [this](auto &first, auto &second) { return this->sortPriority(first, second); });
-            val.data = dt;
-            apply_val = true;
-        }
-        if (apply_val) {
-            corelib::map::set(data, "val", std::any(val));
-            rules[i].data = data;
+        if (member.isOp()) {
+            for (auto &option : member.getOp()) {
+                if (option.isGroup()) {
+                    auto data = option.getGroup();
+                    sortByPriority(data);
+                }
+            }
+            auto& options = member.getOp();
+            std::sort(options.begin(), options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {sortPriority(first, second);});
         }
     }
-    //LOG CHANGES
-    // cpuf::printf("result: \n");
-    // for (auto el : rules) {
-    //     auto first_data = std::any_cast<obj_t>(el.data);
-    //     auto first_val = std::any_cast<Parser::Rule>(corelib::map::get(first_data, "val"));
-    //     cpuf::printf("\t%s\n", Parser::RulesToString(first_val.name));
-    // }
 
-
-}
-void Tree::sortByPriority(Parser::Tree &tree)  {
-    for (auto &member : tree) {
-        if (member.name == Parser::Rules::Rule) {
-            auto data = std::any_cast<obj_t>(member.data);
-            auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-            auto name_str = std::any_cast<std::string>(name.data);
-            auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-            auto nested_rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "nestedRules"));
-            sortByPriorityHelper(rules);
-            sortByPriority(nested_rules);
-            // sort nested rule
-            corelib::map::set(data, "nestedRules", std::any(nested_rules));
-            // apply changes
-
-            corelib::map::set(data, "rule", std::any(rules));
-            member.data = data;
-        }
-    }
 }
 void Tree::sortByPriority() {
-    return sortByPriority(treeMap);
+    for (auto [name, value] : ast.getTreeMap()) {
+        sortByPriority(value.members);
+    }
 }
 void Tree::addSpaceToken() {
     std::vector<Parser::Rule> chars = {

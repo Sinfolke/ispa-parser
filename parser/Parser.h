@@ -315,7 +315,7 @@ namespace Parser {
 			::Parser::Rule val;
 			::Parser::Token name;
 		};
-		using Rule_data_block_regular_datablock_data = ::Parser::Rule;
+		using Rule_data_block_regular_datablock_data = ::Parser::any_t;
 		struct Rule_data_block_templated_datablock_data {
 			::Parser::arr_t<::Parser::Token> second_name;
 			::Parser::Token first_name;
@@ -3069,64 +3069,85 @@ namespace Parser {
 		::Parser::Rule_res Rule_data_block_regular_datablock(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-;
+		
 			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
-			::Parser::Rule _2;
+			::Parser::any_t _2;
 			::Parser::bool_t success_3 = false;
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
-			::Parser::Rule_res _6;
+			std::vector<::Parser::Rule> key_nodes;
 			::Parser::bool_t success_7 = false;
 			::Parser::Token _8;
 			::Parser::bool_t success_9 = false;
+		
 			success_9 = false;
 			success_5 = false;
 			success_3 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_4))
-			{
+		
+			if (!(pos->name() == ::Parser::Tokens::AUTO_4)) {
 				return {};
 			}
 			_0 = *pos;
 			success_1 = true;
 			pos += 1;
 			skip_spaces(pos);
+		
 			_4 = any_data(pos);
-			if (!(_4.status))
-			{
-				success_7 = false;
-				_6 = Rule_data_block_regular_datablock_key(pos);
-				if (!(_6.status))
-				{
+			if (!(_4.status)) {
+				// Attempt one or more Rule_data_block_regular_datablock_key
+				while (true) {
+					auto save = pos;
+					auto res = Rule_data_block_regular_datablock_key(pos);
+					if (!res.status) {
+						pos = save;
+						break;
+					}
+					key_nodes.push_back(res.node);
+					pos += res.node.length();
+					skip_spaces(pos);
+				}
+		
+				if (key_nodes.empty()) {
 					return {};
-				}
-				else 
-				{
+				} else {
 					success_7 = true;
-					pos += _6.node.length();
-					_2 = _6.node;
+					// If needed, merge the keys into a group or composite node
+					_2 = key_nodes;
 				}
-			}
-			else 
-			{
+			} else {
 				success_5 = true;
 				pos += _4.node.length();
 				_2 = _4.node;
 			}
+		
 			success_3 = true;
 			skip_spaces(pos);
-			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
-			{
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7)) {
 				reportError(pos, "auto_7");
 				return {};
 			}
 			_8 = *pos;
 			success_9 = true;
 			pos += 1;
+		
 			::Parser::Types::Rule_data_block_regular_datablock_data data = _2;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::Rule_data_block_regular_datablock, data)};
+			return {
+				true,
+				::Parser::Rule(
+					in->startpos(),
+					in->start(),
+					pos->end(),
+					pos - in,
+					pos->line(),
+					pos->column(),
+					::Parser::Rules::Rule_data_block_regular_datablock,
+					data
+				)
+			};
 		}
+		
 		template <class IT>
 		::Parser::Rule_res Rule_data_block_templated_datablock(IT pos) {
 			auto in = pos;
