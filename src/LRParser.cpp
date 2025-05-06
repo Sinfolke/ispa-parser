@@ -914,7 +914,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-bool isInUsePlace(const Tree::use_place_table &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
+bool isInUsePlace(const Tree::UsePlaceTable &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
     checked.insert(first);
     auto find_it = use_places.find(first);
     if (find_it == use_places.end())

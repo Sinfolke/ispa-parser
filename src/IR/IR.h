@@ -1,5 +1,4 @@
 #pragma once
-#include <Parser.h>
 #include <any>
 #include <list>
 #include <algorithm>
@@ -11,6 +10,8 @@
 #include <unordered_map>
 #include <string>
 #include <utility>
+#include <TreeAPI.h>
+class Tree;
 class LLIR {
     public:
         enum class types {
@@ -53,14 +54,6 @@ class LLIR {
             var_assign_values kind;
             std::any data;
         };
-        struct function_call {
-            std::string name;
-            std::vector<assign> params;
-        };
-        struct method_call {
-            std::string var_name;
-            std::vector<function_call> calls;
-        };
         struct property {
             std::string obj;
             std::list<std::string> properties;
@@ -79,6 +72,14 @@ class LLIR {
         struct expr {
             condition_types id;
             std::any value = {};
+        };
+        struct function_call {
+            std::string name;
+            std::vector<std::vector<expr>> params;
+        };
+        struct method_call {
+            std::string var_name;
+            std::vector<function_call> calls;
         };
         struct condition {
             std::vector<expr> expression;
@@ -145,7 +146,7 @@ class LLIR {
         void convertMembers(std::deque<member> members, std::ostream& out);
         void printIR(std::ostream& out);
         // other functions
-        std::string getErrorName(Parser::Rule rule);
+        std::string getErrorName(const TreeAPI::RuleMember &rule);
         LLIR::variable createSuccessVariable();
         bool compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2);
         bool compare_types(std::list<LLIR::var_type> types);
@@ -158,15 +159,16 @@ class LLIR {
         LLIR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
         LLIR::var_type deduceVarTypeByValue(Parser::Rule mem);
         // convertion functions helpers
-        void addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var, bool addError = true);
-        void handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError = true);
+        void addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true);
+        void handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true);
         void replaceToPrevChar(std::vector<LLIR::member> &elements, int i);
         LLIR::member createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr);
         LLIR::variable add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var);
-        LLIR::variable pushBasedOnQualifier(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true);
-        LLIR::variable pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false);
-        LLIR::variable affectIrByQuantifier(const Parser::Rule &rule, const LLIR::variable &var, char quantifier);
-        LLIR::assign TreeAnyDataToIR(const Parser::Rule &value);
+        LLIR::variable pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true);
+        LLIR::variable pushBasedOnQualifier_Rule_other(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false);
+        LLIR::variable affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier);
+        LLIR::assign TreeRvalueToIR(const TreeAPI::rvalue &value);
+        std::vector<std::vector<LLIR::expr>> TreeFunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body);
         LLIR::function_call TreeFunctionToIR(const Parser::Rule &rule);
         LLIR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
         LLIR::var_type cllTreeCsupportTypeToIR(const Parser::Rule &rule);
@@ -215,8 +217,8 @@ class LLIR {
         std::vector<LLIR::variable> vars;
         std::vector<LLIR::member> data;
         std::vector<node_ret_t> success_vars;
-        const std::vector<Parser::Rule>* rules = nullptr;
-        Parser::Tree* tree;
+        const std::vector<TreeAPI::RuleMember> *rules = nullptr;
+        Tree* tree;
         // data for output
         std::stack<std::string> current_pos_counter;
         size_t indentLevel = 0;
@@ -224,24 +226,32 @@ class LLIR {
         void erase_begin();
         // convertion
         void ruleToIr(const Parser::Rule &rule_rule, char custom_qualifier = -1);
-        auto rulesToIr(const std::vector<Parser::Rule> &rules) -> LLIR;
-        auto rulesToIr(const std::vector<Parser::Rule> &rules, bool &addSpaceSkipFirst) -> LLIR;
-        void treeToIr(const Parser::Tree &tree);
+        auto rulesToIr(const std::vector<TreeAPI::RuleMember> rules) -> LLIR;
+        auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) -> LLIR;
+        void treeToIr();
         // optimizations
         void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
         size_t getBegin(size_t& i);
         void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table, size_t begin);
         void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
     public:
-        LLIR(Parser::Tree &tree, int tokensOnly = -1);
-        LLIR(Parser::Tree *tree, int tokensOnly = -1);
-        LLIR(Parser::Tree &tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
-        LLIR(Parser::Tree *tree, const std::vector<Parser::Rule>& rules, int tokensOnly = -1);
+        LLIR(Tree &tree, int tokensOnly = -1) : tree(&tree) {
+            makeIR();
+        }
+        LLIR(Tree *tree, int tokensOnly = -1) : tree(tree) {
+            makeIR();
+        };
+        LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, int tokensOnly = -1) : tree(&tree) {
+            makeIR();
+        }
+        LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, int tokensOnly = -1) : tree(tree) {
+            makeIR();
+        }
 
         // get functions
+        auto getTree() const -> const Tree*;
         auto getData() const -> const std::vector<LLIR::member>&;
-        auto getDataRef() -> std::vector<LLIR::member>&;
-        auto getTree() -> const Parser::Tree*;
+        auto getData() -> std::vector<LLIR::member>&;
         auto makeIR() -> std::vector<node_ret_t>;
         void optimizeIR();
         virtual void outputIRToFile(std::string filename);

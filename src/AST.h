@@ -1,6 +1,5 @@
 #pragma once
 #include <TreeAPI.h>
-#include <internal_types.h>
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */

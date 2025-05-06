@@ -54,25 +54,25 @@ namespace TreeAPI {
     bool Boolean::getBoolean() {
         return value == "true";
     }
-    bool rvalue::isString() {
+    bool rvalue::isString() const {
         return std::holds_alternative<String>(value);
     }
-    bool rvalue::isNumber() {
+    bool rvalue::isNumber() const {
         return std::holds_alternative<Number>(value);
     }
-    bool rvalue::isBoolean() {
+    bool rvalue::isBoolean() const {
         return std::holds_alternative<Boolean>(value);
     }
-    bool rvalue::isArray() {
+    bool rvalue::isArray() const {
         return std::holds_alternative<Array>(value);
     }
-    bool rvalue::isObject() {
+    bool rvalue::isObject() const {
         return std::holds_alternative<Object>(value);
     };
-    bool rvalue::isAt() {
+    bool rvalue::isAt() const {
         return std::holds_alternative<At>(value);
     }
-    bool rvalue::isID() {
+    bool rvalue::isID() const {
         return std::holds_alternative<ID>(value);
     }
     String& rvalue::getString() {
@@ -93,21 +93,44 @@ namespace TreeAPI {
     std::string& rvalue::getID() {
         return std::get<ID>(value).value;
     }
-    bool CllExprValue::isGroup() {
+    const String& rvalue::getString() const {
+        return std::get<String>(value);
+    }
+    
+    const Number& rvalue::getNumber() const {
+        return std::get<Number>(value);
+    }
+    
+    const Boolean& rvalue::getBoolean() const {
+        return std::get<Boolean>(value);
+    }
+    
+    const std::vector<rvalue>& rvalue::getArray() const {
+        return std::get<Array>(value).value;
+    }
+    
+    const std::unordered_map<std::string, rvalue>& rvalue::getObject() const {
+        return std::get<Object>(value).value;
+    }
+    
+    const std::string& rvalue::getID() const {
+        return std::get<ID>(value).value;
+    }    
+    bool CllExprValue::isGroup() const {
         return value.type() == typeid(CllExpr);
     }
-    bool CllExprValue::isVariable() {
+    bool CllExprValue::isVariable() const {
         return value.type() == typeid(CllVariable);
     }
-    bool CllExprValue::isFunctionCall() {
+    bool CllExprValue::isFunctionCall() const {
         return value.type() == typeid(CllFunctionCall);
     }
 
-    bool CllExprValue::isrvalue() {
+    bool CllExprValue::isrvalue() const {
         return value.type() == typeid(CllExprValue);
     }
-    CllExpr& CllExprValue::getGroup() {
-        return std::any_cast<CllExpr&>(value);
+    CllExprGroup& CllExprValue::getGroup() {
+        return std::any_cast<CllExprGroup&>(value);
     }
     CllVariable& CllExprValue::getVariable() {
         return std::any_cast<CllVariable&>(value);
@@ -118,15 +141,30 @@ namespace TreeAPI {
     rvalue& CllExprValue::getrvalue() {
         return std::any_cast<rvalue&>(value);
     };
-    bool TreeAPI::Cll::isVar() {
+    const CllExpr& CllExprValue::getGroup() const {
+        return std::any_cast<const CllExpr&>(value);
+    }
+    
+    const CllVariable& CllExprValue::getVariable() const {
+        return std::any_cast<const CllVariable&>(value);
+    }
+    
+    const CllFunctionCall& CllExprValue::getFunctionCall() const {
+        return std::any_cast<const CllFunctionCall&>(value);
+    }
+    
+    const rvalue& CllExprValue::getrvalue() const {
+        return std::any_cast<const rvalue&>(value);
+    }    
+    bool TreeAPI::Cll::isVar() const {
         return std::holds_alternative<CllVar>(value);
     }
     
-    bool TreeAPI::Cll::isIf() {
+    bool TreeAPI::Cll::isIf() const {
         return std::holds_alternative<CllIf>(value);
     }
     
-    bool TreeAPI::Cll::isExpr() {
+    bool TreeAPI::Cll::isExpr() const {
         return std::holds_alternative<CllExpr>(value);
     }
     TreeAPI::CllVar &TreeAPI::Cll::getVar() {
@@ -134,6 +172,17 @@ namespace TreeAPI {
     }
     
     TreeAPI::CllIf &TreeAPI::Cll::getIf() {
+        return std::get<CllIf>(value);
+    }
+    
+    const TreeAPI::CllExpr &TreeAPI::Cll::getExpr() const {
+        return std::get<CllExpr>(value);
+    }
+    const TreeAPI::CllVar &TreeAPI::Cll::getVar() const {
+        return std::get<CllVar>(value);
+    }
+    
+    const TreeAPI::CllIf &TreeAPI::Cll::getIf() const {
         return std::get<CllIf>(value);
     }
     
@@ -195,8 +244,8 @@ namespace TreeAPI {
     String& RuleMember::getString() {
         return std::get<String>(value);
     }
-    decltype(RuleMemberName::name)& RuleMember::getName() {
-        return std::get<RuleMemberName>(value).name;
+    RuleMemberName& RuleMember::getName() {
+        return std::get<RuleMemberName>(value);
     }
     decltype(RuleMemberGroup::values)& RuleMember::getGroup() {
         return std::get<RuleMemberGroup>(value).values;
@@ -219,6 +268,42 @@ namespace TreeAPI {
     Cll& RuleMember::getCll() {
         return std::get<Cll>(value);
     }
+    const String& RuleMember::getString() const {
+        return std::get<String>(value);
+    }
+    
+    const RuleMemberName& RuleMember::getName() const {
+        return std::get<RuleMemberName>(value);
+    }
+    
+    const decltype(RuleMemberGroup::values)& RuleMember::getGroup() const {
+        return std::get<RuleMemberGroup>(value).values;
+    }
+    
+    const decltype(RuleMemberOp::options)& RuleMember::getOp() const {
+        return std::get<RuleMemberOp>(value).options;
+    }
+    
+    const RuleMemberCsequence& RuleMember::getCsequence() const {
+        return std::get<RuleMemberCsequence>(value);
+    }
+    
+    const decltype(RuleMemberEscaped::c)& RuleMember::getEscaped() const {
+        return std::get<RuleMemberEscaped>(value).c;
+    }
+    
+    const RuleMemberHex& RuleMember::getHex() const {
+        return std::get<RuleMemberHex>(value);
+    }
+    
+    const RuleMemberBin& RuleMember::getBin() const {
+        return std::get<RuleMemberBin>(value);
+    }
+    
+    const Cll& RuleMember::getCll() const {
+        return std::get<Cll>(value);
+    }
+    
     std::unordered_map<std::string, CllExpr>::iterator RegularDataBlockWKeys::begin() {
         return value.begin();
     }
@@ -354,7 +439,7 @@ namespace TreeAPI {
     }
     
     bool operator==(const CllExprValue &lhs, const CllExprValue &rhs) {
-        return lhs.value.type() == rhs.value.type() && lhs.value == rhs.value;
+        return lhs.value.type() == rhs.value.type() && lhs == rhs;
     }
     
     bool operator==(const CllVariable &lhs, const CllVariable &rhs) {

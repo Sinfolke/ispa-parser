@@ -1,6 +1,5 @@
 #pragma once
 #include <Parser.h>
-#include <internal_types.h>
 #include <corelib.h>
 #include <fstream>
 #include <iostream>
@@ -58,7 +57,7 @@ protected:
     Tree *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    Tree::use_place_table use_places;
+    Tree::UsePlaceTable use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;

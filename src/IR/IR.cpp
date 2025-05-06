@@ -1,12 +1,7 @@
 #include <IR/IR.h>
-#include <internal_types.h>
 #include <corelib.h>
 #include <cpuf/hex.h>
 #include <tree.h>
-LLIR::LLIR(Parser::Tree &tree, int tokensOnly) : tree(&tree), tokensOnly(tokensOnly) {}
-LLIR::LLIR(Parser::Tree *tree, int tokensOnly) : tree(tree), tokensOnly(tokensOnly) {}
-LLIR::LLIR(Parser::Tree &tree, const std::vector<Parser::Rule>& rules, int tokensOnly) : tree(&tree), rules(&rules), tokensOnly(tokensOnly) {}
-LLIR::LLIR(Parser::Tree *tree, const std::vector<Parser::Rule>& rules, int tokensOnly) : tree(tree), rules(&rules), tokensOnly(tokensOnly) {}
 // a structure used to cout
 void LLIR::add(LLIR &repr) {
     data.insert(data.end(), repr.data.begin(), repr.data.end());
@@ -34,7 +29,7 @@ bool LLIR::empty() {
 }
 auto LLIR::makeIR() -> std::vector<LLIR::node_ret_t> {
     if (rules == nullptr) {
-        treeToIr(*tree);
+        treeToIr();
     } else {
         LLIR ir = rulesToIr(*rules);
         update(ir);
@@ -46,13 +41,13 @@ auto LLIR::makeIR() -> std::vector<LLIR::node_ret_t> {
 void LLIR::optimizeIR() {
     raiseVarsTop(data, data);
 }
-const std::vector<LLIR::member>& LLIR::getData() const{
+const std::vector<LLIR::member>& LLIR::getData() const {
     return data;
 }
-std::vector<LLIR::member>& LLIR::getDataRef() {
+std::vector<LLIR::member>& LLIR::getData() {
     return data;
 }
-const Parser::Tree* LLIR::getTree() {
+const Tree* LLIR::getTree() const {
     return tree;
 }
 void LLIR::erase_begin() {
@@ -100,117 +95,86 @@ LLIR::variable createEmptyVariable(std::string name) {
 std::string LLIR::generateVariableName() {
     return std::string("_") + std::to_string(variable_count++);
 }
-std::string LLIR::getErrorName(Parser::Rule rule) {
-    if (rule.name == Parser::Rules::Rule_rule) {
-        auto data = rule.as<obj_t>();
-        rule = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
+std::string LLIR::getErrorName(const TreeAPI::RuleMember &rule) {
+    if (rule.isGroup()) {
+        return "";
     }
-    switch (rule.name) {
-        case Parser::Rules::Rule_group:
-        {
-            auto data = rule.as<obj_t>();
-            auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-            return getErrorName(val[0]);
+    if (rule.isCsequence()) {
+        std::string message;
+        const auto &csequence = rule.getCsequence();
+        
+        // Add "not " if negative
+        if (csequence.negative) {
+            message = "not ";
         }
-        case Parser::Rules::Rule_csequence: 
-        {
-            std::string name;
-            auto data = rule.as<obj_t>();
-            auto _not = std::any_cast<bool>(corelib::map::get(data, "not"));
-            auto val = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-
-            if (_not) {
-                name = "not ";
-            }
-            for (size_t i = 0; i < val.size(); i++) {
-                auto r = val[i];
-                switch (r.name) {
-                    case Parser::Rules::Rule_csequence_symbol:
-                    {
-                        auto val = r.as<std::string>();
-                        name += val;
-                        if (i + 2 == val.size()) {
-                            name += " or ";
-                        } else if (i + 1 < val.size()) {
-                            name += ", ";
-                        }
-                        break;
-                    }
-                    case Parser::Rules::Rule_csequence_diapason:
-                    {
-                        auto val = r.as<std::vector<Parser::Rule>>();
-                        auto first_rule = val[0].as<std::string>();
-                        auto second_rule = val[1].as<std::string>();
-                        name += first_rule + "-" + second_rule;
-                        if (i + 2 == val.size()) {
-                            name += " or ";
-                        } else if (i + 1 < val.size()) {
-                            name += ", ";
-                        }
-                        break;
-                    }
-                    case Parser::Rules::Rule_csequence_escape:
-                    {
-                        auto val = r.as<std::string>();
-                        name += '\\' + val;
-                        if (i + 2 == val.size()) {
-                            name += " or ";
-                        } else if (i + 1 < val.size()) {
-                            name += ", ";
-                        }
-                        break;
-                    }
+        
+        std::vector<std::string> parts;
+        
+        // Process characters
+        for (const auto &character : csequence.characters) {
+            parts.push_back(std::string(1, character));
+        }
+        
+        // Process diapasons
+        for (const auto &diapason : csequence.diapasons) {
+            parts.push_back(diapason.first + "-" + diapason.second);
+        }
+        
+        // Process escaped sequences
+        for (const auto &escaped : csequence.escaped) {
+            parts.push_back("\\" + escaped);
+        }
+        
+        // Join parts with commas, but "or" only between the last two items
+        if (parts.size() > 1) {
+            for (size_t i = 0; i < parts.size(); ++i) {
+                if (i == parts.size() - 2) {
+                    message += parts[i] + " or ";
+                } else if (i < parts.size() - 1) {
+                    message += parts[i] + ", ";
+                } else {
+                    message += parts[i];
                 }
             }
-            return name;
+        } else {
+            message += parts.empty() ? "" : parts[0];  // Handle empty or single element case
         }
-        case Parser::Rules::string: {
-            return '"' + rule.as<std::string>() + '"';
-        }
-        case Parser::Rules::Rule_hex:
-            return "0x" + rule.as<std::string>();
-        case Parser::Rules::Rule_bin: 
-            return "0b" + rule.as<std::string>();
-        case Parser::Rules::Rule_other:
-        {
-            auto name = rule.as<rule_other>();
-            if (name.is_autogenerated) {
-                auto rule = Tree::find_token_in_tree(*tree, name.fullname);
-                if (rule == nullptr) {
-                    return corelib::text::ToLower(name.name);
-                }
-                auto data = std::any_cast<obj_t>(rule->data);
-                auto rules = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "rule"));
-                return getErrorName(rules[0]);
-            } else {
-                return corelib::text::ToLower(name.name);
-            }
-        }
-            break;
-        case Parser::Rules::Rule_escaped:
-            return "\\" + rule.as<std::string>();
-            break;
-        case Parser::Rules::Rule_any:
-            return "any symbol";
-            break;
-        case Parser::Rules::Rule_op:
-        {
-            auto data = rule.as<std::vector<Parser::Rule>>();
-            std::string result = "";
-            for (auto &rule : data) {
-                result += getErrorName(rule);
-                if (&rule != &data.back()) {
-                    result += " or ";
-                }
-            }
-            return result;
-        }
-        default:
-            throw Error("Get name of undefined rule '%s'", Parser::RulesToString(rule.name));
+        return message;
     }
+    if (rule.isString()) {
+        return '"' + rule.getString().value + '"';
+    }
+    if (rule.isHex())
+        return "0x" + rule.getHex().hex_chars;
+    if (rule.isBin())
+        return "0b" + rule.getBin().bin_chars;
+    if (rule.isName()) {
+        const auto &name = rule.getName();
+        if (name.isAutoGenerated) {
+            const auto r = tree->getRawAst().getTreeMap()[name.name];
+            return getErrorName(r.members[0]);
+        }
+        return name.name.back();
+    }
+    if (rule.isEscaped()) {
+        return "\\" + rule.getEscaped();
+    }
+    if (rule.isAny()) {
+        return "symbol";
+    }
+    if (rule.isOp()) {
+        std::string res;
+        const auto &op = rule.getOp();
+        for (const auto &option : op) {
+            res += getErrorName(option);
+            if (&option != op.back())
+                res += " or ";
+        }
+        return res;
+    }
+    throw Error("Undefined rule member");
 }
-template<typename T, std::enable_if_t<std::is_same<T, std::vector<LLIR::member>>::value || std::is_same<T, std::deque<LLIR::member>>::value, int> = 0>
-void processExitStatements(T &values) {
+void processExitStatements(std::vector<LLIR::member> &values) {
     for (auto &el : values) {
         if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
             auto &condition = std::any_cast<LLIR::condition&>(el.value); // Avoid unnecessary copies
@@ -242,7 +206,7 @@ LLIR::variable LLIR::createSuccessVariable() {
     return var;
 }
 
-void LLIR::addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var, bool addError) {
+void LLIR::addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError) {
     std::vector<LLIR::member> block = {{ LLIR::types::EXIT }};
     if (addError && !isFirst) {
         block.insert(block.begin(), { LLIR::types::ERR, getErrorName(rule)});
@@ -256,7 +220,7 @@ void LLIR::addPostLoopCheck(const Parser::Rule &rule, const LLIR::variable &var,
     };
     push({LLIR::types::IF, check_cond});
 }
-void LLIR::handle_plus_qualifier(const Parser::Rule &rule, LLIR::condition loop, bool addError) {
+void LLIR::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError) {
     auto var = createSuccessVariable();
     loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}});
     push({LLIR::types::VARIABLE, var});
@@ -282,20 +246,20 @@ void LLIR::replaceToPrevChar(std::vector<LLIR::member> &elements, int i) {
         }
     }
 }
-std::vector<LLIR::member> createDefaultBlock(LLIR::variable var, LLIR::variable svar) {
+std::vector<LLIR::member> LLIR::createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) {
     return {
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
         {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-std::vector<LLIR::member> createDefaultBlock(LLIR::variable svar) {
+std::vector<LLIR::member> LLIR::createDefaultBlock(const LLIR::variable &svar) {
     return {
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}},
         {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-std::vector<LLIR::member> createDefaultBlock() {
+std::vector<LLIR::member> LLIR::createDefaultBlock() {
     return {
         {LLIR::types::INCREASE_POS_COUNTER}
     };
@@ -346,7 +310,7 @@ LLIR::variable LLIR::add_shadow_variable(std::vector<LLIR::member> &block, const
     block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { shadow_var.name, {LLIR::function_call {"push", {LLIR::assign {LLIR::var_assign_values::VARIABLE, var}}}}}});
     return shadow_var;
 }
-LLIR::variable LLIR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     LLIR::variable shadow_variable;
     if ((insideLoop || quantifier == '+' || quantifier == '*') && add_shadow_var) {
@@ -386,7 +350,7 @@ LLIR::variable LLIR::pushBasedOnQualifier(const Parser::Rule &rule, std::vector<
     return shadow_variable;
 }
 // function to push based on qualifier for Rule_other
-LLIR::variable LLIR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier_Rule_other(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     LLIR::variable shadow_variable;
     if (insideLoop|| quantifier == '+' || quantifier == '*') {
@@ -428,7 +392,7 @@ LLIR::variable LLIR::pushBasedOnQualifier_Rule_other(const Parser::Rule &rule, s
     }
     return shadow_variable;
 }
-LLIR::variable LLIR::affectIrByQuantifier(const Parser::Rule &rule, const LLIR::variable &var, char quantifier) {
+LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier) {
     LLIR::variable shadow_var;
     if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING)) {
         shadow_var = add_shadow_variable(data, var);
@@ -454,124 +418,46 @@ LLIR::variable LLIR::affectIrByQuantifier(const Parser::Rule &rule, const LLIR::
     }
     return shadow_var;
 }
-LLIR::assign LLIR::TreeAnyDataToIR(const Parser::Rule &value) {
-    auto val = std::any_cast<Parser::Rule>(value.data);
+LLIR::assign LLIR::TreeRvalueToIR(const TreeAPI::rvalue &value) {
     LLIR::assign newval;
-    switch (val.name)
-    {
-    case Parser::Rules::string:
-        //cpuf::printf("string, type: %s\n", val.data.type().name());
+    if (value.isString()) {
         newval.kind = LLIR::var_assign_values::STRING;
-        newval.data = std::any_cast<std::string>(val.data);
-        break;
-    case Parser::Rules::var_refer:
-    {        
-        //cpuf::printf("var_refer\n");
-        LLIR::var_refer refer;
-        //cpuf::printf("1\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        //cpuf::printf("2\n");
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        //cpuf::printf("3\n");
-        auto name_str = std::any_cast<std::string>(name.data);
-        //cpuf::printf("4\n");
-        auto pre = std::any_cast<bool>(corelib::map::get(data, "pre"));
-        //cpuf::printf("5\n");
-        auto post = std::any_cast<bool>(corelib::map::get(data, "post"));
-        refer.pre_increament = pre;
-        refer.post_increament = post;
-        refer.name = name_str;
-        // skip brace expression for now as it is not used in rules for parser
-        newval.kind = LLIR::var_assign_values::VAR_REFER;
-        newval.data = refer;
-        break;
-    }
-
-    case Parser::Rules::boolean: 
-    {
-        //cpuf::printf("boolean\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        auto val = std::any_cast<int>(corelib::map::get(data, "val"));
-        newval.kind = val ? LLIR::var_assign_values::_TRUE : LLIR::var_assign_values::_FALSE;
-        break;
-    }
-    case Parser::Rules::number: 
-    {
-        //cpuf::printf("number\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        auto full = std::any_cast<std::string>(corelib::map::get(data, "full"));
+        newval.data = std::any_cast<std::string>(value.getString().value);
+    } else if (value.isBoolean()) {
+        newval.kind = LLIR::var_assign_values::BOOLEAN;
+        newval.data = value.getBoolean().getBoolean() ? LLIR::var_assign_values::_TRUE : LLIR::var_assign_values::_FALSE;
+    } else if (value.isNumber()) {
         newval.kind = LLIR::var_assign_values::NUMBER;
-        newval.data = full;
-        break;
-    }
-    case Parser::Rules::array:
-    {
-        //cpuf::printf("array\n");
-        auto data = std::any_cast<std::vector<Parser::Rule>>(val.data);
-        LLIR::array arr;
-        for (auto &el : data) {
-            arr.push_back(TreeAnyDataToIR(el));
-        }
+        newval.data = value.getNumber().getFull();
+    } else if (value.isArray()) {
         newval.kind = LLIR::var_assign_values::ARRAY;
+        LLIR::array arr;
+        for (const auto el : value.getArray()) {
+            arr.push_back(TreeRvalueToIR(el));
+        }
         newval.data = arr;
-        break;
-    }
-    case Parser::Rules::object:
-    {
-        //cpuf::printf("object\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        auto key = std::any_cast<Parser::Rule>(corelib::map::get(data, "key"));
-        auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
-        auto keys = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "keys"));
-        auto values = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "values"));
-        
-        keys.insert(keys.begin(), key);
-        values.insert(values.begin(), value);
-        LLIR::object obj;
-        for (int i = 0; i < keys.size(); i++) {
-            auto key = keys[i];
-            auto value = values[i];
-            auto strkey = std::any_cast<std::string>(key.data);
-            auto value_data = TreeAnyDataToIR(value);
-            obj[strkey] = value_data;
-        }
+    } else if (value.isObject()) {
         newval.kind = LLIR::var_assign_values::OBJECT;
-        newval.data = obj;
-        break;
-    }
-    case Parser::Rules::accessor:
-    {
-        //cpuf::printf("accessor\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
-        auto second = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "second"));
-        second.insert(second.begin(), first);
-        for (auto &el : second) {
-            el = std::any_cast<Parser::Rule>(el.data);
+        LLIR::object obj;
+        for (const auto &[key, value] : value.getObject()) {
+            obj[key] = TreeRvalueToIR(value);
         }
-        LLIR::accessor mem = {second};
-        newval.kind = LLIR::var_assign_values::ACCESSOR;
-        newval.data = mem;
-        break;
-    }
-    default:
-        throw Error("Undefined rule");
-        break;
-    }
+        newval.data = obj;
+    } else throw Error("Undefined rvalue");
     return newval;
 }
-LLIR::function_call LLIR::TreeFunctionToIR(const Parser::Rule &rule) {
-    LLIR::function_call call;
-    auto data = std::any_cast<obj_t>(rule.data);
-    call.name = std::any_cast<std::string>(std::any_cast<Parser::Rule>(std::any_cast<Parser::Rule>(corelib::map::get(data, "name"))).data);
-    auto body = std::any_cast<Parser::Rule>(corelib::map::get(data, "body")); 
-    auto params = std::any_cast<std::vector<Parser::Rule>>(std::any_cast<Parser::Rule>(body.data).data);
-    std::vector<LLIR::assign> new_params;
-    for (auto arg : params) {
-        new_params.push_back(TreeAnyDataToIR(arg));
+std::vector<std::vector<LLIR::expr>> LLIR::TreeFunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) {
+    std::vector<std::vector<LLIR::expr>> newExpr;
+    for (const auto &expr : body.expr) {
+        newExpr.push_back(TreeExprToIR(expr));
     }
-    call.params = new_params;
-    return call;
+    return newExpr;
+}
+LLIR::function_call LLIR::TreeFunctionToIR(const TreeAPI::CllFunctionCall &call) {
+    LLIR::function_call newCall;
+    newCall.name = call.name;
+    newCall.params = TreeFunctionBodyCallToIR(call.body);
+    return newCall;
 }
 
 LLIR::method_call LLIR::TreeMethodCallToIR(const Parser::Rule &rule) {

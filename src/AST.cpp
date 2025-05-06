@@ -156,14 +156,13 @@ TreeAPI::CllLogicalOp AST::createCllLogicalOp(const Parser::Token &token) {
     return result;
 }
 
-TreeAPI::CllExprValue AST::createCllExprValue(const Parser::Rule logical) {
+TreeAPI::CllExprValue AST::createCllExprValue(const Parser::Rule &logical) {
     auto data = Parser::get::cll_expr_value(logical);
     TreeAPI::CllExprValue result;
-
     switch (data.name())
     {
     case Parser::Rules::Rule_group:
-        result.value = createCllExpr(Parser::get::cll_expr(data));
+        result.value = TreeAPI::CllExprGroup {createCllExpr(Parser::get::cll_expr(data))};
         break;
     case Parser::Rules::cll_variable:
         result.value = createCllVariable(data);

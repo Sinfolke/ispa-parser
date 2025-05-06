@@ -29,7 +29,7 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::stri
     visited.insert(fullname);
     Lookahead_set lookahead_set;
     for (const auto &place : use_places[fullname]) {
-        const auto &options = initial_item_set[place.name];
+        const auto &options = initial_item_set[place];
         for (const auto &option : options) {
             // get next symbol
             for (auto it = option.begin(); it != option.end(); it++) {
