@@ -2,7 +2,6 @@
 #include <corelib.h>
 #include <TreeAPI.h>
 #include <AST.h>
-#include <internal_types.h>
 #include <IR/IR.h>
 class Tree {
     public:

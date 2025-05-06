@@ -460,136 +460,92 @@ LLIR::function_call LLIR::TreeFunctionToIR(const TreeAPI::CllFunctionCall &call)
     return newCall;
 }
 
-LLIR::method_call LLIR::TreeMethodCallToIR(const Parser::Rule &rule) {
-    LLIR::method_call method_call;
-    auto var_rule_data = std::any_cast<obj_t>(rule.data);
-    auto id = std::any_cast<Parser::Rule>(corelib::map::get(var_rule_data, "object"));
-    auto call = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(var_rule_data, "call"));
-    method_call.var_name = std::any_cast<std::string>(id.data);
-    std::vector<LLIR::function_call> calls;
-    for (auto cl : call) {
-        calls.push_back(TreeFunctionToIR(cl));
-    }
-    method_call.calls = calls;
+LLIR::method_call LLIR::TreeMethodCallToIR(const TreeAPI::CllMethodCall &method) {
+    LLIR::function_call newMethod;
+    newMethod.name = method.name;
+    newMethod.params = TreeFunctionToIR(method.body);
+    return newCall;
     return method_call;
 }
-LLIR::var_type LLIR::deduceVarTypeByValue(Parser::Rule mem) {
+LLIR::var_type LLIR::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) {
     LLIR::var_type type;
-    if (mem.name == Parser::Rules::Rule_rule) {
-        auto memdata = std::any_cast<obj_t>(mem.data);
-        mem = std::any_cast<Parser::Rule>(corelib::map::get(memdata, "val"));
-    }
-    if (mem.name == Parser::Rules::Rule_group) {
-        auto data = std::any_cast<obj_t>(mem.data);
-        auto group = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "val"));
-        if (group.size() == 0) {
-            return {LLIR::var_types::UNDEFINED};
-        } else {
-            if (group.size() > 1) {
-                for (auto i = 0; i < group.size(); i++) {
-                    if (deduceVarTypeByValue(group[i]).type != LLIR::var_types::STRING)
-                        return {LLIR::var_types::UNDEFINED};
-                }
-                return {LLIR::var_types::STRING};
-            }
-
-            return deduceVarTypeByValue(group[0]);
+    if (mem.isGroup()) {
+        for (auto i = 0; i < mem.getGroup().size(); i++) {
+            if (deduceVarTypeByProd(mem.getGroup()[i]).type != LLIR::var_types::STRING)
+                return {LLIR::var_types::UNDEFINED};
         }
-    } else if (mem.name == Parser::Rules::Rule_op) {
+        return {LLIR::var_types::STRING};
+    }
+    if (mem.isOp()) {
         LLIR::var_type type = {LLIR::var_types::UNDEFINED};
-        auto val = std::any_cast<std::vector<Parser::Rule>>(mem.data);
-        if (val.size() == 0)
-            return {LLIR::var_types::UNDEFINED};
-        for (auto el : val) {
-            auto el_data = std::any_cast<obj_t>(el.data);
-            auto el_val = std::any_cast<Parser::Rule>(corelib::map::get(el_data, "val"));
+        
+        for (auto el : mem.getOp()) {
             if (type.type == LLIR::var_types::UNDEFINED) {
-                type = deduceVarTypeByValue(el_val);
-            } else if (deduceVarTypeByValue(el_val).type != type.type) {
+                type = deduceVarTypeByProd(el);
+            } else if (deduceVarTypeByProd(el).type != type.type) {
                 return {LLIR::var_types::ANY};
             }
         }
         return type;
-    } else if (mem.name == Parser::Rules::Rule_other) {
-        auto data = std::any_cast<rule_other>(mem.data);
-        return corelib::text::isUpper(data.name) ? LLIR::var_type {LLIR::var_types::Token} : LLIR::var_type {LLIR::var_types::Rule};
+    }
+    if (mem.isName()) {
+        return corelib::text::isUpper(mem.getName().name.back()) ? LLIR::var_type {LLIR::var_types::Token} : LLIR::var_type {LLIR::var_types::Rule};
     }
     return {LLIR::var_types::STRING};
 }
-LLIR::var_type LLIR::cllTreeCsupportTypeToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    bool is_unsigned = std::any_cast<bool>(corelib::map::get(data, "is_unsigned"));
-    auto val = std::any_cast<std::string>(corelib::map::get(data, "val"));
-    // cpuf::printf("3, type: %s\n", corelib::map::get(data, "template").type().name());
-    // auto templ = std::any_cast<Parser::Rule>(corelib::map::get(data, "template"));
-    // std::vector<Parser::Rule> templ_val;
-    // if (templ.data.has_value()) {
-    //     cpuf::printf("4\n");
-    //     templ_val = std::any_cast<std::vector<Parser::Rule>>(templ.data);
-    // }
-    LLIR::var_types result;
-    if (val == "char")
-        result = LLIR::var_types::CHAR;
-    else if (val == "short")
-        result = LLIR::var_types::SHORT;
-    else if (val == "int")
-        result = LLIR::var_types::INT;
-    else if (val == "long")
-        result = LLIR::var_types::LONG;
-    else if (val == "long long")
-        result = LLIR::var_types::LONGLONG;
+// possibly outdated
+// LLIR::var_type LLIR::cllTreeCsupportTypeToIR(const Parser::Rule &rule) {
+//     auto data = std::any_cast<obj_t>(rule.data);
+//     bool is_unsigned = std::any_cast<bool>(corelib::map::get(data, "is_unsigned"));
+//     auto val = std::any_cast<std::string>(corelib::map::get(data, "val"));
+//     // cpuf::printf("3, type: %s\n", corelib::map::get(data, "template").type().name());
+//     // auto templ = std::any_cast<Parser::Rule>(corelib::map::get(data, "template"));
+//     // std::vector<Parser::Rule> templ_val;
+//     // if (templ.data.has_value()) {
+//     //     cpuf::printf("4\n");
+//     //     templ_val = std::any_cast<std::vector<Parser::Rule>>(templ.data);
+//     // }
+//     LLIR::var_types result;
+//     if (val == "char")
+//         result = LLIR::var_types::CHAR;
+//     else if (val == "short")
+//         result = LLIR::var_types::SHORT;
+//     else if (val == "int")
+//         result = LLIR::var_types::INT;
+//     else if (val == "long")
+//         result = LLIR::var_types::LONG;
+//     else if (val == "long long")
+//         result = LLIR::var_types::LONGLONG;
     
-    if (is_unsigned)
-        result = static_cast<LLIR::var_types>(static_cast<int>(result) + 1); // result++
-    return { result };
-    throw Error("Undefined csupport type");
-}
-LLIR::var_type LLIR::cllTreeTypeToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<Parser::Rule>(rule.data);
-    if (data.name == Parser::Rules::cll_csupport_types)
-        return cllTreeCsupportTypeToIR(data);
-    else
-        return cllTreeAbstactTypeToIR(data);
-}
-LLIR::var_type LLIR::cllTreeAbstactTypeToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto val = std::any_cast<std::string>(corelib::map::get(data, "type"));
-    auto templ = std::any_cast<Parser::Rule>(corelib::map::get(data, "template"));
-    std::vector<Parser::Rule> templ_val;
-    if (templ.data.has_value()) {
-        templ_val = std::any_cast<std::vector<Parser::Rule>>(templ.data);
-    }
-    if (val == "var" || val == "any")
+//     if (is_unsigned)
+//         result = static_cast<LLIR::var_types>(static_cast<int>(result) + 1); // result++
+//     return { result };
+//     throw Error("Undefined csupport type");
+// }
+LLIR::var_type LLIR::cllTreeTypeToIR(const TreeAPI::CllType &type) {
+    if (type.type == "var")
         return {LLIR::var_types::ANY, {}};
-    else if (val == "str")
+    else if (type.type == "str")
         return {LLIR::var_types::STRING, {}};
-    else if (val == "bool")
+    else if (type.type == "bool")
         return {LLIR::var_types::BOOLEAN, {}};
-    else if (val == "num")
+    else if (type.type == "num")
         return {LLIR::var_types::NUMBER, {}};
-    else if (val == "arr") {
-        LLIR::var_types type = LLIR::var_types::ARRAY;
-        LLIR::var_type _template = cllTreeTypeToIR(templ_val[0]);
-        return {type, {_template}};
-    } else if (val == "obj") {        
-        LLIR::var_types type = LLIR::var_types::OBJECT;
-        LLIR::var_type _template1 = cllTreeTypeToIR(templ_val[0]);
-        LLIR::var_type _template2 = cllTreeTypeToIR(templ_val[1]);
-        return {type, {_template1, _template2}};
+    else if (type.type == "arr") {
+        LLIR::var_types tp = LLIR::var_types::ARRAY;
+        LLIR::var_type _template = cllTreeTypeToIR(type.templ[0]);
+        return {tp, {_template}};
+    } else if (type.type == "obj") {        
+        LLIR::var_types tp = LLIR::var_types::OBJECT;
+        LLIR::var_type _template1 = cllTreeTypeToIR(type.templ[0]);
+        LLIR::var_type _template2 = cllTreeTypeToIR(type.templ[1]);
+        return {tp, {_template1, _template2}};
     }
-    throw Error("undefined abstract type");
+    throw Error("Undefined type");
 }
-LLIR::var_assign_types LLIR::TreeOpToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<Parser::Rule>(rule.data);
-    if (!data.data.has_value())
-        return LLIR::var_assign_types::ASSIGN;
-    auto val = std::any_cast<std::string>(data.data);
-    if (val == ">>")
-        return LLIR::var_assign_types::BITWISE_RIGHTSHFT;
-    if (val == "<<")
-        return LLIR::var_assign_types::BITWISE_LEFTSHIFT;
+LLIR::var_assign_types LLIR::TreeOpToIR(const char op) {
     // all other is single character so can use switch
-    switch (val[0]) {
+    switch (op) {
         case '+':
             return LLIR::var_assign_types::ADD;
         case '-':
@@ -600,23 +556,11 @@ LLIR::var_assign_types LLIR::TreeOpToIR(const Parser::Rule &rule) {
             return LLIR::var_assign_types::DIVIDE;
         case '%':
             return LLIR::var_assign_types::MODULO;
-        case '&':
-            return LLIR::var_assign_types::BITWISE_AND;
-        case '|':
-            return LLIR::var_assign_types::BITWISE_OR;
-        case '^':
-            return LLIR::var_assign_types::BITWISE_ANDR;
     }
     throw Error("Undefined operator");
 }
-LLIR::expr LLIR::TreeOpToExpr(const Parser::Rule &rule) {
-    auto data = std::any_cast<std::string>(rule.data);
-    if (data == ">>")
-        return {LLIR::condition_types::RIGHT_BITWISE};
-    if (data == "<<")
-        return {LLIR::condition_types::LEFT_BITWISE};
-    // all other is single character so can use switch
-    switch (data[0]) {
+LLIR::expr LLIR::TreeOpToExpr(const char op) {
+    switch (op) {
         case '+':
             return {LLIR::condition_types::ADD};
         case '-':
@@ -627,41 +571,30 @@ LLIR::expr LLIR::TreeOpToExpr(const Parser::Rule &rule) {
             return {LLIR::condition_types::DIVIDE};
         case '%':
             return {LLIR::condition_types::MODULO};
-        case '&':
-            return {LLIR::condition_types::BITWISE_AND};
-        case '|':
-            return {LLIR::condition_types::BITWISE_OR};
-        case '^':
-            return {LLIR::condition_types::BITWISE_ANDR};
-        default:
-            throw Error("Undefined operator");
     }
+    throw Error("Undefined operator");
 }
-LLIR::expr LLIR::TreeCompareOpToExpr(const Parser::Rule &rule) {
-    auto data = std::any_cast<std::string>(rule.data);
-    if (data == "==")
+LLIR::expr LLIR::TreeCompareOpToExpr(const TreeAPI::CllCompareOp &op) {
+    if (op.op == "==")
         return {LLIR::condition_types::EQUAL};
-    if (data == "!=")
+    if (op.op == "!=")
         return {LLIR::condition_types::NOT_EQUAL};
-    if (data == ">")
+    if (op.op == ">")
         return {LLIR::condition_types::HIGHER};
-    if (data == "<")
+    if (op.op == "<")
         return {LLIR::condition_types::LOWER};
-    if (data == ">=")
+    if (op.op == ">=")
         return {LLIR::condition_types::HIGHER_OR_EQUAL};
-    if (data == "<=")
+    if (op.op == "<=")
         return {LLIR::condition_types::LOWER_OR_EQUAL};
     throw Error("undefined compare operator");
 }
-LLIR::expr LLIR::TreeLogicalOpToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<Parser::Rule>(rule.data);
-    if (data.name == Parser::Rules::logical_and)
+LLIR::expr LLIR::TreeLogicalOpToIR(const TreeAPI::CllLogicalOp &lop) {
+    if (lop.isAnd)
         return {LLIR::condition_types::AND};
-    else if (data.name == Parser::Rules::logical_or)
-        return {LLIR::condition_types::OR};
-    throw Error("undefined logical operator");
+    return {LLIR::condition_types::OR};
 }
-LLIR::var_assign_types LLIR::TreeAssignmentOpToIR(const Parser::Rule &rule) {
+LLIR::var_assign_types LLIR::TreeAssignmentOpToIR(const char op) {
     auto data = std::any_cast<Parser::Rule>(rule.data);
     if (!data.data.has_value())
         return LLIR::var_assign_types::ASSIGN;
@@ -669,142 +602,65 @@ LLIR::var_assign_types LLIR::TreeAssignmentOpToIR(const Parser::Rule &rule) {
     v = static_cast<LLIR::var_assign_types>(static_cast<int>(v) + static_cast<int>(LLIR::var_assign_types::ASSIGN));
     return v;
 }
-LLIR::var_assign_types LLIR::TreeOperatorsToIR(const Parser::Rule &rule) {
-    if (rule.name == Parser::Rules::op)
-        return TreeOpToIR(rule);
-    else if (rule.name == Parser::Rules::assignment_op)
-        return TreeAssignmentOpToIR(rule);
-    else
-        throw Error("Undefined operator");
-}
-std::vector<LLIR::expr> LLIR::TreeExprGroupToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprGroupToIR(const TreeAPI::CllExprGroup &group) {
     std::vector<LLIR::expr> expr;
-    auto data = std::any_cast<Parser::Rule>(rule.data);
-    auto expression = TreeExprToIR(data);
+    auto expression = TreeExprToIR(group.expr);
     expr.push_back({LLIR::condition_types::GROUP_OPEN});
     expr.insert(expr.end(), expression.begin(), expression.end());
     expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     return expr;
 }
-std::vector<LLIR::expr> LLIR::TreeExprArithmetic_forToIR(const Parser::Rule &rule) {
-    std::vector<LLIR::expr> expr;
-    auto data = std::any_cast<Parser::Rule>(rule.data);
-    switch (data.name)
-    {
-    case Parser::Rules::expr_group:
-    {
-        auto group_res = TreeExprGroupToIR(data);
-        expr.insert(expr.end(), group_res.begin(), group_res.end());
-        break;
-    }
-    case Parser::Rules::method_call:
-        expr.push_back({LLIR::condition_types::METHOD_CALL, TreeMethodCallToIR(data)});
-        break;
-    case Parser::Rules::cll_function_call:
-        expr.push_back({LLIR::condition_types::FUNCTION_CALL, TreeFunctionToIR(data)});
-        break;
-    case Parser::Rules::any_data:
-        expr.push_back({LLIR::condition_types::ANY_DATA, TreeAnyDataToIR(data)});
-        break;
-    default:
-        throw Error("Undefined data in arithmetic_for %s", Parser::RulesToString(data.name));
-        break;
-    }
+std::vector<LLIR::expr> LLIR::TreeExprValueToIR(const TreeAPI::CllExprValue &value) {
+    std::vector<LLIR::expr> expr(1);
+    if (value.isGroup()) {
+        expr = TreeExprGroupToIR(value.getGroup());
+    } else if (value.isMethodCall()) {
+        expr.push_back({LLIR::condition_types::METHOD_CALL, TreeMethodCallToIR(value.getMethodCall())});
+    } else if (value.isFunctionCall()) {
+        expr.push_back({LLIR::condition_types::FUNCTION_CALL, TreeFunctionToIR(value.getFunctionCall())});
+    } else if (value.isVariable()) {
+        // todo
+       // expr.push_back({LLIR::condition_types::VARIABLE, })
+    } else if (value.isrvalue()) {
+        expr.push_back({LLIR::condition_types::ANY_DATA, TreeRvalueToIR(value.getrvalue())});
+    } else throw Error("Undefined expression");
     return expr;
 }
-std::vector<LLIR::expr> LLIR::TreeExprArithmeticToIR(const Parser::Rule &rule) {
+std::vector<LLIR::expr> LLIR::TreeExprAdditionToIR(const TreeAPI::CllExprAddition &addition) {
     // if (rule.name == Parser::Rules::cll_function_call)
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
-    auto operators = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "operators"));
-    auto sequence = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "sequence"));
     std::vector<LLIR::expr> cond;
-    auto res = TreeExprArithmetic_forToIR(first);
+    auto res = TreeExprValueToIR(addition.value);
     cond.insert(cond.end(), res.begin(), res.end());
-    for (int i = 0; i < operators.size(); i++) {
-        cond.push_back(TreeOpToExpr(operators[i]));
-        res = TreeExprArithmetic_forToIR(sequence[i]);
+    for (int i = 0; i < addition.rights.size(); i++) {
+        cond.push_back(TreeOpToExpr(addition.rights[i].first));
+        res = TreeExprValueToIR(addition.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
     return cond;
 }
-std::vector<LLIR::expr> LLIR::TreeExprCompareToIR_unit(const Parser::Rule &rule) {
-    switch (rule.name)
-    {
-    case Parser::Rules::expr_arithmetic:
-        return TreeExprArithmeticToIR(rule);
-    case Parser::Rules::expr_for_arithmetic:
-        return TreeExprArithmetic_forToIR(rule);
-    case Parser::Rules::expr_group:
-        return TreeExprGroupToIR(rule);
-    default:
-        throw Error("Undefined expr compare unit\n");
-        break;
-    }
-}
-std::vector<LLIR::expr> LLIR::TreeExprCompareToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto first = std::any_cast<Parser::Rule>(corelib::map::get(data, "first"));
-    auto operators = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "operators"));
-    auto sequence = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "sequence"));
-
+std::vector<LLIR::expr> LLIR::TreeExprCompareToIR(const TreeAPI::CllExprCompare &compare) {
     std::vector<LLIR::expr> cond;
-    auto res = TreeExprCompareToIR_unit(first);
+    auto res = TreeExprAdditionToIR(compare.value);
     cond.insert(cond.end(), res.begin(), res.end());
-    for (int i = 0; i < operators.size(); i++) {
-        cond.push_back(TreeCompareOpToExpr(operators[i]));
-        res = TreeExprCompareToIR_unit(sequence[i]);
+    for (int i = 0; i < compare.rights.size(); i++) {
+        cond.push_back(TreeCompareOpToExpr(compare.rights[i].first));
+        res = TreeExprAdditionToIR(compare.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
     return cond;
 }
-std::vector<LLIR::expr> LLIR::TreeExprLogicalUnitToIR(const Parser::Rule &rule) {
-    switch (rule.name)
-    {
-    case Parser::Rules::expr_compare:
-        return TreeExprCompareToIR(rule);
-    case Parser::Rules::expr_arithmetic:
-        return TreeExprArithmeticToIR(rule);
-    case Parser::Rules::expr_for_arithmetic:
-        return TreeExprArithmetic_forToIR(rule);
-    default:
-        throw Error("Undefined unit\n");
-    }
-} 
-std::vector<LLIR::expr> LLIR::TreeExprLogicalToIR(const Parser::Rule &rule) {
-    auto data = std::any_cast<obj_t>(rule.data);
-    auto left = std::any_cast<Parser::Rule>(corelib::map::get(data, "left"));
-    auto op = std::any_cast<Parser::Rule>(corelib::map::get(data, "op"));
-    auto right = std::any_cast<Parser::Rule>(corelib::map::get(data, "right"));
-
+std::vector<LLIR::expr> LLIR::TreeExprLogicalToIR(const TreeAPI::CllExprLogical &logical) {
     std::vector<LLIR::expr> cond;
-    auto left_res = TreeExprLogicalUnitToIR(left);
-    auto op_res = TreeLogicalOpToIR(op);
-    auto rigth_res = TreeExprLogicalUnitToIR(right);
-    cond.insert(cond.end(), left_res.begin(), left_res.end());
-    cond.push_back(op_res);
-    cond.insert(cond.end(), rigth_res.begin(), rigth_res.end());
-    return cond;
-}
-std::vector<LLIR::expr> LLIR::TreeExprToIR(const Parser::Rule &expr) {
-    auto val = std::any_cast<Parser::Rule>(expr.data);
-    switch(val.name) {
-        case Parser::Rules::expr_logical:
-            return TreeExprLogicalToIR(val);
-        case Parser::Rules::expr_compare:
-            return TreeExprCompareToIR(val);
-        case Parser::Rules::expr_arithmetic:
-            return TreeExprArithmeticToIR(val);
-        case Parser::Rules::expr_group:
-            return TreeExprGroupToIR(val);
-        case Parser::Rules::cll_function_call:
-            return {{LLIR::condition_types::FUNCTION_CALL, TreeFunctionToIR(val)}};
-        case Parser::Rules::any_data:
-            return {{LLIR::condition_types::ANY_DATA, TreeAnyDataToIR(val)}};
-        case Parser::Rules::method_call:
-            return {{LLIR::condition_types::METHOD_CALL, TreeMethodCallToIR(val)}};
+    auto res = TreeExprCompareToIR(logical.value);
+    cond.insert(cond.end(), res.begin(), res.end());
+    for (int i = 0; i < logical.rights.size(); i++) {
+        cond.push_back(TreeCompareOpToExpr(logical.rights[i].first));
+        res = TreeExprCompareToIR(logical.rights[i].second);
+        cond.insert(cond.end(), res.begin(), res.end());
     }
-    throw Error("Undefined tree unit: %s", Parser::RulesToString(val.name));
+}
+std::vector<LLIR::expr> LLIR::TreeExprToIR(const TreeAPI::CllExpr &expr) {
+    return TreeExprLogicalToIR(expr.value);
 }
 
 // Function to compare two `templ` arrays
@@ -835,300 +691,76 @@ bool LLIR::compare_types(std::list<LLIR::var_type> types) {
     }
     return is_same;
 }
-LLIR::variable LLIR::getElementbyAccessor(LLIR::accessor &accessor, bool is_match_rule) {
-    enum class accessor_states {
-        GROUP, ELEMENT, CHAR, UNKNOWN
-    };
-    accessor_states state = accessor_states::UNKNOWN;
-    LLIR::variable* elements_pointer = nullptr;
-    LLIR::var_group* group_pointer = nullptr; 
-    for (auto &unit : accessor.elements) {
-        auto num = std::any_cast<Parser::Rule>(unit.data);
-        auto num_data = std::any_cast<obj_t>(num.data);
-        auto num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n")) - 1;
-        switch (unit.name)
-        {
-        case Parser::Rules::accessors_group:
-            //cpuf::printf("accessor $%d\n", (int) num_main);
-            if (state == accessor_states::ELEMENT)
-                throw Error("accessor %% cannot refer to accessor $");
-            else if (state == accessor_states::GROUP) {
-                if (num_main > group_pointer->end)
-                    throw Error("Group %d does not exist", (int) group_pointer->end + num_main);
-                group_pointer += (int) num_main;
+LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
+    LLIR::var_type type = {LLIR::var_types::UNDEFINED};
+    if (value.isString())
+        type.type = LLIR::var_types::STRING;
+    else if (value.isBoolean()) 
+        type.type = LLIR::var_types::BOOLEAN;
+    else if (value.isNumber())
+        type.type = LLIR::var_types::NUMBER;
+    else if (value.isArray()) {
+        LLIR::var_type types;
+        for (const auto &el : value.getArray()) {
+            if (types.type == LLIR::var_types::UNDEFINED) {
+                types.type = deduceTypeFromRvalue(el);
             } else {
-                state = accessor_states::GROUP;
-                if (num_main > groups.size())
-                    throw Error("Group %d does not exist", (int) num_main);
-                //cpuf::printf("Accessing %d, group size: %llu\n", (int) num_main, groups.size());
-                group_pointer = &groups[num_main];
-            }
-            break;
-        case Parser::Rules::accessors_element:
-            //cpuf::printf("accessor %%%d\n", (int) num_main);
-            if (state == accessor_states::ELEMENT) {
-                if (&elements_pointer[(int) num_main] >= elements.data() + elements.size())
-                    throw Error("Element does not exist");
-                elements_pointer += (int) num_main;
-            } else if (state == accessor_states::GROUP) {
-                if (group_pointer->begin + (int) num_main >= elements.size())
-                    throw Error("Element does not exist: %d", group_pointer->begin + (int) num_main);
-                elements_pointer = &elements[group_pointer->begin + (int) num_main];
-            } else {
-                if (num_main >= elements.size())
-                    throw Error("Element does not exist. elements size(): %llu while num_main: %d", elements.size(), (int) num_main);
-                elements_pointer = &elements[num_main];
-            }
-            state = accessor_states::ELEMENT;
-            break;
-        case Parser::Rules::accessors_char:
-            //cpuf::printf("accessor ^%d\n", (int) num_main);
-            if (state != accessor_states::UNKNOWN)
-                throw Error("accessor ^ cannot be reffered by another accessor");
-            if (is_match_rule)
-                throw Error("accessor ^ cannot be used as a match rule");
-            break;
-        default:
-            break;
-        }
-    }
-    return state == accessor_states::ELEMENT ? *elements_pointer : group_pointer->var;
-}
-void LLIR::inlineExprAccessor(LLIR::assign &data) {
-    if (data.kind == LLIR::var_assign_values::ACCESSOR) {
-        auto accessor = std::any_cast<LLIR::accessor>(data.data);
-        if (accessor.elements[0].name == Parser::Rules::accessors_char) {
-            if (accessor.elements.size() > 1)
-                throw Error("Cannot refer subaccessor for accessor '^");
-
-            auto num = std::any_cast<Parser::Rule>(accessor.elements[0].data);
-            auto num_data = std::any_cast<obj_t>(num.data);
-            auto num_main = std::any_cast<double>(corelib::map::get(num_data, "main_n")) - 1;
-            data.kind = LLIR::var_assign_values::CURRENT_POS;
-            data.data = num_main;
-            return;
-        }
-        // a regular accessor
-        auto var = getElementbyAccessor(accessor, false);
-        data.kind = LLIR::var_assign_values::VARIABLE;
-        data.data = var;
-    } else if (data.kind == LLIR::var_assign_values::EXPR) {
-        auto dt = std::any_cast<std::vector<LLIR::expr>>(data.data);
-        inlineExprAccessor(dt);
-        data.data = dt;
-
-    }
-}
-void LLIR::inlineExprAccessor(std::vector<LLIR::expr> &expr) {
-    for (auto &unit : expr) {
-        if (unit.id == LLIR::condition_types::ANY_DATA) {
-            auto data = std::any_cast<LLIR::assign>(unit.value);
-            inlineExprAccessor(data);
-            unit.value = data;
-        }
-    }
-}
-void LLIR::inlineAccessors(std::vector<LLIR::member> &values) {
-    if (values.empty() || elements.empty())
-        return;
-    for (auto it = values.begin(); it != values.end(); it++) {
-        auto el = *it;
-        if (el.type == LLIR::types::ACCESSOR) {
-            auto accessor = std::any_cast<LLIR::accessor>(el.value);
-            auto var = getElementbyAccessor(accessor, true);
-            std::vector<LLIR::expr> expr = {
-                {LLIR::condition_types::STRNCMP, LLIR::strncmp{0, var}}
-            };
-            // go to reverse to get names of var and svar
-            bool insideLoop;
-            LLIR::variable accessor_var, accessor_shadow, accessor_svar;
-            for (auto reverse_it = std::make_reverse_iterator(it + 1); reverse_it != values.rend(); reverse_it++) {
-                if (reverse_it->type == LLIR::types::INSIDE_LOOP) {
-                    insideLoop = true;
-                    reverse_it = std::make_reverse_iterator(values.erase(std::prev(reverse_it.base())));
-                } else if (reverse_it->type == LLIR::types::VARIABLE) {
-                    auto data = std::any_cast<LLIR::variable>(reverse_it->value);
-                    if (accessor_svar.name.empty()) {
-                        accessor_svar = data;
-                    } else if (accessor_shadow.name.empty()) {
-                        accessor_shadow = data;
-                    } else {
-                        accessor_var = data;
-                        break;
-                    }
+                auto newType = deduceTypeFromRvalue(el);
+                if (newType.type != types.type || !compare_templ(newType.templ, types.templ)) {
+                    type.type = LLIR::var_types::ANY;
+                    break;
                 }
             }
-            if (accessor_var.name.empty() || accessor_svar.name.empty())
-                throw Error("Cannot find variable and success variable for accessor");
-            // replace accessor with rule
-            it = values.erase(it); // Erase the accessor element and update iterator
-            std::vector<LLIR::member> block = createDefaultBlock(accessor_var, accessor_svar);
-            LLIR result_rule(tree);
-            result_rule.proceed(*this);
-            pushBasedOnQualifier(Tree::make_rule(Parser::Rules::accessor), expr, block, accessor_var, accessor_svar, false);
-            // replace_exit_to_unsuccess(result_rule.elements, accessor_svar);
-            it = values.insert(it, result_rule.data.begin(), result_rule.data.end()); // Insert new elements and update iterator
-            if (it != values.end())
-                std::advance(it, result_rule.elements.size() - 1); // Move iterator past the newly inserted elements
-        } else if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
-            auto dt = std::any_cast<LLIR::condition>(el.value);
-            inlineExprAccessor(dt.expression);
-            inlineAccessors(dt.block);
-            it->value = dt;
-        } else if (el.type == LLIR::types::VARIABLE) {
-            auto data = std::any_cast<LLIR::variable>(el.value);
-            inlineExprAccessor(data.value);
-            it->value = data;
-        } else if (el.type == LLIR::types::ASSIGN_VARIABLE) {
-            auto data = std::any_cast<LLIR::variable_assign>(el.value);
-            inlineExprAccessor(data.value);
-            it->value = data;
         }
-    }
-}
-LLIR::var_type LLIR::deduceTypeFromAnyData(const Parser::Rule &value) {
-    auto val = std::any_cast<Parser::Rule>(value.data);
-    LLIR::var_type type;
-    switch (val.name)
-    {
-    case Parser::Rules::string:
-        type.type = LLIR::var_types::STRING;
-        break;
-    case Parser::Rules::var_refer:
-    {        
-        LLIR::var_refer refer;
-        auto data = std::any_cast<obj_t>(val.data);
-        auto name = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-        auto name_str = std::any_cast<std::string>(name.data);
-        auto var = std::find_if(vars.begin(), vars.end(), [&name_str](const LLIR::variable var) {return var.name == name_str;});
-        if (var == vars.end())
-            throw Error("Requested variable in expression could not be found: %s", name_str);
-        if (var->type.type == LLIR::var_types::Token_result) {
-            type.type = LLIR::var_types::Token;
-        } else if (var->type.type == LLIR::var_types::Rule_result) {
-            type.type = LLIR::var_types::Rule;
-        } else {
-            type = var->type;
+        if (types.type != LLIR::var_types::ANY) {
+            type.templ = {types};
+            type.type = LLIR::var_types::ARRAY;
         }
-        break;
-    }
-    case Parser::Rules::boolean: 
-    {
-        type.type = LLIR::var_types::BOOLEAN;
-        break;
-    }
-    case Parser::Rules::number: 
-    {
-        
-        type.type = LLIR::var_types::NUMBER;
-        break;
-    }
-    case Parser::Rules::array:
-    {
-        //cpuf::printf("array\n");
-        auto data = std::any_cast<std::vector<Parser::Rule>>(val.data);
-        std::list<LLIR::var_type> types;
-        
-        for (auto &el : data) {
-            types.push_back(deduceTypeFromAnyData(el));
+    } else if (value.isObject()) {
+        // todo: add handle key of different types (int or string)
+        LLIR::var_type types;
+        for (const auto &[key, value] : value.getObject()) {
+            if (types.type == LLIR::var_types::UNDEFINED) {
+                types.type = deduceTypeFromRvalue(value);
+            } else {
+                auto newType = deduceTypeFromRvalue(value);
+                if (newType.type != types.type || !compare_templ(newType.templ, types.templ)) {
+                    type.type = LLIR::var_types::ANY;
+                    break;
+                }
+            }
         }
-        bool is_same = compare_types(types);
-        type.type = LLIR::var_types::ARRAY;
-        type.templ = {is_same ? types.front() : LLIR::var_type {LLIR::var_types::ANY}};
-        break;
-    }
-    case Parser::Rules::object:
-    {
-        //cpuf::printf("object\n");
-        auto data = std::any_cast<obj_t>(val.data);
-        auto key = std::any_cast<Parser::Rule>(corelib::map::get(data, "key"));
-        auto value = std::any_cast<Parser::Rule>(corelib::map::get(data, "value"));
-        auto keys = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "keys"));
-        auto values = std::any_cast<std::vector<Parser::Rule>>(corelib::map::get(data, "values"));
-        
-        keys.insert(keys.begin(), key);
-        values.insert(values.begin(), value);
-        std::list <LLIR::var_type> types;
-        for (int i = 0; i < keys.size(); i++) {
-            auto key = keys[i];
-            auto value = values[i];
-            auto type = deduceTypeFromAnyData(value);
-            types.push_back(type);
+        if (types.type != LLIR::var_types::ANY) {
+            type.templ = {types};
+            type.type = LLIR::var_types::OBJECT;
         }
-        bool is_same = compare_types(types);
-        type.type = LLIR::var_types::OBJECT;
-        type.templ = {is_same ? std::vector<LLIR::var_type> {{LLIR::var_types::STRING}, types.front()} : std::vector<LLIR::var_type> {{LLIR::var_types::STRING}, {LLIR::var_types::ANY}}};
-        break;
-    }
-    case Parser::Rules::accessor:
-    {
-        //cpuf::printf("accessor\n");
-        auto accessor = std::any_cast<LLIR::accessor>(TreeAnyDataToIR(value).data);
-        auto name = getElementbyAccessor(accessor, false);
-        auto var = std::find_if(vars.begin(), vars.end(), [&name](const LLIR::variable var) {
-            return var.name == name.name;
-        });
-        if (var == vars.end())
-            throw Error("Requested variable in expression could not be found: %s", name.name);
-        if (var->type.type == LLIR::var_types::Token_result) {
-            type.type = LLIR::var_types::Token;
-        } else if (var->type.type == LLIR::var_types::Rule_result) {
-            type.type = LLIR::var_types::Rule;
-        } else {
-            type = var->type;
-        }
-        break;
-    }
-    default:
+    } else {
         throw Error("Undefined rule");
-        break;
     }
     return type;
 }
-LLIR::var_type LLIR::deduceTypeFromExpr(const Parser::Rule &expr) {
-    switch (expr.name) {
-        // case Parser::Rules::expr_logical:
-        //     return exprLogicalDeduceType(data);
-        // case Parser::Rules::expr_compare:
-        //     return exprCompareDeduceType(data);
-        // case Parser::Rules::expr_arithmetic:
-        //     return exprArithmeticDeduceType(data);
-        // case Parser::Rules::expr_group:
-        //     return deduceTypeFromExpr(std::any_cast<Parser::Rule>(data.data));
-        case Parser::Rules::any_data:
-            return deduceTypeFromAnyData(expr);
-        default:
-            throw Error("Undefined expression unit: %s", Parser::RulesToString(expr.name));
-    }
+LLIR::var_types LLIR::deduceTypeFromTerm(TreeAPI::CllExprTerm &term) {
+    // type is explicitly based on value. We may not check others in addition
+    return deduceTypeFromRvalue(term.value);
 }
-LLIR::data_block LLIR::TreeDataBlockToIR(const Parser::Rule &rule) {
-    if (rule.empty())
-        return {};
-    auto val = std::any_cast<Parser::Rule>(rule.data);
-    LLIR::data_block datablock;
-    if (val.name == Parser::Rules::Rule_data_block_inclosed_map) {
-        // inclosed map
-        datablock.is_inclosed_map = true;
-        LLIR::inclosed_map map;
-        auto keys = std::any_cast<std::vector<Parser::Rule>>(val.data);
-        for (auto &key : keys) {
-            auto data = std::any_cast<obj_t>(key.data);
-            auto k = std::any_cast<Parser::Rule>(corelib::map::get(data, "name"));
-            auto v = std::any_cast<Parser::Rule>(corelib::map::get(data, "val"));
-            if (v.name == Parser::Rules::expr) {
-                auto expr = TreeExprToIR(v);
-                inlineExprAccessor(expr);
-                map[std::any_cast<std::string>(k.data)] = {expr, deduceTypeFromExpr(std::any_cast<Parser::Rule>(v.data))};
-            } 
-        }
-        datablock.value = {LLIR::var_assign_values::INCLOSED_MAP, map};
-    } else if (val.name == Parser::Rules::any_data) {
-        datablock.is_inclosed_map = false;
-        datablock.value = TreeAnyDataToIR(val);
-        datablock.assign_type = deduceTypeFromExpr(val);
-        inlineExprAccessor(datablock.value);
-    } else throw Error("Undefined data block val\n");
-    return datablock;
+LLIR::var_types LLIR::deduceTypeFromAddition(TreeAPI::CllExprAddition &addition) {
+    // same as with term
+    return deduceTypeFromTerm(addition.value);
+}
+LLIR::var_types LLIR::deduceTypeFromCompare(const TreeAPI::CllExprCompare &compare) {
+    // if any comparasion exists it is boolean
+    if (compare.rights.size() != 0)
+        return {LLIR::var_types::BOOLEAN};
+    return deduceTypeFromAddition(compare.value);
+}
+LLIR::var_type LLIR::deduceTypeFromLogical(const TreeAPI::CllExprLogical &logical) {
+    // if &&/|| exists it is always boolean
+    if (logical.rights.size() != 0)
+        return {LLIR::var_types::BOOLEAN};
+    return deduceTypeFromCompare(logical.value);
+}
+LLIR::var_type LLIR::deduceTypeFromExpr(const TreeAPI::CllExpr &expr) {
+    return deduceTypeFromLogical(expr.value);
 }
 LLIR::node_ret_t LLIR::processGroup(const Parser::Rule &rule, char quantifier) {
     //cpuf::printf("group\n");

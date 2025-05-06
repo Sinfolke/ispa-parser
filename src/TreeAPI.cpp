@@ -23,35 +23,35 @@ namespace TreeAPI {
         }
         return res;
     }
-    size_t String::count_strlen() {
+    size_t String::count_strlen() const {
         return count_strlen(value);
     }
-    std::string String::format_str() {
+    std::string String::format_str() const {
         return format_str(value);
     }
-    bool Number::hasDec() {
+    bool Number::hasDec() const {
         return dec.empty();
     }
-    bool Number::hasSign() {
+    bool Number::hasSign() const {
         return sign == '\0';
     };
-    std::string Number::getFull() {
+    std::string Number::getFull() const {
         std::string full;
         if (sign != '\0')
             full += sign;
         full += main + '.' + dec;
         return full;
     }
-    double Number::getFullNumber() {
+    double Number::getFullNumber() const {
         return std::stod(main + '.' + dec);
     };
-    unsigned Number::getMain() {
+    unsigned Number::getMain() const {
         return std::stoul(main);
     }
-    unsigned Number::getDecimal() {
+    unsigned Number::getDecimal() const {
         return std::stoul(dec);
     }
-    bool Boolean::getBoolean() {
+    bool Boolean::getBoolean() const {
         return value == "true";
     }
     bool rvalue::isString() const {
@@ -125,7 +125,9 @@ namespace TreeAPI {
     bool CllExprValue::isFunctionCall() const {
         return value.type() == typeid(CllFunctionCall);
     }
-
+    bool CllExprValue::isMethodCall() const {
+        return value.type() == typeid(CllMethodCall);
+    }
     bool CllExprValue::isrvalue() const {
         return value.type() == typeid(CllExprValue);
     }
@@ -137,6 +139,9 @@ namespace TreeAPI {
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
         return std::any_cast<CllFunctionCall&>(value);
+    }
+    CllMethodCall& CllExprValue::getMethodCall() {
+        return std::any_cast<CllMethodCall&>(value);
     }
     rvalue& CllExprValue::getrvalue() {
         return std::any_cast<rvalue&>(value);
@@ -152,7 +157,9 @@ namespace TreeAPI {
     const CllFunctionCall& CllExprValue::getFunctionCall() const {
         return std::any_cast<const CllFunctionCall&>(value);
     }
-    
+    const CllMethodCall& CllExprValue::getMethodCall() const {
+        return std::any_cast<const CllMethodCall&>(value);
+    }    
     const rvalue& CllExprValue::getrvalue() const {
         return std::any_cast<const rvalue&>(value);
     }    

@@ -109,7 +109,7 @@ cll:
         ;
 
         #value:
-            @ group | _variable | cll_function_call | any_data
+            @ group | _variable | cll_function_call | method_call | any_data
             {@}
         ;
 
@@ -117,6 +117,10 @@ cll:
             '(' @ expr ')'
             {@}
         ;
+    ;
+    #method_call:
+        @ ID '.' @ function_body_call
+        @{name, body}
     ;
     #_var: 
         @ TYPE? @ ID @ (ASSIGNMENT_OP @ expr)?
@@ -128,7 +132,7 @@ cll:
         {@}
     ;
     #loop_while:
-        'while' @ expr stmt
+        'while' @ expr @ stmt
 
         @{expr, stmt}
     ;

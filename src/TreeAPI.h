@@ -122,19 +122,26 @@ namespace TreeAPI {
         std::string name;
         CllFunctionBodyDecl body;
     };
+    struct CllMethodCall {
+        std::string name;
+        CllFunctionCall body;
+    };
     struct CllExprValue {
         std::any value;
         bool isGroup() const;
         bool isVariable() const;
         bool isFunctionCall() const;
+        bool isMethodCall() const;
         bool isrvalue() const;
         CllExprGroup &getGroup();
         CllVariable &getVariable();
         CllFunctionCall &getFunctionCall();
+        CllMethodCall &getMethodCall();
         rvalue &getrvalue();
         const CllExpr &getGroup() const;
         const CllVariable &getVariable() const;
         const CllFunctionCall &getFunctionCall() const;
+        const CllMethodCall &getMethodCall() const;
         const rvalue &getrvalue() const;
     };
 
@@ -179,7 +186,7 @@ namespace TreeAPI {
     struct CllVar {
         CllType type;
         std::string name;
-        std::string op;
+        char op;
         CllExpr value;
     };
 

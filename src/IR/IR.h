@@ -154,10 +154,10 @@ class LLIR {
         void inlineExprAccessor(LLIR::assign &data);
         void inlineExprAccessor(std::vector<LLIR::expr> &expr);
         void inlineAccessors(std::vector<LLIR::member> &values);
-        LLIR::var_type deduceTypeFromAnyData(const Parser::Rule &value);
+        LLIR::var_type deduceTypeFromRvalue(const Parser::Rule &value);
         LLIR::var_type deduceTypeFromExpr(const Parser::Rule &expr);
         LLIR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
-        LLIR::var_type deduceVarTypeByValue(Parser::Rule mem);
+        LLIR::var_type deduceVarTypeByProd(const TreeAPI::RuleMember &mem);
         // convertion functions helpers
         void addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true);
         void handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true);
@@ -169,8 +169,8 @@ class LLIR {
         LLIR::variable affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier);
         LLIR::assign TreeRvalueToIR(const TreeAPI::rvalue &value);
         std::vector<std::vector<LLIR::expr>> TreeFunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body);
-        LLIR::function_call TreeFunctionToIR(const Parser::Rule &rule);
-        LLIR::method_call TreeMethodCallToIR(const Parser::Rule &rule);
+        LLIR::function_call TreeFunctionToIR(const TreeAPI::CllFunctionCall &rule);
+        LLIR::method_call TreeMethodCallToIR(const TreeAPI::CllMethodCall &rule);
         LLIR::var_type cllTreeCsupportTypeToIR(const Parser::Rule &rule);
         LLIR::var_type cllTreeTypeToIR(const Parser::Rule &rule);
         LLIR::var_type cllTreeAbstactTypeToIR(const Parser::Rule &rule);
@@ -181,9 +181,9 @@ class LLIR {
         LLIR::var_assign_types TreeAssignmentOpToIR(const Parser::Rule &rule);
         LLIR::var_assign_types TreeOperatorsToIR(const Parser::Rule &rule);
         std::vector<LLIR::expr> TreeExprGroupToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprArithmetic_forToIR(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprValueToIR(const Parser::Rule &rule);
         std::vector<LLIR::expr> TreeExprArithmeticToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprCompareToIR_unit(const Parser::Rule &rule);
+        std::vector<LLIR::expr> TreeExprCompareToIR_switch(const Parser::Rule &rule);
         std::vector<LLIR::expr> TreeExprCompareToIR(const Parser::Rule &rule);
         std::vector<LLIR::expr> TreeExprLogicalUnitToIR(const Parser::Rule &rule);
         std::vector<LLIR::expr> TreeExprLogicalToIR(const Parser::Rule &rule);
