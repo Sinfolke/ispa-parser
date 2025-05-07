@@ -301,44 +301,44 @@ void LRParser::transform() {
         transform_helper(value[0].members, name, replacement);
     }
 }
-void LRParser::getPriorityTree(const std::vector<TreeAPI::Rule> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth) {
-    for (const auto &r : *rule) {
-        // Avoid re-expansion of already visited rules
-        if (!corelib::text::isLower(r.members.name) || visited.count(r.fullname))
-            continue;
+// void LRParser::getPriorityTree(const std::vector<TreeAPI::Rule> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth) {
+//     for (const auto &r : *rule) {
+//         // Avoid re-expansion of already visited rules
+//         if (!corelib::text::isLower(r.members.name) || visited.count(r.fullname))
+//             continue;
 
-        // Assign priority if not yet assigned
-        if (priority.find(r.fullname) == priority.end()) {
-            priority[r.fullname] = depth;
-        }
+//         // Assign priority if not yet assigned
+//         if (priority.find(r.fullname) == priority.end()) {
+//             priority[r.fullname] = depth;
+//         }
 
-        visited.insert(r.fullname);
+//         visited.insert(r.fullname);
 
-        // Recurse into rule alternatives
-        auto it = initial_item_set.find(r.fullname);
-        if (it != initial_item_set.end()) {
-            for (const auto &subrule : it->second) {
-                getPriorityTree(&subrule, visited, depth + 1);
-            }
-        }
-    }
-}
+//         // Recurse into rule alternatives
+//         auto it = initial_item_set.find(r.fullname);
+//         if (it != initial_item_set.end()) {
+//             for (const auto &subrule : it->second) {
+//                 getPriorityTree(&subrule, visited, depth + 1);
+//             }
+//         }
+//     }
+// }
 
-void LRParser::getPriorityTree() {
-    std::unordered_set<std::vector<std::string>> visited;
+// void LRParser::getPriorityTree() {
+//     std::unordered_set<std::vector<std::string>> visited;
 
-    auto it = initial_item_set.find({"main"});
-    if (it != initial_item_set.end()) {
-        for (const auto &r : it->second) {
-            getPriorityTree(&r, visited, 0);
-        }
-    } else {
-        throw Error("No main rule found");
-    }
-}
+//     auto it = initial_item_set.find({"main"});
+//     if (it != initial_item_set.end()) {
+//         for (const auto &r : it->second) {
+//             getPriorityTree(&r, visited, 0);
+//         }
+//     } else {
+//         throw Error("No main rule found");
+//     }
+// }
 
 void LRParser::addAugmentedRule() {
-    initial_item_set[{"__start"}] = TreeAPI::Rule { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {{"main"}}}};
+    initial_item_set[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {{"main"}}}}}};
 }
 void LRParser::constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed) {
     for (const auto &option : options) {
@@ -351,7 +351,7 @@ void LRParser::constructFirstSet(const std::vector<TreeAPI::Rule>& options, cons
             if (rule.name == nonterminal) {
                 continue;
             }
-            if (corelib::text::isLower(rule.name)) {
+            if (corelib::text::isLower(rule.name.back())) {
                 // Nonterminal: take FIRST(rule.fullname)
                 // cpuf::printf("[nonterminal %$] ", rule.fullname);
                 auto find = first.find(rule.name);
@@ -520,10 +520,10 @@ void LRParser::constructFollowSet() {
         }
     } while(hasChanges || prevDependedChanged);
 }
-void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item) {
+void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item) {
     size_t next_pos = new_item.dot_pos + 1;
     // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
-    if (rhs_group.empty() || next_pos >= rhs_group.size()) {
+    if (rhs_group.members.empty() || next_pos >= rhs_group.members.size()) {
         // end of rule, compute lookahead of follow(current)
         auto &lookahead = follow[lhs_name];
         new_item.lookahead.insert(lookahead.begin(), lookahead.end());
@@ -531,17 +531,20 @@ void LRParser::compute_cci_lookahead(const std::vector<rule_other> &rhs_group, c
     }
     // check whether next symbol is terminal or non-terminal
     bool epsilon_in_all = true;
-    for (size_t i = next_pos; i < rhs_group.size(); i++) {
-        auto &symbol = rhs_group[i];
-        if (corelib::text::isUpper(symbol.name)) {
+    for (size_t i = next_pos; i < rhs_group.members.size(); i++) {
+        auto &symbol = rhs_group.members[i];
+        if (!symbol.isName())
+            throw Error("Symbol is not name");
+        const auto &name = symbol.getName();
+        if (corelib::text::isUpper(name.name.back())) {
             // terminal
             // cpuf::printf("[terminal] %$", symbol.fullname);
-            new_item.lookahead.insert(symbol.fullname);
+            new_item.lookahead.insert(name.name);
             epsilon_in_all = false;
             break;
         } else {
             // non-terminal, insert FIRST of next symbol
-            auto &first_set = first[symbol.fullname];
+            auto &first_set = first[name.name];
             bool has_espsilon = false;
             // cpuf::printf("[non-terminal %$] ", symbol.fullname);
             for (const auto& el : first_set) {
@@ -568,11 +571,8 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
     for (const auto& rhs_group : item) {
         LR1Core new_item;
         // Create LHS rule_other
-        rule_other lhs;
-        lhs.name = lhs_name.back();  // Use last component as rule name
-        lhs.fullname = lhs_name;
 
-        new_item.lhs = lhs;
+        new_item.lhs = lhs_name;
         new_item.rhs = rhs_group;
         new_item.dot_pos = 0;
         if (closure.find(new_item) != closure.end())
@@ -583,16 +583,17 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
         closure.insert(new_item);
 
         // If rule is epsilon, no need to recurse further
-        if (rhs_group.empty()) {
+        if (rhs_group.members.empty()) {
             continue;
         }
 
         // Expand first symbol if it's non-terminal
-        const auto& sym = rhs_group[0];
-        if (corelib::text::isLower(sym.name)) {
-            auto rule = initial_item_set.find(sym.fullname);
+        const auto& sym = rhs_group.members[0];
+        const auto& name = sym.getName();
+        if (corelib::text::isLower(name.name.back())) {
+            auto rule = initial_item_set.find(name.name);
             if (rule != initial_item_set.end()) {
-                create_item_collection(closure, rule->second, sym.fullname);
+                create_item_collection(closure, rule->second, name.name);
             }
         }
     }
@@ -622,12 +623,12 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
         std::unordered_map<std::vector<std::string>, CanonicalItem> transitions;
 
         for (const auto& item : current) {
-            if (item.dot_pos < item.rhs.size()) {
-                const auto& sym = item.rhs[item.dot_pos].fullname;
+            if (item.dot_pos < item.rhs.members.size()) {
+                const auto& sym = item.rhs.members[item.dot_pos].getName().name;
 
                 LR1Core advanced = item;
                 advanced.dot_pos++;
-                compute_cci_lookahead(advanced.rhs, advanced.lhs.fullname, advanced);
+                compute_cci_lookahead(advanced.rhs, advanced.lhs, advanced);
 
                 // Merge item into the transition set for this symbol
                 auto& itemset = transitions[sym];
@@ -652,12 +653,13 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
             CanonicalItem closure = items;
 
             for (const auto& el : items) {
-                if (el.dot_pos < el.rhs.size()) {
-                    const auto& sym_rhs = el.rhs[el.dot_pos];
-                    if (corelib::text::isLower(sym_rhs.name)) {
-                        auto rule = initial_item_set.find(sym_rhs.fullname);
+                if (el.dot_pos < el.rhs.members.size()) {
+                    const auto& sym_rhs = el.rhs.members[el.dot_pos];
+                    const auto &sym_rhs_name = sym_rhs.getName();
+                    if (corelib::text::isLower(sym_rhs_name.name.back())) {
+                        auto rule = initial_item_set.find(sym_rhs_name.name);
                         if (rule != initial_item_set.end()) {
-                            create_item_collection(closure, rule->second, sym_rhs.fullname);
+                            create_item_collection(closure, rule->second, sym_rhs_name.name);
                         }
                     }
                 }
@@ -674,12 +676,12 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 }
 
 
-size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) {
+size_t LRParser::find_goto_state(const CanonicalItem &item_set, const std::vector<std::string> &symbol) {
     CanonicalItem next_state;
 
     // Step 1: Shift dot over symbol where possible
     for (const auto &item : item_set) {
-        if (item.dot_pos < item.rhs.size() && item.rhs[item.dot_pos] == symbol) {
+        if (item.dot_pos < item.rhs.members.size() && item.rhs.members[item.dot_pos].getName().name == symbol) {
             LR1Core shifted = item;
             shifted.dot_pos++;
             next_state.insert(shifted);
@@ -688,11 +690,12 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
     CanonicalItem closure = next_state;
     // Step 2: Compute closure of this new state
     for (const auto &item : next_state) {
-        if (item.dot_pos < item.rhs.size()) {
-            const auto &next_sym = item.rhs[item.dot_pos];
-            if (corelib::text::isLower(next_sym.name)) {
+        if (item.dot_pos < item.rhs.members.size()) {
+            const auto &next_sym = item.rhs.members[item.dot_pos];
+            const auto &next_sym_name = next_sym.getName();
+            if (corelib::text::isLower(next_sym_name.name.back())) {
                 // Non-terminal → expand it
-                auto rule = initial_item_set.find(next_sym.fullname);
+                auto rule = initial_item_set.find(next_sym_name.name);
                 if (rule != initial_item_set.end()) {
                     create_item_collection(closure, rule->second, rule->first);
                 }
@@ -713,13 +716,13 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const rule_other
 size_t LRParser::find_rules_index(const LR1Core &rule) {
     size_t reduce_index;
     auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
-        if (rule.lhs.fullname != el.first)
+        if (rule.lhs != el.first)
             return false;
         auto &rhs = el.second.second;
-        if (rhs.size() != rule.rhs.size())
+        if (rhs.size() != rule.rhs.members.size())
             return false;
         for (size_t i = 0; i < rhs.size(); i++) {
-            if (rhs[i].fullname != rule.rhs[i].fullname) 
+            if (rhs[i].getName().name != rule.rhs.members[i].getName().name) 
                 return false;
         }
         return true;
@@ -727,7 +730,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     if (found_rhs != rules.end()) {
         reduce_index = found_rhs - rules.begin();
     } else {
-        rules.push_back(Rules_part {rule.lhs.fullname, {rule.rhs.size(), rule.rhs}});
+        rules.push_back(Rules_part {rule.lhs, {rule.rhs.members.size(), rule.rhs.members}});
         reduce_index = rules.size() - 1;
     }
     return reduce_index;
@@ -738,7 +741,7 @@ bool isInUsePlace(const Tree::UsePlaceTable &use_places, const std::vector<std::
     if (find_it == use_places.end())
         return false;
     const auto &[name, used_nonterminals] = *find_it;
-    for (auto [place, nonterminal] : used_nonterminals) {
+    for (auto nonterminal : used_nonterminals) {
         if (nonterminal == second) {
             return true;
         } else if (checked.count(nonterminal) == 0 && isInUsePlace(use_places, nonterminal, second, checked)) {
@@ -768,24 +771,25 @@ void LRParser::resolveCertainConflict(const Conflict &conflict) {
         throw Error("Parser is unable to resolve 3 or more reduce/reduce conflicts\n");
     const auto &first = item[0];
     const auto &second = item[1];
-    if (!first.rhs.empty() && second.rhs.empty()) {
+    if (!first.rhs.members.empty() && second.rhs.members.empty()) {
         *place = conflicts[0];
-    } else if (first.rhs.empty() && !second.rhs.empty()) {
+    } else if (first.rhs.members.empty() && !second.rhs.members.empty()) {
         *place = conflicts[1];
-    } else if (first.rhs.empty() && second.rhs.empty()) {
+    } else if (first.rhs.members.empty() && second.rhs.members.empty()) {
         throw Error("REDUCE/REDUCE conflict for two epsilon rules");
     }
     std::unordered_set<std::vector<std::string>> checked;
     // check whether second rule is nested in first
-    if (isInUsePlace(use_places, first.lhs.fullname, second.lhs.fullname, checked)) {
+    if (isInUsePlace(use_places, first.lhs, second.lhs, checked)) {
         *place = conflicts[0];
     } else {
         checked.clear();
-        if (isInUsePlace(use_places, second.lhs.fullname, first.lhs.fullname, checked)) {
+        if (isInUsePlace(use_places, second.lhs, first.lhs, checked)) {
             *place = conflicts[1];
         } else {
+            throw Error("Insoluble reduce/reduce conflict");
             // both rules are not relative, use deepth
-            if (priority[first.lhs.fullname] > priority[second.lhs.fullname]) {
+            if (priority[first.lhs] > priority[second.lhs]) {
                 *place = conflicts[0];
             } else {
                 *place = conflicts[1];
@@ -820,14 +824,14 @@ void LRParser::buildTable() {
             // }
             // cpuf::printf("\n");
 
-            if (rule.rhs.size() == 1 && rule.lhs.fullname == rule.rhs[0].fullname) {
+            if (rule.rhs.members.size() == 1 && rule.lhs == rule.rhs.members[0].getName().name) {
                 // cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
                 continue;
             }
             // Dot is at the end → Reduce or Accept
-            if (rule.dot_pos >= rule.rhs.size()) {
+            if (rule.dot_pos >= rule.rhs.members.size()) {
                 // Accept condition: augmented rule with start symbol
-                if (rule.lhs.name == "__start" && rule.rhs.size() == 1) {
+                if (rule.lhs == std::vector<std::string> {"__start"} && rule.rhs.members.size() == 1) {
                     action_table[I][{"$"}] = Action{Action_type::ACCEPT, 0};
                     continue;
                 }
@@ -878,14 +882,14 @@ void LRParser::buildTable() {
                 }
                 // cpuf::printf("\n");
             } else { // Dot is before a symbol
-                const auto& next = rule.rhs[rule.dot_pos];
-                size_t next_state = find_goto_state(item_set, next); // goto(I, X)
-                if (corelib::text::isUpper(next.name)) {
+                const auto& next = rule.rhs.members[rule.dot_pos].getName();
+                size_t next_state = find_goto_state(item_set, next.name); // goto(I, X)
+                if (corelib::text::isUpper(next.name.back())) {
                     // Terminal → SHIFT (unconditionally)
-                    if (action_table[I].count(next.fullname) == 0) {
-                        action_table[I][next.fullname] = Action{Action_type::SHIFT, next_state};
+                    if (action_table[I].count(next.name) == 0) {
+                        action_table[I][next.name] = Action{Action_type::SHIFT, next_state};
                     } else {
-                        const auto& existing = action_table[I][next.fullname];
+                        const auto& existing = action_table[I][next.name];
                         if (existing.type != Action_type::SHIFT || existing.state != next_state) {
                             // Avoid duplicate SHIFT actions
                             Conflict new_conflict;
@@ -893,7 +897,7 @@ void LRParser::buildTable() {
                                 new_conflict.item.push_back(*prev_rule);
                             }
                             new_conflict.item.push_back(rule);
-                            new_conflict.place = &action_table[I][next.fullname];
+                            new_conflict.place = &action_table[I][next.name];
 
                             // Add the existing action in the action table as a conflict
                             new_conflict.conflicts.push_back(existing);
@@ -904,7 +908,7 @@ void LRParser::buildTable() {
 
                             // Check if this conflict already exists
                             auto find_it = std::find_if(conflicts.begin(), conflicts.end(), [&I, &next, this](const Conflict &c) {
-                                return c.state == I && c.place == &action_table[I].at(next.fullname);
+                                return c.state == I && c.place == &action_table[I].at(next.name);
                             });
 
                             if (find_it != conflicts.end()) {
@@ -919,9 +923,9 @@ void LRParser::buildTable() {
 
                         
                     }
-                    prev_action = &action_table[I][next.fullname];
+                    prev_action = &action_table[I][next.name];
                 } else {// Non-terminal → GOTO
-                    goto_table[I][next.fullname] = next_state;
+                    goto_table[I][next.name] = next_state;
                 }
             }
             prev_rule = &rule;
@@ -941,8 +945,7 @@ void LRParser::buildTable() {
 void LRParser::prepare() {
     addAugmentedRule();
     use_places = tree->getUsePlacesTable();
-    initial_item_set = construct_initial_item_set();
-    getPriorityTree();
+    // getPriorityTree();
     constructFirstSet();
     constructFollowSet();
     canonical_item_set = construct_cannonical_collections_of_items();
@@ -1004,7 +1007,7 @@ void LRParser::formatRulesTable(std::ostringstream& oss) {
         oss << '\t' << rule_index << ": " << lhs << " → ";
 
         for (const auto& token : body) {
-            oss << corelib::text::join(token.fullname, "_") << " ";
+            oss << corelib::text::join(token.getName().name, "_") << " ";
         }
         oss << '\n';
     }
@@ -1016,16 +1019,16 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
         for (const auto &item : item_set) {
             // Print the LHS
             oss << '\t'
-                << corelib::text::join(item.lhs.fullname, "_")
+                << corelib::text::join(item.lhs, "_")
                 << " → ";
 
             // Print RHS with dot position
-            for (size_t i = 0; i <= item.rhs.size(); ++i) {
+            for (size_t i = 0; i <= item.rhs.members.size(); ++i) {
                 if (i == item.dot_pos) {
                     oss << "• ";
                 }
-                if (i < item.rhs.size()) {
-                    oss << corelib::text::join(item.rhs[i].fullname, "_") << ' ';
+                if (i < item.rhs.members.size()) {
+                    oss << corelib::text::join(item.rhs.members[i].getName().name, "_") << ' ';
                 }
             }
             oss << "; lookahead: {";

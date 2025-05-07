@@ -17,7 +17,7 @@ public:
 
     struct LR0Core {
         std::vector<std::string> lhs;
-        std::vector<std::vector<std::string>> rhs;
+        TreeAPI::Rule rhs;
         size_t dot_pos;
     
         // This is important for set/hash/set comparison
@@ -25,10 +25,6 @@ public:
             return lhs == other.lhs &&
                    rhs == other.rhs &&
                    dot_pos == other.dot_pos;
-        }
-    
-        bool operator<(const LR0Core &other) const {
-            return std::tie(lhs, rhs, dot_pos) < std::tie(other.lhs, other.rhs, other.dot_pos);
         }
     };
     struct LR1Core : public LR0Core {
@@ -43,19 +39,18 @@ public:
     using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
     using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
     using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
-    using ItemSet = std::vector<std::vector<std::vector<std::string>>>;
+    using ItemSet = std::vector<TreeAPI::Rule>;
     using CanonicalItem = std::set<LR1Core>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
 
     using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
     using Follow = First;
-    using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<std::vector<std::string>>>>;
+    using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<TreeAPI::RuleMember>>>;
     using Rules = std::vector<Rules_part>;
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
 protected:
     Tree *tree;
-    InitialItemSet initial_item_set;
     ActionTable action_table;
     GotoTable goto_table;
     Tree::UsePlaceTable use_places;
@@ -73,15 +68,15 @@ protected:
     void createInitialItemSet();
     void transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements);
     void transform();
-    void getPriorityTree(const std::vector<std::vector<std::string>> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
-    void getPriorityTree();
+    // void getPriorityTree(const std::vector<std::vector<std::string>> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
+    // void getPriorityTree();
     void addAugmentedRule();
     // void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
     // auto construct_initial_item_set() -> InitialItemSet;
     void constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed);
     void constructFirstSet();
     void constructFollowSet();
-    void compute_cci_lookahead(const std::vector<std::vector<std::string>> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item);
+    void compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item);
     void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
     auto find_goto_state(const CanonicalItem &item_set, const std::vector<std::string> &symbol) -> size_t;
@@ -100,6 +95,7 @@ protected:
     virtual void build();
     LRParser(Tree *tree, bool build_immediately = true) : tree(tree) {
         if (build_immediately) {
+            createInitialItemSet();
             transform();
             build();
         }
@@ -107,10 +103,12 @@ protected:
     }
 public:
     LRParser(Tree *tree) : tree(tree) {
+        createInitialItemSet();
         transform();
         build();
     }
     LRParser(Tree &tree) : tree(&tree) {
+        createInitialItemSet();
         transform();
         build();
     }
@@ -135,42 +133,42 @@ public:
     void printFirstSet(const std::string &fileName);
     void printFollowSet(const std::string &fileName);
 };
-namespace std {
-    template<>
-    struct hash<LRParser::LR0Core> {
-        size_t operator()(const LRParser::LR0Core& core) const noexcept {
-            size_t seed = 0;
+// namespace std {
+//     template<>
+//     struct hash<LRParser::LR0Core> {
+//         size_t operator()(const LRParser::LR0Core& core) const noexcept {
+//             size_t seed = 0;
             
-            // Hash lhs
-            hash<std::vector<std::string>> hasher;
-            seed ^= hasher(core.lhs) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+//             // Hash lhs
+//             hash<std::vector<std::string>> hasher;
+//             seed ^= hasher(core.lhs) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
             
-            // Hash rhs vector
-            for (const auto& rule : core.rhs) {
-                seed ^= hasher(rule) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
+//             // Hash rhs vector
+//             for (const auto& rule : core.rhs.members) {
+//                 seed ^= hasher(rule) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+//             }
             
-            // Hash dot position
-            seed ^= hash<size_t>{}(core.dot_pos) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+//             // Hash dot position
+//             seed ^= hash<size_t>{}(core.dot_pos) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
             
-            return seed;
-        }
-    };
-}
-namespace std {
-    template<>
-    struct hash<LRParser::LR1Core> {
-        size_t operator()(const LRParser::LR1Core& core) const noexcept {
-            // Start with hash of LR0Core base
-            size_t seed = hash<LRParser::LR0Core>{}(core);
+//             return seed;
+//         }
+//     };
+// }
+// namespace std {
+//     template<>
+//     struct hash<LRParser::LR1Core> {
+//         size_t operator()(const LRParser::LR1Core& core) const noexcept {
+//             // Start with hash of LR0Core base
+//             size_t seed = hash<LRParser::LR0Core>{}(core);
             
-            // Hash each lookahead set
-            hash<vector<string>> vec_hasher;
-            for (const auto& la_set : core.lookahead) {
-                seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
+//             // Hash each lookahead set
+//             hash<vector<string>> vec_hasher;
+//             for (const auto& la_set : core.lookahead) {
+//                 seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+//             }
             
-            return seed;
-        }
-    };
-}
+//             return seed;
+//         }
+//     };
+// }
