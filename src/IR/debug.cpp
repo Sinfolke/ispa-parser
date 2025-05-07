@@ -9,7 +9,6 @@
 #include <stack>
 #include <IR/IR.h>
 #include <corelib.h>
-#include <internal_types.h>
 std::string getCharFromEscaped(char in, bool string) {
     if (in == '"')
         return string ? "\\\"" : "\"";
@@ -80,7 +79,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
             auto arr = std::any_cast<LLIR::array>(data);
             std::string res = "[";
             for (auto &el : arr) {
-                res += convertAssign(el);
+                res += convertExpression(el, false);
                 res += ',';
             }
             res += ']';
@@ -94,15 +93,12 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
             for (auto [key, value] : obj) {
                 res += key;
                 res += ": ";
-                res += convertAssign(value);
+                res += convertExpression(value, false);
                 res += ",";
             }
             res += "}";
             return res;
         }
-        case var_assign_values::ACCESSOR: 
-            //cpuf::printf("accessor\n");
-            return convertAccessor(std::any_cast<accessor>(data));
         case var_assign_values::FUNCTION_CALL:
             return convertFunctionCall(std::any_cast<function_call>(data));
         case var_assign_values::EXPR:
@@ -218,7 +214,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
 std::string LLIR::convertFunctionCall(function_call call) {
     std::string res = call.name + "(";
     for (auto param : call.params) {
-        res += convertAssign(param);
+        res += convertExpression(param, false);
     }
     res += ')';
     return res;
@@ -227,35 +223,6 @@ std::string LLIR::convertAssign(assign asgn) {
     if (asgn.kind == var_assign_values::FUNCTION_CALL)
         return convertFunctionCall(std::any_cast<function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
-}
-
-std::string LLIR::convertAccessor(accessor acc) {
-    std::string str;
-    bool first = true;
-    for (auto el : acc.elements) {
-        if (!first)
-            str += '>';
-        auto el_num = std::any_cast<Parser::Rule>(el.data);
-        auto el_num_data = std::any_cast<obj_t>(el_num.data);
-        auto main = std::any_cast<std::string>(corelib::map::get(el_num_data, "main"));
-        switch (el.name) {
-            case Parser::Rules::accessors_group:
-                str += '$';
-                break;
-            case Parser::Rules::accessors_element:
-                str += '%';
-                break;
-            case Parser::Rules::accessors_char:
-                str += '^';
-                break;
-            default:
-                throw Error("Undefined accessor");
-        }
-        str += main;
-        first = false;
-    }
-    str += '\n';
-    return str;
 }
 void LLIR::convertVariable(variable var, std::ostream& out) {
     out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
@@ -385,9 +352,6 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
         break;
     }
     case LLIR::types::RESET_POS_COUNTER:
-        break;
-    case types::ACCESSOR:
-        out << convertAccessor(std::any_cast<accessor>(mem.value));
         break;
     case types::ASSIGN_VARIABLE:
         convertAssignVariable(std::any_cast<variable_assign>(mem.value), out);

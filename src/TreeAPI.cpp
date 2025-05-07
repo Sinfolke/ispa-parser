@@ -251,6 +251,9 @@ namespace TreeAPI {
     bool RuleMember::emptyQuantifier() const {
         return quantifier == '\0';
     }
+    bool RuleMember::empty() const {
+        return std::holds_alternative<std::monostate>(value);
+    }
     String& RuleMember::getString() {
         return std::get<String>(value);
     }

@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, tree));
         converter->output(output_path);
     } else if (algorithm == "LL") {
-        LLIR ir(tree.getTreeMap());
+        LLIR ir(tree);
         ir.makeIR();
         ir.optimizeIR();
         ir.outputIRToFile("output_ir.txt");

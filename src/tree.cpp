@@ -156,11 +156,11 @@ Types getTypes(const TreeAPI::RuleMemberNospace& ) {return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::string; }
 bool Tree::sortPriority(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
     if (first.isName()) {
-        auto &dt = ast.getTreeMap()[first.getName()];
+        auto &dt = ast.getTreeMap()[first.getName().name];
         return sortPriority(dt.members[0], second);
     }
     if (second.isName()) {
-        auto &dt = ast.getTreeMap()[second.getName()];
+        auto &dt = ast.getTreeMap()[second.getName().name];
         return sortPriority(first, dt.members[0]);
     }
     if (first.isGroup()) {
@@ -230,7 +230,7 @@ void Tree::addSpaceToken() {
     TreeAPI::Rule spaceTokenRule;
     TreeAPI::RuleMemberCsequence csequence;
     csequence.escaped = {' ', '\t', '\n', '\r', '\v', '\f'};
-    spaceTokenRule.members = { TreeAPI::RuleMember {.value = csequence, .quantifier = '+'} };
+    spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
 auto Tree::getTerminals() -> std::unordered_set<std::vector<std::string>> {
@@ -257,7 +257,7 @@ void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, co
         } else if (member.isOp()) {
             getUsePlacesTable(member.getOp(), name, table);
         } else if (member.isName()) {
-            table[name].push_back(member.getName());
+            table[name].push_back(member.getName().name);
         }
     }
 }
@@ -268,7 +268,7 @@ auto Tree::getUsePlacesTable() -> UsePlaceTable {
     }
     return result_table;
 }
-lexer_code Tree::getCodeForLexer() {
+Tree::lexer_code Tree::getCodeForLexer() {
     TreeAPI::RuleMemberOp options;
     for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isLower(name.back()))
@@ -291,11 +291,12 @@ lexer_code Tree::getCodeForLexer() {
     }
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
-    LLIR code(resultRule);
+    LLIR code(*this, resultRule, true);
     code.setIsToken(true);
     auto success_var = code.makeIR();
     code.pop(); // remove space skip
     code.push_begin({LLIR::types::TOKEN});
     code.push({LLIR::types::RULE_END});
     code.optimizeIR();
+    return {code, success_var[0].shadow_var.name.empty() ? success_var[0].shadow_var : success_var[0].var};
 }

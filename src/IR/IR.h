@@ -232,31 +232,37 @@ class LLIR {
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) -> LLIR;
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr();
+        auto makeIR() -> std::vector<RuleMemberVars>;
         // optimizations
         void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
         size_t getBegin(size_t& i);
         void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table, size_t begin);
         void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
+        void optimizeIR();
     public:
         LLIR(Tree &tree, int tokensOnly = -1) : tree(&tree) {
             makeIR();
+            optimizeIR();
         }
         LLIR(Tree *tree, int tokensOnly = -1) : tree(tree) {
             makeIR();
+            optimizeIR();
         };
-        LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, int tokensOnly = -1) : tree(&tree) {
+        LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, bool isToken, int tokensOnly = -1) : tree(&tree), isToken(isToken) {
             makeIR();
+            // call raiseVars manually to specify it is all single rule
+            raiseVarsTop(data, data, "", true);
         }
-        LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, int tokensOnly = -1) : tree(tree) {
+        LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, bool isToken, int tokensOnly = -1) : tree(tree), isToken(isToken) {
             makeIR();
+            raiseVarsTop(data, data, "", true);
         }
 
         // get functions
         auto getTree() const -> const Tree*;
         auto getData() const -> const std::vector<LLIR::member>&;
         auto getData() -> std::vector<LLIR::member>&;
-        auto makeIR() -> std::vector<RuleMemberVars>;
-        void optimizeIR();
+
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();
         void add(LLIR &repr);

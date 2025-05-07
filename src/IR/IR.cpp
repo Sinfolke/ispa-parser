@@ -1227,6 +1227,7 @@ LLIR::RuleMemberVars LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix) {
     return {svar, var};
 }
 std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) {
+    //[[assume(rules.size() >= 2)]];
     if (index >= rules.size()) {
         return {{LLIR::types::EXIT}};
     }

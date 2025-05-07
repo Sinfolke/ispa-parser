@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <tree.h>
+#include <hash.h>
 class LRParser {
 public:
     enum class Action_type {
@@ -15,8 +16,8 @@ public:
     };
 
     struct LR0Core {
-        rule_other lhs;
-        std::vector<rule_other> rhs;
+        std::vector<std::string> lhs;
+        std::vector<std::vector<std::string>> rhs;
         size_t dot_pos;
     
         // This is important for set/hash/set comparison
@@ -39,22 +40,22 @@ public:
         std::vector<Action> conflicts;
         size_t state;
     };
-        
+    using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
     using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
     using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
-    using ItemSet = std::vector<std::vector<rule_other>>;
-    using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<std::vector<rule_other>>>;
+    using ItemSet = std::vector<std::vector<std::vector<std::string>>>;
     using CanonicalItem = std::set<LR1Core>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
 
     using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
     using Follow = First;
-    using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<rule_other>>>;
+    using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<std::vector<std::string>>>>;
     using Rules = std::vector<Rules_part>;
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
 protected:
     Tree *tree;
+    InitialItemSet initial_item_set;
     ActionTable action_table;
     GotoTable goto_table;
     Tree::UsePlaceTable use_places;
@@ -69,32 +70,30 @@ protected:
 
     Priority priority;
     Conflicts conflicts;
-    void transform_helper(Parser::Tree &tree, std::vector<Parser::Rule> &rules, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements);
-    void transform(Parser::Tree &tree, std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, rule_other>> &replacements);
-    void getPriorityTree(const std::vector<rule_other> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
+    void createInitialItemSet();
+    void transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements);
+    void transform();
+    void getPriorityTree(const std::vector<std::vector<std::string>> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
     void getPriorityTree();
     void addAugmentedRule();
-    void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
-    auto construct_initial_item_set() -> InitialItemSet;
-    void constructFirstSet(const std::vector<std::vector<rule_other>>& options, const std::vector<std::string> &nonterminal, bool &changed);
+    // void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
+    // auto construct_initial_item_set() -> InitialItemSet;
+    void constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed);
     void constructFirstSet();
     void constructFollowSet();
-    void compute_cci_lookahead(const std::vector<rule_other> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item);
+    void compute_cci_lookahead(const std::vector<std::vector<std::string>> &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item);
     void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
-    auto find_goto_state(const CanonicalItem &item_set, const rule_other &symbol) -> size_t;
+    auto find_goto_state(const CanonicalItem &item_set, const std::vector<std::string> &symbol) -> size_t;
     auto find_rules_index(const LR1Core &rule) -> size_t;
     void resolveCertainConflict(const Conflict &conflict);
     void resolveConflictsStatically();
     // debug
-    void debug(Parser::Tree &tree, std::vector<std::string> &fullname);
     void formatFirstOrFollowSet(std::ostringstream &oss, First &set);
     void formatRulesTable(std::ostringstream& oss);
     void formatCanonicalItemSet(std::ostringstream &oss);
     auto formatActionTable() const -> std::string;
     auto formatGotoTable() const -> std::string;
-    // transform rules to approaritate form for LR parser
-    void transform();
     // build action and goto table
     void prepare();
     void buildTable();
@@ -116,11 +115,12 @@ public:
         build();
     }
     // get data functions
-    virtual bool isELR() const;
+    virtual bool isELR() const;    
+    static auto ActionTypeToString(const Action_type &type) -> std::string;
+
     auto getActionTable() const -> const ActionTable&;
     auto getGotoTable() const -> const GotoTable&;
     auto getRulesTable() const -> const Rules&; 
-    static auto ActionTypeToString(const Action_type &type) -> std::string;
     auto getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>>;
     auto getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t>>;
     // helper functions
@@ -142,7 +142,7 @@ namespace std {
             size_t seed = 0;
             
             // Hash lhs
-            hash<rule_other> hasher;
+            hash<std::vector<std::string>> hasher;
             seed ^= hasher(core.lhs) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
             
             // Hash rhs vector

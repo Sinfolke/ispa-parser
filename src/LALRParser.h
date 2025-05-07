@@ -1,5 +1,4 @@
 #include <LRParser.h>
-#include <internal_types.h>
 class LALRParser : public LRParser {
 protected:
     void rebuildActionTable(const std::vector<size_t>& state_mapping);
