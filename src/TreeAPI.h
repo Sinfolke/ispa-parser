@@ -56,11 +56,11 @@ namespace TreeAPI {
     };
 
     struct Array {
-        std::vector<rvalue> value;
+        std::vector<CllExpr> value;
     };
 
     struct Object {
-        std::unordered_map<std::string, rvalue> value;
+        std::unordered_map<std::string, CllExpr> value;
     };
 
     struct At {};
@@ -81,14 +81,14 @@ namespace TreeAPI {
         String &getString();
         Number &getNumber();
         Boolean &getBoolean();
-        std::vector<rvalue> &getArray();
-        std::unordered_map<std::string, rvalue> &getObject();
+        std::vector<CllExpr> &getArray();
+        std::unordered_map<std::string, CllExpr> &getObject();
         std::string &getID();
         const String& getString() const;
         const Number& getNumber() const;
         const Boolean& getBoolean() const;
-        const std::vector<rvalue>& getArray() const;
-        const std::unordered_map<std::string, rvalue>& getObject() const;
+        const std::vector<CllExpr>& getArray() const;
+        const std::unordered_map<std::string, CllExpr>& getObject() const;
         const std::string& getID() const;
     };
 
@@ -186,7 +186,7 @@ namespace TreeAPI {
     struct CllVar {
         CllType type;
         std::string name;
-        char op;
+        char op = '\0';
         CllExpr value;
     };
 
@@ -214,6 +214,7 @@ namespace TreeAPI {
         bool is_key_value;
         std::string name;
         void clear();
+        bool empty() const;
     };
 
     struct RuleMemberName {
@@ -320,13 +321,17 @@ namespace TreeAPI {
     };
 
     struct DataBlock {
-        std::variant<RegularDataBlock, RegularDataBlockWKeys, TemplatedDataBlock> value;
-        bool isRegularDataBlock();
-        bool isWithKeys();
-        bool isTemplatedDataBlock();
+        std::variant<std::monostate, RegularDataBlock, RegularDataBlockWKeys, TemplatedDataBlock> value;
+        bool isRegularDataBlock() const;
+        bool isWithKeys() const;
+        bool isTemplatedDataBlock() const;
+        bool empty() const;
         RegularDataBlock &getRegDataBlock();
         RegularDataBlockWKeys &getRegDataBlockWKeys();
         TemplatedDataBlock &getTemplatedDataBlock();
+        const RegularDataBlock &getRegDataBlock() const;
+        const RegularDataBlockWKeys &getRegDataBlockWKeys() const;
+        const TemplatedDataBlock &getTemplatedDataBlock() const;
     };
 
     struct Rule {

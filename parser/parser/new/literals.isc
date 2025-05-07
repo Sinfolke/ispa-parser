@@ -16,13 +16,13 @@ BOOLEAN:
 ;
 array: 
 
-    '[' ( ( @ any_data ',')* )? ']'
+    '[' ( ( @ expr ',')* )? ']'
 
     {@}
 
 object:
     '{'
-        ( @ ID | NUMBER ':' @ any_data ( ',' @ ID ':' @ any_data )* ';' )?
+        ( @ ID | NUMBER ':' @ expr ( ',' @ ID | NUMBER ':' @ expr )* ';' )?
     '}'
     @{key, value, keys, values}
 any_data: 

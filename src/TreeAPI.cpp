@@ -84,10 +84,10 @@ namespace TreeAPI {
     Boolean& rvalue::getBoolean() {
         return std::get<Boolean>(value);
     }
-    std::vector<rvalue>& rvalue::getArray() {
+    std::vector<CllExpr>& rvalue::getArray() {
         return std::get<Array>(value).value;
     }
-    std::unordered_map<std::string, rvalue>& rvalue::getObject() {
+    std::unordered_map<std::string, CllExpr>& rvalue::getObject() {
         return std::get<Object>(value).value;
     }
     std::string& rvalue::getID() {
@@ -105,11 +105,11 @@ namespace TreeAPI {
         return std::get<Boolean>(value);
     }
     
-    const std::vector<rvalue>& rvalue::getArray() const {
+    const std::vector<CllExpr>& rvalue::getArray() const {
         return std::get<Array>(value).value;
     }
     
-    const std::unordered_map<std::string, rvalue>& rvalue::getObject() const {
+    const std::unordered_map<std::string, CllExpr>& rvalue::getObject() const {
         return std::get<Object>(value).value;
     }
     
@@ -211,6 +211,9 @@ namespace TreeAPI {
     void RulePrefix::clear() {
         name = "";
         is_key_value = false;
+    }
+    bool RulePrefix::empty() const {
+        return name.empty();
     }
     bool RuleMember::isString() const {
         return std::holds_alternative<String>(value);
@@ -332,15 +335,15 @@ namespace TreeAPI {
         return names.end();
     }
     
-    bool DataBlock::isRegularDataBlock() {
+    bool DataBlock::isRegularDataBlock() const {
         return std::holds_alternative<RegularDataBlock>(value) || std::holds_alternative<RegularDataBlockWKeys>(value);
     }
     
-    bool DataBlock::isWithKeys() {
+    bool DataBlock::isWithKeys() const {
         return std::holds_alternative<RegularDataBlockWKeys>(value);
     }
     
-    bool DataBlock::isTemplatedDataBlock() {
+    bool DataBlock::isTemplatedDataBlock() const {
         return std::holds_alternative<TemplatedDataBlock>(value);
     }
     
@@ -353,6 +356,17 @@ namespace TreeAPI {
     }
     
     TemplatedDataBlock& DataBlock::getTemplatedDataBlock() {
+        return std::get<TemplatedDataBlock>(value);
+    }
+    const RegularDataBlock& DataBlock::getRegDataBlock() const {
+        return std::get<RegularDataBlock>(value);
+    }
+    
+    const RegularDataBlockWKeys& DataBlock::getRegDataBlockWKeys() const {
+        return std::get<RegularDataBlockWKeys>(value);
+    }
+    
+    const TemplatedDataBlock& DataBlock::getTemplatedDataBlock() const {
         return std::get<TemplatedDataBlock>(value);
     }
     // operator== for rules

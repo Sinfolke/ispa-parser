@@ -12,9 +12,9 @@ class LLConverter_base {
         data_block_t data_block_tokens;
         data_block_t data_block_rules;        
         LLIR lexer_code;
-        LLIR::node_ret_t lexer_code_access_var;
+        LLIR::RuleMemberVars lexer_code_access_var;
     public:
-        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::node_ret_t *access_var = nullptr) : lexer_code(tree.getTreeMap()) {
+        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::RuleMemberVars *access_var = nullptr) : lexer_code(tree.getTreeMap()) {
             auto use_places = tree.getUsePlacesTable();
             auto [tokens, rules] = tree.getTokenAndRuleNames();
             tokens.insert(tokens.begin(), {"NONE"});
@@ -49,7 +49,7 @@ class LRConverter_base {
         use_prop_t use;
         const LRParser* data;        
         LLIR lexer_code;
-        LLIR::node_ret_t success_var;
+        LLIR::RuleMemberVars success_var;
         Tree* tree;
     public:
         LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree.getTreeMap()), data(&data), tree(&tree) {

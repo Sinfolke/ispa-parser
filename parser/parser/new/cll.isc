@@ -119,7 +119,7 @@ cll:
         ;
     ;
     #method_call:
-        @ ID '.' @ function_body_call
+        @ ID '.' @ function_call
         @{name, body}
     ;
     #_var: 

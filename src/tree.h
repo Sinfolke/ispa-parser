@@ -11,7 +11,10 @@ class Tree {
             std::vector<Parser::Rule>::iterator lhs_it;
             std::vector<Parser::Rule>::iterator rhs_it;
         };
-
+        struct lexer_code {
+            LLIR code;
+            LLIR::RuleMemberVars success_var;
+        };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
     private:

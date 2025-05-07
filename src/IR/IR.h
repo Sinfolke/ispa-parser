@@ -25,7 +25,7 @@ class LLIR {
             HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
             LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
             ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
-            CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, NUMBER, HEX, BIN, STRING, STRNCMP, STRNCMP_PREV,
+            CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP, STRNCMP_PREV,
             VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL
         };
         enum class var_types {
@@ -67,12 +67,12 @@ class LLIR {
             condition_types op;
             std::string name;
         };
-        using array = std::vector<assign>;
-        using object = std::unordered_map<std::string, assign>;
         struct expr {
             condition_types id;
             std::any value = {};
         };
+        using array = std::vector<std::vector<expr>>;
+        using object = std::unordered_map<std::string, std::vector<expr>>;
         struct function_call {
             std::string name;
             std::vector<std::vector<expr>> params;
@@ -98,10 +98,6 @@ class LLIR {
             var_assign_types assign_type = var_assign_types::ASSIGN;
             assign value = {var_assign_values::NONE};
         };
-        struct accessor {
-            std::vector<Parser::Rule> elements;
-            char qualifier;
-        };
         struct strncmp {
             bool is_string;
             LLIR::variable value;
@@ -112,7 +108,7 @@ class LLIR {
             LLIR::var_type assign_type;
             bool is_inclosed_map;
         };
-        struct node_ret_t {
+        struct RuleMemberVars {
             LLIR::variable svar;
             LLIR::variable var;
             LLIR::variable shadow_var = {};
@@ -133,7 +129,6 @@ class LLIR {
         std::string conditionTypesToString(condition_types type, std::any data);
         std::string convertFunctionCall(function_call call);
         std::string convertAssign(assign asgn);
-        std::string convertAccessor(accessor acc);
         void convertVariable(variable var, std::ostream& out);
         std::string convertExpression(std::vector<expr> expression, bool with_braces);
         void convertBlock(std::vector<LLIR::member> block, std::ostream& out);
@@ -145,64 +140,72 @@ class LLIR {
         void convertMembers(std::vector<member> members, std::ostream& out);
         void convertMembers(std::deque<member> members, std::ostream& out);
         void printIR(std::ostream& out);
-        // other functions
+
+        // helper functions
+        auto createEmptyVariable(std::string name) -> LLIR::variable;
+        auto processExitStatements(std::vector<LLIR::member> &values) -> void;
+        auto createSuccessVariable() -> LLIR::variable;
+        auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
+        auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true) -> void;
+        auto replaceToPrevChar(std::vector<LLIR::member> &elements, int i) -> void;
+        auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> std::vector<LLIR::member>;
+        auto createDefaultBlock(const LLIR::variable &svar) -> std::vector<LLIR::member>;
+        auto createDefaultBlock() -> std::vector<LLIR::member>;
+        auto getEscapedChar(char in) -> char;
+        auto createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr) -> LLIR::member;
+        auto add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var) -> LLIR::variable;
+        auto pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true) -> LLIR::variable;
+        auto pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false) -> LLIR::variable;
+        auto affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier) -> LLIR::variable;
+        auto compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2) -> bool;
+        
+        // Error functions
         std::string getErrorName(const TreeAPI::RuleMember &rule);
-        LLIR::variable createSuccessVariable();
-        bool compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2);
-        bool compare_types(std::list<LLIR::var_type> types);
-        LLIR::variable getElementbyAccessor(LLIR::accessor &accessor, bool is_match_rule);
-        void inlineExprAccessor(LLIR::assign &data);
-        void inlineExprAccessor(std::vector<LLIR::expr> &expr);
-        void inlineAccessors(std::vector<LLIR::member> &values);
-        LLIR::var_type deduceTypeFromRvalue(const Parser::Rule &value);
-        LLIR::var_type deduceTypeFromExpr(const Parser::Rule &expr);
-        LLIR::data_block TreeDataBlockToIR(const Parser::Rule &rule);
-        LLIR::var_type deduceVarTypeByProd(const TreeAPI::RuleMember &mem);
+
+        // Convertion functions
+        auto TreeRvalueToIR(const TreeAPI::rvalue &value) -> LLIR::assign;
+        auto TreeFunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) -> std::vector<std::vector<LLIR::expr>>;
+        auto TreeFunctionToIR(const TreeAPI::CllFunctionCall &call) -> LLIR::function_call;
+        auto TreeMethodCallToIR(const TreeAPI::CllMethodCall &method) -> LLIR::method_call;
+        auto cllTreeTypeToIR(const TreeAPI::CllType &type) -> LLIR::var_type;
+        auto TreeOpToIR(const char op) -> LLIR::var_assign_types;
+        auto TreeOpToExpr(const char op) -> LLIR::expr;
+        auto TreeCompareOpToExpr(const TreeAPI::CllCompareOp &op) -> LLIR::expr;
+        auto TreeLogicalOpToIR(const TreeAPI::CllLogicalOp &lop) -> LLIR::expr;
+        auto TreeAssignmentOpToIR(const char op) -> LLIR::var_assign_types;
+        auto TreeExprGroupToIR(const TreeAPI::CllExpr &group) -> std::vector<LLIR::expr>;
+        auto TreeExprValueToIR(const TreeAPI::CllExprValue &value) -> std::vector<LLIR::expr>;
+        auto TreeExprTermToIR(const TreeAPI::CllExprTerm &term) -> std::vector<LLIR::expr>;
+        auto TreeExprAdditionToIR(const TreeAPI::CllExprAddition &addition) -> std::vector<LLIR::expr>;
+        auto TreeExprCompareToIR(const TreeAPI::CllExprCompare &compare) -> std::vector<LLIR::expr>;
+        auto TreeExprLogicalToIR(const TreeAPI::CllExprLogical &logical) -> std::vector<LLIR::expr>;
+        auto TreeExprToIR(const TreeAPI::CllExpr &expr) -> std::vector<LLIR::expr>;
+        
+        // deduce type functions
+        auto deduceVarTypeByProd(const TreeAPI::RuleMember &mem) -> LLIR::var_type;
+        auto deduceTypeFromRvalue(const TreeAPI::rvalue &value) -> LLIR::var_type;
+        auto deduceTypeFromExprValue(const TreeAPI::CllExprValue &value) -> LLIR::var_type;
+        auto deduceTypeFromTerm(const TreeAPI::CllExprTerm &term) -> LLIR::var_type;
+        auto deduceTypeFromAddition(const TreeAPI::CllExprAddition &addition) -> LLIR::var_type;
+        auto deduceTypeFromCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type;
+        auto deduceTypeFromLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type;
+        auto deduceTypeFromExpr(const TreeAPI::CllExpr &expr) -> LLIR::var_type;
+        
         // convertion functions helpers
-        void addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true);
-        void handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true);
-        void replaceToPrevChar(std::vector<LLIR::member> &elements, int i);
-        LLIR::member createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr);
-        LLIR::variable add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var);
-        LLIR::variable pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true);
-        LLIR::variable pushBasedOnQualifier_Rule_other(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false);
-        LLIR::variable affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier);
-        LLIR::assign TreeRvalueToIR(const TreeAPI::rvalue &value);
-        std::vector<std::vector<LLIR::expr>> TreeFunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body);
-        LLIR::function_call TreeFunctionToIR(const TreeAPI::CllFunctionCall &rule);
-        LLIR::method_call TreeMethodCallToIR(const TreeAPI::CllMethodCall &rule);
-        LLIR::var_type cllTreeCsupportTypeToIR(const Parser::Rule &rule);
-        LLIR::var_type cllTreeTypeToIR(const Parser::Rule &rule);
-        LLIR::var_type cllTreeAbstactTypeToIR(const Parser::Rule &rule);
-        LLIR::var_assign_types TreeOpToIR(const Parser::Rule &rule);
-        LLIR::expr TreeOpToExpr(const Parser::Rule &rule);
-        LLIR::expr TreeCompareOpToExpr(const Parser::Rule &rule);
-        LLIR::expr TreeLogicalOpToIR(const Parser::Rule &rule);
-        LLIR::var_assign_types TreeAssignmentOpToIR(const Parser::Rule &rule);
-        LLIR::var_assign_types TreeOperatorsToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprGroupToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprValueToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprArithmeticToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprCompareToIR_switch(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprCompareToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprLogicalUnitToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprLogicalToIR(const Parser::Rule &rule);
-        std::vector<LLIR::expr> TreeExprToIR(const Parser::Rule &expr);
-        std::vector<LLIR::member> convert_op_rule(std::vector<Parser::Rule> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar);
-        void process_cll_var(const Parser::Rule &rule);
-        LLIR::condition process_cll_cond(const Parser::Rule &rule);
-        // main convertion functions
-        LLIR::node_ret_t processGroup(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t processRuleCsequence(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t processString(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_hex(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_bin(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t processAccessor(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_other(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_escaped(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_any(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_Rule_op(const Parser::Rule &rule, char quantifier);
-        LLIR::node_ret_t process_cll(const Parser::Rule &rule);
+        auto processGroup(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto processRuleCsequence(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto processString(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_hex(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_bin(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_name(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_nospace(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_escaped(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_any(const TreeAPI::RulePrefix &prefix) -> LLIR::RuleMemberVars;
+        auto convert_op_rule(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> std::vector<LLIR::member>;
+        auto process_Rule_op(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_cll_var(const TreeAPI::CllVar &var) -> void;
+        auto process_cll_if(const TreeAPI::CllIf &cond) -> LLIR::condition;
+        auto process_cll(const TreeAPI::Cll &cll) -> LLIR::RuleMemberVars;        
     protected:
         // data
         size_t variable_count = 0;
@@ -216,7 +219,7 @@ class LLIR {
         std::vector<var_group> groups;
         std::vector<LLIR::variable> vars;
         std::vector<LLIR::member> data;
-        std::vector<node_ret_t> success_vars;
+        std::vector<RuleMemberVars> success_vars;
         const std::vector<TreeAPI::RuleMember> *rules = nullptr;
         Tree* tree;
         // data for output
@@ -225,8 +228,8 @@ class LLIR {
         // helper functions
         void erase_begin();
         // convertion
-        void ruleToIr(const Parser::Rule &rule_rule, char custom_qualifier = -1);
-        auto rulesToIr(const std::vector<TreeAPI::RuleMember> rules) -> LLIR;
+        void ruleToIr(const TreeAPI::RuleMember &rule);
+        auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) -> LLIR;
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr();
         // optimizations
@@ -252,7 +255,7 @@ class LLIR {
         auto getTree() const -> const Tree*;
         auto getData() const -> const std::vector<LLIR::member>&;
         auto getData() -> std::vector<LLIR::member>&;
-        auto makeIR() -> std::vector<node_ret_t>;
+        auto makeIR() -> std::vector<RuleMemberVars>;
         void optimizeIR();
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();

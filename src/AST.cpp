@@ -42,7 +42,7 @@ TreeAPI::Array AST::createArray(const Parser::Rule &array) {
     TreeAPI::Array arr;
     auto data = Parser::get::array(array);
     for (auto el : data) {
-        arr.value.push_back(createRvalue(el));
+        arr.value.push_back(createCllExpr(el));
     }
     return arr;
 }
@@ -264,7 +264,7 @@ TreeAPI::CllVar AST::createCllVar(const Parser::Rule &var) {
     auto data = Parser::get::cll_var(var);
     newVar.name = Parser::get::ID(data.id);
     newVar.type = createCllType(data.type);
-    newVar.op = Parser::get::cll_OP(Parser::get::cll_ASSIGNMENT_OP(data.op));
+    newVar.op = Parser::get::cll_OP(Parser::get::cll_ASSIGNMENT_OP(data.op))[0];
     newVar.value = createCllExpr(data.value);
     return newVar;
 }
@@ -461,6 +461,8 @@ static std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_dat
 }
 TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
     TreeAPI::DataBlock data_block;
+    if (rule.empty())
+        return {};
     auto data = Parser::get::Rule_data_block(rule);
     switch (data.name())
     {
