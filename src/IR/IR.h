@@ -262,6 +262,12 @@ class LLIR {
         void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table, size_t begin);
         void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
         void optimizeIR();
+        LLIR(Tree *tree, int tokensOnly, bool buildImmediately) : tree(tree) {
+            if (buildImmediately) {
+                makeIR();
+                optimizeIR();
+            }
+        }
     public:
         LLIR(Tree &tree, int tokensOnly = -1) : tree(&tree) {
             makeIR();

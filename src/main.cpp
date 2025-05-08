@@ -65,9 +65,12 @@ int main(int argc, char** argv) {
             throw UError("Failed read file: %s", e.what());
         }
         // parse 
+        Parser::Lexer lexer(fileContent.c_str());
+        lexer.makeTokens();
+        std::ofstream tokens_file("tokens");
+        lexer.printTokens(tokens_file);
         Parser::Parser parser;
-        parser.parse(fileContent.c_str());
-        auto current_tree = parser.parse();
+        auto current_tree = parser.parse(lexer);
         // assign tree
         modules.push_back(current_tree);
     }
@@ -75,11 +78,13 @@ int main(int argc, char** argv) {
         for (const auto dirPath : args.get("dir").values) {
             auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
+                cpuf::printf("file %$\n", file);
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
+                Parser::Lexer lexer(content.c_str());
+                lexer.makeTokens();
                 Parser::Parser parser;
-                parser.parse(content.c_str());
-                auto current_tree = parser.parse();
+                auto current_tree = parser.parse(lexer);
                 modules.push_back(current_tree);
             }
         }
@@ -95,7 +100,7 @@ int main(int argc, char** argv) {
     Tree tree(ast);
     //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto name = std::any_cast<std::string>(ast.getName());
+    auto name = ast.getName();
     std::string algorithm = "LL";
     std::string opath;
     if (!args.get("a").empty()) {

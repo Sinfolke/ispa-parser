@@ -1,4 +1,4 @@
-name: "Parser";
+name Parser
 
 spacemode mixed;
 END: [;\n];
@@ -19,11 +19,11 @@ ID:
     {@}
 ;
 SPACEMODE:
-    "spacemode" @ "mixed" | "skipped" | "allowed"
+    'spacemode' @ 'mixed' | 'skipped' | 'allowed'
     {@}
 ;
 NAME:
-    "name" @ ID
+    'name' @ ID
 
     {@}
 ;

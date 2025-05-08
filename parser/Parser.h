@@ -226,7 +226,7 @@ namespace Parser {
 			::Parser::Rule value;
 			::Parser::Rule key;
 		};
-		using any_data_data = ::Parser::any_t;
+		using any_data_data = std::variant<::Parser::Rule, ::Parser::Token>;
 		struct cll_if_data {
 			::Parser::Rule block;
 			::Parser::Rule expr;
@@ -315,7 +315,7 @@ namespace Parser {
 			::Parser::Rule val;
 			::Parser::Token name;
 		};
-		using Rule_data_block_regular_datablock_data = ::Parser::any_t;
+		using Rule_data_block_regular_datablock_data = std::variant<::Parser::Rule, ::Parser::arr_t<::Parser::Rule>>;
 		struct Rule_data_block_templated_datablock_data {
 			::Parser::arr_t<::Parser::Token> second_name;
 			::Parser::Token first_name;
@@ -492,10 +492,11 @@ namespace Parser {
 		public:
 			Token makeToken(const char*& pos);
 			Lexer(const std::string& in) : Lexer_base(in) {}
-			Lexer(char*& in) : Lexer_base(in) {}
-			Lexer(const char*& in) : Lexer_base(in) {}
+			Lexer(const char* in) : Lexer_base(in) {}
 			Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
 			Lexer() {}
+			void printTokens(std::ostream& os);
+			void printToken(std::ostream& os, const Token& token);
 		private:
 			Token_res NONE(const char*);
 			Token_res END(const char*);
@@ -556,10 +557,18 @@ namespace Parser {
 			Token_res __WHITESPACE(const char*);
 	};
 	class Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {
+		public:
+			Parser() {}
+			Parser(Lexer& lexer) {
+				this->lexer = &lexer;
+			}
+			Parser(const char* text) : LLParser_base(text) {}
+		private:
 		Rule_res getRule(Lexer::lazy_iterator&);
 		Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();
 		void lazyParse();
+
 		template <class IT>
 		::Parser::Rule_res main(IT pos) {
 			auto in = pos;
@@ -1003,7 +1012,7 @@ namespace Parser {
 			auto in = pos;
 			skip_spaces(pos);
 ;
-			::Parser::any_t _0;
+			std::variant<::Parser::Rule, ::Parser::Token> _0;
 			::Parser::bool_t success_1 = false;
 			::Parser::Token _2;
 			::Parser::bool_t success_3 = false;
@@ -3072,7 +3081,7 @@ namespace Parser {
 		
 			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
-			::Parser::any_t _2;
+			std::variant<::Parser::Rule, ::Parser::arr_t<::Parser::Rule>> _2;
 			::Parser::bool_t success_3 = false;
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
@@ -3094,33 +3103,35 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 		
-			_4 = any_data(pos);
-			if (!(_4.status)) {
-				// Attempt one or more Rule_data_block_regular_datablock_key
-				while (true) {
-					auto save = pos;
-					auto res = Rule_data_block_regular_datablock_key(pos);
-					if (!res.status) {
-						pos = save;
-						break;
-					}
-					key_nodes.push_back(res.node);
-					pos += res.node.length();
-					skip_spaces(pos);
+			auto save = pos;
+			while (true) {
+				auto save_loop = pos;
+				auto res = Rule_data_block_regular_datablock_key(pos);
+				if (!res.status) {
+					pos = save_loop;
+					break;
 				}
-		
-				if (key_nodes.empty()) {
-					return {};
-				} else {
-					success_7 = true;
-					// If needed, merge the keys into a group or composite node
-					_2 = key_nodes;
-				}
+				key_nodes.push_back(res.node);
+				pos += res.node.length();
+				skip_spaces(pos);
+			}
+
+			if (!key_nodes.empty()) {
+				success_7 = true;
+				_2 = key_nodes;
 			} else {
+				// Fallback to any_data
+				pos = save;
+				auto _4 = any_data(pos);
+				if (!_4.status) {
+					return {};
+				}
 				success_5 = true;
 				pos += _4.node.length();
 				_2 = _4.node;
 			}
+
+
 		
 			success_3 = true;
 			skip_spaces(pos);
@@ -3406,7 +3417,7 @@ namespace Parser {
 			}
 			_0 = *pos;
 			success_1 = true;
-			pos += 1;
+			pos++;
 			skip_spaces(pos);
 			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
 			{

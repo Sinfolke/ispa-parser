@@ -63,9 +63,4 @@ public:
 void custom_terminate_handler();
 #define Error(format, ...) Error(__FILE__, __LINE__, format, ##__VA_ARGS__)
 
-#define Assert(condition, format, ...) \
-    do { \
-        if (!(condition)) { \
-            throw Error("Assertion failed: " format, ##__VA_ARGS__); \
-        } \
-    } while(0)
+#define Assert(condition, format, ...) do { if (!(condition)) throw Error("Assertion failed: " format, ##__VA_ARGS__); } while(0)

@@ -409,7 +409,7 @@ public:
         Lexer_base<TOKEN_T>* owner = nullptr;
         typename TokenFlow<TOKEN_T>::iterator pos;
         public:
-            iterator(const Lexer_base<TOKEN_T> &owner) : owner(&owner), pos(owner->tokens.begin()) {}
+            iterator(Lexer_base<TOKEN_T> &owner) : owner(&owner), pos(owner->tokens.begin()) {}
             iterator(Lexer_base<TOKEN_T>* owner) : owner(owner), pos(owner->tokens.begin()) {}
 
             iterator& operator=(const iterator& other) {
@@ -457,11 +457,10 @@ public:
     virtual Node<TOKEN_T> makeToken(const char*& pos) = 0;
     // constructors
 
-    explicit Lexer_base(const std::string& in) : _in(const_cast<char*>(in.c_str())) {}
-    explicit Lexer_base(char*& in) : _in(in) {}
-    explicit Lexer_base(const char*& in) : _in(const_cast<char*>(in)) {}
-    explicit Lexer_base(TokenFlow<TOKEN_T> &tokens) : tokens(tokens) {}
-    explicit Lexer_base() {}
+    Lexer_base(const std::string& in) : _in(in.c_str()) {}
+    Lexer_base(const char* in) : _in(in) {}
+    Lexer_base(TokenFlow<TOKEN_T> &tokens) : tokens(tokens) {}
+    Lexer_base() {}
 
     bool hasInput() const {
         return _in != nullptr;
@@ -549,6 +548,8 @@ public:
             result = makeToken(pos);
             if (result.empty()) {
                 if (!error_controller.empty()) {
+                    const auto &el = error_controller.begin()->second;
+                    printf("Lexer[error controller]: %zu:%zu: %s\n", el.line, el.column, el.message.c_str());
                     errors.push_back(error_controller.begin()->second);
                 }
                 pos++;
@@ -706,7 +707,7 @@ public:
             parseFromTokens();
         } else if (text != nullptr) {
             lazyParse();
-        } else  throw Parser_No_Input_exception();
+        } else throw Parser_No_Input_exception();
         return tree;
     }
 };

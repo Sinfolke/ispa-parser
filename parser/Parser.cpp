@@ -1,4 +1,58 @@
 #include "Parser.h"
+void Parser::Lexer::printTokens(std::ostream& os) {
+    for (const auto& token : tokens)
+        printToken(os, token);
+}
+void Parser::Lexer::printToken(std::ostream& os, const Token& token) {
+    os << TokensToString(token.name()) << ": ";
+
+    if (token.data().type() == typeid(str_t)) {
+        os << '"' << std::any_cast<str_t>(token.data()) << '"';
+    } else if (token.data().type() == typeid(num_t)) {
+        os << std::any_cast<num_t>(token.data());
+    } else if (token.data().type() == typeid(bool_t)) {
+        os << std::boolalpha << std::any_cast<bool_t>(token.data());
+    } else if (token.data().type() == typeid(Token)) {
+        os << "{ ";
+        printToken(os, std::any_cast<Token>(token.data())); // Recursive call
+        os << " }";
+    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<Token>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printToken(os, *it);
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<str_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<str_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << '"' << *it << '"';
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<num_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<num_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::boolalpha << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    }
+    os << " # " << token.startpos();
+    os << '\n';
+}
+
 Parser::Rule_res Parser::Parser::getRule(Lexer::lazy_iterator &pos) {
         return main(pos);
     }
@@ -6,13 +60,20 @@ Parser::Rule_res Parser::Parser::getRule(Lexer::iterator &pos) {
         return main(pos);
     }
 void ::Parser::Parser::parseFromTokens() {
-        auto pos = Lexer::iterator(lexer);
-        parseFromPos(pos);
-    }
+	auto pos = Lexer::iterator(lexer);
+	parseFromPos(pos);
+}
 void ::Parser::Parser::lazyParse() {
+	if (lexer == nullptr) {
+		Lexer lexer;
+		auto pos = Lexer::lazy_iterator(lexer, text);
+        parseFromPos(pos);
+	} else {
         auto pos = Lexer::lazy_iterator(lexer, text);
         parseFromPos(pos);
-    }
+	}
+
+}
 const ::Parser::Types::ID_data& Parser::get::ID(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
 	return std::any_cast<const Types::ID_data&>(token.data());

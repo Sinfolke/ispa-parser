@@ -95,8 +95,8 @@ TreeAPI::Boolean AST::createBoolean(const Parser::Token boolean) {
 TreeAPI::rvalue AST::createRvalue(const Parser::Rule &rule) {
     TreeAPI::rvalue value;
     auto data = Parser::get::any_data(rule);
-    if (data.type() == typeid(Parser::Rule)) {
-        auto dt = std::any_cast<const Parser::Rule&>(data);
+    if (std::holds_alternative<Parser::Rule>(data)) {
+        const auto &dt = std::get<Parser::Rule>(data);
         switch (dt.name())
         {
         case Parser::Rules::array:
@@ -110,7 +110,7 @@ TreeAPI::rvalue AST::createRvalue(const Parser::Rule &rule) {
             break;
         }
     } else {
-        auto dt = std::any_cast<const Parser::Token&>(data);
+        const auto &dt = std::get<Parser::Token>(data);
         switch (dt.name())
         {
         case Parser::Tokens::STRING:
@@ -124,6 +124,9 @@ TreeAPI::rvalue AST::createRvalue(const Parser::Rule &rule) {
             break;
         case Parser::Tokens::AT:
             value.value = TreeAPI::At {};
+            break;
+        case Parser::Tokens::ID:
+            value.value = TreeAPI::ID {Parser::get::ID(dt)};
             break;
         default:
             throw Error("Undefined token in any_data");
@@ -317,21 +320,27 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
         addToOps = true;
     }
     const auto &rule_r = Parser::get::Rule_rule(rule);
-    member.prefix.is_key_value = rule_r.prefix.name() == Parser::Rules::Rule_keyvalue;
-    // get prefix
-    if (rule_r.prefix.name() == Parser::Rules::Rule_keyvalue) {
-        auto data = Parser::get::Rule_keyvalue(rule_r.prefix);
-        member.prefix.name = Parser::get::ID(data);
-    } else {
-        auto data = Parser::get::Rule_value(rule_r.prefix);
-        member.prefix.name = Parser::get::ID(data);
+    if (!rule_r.prefix.empty()) {
+        member.prefix.is_key_value = rule_r.prefix.name() == Parser::Rules::Rule_keyvalue;
+        // get prefix
+        if (rule_r.prefix.name() == Parser::Rules::Rule_keyvalue) {
+            auto data = Parser::get::Rule_keyvalue(rule_r.prefix);
+            if (!data.empty())
+                member.prefix.name = Parser::get::ID(data);
+        } else {
+            auto data = Parser::get::Rule_value(rule_r.prefix);
+            member.prefix.name = Parser::get::ID(data);
+        }
     }
+
     // get quantifier
     if (!rule_r.quantifier.empty()) {
         member.quantifier = std::any_cast<const std::string&>(Parser::get::Rule_quantifier(rule_r.quantifier))[0];
     }
 
     // get value
+    if (!rule_r.val.has_value())
+        return {};
     if (rule_r.val.type() == typeid(Parser::Rule)) {
         const auto &token = std::any_cast<const Parser::Token&>(rule_r.val);
         switch (token.name()) {
@@ -396,6 +405,7 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
                 throw Error("[AST] Undefined Rule_rule member");
         }
     } else {
+        cpuf::printf("type: %s\n", rule_r.val.type().name());
         auto rule = std::any_cast<const Parser::Rule&>(rule_r.val);
         switch (rule.name())
         {
@@ -468,15 +478,17 @@ std::vector<TreeAPI::RuleMember> AST::createRuleMembers(const std::vector<Parser
             ops_prefix = ops.back().prefix;
             ops.back().prefix.clear();
         }
-        newRules.push_back(member);
+        if (!member.empty())
+            newRules.push_back(member);
     }
     return newRules;
 }
 std::vector<std::string> AST::getNestedRuleNames(const Parser::Types::Rule_data &rule) {
     std::vector<std::string> names;
-    for (auto el : rule.nested_rules) {
-        auto nested_r = Parser::get::Rule(el);
-        names.push_back(Parser::get::ID(nested_r.name));
+    for (const auto &el : rule.nested_rules) {
+        const auto &nested_r = Parser::get::Rule_nested_rule(el);
+        const auto r = Parser::get::Rule(nested_r);
+        names.push_back(Parser::get::ID(r.name));
     }
     return names;
 }
@@ -489,9 +501,10 @@ TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
     {
     case Parser::Rules::Rule_data_block_regular_datablock:
     {
-        auto rdbd = Parser::get::Rule_data_block_regular_datablock(data);
-        if (rdbd.type() == typeid(Parser::Rule)) {
-            data_block.value = TreeAPI::RegularDataBlock {createCllExpr(std::any_cast<const Parser::Rule&>(data))};
+        const auto &alt = Parser::get::Rule_data_block_regular_datablock(data);
+        if (std::holds_alternative<Parser::Rule>(alt)) {
+            const auto &dt = std::get<Parser::Rule>(alt);
+            data_block.value = TreeAPI::RegularDataBlock {createRvalue(dt)};
         } else {
             // key-based data block
             TreeAPI::RegularDataBlockWKeys result;
@@ -529,8 +542,9 @@ void AST::createRules(const Parser::Types::Rule_data &rule) {
     newRule.members = createRuleMembers(rule.rule);
     newRule.data_block = createDataBlock(rule.data_block);
     tree_map[fullname] = std::move(newRule);
-    for (auto nested : rule.nested_rules) {
-        auto r = Parser::get::Rule(nested);
+    for (const auto &nested : rule.nested_rules) {
+        const auto &nr = Parser::get::Rule_nested_rule(nested);
+        const auto &r = Parser::get::Rule(nr);
         createRules(r);
     }
     fullname.pop_back();

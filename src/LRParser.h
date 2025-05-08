@@ -1,5 +1,4 @@
 #pragma once
-#include <Parser.h>
 #include <corelib.h>
 #include <fstream>
 #include <iostream>
@@ -133,6 +132,8 @@ public:
     void printFirstSet(const std::string &fileName);
     void printFollowSet(const std::string &fileName);
 };
+bool operator<(const LRParser::LR0Core &first, const LRParser::LR0Core &second);
+bool operator<(const LRParser::LR1Core &first, const LRParser::LR1Core &second);
 namespace std {
 
     // Hash specialization for TreeAPI::LR0Core

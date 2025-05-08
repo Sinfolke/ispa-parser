@@ -349,7 +349,9 @@ namespace TreeAPI {
     bool DataBlock::isTemplatedDataBlock() const {
         return std::holds_alternative<TemplatedDataBlock>(value);
     }
-    
+    bool DataBlock::empty() const {
+        return std::holds_alternative<std::monostate>(value);
+    }
     RegularDataBlock& DataBlock::getRegDataBlock() {
         return std::get<RegularDataBlock>(value);
     }
@@ -398,17 +400,27 @@ namespace TreeAPI {
     bool operator==(const TreeAPI::Object &lhs, const TreeAPI::Object &rhs) {
         return lhs.value == rhs.value;
     }
-
+    // Comparison operator for ID
+    bool operator==(const TreeAPI::At &lhs, const TreeAPI::At &rhs) {
+        return true;
+    }
     // Comparison operator for ID
     bool operator==(const TreeAPI::ID &lhs, const TreeAPI::ID &rhs) {
         return lhs.value == rhs.value;
     }
 
     // Comparison operator for rvalue
-    bool operator==(const TreeAPI::rvalue &lhs, const TreeAPI::rvalue &rhs) {
-        return lhs.value == rhs.value;
+    bool operator==(const rvalue& lhs, const rvalue& rhs) {
+        return std::visit([](const auto& a, const auto& b) -> bool {
+            using A = std::decay_t<decltype(a)>;
+            using B = std::decay_t<decltype(b)>;
+            if constexpr (std::is_same_v<A, B>) {
+                return a == b;
+            } else {
+                return false;
+            }
+        }, lhs.value, rhs.value);
     }
-
     // Comparison operator for CllCompareOp
     bool operator==(const TreeAPI::CllCompareOp &lhs, const TreeAPI::CllCompareOp &rhs) {
         return lhs.op == rhs.op;

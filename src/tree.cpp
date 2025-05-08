@@ -217,7 +217,7 @@ void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
                 }
             }
             auto& options = member.getOp();
-            std::sort(options.begin(), options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {sortPriority(first, second);});
+            std::sort(options.begin(), options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {return sortPriority(first, second);});
         }
     }
 

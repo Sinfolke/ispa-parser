@@ -6,7 +6,7 @@ bool LLIR::data_block::is_inclosed_map() const {
     return std::holds_alternative<LLIR::inclosed_map>(value);
 }
 bool LLIR::data_block::is_raw_expr() const {
-    return std::holds_alternative<std::vector<LLIR::expr>>(value);
+    return std::holds_alternative<LLIR::regular_data_block>(value);
 }
 LLIR::regular_data_block &LLIR::data_block::getExpr() {
     return std::get<LLIR::regular_data_block>(value);
@@ -788,7 +788,7 @@ LLIR::var_type LLIR::deduceTypeFromExprValue(const TreeAPI::CllExprValue &value)
     } else if (value.isMethodCall()) {
         // todo - get method call type
     } else if (value.isVariable()) {
-        auto find_it = std::find(vars.begin(), vars.end(), value.getVariable().name);
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
         return find_it->type;
@@ -1503,7 +1503,7 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
     success_vars.push_back(success_var);
 }
 LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) {
-    LLIR result(tree);
+    LLIR result(tree, -1, false);
     result.proceed(*this);
     for (const auto &rule : rules) {
         result.ruleToIr(rule);
@@ -1511,7 +1511,7 @@ LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) {
     return result;
 }
 LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) {
-    LLIR result(tree);
+    LLIR result(tree, -1, false);
     result.proceed(*this);
     bool isFirst = true;
     for (const auto &rule : rules) {

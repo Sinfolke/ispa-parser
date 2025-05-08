@@ -1,4 +1,6 @@
 #include <LRParser.h>
+bool operator<(const LRParser::LR0Core &first, const LRParser::LR0Core &second) {return false;}
+bool operator<(const LRParser::LR1Core &first, const LRParser::LR1Core &second) {return false;}
 static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group) {
     size_t count = 0;
     for (auto &rule : group) {

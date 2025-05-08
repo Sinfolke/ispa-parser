@@ -10,7 +10,7 @@ class LLInternalData {
     std::stack<size_t> pos_counter_stack;
     std::stack<std::string> current_pos_counter;
     std::vector<std::string> dynamic_pos_counter = {};
-    std::pair<std::string, std::vector<std::string>> rule_prev_name;
+    std::vector<std::string> rule_prev_name;
     std::string rule_prev_name_str;
     std::string namespace_name;
     bool add_semicolon;

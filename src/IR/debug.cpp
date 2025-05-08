@@ -312,11 +312,11 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
     switch (mem.type)
     {
     case types::RULE:
-        out << "Rule(" << corelib::text::join(std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value).second, "_") << ") {";
+        out << "Rule(" << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_") << ") {";
         indentLevel++;
         break;
     case types::TOKEN:
-        out << "Token(" << corelib::text::join(std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value).second, "_") << ") {";
+        out << "Token(" << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_") << ") {";
         indentLevel++;
         break;
     case types::RULE_END:

@@ -102,8 +102,8 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
     case LLIR::types::RULE:
         if (!cpp_file) {
             has_data_block = false;
-            rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
-            rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
+            rule_prev_name = std::any_cast<std::vector<std::string>>(mem.value);
+            rule_prev_name_str = corelib::text::join(rule_prev_name, "_");
             out << "template <class IT>\n";
             out << std::string(indentLevel, '\t') << "::" << namespace_name << "::Rule_res " << rule_prev_name_str << "(IT pos) {\n";
             indentLevel++;
@@ -114,8 +114,8 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
     case LLIR::types::TOKEN:
         has_data_block = false;
         indentLevel++;
-        rule_prev_name = std::any_cast<std::pair<std::string, std::vector<std::string>>>(mem.value);
-        rule_prev_name_str = corelib::text::join(rule_prev_name.second, "_");
+        rule_prev_name = std::any_cast<std::vector<std::string>>(mem.value);
+        rule_prev_name_str = corelib::text::join(rule_prev_name, "_");
         out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
         out << std::string(indentLevel, '\t') << "auto in = pos";
         isToken = true;
