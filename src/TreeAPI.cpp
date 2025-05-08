@@ -577,13 +577,15 @@ namespace TreeAPI {
     }
     
     bool operator==(const RuleMember &first, const RuleMember &second) {
-        return std::visit([](auto &&lhs, auto &&rhs) -> bool {
-                if constexpr (std::is_same_v<decltype(lhs), decltype(rhs)>) {
-                    return lhs == rhs;
-                } else {
-                    return false;
-                }
-            }, first.value, second.value);
+        return std::visit([](auto&& lhs, auto&& rhs) -> bool {
+            using L = std::decay_t<decltype(lhs)>;
+            using R = std::decay_t<decltype(rhs)>;
+            if constexpr (std::is_same_v<L, R> && requires (L a, R b) { a == b; }) {
+                return lhs == rhs;
+            } else {
+                return false;
+            }
+        }, first.value, second.value);        
     }
     
     bool RuleMember::fullCompare(const RuleMember &second) {

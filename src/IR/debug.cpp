@@ -286,9 +286,9 @@ std::string LLIR::convertDataBlock(data_block dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "data = ";
-    if (dtb.is_inclosed_map) {
+    if (dtb.is_inclosed_map()) {
         res += "\n";
-        for (auto [key, value] : std::any_cast<inclosed_map>(dtb.value.data)) {
+        for (auto [key, value] : dtb.getInclosedMap()) {
             res += std::string(indentLevel + 1, '\t');
             res += key;
             res += ": ";
@@ -299,9 +299,9 @@ std::string LLIR::convertDataBlock(data_block dtb) {
         }
         res += std::string(indentLevel, '\t') + ";";
     } else {
-        res += convertAssign(std::any_cast<assign>(dtb.value));
+        res += convertExpression(dtb.getExpr().first, false);
         res += " # ";
-        res += convert_var_type(dtb.assign_type.type);
+        res += convert_var_type(dtb.getExpr().second.type);
     }
     return res;
 }

@@ -31,7 +31,7 @@ private:
 
 
 public:
-    LLConverter(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::RuleMemberVars *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
+    LLConverter(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::ConvertionResult *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
         this->namespace_name = namespace_name;
         current_pos_counter.push("pos");
     }
@@ -43,7 +43,7 @@ public:
     void addGetRuleFunction(std::ostringstream &out);
     void addparseFromFunctions(std::ostringstream &out);
     void addStandardFunctionsParser(std::ostringstream &out);
-    void addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules);
+    void addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules);
     void addLexerCode_Header(std::ostringstream &out);
     void convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out);
     void addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var);

@@ -159,18 +159,18 @@ void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map 
 void LLHeader::convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const {
     out << "\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
 }
-void LLHeader::write_data_block(std::ostringstream &out, data_block_t dtb) const {
+void LLHeader::write_data_block(std::ostringstream &out, LLIR::DataBlockList dtb) const {
     for (auto [name, block] : dtb) {
-        if (block.is_inclosed_map) {
-            out << "\t\tstruct " + name + "_data {\n";
-            convert_inclosed_map(out, std::any_cast<LLIR::inclosed_map>(block.value.data));
+        if (block.is_inclosed_map()) {
+            out << "\t\tstruct " + corelib::text::join(name, "_") + "_data {\n";
+            convert_inclosed_map(out, block.getInclosedMap());
             out << "\t\t};\n";
         } else {
-            convert_single_assignment_data(out, block.assign_type, name);
+            convert_single_assignment_data(out, block.getExpr().second, corelib::text::join(name, "_"));
         }
     }
 }
-void LLHeader::createTypesNamespace(std::ostringstream &out, const data_block_t &data_block_tokens, const data_block_t &data_block_rules) const {
+void LLHeader::createTypesNamespace(std::ostringstream &out, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\tnamespace Types {\n"; 
     write_data_block(out, data_block_tokens); 
     write_data_block(out, data_block_rules); 
@@ -211,7 +211,7 @@ void LLHeader::create_parser_header(std::ostringstream &out) const {
         << "\t\tvoid parseFromTokens();\n"
         << "\t\tvoid lazyParse();\n";
 }
-void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const data_block_t &data_block_tokens, const data_block_t &data_block_rules) const {
+void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\n\tnamespace get {\n";
     for (auto [name, block] : data_block_tokens) {
         out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(const ::" << namespace_name << "::Token &token);\n";

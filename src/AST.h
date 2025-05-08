@@ -59,6 +59,8 @@ class AST {
     public:
         TreeMap &getTreeMap();
         Use &getUse();
+        std::string &getName();
+        SpacemodeStates &getSpacemode();
 
         AST(const std::vector<Parser::Rule> &modules) {
             constructor(modules);

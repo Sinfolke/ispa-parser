@@ -101,7 +101,7 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             auto arr = std::any_cast<LLIR::array>(data);
             std::string res = "{";
             for (auto &el : arr) {
-                res += convertAssign(el);
+                res += convertExpression(el, false);
                 res += ',';
             }
             if (res.size() > 1)
@@ -119,7 +119,7 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
                 res += "{";
                 res += key;
                 res += ", ";
-                res += convertAssign(value);
+                res += convertExpression(value, false);
                 res += "},";
             }
             if (res.size() > 1) {
@@ -274,7 +274,7 @@ std::string LLStringConvertions::convertFunctionCall(const LLIR::function_call &
     for (auto param : call.params) {
         if (!first)
             res += ", ";
-        res += convertAssign(param);
+        res += convertExpression(param, false);
         first = false;
     }
     res += ')';
@@ -302,16 +302,16 @@ std::string LLStringConvertions::convertDataBlock(const LLIR::data_block &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "::" + namespace_name + "::Types::" + rule_prev_name_str + "_data data";
-    if (dtb.is_inclosed_map) {
+    if (dtb.is_inclosed_map()) {
         res += ";";
         res += "\n";
-        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.value.data)) {
+        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.getInclosedMap())) {
             res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
         }
         add_semicolon = false;
     } else {
         res += " = ";
-        res += convertAssign(std::any_cast<LLIR::assign>(dtb.value));
+        res += convertExpression(dtb.getExpr().first, false);
         res += ";";
     }
     return res;

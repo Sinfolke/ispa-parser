@@ -157,9 +157,7 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR tokens_ir(tree->getTreeMap(), true);
-    tokens_ir.makeIR();
-    tokens_ir.optimizeIR();
+    LLIR tokens_ir(tree, true);
     LLConverter converter(tokens_ir, *tree, &lexer_code, &success_var, filename);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
@@ -211,11 +209,10 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
 void LRConverter::output(std::filesystem::path name) {
     namespace_name = name.filename();
     std::ostringstream cpp_out, h_out;
-    auto  [tokens, rules] = tree->getTokenAndRuleNames();
+    this->tokens = tree->getTerminals();
+    this->rules = tree->getNonTerminals();
     tokens.insert(tokens.begin(), {"NONE"});
     rules.insert(rules.begin(), {"NONE"});
-    this->tokens = tokens;
-    this->rules = rules;
     outputIR(cpp_out, namespace_name);
     outputHeader(h_out, namespace_name);
     std::ofstream cpp(name.string() + ".cpp");

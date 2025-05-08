@@ -234,19 +234,19 @@ void Tree::addSpaceToken() {
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
-auto Tree::getTerminals() -> std::unordered_set<std::vector<std::string>> {
-    std::unordered_set<std::vector<std::string>> set;
+auto Tree::getTerminals() -> std::vector<std::vector<std::string>> {
+    std::vector<std::vector<std::string>> set;
     for (auto [name, value] : ast.getTreeMap()) {
         if (corelib::text::isUpper(name.back()))
-            set.insert(name);
+            set.push_back(name);
     }
     return set;
 }
-auto Tree::getNonTerminals() -> std::unordered_set<std::vector<std::string>> {
-    std::unordered_set<std::vector<std::string>> set;
+auto Tree::getNonTerminals() -> std::vector<std::vector<std::string>> {
+    std::vector<std::vector<std::string>> set;
     for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isLower(name.back()))
-            set.insert(name);
+            set.push_back(name);
     }
     return set;
 }
@@ -293,7 +293,6 @@ Tree::lexer_code Tree::getCodeForLexer() {
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
     LLIR code(*this, resultRule, true);
-    code.setIsToken(true);
     const auto &success_var = code.getSuccessVars();
     code.pop(); // remove space skip
     code.push_begin({LLIR::types::TOKEN});

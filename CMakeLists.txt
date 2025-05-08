@@ -65,11 +65,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)  # Disable GNU extensions
 set_target_properties(ispa PROPERTIES CXX_STANDARD_REQUIRED 20)
 set_target_properties(ispa PROPERTIES CXX_STANDARD 20)
 set_target_properties(ispa PROPERTIES CXX_EXTENSIONS ON)
-
 add_compile_definitions(__SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}")
 add_compile_definitions(PROGRAM_VERSION="0.1.0 beta")
 add_compile_definitions(O_LEVEL=${O_LEVEL})
-
 # Create an interface library to hold common properties
 include_directories(include parser parser/stdlibs)
 add_library(parser STATIC parser/Parser.cpp)

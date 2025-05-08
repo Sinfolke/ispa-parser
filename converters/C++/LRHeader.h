@@ -1,5 +1,4 @@
 #include <LLHeader.h>
-#include <internal_types.h>
 #include <LRParser.h>
 #include <LRInternalData.h>
 class LRHeader : public LLHeader, public LRInternalData {

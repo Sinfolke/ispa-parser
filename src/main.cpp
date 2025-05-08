@@ -94,9 +94,8 @@ int main(int argc, char** argv) {
     */
     Tree tree(ast);
     //tree.resolveConflicts();
-    auto use = tree.accamulate_use_data_to_map();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
-    auto name = std::any_cast<std::string>(use["name"].data());
+    auto name = std::any_cast<std::string>(ast.getName());
     std::string algorithm = "LL";
     std::string opath;
     if (!args.get("a").empty()) {
@@ -139,8 +138,6 @@ int main(int argc, char** argv) {
         converter->output(output_path);
     } else if (algorithm == "LL") {
         LLIR ir(tree);
-        ir.makeIR();
-        ir.optimizeIR();
         ir.outputIRToFile("output_ir.txt");
         auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR&, Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));

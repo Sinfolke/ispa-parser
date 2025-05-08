@@ -5,35 +5,32 @@
 class LLConverter_base {
     protected:
         // data
-        use_prop_t use;
         std::vector<LLIR::member> data;
         std::vector<std::vector<std::string>> tokens;
         std::vector<std::vector<std::string>> rules;
-        data_block_t data_block_tokens;
-        data_block_t data_block_rules;        
+        LLIR::DataBlockList data_block_tokens;
+        LLIR::DataBlockList data_block_rules;        
         LLIR lexer_code;
-        LLIR::RuleMemberVars lexer_code_access_var;
+        LLIR::ConvertionResult lexer_code_access_var;
+        Tree* tree;
     public:
-        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::RuleMemberVars *access_var = nullptr) : lexer_code(tree.getTreeMap()) {
+        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::ConvertionResult *access_var = nullptr) : lexer_code(tree), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
-            auto [tokens, rules] = tree.getTokenAndRuleNames();
+            tokens = tree.getTerminals();
+            rules = tree.getNonTerminals();
             tokens.insert(tokens.begin(), {"NONE"});
             rules.insert(rules.begin(), {"NONE"});
-            auto [data_block_tokens, data_block_rules] = tree.get_data_blocks(ir);
-            this->tokens = tokens;
-            this->rules = rules;
-            this->data_block_tokens = data_block_tokens;
-            this->data_block_rules = data_block_rules;
+            data_block_tokens = ir.getDataBlocksTerminals();
+            data_block_rules = ir.getDataBlocksNonTerminals();
             if (custom_lexer_code == nullptr || access_var == nullptr) {
-                auto lc = tree.getCodeForLexer(use_places);            
+                auto lc = tree.getCodeForLexer();            
                 this->lexer_code = lc.code;
                 this->lexer_code_access_var = lc.success_var;
             } else {
                 this->lexer_code = *custom_lexer_code;
                 this->lexer_code_access_var = *access_var;
             }
-            this->use = tree.accamulate_use_data_to_map();
-            this->data = std::move(ir.getDataRef());
+            this->data = std::move(ir.getData());
         }
         virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {
@@ -46,18 +43,16 @@ class LLConverter_base {
 class LRConverter_base {
     protected:
         // data
-        use_prop_t use;
         const LRParser* data;        
         LLIR lexer_code;
-        LLIR::RuleMemberVars success_var;
+        LLIR::ConvertionResult success_var;
         Tree* tree;
     public:
-        LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree.getTreeMap()), data(&data), tree(&tree) {
+        LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree), data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
-            auto lc = tree.getCodeForLexer(use_places);
+            auto lc = tree.getCodeForLexer();
             lexer_code = lc.code;
             success_var = lc.success_var;
-            use = tree.accamulate_use_data_to_map();
         }
         virtual void output(std::filesystem::path filename) = 0;
 };

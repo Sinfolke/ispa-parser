@@ -4,22 +4,37 @@ void AST::constructor(const Parser::Rule &mod) {
     const auto &entrise = Parser::get::main(mod);
     for (auto entry : entrise) {
         if (entry.type() == typeid(Parser::Rule)) {
-            auto t = std::any_cast<Parser::Rule&>(entry);
+            auto t = std::any_cast<const Parser::Rule&>(entry);
             if (t.name() == Parser::Rules::Rule) {
-                auto data = Parser::get::Rule(std::any_cast<Parser::Rule&>(entry));
+                auto data = Parser::get::Rule(std::any_cast<const Parser::Rule&>(entry));
                 createRules(data);
             } else if (t.name() == Parser::Rules::use) {
                 // accamulate use here
+                const auto & use = Parser::get::use(t);
+                const auto &first_key = Parser::get::use_unit(use.first);
+                this->use[Parser::get::ID(first_key.name)] = createRvalue(first_key.value);
+                for (const auto key : use.second) {
+                    const auto &k = Parser::get::use_unit(key);
+                    this->use[Parser::get::ID(k.name)] = createRvalue(k.value);
+                }
             } else {
                 throw Error("Undefined tree member");
             }
         } else if (entry.type() == typeid(Parser::Token)) {
             // is token
-            auto t = std::any_cast<Parser::Token&>(entry);
+            auto t = std::any_cast<const Parser::Token&>(entry);
             if (t.name() == Parser::Tokens::SPACEMODE) {
                 // handle spacemode
+                const auto &spacemode = Parser::get::SPACEMODE(t);
+                if (spacemode == "mixed") {
+                    this->spacemode = SpacemodeStates::MIXED;
+                }
+                // todo: add other spacemode modes
             } else if (t.name() == Parser::Tokens::NAME) {
                 // handle name
+                const auto &name = Parser::get::NAME(t);
+                const auto &name_str = Parser::get::ID(name);
+                this->name = name_str;
             } else 
                 throw Error("Undefined tree member");
         } else {
@@ -37,6 +52,12 @@ AST::TreeMap& AST::getTreeMap() {
 }
 AST::Use& AST::getUse() {
     return use;
+}
+std::string &AST::getName() {
+    return name;
+}
+AST::SpacemodeStates &AST::getSpacemode() {
+    return spacemode;
 }
 TreeAPI::Array AST::createArray(const Parser::Rule &array) {
     TreeAPI::Array arr;
@@ -75,7 +96,7 @@ TreeAPI::rvalue AST::createRvalue(const Parser::Rule &rule) {
     TreeAPI::rvalue value;
     auto data = Parser::get::any_data(rule);
     if (data.type() == typeid(Parser::Rule)) {
-        auto dt = std::any_cast<Parser::Rule&>(data);
+        auto dt = std::any_cast<const Parser::Rule&>(data);
         switch (dt.name())
         {
         case Parser::Rules::array:
@@ -89,7 +110,7 @@ TreeAPI::rvalue AST::createRvalue(const Parser::Rule &rule) {
             break;
         }
     } else {
-        auto dt = std::any_cast<Parser::Token&>(data);
+        auto dt = std::any_cast<const Parser::Token&>(data);
         switch (dt.name())
         {
         case Parser::Tokens::STRING:
@@ -307,12 +328,12 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
     }
     // get quantifier
     if (!rule_r.quantifier.empty()) {
-        member.quantifier = std::any_cast<std::string>(Parser::get::Rule_quantifier(rule_r.quantifier))[0];
+        member.quantifier = std::any_cast<const std::string&>(Parser::get::Rule_quantifier(rule_r.quantifier))[0];
     }
 
     // get value
     if (rule_r.val.type() == typeid(Parser::Rule)) {
-        const auto &token = std::any_cast<Parser::Token&>(rule_r.val);
+        const auto &token = std::any_cast<const Parser::Token&>(rule_r.val);
         switch (token.name()) {
             case Parser::Tokens::STRING:
                 member.value = TreeAPI::String {Parser::get::STRING(token)};    
@@ -375,7 +396,7 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
                 throw Error("[AST] Undefined Rule_rule member");
         }
     } else {
-        auto rule = std::any_cast<Parser::Rule>(rule_r.val);
+        auto rule = std::any_cast<const Parser::Rule&>(rule_r.val);
         switch (rule.name())
         {
         case Parser::Rules::Rule_name:
@@ -451,7 +472,7 @@ std::vector<TreeAPI::RuleMember> AST::createRuleMembers(const std::vector<Parser
     }
     return newRules;
 }
-static std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule) {
+std::vector<std::string> AST::getNestedRuleNames(const Parser::Types::Rule_data &rule) {
     std::vector<std::string> names;
     for (auto el : rule.nested_rules) {
         auto nested_r = Parser::get::Rule(el);
@@ -470,11 +491,11 @@ TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
     {
         auto rdbd = Parser::get::Rule_data_block_regular_datablock(data);
         if (rdbd.type() == typeid(Parser::Rule)) {
-            data_block.value = TreeAPI::RegularDataBlock {createCllExpr(std::any_cast<Parser::Rule&>(data))};
+            data_block.value = TreeAPI::RegularDataBlock {createCllExpr(std::any_cast<const Parser::Rule&>(data))};
         } else {
             // key-based data block
             TreeAPI::RegularDataBlockWKeys result;
-            auto& keys = std::any_cast<Parser::arr_t<Parser::Rule>&>(data);
+            auto& keys = std::any_cast<const Parser::arr_t<Parser::Rule>&>(data);
             for (const auto &k : keys) {
                 const auto &key = Parser::get::Rule_data_block_regular_datablock_key(k);
                 result[name] = createCllExpr(key.val);
@@ -514,5 +535,3 @@ void AST::createRules(const Parser::Types::Rule_data &rule) {
     }
     fullname.pop_back();
 }
-// called every time after convertion
-void clearCache() {}

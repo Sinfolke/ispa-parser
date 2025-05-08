@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 #include <TreeAPI.h>
+#include <hash.h>
 class Tree;
 class LLIR {
     public:
@@ -45,6 +46,14 @@ class LLIR {
         struct var_type {
             var_types type = LLIR::var_types::UNDEFINED;
             std::vector<var_type> templ = {};
+            std::size_t operator()(const std::vector<std::string>& key) const {
+                std::size_t h = 0;
+                std::hash<std::string> hasher;
+                for (const auto& s : key) {
+                    h ^= hasher(s) + 0x9e3779b9 + (h << 6) + (h >> 2);
+                }
+                return h;
+            }
         };
         struct member {
             types type = types::NONE;
@@ -103,15 +112,21 @@ class LLIR {
             LLIR::variable value;
         };
         using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<LLIR::expr>, var_type>>;
+        using regular_data_block = std::pair<std::vector<LLIR::expr>, var_type>;
         struct data_block {
-            assign value;
-            LLIR::var_type assign_type;
-            bool is_inclosed_map;
+            std::variant<std::monostate, regular_data_block, inclosed_map> value;
+            bool is_inclosed_map() const;
+            bool is_raw_expr() const;
+            regular_data_block &getExpr();
+            inclosed_map &getInclosedMap();
+            const regular_data_block &getExpr() const;
+            const inclosed_map &getInclosedMap() const;
         };
-        struct RuleMemberVars {
+        struct ConvertionResult {
             LLIR::variable svar;
+            LLIR::variable uvar;
             LLIR::variable var;
-            LLIR::variable shadow_var = {};
+            LLIR::variable shadow_var;
             char qualifier;
         };
         struct var_group {
@@ -119,6 +134,7 @@ class LLIR {
             size_t begin;
             size_t end;
         };
+        using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::data_block, LLIR::var_type>;
     private:
         void clear_thread();
         // output functions:
@@ -192,20 +208,25 @@ class LLIR {
         auto deduceTypeFromExpr(const TreeAPI::CllExpr &expr) -> LLIR::var_type;
         
         // convertion functions helpers
-        auto processGroup(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto processRuleCsequence(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto processString(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_hex(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_bin(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_name(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_nospace(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_escaped(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
-        auto process_Rule_any(const TreeAPI::RulePrefix &prefix) -> LLIR::RuleMemberVars;
+        auto processGroup(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto processRuleCsequence(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto processString(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_hex(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_bin(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_name(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_nospace(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_escaped(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
+        auto process_Rule_any(const TreeAPI::RulePrefix &prefix) -> LLIR::ConvertionResult;
         auto convert_op_rule(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> std::vector<LLIR::member>;
-        auto process_Rule_op(const TreeAPI::RuleMember &rule) -> LLIR::RuleMemberVars;
+        auto process_Rule_op(const TreeAPI::RuleMember &rule) -> LLIR::ConvertionResult;
         auto process_cll_var(const TreeAPI::CllVar &var) -> void;
         auto process_cll_if(const TreeAPI::CllIf &cond) -> LLIR::condition;
-        auto process_cll(const TreeAPI::Cll &cll) -> LLIR::RuleMemberVars;        
+        auto process_cll(const TreeAPI::Cll &cll) -> LLIR::ConvertionResult;
+        auto createDataBlock(const TreeAPI::DataBlock &data_block) -> LLIR::data_block;
+        auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
+
+        // interaction functions
+        auto getDataBlocks(const LLIR::types begin_type) -> DataBlockList;
     protected:
         // data
         size_t variable_count = 0;
@@ -219,8 +240,10 @@ class LLIR {
         std::vector<var_group> groups;
         std::vector<LLIR::variable> vars;
         std::vector<LLIR::member> data;
-        std::vector<RuleMemberVars> success_vars;
+        std::vector<ConvertionResult> success_vars;
         const std::vector<TreeAPI::RuleMember> *rules = nullptr;
+        std::vector<std::pair<std::string, LLIR::variable>> key_vars;
+        std::vector<LLIR::variable> unnamed_datablock_units;
         Tree* tree;
         // data for output
         std::stack<std::string> current_pos_counter;
@@ -232,7 +255,7 @@ class LLIR {
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) -> LLIR;
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr();
-        auto makeIR() -> std::vector<RuleMemberVars>;
+        auto makeIR() -> std::vector<ConvertionResult>;
         // optimizations
         void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
         size_t getBegin(size_t& i);
@@ -262,7 +285,7 @@ class LLIR {
         auto getTree() const -> const Tree*;
         auto getData() const -> const std::vector<LLIR::member>&;
         auto getData() -> std::vector<LLIR::member>&;
-        auto getSuccessVars() const -> const std::vector<RuleMemberVars>&;
+        auto getSuccessVars() const -> const std::vector<ConvertionResult>&;
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();
         void add(LLIR &repr);
@@ -275,5 +298,6 @@ class LLIR {
         void pop();
         size_t size();
         bool empty();
-        void setIsToken(bool isToken);
+        auto getDataBlocksTerminals() -> DataBlockList;
+        auto getDataBlocksNonTerminals() -> DataBlockList;
 };

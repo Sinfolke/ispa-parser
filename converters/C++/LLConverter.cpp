@@ -244,12 +244,12 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
     addStandardFunctionsParser(out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addLexerCode_Header(out);
-    convertLexerCode(lexer_code.getDataRef(), out);
+    convertLexerCode(lexer_code.getData(), out);
     addLexerCode_Bottom(out,  lexer_code_access_var.var);
     writeRules(out, false);
 }
 void LLConverter::addHeader(std::ostringstream &out) {
-    out << "#include \"" << std::any_cast<std::string>(use["name"].data) << ".h\"\n";
+    out << "#include \"" << namespace_name << ".h\"\n";
 }
 
 void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
@@ -404,20 +404,14 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
         indentLevel--;
         os << std::string(indentLevel, '\t') << "]";
     })";
-    
-    
-
-
-
-    for (auto data : data_block_rules) {
-        const auto &value = data.value;
-        if (!value.is_inclosed_map)
+    for (const auto &[name, value] : data_block_rules) {
+        if (!value.is_inclosed_map())
             continue;
-        out << "\telse if (data.type() == typeid(Types::" << data.name << "_data)) {\n";
+        out << "\telse if (data.type() == typeid(Types::" << name << "_data)) {\n";
         out << "\t\tos << \"{\\n\";\n";
-        out << "\t\tauto dt = std::any_cast<Types::" << data.name << "_data>(data);\n";
+        out << "\t\tauto dt = std::any_cast<Types::" << name << "_data>(data);\n";
         out << "indentLevel++;";
-        for (const auto &[name, key_data] : std::any_cast<LLIR::inclosed_map>(std::any_cast<LLIR::assign>(value.value).data)) {
+        for (const auto &[name, key_data] : value.getInclosedMap()) {
             out << "\t\tos << std::string(indentLevel, '\\t') << \"" << name << "\"<< \": \";\n";
             out << "\t\tprintRule(os, dt." << name << ", indentLevel, false);\n";
             out << "\t\tos << \"\\n\";\n";
@@ -451,7 +445,7 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
     addGetRuleFunction(out);
     addparseFromFunctions(out);
 }
-void LLConverter::addGetFunctions(std::ostringstream &out, data_block_t datablocks_tokens, data_block_t datablocks_rules) {
+void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules) {
     for (const auto &[name, dtb] : datablocks_tokens) {
         // const overload
         out << "const ::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Token &token) {\n";

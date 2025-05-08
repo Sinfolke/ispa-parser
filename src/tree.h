@@ -13,7 +13,7 @@ class Tree {
         };
         struct lexer_code {
             LLIR code;
-            LLIR::RuleMemberVars success_var;
+            LLIR::ConvertionResult success_var;
         };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
@@ -55,8 +55,8 @@ class Tree {
         void literalsToToken();
         void sortByPriority();
         void addSpaceToken();
-        auto getTerminals() -> std::unordered_set<std::vector<std::string>>;
-        auto getNonTerminals() -> std::unordered_set<std::vector<std::string>>;
+        auto getTerminals() -> std::vector<std::vector<std::string>>;
+        auto getNonTerminals() -> std::vector<std::vector<std::string>>;
         auto getUsePlacesTable() -> UsePlaceTable;
         auto getCodeForLexer() -> lexer_code;
 };
