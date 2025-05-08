@@ -1,6 +1,5 @@
 #pragma once
 #include <LLStringConvertions.h>
-#include <internal_types.h>
 class LLHeader : public LLStringConvertions {
     protected:
     // header output functions

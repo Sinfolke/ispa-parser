@@ -32,17 +32,19 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::stri
         const auto &options = initial_item_set[place];
         for (const auto &option : options) {
             // get next symbol
-            for (auto it = option.begin(); it != option.end(); it++) {
+            for (auto it = option.members.begin(); it != option.members.end(); it++) {
                 const auto &rule = *it;
-                if (rule.fullname == fullname) {
+                const auto &name = rule.getName();
+                if (name.name == fullname) {
                     // found this rule, get all next possible symbols
                     lookahead_set.emplace_back();
-                    for (auto it2 = it + 1; it2 != option.end(); it2++) {
+                    for (auto it2 = it + 1; it2 != option.members.end(); it2++) {
                         const auto &next_rule = *it2;
-                        if (corelib::text::isUpper(next_rule.name)) {
-                            lookahead_set.back().token_sequence.push_back(next_rule.fullname);
+                        const auto &next_rule_name = next_rule.getName();
+                        if (corelib::text::isUpper(next_rule_name.name.back())) {
+                            lookahead_set.back().token_sequence.push_back(next_rule_name.name);
                         } else {
-                            lookahead_set.back().nested.push_back(getLookeaheadSet(next_rule.fullname, visited));
+                            lookahead_set.back().nested.push_back(getLookeaheadSet(next_rule_name.name, visited));
                             lookahead_set.back().token_sequence.push_back(lookahead_set.back().nested.size() - 1);
                         }
                     }
@@ -108,16 +110,17 @@ void ELRParser::build() {
             auto current = nfa_state;
             if (conflict.type == Action_type::SHIFT) {
                 // handle shift action as defaultly in NFA
-                for (size_t j = item.dot_pos; j < item.rhs.size(); ++j) {
-                    auto sym = item.rhs[j];
+                for (size_t j = item.dot_pos; j < item.rhs.members.size(); ++j) {
+                    auto sym = item.rhs.members[j];
                     size_t next = nfa_states.size();
                     nfa_states.emplace_back();
-                    if (corelib::text::isUpper(sym.name)) {
+                    const auto &name = sym.getName();
+                    if (corelib::text::isUpper(name.name.back())) {
                         // terminal, just push
-                        nfa_states[current].transitions[sym.fullname] = next;
+                        nfa_states[current].transitions[name.name] = next;
                     } else {
                         // non terminal, unroll using first set
-                        auto f = first[sym.fullname];
+                        auto f = first[name.name];
                         for (const auto &token : f) {
                             if (token == std::vector<std::string>{"ε"}) {
                                 nfa_states[current].epsilon_transition = next;
@@ -135,7 +138,7 @@ void ELRParser::build() {
                 // 1. Get all possible next lookahead entries for this rule
                 cpuf::printf("REDUCE/REDUCE resolution for %$ on %$\n", state, nfa_state);
                 std::unordered_set<std::vector<std::string>> visited;
-                Lookahead_set lookahead_set = getLookeaheadSet(item.lhs.fullname, visited);
+                Lookahead_set lookahead_set = getLookeaheadSet(item.lhs, visited);
                 processLookaheadSet(lookahead_set, nfa_state, conflict);
 
             }

@@ -133,42 +133,40 @@ public:
     void printFirstSet(const std::string &fileName);
     void printFollowSet(const std::string &fileName);
 };
-// namespace std {
-//     template<>
-//     struct hash<LRParser::LR0Core> {
-//         size_t operator()(const LRParser::LR0Core& core) const noexcept {
-//             size_t seed = 0;
+namespace std {
+
+    // Hash specialization for TreeAPI::LR0Core
+    template <>
+    struct hash<LRParser::LR0Core> {
+        std::size_t operator()(const LRParser::LR0Core& core) const {
+            std::size_t seed = 0;
+            // Hash the lhs vector (std::vector<std::string>)
+            for (const auto& elem : core.lhs) {
+                hash_combine(seed, std::hash<std::string>{}(elem));
+            }
             
-//             // Hash lhs
-//             hash<std::vector<std::string>> hasher;
-//             seed ^= hasher(core.lhs) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            // Hash the rhs (which is a TreeAPI::Rule)
+            hash_combine(seed, std::hash<TreeAPI::Rule>{}(core.rhs));
             
-//             // Hash rhs vector
-//             for (const auto& rule : core.rhs.members) {
-//                 seed ^= hasher(rule) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//             }
+            // Hash the dot_pos size_t value
+            hash_combine(seed, std::hash<size_t>{}(core.dot_pos));
             
-//             // Hash dot position
-//             seed ^= hash<size_t>{}(core.dot_pos) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            return seed;
+        }
+    };
+    template<>
+    struct hash<LRParser::LR1Core> {
+        size_t operator()(const LRParser::LR1Core& core) const noexcept {
+            // Start with hash of LR0Core base
+            size_t seed = hash<LRParser::LR0Core>{}(core);
             
-//             return seed;
-//         }
-//     };
-// }
-// namespace std {
-//     template<>
-//     struct hash<LRParser::LR1Core> {
-//         size_t operator()(const LRParser::LR1Core& core) const noexcept {
-//             // Start with hash of LR0Core base
-//             size_t seed = hash<LRParser::LR0Core>{}(core);
+            // Hash each lookahead set
+            hash<vector<string>> vec_hasher;
+            for (const auto& la_set : core.lookahead) {
+                seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
             
-//             // Hash each lookahead set
-//             hash<vector<string>> vec_hasher;
-//             for (const auto& la_set : core.lookahead) {
-//                 seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-//             }
-            
-//             return seed;
-//         }
-//     };
-// }
+            return seed;
+        }
+    };
+}

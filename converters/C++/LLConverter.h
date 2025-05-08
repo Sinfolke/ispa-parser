@@ -5,7 +5,6 @@
 #include <vector>
 #include <any>
 #include <unordered_map>
-#include <internal_types.h>
 #include <IR/IR.h>
 #include <tree.h>
 #include <corelib.h>

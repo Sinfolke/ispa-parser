@@ -27,6 +27,9 @@ size_t LLIR::size() {
 bool LLIR::empty() {
     return data.empty();
 }
+auto LLIR::getSuccessVars() const -> const std::vector<RuleMemberVars>& {
+    return success_vars;
+}
 auto LLIR::makeIR() -> std::vector<LLIR::RuleMemberVars> {
     if (rules == nullptr) {
         treeToIr();

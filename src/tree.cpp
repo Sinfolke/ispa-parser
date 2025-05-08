@@ -154,6 +154,7 @@ Types getTypes(const TreeAPI::RuleMemberName&) { return Types::string; };
 Types getTypes(const TreeAPI::RuleMemberGroup &) { return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberNospace& ) {return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::string; }
+Types getTypes(const std::monostate&) { return Types::string; }
 bool Tree::sortPriority(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
     if (first.isName()) {
         auto &dt = ast.getTreeMap()[first.getName().name];
@@ -293,10 +294,9 @@ Tree::lexer_code Tree::getCodeForLexer() {
     // get lexer code
     LLIR code(*this, resultRule, true);
     code.setIsToken(true);
-    auto success_var = code.makeIR();
+    const auto &success_var = code.getSuccessVars();
     code.pop(); // remove space skip
     code.push_begin({LLIR::types::TOKEN});
     code.push({LLIR::types::RULE_END});
-    code.optimizeIR();
     return {code, success_var[0].shadow_var.name.empty() ? success_var[0].shadow_var : success_var[0].var};
 }

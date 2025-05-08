@@ -262,7 +262,7 @@ class LLIR {
         auto getTree() const -> const Tree*;
         auto getData() const -> const std::vector<LLIR::member>&;
         auto getData() -> std::vector<LLIR::member>&;
-
+        auto getSuccessVars() const -> const std::vector<RuleMemberVars>&;
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();
         void add(LLIR &repr);
