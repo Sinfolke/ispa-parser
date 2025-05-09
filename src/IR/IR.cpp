@@ -1552,7 +1552,7 @@ void LLIR::treeToIr() {
 LLIR::inclosed_map LLIR::getInclosedMapFromKeyValueBinding() {
     inclosed_map map;
     for (const auto &[name, variable] : key_vars) {
-        map[name] = std::make_pair(std::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, variable}}, variable.type);
+        map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, variable}}, variable.type);
     }
     return map;
 }
