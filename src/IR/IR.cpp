@@ -1565,7 +1565,7 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
             LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
             const auto &key_based_data_block = data_block.getRegDataBlockWKeys();
             for (const auto &[name, expr] : key_based_data_block.value) {
-                initial_map[name] = std::make_pair(TreeExprToIR(expr), deduceTypeFromExpr(expr));
+                initial_map.try_emplace(name, TreeExprToIR(expr), deduceTypeFromExpr(expr));
             }
             block.value = initial_map;
         } else {
@@ -1581,7 +1581,7 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         cpuf::printf("Keys size: %$, values size: %$\n", unnamed_datablock_units.size(), templated_datablock.names.size());
         for (const auto &name : templated_datablock.names) {
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
-            initial_map[name] = std::make_pair(std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);
+            initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
     }
