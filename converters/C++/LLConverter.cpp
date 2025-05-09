@@ -10,10 +10,6 @@
 #include <IR/IR.h>
 #include <logging.h>
 #include <LLConverter.h>
-#include <logging.h>
-#include <boost/core/demangle.hpp>
-
-
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     for (auto &[data_block, name, members] : data) {
         isToken = corelib::text::isLower(name.back());
