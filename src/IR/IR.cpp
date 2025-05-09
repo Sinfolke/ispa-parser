@@ -407,14 +407,15 @@ std::string LLIR::getErrorName(const TreeAPI::RuleMember &rule) {
         
         // Process diapasons
         for (const auto &diapason : csequence.diapasons) {
-            parts.push_back(diapason.first + "-" + diapason.second);
+            parts.push_back(diapason.first + std::string("-") + diapason.second);
         }
         
         // Process escaped sequences
         for (const auto &escaped : csequence.escaped) {
-            parts.push_back("\\" + escaped);
+            parts.push_back(std::string("\\") + escaped);
         }
-        
+
+
         // Join parts with commas, but "or" only between the last two items
         if (parts.size() > 1) {
             for (size_t i = 0; i < parts.size(); ++i) {
@@ -447,7 +448,7 @@ std::string LLIR::getErrorName(const TreeAPI::RuleMember &rule) {
         return name.name.back();
     }
     if (rule.isEscaped()) {
-        return "\\" + rule.getEscaped();
+        return std::string("\\") + rule.getEscaped();
     }
     if (rule.isAny()) {
         return "symbol";
@@ -834,7 +835,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("group\n");
     // create variable with name of "var" or with auto-generated one
     auto var = createEmptyVariable(generateVariableName());
-    auto uvar = !rule.prefix.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto uvar = !rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto svar = createSuccessVariable();
     auto prev_insideLoop = insideLoop;
     const auto &quantifier = rule.quantifier;
@@ -974,7 +975,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     //cpuf::printf("csequence\n");
     const auto &csequence = rule.getCsequence();
 
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::expr> expr;
@@ -1039,7 +1040,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
 LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     const auto &str = rule.getString().value;
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::expr> expr;
@@ -1068,7 +1069,7 @@ LLIR::ConvertionResult LLIR::process_Rule_hex(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("hex\n");
     auto data = rule.getHex().hex_chars;
     std::vector<LLIR::expr> expr = {};
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
@@ -1102,7 +1103,7 @@ LLIR::ConvertionResult LLIR::process_Rule_bin(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("hex\n");
     auto data = rule.getBin().bin_chars;
     std::vector<LLIR::expr> expr = {};
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     std::vector<LLIR::member> block = {
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
@@ -1140,7 +1141,7 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
     auto name = rule.getName().name;
     //cpuf::printf(", name: %s\n", name_str);
 
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
@@ -1238,7 +1239,7 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
     }
     //cpuf::printf("escaped_open\n");
 
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::member> block = {{LLIR::types::EXIT}};
@@ -1256,7 +1257,7 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
 }
 LLIR::ConvertionResult LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix) {
     //cpuf::printf("Rule_any\n");
-    auto var = prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(prefix.name);
+    auto var = prefix.empty() && !prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(prefix.name);
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::expr> expression;
@@ -1306,6 +1307,8 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
     }    
     variable_count = new_ir.variable_count;
     vars = new_ir.vars;
+    unnamed_datablock_units = new_ir.unnamed_datablock_units;
+    key_vars = new_ir.key_vars;
     success_var = new_ir.success_vars[0];
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
@@ -1382,8 +1385,8 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
     }
 
     // Erase marked indices in reverse to prevent shifting issues
-    for (size_t i = erase_indices.size() - 1; i != 0; i--) {
-        new_ir.members.erase(new_ir.members.begin() + erase_indices[i]);
+    for (auto it = erase_indices.rbegin(); it != erase_indices.rend(); ++it) {
+        new_ir.members.erase(new_ir.members.begin() + *it);
     }
     return new_ir.members;
 }
@@ -1391,7 +1394,7 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
 LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     // cpuf::printf("Rule_op\n");
     auto &rules = rule.getOp();
-    auto var = rule.prefix.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto var = rule.prefix.empty() && !rule.prefix.is_key_value ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
     auto block = createDefaultBlock(var, svar);
     // Add success variable
@@ -1433,9 +1436,9 @@ void LLIR::process_cll_var(const TreeAPI::CllVar &var) {
         assign = {LLIR::var_assign_values::EXPR, TreeExprToIR(var.value)};
     }
     if (!var.type.type.empty()) {
-        LLIR::variable var = {var.name, ir_type, assign};
-        push({LLIR::types::VARIABLE, var});
-        vars.push_back(var);
+        LLIR::variable v = {var.name, ir_type, assign};
+        push({LLIR::types::VARIABLE, v});
+        vars.push_back(v);
     } else {
         push({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, assign_types, assign}});
     }
@@ -1488,7 +1491,7 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
         success_var = process_cll(rule.getCll());
     } else throw Error("Undefined rule");
     if (rule.prefix.is_key_value) {
-        if (rule.prefix.empty()) {
+        if (rule.prefix.name.empty()) {
             unnamed_datablock_units.push_back(success_var.uvar);
         } else {
             key_vars.push_back(std::make_pair(rule.prefix.name, success_var.uvar));
@@ -1529,7 +1532,6 @@ LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpa
 }
 void LLIR::treeToIr() {
     for (auto &[name, value] : tree->getRawAst().getTreeMap()) {
-        cpuf::printf("Key count: %$\n", tree->getRawAst().getTreeMap().count(name));
         bool isToken = corelib::text::isUpper(name.back());
         fullname = name;
         bool to_add = true;
@@ -1568,6 +1570,7 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
             block.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
+            cpuf::printf("unnamed size: %$\n", unnamed_datablock_units.size());
             const auto type = deduceTypeFromExpr(data_block.getRegDataBlock());
             block.value = std::make_pair(TreeExprToIR(data_block.getRegDataBlock()), type);
         }
@@ -1575,8 +1578,9 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         // templated data block
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
+        cpuf::printf("Keys size: %$, values size: %$\n", unnamed_datablock_units.size(), templated_datablock.names.size());
         for (const auto &name : templated_datablock.names) {
-            Assert(!unnamed_datablock_units.empty(), "More keys that values");
+            Assert(!unnamed_datablock_units.empty(), "More keys than values");
             initial_map[name] = std::make_pair(std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }

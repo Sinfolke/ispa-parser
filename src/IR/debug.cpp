@@ -400,10 +400,11 @@ void LLIR::convertData(const LLIR::Data &data, std::ostream& out) {
         // rule
         out << "Token(" << corelib::text::join(data.name, "_") << ") {";
     }
+    out << '\n';
     indentLevel++;
     convertMembers(data.members, out);
     if (!data.block.empty()) {
-        convertDataBlock(data.block);
+        out << '\t' << convertDataBlock(data.block);
     }
     indentLevel--;
     out << "}\n";

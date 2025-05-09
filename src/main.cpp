@@ -93,6 +93,11 @@ int main(int argc, char** argv) {
         UWarning("Parameter 'lang' having more than 1 argument. Only first is used.").print();
     }
     AST ast(modules);
+    std::ofstream treeAPIOutput("treeAPI.txt");
+    for (const auto &[name, value] : ast.getTreeMap()) {
+        treeAPIOutput << "name<" << name << "> : " << value;
+    }
+    treeAPIOutput.close();
     /*
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW

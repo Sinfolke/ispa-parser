@@ -213,7 +213,7 @@ namespace TreeAPI {
         is_key_value = false;
     }
     bool RulePrefix::empty() const {
-        return name.empty();
+        return name.empty() && !is_key_value;
     }
     bool RuleMember::isString() const {
         return std::holds_alternative<String>(value);
@@ -599,7 +599,151 @@ namespace TreeAPI {
             }
         }, first.value, second.value);        
     }
-    
+    std::ostream& operator<<(std::ostream& os, const RulePrefix& p) {
+        if (p.empty()) {
+            cpuf::printf("Empty prefix\n");
+            return os;
+        } else {
+            cpuf::printf("not empty prefix\n");
+        }
+        os << (p.is_key_value ? "@ " : "") << p.name;
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberName& n) {
+        os << "Name(";
+        for (size_t i = 0; i < n.name.size(); ++i) {
+            os << n.name[i];
+            if (i + 1 < n.name.size()) os << "::";
+        }
+        os << ")";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberGroup& g) {
+        os << "Group(";
+        for (size_t i = 0; i < g.values.size(); ++i) {
+            os << g.values[i];
+            if (i + 1 < g.values.size()) os << ", ";
+        }
+        os << ")";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberOp& o) {
+        os << "Op(";
+        for (size_t i = 0; i < o.options.size(); ++i) {
+            os << o.options[i];
+            if (i + 1 < o.options.size()) os << " | ";
+        }
+        os << ")";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberCsequence& cs) {
+        os << (cs.negative ? "!" : "") << "Cseq([";
+        for (char c : cs.characters) os << c;
+        os << "]";
+        if (!cs.escaped.empty()) {
+            os << ", Escaped:[";
+            for (char e : cs.escaped) os << "\\" << e;
+            os << "]";
+        }
+        if (!cs.diapasons.empty()) {
+            os << ", Diapasons:[";
+            for (auto [a, b] : cs.diapasons) os << a << "-" << b << " ";
+            os << "]";
+        }
+        os << ")";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberAny&) {
+        return os << "Any";
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberNospace&) {
+        return os << "NoSpace";
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberEscaped& e) {
+        return os << "Escaped(\\" << e.c << ")";
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberHex& h) {
+        return os << "Hex(" << h.hex_chars << ")";
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RuleMemberBin& b) {
+        return os << "Bin(" << b.bin_chars << ")";
+    }
+    std::ostream& operator<<(std::ostream& os, const String& str) {
+        os << "String (" << str.value << ")";
+        return os;
+    }
+    std::ostream& operator<<(std::ostream& os, const Cll& str) {
+        os << "<CLL>";
+        return os;
+    }
+    std::ostream& operator<<(std::ostream& os, const RuleMember& rm) {
+        os << rm.prefix << " ";
+        if (rm.quantifier) os << rm.quantifier << " ";
+
+        std::visit([&os](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (!std::is_same_v<T, std::monostate>)
+                os << arg;
+            else
+                os << "Empty";
+        }, rm.value);
+
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const RegularDataBlockWKeys& block) {
+        os << "DataBlockWithKeys {\n";
+        for (const auto& [key, val] : block.value) {
+            os << "  " << key << ": [CllExpr]\n"; // Placeholder
+        }
+        os << "}";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const TemplatedDataBlock& block) {
+        os << "TemplatedDataBlock(";
+        for (size_t i = 0; i < block.names.size(); ++i) {
+            os << block.names[i];
+            if (i + 1 < block.names.size()) os << ", ";
+        }
+        os << ")";
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const DataBlock& db) {
+        std::visit([&os](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, std::monostate>) {
+                os << "EmptyDataBlock";
+            } else if constexpr (std::is_same_v<T, RegularDataBlock>) {
+                os << "[RegularDataBlock: CllExpr]";
+            } else if constexpr (std::is_same_v<T, RegularDataBlockWKeys>) {
+                os << arg;
+            } else if constexpr (std::is_same_v<T, TemplatedDataBlock>) {
+                os << arg;
+            }
+        }, db.value);
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Rule& r) {
+        os << "Rule {\n";
+        for (const auto& m : r.members)
+            os << "  " << m << "\n";
+        os << "  Data: " << r.data_block << "\n";
+        os << "}";
+        return os;
+    }
+
     bool RuleMember::fullCompare(const RuleMember &second) {
         return *this == second && quantifier == second.quantifier && prefix == second.prefix && isAutoGenerated == second.isAutoGenerated && isInline == second.isInline;
     }

@@ -380,6 +380,23 @@ namespace TreeAPI {
     bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs);
     bool operator==(const DataBlock &lhs, const DataBlock &rhs);
     bool operator==(const Rule &lhs, const Rule &rhs);
+    std::ostream& operator<<(std::ostream& os, const RulePrefix& prefix);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberName& name);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberGroup& group);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberOp& op);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberCsequence& cs);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberAny& any);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberNospace& ns);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberEscaped& esc);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberHex& hex);
+    std::ostream& operator<<(std::ostream& os, const RuleMemberBin& bin);
+    std::ostream& operator<<(std::ostream& os, const String& str);
+    std::ostream& operator<<(std::ostream& os, const Cll& str);
+    std::ostream& operator<<(std::ostream& os, const RuleMember& member);
+    std::ostream& operator<<(std::ostream& os, const RegularDataBlockWKeys& block);
+    std::ostream& operator<<(std::ostream& os, const TemplatedDataBlock& block);
+    std::ostream& operator<<(std::ostream& os, const DataBlock& block);
+    std::ostream& operator<<(std::ostream& os, const Rule& rule);
     CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 };
 inline void hash_combine(std::size_t& seed) {}
