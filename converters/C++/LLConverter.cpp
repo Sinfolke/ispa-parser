@@ -11,19 +11,42 @@
 #include <logging.h>
 #include <LLConverter.h>
 #include <logging.h>
+#include <boost/core/demangle.hpp>
 
 
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
-    bool isRule = false;
-    for (auto &member : data) {
-        if (member.type == LLIR::types::RULE) {
-            isRule = startName;
-        } else if (member.type == LLIR::types::TOKEN) {
-            isRule = !startName;
-        } 
-        if (isRule) {
-            convertMember(member, out);
+    for (auto &[data_block, name, members] : data) {
+        isToken = corelib::text::isLower(name.back());
+        if (isToken != startName) continue;
+        rule_prev_name = name;
+        if (isToken) {
+            out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
+            out << std::string(indentLevel, '\t') << "auto in = pos";
+            isToken = true;
+        } else {
+            out << "template <class IT>\n";
+            out << std::string(indentLevel, '\t') << "::" << namespace_name << "::Rule_res " << rule_prev_name_str << "(IT pos) {\n";
+            indentLevel++;
+            out << std::string(indentLevel, '\t') << "auto in = pos;\n" << std::string(indentLevel, '\t') << "skip_spaces(" << current_pos_counter.top() << ");\n" ;
+            isToken = false;
         }
+        convertMembers(members, out);
+        if (!data_block.empty()) {
+            out << convertDataBlock(data_block);
+        }
+        if (isToken) {
+            out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::" << namespace_name << "::Tokens::" << rule_prev_name_str;
+            if (!data_block.empty())
+                out << ", data";
+            out << ")};\n";
+        } else {
+            out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::" << namespace_name << "::Rules::" << rule_prev_name_str;
+            if (!data_block.empty())
+                out << ", data";
+            out << ")};\n";
+        }
+        indentLevel--;
+        out << std::string(indentLevel, '\t') << "}";
     }
 }
 void LLConverter::outputHeader(std::ostringstream &out, const std::string &filename) {
@@ -99,42 +122,7 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
-    case LLIR::types::RULE:
-        if (!cpp_file) {
-            has_data_block = false;
-            rule_prev_name = std::any_cast<std::vector<std::string>>(mem.value);
-            rule_prev_name_str = corelib::text::join(rule_prev_name, "_");
-            out << "template <class IT>\n";
-            out << std::string(indentLevel, '\t') << "::" << namespace_name << "::Rule_res " << rule_prev_name_str << "(IT pos) {\n";
-            indentLevel++;
-            out << std::string(indentLevel, '\t') << "auto in = pos;\n" << std::string(indentLevel, '\t') << "skip_spaces(" << current_pos_counter.top() << ");\n" ;
-            isToken = false;
-        }
-        break;
-    case LLIR::types::TOKEN:
-        has_data_block = false;
-        indentLevel++;
-        rule_prev_name = std::any_cast<std::vector<std::string>>(mem.value);
-        rule_prev_name_str = corelib::text::join(rule_prev_name, "_");
-        out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
-        out << std::string(indentLevel, '\t') << "auto in = pos";
-        isToken = true;
-        break;
-    case LLIR::types::RULE_END:
-        if (isToken) {
-            out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::" << namespace_name << "::Tokens::" << rule_prev_name_str;
-            if (has_data_block)
-                out << ", data";
-            out << ")};\n";
-        } else {
-            out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::" << namespace_name << "::Rules::" << rule_prev_name_str;
-            if (has_data_block)
-                out << ", data";
-            out << ")};\n";
-        }
-        indentLevel--;
-        out << std::string(indentLevel, '\t') << "}";
-        break;
+
     case LLIR::types::VARIABLE:
         convertVariable(std::any_cast<LLIR::variable>(mem.value), out);
         break;
@@ -197,7 +185,7 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         break;
     case LLIR::types::DATA_BLOCK:
         has_data_block = true;
-        out << convertDataBlock(std::any_cast<LLIR::data_block>(mem.value));
+        out << convertDataBlock(std::any_cast<LLIR::DataBlock>(mem.value));
         break;
     case LLIR::types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
@@ -235,7 +223,10 @@ void LLConverter::convertLexerCode(const std::vector<LLIR::member> &members, std
     isToken = false;
 }
 void LLConverter::convertData(std::ostringstream &out) {
-    convertMembers(data, out);
+    for (const auto &dt : data) {
+        convertMembers(dt.members, out);
+
+    }
 }
 void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
     namespace_name = filename;
@@ -244,7 +235,7 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
     addStandardFunctionsParser(out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addLexerCode_Header(out);
-    convertLexerCode(lexer_code.getData(), out);
+    convertLexerCode(lexer_code.getMembers(), out);
     addLexerCode_Bottom(out,  lexer_code_access_var.var);
     writeRules(out, false);
 }

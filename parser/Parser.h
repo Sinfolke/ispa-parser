@@ -2769,7 +2769,7 @@ namespace Parser {
 			if (success_11)
 			{
 				success_9 = true;
-				val = _8;
+				val = _10;
 				pos = begin_10;
 			}
 			skip_spaces(pos);

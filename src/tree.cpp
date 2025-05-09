@@ -14,6 +14,7 @@ void Tree::removeEmptyRule() {
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
         if (value.members.size() == 0) {
+            cpuf::printf("Members size == 0\n");
             it = treeMap.erase(it);
             continue;
         }
@@ -32,24 +33,7 @@ void Tree::inlineSingleGroups() {
         }
     }
 }
-TreeAPI::CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val) {
-    TreeAPI::CllExprTerm term;
-    term.value = val;
 
-    TreeAPI::CllExprAddition addition;
-    addition.value = std::move(term);
-
-    TreeAPI::CllExprCompare compare;
-    compare.value = std::move(addition);
-
-    TreeAPI::CllExprLogical logical;
-    logical.value = std::move(compare);
-
-    TreeAPI::CllExpr expr;
-    expr.value = std::move(logical);
-
-    return expr;
-}
 void Tree::literalsToToken() {
     size_t count = 0;
     std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
@@ -76,7 +60,7 @@ void Tree::literalsToToken() {
                         member.prefix.is_key_value = true;
     
                         // add data block
-                        newRule.data_block = TreeAPI::DataBlock {TreeAPI::RegularDataBlock {make_expr_from_value(TreeAPI::CllExprValue {TreeAPI::At()})}};
+                        newRule.data_block = TreeAPI::DataBlock {TreeAPI::RegularDataBlock {TreeAPI::make_expr_from_value(TreeAPI::CllExprValue {TreeAPI::rvalue {TreeAPI::At()}})}};
                         // add copied member
                         newRule.members = {member};
     
@@ -223,20 +207,21 @@ void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
 
 }
 void Tree::sortByPriority() {
-    for (auto [name, value] : ast.getTreeMap()) {
+    for (auto &[name, value] : ast.getTreeMap()) {
         sortByPriority(value.members);
     }
 }
 void Tree::addSpaceToken() {
     TreeAPI::Rule spaceTokenRule;
     TreeAPI::RuleMemberCsequence csequence;
-    csequence.escaped = {' ', '\t', '\n', '\r', '\v', '\f'};
+    csequence.escaped = {'\t', '\n', '\r', '\v', '\f'};
+    csequence.characters = {' '};
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
 auto Tree::getTerminals() -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> set;
-    for (auto [name, value] : ast.getTreeMap()) {
+    for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isUpper(name.back()))
             set.push_back(name);
     }
@@ -262,12 +247,13 @@ void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, co
         }
     }
 }
-auto Tree::getUsePlacesTable() -> UsePlaceTable {
-    UsePlaceTable result_table;
+void Tree::createUsePlacesTable() {
     for (const auto &[name, value] : ast.getTreeMap()) {
-        getUsePlacesTable(value.members, name, result_table);
+        getUsePlacesTable(value.members, name, use_places);
     }
-    return result_table;
+}
+auto Tree::getUsePlacesTable() -> UsePlaceTable& {
+    return use_places;
 }
 Tree::lexer_code Tree::getCodeForLexer() {
     TreeAPI::RuleMemberOp options;
@@ -297,5 +283,8 @@ Tree::lexer_code Tree::getCodeForLexer() {
     code.pop(); // remove space skip
     code.push_begin({LLIR::types::TOKEN});
     code.push({LLIR::types::RULE_END});
-    return {code, success_var[0].shadow_var.name.empty() ? success_var[0].shadow_var : success_var[0].var};
+    if (success_var.empty())
+        // throw Error("Empty successvar\n");
+        return {code, LLIR::variable{""}};
+    return {code, success_var[0].uvar};
 }

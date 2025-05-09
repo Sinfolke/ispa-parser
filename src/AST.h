@@ -16,6 +16,7 @@ class AST {
         Use use;
         std::string name;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
+        std::vector<TreeAPI::RuleMember> rules; // raw rules if in constructor assigned not module
         void constructor(const std::vector<Parser::Rule> &modules);
         void constructor(const Parser::Rule &mod);
     
@@ -57,14 +58,20 @@ class AST {
         std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule);
         // build Tree API from AST
         void createRules(const Parser::Types::Rule_data &rule);
+        AST(const std::vector<Parser::Rule> &modules, bool isModule) {
+            if (isModule)
+                constructor(modules);
+            else
+                rules = createRuleMembers(modules);
+        }
+        std::vector<TreeAPI::RuleMember> &getRules();
     public:
         TreeMap &getTreeMap();
         Use &getUse();
         std::string &getName();
         SpacemodeStates &getSpacemode();
-
         AST(const std::vector<Parser::Rule> &modules) {
-            constructor(modules);
+            constructor(modules);\
         }
         AST(const Parser::Rule &mod) {
             constructor(mod);

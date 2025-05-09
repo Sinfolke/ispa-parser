@@ -172,7 +172,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addparseFromFunctions(out, data->isELR());
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
-    converter.convertLexerCode(lexer_code.getData(), out);
+    converter.convertLexerCode(lexer_code.getMembers(), out);
     converter.addLexerCode_Bottom(out, success_var.var);
     converter.convertData(out);
     max_states = data->getMaxStatesCount();

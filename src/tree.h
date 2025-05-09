@@ -30,13 +30,14 @@ class Tree {
         bool sortPriority(const TreeAPI::RuleMemberCsequence &first, const TreeAPI::RuleMemberCsequence &second);
         bool sortPriority(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second);
         bool sortPriority(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
-        bool sortPriority(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);        
+        bool sortPriority(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
         void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> name, UsePlaceTable &table);
-
+        void createUsePlacesTable();
 
         void constructor() {
+            createUsePlacesTable();
             removeEmptyRule();
             inlineSingleGroups();
             sortByPriority();
@@ -57,6 +58,6 @@ class Tree {
         void addSpaceToken();
         auto getTerminals() -> std::vector<std::vector<std::string>>;
         auto getNonTerminals() -> std::vector<std::vector<std::string>>;
-        auto getUsePlacesTable() -> UsePlaceTable;
+        auto getUsePlacesTable() -> UsePlaceTable&;
         auto getCodeForLexer() -> lexer_code;
 };

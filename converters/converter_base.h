@@ -5,7 +5,7 @@
 class LLConverter_base {
     protected:
         // data
-        std::vector<LLIR::member> data;
+        std::vector<LLIR::Data> data;
         std::vector<std::vector<std::string>> tokens;
         std::vector<std::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;

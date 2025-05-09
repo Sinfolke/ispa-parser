@@ -1,6 +1,7 @@
 name Parser
+spacemode mixed
 
-spacemode mixed;
+
 END: [;\n];
 STRICT_END: ';';
 NEWLINE: [\n];

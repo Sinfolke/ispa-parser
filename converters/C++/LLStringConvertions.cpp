@@ -151,9 +151,9 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
     switch (value) {
         case LLIR::var_assign_values::NONE:
             return "NONE";
-        case LLIR::var_assign_values::_TRUE:
+        case LLIR::var_assign_values::True:
             return "true";
-        case LLIR::var_assign_values::_FALSE:
+        case LLIR::var_assign_values::False:
             return "false";
         case LLIR::var_assign_values::CURRENT_POS_COUNTER:
             return current_pos_counter.top();
@@ -298,7 +298,7 @@ std::string LLStringConvertions::convertMethodCall(const LLIR::method_call &meth
     return res;
 }
 
-std::string LLStringConvertions::convertDataBlock(const LLIR::data_block &dtb) {
+std::string LLStringConvertions::convertDataBlock(const LLIR::DataBlock &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "::" + namespace_name + "::Types::" + rule_prev_name_str + "_data data";

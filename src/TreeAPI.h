@@ -380,6 +380,7 @@ namespace TreeAPI {
     bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs);
     bool operator==(const DataBlock &lhs, const DataBlock &rhs);
     bool operator==(const Rule &lhs, const Rule &rhs);
+    CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 };
 inline void hash_combine(std::size_t& seed) {}
 

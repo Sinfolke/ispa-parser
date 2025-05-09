@@ -1,12 +1,8 @@
 #pragma once
 #include <any>
 #include <list>
-#include <algorithm>
 #include <stack>
-#include <unordered_set>
-#include <any>
 #include <vector>
-#include <list>
 #include <unordered_map>
 #include <string>
 #include <utility>
@@ -34,7 +30,7 @@ class LLIR {
             CHAR, UCHAR, SHORT, USHORT, INT, UINT, LONG, ULONG, LONGLONG, ULONGLONG
         };
         enum class var_assign_values {
-            NONE, _TRUE, _FALSE, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VARIABLE, PROPERTY, VAR_REFER, ACCESSOR, 
+            NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VARIABLE, PROPERTY, VAR_REFER, ACCESSOR,
             UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG, CURRENT_POS,
             CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR, INCLOSED_MAP
         };
@@ -67,11 +63,6 @@ class LLIR {
             std::string obj;
             std::list<std::string> properties;
         };
-        struct var_refer {        
-            bool pre_increament;
-            bool post_increament;
-            std::string name;
-        };
         struct current_token {
             condition_types op;
             std::string name;
@@ -79,6 +70,12 @@ class LLIR {
         struct expr {
             condition_types id;
             std::any value = {};
+        };
+        struct var_refer {        
+            std::optional<char> pre_increament;
+            std::optional<char> post_increament;
+            std::string name;
+            std::vector<LLIR::expr> brace_expression;
         };
         using array = std::vector<std::vector<expr>>;
         using object = std::unordered_map<std::string, std::vector<expr>>;
@@ -97,7 +94,7 @@ class LLIR {
         };
 
         struct variable {
-            std::string name = "";
+            std::string name;
             var_type type = {var_types::UNDEFINED};
             assign value = {var_assign_values::NONE};
             std::vector<std::string> property_access = {};
@@ -113,10 +110,11 @@ class LLIR {
         };
         using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<LLIR::expr>, var_type>>;
         using regular_data_block = std::pair<std::vector<LLIR::expr>, var_type>;
-        struct data_block {
+        struct DataBlock {
             std::variant<std::monostate, regular_data_block, inclosed_map> value;
             bool is_inclosed_map() const;
             bool is_raw_expr() const;
+            bool empty() const;
             regular_data_block &getExpr();
             inclosed_map &getInclosedMap();
             const regular_data_block &getExpr() const;
@@ -134,7 +132,12 @@ class LLIR {
             size_t begin;
             size_t end;
         };
-        using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::data_block, LLIR::var_type>;
+        struct Data {
+            DataBlock block;
+            std::vector<std::string> name;
+            std::vector<LLIR::member> members;
+        };
+        using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock, LLIR::var_type>;
     private:
         void clear_thread();
         // output functions:
@@ -151,10 +154,10 @@ class LLIR {
         void convertCondition(condition cond, std::ostream& out);
         void convertAssignVariable(variable_assign var, std::ostream &out);
         std::string convertMethodCall(method_call method);
-        std::string convertDataBlock(data_block dtb);
+        std::string convertDataBlock(const DataBlock &dtb);
         void convertMember(const member& mem, std::ostream& out);
-        void convertMembers(std::vector<member> members, std::ostream& out);
-        void convertMembers(std::deque<member> members, std::ostream& out);
+        void convertMembers(const std::vector<member> &members, std::ostream& out);
+        void convertData(const LLIR::Data &data, std::ostream& out);
         void printIR(std::ostream& out);
 
         // helper functions
@@ -164,9 +167,9 @@ class LLIR {
         auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
         auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true) -> void;
         auto replaceToPrevChar(std::vector<LLIR::member> &elements, int i) -> void;
-        auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> std::vector<LLIR::member>;
-        auto createDefaultBlock(const LLIR::variable &svar) -> std::vector<LLIR::member>;
-        auto createDefaultBlock() -> std::vector<LLIR::member>;
+        static auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> std::vector<LLIR::member>;
+        static auto createDefaultBlock(const LLIR::variable &svar) -> std::vector<LLIR::member>;
+        static auto createDefaultBlock() -> std::vector<LLIR::member>;
         auto getEscapedChar(char in) -> char;
         auto createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr) -> LLIR::member;
         auto add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var) -> LLIR::variable;
@@ -201,10 +204,10 @@ class LLIR {
         auto deduceVarTypeByProd(const TreeAPI::RuleMember &mem) -> LLIR::var_type;
         auto deduceTypeFromRvalue(const TreeAPI::rvalue &value) -> LLIR::var_type;
         auto deduceTypeFromExprValue(const TreeAPI::CllExprValue &value) -> LLIR::var_type;
-        auto deduceTypeFromTerm(const TreeAPI::CllExprTerm &term) -> LLIR::var_type;
-        auto deduceTypeFromAddition(const TreeAPI::CllExprAddition &addition) -> LLIR::var_type;
-        auto deduceTypeFromCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type;
-        auto deduceTypeFromLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type;
+        auto deduceTypeFromExprTerm(const TreeAPI::CllExprTerm &term) -> LLIR::var_type;
+        auto deduceTypeFromExprAddition(const TreeAPI::CllExprAddition &addition) -> LLIR::var_type;
+        auto deduceTypeFromExprCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type;
+        auto deduceTypeFromExprLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type;
         auto deduceTypeFromExpr(const TreeAPI::CllExpr &expr) -> LLIR::var_type;
         
         // convertion functions helpers
@@ -222,11 +225,11 @@ class LLIR {
         auto process_cll_var(const TreeAPI::CllVar &var) -> void;
         auto process_cll_if(const TreeAPI::CllIf &cond) -> LLIR::condition;
         auto process_cll(const TreeAPI::Cll &cll) -> LLIR::ConvertionResult;
-        auto createDataBlock(const TreeAPI::DataBlock &data_block) -> LLIR::data_block;
+        auto createDataBlock(const TreeAPI::DataBlock &data_block) -> LLIR::DataBlock;
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
 
         // interaction functions
-        auto getDataBlocks(const LLIR::types begin_type) -> DataBlockList;
+        auto getDataBlocks(bool isToken) -> DataBlockList;
     protected:
         // data
         size_t variable_count = 0;
@@ -236,10 +239,9 @@ class LLIR {
         bool isFirst = true;
         int tokensOnly = -1;
         std::vector<std::string> fullname;
-        std::vector<LLIR::variable> elements;
-        std::vector<var_group> groups;
         std::vector<LLIR::variable> vars;
-        std::vector<LLIR::member> data;
+        std::vector<Data> data;
+        std::vector<member> members;
         std::vector<ConvertionResult> success_vars;
         const std::vector<TreeAPI::RuleMember> *rules = nullptr;
         std::vector<std::pair<std::string, LLIR::variable>> key_vars;
@@ -257,41 +259,42 @@ class LLIR {
         void treeToIr();
         auto makeIR() -> std::vector<ConvertionResult>;
         // optimizations
-        void getVariablesToTable(std::vector<LLIR::member> &data, size_t &i, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
-        size_t getBegin(size_t& i);
-        void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table, size_t begin);
+        void getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
+        void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table);
         void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
         void optimizeIR();
         LLIR(Tree *tree, int tokensOnly, bool buildImmediately) : tree(tree) {
             if (buildImmediately) {
-                makeIR();
+                treeToIr();
                 optimizeIR();
             }
         }
     public:
         LLIR(Tree &tree, int tokensOnly = -1) : tree(&tree) {
-            makeIR();
+            treeToIr();
             optimizeIR();
         }
         LLIR(Tree *tree, int tokensOnly = -1) : tree(tree) {
-            makeIR();
+            treeToIr();
             optimizeIR();
         };
-        LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, bool isToken, int tokensOnly = -1) : tree(&tree), isToken(isToken) {
-            makeIR();
+        LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(&tree), isToken(isToken) {
+            ruleToIr(toConvert);
             // call raiseVars manually to specify it is all single rule
-            raiseVarsTop(data, data, "", true);
+            raiseVarsTop(members, members, "", true);
         }
-        LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, bool isToken, int tokensOnly = -1) : tree(tree), isToken(isToken) {
-            makeIR();
-            raiseVarsTop(data, data, "", true);
+        LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(tree), isToken(isToken) {
+            ruleToIr(toConvert);
+            raiseVarsTop(members, members, "", true);
         }
 
         // get functions
         auto getTree() const -> const Tree*;
-        auto getData() const -> const std::vector<LLIR::member>&;
-        auto getData() -> std::vector<LLIR::member>&;
+        auto getData() const -> std::vector<Data>;
+        auto getData() -> std::vector<LLIR::Data>&;
+        auto getMembers() const -> const std::vector<member>&;
         auto getSuccessVars() const -> const std::vector<ConvertionResult>&;
+        auto getFullName() const -> std::vector<std::string>;
         virtual void outputIRToFile(std::string filename);
         virtual void outputIRToConsole();
         void add(LLIR &repr);
@@ -302,7 +305,7 @@ class LLIR {
         void update(LLIR& ir);
         void pop_begin();
         void pop();
-        size_t size();
+        auto size() -> size_t;
         bool empty();
         auto getDataBlocksTerminals() -> DataBlockList;
         auto getDataBlocksNonTerminals() -> DataBlockList;

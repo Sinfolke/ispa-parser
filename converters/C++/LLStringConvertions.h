@@ -13,6 +13,6 @@ class LLStringConvertions : public LLInternalData {
     std::string convertFunctionCall(const LLIR::function_call &call);
     std::string convertAssign(const LLIR::assign &asgn);    
     std::string convertMethodCall(const LLIR::method_call &method);
-    std::string convertDataBlock(const LLIR::data_block &dtb);
+    std::string convertDataBlock(const LLIR::DataBlock &dtb);
     std::string convertExpression(const std::vector<LLIR::expr> &expression, bool with_braces);
 };

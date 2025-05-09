@@ -64,6 +64,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::VARIABLE:
         {
             //cpuf::printf("on ID\n");
+            cpuf::printf("type: %s\n", data.type().name());
             auto dt = std::any_cast<LLIR::variable>(data);
             std::string res = dt.name;
             for (auto el : dt.property_access)
@@ -124,8 +125,8 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
     }
     switch (value) {
         case var_assign_values::NONE:                  return "NONE";
-        case var_assign_values::_TRUE:                 return "TRUE";
-        case var_assign_values::_FALSE:                return "FALSE";
+        case var_assign_values::True:                 return "TRUE";
+        case var_assign_values::False:                return "FALSE";
         case var_assign_values::CURRENT_POS_COUNTER:   return "CURRENT_POS_COUNTER";
         case var_assign_values::CURRENT_POS_SEQUENCE:  return "CURRENT_POS_SEQUENCE";
         case var_assign_values::CURRENT_TOKEN:         return "CURRENT_TOKEN";
@@ -197,6 +198,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
             return "CURRENT_TOKEN";
         }
     }
+    cpuf::printf("type: %d\n", (int) type);
     static const std::unordered_map<condition_types, std::string> condTypesMap = {
         {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
         {condition_types::AND, "&&"}, {condition_types::OR, "||"}, {condition_types::NOT, "!"},
@@ -207,7 +209,8 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
         {condition_types::BITWISE_AND, "&"}, {condition_types::BITWISE_ANDR, "^"},
         {condition_types::ADD, "+"}, {condition_types::SUBSTR, "-"},
         {condition_types::MULTIPLY, "*"}, {condition_types::DIVIDE, "/"},
-        {condition_types::MODULO, "%"}, {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"}, 
+        {condition_types::MODULO, "%"}, {condition_types::CURRENT_TOKEN, "CURRENT_TOKEN"},
+        {condition_types::TOKEN_SEQUENCE, "pos"},
     };
     return condTypesMap.at(type);
 }
@@ -282,13 +285,15 @@ std::string LLIR::convertMethodCall(method_call method) {
     return res;
 }
 
-std::string LLIR::convertDataBlock(data_block dtb) {
+std::string LLIR::convertDataBlock(const DataBlock &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "data = ";
+    if (dtb.empty())
+        return "";
     if (dtb.is_inclosed_map()) {
         res += "\n";
-        for (auto [key, value] : dtb.getInclosedMap()) {
+        for (const auto &[key, value] : dtb.getInclosedMap()) {
             res += std::string(indentLevel + 1, '\t');
             res += key;
             res += ": ";
@@ -307,22 +312,9 @@ std::string LLIR::convertDataBlock(data_block dtb) {
 }
 
 void LLIR::convertMember(const member& mem, std::ostream& out) {
-    if (mem.type != types::RULE_END)
-        out << std::string(indentLevel, '\t');
+    out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
-    case types::RULE:
-        out << "Rule(" << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_") << ") {";
-        indentLevel++;
-        break;
-    case types::TOKEN:
-        out << "Token(" << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_") << ") {";
-        indentLevel++;
-        break;
-    case types::RULE_END:
-        out << "}";
-        indentLevel--;
-        break;
     case types::VARIABLE:
         convertVariable(std::any_cast<variable>(mem.value), out);
         break;
@@ -375,7 +367,7 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
             out << "skipspaces(TOKEN_SEQUENCE)";
         break;
     case types::DATA_BLOCK:
-        out << convertDataBlock(std::any_cast<LLIR::data_block>(mem.value));
+        out << convertDataBlock(std::any_cast<LLIR::DataBlock>(mem.value));
         break;
     case types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
@@ -396,19 +388,30 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
     out << '\n';
 }
 
-void LLIR::convertMembers(std::vector<member> members, std::ostream& out) {
-    for (auto mem : members)
+void LLIR::convertMembers(const std::vector<member> &members, std::ostream& out) {
+    for (const auto &mem : members)
         convertMember(mem, out);
 }
-void LLIR::convertMembers(std::deque<member> members, std::ostream& out) {
-    for (auto mem : members)
-        convertMember(mem, out);
+void LLIR::convertData(const LLIR::Data &data, std::ostream& out) {
+    if (corelib::text::isUpper(data.name.back())) {
+        // token
+        out << "Rule(" << corelib::text::join(data.name, "_") << ") {";
+    } else {
+        // rule
+        out << "Token(" << corelib::text::join(data.name, "_") << ") {";
+    }
+    indentLevel++;
+    convertMembers(data.members, out);
+    if (!data.block.empty()) {
+        convertDataBlock(data.block);
+    }
+    indentLevel--;
+    out << "}\n";
 }
 void LLIR::printIR(std::ostream& out) {
     current_pos_counter.push("pos");
-    for (const auto& mem : data) {
-        convertMember(mem, out);
-    }
+    for (const auto &d : data)
+        convertData(d, out);
 }
 
 void LLIR::outputIRToFile(std::string filename) {

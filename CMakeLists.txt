@@ -4,7 +4,7 @@ project(ISPA)
 set(SRC_DIR ./src)
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp external/cpuf/*.cpp)
 add_executable(ispa ${SOURCES})
-target_precompile_headers(ispa PRIVATE parser/Parser.h)
+target_precompile_headers(ispa PRIVATE parser/Parser.h src/TreeAPI.h src/IR/IR.h)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
@@ -126,6 +126,6 @@ target_link_libraries(insideLoop-test PRIVATE tests)
 target_compile_definitions(insideLoop-test PRIVATE __PROCESS_FILE__="insideLoop.isc")
 add_test(
     NAME mainTest
-    COMMAND ${CMAKE_BINARY_DIR} ispa --dir parser/parser --lang cpp
+    COMMAND ${CMAKE_BINARY_DIR} ispa --dir parser/parser --lang cpp -a LL
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
