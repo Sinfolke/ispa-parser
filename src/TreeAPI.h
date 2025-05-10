@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <variant>
 #include <memory>
-#include <type_traits>
 #include <optional>
 #include <logging.h>
 #include <hash.h>
@@ -80,15 +79,15 @@ namespace TreeAPI {
         String &getString();
         Number &getNumber();
         Boolean &getBoolean();
-        std::vector<CllExpr> &getArray();
-        std::unordered_map<std::string, CllExpr> &getObject();
-        std::string &getID();
+        Array &getArray();
+        Object &getObject();
+        ID &getID();
         const String& getString() const;
         const Number& getNumber() const;
         const Boolean& getBoolean() const;
-        const std::vector<CllExpr>& getArray() const;
-        const std::unordered_map<std::string, CllExpr>& getObject() const;
-        const std::string& getID() const;
+        const Array& getArray() const;
+        const Object& getObject() const;
+        const ID& getID() const;
     };
 
     struct CllCompareOp {
@@ -280,10 +279,10 @@ namespace TreeAPI {
         // Non-const overloads
         String& getString();
         RuleMemberName& getName();
-        decltype(RuleMemberGroup::values)& getGroup();
-        decltype(RuleMemberOp::options)& getOp();
+        RuleMemberGroup& getGroup();
+        RuleMemberOp& getOp();
         RuleMemberCsequence& getCsequence();
-        decltype(RuleMemberEscaped::c)& getEscaped();
+        RuleMemberEscaped& getEscaped();
         RuleMemberHex& getHex();
         RuleMemberBin& getBin();
         Cll& getCll();
@@ -291,10 +290,10 @@ namespace TreeAPI {
         // Const overloads
         const String& getString() const;
         const RuleMemberName& getName() const;
-        const decltype(RuleMemberGroup::values)& getGroup() const;
-        const decltype(RuleMemberOp::options)& getOp() const;
+        const RuleMemberGroup& getGroup() const;
+        const RuleMemberOp& getOp() const;
         const RuleMemberCsequence& getCsequence() const;
-        const decltype(RuleMemberEscaped::c)& getEscaped() const;
+        const RuleMemberEscaped& getEscaped() const;
         const RuleMemberHex& getHex() const;
         const RuleMemberBin& getBin() const;
         const Cll& getCll() const;
@@ -399,13 +398,7 @@ namespace TreeAPI {
     std::ostream& operator<<(std::ostream& os, const Rule& rule);
     CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 };
-inline void hash_combine(std::size_t& seed) {}
 
-template <typename T, typename... Rest>
-inline void hash_combine(std::size_t& seed, const T& v, const Rest&... rest) {
-    seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    hash_combine(seed, rest...);
-}
 namespace std {
     // Hash specialization for TreeAPI::CllCompareOp
     template<> struct hash<TreeAPI::CllCompareOp>;
@@ -442,8 +435,6 @@ namespace std {
     template<> struct hash<TreeAPI::Object>;
     template<> struct hash<TreeAPI::At>;
     template<> struct hash<TreeAPI::ID>;
-};
-namespace std {
     // Hash specialization for TreeAPI::CllCompareOp
     template <>
     struct hash<TreeAPI::CllCompareOp> {
@@ -658,11 +649,11 @@ namespace std {
             } else if (member.isName()) {
                 hash_combine(seed, std::hash<TreeAPI::RuleMemberName>{}(member.getName()));
             } else if (member.isGroup()) {
-                for (const auto& value : member.getGroup()) {
+                for (const auto& value : member.getGroup().values) {
                     hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(value));
                 }
             } else if (member.isOp()) {
-                for (const auto& option : member.getOp()) {
+                for (const auto& option : member.getOp().options) {
                     hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(option));
                 }
             } else if (member.isCsequence()) {

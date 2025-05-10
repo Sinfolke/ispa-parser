@@ -115,9 +115,9 @@ class LLIR {
             bool is_inclosed_map() const;
             bool is_raw_expr() const;
             bool empty() const;
-            regular_data_block &getExpr();
+            regular_data_block &getRegularDataBlock();
             inclosed_map &getInclosedMap();
-            const regular_data_block &getExpr() const;
+            const regular_data_block &getRegularDataBlock() const;
             const inclosed_map &getInclosedMap() const;
         };
         struct ConvertionResult {
@@ -137,7 +137,7 @@ class LLIR {
             std::vector<std::string> name;
             std::vector<LLIR::member> members;
         };
-        using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock, LLIR::var_type>;
+        using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock>;
     private:
         void clear_thread();
         // output functions:

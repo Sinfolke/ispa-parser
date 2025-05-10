@@ -304,9 +304,9 @@ std::string LLIR::convertDataBlock(const DataBlock &dtb) {
         }
         res += std::string(indentLevel, '\t') + ";";
     } else {
-        res += convertExpression(dtb.getExpr().first, false);
+        res += convertExpression(dtb.getRegularDataBlock().first, false);
         res += " # ";
-        res += convert_var_type(dtb.getExpr().second.type);
+        res += convert_var_type(dtb.getRegularDataBlock().second.type);
     }
     return res;
 }

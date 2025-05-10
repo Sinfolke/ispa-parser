@@ -20,7 +20,7 @@ class LLHeader : public LLStringConvertions {
     void addStandardFunctionsParser(std::ostringstream &out) const;
     void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const;
     void convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const;
-    void write_data_block(std::ostringstream &out, LLIR::DataBlockList dtb) const;
+    void write_data_block(std::ostringstream &out, const LLIR::DataBlockList &dtb) const;
     void createTypesNamespace(std::ostringstream &out, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const;
     void create_lexer_header(std::ostringstream &out, const std::vector<std::vector<std::string>> &tokens) const;
     void addConstructorsLexer(std::ostringstream &out) const;

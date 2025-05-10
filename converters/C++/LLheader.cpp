@@ -159,14 +159,16 @@ void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map 
 void LLHeader::convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const {
     out << "\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
 }
-void LLHeader::write_data_block(std::ostringstream &out, LLIR::DataBlockList dtb) const {
+void LLHeader::write_data_block(std::ostringstream &out, const LLIR::DataBlockList &dtb) const {
     for (auto [name, block] : dtb) {
+        if (block.empty())
+            continue;
         if (block.is_inclosed_map()) {
-            out << "\t\tstruct " + corelib::text::join(name, "_") + "_data {\n";
+            out << "\t\tstruct " + corelib::text::join(name, "_") + " {\n";
             convert_inclosed_map(out, block.getInclosedMap());
             out << "\t\t};\n";
         } else {
-            convert_single_assignment_data(out, block.getExpr().second, corelib::text::join(name, "_"));
+            convert_single_assignment_data(out, block.getRegularDataBlock().second, corelib::text::join(name, "_"));
         }
     }
 }

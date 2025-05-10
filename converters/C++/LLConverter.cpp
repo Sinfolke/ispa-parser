@@ -17,6 +17,7 @@ void LLConverter::writeRules(std::ostringstream &out, bool startName) {
         rule_prev_name = name;
         if (isToken) {
             out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
+            indentLevel++;
             out << std::string(indentLevel, '\t') << "auto in = pos";
             isToken = true;
         } else {
@@ -93,19 +94,6 @@ void LLConverter::convertCondition(LLIR::condition cond, std::ostringstream &out
 
 void LLConverter::convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
-}
-template<typename... Args>
-std::string dbg(const Args&... args) {
-    std::ostringstream oss;
-    oss << "\nstd::cout << \"";
-    (oss << ... << args);  // Fold expression (C++17)
-    oss << "\\n\";\n";
-    return oss.str();
-}
-std::string rawdbg(const std::string args) {
-    std::ostringstream oss;
-    oss << "\nstd::cout << " << args << ";\n";
-    return oss.str();
 }
 void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out) {
     if (cpp_file && (!isToken || mem.type == LLIR::types::RULE) && mem.type != LLIR::types::TOKEN) {

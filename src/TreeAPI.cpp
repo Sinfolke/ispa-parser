@@ -84,14 +84,14 @@ namespace TreeAPI {
     Boolean& rvalue::getBoolean() {
         return std::get<Boolean>(value);
     }
-    std::vector<CllExpr>& rvalue::getArray() {
-        return std::get<Array>(value).value;
+    Array& rvalue::getArray() {
+        return std::get<Array>(value);
     }
-    std::unordered_map<std::string, CllExpr>& rvalue::getObject() {
-        return std::get<Object>(value).value;
+    Object& rvalue::getObject() {
+        return std::get<Object>(value);
     }
-    std::string& rvalue::getID() {
-        return std::get<ID>(value).value;
+    ID& rvalue::getID() {
+        return std::get<ID>(value);
     }
     const String& rvalue::getString() const {
         return std::get<String>(value);
@@ -105,16 +105,16 @@ namespace TreeAPI {
         return std::get<Boolean>(value);
     }
     
-    const std::vector<CllExpr>& rvalue::getArray() const {
-        return std::get<Array>(value).value;
+    const Array& rvalue::getArray() const {
+        return std::get<Array>(value);
     }
     
-    const std::unordered_map<std::string, CllExpr>& rvalue::getObject() const {
-        return std::get<Object>(value).value;
+    const Object& rvalue::getObject() const {
+        return std::get<Object>(value);
     }
     
-    const std::string& rvalue::getID() const {
-        return std::get<ID>(value).value;
+    const ID& rvalue::getID() const {
+        return std::get<ID>(value);
     }    
     bool CllExprValue::isGroup() const {
         return value.type() == typeid(CllExpr);
@@ -260,17 +260,17 @@ namespace TreeAPI {
     RuleMemberName& RuleMember::getName() {
         return std::get<RuleMemberName>(value);
     }
-    decltype(RuleMemberGroup::values)& RuleMember::getGroup() {
-        return std::get<RuleMemberGroup>(value).values;
+    RuleMemberGroup &RuleMember::getGroup() {
+        return std::get<RuleMemberGroup>(value);
     }
-    decltype(RuleMemberOp::options)& RuleMember::getOp() {
-        return std::get<RuleMemberOp>(value).options;
+    RuleMemberOp& RuleMember::getOp() {
+        return std::get<RuleMemberOp>(value);
     }
     RuleMemberCsequence& RuleMember::getCsequence() {
         return std::get<RuleMemberCsequence>(value);
     }
-    decltype(RuleMemberEscaped::c)& RuleMember::getEscaped() {
-        return std::get<RuleMemberEscaped>(value).c;
+    RuleMemberEscaped& RuleMember::getEscaped() {
+        return std::get<RuleMemberEscaped>(value);
     }
     RuleMemberHex& RuleMember::getHex() {
         return std::get<RuleMemberHex>(value);
@@ -289,20 +289,20 @@ namespace TreeAPI {
         return std::get<RuleMemberName>(value);
     }
     
-    const decltype(RuleMemberGroup::values)& RuleMember::getGroup() const {
-        return std::get<RuleMemberGroup>(value).values;
+    const RuleMemberGroup& RuleMember::getGroup() const {
+        return std::get<RuleMemberGroup>(value);
     }
     
-    const decltype(RuleMemberOp::options)& RuleMember::getOp() const {
-        return std::get<RuleMemberOp>(value).options;
+    const RuleMemberOp& RuleMember::getOp() const {
+        return std::get<RuleMemberOp>(value);
     }
     
     const RuleMemberCsequence& RuleMember::getCsequence() const {
         return std::get<RuleMemberCsequence>(value);
     }
     
-    const decltype(RuleMemberEscaped::c)& RuleMember::getEscaped() const {
-        return std::get<RuleMemberEscaped>(value).c;
+    const RuleMemberEscaped& RuleMember::getEscaped() const {
+        return std::get<RuleMemberEscaped>(value);
     }
     
     const RuleMemberHex& RuleMember::getHex() const {

@@ -195,6 +195,8 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
     } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
+    } else if (type == LLIR::condition_types::TOKEN_SEQUENCE) {
+        return current_pos_counter.top();
     } else if (type == LLIR::condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -311,7 +313,7 @@ std::string LLStringConvertions::convertDataBlock(const LLIR::DataBlock &dtb) {
         add_semicolon = false;
     } else {
         res += " = ";
-        res += convertExpression(dtb.getExpr().first, false);
+        res += convertExpression(dtb.getRegularDataBlock().first, false);
         res += ";";
     }
     return res;

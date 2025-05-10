@@ -12,13 +12,13 @@ bool LLIR::DataBlock::empty() const {
     return std::holds_alternative<std::monostate>(value);
 }
 
-LLIR::regular_data_block &LLIR::DataBlock::getExpr() {
+LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() {
     return std::get<LLIR::regular_data_block>(value);
 };
 LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() {
     return std::get<LLIR::inclosed_map>(value);
 };
-const LLIR::regular_data_block &LLIR::DataBlock::getExpr() const {
+const LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() const {
     return std::get<LLIR::regular_data_block>(value);
 };
 const LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() const {
@@ -448,7 +448,7 @@ std::string LLIR::getErrorName(const TreeAPI::RuleMember &rule) {
         return name.name.back();
     }
     if (rule.isEscaped()) {
-        return std::string("\\") + rule.getEscaped();
+        return std::string("\\") + rule.getEscaped().c;
     }
     if (rule.isAny()) {
         return "symbol";
@@ -456,9 +456,9 @@ std::string LLIR::getErrorName(const TreeAPI::RuleMember &rule) {
     if (rule.isOp()) {
         std::string res;
         const auto &op = rule.getOp();
-        for (const auto &option : op) {
+        for (const auto &option : op.options) {
             res += getErrorName(option);
-            if (&option != &op.back())
+            if (&option != &op.options.back())
                 res += " or ";
         }
         return res;
@@ -478,7 +478,7 @@ LLIR::assign LLIR::TreeRvalueToIR(const TreeAPI::rvalue &value) {
         newval.data = value.getNumber().getFull();
     } else if (value.isID()) {
         newval.kind = LLIR::var_assign_values::VARIABLE;
-        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID(); });
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID().value; });
         if (find_it == vars.end())
             throw Error("Not found variable to convert into expr");
         newval.data = *find_it;
@@ -489,14 +489,14 @@ LLIR::assign LLIR::TreeRvalueToIR(const TreeAPI::rvalue &value) {
     } else if (value.isArray()) {
         newval.kind = LLIR::var_assign_values::ARRAY;
         LLIR::array arr;
-        for (const auto el : value.getArray()) {
+        for (const auto el : value.getArray().value) {
             arr.push_back(TreeExprToIR(el));
         }
         newval.data = arr;
     } else if (value.isObject()) {
         newval.kind = LLIR::var_assign_values::OBJECT;
         LLIR::object obj;
-        for (const auto &[key, value] : value.getObject()) {
+        for (const auto &[key, value] : value.getObject().value) {
             obj[key] = TreeExprToIR(value);
         }
         newval.data = obj;
@@ -708,8 +708,8 @@ std::vector<LLIR::expr> LLIR::TreeExprToIR(const TreeAPI::CllExpr &expr) {
 LLIR::var_type LLIR::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) {
     LLIR::var_type type;
     if (mem.isGroup()) {
-        for (auto i = 0; i < mem.getGroup().size(); i++) {
-            if (deduceVarTypeByProd(mem.getGroup()[i]).type != LLIR::var_types::STRING)
+        for (auto i = 0; i < mem.getGroup().values.size(); i++) {
+            if (deduceVarTypeByProd(mem.getGroup().values[i]).type != LLIR::var_types::STRING)
                 return {LLIR::var_types::UNDEFINED};
         }
         return {LLIR::var_types::STRING};
@@ -717,7 +717,7 @@ LLIR::var_type LLIR::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) {
     if (mem.isOp()) {
         LLIR::var_type type = {LLIR::var_types::UNDEFINED};
         
-        for (auto el : mem.getOp()) {
+        for (auto el : mem.getOp().options) {
             if (type.type == LLIR::var_types::UNDEFINED) {
                 type = deduceVarTypeByProd(el);
             } else if (deduceVarTypeByProd(el).type != type.type) {
@@ -741,8 +741,8 @@ LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
         type.type = LLIR::var_types::NUMBER;
     else if (value.isID()) {
         // likely never execute
-        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID(); });
-        cpuf::printf("var name: %s\n", value.getID());
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID().value; });
+        cpuf::printf("var name: %s\n", value.getID().value);
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
         return find_it->type;
@@ -752,7 +752,7 @@ LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
         return unnamed_datablock_units.front().type;
     } else if (value.isArray()) {
         LLIR::var_type types;
-        for (const auto &el : value.getArray()) {
+        for (const auto &el : value.getArray().value) {
             if (types.type == LLIR::var_types::UNDEFINED) {
                 types = deduceTypeFromExpr(el);
             } else {
@@ -770,7 +770,7 @@ LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
     } else if (value.isObject()) {
         // todo: add handle key of different types (int or string)
         LLIR::var_type types;
-        for (const auto &[key, value] : value.getObject()) {
+        for (const auto &[key, value] : value.getObject().value) {
             if (types.type == LLIR::var_types::UNDEFINED) {
                 types = deduceTypeFromExpr(value);
             } else {
@@ -842,7 +842,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
     if (quantifier == '*' || quantifier == '+')
         insideLoop = true;
     bool addSpaceSkipFirst;
-    auto values = rulesToIr(rule.getGroup(), addSpaceSkipFirst);
+    auto values = rulesToIr(rule.getGroup().values, addSpaceSkipFirst);
     // remove previous space skip it there was \s0
     if (data.size() > 0 && !addSpaceSkipFirst) {
         // remove previous skip of spaces if it does exists
@@ -1213,7 +1213,7 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
     const auto &escaped_c = rule.getEscaped();
 
     std::vector<LLIR::expr> expression;
-    switch (escaped_c) {
+    switch (escaped_c.c) {
         case 's':
             // do not add skip of spaces
             addSpaceSkip = false;
@@ -1416,7 +1416,7 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     //         auto id_str = std::any_cast<std::string>(id.data);
     //     }
     // }
-    const auto res = convert_op_rule(rules, 0, var, svar);
+    const auto res = convert_op_rule(rules.options, 0, var, svar);
     add(res);
     block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
     block.erase(block.end() - 1);
@@ -1539,7 +1539,6 @@ void LLIR::treeToIr() {
             to_add = false;
         }
         this->isToken = isToken;
-        cpuf::printf("rule: %s\n", fullname);
         if (to_add) {
             auto values = rulesToIr(value.members);
             if (!values.members.empty() && values.members.back().type == LLIR::types::SKIP_SPACES)
@@ -1578,7 +1577,6 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         // templated data block
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
-        cpuf::printf("Keys size: %$, values size: %$\n", unnamed_datablock_units.size(), templated_datablock.names.size());
         for (const auto &name : templated_datablock.names) {
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
             initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);

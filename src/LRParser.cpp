@@ -6,7 +6,7 @@ static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group
     for (auto &rule : group) {
         Parser::Rule quantifier;
         if (rule.isGroup() && rule.quantifier == '\0') {
-            count += compute_group_length(rule.getGroup());
+            count += compute_group_length(rule.getGroup().values);
         } else count++;
     }
     return count;
@@ -80,13 +80,13 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                 if (member.isGroup()) {
                     auto data = member.getGroup();
                     // Recursively process the group
-                    transform_helper(data, fullname, replacements);
+                    transform_helper(data.values, fullname, replacements);
         
                     if (member.quantifier == '\0') {
                         // Replace current rule with expanded group
                         members.erase(members.begin() + i);
-                        members.insert(members.begin() + i, data.begin(), data.end());
-                        i += data.size() - 2;
+                        members.insert(members.begin() + i, data.values.begin(), data.values.end());
+                        i += data.values.size() - 2;
                         continue;
                     }
                     std::string quant_rule_name = "__grp" + std::to_string(i);
@@ -107,7 +107,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                     switch (member.quantifier) {
                         case '?':
                             new_alts.push_back({}); // empty
-                            new_alts.push_back(data);
+                            new_alts.push_back(data.values);
                             break;
                 
                         case '+': {
@@ -117,14 +117,14 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                             tail_fullname.back() = tail_name;
                 
                             // A → data tail
-                            auto base = data;
+                            auto base = data.values;
                             base.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {tail_fullname} });
                             new_alts.push_back(base);
                 
                             // A* tail: ε | data tail
                             std::vector<std::vector<TreeAPI::RuleMember>> tail_alts;
                             tail_alts.push_back({});
-                            auto recur = data;
+                            auto recur = data.values;
                             recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {tail_fullname} });
                             tail_alts.push_back(recur);
                 
@@ -136,7 +136,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                         case '*': {
                             // * = ε | data A*
                             new_alts.push_back({});
-                            auto recur = data;
+                            auto recur = data.values;
                             recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {quant_fullname} });
                             new_alts.push_back(recur);
                             break;
@@ -160,19 +160,19 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                         size_t count = 0;
                         bool is_first_going_group = false;
                 
-                        for (const auto &rule : data) {
+                        for (const auto &rule : data.options) {
                             if (rule.isGroup() && rule.quantifier != '\0') {
                                 if (count == 0)
                                     is_first_going_group = true;
                 
-                                auto len = compute_group_length(rule.getGroup());
+                                auto len = compute_group_length(rule.getGroup().values);
                                 group_pos.push_back({count, len});
                                 count += len;
                                 continue;
                             }
                             count++;
                         }        
-                        transform_helper(data, fullname, replacements); // process internal ops/groups
+                        transform_helper(data.options, fullname, replacements); // process internal ops/groups
                         if (is_first_going_group) {
                             auto [pos, len] = group_pos[0];
                             group_pos.erase(group_pos.begin());
@@ -182,10 +182,10 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                             for (; j < len; j++, val_it++, _count++) {
                                 members.insert(members.begin() + i + j, *val_it);
                             }
-                            val_it = data.begin() + j;
+                            val_it = data.options.begin() + j;
                         } else {
-                            members[i] = data[0];
-                            val_it = data.begin() + 1;
+                            members[i] = data.options[0];
+                            val_it = data.options.begin() + 1;
                             _count++;
                         }
                 
@@ -197,14 +197,14 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                         push_name = new_fullname;
                         members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {new_fullname}};
                 
-                        transform_helper(data, fullname, replacements); // process internal ops/groups
-                        val_it = data.begin();
+                        transform_helper(data.options, fullname, replacements); // process internal ops/groups
+                        val_it = data.options.begin();
                     }
-                    for (; val_it != data.end(); val_it++, _count++) {
+                    for (; val_it != data.options.end(); val_it++, _count++) {
                         auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<size_t, size_t> &unit) {return unit.first == _count;});
                         std::vector<TreeAPI::RuleMember> values;
                         if (group != group_pos.end()) {
-                            for (size_t i = 0; i < group->second && val_it != data.end(); i++, _count++, val_it++) {
+                            for (size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
                                 values.push_back(*val_it);
                             }
                             val_it--;
