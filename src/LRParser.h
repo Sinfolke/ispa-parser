@@ -2,6 +2,13 @@
 #include <corelib.h>
 #include <tree.h>
 #include <hash.h>
+#ifdef Rule
+#undef Rule
+#endif
+
+#ifdef Token
+#undef Token
+#endif
 class LRParser {
 public:
     enum class Action_type {

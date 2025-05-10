@@ -6,8 +6,8 @@
 #include <unordered_map>
 #include <string>
 #include <utility>
-#include <TreeAPI.h>
 #include <hash.h>
+#include <TreeAPI.h>
 class Tree;
 class LLIR {
     public:
