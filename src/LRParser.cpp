@@ -37,7 +37,7 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
             return "ACCEPT";
         case Action_type::DFA_RESOLVE:
             return "DFA_RESOLVE";
-        case Action_type::ERROR:
+        case Action_type::ERR:
             return "ERROR";
 
     }

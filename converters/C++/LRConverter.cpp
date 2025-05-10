@@ -91,7 +91,7 @@ void LRConverter::createDFATable(std::ostringstream &out) {
             const auto &act = action.value();
             out << "::" << namespace_name << "::Action::" << LRParser::ActionTypeToString(act.type) << ", " << act.state;
         } else {
-            out << "::" << namespace_name << "::Action::ERROR, 0"; // Default Action if none (e.g., SHIFT 0)
+            out << "::" << namespace_name << "::Action::ERR, 0"; // Default Action if none (e.g., SHIFT 0)
         }
 
         out << "}, std::array<std::pair<::" << namespace_name << "::Tokens, size_t>, " << max_dfa_token_map_size + 2 << "> {";
@@ -207,7 +207,7 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
     LLHeader::close_library(out, namespace_name);
 }
 void LRConverter::output(std::filesystem::path name) {
-    namespace_name = name.filename();
+    namespace_name = name.filename().string();
     std::ostringstream cpp_out, h_out;
     this->tokens = tree->getTerminals();
     this->rules = tree->getNonTerminals();

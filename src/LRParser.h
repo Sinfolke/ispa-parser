@@ -7,7 +7,7 @@
 class LRParser {
 public:
     enum class Action_type {
-        SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERROR 
+        SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERR
     };
     struct Action {
         Action_type type;

@@ -824,7 +824,7 @@ protected:
                     dfa_index = table[0].second;
                     continue;
                 }
-                if (action.type == Action::ERROR) {
+                if (action.type == Action::ERR) {
                     printf("Returning initial action %d, state %zu\n", (int) initial_action->type, initial_action->state);
                     return initial_action;
                 }

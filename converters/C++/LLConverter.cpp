@@ -466,8 +466,8 @@ void LLConverter::outputIR(std::filesystem::path name) {
         throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".h");
     }
     std::ostringstream cpp_ss, h_ss;
-    printIR(cpp_ss, name.filename());
-    outputHeader(h_ss, name.filename());
+    printIR(cpp_ss, name.filename().string());
+    outputHeader(h_ss, name.filename().string());
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
