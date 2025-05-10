@@ -1,15 +1,20 @@
 #pragma once
 #ifndef PARSER
 #define PARSER
-
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <string>
-#include <list>
 #include <unordered_map>
 #include <iscstdlibc++.h>
-#include <fstream>
-#include <iterator>
 
-#include <iostream>
+#ifdef Rule
+#undef Rule
+#endif
+
+#ifdef Token
+#undef Token
+#endif
+
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif

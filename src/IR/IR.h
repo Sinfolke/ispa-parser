@@ -1,5 +1,4 @@
 #pragma once
-#include <TreeAPI.h>
 #include <any>
 #include <list>
 #include <stack>
@@ -8,6 +7,7 @@
 #include <string>
 #include <utility>
 #include <hash.h>
+#include <TreeAPI.h>
 class Tree;
 class LLIR {
     public:
