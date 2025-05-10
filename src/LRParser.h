@@ -1,7 +1,5 @@
 #pragma once
 #include <corelib.h>
-#include <fstream>
-#include <iostream>
 #include <tree.h>
 #include <hash.h>
 class LRParser {

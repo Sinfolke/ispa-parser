@@ -9,6 +9,13 @@
 #include <optional>
 #include <logging.h>
 #include <hash.h>
+#ifdef Rule
+#undef Rule
+#endif
+
+#ifdef Token
+#undef Token
+#endif
 namespace TreeAPI {
     // forward declarations
     struct CllType;
