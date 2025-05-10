@@ -1,5 +1,6 @@
 #pragma once
-
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <vector>
 #include <string>
 #include <any>
@@ -9,13 +10,7 @@
 #include <optional>
 #include <logging.h>
 #include <hash.h>
-#ifdef Rule
-#undef Rule
-#endif
 
-#ifdef Token
-#undef Token
-#endif
 namespace TreeAPI {
     // forward declarations
     struct CllType;
