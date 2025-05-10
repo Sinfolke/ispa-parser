@@ -600,12 +600,8 @@ namespace TreeAPI {
         }, first.value, second.value);        
     }
     std::ostream& operator<<(std::ostream& os, const RulePrefix& p) {
-        if (p.empty()) {
-            cpuf::printf("Empty prefix\n");
+        if (p.empty())
             return os;
-        } else {
-            cpuf::printf("not empty prefix\n");
-        }
         os << (p.is_key_value ? "@ " : "") << p.name;
         return os;
     }

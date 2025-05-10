@@ -198,7 +198,6 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
             return "CURRENT_TOKEN";
         }
     }
-    cpuf::printf("type: %d\n", (int) type);
     static const std::unordered_map<condition_types, std::string> condTypesMap = {
         {condition_types::GROUP_OPEN, "("}, {condition_types::GROUP_CLOSE, ")"},
         {condition_types::AND, "&&"}, {condition_types::OR, "||"}, {condition_types::NOT, "!"},
@@ -308,6 +307,7 @@ std::string LLIR::convertDataBlock(const DataBlock &dtb) {
         res += " # ";
         res += convert_var_type(dtb.getRegularDataBlock().second.type);
     }
+    res += '\n';
     return res;
 }
 
@@ -365,9 +365,6 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
             out << "skipspaces(pos)";
         else
             out << "skipspaces(TOKEN_SEQUENCE)";
-        break;
-    case types::DATA_BLOCK:
-        out << convertDataBlock(std::any_cast<LLIR::DataBlock>(mem.value));
         break;
     case types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();

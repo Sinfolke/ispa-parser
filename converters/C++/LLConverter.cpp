@@ -13,15 +13,16 @@
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     for (auto &[data_block, name, members] : data) {
         isToken = corelib::text::isLower(name.back());
-        if (isToken != startName) continue;
+        if (isToken == startName) continue;
         rule_prev_name = name;
+        rule_prev_name_str = corelib::text::join(name, "_");
         if (isToken) {
-            out << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
+            out << std::string(indentLevel, '\t') << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
             indentLevel++;
             out << std::string(indentLevel, '\t') << "auto in = pos";
             isToken = true;
         } else {
-            out << "template <class IT>\n";
+            out << std::string(indentLevel, '\t') << "template <class IT>\n";
             out << std::string(indentLevel, '\t') << "::" << namespace_name << "::Rule_res " << rule_prev_name_str << "(IT pos) {\n";
             indentLevel++;
             out << std::string(indentLevel, '\t') << "auto in = pos;\n" << std::string(indentLevel, '\t') << "skip_spaces(" << current_pos_counter.top() << ");\n" ;
@@ -29,7 +30,7 @@ void LLConverter::writeRules(std::ostringstream &out, bool startName) {
         }
         convertMembers(members, out);
         if (!data_block.empty()) {
-            out << convertDataBlock(data_block);
+            out << std::string(indentLevel, '\t') << convertDataBlock(data_block) << '\n';
         }
         if (isToken) {
             out << std::string(indentLevel, '\t') << "return {true, ::" << namespace_name << "::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::" << namespace_name << "::Tokens::" << rule_prev_name_str;
@@ -43,7 +44,7 @@ void LLConverter::writeRules(std::ostringstream &out, bool startName) {
             out << ")};\n";
         }
         indentLevel--;
-        out << std::string(indentLevel, '\t') << "}";
+        out << std::string(indentLevel, '\t') << "}\n";
     }
 }
 void LLConverter::outputHeader(std::ostringstream &out, const std::string &filename) {
@@ -382,9 +383,9 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
     for (const auto &[name, value] : data_block_rules) {
         if (!value.is_inclosed_map())
             continue;
-        out << "\telse if (data.type() == typeid(Types::" << name << "_data)) {\n";
+        out << "\telse if (data.type() == typeid(Types::" << name << ")) {\n";
         out << "\t\tos << \"{\\n\";\n";
-        out << "\t\tauto dt = std::any_cast<Types::" << name << "_data>(data);\n";
+        out << "\t\tauto dt = std::any_cast<Types::" << name << ">(data);\n";
         out << "indentLevel++;";
         for (const auto &[name, key_data] : value.getInclosedMap()) {
             out << "\t\tos << std::string(indentLevel, '\\t') << \"" << name << "\"<< \": \";\n";
@@ -421,28 +422,30 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
     addparseFromFunctions(out);
 }
 void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules) {
-    for (const auto &[name, dtb] : datablocks_tokens) {
+    for (const auto &[fullname, dtb] : datablocks_tokens) {
+        const auto name = corelib::text::join(fullname, "_");
         // const overload
-        out << "const ::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Token &token) {\n";
+        out << "const ::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Token &token) {\n";
         out << "\tif (token.name() != ::" << namespace_name << "::Tokens::" << name << ") throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<const Types::" << name << "_data&>(token.data());";
+        out << "\treturn std::any_cast<const Types::" << name << "&>(token.data());";
         out << "\n}\n";
         // non const overload
-        out << "::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
+        out << "::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Token &token) {\n";
         out << "\tif (token.name() != ::" << namespace_name << "::Tokens::" << name << ") throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<Types::" << name << "_data&>(token.data());";
+        out << "\treturn std::any_cast<Types::" << name << "&>(token.data());";
         out << "\n}\n";
     }
-    for (const auto &[name, dtb] : datablocks_rules) {
+    for (const auto &[fullname, dtb] : datablocks_rules) {
+        const auto name = corelib::text::join(fullname, "_");
         // const overload
-        out << "const ::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Rule &rule) {\n";
+        out << "const ::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Rule &rule) {\n";
         out << "\tif (rule.name() != ::" << namespace_name << "::Rules::" << name << ") throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<const Types::" << name << "_data&>(rule.data());";
+        out << "\treturn std::any_cast<const Types::" << name << "&>(rule.data());";
         out << "\n}\n";
         // non-const overload
-        out << "::" << namespace_name << "::Types::" << name << "_data& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
+        out << "::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(::" << namespace_name << "::Rule &rule) {\n";
         out << "\tif (rule.name() != ::" << namespace_name << "::Rules::" << name << ") throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::" << name << ", \"" << namespace_name << "\");\n";
-        out << "\treturn std::any_cast<Types::" << name << "_data&>(rule.data());";
+        out << "\treturn std::any_cast<Types::" << name << "&>(rule.data());";
         out << "\n}\n";
     }
 }

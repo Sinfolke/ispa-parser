@@ -215,13 +215,15 @@ void LLHeader::create_parser_header(std::ostringstream &out) const {
 }
 void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\n\tnamespace get {\n";
-    for (auto [name, block] : data_block_tokens) {
-        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(const ::" << namespace_name << "::Token &token);\n";
-        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(::" << namespace_name << "::Token &token);\n";
+    for (const auto &[fullname, block] : data_block_tokens) {
+        const auto name = corelib::text::join(fullname, "_");
+        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "& " << name << "(const ::" << namespace_name << "::Token &token);\n";
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "& " << name << "(::" << namespace_name << "::Token &token);\n";
     }
-    for (auto [name, block] : data_block_rules) {
-        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(const ::" << namespace_name << "::Rule &rule);\n";
-        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "_data& " << name << "(::" << namespace_name << "::Rule &rule);\n";
+    for (const auto &[fullname, block] : data_block_rules) {
+        const auto name = corelib::text::join(fullname, "_");
+        out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "& " << name << "(const ::" << namespace_name << "::Rule &rule);\n";
+        out << "\t\t::" << namespace_name << "::" << "Types::" << name << "& " << name << "(::" << namespace_name << "::Rule &rule);\n";
     }
     out << "\t}\n";
 }

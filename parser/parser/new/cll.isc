@@ -1,5 +1,5 @@
 cll:
-    '$' @ #_var | #_if | #expr | #loop_while | #loop_for END
+    '$' @ #_var | #_if | #expr | #loop_while | #loop_for* END
     {@} 
 
     #OP:
@@ -128,7 +128,7 @@ cll:
         @{type, id, op, value}
     ;
     #stmt:
-        '{' @ Rule.rule* '}'
+        '{' @ rule.rule* '}'
         {@}
     ;
     #loop_while:

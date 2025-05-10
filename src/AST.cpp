@@ -1,8 +1,8 @@
 #include <AST.h>
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
-    const auto &entrise = Parser::get::main(mod);
-    for (auto entry : entrise) {
+    const auto &entries = Parser::get::main(mod);
+    for (auto entry : entries) {
         if (entry.type() == typeid(Parser::Rule)) {
             auto t = std::any_cast<const Parser::Rule&>(entry);
             if (t.name() == Parser::Rules::Rule) {
