@@ -78,13 +78,19 @@ int main(int argc, char** argv) {
         for (const auto dirPath : args.get("dir").values) {
             auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
-                cpuf::printf("file %$\n", file);
+                printf("file %s\n", file.c_str());
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
                 Parser::Lexer lexer(content.c_str());
                 lexer.makeTokens();
+                for (const auto &err : lexer.getErrors()) {
+                    printf("Lexer error[%zu, %zu]: %s\n", err.line, err.column, err.message.c_str());
+                }
                 Parser::Parser parser;
                 auto current_tree = parser.parse(lexer);
+                for (const auto &err : parser.getErrors()) {
+                    printf("Parser error[%zu, %zu]: %s\n", err.line, err.column, err.message.c_str());
+                }
                 modules.push_back(current_tree);
             }
         }
@@ -93,15 +99,17 @@ int main(int argc, char** argv) {
         UWarning("Parameter 'lang' having more than 1 argument. Only first is used.").print();
     }
     AST ast(modules);
+    std::ofstream treeAPIOutput("treeAPI.txt");
+    for (const auto &[name, value] : ast.getTreeMap()) {
+        treeAPIOutput << "name<" << name << "> : " << value;
+    }
+    treeAPIOutput.close();
     /*
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
     Tree tree(ast);
-    std::ofstream treeAPIOutput("treeAPI.txt");
-    for (const auto &[name, value] : tree.getRawAst().getTreeMap()) {
-        treeAPIOutput << "name<" << name << "> : " << value;
-    }
+
     //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
     auto name = ast.getName();

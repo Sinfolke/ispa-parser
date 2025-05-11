@@ -164,8 +164,9 @@ class LLIR {
         auto createEmptyVariable(std::string name) -> LLIR::variable;
         auto processExitStatements(std::vector<LLIR::member> &values) -> void;
         auto createSuccessVariable() -> LLIR::variable;
+        auto createAssignUvarBlock(const LLIR::variable uvar, const LLIR::variable var, const LLIR::variable &shadow_var) -> LLIR::member;
         auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
-        auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError = true) -> void;
+        auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, const LLIR::variable &uvar, const LLIR::variable &var, LLIR::variable &shadow_var, bool addError = true) -> void;
         auto replaceToPrevChar(std::vector<LLIR::member> &elements, int i) -> void;
         static auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> std::vector<LLIR::member>;
         static auto createDefaultBlock(const LLIR::variable &svar) -> std::vector<LLIR::member>;
@@ -173,9 +174,9 @@ class LLIR {
         auto getEscapedChar(char in) -> char;
         auto createDefaultCall(std::vector<LLIR::member> &block, LLIR::variable var, const std::string &name, std::vector<LLIR::expr> &expr) -> LLIR::member;
         auto add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var) -> LLIR::variable;
-        auto pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true) -> LLIR::variable;
-        auto pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false) -> LLIR::variable;
-        auto affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier) -> LLIR::variable;
+        auto pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true) -> LLIR::variable;
+        auto pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var = false) -> LLIR::variable;
+        auto affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR::variable &uvar, const LLIR::variable &var, char quantifier) -> LLIR::variable;
         auto compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2) -> bool;
         
         // Error functions
@@ -201,6 +202,7 @@ class LLIR {
         auto TreeExprToIR(const TreeAPI::CllExpr &expr) -> std::vector<LLIR::expr>;
         
         // deduce type functions
+        auto deduceUvarType(const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::var_type;
         auto deduceVarTypeByProd(const TreeAPI::RuleMember &mem) -> LLIR::var_type;
         auto deduceTypeFromRvalue(const TreeAPI::rvalue &value) -> LLIR::var_type;
         auto deduceTypeFromExprValue(const TreeAPI::CllExprValue &value) -> LLIR::var_type;

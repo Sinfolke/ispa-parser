@@ -16,7 +16,6 @@ class AST {
         Use use;
         std::string name;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
-        std::vector<TreeAPI::RuleMember> rules; // raw rules if in constructor assigned not module
         void constructor(const std::vector<Parser::Rule> &modules);
         void constructor(const Parser::Rule &mod);
     
@@ -27,7 +26,7 @@ class AST {
         bool prev_op;
         bool add_prev;
         std::vector<std::string> fullname;
-        std::vector<std::string> nested_rule_names;
+        std::vector<std::pair<std::string, std::vector<std::string>>> nested_rule_names;
         TreeAPI::RulePrefix ops_prefix;
         std::vector<TreeAPI::RuleMember> ops;
 
@@ -52,17 +51,22 @@ class AST {
         TreeAPI::CllType createCllType(const Parser::Token &rule);
         TreeAPI::CllVar createCllVar(const Parser::Rule &var);
         TreeAPI::Cll convertCll(const Parser::Rule &cll);
-        TreeAPI::RuleMember createRuleMember(const Parser::Rule &rule);
-        std::vector<TreeAPI::RuleMember> createRuleMembers(const std::vector<Parser::Rule> rules);
+        void createRuleMember(const Parser::Rule &rule);
+        void createRuleMembers(const std::vector<Parser::Rule> &rules);
         TreeAPI::DataBlock createDataBlock(const Parser::Rule &rule);
-        std::vector<std::string> getNestedRuleNames(const Parser::Types::Rule_data &rule);
+
+        // helper
+        void getNestedRuleNames(const Parser::Types::Rule_data &rule);
+        void flushOpSequence();
         // build Tree API from AST
         void createRules(const Parser::Types::Rule_data &rule);
-        AST(const std::vector<Parser::Rule> &modules, bool isModule) {
+        AST(const std::vector<Parser::Rule> &modules, const  std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, bool isModule) {
+            this->nested_rule_names = nested_rule_names;
             if (isModule)
                 constructor(modules);
-            else
-                rules = createRuleMembers(modules);
+            else {
+                createRuleMembers(modules);
+            }
         }
         std::vector<TreeAPI::RuleMember> &getRules();
     public:

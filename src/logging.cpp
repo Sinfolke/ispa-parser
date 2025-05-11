@@ -34,6 +34,7 @@ void UWarning::print() {
     needed to auto-print into console if not handled with try-catch block
 */
 void custom_terminate_handler() {
+#ifndef DEBUG
     try {
         // Try to rethrow the last uncaught exception to print it
         if (std::current_exception()) {
@@ -53,5 +54,5 @@ void custom_terminate_handler() {
         cpuf::printf("Unknown exception\n");
         exit(1);
     }
-
+#endif
 }

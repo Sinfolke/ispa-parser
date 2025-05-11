@@ -209,7 +209,7 @@ namespace TreeAPI {
     };
 
     struct RulePrefix {
-        bool is_key_value;
+        bool is_key_value = false;
         std::string name;
         void clear();
         bool empty() const;
@@ -240,7 +240,6 @@ namespace TreeAPI {
     struct RuleMemberNospace {};
 
     struct RuleMemberEscaped {
-        RuleMemberEscaped(char c) : c(c) {}
         char c;
     };
 

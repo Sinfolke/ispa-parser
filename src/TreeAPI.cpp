@@ -748,16 +748,16 @@ namespace TreeAPI {
         term.value = val;
     
         TreeAPI::CllExprAddition addition;
-        addition.value = std::move(term);
+        addition.value = term;
     
         TreeAPI::CllExprCompare compare;
-        compare.value = std::move(addition);
+        compare.value = addition;
     
         TreeAPI::CllExprLogical logical;
-        logical.value = std::move(compare);
+        logical.value = compare;
     
         TreeAPI::CllExpr expr;
-        expr.value = std::move(logical);
+        expr.value = logical;
     
         return expr;
     }

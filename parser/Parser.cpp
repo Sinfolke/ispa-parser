@@ -804,15 +804,15 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	if (!(_2.status))
 	{
 		success_5 = false;
-		_4 = AUTO_15(pos);
+		_4 = NAME(pos);
 		if (!(_4.status))
 		{
 			success_7 = false;
-			_6 = BOOLEAN(pos);
+			_6 = AUTO_15(pos);
 			if (!(_6.status))
 			{
 				success_9 = false;
-				_8 = NAME(pos);
+				_8 = BOOLEAN(pos);
 				if (!(_8.status))
 				{
 					success_11 = false;
@@ -1560,7 +1560,11 @@ Parser::Token_res Parser::Lexer::SPACEMODE(const char* pos) {
 		_2 = _4;
 	}
 	success_3 = true;
-	::Parser::Types::SPACEMODE_data data = _0;
+	auto e = END(pos);
+	if (!e.status)
+		return {};
+	pos += e.node.length();
+	::Parser::Types::SPACEMODE_data data = _2;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::SPACEMODE, data)};
 }
 Parser::Token_res Parser::Lexer::NAME(const char* pos) {
@@ -1587,6 +1591,10 @@ Parser::Token_res Parser::Lexer::NAME(const char* pos) {
 	}
 	success_3 = true;
 	pos += _2.node.length();
+	auto e = END(pos);
+	if (!e.status)
+		return {};
+	pos += e.node.length();
 	::Parser::Types::NAME_data data = _2.node;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NAME, data)};
 }

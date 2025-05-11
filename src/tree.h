@@ -27,14 +27,14 @@ class Tree {
         );
 
         // sort by priority functions
-        bool sortPriority(const TreeAPI::String &first, const TreeAPI::String &second);
-        bool sortPriority(const TreeAPI::RuleMemberBin &first, const TreeAPI::RuleMemberBin &second);
-        bool sortPriority(const TreeAPI::RuleMemberHex &first, const TreeAPI::RuleMemberHex &second);
-        bool sortPriority(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second);
-        bool sortPriority(const TreeAPI::RuleMemberCsequence &first, const TreeAPI::RuleMemberCsequence &second);
-        bool sortPriority(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second);
-        bool sortPriority(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
-        bool sortPriority(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
+        bool prioritySort(const TreeAPI::String &first, const TreeAPI::String &second);
+        bool prioritySort(const TreeAPI::RuleMemberBin &first, const TreeAPI::RuleMemberBin &second);
+        bool prioritySort(const TreeAPI::RuleMemberHex &first, const TreeAPI::RuleMemberHex &second);
+        bool prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second);
+        bool prioritySort(const TreeAPI::RuleMemberCsequence &first, const TreeAPI::RuleMemberCsequence &second);
+        bool prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second);
+        bool prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
+        bool prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
         void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> name, UsePlaceTable &table);

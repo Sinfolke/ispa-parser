@@ -1,7 +1,4 @@
-name Parser
-spacemode mixed
-
-
+name Parser;
 END: [;\n];
 STRICT_END: ';';
 NEWLINE: [\n];
@@ -20,30 +17,27 @@ ID:
     {@}
 ;
 SPACEMODE:
-    'spacemode' @ 'mixed' | 'skipped' | 'allowed'
+    'spacemode' @ 'mixed' | 'skipped' | 'allowed' END
     {@}
 ;
 NAME:
-    'name' @ ID
+    'name' @ ID END
 
     {@}
 ;
-main: @ (use | Rule | SPACEMODE | NAME)+
+main:
+    @ (use | Rule | SPACEMODE | NAME)+
     {@}
 ;
 
 use: 
-    'use' #unit (',' #unit)*
+    'use' @ #unit (',' @ #unit)*
     
-    data: 
-        first: %2
-        second: %4
-    ;
+    @{first, second}
 
     #unit:
-        ID any_data?
+        @ ID @ rvalue?
 
-        data:
-            name: %1
-            value: %2
+        @{name, value}
+    ;
 ;

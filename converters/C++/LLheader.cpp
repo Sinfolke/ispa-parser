@@ -157,7 +157,7 @@ void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map 
     }
 }
 void LLHeader::convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const {
-    out << "\t\tusing " << name << "_data = " << convert_var_type(type.type, type.templ) << ";\n";
+    out << "\t\tusing " << name << " = " << convert_var_type(type.type, type.templ) << ";\n";
 }
 void LLHeader::write_data_block(std::ostringstream &out, const LLIR::DataBlockList &dtb) const {
     for (auto [name, block] : dtb) {
@@ -216,11 +216,15 @@ void LLHeader::create_parser_header(std::ostringstream &out) const {
 void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\n\tnamespace get {\n";
     for (const auto &[fullname, block] : data_block_tokens) {
+        if (block.empty())
+            continue;
         const auto name = corelib::text::join(fullname, "_");
         out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "& " << name << "(const ::" << namespace_name << "::Token &token);\n";
         out << "\t\t::" << namespace_name << "::" << "Types::" << name << "& " << name << "(::" << namespace_name << "::Token &token);\n";
     }
     for (const auto &[fullname, block] : data_block_rules) {
+        if (block.empty())
+            continue;
         const auto name = corelib::text::join(fullname, "_");
         out << "\t\tconst ::" << namespace_name << "::" << "Types::" << name << "& " << name << "(const ::" << namespace_name << "::Rule &rule);\n";
         out << "\t\t::" << namespace_name << "::" << "Types::" << name << "& " << name << "(::" << namespace_name << "::Rule &rule);\n";

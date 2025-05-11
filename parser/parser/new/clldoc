@@ -150,9 +150,9 @@ variables:
 Access of the parsed data:
     This also can works not only in CLL but during parsing too. You can require
     to match element that has been already matched before by the index
-    % - means access the value by certain index. Index beginds from 1;
+    % - means access the value by certain index. Index begins from 1;
     $ - means access the value by index of group. Index also begins from 1;
-    ^ - means access the value by the current offset. Index beginds from 0;
+    ^ - means access the value by the current offset. Index begins from 0;
 
     Imagine some rule:
     'a' 'b' ( 'c' [0-9]+ ( '+' [a-z]+ )? )

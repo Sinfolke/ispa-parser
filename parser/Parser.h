@@ -578,96 +578,59 @@ namespace Parser {
 		::Parser::Rule_res main(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-;
-			::Parser::arr_t<::Parser::any_t> _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::bool_t success_3 = false;
-			::Parser::bool_t success_17 = false;
-			::Parser::arr_t<::Parser::any_t> _2;
-			::Parser::Token _4;
-			::Parser::bool_t success_5 = false;
-			::Parser::arr_t<::Parser::Token> shadow_6;
-			::Parser::Rule_res _7;
-			::Parser::bool_t success_8 = false;
-			::Parser::arr_t<::Parser::Rule> shadow_9;
-			::Parser::Rule_res _10;
-			::Parser::bool_t success_11 = false;
-			::Parser::arr_t<::Parser::Rule> shadow_12;
-			::Parser::Token _13;
-			::Parser::bool_t success_14 = false;
-			::Parser::arr_t<::Parser::Token> shadow_15;
-			::Parser::arr_t<::Parser::arr_t<::Parser::any_t>> shadow_16;
-			success_17 = false;
-			success_3 = false;
-			success_1 = false;
-			auto begin_2 = pos;
-			while (1)
-			{
-				success_5 = false;
-				if (!(begin_2->name() == ::Parser::Tokens::SPACEMODE))
-				{
-					success_8 = false;
-					_7 = use(begin_2);
-					if (!(_7.status))
-					{
-						success_11 = false;
-						_10 = Rule(begin_2);
-						if (!(_10.status))
-						{
-							success_14 = false;
-							if (!(begin_2->name() == ::Parser::Tokens::NAME))
-							{
-								break;
-							}
-							else 
-							{
-								_13 = *begin_2;
-								success_14 = true;
-								begin_2 += 1;
-								shadow_15.push_back(_13);
-								_2.push_back(_13);
-							}
-						}
-						else 
-						{
-							success_11 = true;
-							begin_2 += _10.node.length();
-							shadow_12.push_back(_10.node);
-							_2.push_back(_10.node);
+
+			::Parser::arr_t<::Parser::any_t> parsed_elements;
+			auto begin = pos;
+			bool matched_any = false;
+
+			while (true) {
+				bool matched = false;
+
+				if (begin->name() == ::Parser::Tokens::SPACEMODE) {
+					parsed_elements.push_back(*begin);
+					++begin;
+					matched = true;
+				} else {
+					auto res_use = use(begin);
+					if (res_use.status) {
+						parsed_elements.push_back(res_use.node);
+						begin += res_use.node.length();
+						matched = true;
+					} else {
+						auto res_rule = Rule(begin);
+						if (res_rule.status) {
+							parsed_elements.push_back(res_rule.node);
+							begin += res_rule.node.length();
+							matched = true;
+						} else if (begin->name() == ::Parser::Tokens::NAME) {
+							parsed_elements.push_back(*begin);
+							++begin;
+							matched = true;
 						}
 					}
-					else 
-					{
-						success_8 = true;
-						begin_2 += _7.node.length();
-						shadow_9.push_back(_7.node);
-						_2.push_back(_7.node);
-					}
 				}
-				else 
-				{
-					_4 = *begin_2;
-					success_5 = true;
-					begin_2 += 1;
-					shadow_6.push_back(_4);
-					_2.push_back(_4);
-				}
-				success_3 = true;
-				shadow_16.push_back(_0);
-				success_17 = true;
+
+				if (!matched)
+					break;
+
+				matched_any = true;
 			}
-			if (!success_17)
-			{
-				reportError(pos, "spacemode or use or rule or name");
+
+			if (!matched_any) {
+				reportError(pos, "Expected one of: SPACEMODE, use, rule, or NAME");
 				return {};
 			}
-			if (success_3)
-			{
-				success_1 = true;
-				pos = begin_2;
-			}
-			::Parser::Types::main_data data = _2;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::main, data)};
+
+			pos = begin;
+			::Parser::Types::main_data data = parsed_elements;
+			return {
+				true,
+				::Parser::Rule(
+					in->startpos(), in->start(), pos->end(), pos - in,
+					pos->line(), pos->column(),
+					::Parser::Rules::main, data
+				)
+			};
 		}
 		template <class IT>
 		::Parser::Rule_res use_unit(IT pos) {
@@ -2678,21 +2641,21 @@ namespace Parser {
 														{
 															return {};
 														}
-														else 
+														else
 														{
 															success_35 = true;
 															begin_10 += _34.node.length();
 															_10 = _34.node;
 														}
 													}
-													else 
+													else
 													{
 														success_33 = true;
 														begin_10 += _32.node.length();
 														_10 = _32.node;
 													}
 												}
-												else 
+												else
 												{
 													_30 = *begin_10;
 													success_31 = true;
@@ -2700,14 +2663,14 @@ namespace Parser {
 													_10 = _30;
 												}
 											}
-											else 
+											else
 											{
 												success_29 = true;
 												begin_10 += _28.node.length();
 												_10 = _28.node;
 											}
 										}
-										else 
+										else
 										{
 											_26 = *begin_10;
 											success_27 = true;
@@ -2715,7 +2678,7 @@ namespace Parser {
 											_10 = _26;
 										}
 									}
-									else 
+									else
 									{
 										_24 = *begin_10;
 										success_25 = true;
@@ -2723,7 +2686,7 @@ namespace Parser {
 										_10 = _24;
 									}
 								}
-								else 
+								else
 								{
 									_22 = *begin_10;
 									success_23 = true;
@@ -2731,7 +2694,7 @@ namespace Parser {
 									_10 = _22;
 								}
 							}
-							else 
+							else
 							{
 								_20 = *begin_10;
 								success_21 = true;
@@ -2739,7 +2702,7 @@ namespace Parser {
 								_10 = _20;
 							}
 						}
-						else 
+						else
 						{
 							_18 = *begin_10;
 							success_19 = true;
@@ -2747,7 +2710,7 @@ namespace Parser {
 							_10 = _18;
 						}
 					}
-					else 
+					else
 					{
 						_16 = *begin_10;
 						success_17 = true;
@@ -2755,7 +2718,7 @@ namespace Parser {
 						_10 = _16;
 					}
 				}
-				else 
+				else
 				{
 					_14 = *begin_10;
 					success_15 = true;
@@ -2763,7 +2726,7 @@ namespace Parser {
 					_10 = _14;
 				}
 			}
-			else 
+			else
 			{
 				_12 = *begin_10;
 				success_13 = true;

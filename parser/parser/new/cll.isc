@@ -1,6 +1,6 @@
 cll:
-    '$' @ #_var | #_if | #expr | #loop_while | #loop_for* END
-    {@} 
+    '$' @ #_var | #_if | #expr | #loop_while | #loop_for END
+    {@}
 
     #OP:
         @ '+' | '-' | '*' | '/' | '%'
@@ -30,7 +30,7 @@ cll:
     #LOGICAL_OR:
         '||' | 'or'
     ;
-    
+
     #TYPE:
         ( @ 'var' | 'num' | 'bool' | 'str' | (@ 'arr' @ TEMPLATE) | (@ 'obj' @ TEMPLATE) )
 
@@ -41,7 +41,7 @@ cll:
 
         @{first, second}
     ;
-    #_if: 
+    #_if:
         'if' @ expr @ stmt
 
         @{expr, stmt}
@@ -75,12 +75,12 @@ cll:
 
         @{name, body}
     ;
-    #function_decl: 
+    #function_decl:
         'fn' @ ID+ @ function_body_decl @ stmt?
-        
+
         @{type, name, stmt}
     ;
-    #expr: 
+    #expr:
         @ #logical
         {@}
 
@@ -98,7 +98,7 @@ cll:
 
         #arithmetic:
             @ term (@ PLUS | MINUS @ term)*
-            
+
             @{first, operators, sequence}
         ;
 
@@ -109,7 +109,7 @@ cll:
         ;
 
         #value:
-            @ group | _variable | cll_function_call | method_call | any_data
+            @ group | _variable | function_call | method_call | rvalue
             {@}
         ;
 
@@ -122,13 +122,13 @@ cll:
         @ ID '.' @ function_call
         @{name, body}
     ;
-    #_var: 
+    #_var:
         @ TYPE? @ ID @ (ASSIGNMENT_OP @ expr)?
 
         @{type, id, op, value}
     ;
     #stmt:
-        '{' @ rule.rule* '}'
+        '{' @ rule.member* '}'
         {@}
     ;
     #loop_while:
@@ -136,7 +136,7 @@ cll:
 
         @{expr, stmt}
     ;
-    #loop_for: 
+    #loop_for:
         'for' '(' @ (expr | _var)? ';' @ expr? ';' @ expr? ')' @ stmt
 
         @{decl, cond, end, stmt}

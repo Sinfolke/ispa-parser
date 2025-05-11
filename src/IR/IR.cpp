@@ -161,7 +161,12 @@ LLIR::variable LLIR::createSuccessVariable() {
     var.value = {LLIR::var_assign_values::False};
     return var;
 }
-
+auto LLIR::createAssignUvarBlock(const LLIR::variable uvar, const LLIR::variable var, const LLIR::variable &shadow_var) -> LLIR::member {
+    return !uvar.name.empty() ?
+        LLIR::member {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {uvar.name, LLIR::var_assign_types::ASSIGN, {LLIR::var_assign_values::VARIABLE, shadow_var.name.empty() ? var : shadow_var}}}
+    :
+        LLIR::member {LLIR::types::EMPTY};
+}
 void LLIR::addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError) {
     std::vector<LLIR::member> block = {{ LLIR::types::EXIT }};
     if (addError && !isFirst) {
@@ -176,12 +181,12 @@ void LLIR::addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variabl
     };
     push({LLIR::types::IF, check_cond});
 }
-void LLIR::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, bool addError) {
-    auto var = createSuccessVariable();
-    loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}});
-    push({LLIR::types::VARIABLE, var});
+void LLIR::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, const LLIR::variable &uvar, const LLIR::variable &var, LLIR::variable &shadow_var, bool addError) {
+    auto postCheckVar = createSuccessVariable();
+    loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {postCheckVar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}});
+    push({LLIR::types::VARIABLE, postCheckVar});
     push({LLIR::types::WHILE, loop});
-    addPostLoopCheck(rule, var, addError);
+    addPostLoopCheck(rule, postCheckVar, addError);
 }
 void LLIR::replaceToPrevChar(std::vector<LLIR::member> &elements, int i) {
     for (; i < elements.size(); i++) {
@@ -266,18 +271,20 @@ LLIR::variable LLIR::add_shadow_variable(std::vector<LLIR::member> &block, const
     block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { shadow_var.name, {LLIR::function_call {"push", {std::vector<std::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, var}}}}}}}});
     return shadow_var;
 }
-LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     LLIR::variable shadow_variable;
     if ((insideLoop || quantifier == '+' || quantifier == '*') && add_shadow_var) {
        shadow_variable = add_shadow_variable(block, var);
        add_shadow_var = false;
     }
+    uvar.type = deduceUvarType(var, shadow_variable);
+    push({LLIR::types::VARIABLE, uvar});
     switch (quantifier) {
         case '+':
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
-            handle_plus_qualifier(rule, LLIR::condition {expr, block});
+            handle_plus_qualifier(rule, LLIR::condition {expr, block}, uvar, var, shadow_variable);
             break;
         case '*': {
             if (add_shadow_var)
@@ -291,6 +298,7 @@ LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::
             break;
         default:
             // add the negative into condition
+            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             expr.insert(expr.begin(), {LLIR::condition_types::NOT});
             expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
             expr.push_back({LLIR::condition_types::GROUP_CLOSE});
@@ -303,10 +311,11 @@ LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::
             add(block);
             break;
     }
+    push(createAssignUvarBlock(uvar, var, shadow_variable));
     return shadow_variable;
 }
 // function to push based on qualifier for Rule_other
-LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var) {
+LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, const LLIR::member &call, char quantifier, bool add_shadow_var) {
     //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     LLIR::variable shadow_variable;
     if (insideLoop|| quantifier == '+' || quantifier == '*') {
@@ -318,21 +327,25 @@ LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &r
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
-            handle_plus_qualifier(rule, LLIR::condition {expr, block});
+            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            handle_plus_qualifier(rule, LLIR::condition {expr, block}, uvar, var, shadow_variable);
             break;
         case '*': {
             if (add_shadow_var)
                 shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
+            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             push({LLIR::types::WHILE, LLIR::condition{expr, block}});
             break;
         }
         case '?':
+            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             push({LLIR::types::IF, LLIR::condition{expr, block}});
             break;
         default:
         {
             // add the negative into condition
+            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             expr.insert(expr.begin(), {LLIR::condition_types::NOT});
             expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
             expr.push_back({LLIR::condition_types::GROUP_CLOSE});
@@ -348,11 +361,13 @@ LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &r
     }
     return shadow_variable;
 }
-LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, const LLIR::variable &var, char quantifier) {
+LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR::variable &uvar, const LLIR::variable &var, char quantifier) {
     LLIR::variable shadow_var;
     if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING)) {
         shadow_var = add_shadow_variable(members, var);
     }
+    uvar.type = deduceUvarType(var, shadow_var);
+    push({LLIR::types::VARIABLE, uvar});
     if (quantifier == '*' || quantifier == '+') {
         LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
         loop.block = members;
@@ -361,7 +376,7 @@ LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, const
         // raiseVarsTop(data, loop.block, true, false, false);
         // raiseVarsTop(data, loop.else_block, true, false, false);
         if (quantifier == '+') {
-            handle_plus_qualifier(rule, loop);
+            handle_plus_qualifier(rule, loop, uvar, var, shadow_var);
         } else {
             push({LLIR::types::WHILE, loop});
         }
@@ -711,7 +726,9 @@ std::vector<LLIR::expr> LLIR::TreeExprLogicalToIR(const TreeAPI::CllExprLogical 
 std::vector<LLIR::expr> LLIR::TreeExprToIR(const TreeAPI::CllExpr &expr) {
     return TreeExprLogicalToIR(expr.value);
 }
-
+auto LLIR::deduceUvarType(const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::var_type {
+    return shadow_var.name.empty() ? var.type : shadow_var.type;
+}
 LLIR::var_type LLIR::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) {
     LLIR::var_type type;
     if (mem.isGroup()) {
@@ -749,7 +766,6 @@ LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
     else if (value.isID()) {
         // likely never execute
         auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID().value; });
-        cpuf::printf("var name: %s\n", value.getID().value);
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
         return find_it->type;
@@ -850,6 +866,8 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
         insideLoop = true;
     bool addSpaceSkipFirst;
     auto values = rulesToIr(rule.getGroup().values, addSpaceSkipFirst);
+    update(values);
+    insideLoop = prev_insideLoop;
     // remove previous space skip it there was \s0
     if (data.size() > 0 && !addSpaceSkipFirst) {
         // remove previous skip of spaces if it does exists
@@ -860,6 +878,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
             }
         }
     }
+
     var.type = {deduceVarTypeByProd(rule)};
     if ((quantifier == '*' || quantifier == '+') && var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING) {
         var.type.templ = {{var.type.type}};
@@ -923,7 +942,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
         values.pop();
     }
     values.add(var_members);
-    auto shadow_var = values.affectIrByQuantifier(rule, var, quantifier);
+    auto shadow_var = values.affectIrByQuantifier(rule, uvar, var, quantifier);
     for (const auto &svar : used_vars) {
         raiseVarsTop(values.members, values.members, svar, true, false, true);
     }
@@ -931,10 +950,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
     if (svar_expr.empty()) {
         svar_cond = {
             {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}},
-            !uvar.name.empty() ? 
-                LLIR::member {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}}
-            :
-                LLIR::member {LLIR::types::EMPTY},
+            createAssignUvarBlock(uvar, var, shadow_var),
             {LLIR::types::POP_POS_COUNTER}
         };
     } else {
@@ -944,10 +960,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
                 svar_expr,
                 {
                     {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}},
-                    !uvar.name.empty() ? 
-                        LLIR::member {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {uvar.name, LLIR::var_assign_types::ASSIGN, {LLIR::var_assign_values::VARIABLE, shadow_var.name.empty() ? var : shadow_var}}}
-                    :
-                        LLIR::member {LLIR::types::EMPTY},
+                    createAssignUvarBlock(uvar, var, shadow_var),
                     {LLIR::types::POP_POS_COUNTER}
                 }
             }
@@ -956,12 +969,6 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
     if (var.type.type != LLIR::var_types::UNDEFINED) {
         push({LLIR::types::VARIABLE, var});
     }
-    if (!uvar.name.empty()) {
-        uvar.type = shadow_var.name.empty() ? var.type : shadow_var.type;
-        push({LLIR::types::VARIABLE, uvar});
-    }
-    update(values);
-    insideLoop = prev_insideLoop;
     push({LLIR::types::VARIABLE, svar});
     push({LLIR::types::PUSH_POS_COUNTER, begin_var_name});
     // maybe implemente later
@@ -982,7 +989,8 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     //cpuf::printf("csequence\n");
     const auto &csequence = rule.getCsequence();
 
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::expr> expr;
@@ -1041,13 +1049,14 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, rule.quantifier, false);
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     const auto &str = rule.getString().value;
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::expr> expr;
@@ -1069,14 +1078,15 @@ LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, rule.quantifier, false);
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::process_Rule_hex(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("hex\n");
     auto data = rule.getHex().hex_chars;
     std::vector<LLIR::expr> expr = {};
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
@@ -1103,14 +1113,15 @@ LLIR::ConvertionResult LLIR::process_Rule_hex(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("hex_open\n");
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, rule.quantifier, false);
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::process_Rule_bin(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("hex\n");
     auto data = rule.getBin().bin_chars;
     std::vector<LLIR::expr> expr = {};
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     std::vector<LLIR::member> block = {
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
@@ -1140,15 +1151,15 @@ LLIR::ConvertionResult LLIR::process_Rule_bin(const TreeAPI::RuleMember &rule) {
     }
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, rule.quantifier, false);
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) {
     //cpuf::printf("Rule_other");
     auto name = rule.getName().name;
     //cpuf::printf(", name: %s\n", name_str);
-
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
@@ -1171,7 +1182,7 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
         std::vector<LLIR::expr> expr;
         auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
         push(call);
-        shadow_var = pushBasedOnQualifier_Rule_name(rule, expr, block, var, svar, call, rule.quantifier);
+        shadow_var = pushBasedOnQualifier_Rule_name(rule, expr, block, uvar, var, svar, call, rule.quantifier);
 
     } else {
         if (isCallingToken) {
@@ -1186,7 +1197,7 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
             std::vector<LLIR::expr> expr = {
                 {LLIR::condition_types::CURRENT_TOKEN, LLIR::current_token {LLIR::condition_types::EQUAL, corelib::text::join(name, "_")}},
             };
-            shadow_var = pushBasedOnQualifier(rule, expr, block, var, svar, rule.quantifier);
+            shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier);
         } else {
             block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
             block.back().value = var.name;
@@ -1195,12 +1206,12 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
             std::vector<LLIR::expr> expr;
             auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
             push(call);
-            shadow_var = pushBasedOnQualifier_Rule_name(rule, expr, block, var, svar, call, rule.quantifier);
+            shadow_var = pushBasedOnQualifier_Rule_name(rule, expr, block, uvar, var, svar, call, rule.quantifier);
 
         }
 
     }
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::process_Rule_nospace(const TreeAPI::RuleMember &rule) {
     addSpaceSkip = false;
@@ -1245,8 +1256,8 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
             
     }
     //cpuf::printf("escaped_open\n");
-
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::member> block = {{LLIR::types::EXIT}};
@@ -1256,11 +1267,11 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
     auto block_after = createDefaultBlock(var, svar);
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expression, block, var, svar, rule.quantifier);
+    auto shadow_var = pushBasedOnQualifier(rule, expression, block, uvar, var, svar, rule.quantifier);
     push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
     //cpuf::printf("escaped_close\n");
-    return {svar, shadow_var.name.empty() ? (var.name.empty() ? LLIR::variable {} : var) : shadow_var, var, shadow_var, rule.quantifier};
+    return {svar, uvar, var, shadow_var, rule.quantifier};
 }
 LLIR::ConvertionResult LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix) {
     //cpuf::printf("Rule_any\n");
@@ -1295,7 +1306,7 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
     std::vector<std::vector<LLIR::member>> blocks;
     std::vector<std::vector<LLIR::expr>> conditions;
     auto rule = rules[index++];
-    LLIR new_ir(tree);
+    LLIR new_ir(tree, -1, false);
     new_ir.proceed(*this);
 
     if (rule.isGroup()) {
@@ -1391,7 +1402,6 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
         }
     }
 
-    // Erase marked indices in reverse to prevent shifting issues
     for (auto it = erase_indices.rbegin(); it != erase_indices.rend(); ++it) {
         new_ir.members.erase(new_ir.members.begin() + *it);
     }
@@ -1401,9 +1411,11 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
 LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     // cpuf::printf("Rule_op\n");
     auto &rules = rule.getOp();
-    auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
+    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     auto block = createDefaultBlock(var, svar);
+    cpuf::printf("op prefix: %$\n", rule.prefix);
     // Add success variable
     var.type = {deduceVarTypeByProd(rule)};
     if (insideLoop && var.type.type != LLIR::var_types::STRING) {
@@ -1412,6 +1424,7 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     }
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
+    push({LLIR::types::VARIABLE, uvar});
     // Convert rules into IR
     // for (auto rule : op) {
     //     auto rule_data = std::any_cast<obj_t>(rule.data);
@@ -1429,7 +1442,9 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     block.erase(block.end() - 1);
     // Append default block
     add(block);
-    return {svar, var, var, {}, rule.quantifier};
+    const auto shadow_var = createEmptyVariable("");
+    push(createAssignUvarBlock(uvar, var, shadow_var));
+    return {svar, uvar, var, {}, rule.quantifier};
 }
 void LLIR::process_cll_var(const TreeAPI::CllVar &var) {
     // get data section
@@ -1496,12 +1511,14 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
         success_var = process_Rule_any(rule.prefix);
     } else if (rule.isCll()) {
         success_var = process_cll(rule.getCll());
+    } else if (rule.empty()) {
+        throw Error("Empty rule in %$", fullname);
     } else throw Error("Undefined rule");
     if (rule.prefix.is_key_value) {
         if (rule.prefix.name.empty()) {
             unnamed_datablock_units.push_back(success_var.uvar);
         } else {
-            key_vars.push_back(std::make_pair(rule.prefix.name, success_var.uvar));
+            key_vars.emplace_back(rule.prefix.name, success_var.uvar);
         }
     }
     const auto insert_var = [this](const LLIR::variable &var) {
@@ -1521,6 +1538,8 @@ LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) {
     LLIR result(tree, -1, false);
     result.proceed(*this);
     for (const auto &rule : rules) {
+        if (rule.empty())
+            continue;
         result.ruleToIr(rule);
     }
     return result;
@@ -1583,6 +1602,7 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         // templated data block
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
+        cpuf::printf("udu: %$, tdb: %$\n", unnamed_datablock_units.size(), templated_datablock.names.size());
         for (const auto &name : templated_datablock.names) {
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
             initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);

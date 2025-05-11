@@ -3,7 +3,7 @@ rule:
 
     @{ name, rule, data_block, nested_rules }
 
-    #rule:
+    #member:
 
         @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ QUANTIFIER?
 
@@ -15,7 +15,7 @@ rule:
         @{ is_nested, name, nested_name }
     ;
     #group:
-        '(' @ rule* ')'
+        '(' @ member* ')'
 
         {@}
     ;
@@ -35,7 +35,7 @@ rule:
         @ #templated_datablock | #regular_datablock
         {@}
         #regular_datablock:
-            '{' @ any_data | #key+ '}'
+            '{' @ cll.expr | #key+ '}'
             {@}
             #key:
                 @ ID '=' @ cll.expr

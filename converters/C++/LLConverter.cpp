@@ -12,7 +12,7 @@
 #include <LLConverter.h>
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     for (auto &[data_block, name, members] : data) {
-        isToken = corelib::text::isLower(name.back());
+        isToken = corelib::text::isUpper(name.back());
         if (isToken == startName) continue;
         rule_prev_name = name;
         rule_prev_name_str = corelib::text::join(name, "_");
@@ -423,6 +423,8 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
 }
 void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules) {
     for (const auto &[fullname, dtb] : datablocks_tokens) {
+        if (dtb.empty())
+            continue;
         const auto name = corelib::text::join(fullname, "_");
         // const overload
         out << "const ::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Token &token) {\n";
@@ -436,6 +438,8 @@ void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlock
         out << "\n}\n";
     }
     for (const auto &[fullname, dtb] : datablocks_rules) {
+        if (dtb.empty())
+            continue;
         const auto name = corelib::text::join(fullname, "_");
         // const overload
         out << "const ::" << namespace_name << "::Types::" << name << "& " << namespace_name << "::get::" << name << "(const ::" << namespace_name << "::Rule &rule) {\n";

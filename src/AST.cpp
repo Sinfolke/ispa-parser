@@ -6,7 +6,7 @@ void AST::constructor(const Parser::Rule &mod) {
         if (entry.type() == typeid(Parser::Rule)) {
             auto t = std::any_cast<const Parser::Rule&>(entry);
             if (t.name() == Parser::Rules::Rule) {
-                auto data = Parser::get::Rule(std::any_cast<const Parser::Rule&>(entry));
+                const auto &data = Parser::get::Rule(std::any_cast<const Parser::Rule&>(entry));
                 createRules(data);
             } else if (t.name() == Parser::Rules::use) {
                 // accamulate use here
@@ -60,7 +60,7 @@ AST::SpacemodeStates &AST::getSpacemode() {
     return spacemode;
 }
 std::vector<TreeAPI::RuleMember> &AST::getRules() {
-    return rules;
+    return newRules;
 }
 TreeAPI::Array AST::createArray(const Parser::Rule &array) {
     TreeAPI::Array arr;
@@ -268,7 +268,8 @@ TreeAPI::CllIf AST::createCllIf(const Parser::Rule &cond) {
     TreeAPI::CllIf newCond;
     auto data = Parser::get::cll_if(cond);
     newCond.expr = createCllExpr(data.expr);
-    newCond.stmt = createRuleMembers(Parser::get::cll_block(data.block));
+    AST newAst(Parser::get::cll_block(data.block), nested_rule_names, false);
+    newCond.stmt = newAst.getRules();
     return newCond;
 }
 
@@ -313,12 +314,25 @@ TreeAPI::Cll AST::convertCll(const Parser::Rule &cll) {
     }
     return member;
 }
+void AST::flushOpSequence() {
+    in_op = false;
+    prev_op = false;
+
+    TreeAPI::RuleMemberOp op{ops};
+    newRules.push_back(TreeAPI::RuleMember{
+        .prefix = ops_prefix,
+        .value = op
+    });
+    ops.clear();
+    ops_prefix = {};
+
+}
+
 /*
     create RuleMember API from Rule_rule AST member
 */
-TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
+void AST::createRuleMember(const Parser::Rule &rule) {
     TreeAPI::RuleMember member;
-    bool addToOps = in_op;
     const auto &rule_r = Parser::get::Rule_rule(rule);
     if (!rule_r.prefix.empty()) {
         member.prefix.is_key_value = rule_r.prefix.name() == Parser::Rules::Rule_keyvalue;
@@ -339,10 +353,6 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
     }
 
     // get value
-    if (!rule_r.val.has_value()) {
-        cpuf::printf("Empty rule\n");
-        return {};
-    }
     if (rule_r.val.type() == typeid(Parser::Token)) {
         const auto &token = std::any_cast<const Parser::Token&>(rule_r.val);
         switch (token.name()) {
@@ -351,21 +361,24 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
                 break;
             case Parser::Tokens::Rule_OP:
                 if (!in_op) {
-                    // Start new operation sequence
                     in_op = true;
-                    ops_prefix = member.prefix;  // Save prefix from first member
-                    if (!ops.empty()) {
-                        // Shouldn't happen, but clear just in case
-                        ops.clear();
-                    }
-                } else {
-                    // Already in operation - add current member to options
-                    ops.push_back(member);
+                    prev_op = true;
+
+                    auto prev_member = newRules.back();
+                    if (prev_member.empty())
+                        throw Error("Empty previous member");
+                    ops_prefix = prev_member.prefix;
+                    prev_member.prefix.clear();
+                    ops.push_back(prev_member);
+
+                    newRules.pop_back();
                 }
                 prev_op = true;
-                addToOps = false;  // Don't add the OP token itself
-                break;
+                return; // skip adding this token to newRules
             case Parser::Tokens::Rule_NOSPACE:
+                if (!member.prefix.empty()) {
+                    throw Error("Prefix and NOSPACE can't be used together");
+                }
                 member.value = TreeAPI::RuleMemberNospace();
                 break;
             // temporary solution
@@ -425,15 +438,12 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
             auto data = Parser::get::Rule_name(rule);
 
             std::vector<std::string> rule_name;
-            // if (is_nested)
-            //     rule_name.assign(fullname.begin(), fullname.end());
-            // rule_name.push_back(std::any_cast<std::string>(name.data));
-            // for (auto &nested : nested_rule_names)
-            //     rule_name.push_back(std::any_cast<std::string>(nested.data));
-
-            auto res = std::find(nested_rule_names.begin(), nested_rule_names.end(), Parser::get::ID(data.name));
+            cpuf::printf("data name: %s\n", Parser::get::ID(data.name));
+            auto res = std::find_if(nested_rule_names.begin(), nested_rule_names.end(), [&data](const  std::pair<std::string, std::vector<std::string>> &p) {
+                return p.first == Parser::get::ID(data.name);
+            });
             if (res != nested_rule_names.end()) {
-                rule_name = std::vector<std::string>{*res};
+                rule_name = res->second;
             } else {
                 if (!data.is_nested.empty()) {
                     rule_name.assign(fullname.begin(), fullname.end());
@@ -449,7 +459,7 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
         case Parser::Rules::Rule_group:
         {
             auto data = Parser::get::Rule_group(rule);
-            AST group_ast(data, false);
+            AST group_ast(data, nested_rule_names, false);
             member.value = TreeAPI::RuleMemberGroup{group_ast.getRules()};
             break;
         }
@@ -462,55 +472,34 @@ TreeAPI::RuleMember AST::createRuleMember(const Parser::Rule &rule) {
             break;
         }
     }
-    if (addToOps) {
-        if (in_op) {
-            // If we're in an operation sequence, add the member to options
+    if (in_op) {
+        if (prev_op) {
             ops.push_back(member);
             prev_op = false;
         } else {
-            // Not in operation - add directly to rules
+            flushOpSequence();
             newRules.push_back(member);
         }
-    } else if (!in_op && !ops.empty()) {
-        // Finished operation sequence - create RuleMemberOp
-        TreeAPI::RuleMemberOp op{std::move(ops)};
-        newRules.push_back(TreeAPI::RuleMember{
-            .prefix = ops_prefix,
-            .value = std::move(op)
-        });
-        ops.clear();
-        ops_prefix = {};
-    }
-    return member;
-}
-std::vector<TreeAPI::RuleMember> AST::createRuleMembers(const std::vector<Parser::Rule> rules) {
-    in_op = false;
-    prev_op = false;
-    add_prev = false;
-    for (const auto &rule : rules) {
-        auto member = createRuleMember(rule);
-        if (member.empty())
-            continue;
-        if (add_prev) {
-            in_op = true;
-            prev_op = true;
-            ops.push_back(newRules.back());
-            newRules.pop_back();
-            ops_prefix = ops.back().prefix;
-            ops.back().prefix.clear();
-        }
+    } else {
         newRules.push_back(member);
     }
-    return newRules;
 }
-std::vector<std::string> AST::getNestedRuleNames(const Parser::Types::Rule_data &rule) {
-    std::vector<std::string> names;
+void AST::createRuleMembers(const std::vector<Parser::Rule> &rules) {
+    for (const auto &rule : rules) {
+        createRuleMember(rule);
+    }
+    if (!ops.empty())
+        flushOpSequence();
+}
+void AST::getNestedRuleNames(const Parser::Types::Rule_data &rule) {
     for (const auto &el : rule.nested_rules) {
         const auto &nested_r = Parser::get::Rule_nested_rule(el);
         const auto r = Parser::get::Rule(nested_r);
-        names.push_back(Parser::get::ID(r.name));
+        const auto &name = Parser::get::ID(r.name);
+        auto new_name = fullname;
+        new_name.push_back(name);
+        nested_rule_names.emplace_back(name, new_name);
     }
-    return names;
 }
 TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
     TreeAPI::DataBlock data_block;
@@ -558,21 +547,24 @@ TreeAPI::DataBlock AST::createDataBlock(const Parser::Rule &rule) {
 // build Tree API from AST
 void AST::createRules(const Parser::Types::Rule_data &rule) {
     TreeAPI::Rule newRule;
-    std::vector<std::string> nested_rule_names = getNestedRuleNames(rule);
+    if (rule.rule.empty())
+        return;
     fullname.push_back(Parser::get::ID(rule.name));
-    newRule.members = std::move(createRuleMembers(rule.rule));
+    size_t previous_size = nested_rule_names.size();
+    getNestedRuleNames(rule);
+    cpuf::printf("rule: %$\n", fullname);
+    createRuleMembers(rule.rule);
+    newRule.members = newRules;
     newRule.data_block = createDataBlock(rule.data_block);
     tree_map[fullname] = newRule;
     newRules.clear();
-    in_op = false;
-    prev_op = false;
-    add_prev = false;
-    ops_prefix.clear();
-    ops.clear();
     for (const auto &nested : rule.nested_rules) {
         const auto &nr = Parser::get::Rule_nested_rule(nested);
         const auto &r = Parser::get::Rule(nr);
         createRules(r);
+    }
+    if (!nested_rule_names.empty() && !rule.nested_rules.empty()) {
+        nested_rule_names.erase(nested_rule_names.begin() + previous_size, nested_rule_names.end());
     }
     fullname.pop_back();
 }

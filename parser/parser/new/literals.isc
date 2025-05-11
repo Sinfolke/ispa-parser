@@ -16,16 +16,17 @@ BOOLEAN:
 ;
 array: 
 
-    '[' ( ( @ expr ',')* )? ']'
+    '[' ( ( @ cll.expr ',')* )? ']'
 
     {@}
-
+;
 object:
     '{'
-        ( @ ID | NUMBER ':' @ expr ( ',' @ ID | NUMBER ':' @ expr )* ';' )?
+        ( @ ID | NUMBER ':' @ cll.expr ( ',' @ ID | NUMBER ':' @ cll.expr )* ';' )?
     '}'
     @{key, value, keys, values}
-any_data: 
+;
+rvalue:
 
     @ BOOLEAN | NUMBER | STRING | ID | AT | array | object
     
