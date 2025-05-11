@@ -2753,7 +2753,7 @@ namespace Parser {
 			success_37 = true;
 			pos = begin_38;
 			::Parser::Types::Rule_rule_data data;
-			data.quantifier = quantifier;
+			data.quantifier = _38.node;
 			data.val = val;
 			data.prefix = prefix;
 

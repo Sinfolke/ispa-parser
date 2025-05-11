@@ -683,7 +683,7 @@ namespace TreeAPI {
     }
     std::ostream& operator<<(std::ostream& os, const RuleMember& rm) {
         os << rm.prefix << " ";
-        if (rm.quantifier) os << rm.quantifier << " ";
+
 
         std::visit([&os](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
@@ -692,7 +692,8 @@ namespace TreeAPI {
             else
                 os << "Empty";
         }, rm.value);
-
+        if (rm.quantifier)
+            os << rm.quantifier << ";";
         return os;
     }
 

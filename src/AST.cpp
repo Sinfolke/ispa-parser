@@ -350,7 +350,20 @@ void AST::createRuleMember(const Parser::Rule &rule) {
 
     // get quantifier
     if (!rule_r.quantifier.empty()) {
-        member.quantifier = std::any_cast<const std::string&>(Parser::get::Rule_quantifier(rule_r.quantifier))[0];
+        const auto &q = Parser::get::Rule_quantifier(rule_r.quantifier);
+        switch (q.name()) {
+            case Parser::Tokens::PLUS:
+                member.quantifier = '+';
+                break;
+            case Parser::Tokens::MULTIPLE:
+                member.quantifier = '*';
+                break;
+            case Parser::Tokens::QUESTION_MARK:
+                member.quantifier = '?';
+                break;
+            default:
+                member.quantifier = '\0';
+        }
     }
 
     // get value

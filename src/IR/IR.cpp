@@ -278,9 +278,11 @@ LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::
        shadow_variable = add_shadow_variable(block, var);
        add_shadow_var = false;
     }
-    uvar.type = deduceUvarType(var, shadow_variable);
-    if (!uvar.name.empty())
+
+    if (!uvar.name.empty()) {
+        uvar.type = deduceUvarType(var, shadow_variable);
         push({LLIR::types::VARIABLE, uvar});
+    }
     switch (quantifier) {
         case '+':
             if (add_shadow_var)
@@ -322,6 +324,10 @@ LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &r
     if (insideLoop|| quantifier == '+' || quantifier == '*') {
         shadow_variable = add_shadow_variable(block, var);
         add_shadow_var = false;
+    }
+    if (!uvar.name.empty()) {
+        uvar.type = deduceUvarType(var, shadow_variable);
+        push({LLIR::types::VARIABLE, uvar});
     }
     switch (quantifier) {
         case '+':
@@ -367,8 +373,11 @@ LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR:
     if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING)) {
         shadow_var = add_shadow_variable(members, var);
     }
-    uvar.type = deduceUvarType(var, shadow_var);
-    push({LLIR::types::VARIABLE, uvar});
+    if (!uvar.name.empty()) {
+        uvar.type = deduceUvarType(var, shadow_var);
+        push({LLIR::types::VARIABLE, uvar});
+    }
+    cpuf::printf("group quantifier: %$\n", quantifier);
     if (quantifier == '*' || quantifier == '+') {
         LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
         loop.block = members;
@@ -1173,8 +1182,8 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
     if (isToken) {
-        // if (!isCallingToken)
-        //     throw Error("Cannot call rule from token");
+        if (!isCallingToken)
+            throw Error("Cannot call rule from token");
         // remove variable assignemnt
         block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
         block.back().value = var.name;
@@ -1354,7 +1363,7 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
                     }
                 }
             }};
-        } 
+        }
         new_ir.push({LLIR::types::IF, cond});
     } else {
         replaceToPrevChar(new_ir.members, 0);
@@ -1416,7 +1425,7 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     auto block = createDefaultBlock(var, svar);
-    cpuf::printf("op prefix: %$\n", rule.prefix);
+    // cpuf::printf("op prefix: %$\n", rule.prefix);
     // Add success variable
     var.type = {deduceVarTypeByProd(rule)};
     if (insideLoop && var.type.type != LLIR::var_types::STRING) {

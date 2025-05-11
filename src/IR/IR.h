@@ -268,26 +268,26 @@ class LLIR {
         LLIR(Tree *tree, int tokensOnly, bool buildImmediately) : tree(tree) {
             if (buildImmediately) {
                 treeToIr();
-                optimizeIR();
+                //optimizeIR();
             }
         }
     public:
         LLIR(Tree &tree, int tokensOnly = -1) : tree(&tree) {
             treeToIr();
-            optimizeIR();
+            //optimizeIR();
         }
         LLIR(Tree *tree, int tokensOnly = -1) : tree(tree) {
             treeToIr();
-            optimizeIR();
+            //optimizeIR();
         };
         LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(&tree), isToken(isToken) {
             ruleToIr(toConvert);
             // call raiseVars manually to specify it is all single rule
-            raiseVarsTop(members, members, "", true);
+            //raiseVarsTop(members, members, "", true);
         }
         LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(tree), isToken(isToken) {
             ruleToIr(toConvert);
-            raiseVarsTop(members, members, "", true);
+            //raiseVarsTop(members, members, "", true);
         }
 
         // get functions
