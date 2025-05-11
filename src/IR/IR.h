@@ -261,7 +261,7 @@ class LLIR {
         void treeToIr();
         auto makeIR() -> std::vector<ConvertionResult>;
         // optimizations
-        void getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive);
+        void getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string &var_name, bool retain_value, bool recursive);
         void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table);
         void raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
         void optimizeIR();

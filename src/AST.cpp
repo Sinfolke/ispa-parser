@@ -315,16 +315,17 @@ TreeAPI::Cll AST::convertCll(const Parser::Rule &cll) {
     return member;
 }
 void AST::flushOpSequence() {
+    if (!ops.empty()) {
+        TreeAPI::RuleMemberOp op{ops};
+        newRules.push_back(TreeAPI::RuleMember{
+            .prefix = ops_prefix,
+            .value = op
+        });
+        ops.clear();
+        ops_prefix = {};
+    }
     in_op = false;
     prev_op = false;
-
-    TreeAPI::RuleMemberOp op{ops};
-    newRules.push_back(TreeAPI::RuleMember{
-        .prefix = ops_prefix,
-        .value = op
-    });
-    ops.clear();
-    ops_prefix = {};
 
 }
 

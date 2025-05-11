@@ -1,7 +1,7 @@
 #include <IR/IR.h>
 #include <cstdint>
 #include <cpuf/printf.h>
-void LLIR::getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string var_name, bool retain_value, bool recursive) {
+void LLIR::getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string &var_name, bool retain_value, bool recursive) {
     for (size_t i = 0; i < data.size(); i++) {
         auto el = data[i];
         if (el.type == LLIR::types::VARIABLE) {
@@ -50,6 +50,7 @@ void LLIR::optimizeIR() {
     if (data.empty()) {
         raiseVarsTop(members, members);
     } else {
+        cpuf::printf("Optimze IR on non-empty data\n");
         for (auto &d : data) {
             raiseVarsTop(d.members, d.members);
         }

@@ -279,7 +279,8 @@ LLIR::variable LLIR::pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::
        add_shadow_var = false;
     }
     uvar.type = deduceUvarType(var, shadow_variable);
-    push({LLIR::types::VARIABLE, uvar});
+    if (!uvar.name.empty())
+        push({LLIR::types::VARIABLE, uvar});
     switch (quantifier) {
         case '+':
             if (add_shadow_var)
@@ -1424,7 +1425,10 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
     }
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    push({LLIR::types::VARIABLE, uvar});
+    if (!uvar.name.empty()) {
+        uvar.type = var.type;
+        push({LLIR::types::VARIABLE, uvar});
+    }
     // Convert rules into IR
     // for (auto rule : op) {
     //     auto rule_data = std::any_cast<obj_t>(rule.data);
@@ -1516,7 +1520,8 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
     } else throw Error("Undefined rule");
     if (rule.prefix.is_key_value) {
         if (rule.prefix.name.empty()) {
-            unnamed_datablock_units.push_back(success_var.uvar);
+            unnamed_datablock_units.push_back(success_var.uvar.name.empty() ? (success_var.shadow_var.name.empty() ? success_var.var : success_var.shadow_var) : success_var.uvar);
+            cpuf::printf("pushed variable %$\n", unnamed_datablock_units.back().name);
         } else {
             key_vars.emplace_back(rule.prefix.name, success_var.uvar);
         }

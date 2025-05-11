@@ -34,7 +34,6 @@ void Tree::inlineSingleGroups() {
                     member.value = replacement; // replace only after you're done accessing
                 }
             }
-
         }
     }
 }
@@ -186,14 +185,20 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
     }
     if (first.isGroup()) {
         auto &dt = first.getGroup();
+        if (dt.values.empty())
+            throw Error("Empty group\n");
         return prioritySort(dt.values[0], second);
     }
     if (second.isGroup()) {
         auto &dt = second.getGroup();
+        if (dt.values.empty())
+            throw Error("Empty group\n");
         return prioritySort(first, dt.values[0]);
     }
     if (first.isOp()) {
         auto &dt = first.getOp();
+        if (dt.options.empty())
+            throw Error("Empty op\n");
         return prioritySort(dt.options.back(), second);
     }
     if (second.isOp()) {

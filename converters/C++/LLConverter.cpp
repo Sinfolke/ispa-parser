@@ -19,7 +19,7 @@ void LLConverter::writeRules(std::ostringstream &out, bool startName) {
         if (isToken) {
             out << std::string(indentLevel, '\t') << namespace_name << "::Token_res " << namespace_name << "::Lexer::" << rule_prev_name_str << "(const char* pos) {\n";
             indentLevel++;
-            out << std::string(indentLevel, '\t') << "auto in = pos";
+            out << std::string(indentLevel, '\t') << "auto in = pos;\n";
             isToken = true;
         } else {
             out << std::string(indentLevel, '\t') << "template <class IT>\n";

@@ -63,7 +63,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ cll, _var, }> : Rule {
   @  Name(cll::TYPE)
   @  Name(ID)
-  @  Group( Op( Name(cll::ASSIGNMENT_OP)), @  Name(cll::expr))
+  @  Group( Name(cll::ASSIGNMENT_OP), @  Name(cll::expr))
   Data: TemplatedDataBlock(type, id, op, value)
 }name<{ cll, function_call, }> : Rule {
   @  Name(ID)
@@ -212,7 +212,7 @@ name<{ rule, BIN, }> : Rule {
    Name(END)
   Data: [RegularDataBlock: CllExpr]
 }name<{ rule, member, }> : Rule {
-  @  Group( Op(),  Op( Name(rule::keyvalue) |  Name(rule::value)))
+  @  Group( Op( Name(rule::keyvalue) |  Name(rule::value)))
   @  Op( Name(rule::name) |  Name(rule::group) |  Name(rule::CSEQUENCE) |  Name(STRING) |  Name(rule::HEX) |  Name(rule::BIN) |  Name(rule::NOSPACE) |  Name(rule::ESCAPED) |  Name(rule::ANY) |  Name(rule::OP) |  Name(LINEAR_COMMENT) |  Name(cll))
   @  Name(rule::QUANTIFIER)
   Data: TemplatedDataBlock(prefix, val, quantifier)

@@ -26,18 +26,6 @@ set(INCLUDE_DIRS
 # =============================================
 # Compiler Configuration
 # =============================================
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_definitions(DEBUG)
-    set(O_LEVEL "g" CACHE STRING "Debug optimization level")
-    add_compile_options(-g)
-else()
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|MSVC")
-        add_compile_options(-ffast-math -fno-protect-parens)
-    else()
-        message(STATUS "Compiler doesn't support direct optimization control")
-    endif()
-    set(O_LEVEL "2" CACHE STRING "Release optimization level")
-endif()
 
 if(MSVC)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

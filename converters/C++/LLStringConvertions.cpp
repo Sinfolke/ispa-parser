@@ -303,7 +303,7 @@ std::string LLStringConvertions::convertMethodCall(const LLIR::method_call &meth
 std::string LLStringConvertions::convertDataBlock(const LLIR::DataBlock &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
-    res += "::" + namespace_name + "::Types::" + rule_prev_name_str + "_data data";
+    res += "::" + namespace_name + "::Types::" + rule_prev_name_str + " data";
     if (dtb.is_inclosed_map()) {
         res += ";";
         res += "\n";
