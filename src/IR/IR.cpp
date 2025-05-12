@@ -380,7 +380,7 @@ LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR:
     if (quantifier == '*' || quantifier == '+') {
         LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
         loop.block = members;
-        data.clear();
+        members.clear();
         processExitStatements(loop.block);
         // raiseVarsTop(data, loop.block, true, false, false);
         // raiseVarsTop(data, loop.else_block, true, false, false);
@@ -392,7 +392,7 @@ LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR:
     } else if (quantifier == '?') {
         LLIR::condition loop = { { {LLIR::condition_types::NUMBER, (long long) 0} } };
         loop.block = members;
-        data.clear();
+        members.clear();
         processExitStatements(loop.block);
         push({ LLIR::types::DOWHILE, loop });
     }

@@ -221,7 +221,7 @@ void LLConverter::printIR(std::ostringstream &out, const std::string &filename) 
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addLexerCode_Header(out);
     convertLexerCode(lexer_code.getMembers(), out);
-    addLexerCode_Bottom(out,  lexer_code_access_var.var);
+    addLexerCode_Bottom(out,  lexer_code_access_var);
     writeRules(out, false);
 }
 void LLConverter::addHeader(std::ostringstream &out) {

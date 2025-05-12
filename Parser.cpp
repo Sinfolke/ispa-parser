@@ -581,17 +581,657 @@ const ::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(const ::Parse
 }
 
 Parser::Token Parser::Lexer::makeToken(const char*& pos) {
-	::Parser::UNDEF _0;
+	::Parser::Token _0;
 	::Parser::bool_t success_1 = false;
-	return {};
+	::Parser::Token_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token_res _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Token_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Token_res _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::Token_res _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::Token_res _12;
+	::Parser::bool_t success_13 = false;
+	::Parser::Token_res _14;
+	::Parser::bool_t success_15 = false;
+	::Parser::Token_res _16;
+	::Parser::bool_t success_17 = false;
+	::Parser::Token_res _18;
+	::Parser::bool_t success_19 = false;
+	::Parser::Token_res _20;
+	::Parser::bool_t success_21 = false;
+	::Parser::Token_res _22;
+	::Parser::bool_t success_23 = false;
+	::Parser::Token_res _24;
+	::Parser::bool_t success_25 = false;
+	::Parser::Token_res _26;
+	::Parser::bool_t success_27 = false;
+	::Parser::Token_res _28;
+	::Parser::bool_t success_29 = false;
+	::Parser::Token_res _30;
+	::Parser::bool_t success_31 = false;
+	::Parser::Token_res _32;
+	::Parser::bool_t success_33 = false;
+	::Parser::Token_res _34;
+	::Parser::bool_t success_35 = false;
+	::Parser::Token_res _36;
+	::Parser::bool_t success_37 = false;
+	::Parser::Token_res _38;
+	::Parser::bool_t success_39 = false;
+	::Parser::Token_res _40;
+	::Parser::bool_t success_41 = false;
+	::Parser::Token_res _42;
+	::Parser::bool_t success_43 = false;
+	::Parser::Token_res _44;
+	::Parser::bool_t success_45 = false;
+	::Parser::Token_res _46;
+	::Parser::bool_t success_47 = false;
+	::Parser::Token_res _48;
+	::Parser::bool_t success_49 = false;
+	::Parser::Token_res _50;
+	::Parser::bool_t success_51 = false;
+	::Parser::Token_res _52;
+	::Parser::bool_t success_53 = false;
+	::Parser::Token_res _54;
+	::Parser::bool_t success_55 = false;
+	::Parser::Token_res _56;
+	::Parser::bool_t success_57 = false;
+	::Parser::Token_res _58;
+	::Parser::bool_t success_59 = false;
+	::Parser::Token_res _60;
+	::Parser::bool_t success_61 = false;
+	::Parser::Token_res _62;
+	::Parser::bool_t success_63 = false;
+	::Parser::Token_res _64;
+	::Parser::bool_t success_65 = false;
+	::Parser::Token_res _66;
+	::Parser::bool_t success_67 = false;
+	::Parser::Token_res _68;
+	::Parser::bool_t success_69 = false;
+	::Parser::Token_res _70;
+	::Parser::bool_t success_71 = false;
+	::Parser::Token_res _72;
+	::Parser::bool_t success_73 = false;
+	::Parser::Token_res _74;
+	::Parser::bool_t success_75 = false;
+	::Parser::Token_res _76;
+	::Parser::bool_t success_77 = false;
+	::Parser::Token_res _78;
+	::Parser::bool_t success_79 = false;
+	::Parser::Token_res _80;
+	::Parser::bool_t success_81 = false;
+	::Parser::Token_res _82;
+	::Parser::bool_t success_83 = false;
+	::Parser::Token_res _84;
+	::Parser::bool_t success_85 = false;
+	::Parser::Token_res _86;
+	::Parser::bool_t success_87 = false;
+	::Parser::Token_res _88;
+	::Parser::bool_t success_89 = false;
+	::Parser::Token_res _90;
+	::Parser::bool_t success_91 = false;
+	::Parser::Token_res _92;
+	::Parser::bool_t success_93 = false;
+	::Parser::Token_res _94;
+	::Parser::bool_t success_95 = false;
+	::Parser::Token_res _96;
+	::Parser::bool_t success_97 = false;
+	::Parser::Token_res _98;
+	::Parser::bool_t success_99 = false;
+	success_1 = false;
+	success_3 = false;
+	_2 = __WHITESPACE(pos);
+	if (!(_2.status))
+	{
+		success_5 = false;
+		_4 = AUTO_22(pos);
+		if (!(_4.status))
+		{
+			success_7 = false;
+			_6 = AUTO_21(pos);
+			if (!(_6.status))
+			{
+				success_9 = false;
+				_8 = AUTO_11(pos);
+				if (!(_8.status))
+				{
+					success_11 = false;
+					_10 = AUTO_7(pos);
+					if (!(_10.status))
+					{
+						success_13 = false;
+						_12 = AUTO_6(pos);
+						if (!(_12.status))
+						{
+							success_15 = false;
+							_14 = AUTO_3(pos);
+							if (!(_14.status))
+							{
+								success_17 = false;
+								_16 = AUTO_2(pos);
+								if (!(_16.status))
+								{
+									success_19 = false;
+									_18 = AUTO_1(pos);
+									if (!(_18.status))
+									{
+										success_21 = false;
+										_20 = AUTO_0(pos);
+										if (!(_20.status))
+										{
+											success_23 = false;
+											_22 = rule_BIN(pos);
+											if (!(_22.status))
+											{
+												success_25 = false;
+												_24 = rule_HEX(pos);
+												if (!(_24.status))
+												{
+													success_27 = false;
+													_26 = AUTO_14(pos);
+													if (!(_26.status))
+													{
+														success_29 = false;
+														_28 = rule_NOSPACE(pos);
+														if (!(_28.status))
+														{
+															success_31 = false;
+															_30 = rule_ANY(pos);
+															if (!(_30.status))
+															{
+																success_33 = false;
+																_32 = AUTO_8(pos);
+																if (!(_32.status))
+																{
+																	success_35 = false;
+																	_34 = rule_QUANTIFIER(pos);
+																	if (!(_34.status))
+																	{
+																		success_37 = false;
+																		_36 = rule_OP(pos);
+																		if (!(_36.status))
+																		{
+																			success_39 = false;
+																			_38 = AUTO_17(pos);
+																			if (!(_38.status))
+																			{
+																				success_41 = false;
+																				_40 = cll_COMPARE_OP(pos);
+																				if (!(_40.status))
+																				{
+																					success_43 = false;
+																					_42 = AUTO_9(pos);
+																					if (!(_42.status))
+																					{
+																						success_45 = false;
+																						_44 = AUTO_5(pos);
+																						if (!(_44.status))
+																						{
+																							success_47 = false;
+																							_46 = END(pos);
+																							if (!(_46.status))
+																							{
+																								success_49 = false;
+																								_48 = rule_ESCAPED(pos);
+																								if (!(_48.status))
+																								{
+																									success_51 = false;
+																									_50 = AUTO_10(pos);
+																									if (!(_50.status))
+																									{
+																										success_53 = false;
+																										_52 = cll_ASSIGNMENT_OP(pos);
+																										if (!(_52.status))
+																										{
+																											success_55 = false;
+																											_54 = AUTO_19(pos);
+																											if (!(_54.status))
+																											{
+																												success_57 = false;
+																												_56 = cll_LOGICAL_OP(pos);
+																												if (!(_56.status))
+																												{
+																													success_59 = false;
+																													_58 = cll_TYPE(pos);
+																													if (!(_58.status))
+																													{
+																														success_61 = false;
+																														_60 = AUTO_12(pos);
+																														if (!(_60.status))
+																														{
+																															success_63 = false;
+																															_62 = STRING(pos);
+																															if (!(_62.status))
+																															{
+																																success_65 = false;
+																																_64 = NUMBER(pos);
+																																if (!(_64.status))
+																																{
+																																	success_67 = false;
+																																	_66 = AUTO_16(pos);
+																																	if (!(_66.status))
+																																	{
+																																		success_69 = false;
+																																		_68 = AUTO_4(pos);
+																																		if (!(_68.status))
+																																		{
+																																			success_71 = false;
+																																			_70 = BOOLEAN(pos);
+																																			if (!(_70.status))
+																																			{
+																																				success_73 = false;
+																																				_72 = STRICT_END(pos);
+																																				if (!(_72.status))
+																																				{
+																																					success_75 = false;
+																																					_74 = AUTO_13(pos);
+																																					if (!(_74.status))
+																																					{
+																																						success_77 = false;
+																																						_76 = PLUS(pos);
+																																						if (!(_76.status))
+																																						{
+																																							success_79 = false;
+																																							_78 = MINUS(pos);
+																																							if (!(_78.status))
+																																							{
+																																								success_81 = false;
+																																								_80 = DIVIDE(pos);
+																																								if (!(_80.status))
+																																								{
+																																									success_83 = false;
+																																									_82 = MULTIPLE(pos);
+																																									if (!(_82.status))
+																																									{
+																																										success_85 = false;
+																																										_84 = MODULO(pos);
+																																										if (!(_84.status))
+																																										{
+																																											success_87 = false;
+																																											_86 = AT(pos);
+																																											if (!(_86.status))
+																																											{
+																																												success_89 = false;
+																																												_88 = ID(pos);
+																																												if (!(_88.status))
+																																												{
+																																													success_91 = false;
+																																													_90 = AUTO_15(pos);
+																																													if (!(_90.status))
+																																													{
+																																														success_93 = false;
+																																														_92 = rule_CSEQUENCE(pos);
+																																														if (!(_92.status))
+																																														{
+																																															success_95 = false;
+																																															_94 = LINEAR_COMMENT(pos);
+																																															if (!(_94.status))
+																																															{
+																																																success_97 = false;
+																																																_96 = AUTO_20(pos);
+																																																if (!(_96.status))
+																																																{
+																																																	success_99 = false;
+																																																	_98 = AUTO_18(pos);
+																																																	if (!(_98.status))
+																																																	{
+																																																		return {};
+																																																	}
+																																																	else 
+																																																	{
+																																																		success_99 = true;
+																																																		pos += _98.node.length();
+																																																		_0 = _98.node;
+																																																	}
+																																																}
+																																																else 
+																																																{
+																																																	success_97 = true;
+																																																	pos += _96.node.length();
+																																																	_0 = _96.node;
+																																																}
+																																															}
+																																															else 
+																																															{
+																																																success_95 = true;
+																																																pos += _94.node.length();
+																																																_0 = _94.node;
+																																															}
+																																														}
+																																														else 
+																																														{
+																																															success_93 = true;
+																																															pos += _92.node.length();
+																																															_0 = _92.node;
+																																														}
+																																													}
+																																													else 
+																																													{
+																																														success_91 = true;
+																																														pos += _90.node.length();
+																																														_0 = _90.node;
+																																													}
+																																												}
+																																												else 
+																																												{
+																																													success_89 = true;
+																																													pos += _88.node.length();
+																																													_0 = _88.node;
+																																												}
+																																											}
+																																											else 
+																																											{
+																																												success_87 = true;
+																																												pos += _86.node.length();
+																																												_0 = _86.node;
+																																											}
+																																										}
+																																										else 
+																																										{
+																																											success_85 = true;
+																																											pos += _84.node.length();
+																																											_0 = _84.node;
+																																										}
+																																									}
+																																									else 
+																																									{
+																																										success_83 = true;
+																																										pos += _82.node.length();
+																																										_0 = _82.node;
+																																									}
+																																								}
+																																								else 
+																																								{
+																																									success_81 = true;
+																																									pos += _80.node.length();
+																																									_0 = _80.node;
+																																								}
+																																							}
+																																							else 
+																																							{
+																																								success_79 = true;
+																																								pos += _78.node.length();
+																																								_0 = _78.node;
+																																							}
+																																						}
+																																						else 
+																																						{
+																																							success_77 = true;
+																																							pos += _76.node.length();
+																																							_0 = _76.node;
+																																						}
+																																					}
+																																					else 
+																																					{
+																																						success_75 = true;
+																																						pos += _74.node.length();
+																																						_0 = _74.node;
+																																					}
+																																				}
+																																				else 
+																																				{
+																																					success_73 = true;
+																																					pos += _72.node.length();
+																																					_0 = _72.node;
+																																				}
+																																			}
+																																			else 
+																																			{
+																																				success_71 = true;
+																																				pos += _70.node.length();
+																																				_0 = _70.node;
+																																			}
+																																		}
+																																		else 
+																																		{
+																																			success_69 = true;
+																																			pos += _68.node.length();
+																																			_0 = _68.node;
+																																		}
+																																	}
+																																	else 
+																																	{
+																																		success_67 = true;
+																																		pos += _66.node.length();
+																																		_0 = _66.node;
+																																	}
+																																}
+																																else 
+																																{
+																																	success_65 = true;
+																																	pos += _64.node.length();
+																																	_0 = _64.node;
+																																}
+																															}
+																															else 
+																															{
+																																success_63 = true;
+																																pos += _62.node.length();
+																																_0 = _62.node;
+																															}
+																														}
+																														else 
+																														{
+																															success_61 = true;
+																															pos += _60.node.length();
+																															_0 = _60.node;
+																														}
+																													}
+																													else 
+																													{
+																														success_59 = true;
+																														pos += _58.node.length();
+																														_0 = _58.node;
+																													}
+																												}
+																												else 
+																												{
+																													success_57 = true;
+																													pos += _56.node.length();
+																													_0 = _56.node;
+																												}
+																											}
+																											else 
+																											{
+																												success_55 = true;
+																												pos += _54.node.length();
+																												_0 = _54.node;
+																											}
+																										}
+																										else 
+																										{
+																											success_53 = true;
+																											pos += _52.node.length();
+																											_0 = _52.node;
+																										}
+																									}
+																									else 
+																									{
+																										success_51 = true;
+																										pos += _50.node.length();
+																										_0 = _50.node;
+																									}
+																								}
+																								else 
+																								{
+																									success_49 = true;
+																									pos += _48.node.length();
+																									_0 = _48.node;
+																								}
+																							}
+																							else 
+																							{
+																								success_47 = true;
+																								pos += _46.node.length();
+																								_0 = _46.node;
+																							}
+																						}
+																						else 
+																						{
+																							success_45 = true;
+																							pos += _44.node.length();
+																							_0 = _44.node;
+																						}
+																					}
+																					else 
+																					{
+																						success_43 = true;
+																						pos += _42.node.length();
+																						_0 = _42.node;
+																					}
+																				}
+																				else 
+																				{
+																					success_41 = true;
+																					pos += _40.node.length();
+																					_0 = _40.node;
+																				}
+																			}
+																			else 
+																			{
+																				success_39 = true;
+																				pos += _38.node.length();
+																				_0 = _38.node;
+																			}
+																		}
+																		else 
+																		{
+																			success_37 = true;
+																			pos += _36.node.length();
+																			_0 = _36.node;
+																		}
+																	}
+																	else 
+																	{
+																		success_35 = true;
+																		pos += _34.node.length();
+																		_0 = _34.node;
+																	}
+																}
+																else 
+																{
+																	success_33 = true;
+																	pos += _32.node.length();
+																	_0 = _32.node;
+																}
+															}
+															else 
+															{
+																success_31 = true;
+																pos += _30.node.length();
+																_0 = _30.node;
+															}
+														}
+														else 
+														{
+															success_29 = true;
+															pos += _28.node.length();
+															_0 = _28.node;
+														}
+													}
+													else 
+													{
+														success_27 = true;
+														pos += _26.node.length();
+														_0 = _26.node;
+													}
+												}
+												else 
+												{
+													success_25 = true;
+													pos += _24.node.length();
+													_0 = _24.node;
+												}
+											}
+											else 
+											{
+												success_23 = true;
+												pos += _22.node.length();
+												_0 = _22.node;
+											}
+										}
+										else 
+										{
+											success_21 = true;
+											pos += _20.node.length();
+											_0 = _20.node;
+										}
+									}
+									else 
+									{
+										success_19 = true;
+										pos += _18.node.length();
+										_0 = _18.node;
+									}
+								}
+								else 
+								{
+									success_17 = true;
+									pos += _16.node.length();
+									_0 = _16.node;
+								}
+							}
+							else 
+							{
+								success_15 = true;
+								pos += _14.node.length();
+								_0 = _14.node;
+							}
+						}
+						else 
+						{
+							success_13 = true;
+							pos += _12.node.length();
+							_0 = _12.node;
+						}
+					}
+					else 
+					{
+						success_11 = true;
+						pos += _10.node.length();
+						_0 = _10.node;
+					}
+				}
+				else 
+				{
+					success_9 = true;
+					pos += _8.node.length();
+					_0 = _8.node;
+				}
+			}
+			else 
+			{
+				success_7 = true;
+				pos += _6.node.length();
+				_0 = _6.node;
+			}
+		}
+		else 
+		{
+			success_5 = true;
+			pos += _4.node.length();
+			_0 = _4.node;
+		}
+	}
+	else 
+	{
+		success_3 = true;
+		pos += _2.node.length();
+		_0 = _2.node;
+	}
 	success_1 = true;
-	return ;
+	return _0;
 }
 Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	::Parser::bool_t success_2 = false;
+	success_1 = false;
+	success_2 = false;
 	while (*(pos + 0) == ' ' || *(pos + 0) == '\t' || *(pos + 0) == '\n' || *(pos + 0) == '\r' || *(pos + 0) == '\v' || *(pos + 0) == '\f')
 	{
 		_0 += ::Parser::str_t(pos, 1);
@@ -609,6 +1249,7 @@ Parser::Token_res Parser::Lexer::AUTO_22(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '#'))
 	{
 		return {};
@@ -623,6 +1264,7 @@ Parser::Token_res Parser::Lexer::AUTO_21(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "for", 3)))
 	{
 		return {};
@@ -637,6 +1279,7 @@ Parser::Token_res Parser::Lexer::AUTO_11(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "fn", 2)))
 	{
 		return {};
@@ -651,6 +1294,7 @@ Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '('))
 	{
 		return {};
@@ -665,6 +1309,7 @@ Parser::Token_res Parser::Lexer::AUTO_6(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '.'))
 	{
 		return {};
@@ -679,6 +1324,7 @@ Parser::Token_res Parser::Lexer::AUTO_3(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '}'))
 	{
 		return {};
@@ -693,6 +1339,7 @@ Parser::Token_res Parser::Lexer::AUTO_2(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ','))
 	{
 		return {};
@@ -707,6 +1354,7 @@ Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '{'))
 	{
 		return {};
@@ -721,6 +1369,7 @@ Parser::Token_res Parser::Lexer::AUTO_0(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '@'))
 	{
 		return {};
@@ -735,6 +1384,10 @@ Parser::Token_res Parser::Lexer::rule_BIN(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_4 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "0b", 2)))
 	{
 		return {};
@@ -743,9 +1396,8 @@ Parser::Token_res Parser::Lexer::rule_BIN(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_4 = false;
+	success_3 = false;
+	success_4 = false;
 	while (*(pos + 0) == '0' || *(pos + 0) == '1')
 	{
 		_2 += ::Parser::str_t(pos, 1);
@@ -765,6 +1417,10 @@ Parser::Token_res Parser::Lexer::rule_HEX(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_4 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "0x", 2)))
 	{
 		return {};
@@ -773,9 +1429,8 @@ Parser::Token_res Parser::Lexer::rule_HEX(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_4 = false;
+	success_3 = false;
+	success_4 = false;
 	while ((*(pos + 0)>='0' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f'))
 	{
 		_2 += ::Parser::str_t(pos, 1);
@@ -795,6 +1450,7 @@ Parser::Token_res Parser::Lexer::AUTO_14(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '['))
 	{
 		return {};
@@ -809,6 +1465,7 @@ Parser::Token_res Parser::Lexer::rule_NOSPACE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "\\s0", 3)))
 	{
 		return {};
@@ -822,6 +1479,7 @@ Parser::Token_res Parser::Lexer::rule_ANY(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '.'))
 	{
 		return {};
@@ -835,6 +1493,7 @@ Parser::Token_res Parser::Lexer::AUTO_8(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ')'))
 	{
 		return {};
@@ -849,6 +1508,9 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_ESCAPE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
 		return {};
@@ -856,8 +1518,7 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_ESCAPE(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	if (*(pos + 0) == '\0')
 	{
 		reportError(pos, "symbol");
@@ -875,14 +1536,18 @@ Parser::Token_res Parser::Lexer::rule_QUANTIFIER(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(*(pos + 0) == '?'))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(*(pos + 0) == '+'))
 		{
-			::Parser::str_t _6;
-			::Parser::bool_t success_7 = false;
+			success_7 = false;
 			if (!(*(pos + 0) == '*'))
 			{
 				return {};
@@ -920,14 +1585,18 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_SYMBOL(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "\\", 1)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "\\]", 2)))
 		{
-			::Parser::str_t _6;
-			::Parser::bool_t success_7 = false;
+			success_7 = false;
 			if (!(!(*(pos + 0) == '\\')))
 			{
 				return {};
@@ -963,6 +1632,7 @@ Parser::Token_res Parser::Lexer::rule_OP(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '|'))
 	{
 		return {};
@@ -976,6 +1646,7 @@ Parser::Token_res Parser::Lexer::AUTO_17(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '&'))
 	{
 		return {};
@@ -992,26 +1663,33 @@ Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::str_t _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::str_t _12;
+	::Parser::bool_t success_13 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "==", 2)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "!=", 2)))
 		{
-			::Parser::str_t _6;
-			::Parser::bool_t success_7 = false;
+			success_7 = false;
 			if (!(*(pos + 0) == '>'))
 			{
-				::Parser::str_t _8;
-				::Parser::bool_t success_9 = false;
+				success_9 = false;
 				if (!(*(pos + 0) == '<'))
 				{
-					::Parser::str_t _10;
-					::Parser::bool_t success_11 = false;
+					success_11 = false;
 					if (!(!std::strncmp(pos, ">=", 2)))
 					{
-						::Parser::str_t _12;
-						::Parser::bool_t success_13 = false;
+						success_13 = false;
 						if (!(!std::strncmp(pos, "<=", 2)))
 						{
 							return {};
@@ -1071,6 +1749,7 @@ Parser::Token_res Parser::Lexer::AUTO_9(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '$'))
 	{
 		return {};
@@ -1085,6 +1764,7 @@ Parser::Token_res Parser::Lexer::AUTO_5(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "while", 5)))
 	{
 		return {};
@@ -1099,6 +1779,7 @@ Parser::Token_res Parser::Lexer::END(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ';' || *(pos + 0) == '\\' || *(pos + 0) == 'n'))
 	{
 		return {};
@@ -1112,6 +1793,11 @@ Parser::Token_res Parser::Lexer::rule_ESCAPED(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
 		return {};
@@ -1119,10 +1805,8 @@ Parser::Token_res Parser::Lexer::rule_ESCAPED(const char* pos) {
 	_0 += ::Parser::str_t(pos, 1);
 	success_1 = true;
 	pos += 1;
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
+	success_3 = false;
+	success_5 = false;
 	if (*(pos + 0) == '\0')
 	{
 		return {};
@@ -1144,22 +1828,28 @@ Parser::Token_res Parser::Lexer::cll_OP(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::str_t _10;
+	::Parser::bool_t success_11 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(*(pos + 0) == '+'))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(*(pos + 0) == '-'))
 		{
-			::Parser::str_t _6;
-			::Parser::bool_t success_7 = false;
+			success_7 = false;
 			if (!(*(pos + 0) == '*'))
 			{
-				::Parser::str_t _8;
-				::Parser::bool_t success_9 = false;
+				success_9 = false;
 				if (!(*(pos + 0) == '/'))
 				{
-					::Parser::str_t _10;
-					::Parser::bool_t success_11 = false;
+					success_11 = false;
 					if (!(*(pos + 0) == '%'))
 					{
 						return {};
@@ -1211,6 +1901,7 @@ Parser::Token_res Parser::Lexer::AUTO_10(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "if", 2)))
 	{
 		return {};
@@ -1225,6 +1916,9 @@ Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
 	auto in = pos;
 	::Parser::Token_res _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	success_1 = false;
 	_0 = cll_OP(pos);
 	if (_0.status)
 	{
@@ -1232,8 +1926,7 @@ Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
 		pos += _0.node.length();
 	}
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	if (!(*(pos + 0) == '='))
 	{
 		reportError(pos, "\"=\"");
@@ -1249,6 +1942,7 @@ Parser::Token_res Parser::Lexer::AUTO_19(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ';'))
 	{
 		return {};
@@ -1263,6 +1957,17 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::Token_res _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::bool_t success_5 = false;
+	::Parser::bool_t success_9 = false;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _6;
+	::Parser::Token_res _8;
+	::Parser::arr_t<::Parser::Token> shadow_10;
+	::Parser::str_t _12;
+	::Parser::bool_t success_13 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '<'))
 	{
 		return {};
@@ -1271,8 +1976,7 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	skip_spaces(pos);
-	::Parser::Token_res _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	_2 = cll_TYPE(pos);
 	if (!(_2.status))
 	{
@@ -1282,35 +1986,12 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 	success_3 = true;
 	pos += _2.node.length();
 	skip_spaces(pos);
-	::Parser::bool_t success_5 = false;
+	success_5 = false;
 	auto begin_11 = pos;
-	::Parser::bool_t success_9 = false;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _6;
-	if (!(*(begin_11 + 0) == ','))
-	{
-		reportError(pos, "\",\"");
-		return {};
-	}
-	_6 += ::Parser::str_t(begin_11, 1);
-	success_7 = true;
-	begin_11 += 1;
-	skip_spaces(begin_11);
-	::Parser::Token_res _8;
-	_8 = cll_TYPE(begin_11);
-	::Parser::arr_t<::Parser::Token> shadow_10;
-	if (!(_8.status))
-	{
-		reportError(pos, "TYPE");
-		return {};
-	}
-	success_9 = true;
-	begin_11 += _8.node.length();
-	shadow_10.push_back(_8.node);
+	success_9 = false;
+	success_7 = false;
 	while (1)
 	{
-		::Parser::str_t _6;
-		::Parser::bool_t success_7 = false;
 		if (!(*(begin_11 + 0) == ','))
 		{
 			reportError(pos, "\",\"");
@@ -1320,10 +2001,7 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 		success_7 = true;
 		begin_11 += 1;
 		skip_spaces(begin_11);
-		::Parser::Token_res _8;
-		::Parser::bool_t success_9 = false;
 		_8 = cll_TYPE(begin_11);
-		::Parser::arr_t<::Parser::Token> shadow_10;
 		if (!(_8.status))
 		{
 			reportError(pos, "TYPE");
@@ -1339,8 +2017,7 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 		pos = begin_11;
 	}
 	skip_spaces(pos);
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
+	success_13 = false;
 	if (!(*(pos + 0) == '>'))
 	{
 		reportError(pos, "\">\"");
@@ -1357,10 +2034,13 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_NOT(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(*(pos + 0) == '!'))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "not", 3)))
 		{
 			return {};
@@ -1389,11 +2069,14 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_OP(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::Token_res _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::Token_res _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	success_3 = false;
 	_2 = cll_LOGICAL_AND(pos);
 	if (!(_2.status))
 	{
-		::Parser::Token_res _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		_4 = cll_LOGICAL_OR(pos);
 		if (!(_4.status))
 		{
@@ -1422,46 +2105,41 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::str_t _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::bool_t success_11 = false;
+	::Parser::bool_t success_15 = false;
+	::Parser::bool_t success_13 = false;
+	::Parser::str_t _12;
+	::Parser::Token_res _14;
+	::Parser::bool_t success_18 = false;
+	::Parser::bool_t success_22 = false;
+	::Parser::bool_t success_20 = false;
+	::Parser::str_t _19;
+	::Parser::Token_res _21;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "var", 3)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "num", 3)))
 		{
-			::Parser::str_t _6;
-			::Parser::bool_t success_7 = false;
+			success_7 = false;
 			if (!(!std::strncmp(pos, "bool", 4)))
 			{
-				::Parser::str_t _8;
-				::Parser::bool_t success_9 = false;
+				success_9 = false;
 				if (!(!std::strncmp(pos, "str", 3)))
 				{
-					::Parser::bool_t success_11 = false;
+					success_11 = false;
 					auto begin_16 = pos;
-					::Parser::bool_t success_15 = false;
-					::Parser::bool_t success_13 = false;
-					::Parser::str_t _12;
-					if (!(!std::strncmp(begin_16 + 0, "arr", 3)))
-					{
-						return {};
-					}
-					_12 += ::Parser::str_t(begin_16, 3);
-					success_13 = true;
-					begin_16 += 3;
-					skip_spaces(begin_16);
-					::Parser::Token_res _14;
-					_14 = cll_TEMPLATE(begin_16);
-					if (!(_14.status))
-					{
-						reportError(pos, "TEMPLATE");
-						return {};
-					}
-					success_15 = true;
-					begin_16 += _14.node.length();
+					success_15 = false;
+					success_13 = false;
 					do
 					{
-						::Parser::str_t _12;
-						::Parser::bool_t success_13 = false;
 						if (!(!std::strncmp(begin_16 + 0, "arr", 3)))
 						{
 							break;
@@ -1470,8 +2148,6 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 						success_13 = true;
 						begin_16 += 3;
 						skip_spaces(begin_16);
-						::Parser::Token_res _14;
-						::Parser::bool_t success_15 = false;
 						_14 = cll_TEMPLATE(begin_16);
 						if (!(_14.status))
 						{
@@ -1490,32 +2166,12 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 					;
 					if (!success_11)
 					{
-						::Parser::bool_t success_18 = false;
+						success_18 = false;
 						auto begin_23 = pos;
-						::Parser::bool_t success_22 = false;
-						::Parser::bool_t success_20 = false;
-						::Parser::str_t _19;
-						if (!(!std::strncmp(begin_23 + 0, "obj", 3)))
-						{
-							return {};
-						}
-						_19 += ::Parser::str_t(begin_23, 3);
-						success_20 = true;
-						begin_23 += 3;
-						skip_spaces(begin_23);
-						::Parser::Token_res _21;
-						_21 = cll_TEMPLATE(begin_23);
-						if (!(_21.status))
-						{
-							reportError(pos, "TEMPLATE");
-							return {};
-						}
-						success_22 = true;
-						begin_23 += _21.node.length();
+						success_22 = false;
+						success_20 = false;
 						do
 						{
-							::Parser::str_t _19;
-							::Parser::bool_t success_20 = false;
 							if (!(!std::strncmp(begin_23 + 0, "obj", 3)))
 							{
 								break;
@@ -1524,8 +2180,6 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 							success_20 = true;
 							begin_23 += 3;
 							skip_spaces(begin_23);
-							::Parser::Token_res _21;
-							::Parser::bool_t success_22 = false;
 							_21 = cll_TEMPLATE(begin_23);
 							if (!(_21.status))
 							{
@@ -1594,6 +2248,7 @@ Parser::Token_res Parser::Lexer::AUTO_12(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "++", 2)))
 	{
 		return {};
@@ -1610,10 +2265,13 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "||", 2)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "or", 2)))
 		{
 			return {};
@@ -1640,10 +2298,26 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	auto begin_20 = pos;
 	::Parser::bool_t success_19 = false;
 	::Parser::bool_t success_3 = false;
 	::Parser::str_t _2;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _6;
+	::Parser::str_t _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::bool_t success_13 = false;
+	::Parser::bool_t success_11 = false;
+	::Parser::str_t _10;
+	::Parser::str_t _12;
+	::Parser::str_t _15;
+	::Parser::bool_t success_16 = false;
+	::Parser::str_t _18;
+	success_1 = false;
+	auto begin_20 = pos;
+	success_19 = false;
+	success_3 = false;
 	if (!(!std::strncmp(begin_20 + 0, "\'", 1)))
 	{
 		return {};
@@ -1652,126 +2326,17 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 	success_3 = true;
 	begin_20 += 1;
 	skip_spaces(begin_20);
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
+	success_5 = false;
 	auto begin_17 = begin_20;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _6;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	auto begin_14 = begin_17;
-	::Parser::bool_t success_13 = false;
-	::Parser::bool_t success_11 = false;
-	::Parser::str_t _10;
-	if (!(!std::strncmp(begin_14 + 0, "\\", 1)))
-	{
-		reportError(pos, "\"\\\"");
-		return {};
-	}
-	_10 += ::Parser::str_t(begin_14, 1);
-	success_11 = true;
-	begin_14 += 1;
-	skip_spaces(begin_14);
-	::Parser::str_t _12;
-	if (*(begin_14 + 0) == '\0')
-	{
-		reportError(pos, "symbol");
-		return {};
-	}
-	_12 += ::Parser::str_t(begin_14, 1);
-	success_13 = true;
-	begin_14 += 1;
-	_8 += _10;
-	_8 += ;
-	do
-	{
-		::Parser::str_t _10;
-		::Parser::bool_t success_11 = false;
-		if (!(!std::strncmp(begin_14 + 0, "\\", 1)))
-		{
-			reportError(pos, "\"\\\"");
-			break;
-		}
-		_10 += ::Parser::str_t(begin_14, 1);
-		success_11 = true;
-		begin_14 += 1;
-		skip_spaces(begin_14);
-		::Parser::str_t _12;
-		::Parser::bool_t success_13 = false;
-		if (*(begin_14 + 0) == '\0')
-		{
-			reportError(pos, "symbol");
-			break;
-		}
-		_12 += ::Parser::str_t(begin_14, 1);
-		success_13 = true;
-		begin_14 += 1;
-		_8 += _10;
-		_8 += ;
-	}
-	while(0);
-	if (success_11 && success_13)
-	{
-		success_9 = true;
-		begin_17 = begin_14;
-	}
-	;
-	if (!success_9)
-	{
-		::Parser::str_t _15;
-		::Parser::bool_t success_16 = false;
-		if (!(!(*(begin_17 + 0) == '\'')))
-		{
-			return {};
-		}
-		else 
-		{
-			_15 = ::Parser::str_t(begin_17, 1);
-			success_16 = true;
-			begin_17 += 1;
-			_6 = _15;
-		}
-	}
-	else 
-	{
-		_6 = _8;
-	}
-	success_7 = true;
-	_4 += _6;
+	success_7 = false;
 	while (1)
 	{
-		::Parser::str_t _6;
-		::Parser::bool_t success_7 = false;
-		::Parser::str_t _8;
-		::Parser::bool_t success_9 = false;
+		success_9 = false;
 		auto begin_14 = begin_17;
-		::Parser::bool_t success_13 = false;
-		::Parser::bool_t success_11 = false;
-		::Parser::str_t _10;
-		if (!(!std::strncmp(begin_14 + 0, "\\", 1)))
-		{
-			reportError(pos, "\"\\\"");
-			break;
-		}
-		_10 += ::Parser::str_t(begin_14, 1);
-		success_11 = true;
-		begin_14 += 1;
-		skip_spaces(begin_14);
-		::Parser::str_t _12;
-		if (*(begin_14 + 0) == '\0')
-		{
-			reportError(pos, "symbol");
-			break;
-		}
-		_12 += ::Parser::str_t(begin_14, 1);
-		success_13 = true;
-		begin_14 += 1;
-		_8 += _10;
-		_8 += ;
+		success_13 = false;
+		success_11 = false;
 		do
 		{
-			::Parser::str_t _10;
-			::Parser::bool_t success_11 = false;
 			if (!(!std::strncmp(begin_14 + 0, "\\", 1)))
 			{
 				reportError(pos, "\"\\\"");
@@ -1781,8 +2346,6 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 			success_11 = true;
 			begin_14 += 1;
 			skip_spaces(begin_14);
-			::Parser::str_t _12;
-			::Parser::bool_t success_13 = false;
 			if (*(begin_14 + 0) == '\0')
 			{
 				reportError(pos, "symbol");
@@ -1803,8 +2366,7 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 		;
 		if (!success_9)
 		{
-			::Parser::str_t _15;
-			::Parser::bool_t success_16 = false;
+			success_16 = false;
 			if (!(!(*(begin_17 + 0) == '\'')))
 			{
 				break;
@@ -1830,7 +2392,6 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 		begin_20 = begin_17;
 	}
 	skip_spaces(begin_20);
-	::Parser::str_t _18;
 	if (!(!std::strncmp(begin_20 + 0, "\'", 1)))
 	{
 		reportError(pos, "\"\'\"");
@@ -1854,6 +2415,7 @@ Parser::Token_res Parser::Lexer::NEWLINE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '\\' || *(pos + 0) == 'n'))
 	{
 		return {};
@@ -1867,6 +2429,16 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::bool_t success_9 = false;
+	::Parser::bool_t success_7 = false;
+	::Parser::str_t _6;
+	::Parser::str_t _8;
+	::Parser::bool_t success_10 = false;
+	success_1 = false;
 	if (*(pos + 0) == '+' || *(pos + 0) == '-')
 	{
 		_0 += ::Parser::str_t(pos, 1);
@@ -1874,8 +2446,7 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 		pos += 1;
 	}
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	if (!((*(pos + 0)>='0' && *(pos + 0)<='9')))
 	{
 		reportError(pos, "0-9");
@@ -1885,41 +2456,12 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 	success_3 = true;
 	pos += 1;
 	skip_spaces(pos);
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
+	success_5 = false;
 	auto begin_11 = pos;
-	::Parser::bool_t success_9 = false;
-	::Parser::bool_t success_7 = false;
-	::Parser::str_t _6;
-	if (!(*(begin_11 + 0) == '.' || *(begin_11 + 0) == ','))
-	{
-		reportError(pos, ". or ,");
-		return {};
-	}
-	_6 += ::Parser::str_t(begin_11, 1);
-	success_7 = true;
-	begin_11 += 1;
-	skip_spaces(begin_11);
-	::Parser::str_t _8;
-	::Parser::bool_t success_10 = false;
-	while ((*(begin_11 + 0)>='0' && *(begin_11 + 0)<='9'))
-	{
-		_8 += ::Parser::str_t(begin_11, 1);
-		success_9 = true;
-		begin_11 += 1;
-		success_10 = true;
-	}
-	if (!success_10)
-	{
-		reportError(pos, "0-9");
-		return {};
-	}
-	_4 += _6;
-	_4 += _8;
+	success_9 = false;
+	success_7 = false;
 	do
 	{
-		::Parser::str_t _6;
-		::Parser::bool_t success_7 = false;
 		if (!(*(begin_11 + 0) == '.' || *(begin_11 + 0) == ','))
 		{
 			reportError(pos, ". or ,");
@@ -1929,9 +2471,7 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 		success_7 = true;
 		begin_11 += 1;
 		skip_spaces(begin_11);
-		::Parser::str_t _8;
-		::Parser::bool_t success_9 = false;
-		::Parser::bool_t success_10 = false;
+		success_10 = false;
 		while ((*(begin_11 + 0)>='0' && *(begin_11 + 0)<='9'))
 		{
 			_8 += ::Parser::str_t(begin_11, 1);
@@ -1959,6 +2499,7 @@ Parser::Token_res Parser::Lexer::AUTO_16(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ':'))
 	{
 		return {};
@@ -1973,6 +2514,7 @@ Parser::Token_res Parser::Lexer::AUTO_4(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '='))
 	{
 		return {};
@@ -1990,10 +2532,13 @@ Parser::Token_res Parser::Lexer::BOOLEAN(const char* pos) {
 	::Parser::str_t d;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "true", 4)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "false", 5)))
 		{
 			return {};
@@ -2022,6 +2567,7 @@ Parser::Token_res Parser::Lexer::STRICT_END(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ';'))
 	{
 		return {};
@@ -2035,6 +2581,7 @@ Parser::Token_res Parser::Lexer::AUTO_13(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "--", 2)))
 	{
 		return {};
@@ -2048,11 +2595,17 @@ Parser::Token_res Parser::Lexer::AUTO_13(const char* pos) {
 Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
 	auto in = pos;
 	::Parser::bool_t success_1 = false;
-	auto begin_8 = pos;
 	::Parser::bool_t success_7 = false;
 	::Parser::bool_t success_5 = false;
 	::Parser::bool_t success_3 = false;
 	::Parser::Token_res _2;
+	::Parser::str_t _4;
+	::Parser::Token_res _6;
+	success_1 = false;
+	auto begin_8 = pos;
+	success_7 = false;
+	success_5 = false;
+	success_3 = false;
 	_2 = rule_CSEQUENCE_SYMBOL(begin_8);
 	if (!(_2.status))
 	{
@@ -2060,7 +2613,6 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
 	}
 	success_3 = true;
 	begin_8 += _2.node.length();
-	::Parser::str_t _4;
 	if (!(*(begin_8 + 0) == '-'))
 	{
 		reportError(pos, "\"-\"");
@@ -2069,7 +2621,6 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
 	_4 += ::Parser::str_t(begin_8, 1);
 	success_5 = true;
 	begin_8 += 1;
-	::Parser::Token_res _6;
 	_6 = rule_CSEQUENCE_SYMBOL(begin_8);
 	if (!(_6.status))
 	{
@@ -2091,10 +2642,13 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	success_3 = false;
 	if (!(!std::strncmp(pos, "&&", 2)))
 	{
-		::Parser::str_t _4;
-		::Parser::bool_t success_5 = false;
+		success_5 = false;
 		if (!(!std::strncmp(pos, "and", 3)))
 		{
 			return {};
@@ -2121,6 +2675,7 @@ Parser::Token_res Parser::Lexer::QUESTION_MARK(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '?'))
 	{
 		return {};
@@ -2134,6 +2689,7 @@ Parser::Token_res Parser::Lexer::PLUS(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '+'))
 	{
 		return {};
@@ -2147,6 +2703,7 @@ Parser::Token_res Parser::Lexer::MINUS(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '-'))
 	{
 		return {};
@@ -2160,6 +2717,7 @@ Parser::Token_res Parser::Lexer::DIVIDE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '/'))
 	{
 		return {};
@@ -2173,6 +2731,7 @@ Parser::Token_res Parser::Lexer::MULTIPLE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '*'))
 	{
 		return {};
@@ -2186,6 +2745,7 @@ Parser::Token_res Parser::Lexer::MODULO(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '%'))
 	{
 		return {};
@@ -2199,6 +2759,7 @@ Parser::Token_res Parser::Lexer::AT(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '@'))
 	{
 		return {};
@@ -2212,9 +2773,13 @@ Parser::Token_res Parser::Lexer::ID(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	auto begin_6 = pos;
 	::Parser::bool_t success_3 = false;
 	::Parser::str_t _2;
+	::Parser::str_t _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	auto begin_6 = pos;
+	success_3 = false;
 	if (!(*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z')))
 	{
 		return {};
@@ -2223,8 +2788,7 @@ Parser::Token_res Parser::Lexer::ID(const char* pos) {
 	success_3 = true;
 	begin_6 += 1;
 	skip_spaces(begin_6);
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
+	success_5 = false;
 	while (*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z') || (*(begin_6 + 0)>='0' && *(begin_6 + 0)<='9'))
 	{
 		_4 += ::Parser::str_t(begin_6, 1);
@@ -2245,6 +2809,7 @@ Parser::Token_res Parser::Lexer::AUTO_15(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == ']'))
 	{
 		return {};
@@ -2259,6 +2824,19 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	::Parser::Token _4;
+	::Parser::bool_t success_5 = false;
+	::Parser::Token_res _6;
+	::Parser::bool_t success_7 = false;
+	::Parser::Token_res _8;
+	::Parser::bool_t success_9 = false;
+	::Parser::Token_res _10;
+	::Parser::bool_t success_11 = false;
+	::Parser::str_t _12;
+	::Parser::bool_t success_13 = false;
+	success_1 = false;
 	if (!(*(pos + 0) == '['))
 	{
 		return {};
@@ -2267,8 +2845,7 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	if (*(pos + 0) == '^')
 	{
 		_2 += ::Parser::str_t(pos, 1);
@@ -2276,20 +2853,16 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 		pos += 1;
 	}
 	skip_spaces(pos);
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	::Parser::Token_res _6;
-	::Parser::bool_t success_7 = false;
+	success_5 = false;
+	success_7 = false;
 	_6 = rule_CSEQUENCE_ESCAPE(pos);
 	if (!(_6.status))
 	{
-		::Parser::Token_res _8;
-		::Parser::bool_t success_9 = false;
+		success_9 = false;
 		_8 = rule_CSEQUENCE_SYMBOL(pos);
 		if (!(_8.status))
 		{
-			::Parser::Token_res _10;
-			::Parser::bool_t success_11 = false;
+			success_11 = false;
 			_10 = rule_CSEQUENCE_DIAPASON(pos);
 			if (!(_10.status))
 			{
@@ -2317,8 +2890,7 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	}
 	success_5 = true;
 	skip_spaces(pos);
-	::Parser::str_t _12;
-	::Parser::bool_t success_13 = false;
+	success_13 = false;
 	if (!(*(pos + 0) == ']'))
 	{
 		reportError(pos, "\"]\"");
@@ -2333,6 +2905,9 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	::Parser::str_t _2;
+	::Parser::bool_t success_3 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "//", 2)))
 	{
 		return {};
@@ -2341,8 +2916,7 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	success_1 = true;
 	pos += 2;
 	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
+	success_3 = false;
 	while (!(*(pos + 0) == '\\' || *(pos + 0) == 'n' && *(pos + 0) != '\0'))
 	{
 		_2 += ::Parser::str_t(pos, 1);
@@ -2355,6 +2929,7 @@ Parser::Token_res Parser::Lexer::AUTO_20(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "use", 3)))
 	{
 		return {};
@@ -2369,6 +2944,7 @@ Parser::Token_res Parser::Lexer::AUTO_18(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
+	success_1 = false;
 	if (*(pos + 0) == '#')
 	{
 		_0 += ::Parser::str_t(pos, 1);

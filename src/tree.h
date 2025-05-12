@@ -12,7 +12,7 @@ class Tree {
         };
         struct lexer_code {
             LLIR code;
-            LLIR::ConvertionResult success_var;
+            LLIR::variable success_var;
         };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
@@ -37,16 +37,16 @@ class Tree {
         bool prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
         void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         
-        void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> name, UsePlaceTable &table);
+        void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
         void createUsePlacesTable();
 
         void constructor() {
-            createUsePlacesTable();
             removeEmptyRule();
             inlineSingleGroups();
             sortByPriority();
             literalsToToken();
             addSpaceToken();
+            createUsePlacesTable();
         }
     public:
         Tree(const AST &ast, bool rawAssign = false) : ast(ast) {

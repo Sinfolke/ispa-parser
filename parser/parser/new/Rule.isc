@@ -28,7 +28,7 @@ rule:
         {@}
     ;
     #nested_rule: 
-        '#' \s0 @ Rule
+        '#' \s0 @ rule
         {@}
     ;
     #data_block:

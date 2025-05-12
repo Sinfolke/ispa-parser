@@ -274,20 +274,20 @@ auto Tree::getNonTerminals() -> std::vector<std::vector<std::string>> {
     }
     return set;
 }
-void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> name, UsePlaceTable &table) {
+void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name) {
     for (const auto &member : members) {
         if (member.isGroup()) {
-            getUsePlacesTable(member.getGroup().values, name, table);
+            getUsePlacesTable(member.getGroup().values, name);
         } else if (member.isOp()) {
-            getUsePlacesTable(member.getOp().options, name, table);
+            getUsePlacesTable(member.getOp().options, name);
         } else if (member.isName()) {
-            table[name].push_back(member.getName().name);
+            use_places[member.getName().name].push_back(name);
         }
     }
 }
 void Tree::createUsePlacesTable() {
     for (const auto &[name, value] : ast.getTreeMap()) {
-        getUsePlacesTable(value.members, name, use_places);
+        getUsePlacesTable(value.members, name);
     }
 }
 auto Tree::getUsePlacesTable() -> UsePlaceTable& {
@@ -311,9 +311,14 @@ Tree::lexer_code Tree::getCodeForLexer() {
                 // add this token
                 options.options.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName { name } });
             }
+        } else if (name == std::vector<std::string> { "__WHITESPACE" }) {
+            options.options.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName { name } });
+        } else {
+            printf("Not found %s in use_places, use_places size: %zu\n", name.back().c_str(), use_places.size());
         }
         // if not found, do not add this means the token is never used
     }
+    sortByPriority(options.options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
     LLIR code(*this, resultRule, true);
@@ -322,7 +327,7 @@ Tree::lexer_code Tree::getCodeForLexer() {
     code.push_begin({LLIR::types::TOKEN});
     code.push({LLIR::types::RULE_END});
     if (success_var.empty())
-        // throw Error("Empty successvar\n");
-        return {code, LLIR::variable{""}};
-    return {code, success_var[0].uvar};
+        throw Error("Empty successvar\n");
+    cpuf::printf("success_var[0].name: %s\n", success_var[0].var.name);
+    return {code, success_var[0].var};
 }

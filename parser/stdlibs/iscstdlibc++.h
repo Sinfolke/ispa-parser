@@ -6,6 +6,9 @@
  * It is for case you'd use two ISC parsers in one same project.
  * However it won't cancell that parser does not rely on any library
 */
+#pragma once
+#ifndef _ISPA_STD_LIB_CPP
+#define _ISPA_STD_LIB_CPP
 #include <map>
 #include <vector>
 #include <deque>
@@ -18,9 +21,6 @@
 #include <variant>
 #include <optional>
 #include <queue>
-#ifndef _ISC_STD_LIB
-#define _ISC_STD_LIB
-
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -168,6 +168,7 @@ public:
             throw node_exception("endpos");
         return _startpos + (_end - _start);
     }
+    /* clear rule */
     void clear() {
         _startpos = std::string::npos;
         _line = 0;
@@ -194,7 +195,7 @@ public:
         return *this;
     }
     /**
-     * whether token is empty
+     * whether node is empty
      */
     auto empty() const {
         return _empty;
@@ -247,6 +248,9 @@ public:
     auto &data() {
         return _data;
     }
+    /**
+     * get data of this node
+     */
     const auto &data() const {
         return _data;
     }
@@ -335,10 +339,8 @@ protected:
     }
 public:
     /**
-     * A lazy iterator (accamulates only tokens that currently are accessed).
-     * Be aware it acts independently of the lexer class and does not accamulate tokens for it
-     * If you pass in parser class the input string a lazy iterator is going to be used and no tokens to lexer accamulated otherwise if you accamulate tokens in lexer class
-     * and pass it in to parser class your tokens will be saved until clean
+     * A lazy iterator (accumulates only tokens that currently are accessed).
+     * Be aware it acts independently of the lexer class and does not accumulate tokens for it
      */
     class lazy_iterator {
         Lexer_base<TOKEN_T>* owner = nullptr;
@@ -401,7 +403,7 @@ public:
     };
     /**
      * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
-     * If you need to iterate through tokens after parsing, first accamulate tokens, then run parsing.
+     * If you need to iterate through tokens after parsing, first accumulate tokens, then run parsing.
      */
     class iterator {
         Lexer_base<TOKEN_T>* owner = nullptr;
@@ -535,7 +537,7 @@ public:
     }
 
     /**
-     * Accamulate tokens (saving in this class) and return their reference
+     * Accumulate tokens (saving in this class) and return their reference
      */
     TokenFlow<TOKEN_T>& makeTokens() {
         if (_in == nullptr)
@@ -578,10 +580,10 @@ public:
     }
     /**
      * @param tokenizator the tokenizator with tokens
-     * Push another tokenizator tokens to current token flow. Note that if tokenizator has no token an Lexer_No_Tokens_exception is raised 
+     * Push another lexer's tokens to the current one
      */
     void push(const Lexer_base& tokenizator) {
-        if (tokenizator.hasTokenFlow())
+        if (tokenizator.hasTokens())
             tokens.push_back(tokenizator.tokens);
         else
             throw Lexer_No_Tokens_exception();
@@ -593,8 +595,8 @@ public:
         tokens.pop_back();
     }
     /**
-     * @param n the amount of tokens to pop
-     * Pop a specific amount of tokens
+     * @param n the number of tokens to pop
+     * Pop specific number of tokens
      */
     void pop(const std::size_t& n) {
         if (n > tokens.size())
@@ -655,10 +657,6 @@ protected:
             error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
 public:
-    /**
-     * @brief Your parsed Tree. The Tree is std::vector. 
-     * 
-     */
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
     virtual void parseFromTokens() = 0;
@@ -696,7 +694,7 @@ public:
         return errors;
     }
     /**
-     * @brief Parser the tokens and get the tree
+     * @brief Parser the tokens based on input provided before
      * 
      * @return Tree<RULE_T> 
      */
@@ -893,4 +891,4 @@ protected:
 
 #undef _ISC_GITHUB
 #undef _ISC_INTERNAL_ERROR_MARK
-#endif // ISC_STD_LIB_CPP
+#endif // _ISPA_STD_LIB_CPP

@@ -173,7 +173,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
     converter.convertLexerCode(lexer_code.getMembers(), out);
-    converter.addLexerCode_Bottom(out, success_var.var);
+    converter.addLexerCode_Bottom(out, success_var);
     converter.convertData(out);
     max_states = data->getMaxStatesCount();
     createActionTable(out);

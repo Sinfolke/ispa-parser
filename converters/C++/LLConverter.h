@@ -31,7 +31,7 @@ private:
 
 
 public:
-    LLConverter(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::ConvertionResult *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
+    LLConverter(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
         this->namespace_name = namespace_name;
         current_pos_counter.push("pos");
     }

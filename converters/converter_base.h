@@ -11,10 +11,10 @@ class LLConverter_base {
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;        
         LLIR lexer_code;
-        LLIR::ConvertionResult lexer_code_access_var;
+        LLIR::variable lexer_code_access_var;
         Tree* tree;
     public:
-        LLConverter_base(LLIR &ir, Tree &tree, LLIR *custom_lexer_code = nullptr, LLIR::ConvertionResult *access_var = nullptr) : lexer_code(tree), tree(&tree) {
+        LLConverter_base(LLIR &ir, Tree &tree, const LLIR *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -24,11 +24,11 @@ class LLConverter_base {
             data_block_rules = ir.getDataBlocksNonTerminals();
             if (custom_lexer_code == nullptr || access_var == nullptr) {
                 auto lc = tree.getCodeForLexer();            
-                this->lexer_code = lc.code;
-                this->lexer_code_access_var = lc.success_var;
+                lexer_code = lc.code;
+                lexer_code_access_var = lc.success_var;
             } else {
-                this->lexer_code = *custom_lexer_code;
-                this->lexer_code_access_var = *access_var;
+                lexer_code = *custom_lexer_code;
+                lexer_code_access_var = *access_var;
             }
             this->data = std::move(ir.getData());
         }
@@ -45,7 +45,7 @@ class LRConverter_base {
         // data
         const LRParser* data;        
         LLIR lexer_code;
-        LLIR::ConvertionResult success_var;
+        LLIR::variable success_var;
         Tree* tree;
     public:
         LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree), data(&data), tree(&tree) {

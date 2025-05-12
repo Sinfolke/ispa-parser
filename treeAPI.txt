@@ -292,7 +292,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ rule, nested_rule, }> : Rule {
    String (#)
    NoSpace
-  @  Name(Rule)
+  @  Name(rule)
   Data: [RegularDataBlock: CllExpr]
 }name<{ _use, unit, }> : Rule {
   @  Name(ID)
