@@ -452,7 +452,6 @@ void AST::createRuleMember(const Parser::Rule &rule) {
             auto data = Parser::get::Rule_name(rule);
 
             std::vector<std::string> rule_name;
-            cpuf::printf("data name: %s\n", Parser::get::ID(data.name));
             auto res = std::find_if(nested_rule_names.begin(), nested_rule_names.end(), [&data](const  std::pair<std::string, std::vector<std::string>> &p) {
                 return p.first == Parser::get::ID(data.name);
             });
@@ -566,7 +565,6 @@ void AST::createRules(const Parser::Types::Rule_data &rule) {
     fullname.push_back(Parser::get::ID(rule.name));
     size_t previous_size = nested_rule_names.size();
     getNestedRuleNames(rule);
-    cpuf::printf("rule: %$\n", fullname);
     createRuleMembers(rule.rule);
     newRule.members = newRules;
     newRule.data_block = createDataBlock(rule.data_block);

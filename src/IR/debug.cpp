@@ -64,7 +64,6 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::VARIABLE:
         {
             //cpuf::printf("on ID\n");
-            cpuf::printf("type: %s\n", data.type().name());
             auto dt = std::any_cast<LLIR::variable>(data);
             std::string res = dt.name;
             for (auto el : dt.property_access)

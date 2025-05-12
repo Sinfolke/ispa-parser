@@ -14,7 +14,6 @@ void Tree::removeEmptyRule() {
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
         if (value.members.size() == 0) {
-            cpuf::printf("Members size == 0\n");
             it = treeMap.erase(it);
             continue;
         }
@@ -85,10 +84,7 @@ void Tree::literalsToToken() {
     auto &treeMap = ast.getTreeMap();
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
-            cpuf::printf("Token-to-literals for %$\n", name);
             literalsToToken(value.members, count, toInsert, generated);
-        } else {
-            printf("terminal %s ignored\n", corelib::text::join(name, "_").c_str());
         }
     }
     for (const auto &[name, newRule] : toInsert) {
@@ -176,7 +172,6 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
         return prioritySort(find_it->second.members[0], second);
     }
     if (second.isName()){
-        cpuf::printf("first: %$\n", first);
         auto find_it = ast.getTreeMap().find(second.getName().name);
         if (find_it == ast.getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", second.getName().name, second);

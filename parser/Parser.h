@@ -586,36 +586,46 @@ namespace Parser {
 			while (true) {
 				bool matched = false;
 
+				// SPACEMODE first
 				if (begin->name() == ::Parser::Tokens::SPACEMODE) {
 					parsed_elements.push_back(*begin);
 					++begin;
 					matched = true;
-				} else {
+				}
+				// Try `use`
+				else {
 					auto res_use = use(begin);
 					if (res_use.status) {
 						parsed_elements.push_back(res_use.node);
 						begin += res_use.node.length();
 						matched = true;
-					} else {
-						auto res_rule = Rule(begin);
-						if (res_rule.status) {
-							parsed_elements.push_back(res_rule.node);
-							begin += res_rule.node.length();
-							matched = true;
-						} else if (begin->name() == ::Parser::Tokens::NAME) {
-							parsed_elements.push_back(*begin);
-							++begin;
-							matched = true;
-						}
 					}
 				}
 
-				if (!matched)
+				// Try `Rule` if not matched yet
+				if (!matched) {
+					auto res_rule = Rule(begin);
+					if (res_rule.status) {
+						parsed_elements.push_back(res_rule.node);
+						begin += res_rule.node.length();
+						matched = true;
+					}
+				}
+
+				// Fallback: raw NAME token
+				if (!matched && begin->name() == ::Parser::Tokens::NAME) {
+					parsed_elements.push_back(*begin);
+					++begin;
+					matched = true;
+				}
+
+				// If nothing matched, stop
+				if (!matched) {
 					break;
+				}
 
 				matched_any = true;
 			}
-
 			if (!matched_any) {
 				reportError(pos, "Expected one of: SPACEMODE, use, rule, or NAME");
 				return {};
@@ -729,6 +739,10 @@ namespace Parser {
 				success_5 = true;
 				pos = begin_6;
 			}
+			if (pos->name() != ::Parser::Tokens::AUTO_6) {
+				return {};
+			}
+			pos++;
 			::Parser::Types::use_data data;
 			data.second = shadow_11;
 			data.first = _2.node;
@@ -2632,8 +2646,7 @@ namespace Parser {
 												if (!(begin_10->name() == ::Parser::Tokens::STRING))
 												{
 													success_33 = false;
-													_32 = cll(begin_10);
-													if (!(_32.status))
+													if (true)
 													{
 														success_35 = false;
 														_34 = Rule_name(begin_10);

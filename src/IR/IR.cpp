@@ -377,7 +377,6 @@ LLIR::variable LLIR::affectIrByQuantifier(const TreeAPI::RuleMember &rule, LLIR:
         uvar.type = deduceUvarType(var, shadow_var);
         push({LLIR::types::VARIABLE, uvar});
     }
-    cpuf::printf("group quantifier: %$\n", quantifier);
     if (quantifier == '*' || quantifier == '+') {
         LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
         loop.block = members;
@@ -1530,7 +1529,6 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
     if (rule.prefix.is_key_value) {
         if (rule.prefix.name.empty()) {
             unnamed_datablock_units.push_back(success_var.uvar.name.empty() ? (success_var.shadow_var.name.empty() ? success_var.var : success_var.shadow_var) : success_var.uvar);
-            cpuf::printf("pushed variable %$\n", unnamed_datablock_units.back().name);
         } else {
             key_vars.emplace_back(rule.prefix.name, success_var.uvar);
         }
@@ -1616,7 +1614,6 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         // templated data block
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
-        cpuf::printf("udu: %$, tdb: %$\n", unnamed_datablock_units.size(), templated_datablock.names.size());
         for (const auto &name : templated_datablock.names) {
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
             initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);

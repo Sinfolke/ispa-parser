@@ -255,7 +255,7 @@ public:
 template<class RESULT_T>
 struct match_result {
     bool status = false;
-    Node<RESULT_T> node;
+    Node<RESULT_T> node = {};
 };
 
 template<class TOKEN_T>

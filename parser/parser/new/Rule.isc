@@ -1,5 +1,5 @@
 rule:
-    @ ID ':' @ #rule+ @ #data_block? @ #nested_rule* STRICT_END
+    @ ID ':' @ #member+ @ #data_block? @ #nested_rule* STRICT_END
 
     @{ name, rule, data_block, nested_rules }
 

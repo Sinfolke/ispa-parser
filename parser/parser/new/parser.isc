@@ -6,33 +6,23 @@ LINEAR_COMMENT:
     '//' [^\n]*
 ;
 QUESTION_MARK: '?';
-PLUS:     '+';
-MINUS:    '-';
-DIVIDE:   '/';
+PLUS: '+';
+MINUS: '-';
+DIVIDE: '/';
 MULTIPLE: '*';
-MODULO:   '%';
+MODULO: '%';
 AT: '@';
-ID: 
-    @ ([a-zA-Z_] [a-zA-Z0-9_]*)
-    {@}
-;
-SPACEMODE:
-    'spacemode' @ 'mixed' | 'skipped' | 'allowed' END
-    {@}
-;
-NAME:
-    'name' @ ID END
-
+ID:
+    @ ([a-zA-Z_][a-zA-Z0-9_]*)
     {@}
 ;
 main:
-    @ (use | Rule | SPACEMODE | NAME)+
+    @ ( _use | rule )+
     {@}
 ;
+_use:
+    'use' @ #unit (',' @ #unit)* STRICT_END
 
-use: 
-    'use' @ #unit (',' @ #unit)*
-    
     @{first, second}
 
     #unit:
