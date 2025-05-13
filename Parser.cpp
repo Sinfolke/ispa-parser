@@ -1795,8 +1795,6 @@ Parser::Token_res Parser::Lexer::rule_ESCAPED(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
 	success_1 = false;
 	if (!(!std::strncmp(pos + 0, "\\", 1)))
 	{
@@ -1806,19 +1804,14 @@ Parser::Token_res Parser::Lexer::rule_ESCAPED(const char* pos) {
 	success_1 = true;
 	pos += 1;
 	success_3 = false;
-	success_5 = false;
 	if (*(pos + 0) == '\0')
 	{
+		reportError(pos, "symbol");
 		return {};
 	}
-	else 
-	{
-		_4 = ::Parser::str_t(pos, 1);
-		success_5 = true;
-		pos += 1;
-		_2 = ;
-	}
+	_2 += ::Parser::str_t(pos, 1);
 	success_3 = true;
+	pos += 1;
 	::Parser::Types::rule_ESCAPED data = _2;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_ESCAPED, data)};
 }
@@ -2200,14 +2193,6 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 						{
 							return {};
 						}
-						else 
-						{
-							_0 = _17;
-						}
-					}
-					else 
-					{
-						_0 = _10;
 					}
 				}
 				else 
@@ -2355,7 +2340,7 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 			success_13 = true;
 			begin_14 += 1;
 			_8 += _10;
-			_8 += ;
+			_8 += _12;
 		}
 		while(0);
 		if (success_11 && success_13)
@@ -2826,7 +2811,7 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	::Parser::bool_t success_1 = false;
 	::Parser::str_t _2;
 	::Parser::bool_t success_3 = false;
-	::Parser::Token _4;
+	::Parser::arr_t<::Parser::Token> _4;
 	::Parser::bool_t success_5 = false;
 	::Parser::Token_res _6;
 	::Parser::bool_t success_7 = false;
@@ -2872,21 +2857,21 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 			{
 				success_11 = true;
 				pos += _10.node.length();
-				_4 = _10.node;
+				_4.push_back(_10.node);
 			}
 		}
 		else 
 		{
 			success_9 = true;
 			pos += _8.node.length();
-			_4 = _8.node;
+			_4.push_back(_8.node);
 		}
 	}
 	else 
 	{
 		success_7 = true;
 		pos += _6.node.length();
-		_4 = _6.node;
+		_4.push_back(_6.node);
 	}
 	success_5 = true;
 	skip_spaces(pos);

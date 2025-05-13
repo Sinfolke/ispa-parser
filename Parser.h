@@ -197,20 +197,20 @@ namespace Parser {
 		using rule_ESCAPED = ::Parser::str_t;
 		using AUTO_10 = ::Parser::str_t;
 		using rule_group = ::Parser::arr_t<::Parser::Rule>;
-		using rule_nested_rule = ::Parser::Rule_res;
-		using main = ::Parser::Rule;
+		using rule_nested_rule = ::Parser::Rule;
+		using main = ::Parser::arr_t<::Parser::Rule>;
 		using rule_keyvalue = ::Parser::Token;
 		using rvalue = ::Parser::any_t;
 		using cll_stmt = ::Parser::arr_t<::Parser::Rule>;
-		using cll_expr_group = ::Parser::Rule_res;
-		using rule_data_block_regular_datablock = ::Parser::Rule;
+		using cll_expr_group = ::Parser::Rule;
+		using rule_data_block_regular_datablock = ::Parser::any_t;
 		using cll = ::Parser::Rule;
-		using cll_expr = ::Parser::Rule_res;
-		using cll_function_body_call = ::Parser::Rule_res;
+		using cll_expr = ::Parser::Rule;
+		using cll_function_body_call = ::Parser::Rule;
 		using rule_value = ::Parser::Token;
 		using rule_data_block = ::Parser::Rule;
-		using cll_function_body_decl = ::Parser::Rule_res;
-		using array = ::Parser::Rule_res;
+		using cll_function_body_decl = ::Parser::Rule;
+		using array = ::Parser::Rule;
 		using cll_expr_value = ::Parser::Rule;
 	}
 
@@ -1109,7 +1109,7 @@ namespace Parser {
 			skip_spaces(pos);
 			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
-			::Parser::Rule _2;
+			::Parser::any_t _2;
 			::Parser::bool_t success_3 = false;
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
@@ -2632,7 +2632,7 @@ namespace Parser {
 		::Parser::Rule_res main(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::Rule _0;
+			::Parser::arr_t<::Parser::Rule> _0;
 			::Parser::bool_t success_1 = false;
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
@@ -2653,14 +2653,14 @@ namespace Parser {
 				{
 					success_5 = true;
 					pos += _4.node.length();
-					_0 = _4.node;
+					_0.push_back(_4.node);
 				}
 			}
 			else 
 			{
 				success_3 = true;
 				pos += _2.node.length();
-				_0 = _2.node;
+				_0.push_back(_2.node);
 			}
 			success_1 = true;
 			::Parser::Types::main data = _0;

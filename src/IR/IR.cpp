@@ -1,3 +1,4 @@
+#include <chrono>
 #include <IR/IR.h>
 #include <corelib.h>
 #include <cpuf/hex.h>
@@ -739,30 +740,37 @@ auto LLIR::deduceUvarType(const LLIR::variable &var, const LLIR::variable &shado
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
 LLIR::var_type LLIR::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) {
-    LLIR::var_type type;
+    LLIR::var_type type = {LLIR::var_types::UNDEFINED};
     if (mem.isGroup()) {
         for (auto i = 0; i < mem.getGroup().values.size(); i++) {
-            if (deduceVarTypeByProd(mem.getGroup().values[i]).type != LLIR::var_types::STRING)
+            if (deduceVarTypeByProd(mem.getGroup().values[i]).type != LLIR::var_types::STRING) {
                 return {LLIR::var_types::UNDEFINED};
+            }
         }
-        return {LLIR::var_types::STRING};
-    }
-    if (mem.isOp()) {
-        LLIR::var_type type = {LLIR::var_types::UNDEFINED};
-        
-        for (auto el : mem.getOp().options) {
-            if (type.type == LLIR::var_types::UNDEFINED) {
-                type = deduceVarTypeByProd(el);
-            } else if (deduceVarTypeByProd(el).type != type.type) {
+        type = {LLIR::var_types::STRING};
+    } else if (mem.isOp()) {
+        std::optional<LLIR::var_types> first_type;
+        for (const auto &el : mem.getOp().options) {
+            auto t = deduceVarTypeByProd(el).type;
+            // if (t == LLIR::var_types::UNDEFINED)
+            //     return {LLIR::var_types::UNDEFINED};
+            if (!first_type) {
+                first_type = t;
+            } else if (t != *first_type) {
                 return {LLIR::var_types::ANY};
             }
         }
-        return type;
+        type.type = first_type.value_or(LLIR::var_types::UNDEFINED);
+    } else if (mem.isName()) {
+        type.type = corelib::text::isUpper(mem.getName().name.back()) ? LLIR::var_types::Token : LLIR::var_types::Rule;
+    } else type.type = LLIR::var_types::STRING;
+    if (type.type == LLIR::var_types::UNDEFINED)
+        return {LLIR::var_types::UNDEFINED};
+    if (type.type != LLIR::var_types::STRING && (mem.quantifier == '+' || mem.quantifier == '*')) {
+        type.templ = {type};
+        type.type = LLIR::var_types::ARRAY;
     }
-    if (mem.isName()) {
-        return corelib::text::isUpper(mem.getName().name.back()) ? LLIR::var_type {LLIR::var_types::Token} : LLIR::var_type {LLIR::var_types::Rule};
-    }
-    return {LLIR::var_types::STRING};
+    return type;
 }
 LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
     LLIR::var_type type = {LLIR::var_types::UNDEFINED};
@@ -777,11 +785,20 @@ LLIR::var_type LLIR::deduceTypeFromRvalue(const TreeAPI::rvalue &value) {
         auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getID().value; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
-        return find_it->type;
+        if (find_it->type.type == LLIR::var_types::Rule_result)
+            type = {LLIR::var_types::Rule};
+        else if (find_it->type.type == LLIR::var_types::Token_result)
+            type = {LLIR::var_types::Token};
+        else type = find_it->type;
     } else if (value.isAt()) {
         if (unnamed_datablock_units.empty())
             throw Error("no more data accamulated with @");
-        return unnamed_datablock_units.front().type;
+        const auto &t = unnamed_datablock_units.front().type;
+        if (t.type == LLIR::var_types::Rule_result)
+            type = {LLIR::var_types::Rule};
+        else if (t.type == LLIR::var_types::Token_result)
+            type = {LLIR::var_types::Token};
+        else type = t;
     } else if (value.isArray()) {
         LLIR::var_type types;
         for (const auto &el : value.getArray().value) {
@@ -833,6 +850,10 @@ LLIR::var_type LLIR::deduceTypeFromExprValue(const TreeAPI::CllExprValue &value)
         auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
+        if (find_it->type.type == LLIR::var_types::Rule_result)
+            return {LLIR::var_types::Rule};
+        if (find_it->type.type == LLIR::var_types::Token_result)
+            return {LLIR::var_types::Token};
         return find_it->type;
     } else if (value.isrvalue()) {
         return deduceTypeFromRvalue(value.getrvalue());
@@ -899,7 +920,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
         case LLIR::var_types::STRING:
             // it is a string so add all values
             for (auto node : values.success_vars) {
-                if (node.var.name == "" && node.svar.name == "")
+                if (node.var.name.empty())
                     continue;
                 var_members.push_back(
                     {
@@ -1303,7 +1324,7 @@ LLIR::ConvertionResult LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix)
     push({LLIR::types::VARIABLE, svar});
     push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
-    return {svar, var};
+    return {svar, {}, var};
 }
 std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) {
     //[[assume(rules.size() >= 2)]];
@@ -1349,7 +1370,7 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
         };
         auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
         auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
-        if (!v.name.empty()) {
+        if (!v.name.empty() && v.type.type != LLIR::var_types::UNDEFINED) {
             cond.else_block = {{
                 LLIR::types::ASSIGN_VARIABLE,
                 LLIR::variable_assign 
@@ -1431,7 +1452,9 @@ LLIR::ConvertionResult LLIR::process_Rule_op(const TreeAPI::RuleMember &rule) {
         var.type.templ = {{var.type.type}};
         var.type.type = LLIR::var_types::ARRAY;
     }
-    push({LLIR::types::VARIABLE, var});
+    if (var.type.type != LLIR::var_types::UNDEFINED) {
+        push({LLIR::types::VARIABLE, var});
+    }
     push({LLIR::types::VARIABLE, svar});
     if (!uvar.name.empty()) {
         uvar.type = var.type;

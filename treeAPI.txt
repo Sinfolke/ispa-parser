@@ -98,7 +98,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ rule, ESCAPED, }> : Rule {
    String (\\)
    NoSpace
-  @  Group( Op( Any))
+  @  Group( Any)
    NoSpace
   Data: [RegularDataBlock: CllExpr]
 }name<{ cll, OP, }> : Rule {
