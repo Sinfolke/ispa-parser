@@ -16,6 +16,7 @@ class Tree {
         };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
+    std::vector<std::string> n;
     private:
         AST ast;
         size_t token_count = 0;

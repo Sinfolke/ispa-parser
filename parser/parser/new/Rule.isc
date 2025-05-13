@@ -5,7 +5,7 @@ rule:
 
     #member:
 
-        @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ QUANTIFIER?
+        @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ quantifier?
 
         @{ prefix, val, quantifier }
     ;
@@ -50,8 +50,8 @@ rule:
     #OP:
         '|'
     ;
-    #QUANTIFIER:
-        @('?' | '+' | '*')
+    #quantifier:
+        @(QUESTION_MARK | PLUS | MULTIPLE)
         {@}
     ;
 

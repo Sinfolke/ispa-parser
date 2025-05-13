@@ -57,6 +57,7 @@ void Tree::literalsToToken(
 
                 // make the rule to store the data via @ <rule>
                 newRuleMember.prefix.clear();
+                newRuleMember.quantifier = '\0';
                 newRuleMember.prefix.is_key_value = true;
 
                 // add data block
@@ -96,7 +97,6 @@ bool Tree::prioritySort(const TreeAPI::String &first, const TreeAPI::String &sec
         return first.value.size() > second.value.size();
     return first.value > second.value;
 }
-
 bool Tree::prioritySort(const TreeAPI::RuleMemberBin &first, const TreeAPI::RuleMemberBin &second) {
     return first.bin_chars.size() > second.bin_chars.size();
 }
@@ -107,14 +107,14 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberHex &first, const TreeAPI::Rule
 
 bool Tree::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second) {
     auto &treeMap = ast.getTreeMap();
-    auto first_data = treeMap.find(first.name);
-    auto second_data = treeMap.find(second.name);
+    const auto first_data = treeMap.find(first.name);
+    const auto second_data = treeMap.find(second.name);
     if (first_data == treeMap.end())
         throw Error("Not found Rule_name in map: %$ against %$\n", first.name, second);
     if (second_data == treeMap.end())
         throw Error("Not found Rule_name in map: %$ against %$\n", second.name, first);
-    auto &first_rules = first_data->second.members;
-    auto &second_rules = second_data->second.members;
+    const auto &first_rules = first_data->second.members;
+    const auto &second_rules = second_data->second.members;
     for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
         if (first_rules[i] == second_rules[i])
             continue;
@@ -154,7 +154,7 @@ Types getTypes(const TreeAPI::RuleMemberBin&) { return Types::Rule_bin; }
 Types getTypes(const TreeAPI::RuleMemberHex&) { return Types::Rule_hex; }
 Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
 Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
-// never meeted types
+// never meet types
 Types getTypes(const TreeAPI::RuleMemberName&) { return Types::string; };
 Types getTypes(const TreeAPI::RuleMemberGroup &) { return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberNospace& ) {return Types::string; }
@@ -164,6 +164,23 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
     if (first.isName() && second.isName()) {
         return prioritySort(first.getName(), second.getName());
     }
+    if (first.isGroup() && second.isGroup())
+        prioritySort(first.getGroup(), second.getGroup());
+    if (first.isOp() && second.isOp())
+        prioritySort(first.getOp(), second.getOp());
+    if (first.isString() && second.isString())
+        return prioritySort(first.getString(), second.getString());
+    if (first.isEscaped() && second.isEscaped())
+        return false;
+    if (first.isCsequence() && second.isCsequence())
+        return prioritySort(first.getCsequence(), second.getCsequence());
+    if (first.isBin() && second.isBin())
+        return prioritySort(first.getBin(), second.getBin());
+    if (first.isHex() && second.isHex())
+        return prioritySort(first.getHex(), second.getHex());
+    if (first.isAny() && second.isAny())
+        return false;
+
     if (first.isName()) {
         auto find_it = ast.getTreeMap().find(first.getName().name);
         if (find_it == ast.getTreeMap().end()) {
@@ -198,6 +215,8 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
     }
     if (second.isOp()) {
         auto &dt = second.getOp();
+        if (dt.options.empty())
+            throw Error("Empty op\n");
         return prioritySort(first, dt.options[0]);
     }
     return std::visit([&](const auto &f, const auto &s) -> bool {
@@ -247,6 +266,7 @@ void Tree::sortByPriority() {
         if (value.members.empty()) {
             throw Error("Empty rule\n");
         }
+        n = name;
         sortByPriority(value.members);
     }
 }
