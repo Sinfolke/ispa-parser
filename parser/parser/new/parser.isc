@@ -1,7 +1,4 @@
 name Parser;
-END: [;\n];
-STRICT_END: ';';
-NEWLINE: [\n];
 LINEAR_COMMENT:
     '//' [^\n]*
 ;
@@ -12,16 +9,27 @@ DIVIDE: '/';
 MULTIPLE: '*';
 MODULO: '%';
 AT: '@';
+DOT: '.';
+SPACEMODE:
+    'spacemode' @ 'mixed' | 'skipped' | 'allowed' ';'
+
+    {@}
+;
+NAME:
+    'name' @ ID ';'
+
+    {@}
+;
 ID:
     @ ([a-zA-Z_][a-zA-Z0-9_]*)
     {@}
 ;
 main:
-    @ ( _use | rule )+
+    ( @ _use | rule | NAME | SPACEMODE )+
     {@}
 ;
 _use:
-    'use' @ #unit (',' @ #unit)* STRICT_END
+    'use' @ #unit (',' @ #unit)* ';'
 
     @{first, second}
 

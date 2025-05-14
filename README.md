@@ -9,12 +9,21 @@
  1. Make sure the syntax definion is done
  2. Do bootstrap. Write the parser for the syntax of this parser
  3. Begin to write the main code of the parser
- 5. Compile the parser writing the code on C++ by own
- 6. Create rules to walk on parser tree if need some optimisations or else before the compilation
- 7. Convert rules into IR. First convert high level constructs, then cll and accessor
- 8. Optimize the IR
- 9. Since the parser is for multiple languages each language has own shared library for output. First it should output only C++ results.
- 10. After all done i can adjust parser rule syntax and do bootstrap
+ 4. Compile the parser writing the code on C++ by own
+ 5. Create rules to walk on parser tree if need some optimisations or else before the compilation
+ 6. Convert rules into IR. First convert high level constructs, then cll and accessor
+ 7. Optimize the IR
+ 8. Since the parser is for multiple languages each language has own shared library for output. First it should output only C++ results.
+ 9. After all done i can adjust parser rule syntax and do bootstrap
+10. Add proper error handling (panic mode, error production)
+     1. Create Error IR
+     2. For every error case automatically determine rules for recovery
+     3. lower to LLIR
+     4. Insert error handling instead of every return {}
+ 11. Add modules
+ 12. Add templates
+ 13. Add inheritance
+ 14. Add internal error handling for parser in rules 
 ### Todo
   Add handle of variables in Rule_other (*?)
 

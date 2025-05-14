@@ -912,7 +912,7 @@ LLIR::ConvertionResult LLIR::processGroup(const TreeAPI::RuleMember &rule) {
     update(values);
     insideLoop = prev_insideLoop;
     // remove previous space skip it there was \s0
-    if (data.size() > 0 && !addSpaceSkipFirst) {
+    if (members.size() > 0 && !addSpaceSkipFirst) {
         // remove previous skip of spaces if it does exists
         for (auto rit = this->members.rbegin(); rit != this->members.rend(); rit++) {
             if (rit->type == LLIR::types::SKIP_SPACES) {
@@ -1063,7 +1063,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
         expr.insert(expr.end(), {
             {LLIR::condition_types::CURRENT_CHARACTER},
             {LLIR::condition_types::EQUAL},
-            {LLIR::condition_types::CHARACTER, getEscapedChar(c)}
+            {LLIR::condition_types::ESCAPED_CHARACTER, c}
         });
         first = false;
     }
@@ -1086,7 +1086,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     if (csequence.negative) {
         if (rule.quantifier == '+' || rule.quantifier == '*')
             expr.insert(expr.end(), {
-                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::CHARACTER, '\0'}, 
+                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
             });
         expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
@@ -1115,7 +1115,7 @@ LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
         expr = {
             {LLIR::condition_types::CURRENT_CHARACTER},
             {LLIR::condition_types::EQUAL},
-            {LLIR::condition_types::CHARACTER, value == "\\'" ? '\'' : value[0]}
+            value[0] == '\\' ? LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, value[1]} :  LLIR::expr {LLIR::condition_types::CHARACTER, value[0]}
         };
         var.type.type = LLIR::var_types::CHAR;
     } else {
@@ -1340,7 +1340,7 @@ LLIR::ConvertionResult LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix)
             {LLIR::condition_types::CURRENT_CHARACTER},
             {LLIR::condition_types::EQUAL},
             isToken ?
-            LLIR::expr {LLIR::condition_types::CHARACTER, '\0'}
+            LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, '0'}
             :
             LLIR::expr {LLIR::condition_types::CURRENT_TOKEN, "NONE"}
         };

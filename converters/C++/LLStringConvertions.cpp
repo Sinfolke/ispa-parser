@@ -193,7 +193,14 @@ std::string LLStringConvertions::convert_var_assing_types(const LLIR::var_assign
 std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_types &type, const std::any &data) {
     if (type == LLIR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
-        return std::string("'") + corelib::text::getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
+        const auto c = std::any_cast<char>(data);
+        if (c == '\'') {
+            return std::string("'\\''");
+        } else {
+            return std::string("'") + std::any_cast<char>(data) + std::string("'");
+        }
+    } else if (type == LLIR::condition_types::ESCAPED_CHARACTER) {
+        return std::string("'\\") + std::any_cast<char>(data) + std::string("'");
     } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";

@@ -9,25 +9,6 @@
 #include <stack>
 #include <IR/IR.h>
 #include <corelib.h>
-std::string getCharFromEscaped(char in, bool string) {
-    if (in == '"')
-        return string ? "\\\"" : "\"";
-    if (in == '\'')
-        return string ? "'" : "\\'";
-    switch (in)
-    {
-    case '\n': return "\\n";  // Newline
-    case '\r': return "\\r";  // Carriage return
-    case '\t': return "\\t";  // Horizontal tab
-    case '\a': return "\\a";  // Bell (alert)
-    case '\b': return "\\b";  // Backspace
-    case '\f': return "\\f";  // Form feed (new page)
-    case '\v': return "\\v";  // Vertical tab
-    case '\\': return "\\";   // Backslash
-    case '\0': return "\\0";  // end of string
-    default: return std::string(1, in);      // Return the character itself if not an escape sequence
-    }
-}
 std::string LLIR::convert_var_type(var_types type) {
     static const std::unordered_map<var_types, std::string> typesMap = {
         {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
@@ -149,7 +130,9 @@ std::string LLIR::convert_var_assing_types(var_assign_types type) {
 std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     if (type == condition_types::CHARACTER) {
         //cpuf::printf("character\n");
-        return std::string("'") + getCharFromEscaped(std::any_cast<char>(data), false) + std::string("'");
+        return std::string("'") + std::any_cast<char>(data) + std::string("'");
+    } else if (type == condition_types::ESCAPED_CHARACTER) {
+        return std::string("'\\") + std::any_cast<char>(data) + std::string("'");
     } else if (type == condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*pos";

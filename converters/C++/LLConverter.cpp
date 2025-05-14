@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <any>
-#include <typeinfo>
 #include <unordered_map>
 #include <iomanip>
 #include <stack>

@@ -1,5 +1,5 @@
 cll:
-    '$' @ #_var | #_if | #expr | #loop_while | #loop_for END
+    '$' @ #_var | #_if | #expr | #loop_while | #loop_for ';'
     {@}
 
     #OP:
@@ -103,7 +103,7 @@ cll:
         ;
 
         #term:
-            @ value (@ MULTIPLE | DIVIDE | MODULO @ value)*  // TERM_OP = * / / % etc.
+            @ value (@ MULTIPLE | DIVIDE | MODULO @ value)*
 
             @{first, operators, sequence}
         ;
@@ -119,7 +119,7 @@ cll:
         ;
     ;
     #method_call:
-        @ ID '.' @ function_call
+        @ ID DOT @ function_call
         @{name, body}
     ;
     #_var:

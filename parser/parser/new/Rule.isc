@@ -1,11 +1,11 @@
 rule:
-    @ ID ':' @ #member+ @ #data_block? @ #nested_rule* STRICT_END
+    @ ID ':' @ #member+ @ #data_block? @ #nested_rule* ';'
 
     @{ name, rule, data_block, nested_rules }
 
     #member:
 
-        @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | ANY | OP | LINEAR_COMMENT | cll @ quantifier?
+        @(keyvalue | value)? @ name | group | CSEQUENCE | STRING | HEX | BIN | NOSPACE | ESCAPED | DOT | OP | LINEAR_COMMENT | cll @ quantifier?
 
         @{ prefix, val, quantifier }
     ;
@@ -63,17 +63,13 @@ rule:
             {@}
         ;
         #ESCAPE:
-            // some escape chars like \s, \d
-            '\\' \s0 @ (.)
+            '\\' \s0 @ .
             {@}
         ;
         #DIAPASON:
             ( @ SYMBOL \s0 '-' \s0 @ SYMBOL)
             @{from, to}
         ;
-    ;
-    #ANY:
-        '.'
     ;
     #NOSPACE:
         '\\s0'

@@ -291,7 +291,7 @@ void Tree::sortByPriority() {
 void Tree::addSpaceToken() {
     TreeAPI::Rule spaceTokenRule;
     TreeAPI::RuleMemberCsequence csequence;
-    csequence.escaped = {'\t', '\n', '\r', '\v', '\f'};
+    csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
     csequence.characters = {' '};
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
