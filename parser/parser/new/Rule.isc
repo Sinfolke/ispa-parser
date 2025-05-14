@@ -10,7 +10,7 @@ rule:
         @{ prefix, val, quantifier }
     ;
     #name:
-        @ '#'? @ ID ('.' @ ID)*
+        @ '#'? @ ID (DOT @ ID)*
 
         @{ is_nested, name, nested_name }
     ;
@@ -75,7 +75,7 @@ rule:
         '\\s0'
     ;
     #ESCAPED:
-        '\\' \s0 @(.) \s0
+        '\\' \s0 @ . \s0
         {@}
     ;
     #HEX:

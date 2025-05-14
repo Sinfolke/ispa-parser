@@ -203,7 +203,7 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
         return std::string("'\\") + std::any_cast<char>(data) + std::string("'");
     } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
+        return "*(" + current_pos_counter.top() + " + " + std::to_string(std::any_cast<size_t>(data)) + ")";
     } else if (type == LLIR::condition_types::TOKEN_SEQUENCE) {
         return current_pos_counter.top();
     } else if (type == LLIR::condition_types::NUMBER) {
@@ -217,23 +217,11 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
         auto dt = std::any_cast<LLIR::strncmp>(data);
         std::string val;
         if (dt.is_string) {
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " +  std::to_string(pos_counter) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(dt.begin) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
             pos_counter += count_strlen(dt.value.name.c_str()) - 1;
         } else {
             dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
-        }
-        return val;
-    } else if (type == LLIR::condition_types::STRNCMP_PREV) {
-        //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<LLIR::strncmp>(data);
-        std::string val;
-        if (dt.is_string) {
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
-            pos_counter += count_strlen(dt.value.name.c_str()) - 1;
-        } else {
-            dynamic_pos_counter.push_back("strlen(" + dt.value.name + ")");
-            val = std::string("!std::strncmp(" + current_pos_counter.top() + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
+            val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(dt.begin) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
     } else if (type == LLIR::condition_types::VARIABLE) {

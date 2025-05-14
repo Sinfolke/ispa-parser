@@ -38,7 +38,7 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, __WHITESPACE, AUTO_11, AUTO_7, AUTO_6, AUTO_3, AUTO_2, AUTO_1, AUTO_0, rule_BIN, rule_HEX, AUTO_14, rule_NOSPACE, AUTO_8, rule_CSEQUENCE_ESCAPE, rule_CSEQUENCE_SYMBOL, rule_OP, AUTO_17, cll_COMPARE_OP, AUTO_9, AUTO_5, rule_ESCAPED, cll_OP, AUTO_10, cll_ASSIGNMENT_OP, AUTO_19, cll_TEMPLATE, cll_LOGICAL_NOT, cll_LOGICAL_OP, cll_TYPE, AUTO_12, cll_LOGICAL_OR, STRING, NUMBER, AUTO_16, AUTO_4, BOOLEAN, SPACEMODE, AUTO_13, rule_CSEQUENCE_DIAPASON, cll_LOGICAL_AND, QUESTION_MARK, PLUS, MINUS, DIVIDE, MULTIPLE, MODULO, AT, DOT, ID, AUTO_15, rule_CSEQUENCE, LINEAR_COMMENT, AUTO_20, AUTO_18, NAME
+		NONE, __WHITESPACE, AUTO_11, AUTO_7, AUTO_6, AUTO_3, AUTO_2, AUTO_1, AUTO_0, rule_BIN, rule_HEX, AUTO_14, rule_NOSPACE, AUTO_8, rule_CSEQUENCE_ESCAPE, rule_CSEQUENCE_SYMBOL, rule_OP, AUTO_17, cll_COMPARE_OP, AUTO_9, AUTO_5, rule_ESCAPED, cll_OP, AUTO_10, cll_ASSIGNMENT_OP, AUTO_19, cll_TEMPLATE, cll_LOGICAL_NOT, cll_LOGICAL_OP, cll_TYPE, AUTO_12, cll_LOGICAL_OR, STRING, NUMBER, AUTO_16, AUTO_4, BOOLEAN, SPACEMODE, AUTO_13, rule_CSEQUENCE_DIAPASON, cll_LOGICAL_AND, QUESTION_MARK, PLUS, MINUS, DIVIDE, MULTIPLE, MODULO, AT, DOT, ID, AUTO_15, rule_CSEQUENCE, LINEAR_COMMENT, AUTO_18, NAME
 	};
 	enum class Rules {
 		NONE, rule_data_block_templated_datablock, rule_data_block_regular_datablock_key, rule_data_block_regular_datablock, cll_loop_while, cll_method_call, cll_expr_group, cll_expr_logical, cll__var, cll_function_call, cll, cll_expr_compare, cll_expr_arithmetic, cll__if, cll_function_parameters, cll_function_arguments, cll_function_decl, cll__variable, cll_expr, cll_function_body_call, cll_stmt, rule, rule_value, rule_data_block, cll_function_body_decl, rule_name, array, rule_member, cll_expr_value, object, rvalue, cll_expr_term, rule_keyvalue, rule_quantifier, main, _use, cll_loop_for, rule_nested_rule, _use_unit, rule_group
@@ -105,7 +105,6 @@ namespace Parser {
 			case Tokens::AUTO_15: return "AUTO_15";
 			case Tokens::rule_CSEQUENCE: return "rule_CSEQUENCE";
 			case Tokens::LINEAR_COMMENT: return "LINEAR_COMMENT";
-			case Tokens::AUTO_20: return "AUTO_20";
 			case Tokens::AUTO_18: return "AUTO_18";
 			case Tokens::NAME: return "NAME";
 		}
@@ -157,13 +156,25 @@ namespace Parser {
 		return "NONE";
 	}
 	namespace Types {
-		using AUTO_20 = ::Parser::str_t;
+		struct rule_CSEQUENCE {
+			::Parser::arr_t<::Parser::arr_t<::Parser::Token>> val;
+			char _not;
+		};
 		using ID = ::Parser::str_t;
+		struct rule_CSEQUENCE_DIAPASON {
+			::Parser::Token to;
+			::Parser::Token from;
+		};
 		using AUTO_13 = char;
 		using SPACEMODE = ::Parser::str_t;
 		using AUTO_16 = char;
+		struct NUMBER {
+			::Parser::str_t dec;
+			char main;
+			::Parser::str_t sign;
+		};
 		using AUTO_8 = char;
-		using AUTO_18 = char;
+		using AUTO_18 = ::Parser::str_t;
 		using AUTO_14 = char;
 		using rule_HEX = ::Parser::str_t;
 		using AUTO_2 = char;
@@ -185,43 +196,160 @@ namespace Parser {
 		using AUTO_17 = char;
 		using cll_COMPARE_OP = ::Parser::str_t;
 		using AUTO_12 = ::Parser::str_t;
+		struct cll_TEMPLATE {
+			::Parser::arr_t<::Parser::Token> second;
+			::Parser::Token first;
+		};
 		using AUTO_9 = ::Parser::str_t;
 		using AUTO_15 = char;
-		using rule_ESCAPED = ::Parser::str_t;
+		using rule_ESCAPED = char;
 		using AUTO_10 = ::Parser::str_t;
 		using NAME = ::Parser::Token;
 		using AUTO_19 = ::Parser::str_t;
+		struct cll_TYPE {
+			::Parser::Token templ;
+			::Parser::str_t type;
+		};
 		using cll_LOGICAL_OP = ::Parser::Token;
 		using rule_group = ::Parser::arr_t<::Parser::Rule>;
+		struct _use_unit {
+			::Parser::Rule value;
+			::Parser::Token name;
+		};
 		using rule_nested_rule = ::Parser::Token;
+		struct _use {
+			::Parser::arr_t<::Parser::Rule> second;
+			::Parser::Rule first;
+		};
 		using main = ::Parser::arr_t<::Parser::any_t>;
 		using rule_quantifier = ::Parser::Token;
 		using rule_keyvalue = ::Parser::Token;
+		struct cll_expr_term {
+			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::Token> operators;
+			::Parser::Rule first;
+		};
 		using rvalue = ::Parser::any_t;
+		struct cll_expr_arithmetic {
+			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::Token> operators;
+			::Parser::Rule first;
+		};
+		struct cll__if {
+			::Parser::Rule stmt;
+			::Parser::Rule expr;
+		};
+		struct cll__var {
+			::Parser::Rule value;
+			::Parser::Token op;
+			::Parser::Token id;
+			::Parser::Token type;
+		};
+		struct rule {
+			::Parser::arr_t<::Parser::Rule> nested_rules;
+			::Parser::Rule data_block;
+			::Parser::arr_t<::Parser::Rule> rule;
+			::Parser::Token name;
+		};
+		struct cll_function_call {
+			::Parser::Rule body;
+			::Parser::Token name;
+		};
+		struct cll_function_decl {
+			::Parser::Rule stmt;
+			::Parser::Rule name;
+			::Parser::arr_t<::Parser::Token> type;
+		};
 		using cll_stmt = ::Parser::arr_t<::Parser::Rule>;
 		using cll_expr_group = ::Parser::Rule;
 		using cll = ::Parser::Rule;
+		struct cll_expr_compare {
+			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::Token> operators;
+			::Parser::Rule first;
+		};
+		struct cll_function_parameters {
+			::Parser::arr_t<::Parser::Token> second;
+			::Parser::Token first;
+		};
+		struct cll_function_arguments {
+			::Parser::arr_t<::Parser::Rule> second;
+			::Parser::Rule first;
+		};
+		struct cll_loop_while {
+			::Parser::Rule stmt;
+			::Parser::Rule expr;
+		};
+		struct cll_method_call {
+			::Parser::Rule body;
+			::Parser::Token name;
+		};
+		struct rule_data_block_templated_datablock {
+			::Parser::arr_t<::Parser::Token> second_name;
+			::Parser::Token first_name;
+		};
 		using rule_data_block_regular_datablock = ::Parser::any_t;
+		struct rule_data_block_regular_datablock_key {
+			::Parser::Rule dt;
+			::Parser::Token name;
+		};
+		struct cll__variable {
+			::Parser::Token pos;
+			::Parser::Rule brace_expression;
+			::Parser::Token name;
+			::Parser::Token pre;
+		};
 		using cll_expr = ::Parser::Rule;
+		struct cll_loop_for {
+			::Parser::Rule stmt;
+			::Parser::Rule end;
+			::Parser::Rule cond;
+			::Parser::Rule decl;
+		};
 		using cll_function_body_call = ::Parser::Rule;
 		using rule_value = ::Parser::Token;
 		using rule_data_block = ::Parser::Rule;
 		using cll_function_body_decl = ::Parser::Rule;
+		struct rule_name {
+			::Parser::arr_t<::Parser::Token> nested_name;
+			::Parser::Token name;
+			::Parser::Token is_nested;
+		};
 		using array = ::Parser::arr_t<::Parser::Rule>;
+		struct rule_member {
+			::Parser::Rule quantifier;
+			::Parser::any_t val;
+			::Parser::Rule prefix;
+		};
+		struct object {
+			::Parser::arr_t<::Parser::Rule> values;
+			::Parser::arr_t<::Parser::Token> keys;
+			::Parser::Rule value;
+			::Parser::Token key;
+		};
+		struct cll_expr_logical {
+			::Parser::arr_t<::Parser::Rule> right;
+			::Parser::arr_t<::Parser::Token> op;
+			::Parser::Rule left;
+		};
 		using cll_expr_value = ::Parser::Rule;
 	}
 
 	namespace get {
-		const ::Parser::Types::AUTO_20& AUTO_20(const ::Parser::Token &token);
-		::Parser::Types::AUTO_20& AUTO_20(::Parser::Token &token);
+		const ::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(const ::Parser::Token &token);
+		::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(::Parser::Token &token);
 		const ::Parser::Types::ID& ID(const ::Parser::Token &token);
 		::Parser::Types::ID& ID(::Parser::Token &token);
+		const ::Parser::Types::rule_CSEQUENCE_DIAPASON& rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token);
+		::Parser::Types::rule_CSEQUENCE_DIAPASON& rule_CSEQUENCE_DIAPASON(::Parser::Token &token);
 		const ::Parser::Types::AUTO_13& AUTO_13(const ::Parser::Token &token);
 		::Parser::Types::AUTO_13& AUTO_13(::Parser::Token &token);
 		const ::Parser::Types::SPACEMODE& SPACEMODE(const ::Parser::Token &token);
 		::Parser::Types::SPACEMODE& SPACEMODE(::Parser::Token &token);
 		const ::Parser::Types::AUTO_16& AUTO_16(const ::Parser::Token &token);
 		::Parser::Types::AUTO_16& AUTO_16(::Parser::Token &token);
+		const ::Parser::Types::NUMBER& NUMBER(const ::Parser::Token &token);
+		::Parser::Types::NUMBER& NUMBER(::Parser::Token &token);
 		const ::Parser::Types::AUTO_8& AUTO_8(const ::Parser::Token &token);
 		::Parser::Types::AUTO_8& AUTO_8(::Parser::Token &token);
 		const ::Parser::Types::AUTO_18& AUTO_18(const ::Parser::Token &token);
@@ -268,6 +396,8 @@ namespace Parser {
 		::Parser::Types::cll_COMPARE_OP& cll_COMPARE_OP(::Parser::Token &token);
 		const ::Parser::Types::AUTO_12& AUTO_12(const ::Parser::Token &token);
 		::Parser::Types::AUTO_12& AUTO_12(::Parser::Token &token);
+		const ::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(const ::Parser::Token &token);
+		::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(::Parser::Token &token);
 		const ::Parser::Types::AUTO_9& AUTO_9(const ::Parser::Token &token);
 		::Parser::Types::AUTO_9& AUTO_9(::Parser::Token &token);
 		const ::Parser::Types::AUTO_15& AUTO_15(const ::Parser::Token &token);
@@ -280,30 +410,68 @@ namespace Parser {
 		::Parser::Types::NAME& NAME(::Parser::Token &token);
 		const ::Parser::Types::AUTO_19& AUTO_19(const ::Parser::Token &token);
 		::Parser::Types::AUTO_19& AUTO_19(::Parser::Token &token);
+		const ::Parser::Types::cll_TYPE& cll_TYPE(const ::Parser::Token &token);
+		::Parser::Types::cll_TYPE& cll_TYPE(::Parser::Token &token);
 		const ::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(const ::Parser::Token &token);
 		::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(::Parser::Token &token);
 		const ::Parser::Types::rule_group& rule_group(const ::Parser::Rule &rule);
 		::Parser::Types::rule_group& rule_group(::Parser::Rule &rule);
+		const ::Parser::Types::_use_unit& _use_unit(const ::Parser::Rule &rule);
+		::Parser::Types::_use_unit& _use_unit(::Parser::Rule &rule);
 		const ::Parser::Types::rule_nested_rule& rule_nested_rule(const ::Parser::Rule &rule);
 		::Parser::Types::rule_nested_rule& rule_nested_rule(::Parser::Rule &rule);
+		const ::Parser::Types::_use& _use(const ::Parser::Rule &rule);
+		::Parser::Types::_use& _use(::Parser::Rule &rule);
 		const ::Parser::Types::main& main(const ::Parser::Rule &rule);
 		::Parser::Types::main& main(::Parser::Rule &rule);
 		const ::Parser::Types::rule_quantifier& rule_quantifier(const ::Parser::Rule &rule);
 		::Parser::Types::rule_quantifier& rule_quantifier(::Parser::Rule &rule);
 		const ::Parser::Types::rule_keyvalue& rule_keyvalue(const ::Parser::Rule &rule);
 		::Parser::Types::rule_keyvalue& rule_keyvalue(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_term& cll_expr_term(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_term& cll_expr_term(::Parser::Rule &rule);
 		const ::Parser::Types::rvalue& rvalue(const ::Parser::Rule &rule);
 		::Parser::Types::rvalue& rvalue(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(::Parser::Rule &rule);
+		const ::Parser::Types::cll__if& cll__if(const ::Parser::Rule &rule);
+		::Parser::Types::cll__if& cll__if(::Parser::Rule &rule);
+		const ::Parser::Types::cll__var& cll__var(const ::Parser::Rule &rule);
+		::Parser::Types::cll__var& cll__var(::Parser::Rule &rule);
+		const ::Parser::Types::rule& rule(const ::Parser::Rule &rule);
+		::Parser::Types::rule& rule(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_call& cll_function_call(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_call& cll_function_call(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_decl& cll_function_decl(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_decl& cll_function_decl(::Parser::Rule &rule);
 		const ::Parser::Types::cll_stmt& cll_stmt(const ::Parser::Rule &rule);
 		::Parser::Types::cll_stmt& cll_stmt(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr_group& cll_expr_group(const ::Parser::Rule &rule);
 		::Parser::Types::cll_expr_group& cll_expr_group(::Parser::Rule &rule);
 		const ::Parser::Types::cll& cll(const ::Parser::Rule &rule);
 		::Parser::Types::cll& cll(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_compare& cll_expr_compare(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_compare& cll_expr_compare(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_parameters& cll_function_parameters(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_parameters& cll_function_parameters(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_arguments& cll_function_arguments(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_arguments& cll_function_arguments(::Parser::Rule &rule);
+		const ::Parser::Types::cll_loop_while& cll_loop_while(const ::Parser::Rule &rule);
+		::Parser::Types::cll_loop_while& cll_loop_while(::Parser::Rule &rule);
+		const ::Parser::Types::cll_method_call& cll_method_call(const ::Parser::Rule &rule);
+		::Parser::Types::cll_method_call& cll_method_call(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(::Parser::Rule &rule);
 		const ::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(const ::Parser::Rule &rule);
 		::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(::Parser::Rule &rule);
+		const ::Parser::Types::cll__variable& cll__variable(const ::Parser::Rule &rule);
+		::Parser::Types::cll__variable& cll__variable(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr& cll_expr(const ::Parser::Rule &rule);
 		::Parser::Types::cll_expr& cll_expr(::Parser::Rule &rule);
+		const ::Parser::Types::cll_loop_for& cll_loop_for(const ::Parser::Rule &rule);
+		::Parser::Types::cll_loop_for& cll_loop_for(::Parser::Rule &rule);
 		const ::Parser::Types::cll_function_body_call& cll_function_body_call(const ::Parser::Rule &rule);
 		::Parser::Types::cll_function_body_call& cll_function_body_call(::Parser::Rule &rule);
 		const ::Parser::Types::rule_value& rule_value(const ::Parser::Rule &rule);
@@ -312,8 +480,16 @@ namespace Parser {
 		::Parser::Types::rule_data_block& rule_data_block(::Parser::Rule &rule);
 		const ::Parser::Types::cll_function_body_decl& cll_function_body_decl(const ::Parser::Rule &rule);
 		::Parser::Types::cll_function_body_decl& cll_function_body_decl(::Parser::Rule &rule);
+		const ::Parser::Types::rule_name& rule_name(const ::Parser::Rule &rule);
+		::Parser::Types::rule_name& rule_name(::Parser::Rule &rule);
 		const ::Parser::Types::array& array(const ::Parser::Rule &rule);
 		::Parser::Types::array& array(::Parser::Rule &rule);
+		const ::Parser::Types::rule_member& rule_member(const ::Parser::Rule &rule);
+		::Parser::Types::rule_member& rule_member(::Parser::Rule &rule);
+		const ::Parser::Types::object& object(const ::Parser::Rule &rule);
+		::Parser::Types::object& object(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_logical& cll_expr_logical(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_logical& cll_expr_logical(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr_value& cll_expr_value(const ::Parser::Rule &rule);
 		::Parser::Types::cll_expr_value& cll_expr_value(::Parser::Rule &rule);
 	}
@@ -391,7 +567,6 @@ namespace Parser {
 			Token_res AUTO_15(const char*);
 			Token_res rule_CSEQUENCE(const char*);
 			Token_res LINEAR_COMMENT(const char*);
-			Token_res AUTO_20(const char*);
 			Token_res AUTO_18(const char*);
 			Token_res NAME(const char*);
 	};
@@ -515,7 +690,11 @@ namespace Parser {
 			_18 = *pos;
 			success_19 = true;
 			pos += 1;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_templated_datablock)};
+			::Parser::Types::rule_data_block_templated_datablock data;
+			data.second_name = shadow_15;
+			data.first_name = _6;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_templated_datablock, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_data_block_regular_datablock_key(IT pos) {
@@ -555,7 +734,11 @@ namespace Parser {
 			}
 			success_5 = true;
 			pos += _4.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_regular_datablock_key)};
+			::Parser::Types::rule_data_block_regular_datablock_key data;
+			data.dt = _4.node;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_regular_datablock_key, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_data_block_regular_datablock(IT pos) {
@@ -665,7 +848,11 @@ namespace Parser {
 			}
 			success_5 = true;
 			pos += _4.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_while)};
+			::Parser::Types::cll_loop_while data;
+			data.stmt = _4.node;
+			data.expr = _2.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_while, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_method_call(IT pos) {
@@ -705,7 +892,11 @@ namespace Parser {
 			}
 			success_5 = true;
 			pos += _4.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_method_call)};
+			::Parser::Types::cll_method_call data;
+			data.body = _4.node;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_method_call, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_expr_group(IT pos) {
@@ -801,7 +992,12 @@ namespace Parser {
 				success_3 = true;
 				pos = begin_10;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_logical)};
+			::Parser::Types::cll_expr_logical data;
+			data.right = shadow_9;
+			data.op = shadow_6;
+			data.left = _0.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_logical, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll__var(IT pos) {
@@ -864,7 +1060,13 @@ namespace Parser {
 				success_5 = true;
 				pos = begin_10;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__var)};
+			::Parser::Types::cll__var data;
+			data.value = _8.node;
+			data.op = _6;
+			data.id = _2;
+			data.type = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__var, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_function_call(IT pos) {
@@ -892,7 +1094,11 @@ namespace Parser {
 			}
 			success_3 = true;
 			pos += _2.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_call)};
+			::Parser::Types::cll_function_call data;
+			data.body = _2.node;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_call, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll(IT pos) {
@@ -1047,7 +1253,12 @@ namespace Parser {
 				success_3 = true;
 				pos = begin_10;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_compare)};
+			::Parser::Types::cll_expr_compare data;
+			data.sequence = shadow_9;
+			data.operators = shadow_6;
+			data.first = _0.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_compare, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_expr_arithmetic(IT pos) {
@@ -1124,7 +1335,12 @@ namespace Parser {
 				success_3 = true;
 				pos = begin_15;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_arithmetic)};
+			::Parser::Types::cll_expr_arithmetic data;
+			data.sequence = shadow_14;
+			data.operators = _4;
+			data.first = _0.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_arithmetic, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll__if(IT pos) {
@@ -1164,7 +1380,11 @@ namespace Parser {
 			}
 			success_5 = true;
 			pos += _4.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__if)};
+			::Parser::Types::cll__if data;
+			data.stmt = _4.node;
+			data.expr = _2.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__if, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_function_parameters(IT pos) {
@@ -1227,7 +1447,11 @@ namespace Parser {
 				success_1 = true;
 				pos = begin_13;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_parameters)};
+			::Parser::Types::cll_function_parameters data;
+			data.second = shadow_11;
+			data.first = _2;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_parameters, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_function_arguments(IT pos) {
@@ -1290,7 +1514,11 @@ namespace Parser {
 				success_1 = true;
 				pos = begin_13;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_arguments)};
+			::Parser::Types::cll_function_arguments data;
+			data.second = shadow_11;
+			data.first = _2.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_arguments, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_function_decl(IT pos) {
@@ -1348,7 +1576,12 @@ namespace Parser {
 				success_9 = true;
 				pos += _8.node.length();
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_decl)};
+			::Parser::Types::cll_function_decl data;
+			data.stmt = _8.node;
+			data.name = _6.node;
+			data.type = shadow_4;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_decl, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll__variable(IT pos) {
@@ -1505,7 +1738,13 @@ namespace Parser {
 				success_21 = true;
 				pos = begin_28;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__variable)};
+			::Parser::Types::cll__variable data;
+			data.pos = _20;
+			data.brace_expression = _15.node;
+			data.name = _9;
+			data.pre = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__variable, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_expr(IT pos) {
@@ -1689,7 +1928,13 @@ namespace Parser {
 			_13 = *pos;
 			success_14 = true;
 			pos += 1;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule)};
+			::Parser::Types::rule data;
+			data.nested_rules = shadow_12;
+			data.data_block = _8.node;
+			data.rule = shadow_6;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_value(IT pos) {
@@ -1838,9 +2083,9 @@ namespace Parser {
 			success_7 = false;
 			while (1)
 			{
-				if (!(begin_12->name() == ::Parser::Tokens::AUTO_18))
+				if (!(begin_12->name() == ::Parser::Tokens::DOT))
 				{
-					reportError(pos, "auto_18 ");
+					reportError(pos, "dot ");
 					break;
 				}
 				_6 = *begin_12;
@@ -1863,7 +2108,12 @@ namespace Parser {
 				success_5 = true;
 				pos = begin_12;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_name)};
+			::Parser::Types::rule_name data;
+			data.nested_name = shadow_11;
+			data.name = _2;
+			data.is_nested = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_name, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res array(IT pos) {
@@ -2163,7 +2413,12 @@ namespace Parser {
 				success_36 = true;
 				pos += _35.node.length();
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_member)};
+			::Parser::Types::rule_member data;
+			data.quantifier = _35.node;
+			data.val = _9;
+			data.prefix = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_member, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_expr_value(IT pos) {
@@ -2437,7 +2692,13 @@ namespace Parser {
 			_37 = *pos;
 			success_38 = true;
 			pos += 1;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::object)};
+			::Parser::Types::object data;
+			data.values = shadow_32;
+			data.keys = _19;
+			data.value = _12.node;
+			data.key = _4;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::object, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rvalue(IT pos) {
@@ -2632,7 +2893,12 @@ namespace Parser {
 				success_3 = true;
 				pos = begin_18;
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_term)};
+			::Parser::Types::cll_expr_term data;
+			data.sequence = shadow_17;
+			data.operators = _4;
+			data.first = _0.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_term, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_keyvalue(IT pos) {
@@ -2834,7 +3100,7 @@ namespace Parser {
 			::Parser::Token _13;
 			::Parser::bool_t success_14 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_19))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_18))
 			{
 				return {};
 			}
@@ -2893,7 +3159,11 @@ namespace Parser {
 			_13 = *pos;
 			success_14 = true;
 			pos += 1;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use)};
+			::Parser::Types::_use data;
+			data.second = shadow_11;
+			data.first = _2.node;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_loop_for(IT pos) {
@@ -2924,7 +3194,7 @@ namespace Parser {
 			::Parser::Rule_res _23;
 			::Parser::bool_t success_24 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_20))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_19))
 			{
 				return {};
 			}
@@ -3035,7 +3305,13 @@ namespace Parser {
 			}
 			success_24 = true;
 			pos += _23.node.length();
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_for)};
+			::Parser::Types::cll_loop_for data;
+			data.stmt = _23.node;
+			data.end = _19.node;
+			data.cond = _15.node;
+			data.decl = _4;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_for, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_nested_rule(IT pos) {
@@ -3089,7 +3365,11 @@ namespace Parser {
 				success_3 = true;
 				pos += _2.node.length();
 			}
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use_unit)};
+			::Parser::Types::_use_unit data;
+			data.value = _2.node;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use_unit, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_group(IT pos) {

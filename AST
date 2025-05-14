@@ -1,33 +1,132 @@
 [
-		NAME: { ID: "Parser" # 5
- } # 0
+	{
+		{
+			nested_rules: [
+								AUTO_17:  # 122
 ,
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	},
-	{
-		<UNDEF TYPE>	}
+								AUTO_17:  # 331
+,
+								AUTO_17:  # 428
+,
+								AUTO_17:  # 490
+,
+								AUTO_17:  # 550
+,
+								AUTO_17:  # 601
+,
+								AUTO_17:  # 665
+,
+								AUTO_17:  # 1081
+,
+								AUTO_17:  # 1111
+,
+								AUTO_17:  # 1194
+,
+								AUTO_17:  # 1550
+,
+								AUTO_17:  # 1588
+,
+								AUTO_17:  # 1649
+,
+								AUTO_17:  # 1708
+
+			]
+			data_block: {
+				{
+					second_name: [
+						ID: "rule" # 82
+						ID: "data_block" # 88
+						ID: "nested_rules" # 100
+					]
+					first_name: ID: "name" # 76
+
+				}
+			}
+			rule: [
+				{
+					quantifier: <UNDEF TYPE>
+					val: {
+						{
+							nested_name: [
+							]
+							name: ID: "ID" # 13
+
+							is_nested: NONE:  # 18446744073709551615
+
+						}
+					}
+					prefix: 					NONE:  # 18446744073709551615
+
+				}
+,
+				{
+					quantifier: <UNDEF TYPE>
+					val: 					STRING: ":" # 16
+
+					prefix: <UNDEF TYPE>
+				}
+,
+				{
+					quantifier: 					PLUS:  # 29
+
+					val: {
+						{
+							nested_name: [
+							]
+							name: ID: "member" # 23
+
+							is_nested: AUTO_17:  # 22
+
+						}
+					}
+					prefix: 					NONE:  # 18446744073709551615
+
+				}
+,
+				{
+					quantifier: 					QUESTION_MARK:  # 44
+
+					val: {
+						{
+							nested_name: [
+							]
+							name: ID: "data_block" # 34
+
+							is_nested: AUTO_17:  # 33
+
+						}
+					}
+					prefix: 					NONE:  # 18446744073709551615
+
+				}
+,
+				{
+					quantifier: 					MULTIPLE:  # 60
+
+					val: {
+						{
+							nested_name: [
+							]
+							name: ID: "nested_rule" # 49
+
+							is_nested: AUTO_17:  # 48
+
+						}
+					}
+					prefix: 					NONE:  # 18446744073709551615
+
+				}
+,
+				{
+					quantifier: <UNDEF TYPE>
+					val: 					STRING: ";" # 62
+
+					prefix: <UNDEF TYPE>
+				}
+
+			]
+			name: ID: "rule" # 0
+
+		}
+	}
 ]

@@ -22,7 +22,7 @@ class LLIR {
             HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
             LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
             ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
-            CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP, STRNCMP_PREV,
+            CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
             VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL
         };
         enum class var_types {
@@ -107,6 +107,7 @@ class LLIR {
         struct strncmp {
             bool is_string;
             LLIR::variable value;
+            size_t begin = 0;
         };
         using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<LLIR::expr>, var_type>>;
         using regular_data_block = std::pair<std::vector<LLIR::expr>, var_type>;
@@ -167,7 +168,6 @@ class LLIR {
         auto createAssignUvarBlock(const LLIR::variable uvar, const LLIR::variable var, const LLIR::variable &shadow_var) -> LLIR::member;
         auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
         auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, const LLIR::variable &uvar, const LLIR::variable &var, LLIR::variable &shadow_var, bool addError = true) -> void;
-        auto replaceToPrevChar(std::vector<LLIR::member> &elements, int i) -> void;
         static auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> std::vector<LLIR::member>;
         static auto createDefaultBlock(const LLIR::variable &svar) -> std::vector<LLIR::member>;
         static auto createDefaultBlock() -> std::vector<LLIR::member>;

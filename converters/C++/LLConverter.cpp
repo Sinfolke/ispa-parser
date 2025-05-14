@@ -382,9 +382,9 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
     for (const auto &[name, value] : data_block_rules) {
         if (!value.is_inclosed_map())
             continue;
-        out << "\telse if (data.type() == typeid(Types::" << name << ")) {\n";
+        out << "\telse if (data.type() == typeid(Types::" << corelib::text::join(name, "_") << ")) {\n";
         out << "\t\tos << \"{\\n\";\n";
-        out << "\t\tauto dt = std::any_cast<Types::" << name << ">(data);\n";
+        out << "\t\tauto dt = std::any_cast<Types::" << corelib::text::join(name, "_") << ">(data);\n";
         out << "indentLevel++;";
         for (const auto &[name, key_data] : value.getInclosedMap()) {
             out << "\t\tos << std::string(indentLevel, '\\t') << \"" << name << "\"<< \": \";\n";

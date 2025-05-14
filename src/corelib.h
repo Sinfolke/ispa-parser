@@ -15,6 +15,7 @@ namespace corelib {
     namespace text {
         bool startsWith(const std::string& str, const std::string& prefix);
         bool startsWithRange(const std::string& str, char from, char to);
+        bool isAllAlpha(const std::string& str);
         bool isUpper(const char* str);
         bool isUpper(const std::string str);
         bool isLower(const char* str);

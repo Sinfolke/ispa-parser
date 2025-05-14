@@ -189,25 +189,6 @@ void LLIR::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::conditio
     push({LLIR::types::WHILE, loop});
     addPostLoopCheck(rule, postCheckVar, addError);
 }
-void LLIR::replaceToPrevChar(std::vector<LLIR::member> &elements, int i) {
-    for (; i < elements.size(); i++) {
-        auto &el = elements[i];
-        if (el.type == LLIR::types::IF || el.type == LLIR::types::WHILE || el.type == LLIR::types::DOWHILE) {
-            // replace CURRENT_CHARACTER to PREV_CHARACTER
-            auto val = std::any_cast<LLIR::condition>(el.value);
-            for (auto &expr : val.expression) {
-                if (expr.id == LLIR::condition_types::STRNCMP) {
-                    expr.id = LLIR::condition_types::STRNCMP_PREV;
-                }
-
-            }
-            replaceToPrevChar(val.block, 0);
-            if (el.type == LLIR::types::IF)
-                replaceToPrevChar(val.else_block, 0);
-            elements[i].value = val;
-        }
-    }
-}
 std::vector<LLIR::member> LLIR::createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) {
     return {
         var.type.type == LLIR::var_types::CHAR ?
@@ -1047,11 +1028,12 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     }
 
     bool first = true;
+    size_t count = 0;
     for (const auto c : csequence.characters) {
         if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::CHARACTER, c}
         });
@@ -1061,7 +1043,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
         if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::ESCAPED_CHARACTER, c}
         });
@@ -1072,11 +1054,11 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
             {LLIR::condition_types::GROUP_OPEN},
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::HIGHER_OR_EQUAL},
             {LLIR::condition_types::CHARACTER, from},
             {LLIR::condition_types::AND},
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::LOWER_OR_EQUAL},
             {LLIR::condition_types::CHARACTER, to},
             {LLIR::condition_types::GROUP_CLOSE}
@@ -1086,7 +1068,7 @@ LLIR::ConvertionResult LLIR::processRuleCsequence(const TreeAPI::RuleMember &rul
     if (csequence.negative) {
         if (rule.quantifier == '+' || rule.quantifier == '*')
             expr.insert(expr.end(), {
-                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
+                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
             });
         expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
@@ -1113,7 +1095,7 @@ LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
     if (str.count_strlen() == 1) {
         // micro optimization - compare as single character for single character strings
         expr = {
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             value[0] == '\\' ? LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, value[1]} :  LLIR::expr {LLIR::condition_types::CHARACTER, value[0]}
         };
@@ -1124,7 +1106,28 @@ LLIR::ConvertionResult LLIR::processString(const TreeAPI::RuleMember &rule) {
         };
         var.type = {LLIR::var_types::STRING};
     }
-
+    if (corelib::text::isAllAlpha(value)) {
+        // it is keyword, add conditional check that it is not start of ID
+        expr.insert(expr.end(), {
+            {LLIR::condition_types::AND},
+            {LLIR::condition_types::NOT},
+            {LLIR::condition_types::GROUP_OPEN},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'a'},
+                {LLIR::condition_types::AND},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'z'},
+                {LLIR::condition_types::OR},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'A'},
+                {LLIR::condition_types::AND},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'Z'},
+                {LLIR::condition_types::OR},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, '0'},
+                {LLIR::condition_types::AND},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, '9'},
+                {LLIR::condition_types::OR},
+                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::EQUAL}, {LLIR::condition_types::CHARACTER, '_'},
+            {LLIR::condition_types::GROUP_CLOSE},
+        });
+    }
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
@@ -1148,12 +1151,12 @@ LLIR::ConvertionResult LLIR::process_Rule_hex(const TreeAPI::RuleMember &rule) {
     }
     if (data.size() % 2 != 0)
         data.insert(data.begin(), '0');
-    for (int i = 0; i < data.size(); i += 2) {
+    for (size_t i = 0; i < data.size(); i += 2) {
         std::string hex(data.data() + i, 2);
         if (!is_first)
             expr.push_back({LLIR::condition_types::AND});
         is_first = false;
-        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER});
+        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
         expr.push_back({LLIR::condition_types::EQUAL});
         expr.push_back({LLIR::condition_types::HEX, hex});
     }
@@ -1185,14 +1188,14 @@ LLIR::ConvertionResult LLIR::process_Rule_bin(const TreeAPI::RuleMember &rule) {
     }
     while (data.size() % 8 != 0)
         data.insert(data.begin(), '0');
-    for (int i = 0; i < data.size(); i += 8) {
+    for (size_t i = 0; i < data.size(); i += 8) {
         std::string bin(data.data() + i, 8);
         auto as_hex = hex::from_binary(bin);
         as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
         if (!is_first)
             expr.push_back({LLIR::condition_types::AND});
         is_first = false;
-        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER});
+        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
         expr.push_back({LLIR::condition_types::EQUAL});
         expr.push_back({LLIR::condition_types::HEX, as_hex});
     }
@@ -1296,7 +1299,7 @@ LLIR::ConvertionResult LLIR::process_Rule_escaped(const TreeAPI::RuleMember &rul
             }
             //cpuf::printf("ON_EXPRESSION\n");
             expression = {
-                {LLIR::condition_types::CURRENT_CHARACTER},
+                {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
                 {LLIR::condition_types::NOT_EQUAL},
                 {LLIR::condition_types::CHARACTER, ' '}
             };
@@ -1337,7 +1340,7 @@ LLIR::ConvertionResult LLIR::process_Rule_any(const TreeAPI::RulePrefix &prefix)
     std::vector<LLIR::member> block_after = createDefaultBlock(var, svar);
     if (isToken) {
         expression = {
-            {LLIR::condition_types::CURRENT_CHARACTER},
+            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             isToken ?
             LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, '0'}
@@ -1414,7 +1417,6 @@ std::vector<LLIR::member> LLIR::convert_op_rule(const std::vector<TreeAPI::RuleM
         }
         new_ir.push({LLIR::types::IF, cond});
     } else {
-        replaceToPrevChar(new_ir.members, 0);
         for (int i = 0; i < new_ir.members.size(); i++) {
             auto &el = new_ir.members[i];
             if (el.type == LLIR::types::IF) {
@@ -1635,8 +1637,9 @@ LLIR::inclosed_map LLIR::getInclosedMapFromKeyValueBinding() {
 }
 LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
     LLIR::DataBlock block;
-    if (data_block.empty())
+    if (data_block.empty()) {
         return block;
+    }
     if (data_block.isRegularDataBlock()) {
         if (data_block.isWithKeys()) {
             LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
@@ -1656,9 +1659,16 @@ LLIR::DataBlock LLIR::createDataBlock(const TreeAPI::DataBlock &data_block) {
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
         for (const auto &name : templated_datablock.names) {
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
-            initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, unnamed_datablock_units.front().type);
+            auto type = unnamed_datablock_units.front().type;
+            if (type.type == LLIR::var_types::Rule_result) {
+                type.type = LLIR::var_types::Rule;
+            } else if (type.type == LLIR::var_types::Token_result) {
+                type.type = LLIR::var_types::Token;
+            }
+            initial_map.try_emplace(name, std::vector<LLIR::expr> {LLIR::expr {condition_types::VARIABLE, unnamed_datablock_units.front()}}, type);
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
+        block.value = initial_map;
     }
     return block;
 }

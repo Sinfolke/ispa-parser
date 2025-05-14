@@ -58,7 +58,13 @@ namespace corelib::text {
     bool startsWithRange(const std::string& str, char from, char to) {
         return (str[0] >= from && str[0] <= to);
     }
-
+    bool isAllAlpha(const std::string& str) {
+        for (const char &ch : str) {
+            if (!isalpha(ch))
+                return false;
+        }
+        return true;
+    }
 
     bool isUpper(const char* str) {
         for (; *str; str++) {

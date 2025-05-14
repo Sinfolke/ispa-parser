@@ -61,7 +61,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ cll, _var, }> : Rule {
   @  Name(cll::TYPE)?;
   @  Name(ID)
-  @  Group( Name(cll::ASSIGNMENT_OP), @  Name(cll::expr))?;
+   Group(@  Name(cll::ASSIGNMENT_OP), @  Name(cll::expr))?;
   Data: TemplatedDataBlock(type, id, op, value)
 }name<{ cll, function_call, }> : Rule {
   @  Name(ID)
@@ -88,7 +88,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ rule, ESCAPED, }> : Rule {
    String (\\)
    NoSpace
-  @  Group( Op( Any))
+  @  Any
    NoSpace
   Data: [RegularDataBlock: CllExpr]
 }name<{ cll, OP, }> : Rule {
@@ -181,7 +181,7 @@ name<{ rule, BIN, }> : Rule {
 }name<{ rule, name, }> : Rule {
   @  String (#)?;
   @  Name(ID)
-   Group( String (.), @  Name(ID))*;
+   Group( Name(DOT), @  Name(ID))*;
   Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<{ array, }> : Rule {
    String ([)

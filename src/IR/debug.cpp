@@ -142,7 +142,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     } else if (type == condition_types::STRING) {
         //cpuf::printf("string\n");
         return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
-    } else if (type == condition_types::STRNCMP || type == condition_types::STRNCMP_PREV) {
+    } else if (type == condition_types::STRNCMP) {
         //cpuf::printf("strncmp\n");
         auto dt = std::any_cast<LLIR::strncmp>(data);
         if (dt.is_string) {
