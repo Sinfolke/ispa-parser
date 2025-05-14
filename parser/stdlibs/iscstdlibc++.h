@@ -550,7 +550,7 @@ public:
                 if (!error_controller.empty()) {
                     const auto &el = error_controller.begin()->second;
                     printf("Lexer[error controller]: %zu:%zu: %s\n", el.line, el.column, el.message.c_str());
-                    errors.push_back(error_controller.begin()->second);
+                    errors.push_back(el);
                 }
                 pos++;
             } else {

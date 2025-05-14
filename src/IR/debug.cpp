@@ -112,6 +112,8 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
         }
+        case var_assign_values::CURRENT_CHARACTER:
+            return "*pos";
         case var_assign_values::PROPERTY:
         {
             auto dt = std::any_cast<LLIR::property>(data);

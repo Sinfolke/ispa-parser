@@ -9,6 +9,8 @@
 #include <logging.h>
 #include <hash.h>
 
+#include "TreeAPI.h"
+
 namespace TreeAPI {
     // forward declarations
     struct CllType;
@@ -298,7 +300,9 @@ namespace TreeAPI {
         const Cll& getCll() const;
         bool fullCompare(const RuleMember &second);
     };
-
+    struct RuleMemberKey {
+        RuleMember base;
+    };
     struct RegularDataBlockWKeys {
         std::unordered_map<std::string, CllExpr> value;
 
@@ -374,6 +378,7 @@ namespace TreeAPI {
     bool operator==(const RuleMemberHex &lhs, const RuleMemberHex &rhs);
     bool operator==(const RuleMemberBin &lhs, const RuleMemberBin &rhs);
     bool operator==(const RuleMember &lhs, const RuleMember &rhs);
+    bool operator==(const RuleMemberKey &lhs, const RuleMemberKey &rhs);
     bool operator==(const RegularDataBlockWKeys &lhs, const RegularDataBlockWKeys &rhs);
     bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs);
     bool operator==(const DataBlock &lhs, const DataBlock &rhs);
@@ -632,7 +637,6 @@ namespace std {
         }
     };
     // Hash for RuleMember
-
     template <>
     struct hash<TreeAPI::RuleMember> {
         std::size_t operator()(const TreeAPI::RuleMember& member) const {
@@ -690,7 +694,14 @@ namespace std {
             return seed;
         }
     };
-
+    template <>
+    struct hash<TreeAPI::RuleMemberKey> {
+        size_t operator()(const TreeAPI::RuleMemberKey& key) const {
+            TreeAPI::RuleMember copy = key.base;
+            copy.quantifier = '\0';
+            return std::hash<TreeAPI::RuleMember>{}(copy);
+        }
+    };
     // Hash for RuleMemberOp
     template <>
     struct hash<TreeAPI::RuleMemberOp> {

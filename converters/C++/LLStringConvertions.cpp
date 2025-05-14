@@ -167,6 +167,8 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             dynamic_pos_counter = {};
             return "::" + namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
         }
+        case LLIR::var_assign_values::CURRENT_CHARACTER:
+            return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
         case LLIR::var_assign_values::CURRENT_TOKEN:
             return "*" + current_pos_counter.top();
         case LLIR::var_assign_values::TOKEN_SEQUENCE:

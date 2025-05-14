@@ -19,13 +19,13 @@ name<{ rule, BIN, }> : Rule {
   @  Group( Any)
   Data: [RegularDataBlock: CllExpr]
 }name<{ rule, CSEQUENCE, SYMBOL, }> : Rule {
-  @  Group( Op( String (\\) |  String (\\]) |  !Cseq([\])))
+  @  Group( Op( String (\\) |  !Cseq([]])))
   Data: [RegularDataBlock: CllExpr]
 }name<{ rule, OP, }> : Rule {
    String (|)
   Data: EmptyDataBlock
 }name<{ rule, data_block, templated_datablock, }> : Rule {
-   String (@)
+   Name(AT)
    String ({)
    Group(@  Name(ID),  Group( String (,), @  Name(ID))*;)?;
    String (})
@@ -90,7 +90,7 @@ name<{ rule, BIN, }> : Rule {
    String (})
   Data: [RegularDataBlock: CllExpr]
 }name<{ END, }> : Rule {
-   Cseq([;\n])
+   Cseq([;n])
   Data: EmptyDataBlock
 }name<{ rule, ESCAPED, }> : Rule {
    String (\\)
@@ -163,10 +163,10 @@ name<{ rule, BIN, }> : Rule {
    Op( String (||) |  String (or))
   Data: EmptyDataBlock
 }name<{ STRING, }> : Rule {
-   Group( String (\'), @  Group( Op( Group( String (\\),  Any) |  !Cseq(['])))*;,  String (\'))
+   Group( String (\'), @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;,  String (\'))
   Data: [RegularDataBlock: CllExpr]
 }name<{ NEWLINE, }> : Rule {
-   Cseq([\n])
+   Cseq([n])
   Data: EmptyDataBlock
 }name<{ rule, value, }> : Rule {
    String (&)
@@ -244,7 +244,7 @@ name<{ rule, BIN, }> : Rule {
    String (*)
   Data: EmptyDataBlock
 }name<{ rule, keyvalue, }> : Rule {
-   String (@)
+   Name(AT)
    Group( NoSpace, @  Name(ID))?;
   Data: [RegularDataBlock: CllExpr]
 }name<{ MODULO, }> : Rule {
@@ -267,7 +267,7 @@ name<{ rule, BIN, }> : Rule {
   Data: [RegularDataBlock: CllExpr]
 }name<{ LINEAR_COMMENT, }> : Rule {
    String (//)
-   !Cseq([\n])*;
+   !Cseq([n])*;
   Data: EmptyDataBlock
 }name<{ main, }> : Rule {
   @  Group( Op( Name(_use) |  Name(rule)))+;

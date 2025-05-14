@@ -21,7 +21,7 @@ int main() {
     auto parser_errors = parser.getErrors();
     printf("errors size(): %zu\n", parser_errors.size());
     for (auto error : parser_errors) {
-        printf("Parser: %zu:%zu: %s\n", error.line, error.column, error.message.c_str());
+        printf("Parser: %zu:%zu(%zu): %s\n", error.line, error.column, error.pos, error.message.c_str());
     }
     std::ofstream file("AST");
     parser.printAST(file);

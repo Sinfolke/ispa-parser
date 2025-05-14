@@ -2341,38 +2341,28 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE_SYMBOL(const char* pos) {
 	success_3 = false;
 	success_1 = false;
 	auto begin_2 = pos;
-	if (!(!std::strncmp(begin_2, "\\]", 2)))
+	success_7 = false;
+	if (!(!std::strncmp(begin_2, "\\", 1)))
 	{
-		success_7 = false;
-		if (!(!std::strncmp(begin_2, "\\", 1)))
+		success_9 = false;
+		if (!(!(*(begin_2 + 0) == ']')))
 		{
-			success_9 = false;
-			if (!(!(*(begin_2 + 0) == ']')))
-			{
-				return {};
-			}
-			else 
-			{
-				_8 = ::Parser::str_t(begin_2, 1);
-				success_9 = true;
-				begin_2 += 1;
-				_2 = _8;
-			}
+			return {};
 		}
-		else 
+		else
 		{
-			_6 = ::Parser::str_t(begin_2, 1);
-			success_7 = true;
+			_8 = ::Parser::str_t(begin_2, 1);
+			success_9 = true;
 			begin_2 += 1;
-			_2 = _6;
+			_2 = _8;
 		}
 	}
-	else 
+	else
 	{
-		_4 = ::Parser::str_t(begin_2, 2);
-		success_5 = true;
-		begin_2 += 2;
-		_2 = _4;
+		_6 = ::Parser::str_t(begin_2, 1);
+		success_7 = true;
+		begin_2 += 1;
+		_2 = _6;
 	}
 	success_3 = true;
 	_0 += _2;
@@ -2540,11 +2530,11 @@ Parser::Token_res Parser::Lexer::Rule_CSEQUENCE(const char* pos) {
 		if (!(_8.status))
 		{
 			success_12 = false;
-			_11 = Rule_CSEQUENCE_SYMBOL(begin_6);
+			_11 = Rule_CSEQUENCE_ESCAPE(begin_6);
 			if (!(_11.status))
 			{
 				success_15 = false;
-				_14 = Rule_CSEQUENCE_ESCAPE(begin_6);
+				_14 = Rule_CSEQUENCE_SYMBOL(begin_6);
 				if (!(_14.status))
 				{
 					break;

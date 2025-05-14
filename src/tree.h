@@ -22,9 +22,10 @@ class Tree {
         size_t token_count = 0;
         UsePlaceTable use_places;
         void literalsToToken(
-            std::vector<TreeAPI::RuleMember> &literals, size_t &count,
+            std::vector<TreeAPI::RuleMember> &literals,
+            size_t &count,
             std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> &toInsert,
-            std::unordered_map<TreeAPI::RuleMember, TreeAPI::RuleMember> &generated
+            std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> &generated
         );
 
         // sort by priority functions
@@ -36,6 +37,7 @@ class Tree {
         bool prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second);
         bool prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
         bool prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
+        void sortByPriority(TreeAPI::RuleMemberOp& options);
         void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);

@@ -20,7 +20,7 @@ rule:
         {@}
     ;
     #keyvalue:
-        '@' (\s0 @ ID)?
+        AT (\s0 @ ID)?
         {@}
     ;
     #value:
@@ -43,7 +43,7 @@ rule:
             ;
         ;
         #templated_datablock:
-            '@' '{' (@ ID (',' @ ID)*)? '}'
+            AT '{' (@ ID (',' @ ID)*)? '}'
             @{ first_name, second_name }
         ;
     ;
@@ -51,7 +51,7 @@ rule:
         '|'
     ;
     #quantifier:
-        @(QUESTION_MARK | PLUS | MULTIPLE)
+        @ QUESTION_MARK | PLUS | MULTIPLE
         {@}
     ;
 
@@ -59,7 +59,7 @@ rule:
         '[' @ '^'? @ ( #ESCAPE | #SYMBOL | #DIAPASON )* ']'
         @{_not, val}
         #SYMBOL:
-            @('\\' | '\\]' | [^\]])
+            @('\\' | [^\]])
             {@}
         ;
         #ESCAPE:

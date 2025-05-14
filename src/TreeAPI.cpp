@@ -1,11 +1,15 @@
 #include <TreeAPI.h>
+#include <sys/stat.h>
 
 namespace TreeAPI {
     size_t String::count_strlen(const std::string &str) {
         size_t count = 0;
         for (auto it = str.begin(); it != str.end(); it++) {
             if (*it == '\\') {
+                if (it + 1 == str.end())
+                    break;
                 it++;
+                count++;
                 continue;
             }
             count++;
@@ -598,6 +602,10 @@ namespace TreeAPI {
                 return false;
             }
         }, first.value, second.value);        
+    }
+    bool operator==(const RuleMemberKey &first, const RuleMemberKey &second) {
+        cpuf::printf("Key: comparing %$ with %$\n", first.base, second.base);
+        return first.base == second.base;
     }
     std::ostream& operator<<(std::ostream& os, const RulePrefix& p) {
         if (p.empty())

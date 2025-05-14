@@ -27,6 +27,8 @@ void Tree::inlineSingleGroups() {
     for (auto &[name, value] : ast.getTreeMap()) {
         for (auto &member : value.members) {
             if (member.isGroup()) {
+                if (member.quantifier != '\0')
+                    continue;
                 const auto &grp = member.getGroup();
                 if (grp.values.size() == 1) {
                     auto replacement = grp.values[0].value; // make a safe copy
@@ -38,14 +40,19 @@ void Tree::inlineSingleGroups() {
 }
 void Tree::literalsToToken(
     std::vector<TreeAPI::RuleMember> &literals,
-    size_t &count, std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> &toInsert,
-    std::unordered_map<TreeAPI::RuleMember, TreeAPI::RuleMember> &generated
+    size_t &count,
+    std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> &toInsert,
+    std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> &generated
     ) {
     for (auto &member : literals) {
         if (member.isString() || member.isHex() || member.isBin() || member.isEscaped() || member.isCsequence()) {
-            auto find_it = generated.find(member);
+            auto find_it = std::find_if(generated.begin(), generated.end(), [&](const std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember> &pair) {
+                return pair.first == member;
+            });
             if (find_it != generated.end()) {
+                char prev_quantifier = member.quantifier;
                 member = find_it->second; // Use the generated member
+                member.quantifier = prev_quantifier; // Restore the quantifier
             } else {
                 // create new token
                 std::vector<std::string> new_name = {"AUTO_" + std::to_string(count++)};
@@ -66,7 +73,7 @@ void Tree::literalsToToken(
                 newRule.members = {newRuleMember};
 
                 // Store the generated member
-                generated[mem_copy_for_generated] = member;
+                generated.push_back({mem_copy_for_generated, member});
                 toInsert.push_back(std::make_pair(new_name, newRule));
             }
         } else if (member.isGroup()) {
@@ -80,7 +87,7 @@ void Tree::literalsToToken(
 }
 void Tree::literalsToToken() {
     size_t count = 0;
-    std::unordered_map<TreeAPI::RuleMember, TreeAPI::RuleMember> generated;
+    std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
     auto &treeMap = ast.getTreeMap();
     for (auto &[name, value] : treeMap) {
@@ -116,8 +123,9 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::Rul
     const auto &first_rules = first_data->second.members;
     const auto &second_rules = second_data->second.members;
     for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
-        if (first_rules[i] == second_rules[i])
+        if (first_rules[i] == second_rules[i]) {
             continue;
+        }
         return prioritySort(first_rules[i], second_rules[i]);
     }
     return first_rules.size() > second_rules.size();
@@ -156,18 +164,17 @@ Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
 Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
 // never meet types
 Types getTypes(const TreeAPI::RuleMemberName&) { return Types::string; };
-Types getTypes(const TreeAPI::RuleMemberGroup &) { return Types::string; }
-Types getTypes(const TreeAPI::RuleMemberNospace& ) {return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::string; }
 Types getTypes(const std::monostate&) { return Types::string; }
 bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
-    if (first.isName() && second.isName()) {
+    if (first.isName() && second.isName())
         return prioritySort(first.getName(), second.getName());
-    }
     if (first.isGroup() && second.isGroup())
-        prioritySort(first.getGroup(), second.getGroup());
+        return prioritySort(first.getGroup(), second.getGroup());
     if (first.isOp() && second.isOp())
-        prioritySort(first.getOp(), second.getOp());
+        return prioritySort(first.getOp(), second.getOp());
     if (first.isString() && second.isString())
         return prioritySort(first.getString(), second.getString());
     if (first.isEscaped() && second.isEscaped())
@@ -186,14 +193,24 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
         if (find_it == ast.getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", first.getName().name, second);
         }
-        return prioritySort(find_it->second.members[0], second);
+        const auto &members = find_it->second.members;
+        return std::visit([&](const auto &f, const auto &s) -> bool {
+            if (members.size() > 1 && getTypes(f) == getTypes(s))
+                return false;
+            return prioritySort(members[0], second);
+        }, members[0].value, second.value);
     }
     if (second.isName()){
         auto find_it = ast.getTreeMap().find(second.getName().name);
         if (find_it == ast.getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", second.getName().name, second);
         }
-        return prioritySort(first, find_it->second.members[0]);
+        const auto &members = find_it->second.members;
+        return std::visit([&](const auto &f, const auto &s) -> bool {
+            if (members.size() > 1 && getTypes(f) == getTypes(s))
+                return true;
+            return prioritySort(first, members[0]);
+        }, first.value, members[0].value);
     }
     if (first.isGroup()) {
         auto &dt = first.getGroup();
@@ -242,6 +259,9 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
         return false; // both unknown
     }, first.value, second.value);
 }
+void Tree::sortByPriority(TreeAPI::RuleMemberOp& options) {
+    std::sort(options.options.begin(), options.options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {return prioritySort(first, second);});
+}
 void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
@@ -255,11 +275,9 @@ void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
                     sortByPriority(data.values);
                 }
             }
-            auto& options = member.getOp().options;
-            std::sort(options.begin(), options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {return prioritySort(first, second);});
+            sortByPriority(member.getOp());
         }
     }
-
 }
 void Tree::sortByPriority() {
     for (auto &[name, value] : ast.getTreeMap()) {
@@ -319,7 +337,7 @@ Tree::lexer_code Tree::getCodeForLexer() {
         if (corelib::text::isLower(name.back()))
             continue;
         auto find_it = use_places.find(name);
-        if (find_it != use_places.end()) {
+        if (find_it != use_places.end() && name != std::vector<std::string>{"__WHITESPACE"}) {
             bool to_add = false;
             for (const auto &use_name : find_it->second) {
                 if (corelib::text::isLower(use_name.back())) {
@@ -334,11 +352,11 @@ Tree::lexer_code Tree::getCodeForLexer() {
         } else if (name == std::vector<std::string> { "__WHITESPACE" }) {
             options.options.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName { name } });
         } else {
-            printf("Not found %s in use_places, use_places size: %zu\n", name.back().c_str(), use_places.size());
+            printf("Not found %s in use_places\n", name.back().c_str());
         }
         // if not found, do not add this means the token is never used
     }
-    sortByPriority(options.options);
+    sortByPriority(options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
     LLIR code(*this, resultRule, true);
@@ -347,7 +365,6 @@ Tree::lexer_code Tree::getCodeForLexer() {
     code.push_begin({LLIR::types::TOKEN});
     code.push({LLIR::types::RULE_END});
     if (success_var.empty())
-        throw Error("Empty successvar\n");
-    cpuf::printf("success_var[0].name: %s\n", success_var[0].var.name);
+        throw Error("Empty success var\n");
     return {code, success_var[0].var};
 }
