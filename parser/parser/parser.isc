@@ -2,14 +2,6 @@ name Parser;
 LINEAR_COMMENT:
     '//' [^\n]*
 ;
-QUESTION_MARK: '?';
-PLUS: '+';
-MINUS: '-';
-DIVIDE: '/';
-MULTIPLE: '*';
-MODULO: '%';
-AT: '@';
-DOT: '.';
 SPACEMODE:
     'spacemode' @ 'mixed' | 'skipped' | 'allowed' ';'
 

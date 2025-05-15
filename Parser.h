@@ -38,10 +38,10 @@ namespace Parser {
 	template<typename Key, typename Value>
 	using obj_t = PARSER_OBJ_TYPE<Key, Value>;
 	enum class Tokens {
-		NONE, __WHITESPACE, AUTO_11, AUTO_7, AUTO_6, AUTO_3, AUTO_2, AUTO_1, AUTO_0, rule_BIN, rule_HEX, AUTO_14, rule_NOSPACE, AUTO_8, rule_CSEQUENCE_ESCAPE, rule_CSEQUENCE_SYMBOL, rule_OP, AUTO_17, cll_COMPARE_OP, AUTO_9, AUTO_5, rule_ESCAPED, cll_OP, AUTO_10, cll_ASSIGNMENT_OP, AUTO_19, cll_TEMPLATE, cll_LOGICAL_NOT, cll_LOGICAL_OP, cll_TYPE, AUTO_12, cll_LOGICAL_OR, STRING, NUMBER, AUTO_16, AUTO_4, BOOLEAN, SPACEMODE, AUTO_13, rule_CSEQUENCE_DIAPASON, cll_LOGICAL_AND, QUESTION_MARK, PLUS, MINUS, DIVIDE, MULTIPLE, MODULO, AT, DOT, ID, AUTO_15, rule_CSEQUENCE, LINEAR_COMMENT, AUTO_18, NAME
+		NONE, __WHITESPACE, AUTO_22, AUTO_21, AUTO_11, AUTO_7, AUTO_6, AUTO_3, AUTO_2, AUTO_1, AUTO_0, rule_BIN, rule_HEX, AUTO_14, rule_NOSPACE, AUTO_8, rule_CSEQUENCE_ESCAPE, rule_CSEQUENCE_SYMBOL, rule_OP, AUTO_16, AUTO_4, AUTO_17, cll_COMPARE_OP, AUTO_9, AUTO_5, rule_ESCAPED, cll_OP, AUTO_10, cll_ASSIGNMENT_OP, AUTO_19, cll_TEMPLATE, cll_LOGICAL_NOT, cll_LOGICAL_OP, cll_TYPE, NAME, AUTO_12, AUTO_20, cll_LOGICAL_OR, STRING, NUMBER, BOOLEAN, SPACEMODE, AUTO_13, SQUARE_BRACE_OPEN, PLUS, MINUS, DIVIDE, rule_CSEQUENCE_DIAPASON, cll_LOGICAL_AND, MULTIPLE, MODULO, AT, DOT, SQUARE_BRACE_CLOSE, AUTO_18, QUESTION_MARK, AUTO_15, rule_CSEQUENCE, LINEAR_COMMENT, ID
 	};
 	enum class Rules {
-		NONE, rule_data_block_templated_datablock, rule_data_block_regular_datablock_key, rule_data_block_regular_datablock, cll_loop_while, cll_method_call, cll_expr_group, cll_expr_logical, cll__var, cll_function_call, cll, cll_expr_compare, cll_expr_arithmetic, cll__if, cll_function_parameters, cll_function_arguments, cll_function_decl, cll__variable, cll_expr, cll_function_body_call, cll_stmt, rule, rule_value, rule_data_block, cll_function_body_decl, rule_name, array, rule_member, cll_expr_value, object, rvalue, cll_expr_term, rule_keyvalue, rule_quantifier, main, _use, cll_loop_for, rule_nested_rule, _use_unit, rule_group
+		NONE, rule_data_block_templated_datablock, rule_data_block_regular_datablock_key, rule_data_block_regular_datablock, rule_data_block, rule_value, rule_keyvalue, rule_name, cll_loop_while, cll_method_call, cll_expr_group, cll_expr_logical, cll__var, cll_function_call, cll, cll_expr_compare, cll_expr_arithmetic, cll__if, cll_function_parameters, cll_function_arguments, cll_function_decl, rule_group, cll__variable, cll_expr, cll_function_body_call, rule_nested_rule, cll_loop_for, cll_stmt, rule, cll_function_body_decl, array, rule_member, rvalue, moduleDeclaration, cll_expr_value, object, moduleImport, cll_expr_term, _use_unit, moduleImport_from, moduleImport_from_import_list, rule_quantifier, main, _use
 	};
 	using Rule = ISPA_STD::Node<Rules>;
 	using Rule_res = ISPA_STD::match_result<Rules>;
@@ -54,6 +54,8 @@ namespace Parser {
 		switch (token) {
 			case Tokens::NONE: return "NONE";
 			case Tokens::__WHITESPACE: return "__WHITESPACE";
+			case Tokens::AUTO_22: return "AUTO_22";
+			case Tokens::AUTO_21: return "AUTO_21";
 			case Tokens::AUTO_11: return "AUTO_11";
 			case Tokens::AUTO_7: return "AUTO_7";
 			case Tokens::AUTO_6: return "AUTO_6";
@@ -69,6 +71,8 @@ namespace Parser {
 			case Tokens::rule_CSEQUENCE_ESCAPE: return "rule_CSEQUENCE_ESCAPE";
 			case Tokens::rule_CSEQUENCE_SYMBOL: return "rule_CSEQUENCE_SYMBOL";
 			case Tokens::rule_OP: return "rule_OP";
+			case Tokens::AUTO_16: return "AUTO_16";
+			case Tokens::AUTO_4: return "AUTO_4";
 			case Tokens::AUTO_17: return "AUTO_17";
 			case Tokens::cll_COMPARE_OP: return "cll_COMPARE_OP";
 			case Tokens::AUTO_9: return "AUTO_9";
@@ -82,31 +86,32 @@ namespace Parser {
 			case Tokens::cll_LOGICAL_NOT: return "cll_LOGICAL_NOT";
 			case Tokens::cll_LOGICAL_OP: return "cll_LOGICAL_OP";
 			case Tokens::cll_TYPE: return "cll_TYPE";
+			case Tokens::NAME: return "NAME";
 			case Tokens::AUTO_12: return "AUTO_12";
+			case Tokens::AUTO_20: return "AUTO_20";
 			case Tokens::cll_LOGICAL_OR: return "cll_LOGICAL_OR";
 			case Tokens::STRING: return "STRING";
 			case Tokens::NUMBER: return "NUMBER";
-			case Tokens::AUTO_16: return "AUTO_16";
-			case Tokens::AUTO_4: return "AUTO_4";
 			case Tokens::BOOLEAN: return "BOOLEAN";
 			case Tokens::SPACEMODE: return "SPACEMODE";
 			case Tokens::AUTO_13: return "AUTO_13";
-			case Tokens::rule_CSEQUENCE_DIAPASON: return "rule_CSEQUENCE_DIAPASON";
-			case Tokens::cll_LOGICAL_AND: return "cll_LOGICAL_AND";
-			case Tokens::QUESTION_MARK: return "QUESTION_MARK";
+			case Tokens::SQUARE_BRACE_OPEN: return "SQUARE_BRACE_OPEN";
 			case Tokens::PLUS: return "PLUS";
 			case Tokens::MINUS: return "MINUS";
 			case Tokens::DIVIDE: return "DIVIDE";
+			case Tokens::rule_CSEQUENCE_DIAPASON: return "rule_CSEQUENCE_DIAPASON";
+			case Tokens::cll_LOGICAL_AND: return "cll_LOGICAL_AND";
 			case Tokens::MULTIPLE: return "MULTIPLE";
 			case Tokens::MODULO: return "MODULO";
 			case Tokens::AT: return "AT";
 			case Tokens::DOT: return "DOT";
-			case Tokens::ID: return "ID";
+			case Tokens::SQUARE_BRACE_CLOSE: return "SQUARE_BRACE_CLOSE";
+			case Tokens::AUTO_18: return "AUTO_18";
+			case Tokens::QUESTION_MARK: return "QUESTION_MARK";
 			case Tokens::AUTO_15: return "AUTO_15";
 			case Tokens::rule_CSEQUENCE: return "rule_CSEQUENCE";
 			case Tokens::LINEAR_COMMENT: return "LINEAR_COMMENT";
-			case Tokens::AUTO_18: return "AUTO_18";
-			case Tokens::NAME: return "NAME";
+			case Tokens::ID: return "ID";
 		}
 		return "NONE";
 	}
@@ -116,6 +121,10 @@ namespace Parser {
 			case Rules::rule_data_block_templated_datablock: return "rule_data_block_templated_datablock";
 			case Rules::rule_data_block_regular_datablock_key: return "rule_data_block_regular_datablock_key";
 			case Rules::rule_data_block_regular_datablock: return "rule_data_block_regular_datablock";
+			case Rules::rule_data_block: return "rule_data_block";
+			case Rules::rule_value: return "rule_value";
+			case Rules::rule_keyvalue: return "rule_keyvalue";
+			case Rules::rule_name: return "rule_name";
 			case Rules::cll_loop_while: return "cll_loop_while";
 			case Rules::cll_method_call: return "cll_method_call";
 			case Rules::cll_expr_group: return "cll_expr_group";
@@ -129,121 +138,177 @@ namespace Parser {
 			case Rules::cll_function_parameters: return "cll_function_parameters";
 			case Rules::cll_function_arguments: return "cll_function_arguments";
 			case Rules::cll_function_decl: return "cll_function_decl";
+			case Rules::rule_group: return "rule_group";
 			case Rules::cll__variable: return "cll__variable";
 			case Rules::cll_expr: return "cll_expr";
 			case Rules::cll_function_body_call: return "cll_function_body_call";
+			case Rules::rule_nested_rule: return "rule_nested_rule";
+			case Rules::cll_loop_for: return "cll_loop_for";
 			case Rules::cll_stmt: return "cll_stmt";
 			case Rules::rule: return "rule";
-			case Rules::rule_value: return "rule_value";
-			case Rules::rule_data_block: return "rule_data_block";
 			case Rules::cll_function_body_decl: return "cll_function_body_decl";
-			case Rules::rule_name: return "rule_name";
 			case Rules::array: return "array";
 			case Rules::rule_member: return "rule_member";
+			case Rules::rvalue: return "rvalue";
+			case Rules::moduleDeclaration: return "moduleDeclaration";
 			case Rules::cll_expr_value: return "cll_expr_value";
 			case Rules::object: return "object";
-			case Rules::rvalue: return "rvalue";
+			case Rules::moduleImport: return "moduleImport";
 			case Rules::cll_expr_term: return "cll_expr_term";
-			case Rules::rule_keyvalue: return "rule_keyvalue";
+			case Rules::_use_unit: return "_use_unit";
+			case Rules::moduleImport_from: return "moduleImport_from";
+			case Rules::moduleImport_from_import_list: return "moduleImport_from_import_list";
 			case Rules::rule_quantifier: return "rule_quantifier";
 			case Rules::main: return "main";
 			case Rules::_use: return "_use";
-			case Rules::cll_loop_for: return "cll_loop_for";
-			case Rules::rule_nested_rule: return "rule_nested_rule";
-			case Rules::_use_unit: return "_use_unit";
-			case Rules::rule_group: return "rule_group";
 		}
 		return "NONE";
 	}
 	namespace Types {
+		using ID = ::Parser::str_t;
 		struct rule_CSEQUENCE {
 			::Parser::arr_t<::Parser::arr_t<::Parser::Token>> val;
 			char _not;
 		};
-		using ID = ::Parser::str_t;
 		struct rule_CSEQUENCE_DIAPASON {
 			::Parser::Token to;
 			::Parser::Token from;
 		};
-		using AUTO_13 = char;
+		using AUTO_13 = ::Parser::str_t;
 		using SPACEMODE = ::Parser::str_t;
-		using AUTO_16 = char;
 		struct NUMBER {
 			::Parser::str_t dec;
 			char main;
 			::Parser::str_t sign;
 		};
-		using AUTO_8 = char;
-		using AUTO_18 = ::Parser::str_t;
-		using AUTO_14 = char;
-		using rule_HEX = ::Parser::str_t;
-		using AUTO_2 = char;
-		using rule_BIN = ::Parser::str_t;
-		using STRING = ::Parser::str_t;
-		using AUTO_11 = ::Parser::str_t;
-		using AUTO_0 = char;
-		using BOOLEAN = ::Parser::str_t;
-		using rule_CSEQUENCE_ESCAPE = char;
-		using AUTO_4 = ::Parser::str_t;
-		using cll_OP = ::Parser::str_t;
-		using AUTO_3 = char;
-		using AUTO_6 = char;
-		using AUTO_7 = char;
-		using AUTO_5 = char;
-		using cll_ASSIGNMENT_OP = char;
-		using AUTO_1 = char;
-		using rule_CSEQUENCE_SYMBOL = ::Parser::str_t;
-		using AUTO_17 = char;
-		using cll_COMPARE_OP = ::Parser::str_t;
+		using AUTO_20 = ::Parser::str_t;
+		using cll_LOGICAL_OP = ::Parser::Token;
 		using AUTO_12 = ::Parser::str_t;
 		struct cll_TEMPLATE {
 			::Parser::arr_t<::Parser::Token> second;
 			::Parser::Token first;
 		};
-		using AUTO_9 = ::Parser::str_t;
+		using AUTO_18 = char;
+		using AUTO_14 = ::Parser::str_t;
+		using rule_HEX = ::Parser::str_t;
+		using AUTO_2 = char;
+		using rule_BIN = ::Parser::str_t;
+		using BOOLEAN = ::Parser::str_t;
+		using rule_CSEQUENCE_ESCAPE = char;
+		using AUTO_4 = char;
+		using cll_OP = ::Parser::str_t;
+		using AUTO_6 = ::Parser::str_t;
+		using AUTO_7 = char;
+		using AUTO_5 = char;
+		using cll_ASSIGNMENT_OP = char;
+		using AUTO_3 = char;
+		using AUTO_0 = char;
+		using AUTO_21 = ::Parser::str_t;
+		using cll_COMPARE_OP = ::Parser::str_t;
+		using AUTO_1 = char;
+		using STRING = ::Parser::str_t;
+		using AUTO_11 = ::Parser::str_t;
+		using AUTO_22 = ::Parser::str_t;
+		using rule_CSEQUENCE_SYMBOL = ::Parser::str_t;
+		using AUTO_17 = ::Parser::str_t;
+		using AUTO_8 = char;
+		using AUTO_16 = char;
+		using AUTO_9 = char;
 		using AUTO_15 = char;
 		using rule_ESCAPED = char;
-		using AUTO_10 = ::Parser::str_t;
+		using AUTO_10 = char;
 		using NAME = ::Parser::Token;
-		using AUTO_19 = ::Parser::str_t;
 		struct cll_TYPE {
 			::Parser::Token templ;
 			::Parser::str_t type;
 		};
-		using cll_LOGICAL_OP = ::Parser::Token;
-		using rule_group = ::Parser::arr_t<::Parser::Rule>;
+		using AUTO_19 = ::Parser::str_t;
+		using rule_quantifier = ::Parser::Token;
+		using main = ::Parser::arr_t<::Parser::any_t>;
+		struct moduleImport_from_import_list {
+			::Parser::arr_t<::Parser::Token> sequence;
+			::Parser::Token first;
+		};
 		struct _use_unit {
 			::Parser::Rule value;
 			::Parser::Token name;
 		};
-		using rule_nested_rule = ::Parser::Token;
-		struct _use {
-			::Parser::arr_t<::Parser::Rule> second;
-			::Parser::Rule first;
-		};
-		using main = ::Parser::arr_t<::Parser::any_t>;
-		using rule_quantifier = ::Parser::Token;
-		using rule_keyvalue = ::Parser::Token;
 		struct cll_expr_term {
 			::Parser::arr_t<::Parser::Rule> sequence;
 			::Parser::arr_t<::Parser::Token> operators;
 			::Parser::Rule first;
 		};
+		struct object {
+			::Parser::arr_t<::Parser::Rule> values;
+			::Parser::arr_t<::Parser::Token> keys;
+			::Parser::Rule value;
+			::Parser::Token key;
+		};
+		using moduleImport = ::Parser::any_t;
+		using moduleDeclaration = ::Parser::Token;
 		using rvalue = ::Parser::any_t;
-		struct cll_expr_arithmetic {
-			::Parser::arr_t<::Parser::Rule> sequence;
-			::Parser::arr_t<::Parser::Token> operators;
-			::Parser::Rule first;
+		struct rule_member {
+			::Parser::Rule quantifier;
+			::Parser::any_t val;
+			::Parser::Rule prefix;
 		};
-		struct cll__if {
-			::Parser::Rule stmt;
-			::Parser::Rule expr;
-		};
+		using array = ::Parser::arr_t<::Parser::Rule>;
 		struct cll__var {
 			::Parser::Rule value;
 			::Parser::Token op;
 			::Parser::Token id;
 			::Parser::Token type;
+		};
+		struct cll_function_decl {
+			::Parser::Rule stmt;
+			::Parser::Rule name;
+			::Parser::arr_t<::Parser::Token> type;
+		};
+		using cll_expr_value = ::Parser::Rule;
+		struct cll_expr_logical {
+			::Parser::arr_t<::Parser::Rule> right;
+			::Parser::arr_t<::Parser::Token> op;
+			::Parser::Rule left;
+		};
+		using cll_stmt = ::Parser::arr_t<::Parser::Rule>;
+		using cll_expr_group = ::Parser::Rule;
+		struct cll_loop_while {
+			::Parser::Rule stmt;
+			::Parser::Rule expr;
+		};
+		struct cll_method_call {
+			::Parser::Rule body;
+			::Parser::Token name;
+		};
+		struct rule_data_block_templated_datablock {
+			::Parser::arr_t<::Parser::Token> second_name;
+			::Parser::Token first_name;
+		};
+		struct rule_name {
+			::Parser::arr_t<::Parser::Token> nested_name;
+			::Parser::Token name;
+			::Parser::Token is_nested;
+		};
+		using rule_data_block = ::Parser::Rule;
+		struct _use {
+			::Parser::arr_t<::Parser::Rule> second;
+			::Parser::Rule first;
+		};
+		using rule_nested_rule = ::Parser::Rule;
+		using rule_value = ::Parser::Token;
+		using rule_data_block_regular_datablock = ::Parser::any_t;
+		struct moduleImport_from {
+			::Parser::Token from;
+			::Parser::any_t what;
+		};
+		struct rule_data_block_regular_datablock_key {
+			::Parser::Rule dt;
+			::Parser::Token name;
+		};
+		using rule_keyvalue = ::Parser::Token;
+		struct cll_function_call {
+			::Parser::Rule body;
+			::Parser::Token name;
 		};
 		struct rule {
 			::Parser::arr_t<::Parser::Rule> nested_rules;
@@ -251,17 +316,6 @@ namespace Parser {
 			::Parser::arr_t<::Parser::Rule> rule;
 			::Parser::Token name;
 		};
-		struct cll_function_call {
-			::Parser::Rule body;
-			::Parser::Token name;
-		};
-		struct cll_function_decl {
-			::Parser::Rule stmt;
-			::Parser::Rule name;
-			::Parser::arr_t<::Parser::Token> type;
-		};
-		using cll_stmt = ::Parser::arr_t<::Parser::Rule>;
-		using cll_expr_group = ::Parser::Rule;
 		using cll = ::Parser::Rule;
 		struct cll_expr_compare {
 			::Parser::arr_t<::Parser::Rule> sequence;
@@ -276,23 +330,17 @@ namespace Parser {
 			::Parser::arr_t<::Parser::Rule> second;
 			::Parser::Rule first;
 		};
-		struct cll_loop_while {
+		struct cll_expr_arithmetic {
+			::Parser::arr_t<::Parser::Rule> sequence;
+			::Parser::arr_t<::Parser::Token> operators;
+			::Parser::Rule first;
+		};
+		struct cll__if {
 			::Parser::Rule stmt;
 			::Parser::Rule expr;
 		};
-		struct cll_method_call {
-			::Parser::Rule body;
-			::Parser::Token name;
-		};
-		struct rule_data_block_templated_datablock {
-			::Parser::arr_t<::Parser::Token> second_name;
-			::Parser::Token first_name;
-		};
-		using rule_data_block_regular_datablock = ::Parser::any_t;
-		struct rule_data_block_regular_datablock_key {
-			::Parser::Rule dt;
-			::Parser::Token name;
-		};
+		using rule_group = ::Parser::arr_t<::Parser::Rule>;
+		using cll_function_body_decl = ::Parser::Rule;
 		struct cll__variable {
 			::Parser::Token pos;
 			::Parser::Rule brace_expression;
@@ -307,51 +355,29 @@ namespace Parser {
 			::Parser::Rule decl;
 		};
 		using cll_function_body_call = ::Parser::Rule;
-		using rule_value = ::Parser::Token;
-		using rule_data_block = ::Parser::Rule;
-		using cll_function_body_decl = ::Parser::Rule;
-		struct rule_name {
-			::Parser::arr_t<::Parser::Token> nested_name;
-			::Parser::Token name;
-			::Parser::Token is_nested;
-		};
-		using array = ::Parser::arr_t<::Parser::Rule>;
-		struct rule_member {
-			::Parser::Rule quantifier;
-			::Parser::any_t val;
-			::Parser::Rule prefix;
-		};
-		struct object {
-			::Parser::arr_t<::Parser::Rule> values;
-			::Parser::arr_t<::Parser::Token> keys;
-			::Parser::Rule value;
-			::Parser::Token key;
-		};
-		struct cll_expr_logical {
-			::Parser::arr_t<::Parser::Rule> right;
-			::Parser::arr_t<::Parser::Token> op;
-			::Parser::Rule left;
-		};
-		using cll_expr_value = ::Parser::Rule;
 	}
 
 	namespace get {
-		const ::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(const ::Parser::Token &token);
-		::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(::Parser::Token &token);
 		const ::Parser::Types::ID& ID(const ::Parser::Token &token);
 		::Parser::Types::ID& ID(::Parser::Token &token);
+		const ::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(const ::Parser::Token &token);
+		::Parser::Types::rule_CSEQUENCE& rule_CSEQUENCE(::Parser::Token &token);
 		const ::Parser::Types::rule_CSEQUENCE_DIAPASON& rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token);
 		::Parser::Types::rule_CSEQUENCE_DIAPASON& rule_CSEQUENCE_DIAPASON(::Parser::Token &token);
 		const ::Parser::Types::AUTO_13& AUTO_13(const ::Parser::Token &token);
 		::Parser::Types::AUTO_13& AUTO_13(::Parser::Token &token);
 		const ::Parser::Types::SPACEMODE& SPACEMODE(const ::Parser::Token &token);
 		::Parser::Types::SPACEMODE& SPACEMODE(::Parser::Token &token);
-		const ::Parser::Types::AUTO_16& AUTO_16(const ::Parser::Token &token);
-		::Parser::Types::AUTO_16& AUTO_16(::Parser::Token &token);
 		const ::Parser::Types::NUMBER& NUMBER(const ::Parser::Token &token);
 		::Parser::Types::NUMBER& NUMBER(::Parser::Token &token);
-		const ::Parser::Types::AUTO_8& AUTO_8(const ::Parser::Token &token);
-		::Parser::Types::AUTO_8& AUTO_8(::Parser::Token &token);
+		const ::Parser::Types::AUTO_20& AUTO_20(const ::Parser::Token &token);
+		::Parser::Types::AUTO_20& AUTO_20(::Parser::Token &token);
+		const ::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(const ::Parser::Token &token);
+		::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(::Parser::Token &token);
+		const ::Parser::Types::AUTO_12& AUTO_12(const ::Parser::Token &token);
+		::Parser::Types::AUTO_12& AUTO_12(::Parser::Token &token);
+		const ::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(const ::Parser::Token &token);
+		::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(::Parser::Token &token);
 		const ::Parser::Types::AUTO_18& AUTO_18(const ::Parser::Token &token);
 		::Parser::Types::AUTO_18& AUTO_18(::Parser::Token &token);
 		const ::Parser::Types::AUTO_14& AUTO_14(const ::Parser::Token &token);
@@ -362,12 +388,6 @@ namespace Parser {
 		::Parser::Types::AUTO_2& AUTO_2(::Parser::Token &token);
 		const ::Parser::Types::rule_BIN& rule_BIN(const ::Parser::Token &token);
 		::Parser::Types::rule_BIN& rule_BIN(::Parser::Token &token);
-		const ::Parser::Types::STRING& STRING(const ::Parser::Token &token);
-		::Parser::Types::STRING& STRING(::Parser::Token &token);
-		const ::Parser::Types::AUTO_11& AUTO_11(const ::Parser::Token &token);
-		::Parser::Types::AUTO_11& AUTO_11(::Parser::Token &token);
-		const ::Parser::Types::AUTO_0& AUTO_0(const ::Parser::Token &token);
-		::Parser::Types::AUTO_0& AUTO_0(::Parser::Token &token);
 		const ::Parser::Types::BOOLEAN& BOOLEAN(const ::Parser::Token &token);
 		::Parser::Types::BOOLEAN& BOOLEAN(::Parser::Token &token);
 		const ::Parser::Types::rule_CSEQUENCE_ESCAPE& rule_CSEQUENCE_ESCAPE(const ::Parser::Token &token);
@@ -376,8 +396,6 @@ namespace Parser {
 		::Parser::Types::AUTO_4& AUTO_4(::Parser::Token &token);
 		const ::Parser::Types::cll_OP& cll_OP(const ::Parser::Token &token);
 		::Parser::Types::cll_OP& cll_OP(::Parser::Token &token);
-		const ::Parser::Types::AUTO_3& AUTO_3(const ::Parser::Token &token);
-		::Parser::Types::AUTO_3& AUTO_3(::Parser::Token &token);
 		const ::Parser::Types::AUTO_6& AUTO_6(const ::Parser::Token &token);
 		::Parser::Types::AUTO_6& AUTO_6(::Parser::Token &token);
 		const ::Parser::Types::AUTO_7& AUTO_7(const ::Parser::Token &token);
@@ -386,18 +404,30 @@ namespace Parser {
 		::Parser::Types::AUTO_5& AUTO_5(::Parser::Token &token);
 		const ::Parser::Types::cll_ASSIGNMENT_OP& cll_ASSIGNMENT_OP(const ::Parser::Token &token);
 		::Parser::Types::cll_ASSIGNMENT_OP& cll_ASSIGNMENT_OP(::Parser::Token &token);
+		const ::Parser::Types::AUTO_3& AUTO_3(const ::Parser::Token &token);
+		::Parser::Types::AUTO_3& AUTO_3(::Parser::Token &token);
+		const ::Parser::Types::AUTO_0& AUTO_0(const ::Parser::Token &token);
+		::Parser::Types::AUTO_0& AUTO_0(::Parser::Token &token);
+		const ::Parser::Types::AUTO_21& AUTO_21(const ::Parser::Token &token);
+		::Parser::Types::AUTO_21& AUTO_21(::Parser::Token &token);
+		const ::Parser::Types::cll_COMPARE_OP& cll_COMPARE_OP(const ::Parser::Token &token);
+		::Parser::Types::cll_COMPARE_OP& cll_COMPARE_OP(::Parser::Token &token);
 		const ::Parser::Types::AUTO_1& AUTO_1(const ::Parser::Token &token);
 		::Parser::Types::AUTO_1& AUTO_1(::Parser::Token &token);
+		const ::Parser::Types::STRING& STRING(const ::Parser::Token &token);
+		::Parser::Types::STRING& STRING(::Parser::Token &token);
+		const ::Parser::Types::AUTO_11& AUTO_11(const ::Parser::Token &token);
+		::Parser::Types::AUTO_11& AUTO_11(::Parser::Token &token);
+		const ::Parser::Types::AUTO_22& AUTO_22(const ::Parser::Token &token);
+		::Parser::Types::AUTO_22& AUTO_22(::Parser::Token &token);
 		const ::Parser::Types::rule_CSEQUENCE_SYMBOL& rule_CSEQUENCE_SYMBOL(const ::Parser::Token &token);
 		::Parser::Types::rule_CSEQUENCE_SYMBOL& rule_CSEQUENCE_SYMBOL(::Parser::Token &token);
 		const ::Parser::Types::AUTO_17& AUTO_17(const ::Parser::Token &token);
 		::Parser::Types::AUTO_17& AUTO_17(::Parser::Token &token);
-		const ::Parser::Types::cll_COMPARE_OP& cll_COMPARE_OP(const ::Parser::Token &token);
-		::Parser::Types::cll_COMPARE_OP& cll_COMPARE_OP(::Parser::Token &token);
-		const ::Parser::Types::AUTO_12& AUTO_12(const ::Parser::Token &token);
-		::Parser::Types::AUTO_12& AUTO_12(::Parser::Token &token);
-		const ::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(const ::Parser::Token &token);
-		::Parser::Types::cll_TEMPLATE& cll_TEMPLATE(::Parser::Token &token);
+		const ::Parser::Types::AUTO_8& AUTO_8(const ::Parser::Token &token);
+		::Parser::Types::AUTO_8& AUTO_8(::Parser::Token &token);
+		const ::Parser::Types::AUTO_16& AUTO_16(const ::Parser::Token &token);
+		::Parser::Types::AUTO_16& AUTO_16(::Parser::Token &token);
 		const ::Parser::Types::AUTO_9& AUTO_9(const ::Parser::Token &token);
 		::Parser::Types::AUTO_9& AUTO_9(::Parser::Token &token);
 		const ::Parser::Types::AUTO_15& AUTO_15(const ::Parser::Token &token);
@@ -408,46 +438,72 @@ namespace Parser {
 		::Parser::Types::AUTO_10& AUTO_10(::Parser::Token &token);
 		const ::Parser::Types::NAME& NAME(const ::Parser::Token &token);
 		::Parser::Types::NAME& NAME(::Parser::Token &token);
-		const ::Parser::Types::AUTO_19& AUTO_19(const ::Parser::Token &token);
-		::Parser::Types::AUTO_19& AUTO_19(::Parser::Token &token);
 		const ::Parser::Types::cll_TYPE& cll_TYPE(const ::Parser::Token &token);
 		::Parser::Types::cll_TYPE& cll_TYPE(::Parser::Token &token);
-		const ::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(const ::Parser::Token &token);
-		::Parser::Types::cll_LOGICAL_OP& cll_LOGICAL_OP(::Parser::Token &token);
-		const ::Parser::Types::rule_group& rule_group(const ::Parser::Rule &rule);
-		::Parser::Types::rule_group& rule_group(::Parser::Rule &rule);
-		const ::Parser::Types::_use_unit& _use_unit(const ::Parser::Rule &rule);
-		::Parser::Types::_use_unit& _use_unit(::Parser::Rule &rule);
-		const ::Parser::Types::rule_nested_rule& rule_nested_rule(const ::Parser::Rule &rule);
-		::Parser::Types::rule_nested_rule& rule_nested_rule(::Parser::Rule &rule);
-		const ::Parser::Types::_use& _use(const ::Parser::Rule &rule);
-		::Parser::Types::_use& _use(::Parser::Rule &rule);
-		const ::Parser::Types::main& main(const ::Parser::Rule &rule);
-		::Parser::Types::main& main(::Parser::Rule &rule);
+		const ::Parser::Types::AUTO_19& AUTO_19(const ::Parser::Token &token);
+		::Parser::Types::AUTO_19& AUTO_19(::Parser::Token &token);
 		const ::Parser::Types::rule_quantifier& rule_quantifier(const ::Parser::Rule &rule);
 		::Parser::Types::rule_quantifier& rule_quantifier(::Parser::Rule &rule);
-		const ::Parser::Types::rule_keyvalue& rule_keyvalue(const ::Parser::Rule &rule);
-		::Parser::Types::rule_keyvalue& rule_keyvalue(::Parser::Rule &rule);
+		const ::Parser::Types::main& main(const ::Parser::Rule &rule);
+		::Parser::Types::main& main(::Parser::Rule &rule);
+		const ::Parser::Types::moduleImport_from_import_list& moduleImport_from_import_list(const ::Parser::Rule &rule);
+		::Parser::Types::moduleImport_from_import_list& moduleImport_from_import_list(::Parser::Rule &rule);
+		const ::Parser::Types::_use_unit& _use_unit(const ::Parser::Rule &rule);
+		::Parser::Types::_use_unit& _use_unit(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr_term& cll_expr_term(const ::Parser::Rule &rule);
 		::Parser::Types::cll_expr_term& cll_expr_term(::Parser::Rule &rule);
+		const ::Parser::Types::object& object(const ::Parser::Rule &rule);
+		::Parser::Types::object& object(::Parser::Rule &rule);
+		const ::Parser::Types::moduleImport& moduleImport(const ::Parser::Rule &rule);
+		::Parser::Types::moduleImport& moduleImport(::Parser::Rule &rule);
+		const ::Parser::Types::moduleDeclaration& moduleDeclaration(const ::Parser::Rule &rule);
+		::Parser::Types::moduleDeclaration& moduleDeclaration(::Parser::Rule &rule);
 		const ::Parser::Types::rvalue& rvalue(const ::Parser::Rule &rule);
 		::Parser::Types::rvalue& rvalue(::Parser::Rule &rule);
-		const ::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(const ::Parser::Rule &rule);
-		::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(::Parser::Rule &rule);
-		const ::Parser::Types::cll__if& cll__if(const ::Parser::Rule &rule);
-		::Parser::Types::cll__if& cll__if(::Parser::Rule &rule);
+		const ::Parser::Types::rule_member& rule_member(const ::Parser::Rule &rule);
+		::Parser::Types::rule_member& rule_member(::Parser::Rule &rule);
+		const ::Parser::Types::array& array(const ::Parser::Rule &rule);
+		::Parser::Types::array& array(::Parser::Rule &rule);
 		const ::Parser::Types::cll__var& cll__var(const ::Parser::Rule &rule);
 		::Parser::Types::cll__var& cll__var(::Parser::Rule &rule);
-		const ::Parser::Types::rule& rule(const ::Parser::Rule &rule);
-		::Parser::Types::rule& rule(::Parser::Rule &rule);
-		const ::Parser::Types::cll_function_call& cll_function_call(const ::Parser::Rule &rule);
-		::Parser::Types::cll_function_call& cll_function_call(::Parser::Rule &rule);
 		const ::Parser::Types::cll_function_decl& cll_function_decl(const ::Parser::Rule &rule);
 		::Parser::Types::cll_function_decl& cll_function_decl(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_value& cll_expr_value(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_value& cll_expr_value(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_logical& cll_expr_logical(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_logical& cll_expr_logical(::Parser::Rule &rule);
 		const ::Parser::Types::cll_stmt& cll_stmt(const ::Parser::Rule &rule);
 		::Parser::Types::cll_stmt& cll_stmt(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr_group& cll_expr_group(const ::Parser::Rule &rule);
 		::Parser::Types::cll_expr_group& cll_expr_group(::Parser::Rule &rule);
+		const ::Parser::Types::cll_loop_while& cll_loop_while(const ::Parser::Rule &rule);
+		::Parser::Types::cll_loop_while& cll_loop_while(::Parser::Rule &rule);
+		const ::Parser::Types::cll_method_call& cll_method_call(const ::Parser::Rule &rule);
+		::Parser::Types::cll_method_call& cll_method_call(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(::Parser::Rule &rule);
+		const ::Parser::Types::rule_name& rule_name(const ::Parser::Rule &rule);
+		::Parser::Types::rule_name& rule_name(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block& rule_data_block(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block& rule_data_block(::Parser::Rule &rule);
+		const ::Parser::Types::_use& _use(const ::Parser::Rule &rule);
+		::Parser::Types::_use& _use(::Parser::Rule &rule);
+		const ::Parser::Types::rule_nested_rule& rule_nested_rule(const ::Parser::Rule &rule);
+		::Parser::Types::rule_nested_rule& rule_nested_rule(::Parser::Rule &rule);
+		const ::Parser::Types::rule_value& rule_value(const ::Parser::Rule &rule);
+		::Parser::Types::rule_value& rule_value(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(::Parser::Rule &rule);
+		const ::Parser::Types::moduleImport_from& moduleImport_from(const ::Parser::Rule &rule);
+		::Parser::Types::moduleImport_from& moduleImport_from(::Parser::Rule &rule);
+		const ::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(const ::Parser::Rule &rule);
+		::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(::Parser::Rule &rule);
+		const ::Parser::Types::rule_keyvalue& rule_keyvalue(const ::Parser::Rule &rule);
+		::Parser::Types::rule_keyvalue& rule_keyvalue(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_call& cll_function_call(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_call& cll_function_call(::Parser::Rule &rule);
+		const ::Parser::Types::rule& rule(const ::Parser::Rule &rule);
+		::Parser::Types::rule& rule(::Parser::Rule &rule);
 		const ::Parser::Types::cll& cll(const ::Parser::Rule &rule);
 		::Parser::Types::cll& cll(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr_compare& cll_expr_compare(const ::Parser::Rule &rule);
@@ -456,16 +512,14 @@ namespace Parser {
 		::Parser::Types::cll_function_parameters& cll_function_parameters(::Parser::Rule &rule);
 		const ::Parser::Types::cll_function_arguments& cll_function_arguments(const ::Parser::Rule &rule);
 		::Parser::Types::cll_function_arguments& cll_function_arguments(::Parser::Rule &rule);
-		const ::Parser::Types::cll_loop_while& cll_loop_while(const ::Parser::Rule &rule);
-		::Parser::Types::cll_loop_while& cll_loop_while(::Parser::Rule &rule);
-		const ::Parser::Types::cll_method_call& cll_method_call(const ::Parser::Rule &rule);
-		::Parser::Types::cll_method_call& cll_method_call(::Parser::Rule &rule);
-		const ::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(const ::Parser::Rule &rule);
-		::Parser::Types::rule_data_block_templated_datablock& rule_data_block_templated_datablock(::Parser::Rule &rule);
-		const ::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(const ::Parser::Rule &rule);
-		::Parser::Types::rule_data_block_regular_datablock& rule_data_block_regular_datablock(::Parser::Rule &rule);
-		const ::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(const ::Parser::Rule &rule);
-		::Parser::Types::rule_data_block_regular_datablock_key& rule_data_block_regular_datablock_key(::Parser::Rule &rule);
+		const ::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(const ::Parser::Rule &rule);
+		::Parser::Types::cll_expr_arithmetic& cll_expr_arithmetic(::Parser::Rule &rule);
+		const ::Parser::Types::cll__if& cll__if(const ::Parser::Rule &rule);
+		::Parser::Types::cll__if& cll__if(::Parser::Rule &rule);
+		const ::Parser::Types::rule_group& rule_group(const ::Parser::Rule &rule);
+		::Parser::Types::rule_group& rule_group(::Parser::Rule &rule);
+		const ::Parser::Types::cll_function_body_decl& cll_function_body_decl(const ::Parser::Rule &rule);
+		::Parser::Types::cll_function_body_decl& cll_function_body_decl(::Parser::Rule &rule);
 		const ::Parser::Types::cll__variable& cll__variable(const ::Parser::Rule &rule);
 		::Parser::Types::cll__variable& cll__variable(::Parser::Rule &rule);
 		const ::Parser::Types::cll_expr& cll_expr(const ::Parser::Rule &rule);
@@ -474,24 +528,6 @@ namespace Parser {
 		::Parser::Types::cll_loop_for& cll_loop_for(::Parser::Rule &rule);
 		const ::Parser::Types::cll_function_body_call& cll_function_body_call(const ::Parser::Rule &rule);
 		::Parser::Types::cll_function_body_call& cll_function_body_call(::Parser::Rule &rule);
-		const ::Parser::Types::rule_value& rule_value(const ::Parser::Rule &rule);
-		::Parser::Types::rule_value& rule_value(::Parser::Rule &rule);
-		const ::Parser::Types::rule_data_block& rule_data_block(const ::Parser::Rule &rule);
-		::Parser::Types::rule_data_block& rule_data_block(::Parser::Rule &rule);
-		const ::Parser::Types::cll_function_body_decl& cll_function_body_decl(const ::Parser::Rule &rule);
-		::Parser::Types::cll_function_body_decl& cll_function_body_decl(::Parser::Rule &rule);
-		const ::Parser::Types::rule_name& rule_name(const ::Parser::Rule &rule);
-		::Parser::Types::rule_name& rule_name(::Parser::Rule &rule);
-		const ::Parser::Types::array& array(const ::Parser::Rule &rule);
-		::Parser::Types::array& array(::Parser::Rule &rule);
-		const ::Parser::Types::rule_member& rule_member(const ::Parser::Rule &rule);
-		::Parser::Types::rule_member& rule_member(::Parser::Rule &rule);
-		const ::Parser::Types::object& object(const ::Parser::Rule &rule);
-		::Parser::Types::object& object(::Parser::Rule &rule);
-		const ::Parser::Types::cll_expr_logical& cll_expr_logical(const ::Parser::Rule &rule);
-		::Parser::Types::cll_expr_logical& cll_expr_logical(::Parser::Rule &rule);
-		const ::Parser::Types::cll_expr_value& cll_expr_value(const ::Parser::Rule &rule);
-		::Parser::Types::cll_expr_value& cll_expr_value(::Parser::Rule &rule);
 	}
 	class Lexer : public ISPA_STD::Lexer_base<Tokens> {
 		public:
@@ -509,13 +545,14 @@ namespace Parser {
          */
         static void printToken(std::ostream& os, const Token& token);
 		Lexer(const std::string& in) : Lexer_base(in) {}
-        Lexer(char*& in) : Lexer_base(in) {}
-        Lexer(const char*& in) : Lexer_base(in) {}
+        Lexer(const char* in) : Lexer_base(in) {}
         Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
         Lexer() {}
 		private:
 			Token_res NONE(const char*);
 			Token_res __WHITESPACE(const char*);
+			Token_res AUTO_22(const char*);
+			Token_res AUTO_21(const char*);
 			Token_res AUTO_11(const char*);
 			Token_res AUTO_7(const char*);
 			Token_res AUTO_6(const char*);
@@ -531,6 +568,8 @@ namespace Parser {
 			Token_res rule_CSEQUENCE_ESCAPE(const char*);
 			Token_res rule_CSEQUENCE_SYMBOL(const char*);
 			Token_res rule_OP(const char*);
+			Token_res AUTO_16(const char*);
+			Token_res AUTO_4(const char*);
 			Token_res AUTO_17(const char*);
 			Token_res cll_COMPARE_OP(const char*);
 			Token_res AUTO_9(const char*);
@@ -544,31 +583,32 @@ namespace Parser {
 			Token_res cll_LOGICAL_NOT(const char*);
 			Token_res cll_LOGICAL_OP(const char*);
 			Token_res cll_TYPE(const char*);
+			Token_res NAME(const char*);
 			Token_res AUTO_12(const char*);
+			Token_res AUTO_20(const char*);
 			Token_res cll_LOGICAL_OR(const char*);
 			Token_res STRING(const char*);
 			Token_res NUMBER(const char*);
-			Token_res AUTO_16(const char*);
-			Token_res AUTO_4(const char*);
 			Token_res BOOLEAN(const char*);
 			Token_res SPACEMODE(const char*);
 			Token_res AUTO_13(const char*);
-			Token_res rule_CSEQUENCE_DIAPASON(const char*);
-			Token_res cll_LOGICAL_AND(const char*);
-			Token_res QUESTION_MARK(const char*);
+			Token_res SQUARE_BRACE_OPEN(const char*);
 			Token_res PLUS(const char*);
 			Token_res MINUS(const char*);
 			Token_res DIVIDE(const char*);
+			Token_res rule_CSEQUENCE_DIAPASON(const char*);
+			Token_res cll_LOGICAL_AND(const char*);
 			Token_res MULTIPLE(const char*);
 			Token_res MODULO(const char*);
 			Token_res AT(const char*);
 			Token_res DOT(const char*);
-			Token_res ID(const char*);
+			Token_res SQUARE_BRACE_CLOSE(const char*);
+			Token_res AUTO_18(const char*);
+			Token_res QUESTION_MARK(const char*);
 			Token_res AUTO_15(const char*);
 			Token_res rule_CSEQUENCE(const char*);
 			Token_res LINEAR_COMMENT(const char*);
-			Token_res AUTO_18(const char*);
-			Token_res NAME(const char*);
+			Token_res ID(const char*);
 	};
 	class Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {
 		public:
@@ -811,6 +851,184 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_regular_datablock, data)};
 		}
 		template <class IT>
+		::Parser::Rule_res rule_data_block(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Rule _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Rule_res _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::Rule_res _4;
+			::Parser::bool_t success_5 = false;
+			success_1 = false;
+			success_3 = false;
+			_2 = rule_data_block_regular_datablock(pos);
+			if (!(_2.status))
+			{
+				success_5 = false;
+				_4 = rule_data_block_templated_datablock(pos);
+				if (!(_4.status))
+				{
+					return {};
+				}
+				else 
+				{
+					success_5 = true;
+					pos += _4.node.length();
+					_0 = _4.node;
+				}
+			}
+			else 
+			{
+				success_3 = true;
+				pos += _2.node.length();
+				_0 = _2.node;
+			}
+			success_1 = true;
+			::Parser::Types::rule_data_block data = _0;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res rule_value(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_4))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				reportError(pos, "id ");
+				return {};
+			}
+			_2 = *pos;
+			success_3 = true;
+			pos += 1;
+			::Parser::Types::rule_value data = _2;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_value, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res rule_keyvalue(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::bool_t success_3 = false;
+			::Parser::bool_t success_5 = false;
+			::Parser::Token _4;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AT))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			success_3 = false;
+			auto begin_6 = pos;
+			success_5 = false;
+			do
+			{
+				if (!(begin_6->name() == ::Parser::Tokens::ID))
+				{
+					reportError(pos, "id ");
+					break;
+				}
+				_4 = *begin_6;
+				success_5 = true;
+				begin_6 += 1;
+			}
+			while(0);
+			if (success_5)
+			{
+				success_3 = true;
+				pos = begin_6;
+			}
+			::Parser::Types::rule_keyvalue data = _4;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_keyvalue, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res rule_name(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::bool_t success_5 = false;
+			::Parser::bool_t success_10 = false;
+			::Parser::bool_t success_7 = false;
+			::Parser::Token _6;
+			::Parser::arr_t<::Parser::Token> shadow_8;
+			::Parser::Token _9;
+			::Parser::arr_t<::Parser::Token> shadow_11;
+			success_1 = false;
+			if (pos->name() == ::Parser::Tokens::AUTO_5)
+			{
+				_0 = *pos;
+				success_1 = true;
+				pos += 1;
+			}
+			skip_spaces(pos);
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				reportError(pos, "id ");
+				return {};
+			}
+			_2 = *pos;
+			success_3 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_5 = false;
+			auto begin_12 = pos;
+			success_10 = false;
+			success_7 = false;
+			while (1)
+			{
+				if (!(begin_12->name() == ::Parser::Tokens::DOT))
+				{
+					reportError(pos, "dot ");
+					break;
+				}
+				_6 = *begin_12;
+				success_7 = true;
+				begin_12 += 1;
+				shadow_8.push_back(_6);
+				skip_spaces(begin_12);
+				if (!(begin_12->name() == ::Parser::Tokens::ID))
+				{
+					reportError(pos, "id ");
+					break;
+				}
+				_9 = *begin_12;
+				success_10 = true;
+				begin_12 += 1;
+				shadow_11.push_back(_9);
+			}
+			if (success_7 && success_10)
+			{
+				success_5 = true;
+				pos = begin_12;
+			}
+			::Parser::Types::rule_name data;
+			data.nested_name = shadow_11;
+			data.name = _2;
+			data.is_nested = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_name, data)};
+		}
+		template <class IT>
 		::Parser::Rule_res cll_loop_while(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
@@ -821,7 +1039,7 @@ namespace Parser {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_4))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
 			{
 				return {};
 			}
@@ -909,7 +1127,7 @@ namespace Parser {
 			::Parser::Token _4;
 			::Parser::bool_t success_5 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
 			{
 				return {};
 			}
@@ -928,9 +1146,9 @@ namespace Parser {
 			pos += _2.node.length();
 			skip_spaces(pos);
 			success_5 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
 			{
-				reportError(pos, "auto_6 ");
+				reportError(pos, "auto_8 ");
 				return {};
 			}
 			_4 = *pos;
@@ -1121,7 +1339,7 @@ namespace Parser {
 			::Parser::Token _14;
 			::Parser::bool_t success_15 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_9))
 			{
 				return {};
 			}
@@ -1189,9 +1407,9 @@ namespace Parser {
 			success_3 = true;
 			skip_spaces(pos);
 			success_15 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
 			{
-				reportError(pos, "auto_8 ");
+				reportError(pos, "auto_10 ");
 				return {};
 			}
 			_14 = *pos;
@@ -1353,7 +1571,7 @@ namespace Parser {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_9))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_11))
 			{
 				return {};
 			}
@@ -1535,7 +1753,7 @@ namespace Parser {
 			::Parser::Rule_res _8;
 			::Parser::bool_t success_9 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_12))
 			{
 				return {};
 			}
@@ -1584,6 +1802,48 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_decl, data)};
 		}
 		template <class IT>
+		::Parser::Rule_res rule_group(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Rule_res _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::arr_t<::Parser::Rule> shadow_4;
+			::Parser::Token _5;
+			::Parser::bool_t success_6 = false;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			_2 = rule_member(pos);
+			while (_2.status)
+			{
+				success_3 = true;
+				pos += _2.node.length();
+				shadow_4.push_back(_2.node);
+				_2 = rule_member(pos);
+			}
+			skip_spaces(pos);
+			success_6 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
+			{
+				reportError(pos, "auto_8 ");
+				return {};
+			}
+			_5 = *pos;
+			success_6 = true;
+			pos += 1;
+			::Parser::Types::rule_group data = shadow_4;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_group, data)};
+		}
+		template <class IT>
 		::Parser::Rule_res cll__variable(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
@@ -1618,10 +1878,10 @@ namespace Parser {
 			do
 			{
 				success_5 = false;
-				if (!(begin_8->name() == ::Parser::Tokens::AUTO_11))
+				if (!(begin_8->name() == ::Parser::Tokens::AUTO_13))
 				{
 					success_7 = false;
-					if (!(begin_8->name() == ::Parser::Tokens::AUTO_12))
+					if (!(begin_8->name() == ::Parser::Tokens::AUTO_14))
 					{
 						break;
 					}
@@ -1667,9 +1927,9 @@ namespace Parser {
 			success_14 = false;
 			do
 			{
-				if (!(begin_19->name() == ::Parser::Tokens::AUTO_13))
+				if (!(begin_19->name() == ::Parser::Tokens::AUTO_15))
 				{
-					reportError(pos, "auto_13 ");
+					reportError(pos, "auto_15 ");
 					break;
 				}
 				_13 = *begin_19;
@@ -1685,9 +1945,9 @@ namespace Parser {
 				success_16 = true;
 				begin_19 += _15.node.length();
 				skip_spaces(begin_19);
-				if (!(begin_19->name() == ::Parser::Tokens::AUTO_14))
+				if (!(begin_19->name() == ::Parser::Tokens::AUTO_16))
 				{
-					reportError(pos, "auto_14 ");
+					reportError(pos, "auto_16 ");
 					break;
 				}
 				_17 = *begin_19;
@@ -1707,10 +1967,10 @@ namespace Parser {
 			do
 			{
 				success_25 = false;
-				if (!(begin_28->name() == ::Parser::Tokens::AUTO_11))
+				if (!(begin_28->name() == ::Parser::Tokens::AUTO_13))
 				{
 					success_27 = false;
-					if (!(begin_28->name() == ::Parser::Tokens::AUTO_12))
+					if (!(begin_28->name() == ::Parser::Tokens::AUTO_14))
 					{
 						break;
 					}
@@ -1774,7 +2034,7 @@ namespace Parser {
 			::Parser::Token _4;
 			::Parser::bool_t success_5 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
 			{
 				return {};
 			}
@@ -1793,9 +2053,9 @@ namespace Parser {
 			pos += _2.node.length();
 			skip_spaces(pos);
 			success_5 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
 			{
-				reportError(pos, "auto_6 ");
+				reportError(pos, "auto_8 ");
 				return {};
 			}
 			_4 = *pos;
@@ -1803,6 +2063,182 @@ namespace Parser {
 			pos += 1;
 			::Parser::Types::cll_function_body_call data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_body_call, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res rule_nested_rule(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Rule_res _2;
+			::Parser::bool_t success_3 = false;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			success_3 = false;
+			_2 = rule(pos);
+			if (!(_2.status))
+			{
+				reportError(pos, "rule ");
+				return {};
+			}
+			success_3 = true;
+			pos += _2.node.length();
+			::Parser::Types::rule_nested_rule data = _2.node;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_nested_rule, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res cll_loop_for(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::Rule _4;
+			::Parser::bool_t success_5 = false;
+			::Parser::bool_t success_7 = false;
+			::Parser::Rule _6;
+			::Parser::Rule_res _8;
+			::Parser::bool_t success_9 = false;
+			::Parser::Rule_res _10;
+			::Parser::bool_t success_11 = false;
+			::Parser::Token _13;
+			::Parser::bool_t success_14 = false;
+			::Parser::Rule_res _15;
+			::Parser::bool_t success_16 = false;
+			::Parser::Token _17;
+			::Parser::bool_t success_18 = false;
+			::Parser::Rule_res _19;
+			::Parser::bool_t success_20 = false;
+			::Parser::Token _21;
+			::Parser::bool_t success_22 = false;
+			::Parser::Rule_res _23;
+			::Parser::bool_t success_24 = false;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_17))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
+			{
+				reportError(pos, "auto_7 ");
+				return {};
+			}
+			_2 = *pos;
+			success_3 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_5 = false;
+			auto begin_12 = pos;
+			success_7 = false;
+			do
+			{
+				success_9 = false;
+				_8 = cll__var(begin_12);
+				if (!(_8.status))
+				{
+					success_11 = false;
+					_10 = cll_expr(begin_12);
+					if (!(_10.status))
+					{
+						break;
+					}
+					else 
+					{
+						success_11 = true;
+						begin_12 += _10.node.length();
+						_6 = _10.node;
+					}
+				}
+				else 
+				{
+					success_9 = true;
+					begin_12 += _8.node.length();
+					_6 = _8.node;
+				}
+				success_7 = true;
+				_4 = _6;
+			}
+			while(0);
+			if (success_7)
+			{
+				success_5 = true;
+				pos = begin_12;
+			}
+			skip_spaces(pos);
+			success_14 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
+			{
+				reportError(pos, "auto_10 ");
+				return {};
+			}
+			_13 = *pos;
+			success_14 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_16 = false;
+			_15 = cll_expr(pos);
+			if (_15.status)
+			{
+				success_16 = true;
+				pos += _15.node.length();
+			}
+			skip_spaces(pos);
+			success_18 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
+			{
+				reportError(pos, "auto_10 ");
+				return {};
+			}
+			_17 = *pos;
+			success_18 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_20 = false;
+			_19 = cll_expr(pos);
+			if (_19.status)
+			{
+				success_20 = true;
+				pos += _19.node.length();
+			}
+			skip_spaces(pos);
+			success_22 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
+			{
+				reportError(pos, "auto_8 ");
+				return {};
+			}
+			_21 = *pos;
+			success_22 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_24 = false;
+			_23 = cll_stmt(pos);
+			if (!(_23.status))
+			{
+				reportError(pos, "cll stmt ");
+				return {};
+			}
+			success_24 = true;
+			pos += _23.node.length();
+			::Parser::Types::cll_loop_for data;
+			data.stmt = _23.node;
+			data.end = _19.node;
+			data.cond = _15.node;
+			data.decl = _4;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_for, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_stmt(IT pos) {
@@ -1875,9 +2311,9 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_15))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_18))
 			{
-				reportError(pos, "auto_15 ");
+				reportError(pos, "auto_18 ");
 				return {};
 			}
 			_2 = *pos;
@@ -1920,9 +2356,9 @@ namespace Parser {
 			}
 			skip_spaces(pos);
 			success_14 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
 			{
-				reportError(pos, "auto_8 ");
+				reportError(pos, "auto_10 ");
 				return {};
 			}
 			_13 = *pos;
@@ -1937,73 +2373,6 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule, data)};
 		}
 		template <class IT>
-		::Parser::Rule_res rule_value(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Token _2;
-			::Parser::bool_t success_3 = false;
-			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_16))
-			{
-				return {};
-			}
-			_0 = *pos;
-			success_1 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::ID))
-			{
-				reportError(pos, "id ");
-				return {};
-			}
-			_2 = *pos;
-			success_3 = true;
-			pos += 1;
-			::Parser::Types::rule_value data = _2;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_value, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res rule_data_block(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Rule _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Rule_res _2;
-			::Parser::bool_t success_3 = false;
-			::Parser::Rule_res _4;
-			::Parser::bool_t success_5 = false;
-			success_1 = false;
-			success_3 = false;
-			_2 = rule_data_block_regular_datablock(pos);
-			if (!(_2.status))
-			{
-				success_5 = false;
-				_4 = rule_data_block_templated_datablock(pos);
-				if (!(_4.status))
-				{
-					return {};
-				}
-				else 
-				{
-					success_5 = true;
-					pos += _4.node.length();
-					_0 = _4.node;
-				}
-			}
-			else 
-			{
-				success_3 = true;
-				pos += _2.node.length();
-				_0 = _2.node;
-			}
-			success_1 = true;
-			::Parser::Types::rule_data_block data = _0;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block, data)};
-		}
-		template <class IT>
 		::Parser::Rule_res cll_function_body_decl(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
@@ -2014,7 +2383,7 @@ namespace Parser {
 			::Parser::Token _4;
 			::Parser::bool_t success_5 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_7))
 			{
 				return {};
 			}
@@ -2033,9 +2402,9 @@ namespace Parser {
 			pos += _2.node.length();
 			skip_spaces(pos);
 			success_5 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
 			{
-				reportError(pos, "auto_6 ");
+				reportError(pos, "auto_8 ");
 				return {};
 			}
 			_4 = *pos;
@@ -2043,77 +2412,6 @@ namespace Parser {
 			pos += 1;
 			::Parser::Types::cll_function_body_decl data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_body_decl, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res rule_name(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Token _2;
-			::Parser::bool_t success_3 = false;
-			::Parser::bool_t success_5 = false;
-			::Parser::bool_t success_10 = false;
-			::Parser::bool_t success_7 = false;
-			::Parser::Token _6;
-			::Parser::arr_t<::Parser::Token> shadow_8;
-			::Parser::Token _9;
-			::Parser::arr_t<::Parser::Token> shadow_11;
-			success_1 = false;
-			if (pos->name() == ::Parser::Tokens::AUTO_17)
-			{
-				_0 = *pos;
-				success_1 = true;
-				pos += 1;
-			}
-			skip_spaces(pos);
-			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::ID))
-			{
-				reportError(pos, "id ");
-				return {};
-			}
-			_2 = *pos;
-			success_3 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_5 = false;
-			auto begin_12 = pos;
-			success_10 = false;
-			success_7 = false;
-			while (1)
-			{
-				if (!(begin_12->name() == ::Parser::Tokens::DOT))
-				{
-					reportError(pos, "dot ");
-					break;
-				}
-				_6 = *begin_12;
-				success_7 = true;
-				begin_12 += 1;
-				shadow_8.push_back(_6);
-				skip_spaces(begin_12);
-				if (!(begin_12->name() == ::Parser::Tokens::ID))
-				{
-					reportError(pos, "id ");
-					break;
-				}
-				_9 = *begin_12;
-				success_10 = true;
-				begin_12 += 1;
-				shadow_11.push_back(_9);
-			}
-			if (success_7 && success_10)
-			{
-				success_5 = true;
-				pos = begin_12;
-			}
-			::Parser::Types::rule_name data;
-			data.nested_name = shadow_11;
-			data.name = _2;
-			data.is_nested = _0;
-
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_name, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res array(IT pos) {
@@ -2132,7 +2430,7 @@ namespace Parser {
 			::Parser::Token _14;
 			::Parser::bool_t success_15 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_13))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_15))
 			{
 				return {};
 			}
@@ -2181,9 +2479,9 @@ namespace Parser {
 			pos = begin_13;
 			skip_spaces(pos);
 			success_15 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_14))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_16))
 			{
-				reportError(pos, "auto_14 ");
+				reportError(pos, "auto_16 ");
 				return {};
 			}
 			_14 = *pos;
@@ -2421,6 +2719,150 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_member, data)};
 		}
 		template <class IT>
+		::Parser::Rule_res rvalue(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::any_t _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::Token _4;
+			::Parser::bool_t success_5 = false;
+			::Parser::Rule_res _6;
+			::Parser::bool_t success_7 = false;
+			::Parser::Rule_res _8;
+			::Parser::bool_t success_9 = false;
+			::Parser::Token _10;
+			::Parser::bool_t success_11 = false;
+			::Parser::Token _12;
+			::Parser::bool_t success_13 = false;
+			::Parser::Token _14;
+			::Parser::bool_t success_15 = false;
+			success_1 = false;
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::BOOLEAN))
+			{
+				success_5 = false;
+				if (!(pos->name() == ::Parser::Tokens::STRING))
+				{
+					success_7 = false;
+					_6 = object(pos);
+					if (!(_6.status))
+					{
+						success_9 = false;
+						_8 = array(pos);
+						if (!(_8.status))
+						{
+							success_11 = false;
+							if (!(pos->name() == ::Parser::Tokens::AT))
+							{
+								success_13 = false;
+								if (!(pos->name() == ::Parser::Tokens::ID))
+								{
+									success_15 = false;
+									if (!(pos->name() == ::Parser::Tokens::NUMBER))
+									{
+										return {};
+									}
+									else 
+									{
+										_14 = *pos;
+										success_15 = true;
+										pos += 1;
+										_0 = _14;
+									}
+								}
+								else 
+								{
+									_12 = *pos;
+									success_13 = true;
+									pos += 1;
+									_0 = _12;
+								}
+							}
+							else 
+							{
+								_10 = *pos;
+								success_11 = true;
+								pos += 1;
+								_0 = _10;
+							}
+						}
+						else 
+						{
+							success_9 = true;
+							pos += _8.node.length();
+							_0 = _8.node;
+						}
+					}
+					else 
+					{
+						success_7 = true;
+						pos += _6.node.length();
+						_0 = _6.node;
+					}
+				}
+				else 
+				{
+					_4 = *pos;
+					success_5 = true;
+					pos += 1;
+					_0 = _4;
+				}
+			}
+			else 
+			{
+				_2 = *pos;
+				success_3 = true;
+				pos += 1;
+				_0 = _2;
+			}
+			success_1 = true;
+			::Parser::Types::rvalue data = _0;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rvalue, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res moduleDeclaration(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::Token _4;
+			::Parser::bool_t success_5 = false;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_19))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				reportError(pos, "id ");
+				return {};
+			}
+			_2 = *pos;
+			success_3 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_5 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
+			{
+				reportError(pos, "auto_10 ");
+				return {};
+			}
+			_4 = *pos;
+			success_5 = true;
+			pos += 1;
+			::Parser::Types::moduleDeclaration data = _2;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::moduleDeclaration, data)};
+		}
+		template <class IT>
 		::Parser::Rule_res cll_expr_value(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
@@ -2446,15 +2888,15 @@ namespace Parser {
 				if (!(_4.status))
 				{
 					success_7 = false;
-					_6 = rvalue(pos);
+					_6 = cll_method_call(pos);
 					if (!(_6.status))
 					{
 						success_9 = false;
-						_8 = cll_method_call(pos);
+						_8 = cll_function_call(pos);
 						if (!(_8.status))
 						{
 							success_11 = false;
-							_10 = cll_function_call(pos);
+							_10 = rvalue(pos);
 							if (!(_10.status))
 							{
 								return {};
@@ -2578,9 +3020,9 @@ namespace Parser {
 				}
 				success_5 = true;
 				skip_spaces(begin_36);
-				if (!(begin_36->name() == ::Parser::Tokens::AUTO_15))
+				if (!(begin_36->name() == ::Parser::Tokens::AUTO_18))
 				{
-					reportError(pos, "auto_15 ");
+					reportError(pos, "auto_18 ");
 					break;
 				}
 				_10 = *begin_36;
@@ -2641,9 +3083,9 @@ namespace Parser {
 					}
 					success_20 = true;
 					skip_spaces(begin_33);
-					if (!(begin_33->name() == ::Parser::Tokens::AUTO_15))
+					if (!(begin_33->name() == ::Parser::Tokens::AUTO_18))
 					{
-						reportError(pos, "auto_15 ");
+						reportError(pos, "auto_18 ");
 						break;
 					}
 					_27 = *begin_33;
@@ -2667,9 +3109,9 @@ namespace Parser {
 					begin_36 = begin_33;
 				}
 				skip_spaces(begin_36);
-				if (!(begin_36->name() == ::Parser::Tokens::AUTO_8))
+				if (!(begin_36->name() == ::Parser::Tokens::AUTO_10))
 				{
-					reportError(pos, "auto_8 ");
+					reportError(pos, "auto_10 ");
 					break;
 				}
 				_34 = *begin_36;
@@ -2701,107 +3143,53 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::object, data)};
 		}
 		template <class IT>
-		::Parser::Rule_res rvalue(IT pos) {
+		::Parser::Rule_res moduleImport(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::any_t _0;
+			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
-			::Parser::Token _2;
+			::Parser::any_t _2;
 			::Parser::bool_t success_3 = false;
 			::Parser::Token _4;
 			::Parser::bool_t success_5 = false;
 			::Parser::Rule_res _6;
 			::Parser::bool_t success_7 = false;
-			::Parser::Rule_res _8;
-			::Parser::bool_t success_9 = false;
-			::Parser::Token _10;
-			::Parser::bool_t success_11 = false;
-			::Parser::Token _12;
-			::Parser::bool_t success_13 = false;
-			::Parser::Token _14;
-			::Parser::bool_t success_15 = false;
 			success_1 = false;
-			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::BOOLEAN))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_20))
 			{
-				success_5 = false;
-				if (!(pos->name() == ::Parser::Tokens::STRING))
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			success_5 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				success_7 = false;
+				_6 = moduleImport_from(pos);
+				if (!(_6.status))
 				{
-					success_7 = false;
-					_6 = object(pos);
-					if (!(_6.status))
-					{
-						success_9 = false;
-						_8 = array(pos);
-						if (!(_8.status))
-						{
-							success_11 = false;
-							if (!(pos->name() == ::Parser::Tokens::AT))
-							{
-								success_13 = false;
-								if (!(pos->name() == ::Parser::Tokens::ID))
-								{
-									success_15 = false;
-									if (!(pos->name() == ::Parser::Tokens::NUMBER))
-									{
-										return {};
-									}
-									else 
-									{
-										_14 = *pos;
-										success_15 = true;
-										pos += 1;
-										_0 = _14;
-									}
-								}
-								else 
-								{
-									_12 = *pos;
-									success_13 = true;
-									pos += 1;
-									_0 = _12;
-								}
-							}
-							else 
-							{
-								_10 = *pos;
-								success_11 = true;
-								pos += 1;
-								_0 = _10;
-							}
-						}
-						else 
-						{
-							success_9 = true;
-							pos += _8.node.length();
-							_0 = _8.node;
-						}
-					}
-					else 
-					{
-						success_7 = true;
-						pos += _6.node.length();
-						_0 = _6.node;
-					}
+					return {};
 				}
 				else 
 				{
-					_4 = *pos;
-					success_5 = true;
-					pos += 1;
-					_0 = _4;
+					success_7 = true;
+					pos += _6.node.length();
+					_2 = _6.node;
 				}
 			}
 			else 
 			{
-				_2 = *pos;
-				success_3 = true;
+				_4 = *pos;
+				success_5 = true;
 				pos += 1;
-				_0 = _2;
+				_2 = _4;
 			}
-			success_1 = true;
-			::Parser::Types::rvalue data = _0;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rvalue, data)};
+			success_3 = true;
+			::Parser::Types::moduleImport data = _2;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::moduleImport, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_expr_term(IT pos) {
@@ -2901,44 +3289,158 @@ namespace Parser {
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_term, data)};
 		}
 		template <class IT>
-		::Parser::Rule_res rule_keyvalue(IT pos) {
+		::Parser::Rule_res _use_unit(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
 			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
+			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
-			::Parser::bool_t success_5 = false;
-			::Parser::Token _4;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AT))
+			if (!(pos->name() == ::Parser::Tokens::ID))
 			{
 				return {};
 			}
 			_0 = *pos;
 			success_1 = true;
 			pos += 1;
+			skip_spaces(pos);
 			success_3 = false;
-			auto begin_6 = pos;
-			success_5 = false;
-			do
+			_2 = rvalue(pos);
+			if (_2.status)
 			{
-				if (!(begin_6->name() == ::Parser::Tokens::ID))
+				success_3 = true;
+				pos += _2.node.length();
+			}
+			::Parser::Types::_use_unit data;
+			data.value = _2.node;
+			data.name = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use_unit, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res moduleImport_from(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::any_t _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::Token _2;
+			::Parser::bool_t success_3 = false;
+			::Parser::Rule_res _4;
+			::Parser::bool_t success_5 = false;
+			::Parser::Token _6;
+			::Parser::bool_t success_7 = false;
+			::Parser::Token _8;
+			::Parser::bool_t success_9 = false;
+			success_1 = false;
+			success_3 = false;
+			if (!(pos->name() == ::Parser::Tokens::MULTIPLE))
+			{
+				success_5 = false;
+				_4 = moduleImport_from_import_list(pos);
+				if (!(_4.status))
+				{
+					return {};
+				}
+				else 
+				{
+					success_5 = true;
+					pos += _4.node.length();
+					_0 = _4.node;
+				}
+			}
+			else 
+			{
+				_2 = *pos;
+				success_3 = true;
+				pos += 1;
+				_0 = _2;
+			}
+			success_1 = true;
+			skip_spaces(pos);
+			success_7 = false;
+			if (!(pos->name() == ::Parser::Tokens::AUTO_21))
+			{
+				reportError(pos, "auto_21 ");
+				return {};
+			}
+			_6 = *pos;
+			success_7 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_9 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				reportError(pos, "id ");
+				return {};
+			}
+			_8 = *pos;
+			success_9 = true;
+			pos += 1;
+			::Parser::Types::moduleImport_from data;
+			data.from = _8;
+			data.what = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::moduleImport_from, data)};
+		}
+		template <class IT>
+		::Parser::Rule_res moduleImport_from_import_list(IT pos) {
+			auto in = pos;
+			skip_spaces(pos);
+			::Parser::Token _0;
+			::Parser::bool_t success_1 = false;
+			::Parser::bool_t success_3 = false;
+			::Parser::bool_t success_8 = false;
+			::Parser::bool_t success_5 = false;
+			::Parser::Token _4;
+			::Parser::arr_t<::Parser::Token> shadow_6;
+			::Parser::Token _7;
+			::Parser::arr_t<::Parser::Token> shadow_9;
+			success_1 = false;
+			if (!(pos->name() == ::Parser::Tokens::ID))
+			{
+				return {};
+			}
+			_0 = *pos;
+			success_1 = true;
+			pos += 1;
+			skip_spaces(pos);
+			success_3 = false;
+			auto begin_10 = pos;
+			success_8 = false;
+			success_5 = false;
+			while (1)
+			{
+				if (!(begin_10->name() == ::Parser::Tokens::AUTO_1))
+				{
+					reportError(pos, "auto_1 ");
+					break;
+				}
+				_4 = *begin_10;
+				success_5 = true;
+				begin_10 += 1;
+				shadow_6.push_back(_4);
+				skip_spaces(begin_10);
+				if (!(begin_10->name() == ::Parser::Tokens::ID))
 				{
 					reportError(pos, "id ");
 					break;
 				}
-				_4 = *begin_6;
-				success_5 = true;
-				begin_6 += 1;
+				_7 = *begin_10;
+				success_8 = true;
+				begin_10 += 1;
+				shadow_9.push_back(_7);
 			}
-			while(0);
-			if (success_5)
+			if (success_5 && success_8)
 			{
 				success_3 = true;
-				pos = begin_6;
+				pos = begin_10;
 			}
-			::Parser::Types::rule_keyvalue data = _4;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_keyvalue, data)};
+			::Parser::Types::moduleImport_from_import_list data;
+			data.sequence = shadow_9;
+			data.first = _0;
+
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::moduleImport_from_import_list, data)};
 		}
 		template <class IT>
 		::Parser::Rule_res rule_quantifier(IT pos) {
@@ -3100,7 +3602,7 @@ namespace Parser {
 			::Parser::Token _13;
 			::Parser::bool_t success_14 = false;
 			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_18))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_22))
 			{
 				return {};
 			}
@@ -3151,9 +3653,9 @@ namespace Parser {
 			}
 			skip_spaces(pos);
 			success_14 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
+			if (!(pos->name() == ::Parser::Tokens::AUTO_10))
 			{
-				reportError(pos, "auto_8 ");
+				reportError(pos, "auto_10 ");
 				return {};
 			}
 			_13 = *pos;
@@ -3164,254 +3666,6 @@ namespace Parser {
 			data.first = _2.node;
 
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res cll_loop_for(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Token _2;
-			::Parser::bool_t success_3 = false;
-			::Parser::Rule _4;
-			::Parser::bool_t success_5 = false;
-			::Parser::bool_t success_7 = false;
-			::Parser::Rule _6;
-			::Parser::Rule_res _8;
-			::Parser::bool_t success_9 = false;
-			::Parser::Rule_res _10;
-			::Parser::bool_t success_11 = false;
-			::Parser::Token _13;
-			::Parser::bool_t success_14 = false;
-			::Parser::Rule_res _15;
-			::Parser::bool_t success_16 = false;
-			::Parser::Token _17;
-			::Parser::bool_t success_18 = false;
-			::Parser::Rule_res _19;
-			::Parser::bool_t success_20 = false;
-			::Parser::Token _21;
-			::Parser::bool_t success_22 = false;
-			::Parser::Rule_res _23;
-			::Parser::bool_t success_24 = false;
-			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_19))
-			{
-				return {};
-			}
-			_0 = *pos;
-			success_1 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
-			{
-				reportError(pos, "auto_5 ");
-				return {};
-			}
-			_2 = *pos;
-			success_3 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_5 = false;
-			auto begin_12 = pos;
-			success_7 = false;
-			do
-			{
-				success_9 = false;
-				_8 = cll__var(begin_12);
-				if (!(_8.status))
-				{
-					success_11 = false;
-					_10 = cll_expr(begin_12);
-					if (!(_10.status))
-					{
-						break;
-					}
-					else 
-					{
-						success_11 = true;
-						begin_12 += _10.node.length();
-						_6 = _10.node;
-					}
-				}
-				else 
-				{
-					success_9 = true;
-					begin_12 += _8.node.length();
-					_6 = _8.node;
-				}
-				success_7 = true;
-				_4 = _6;
-			}
-			while(0);
-			if (success_7)
-			{
-				success_5 = true;
-				pos = begin_12;
-			}
-			skip_spaces(pos);
-			success_14 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
-			{
-				reportError(pos, "auto_8 ");
-				return {};
-			}
-			_13 = *pos;
-			success_14 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_16 = false;
-			_15 = cll_expr(pos);
-			if (_15.status)
-			{
-				success_16 = true;
-				pos += _15.node.length();
-			}
-			skip_spaces(pos);
-			success_18 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_8))
-			{
-				reportError(pos, "auto_8 ");
-				return {};
-			}
-			_17 = *pos;
-			success_18 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_20 = false;
-			_19 = cll_expr(pos);
-			if (_19.status)
-			{
-				success_20 = true;
-				pos += _19.node.length();
-			}
-			skip_spaces(pos);
-			success_22 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
-			{
-				reportError(pos, "auto_6 ");
-				return {};
-			}
-			_21 = *pos;
-			success_22 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_24 = false;
-			_23 = cll_stmt(pos);
-			if (!(_23.status))
-			{
-				reportError(pos, "cll stmt ");
-				return {};
-			}
-			success_24 = true;
-			pos += _23.node.length();
-			::Parser::Types::cll_loop_for data;
-			data.stmt = _23.node;
-			data.end = _19.node;
-			data.cond = _15.node;
-			data.decl = _4;
-
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_loop_for, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res rule_nested_rule(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Rule_res _2;
-			::Parser::bool_t success_3 = false;
-			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_17))
-			{
-				return {};
-			}
-			_0 = *pos;
-			success_1 = true;
-			pos += 1;
-			success_3 = false;
-			_2 = rule(pos);
-			if (!(_2.status))
-			{
-				reportError(pos, "rule ");
-				return {};
-			}
-			success_3 = true;
-			pos += _2.node.length();
-			::Parser::Types::rule_nested_rule data = _0;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_nested_rule, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res _use_unit(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Rule_res _2;
-			::Parser::bool_t success_3 = false;
-			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::ID))
-			{
-				return {};
-			}
-			_0 = *pos;
-			success_1 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_3 = false;
-			_2 = rvalue(pos);
-			if (_2.status)
-			{
-				success_3 = true;
-				pos += _2.node.length();
-			}
-			::Parser::Types::_use_unit data;
-			data.value = _2.node;
-			data.name = _0;
-
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::_use_unit, data)};
-		}
-		template <class IT>
-		::Parser::Rule_res rule_group(IT pos) {
-			auto in = pos;
-			skip_spaces(pos);
-			::Parser::Token _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Rule_res _2;
-			::Parser::bool_t success_3 = false;
-			::Parser::arr_t<::Parser::Rule> shadow_4;
-			::Parser::Token _5;
-			::Parser::bool_t success_6 = false;
-			success_1 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_5))
-			{
-				return {};
-			}
-			_0 = *pos;
-			success_1 = true;
-			pos += 1;
-			skip_spaces(pos);
-			success_3 = false;
-			_2 = rule_member(pos);
-			while (_2.status)
-			{
-				success_3 = true;
-				pos += _2.node.length();
-				shadow_4.push_back(_2.node);
-				_2 = rule_member(pos);
-			}
-			skip_spaces(pos);
-			success_6 = false;
-			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
-			{
-				reportError(pos, "auto_6 ");
-				return {};
-			}
-			_5 = *pos;
-			success_6 = true;
-			pos += 1;
-			::Parser::Types::rule_group data = shadow_4;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_group, data)};
 		}
 	};
 

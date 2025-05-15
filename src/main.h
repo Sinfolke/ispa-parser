@@ -28,10 +28,10 @@
 #include <init.h>
 
 #include <args.h>
-#include <Parser.h>
+#include <../parser/Parser.h>
 #include <TreeAPI.h>
 #include <AST.h>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <LRParser.h>
 #include <LALRParser.h>
 #include <ELRParser.h>

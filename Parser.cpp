@@ -148,7 +148,18 @@ if (data.type() == typeid(str_t)) {
         }
         indentLevel--;
         os << std::string(indentLevel, '\t') << "]";
-    }	else if (data.type() == typeid(Types::_use_unit)) {
+    }	else if (data.type() == typeid(Types::moduleImport_from_import_list)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::moduleImport_from_import_list>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "sequence"<< ": ";
+		printRule(os, dt.sequence, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "first"<< ": ";
+		printRule(os, dt.first, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::_use_unit)) {
 		os << "{\n";
 		auto dt = std::any_cast<Types::_use_unit>(data);
 indentLevel++;		os << std::string(indentLevel, '\t') << "value"<< ": ";
@@ -156,17 +167,6 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "value"<< ": ";
 		os << "\n";
 		os << std::string(indentLevel, '\t') << "name"<< ": ";
 		printRule(os, dt.name, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::_use)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::_use>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "second"<< ": ";
-		printRule(os, dt.second, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "first"<< ": ";
-		printRule(os, dt.first, indentLevel, false);
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
@@ -184,28 +184,34 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "sequence"<< ": ";
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::cll_expr_arithmetic)) {
+	else if (data.type() == typeid(Types::object)) {
 		os << "{\n";
-		auto dt = std::any_cast<Types::cll_expr_arithmetic>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "sequence"<< ": ";
-		printRule(os, dt.sequence, indentLevel, false);
+		auto dt = std::any_cast<Types::object>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "values"<< ": ";
+		printRule(os, dt.values, indentLevel, false);
 		os << "\n";
-		os << std::string(indentLevel, '\t') << "operators"<< ": ";
-		printRule(os, dt.operators, indentLevel, false);
+		os << std::string(indentLevel, '\t') << "keys"<< ": ";
+		printRule(os, dt.keys, indentLevel, false);
 		os << "\n";
-		os << std::string(indentLevel, '\t') << "first"<< ": ";
-		printRule(os, dt.first, indentLevel, false);
+		os << std::string(indentLevel, '\t') << "value"<< ": ";
+		printRule(os, dt.value, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "key"<< ": ";
+		printRule(os, dt.key, indentLevel, false);
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::cll__if)) {
+	else if (data.type() == typeid(Types::rule_member)) {
 		os << "{\n";
-		auto dt = std::any_cast<Types::cll__if>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
-		printRule(os, dt.stmt, indentLevel, false);
+		auto dt = std::any_cast<Types::rule_member>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "quantifier"<< ": ";
+		printRule(os, dt.quantifier, indentLevel, false);
 		os << "\n";
-		os << std::string(indentLevel, '\t') << "expr"<< ": ";
-		printRule(os, dt.expr, indentLevel, false);
+		os << std::string(indentLevel, '\t') << "val"<< ": ";
+		printRule(os, dt.val, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "prefix"<< ": ";
+		printRule(os, dt.prefix, indentLevel, false);
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
@@ -226,17 +232,108 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "value"<< ": ";
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::rule)) {
+	else if (data.type() == typeid(Types::cll_function_decl)) {
 		os << "{\n";
-		auto dt = std::any_cast<Types::rule>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "nested_rules"<< ": ";
-		printRule(os, dt.nested_rules, indentLevel, false);
+		auto dt = std::any_cast<Types::cll_function_decl>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
+		printRule(os, dt.stmt, indentLevel, false);
 		os << "\n";
-		os << std::string(indentLevel, '\t') << "data_block"<< ": ";
-		printRule(os, dt.data_block, indentLevel, false);
+		os << std::string(indentLevel, '\t') << "name"<< ": ";
+		printRule(os, dt.name, indentLevel, false);
 		os << "\n";
-		os << std::string(indentLevel, '\t') << "rule"<< ": ";
-		printRule(os, dt.rule, indentLevel, false);
+		os << std::string(indentLevel, '\t') << "type"<< ": ";
+		printRule(os, dt.type, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::cll_expr_logical)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::cll_expr_logical>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "right"<< ": ";
+		printRule(os, dt.right, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "op"<< ": ";
+		printRule(os, dt.op, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "left"<< ": ";
+		printRule(os, dt.left, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::cll_loop_while)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::cll_loop_while>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
+		printRule(os, dt.stmt, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "expr"<< ": ";
+		printRule(os, dt.expr, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::cll_method_call)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::cll_method_call>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "body"<< ": ";
+		printRule(os, dt.body, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "name"<< ": ";
+		printRule(os, dt.name, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::rule_data_block_templated_datablock)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::rule_data_block_templated_datablock>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "second_name"<< ": ";
+		printRule(os, dt.second_name, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "first_name"<< ": ";
+		printRule(os, dt.first_name, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::rule_name)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::rule_name>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "nested_name"<< ": ";
+		printRule(os, dt.nested_name, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "name"<< ": ";
+		printRule(os, dt.name, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "is_nested"<< ": ";
+		printRule(os, dt.is_nested, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::_use)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::_use>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "second"<< ": ";
+		printRule(os, dt.second, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "first"<< ": ";
+		printRule(os, dt.first, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::moduleImport_from)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::moduleImport_from>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "from"<< ": ";
+		printRule(os, dt.from, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "what"<< ": ";
+		printRule(os, dt.what, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::rule_data_block_regular_datablock_key)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::rule_data_block_regular_datablock_key>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "dt"<< ": ";
+		printRule(os, dt.dt, indentLevel, false);
 		os << "\n";
 		os << std::string(indentLevel, '\t') << "name"<< ": ";
 		printRule(os, dt.name, indentLevel, false);
@@ -254,17 +351,20 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "body"<< ": ";
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::cll_function_decl)) {
+	else if (data.type() == typeid(Types::rule)) {
 		os << "{\n";
-		auto dt = std::any_cast<Types::cll_function_decl>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
-		printRule(os, dt.stmt, indentLevel, false);
+		auto dt = std::any_cast<Types::rule>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "nested_rules"<< ": ";
+		printRule(os, dt.nested_rules, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "data_block"<< ": ";
+		printRule(os, dt.data_block, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "rule"<< ": ";
+		printRule(os, dt.rule, indentLevel, false);
 		os << "\n";
 		os << std::string(indentLevel, '\t') << "name"<< ": ";
 		printRule(os, dt.name, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "type"<< ": ";
-		printRule(os, dt.type, indentLevel, false);
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
@@ -304,47 +404,28 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "second"<< ": ";
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::cll_loop_while)) {
+	else if (data.type() == typeid(Types::cll_expr_arithmetic)) {
 		os << "{\n";
-		auto dt = std::any_cast<Types::cll_loop_while>(data);
+		auto dt = std::any_cast<Types::cll_expr_arithmetic>(data);
+indentLevel++;		os << std::string(indentLevel, '\t') << "sequence"<< ": ";
+		printRule(os, dt.sequence, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "operators"<< ": ";
+		printRule(os, dt.operators, indentLevel, false);
+		os << "\n";
+		os << std::string(indentLevel, '\t') << "first"<< ": ";
+		printRule(os, dt.first, indentLevel, false);
+		os << "\n";
+		os << std::string(--indentLevel, '\t') << "}\n";
+	}
+	else if (data.type() == typeid(Types::cll__if)) {
+		os << "{\n";
+		auto dt = std::any_cast<Types::cll__if>(data);
 indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
 		printRule(os, dt.stmt, indentLevel, false);
 		os << "\n";
 		os << std::string(indentLevel, '\t') << "expr"<< ": ";
 		printRule(os, dt.expr, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::cll_method_call)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::cll_method_call>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "body"<< ": ";
-		printRule(os, dt.body, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "name"<< ": ";
-		printRule(os, dt.name, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::rule_data_block_templated_datablock)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::rule_data_block_templated_datablock>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "second_name"<< ": ";
-		printRule(os, dt.second_name, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "first_name"<< ": ";
-		printRule(os, dt.first_name, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::rule_data_block_regular_datablock_key)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::rule_data_block_regular_datablock_key>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "dt"<< ": ";
-		printRule(os, dt.dt, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "name"<< ": ";
-		printRule(os, dt.name, indentLevel, false);
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
@@ -382,65 +463,6 @@ indentLevel++;		os << std::string(indentLevel, '\t') << "stmt"<< ": ";
 		os << "\n";
 		os << std::string(--indentLevel, '\t') << "}\n";
 	}
-	else if (data.type() == typeid(Types::rule_name)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::rule_name>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "nested_name"<< ": ";
-		printRule(os, dt.nested_name, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "name"<< ": ";
-		printRule(os, dt.name, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "is_nested"<< ": ";
-		printRule(os, dt.is_nested, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::rule_member)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::rule_member>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "quantifier"<< ": ";
-		printRule(os, dt.quantifier, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "val"<< ": ";
-		printRule(os, dt.val, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "prefix"<< ": ";
-		printRule(os, dt.prefix, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::object)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::object>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "values"<< ": ";
-		printRule(os, dt.values, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "keys"<< ": ";
-		printRule(os, dt.keys, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "value"<< ": ";
-		printRule(os, dt.value, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "key"<< ": ";
-		printRule(os, dt.key, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
-	else if (data.type() == typeid(Types::cll_expr_logical)) {
-		os << "{\n";
-		auto dt = std::any_cast<Types::cll_expr_logical>(data);
-indentLevel++;		os << std::string(indentLevel, '\t') << "right"<< ": ";
-		printRule(os, dt.right, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "op"<< ": ";
-		printRule(os, dt.op, indentLevel, false);
-		os << "\n";
-		os << std::string(indentLevel, '\t') << "left"<< ": ";
-		printRule(os, dt.left, indentLevel, false);
-		os << "\n";
-		os << std::string(--indentLevel, '\t') << "}\n";
-	}
 else os << "<UNDEF TYPE>";
 }Parser::Rule_res Parser::Parser::getRule(Lexer::lazy_iterator &pos) {
         return main(pos);
@@ -456,14 +478,6 @@ void ::Parser::Parser::lazyParse() {
         auto pos = Lexer::lazy_iterator(lexer, text);
         parseFromPos(pos);
     }
-const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE&>(token.data());
-}
 const ::Parser::Types::ID& Parser::get::ID(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
 	return std::any_cast<const Types::ID&>(token.data());
@@ -471,6 +485,14 @@ const ::Parser::Types::ID& Parser::get::ID(const ::Parser::Token &token) {
 ::Parser::Types::ID& Parser::get::ID(::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
 	return std::any_cast<Types::ID&>(token.data());
+}
+const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
+	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());
+}
+::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
+	return std::any_cast<Types::rule_CSEQUENCE&>(token.data());
 }
 const ::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
@@ -496,14 +518,6 @@ const ::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(const ::Parser::Token &
 	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
 	return std::any_cast<Types::SPACEMODE&>(token.data());
 }
-const ::Parser::Types::AUTO_16& Parser::get::AUTO_16(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<const Types::AUTO_16&>(token.data());
-}
-::Parser::Types::AUTO_16& Parser::get::AUTO_16(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<Types::AUTO_16&>(token.data());
-}
 const ::Parser::Types::NUMBER& Parser::get::NUMBER(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
 	return std::any_cast<const Types::NUMBER&>(token.data());
@@ -512,13 +526,37 @@ const ::Parser::Types::NUMBER& Parser::get::NUMBER(const ::Parser::Token &token)
 	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
 	return std::any_cast<Types::NUMBER&>(token.data());
 }
-const ::Parser::Types::AUTO_8& Parser::get::AUTO_8(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<const Types::AUTO_8&>(token.data());
+const ::Parser::Types::AUTO_20& Parser::get::AUTO_20(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
+	return std::any_cast<const Types::AUTO_20&>(token.data());
 }
-::Parser::Types::AUTO_8& Parser::get::AUTO_8(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<Types::AUTO_8&>(token.data());
+::Parser::Types::AUTO_20& Parser::get::AUTO_20(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
+	return std::any_cast<Types::AUTO_20&>(token.data());
+}
+const ::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
+	return std::any_cast<const Types::cll_LOGICAL_OP&>(token.data());
+}
+::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
+	return std::any_cast<Types::cll_LOGICAL_OP&>(token.data());
+}
+const ::Parser::Types::AUTO_12& Parser::get::AUTO_12(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
+	return std::any_cast<const Types::AUTO_12&>(token.data());
+}
+::Parser::Types::AUTO_12& Parser::get::AUTO_12(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
+	return std::any_cast<Types::AUTO_12&>(token.data());
+}
+const ::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
+	return std::any_cast<const Types::cll_TEMPLATE&>(token.data());
+}
+::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
+	return std::any_cast<Types::cll_TEMPLATE&>(token.data());
 }
 const ::Parser::Types::AUTO_18& Parser::get::AUTO_18(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
@@ -560,30 +598,6 @@ const ::Parser::Types::rule_BIN& Parser::get::rule_BIN(const ::Parser::Token &to
 	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
 	return std::any_cast<Types::rule_BIN&>(token.data());
 }
-const ::Parser::Types::STRING& Parser::get::STRING(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<const Types::STRING&>(token.data());
-}
-::Parser::Types::STRING& Parser::get::STRING(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<Types::STRING&>(token.data());
-}
-const ::Parser::Types::AUTO_11& Parser::get::AUTO_11(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<const Types::AUTO_11&>(token.data());
-}
-::Parser::Types::AUTO_11& Parser::get::AUTO_11(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<Types::AUTO_11&>(token.data());
-}
-const ::Parser::Types::AUTO_0& Parser::get::AUTO_0(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<const Types::AUTO_0&>(token.data());
-}
-::Parser::Types::AUTO_0& Parser::get::AUTO_0(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<Types::AUTO_0&>(token.data());
-}
 const ::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
 	return std::any_cast<const Types::BOOLEAN&>(token.data());
@@ -615,14 +629,6 @@ const ::Parser::Types::cll_OP& Parser::get::cll_OP(const ::Parser::Token &token)
 ::Parser::Types::cll_OP& Parser::get::cll_OP(::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
 	return std::any_cast<Types::cll_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_3& Parser::get::AUTO_3(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<const Types::AUTO_3&>(token.data());
-}
-::Parser::Types::AUTO_3& Parser::get::AUTO_3(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<Types::AUTO_3&>(token.data());
 }
 const ::Parser::Types::AUTO_6& Parser::get::AUTO_6(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
@@ -656,6 +662,38 @@ const ::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(const :
 	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
 	return std::any_cast<Types::cll_ASSIGNMENT_OP&>(token.data());
 }
+const ::Parser::Types::AUTO_3& Parser::get::AUTO_3(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
+	return std::any_cast<const Types::AUTO_3&>(token.data());
+}
+::Parser::Types::AUTO_3& Parser::get::AUTO_3(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
+	return std::any_cast<Types::AUTO_3&>(token.data());
+}
+const ::Parser::Types::AUTO_0& Parser::get::AUTO_0(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
+	return std::any_cast<const Types::AUTO_0&>(token.data());
+}
+::Parser::Types::AUTO_0& Parser::get::AUTO_0(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
+	return std::any_cast<Types::AUTO_0&>(token.data());
+}
+const ::Parser::Types::AUTO_21& Parser::get::AUTO_21(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
+	return std::any_cast<const Types::AUTO_21&>(token.data());
+}
+::Parser::Types::AUTO_21& Parser::get::AUTO_21(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
+	return std::any_cast<Types::AUTO_21&>(token.data());
+}
+const ::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
+	return std::any_cast<const Types::cll_COMPARE_OP&>(token.data());
+}
+::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
+	return std::any_cast<Types::cll_COMPARE_OP&>(token.data());
+}
 const ::Parser::Types::AUTO_1& Parser::get::AUTO_1(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
 	return std::any_cast<const Types::AUTO_1&>(token.data());
@@ -663,6 +701,30 @@ const ::Parser::Types::AUTO_1& Parser::get::AUTO_1(const ::Parser::Token &token)
 ::Parser::Types::AUTO_1& Parser::get::AUTO_1(::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
 	return std::any_cast<Types::AUTO_1&>(token.data());
+}
+const ::Parser::Types::STRING& Parser::get::STRING(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
+	return std::any_cast<const Types::STRING&>(token.data());
+}
+::Parser::Types::STRING& Parser::get::STRING(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
+	return std::any_cast<Types::STRING&>(token.data());
+}
+const ::Parser::Types::AUTO_11& Parser::get::AUTO_11(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
+	return std::any_cast<const Types::AUTO_11&>(token.data());
+}
+::Parser::Types::AUTO_11& Parser::get::AUTO_11(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
+	return std::any_cast<Types::AUTO_11&>(token.data());
+}
+const ::Parser::Types::AUTO_22& Parser::get::AUTO_22(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
+	return std::any_cast<const Types::AUTO_22&>(token.data());
+}
+::Parser::Types::AUTO_22& Parser::get::AUTO_22(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
+	return std::any_cast<Types::AUTO_22&>(token.data());
 }
 const ::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
@@ -680,29 +742,21 @@ const ::Parser::Types::AUTO_17& Parser::get::AUTO_17(const ::Parser::Token &toke
 	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
 	return std::any_cast<Types::AUTO_17&>(token.data());
 }
-const ::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<const Types::cll_COMPARE_OP&>(token.data());
+const ::Parser::Types::AUTO_8& Parser::get::AUTO_8(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
+	return std::any_cast<const Types::AUTO_8&>(token.data());
 }
-::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<Types::cll_COMPARE_OP&>(token.data());
+::Parser::Types::AUTO_8& Parser::get::AUTO_8(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
+	return std::any_cast<Types::AUTO_8&>(token.data());
 }
-const ::Parser::Types::AUTO_12& Parser::get::AUTO_12(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<const Types::AUTO_12&>(token.data());
+const ::Parser::Types::AUTO_16& Parser::get::AUTO_16(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
+	return std::any_cast<const Types::AUTO_16&>(token.data());
 }
-::Parser::Types::AUTO_12& Parser::get::AUTO_12(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<Types::AUTO_12&>(token.data());
-}
-const ::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<const Types::cll_TEMPLATE&>(token.data());
-}
-::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<Types::cll_TEMPLATE&>(token.data());
+::Parser::Types::AUTO_16& Parser::get::AUTO_16(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
+	return std::any_cast<Types::AUTO_16&>(token.data());
 }
 const ::Parser::Types::AUTO_9& Parser::get::AUTO_9(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
@@ -744,14 +798,6 @@ const ::Parser::Types::NAME& Parser::get::NAME(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
 	return std::any_cast<Types::NAME&>(token.data());
 }
-const ::Parser::Types::AUTO_19& Parser::get::AUTO_19(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<const Types::AUTO_19&>(token.data());
-}
-::Parser::Types::AUTO_19& Parser::get::AUTO_19(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<Types::AUTO_19&>(token.data());
-}
 const ::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
 	return std::any_cast<const Types::cll_TYPE&>(token.data());
@@ -760,53 +806,13 @@ const ::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(const ::Parser::Token &to
 	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
 	return std::any_cast<Types::cll_TYPE&>(token.data());
 }
-const ::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<const Types::cll_LOGICAL_OP&>(token.data());
+const ::Parser::Types::AUTO_19& Parser::get::AUTO_19(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
+	return std::any_cast<const Types::AUTO_19&>(token.data());
 }
-::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<Types::cll_LOGICAL_OP&>(token.data());
-}
-const ::Parser::Types::rule_group& Parser::get::rule_group(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
-	return std::any_cast<const Types::rule_group&>(rule.data());
-}
-::Parser::Types::rule_group& Parser::get::rule_group(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
-	return std::any_cast<Types::rule_group&>(rule.data());
-}
-const ::Parser::Types::_use_unit& Parser::get::_use_unit(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
-	return std::any_cast<const Types::_use_unit&>(rule.data());
-}
-::Parser::Types::_use_unit& Parser::get::_use_unit(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
-	return std::any_cast<Types::_use_unit&>(rule.data());
-}
-const ::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
-	return std::any_cast<const Types::rule_nested_rule&>(rule.data());
-}
-::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
-	return std::any_cast<Types::rule_nested_rule&>(rule.data());
-}
-const ::Parser::Types::_use& Parser::get::_use(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
-	return std::any_cast<const Types::_use&>(rule.data());
-}
-::Parser::Types::_use& Parser::get::_use(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
-	return std::any_cast<Types::_use&>(rule.data());
-}
-const ::Parser::Types::main& Parser::get::main(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
-	return std::any_cast<const Types::main&>(rule.data());
-}
-::Parser::Types::main& Parser::get::main(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
-	return std::any_cast<Types::main&>(rule.data());
+::Parser::Types::AUTO_19& Parser::get::AUTO_19(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
+	return std::any_cast<Types::AUTO_19&>(token.data());
 }
 const ::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
@@ -816,13 +822,29 @@ const ::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(const ::Par
 	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
 	return std::any_cast<Types::rule_quantifier&>(rule.data());
 }
-const ::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
-	return std::any_cast<const Types::rule_keyvalue&>(rule.data());
+const ::Parser::Types::main& Parser::get::main(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
+	return std::any_cast<const Types::main&>(rule.data());
 }
-::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
-	return std::any_cast<Types::rule_keyvalue&>(rule.data());
+::Parser::Types::main& Parser::get::main(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
+	return std::any_cast<Types::main&>(rule.data());
+}
+const ::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
+	return std::any_cast<const Types::moduleImport_from_import_list&>(rule.data());
+}
+::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
+	return std::any_cast<Types::moduleImport_from_import_list&>(rule.data());
+}
+const ::Parser::Types::_use_unit& Parser::get::_use_unit(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
+	return std::any_cast<const Types::_use_unit&>(rule.data());
+}
+::Parser::Types::_use_unit& Parser::get::_use_unit(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
+	return std::any_cast<Types::_use_unit&>(rule.data());
 }
 const ::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
@@ -832,6 +854,30 @@ const ::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(const ::Parser:
 	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
 	return std::any_cast<Types::cll_expr_term&>(rule.data());
 }
+const ::Parser::Types::object& Parser::get::object(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
+	return std::any_cast<const Types::object&>(rule.data());
+}
+::Parser::Types::object& Parser::get::object(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
+	return std::any_cast<Types::object&>(rule.data());
+}
+const ::Parser::Types::moduleImport& Parser::get::moduleImport(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
+	return std::any_cast<const Types::moduleImport&>(rule.data());
+}
+::Parser::Types::moduleImport& Parser::get::moduleImport(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
+	return std::any_cast<Types::moduleImport&>(rule.data());
+}
+const ::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
+	return std::any_cast<const Types::moduleDeclaration&>(rule.data());
+}
+::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
+	return std::any_cast<Types::moduleDeclaration&>(rule.data());
+}
 const ::Parser::Types::rvalue& Parser::get::rvalue(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
 	return std::any_cast<const Types::rvalue&>(rule.data());
@@ -840,21 +886,21 @@ const ::Parser::Types::rvalue& Parser::get::rvalue(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
 	return std::any_cast<Types::rvalue&>(rule.data());
 }
-const ::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
-	return std::any_cast<const Types::cll_expr_arithmetic&>(rule.data());
+const ::Parser::Types::rule_member& Parser::get::rule_member(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
+	return std::any_cast<const Types::rule_member&>(rule.data());
 }
-::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
-	return std::any_cast<Types::cll_expr_arithmetic&>(rule.data());
+::Parser::Types::rule_member& Parser::get::rule_member(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
+	return std::any_cast<Types::rule_member&>(rule.data());
 }
-const ::Parser::Types::cll__if& Parser::get::cll__if(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
-	return std::any_cast<const Types::cll__if&>(rule.data());
+const ::Parser::Types::array& Parser::get::array(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
+	return std::any_cast<const Types::array&>(rule.data());
 }
-::Parser::Types::cll__if& Parser::get::cll__if(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
-	return std::any_cast<Types::cll__if&>(rule.data());
+::Parser::Types::array& Parser::get::array(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
+	return std::any_cast<Types::array&>(rule.data());
 }
 const ::Parser::Types::cll__var& Parser::get::cll__var(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
@@ -864,22 +910,6 @@ const ::Parser::Types::cll__var& Parser::get::cll__var(const ::Parser::Rule &rul
 	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
 	return std::any_cast<Types::cll__var&>(rule.data());
 }
-const ::Parser::Types::rule& Parser::get::rule(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
-	return std::any_cast<const Types::rule&>(rule.data());
-}
-::Parser::Types::rule& Parser::get::rule(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
-	return std::any_cast<Types::rule&>(rule.data());
-}
-const ::Parser::Types::cll_function_call& Parser::get::cll_function_call(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
-	return std::any_cast<const Types::cll_function_call&>(rule.data());
-}
-::Parser::Types::cll_function_call& Parser::get::cll_function_call(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
-	return std::any_cast<Types::cll_function_call&>(rule.data());
-}
 const ::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
 	return std::any_cast<const Types::cll_function_decl&>(rule.data());
@@ -887,6 +917,22 @@ const ::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(const :
 ::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
 	return std::any_cast<Types::cll_function_decl&>(rule.data());
+}
+const ::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
+	return std::any_cast<const Types::cll_expr_value&>(rule.data());
+}
+::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
+	return std::any_cast<Types::cll_expr_value&>(rule.data());
+}
+const ::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
+	return std::any_cast<const Types::cll_expr_logical&>(rule.data());
+}
+::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
+	return std::any_cast<Types::cll_expr_logical&>(rule.data());
 }
 const ::Parser::Types::cll_stmt& Parser::get::cll_stmt(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_stmt) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_stmt, "Parser");
@@ -903,6 +949,118 @@ const ::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(const ::Parse
 ::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
 	return std::any_cast<Types::cll_expr_group&>(rule.data());
+}
+const ::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
+	return std::any_cast<const Types::cll_loop_while&>(rule.data());
+}
+::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
+	return std::any_cast<Types::cll_loop_while&>(rule.data());
+}
+const ::Parser::Types::cll_method_call& Parser::get::cll_method_call(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
+	return std::any_cast<const Types::cll_method_call&>(rule.data());
+}
+::Parser::Types::cll_method_call& Parser::get::cll_method_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
+	return std::any_cast<Types::cll_method_call&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
+	return std::any_cast<const Types::rule_data_block_templated_datablock&>(rule.data());
+}
+::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
+	return std::any_cast<Types::rule_data_block_templated_datablock&>(rule.data());
+}
+const ::Parser::Types::rule_name& Parser::get::rule_name(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
+	return std::any_cast<const Types::rule_name&>(rule.data());
+}
+::Parser::Types::rule_name& Parser::get::rule_name(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
+	return std::any_cast<Types::rule_name&>(rule.data());
+}
+const ::Parser::Types::rule_data_block& Parser::get::rule_data_block(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
+	return std::any_cast<const Types::rule_data_block&>(rule.data());
+}
+::Parser::Types::rule_data_block& Parser::get::rule_data_block(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
+	return std::any_cast<Types::rule_data_block&>(rule.data());
+}
+const ::Parser::Types::_use& Parser::get::_use(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
+	return std::any_cast<const Types::_use&>(rule.data());
+}
+::Parser::Types::_use& Parser::get::_use(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
+	return std::any_cast<Types::_use&>(rule.data());
+}
+const ::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
+	return std::any_cast<const Types::rule_nested_rule&>(rule.data());
+}
+::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
+	return std::any_cast<Types::rule_nested_rule&>(rule.data());
+}
+const ::Parser::Types::rule_value& Parser::get::rule_value(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
+	return std::any_cast<const Types::rule_value&>(rule.data());
+}
+::Parser::Types::rule_value& Parser::get::rule_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
+	return std::any_cast<Types::rule_value&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
+	return std::any_cast<const Types::rule_data_block_regular_datablock&>(rule.data());
+}
+::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
+	return std::any_cast<Types::rule_data_block_regular_datablock&>(rule.data());
+}
+const ::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
+	return std::any_cast<const Types::moduleImport_from&>(rule.data());
+}
+::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
+	return std::any_cast<Types::moduleImport_from&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
+	return std::any_cast<const Types::rule_data_block_regular_datablock_key&>(rule.data());
+}
+::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
+	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
+}
+const ::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
+	return std::any_cast<const Types::rule_keyvalue&>(rule.data());
+}
+::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
+	return std::any_cast<Types::rule_keyvalue&>(rule.data());
+}
+const ::Parser::Types::cll_function_call& Parser::get::cll_function_call(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
+	return std::any_cast<const Types::cll_function_call&>(rule.data());
+}
+::Parser::Types::cll_function_call& Parser::get::cll_function_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
+	return std::any_cast<Types::cll_function_call&>(rule.data());
+}
+const ::Parser::Types::rule& Parser::get::rule(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
+	return std::any_cast<const Types::rule&>(rule.data());
+}
+::Parser::Types::rule& Parser::get::rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
+	return std::any_cast<Types::rule&>(rule.data());
 }
 const ::Parser::Types::cll& Parser::get::cll(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll, "Parser");
@@ -936,45 +1094,37 @@ const ::Parser::Types::cll_function_arguments& Parser::get::cll_function_argumen
 	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
 	return std::any_cast<Types::cll_function_arguments&>(rule.data());
 }
-const ::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
-	return std::any_cast<const Types::cll_loop_while&>(rule.data());
+const ::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
+	return std::any_cast<const Types::cll_expr_arithmetic&>(rule.data());
 }
-::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
-	return std::any_cast<Types::cll_loop_while&>(rule.data());
+::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
+	return std::any_cast<Types::cll_expr_arithmetic&>(rule.data());
 }
-const ::Parser::Types::cll_method_call& Parser::get::cll_method_call(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
-	return std::any_cast<const Types::cll_method_call&>(rule.data());
+const ::Parser::Types::cll__if& Parser::get::cll__if(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
+	return std::any_cast<const Types::cll__if&>(rule.data());
 }
-::Parser::Types::cll_method_call& Parser::get::cll_method_call(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
-	return std::any_cast<Types::cll_method_call&>(rule.data());
+::Parser::Types::cll__if& Parser::get::cll__if(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
+	return std::any_cast<Types::cll__if&>(rule.data());
 }
-const ::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
-	return std::any_cast<const Types::rule_data_block_templated_datablock&>(rule.data());
+const ::Parser::Types::rule_group& Parser::get::rule_group(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
+	return std::any_cast<const Types::rule_group&>(rule.data());
 }
-::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
-	return std::any_cast<Types::rule_data_block_templated_datablock&>(rule.data());
+::Parser::Types::rule_group& Parser::get::rule_group(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
+	return std::any_cast<Types::rule_group&>(rule.data());
 }
-const ::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
-	return std::any_cast<const Types::rule_data_block_regular_datablock&>(rule.data());
+const ::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
+	return std::any_cast<const Types::cll_function_body_decl&>(rule.data());
 }
-::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
-	return std::any_cast<Types::rule_data_block_regular_datablock&>(rule.data());
-}
-const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
-	return std::any_cast<const Types::rule_data_block_regular_datablock_key&>(rule.data());
-}
-::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
-	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
+::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
+	return std::any_cast<Types::cll_function_body_decl&>(rule.data());
 }
 const ::Parser::Types::cll__variable& Parser::get::cll__variable(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll__variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__variable, "Parser");
@@ -1007,78 +1157,6 @@ const ::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_ca
 ::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_call(::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
 	return std::any_cast<Types::cll_function_body_call&>(rule.data());
-}
-const ::Parser::Types::rule_value& Parser::get::rule_value(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
-	return std::any_cast<const Types::rule_value&>(rule.data());
-}
-::Parser::Types::rule_value& Parser::get::rule_value(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
-	return std::any_cast<Types::rule_value&>(rule.data());
-}
-const ::Parser::Types::rule_data_block& Parser::get::rule_data_block(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
-	return std::any_cast<const Types::rule_data_block&>(rule.data());
-}
-::Parser::Types::rule_data_block& Parser::get::rule_data_block(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
-	return std::any_cast<Types::rule_data_block&>(rule.data());
-}
-const ::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
-	return std::any_cast<const Types::cll_function_body_decl&>(rule.data());
-}
-::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
-	return std::any_cast<Types::cll_function_body_decl&>(rule.data());
-}
-const ::Parser::Types::rule_name& Parser::get::rule_name(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
-	return std::any_cast<const Types::rule_name&>(rule.data());
-}
-::Parser::Types::rule_name& Parser::get::rule_name(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
-	return std::any_cast<Types::rule_name&>(rule.data());
-}
-const ::Parser::Types::array& Parser::get::array(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
-	return std::any_cast<const Types::array&>(rule.data());
-}
-::Parser::Types::array& Parser::get::array(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
-	return std::any_cast<Types::array&>(rule.data());
-}
-const ::Parser::Types::rule_member& Parser::get::rule_member(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
-	return std::any_cast<const Types::rule_member&>(rule.data());
-}
-::Parser::Types::rule_member& Parser::get::rule_member(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
-	return std::any_cast<Types::rule_member&>(rule.data());
-}
-const ::Parser::Types::object& Parser::get::object(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
-	return std::any_cast<const Types::object&>(rule.data());
-}
-::Parser::Types::object& Parser::get::object(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
-	return std::any_cast<Types::object&>(rule.data());
-}
-const ::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
-	return std::any_cast<const Types::cll_expr_logical&>(rule.data());
-}
-::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
-	return std::any_cast<Types::cll_expr_logical&>(rule.data());
-}
-const ::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
-	return std::any_cast<const Types::cll_expr_value&>(rule.data());
-}
-::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
-	return std::any_cast<Types::cll_expr_value&>(rule.data());
 }
 
 Parser::Token Parser::Lexer::makeToken(const char*& pos) {
@@ -1176,89 +1254,95 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::bool_t success_91 = false;
 	::Parser::Token_res _92;
 	::Parser::bool_t success_93 = false;
+	::Parser::Token_res _94;
+	::Parser::bool_t success_95 = false;
+	::Parser::Token_res _96;
+	::Parser::bool_t success_97 = false;
+	::Parser::Token_res _98;
+	::Parser::bool_t success_99 = false;
 	success_1 = false;
 	success_3 = false;
 	_2 = SPACEMODE(pos);
 	if (!(_2.status))
 	{
 		success_5 = false;
-		_4 = AUTO_4(pos);
+		_4 = AUTO_19(pos);
 		if (!(_4.status))
 		{
 			success_7 = false;
-			_6 = BOOLEAN(pos);
+			_6 = AUTO_20(pos);
 			if (!(_6.status))
 			{
 				success_9 = false;
-				_8 = NAME(pos);
+				_8 = AUTO_6(pos);
 				if (!(_8.status))
 				{
 					success_11 = false;
-					_10 = cll_TYPE(pos);
+					_10 = BOOLEAN(pos);
 					if (!(_10.status))
 					{
 						success_13 = false;
-						_12 = rule_NOSPACE(pos);
+						_12 = NAME(pos);
 						if (!(_12.status))
 						{
 							success_15 = false;
-							_14 = AUTO_18(pos);
+							_14 = AUTO_21(pos);
 							if (!(_14.status))
 							{
 								success_17 = false;
-								_16 = AUTO_19(pos);
+								_16 = rule_NOSPACE(pos);
 								if (!(_16.status))
 								{
 									success_19 = false;
-									_18 = cll_LOGICAL_OP(pos);
+									_18 = AUTO_22(pos);
 									if (!(_18.status))
 									{
 										success_21 = false;
-										_20 = AUTO_9(pos);
+										_20 = cll_TYPE(pos);
 										if (!(_20.status))
 										{
 											success_23 = false;
-											_22 = AUTO_10(pos);
+											_22 = AUTO_17(pos);
 											if (!(_22.status))
 											{
 												success_25 = false;
-												_24 = rule_ESCAPED(pos);
+												_24 = cll_LOGICAL_OP(pos);
 												if (!(_24.status))
 												{
 													success_27 = false;
-													_26 = STRING(pos);
+													_26 = AUTO_11(pos);
 													if (!(_26.status))
 													{
 														success_29 = false;
-														_28 = rule_HEX(pos);
+														_28 = AUTO_12(pos);
 														if (!(_28.status))
 														{
 															success_31 = false;
-															_30 = rule_BIN(pos);
+															_30 = rule_ESCAPED(pos);
 															if (!(_30.status))
 															{
 																success_33 = false;
-																_32 = LINEAR_COMMENT(pos);
+																_32 = STRING(pos);
 																if (!(_32.status))
 																{
 																	success_35 = false;
-																	_34 = AUTO_11(pos);
+																	_34 = AUTO_13(pos);
 																	if (!(_34.status))
 																	{
 																		success_37 = false;
-																		_36 = AUTO_12(pos);
+																		_36 = cll_COMPARE_OP(pos);
 																		if (!(_36.status))
 																		{
 																			success_39 = false;
-																			_38 = AUTO_2(pos);
+																			_38 = rule_HEX(pos);
 																			if (!(_38.status))
 																			{
 																				success_41 = false;
-																				_40 = rule_OP(pos);
+																				_40 = rule_BIN(pos);
 																				if (!(_40.status))
 																				{
 																					success_43 = false;
-																					_42 = AUTO_0(pos);
+																					_42 = LINEAR_COMMENT(pos);
 																					if (!(_42.status))
 																					{
 																						success_45 = false;
@@ -1266,102 +1350,135 @@ Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 																						if (!(_44.status))
 																						{
 																							success_47 = false;
-																							_46 = rule_CSEQUENCE(pos);
+																							_46 = AUTO_2(pos);
 																							if (!(_46.status))
 																							{
 																								success_49 = false;
-																								_48 = AUTO_13(pos);
+																								_48 = rule_OP(pos);
 																								if (!(_48.status))
 																								{
 																									success_51 = false;
-																									_50 = cll_COMPARE_OP(pos);
+																									_50 = AUTO_0(pos);
 																									if (!(_50.status))
 																									{
 																										success_53 = false;
-																										_52 = AT(pos);
+																										_52 = AUTO_16(pos);
 																										if (!(_52.status))
 																										{
 																											success_55 = false;
-																											_54 = QUESTION_MARK(pos);
+																											_54 = rule_CSEQUENCE(pos);
 																											if (!(_54.status))
 																											{
 																												success_57 = false;
-																												_56 = AUTO_3(pos);
+																												_56 = AUTO_15(pos);
 																												if (!(_56.status))
 																												{
 																													success_59 = false;
-																													_58 = AUTO_8(pos);
+																													_58 = AT(pos);
 																													if (!(_58.status))
 																													{
 																														success_61 = false;
-																														_60 = AUTO_15(pos);
+																														_60 = QUESTION_MARK(pos);
 																														if (!(_60.status))
 																														{
 																															success_63 = false;
-																															_62 = DIVIDE(pos);
+																															_62 = AUTO_3(pos);
 																															if (!(_62.status))
 																															{
 																																success_65 = false;
-																																_64 = MINUS(pos);
+																																_64 = AUTO_10(pos);
 																																if (!(_64.status))
 																																{
 																																	success_67 = false;
-																																	_66 = AUTO_1(pos);
+																																	_66 = AUTO_18(pos);
 																																	if (!(_66.status))
 																																	{
 																																		success_69 = false;
-																																		_68 = PLUS(pos);
+																																		_68 = DOT(pos);
 																																		if (!(_68.status))
 																																		{
 																																			success_71 = false;
-																																			_70 = MULTIPLE(pos);
+																																			_70 = MODULO(pos);
 																																			if (!(_70.status))
 																																			{
 																																				success_73 = false;
-																																				_72 = AUTO_6(pos);
+																																				_72 = cll_ASSIGNMENT_OP(pos);
 																																				if (!(_72.status))
 																																				{
 																																					success_75 = false;
-																																					_74 = AUTO_5(pos);
+																																					_74 = DIVIDE(pos);
 																																					if (!(_74.status))
 																																					{
 																																						success_77 = false;
-																																						_76 = AUTO_16(pos);
+																																						_76 = MINUS(pos);
 																																						if (!(_76.status))
 																																						{
 																																							success_79 = false;
-																																							_78 = MODULO(pos);
+																																							_78 = AUTO_1(pos);
 																																							if (!(_78.status))
 																																							{
 																																								success_81 = false;
-																																								_80 = cll_ASSIGNMENT_OP(pos);
+																																								_80 = PLUS(pos);
 																																								if (!(_80.status))
 																																								{
 																																									success_83 = false;
-																																									_82 = DOT(pos);
+																																									_82 = MULTIPLE(pos);
 																																									if (!(_82.status))
 																																									{
 																																										success_85 = false;
-																																										_84 = AUTO_7(pos);
+																																										_84 = AUTO_8(pos);
 																																										if (!(_84.status))
 																																										{
 																																											success_87 = false;
-																																											_86 = AUTO_17(pos);
+																																											_86 = AUTO_7(pos);
 																																											if (!(_86.status))
 																																											{
 																																												success_89 = false;
-																																												_88 = __WHITESPACE(pos);
+																																												_88 = AUTO_4(pos);
 																																												if (!(_88.status))
 																																												{
 																																													success_91 = false;
-																																													_90 = ID(pos);
+																																													_90 = AUTO_9(pos);
 																																													if (!(_90.status))
 																																													{
 																																														success_93 = false;
-																																														_92 = NUMBER(pos);
+																																														_92 = AUTO_5(pos);
 																																														if (!(_92.status))
 																																														{
-																																															return {};
+																																															success_95 = false;
+																																															_94 = __WHITESPACE(pos);
+																																															if (!(_94.status))
+																																															{
+																																																success_97 = false;
+																																																_96 = ID(pos);
+																																																if (!(_96.status))
+																																																{
+																																																	success_99 = false;
+																																																	_98 = NUMBER(pos);
+																																																	if (!(_98.status))
+																																																	{
+																																																		return {};
+																																																	}
+																																																	else 
+																																																	{
+																																																		success_99 = true;
+																																																		pos += _98.node.length();
+																																																		_0 = _98.node;
+																																																	}
+																																																}
+																																																else 
+																																																{
+																																																	success_97 = true;
+																																																	pos += _96.node.length();
+																																																	_0 = _96.node;
+																																																}
+																																															}
+																																															else 
+																																															{
+																																																success_95 = true;
+																																																pos += _94.node.length();
+																																																_0 = _94.node;
+																																															}
 																																														}
 																																														else 
 																																														{
@@ -1707,12 +1824,42 @@ Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	}
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::__WHITESPACE)};
 }
+Parser::Token_res Parser::Lexer::AUTO_22(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "use", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 3);
+	success_1 = true;
+	pos += 3;
+	::Parser::Types::AUTO_22 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_22, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_21(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "from", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 4);
+	success_1 = true;
+	pos += 4;
+	::Parser::Types::AUTO_21 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_21, data)};
+}
 Parser::Token_res Parser::Lexer::AUTO_11(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "--", 2)))
+	if (!(!std::strncmp(pos + 0, "if", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
 	{
 		return {};
 	}
@@ -1727,7 +1874,7 @@ Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == '$'))
+	if (!(*(pos + 0) == '('))
 	{
 		return {};
 	}
@@ -1739,16 +1886,16 @@ Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::AUTO_6(const char* pos) {
 	auto in = pos;
-	char _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == ')'))
+	if (!(!std::strncmp(pos + 0, "while", 5) && !(*(pos + 5)>='a' && *(pos + 5)<='z' || *(pos + 5)>='A' && *(pos + 5)<='Z' || *(pos + 5)>='0' && *(pos + 5)<='9' || *(pos + 5) == '_')))
 	{
 		return {};
 	}
-	_0 = *(pos + 0);
+	_0 += ::Parser::str_t(pos, 5);
 	success_1 = true;
-	pos += 1;
+	pos += 5;
 	::Parser::Types::AUTO_6 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_6, data)};
 }
@@ -1880,16 +2027,16 @@ Parser::Token_res Parser::Lexer::rule_HEX(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::AUTO_14(const char* pos) {
 	auto in = pos;
-	char _0;
+	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == ']'))
+	if (!(!std::strncmp(pos + 0, "++", 2)))
 	{
 		return {};
 	}
-	_0 = *(pos + 0);
+	_0 += ::Parser::str_t(pos, 2);
 	success_1 = true;
-	pos += 1;
+	pos += 2;
 	::Parser::Types::AUTO_14 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_14, data)};
 }
@@ -1912,7 +2059,7 @@ Parser::Token_res Parser::Lexer::AUTO_8(const char* pos) {
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == ';'))
+	if (!(*(pos + 0) == ')'))
 	{
 		return {};
 	}
@@ -1998,18 +2145,48 @@ Parser::Token_res Parser::Lexer::rule_OP(const char* pos) {
 	pos += 1;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_OP)};
 }
-Parser::Token_res Parser::Lexer::AUTO_17(const char* pos) {
+Parser::Token_res Parser::Lexer::AUTO_16(const char* pos) {
 	auto in = pos;
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == '#'))
+	if (!(*(pos + 0) == ']'))
 	{
 		return {};
 	}
 	_0 = *(pos + 0);
 	success_1 = true;
 	pos += 1;
+	::Parser::Types::AUTO_16 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_16, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_4(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == '&'))
+	{
+		return {};
+	}
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	::Parser::Types::AUTO_4 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_4, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_17(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "for", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 3);
+	success_1 = true;
+	pos += 3;
 	::Parser::Types::AUTO_17 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_17, data)};
 }
@@ -2103,16 +2280,16 @@ Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::AUTO_9(const char* pos) {
 	auto in = pos;
-	::Parser::str_t _0;
+	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "if", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
+	if (!(*(pos + 0) == '$'))
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 = *(pos + 0);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	::Parser::Types::AUTO_9 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_9, data)};
 }
@@ -2121,7 +2298,7 @@ Parser::Token_res Parser::Lexer::AUTO_5(const char* pos) {
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == '('))
+	if (!(*(pos + 0) == '#'))
 	{
 		return {};
 	}
@@ -2234,16 +2411,16 @@ Parser::Token_res Parser::Lexer::cll_OP(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::AUTO_10(const char* pos) {
 	auto in = pos;
-	::Parser::str_t _0;
+	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "fn", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
+	if (!(*(pos + 0) == ';'))
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 2);
+	_0 = *(pos + 0);
 	success_1 = true;
-	pos += 2;
+	pos += 1;
 	::Parser::Types::AUTO_10 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_10, data)};
 }
@@ -2278,13 +2455,13 @@ Parser::Token_res Parser::Lexer::AUTO_19(const char* pos) {
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "for", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
+	if (!(!std::strncmp(pos + 0, "module", 6) && !(*(pos + 6)>='a' && *(pos + 6)<='z' || *(pos + 6)>='A' && *(pos + 6)<='Z' || *(pos + 6)>='0' && *(pos + 6)<='9' || *(pos + 6) == '_')))
 	{
 		return {};
 	}
-	_0 += ::Parser::str_t(pos, 3);
+	_0 += ::Parser::str_t(pos, 6);
 	success_1 = true;
-	pos += 3;
+	pos += 6;
 	::Parser::Types::AUTO_19 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_19, data)};
 }
@@ -2579,12 +2756,51 @@ Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_TYPE, data)};
 }
+Parser::Token_res Parser::Lexer::NAME(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	::Parser::Token_res _2;
+	::Parser::bool_t success_3 = false;
+	char _4;
+	::Parser::bool_t success_5 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "name", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 4);
+	success_1 = true;
+	pos += 4;
+	skip_spaces(pos);
+	success_3 = false;
+	_2 = ID(pos);
+	if (!(_2.status))
+	{
+		reportError(pos, "id ");
+		return {};
+	}
+	success_3 = true;
+	pos += _2.node.length();
+	skip_spaces(pos);
+	success_5 = false;
+	if (!(*(pos + 0) == ';'))
+	{
+		reportError(pos, "\";\"");
+		return {};
+	}
+	_4 = *(pos + 0);
+	success_5 = true;
+	pos += 1;
+	::Parser::Types::NAME data = _2.node;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NAME, data)};
+}
 Parser::Token_res Parser::Lexer::AUTO_12(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "++", 2)))
+	if (!(!std::strncmp(pos + 0, "fn", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
 	{
 		return {};
 	}
@@ -2593,6 +2809,21 @@ Parser::Token_res Parser::Lexer::AUTO_12(const char* pos) {
 	pos += 2;
 	::Parser::Types::AUTO_12 data = _0;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_12, data)};
+}
+Parser::Token_res Parser::Lexer::AUTO_20(const char* pos) {
+	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "import", 6) && !(*(pos + 6)>='a' && *(pos + 6)<='z' || *(pos + 6)>='A' && *(pos + 6)<='Z' || *(pos + 6)>='0' && *(pos + 6)<='9' || *(pos + 6) == '_')))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 6);
+	success_1 = true;
+	pos += 6;
+	::Parser::Types::AUTO_20 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_20, data)};
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 	auto in = pos;
@@ -2820,36 +3051,6 @@ Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
 
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NUMBER, data)};
 }
-Parser::Token_res Parser::Lexer::AUTO_16(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(*(pos + 0) == '&'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	::Parser::Types::AUTO_16 data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_16, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_4(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "while", 5) && !(*(pos + 5)>='a' && *(pos + 5)<='z' || *(pos + 5)>='A' && *(pos + 5)<='Z' || *(pos + 5)>='0' && *(pos + 5)<='9' || *(pos + 5) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 5;
-	::Parser::Types::AUTO_4 data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_4, data)};
-}
 Parser::Token_res Parser::Lexer::BOOLEAN(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
@@ -2962,6 +3163,21 @@ Parser::Token_res Parser::Lexer::SPACEMODE(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::AUTO_13(const char* pos) {
 	auto in = pos;
+	::Parser::str_t _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(!std::strncmp(pos + 0, "--", 2)))
+	{
+		return {};
+	}
+	_0 += ::Parser::str_t(pos, 2);
+	success_1 = true;
+	pos += 2;
+	::Parser::Types::AUTO_13 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_13, data)};
+}
+Parser::Token_res Parser::Lexer::SQUARE_BRACE_OPEN(const char* pos) {
+	auto in = pos;
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
@@ -2972,8 +3188,49 @@ Parser::Token_res Parser::Lexer::AUTO_13(const char* pos) {
 	_0 = *(pos + 0);
 	success_1 = true;
 	pos += 1;
-	::Parser::Types::AUTO_13 data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_13, data)};
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::SQUARE_BRACE_OPEN)};
+}
+Parser::Token_res Parser::Lexer::PLUS(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == '+'))
+	{
+		return {};
+	}
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::PLUS)};
+}
+Parser::Token_res Parser::Lexer::MINUS(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == '-'))
+	{
+		return {};
+	}
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::MINUS)};
+}
+Parser::Token_res Parser::Lexer::DIVIDE(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == '/'))
+	{
+		return {};
+	}
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::DIVIDE)};
 }
 Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
 	auto in = pos;
@@ -3058,62 +3315,6 @@ Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
 	success_1 = true;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_LOGICAL_AND)};
 }
-Parser::Token_res Parser::Lexer::QUESTION_MARK(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(*(pos + 0) == '?'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::QUESTION_MARK)};
-}
-Parser::Token_res Parser::Lexer::PLUS(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(*(pos + 0) == '+'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::PLUS)};
-}
-Parser::Token_res Parser::Lexer::MINUS(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(*(pos + 0) == '-'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::MINUS)};
-}
-Parser::Token_res Parser::Lexer::DIVIDE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(*(pos + 0) == '/'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::DIVIDE)};
-}
 Parser::Token_res Parser::Lexer::MULTIPLE(const char* pos) {
 	auto in = pos;
 	char _0;
@@ -3170,48 +3371,55 @@ Parser::Token_res Parser::Lexer::DOT(const char* pos) {
 	pos += 1;
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::DOT)};
 }
-Parser::Token_res Parser::Lexer::ID(const char* pos) {
+Parser::Token_res Parser::Lexer::SQUARE_BRACE_CLOSE(const char* pos) {
 	auto in = pos;
-	::Parser::str_t _0;
+	char _0;
 	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_3 = false;
-	char _2;
-	::Parser::str_t _4;
-	::Parser::bool_t success_5 = false;
 	success_1 = false;
-	auto begin_6 = pos;
-	success_3 = false;
-	if (!(*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z')))
+	if (!(*(pos + 0) == ']'))
 	{
 		return {};
 	}
-	_2 = *(begin_6 + 0);
-	success_3 = true;
-	begin_6 += 1;
-	skip_spaces(begin_6);
-	success_5 = false;
-	while (*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z') || (*(begin_6 + 0)>='0' && *(begin_6 + 0)<='9'))
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::SQUARE_BRACE_CLOSE)};
+}
+Parser::Token_res Parser::Lexer::AUTO_18(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == ':'))
 	{
-		_4 += ::Parser::str_t(begin_6, 1);
-		success_5 = true;
-		begin_6 += 1;
+		return {};
 	}
-	_0 += _2;
-	_0 += _4;
-	if (success_3)
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	::Parser::Types::AUTO_18 data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_18, data)};
+}
+Parser::Token_res Parser::Lexer::QUESTION_MARK(const char* pos) {
+	auto in = pos;
+	char _0;
+	::Parser::bool_t success_1 = false;
+	success_1 = false;
+	if (!(*(pos + 0) == '?'))
 	{
-		success_1 = true;
-		pos = begin_6;
+		return {};
 	}
-	::Parser::Types::ID data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::ID, data)};
+	_0 = *(pos + 0);
+	success_1 = true;
+	pos += 1;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::QUESTION_MARK)};
 }
 Parser::Token_res Parser::Lexer::AUTO_15(const char* pos) {
 	auto in = pos;
 	char _0;
 	::Parser::bool_t success_1 = false;
 	success_1 = false;
-	if (!(*(pos + 0) == ':'))
+	if (!(*(pos + 0) == '['))
 	{
 		return {};
 	}
@@ -3266,15 +3474,15 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	while (1)
 	{
 		success_9 = false;
-		_8 = rule_CSEQUENCE_ESCAPE(begin_17);
+		_8 = rule_CSEQUENCE_DIAPASON(begin_17);
 		if (!(_8.status))
 		{
 			success_12 = false;
-			_11 = rule_CSEQUENCE_SYMBOL(begin_17);
+			_11 = rule_CSEQUENCE_ESCAPE(begin_17);
 			if (!(_11.status))
 			{
 				success_15 = false;
-				_14 = rule_CSEQUENCE_DIAPASON(begin_17);
+				_14 = rule_CSEQUENCE_SYMBOL(begin_17);
 				if (!(_14.status))
 				{
 					break;
@@ -3343,7 +3551,7 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	pos += 2;
 	skip_spaces(pos);
 	success_3 = false;
-	while (!(*(pos + 0) == 'n' && *(pos + 0) != '\0'))
+	while (!(*(pos + 0) == '\n' && *(pos + 0) != '\0'))
 	{
 		_2 += ::Parser::str_t(pos, 1);
 		success_3 = true;
@@ -3351,57 +3559,39 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 	}
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::LINEAR_COMMENT)};
 }
-Parser::Token_res Parser::Lexer::AUTO_18(const char* pos) {
+Parser::Token_res Parser::Lexer::ID(const char* pos) {
 	auto in = pos;
 	::Parser::str_t _0;
 	::Parser::bool_t success_1 = false;
-	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "use", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	::Parser::Types::AUTO_18 data = _0;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_18, data)};
-}
-Parser::Token_res Parser::Lexer::NAME(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::Token_res _2;
 	::Parser::bool_t success_3 = false;
-	char _4;
+	char _2;
+	::Parser::str_t _4;
 	::Parser::bool_t success_5 = false;
 	success_1 = false;
-	if (!(!std::strncmp(pos + 0, "name", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	skip_spaces(pos);
+	auto begin_6 = pos;
 	success_3 = false;
-	_2 = ID(pos);
-	if (!(_2.status))
+	if (!(*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z')))
 	{
-		reportError(pos, "id ");
 		return {};
 	}
+	_2 = *(begin_6 + 0);
 	success_3 = true;
-	pos += _2.node.length();
-	skip_spaces(pos);
+	begin_6 += 1;
+	skip_spaces(begin_6);
 	success_5 = false;
-	if (!(*(pos + 0) == ';'))
+	while (*(begin_6 + 0) == '_' || (*(begin_6 + 0)>='a' && *(begin_6 + 0)<='z') || (*(begin_6 + 0)>='A' && *(begin_6 + 0)<='Z') || (*(begin_6 + 0)>='0' && *(begin_6 + 0)<='9'))
 	{
-		reportError(pos, "\";\"");
-		return {};
+		_4 += ::Parser::str_t(begin_6, 1);
+		success_5 = true;
+		begin_6 += 1;
 	}
-	_4 = *(pos + 0);
-	success_5 = true;
-	pos += 1;
-	::Parser::Types::NAME data = _2.node;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NAME, data)};
+	_0 += _2;
+	_0 += _4;
+	if (success_3)
+	{
+		success_1 = true;
+		pos = begin_6;
+	}
+	::Parser::Types::ID data = _0;
+	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::ID, data)};
 }

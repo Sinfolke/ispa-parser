@@ -15,7 +15,7 @@ name<{ rule, BIN, }> : Rule {
   @  Any
   Data: [RegularDataBlock: CllExpr]
 }name<{ rule, CSEQUENCE, SYMBOL, }> : Rule {
-  @  Group( Op( String (\\) |  !Cseq([]])))
+  @  Op( String (\\) |  !Cseq([]]))
   Data: [RegularDataBlock: CllExpr]
 }name<{ rule, OP, }> : Rule {
    String (|)
@@ -36,6 +36,22 @@ name<{ rule, BIN, }> : Rule {
   @  Op( Name(cll::expr) |  Name(rule::data_block::regular_datablock::key)+;)
    String (})
   Data: [RegularDataBlock: CllExpr]
+}name<{ rule, data_block, }> : Rule {
+  @  Op( Name(rule::data_block::templated_datablock) |  Name(rule::data_block::regular_datablock))
+  Data: [RegularDataBlock: CllExpr]
+}name<{ rule, value, }> : Rule {
+   String (&)
+  @  Name(ID)
+  Data: [RegularDataBlock: CllExpr]
+}name<{ rule, keyvalue, }> : Rule {
+   Name(AT)
+   Group( NoSpace, @  Name(ID))?;
+  Data: [RegularDataBlock: CllExpr]
+}name<{ rule, name, }> : Rule {
+  @  String (#)?;
+  @  Name(ID)
+   Group( Name(DOT), @  Name(ID))*;
+  Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<{ cll, loop_while, }> : Rule {
    String (while)
   @  Name(cll::expr)
@@ -125,6 +141,16 @@ name<{ rule, BIN, }> : Rule {
 }name<{ cll, TYPE, }> : Rule {
    Group(@  Op( String (var) |  String (num) |  String (bool) |  String (str) |  Group(@  String (arr), @  Name(cll::TEMPLATE)) |  Group(@  String (obj), @  Name(cll::TEMPLATE))))
   Data: TemplatedDataBlock(type, templ)
+}name<{ rule, group, }> : Rule {
+   String (()
+  @  Name(rule::member)*;
+   String ())
+  Data: [RegularDataBlock: CllExpr]
+}name<{ NAME, }> : Rule {
+   String (name)
+  @  Name(ID)
+   String (;)
+  Data: [RegularDataBlock: CllExpr]
 }name<{ cll, _variable, }> : Rule {
   @  Group( Op( String (++) |  String (--)))?;
   @  Name(ID)
@@ -139,6 +165,22 @@ name<{ rule, BIN, }> : Rule {
   @  Name(cll::function_arguments)
    String ())
   Data: [RegularDataBlock: CllExpr]
+}name<{ rule, nested_rule, }> : Rule {
+   String (#)
+   NoSpace
+  @  Name(rule)
+  Data: [RegularDataBlock: CllExpr]
+}name<{ cll, loop_for, }> : Rule {
+   String (for)
+   String (()
+  @  Group( Op( Name(cll::expr) |  Name(cll::_var)))?;
+   String (;)
+  @  Name(cll::expr)?;
+   String (;)
+  @  Name(cll::expr)?;
+   String ())
+  @  Name(cll::stmt)
+  Data: TemplatedDataBlock(decl, cond, end, stmt)
 }name<{ cll, stmt, }> : Rule {
    String ({)
   @  Name(rule::member)*;
@@ -158,18 +200,11 @@ name<{ rule, BIN, }> : Rule {
 }name<{ STRING, }> : Rule {
    Group( String (\'), @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;,  String (\'))
   Data: [RegularDataBlock: CllExpr]
-}name<{ rule, value, }> : Rule {
-   String (&)
-  @  Name(ID)
-  Data: [RegularDataBlock: CllExpr]
 }name<{ NUMBER, }> : Rule {
   @  Cseq([+-])?;
   @  Group( Cseq([], Diapasons:[0-9 ])+;)
   @  Group( Cseq([.,]),  Cseq([], Diapasons:[0-9 ])+;)?;
   Data: TemplatedDataBlock(sign, main, dec)
-}name<{ rule, data_block, }> : Rule {
-  @  Op( Name(rule::data_block::templated_datablock) |  Name(rule::data_block::regular_datablock))
-  Data: [RegularDataBlock: CllExpr]
 }name<{ cll, function_body_decl, }> : Rule {
    String (()
   @  Name(cll::function_parameters)
@@ -178,11 +213,6 @@ name<{ rule, BIN, }> : Rule {
 }name<{ BOOLEAN, }> : Rule {
   d Group( Op( String (true) |  String (false)))
   Data: [RegularDataBlock: CllExpr]
-}name<{ rule, name, }> : Rule {
-  @  String (#)?;
-  @  Name(ID)
-   Group( Name(DOT), @  Name(ID))*;
-  Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<{ array, }> : Rule {
    String ([)
    Group( Group(@  Name(cll::expr),  String (,))*;)?;
@@ -193,11 +223,31 @@ name<{ rule, BIN, }> : Rule {
   @  Op( String (mixed) |  String (skipped) |  String (allowed))
    String (;)
   Data: [RegularDataBlock: CllExpr]
+}name<{ SQUARE_BRACE_OPEN, }> : Rule {
+   String ([)
+  Data: EmptyDataBlock
 }name<{ rule, member, }> : Rule {
   @  Group( Op( Name(rule::keyvalue) |  Name(rule::value)))?;
   @  Op( Name(rule::name) |  Name(rule::group) |  Name(rule::CSEQUENCE) |  Name(STRING) |  Name(rule::HEX) |  Name(rule::BIN) |  Name(rule::NOSPACE) |  Name(rule::ESCAPED) |  Name(DOT) |  Name(rule::OP) |  Name(LINEAR_COMMENT) |  Name(cll))
   @  Name(rule::quantifier)?;
   Data: TemplatedDataBlock(prefix, val, quantifier)
+}name<{ rvalue, }> : Rule {
+  @  Op( Name(BOOLEAN) |  Name(NUMBER) |  Name(STRING) |  Name(ID) |  Name(AT) |  Name(array) |  Name(object))
+  Data: [RegularDataBlock: CllExpr]
+}name<{ PLUS, }> : Rule {
+   String (+)
+  Data: EmptyDataBlock
+}name<{ MINUS, }> : Rule {
+   String (-)
+  Data: EmptyDataBlock
+}name<{ DIVIDE, }> : Rule {
+   String (/)
+  Data: EmptyDataBlock
+}name<{ moduleDeclaration, }> : Rule {
+   String (module)
+  @  Name(ID)
+   String (;)
+  Data: [RegularDataBlock: CllExpr]
 }name<{ rule, CSEQUENCE, DIAPASON, }> : Rule {
    Group(@  Name(rule::CSEQUENCE::SYMBOL),  NoSpace,  String (-),  NoSpace, @  Name(rule::CSEQUENCE::SYMBOL))
   Data: TemplatedDataBlock(from, to)
@@ -212,21 +262,10 @@ name<{ rule, BIN, }> : Rule {
    Group(@  Op( Name(ID) |  Name(NUMBER)),  String (:), @  Name(cll::expr),  Group( String (,), @  Op( Name(ID) |  Name(NUMBER)),  String (:), @  Name(cll::expr))*;,  String (;))?;
    String (})
   Data: TemplatedDataBlock(key, value, keys, values)
-}name<{ rvalue, }> : Rule {
-  @  Op( Name(BOOLEAN) |  Name(NUMBER) |  Name(STRING) |  Name(ID) |  Name(AT) |  Name(array) |  Name(object))
+}name<{ moduleImport, }> : Rule {
+   String (import)
+  @  Op( Name(ID) |  Name(moduleImport::from))
   Data: [RegularDataBlock: CllExpr]
-}name<{ QUESTION_MARK, }> : Rule {
-   String (?)
-  Data: EmptyDataBlock
-}name<{ PLUS, }> : Rule {
-   String (+)
-  Data: EmptyDataBlock
-}name<{ MINUS, }> : Rule {
-   String (-)
-  Data: EmptyDataBlock
-}name<{ DIVIDE, }> : Rule {
-   String (/)
-  Data: EmptyDataBlock
 }name<{ cll, expr, term, }> : Rule {
   @  Name(cll::expr::value)
    Group(@  Op( Name(MULTIPLE) |  Name(DIVIDE) |  Name(MODULO)), @  Name(cll::expr::value))*;
@@ -234,10 +273,6 @@ name<{ rule, BIN, }> : Rule {
 }name<{ MULTIPLE, }> : Rule {
    String (*)
   Data: EmptyDataBlock
-}name<{ rule, keyvalue, }> : Rule {
-   Name(AT)
-   Group( NoSpace, @  Name(ID))?;
-  Data: [RegularDataBlock: CllExpr]
 }name<{ MODULO, }> : Rule {
    String (%)
   Data: EmptyDataBlock
@@ -247,13 +282,29 @@ name<{ rule, BIN, }> : Rule {
 }name<{ DOT, }> : Rule {
    String (.)
   Data: EmptyDataBlock
-}name<{ ID, }> : Rule {
-  @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
-  Data: [RegularDataBlock: CllExpr]
+}name<{ SQUARE_BRACE_CLOSE, }> : Rule {
+   String (])
+  Data: EmptyDataBlock
+}name<{ _use, unit, }> : Rule {
+  @  Name(ID)
+  @  Name(rvalue)?;
+  Data: TemplatedDataBlock(name, value)
+}name<{ moduleImport, from, }> : Rule {
+  @  Op( Name(MULTIPLE) |  Name(moduleImport::from::import_list))
+   String (from)
+  @  Name(ID)
+  Data: TemplatedDataBlock(what, from)
+}name<{ QUESTION_MARK, }> : Rule {
+   String (?)
+  Data: EmptyDataBlock
+}name<{ moduleImport, from, import_list, }> : Rule {
+  @  Name(ID)
+   Group( String (,), @  Name(ID))*;
+  Data: TemplatedDataBlock(first, sequence)
 }name<{ rule, CSEQUENCE, }> : Rule {
    String ([)
   @  String (^)?;
-  @  Group( Op( Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::SYMBOL) |  Name(rule::CSEQUENCE::DIAPASON)))*;
+  @  Group( Op( Name(rule::CSEQUENCE::DIAPASON) |  Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::SYMBOL)))*;
    String (])
   Data: TemplatedDataBlock(_not, val)
 }name<{ rule, quantifier, }> : Rule {
@@ -266,40 +317,13 @@ name<{ rule, BIN, }> : Rule {
 }name<{ main, }> : Rule {
    Group(@  Op( Name(_use) |  Name(rule) |  Name(NAME) |  Name(SPACEMODE)))+;
   Data: [RegularDataBlock: CllExpr]
+}name<{ ID, }> : Rule {
+  @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
+  Data: [RegularDataBlock: CllExpr]
 }name<{ _use, }> : Rule {
    String (use)
   @  Name(_use::unit)
    Group( String (,), @  Name(_use::unit))*;
    String (;)
   Data: TemplatedDataBlock(first, second)
-}name<{ cll, loop_for, }> : Rule {
-   String (for)
-   String (()
-  @  Group( Op( Name(cll::expr) |  Name(cll::_var)))?;
-   String (;)
-  @  Name(cll::expr)?;
-   String (;)
-  @  Name(cll::expr)?;
-   String ())
-  @  Name(cll::stmt)
-  Data: TemplatedDataBlock(decl, cond, end, stmt)
-}name<{ rule, nested_rule, }> : Rule {
-   String (#)
-   NoSpace
-  @  Name(rule)
-  Data: [RegularDataBlock: CllExpr]
-}name<{ _use, unit, }> : Rule {
-  @  Name(ID)
-  @  Name(rvalue)?;
-  Data: TemplatedDataBlock(name, value)
-}name<{ NAME, }> : Rule {
-   String (name)
-  @  Name(ID)
-   String (;)
-  Data: [RegularDataBlock: CllExpr]
-}name<{ rule, group, }> : Rule {
-   String (()
-  @  Name(rule::member)*;
-   String ())
-  Data: [RegularDataBlock: CllExpr]
 }

@@ -5,7 +5,7 @@
 #include <corelib.h>
 #include <cpuf/printf.h>
 #include <list>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 AST& Tree::getRawAst() {
     return ast;
 }
@@ -50,9 +50,7 @@ void Tree::literalsToToken(
                 return pair.first == member;
             });
             if (find_it != generated.end()) {
-                char prev_quantifier = member.quantifier;
-                member = find_it->second; // Use the generated member
-                member.quantifier = prev_quantifier; // Restore the quantifier
+                member.value = find_it->second.value; // Use the generated member
             } else {
                 // create new token
                 std::vector<std::string> new_name = {"AUTO_" + std::to_string(count++)};
@@ -265,14 +263,12 @@ void Tree::sortByPriority(TreeAPI::RuleMemberOp& options) {
 void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
-            auto &data = member.getGroup();
-            sortByPriority(data.values);
+            sortByPriority(member.getGroup().values);
         }
         if (member.isOp()) {
             for (auto &option : member.getOp().options) {
                 if (option.isGroup()) {
-                    auto &data = option.getGroup();
-                    sortByPriority(data.values);
+                    sortByPriority(option.getGroup().values);
                 }
             }
             sortByPriority(member.getOp());
@@ -284,7 +280,6 @@ void Tree::sortByPriority() {
         if (value.members.empty()) {
             throw Error("Empty rule\n");
         }
-        n = name;
         sortByPriority(value.members);
     }
 }

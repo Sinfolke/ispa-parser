@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <iomanip>
 #include <stack>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <logging.h>
 #include <LLConverter.h>
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
@@ -166,10 +166,6 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         break;
     case LLIR::types::SKIP_SPACES:
         out << "skip_spaces(" << current_pos_counter.top() << ")";
-        break;
-    case LLIR::types::DATA_BLOCK:
-        has_data_block = true;
-        out << convertDataBlock(std::any_cast<LLIR::DataBlock>(mem.value));
         break;
     case LLIR::types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();

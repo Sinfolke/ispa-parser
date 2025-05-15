@@ -1,6 +1,6 @@
 
 #include <list>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <string>
 #include <list>
 #include <any>
@@ -192,8 +192,7 @@ void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<st
 }
 void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
     out << "\t\t"<< R"(Lexer(const std::string& in) : Lexer_base(in) {}
-        Lexer(char*& in) : Lexer_base(in) {}
-        Lexer(const char*& in) : Lexer_base(in) {}
+        Lexer(const char* in) : Lexer_base(in) {}
         Lexer(TokenFlow &tokens) : Lexer_base(tokens) {}
         Lexer() {})";
     out << "\n";

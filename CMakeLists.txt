@@ -77,7 +77,7 @@ add_executable(ispa ${SOURCES})
 target_precompile_headers(ispa PRIVATE
         parser/Parser.h
         src/TreeAPI.h
-        src/IR/IR.h
+        src/IR/LLIR.h
 )
 
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})

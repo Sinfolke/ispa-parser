@@ -56,10 +56,10 @@ class AST {
         TreeAPI::DataBlock createDataBlock(const Parser::Rule &rule);
 
         // helper
-        void getNestedRuleNames(const Parser::Types::Rule_data &rule);
+        void getNestedRuleNames(const Parser::Types::rule &rule);
         void flushOpSequence();
         // build Tree API from AST
-        void createRules(const Parser::Types::Rule_data &rule);
+        void createRules(const Parser::Types::rule &rule);
         AST(const std::vector<Parser::Rule> &modules, const  std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, bool isModule) {
             this->nested_rule_names = nested_rule_names;
             if (isModule)

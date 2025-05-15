@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <LLInternalData.h>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <logging.h>
 #include <corelib.h>
 class LLStringConvertions : public LLInternalData {

@@ -1,5 +1,5 @@
 #pragma once
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <LRParser.h>
 #include <tree.h>
 class LLConverter_base {

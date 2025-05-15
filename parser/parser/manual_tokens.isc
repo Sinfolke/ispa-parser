@@ -1,0 +1,10 @@
+QUESTION_MARK: '?';
+PLUS: '+';
+MINUS: '-';
+DIVIDE: '/';
+MULTIPLE: '*';
+MODULO: '%';
+AT: '@';
+DOT: '.';
+SQUARE_BRACE_OPEN: '[';
+SQUARE_BRACE_CLOSE: ']';

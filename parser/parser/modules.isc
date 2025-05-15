@@ -1,0 +1,18 @@
+moduleDeclaration:
+    'module' @ ID ';'
+    {@}
+;
+moduleImport:
+    'import' @ ID | #from
+    {@}
+    #from:
+        @ MULTIPLE | #import_list 'from' @ ID
+
+        @{what, from}
+
+        #import_list:
+            @ ID (',' @ ID)*
+            @{first, sequence}
+        ;
+    ;
+;

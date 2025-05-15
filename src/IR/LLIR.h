@@ -23,14 +23,14 @@ class LLIR {
             LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
             ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
             CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
-            VARIABLE, SUCCESS_CHECK, ANY_DATA, METHOD_CALL, FUNCTION_CALL
+            VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL
         };
         enum class var_types {
             UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result,
             CHAR, UCHAR, SHORT, USHORT, INT, UINT, LONG, ULONG, LONGLONG, ULONGLONG
         };
         enum class var_assign_values {
-            NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VARIABLE, PROPERTY, VAR_REFER, ACCESSOR,
+            NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VAR_REFER, ACCESSOR,
             UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG, CURRENT_POS,
             CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR, INCLOSED_MAP
         };
@@ -71,10 +71,17 @@ class LLIR {
             condition_types id;
             std::any value = {};
         };
+
+        struct variable {
+            std::string name;
+            var_type type = {var_types::UNDEFINED};
+            assign value = {var_assign_values::NONE};
+            std::vector<std::string> property_access = {};
+        };
         struct var_refer {        
             std::optional<char> pre_increament;
             std::optional<char> post_increament;
-            std::string name;
+            variable var;
             std::vector<LLIR::expr> brace_expression;
         };
         using array = std::vector<std::vector<expr>>;
@@ -93,12 +100,6 @@ class LLIR {
             std::vector<member> else_block = {}; 
         };
 
-        struct variable {
-            std::string name;
-            var_type type = {var_types::UNDEFINED};
-            assign value = {var_assign_values::NONE};
-            std::vector<std::string> property_access = {};
-        };
         struct variable_assign {
             std::string name;
             var_assign_types assign_type = var_assign_types::ASSIGN;

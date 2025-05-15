@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <iomanip>
 #include <stack>
-#include <IR/IR.h>
+#include <IR/LLIR.h>
 #include <corelib.h>
 std::string LLIR::convert_var_type(var_types type) {
     static const std::unordered_map<var_types, std::string> typesMap = {
@@ -33,23 +33,26 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::VAR_REFER:
         {
             //cpuf::printf("ON var_refer\n");
-            auto dt = std::any_cast<var_refer>(data);
-            std::string res;
-            if (dt.pre_increament)
-                res += "++";
-            res += dt.name;
-            if (dt.post_increament)
-                res += "++";
-            return res;
-        }
-        case var_assign_values::VARIABLE:
-        {
-            //cpuf::printf("on ID\n");
-            auto dt = std::any_cast<LLIR::variable>(data);
-            std::string res = dt.name;
-            for (auto el : dt.property_access)
-                res += "." + el;
-            return res;
+            cpuf::printf("variable. type: %s\n", data.type().name());
+            std::flush(std::cout);
+            auto dt = std::any_cast<LLIR::var_refer>(data);
+            std::string name = dt.var.name;
+            for (const auto &el : dt.var.property_access)
+                name += "." + el;
+            if (dt.post_increament.value_or('\0') == '-') {
+                name.insert(0, "--");
+            } else if (dt.post_increament.value_or('\0') == '+') {
+                name.insert(0, "++");
+            }
+            if (!dt.brace_expression.empty()) {
+                name += '[' + convertExpression(dt.brace_expression, false) + ']';
+            }
+            if (dt.post_increament.value_or('\0') == '-') {
+                name += "--";
+            } else if (dt.post_increament.value_or('\0') == '+') {
+                name += "++";
+            }
+            return name;
         }
         case var_assign_values::INT:
             //cpuf::printf("on INT, type: %s\n", data.type().name());
@@ -71,7 +74,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
             //cpuf::printf("on object\n");
             auto obj = std::any_cast<LLIR::object>(data);
             std::string res = "{";
-            for (auto [key, value] : obj) {
+            for (const auto &[key, value] : obj) {
                 res += key;
                 res += ": ";
                 res += convertExpression(value, false);
@@ -95,15 +98,6 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         }
         case var_assign_values::CURRENT_CHARACTER:
             return "*pos";
-        case var_assign_values::PROPERTY:
-        {
-            auto dt = std::any_cast<LLIR::property>(data);
-            std::string res = dt.obj;
-            for (auto el : dt.properties) {
-                res += "." + el;
-            }
-            return res;
-        }
     }
     switch (value) {
         case var_assign_values::NONE:                  return "NONE";
@@ -151,12 +145,24 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
             return std::string("!STRNCMP(pos, ") + dt.value.name + std::string(")");
         }
     } else if (type == condition_types::VARIABLE) {
-        //cpuf::printf("variable\n");   
-        auto dt = std::any_cast<LLIR::variable>(data);
-        std::string res = dt.name;
-        for (auto el : dt.property_access)
-            res += "." + el;
-        return res;
+        auto dt = std::any_cast<LLIR::var_refer>(data);
+        std::string name = dt.var.name;
+        for (const auto &el : dt.var.property_access)
+            name += "." + el;
+        if (dt.post_increament.value_or('\0') == '-') {
+            name.insert(0, "--");
+        } else if (dt.post_increament.value_or('\0') == '+') {
+            name.insert(0, "++");
+        }
+        if (!dt.brace_expression.empty()) {
+            name += '[' + convertExpression(dt.brace_expression, false) + ']';
+        }
+        if (dt.post_increament.value_or('\0') == '-') {
+            name += "--";
+        } else if (dt.post_increament.value_or('\0') == '+') {
+            name += "++";
+        }
+        return name;
     } else if (type == condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
         return std::any_cast<std::string>(data) + ".res";
@@ -166,7 +172,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     } else if (type == condition_types::BIN) {
         //cpuf::printf("bin\n");
         return std::string("0b") + std::any_cast<std::string>(data);
-    } else if (type == condition_types::ANY_DATA) {
+    } else if (type == condition_types::RVALUE) {
         auto dt = std::any_cast<assign>(data);
         return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == condition_types::METHOD_CALL) {

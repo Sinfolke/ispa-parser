@@ -73,24 +73,24 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             return std::string(1, '"') + format_str(std::any_cast<std::string>(data)) + std::string(1, '"');
         case LLIR::var_assign_values::VAR_REFER:
         {
-            //cpuf::printf("ON var_refer\n");
             auto dt = std::any_cast<LLIR::var_refer>(data);
-            std::string res;
-            if (dt.pre_increament)
-                res += "++";
-            res += dt.name;
-            if (dt.post_increament)
-                res += "++";
-            return res;
-        }
-        case LLIR::var_assign_values::VARIABLE:
-        {
-            //cpuf::printf("on ID\n");
-            auto dt = std::any_cast<LLIR::variable>(data);
-            std::string res = dt.name;
-            for (auto el : dt.property_access)
-                res += "." + el;
-            return res;
+            std::string name = dt.var.name;
+            for (const auto &el : dt.var.property_access)
+                name += "." + el;
+            if (dt.post_increament.value_or('\0') == '-') {
+                name.insert(0, "--");
+            } else if (dt.post_increament.value_or('\0') == '+') {
+                name.insert(0, "++");
+            }
+            if (!dt.brace_expression.empty()) {
+                name += '[' + convertExpression(dt.brace_expression, false) + ']';
+            }
+            if (dt.post_increament.value_or('\0') == '-') {
+                name += "--";
+            } else if (dt.post_increament.value_or('\0') == '+') {
+                name += "++";
+            }
+            return name;
         }
         case LLIR::var_assign_values::INT:
             //cpuf::printf("on INT\n");
@@ -225,19 +225,32 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
         }
         return val;
     } else if (type == LLIR::condition_types::VARIABLE) {
-        //cpuf::printf("variable\n");   
-        auto dt = std::any_cast<LLIR::variable>(data);
-        std::string res = dt.name;
-        for (auto el : dt.property_access)
-            res += "." + el;
-        return res;
+        //cpuf::printf("variable\n");
+        auto dt = std::any_cast<LLIR::var_refer>(data);
+        std::string name = dt.var.name;
+        for (const auto &el : dt.var.property_access)
+            name += "." + el;
+        if (dt.post_increament.value_or('\0') == '-') {
+            name.insert(0, "--");
+        } else if (dt.post_increament.value_or('\0') == '+') {
+            name.insert(0, "++");
+        }
+        if (!dt.brace_expression.empty()) {
+            name += '[' + convertExpression(dt.brace_expression, false) + ']';
+        }
+        if (dt.post_increament.value_or('\0') == '-') {
+            name += "--";
+        } else if (dt.post_increament.value_or('\0') == '+') {
+            name += "++";
+        }
+        return name;
     } else if (type == LLIR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
         return std::any_cast<std::string>(data) + ".status";
     } else if (type == LLIR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
-    } else if (type == LLIR::condition_types::ANY_DATA) {
+    } else if (type == LLIR::condition_types::RVALUE) {
         auto dt = std::any_cast<LLIR::assign>(data);
         return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == LLIR::condition_types::METHOD_CALL) {
