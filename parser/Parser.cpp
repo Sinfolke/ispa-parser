@@ -453,9 +453,16 @@ void ::Parser::Parser::parseFromTokens() {
         parseFromPos(pos);
     }
 void ::Parser::Parser::lazyParse() {
-        auto pos = Lexer::lazy_iterator(lexer, text);
-        parseFromPos(pos);
-    }
+	if (lexer == nullptr) {
+		Lexer lexer;
+		lexer.setinput(text);
+		auto pos = Lexer::lazy_iterator(lexer, text);
+		parseFromPos(pos);
+	} else {
+		auto pos = Lexer::lazy_iterator(lexer, text);
+		parseFromPos(pos);
+	}
+}
 const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
 	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());

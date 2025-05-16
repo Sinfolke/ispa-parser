@@ -15,14 +15,14 @@ class LLIR {
             NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
             METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
             ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER, 
-            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR, EMPTY
+            SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR, JUMP, JUMP_FROM_VARIABLE, EMPTY
         };
         enum class condition_types {
             GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL, 
             HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
             LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
             ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,  
-            CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
+            CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_NAME, TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
             VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL
         };
         enum class var_types {
@@ -140,10 +140,13 @@ class LLIR {
             std::vector<LLIR::member> members;
         };
         using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock>;
+
+        // static variables
+        static auto createEmptyVariable(std::string name) -> LLIR::variable;
+        static auto processExitStatements(std::vector<LLIR::member> &values) -> void;
     private:
         void clear_thread();
         // output functions:
-        std::string generateVariableName();
         std::string convert_var_type(var_types type);
         std::string convert_var_assing_values(var_assign_values value, std::any data);
         std::string convert_var_assing_types(var_assign_types type);
@@ -163,8 +166,7 @@ class LLIR {
         void printIR(std::ostream& out);
 
         // helper functions
-        auto createEmptyVariable(std::string name) -> LLIR::variable;
-        auto processExitStatements(std::vector<LLIR::member> &values) -> void;
+        auto generateVariableName() -> std::string;
         auto createSuccessVariable() -> LLIR::variable;
         auto createAssignUvarBlock(const LLIR::variable uvar, const LLIR::variable var, const LLIR::variable &shadow_var) -> LLIR::member;
         auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
@@ -181,7 +183,8 @@ class LLIR {
         auto compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2) -> bool;
         
         // Error functions
-        std::string getErrorName(const TreeAPI::RuleMember &rule);
+        auto getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) ->  std::set<std::vector<std::string>>;
+        auto getErrorName(const TreeAPI::RuleMember &rule) -> std::string;
 
         // Convertion functions
         auto TreeRvalueToIR(const TreeAPI::rvalue &value) -> LLIR::assign;
@@ -250,6 +253,9 @@ class LLIR {
         std::vector<std::pair<std::string, LLIR::variable>> key_vars;
         std::vector<LLIR::variable> unnamed_datablock_units;
         Tree* tree;
+        // follow symbols set for error handling
+        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> symbol_follow;
+        bool has_symbol_follow = true;
         // data for output
         std::stack<std::string> current_pos_counter;
         size_t indentLevel = 0;
@@ -260,7 +266,6 @@ class LLIR {
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) -> LLIR;
         auto rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) -> LLIR;
         void treeToIr();
-        auto makeIR() -> std::vector<ConvertionResult>;
         // optimizations
         void getVariablesToTable(std::vector<LLIR::member> &data, std::vector<LLIR::member>& table, std::string &var_name, bool retain_value, bool recursive);
         void insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table);
@@ -282,11 +287,13 @@ class LLIR {
             optimizeIR();
         };
         LLIR(Tree &tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(&tree), isToken(isToken) {
+            has_symbol_follow = false;
             ruleToIr(toConvert);
             // call raiseVars manually to specify it is all single rule
             raiseVarsTop(members, members, "", true);
         }
         LLIR(Tree *tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(tree), isToken(isToken) {
+            has_symbol_follow = false;
             ruleToIr(toConvert);
             raiseVarsTop(members, members, "", true);
         }

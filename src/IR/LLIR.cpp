@@ -12,6 +12,8 @@
 #include <bits/regex_constants.h>
 #include <sys/stat.h>
 
+#include "ErrorIR.h"
+
 bool LLIR::DataBlock::is_inclosed_map() const {
     return std::holds_alternative<LLIR::inclosed_map>(value);
 }
@@ -102,6 +104,7 @@ void LLIR::proceed(const LLIR &ir) {
     isFirst = ir.isFirst;
     key_vars = ir.key_vars;
     unnamed_datablock_units = ir.unnamed_datablock_units;
+    symbol_follow = ir.symbol_follow;
 }
 void LLIR::update(LLIR &ir) {
     variable_count = ir.variable_count;
@@ -139,6 +142,25 @@ LLIR::variable LLIR::createEmptyVariable(std::string name) {
 }
 std::string LLIR::generateVariableName() {
     return std::string("_") + std::to_string(variable_count++);
+}
+auto LLIR::getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) -> std::set<std::vector<std::string>> {
+    std::set<std::vector<std::string>> terminals;
+    for (size_t i = pos; i < symbols.size(); i++) {
+        const auto &sym = symbols[i];
+        if (!sym.isName())
+            continue;
+        const auto n = sym.getName();
+        if (corelib::text::isUpper(n.name.back())) {
+            terminals.insert(n.name);
+        } else {
+            auto &terms = tree->getFirstSet()[n.name];
+            terminals.insert(terms.begin(), terms.end());
+        }
+        if (sym.quantifier == '?' || sym.quantifier == '*')
+            continue;
+        break;
+    }
+    return terminals;
 }
 void LLIR::processExitStatements(std::vector<LLIR::member> &values) {
     for (auto &el : values) {
@@ -351,7 +373,17 @@ LLIR::variable LLIR::pushBasedOnQualifier_Rule_name(const TreeAPI::RuleMember &r
             expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
             expr.push_back({LLIR::condition_types::GROUP_CLOSE});
             // add exit statement
-            std::vector<LLIR::member> blk = {{LLIR::types::EXIT}};
+            std::vector<LLIR::member> blk;
+            if (has_symbol_follow) {
+                ErrorIR error(tree, rule, symbol_follow, isFirst);
+                blk = {error.lowerToLLIR(variable_count)};
+            } else {
+                blk = {{LLIR::types::EXIT}};
+                if (!isFirst) {
+                    blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
+                }
+            }
+
             if (!isFirst) {
                 blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
             }
@@ -1226,6 +1258,11 @@ LLIR::ConvertionResult LLIR::process_Rule_name(const TreeAPI::RuleMember &rule) 
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
+    if (has_symbol_follow) {
+        if (symbol_follow.empty())
+            throw Error("empty symbol follow on rule %$\n", fullname);
+        symbol_follow.back().first = name;
+    }
     if (!isToken && isCallingToken) {
         var.type.type = LLIR::var_types::Token;
     } else {
@@ -1602,10 +1639,14 @@ void LLIR::ruleToIr(const TreeAPI::RuleMember &rule) {
 LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules) {
     LLIR result(tree, -1, false);
     result.proceed(*this);
+    size_t pos = 0;
     for (const auto &rule : rules) {
         if (rule.empty())
             continue;
+        result.symbol_follow.emplace_back(std::vector<std::string> {}, getNextTerminal(rules, pos));
         result.ruleToIr(rule);
+        result.symbol_follow.pop_back();
+        pos++;
     }
     return result;
 }
@@ -1613,11 +1654,17 @@ LLIR LLIR::rulesToIr(const std::vector<TreeAPI::RuleMember> &rules, bool &addSpa
     LLIR result(tree, -1, false);
     result.proceed(*this);
     bool isFirst = true;
+    size_t pos = 0;
     for (const auto &rule : rules) {
+        if (rule.empty())
+            continue;
+        result.symbol_follow.emplace_back(std::vector<std::string> {}, getNextTerminal(rules, pos));
         result.ruleToIr(rule);
+        result.symbol_follow.pop_back();
         if (isFirst)
             addSpaceSkipFirst = result.addSpaceSkip;
         isFirst = false;
+        pos++;
     }
     return result;
 }

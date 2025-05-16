@@ -9,6 +9,12 @@
 AST& Tree::getRawAst() {
     return ast;
 }
+auto Tree::getFirstSet() -> First & {
+    return first;
+}
+auto Tree::getFollowSet() -> Follow & {
+    return follow;
+}
 void Tree::removeEmptyRule() {
     auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
@@ -151,7 +157,7 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleM
     return prioritySort(first.options.back(), second.options.back());
 }
 enum class Types {
-    string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll
+    string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll, name, group, nospace, op, empty
 };
 Types getTypes(const TreeAPI::String&) { return Types::string; }
 Types getTypes(const TreeAPI::RuleMemberEscaped &) { return Types::Rule_escaped; }
@@ -161,11 +167,11 @@ Types getTypes(const TreeAPI::RuleMemberHex&) { return Types::Rule_hex; }
 Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
 Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
 // never meet types
-Types getTypes(const TreeAPI::RuleMemberName&) { return Types::string; };
-Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::string; }
-Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::string; }
-Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::string; }
-Types getTypes(const std::monostate&) { return Types::string; }
+Types getTypes(const TreeAPI::RuleMemberName&) { return Types::name; };
+Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::group; }
+Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::nospace; }
+Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::op; }
+Types getTypes(const std::monostate&) { return Types::empty; }
 bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
     if (first.isName() && second.isName())
         return prioritySort(first.getName(), second.getName());
@@ -325,6 +331,214 @@ void Tree::createUsePlacesTable() {
 }
 auto Tree::getUsePlacesTable() -> UsePlaceTable& {
     return use_places;
+}
+void Tree::constructNullableSet() {
+    bool changed;
+    do {
+        changed = false;
+        for (const auto &[name, value] : ast.getTreeMap()) {
+            if (corelib::text::isUpper(name.back())) continue;
+            if (nullable[name]) continue;
+
+            bool all_nullable = true;
+            for (const auto &member : value.members) {
+                if (member.isName()) {
+                    const auto &n = member.getName().name;
+                    if (corelib::text::isUpper(n.back()) || !nullable[n]) {
+                        all_nullable = false;
+                        break;
+                    }
+                } else if (member.isGroup() || member.isOp()) {
+                    all_nullable = false;
+                    break;
+                } else if (member.quantifier != '?' && member.quantifier != '*') {
+                    all_nullable = false;
+                    break;
+                }
+            }
+
+            if (all_nullable) {
+                nullable[name] = true;
+                changed = true;
+            }
+        }
+    } while (changed);
+}
+auto Tree::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>> {
+    bool nullable_prefix = true;
+    std::set<std::vector<std::string>> set;
+    for (const auto &member : members) {
+        if (member.isGroup()) {
+            auto group_set = constructFirstSet(member.getGroup().values, nonterminal);
+            set.insert(group_set.begin(), group_set.end());
+            if (member.quantifier == '\0' || member.quantifier == '+') {
+                nullable_prefix = false;
+                break;
+            }
+            continue;
+        }
+        if (member.isOp()) {
+            for (const auto &el : member.getOp().options) {
+                std::vector<TreeAPI::RuleMember> mem = {el};
+                auto op_set = constructFirstSet(mem, nonterminal);
+                set.insert(op_set.begin(), op_set.end());
+            }
+            break; // rule_op is never with quantifier
+        }
+        if (member.isNospace())
+            continue;
+        const auto &rule = member.getName();
+        if (rule.name == nonterminal) {
+            continue;
+        }
+        if (corelib::text::isLower(rule.name.back())) {
+            auto find = first.find(rule.name);
+            const auto &otherFirst = first[rule.name];
+            set.insert(otherFirst.begin(), otherFirst.end());
+            if (!nullable[rule.name]) {
+                nullable_prefix = false;
+                break;
+            }
+        } else {
+            set.insert(rule.name);
+            if (member.quantifier == '\0' || member.quantifier == '+') {
+                nullable_prefix = false;
+                break;
+            }
+        }
+    }
+    // If all symbols in this production were nullable
+    if (nullable_prefix) {
+        set.insert({"ε"});
+    }
+    return set;
+}
+void Tree::constructFirstSet() {
+    bool changed;
+    do {
+        changed = false;
+        for (const auto &[name, value] : ast.getTreeMap()) {
+            // cpuf::printf("constructing first set for %$ -> ", nonterminal);
+            if (corelib::text::isUpper(name.back())) {
+                continue;
+            }
+            std::set<std::vector<std::string>> visited;
+            auto set = constructFirstSet(value.members, name);
+            auto size = first[name].size();
+            first[name].insert(set.begin(), set.end());
+            if (first[name].size() != size)
+                changed = true;
+        }
+    } while (changed);
+}
+
+void Tree::constructFollowSet() {
+    bool hasChanges;
+    bool prevDependedChanged;
+    std::vector<std::vector<std::string>> prev_depend;
+    std::vector<std::vector<std::string>> changed;
+    do {
+        hasChanges = false;
+        prevDependedChanged = false;
+        prev_depend.clear();
+        changed.clear();
+        for (const auto &[name, value] : ast.getTreeMap()) {
+            if (corelib::text::isUpper(name.back())) {
+                continue;
+            }
+            bool is_left_recursive = false;
+            if (value.members.size() > 0 && value.members[0].isName() && name == value.members[0].getName().name) {
+                is_left_recursive = true;
+            }
+            for (auto it = value.members.begin(); it != value.members.end(); it++) {
+                if (!it->isName()) {
+                    continue;
+                }
+                auto current = it->getName();
+
+                if (name == current.name) {
+                    // include first(name)
+                    auto f = first[name];
+                    for (auto &e : f) {
+                        if (e == std::vector<std::string>{"ε"}) {
+                            continue;
+                        }
+                        if (follow[name].insert(e).second)
+                            hasChanges = true;
+                    }
+                    prev_depend.push_back(name);
+                } else if (is_left_recursive && corelib::text::isLower(current.name.back())) {
+                    auto prev_size = follow[current.name].size();
+                    follow[current.name].insert(follow[name].begin(), follow[name].end());
+                    if (prev_size != follow[current.name].size())
+                        hasChanges = true;
+                    prev_depend.push_back(current.name);
+                }
+                if (it + 1 == value.members.end()) {
+                    // Add FOLLOW of LHS (the left-hand-side nonterminal)
+                    auto &f_lhs = follow[name];
+                    for (auto &sym : f_lhs) {
+                        if (follow[current.name].insert(sym).second)
+                            hasChanges = true;
+                    }
+                } else {
+                    auto next = (it + 1);
+                    while (!next->isName() && next != value.members.end()) {
+                        next++;
+                    }
+                    if (next == value.members.end()) {
+                        // Add FOLLOW of LHS (the left-hand-side nonterminal)
+                        auto &f_lhs = follow[name];
+                        for (auto &sym : f_lhs) {
+                            if (follow[current.name].insert(sym).second)
+                                hasChanges = true;
+                        }
+                    } else {
+                        const auto &next_name = next->getName();
+                        if (corelib::text::isUpper(next_name.name.back())) {
+                            // terminal, just push
+                            if (follow[current.name].insert(next_name.name).second)
+                                hasChanges = true;
+                        } else {
+                            // non-terminal, insert it's first
+                            auto f = first[next_name.name];
+                            bool has_epsilon = false;
+                            for (auto &e : f) {
+                                if (e == std::vector<std::string>{"ε"}) {
+                                    has_epsilon = true;
+                                    continue;
+                                }
+                                if (follow[current.name].insert(e).second)
+                                    hasChanges = true;
+                            }
+                            if (has_epsilon) {
+                                // if ε in FIRST(next), add FOLLOW of LHS
+                                auto &f_lhs = follow[name];
+                                for (auto &sym : f_lhs) {
+                                    if (follow[current.name].insert(sym).second)
+                                        hasChanges = true;
+                                }
+                            }
+                            prev_depend.push_back(next_name.name);
+                        }
+                    }
+
+                }
+            }
+            if (hasChanges) {
+                changed.push_back(name);
+            }
+        }
+        if (!hasChanges) {
+            // slight optimization: perform check only if this could be last iteration
+            for (auto change_symbol : changed) {
+                if (std::find(prev_depend.begin(), prev_depend.end(), change_symbol) != prev_depend.end()) {
+                    prevDependedChanged = true;
+                    break;
+                }
+            }
+        }
+    } while(hasChanges || prevDependedChanged);
 }
 Tree::lexer_code Tree::getCodeForLexer() {
     TreeAPI::RuleMemberOp options;

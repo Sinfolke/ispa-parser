@@ -64,13 +64,9 @@ int main(int argc, char** argv) {
         } catch(std::exception& e) {
             throw UError("Failed read file: %s", e.what());
         }
-        // parse 
-        Parser::Lexer lexer(fileContent.c_str());
-        lexer.makeTokens();
-        std::ofstream tokens_file("tokens");
-        lexer.printTokens(tokens_file);
+        // parse
         Parser::Parser parser;
-        auto current_tree = parser.parse(lexer);
+        auto current_tree = parser.parse(fileContent.c_str());
         // assign tree
         modules.push_back(current_tree);
     }
@@ -81,13 +77,8 @@ int main(int argc, char** argv) {
                 printf("file %s\n", file.c_str());
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
-                Parser::Lexer lexer(content.c_str());
-                lexer.makeTokens();
-                for (const auto &err : lexer.getErrors()) {
-                    printf("Lexer error[%zu, %zu]: %s\n", err.line, err.column, err.message.c_str());
-                }
                 Parser::Parser parser;
-                auto current_tree = parser.parse(lexer);
+                auto current_tree = parser.parse(content.c_str());
                 for (const auto &err : parser.getErrors()) {
                     printf("Parser error[%zu, %zu]: %s\n", err.line, err.column, err.message.c_str());
                 }

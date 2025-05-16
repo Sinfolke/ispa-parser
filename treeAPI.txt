@@ -47,11 +47,6 @@ name<{ rule, BIN, }> : Rule {
    Name(AT)
    Group( NoSpace, @  Name(ID))?;
   Data: [RegularDataBlock: CllExpr]
-}name<{ rule, name, }> : Rule {
-  @  String (#)?;
-  @  Name(ID)
-   Group( Name(DOT), @  Name(ID))*;
-  Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<{ cll, loop_while, }> : Rule {
    String (while)
   @  Name(cll::expr)
@@ -141,16 +136,6 @@ name<{ rule, BIN, }> : Rule {
 }name<{ cll, TYPE, }> : Rule {
    Group(@  Op( String (var) |  String (num) |  String (bool) |  String (str) |  Group(@  String (arr), @  Name(cll::TEMPLATE)) |  Group(@  String (obj), @  Name(cll::TEMPLATE))))
   Data: TemplatedDataBlock(type, templ)
-}name<{ rule, group, }> : Rule {
-   String (()
-  @  Name(rule::member)*;
-   String ())
-  Data: [RegularDataBlock: CllExpr]
-}name<{ NAME, }> : Rule {
-   String (name)
-  @  Name(ID)
-   String (;)
-  Data: [RegularDataBlock: CllExpr]
 }name<{ cll, _variable, }> : Rule {
   @  Group( Op( String (++) |  String (--)))?;
   @  Name(ID)
@@ -213,6 +198,11 @@ name<{ rule, BIN, }> : Rule {
 }name<{ BOOLEAN, }> : Rule {
   d Group( Op( String (true) |  String (false)))
   Data: [RegularDataBlock: CllExpr]
+}name<{ rule, name, }> : Rule {
+  @  String (#)?;
+  @  Name(ID)
+   Group( Name(DOT), @  Name(ID))*;
+  Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<{ array, }> : Rule {
    String ([)
    Group( Group(@  Name(cll::expr),  String (,))*;)?;
@@ -223,9 +213,6 @@ name<{ rule, BIN, }> : Rule {
   @  Op( String (mixed) |  String (skipped) |  String (allowed))
    String (;)
   Data: [RegularDataBlock: CllExpr]
-}name<{ SQUARE_BRACE_OPEN, }> : Rule {
-   String ([)
-  Data: EmptyDataBlock
 }name<{ rule, member, }> : Rule {
   @  Group( Op( Name(rule::keyvalue) |  Name(rule::value)))?;
   @  Op( Name(rule::name) |  Name(rule::group) |  Name(rule::CSEQUENCE) |  Name(STRING) |  Name(rule::HEX) |  Name(rule::BIN) |  Name(rule::NOSPACE) |  Name(rule::ESCAPED) |  Name(DOT) |  Name(rule::OP) |  Name(LINEAR_COMMENT) |  Name(cll))
@@ -282,13 +269,6 @@ name<{ rule, BIN, }> : Rule {
 }name<{ DOT, }> : Rule {
    String (.)
   Data: EmptyDataBlock
-}name<{ SQUARE_BRACE_CLOSE, }> : Rule {
-   String (])
-  Data: EmptyDataBlock
-}name<{ _use, unit, }> : Rule {
-  @  Name(ID)
-  @  Name(rvalue)?;
-  Data: TemplatedDataBlock(name, value)
 }name<{ moduleImport, from, }> : Rule {
   @  Op( Name(MULTIPLE) |  Name(moduleImport::from::import_list))
    String (from)
@@ -326,4 +306,18 @@ name<{ rule, BIN, }> : Rule {
    Group( String (,), @  Name(_use::unit))*;
    String (;)
   Data: TemplatedDataBlock(first, second)
+}name<{ _use, unit, }> : Rule {
+  @  Name(ID)
+  @  Name(rvalue)?;
+  Data: TemplatedDataBlock(name, value)
+}name<{ NAME, }> : Rule {
+   String (name)
+  @  Name(ID)
+   String (;)
+  Data: [RegularDataBlock: CllExpr]
+}name<{ rule, group, }> : Rule {
+   String (()
+  @  Name(rule::member)*;
+   String ())
+  Data: [RegularDataBlock: CllExpr]
 }

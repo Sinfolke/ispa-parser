@@ -33,8 +33,6 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::VAR_REFER:
         {
             //cpuf::printf("ON var_refer\n");
-            cpuf::printf("variable. type: %s\n", data.type().name());
-            std::flush(std::cout);
             auto dt = std::any_cast<LLIR::var_refer>(data);
             std::string name = dt.var.name;
             for (const auto &el : dt.var.property_access)
@@ -130,6 +128,10 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     } else if (type == condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*pos";
+    } else if (type == condition_types::TOKEN_NAME) {
+        return std::any_cast<LLIR::variable>(data).name + "->name()";
+    } else if (type == condition_types::TOKEN) {
+        return "Tokens::" + std::any_cast<std::string>(data);
     } else if (type == condition_types::NUMBER) {
         //cpuf::printf("number\n");    
         return std::to_string(std::any_cast<long long>(data));
@@ -367,10 +369,16 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
         out << current_pos_counter.top() << " = " << el;
         break;
     }
+    case types::JUMP:
+        out << "jump " << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_");
+        break;
+    case types::JUMP_FROM_VARIABLE:
+        out << "jump $" << std::any_cast<std::string>(mem.value);
+        break;
     case types::EMPTY:
         return;
     default:
-        throw Error("Undefined IR member\n");
+        throw Error("Undefined IR member: %$\n", (int) mem.type);
     }
     out << '\n';
 }

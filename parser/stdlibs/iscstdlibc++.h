@@ -312,7 +312,7 @@ protected:
     std::size_t __line(const char* pos) const {
         std::size_t count = 1;
         std::size_t escaptions = 0;
-        for (char* in = const_cast<char*>(_in); in < pos; in++) {
+        for (const char* in = _in; in < pos; in++) {
             if (*in == '\n') count++;
         }
         return count;
@@ -347,60 +347,78 @@ public:
         Node<TOKEN_T> current;
         const char* pos = nullptr;
         size_t counter = 0;
-        public:
-            lazy_iterator(Lexer_base<TOKEN_T>& owner, const char* in) : owner(&owner), pos(in) {
-                current = this->owner->makeToken(pos);
-            }
-            lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in) : owner(owner), pos(in) {
-                current = this->owner->makeToken(pos);
-            }
-            lazy_iterator(lazy_iterator &iterator) : owner(iterator.owner), pos(iterator.pos), counter(iterator.counter), current(iterator.current) {}
-            bool isEnd() {
-                return current.empty();
-            }
-            lazy_iterator& operator=(const lazy_iterator& other) {
+
+        void advance() {
+            if (isEnd())
+                return;
+            current = owner->makeToken(pos);
+            if (!current.empty())
+                counter++;
+        }
+
+    public:
+        lazy_iterator(Lexer_base<TOKEN_T>& owner, const char* in)
+            : owner(&owner), pos(in) {
+            current = owner.makeToken(pos);
+            counter = current.empty() ? 0 : 1;
+        }
+
+        lazy_iterator(Lexer_base<TOKEN_T>* owner, const char* in)
+            : owner(owner), pos(in) {
+            current = owner->makeToken(pos);
+            counter = current.empty() ? 0 : 1;
+        }
+
+        lazy_iterator(const lazy_iterator &iterator)
+            : owner(iterator.owner), pos(iterator.pos), counter(iterator.counter), current(iterator.current) {}
+
+        bool isEnd() const {
+            return current.empty();
+        }
+
+        lazy_iterator& operator=(const lazy_iterator& other) {
+            if (this != &other) {
                 owner = other.owner;
                 pos = other.pos;
-                return *this;
-            }  
-            void operator+=(size_t count) {
-                counter += count;
-                while(count > 0 && !isEnd()) {
-                    current = owner->makeToken(pos);
-                    count--;
-                }
+                current = other.current;
+                counter = other.counter;
             }
-            auto operator-(const lazy_iterator &iterator) const {
-                return counter - iterator.counter;
-            }
+            return *this;
+        }
 
-            lazy_iterator& operator++() {
-                this->operator+=(1);
-                return *this;
-            }
-            lazy_iterator operator++(int) {
-                auto temp = *this;
-                this->operator+=(1);
-                return temp;
-            }
-            size_t operator-(lazy_iterator iterator) {
-                return pos - iterator.pos;
-            }
-            lazy_iterator operator+(size_t count) const {
-                lazy_iterator temp = *this;
-                temp += count;
-                return temp;
-            }
-            const Node<TOKEN_T>& operator*() const {
-                return current;
-            }
-            const Node<TOKEN_T>* operator->() const {
-                return &current;
-            }
-            auto distance() const {
-                return counter;
-            }
+        lazy_iterator& operator++() {
+            advance();
+            return *this;
+        }
+
+        lazy_iterator operator++(int) {
+            auto temp = *this;
+            advance();
+            return temp;
+        }
+
+        void operator+=(size_t count) {
+            while (count-- > 0 && !isEnd())
+                advance();
+        }
+
+        ptrdiff_t operator-(const lazy_iterator &iterator) const {
+            return static_cast<ptrdiff_t>(counter) - static_cast<ptrdiff_t>(iterator.counter);
+        }
+
+        const Node<TOKEN_T>& operator*() const {
+            return current;
+        }
+
+        const Node<TOKEN_T>* operator->() const {
+            return &current;
+        }
+
+        size_t distance() const {
+            return counter;
+        }
     };
+
     /**
      * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
      * If you need to iterate through tokens after parsing, first accumulate tokens, then run parsing.
