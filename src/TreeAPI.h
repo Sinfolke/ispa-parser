@@ -9,8 +9,6 @@
 #include <logging.h>
 #include <hash.h>
 
-#include "TreeAPI.h"
-
 namespace TreeAPI {
     // forward declarations
     struct CllType;

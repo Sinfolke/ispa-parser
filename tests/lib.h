@@ -1,7 +1,5 @@
 #include <vector>
 #include <fstream>
-#include <sstream>
-#include <stdexcept>
 #include <algorithm>
 void putCmd(std::vector<std::string> cmd) {
     std::string res = ""; 

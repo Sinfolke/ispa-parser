@@ -5,7 +5,7 @@
 #include <corelib.h>
 #include <cpuf/printf.h>
 #include <list>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 AST& Tree::getRawAst() {
     return ast;
 }
@@ -568,11 +568,11 @@ Tree::lexer_code Tree::getCodeForLexer() {
     sortByPriority(options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
-    LLIR code(*this, resultRule, true);
+    LLIR_old code(*this, resultRule, true);
     const auto &success_var = code.getSuccessVars();
     code.pop(); // remove space skip
-    code.push_begin({LLIR::types::TOKEN});
-    code.push({LLIR::types::RULE_END});
+    code.push_begin({LLIR_old::types::TOKEN});
+    code.push({LLIR_old::types::RULE_END});
     if (success_var.empty())
         throw Error("Empty success var\n");
     return {code, success_var[0].var};

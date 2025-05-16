@@ -14,7 +14,7 @@ public:
         std::any value;
     };
     struct condition {
-        std::vector<LLIR::expr> cond;
+        std::vector<LLIR_old::expr> cond;
         std::vector<Instruction> block;
         std::vector<Instruction> else_block;
     };
@@ -36,7 +36,7 @@ private:
 
     // duirng lower to LLIR variables
     size_t variable_count;
-    LLIR::variable panic_mode_variable;
+    LLIR_old::variable panic_mode_variable;
 
     bool isFirst;
     auto panic_mode() -> Instructions;
@@ -52,9 +52,9 @@ public:
     auto end() -> Instructions::const_iterator;
 
     // lower to LLIR functions
-    auto lowerIIFPart(const iif_condition_part &part) -> LLIR::expr;
-    auto lowerIIF(const std::vector<iif_condition_part> &condition) -> std::vector<LLIR::expr>;
-    auto lowerToLLIRMember(const Instruction &member) -> std::vector<LLIR::member>;
-    auto lowerToLLIRMembers(const Instructions &members) -> std::vector<LLIR::member>;
-    auto lowerToLLIR(size_t &variable_count) -> std::vector<LLIR::member>;
+    auto lowerIIFPart(const iif_condition_part &part) -> LLIR_old::expr;
+    auto lowerIIF(const std::vector<iif_condition_part> &condition) -> std::vector<LLIR_old::expr>;
+    auto lowerToLLIRMember(const Instruction &member) -> std::vector<LLIR_old::member>;
+    auto lowerToLLIRMembers(const Instructions &members) -> std::vector<LLIR_old::member>;
+    auto lowerToLLIR(size_t &variable_count) -> std::vector<LLIR_old::member>;
 };

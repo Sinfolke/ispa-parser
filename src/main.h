@@ -31,7 +31,7 @@
 #include <../parser/Parser.h>
 #include <TreeAPI.h>
 #include <AST.h>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 #include <LRParser.h>
 #include <LALRParser.h>
 #include <ELRParser.h>

@@ -1,5 +1,17 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ISPA LANGUAGES CXX)
+# =============================================
+# FUNCTIONS
+# =============================================
+function(get_file_range output_var)
+    set(result "")
+    foreach(path IN LISTS ARGN)
+        file(GLOB_RECURSE temp CONFIGURE_DEPENDS ${path})
+        list(APPEND result ${temp})
+    endforeach()
+    set(${output_var} ${result} PARENT_SCOPE)
+endfunction()
+
 
 # =============================================
 # Global Configuration
@@ -8,11 +20,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
-
 # =============================================
 # Project Structure
 # =============================================
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/parser)
 set(INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -45,17 +57,6 @@ if(NOT DISABLE_TRACER)
     endif()
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_definitions(__LIBC)
-    include_directories(
-            /usr/lib/gcc/x86_64-linux-gnu/14/include
-            /usr/lib/gcc/x86_64-linux-gnu/13/include
-            /usr/lib/gcc/x86_64-linux-gnu/12/include
-            /usr/lib/gcc/x86_64-linux-gnu/11/include
-            /usr/lib/gcc/x86_64-linux-gnu/10/include
-    )
-endif()
-
 # =============================================
 # Project Definitions
 # =============================================
@@ -68,16 +69,25 @@ add_compile_definitions(
 # =============================================
 # Main Executable
 # =============================================
-file(GLOB_RECURSE SOURCES
+set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "TRUE") # required for modules
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP "TRUE")    # enables BMI dependencies
+
+add_executable(ispa)
+#target_compile_options(ispa PRIVATE -fmodules)
+get_file_range(ISPA_SOURCES
+        ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
 )
-
-add_executable(ispa ${SOURCES})
-target_precompile_headers(ispa PRIVATE
-        parser/Parser.h
-        src/TreeAPI.h
-        src/IR/LLIR.h
+get_file_range(ISPA_MODULE_INTERFACES
+        ${SRC_DIR}/*.cppm
+)
+target_sources(ispa PRIVATE ${ISPA_SOURCES})
+target_sources(ispa
+        PRIVATE
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${ISPA_MODULE_INTERFACES}
 )
 
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
@@ -86,13 +96,9 @@ set_target_properties(ispa PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
+        HEADER_FILE_ONLY FALSE
+        SKIP_PRECOMPILE_HEADERS TRUE
 )
-
-# =============================================
-# Parser Library
-# =============================================
-add_library(parser STATIC parser/Parser.cpp)
-target_include_directories(parser PUBLIC ${INCLUDE_DIRS})
 
 # =============================================
 # Converter Configuration
@@ -113,7 +119,6 @@ add_library(ispa-converter-cpp SHARED
 
 target_link_libraries(ispa-converter-cpp PRIVATE
         ispa-converter
-        parser
 )
 target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
 
@@ -121,8 +126,7 @@ target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
 # Link Dependencies
 # =============================================
 target_link_libraries(ispa PRIVATE
-        parser
-        ispa-converter-cpp
+    ispa-converter-cpp
 )
 
 if(NOT DISABLE_TRACER)
@@ -132,14 +136,14 @@ endif()
 # =============================================
 # Testing Configuration
 # =============================================
-add_library(tests INTERFACE)
-target_compile_definitions(tests INTERFACE
-        __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests"
-)
-target_include_directories(tests INTERFACE
-        parser/include
-        parser/stdlibs/old
-)
+#add_library(tests INTERFACE)
+#target_compile_definitions(tests INTERFACE
+#        __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests"
+#)
+#target_include_directories(tests INTERFACE
+#        parser/include
+#        parser/stdlibs/old
+#)
 
 # Uncomment and modify as needed for test executables
 # function(add_ispa_test test_name)

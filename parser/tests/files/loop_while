@@ -1,3 +1,0 @@
-while (skipup(' ') > spaces_amount) {
-        Rule.rule
-    }

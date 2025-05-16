@@ -145,9 +145,9 @@ int main(int argc, char** argv) {
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, tree));
         converter->output(output_path);
     } else if (algorithm == "LL") {
-        LLIR ir(tree);
+        LLIR_old ir(tree);
         ir.outputIRToFile("output_ir.txt");
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR&, Tree&>("getLLConverter");
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR_old&, Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
         converter->outputIR(output_path);
     } else {

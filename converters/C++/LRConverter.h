@@ -5,7 +5,7 @@
 #include <vector>
 #include <any>
 #include <unordered_map>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 #include <tree.h>
 #include <corelib.h>
 #include <stack>

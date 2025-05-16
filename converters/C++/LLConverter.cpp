@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <iomanip>
 #include <stack>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 #include <logging.h>
 #include <LLConverter.h>
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
@@ -68,21 +68,21 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     close_parser_header(out);
     close_library(out, namespace_name);
 }
-void LLConverter::convertVariable(LLIR::variable var, std::ostringstream &out) {
+void LLConverter::convertVariable(LLIR_old::variable var, std::ostringstream &out) {
     out << convert_var_type(var.type.type, var.type.templ) << " " << var.name;
-    if (var.value.kind != LLIR::var_assign_values::NONE)
+    if (var.value.kind != LLIR_old::var_assign_values::NONE)
         out << " = " << convertAssign(var.value);
     out << ';';
 }
 
-void LLConverter::convertBlock(std::vector<LLIR::member> block, std::ostringstream &out) {
+void LLConverter::convertBlock(std::vector<LLIR_old::member> block, std::ostringstream &out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void LLConverter::convertCondition(LLIR::condition cond, std::ostringstream &out) {
+void LLConverter::convertCondition(LLIR_old::condition cond, std::ostringstream &out) {
     out << convertExpression(cond.expression, true);
     convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
@@ -92,87 +92,87 @@ void LLConverter::convertCondition(LLIR::condition cond, std::ostringstream &out
 }
 
 
-void LLConverter::convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out) {
+void LLConverter::convertAssignVariable(LLIR_old::variable_assign var, std::ostringstream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
-void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out) {
-    if (cpp_file && (!isToken || mem.type == LLIR::types::RULE) && mem.type != LLIR::types::TOKEN) {
+void LLConverter::convertMember(const LLIR_old::member& mem, std::ostringstream &out) {
+    if (cpp_file && (!isToken || mem.type == LLIR_old::types::RULE) && mem.type != LLIR_old::types::TOKEN) {
         isToken = false;
         return;
     }
-    if (mem.type == LLIR::types::EMPTY)
+    if (mem.type == LLIR_old::types::EMPTY)
         return;
-    if (mem.type != LLIR::types::RULE_END)
+    if (mem.type != LLIR_old::types::RULE_END)
         out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
 
-    case LLIR::types::VARIABLE:
-        convertVariable(std::any_cast<LLIR::variable>(mem.value), out);
+    case LLIR_old::types::VARIABLE:
+        convertVariable(std::any_cast<LLIR_old::variable>(mem.value), out);
         break;
-    case LLIR::types::METHOD_CALL:
-        out << convertMethodCall(std::any_cast<LLIR::method_call>(mem.value));
+    case LLIR_old::types::METHOD_CALL:
+        out << convertMethodCall(std::any_cast<LLIR_old::method_call>(mem.value));
         break;
-    case LLIR::types::IF:
+    case LLIR_old::types::IF:
         out << "if ";
-        convertCondition(std::any_cast<LLIR::condition>(mem.value), out);
+        convertCondition(std::any_cast<LLIR_old::condition>(mem.value), out);
         break;
-    case LLIR::types::WHILE:
+    case LLIR_old::types::WHILE:
         out << "while ";
-        convertCondition(std::any_cast<LLIR::condition>(mem.value), out);
+        convertCondition(std::any_cast<LLIR_old::condition>(mem.value), out);
         break;
-    case LLIR::types::DOWHILE:
+    case LLIR_old::types::DOWHILE:
     {
         out << "do\n";
-        convertBlock(std::any_cast<LLIR::condition>(mem.value).block, out);
+        convertBlock(std::any_cast<LLIR_old::condition>(mem.value).block, out);
         out << '\n' << std::string(indentLevel, '\t') << "while";
-        auto expr = convertExpression(std::any_cast<LLIR::condition>(mem.value).expression, true);
+        auto expr = convertExpression(std::any_cast<LLIR_old::condition>(mem.value).expression, true);
         expr.back() = ';';
         out << expr;
         break;
     }
-    case LLIR::types::INCREASE_POS_COUNTER:
+    case LLIR_old::types::INCREASE_POS_COUNTER:
         out << current_pos_counter.top() << " += " + std::to_string(pos_counter_stack.top() + 1);
         pos_counter_stack.pop();
         break;
-    case LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+    case LLIR_old::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
         out << current_pos_counter.top() << " += " + var + ".node.length()";
         break;
     }
-    case LLIR::types::RESET_POS_COUNTER:
+    case LLIR_old::types::RESET_POS_COUNTER:
         pos_counter_stack.pop();
         break;
-    case LLIR::types::ACCESSOR:
+    case LLIR_old::types::ACCESSOR:
         throw Error("Accessor cannot be here\n");
-    case LLIR::types::ASSIGN_VARIABLE:
-        convertAssignVariable(std::any_cast<LLIR::variable_assign>(mem.value), out);
+    case LLIR_old::types::ASSIGN_VARIABLE:
+        convertAssignVariable(std::any_cast<LLIR_old::variable_assign>(mem.value), out);
         break;
-    case LLIR::types::BREAK_LOOP:
+    case LLIR_old::types::BREAK_LOOP:
         out << "break";
         break;
-    case LLIR::types::CONTINUE_LOOP:
+    case LLIR_old::types::CONTINUE_LOOP:
         out << "continue";
         break;
-    case LLIR::types::EXIT:
+    case LLIR_old::types::EXIT:
         out << "return {};";
         break;
-    case LLIR::types::ERR:
+    case LLIR_old::types::ERR:
         out << "reportError(pos, \"";
         for (auto &c : std::any_cast<std::string>(mem.value)) {
             out << corelib::text::getCharFromEscapedAsStr(c, true);
         }
         out << "\");";
         break;
-    case LLIR::types::SKIP_SPACES:
+    case LLIR_old::types::SKIP_SPACES:
         out << "skip_spaces(" << current_pos_counter.top() << ")";
         break;
-    case LLIR::types::PUSH_POS_COUNTER: {
+    case LLIR_old::types::PUSH_POS_COUNTER: {
         out << "auto " << std::any_cast<std::string>(mem.value) << " = " << current_pos_counter.top();
         current_pos_counter.push(std::any_cast<std::string>(mem.value));
         break;
     }
-    case LLIR::types::POP_POS_COUNTER: {
+    case LLIR_old::types::POP_POS_COUNTER: {
         auto el = current_pos_counter.top();
         current_pos_counter.pop();
         out << current_pos_counter.top() << " = " << el;
@@ -188,11 +188,11 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
     add_semicolon = true;
 }
 
-void LLConverter::convertMembers(const std::vector<LLIR::member> &members, std::ostringstream &out) {
+void LLConverter::convertMembers(const std::vector<LLIR_old::member> &members, std::ostringstream &out) {
     for (auto mem : members)
         convertMember(mem, out);
 }
-void LLConverter::convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out) {
+void LLConverter::convertLexerCode(const std::vector<LLIR_old::member> &members, std::ostringstream &out) {
     isToken = true;
     if (!members.empty()) {
         for (auto it = members.begin() + 1; it != members.end() - 1; it++) {
@@ -416,7 +416,7 @@ void LLConverter::addStandardFunctionsParser(std::ostringstream &out) {
     addGetRuleFunction(out);
     addparseFromFunctions(out);
 }
-void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules) {
+void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR_old::DataBlockList &datablocks_tokens, const LLIR_old::DataBlockList &datablocks_rules) {
     for (const auto &[fullname, dtb] : datablocks_tokens) {
         if (dtb.empty())
             continue;
@@ -453,7 +453,7 @@ void LLConverter::addLexerCode_Header(std::ostringstream &out) {
     out << "\n" << namespace_name << "::Token " << namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
     indentLevel++;
 }
-void LLConverter::addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var) {
+void LLConverter::addLexerCode_Bottom(std::ostringstream &out, LLIR_old::variable var) {
     out << "\treturn " << var.name << ";\n";
     out << "}\n";
     indentLevel--;
@@ -473,7 +473,7 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR& ir, Tree& tree) {
+extern "C" LLConverter_base* getLLConverter(LLIR_old& ir, Tree& tree) {
     return new LLConverter(ir, tree);
 }
 

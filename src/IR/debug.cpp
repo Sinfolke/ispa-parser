@@ -7,9 +7,9 @@
 #include <unordered_map>
 #include <iomanip>
 #include <stack>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 #include <corelib.h>
-std::string LLIR::convert_var_type(var_types type) {
+std::string LLIR_old::convert_var_type(var_types type) {
     static const std::unordered_map<var_types, std::string> typesMap = {
         {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},
         {var_types::ARRAY, "array"}, {var_types::OBJECT, "object"}, {var_types::FUNCTION, "function"},
@@ -25,7 +25,7 @@ std::string LLIR::convert_var_type(var_types type) {
 }
 
 
-std::string LLIR::convert_var_assing_values(var_assign_values value, std::any data) {
+std::string LLIR_old::convert_var_assing_values(var_assign_values value, std::any data) {
     switch (value) {
         case var_assign_values::STRING:
             //cpuf::printf("on String\n");
@@ -33,7 +33,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::VAR_REFER:
         {
             //cpuf::printf("ON var_refer\n");
-            auto dt = std::any_cast<LLIR::var_refer>(data);
+            auto dt = std::any_cast<LLIR_old::var_refer>(data);
             std::string name = dt.var.name;
             for (const auto &el : dt.var.property_access)
                 name += "." + el;
@@ -58,7 +58,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
-            auto arr = std::any_cast<LLIR::array>(data);
+            auto arr = std::any_cast<LLIR_old::array>(data);
             std::string res = "[";
             for (auto &el : arr) {
                 res += convertExpression(el, false);
@@ -70,7 +70,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         case var_assign_values::OBJECT:
         {
             //cpuf::printf("on object\n");
-            auto obj = std::any_cast<LLIR::object>(data);
+            auto obj = std::any_cast<LLIR_old::object>(data);
             std::string res = "{";
             for (const auto &[key, value] : obj) {
                 res += key;
@@ -85,7 +85,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
             return convertFunctionCall(std::any_cast<function_call>(data));
         case var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<LLIR::expr>>(data), false);
+            return convertExpression(std::any_cast<std::vector<LLIR_old::expr>>(data), false);
         case var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -108,7 +108,7 @@ std::string LLIR::convert_var_assing_values(var_assign_values value, std::any da
         default: return "NONE"; // Handle unknown values
     }
 }
-std::string LLIR::convert_var_assing_types(var_assign_types type) {
+std::string LLIR_old::convert_var_assing_types(var_assign_types type) {
     switch (type) {
         case var_assign_types::ASSIGN:    return "=";
         case var_assign_types::ADD:       return "+=";
@@ -119,7 +119,7 @@ std::string LLIR::convert_var_assing_types(var_assign_types type) {
         default: return "="; // Handle unknown values
     }
 }
-std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
+std::string LLIR_old::conditionTypesToString(condition_types type, std::any data) {
     if (type == condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         return std::string("'") + std::any_cast<char>(data) + std::string("'");
@@ -129,7 +129,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
         //cpuf::printf("current_character\n");
         return "*pos";
     } else if (type == condition_types::TOKEN_NAME) {
-        return std::any_cast<LLIR::variable>(data).name + "->name()";
+        return std::any_cast<LLIR_old::variable>(data).name + "->name()";
     } else if (type == condition_types::TOKEN) {
         return "Tokens::" + std::any_cast<std::string>(data);
     } else if (type == condition_types::NUMBER) {
@@ -140,14 +140,14 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
         return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
     } else if (type == condition_types::STRNCMP) {
         //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<LLIR::strncmp>(data);
+        auto dt = std::any_cast<LLIR_old::strncmp>(data);
         if (dt.is_string) {
             return std::string("!STRNCMP(pos, \"") + dt.value.name + std::string("\")");
         } else {
             return std::string("!STRNCMP(pos, ") + dt.value.name + std::string(")");
         }
     } else if (type == condition_types::VARIABLE) {
-        auto dt = std::any_cast<LLIR::var_refer>(data);
+        auto dt = std::any_cast<LLIR_old::var_refer>(data);
         std::string name = dt.var.name;
         for (const auto &el : dt.var.property_access)
             name += "." + el;
@@ -179,11 +179,11 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
         return convert_var_assing_values(dt.kind, dt.data);
     } else if (type == condition_types::METHOD_CALL) {
         return convertMethodCall(std::any_cast<method_call>(data));
-    } else if (type == LLIR::condition_types::FUNCTION_CALL) {
+    } else if (type == LLIR_old::condition_types::FUNCTION_CALL) {
         return convertFunctionCall( std::any_cast<function_call>(data));
-    } else if (type == LLIR::condition_types::CURRENT_TOKEN) {
+    } else if (type == LLIR_old::condition_types::CURRENT_TOKEN) {
         if (data.has_value()) {
-            auto dt = std::any_cast<LLIR::current_token>(data);
+            auto dt = std::any_cast<LLIR_old::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any());
             return "CURRENT_TOKEN " + op + " " + dt.name;
         } else {
@@ -205,7 +205,7 @@ std::string LLIR::conditionTypesToString(condition_types type, std::any data) {
     };
     return condTypesMap.at(type);
 }
-std::string LLIR::convertFunctionCall(function_call call) {
+std::string LLIR_old::convertFunctionCall(function_call call) {
     std::string res = call.name + "(";
     for (auto param : call.params) {
         res += convertExpression(param, false);
@@ -213,26 +213,26 @@ std::string LLIR::convertFunctionCall(function_call call) {
     res += ')';
     return res;
 }
-std::string LLIR::convertAssign(assign asgn) {
+std::string LLIR_old::convertAssign(assign asgn) {
     if (asgn.kind == var_assign_values::FUNCTION_CALL)
         return convertFunctionCall(std::any_cast<function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
 }
-void LLIR::convertVariable(variable var, std::ostream& out) {
+void LLIR_old::convertVariable(variable var, std::ostream& out) {
     out << convert_var_type(var.type.type) << " " << var.name << " = " << convertAssign(var.value);
 }
 
-std::string LLIR::convertExpression(std::vector<expr> expression, bool with_braces) {
+std::string LLIR_old::convertExpression(std::vector<expr> expression, bool with_braces) {
     std::string result;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
         expr current = expression[i];
         if (
-            current.id == LLIR::condition_types::AND || 
-            current.id == LLIR::condition_types::OR || 
-            current.id == LLIR::condition_types::EQUAL ||
-            current.id == LLIR::condition_types::NOT_EQUAL
+            current.id == LLIR_old::condition_types::AND ||
+            current.id == LLIR_old::condition_types::OR ||
+            current.id == LLIR_old::condition_types::EQUAL ||
+            current.id == LLIR_old::condition_types::NOT_EQUAL
             ) {
             result += ' ';
             result += conditionTypesToString(current.id, current.value);
@@ -245,14 +245,14 @@ std::string LLIR::convertExpression(std::vector<expr> expression, bool with_brac
         result += ")\n";
     return result;
 }
-void LLIR::convertBlock(std::vector<LLIR::member> block, std::ostream& out) {
+void LLIR_old::convertBlock(std::vector<LLIR_old::member> block, std::ostream& out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
     indentLevel--;
     out << std::string(indentLevel, '\t') << "}";
 }
-void LLIR::convertCondition(condition cond, std::ostream& out) {
+void LLIR_old::convertCondition(condition cond, std::ostream& out) {
     out << convertExpression(cond.expression, true);
     convertBlock(cond.block, out);
     if (!cond.else_block.empty()) {
@@ -262,11 +262,11 @@ void LLIR::convertCondition(condition cond, std::ostream& out) {
 }
 
 
-void LLIR::convertAssignVariable(variable_assign var, std::ostream &out) {
+void LLIR_old::convertAssignVariable(variable_assign var, std::ostream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 
-std::string LLIR::convertMethodCall(method_call method) {
+std::string LLIR_old::convertMethodCall(method_call method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
@@ -276,7 +276,7 @@ std::string LLIR::convertMethodCall(method_call method) {
     return res;
 }
 
-std::string LLIR::convertDataBlock(const DataBlock &dtb) {
+std::string LLIR_old::convertDataBlock(const DataBlock &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "data = ";
@@ -303,7 +303,7 @@ std::string LLIR::convertDataBlock(const DataBlock &dtb) {
     return res;
 }
 
-void LLIR::convertMember(const member& mem, std::ostream& out) {
+void LLIR_old::convertMember(const member& mem, std::ostream& out) {
     out << std::string(indentLevel, '\t');
     switch (mem.type)
     {
@@ -330,12 +330,12 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
     case types::INCREASE_POS_COUNTER:
         out << current_pos_counter.top() << "++";
         break;
-    case LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
+    case LLIR_old::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH: {
         auto var = std::any_cast<std::string>(mem.value);
         out << current_pos_counter.top() << " += " << var << ".token.length()";
         break;
     }
-    case LLIR::types::RESET_POS_COUNTER:
+    case LLIR_old::types::RESET_POS_COUNTER:
         break;
     case types::ASSIGN_VARIABLE:
         convertAssignVariable(std::any_cast<variable_assign>(mem.value), out);
@@ -383,11 +383,11 @@ void LLIR::convertMember(const member& mem, std::ostream& out) {
     out << '\n';
 }
 
-void LLIR::convertMembers(const std::vector<member> &members, std::ostream& out) {
+void LLIR_old::convertMembers(const std::vector<member> &members, std::ostream& out) {
     for (const auto &mem : members)
         convertMember(mem, out);
 }
-void LLIR::convertData(const LLIR::Data &data, std::ostream& out) {
+void LLIR_old::convertData(const LLIR_old::Data &data, std::ostream& out) {
     if (corelib::text::isUpper(data.name.back())) {
         // token
         out << "Rule(" << corelib::text::join(data.name, "_") << ") {";
@@ -404,13 +404,13 @@ void LLIR::convertData(const LLIR::Data &data, std::ostream& out) {
     indentLevel--;
     out << "}\n";
 }
-void LLIR::printIR(std::ostream& out) {
+void LLIR_old::printIR(std::ostream& out) {
     current_pos_counter.push("pos");
     for (const auto &d : data)
         convertData(d, out);
 }
 
-void LLIR::outputIRToFile(std::string filename) {
+void LLIR_old::outputIRToFile(std::string filename) {
     int identLevel = 0;
     std::ofstream file(filename);
     if (file.is_open()) {
@@ -421,7 +421,7 @@ void LLIR::outputIRToFile(std::string filename) {
     }
 }
 
-void LLIR::outputIRToConsole() {
+void LLIR_old::outputIRToConsole() {
     int identLevel = 0;
     printIR(std::cout);
 }

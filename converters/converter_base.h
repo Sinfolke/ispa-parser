@@ -1,20 +1,20 @@
 #pragma once
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 #include <LRParser.h>
 #include <tree.h>
 class LLConverter_base {
     protected:
         // data
-        std::vector<LLIR::Data> data;
+        std::vector<LLIR_old::Data> data;
         std::vector<std::vector<std::string>> tokens;
         std::vector<std::vector<std::string>> rules;
-        LLIR::DataBlockList data_block_tokens;
-        LLIR::DataBlockList data_block_rules;        
-        LLIR lexer_code;
-        LLIR::variable lexer_code_access_var;
+        LLIR_old::DataBlockList data_block_tokens;
+        LLIR_old::DataBlockList data_block_rules;        
+        LLIR_old lexer_code;
+        LLIR_old::variable lexer_code_access_var;
         Tree* tree;
     public:
-        LLConverter_base(LLIR &ir, Tree &tree, const LLIR *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
+        LLConverter_base(LLIR_old &ir, Tree &tree, const LLIR_old *custom_lexer_code = nullptr, const LLIR_old::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -44,8 +44,8 @@ class LRConverter_base {
     protected:
         // data
         const LRParser* data;        
-        LLIR lexer_code;
-        LLIR::variable success_var;
+        LLIR_old lexer_code;
+        LLIR_old::variable success_var;
         Tree* tree;
     public:
         LRConverter_base(const LRParser &data, Tree &tree) : lexer_code(tree), data(&data), tree(&tree) {

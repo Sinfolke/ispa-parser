@@ -1,7 +1,7 @@
 #pragma once
 #include <corelib.h>
 #include <AST.h>
-#include <IR/LLIR.h>
+#include <IR/LLIR_old.h>
 class Tree {
     public:
         struct Conflict {
@@ -11,8 +11,8 @@ class Tree {
             std::vector<Parser::Rule>::iterator rhs_it;
         };
         struct lexer_code {
-            LLIR code;
-            LLIR::variable success_var;
+            LLIR_old code;
+            LLIR_old::variable success_var;
         };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
