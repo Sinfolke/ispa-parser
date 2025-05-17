@@ -1,6 +1,24 @@
-#include <main.h>
+#include <fmt/printf.h>
+#include <fmt/format.h>
+#include <cpuf/color.h>
+#include <cpuf/dlib.h>
+#include <unordered_map>
+#include <vector>
+#include <Parser.h>
+#include <IR/LLIR_old.h>
+import init;
+import args;
+import corelib;
+import logging;
+import AST;
+import ASTPass;
+import LRParser;
+import ELRParser;
+import LALRParser;
+class LLConverter_base;
+class LRConverter_base;
 void printHelp() {
-    cpuf::printf(R"(
+    fmt::printf(R"(
 usage: 
     [parameters] [individual files]
     -help show this help message
@@ -8,12 +26,12 @@ usage:
     --dir specify the directories where to locate sources
     --lang specify target language to generate to. Use --help-lang to see all languages
     )", color::yellow, color::reset);
-    cpuf::printf("\n");
+    fmt::printf("\n");
 }
-std::forward_list<const char*> parameters_required {
+std::vector<const char*> parameters_required {
     "lang"
 };
-std::forward_list<const char*> parameters_with_arguments {
+std::vector<const char*> parameters_with_arguments {
     "lang", "a"
 };
 std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
@@ -37,7 +55,7 @@ int main(int argc, char** argv) {
         return 0;
     }
     if (args.has("version")) {
-        cpuf::printf("%$\n", PROGRAM_VERSION);
+        fmt::printf("%$\n", PROGRAM_VERSION);
         return 0;
     }
     // throw error if required argument missing or not having parameters
@@ -57,7 +75,7 @@ int main(int argc, char** argv) {
     if (!args.unnamed().size() && !args.has("dir"))
         throw UError("No input files");
     for (const auto file : args.unnamed()) {
-        cpuf::printf("file: %$\n", file);
+        fmt::printf("file: %$\n", file);
         std::string fileContent;
         try {
             fileContent = corelib::file::readFile(std::string(file));
@@ -99,7 +117,7 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
-    Tree tree(ast);
+    ASTPass tree(ast);
 
     //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
@@ -121,7 +139,7 @@ int main(int argc, char** argv) {
         LRIR.printCanonicalCollection("canonical_collection.txt");
         // LRIR.printFirstSet("first_set.txt");
         // LRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
         converter->output(output_path);
     } else if (algorithm == "LALR") {
@@ -130,7 +148,7 @@ int main(int argc, char** argv) {
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
         // LALRIR.printFirstSet("first_set.txt");
         // LALRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
         converter->output(output_path);
     } else if (algorithm == "ELR") {
@@ -141,13 +159,13 @@ int main(int argc, char** argv) {
         ELRIR.printFollowSet("follow_set.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, Tree&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, tree));
         converter->output(output_path);
     } else if (algorithm == "LL") {
         LLIR_old ir(tree);
         ir.outputIRToFile("output_ir.txt");
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR_old&, Tree&>("getLLConverter");
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR_old&, ASTPass&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
         converter->outputIR(output_path);
     } else {

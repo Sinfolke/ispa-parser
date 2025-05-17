@@ -1,10 +1,11 @@
-#pragma once
-#include <TreeAPI.h>
+module;
 #include <Parser.h>
+export module AST;
+import TreeAPI;
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */
-class AST {
+export class AST {
     public:        
         enum class SpacemodeStates {
             MIXED, MANUAL, SKIPPED 

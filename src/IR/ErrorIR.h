@@ -1,6 +1,6 @@
 #pragma once
-#include <TreeAPI.h>
-#include <tree.h>
+#include <TreeAPI.cppm>
+#include <ASTPass.cppm>
 class ErrorIR {
 public:
     enum class InstructionType {
@@ -32,7 +32,7 @@ private:
     Instructions instructions;
     const TreeAPI::RuleMember *member;
     std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> follow;
-    Tree *tree;
+    ASTPass *tree;
 
     // duirng lower to LLIR variables
     size_t variable_count;
@@ -43,7 +43,7 @@ private:
     void lower();
 public:
     // construct an error element based on tree value
-    ErrorIR(Tree *tree, const TreeAPI::RuleMember &member, const std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> &follow, bool isFirst)
+    ErrorIR(ASTPass *tree, const TreeAPI::RuleMember &member, const std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> &follow, bool isFirst)
     : tree(tree), member(&member), follow(follow), isFirst(isFirst) { lower(); }
     // todo add constructor for custom error messages
 

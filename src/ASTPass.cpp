@@ -1,21 +1,22 @@
+module;
 #include <sstream>
 #include <algorithm>
-#include <queue>
-#include <tree.h>
-#include <corelib.h>
 #include <cpuf/printf.h>
-#include <list>
-#include <IR/LLIR_old.h>
-AST& Tree::getRawAst() {
+module ASTPass;
+import corelib;
+import LLIR;
+import AST;
+import TreeAPI;
+AST& ASTPass::getRawAst() {
     return ast;
 }
-auto Tree::getFirstSet() -> First & {
+auto ASTPass::getFirstSet() -> First & {
     return first;
 }
-auto Tree::getFollowSet() -> Follow & {
+auto ASTPass::getFollowSet() -> Follow & {
     return follow;
 }
-void Tree::removeEmptyRule() {
+void ASTPass::removeEmptyRule() {
     auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
@@ -29,7 +30,7 @@ void Tree::removeEmptyRule() {
 // void Tree::removeUnusedRule() {
 //
 // }
-void Tree::inlineSingleGroups() {
+void ASTPass::inlineSingleGroups() {
     for (auto &[name, value] : ast.getTreeMap()) {
         for (auto &member : value.members) {
             if (member.isGroup()) {
@@ -44,7 +45,7 @@ void Tree::inlineSingleGroups() {
         }
     }
 }
-void Tree::literalsToToken(
+void ASTPass::literalsToToken(
     std::vector<TreeAPI::RuleMember> &literals,
     size_t &count,
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> &toInsert,
@@ -89,7 +90,7 @@ void Tree::literalsToToken(
         }
     }
 }
-void Tree::literalsToToken() {
+void ASTPass::literalsToToken() {
     size_t count = 0;
     std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
@@ -103,20 +104,20 @@ void Tree::literalsToToken() {
         treeMap[name] = newRule;
     }
 }
-bool Tree::prioritySort(const TreeAPI::String &first, const TreeAPI::String &second) {
+bool ASTPass::prioritySort(const TreeAPI::String &first, const TreeAPI::String &second) {
     if (first.value.size() != second.value.size())
         return first.value.size() > second.value.size();
     return first.value > second.value;
 }
-bool Tree::prioritySort(const TreeAPI::RuleMemberBin &first, const TreeAPI::RuleMemberBin &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberBin &first, const TreeAPI::RuleMemberBin &second) {
     return first.bin_chars.size() > second.bin_chars.size();
 }
 
-bool Tree::prioritySort(const TreeAPI::RuleMemberHex &first, const TreeAPI::RuleMemberHex &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberHex &first, const TreeAPI::RuleMemberHex &second) {
     return first.hex_chars.size() > second.hex_chars.size();
 }
 
-bool Tree::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second) {
     auto &treeMap = ast.getTreeMap();
     const auto first_data = treeMap.find(first.name);
     const auto second_data = treeMap.find(second.name);
@@ -135,7 +136,7 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::Rul
     return first_rules.size() > second_rules.size();
 }
 
-bool Tree::prioritySort(const TreeAPI::RuleMemberCsequence &first, const TreeAPI::RuleMemberCsequence &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberCsequence &first, const TreeAPI::RuleMemberCsequence &second) {
     if (!first.negative && second.negative)
         return true;
     if (first.negative && !second.negative)
@@ -144,7 +145,7 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberCsequence &first, const TreeAPI
            second.characters.size() + second.escaped.size() + second.diapasons.size();
 }
 
-bool Tree::prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second) {
     for (size_t i = 0; i < first.values.size() && i < second.values.size(); ++i) {
         if (first.values[i] == second.values[i])
             continue;
@@ -153,7 +154,7 @@ bool Tree::prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::Ru
     return first.values.size() > second.values.size();
 }
 
-bool Tree::prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second) {
     return prioritySort(first.options.back(), second.options.back());
 }
 enum class Types {
@@ -172,7 +173,7 @@ Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::group; }
 Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::nospace; }
 Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::op; }
 Types getTypes(const std::monostate&) { return Types::empty; }
-bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
+bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
     if (first.isName() && second.isName())
         return prioritySort(first.getName(), second.getName());
     if (first.isGroup() && second.isGroup())
@@ -263,10 +264,10 @@ bool Tree::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMem
         return false; // both unknown
     }, first.value, second.value);
 }
-void Tree::sortByPriority(TreeAPI::RuleMemberOp& options) {
+void ASTPass::sortByPriority(TreeAPI::RuleMemberOp& options) {
     std::sort(options.options.begin(), options.options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {return prioritySort(first, second);});
 }
-void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
+void ASTPass::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
             sortByPriority(member.getGroup().values);
@@ -281,7 +282,7 @@ void Tree::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
         }
     }
 }
-void Tree::sortByPriority() {
+void ASTPass::sortByPriority() {
     for (auto &[name, value] : ast.getTreeMap()) {
         if (value.members.empty()) {
             throw Error("Empty rule\n");
@@ -289,7 +290,7 @@ void Tree::sortByPriority() {
         sortByPriority(value.members);
     }
 }
-void Tree::addSpaceToken() {
+void ASTPass::addSpaceToken() {
     TreeAPI::Rule spaceTokenRule;
     TreeAPI::RuleMemberCsequence csequence;
     csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
@@ -297,7 +298,7 @@ void Tree::addSpaceToken() {
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
-auto Tree::getTerminals() -> std::vector<std::vector<std::string>> {
+auto ASTPass::getTerminals() -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> set;
     for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isUpper(name.back()))
@@ -305,7 +306,7 @@ auto Tree::getTerminals() -> std::vector<std::vector<std::string>> {
     }
     return set;
 }
-auto Tree::getNonTerminals() -> std::vector<std::vector<std::string>> {
+auto ASTPass::getNonTerminals() -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> set;
     for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isLower(name.back()))
@@ -313,7 +314,7 @@ auto Tree::getNonTerminals() -> std::vector<std::vector<std::string>> {
     }
     return set;
 }
-void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name) {
+void ASTPass::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name) {
     for (const auto &member : members) {
         if (member.isGroup()) {
             getUsePlacesTable(member.getGroup().values, name);
@@ -324,15 +325,15 @@ void Tree::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, co
         }
     }
 }
-void Tree::createUsePlacesTable() {
+void ASTPass::createUsePlacesTable() {
     for (const auto &[name, value] : ast.getTreeMap()) {
         getUsePlacesTable(value.members, name);
     }
 }
-auto Tree::getUsePlacesTable() -> UsePlaceTable& {
+auto ASTPass::getUsePlacesTable() -> UsePlaceTable& {
     return use_places;
 }
-void Tree::constructNullableSet() {
+void ASTPass::constructNullableSet() {
     bool changed;
     do {
         changed = false;
@@ -364,7 +365,7 @@ void Tree::constructNullableSet() {
         }
     } while (changed);
 }
-auto Tree::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>> {
+auto ASTPass::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>> {
     bool nullable_prefix = true;
     std::set<std::vector<std::string>> set;
     for (const auto &member : members) {
@@ -413,7 +414,7 @@ auto Tree::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, co
     }
     return set;
 }
-void Tree::constructFirstSet() {
+void ASTPass::constructFirstSet() {
     bool changed;
     do {
         changed = false;
@@ -432,7 +433,7 @@ void Tree::constructFirstSet() {
     } while (changed);
 }
 
-void Tree::constructFollowSet() {
+void ASTPass::constructFollowSet() {
     bool hasChanges;
     bool prevDependedChanged;
     std::vector<std::vector<std::string>> prev_depend;
@@ -540,7 +541,7 @@ void Tree::constructFollowSet() {
         }
     } while(hasChanges || prevDependedChanged);
 }
-Tree::lexer_code Tree::getCodeForLexer() {
+ASTPass::lexer_code ASTPass::getCodeForLexer() {
     TreeAPI::RuleMemberOp options;
     for (const auto &[name, value] : ast.getTreeMap()) {
         if (corelib::text::isLower(name.back()))

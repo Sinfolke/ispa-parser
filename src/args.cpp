@@ -1,6 +1,5 @@
-#include <args.h>
-#include <cstring>
-
+module args;
+import logging;
 bool Arg::empty() const {
     return values.empty() && !isBool;
 }

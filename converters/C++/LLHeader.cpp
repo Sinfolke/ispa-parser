@@ -1,13 +1,11 @@
 
-#include <list>
-#include <IR/LLIR_old.h>
-#include <string>
-#include <list>
-#include <any>
-#include <logging.h>
-#include <LLConverter.h>
-#include <LLHeader.h>
+module;
 #include <unordered_map>
+#include <string>
+module LLHeader;
+import LLIR;
+import logging;
+import Converter;
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <list>\n";

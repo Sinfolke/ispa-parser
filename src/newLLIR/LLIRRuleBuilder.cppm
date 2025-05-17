@@ -1,5 +1,5 @@
 module;
-#include <TreeAPI.h>
+#include <TreeAPI.cppm>
 export module LLIRRuleBuilder;
 import LLIRBuilderData;
 import LLIRBuilderBase;

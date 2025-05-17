@@ -1,21 +1,16 @@
-#pragma once
-
-#include <iostream>
+module;
 #include <string>
 #include <vector>
-#include <any>
-#include <unordered_map>
-#include <IR/LLIR_old.h>
-#include <tree.h>
-#include <corelib.h>
-#include <stack>
-#include <logging.h>
-#include <converter_base.h>
-#include <LRParser.h>
-#include <LLHeader.h>
 
-
-class LLConverter : public LLConverter_base, public LLHeader {
+export module LLConverter;
+import Converter;
+import corelib;
+import logging;
+import LRParser;
+import ASTPass;
+import LLIR;
+import LLHeader;
+export class LLConverter : public LLConverter_base, public LLHeader {
 private:
 
     void outputHeader(std::ostringstream &out, const std::string &filename);
@@ -31,7 +26,7 @@ private:
 
 
 public:
-    LLConverter(LLIR_old &ir, Tree &tree, LLIR_old *custom_lexer_code = nullptr, LLIR_old::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
+    LLConverter(LLIR_old &ir, ASTPass &tree, LLIR_old *custom_lexer_code = nullptr, LLIR_old::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
         this->namespace_name = namespace_name;
         current_pos_counter.push("pos");
     }

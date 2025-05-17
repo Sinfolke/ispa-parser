@@ -1,4 +1,5 @@
 #pragma once
+module;
 #include <vector>
 #include <string>
 #include <any>
@@ -6,10 +7,11 @@
 #include <variant>
 #include <memory>
 #include <optional>
-#include <logging.h>
-#include <hash.h>
+export module TreeAPI;
+import logging;
+import hash;
 
-namespace TreeAPI {
+export namespace TreeAPI {
     // forward declarations
     struct CllType;
     struct CllFunctionArguments;

@@ -1,8 +1,9 @@
-#pragma once
+module;
 #include <string>
 #include <stack>
 #include <vector>
-class LLInternalData {
+export module LLInternalData;
+export class LLInternalData {
     protected:
     // private variables used for convertion
     size_t pos_counter = 0;
@@ -13,8 +14,8 @@ class LLInternalData {
     std::vector<std::string> rule_prev_name;
     std::string rule_prev_name_str;
     std::string namespace_name;
-    bool add_semicolon;
-    bool has_data_block;
-    bool isToken;
+    bool add_semicolon = false;
+    bool has_data_block = false;
+    bool isToken = false;
     bool cpp_file = true;
 };

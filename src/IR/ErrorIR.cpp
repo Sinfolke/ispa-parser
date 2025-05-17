@@ -1,5 +1,5 @@
 #include "ErrorIR.h"
-#include <corelib.h>
+#include <corelib.cppm>
 auto ErrorIR::panic_mode() -> Instructions {
     Instructions newInstructions;
     newInstructions.push_back({InstructionType::PANIC_MODE, follow});

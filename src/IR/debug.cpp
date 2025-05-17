@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <stack>
 #include <IR/LLIR_old.h>
-#include <corelib.h>
+#include <corelib.cppm>
 std::string LLIR_old::convert_var_type(var_types type) {
     static const std::unordered_map<var_types, std::string> typesMap = {
         {var_types::UNDEFINED, "UNDEF"}, {var_types::BOOLEAN, "bool"}, {var_types::STRING, "str"}, {var_types::NUMBER, "num"},

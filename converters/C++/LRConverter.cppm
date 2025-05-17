@@ -1,20 +1,10 @@
-#pragma once
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <any>
-#include <unordered_map>
-#include <IR/LLIR_old.h>
-#include <tree.h>
-#include <corelib.h>
-#include <stack>
-#include <logging.h>
-#include <converter_base.h>
-#include <LRParser.h>
-#include <ELRParser.h>
-#include <LLConverter.h>
-#include <LRHeader.h>
+module;
+#include <sstream>
+export module LRConverter;
+import Converter;
+import LRParser;
+import corelib;
+import LRHeader;
 class LRConverter : public LRConverter_base, public LRHeader {
 private:
     // private variables used for convertion
@@ -27,7 +17,7 @@ private:
     void outputIR(std::ostringstream &out, std::string &filename);
     void outputHeader(std::ostringstream& out, std::string &filename) const;
 public:
-    LRConverter(LRParser &parser, Tree &tree) : LRConverter_base(parser, tree) {}
+    LRConverter(LRParser &parser, ASTPass &tree) : LRConverter_base(parser, tree) {}
     ~LRConverter() {}
     void output(std::filesystem::path filename);
 };

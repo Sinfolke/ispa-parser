@@ -1,8 +1,8 @@
-#pragma once
-#include <corelib.h>
-#include <AST.h>
-#include <IR/LLIR_old.h>
-class Tree {
+export module ASTPass;
+#include <Parser.h>
+import corelib;
+import LLIR;
+export class ASTPass {
     public:
         struct Conflict {
             std::vector<Parser::Rule>* lhs_rule;
@@ -63,7 +63,7 @@ class Tree {
             constructFollowSet();
         }
     public:
-        Tree(const AST &ast, bool rawAssign = false) : ast(ast) {
+        ASTPass(const AST &ast, bool rawAssign = false) : ast(ast) {
             if (!rawAssign)
                 constructor();
         }

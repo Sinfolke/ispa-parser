@@ -12,6 +12,24 @@ function(get_file_range output_var)
     set(${output_var} ${result} PARENT_SCOPE)
 endfunction()
 
+# =============================================
+# Fetch libraries
+# =============================================
+
+include(FetchContent)
+
+# Try to find system-installed fmt
+find_package(fmt QUIET)
+
+# If not found, fetch it
+if(NOT fmt_FOUND)
+    message(STATUS "fmt not found, using FetchContent to download it")
+    FetchContent_Declare(fmt
+            GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(fmt)
+endif()
 
 # =============================================
 # Global Configuration
@@ -32,6 +50,7 @@ set(INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/fmt/include
 )
 
 
@@ -65,6 +84,8 @@ add_compile_definitions(
         PROGRAM_VERSION="0.1.0 beta"
         O_LEVEL=${O_LEVEL}
 )
+###
+
 
 # =============================================
 # Main Executable
@@ -78,7 +99,8 @@ add_executable(ispa)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cc
 )
 get_file_range(ISPA_MODULE_INTERFACES
         ${SRC_DIR}/*.cppm
@@ -105,18 +127,24 @@ set_target_properties(ispa PROPERTIES
 # =============================================
 add_library(ispa-converter INTERFACE)
 target_include_directories(ispa-converter INTERFACE ${INCLUDE_DIRS})
-
-if(WIN32)
-    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
-endif()
+#
+#if(WIN32)
+#    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
+#endif()
 
 file(GLOB_RECURSE CPP_CONVERTER_SOURCES converters/C++/*.cpp)
 add_library(ispa-converter-cpp SHARED
         ${CPP_CONVERTER_SOURCES}
-        ${CONVERTER_SRC}
-        ${SRC_DIR}/tree.cpp
+#        ${CONVERTER_SRC}
 )
-
+get_file_range(CONVERTER_MODULE_INTERFACES
+        converters/C++/*.cppm
+)
+target_sources(ispa-converter-cpp
+        PRIVATE
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${CONVERTER_MODULE_INTERFACES}
+)
 target_link_libraries(ispa-converter-cpp PRIVATE
         ispa-converter
 )
@@ -127,8 +155,8 @@ target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
 # =============================================
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp
+    fmt::fmt
 )
-
 if(NOT DISABLE_TRACER)
     target_link_libraries(ispa PRIVATE Boost::stacktrace_backtrace)
 endif()

@@ -1,7 +1,7 @@
 module;
 #include <vector>
 #include <string>
-#include <tree.h>
+#include <ASTPass.cppm>
 export module LLIRBuilder;
 import LLIR;
 export class LLIRBuilder {
@@ -17,7 +17,7 @@ export class LLIRBuilder {
     std::vector<LLIR::ConvertionResult> success_vars;
     std::vector<std::pair<std::string, LLIR::variable>> key_vars;
     std::vector<LLIR::variable> unnamed_datablock_units;
-    Tree *tree;
+    ASTPass *tree;
 public:
-    LLIRBuilder(Tree *tree) : tree(tree) {}
+    LLIRBuilder(ASTPass *tree) : tree(tree) {}
 };

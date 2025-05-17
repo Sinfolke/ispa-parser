@@ -1,4 +1,5 @@
-#include <LRHeader.h>
+module;
+module LRHeader;
 void LRHeader::addIncludes_h(std::ostringstream &out) const {
     out << "#include <optional>\n\n";
 }

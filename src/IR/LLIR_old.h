@@ -6,9 +6,9 @@
 #include <unordered_map>
 #include <string>
 #include <utility>
-#include <hash.h>
-#include <TreeAPI.h>
-class Tree;
+#include <hash.cppm>
+#include <TreeAPI.cppm>
+class ASTPass;
 class LLIR_old {
     public:
         enum class types {
@@ -141,7 +141,7 @@ class LLIR_old {
         };
         using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR_old::DataBlock>;
 
-        // static variables
+        // static functions
         static auto createEmptyVariable(std::string name) -> LLIR_old::variable;
         static auto processExitStatements(std::vector<LLIR_old::member> &values) -> void;
     private:
@@ -252,7 +252,7 @@ class LLIR_old {
         const std::vector<TreeAPI::RuleMember> *rules = nullptr;
         std::vector<std::pair<std::string, LLIR_old::variable>> key_vars;
         std::vector<LLIR_old::variable> unnamed_datablock_units;
-        Tree* tree;
+        ASTPass* tree;
         // follow symbols set for error handling
         std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> symbol_follow;
         bool has_symbol_follow = true;
@@ -271,35 +271,35 @@ class LLIR_old {
         void insertVariablesOnTop(std::vector<LLIR_old::member> &insertPlace, std::vector<LLIR_old::member>& table);
         void raiseVarsTop(std::vector<LLIR_old::member> &insertPlace, std::vector<LLIR_old::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
         void optimizeIR();
-        LLIR_old(Tree *tree, int tokensOnly, bool buildImmediately) : tree(tree) {
+        LLIR_old(ASTPass *tree, int tokensOnly, bool buildImmediately) : tree(tree) {
             if (buildImmediately) {
                 treeToIr();
                 optimizeIR();
             }
         }
     public:
-        LLIR_old(Tree &tree, int tokensOnly = -1) : tree(&tree) {
+        LLIR_old(ASTPass &tree, int tokensOnly = -1) : tree(&tree) {
             treeToIr();
             optimizeIR();
         }
-        LLIR_old(Tree *tree, int tokensOnly = -1) : tree(tree) {
+        LLIR_old(ASTPass *tree, int tokensOnly = -1) : tree(tree) {
             treeToIr();
             optimizeIR();
         };
-        LLIR_old(Tree &tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(&tree), isToken(isToken) {
+        LLIR_old(ASTPass &tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(&tree), isToken(isToken) {
             has_symbol_follow = false;
             ruleToIr(toConvert);
             // call raiseVars manually to specify it is all single rule
             raiseVarsTop(members, members, "", true);
         }
-        LLIR_old(Tree *tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(tree), isToken(isToken) {
+        LLIR_old(ASTPass *tree, const TreeAPI::RuleMember &toConvert, const bool isToken) : tree(tree), isToken(isToken) {
             has_symbol_follow = false;
             ruleToIr(toConvert);
             raiseVarsTop(members, members, "", true);
         }
 
         // get functions
-        auto getTree() const -> const Tree*;
+        auto getTree() const -> const ASTPass*;
         auto getData() const -> std::vector<Data>;
         auto getData() -> std::vector<LLIR_old::Data>&;
         auto getMembers() const -> const std::vector<member>&;

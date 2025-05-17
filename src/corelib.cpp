@@ -1,13 +1,13 @@
-#include <corelib.h>
-#include <sstream>
+module;
+#include <corelib.cppm>
 #include <filesystem>
 #include <fstream>
 #include <string>
 #include <vector>
-namespace fs = std::filesystem;
+module corelib;
 namespace corelib::file {
     // Function to read the content of a file into a string
-    std::string readFile(const fs::path filePath) {
+    std::string readFile(const std::filesystem::path filePath) {
         std::ifstream file(filePath, std::ios::in | std::ios::binary);
         if (!file) {
             throw UError("Failed to open file: %$", filePath.string());
@@ -32,7 +32,7 @@ namespace corelib::file {
         std::vector<std::string> contents;
 
         try {
-            for (const auto& entry : fs::recursive_directory_iterator(dir)) {
+            for (const auto& entry : std::filesystem::recursive_directory_iterator(dir)) {
                 if (entry.is_regular_file() && 
                     (ext.empty() || entry.path().extension() == ext)) {
                     contents.push_back(entry.path().string());
@@ -130,8 +130,6 @@ namespace corelib::text {
         default: return std::string(1, in);      // Return the character itself if not an escape sequence
         }
     }
-}
-namespace corelib::text {
     std::string join(const std::vector<std::string> &elements, const std::string &delimiter) {
         if (elements.empty()) return "";
         std::string joined = elements.front();

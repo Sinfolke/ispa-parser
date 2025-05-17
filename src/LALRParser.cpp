@@ -1,4 +1,7 @@
-#include <LALRParser.h>
+module;
+#include <unordered_map>
+#include <algorithm>
+module LALRParser;
 void LALRParser::rebuildActionTable(const std::vector<size_t>& state_mapping) {
     ActionTable new_action_table;
 

@@ -1,12 +1,13 @@
-#pragma once
+module;
 #include <sstream>
 #include <filesystem>
 #include <string>
 #include <cstring>
 #include <vector>
 #include <unordered_map>
-#include <logging.h>
-namespace corelib {
+#include <logging.cppm>
+export module corelib;
+export namespace corelib {
     namespace file {
         std::string readFile(const std::filesystem::path filePath);
         std::string readFile(const std::string& filePath);

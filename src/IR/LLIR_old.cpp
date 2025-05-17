@@ -1,9 +1,9 @@
 #include "LLIR_old.h"
 
 #include <chrono>
-#include <corelib.h>
+#include <corelib.cppm>
 #include <cpuf/hex.h>
-#include <tree.h>
+#include <ASTPass.cppm>
 #include <sys/stat.h>
 
 #include "ErrorIR.h"
@@ -70,7 +70,7 @@ const std::vector<LLIR_old::member> &LLIR_old::getMembers() const {
 std::vector<std::string> LLIR_old::getFullName() const {
     return fullname;
 }
-const Tree* LLIR_old::getTree() const {
+const ASTPass* LLIR_old::getTree() const {
     return tree;
 }
 void LLIR_old::erase_begin() {
@@ -126,17 +126,7 @@ LLIR_old::DataBlockList LLIR_old::getDataBlocksTerminals() {
 LLIR_old::DataBlockList LLIR_old::getDataBlocksNonTerminals() {
     return getDataBlocks(false);
 }
-LLIR_old::variable LLIR_old::createEmptyVariable(std::string name) {
-    LLIR_old::variable var {
-        name,
-        {LLIR_old::var_types::UNDEFINED},
-        LLIR_old::var_assign_values::NONE,
-    };
-    return var;
-}
-std::string LLIR_old::generateVariableName() {
-    return std::string("_") + std::to_string(variable_count++);
-}
+
 auto LLIR_old::getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) -> std::set<std::vector<std::string>> {
     std::set<std::vector<std::string>> terminals;
     for (size_t i = pos; i < symbols.size(); i++) {
@@ -214,44 +204,6 @@ void LLIR_old::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR_old::
     push({LLIR_old::types::WHILE, loop});
     addPostLoopCheck(rule, postCheckVar, addError);
 }
-std::vector<LLIR_old::member> LLIR_old::createDefaultBlock(const LLIR_old::variable &var, const LLIR_old::variable &svar) {
-    return {
-        var.type.type == LLIR_old::var_types::CHAR ?
-        LLIR_old::member {LLIR_old::types::ASSIGN_VARIABLE, LLIR_old::variable_assign {var.name, LLIR_old::var_assign_types::ASSIGN, LLIR_old::var_assign_values::CURRENT_CHARACTER}}
-        :
-        LLIR_old::member {LLIR_old::types::ASSIGN_VARIABLE, LLIR_old::variable_assign {var.name, LLIR_old::var_assign_types::ADD, LLIR_old::var_assign_values::CURRENT_POS_SEQUENCE}},
-        {LLIR_old::types::ASSIGN_VARIABLE, LLIR_old::variable_assign {svar.name, LLIR_old::var_assign_types::ASSIGN, LLIR_old::var_assign_values::True}},
-        {LLIR_old::types::INCREASE_POS_COUNTER}
-    };
-}
-std::vector<LLIR_old::member> LLIR_old::createDefaultBlock(const LLIR_old::variable &svar) {
-    return {
-        {LLIR_old::types::ASSIGN_VARIABLE, LLIR_old::variable_assign {svar.name, LLIR_old::var_assign_types::ASSIGN, LLIR_old::var_assign_values::True}},
-        {LLIR_old::types::INCREASE_POS_COUNTER}
-    };
-}
-std::vector<LLIR_old::member> LLIR_old::createDefaultBlock() {
-    return {
-        {LLIR_old::types::INCREASE_POS_COUNTER}
-    };
-}
-char LLIR_old::getEscapedChar(char in) {
-    switch (in)
-    {
-    case 'n': return '\n';   // Newline
-    case 'r': return '\r';   // Carriage return
-    case 't': return '\t';   // Horizontal tab
-    case 'a': return '\a';   // Bell (alert)
-    case 'b': return '\b';   // Backspace
-    case 'f': return '\f';   // Form feed (new page)
-    case 'v': return '\v';   // Vertical tab
-    case '\\': return '\\';  // Backslash
-    case '\'': return '\'';  // Single quote
-    case '"': return '"';    // Double quote
-    default: return in;      // Return the character itself if not an escape sequence
-    }
-}
-
 LLIR_old::member LLIR_old::createDefaultCall(std::vector<LLIR_old::member> &block, LLIR_old::variable var, const std::string &name, std::vector<LLIR_old::expr> &expr) {
     auto function_call = LLIR_old::function_call {
         name,

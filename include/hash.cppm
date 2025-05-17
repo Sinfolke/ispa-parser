@@ -1,15 +1,16 @@
-#pragma once
+module;
 #include <vector>
 #include <set>
 #include <algorithm>
-inline void hash_combine(std::size_t& seed) {}
+export module hash;
+export inline void hash_combine(std::size_t& seed) {}
 
-template <typename T, typename... Rest>
+export template <typename T, typename... Rest>
 inline void hash_combine(std::size_t& seed, const T& v, const Rest&... rest) {
     seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     hash_combine(seed, rest...);
 }
-namespace std {
+export namespace std {
     template <typename T>
     struct hash<vector<T>> {
         size_t operator()(const vector<T>& vec) const noexcept {
@@ -21,8 +22,6 @@ namespace std {
             return seed;
         }
     };
-}
-namespace std {
     template<typename T>
     struct hash<set<T>> {
         size_t operator()(const set<T>& set) const noexcept {
@@ -33,8 +32,6 @@ namespace std {
             return seed;
         }
     };
-}
-namespace std {
     template<typename T1, typename T2>
     struct hash<std::pair<T1, T2>> {
         std::size_t operator()(const std::pair<T1, T2>& p) const {

@@ -1,10 +1,11 @@
 module;
 #include <string>
 #include <vector>
-#include <tree.h>
+#include <ASTPass.cppm>
 export module LLIRBuilderData;
 export import LLIR;
 export class LLIRBuilderData {
+protected:
     size_t *variable_count = nullptr;
     bool *isToken = nullptr;
     bool *insideLoop = nullptr;
@@ -17,8 +18,8 @@ export class LLIRBuilderData {
     std::vector<LLIR::ConvertionResult> *success_vars = nullptr;
     std::vector<std::pair<std::string, LLIR::variable>> *key_vars = nullptr;
     std::vector<LLIR::variable> *unnamed_datablock_units = nullptr;
-    Tree *tree = nullptr;
-
+    ASTPass *tree = nullptr;
+public:
     auto initializationCheck() -> bool;
     LLIRBuilderData(
         size_t &variable_count,
@@ -33,7 +34,7 @@ export class LLIRBuilderData {
         std::vector<LLIR::ConvertionResult> &success_vars,
         std::vector<std::pair<std::string, LLIR::variable>> &key_vars,
         std::vector<LLIR::variable> &unnamed_datablock_units,
-        Tree *tree
+        ASTPass *tree
     ) :
         variable_count(&variable_count),
         isToken(&isToken),

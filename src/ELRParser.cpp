@@ -1,4 +1,4 @@
-#include <ELRParser.h>
+#include <ELRParser.cppm>
 bool ELRParser::isELR() const {
     return true;
 }

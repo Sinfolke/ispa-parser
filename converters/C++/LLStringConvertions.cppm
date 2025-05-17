@@ -1,0 +1,20 @@
+module;
+#include <vector>
+#include <string>
+export module LLStringConvertions;
+import corelib;
+import logging;
+import LLInternalData;
+import LLIR;
+class LLStringConvertions : public LLInternalData {
+    protected:
+    std::string convert_var_type(const LLIR::var_types &type, const std::vector<LLIR::var_type> &data) const;
+    std::string convert_var_assing_values(const LLIR::var_assign_values &value, const std::any &data);
+    std::string convert_var_assing_types(const LLIR::var_assign_types &value) const;
+    std::string conditionTypesToString(const LLIR::condition_types &type, const std::any &data);
+    std::string convertFunctionCall(const LLIR::function_call &call);
+    std::string convertAssign(const LLIR::assign &asgn);    
+    std::string convertMethodCall(const LLIR::method_call &method);
+    std::string convertDataBlock(const LLIR::DataBlock &dtb);
+    std::string convertExpression(const std::vector<LLIR::expr> &expression, bool with_braces);
+};

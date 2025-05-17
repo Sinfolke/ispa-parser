@@ -1,4 +1,7 @@
-#include <LRConverter.h>
+module;
+#include <vector>
+#include <string>
+module LRConverter;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }
@@ -224,6 +227,6 @@ void LRConverter::output(std::filesystem::path name) {
     cpp << cpp_out.str();
     h << h_out.str();
 }
-extern "C" LRConverter_base* getLRConverter(LRParser& data, Tree& tree) {
+extern "C" LRConverter_base* getLRConverter(LRParser& data, ASTPass& tree) {
     return new LRConverter(data, tree);
 }

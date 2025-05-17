@@ -1,15 +1,17 @@
-#pragma once
-#include <corelib.h>
-#include <tree.h>
-#include <hash.h>
-#ifdef Rule
-#undef Rule
-#endif
+module;
 
-#ifdef Token
-#undef Token
-#endif
-class LRParser {
+#include <vector>
+#include <string>
+#include <set>
+#include <unordered_map>
+export module LRParser;
+
+import corelib;
+import ASTPass;
+import hash;
+import TreeAPI;
+
+export class LRParser {
 public:
     enum class Action_type {
         SHIFT, REDUCE, ACCEPT, DFA_RESOLVE, ERR
@@ -54,10 +56,10 @@ public:
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
 protected:
-    Tree *tree;
+    ASTPass *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    Tree::UsePlaceTable use_places;
+    ASTPass::UsePlaceTable use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;
@@ -97,7 +99,7 @@ protected:
     void prepare();
     void buildTable();
     virtual void build();
-    LRParser(Tree *tree, bool build_immediately = true) : tree(tree) {
+    LRParser(ASTPass *tree, bool build_immediately = true) : tree(tree) {
         if (build_immediately) {
             createInitialItemSet();
             transform();
@@ -106,12 +108,12 @@ protected:
 
     }
 public:
-    LRParser(Tree *tree) : tree(tree) {
+    LRParser(ASTPass *tree) : tree(tree) {
         createInitialItemSet();
         transform();
         build();
     }
-    LRParser(Tree &tree) : tree(&tree) {
+    LRParser(ASTPass &tree) : tree(&tree) {
         createInitialItemSet();
         transform();
         build();

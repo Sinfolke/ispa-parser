@@ -1,5 +1,6 @@
-#include <init.h>
+module;
 #include <cpuf/operator.h>
+module init;
 void init(void) {
     //std::set_terminate(custom_terminate_handler);
 #ifndef DEBUG

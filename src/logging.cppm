@@ -1,23 +1,20 @@
-#pragma once
+module;
 #ifndef __SOURCE_ROOT__
 #error "__SOURCE_ROOT__ not defined. It was intended to define root directory of source code what is done via CMAKE"
 #endif
-#include <stdexcept>
-#include <debug/relativePath.h>
 #include <cpuf/printf.h>
-class Error : public std::exception {
+export module logging;
+export class Error : public std::exception {
 public:
-    const char* file;
     std::string message;
-    size_t line;
     template<typename ...Args>
-    Error(const char* file, size_t line, const char* format, Args&&... args)
-        : file(getRelativePath(file)), line(line), message( cpuf::sprintf(format, args...) ) {}
+    Error(const char* format, Args&&... args)
+        : message( cpuf::sprintf(format, args...) ) {}
     void print();
     const char* what() const noexcept override;
 };
 // base user error class
-class UBase : std::exception {
+export class UBase : std::exception {
 public:
     const std::string message;
     template<typename ...Args>
@@ -31,7 +28,7 @@ public:
     void print();
     const char* what() const noexcept override;
 };
-class UError : public UBase {
+export class UError : public UBase {
 public:
     template<typename... Args>
     UError(const char* message, Args&&... args)
@@ -43,7 +40,7 @@ public:
 
     void print();
 };
-class UWarning : public UBase {
+export class UWarning : public UBase {
 public:
     template<typename... Args>
     UWarning(const char* message, Args&&... args)
@@ -60,7 +57,4 @@ public:
 /*
     needed to auto-print into console if not handled with try-catch block
 */
-void custom_terminate_handler();
-#define Error(format, ...) Error(__FILE__, __LINE__, format, ##__VA_ARGS__)
-
-#define Assert(condition, format, ...) do { if (!(condition)) throw Error("Assertion failed: " format, ##__VA_ARGS__); } while(0)
+export void custom_terminate_handler();

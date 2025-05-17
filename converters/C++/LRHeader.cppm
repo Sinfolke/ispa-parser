@@ -1,7 +1,10 @@
-#include <LLHeader.h>
-#include <LRParser.h>
-#include <LRInternalData.h>
-class LRHeader : public LLHeader, public LRInternalData {
+module;
+#include <sstream>
+export module LRHeader;
+import LLHeader;
+import LRParser;
+import LRInternalData;
+export class LRHeader : public LLHeader, public LRInternalData {
     protected:
     void addIncludes_h(std::ostringstream &out) const;
     void createActionStruct(std::ostringstream &out) const;

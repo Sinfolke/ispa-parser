@@ -1,14 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <any>
-#include <unordered_map>
-#include <iomanip>
-#include <stack>
-#include <IR/LLIR_old.h>
-#include <logging.h>
-#include <LLConverter.h>
+module;
+#include <ostream>
+module LLConverter;
+import LLIR;
+import logging;
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
     for (auto &[data_block, name, members] : data) {
         isToken = corelib::text::isUpper(name.back());
@@ -473,7 +467,7 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR_old& ir, Tree& tree) {
+extern "C" LLConverter_base* getLLConverter(LLIR_old& ir, ASTPass& tree) {
     return new LLConverter(ir, tree);
 }
 

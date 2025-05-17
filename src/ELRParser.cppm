@@ -1,11 +1,19 @@
 /**
- * The Extended LR parser. ELR.h and ELR.cpp files reponse for generating LR(*) parser. 
+ * The Extended LR parser. ELR.cppm and ELR.cpp files reponse for generating LR(*) parser.
  */
-#pragma once
-#include <LRParser.h>
+module;
+#include <vector>
+#include <string>
+#include <set>
+#include <unordered_map>
 #include <optional>
 #include <variant>
-class ELRParser : public LRParser {
+#include <unordered_set>
+export module ELRParser;
+import LRParser;
+import ASTPass;
+
+export class ELRParser : public LRParser {
     public:
         struct NFA_state {
             std::unordered_map<std::vector<std::string>, size_t> transitions;
@@ -38,10 +46,10 @@ class ELRParser : public LRParser {
         ELRParser::Lookahead_set getLookeaheadSet(const std::vector<std::string> &fullname, std::unordered_set<std::vector<std::string>> &visited);
         void processLookaheadSet(const Lookahead_set &lookahead_set, size_t nfa_initial_index, const Action& action);
         public:
-        ELRParser(Tree *tree) : LRParser(tree, false) {
+        ELRParser(ASTPass *tree) : LRParser(tree, false) {
             build();
         }
-        ELRParser(Tree &tree) : LRParser(&tree, false) {
+        ELRParser(ASTPass &tree) : LRParser(&tree, false) {
             build();
         }
 };

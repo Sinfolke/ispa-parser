@@ -1,11 +1,9 @@
-#pragma once
+module;
 #include <vector>
-#include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <functional>
-#include <logging.h>
-class Arg {
+export module args;
+export class Arg {
     public:
     bool isBool = false;
     std::vector<std::string> values;
@@ -20,7 +18,7 @@ class Arg {
     const std::string& operator[](int v) const;
 };
 
-class Args {
+export class Args {
 private:
     int argc;
     char** argv;

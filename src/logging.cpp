@@ -1,12 +1,16 @@
+module;
 #ifdef ENABLE_TRACER
     #include <boost/stacktrace.hpp>
 #endif
-#include <logging.h>
+#include <iostream>
 #include <cpuf/color.h>
+#include <fmt/printf.h>
+#include <fmt/format.h>
+module logging;
 #undef Error
 inline void printCallTrace() {
 #ifdef ENABLE_TRACER
-    cpuf::perror("call trace: %$\n", boost::stacktrace::stacktrace());
+    std::cerr << fmt::format("call trace: %$\n", boost::stacktrace::stacktrace());
 #endif
 }
 const char* Error::what() const noexcept {
@@ -15,7 +19,7 @@ const char* Error::what() const noexcept {
 void Error::print() {
 // Capture the stack trace
 
-    cpuf::perror("ispa: %sinternal error%s [%s:%d]: %s\n", color::red, color::reset, file, line, message);
+    std::cerr << fmt::format("ispa: %sinternal error%s: %s\n", color::red, color::reset, message);
     printCallTrace();
     exit(2);
 }
@@ -23,11 +27,11 @@ const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {
-    cpuf::perror("ispa: %serror%s: %$\n", color::red, color::reset, message);
+    std::cerr << fmt::format("ispa: %serror%s: %$\n", color::red, color::reset, message);
     exit(1);
 }
 void UWarning::print() {
-    cpuf::printf("ispa: %swarning%s: %$\n", color::yellow, color::reset, message);
+    fmt::printf("ispa: %swarning%s: %$\n", color::yellow, color::reset, message);
 }
 
 /*
@@ -35,6 +39,7 @@ void UWarning::print() {
 */
 void custom_terminate_handler() {
 #ifndef DEBUG
+    std::flush(std::cout);
     try {
         // Try to rethrow the last uncaught exception to print it
         if (std::current_exception()) {
@@ -47,11 +52,11 @@ void custom_terminate_handler() {
     } catch (UWarning& e) {
         e.print();
     } catch (std::exception& e) {
-        cpuf::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
+        fmt::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
         printCallTrace();
         exit(1);
     } catch (...) {
-        cpuf::printf("Unknown exception\n");
+        fmt::printf("Unknown exception\n");
         exit(1);
     }
 #endif

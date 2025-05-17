@@ -140,6 +140,7 @@ public:
     };
     using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock>;
     using Nodes = std::vector<LLIR::member>;
+    using Expression = std::vector<LLIR::expr>;
     // static variables
     static auto createEmptyVariable(std::string name) -> LLIR::variable;
     static auto processExitStatements(std::vector<LLIR::member> &values) -> void;

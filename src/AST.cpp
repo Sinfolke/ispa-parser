@@ -1,4 +1,11 @@
-#include <AST.h>
+module;
+#include <any>
+#include <utility>
+#include <algorithm>
+#include <Parser.h>
+module AST;
+import logging;
+import TreeAPI;
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);
