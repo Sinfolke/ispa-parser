@@ -1,7 +1,6 @@
 module;
 #include <vector>
 #include <set>
-#include <algorithm>
 export module hash;
 export inline void hash_combine(std::size_t& seed) {}
 

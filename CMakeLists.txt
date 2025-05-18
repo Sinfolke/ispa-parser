@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.28.3)
+set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 project(ISPA LANGUAGES CXX)
 # =============================================
 # FUNCTIONS
@@ -9,8 +10,19 @@ function(get_file_range output_var)
         file(GLOB_RECURSE temp CONFIGURE_DEPENDS ${path})
         list(APPEND result ${temp})
     endforeach()
+    list(REMOVE_DUPLICATES result)
     set(${output_var} ${result} PARENT_SCOPE)
 endfunction()
+function(add_raw_module target source_target)
+    # Ensure that source_target builds before this one
+
+    foreach(module IN LISTS ARGN)
+        target_compile_options(${target} PRIVATE
+                "-fmodule-file=${module}=${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${source_target}.dir/${module}.pcm"
+        )
+    endforeach()
+endfunction()
+
 
 # =============================================
 # Fetch libraries
@@ -19,29 +31,28 @@ endfunction()
 include(FetchContent)
 
 # Try to find system-installed fmt
-find_package(fmt QUIET)
-
+#find_package(fmt QUIET)
 # If not found, fetch it
-if(NOT fmt_FOUND)
-    message(STATUS "fmt not found, using FetchContent to download it")
-    FetchContent_Declare(fmt
-            GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-            GIT_TAG master
-    )
-    FetchContent_MakeAvailable(fmt)
-endif()
+message(STATUS "fmt not found, using FetchContent to download it")
+FetchContent_Declare(fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG master
+)
+FetchContent_MakeAvailable(fmt)
 
 # =============================================
 # Global Configuration
 # =============================================
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 # =============================================
 # Project Structure
 # =============================================
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(CONVERTERS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/converters)
 set(PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/parser)
 set(INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -57,13 +68,23 @@ set(INCLUDE_DIRS
 # =============================================
 # Compiler Configuration
 # =============================================
-
+set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "TRUE") # required for modules
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP "TRUE")    # enables BMI dependencies
 if(MSVC)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 else()
     add_link_options(-rdynamic)
 endif()
-
+set(CLANG_MODULE_CACHE_DIR "${CMAKE_BINARY_DIR}/clang-modules")
+set(MODULE_COMPILATION
+        -fmodules
+        -fimplicit-modules
+        -fimplicit-module-maps
+        -fmodules-cache-path=${CLANG_MODULE_CACHE_DIR}
+)
+add_compile_options(-stdlib=libc++)
+add_link_options(-stdlib=libc++)
 # =============================================
 # Dependencies
 # =============================================
@@ -84,44 +105,41 @@ add_compile_definitions(
         PROGRAM_VERSION="0.1.0 beta"
         O_LEVEL=${O_LEVEL}
 )
-###
-
+get_file_range(FMT_MODULES ${fmt_SOURCE_DIR}/src/fmt.cc)
+add_library(fmt_m STATIC)
+target_sources(fmt_m
+    PUBLIC
+    FILE_SET cxx_modules TYPE CXX_MODULES FILES
+    ${FMT_MODULES}
+)
+target_sources(fmt_m PRIVATE ${ISPA_SOURCES})
+target_include_directories(fmt_m PRIVATE ${fmt_SOURCE_DIR}/include)
 
 # =============================================
 # Main Executable
 # =============================================
-set(CMAKE_CXX_SCAN_FOR_MODULES ON)
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "TRUE") # required for modules
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP "TRUE")    # enables BMI dependencies
 
 add_executable(ispa)
-#target_compile_options(ispa PRIVATE -fmodules)
+target_compile_options(ispa PRIVATE -fmodules)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/color.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cc
 )
-get_file_range(ISPA_MODULE_INTERFACES
+get_file_range(ISPA_MODULES
         ${SRC_DIR}/*.cppm
+        ${PARSER_DIR}/*.cppm
+        ${INCLUDE_DIR}/*.cppm
+)
+target_sources(ispa
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${ISPA_MODULES}
 )
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
-target_sources(ispa
-        PRIVATE
-        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-        ${ISPA_MODULE_INTERFACES}
-)
-
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
-set_target_properties(ispa PROPERTIES
-        OUTPUT_NAME ispa
-        CXX_STANDARD 20
-        CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF
-        HEADER_FILE_ONLY FALSE
-        SKIP_PRECOMPILE_HEADERS TRUE
-)
-
+target_compile_options(ispa PRIVATE ${MODULE_COMPILATION})
 # =============================================
 # Converter Configuration
 # =============================================
@@ -131,36 +149,38 @@ target_include_directories(ispa-converter INTERFACE ${INCLUDE_DIRS})
 #if(WIN32)
 #    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
 #endif()
-
-file(GLOB_RECURSE CPP_CONVERTER_SOURCES converters/C++/*.cpp)
+get_file_range(CPP_CONVERTER_SOURCES
+        ${CONVERTERS_DIR}/C++/*.cpp
+)
 add_library(ispa-converter-cpp SHARED
         ${CPP_CONVERTER_SOURCES}
-#        ${CONVERTER_SRC}
-)
-get_file_range(CONVERTER_MODULE_INTERFACES
-        converters/C++/*.cppm
-)
-target_sources(ispa-converter-cpp
-        PRIVATE
-        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-        ${CONVERTER_MODULE_INTERFACES}
 )
 target_link_libraries(ispa-converter-cpp PRIVATE
         ispa-converter
 )
 target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
-
+get_file_range(CPP_CONVERTER_MODULES
+        ${CONVERTERS_DIR}/C++/*.cppm
+)
+target_sources(ispa-converter-cpp
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${CPP_CONVERTER_MODULES}
+        ${CONVERTERS_DIR}/Converter.cppm
+)
+target_compile_options(ispa-converter-cpp PRIVATE ${MODULE_COMPILATION})
+add_raw_module(ispa-converter-cpp ispa LRParser corelib LLIR)
 # =============================================
 # Link Dependencies
 # =============================================
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp
     fmt::fmt
+    fmt_m
 )
 if(NOT DISABLE_TRACER)
     target_link_libraries(ispa PRIVATE Boost::stacktrace_backtrace)
 endif()
-
 # =============================================
 # Testing Configuration
 # =============================================

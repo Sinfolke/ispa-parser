@@ -1,10 +1,9 @@
 module;
-#include <cpuf/operator.h>
+#include <iostream>
 module init;
-void init(void) {
+void init() {
     //std::set_terminate(custom_terminate_handler);
 #ifndef DEBUG
     std::ios::sync_with_stdio(false);
 #endif
-    cpuf::op::addType = false;
 }

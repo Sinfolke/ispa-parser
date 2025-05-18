@@ -1,11 +1,8 @@
-#include <fmt/printf.h>
-#include <fmt/format.h>
 #include <cpuf/color.h>
 #include <cpuf/dlib.h>
 #include <unordered_map>
-#include <vector>
+#include <filesystem>
 #include <Parser.h>
-#include <IR/LLIR_old.h>
 import init;
 import args;
 import corelib;
@@ -15,8 +12,11 @@ import ASTPass;
 import LRParser;
 import ELRParser;
 import LALRParser;
-class LLConverter_base;
-class LRConverter_base;
+import Converter;
+import LLIRBuilder;
+import LLIR;
+import Parser;
+import fmt;
 void printHelp() {
     fmt::printf(R"(
 usage: 
@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
-    ASTPass tree(ast);
+    ASTPass treePass(ast);
 
     //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
@@ -134,25 +134,25 @@ int main(int argc, char** argv) {
     std::filesystem::path output_path = opath;
     output_path.append(name);
     if (algorithm == "LR") {
-        LRParser LRIR(tree);
+        LRParser LRIR(ast);
         // LRIR.printTables("tables");
         LRIR.printCanonicalCollection("canonical_collection.txt");
         // LRIR.printFirstSet("first_set.txt");
         // LRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, tree));
+        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "LALR") {
-        LALRParser LALRIR(tree);
+        LALRParser LALRIR(ast);
         // LALRIR.printTables("tables");
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
         // LALRIR.printFirstSet("first_set.txt");
         // LALRIR.printFollowSet("follow_set.txt");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, tree));
+        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "ELR") {
-        ELRParser ELRIR(tree);
+        ELRParser ELRIR(ast);
         ELRIR.printTables("tables");
         ELRIR.printCanonicalCollection("canonical_collection.txt");
         ELRIR.printFirstSet("first_set.txt");
@@ -160,13 +160,13 @@ int main(int argc, char** argv) {
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, tree));
+        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "LL") {
-        LLIR_old ir(tree);
+        LLIRBuilder ir(ast);
         ir.outputIRToFile("output_ir.txt");
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR_old&, ASTPass&>("getLLConverter");
-        auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, tree));
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, IR&, ASTPass&>("getLLConverter");
+        auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, ast));
         converter->outputIR(output_path);
     } else {
         throw UError("Unknown algorithm '%s'", algorithm);

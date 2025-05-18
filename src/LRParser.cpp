@@ -1,12 +1,8 @@
 module;
-
-#include <string>
-#include <algorithm>
-#include <unordered_set>
 #include <unordered_map>
-
+#include <unordered_set>
+#include <string>
 module LRParser;
-
 import TreeAPI;
 bool operator<(const LRParser::LR0Core &first, const LRParser::LR0Core &second) {return false;}
 bool operator<(const LRParser::LR1Core &first, const LRParser::LR1Core &second) {return false;}

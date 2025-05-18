@@ -1,9 +1,8 @@
 module;
 #include <vector>
-#include <string>
 export module LALRParser;
 import LRParser;
-import ASTPass;
+import AST;
 export class LALRParser : public LRParser {
 protected:
     void rebuildActionTable(const std::vector<size_t>& state_mapping);
@@ -11,10 +10,10 @@ protected:
     std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> getActionType(const LR1Core& item, size_t state);
     void build() override;
 public:
-    LALRParser(ASTPass *tree) : LRParser(tree, true) {
+    LALRParser(AST *tree) : LRParser(tree, true) {
         build();
     }
-    LALRParser(ASTPass &tree) : LRParser(&tree, true) {
+    LALRParser(AST &tree) : LRParser(&tree, true) {
         build();
     }
 };

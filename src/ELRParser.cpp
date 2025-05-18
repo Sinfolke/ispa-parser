@@ -1,4 +1,9 @@
-#include <ELRParser.cppm>
+module;
+#include <vector>
+#include <set>
+#include <queue>
+#include <variant>
+module ELRParser;
 bool ELRParser::isELR() const {
     return true;
 }

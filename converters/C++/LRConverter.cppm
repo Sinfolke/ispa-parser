@@ -1,5 +1,4 @@
 module;
-#include <sstream>
 export module LRConverter;
 import Converter;
 import LRParser;

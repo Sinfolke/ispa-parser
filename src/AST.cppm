@@ -1,7 +1,11 @@
 module;
+#include <vector>
+#include <string>
+#include <unordered_map>
 #include <Parser.h>
 export module AST;
 import TreeAPI;
+import Parser;
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */

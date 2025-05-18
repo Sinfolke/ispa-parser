@@ -1,28 +1,32 @@
 module;
-#ifndef __SOURCE_ROOT__
-#error "__SOURCE_ROOT__ not defined. It was intended to define root directory of source code what is done via CMAKE"
-#endif
-#include <cpuf/printf.h>
+#include <string>
 export module logging;
+import fmt;
 export class Error : public std::exception {
 public:
     std::string message;
     template<typename ...Args>
     Error(const char* format, Args&&... args)
-        : message( cpuf::sprintf(format, args...) ) {}
+        : message( fmt::sprintf(format, args...) ) {}
     void print();
     const char* what() const noexcept override;
+};
+export template<typename ...Args>
+void Assert(bool condition, const char* format, Args&&... args) {
+    if (!condition) {
+        throw Error(format, std::forward<Args>(args)...);
+    }
 };
 // base user error class
 export class UBase : std::exception {
 public:
     const std::string message;
     template<typename ...Args>
-    UBase(const char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(const char* message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(char* message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(std::string message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(std::string message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
 
 
     void print();

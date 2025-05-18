@@ -2,16 +2,13 @@
  * The Extended LR parser. ELR.cppm and ELR.cpp files reponse for generating LR(*) parser.
  */
 module;
-#include <vector>
-#include <string>
-#include <set>
 #include <unordered_map>
-#include <optional>
+#include <vector>
+#include <set>
 #include <variant>
-#include <unordered_set>
 export module ELRParser;
 import LRParser;
-import ASTPass;
+import AST;
 
 export class ELRParser : public LRParser {
     public:
@@ -46,10 +43,10 @@ export class ELRParser : public LRParser {
         ELRParser::Lookahead_set getLookeaheadSet(const std::vector<std::string> &fullname, std::unordered_set<std::vector<std::string>> &visited);
         void processLookaheadSet(const Lookahead_set &lookahead_set, size_t nfa_initial_index, const Action& action);
         public:
-        ELRParser(ASTPass *tree) : LRParser(tree, false) {
+        ELRParser(AST *tree) : LRParser(tree, false) {
             build();
         }
-        ELRParser(ASTPass &tree) : LRParser(&tree, false) {
+        ELRParser(AST &tree) : LRParser(&tree, false) {
             build();
         }
 };

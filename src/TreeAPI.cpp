@@ -1,9 +1,8 @@
 module;
-#include <variant>
-#include <vector>
 #include <string>
+#include <variant>
 #include <any>
-#include <algorithm>
+#include <unordered_map>
 module TreeAPI;
 namespace TreeAPI {
     size_t String::count_strlen(const std::string &str) {
@@ -608,7 +607,6 @@ namespace TreeAPI {
         }, first.value, second.value);        
     }
     bool operator==(const RuleMemberKey &first, const RuleMemberKey &second) {
-        cpuf::printf("Key: comparing %$ with %$\n", first.base, second.base);
         return first.base == second.base;
     }
     std::ostream& operator<<(std::ostream& os, const RulePrefix& p) {

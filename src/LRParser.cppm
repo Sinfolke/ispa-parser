@@ -1,13 +1,11 @@
 module;
-
 #include <vector>
-#include <string>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 export module LRParser;
-
 import corelib;
-import ASTPass;
+import AST;
 import hash;
 import TreeAPI;
 
@@ -56,10 +54,10 @@ public:
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
 protected:
-    ASTPass *tree;
+    AST *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    ASTPass::UsePlaceTable use_places;
+    std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>> use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;
@@ -99,7 +97,7 @@ protected:
     void prepare();
     void buildTable();
     virtual void build();
-    LRParser(ASTPass *tree, bool build_immediately = true) : tree(tree) {
+    LRParser(AST *tree, bool build_immediately = true) : tree(tree) {
         if (build_immediately) {
             createInitialItemSet();
             transform();
@@ -108,12 +106,12 @@ protected:
 
     }
 public:
-    LRParser(ASTPass *tree) : tree(tree) {
+    LRParser(AST *tree) : tree(tree) {
         createInitialItemSet();
         transform();
         build();
     }
-    LRParser(ASTPass &tree) : tree(&tree) {
+    LRParser(AST &tree) : tree(&tree) {
         createInitialItemSet();
         transform();
         build();

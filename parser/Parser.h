@@ -1,15 +1,9 @@
 #pragma once
-#ifndef PARSER
-#define PARSER
-
 #include <string>
-#include <list>
 #include <unordered_map>
 #include <iscstdlibc++.h>
-#include <fstream>
 #include <iterator>
 
-#include <iostream>
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif
@@ -3415,6 +3409,3 @@ namespace Parser {
 	};
 
 } // Parser
-
-
-#endif // PARSER

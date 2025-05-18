@@ -1,22 +1,23 @@
 module;
-#include <filesystem>
+#include <vector>
+#include <string>
 export module Converter;
 import LLIR;
 import LRParser;
-import ASTPass;
+import AST;
 export class LLConverter_base {
     protected:
         // data
-        std::vector<LLIR_old::Data> data;
+        std::vector<LLIR::Data> data;
         std::vector<std::vector<std::string>> tokens;
         std::vector<std::vector<std::string>> rules;
-        LLIR_old::DataBlockList data_block_tokens;
-        LLIR_old::DataBlockList data_block_rules;        
-        LLIR_old lexer_code;
-        LLIR_old::variable lexer_code_access_var;
-        ASTPass* tree;
+        LLIR::DataBlockList data_block_tokens;
+        LLIR::DataBlockList data_block_rules;
+        LLIR::lexer_code lexer_code;
+        LLIR::variable lexer_code_access_var;
+        AST* tree;
     public:
-        LLConverter_base(LLIR_old &ir, ASTPass &tree, const LLIR_old *custom_lexer_code = nullptr, const LLIR_old::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
+        LLConverter_base(IR &ir, AST &tree, const IR *custom_lexer_code = nullptr, const IR::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -25,7 +26,7 @@ export class LLConverter_base {
             data_block_tokens = ir.getDataBlocksTerminals();
             data_block_rules = ir.getDataBlocksNonTerminals();
             if (custom_lexer_code == nullptr || access_var == nullptr) {
-                auto lc = tree.getCodeForLexer();            
+                auto lc = tree.getCodeForLexer();
                 lexer_code = lc.code;
                 lexer_code_access_var = lc.success_var;
             } else {
@@ -42,15 +43,15 @@ export class LLConverter_base {
             return data_block_rules;
         }
 };
-class LRConverter_base {
+export class LRConverter_base {
     protected:
         // data
-        const LRParser* data;        
-        LLIR_old lexer_code;
-        LLIR_old::variable success_var;
-        ASTPass* tree;
+        const LRParser* data;
+        IR lexer_code;
+        IR::variable success_var;
+        AST* tree;
     public:
-        LRConverter_base(const LRParser &data, ASTPass &tree) : lexer_code(tree), data(&data), tree(&tree) {
+        LRConverter_base(const LRParser &data, AST &tree) : lexer_code(tree), data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer();
             lexer_code = lc.code;

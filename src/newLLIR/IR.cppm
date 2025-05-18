@@ -1,15 +1,12 @@
 module;
 #include <vector>
-#include <string>
 #include <any>
-#include <optional>
+#include <string>
 #include <variant>
+#include <optional>
 #include <unordered_map>
-
 export module LLIR;
-
-export class LLIR {
-public:
+export namespace LLIR {
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
         METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
@@ -39,7 +36,7 @@ public:
         ASSIGN_BITWISE_AND, ASSIGN_BITWISE_OR, ASSIGN_BITWISE_ANDR, ASSIGN_BITWISE_RIGHTSHFT, ASSIGN_BITWISE_LEFTSHIFT
     };
     struct var_type {
-        var_types type = LLIR::var_types::UNDEFINED;
+        var_types type = var_types::UNDEFINED;
         std::vector<var_type> templ = {};
         std::size_t operator()(const std::vector<std::string>& key) const {
             std::size_t h = 0;
@@ -81,7 +78,7 @@ public:
         std::optional<char> pre_increament;
         std::optional<char> post_increament;
         variable var;
-        std::vector<LLIR::expr> brace_expression;
+        std::vector<expr> brace_expression;
     };
     using array = std::vector<std::vector<expr>>;
     using object = std::unordered_map<std::string, std::vector<expr>>;
@@ -106,11 +103,11 @@ public:
     };
     struct strncmp {
         bool is_string;
-        LLIR::variable value;
+        variable value;
         size_t begin = 0;
     };
-    using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<LLIR::expr>, var_type>>;
-    using regular_data_block = std::pair<std::vector<LLIR::expr>, var_type>;
+    using inclosed_map = std::unordered_map<std::string, std::pair<std::vector<expr>, var_type>>;
+    using regular_data_block = std::pair<std::vector<expr>, var_type>;
     struct DataBlock {
         std::variant<std::monostate, regular_data_block, inclosed_map> value;
         bool is_inclosed_map() const;
@@ -122,38 +119,37 @@ public:
         const inclosed_map &getInclosedMap() const;
     };
     struct ConvertionResult {
-        LLIR::variable svar;
-        LLIR::variable uvar;
-        LLIR::variable var;
-        LLIR::variable shadow_var;
+        variable svar;
+        variable uvar;
+        variable var;
+        variable shadow_var;
         char qualifier;
     };
     struct var_group {
-        LLIR::variable var;
+        variable var;
         size_t begin;
         size_t end;
     };
     struct Data {
         DataBlock block;
         std::vector<std::string> name;
-        std::vector<LLIR::member> members;
+        std::vector<member> members;
     };
-    using DataBlockList = std::unordered_map<std::vector<std::string>, LLIR::DataBlock>;
-    using Nodes = std::vector<LLIR::member>;
-    using Expression = std::vector<LLIR::expr>;
-    // static variables
-    static auto createEmptyVariable(std::string name) -> LLIR::variable;
-    static auto processExitStatements(std::vector<LLIR::member> &values) -> void;
-protected:
-    std::vector<Data> data;
-public:
-    auto getData() const -> const std::vector<Data>&;
-    auto operator[](size_t pos) const -> const Data&;
-    auto begin() -> std::vector<Data>::iterator;
-    auto end() -> std::vector<Data>::iterator;
-    auto cbegin() -> std::vector<Data>::const_iterator;
-    auto cend() -> std::vector<Data>::const_iterator;
-    auto size() -> size_t;
-    auto empty() -> bool;
-    auto clear() -> void;
-};
+    using DataBlockList = std::unordered_map<std::vector<std::string>, DataBlock>;
+    using Nodes = std::vector<member>;
+    using Expression = std::vector<expr>;
+    class IR {
+    protected:
+        std::vector<Data> data;
+    public:
+        auto getData() const -> const std::vector<Data>&;
+        auto operator[](size_t pos) const -> const Data&;
+        auto begin() -> std::vector<Data>::iterator;
+        auto end() -> std::vector<Data>::iterator;
+        auto cbegin() -> std::vector<Data>::const_iterator;
+        auto cend() -> std::vector<Data>::const_iterator;
+        auto size() -> size_t;
+        auto empty() -> bool;
+        auto clear() -> void;
+    };
+}

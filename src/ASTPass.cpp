@@ -1,15 +1,12 @@
 module;
-#include <sstream>
-#include <algorithm>
-#include <cpuf/printf.h>
+#include <string>
+#include <variant>
+#include <vector>
 module ASTPass;
 import corelib;
 import LLIR;
 import AST;
 import TreeAPI;
-AST& ASTPass::getRawAst() {
-    return ast;
-}
 auto ASTPass::getFirstSet() -> First & {
     return first;
 }
@@ -17,7 +14,7 @@ auto ASTPass::getFollowSet() -> Follow & {
     return follow;
 }
 void ASTPass::removeEmptyRule() {
-    auto &treeMap = ast.getTreeMap();
+    auto &treeMap = ast->getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
         if (value.members.size() == 0) {
@@ -31,7 +28,7 @@ void ASTPass::removeEmptyRule() {
 //
 // }
 void ASTPass::inlineSingleGroups() {
-    for (auto &[name, value] : ast.getTreeMap()) {
+    for (auto &[name, value] : ast->getTreeMap()) {
         for (auto &member : value.members) {
             if (member.isGroup()) {
                 if (member.quantifier != '\0')
@@ -94,7 +91,7 @@ void ASTPass::literalsToToken() {
     size_t count = 0;
     std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
-    auto &treeMap = ast.getTreeMap();
+    auto &treeMap = ast->getTreeMap();
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
             literalsToToken(value.members, count, toInsert, generated);
@@ -118,7 +115,7 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMemberHex &first, const TreeAPI::R
 }
 
 bool ASTPass::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::RuleMemberName &second) {
-    auto &treeMap = ast.getTreeMap();
+    auto &treeMap = ast->getTreeMap();
     const auto first_data = treeMap.find(first.name);
     const auto second_data = treeMap.find(second.name);
     if (first_data == treeMap.end())
@@ -194,8 +191,8 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         return false;
 
     if (first.isName()) {
-        auto find_it = ast.getTreeMap().find(first.getName().name);
-        if (find_it == ast.getTreeMap().end()) {
+        auto find_it = ast->getTreeMap().find(first.getName().name);
+        if (find_it == ast->getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", first.getName().name, second);
         }
         const auto &members = find_it->second.members;
@@ -206,8 +203,8 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         }, members[0].value, second.value);
     }
     if (second.isName()){
-        auto find_it = ast.getTreeMap().find(second.getName().name);
-        if (find_it == ast.getTreeMap().end()) {
+        auto find_it = ast->getTreeMap().find(second.getName().name);
+        if (find_it == ast->getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", second.getName().name, second);
         }
         const auto &members = find_it->second.members;
@@ -283,7 +280,7 @@ void ASTPass::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
     }
 }
 void ASTPass::sortByPriority() {
-    for (auto &[name, value] : ast.getTreeMap()) {
+    for (auto &[name, value] : ast->getTreeMap()) {
         if (value.members.empty()) {
             throw Error("Empty rule\n");
         }
@@ -296,11 +293,11 @@ void ASTPass::addSpaceToken() {
     csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
     csequence.characters = {' '};
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
-    ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
+    ast->getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
 auto ASTPass::getTerminals() -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> set;
-    for (const auto &[name, value] : ast.getTreeMap()) {
+    for (const auto &[name, value] : ast->getTreeMap()) {
         if (corelib::text::isUpper(name.back()))
             set.push_back(name);
     }
@@ -308,7 +305,7 @@ auto ASTPass::getTerminals() -> std::vector<std::vector<std::string>> {
 }
 auto ASTPass::getNonTerminals() -> std::vector<std::vector<std::string>> {
     std::vector<std::vector<std::string>> set;
-    for (const auto &[name, value] : ast.getTreeMap()) {
+    for (const auto &[name, value] : ast->getTreeMap()) {
         if (corelib::text::isLower(name.back()))
             set.push_back(name);
     }
@@ -326,7 +323,7 @@ void ASTPass::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members,
     }
 }
 void ASTPass::createUsePlacesTable() {
-    for (const auto &[name, value] : ast.getTreeMap()) {
+    for (const auto &[name, value] : ast->getTreeMap()) {
         getUsePlacesTable(value.members, name);
     }
 }
@@ -337,7 +334,7 @@ void ASTPass::constructNullableSet() {
     bool changed;
     do {
         changed = false;
-        for (const auto &[name, value] : ast.getTreeMap()) {
+        for (const auto &[name, value] : ast->getTreeMap()) {
             if (corelib::text::isUpper(name.back())) continue;
             if (nullable[name]) continue;
 
@@ -418,7 +415,7 @@ void ASTPass::constructFirstSet() {
     bool changed;
     do {
         changed = false;
-        for (const auto &[name, value] : ast.getTreeMap()) {
+        for (const auto &[name, value] : ast->getTreeMap()) {
             // cpuf::printf("constructing first set for %$ -> ", nonterminal);
             if (corelib::text::isUpper(name.back())) {
                 continue;
@@ -443,7 +440,7 @@ void ASTPass::constructFollowSet() {
         prevDependedChanged = false;
         prev_depend.clear();
         changed.clear();
-        for (const auto &[name, value] : ast.getTreeMap()) {
+        for (const auto &[name, value] : ast->getTreeMap()) {
             if (corelib::text::isUpper(name.back())) {
                 continue;
             }
@@ -543,7 +540,7 @@ void ASTPass::constructFollowSet() {
 }
 ASTPass::lexer_code ASTPass::getCodeForLexer() {
     TreeAPI::RuleMemberOp options;
-    for (const auto &[name, value] : ast.getTreeMap()) {
+    for (const auto &[name, value] : ast->getTreeMap()) {
         if (corelib::text::isLower(name.back()))
             continue;
         auto find_it = use_places.find(name);
@@ -569,11 +566,9 @@ ASTPass::lexer_code ASTPass::getCodeForLexer() {
     sortByPriority(options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
-    LLIR_old code(*this, resultRule, true);
+    IR code(*ast, resultRule, true);
     const auto &success_var = code.getSuccessVars();
     code.pop(); // remove space skip
-    code.push_begin({LLIR_old::types::TOKEN});
-    code.push({LLIR_old::types::RULE_END});
     if (success_var.empty())
         throw Error("Empty success var\n");
     return {code, success_var[0].var};

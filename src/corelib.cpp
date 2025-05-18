@@ -1,10 +1,9 @@
 module;
-#include <corelib.cppm>
+#include <string>
 #include <filesystem>
 #include <fstream>
-#include <string>
-#include <vector>
 module corelib;
+import logging;
 namespace corelib::file {
     // Function to read the content of a file into a string
     std::string readFile(const std::filesystem::path filePath) {

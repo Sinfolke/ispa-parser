@@ -1,7 +1,11 @@
-export module ASTPass;
+module;
 #include <Parser.h>
+#include <set>
+export module ASTPass;
 import corelib;
 import LLIR;
+import AST;
+import TreeAPI;
 export class ASTPass {
     public:
         struct Conflict {
@@ -11,15 +15,15 @@ export class ASTPass {
             std::vector<Parser::Rule>::iterator rhs_it;
         };
         struct lexer_code {
-            LLIR_old code;
-            LLIR_old::variable success_var;
+            LLIR::IR code;
+            LLIR::variable success_var;
         };
         using ConflictsList = std::vector<Conflict>;
         using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
         using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
         using Follow = First;
     private:
-        AST ast;
+        AST *ast;
         size_t token_count = 0;
         UsePlaceTable use_places;
         First first;
@@ -63,7 +67,7 @@ export class ASTPass {
             constructFollowSet();
         }
     public:
-        ASTPass(const AST &ast, bool rawAssign = false) : ast(ast) {
+        ASTPass(AST &ast, bool rawAssign = false) : ast(&ast) {
             if (!rawAssign)
                 constructor();
         }
