@@ -1,10 +1,9 @@
-module;
-#include <sstream>
 module LLHeader;
 import Converter;
 import LLIR;
 import logging;
 import corelib;
+import std;
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <list>\n";

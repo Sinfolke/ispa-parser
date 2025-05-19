@@ -1,16 +1,10 @@
 /**
  * The Extended LR parser. ELR.cppm and ELR.cpp files reponse for generating LR(*) parser.
  */
-module;
-#include <unordered_map>
-#include <vector>
-#include <set>
-#include <variant>
-#include <unordered_set>
 export module ELRParser;
 import LRParser;
 import AST;
-
+import std;
 export class ELRParser : public LRParser {
     public:
         struct NFA_state {

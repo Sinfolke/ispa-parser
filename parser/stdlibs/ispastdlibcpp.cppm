@@ -6,32 +6,21 @@
  * It is for case you'd use two ISC parsers in one same project.
  * However it won't cancell that parser does not rely on any library
 */
-#pragma once
-#ifndef _ISPA_STD_LIB_CPP
-#define _ISPA_STD_LIB_CPP
-#include <map>
-#include <vector>
-#include <deque>
-#include <string>
-#include <any>
-#include <stdexcept>
-#include <cctype>
-#include <cstring>
-#include <fstream>
-#include <variant>
-#include <optional>
-#include <queue>
+
+export module ispastdlibcpp;
+import std;
+import std.compat;
 #ifndef STRINGIFY
 /**
  * @brief does #x
- * 
+ *
  */
 #define STRINGIFY(x) #x
 #endif
 #ifndef TOSTRING
 /**
  * @brief Converts to a string literal non-quoted value
- * 
+ *
  */
 #define TOSTRING(x) STRINGIFY(x)
 #endif
@@ -68,12 +57,12 @@ namespace {
 }
 /**
  * @brief For the C++ here are common class declarations and structures
- * 
+ *
 */
-namespace ISPA_STD {
+export namespace ISPA_STD {
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
- * 
+ *
  */
 class Lexer_No_Tokens_exception : public std::exception {
     public:
@@ -98,10 +87,10 @@ class node_exception : public std::exception {
         std::string mes;
         void fill(const std::string& method) {
             mes.resize(94 + 2*6 + 453 + 109);
-            mes = 
+            mes =
             ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method '";
             mes += method;
-            mes += 
+            mes +=
             "' required it.\n"
             _ISC_INTERNAL_ERROR_MARK "\n"
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
@@ -111,11 +100,11 @@ class node_exception : public std::exception {
             "When they are called but the object is still uninitialised you get this error\n";
         }
         void fill() {
-            mes = 
+            mes =
             ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method required it.\n"
             _ISC_INTERNAL_ERROR_MARK "\n"
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
-            "But their methods like line etc. require those properties." 
+            "But their methods like line etc. require those properties."
             "When they are called but the object is still uninitialised you get this error\n"
             ;
         }
@@ -160,8 +149,8 @@ public:
 
     /**
      * @brief Get the end position based on startpos and length
-     * 
-     * @return long long 
+     *
+     * @return long long
      */
     std::size_t endpos() const {
         if (_startpos == std::string::npos || _end == nullptr || _start == nullptr)
@@ -201,7 +190,7 @@ public:
         return _empty;
     }
     /**
-     * get start position 
+     * get start position
      */
     auto startpos() const {
         return _startpos;
@@ -284,16 +273,16 @@ protected:
 /* internal integration functionality */
     /**
      * @brief Get the current position in the text (compares first input point with the current)
-     * 
-     * @param txt 
-     * @return std::size_t 
+     *
+     * @param txt
+     * @return std::size_t
      */
     std::size_t getCurrentPos(const char* in) {
         return in - _in;
     }
     /**
      * @brief skip the spaces
-     * 
+     *
      * @param in the input
      * @return std::size_t
      */
@@ -301,13 +290,13 @@ protected:
         auto prev = in;
         while(isspace(*in))
             in++;
-        
+
         return in - prev;
     }
         /**
      * @brief Returns the number of line of the current token or rule. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
+     *
+     * @return std::size_t
      */
     std::size_t __line(const char* pos) const {
         std::size_t count = 1;
@@ -319,16 +308,16 @@ protected:
     }
     /**
      * @brief Returns the position in line of token. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
+     *
+     * @return std::size_t
      */
     std::size_t __column(const char* pos) const {
         std::size_t count = 1;
         std::size_t escaptions = 0;
         for (char* in = const_cast<char*>(_in); in < pos; in++) {
-            if (*in == '\n') 
+            if (*in == '\n')
                 count = 0;
-            else 
+            else
                 count++;
         }
         return count;
@@ -434,7 +423,7 @@ public:
                 owner = other.owner;
                 pos = other.pos;
                 return *this;
-            }            
+            }
             void operator+=(size_t count) {
                 pos += count;
             }
@@ -461,7 +450,7 @@ public:
             }
             Node<TOKEN_T>& operator*() const {
                 return *pos;
-            } 
+            }
             Node<TOKEN_T>* operator->() const {
                 return &(*pos);
             }
@@ -542,12 +531,12 @@ public:
         if (!file) {
             throw std::runtime_error(std::string("Failed to open file '") + path + "'");
         }
-    
+
         std::string str;
         file.seekg(0, std::ios::end);
         size_t fileSize = file.tellg();
         str.reserve(fileSize);  // Reserve enough space for the string
-    
+
         file.seekg(0, std::ios::beg);
         str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         makeTokens(str);
@@ -663,7 +652,7 @@ protected:
         auto prev = pos;
         while (pos->name() == TOKEN_T::__WHITESPACE)
             ++pos;
-        
+
         return pos - prev;
     }
     void reportError(typename Lexer_base<TOKEN_T>::lazy_iterator pos, std::string msg) {
@@ -713,8 +702,8 @@ public:
     }
     /**
      * @brief Parser the tokens based on input provided before
-     * 
-     * @return Tree<RULE_T> 
+     *
+     * @return Tree<RULE_T>
      */
     Node<RULE_T>& parse() {
         if (lexer != nullptr) {
@@ -906,7 +895,3 @@ protected:
     }
 };
 } // namespace __ISC_STD
-
-#undef _ISC_GITHUB
-#undef _ISC_INTERNAL_ERROR_MARK
-#endif // _ISPA_STD_LIB_CPP

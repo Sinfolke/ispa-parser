@@ -1,12 +1,10 @@
-module;
-#include <ostream>
-#include <vector>
-#include <set>
 export module LLIRBuilderBase;
 import TreeAPI;
 import LLIR;
 import LLIRBuilderData;
 import LLIRBuilderUtility;
+import std;
+import std.compat;
 export namespace LLIR {
     class BuilderBase : protected BuilderData, public BuilderUtility {
     public:

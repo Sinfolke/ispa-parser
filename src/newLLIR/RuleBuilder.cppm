@@ -1,11 +1,9 @@
-module;
-#include <vector>
-#include <string>
 export module LLIRRuleBuilder;
 import LLIRBuilderData;
 import LLIRBuilderBase;
 import LLIR;
 import TreeAPI;
+import std;
 export namespace LLIR {
     class RuleBuilder {
         LLIR::BuilderData &builderData;

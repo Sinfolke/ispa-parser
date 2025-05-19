@@ -1,9 +1,8 @@
-module;
-#include <sstream>
 export module LRHeader;
 import LLHeader;
 import LRParser;
 import LRInternalData;
+import std;
 export class LRHeader : public LLHeader, public LRInternalData {
     protected:
     void addIncludes_h(std::ostringstream &out) const;

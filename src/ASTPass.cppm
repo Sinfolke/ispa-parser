@@ -1,20 +1,19 @@
-module;
-#include <Parser.h>
-#include <set>
 export module ASTPass;
 import corelib;
 import LLIR;
 import AST;
 import TreeAPI;
+import std;
+import std.compat;
 export class ASTPass {
     public:
-        struct Conflict {
-            std::vector<Parser::Rule>* lhs_rule;
-            std::vector<Parser::Rule>* rhs_rule;
-            std::vector<Parser::Rule>::iterator lhs_it;
-            std::vector<Parser::Rule>::iterator rhs_it;
-        };
-        using ConflictsList = std::vector<Conflict>;
+        // struct Conflict {
+        //     std::vector<Parser::Rule>* lhs_rule;
+        //     std::vector<Parser::Rule>* rhs_rule;
+        //     std::vector<Parser::Rule>::iterator lhs_it;
+        //     std::vector<Parser::Rule>::iterator rhs_it;
+        // };
+        // using ConflictsList = std::vector<Conflict>;
 
     private:
         AST *ast;

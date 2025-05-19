@@ -1,8 +1,7 @@
 module;
-#include <stack>
-#include <string>
-#include <vector>
 export module LLInternalData;
+import std;
+import std.compat;
 export class LLInternalData {
     protected:
     // private variables used for convertion

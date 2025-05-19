@@ -1,9 +1,7 @@
-#pragma once
-#include <string>
-#include <unordered_map>
-#include <iscstdlibc++.h>
-#include <iterator>
-
+export module Parser;
+import ispastdlibcpp;
+import std;
+import std.compat;
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif
@@ -22,7 +20,7 @@
 #ifndef PARSER_BOOL_TYPE
 #define PARSER_BOOL_TYPE bool
 #endif
-namespace Parser {
+export namespace Parser {
 	using str_t = PARSER_STR_TYPE;
 	using num_t = PARSER_NUM_TYPE;
 	using bool_t = PARSER_BOOL_TYPE;

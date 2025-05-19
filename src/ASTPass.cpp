@@ -1,14 +1,10 @@
-module;
-#include <string>
-#include <variant>
-#include <vector>
-#include <algorithm>
 module ASTPass;
 import corelib;
 import LLIR;
 import AST;
 import TreeAPI;
 import logging;
+import std;
 void ASTPass::removeEmptyRule(AST &ast) {
     auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {

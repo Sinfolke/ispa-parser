@@ -1,9 +1,7 @@
-module;
-#include <string>
-#include <filesystem>
-#include <fstream>
 module corelib;
 import logging;
+import std;
+import std.compat;
 namespace corelib::file {
     // Function to read the content of a file into a string
     std::string readFile(const std::filesystem::path filePath) {

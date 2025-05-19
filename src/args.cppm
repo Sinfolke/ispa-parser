@@ -1,6 +1,5 @@
-module;
-import std;
 export module args;
+import std;
 export class Arg {
     public:
     bool isBool = false;

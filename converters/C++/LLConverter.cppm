@@ -1,7 +1,4 @@
 module;
-#include <string>
-#include <sstream>
-#include <filesystem>
 export module LLConverter;
 import Converter;
 import corelib;
@@ -9,6 +6,7 @@ import logging;
 import AST;
 import LLIR;
 import LLHeader;
+import std;
 export class LLConverter : public LLConverter_base, public LLHeader {
     void outputHeader(std::ostringstream &out, const std::string &filename);
     

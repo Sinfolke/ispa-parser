@@ -1,11 +1,8 @@
-module;
-#include <string>
-#include <unordered_map>
-#include <variant>
-#include <any>
 export module TreeAPI;
 import logging;
 import hash;
+import std;
+import std.compat;
 export namespace TreeAPI {
     // forward declarations
     struct CllType;

@@ -1,7 +1,7 @@
-module;
-
 module LLIRRuleBuilder;
+import LLIRRuleMemberBuilder;
 import logging;
+import std;
 void LLIR::RuleBuilder::build() {
     data.block = createDataBlock(rule->data_block);
     data.members = LLIRRuleMemberBuilder(builderData).getData();

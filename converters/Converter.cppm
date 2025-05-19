@@ -1,11 +1,8 @@
-module;
-#include <vector>
-#include <string>
-#include <filesystem>
 export module Converter;
 import LLIR;
 import LRParser;
 import AST;
+import std;
 export class LLConverter_base {
     protected:
         // data

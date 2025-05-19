@@ -1,10 +1,5 @@
-module;
-#include <vector>
-#include <set>
-#include <queue>
-#include <variant>
-#include <unordered_map>
 module ELRParser;
+import std;
 bool ELRParser::isELR() const {
     return true;
 }

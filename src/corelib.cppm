@@ -1,7 +1,5 @@
-module;
-#include <string>
-#include <filesystem>
 export module corelib;
+import std;
 export namespace corelib {
     namespace file {
         std::string readFile(const std::filesystem::path filePath);

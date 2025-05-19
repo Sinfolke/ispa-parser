@@ -1,8 +1,7 @@
-module;
-#include <sstream>
 export module LLHeader;
 import LLStringConvertions;
 import LLIR;
+import std;
 export class LLHeader : public LLStringConvertions {
     protected:
     // header output functions

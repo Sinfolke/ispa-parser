@@ -1,14 +1,8 @@
-module;
-#include <ostream>
-#include <any>
-#include <algorithm>
-#include <optional>
-#include <vector>
-#include <set>
 module LLIRBuilderBase;
 import logging;
 import corelib;
 import LLIR;
+import std;
 auto LLIR::BuilderBase::getData() -> ::LLIR::Nodes & {
     return data;
 }

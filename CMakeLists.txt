@@ -48,28 +48,34 @@ function(precompile_std target)
                 "/lib/**/std.cppm"
                 "/usr/**/std.cppm"
         )
-
         if(STDCXX_MODULE_LIST)
             list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE)
-            message(STATUS "Using std module at: ${STDCXX_MODULE}")
+            message(STATUS "Using std module from: ${STDCXX_MODULE}")
         else()
             message(FATAL_ERROR "std.cppm module not found in system directories")
         endif()
+        # use compat module ships in same directory
+
+        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE} DIRECTORY)
+        set(STD_COMPATCXX_MODULE ${STDCXX_MODULE_DIR}/std.compat.cppm)
+        message(STATUS "Using std.compat module from: ${STD_COMPATCXX_MODULE}")
         # copy module into current directory to avoid cmake conflicts
         file(COPY ${STDCXX_MODULE} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+        file(COPY ${STD_COMPATCXX_MODULE} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
         set(STDCXX_MODULE_CMAKE_PATH ${CMAKE_BINARY_DIR}/prebuilt_std/std.cppm)
+        set(STD_COMPATCXX_MODULE_CMAKE_PATH ${CMAKE_BINARY_DIR}/prebuilt_std/std.compat.cppm)
         # Add compile command to precompile std module
         target_compile_options(${target} PRIVATE
                 -stdlib=libc++
                 -Wno-reserved-identifier
                 -Wno-reserved-module-identifier
         )
-        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE} DIRECTORY)
         target_include_directories(${target} PRIVATE ${STDCXX_MODULE_DIR})
         target_sources(${target}
                 PUBLIC
                 FILE_SET cxx_modules TYPE CXX_MODULES FILES
                 ${STDCXX_MODULE_CMAKE_PATH}
+                ${STD_COMPATCXX_MODULE_CMAKE_PATH}
         )
 endif()
 endfunction()

@@ -1,7 +1,6 @@
-module;
-#include <string>
 export module logging;
 import fmt;
+import std;
 export class Error : public std::exception {
 public:
     std::string message;

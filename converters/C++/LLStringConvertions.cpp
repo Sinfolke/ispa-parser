@@ -1,10 +1,8 @@
 module;
-#include <cstdio>
-#include <string>
-#include <unordered_map>
-#include <any>
 module LLStringConvertions;
 import LLIR;
+import std;
+import std.compat;
 static size_t count_strlen(const char* str) {
     size_t count = 0;
     for (const char* pos = str; *pos; pos++) {

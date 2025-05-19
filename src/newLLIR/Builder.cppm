@@ -1,9 +1,8 @@
-module;
-#include <vector>
-#include <string>
 export module LLIRBuilder;
 import LLIR;
 import AST;
+import std;
+import std.compat;
 namespace LLIR {
     export class Builder {
         size_t variable_count = 0;

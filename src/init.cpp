@@ -1,6 +1,5 @@
-module;
-#include <iostream>
 module init;
+import std;
 void init() {
     //std::set_terminate(custom_terminate_handler);
 #ifndef DEBUG

@@ -1,5 +1,3 @@
-module;
-
 export module LLIRBuilderUtility;
 import LLIR;
 export namespace LLIR {

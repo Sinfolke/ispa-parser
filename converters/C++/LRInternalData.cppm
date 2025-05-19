@@ -1,12 +1,7 @@
-module;
-#include <vector>
-#include <string>
-#include <cstdlib>
-#include <stack>
-#include <cstddef>
 export module LRInternalData;
 import LRParser;
 import LLIR;
+import std;
 export class LRInternalData {
     protected:
         std::size_t max_states = 0, max_dfa_token_map_size = 0;

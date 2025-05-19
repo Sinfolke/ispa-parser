@@ -1,11 +1,11 @@
-module;
-#include <vector>
 export module LLIRRuleMemberBuilder;
 
 import LLIRBuilderBase;
 import LLIRBuilderData;
 import TreeAPI;
 import LLIR;
+import std;
+import std.compat;
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
         void build() override;

@@ -1,14 +1,10 @@
 module;
-#include <sstream>
-#include <string>
-#include <cstddef>
-#include <filesystem>
-#include <iostream>
 module LRConverter;
 import LLConverter;
 import logging;
 import ELRParser;
 import LLIRBuilder;
+import std;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }

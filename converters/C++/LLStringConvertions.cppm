@@ -1,11 +1,9 @@
-module;
-#include <string>
-#include <any>
 export module LLStringConvertions;
 import corelib;
 import logging;
 import LLInternalData;
 import LLIR;
+import std;
 export class LLStringConvertions : public LLInternalData {
     protected:
     std::string convert_var_type(const LLIR::var_types &type, const std::vector<LLIR::var_type> &data) const;

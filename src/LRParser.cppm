@@ -1,13 +1,10 @@
-module;
-#include <vector>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
 export module LRParser;
 import corelib;
 import AST;
 import hash;
 import TreeAPI;
+import std;
+import std.compat;
 export class LRParser {
 public:
     enum class Action_type {

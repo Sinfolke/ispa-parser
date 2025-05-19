@@ -1,9 +1,8 @@
-module;
-#include <string>
-#include <vector>
 export module LLIRBuilderData;
 import LLIR;
-import ASTPass;
+import AST;
+import std;
+import std.compat;
 export namespace LLIR {
     class BuilderData {
     protected:
@@ -35,7 +34,7 @@ export namespace LLIR {
             std::vector<ConvertionResult> &success_vars,
             std::vector<std::pair<std::string, variable>> &key_vars,
             std::vector<variable> &unnamed_datablock_units,
-            ASTPass *tree
+            AST *tree
         ) :
             variable_count(&variable_count),
             isToken(&isToken),

@@ -1,11 +1,6 @@
-module;
-#include <vector>
-#include <any>
-#include <string>
-#include <variant>
-#include <optional>
-#include <unordered_map>
 export module LLIR;
+import std;
+import std.compat;
 export namespace LLIR {
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,

@@ -1,7 +1,7 @@
-module;
-#include <vector>
 module LLIRBuilderUtility;
 import LLIR;
+import std;
+import std.compat;
 void LLIR::BuilderUtility::removePrevSpaceSkip() {
     if (!data->empty()) {
         // remove previous skip of spaces if it does exists

@@ -1,14 +1,11 @@
 
-module;
-#include <sstream>
-#include <filesystem>
 export module LRConverter;
 import Converter;
 import LRHeader;
 import corelib;
 import LRParser;
 import AST;
-
+import std;
 class LRConverter : public LRConverter_base, public LRHeader {
 private:
     // private variables used for convertion

@@ -1,11 +1,9 @@
-module;
-#include <any>
-#include <Parser.h>
 module AST;
 import ASTPass;
 import logging;
 import TreeAPI;
 import LLIRBuilder;
+import std;
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);

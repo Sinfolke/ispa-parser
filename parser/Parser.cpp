@@ -1,5 +1,5 @@
-#include "Parser.h"
-
+module Parser;
+import std;
 void Parser::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
         printToken(os, token);
