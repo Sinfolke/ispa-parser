@@ -2,8 +2,10 @@ module;
 #include <any>
 #include <Parser.h>
 module AST;
+import ASTPass;
 import logging;
 import TreeAPI;
+import LLIRBuilder;
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);
@@ -863,7 +865,7 @@ auto AST::getCodeForLexer() -> lexer_code {
         }
         // if not found, do not add this means the token is never used
     }
-    sortByPriority(options);
+    ASTPass::sortByPriority(*this, options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
     LLIR::Builder code(this, resultRule, true);

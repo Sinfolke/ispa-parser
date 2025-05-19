@@ -1,7 +1,5 @@
 module;
-#include <vector>
-#include <string>
-#include <unordered_map>
+import std;
 export module args;
 export class Arg {
     public:

@@ -1,5 +1,14 @@
 module;
+#include <sstream>
+#include <string>
+#include <cstddef>
+#include <filesystem>
+#include <iostream>
 module LRConverter;
+import LLConverter;
+import logging;
+import ELRParser;
+import LLIRBuilder;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }
@@ -158,7 +167,7 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR_old tokens_ir(tree, true);
+    LLIR::Builder tokens_ir(tree, true);
     LLConverter converter(tokens_ir, *tree, &lexer_code, &success_var, filename);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
@@ -173,7 +182,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addparseFromFunctions(out, data->isELR());
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
-    converter.convertLexerCode(lexer_code.getMembers(), out);
+    converter.convertLexerCode(lexer_code.getData()[0].members, out);
     converter.addLexerCode_Bottom(out, success_var);
     converter.convertData(out);
     max_states = data->getMaxStatesCount();
@@ -225,6 +234,6 @@ void LRConverter::output(std::filesystem::path name) {
     cpp << cpp_out.str();
     h << h_out.str();
 }
-extern "C" LRConverter_base* getLRConverter(LRParser& data, ASTPass& tree) {
+extern "C" LRConverter_base* getLRConverter(LRParser& data, AST& tree) {
     return new LRConverter(data, tree);
 }

@@ -9,8 +9,8 @@ import LLIR;
 import AST;
 import TreeAPI;
 import logging;
-void ASTPass::removeEmptyRule() {
-    auto &treeMap = ast->getTreeMap();
+void ASTPass::removeEmptyRule(AST &ast) {
+    auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
         if (value.members.size() == 0) {
@@ -20,11 +20,8 @@ void ASTPass::removeEmptyRule() {
         it++;
     }
 }
-// void Tree::removeUnusedRule() {
-//
-// }
-void ASTPass::inlineSingleGroups() {
-    for (auto &[name, value] : ast->getTreeMap()) {
+void ASTPass::inlineSingleGroups(AST &ast) {
+    for (auto &[name, value] : ast.getTreeMap()) {
         for (auto &member : value.members) {
             if (member.isGroup()) {
                 if (member.quantifier != '\0')
@@ -83,14 +80,15 @@ void ASTPass::literalsToToken(
         }
     }
 }
-void ASTPass::literalsToToken() {
+void ASTPass::literalsToToken(AST &ast) {
     size_t count = 0;
     std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
-    auto &treeMap = ast->getTreeMap();
+    auto &treeMap = ast.getTreeMap();
+    ASTPass pass(ast);
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
-            literalsToToken(value.members, count, toInsert, generated);
+            pass.literalsToToken(value.members, count, toInsert, generated);
         }
     }
     for (const auto &[name, newRule] : toInsert) {
@@ -115,9 +113,9 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::
     const auto first_data = treeMap.find(first.name);
     const auto second_data = treeMap.find(second.name);
     if (first_data == treeMap.end())
-        throw Error("Not found Rule_name in map: %$ against %$\n", first.name, second);
+        throw Error("Not found Rule_name in map");
     if (second_data == treeMap.end())
-        throw Error("Not found Rule_name in map: %$ against %$\n", second.name, first);
+        throw Error("Not found Rule_name in map");
     const auto &first_rules = first_data->second.members;
     const auto &second_rules = second_data->second.members;
     for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
@@ -257,10 +255,13 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         return false; // both unknown
     }, first.value, second.value);
 }
-void ASTPass::sortByPriority(TreeAPI::RuleMemberOp& options) {
-    std::sort(options.options.begin(), options.options.end(), [this](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {return prioritySort(first, second);});
+void ASTPass::sortByPriority(AST &ast, TreeAPI::RuleMemberOp& options) {
+    ASTPass pass(ast);
+    std::sort(options.options.begin(), options.options.end(), [&](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {
+        return pass.prioritySort(first, second);
+    });
 }
-void ASTPass::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
+void ASTPass::sortByPriority(AST &ast, std::vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
             sortByPriority(member.getGroup().values);
@@ -271,23 +272,39 @@ void ASTPass::sortByPriority(std::vector<TreeAPI::RuleMember>& members) {
                     sortByPriority(option.getGroup().values);
                 }
             }
-            sortByPriority(member.getOp());
+            sortByPriority(ast, member.getOp());
         }
     }
 }
-void ASTPass::sortByPriority() {
-    for (auto &[name, value] : ast->getTreeMap()) {
+void ASTPass::sortByPriority(AST &ast) {
+    for (auto &[name, value] : ast.getTreeMap()) {
         if (value.members.empty()) {
             throw Error("Empty rule\n");
         }
-        sortByPriority(value.members);
+        ASTPass pass(ast);
+        pass.sortByPriority(value.members);
     }
 }
-void ASTPass::addSpaceToken() {
+void ASTPass::addSpaceToken(AST &ast) {
     TreeAPI::Rule spaceTokenRule;
     TreeAPI::RuleMemberCsequence csequence;
     csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
     csequence.characters = {' '};
     spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
-    ast->getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
+    ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
+}
+void ASTPass::removeEmptyRule() {
+    removeEmptyRule(*ast);
+}
+void ASTPass::inlineSingleGroups() {
+    inlineSingleGroups(*ast);
+}
+void ASTPass::literalsToToken() {
+    literalsToToken(*ast);
+}
+void ASTPass::sortByPriority() {
+    sortByPriority(*ast);
+}
+void ASTPass::addSpaceToken() {
+    addSpaceToken(*ast);
 }

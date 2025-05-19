@@ -1,9 +1,14 @@
+
 module;
+#include <sstream>
+#include <filesystem>
 export module LRConverter;
 import Converter;
-import LRParser;
-import corelib;
 import LRHeader;
+import corelib;
+import LRParser;
+import AST;
+
 class LRConverter : public LRConverter_base, public LRHeader {
 private:
     // private variables used for convertion
@@ -16,7 +21,7 @@ private:
     void outputIR(std::ostringstream &out, std::string &filename);
     void outputHeader(std::ostringstream& out, std::string &filename) const;
 public:
-    LRConverter(LRParser &parser, ASTPass &tree) : LRConverter_base(parser, tree) {}
+    LRConverter(LRParser &parser, AST &tree) : LRConverter_base(parser, tree) {}
     ~LRConverter() {}
     void output(std::filesystem::path filename);
 };

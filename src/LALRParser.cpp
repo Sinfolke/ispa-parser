@@ -1,7 +1,7 @@
 module;
 #include <vector>
 #include <unordered_map>
-#include <set>
+#include <unordered_set>
 module LALRParser;
 import TreeAPI;
 import LRParser;
@@ -54,7 +54,7 @@ std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRPars
 
 void LALRParser::build() {
     // identify merge states
-    std::unordered_map<CanonicalItem, std::vector<size_t>> core_to_states;
+    std::unordered_map<CanonicalItem, std::vector<size_t>, CanonicalItemHash> core_to_states;
     size_t i = 0;
     for (auto item : canonical_item_set) {
         CanonicalItem core;

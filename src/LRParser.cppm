@@ -78,6 +78,17 @@ public:
     using Rules = std::vector<Rules_part>;
     using Priority = std::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
+
+    struct CanonicalItemHash {
+        std::size_t operator()(const CanonicalItem& item) const noexcept {
+            std::size_t seed = item.size();
+            LR1CoreHash core_hash;  // assumes this is a functor like std::hash<LR1Core>
+            for (const auto& elem : item) {
+                seed ^= core_hash(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+            return seed;
+        }
+    };
 protected:
     AST *tree;
     ActionTable action_table;

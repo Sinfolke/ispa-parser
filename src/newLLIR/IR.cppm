@@ -139,6 +139,7 @@ export namespace LLIR {
     using Nodes = std::vector<member>;
     using Expression = std::vector<expr>;
     class IR {
+        auto getDataBlocks(bool isToken) -> DataBlockList;
     protected:
         std::vector<Data> data;
     public:
@@ -151,6 +152,8 @@ export namespace LLIR {
         auto size() -> size_t;
         auto empty() -> bool;
         auto clear() -> void;
+        auto getDataBlocksTerminals() -> DataBlockList;
+        auto getDataBlocksNonTerminals() -> DataBlockList;
     };
     using lexer_code = std::pair<IR, variable>;
 }

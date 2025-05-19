@@ -19,7 +19,7 @@ export namespace LLIR {
         std::vector<ConvertionResult> *success_vars = nullptr;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
-        ASTPass *tree = nullptr;
+        AST *tree = nullptr;
     public:
         auto initializationCheck() -> bool;
         BuilderData(

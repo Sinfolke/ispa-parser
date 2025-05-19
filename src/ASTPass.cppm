@@ -35,8 +35,6 @@ export class ASTPass {
         bool prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI::RuleMemberGroup &second);
         bool prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
         bool prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
-        void sortByPriority(TreeAPI::RuleMemberOp& options);
-        void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         
 
         void constructor() {
@@ -51,8 +49,15 @@ export class ASTPass {
             if (!rawAssign)
                 constructor();
         }
-        auto getRawAst() -> AST&;
-
+        static void sortByPriority(TreeAPI::RuleMemberOp& options);
+        static void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
+        static void removeEmptyRule(AST &ast);
+        static void inlineSingleGroups(AST &ast);
+        static void literalsToToken(AST &ast);
+        static void sortByPriority(AST &ast);
+        static void addSpaceToken(AST &ast);
+        static void sortByPriority(AST &ast, TreeAPI::RuleMemberOp& options);
+        static void sortByPriority(AST &ast, std::vector<TreeAPI::RuleMember>& members);
         void removeEmptyRule();
         void inlineSingleGroups();
         void literalsToToken();

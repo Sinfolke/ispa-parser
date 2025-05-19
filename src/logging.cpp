@@ -2,6 +2,8 @@ module;
 #include <iostream>
 #include <cpuf/color.h>
 #include <exception>
+
+#include "cpuf/printf.h"
 module logging;
 const char* Error::what() const noexcept {
     return message.c_str();
@@ -9,18 +11,18 @@ const char* Error::what() const noexcept {
 void Error::print() {
 // Capture the stack trace
 
-    std::cerr << fmt::format("ispa: %sinternal error%s: {}\n", color::red, color::reset, message);
+    std::cerr << cpuf::sprintf("ispa: %sinternal error%s: %$\n", color::red, color::reset, message);
     exit(2);
 }
 const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() {
-    std::cerr << fmt::format("ispa: %serror%s: {}\n", color::red, color::reset, message);
+    std::cerr << cpuf::sprintf("ispa: %serror%s: %$\n", color::red, color::reset, message);
     exit(1);
 }
 void UWarning::print() {
-    fmt::printf("ispa: %swarning%s: {}\n", color::yellow, color::reset, message);
+    cpuf::printf("ispa: %swarning%s: %$\n", color::yellow, color::reset, message);
 }
 
 /*
@@ -41,10 +43,10 @@ void custom_terminate_handler() {
     } catch (UWarning& e) {
         e.print();
     } catch (std::exception& e) {
-        fmt::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
+        cpuf::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
         exit(1);
     } catch (...) {
-        fmt::printf("Unknown exception\n");
+        cpuf::printf("Unknown exception\n");
         exit(1);
     }
 #endif

@@ -1,5 +1,6 @@
 #include <cpuf/color.h>
 #include <cpuf/dlib.h>
+#include <cpuf/operator.h>
 #include <unordered_map>
 #include <filesystem>
 #include <Parser.h>
@@ -15,8 +16,8 @@ import LALRParser;
 import Converter;
 import LLIRBuilder;
 import LLIR;
-import Parser;
 import fmt;
+import hash;
 void printHelp() {
     fmt::printf(R"(
 usage: 

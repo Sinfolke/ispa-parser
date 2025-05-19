@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.28.3)
+cmake_minimum_required(VERSION 3.30 FATAL_ERROR)
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 project(ISPA LANGUAGES CXX)
+set(CMAKE_CXX_MODULE_STD 1) # this is important
 # =============================================
 # FUNCTIONS
 # =============================================
@@ -39,7 +40,39 @@ function(collect_filenames out_var extension)
 
     set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
+function(precompile_std target)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message(STATUS "Searching std module")
 
+        file(GLOB_RECURSE STDCXX_MODULE_LIST
+                "/lib/**/std.cppm"
+                "/usr/**/std.cppm"
+        )
+
+        if(STDCXX_MODULE_LIST)
+            list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE)
+            message(STATUS "Using std module at: ${STDCXX_MODULE}")
+        else()
+            message(FATAL_ERROR "std.cppm module not found in system directories")
+        endif()
+        # copy module into current directory to avoid cmake conflicts
+        file(COPY ${STDCXX_MODULE} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+        set(STDCXX_MODULE_CMAKE_PATH ${CMAKE_BINARY_DIR}/prebuilt_std/std.cppm)
+        # Add compile command to precompile std module
+        target_compile_options(${target} PRIVATE
+                -stdlib=libc++
+                -Wno-reserved-identifier
+                -Wno-reserved-module-identifier
+        )
+        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE} DIRECTORY)
+        target_include_directories(${target} PRIVATE ${STDCXX_MODULE_DIR})
+        target_sources(${target}
+                PUBLIC
+                FILE_SET cxx_modules TYPE CXX_MODULES FILES
+                ${STDCXX_MODULE_CMAKE_PATH}
+        )
+endif()
+endfunction()
 
 # =============================================
 # Fetch libraries
@@ -80,8 +113,11 @@ set(INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
         ${CMAKE_CURRENT_SOURCE_DIR}/external/fmt/include
 )
-
-
+# =============================================
+# Add CXX20 std module
+# =============================================
+add_library(cxx_std_module STATIC)
+precompile_std(cxx_std_module)
 # =============================================
 # Compiler Configuration
 # =============================================
@@ -96,9 +132,6 @@ endif()
 set(CLANG_MODULE_CACHE_DIR "${CMAKE_BINARY_DIR}/clang-modules")
 set(MODULE_COMPILATION
         -fmodules-cache-path=${CLANG_MODULE_CACHE_DIR}
-        -fno-modules
-        -fno-implicit-modules
-        -fno-implicit-module-maps
 )
 add_compile_options(-stdlib=libc++)
 add_link_options(-stdlib=libc++)
@@ -134,6 +167,7 @@ target_sources(ispa_modules
         ${ISPA_MODULES}
 )
 target_include_directories(ispa_modules PRIVATE ${INCLUDE_DIRS})
+target_link_libraries(ispa_modules PRIVATE cxx_std_module)
 # =============================================
 # Main Executable
 # =============================================
@@ -149,7 +183,11 @@ get_file_range(ISPA_SOURCES
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
 #target_compile_options(ispa PRIVATE ${MODULE_COMPILATION})
-target_link_libraries(ispa PRIVATE ispa_modules)
+target_link_libraries(ispa
+        PRIVATE
+            ispa_modules
+            cxx_std_module
+)
 # =============================================
 # Converter Configuration
 # =============================================
@@ -182,7 +220,13 @@ target_sources(ispa-converter-cpp
 # =============================================
 # Link Dependencies
 # =============================================
-target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
+add_dependencies(ispa_modules cxx_std_module)
+add_dependencies(ispa ispa_modules cxx_std_module)
+add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
+target_link_libraries(ispa-converter-cpp
+        PRIVATE
+            ispa_modules
+)
 target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp

@@ -1,9 +1,10 @@
-
 module;
+#include <sstream>
 module LLHeader;
+import Converter;
 import LLIR;
 import logging;
-import Converter;
+import corelib;
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <list>\n";
@@ -146,16 +147,16 @@ void LLHeader::addStandardFunctionsParser(std::ostringstream &out) const {
             static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);)";
     out << "\n";
 }
-void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR_old::inclosed_map map) const {
+void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const {
     for (auto [key, value] : map) {
         auto [expr, type] = value;
         out << "\t\t\t" << convert_var_type(type.type, type.templ) << " " << key << ";\n";
     }
 }
-void LLHeader::convert_single_assignment_data(std::ostringstream &out, LLIR_old::var_type type, std::string name) const {
+void LLHeader::convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const {
     out << "\t\tusing " << name << " = " << convert_var_type(type.type, type.templ) << ";\n";
 }
-void LLHeader::write_data_block(std::ostringstream &out, const LLIR_old::DataBlockList &dtb) const {
+void LLHeader::write_data_block(std::ostringstream &out, const LLIR::DataBlockList &dtb) const {
     for (auto [name, block] : dtb) {
         if (block.empty())
             continue;
@@ -168,7 +169,7 @@ void LLHeader::write_data_block(std::ostringstream &out, const LLIR_old::DataBlo
         }
     }
 }
-void LLHeader::createTypesNamespace(std::ostringstream &out, const LLIR_old::DataBlockList &data_block_tokens, const LLIR_old::DataBlockList &data_block_rules) const {
+void LLHeader::createTypesNamespace(std::ostringstream &out, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\tnamespace Types {\n"; 
     write_data_block(out, data_block_tokens); 
     write_data_block(out, data_block_rules); 
@@ -208,7 +209,7 @@ void LLHeader::create_parser_header(std::ostringstream &out) const {
         << "\t\tvoid parseFromTokens();\n"
         << "\t\tvoid lazyParse();\n";
 }
-void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR_old::DataBlockList &data_block_tokens, const LLIR_old::DataBlockList &data_block_rules) const {
+void LLHeader::create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const {
     out << "\n\tnamespace get {\n";
     for (const auto &[fullname, block] : data_block_tokens) {
         if (block.empty())
