@@ -3,6 +3,7 @@ module;
 #include <variant>
 #include <any>
 #include <unordered_map>
+#include <vector>
 module TreeAPI;
 namespace TreeAPI {
     size_t String::count_strlen(const std::string &str) {
@@ -402,6 +403,7 @@ namespace TreeAPI {
     bool operator==(const TreeAPI::Array &lhs, const TreeAPI::Array &rhs) {
         return lhs.value == rhs.value;
     }
+
 
     // Comparison operator for Object
     bool operator==(const TreeAPI::Object &lhs, const TreeAPI::Object &rhs) {

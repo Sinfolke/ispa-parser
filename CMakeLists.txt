@@ -22,6 +22,23 @@ function(add_raw_module target source_target)
         )
     endforeach()
 endfunction()
+function(collect_filenames out_var extension)
+    set(cppm_files "")
+    foreach(path IN LISTS ARGN)
+        file(GLOB_RECURSE temp RELATIVE "${path}" "${path}/*.${extension}")
+        list(APPEND cppm_files ${temp})
+    endforeach()
+
+    list(REMOVE_DUPLICATES cppm_files)
+
+    set(result "")
+    foreach(file ${cppm_files})
+        get_filename_component(name "${file}" NAME_WE)
+        list(APPEND result "${name}")
+    endforeach()
+
+    set(${out_var} "${result}" PARENT_SCOPE)
+endfunction()
 
 
 # =============================================
@@ -43,7 +60,7 @@ FetchContent_MakeAvailable(fmt)
 # =============================================
 # Global Configuration
 # =============================================
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
@@ -78,25 +95,13 @@ else()
 endif()
 set(CLANG_MODULE_CACHE_DIR "${CMAKE_BINARY_DIR}/clang-modules")
 set(MODULE_COMPILATION
-        -fmodules
-        -fimplicit-modules
-        -fimplicit-module-maps
         -fmodules-cache-path=${CLANG_MODULE_CACHE_DIR}
+        -fno-modules
+        -fno-implicit-modules
+        -fno-implicit-module-maps
 )
 add_compile_options(-stdlib=libc++)
 add_link_options(-stdlib=libc++)
-# =============================================
-# Dependencies
-# =============================================
-if(NOT DISABLE_TRACER)
-    add_compile_definitions(ENABLE_TRACER)
-    if(WIN32)
-        find_package(Boost REQUIRED COMPONENTS stacktrace_noop)
-    else()
-        find_package(Boost 1.74 REQUIRED COMPONENTS stacktrace_backtrace)
-    endif()
-endif()
-
 # =============================================
 # Project Definitions
 # =============================================
@@ -114,32 +119,37 @@ target_sources(fmt_m
 )
 target_sources(fmt_m PRIVATE ${ISPA_SOURCES})
 target_include_directories(fmt_m PRIVATE ${fmt_SOURCE_DIR}/include)
-
+# =============================================
+# ISPA MAIN EXECUTABLE MODULES
+# =============================================
+add_library(ispa_modules STATIC)
+get_file_range(ISPA_MODULES
+        ${SRC_DIR}/*.cppm
+        ${PARSER_DIR}/*.cppm
+        ${INCLUDE_DIR}/*.cppm
+)
+target_sources(ispa_modules
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${ISPA_MODULES}
+)
+target_include_directories(ispa_modules PRIVATE ${INCLUDE_DIRS})
 # =============================================
 # Main Executable
 # =============================================
 
 add_executable(ispa)
-target_compile_options(ispa PRIVATE -fmodules)
+#target_compile_options(ispa PRIVATE -fmodules)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/color.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cc
 )
-get_file_range(ISPA_MODULES
-        ${SRC_DIR}/*.cppm
-        ${PARSER_DIR}/*.cppm
-        ${INCLUDE_DIR}/*.cppm
-)
-target_sources(ispa
-        PUBLIC
-        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-        ${ISPA_MODULES}
-)
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
-target_compile_options(ispa PRIVATE ${MODULE_COMPILATION})
+#target_compile_options(ispa PRIVATE ${MODULE_COMPILATION})
+target_link_libraries(ispa PRIVATE ispa_modules)
 # =============================================
 # Converter Configuration
 # =============================================
@@ -168,19 +178,17 @@ target_sources(ispa-converter-cpp
         ${CPP_CONVERTER_MODULES}
         ${CONVERTERS_DIR}/Converter.cppm
 )
-target_compile_options(ispa-converter-cpp PRIVATE ${MODULE_COMPILATION})
-add_raw_module(ispa-converter-cpp ispa LRParser corelib LLIR)
+#target_compile_options(ispa-converter-cpp PRIVATE ${MODULE_COMPILATION})
 # =============================================
 # Link Dependencies
 # =============================================
+target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
+target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp
     fmt::fmt
     fmt_m
 )
-if(NOT DISABLE_TRACER)
-    target_link_libraries(ispa PRIVATE Boost::stacktrace_backtrace)
-endif()
 # =============================================
 # Testing Configuration
 # =============================================

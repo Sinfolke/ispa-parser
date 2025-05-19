@@ -6,6 +6,7 @@ module;
 #include <vector>
 #include <set>
 #include <variant>
+#include <unordered_set>
 export module ELRParser;
 import LRParser;
 import AST;

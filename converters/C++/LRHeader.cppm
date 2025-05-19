@@ -1,4 +1,5 @@
 module;
+#include <sstream>
 export module LRHeader;
 import LLHeader;
 import LRParser;

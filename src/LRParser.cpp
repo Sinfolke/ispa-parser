@@ -2,10 +2,11 @@ module;
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include <queue>
+#include <cpuf/printf.h>
 module LRParser;
 import TreeAPI;
-bool operator<(const LRParser::LR0Core &first, const LRParser::LR0Core &second) {return false;}
-bool operator<(const LRParser::LR1Core &first, const LRParser::LR1Core &second) {return false;}
+import logging;
 static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group) {
     size_t count = 0;
     for (auto &rule : group) {
@@ -72,10 +73,10 @@ bool LRParser::isELR() const {
     return false;
 }
 void LRParser::createInitialItemSet() {
-    for (auto &[name, value] : tree->getRawAst().getTreeMap()) {
+    for (auto &[name, value] : tree->getTreeMap()) {
         initial_item_set[name] = {value};
     }
-    tree->getRawAst().getTreeMap().clear();
+    tree->getTreeMap().clear();
 }
 void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements) {
     for (size_t i = 0; i < members.size(); i++) {
@@ -742,7 +743,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-bool isInUsePlace(const ASTPass::UsePlaceTable &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
+bool isInUsePlace(const AST::UsePlaceTable &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
     checked.insert(first);
     auto find_it = use_places.find(first);
     if (find_it == use_places.end())

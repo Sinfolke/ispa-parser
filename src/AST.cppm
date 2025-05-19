@@ -5,7 +5,8 @@ module;
 #include <Parser.h>
 export module AST;
 import TreeAPI;
-import Parser;
+import corelib;
+import LLIR;
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */
@@ -16,6 +17,10 @@ export class AST {
         };
         using TreeMap = std::unordered_map<std::vector<std::string>, TreeAPI::Rule>;
         using Use = std::unordered_map<std::string, TreeAPI::rvalue>;
+        using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
+        using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
+        using Follow = First;
+        using lexer_code = std::pair<LLIR::IR, LLIR::variable>;
     private:
         TreeMap tree_map;
         Use use;
@@ -35,6 +40,10 @@ export class AST {
         TreeAPI::RulePrefix ops_prefix;
         std::vector<TreeAPI::RuleMember> ops;
 
+        UsePlaceTable use_places;
+        First first;
+        Follow follow;
+        std::unordered_map<std::vector<std::string>, bool> nullable;
         TreeAPI::Array createArray(const Parser::Rule &array);
         TreeAPI::Object createObject(const Parser::Rule &object);
         TreeAPI::String createString(const Parser::Token &token);
@@ -74,15 +83,28 @@ export class AST {
             }
         }
         std::vector<TreeAPI::RuleMember> &getRules();
+        void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
+        void createUsePlacesTable();
+        void constructNullableSet();
+        auto constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>>;
+        void constructFirstSet();
+        void constructFollowSet();
     public:
         TreeMap &getTreeMap();
         Use &getUse();
         std::string &getName();
         SpacemodeStates &getSpacemode();
+
         AST(const std::vector<Parser::Rule> &modules) {
             constructor(modules);\
         }
         AST(const Parser::Rule &mod) {
             constructor(mod);
         }
+        auto getTerminals() -> std::vector<std::vector<std::string>>;
+        auto getNonTerminals() -> std::vector<std::vector<std::string>>;
+        auto getUsePlacesTable() -> UsePlaceTable&;
+        auto getCodeForLexer() -> std::pair<LLIR::IR, LLIR::variable>;
+        auto getFirstSet()-> First&;
+        auto getFollowSet() -> Follow&;
 };

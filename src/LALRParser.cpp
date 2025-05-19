@@ -1,7 +1,11 @@
 module;
 #include <vector>
 #include <unordered_map>
+#include <set>
 module LALRParser;
+import TreeAPI;
+import LRParser;
+import hash;
 void LALRParser::rebuildActionTable(const std::vector<size_t>& state_mapping) {
     ActionTable new_action_table;
 

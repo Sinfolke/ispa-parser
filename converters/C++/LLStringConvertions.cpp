@@ -1,4 +1,8 @@
 module;
+#include <cstdio>
+#include <string>
+#include <unordered_map>
+#include <any>
 module LLStringConvertions;
 import LLIR;
 static size_t count_strlen(const char* str) {
@@ -22,23 +26,23 @@ static std::string format_str(std::string str) {
     }
     return res;
 }
-std::string LLStringConvertions::convert_var_type(const IR::var_types &type, const std::vector<IR::var_type> &data) const {
-    if (type == IR::var_types::ARRAY) {
-        std::vector<IR::var_type> type = data;
+std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, const std::vector<LLIR::var_type> &data) const {
+    if (type == LLIR::var_types::ARRAY) {
+        std::vector<LLIR::var_type> type = data;
         if (data.empty())
-            type.push_back({IR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         std::string t = "::" + namespace_name + "::arr_t";
         t += "<";
         t += convert_var_type(type[0].type, type[0].templ);
         t += ">";
         return t;
-    } else if (type == IR::var_types::OBJECT) {
-        std::vector<IR::var_type> type = data;
+    } else if (type == LLIR::var_types::OBJECT) {
+        std::vector<LLIR::var_type> type = data;
         if (data.size() < 1) {
-            type.push_back({IR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         }
         if (data.size() < 2) {
-            type.push_back({IR::var_types::ANY});
+            type.push_back({LLIR::var_types::ANY});
         }
         std::string t = "::" + namespace_name + "::obj_t";
         t += "<";
@@ -48,33 +52,33 @@ std::string LLStringConvertions::convert_var_type(const IR::var_types &type, con
         t += ">";
         return t;
     }
-    static const std::unordered_map<IR::var_types, std::string> typesMap = {
-        {IR::var_types::UNDEFINED, "UNDEF"}, {IR::var_types::BOOLEAN, "bool_t"},
-        {IR::var_types::STRING, "str_t"}, {IR::var_types::NUMBER, "num_t"},
-        {IR::var_types::FUNCTION, "function"},
-        {IR::var_types::ANY, "any_t"}, {IR::var_types::Rule, "Rule"}, {IR::var_types::Token, "Token"},
-        {IR::var_types::Rule_result, "Rule_res"}, {IR::var_types::Token_result, "Token_res"},
-        {IR::var_types::CHAR, "char"}, {IR::var_types::UCHAR, "unsigned char"},
-        {IR::var_types::SHORT, "short"}, {IR::var_types::USHORT, "unsigned short"},
-        {IR::var_types::INT, "int"}, {IR::var_types::UINT, "unsigned int"},
-        {IR::var_types::LONG, "long"}, {IR::var_types::ULONG, "unsigned long"},
-        {IR::var_types::LONGLONG, "long long"}, {IR::var_types::ULONGLONG, "unsigned long long"}
+    static const std::unordered_map<LLIR::var_types, std::string> typesMap = {
+        {LLIR::var_types::UNDEFINED, "UNDEF"}, {LLIR::var_types::BOOLEAN, "bool_t"},
+        {LLIR::var_types::STRING, "str_t"}, {LLIR::var_types::NUMBER, "num_t"},
+        {LLIR::var_types::FUNCTION, "function"},
+        {LLIR::var_types::ANY, "any_t"}, {LLIR::var_types::Rule, "Rule"}, {LLIR::var_types::Token, "Token"},
+        {LLIR::var_types::Rule_result, "Rule_res"}, {LLIR::var_types::Token_result, "Token_res"},
+        {LLIR::var_types::CHAR, "char"}, {LLIR::var_types::UCHAR, "unsigned char"},
+        {LLIR::var_types::SHORT, "short"}, {LLIR::var_types::USHORT, "unsigned short"},
+        {LLIR::var_types::INT, "int"}, {LLIR::var_types::UINT, "unsigned int"},
+        {LLIR::var_types::LONG, "long"}, {LLIR::var_types::ULONG, "unsigned long"},
+        {LLIR::var_types::LONGLONG, "long long"}, {LLIR::var_types::ULONGLONG, "unsigned long long"}
     };
-    if (type < IR::var_types::CHAR)
+    if (type < LLIR::var_types::CHAR)
         return "::" + namespace_name + "::" + typesMap.at(type);
     else
         return typesMap.at(type);
 }
 
 
-std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_values &value, const std::any &data) {
+std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assign_values &value, const std::any &data) {
     switch (value) {
-        case IR::var_assign_values::STRING:
+        case LLIR::var_assign_values::STRING:
             //cpuf::printf("on String\n");
             return std::string(1, '"') + format_str(std::any_cast<std::string>(data)) + std::string(1, '"');
-        case IR::var_assign_values::VAR_REFER:
+        case LLIR::var_assign_values::VAR_REFER:
         {
-            auto dt = std::any_cast<IR::var_refer>(data);
+            auto dt = std::any_cast<LLIR::var_refer>(data);
             std::string name = dt.var.name;
             for (const auto &el : dt.var.property_access)
                 name += "." + el;
@@ -93,13 +97,13 @@ std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_
             }
             return name;
         }
-        case IR::var_assign_values::INT:
+        case LLIR::var_assign_values::INT:
             //cpuf::printf("on INT\n");
             return std::any_cast<std::string>(data);
-        case IR::var_assign_values::ARRAY:
+        case LLIR::var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
-            auto arr = std::any_cast<IR::array>(data);
+            auto arr = std::any_cast<LLIR::array>(data);
             std::string res = "{";
             for (auto &el : arr) {
                 res += convertExpression(el, false);
@@ -111,10 +115,10 @@ std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_
                 res += '}';
             return res;
         }
-        case IR::var_assign_values::OBJECT:
+        case LLIR::var_assign_values::OBJECT:
         {
             //cpuf::printf("on object\n");
-            auto obj = std::any_cast<IR::object>(data);
+            auto obj = std::any_cast<LLIR::object>(data);
             std::string res = "{";
             for (auto [key, value] : obj) {
                 res += "{";
@@ -130,16 +134,16 @@ std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_
             }
             return res;
         }
-        case IR::var_assign_values::ACCESSOR:
+        case LLIR::var_assign_values::ACCESSOR:
             //cpuf::printf("accessor\n");
             return "";
             throw Error("Accessor cannot be here\n");
-        case IR::var_assign_values::FUNCTION_CALL:
-            return convertFunctionCall(std::any_cast<IR::function_call>(data));
-        case IR::var_assign_values::EXPR:
+        case LLIR::var_assign_values::FUNCTION_CALL:
+            return convertFunctionCall(std::any_cast<LLIR::function_call>(data));
+        case LLIR::var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<IR::expr>>(data), false);
-        case IR::var_assign_values::CURRENT_POS:
+            return convertExpression(std::any_cast<std::vector<LLIR::expr>>(data), false);
+        case LLIR::var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
             char sign = dt >= 0 ? '+' : '-';
@@ -150,15 +154,15 @@ std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_
         }
     }
     switch (value) {
-        case IR::var_assign_values::NONE:
+        case LLIR::var_assign_values::NONE:
             return "NONE";
-        case IR::var_assign_values::True:
+        case LLIR::var_assign_values::True:
             return "true";
-        case IR::var_assign_values::False:
+        case LLIR::var_assign_values::False:
             return "false";
-        case IR::var_assign_values::CURRENT_POS_COUNTER:
+        case LLIR::var_assign_values::CURRENT_POS_COUNTER:
             return current_pos_counter.top();
-        case IR::var_assign_values::CURRENT_POS_SEQUENCE:
+        case LLIR::var_assign_values::CURRENT_POS_SEQUENCE:
         {
             std::string count_str = std::to_string(pos_counter_stack.top() + 1);
             if (dynamic_pos_counter.size()) {
@@ -168,31 +172,31 @@ std::string LLStringConvertions::convert_var_assing_values(const IR::var_assign_
             dynamic_pos_counter = {};
             return "::" + namespace_name + "::str_t(" + current_pos_counter.top() + ", " + count_str + ")";
         }
-        case IR::var_assign_values::CURRENT_CHARACTER:
+        case LLIR::var_assign_values::CURRENT_CHARACTER:
             return "*(" + current_pos_counter.top() + " + " + std::to_string(pos_counter) + ")";
-        case IR::var_assign_values::CURRENT_TOKEN:
+        case LLIR::var_assign_values::CURRENT_TOKEN:
             return "*" + current_pos_counter.top();
-        case IR::var_assign_values::TOKEN_SEQUENCE:
+        case LLIR::var_assign_values::TOKEN_SEQUENCE:
             return current_pos_counter.top();
         default:
             return "NONE";
     }
 }
 
-std::string LLStringConvertions::convert_var_assing_types(const IR::var_assign_types &value) const {
+std::string LLStringConvertions::convert_var_assing_types(const LLIR::var_assign_types &value) const {
     switch (value) {
-        case IR::var_assign_types::ASSIGN:    return "=";
-        case IR::var_assign_types::ADD:       return "+=";
-        case IR::var_assign_types::SUBSTR:    return "-=";
-        case IR::var_assign_types::MULTIPLY:  return "*=";
-        case IR::var_assign_types::DIVIDE:    return "/=";
-        case IR::var_assign_types::MODULO:    return "%=";
+        case LLIR::var_assign_types::ASSIGN:    return "=";
+        case LLIR::var_assign_types::ADD:       return "+=";
+        case LLIR::var_assign_types::SUBSTR:    return "-=";
+        case LLIR::var_assign_types::MULTIPLY:  return "*=";
+        case LLIR::var_assign_types::DIVIDE:    return "/=";
+        case LLIR::var_assign_types::MODULO:    return "%=";
         default: return "="; // Handle unknown values
     }
 }
 
-std::string LLStringConvertions::conditionTypesToString(const IR::condition_types &type, const std::any &data) {
-    if (type == IR::condition_types::CHARACTER) {
+std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_types &type, const std::any &data) {
+    if (type == LLIR::condition_types::CHARACTER) {
         //cpuf::printf("character\n");
         const auto c = std::any_cast<char>(data);
         if (c == '\'') {
@@ -200,22 +204,22 @@ std::string LLStringConvertions::conditionTypesToString(const IR::condition_type
         } else {
             return std::string("'") + std::any_cast<char>(data) + std::string("'");
         }
-    } else if (type == IR::condition_types::ESCAPED_CHARACTER) {
+    } else if (type == LLIR::condition_types::ESCAPED_CHARACTER) {
         return std::string("'\\") + std::any_cast<char>(data) + std::string("'");
-    } else if (type == IR::condition_types::CURRENT_CHARACTER) {
+    } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
         return "*(" + current_pos_counter.top() + " + " + std::to_string(std::any_cast<size_t>(data)) + ")";
-    } else if (type == IR::condition_types::TOKEN_SEQUENCE) {
+    } else if (type == LLIR::condition_types::TOKEN_SEQUENCE) {
         return current_pos_counter.top();
-    } else if (type == IR::condition_types::NUMBER) {
+    } else if (type == LLIR::condition_types::NUMBER) {
         //cpuf::printf("number\n");
         return std::to_string(std::any_cast<long long>(data));
-    } else if (type == IR::condition_types::STRING) {
+    } else if (type == LLIR::condition_types::STRING) {
         //cpuf::printf("string\n");
         return std::string(1, '"') + std::any_cast<std::string>(data) + std::string(1, '"');
-    } else if (type == IR::condition_types::STRNCMP) {
+    } else if (type == LLIR::condition_types::STRNCMP) {
         //cpuf::printf("strncmp\n");
-        auto dt = std::any_cast<IR::strncmp>(data);
+        auto dt = std::any_cast<LLIR::strncmp>(data);
         std::string val;
         if (dt.is_string) {
             val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(dt.begin) + ", \"") + format_str(dt.value.name) + std::string("\", ") + std::to_string(count_strlen(dt.value.name.c_str())) + ")";
@@ -225,9 +229,9 @@ std::string LLStringConvertions::conditionTypesToString(const IR::condition_type
             val = std::string("!std::strncmp(" + current_pos_counter.top() + " + " + std::to_string(dt.begin) + ", ") + format_str(dt.value.name) + ", strlen(" + dt.value.name + "))";
         }
         return val;
-    } else if (type == IR::condition_types::VARIABLE) {
+    } else if (type == LLIR::condition_types::VARIABLE) {
         //cpuf::printf("variable\n");
-        auto dt = std::any_cast<IR::var_refer>(data);
+        auto dt = std::any_cast<LLIR::var_refer>(data);
         std::string name = dt.var.name;
         for (const auto &el : dt.var.property_access)
             name += "." + el;
@@ -245,43 +249,43 @@ std::string LLStringConvertions::conditionTypesToString(const IR::condition_type
             name += "++";
         }
         return name;
-    } else if (type == IR::condition_types::SUCCESS_CHECK) {
+    } else if (type == LLIR::condition_types::SUCCESS_CHECK) {
         //cpuf::printf("success_check\n");
         return std::any_cast<std::string>(data) + ".status";
-    } else if (type == IR::condition_types::HEX) {
+    } else if (type == LLIR::condition_types::HEX) {
         //cpuf::printf("hex\n");
         return std::string("0x") + std::any_cast<std::string>(data);
-    } else if (type == IR::condition_types::RVALUE) {
-        auto dt = std::any_cast<IR::assign>(data);
+    } else if (type == LLIR::condition_types::RVALUE) {
+        auto dt = std::any_cast<LLIR::assign>(data);
         return convert_var_assing_values(dt.kind, dt.data);
-    } else if (type == IR::condition_types::METHOD_CALL) {
-        return convertMethodCall(std::any_cast<IR::method_call>(data));
-    } else if (type == IR::condition_types::FUNCTION_CALL) {
-        return convertFunctionCall( std::any_cast<IR::function_call>(data));
-    } else if (type == IR::condition_types::CURRENT_TOKEN) {
+    } else if (type == LLIR::condition_types::METHOD_CALL) {
+        return convertMethodCall(std::any_cast<LLIR::method_call>(data));
+    } else if (type == LLIR::condition_types::FUNCTION_CALL) {
+        return convertFunctionCall( std::any_cast<LLIR::function_call>(data));
+    } else if (type == LLIR::condition_types::CURRENT_TOKEN) {
         if (data.has_value()) {
-            auto dt = std::any_cast<IR::current_token>(data);
+            auto dt = std::any_cast<LLIR::current_token>(data);
             auto op = conditionTypesToString(dt.op, std::any());
             return current_pos_counter.top() + "->name() " + op + " " + "::" + namespace_name + "::Tokens::" + dt.name;
         } else {
             return "*" + current_pos_counter.top();
         }
     }
-    static const std::unordered_map<IR::condition_types, std::string> condTypesMap = {
-        {IR::condition_types::GROUP_OPEN, "("}, {IR::condition_types::GROUP_CLOSE, ")"},
-        {IR::condition_types::AND, "&&"}, {IR::condition_types::OR, "||"}, {IR::condition_types::NOT, "!"},
-        {IR::condition_types::EQUAL, "=="}, {IR::condition_types::NOT_EQUAL, "!="},
-        {IR::condition_types::HIGHER, ">"}, {IR::condition_types::LOWER, "<"},
-        {IR::condition_types::HIGHER_OR_EQUAL, ">="}, {IR::condition_types::LOWER_OR_EQUAL, "<="},
-        {IR::condition_types::LEFT_BITWISE, "<<"}, {IR::condition_types::RIGHT_BITWISE, ">>"},
-        {IR::condition_types::BITWISE_AND, "&"}, {IR::condition_types::BITWISE_ANDR, "^"},
-        {IR::condition_types::ADD, "+"}, {IR::condition_types::SUBSTR, "-"},
-        {IR::condition_types::MULTIPLY, "*"}, {IR::condition_types::DIVIDE, "/"},
-        {IR::condition_types::MODULO, "%"},
+    static const std::unordered_map<LLIR::condition_types, std::string> condTypesMap = {
+        {LLIR::condition_types::GROUP_OPEN, "("}, {LLIR::condition_types::GROUP_CLOSE, ")"},
+        {LLIR::condition_types::AND, "&&"}, {LLIR::condition_types::OR, "||"}, {LLIR::condition_types::NOT, "!"},
+        {LLIR::condition_types::EQUAL, "=="}, {LLIR::condition_types::NOT_EQUAL, "!="},
+        {LLIR::condition_types::HIGHER, ">"}, {LLIR::condition_types::LOWER, "<"},
+        {LLIR::condition_types::HIGHER_OR_EQUAL, ">="}, {LLIR::condition_types::LOWER_OR_EQUAL, "<="},
+        {LLIR::condition_types::LEFT_BITWISE, "<<"}, {LLIR::condition_types::RIGHT_BITWISE, ">>"},
+        {LLIR::condition_types::BITWISE_AND, "&"}, {LLIR::condition_types::BITWISE_ANDR, "^"},
+        {LLIR::condition_types::ADD, "+"}, {LLIR::condition_types::SUBSTR, "-"},
+        {LLIR::condition_types::MULTIPLY, "*"}, {LLIR::condition_types::DIVIDE, "/"},
+        {LLIR::condition_types::MODULO, "%"},
     };
     return condTypesMap.at(type);
 }
-std::string LLStringConvertions::convertFunctionCall(const IR::function_call &call) {
+std::string LLStringConvertions::convertFunctionCall(const LLIR::function_call &call) {
     std::string res = call.name + "(";
     bool first = true;
     for (auto param : call.params) {
@@ -293,12 +297,12 @@ std::string LLStringConvertions::convertFunctionCall(const IR::function_call &ca
     res += ')';
     return res;
 }
-std::string LLStringConvertions::convertAssign(const IR::assign &asgn) {
-    if (asgn.kind == IR::var_assign_values::FUNCTION_CALL)
-        return convertFunctionCall(std::any_cast<IR::function_call>(asgn.data));
+std::string LLStringConvertions::convertAssign(const LLIR::assign &asgn) {
+    if (asgn.kind == LLIR::var_assign_values::FUNCTION_CALL)
+        return convertFunctionCall(std::any_cast<LLIR::function_call>(asgn.data));
     return convert_var_assing_values(asgn.kind, asgn.data);
 }
-std::string LLStringConvertions::convertMethodCall(const IR::method_call &method) {
+std::string LLStringConvertions::convertMethodCall(const LLIR::method_call &method) {
     // Implement method call conversion with proper indentation
     std::string res = method.var_name;
     for (auto call : method.calls) {
@@ -311,14 +315,14 @@ std::string LLStringConvertions::convertMethodCall(const IR::method_call &method
     return res;
 }
 
-std::string LLStringConvertions::convertDataBlock(const IR::DataBlock &dtb) {
+std::string LLStringConvertions::convertDataBlock(const LLIR::DataBlock &dtb) {
     // Implement method call conversion with proper indentation
     std::string res;
     res += "::" + namespace_name + "::Types::" + rule_prev_name_str + " data";
     if (dtb.is_inclosed_map()) {
         res += ";";
         res += "\n";
-        for (auto [key, value] : std::any_cast<IR::inclosed_map>(dtb.getInclosedMap())) {
+        for (auto [key, value] : std::any_cast<LLIR::inclosed_map>(dtb.getInclosedMap())) {
             res += std::string(indentLevel, '\t') + "data." + key + " = " + convertExpression(value.first, false) + ";\n";
         }
         add_semicolon = false;
@@ -329,18 +333,18 @@ std::string LLStringConvertions::convertDataBlock(const IR::DataBlock &dtb) {
     }
     return res;
 }
-std::string LLStringConvertions::convertExpression(const std::vector<IR::expr> &expression, bool with_braces) {
+std::string LLStringConvertions::convertExpression(const std::vector<LLIR::expr> &expression, bool with_braces) {
     std::string result;
     pos_counter = 0;
     if (with_braces)
         result += '(';
     for (int i = 0; i < expression.size(); i++) {
-        IR::expr current = expression[i];
+        LLIR::expr current = expression[i];
         if (
-            current.id == IR::condition_types::AND ||
-            current.id == IR::condition_types::OR ||
-            current.id == IR::condition_types::EQUAL ||
-            current.id == IR::condition_types::NOT_EQUAL
+            current.id == LLIR::condition_types::AND ||
+            current.id == LLIR::condition_types::OR ||
+            current.id == LLIR::condition_types::EQUAL ||
+            current.id == LLIR::condition_types::NOT_EQUAL
             ) {
             result += ' ';
             result += conditionTypesToString(current.id, current.value);

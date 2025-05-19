@@ -152,4 +152,5 @@ export namespace LLIR {
         auto empty() -> bool;
         auto clear() -> void;
     };
+    using lexer_code = std::pair<IR, variable>;
 }

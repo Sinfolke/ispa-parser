@@ -3,6 +3,7 @@ module;
 #include <set>
 #include <queue>
 #include <variant>
+#include <unordered_map>
 module ELRParser;
 bool ELRParser::isELR() const {
     return true;

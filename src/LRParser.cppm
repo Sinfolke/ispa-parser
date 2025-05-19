@@ -8,7 +8,6 @@ import corelib;
 import AST;
 import hash;
 import TreeAPI;
-
 export class LRParser {
 public:
     enum class Action_type {
@@ -30,9 +29,35 @@ public:
                    rhs == other.rhs &&
                    dot_pos == other.dot_pos;
         }
+
     };
+
     struct LR1Core : public LR0Core {
         mutable std::set<std::vector<std::string>> lookahead;
+    };
+    struct LR0CoreHash {
+        std::size_t operator()(const LRParser::LR0Core& core) const {
+            std::size_t seed = 0;
+            for (const auto& elem : core.lhs) {
+                hash_combine(seed, std::hash<std::string>{}(elem));
+            }
+            hash_combine(seed, std::hash<TreeAPI::Rule>{}(core.rhs));
+            hash_combine(seed, std::hash<size_t>{}(core.dot_pos));
+            return seed;
+        }
+    };
+
+    struct LR1CoreHash {
+        std::size_t operator()(const LRParser::LR1Core& core) const noexcept {
+            size_t seed = LR0CoreHash{}(core);  // reuse LR0Core hash
+
+            std::hash<std::vector<std::string>> vec_hasher;
+            for (const auto& la_set : core.lookahead) {
+                seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+
+            return seed;
+        }
     };
     struct Conflict {
         std::vector<LR1Core> item;
@@ -44,7 +69,7 @@ public:
     using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
     using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
     using ItemSet = std::vector<TreeAPI::Rule>;
-    using CanonicalItem = std::set<LR1Core>;
+    using CanonicalItem = std::unordered_set<LR1Core, LR1CoreHash>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
 
     using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
@@ -137,8 +162,6 @@ public:
     void printFirstSet(const std::string &fileName);
     void printFollowSet(const std::string &fileName);
 };
-bool operator<(const LRParser::LR0Core &first, const LRParser::LR0Core &second);
-bool operator<(const LRParser::LR1Core &first, const LRParser::LR1Core &second);
 namespace std {
 
     // Hash specialization for TreeAPI::LR0Core

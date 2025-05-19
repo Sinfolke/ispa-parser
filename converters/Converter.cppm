@@ -1,6 +1,7 @@
 module;
 #include <vector>
 #include <string>
+#include <filesystem>
 export module Converter;
 import LLIR;
 import LRParser;
@@ -13,11 +14,11 @@ export class LLConverter_base {
         std::vector<std::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;
-        LLIR::lexer_code lexer_code;
+        LLIR::IR lexer_code;
         LLIR::variable lexer_code_access_var;
         AST* tree;
     public:
-        LLConverter_base(IR &ir, AST &tree, const IR *custom_lexer_code = nullptr, const IR::variable *access_var = nullptr) : lexer_code(tree), tree(&tree) {
+        LLConverter_base(LLIR::IR &ir, AST &tree, const LLIR::IR *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -27,8 +28,8 @@ export class LLConverter_base {
             data_block_rules = ir.getDataBlocksNonTerminals();
             if (custom_lexer_code == nullptr || access_var == nullptr) {
                 auto lc = tree.getCodeForLexer();
-                lexer_code = lc.code;
-                lexer_code_access_var = lc.success_var;
+                lexer_code = lc.first;
+                lexer_code_access_var = lc.second;
             } else {
                 lexer_code = *custom_lexer_code;
                 lexer_code_access_var = *access_var;
@@ -47,15 +48,15 @@ export class LRConverter_base {
     protected:
         // data
         const LRParser* data;
-        IR lexer_code;
-        IR::variable success_var;
+        LLIR::IR lexer_code;
+        LLIR::variable success_var;
         AST* tree;
     public:
-        LRConverter_base(const LRParser &data, AST &tree) : lexer_code(tree), data(&data), tree(&tree) {
+        LRConverter_base(const LRParser &data, AST &tree) : data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer();
-            lexer_code = lc.code;
-            success_var = lc.success_var;
+            lexer_code = lc.first;
+            success_var = lc.second;
         }
         virtual void output(std::filesystem::path filename) = 0;
 };
