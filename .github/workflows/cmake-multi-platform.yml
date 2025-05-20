@@ -53,11 +53,11 @@ jobs:
       #     restore-keys: |
       #       boost-${{ matrix.os }}-${{ matrix.c_compiler }}
       #       boost-${{ matrix.os }}
-      # - name: Install dependencies (Ubuntu)
-      #   if: ${{ matrix.os == 'ubuntu-latest' }}
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y libboost-all-dev gcc build-essential
+      - name: Install dependencies (Ubuntu)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+         sudo apt-get update
+          sudo apt install libc++-dev libc++abi-dev
 
       # - name: Install Boost (Windows)
       #   if: ${{ matrix.os == 'windows-latest' }}
