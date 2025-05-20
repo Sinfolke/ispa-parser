@@ -42,29 +42,40 @@ function(collect_filenames out_var extension)
 endfunction()
 function(precompile_std target)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message(STATUS "Searching std module")
+        message(STATUS "Checking cached std module location...")
 
-        file(GLOB_RECURSE STDCXX_MODULE_LIST
-                "/lib/**/std.cppm"
-                "/usr/**/std.cppm"
-        )
-        if(STDCXX_MODULE_LIST)
-            list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE)
-            message(STATUS "Using std module from: ${STDCXX_MODULE}")
+        # Use cache variable if already set
+        if(NOT DEFINED STDCXX_MODULE_PATH OR NOT EXISTS "${STDCXX_MODULE_PATH}")
+            message(STATUS "Searching for std.cppm module...")
+            file(GLOB_RECURSE STDCXX_MODULE_LIST
+                    "/lib/**/std.cppm"
+                    "/usr/**/std.cppm"
+            )
+            if(STDCXX_MODULE_LIST)
+                list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE_PATH)
+                set(STDCXX_MODULE_PATH "${STDCXX_MODULE_PATH}" CACHE FILEPATH "Path to std.cppm module")
+            else()
+                message(FATAL_ERROR "std.cppm module not found in system directories")
+            endif()
+            message(STATUS "Module found at ${STDCXX_MODULE_PATH}")
         else()
-            message(FATAL_ERROR "std.cppm module not found in system directories")
+            message(STATUS "Using cached std module location: ${STDCXX_MODULE_PATH}")
         endif()
-        # use compat module ships in same directory
 
-        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE} DIRECTORY)
-        set(STD_COMPATCXX_MODULE ${STDCXX_MODULE_DIR}/std.compat.cppm)
-        message(STATUS "Using std.compat module from: ${STD_COMPATCXX_MODULE}")
-        # copy module into current directory to avoid cmake conflicts
-        file(COPY ${STDCXX_MODULE} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
-        file(COPY ${STD_COMPATCXX_MODULE} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
-        set(STDCXX_MODULE_CMAKE_PATH ${CMAKE_BINARY_DIR}/prebuilt_std/std.cppm)
-        set(STD_COMPATCXX_MODULE_CMAKE_PATH ${CMAKE_BINARY_DIR}/prebuilt_std/std.compat.cppm)
-        # Add compile command to precompile std module
+        # Get compat module next to it
+        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE_PATH} DIRECTORY)
+        set(STD_COMPATCXX_MODULE_PATH "${STDCXX_MODULE_DIR}/std.compat.cppm")
+        if(NOT EXISTS "${STD_COMPATCXX_MODULE_PATH}")
+            message(FATAL_ERROR "std.compat.cppm not found at expected location: ${STD_COMPATCXX_MODULE_PATH}")
+        endif()
+
+        # Copy both to build dir
+        file(COPY ${STDCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+        file(COPY ${STD_COMPATCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+
+        set(STDCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/std.cppm")
+        set(STD_COMPATCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/std.compat.cppm")
+
         target_compile_options(${target} PRIVATE
                 -stdlib=libc++
                 -Wno-reserved-identifier
@@ -77,7 +88,7 @@ function(precompile_std target)
                 ${STDCXX_MODULE_CMAKE_PATH}
                 ${STD_COMPATCXX_MODULE_CMAKE_PATH}
         )
-endif()
+    endif()
 endfunction()
 
 # =============================================

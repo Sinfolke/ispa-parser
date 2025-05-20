@@ -1,16 +1,17 @@
 module LLIRRuleMemberBuilder;
+import CllBuilder;
 import logging;
 import corelib;
 import std;
 // constructors
 
-LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules) : LLIR::BuilderBase(data, {}) {
+LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules) : LLIR::BuilderBase(data) {
     for (const auto &mem : rules) {
         rule = &mem;
         build();
     }
 }
-LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) : LLIR::BuilderBase(data, {}) {
+LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) : LLIR::BuilderBase(data) {
     bool isFirst = true;
     for (const auto &mem : rules) {
         rule = &mem;
@@ -62,31 +63,33 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
 auto LLIR::MemberBuilder::build() -> void {
     *addSpaceSkip = true;
     LLIR::ConvertionResult success_var;
+    std::unique_ptr<BuilderBase> builder = nullptr;
     if (rule->isGroup()) {
-        GroupBuilder group(*this, rule);
+        builder = std::make_unique<GroupBuilder>(*this, *rule);
     } else if (rule->isCsequence()) {
-        LLIR::RuleMemberCsequenceBuilder(rule);
+        builder = std::make_unique<CsequenceBuilder>(*this, *rule);
     } else if (rule->isString()) {
-        LLIR::RuleMemberStringBuilder(rule);
+        builder = std::make_unique<StringBuilder>(*this, *rule);
     } else if (rule->isHex()) {
-        LLIR::RuleMemberHexBuilder(rule);
+        builder = std::make_unique<HexBuilder>(*this, *rule);
     } else if (rule->isBin()) {
-        LLIR::RuleMemberBinBuilder(rule);
+        builder = std::make_unique<BinBuilder>(*this, *rule);
     } else if (rule->isName()) {
-        LLIR::RuleMemberNameBuilder(rule);
+        builder = std::make_unique<NameBuilder>(*this, *rule);
     } else if (rule->isEscaped()) {
-        LLIR::RuleMemberEscapedBuilder(rule);
+        builder = std::make_unique<EscapedBuilder>(*this, *rule);
     } else if (rule->isNospace()) {
-        LLIR::RuleMemberNospaceBuilder(rule);
+        builder = std::make_unique<NospaceBuilder>(*this, *rule);
     } else if (rule->isOp()) {
-        LLIR::RuleMemberOpBuilder(rule);
+        builder = std::make_unique<OpBuilder>(*this, *rule);
     } else if (rule->isAny()) {
-        LLIR::RuleMemberAnyBuilder(rule->prefix);
+        builder = std::make_unique<AnyBuilder>(*this, *rule);
     } else if (rule->isCll()) {
-        LLIR::RuleMemberCllBuilder(rule->getCll());
+        builder = std::make_unique<LLIR::CllBuilder>(rule->getCll());
     } else if (rule->empty()) {
         throw Error("Empty rule in %$", fullname);
     } else throw Error("Undefined rule");
+    data = builder->getData();
     if (rule->prefix.is_key_value) {
         if (rule->prefix.name.empty()) {
             unnamed_datablock_units->push_back(success_var.uvar.name.empty() ? (success_var.shadow_var.name.empty() ? success_var.var : success_var.shadow_var) : success_var.uvar);
@@ -102,10 +105,10 @@ auto LLIR::MemberBuilder::build() -> void {
     insert_var(success_var.svar);
     insert_var(success_var.var);
     insert_var(success_var.shadow_var);
-    isFirst = false;
+    *isFirst = false;
     if (addSpaceSkip)
         push({LLIR::types::SKIP_SPACES, isToken});
-    success_vars->push_back(success_var);
+    conv_res.push_back(success_var);
 }
 void LLIR::GroupBuilder::build() {
     auto var = createEmptyVariable(generateVariableName());
@@ -150,7 +153,7 @@ void LLIR::GroupBuilder::build() {
             var_members.push_back( LLIR::member
                 {
                     LLIR::types::ASSIGN_VARIABLE,
-                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VAR_REFER,  LLIR::var_refer {.var = values.success_vars[0].var}}}
+                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VAR_REFER,  LLIR::var_refer {.var = builder.conv_res[0].var}}}
                 }
             );
 
@@ -169,15 +172,15 @@ void LLIR::GroupBuilder::build() {
     std::vector<std::string> used_vars;
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     if (!builder.getReturnVars().empty()) {
-        bool fLLIR::st = true;
+        bool first = true;
         for (auto el : builder.getReturnVars()) {
             if (el.qualifier == '*' || el.qualifier == '?' || el.svar.name.empty())
                 continue;
-            if (!fLLIR::st)
+            if (!first)
                 svar_expr.push_back({LLIR::condition_types::AND});
             used_vars.push_back(el.svar.name);
             svar_expr.push_back({LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = el.svar}});
-            fLLIR::st = false;
+            first = false;
         }
     }
     // for (int i = 0; i < node_ret.size(); i++) {
@@ -252,30 +255,30 @@ void LLIR::CsequenceBuilder::build() {
         };
     }
 
-    bool fLLIR::st = true;
+    bool first = true;
     size_t count = 0;
     for (const auto c : csequence.characters) {
-        if (!fLLIR::st)
+        if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
             {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::CHARACTER, c}
         });
-        fLLIR::st = false;
+        first = false;
     }
     for (const auto c : csequence.escaped) {
-        if (!fLLIR::st)
+        if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
             {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::ESCAPED_CHARACTER, c}
         });
-        fLLIR::st = false;
+        first = false;
     }
     for (const auto &[from, to] : csequence.diapasons) {
-        if (!fLLIR::st)
+        if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
             {LLIR::condition_types::GROUP_OPEN},
@@ -288,7 +291,7 @@ void LLIR::CsequenceBuilder::build() {
             {LLIR::condition_types::CHARACTER, to},
             {LLIR::condition_types::GROUP_CLOSE}
         });
-        fLLIR::st = false;
+        first = false;
     }
     if (csequence.negative) {
         if (rule.quantifier == '+' || rule.quantifier == '*')
@@ -366,7 +369,7 @@ void LLIR::HexBuilder::build() {
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
-    bool is_fLLIR::st = true, is_negative = false;
+    bool is_first = true, is_negative = false;
     if (rule.quantifier == '\0') {
         expr.push_back({LLIR::condition_types::NOT});
         expr.push_back({LLIR::condition_types::GROUP_OPEN});
@@ -376,9 +379,9 @@ void LLIR::HexBuilder::build() {
         data.insert(data.begin(), '0');
     for (size_t i = 0; i < data.size(); i += 2) {
         std::string hex(data.data() + i, 2);
-        if (!is_fLLIR::st)
+        if (!is_first)
             expr.push_back({LLIR::condition_types::AND});
-        is_fLLIR::st = false;
+        is_first = false;
         expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
         expr.push_back({LLIR::condition_types::EQUAL});
         expr.push_back({LLIR::condition_types::HEX, hex});
@@ -402,7 +405,7 @@ void LLIR::BinBuilder::build() {
         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
         {LLIR::types::INCREASE_POS_COUNTER},
     };
-    bool is_fLLIR::st = true, is_negative = false;
+    bool is_first = true, is_negative = false;
     if (rule.quantifier == '\0') {
         expr.push_back({LLIR::condition_types::NOT});
         expr.push_back({LLIR::condition_types::GROUP_OPEN});
@@ -414,9 +417,9 @@ void LLIR::BinBuilder::build() {
         std::string bin(data.data() + i, 8);
         auto as_hex = hex::from_binary(bin);
         as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
-        if (!is_fLLIR::st)
+        if (!is_first)
             expr.push_back({LLIR::condition_types::AND});
-        is_fLLIR::st = false;
+        is_first = false;
         expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
         expr.push_back({LLIR::condition_types::EQUAL});
         expr.push_back({LLIR::condition_types::HEX, as_hex});
@@ -441,7 +444,7 @@ void LLIR::NameBuilder::build() {
     if (has_symbol_follow) {
         if (symbol_follow.empty())
             throw Error("empty symbol follow on rule %$\n", fullname);
-        symbol_follow.back().fLLIR::st = name;
+        symbol_follow.back().first = name;
     }
     if (!isToken && isCallingToken) {
         var.type.type = LLIR::var_types::Token;

@@ -5,6 +5,7 @@ import logging;
 import ELRParser;
 import LLIRBuilder;
 import std;
+import std.compat;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }

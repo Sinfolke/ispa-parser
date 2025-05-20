@@ -5,7 +5,7 @@ import std;
 import std.compat;
 export namespace LLIR {
     class BuilderData {
-    protected:
+    public:
         size_t *variable_count = nullptr;
         bool *isToken = nullptr;
         bool *insideLoop = nullptr;
@@ -15,11 +15,10 @@ export namespace LLIR {
         std::vector<std::string> *fullname = nullptr;
         std::vector<variable> *vars = nullptr;
         Nodes *members = nullptr;
-        std::vector<ConvertionResult> *success_vars = nullptr;
+        std::vector<ConvertionResult> conv_res;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
         AST *tree = nullptr;
-    public:
         auto initializationCheck() -> bool;
         BuilderData(
             size_t &variable_count,
@@ -31,7 +30,6 @@ export namespace LLIR {
             std::vector<std::string> &fullname,
             std::vector<variable> &vars,
             std::vector<member> &members,
-            std::vector<ConvertionResult> &success_vars,
             std::vector<std::pair<std::string, variable>> &key_vars,
             std::vector<variable> &unnamed_datablock_units,
             AST *tree
@@ -45,7 +43,6 @@ export namespace LLIR {
             fullname(&fullname),
             vars(&vars),
             members(&members),
-            success_vars(&success_vars),
             key_vars(&key_vars),
             unnamed_datablock_units(&unnamed_datablock_units),
             tree(tree)

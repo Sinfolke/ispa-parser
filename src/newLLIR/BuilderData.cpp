@@ -9,7 +9,6 @@ auto LLIR::BuilderData::initializationCheck() -> bool {
         fullname != nullptr &&
         members != nullptr &&
         vars != nullptr &&
-        success_vars != nullptr &&
         key_vars != nullptr &&
         unnamed_datablock_units != nullptr &&
         tree != nullptr

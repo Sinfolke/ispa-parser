@@ -467,7 +467,7 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR_old& ir, ASTPass& tree) {
+extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST& tree) {
     return new LLConverter(ir, tree);
 }
 

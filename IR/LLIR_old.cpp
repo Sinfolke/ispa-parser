@@ -1522,16 +1522,7 @@ LLIR_old::condition LLIR_old::process_cll_if(const TreeAPI::CllIf &cond) {
     return condition;
 }
 LLIR_old::ConvertionResult LLIR_old::process_cll(const TreeAPI::Cll &cll) {
-    addSpaceSkip = false;
-    LLIR_old::condition cond;
-    if (cll.isVar()) {
-        process_cll_var(cll.getVar());
-    } else if (cll.isIf()) {
-        process_cll_if(cll.getIf());
-    } else if (cll.isExpr()) {
-        // ignore right now, has no side effects
-    } else throw Error("Undefined cll entry");
-    return {{}, {}};
+
 }
 
 void LLIR_old::ruleToIr(const TreeAPI::RuleMember &rule) {

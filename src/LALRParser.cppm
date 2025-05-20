@@ -2,6 +2,7 @@ export module LALRParser;
 import LRParser;
 import AST;
 import std;
+import std.compat;
 export class LALRParser : public LRParser {
 protected:
     void rebuildActionTable(const std::vector<size_t>& state_mapping);

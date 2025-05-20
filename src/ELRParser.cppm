@@ -5,6 +5,7 @@ export module ELRParser;
 import LRParser;
 import AST;
 import std;
+import std.compat;
 export class ELRParser : public LRParser {
     public:
         struct NFA_state {

@@ -2,6 +2,7 @@ module LLIRBuilderBase;
 import logging;
 import corelib;
 import LLIR;
+import CllBuilder;
 import std;
 auto LLIR::BuilderBase::getData() -> ::LLIR::Nodes & {
     return data;
@@ -12,10 +13,21 @@ auto LLIR::BuilderBase::getData() const -> const ::LLIR::Nodes & {
 auto LLIR::BuilderBase::getReturnVars() const -> const std::vector<LLIR::ConvertionResult> & {
     return return_vars;
 }
-
-auto operator<<(std::ostream &os, const LLIR::BuilderBase &data) -> std::ostream& {
-    data.print(os);
-    return os;
+auto LLIR::BuilderBase::getBuilderData() -> BuilderData {
+    return BuilderData(
+        *variable_count,
+        *isToken,
+        *insideLoop,
+        *addSpaceSkip,
+        *isFirst,
+        *tokensOnly,
+        *fullname,
+        *vars,
+        *members,
+        *key_vars,
+        *unnamed_datablock_units,
+        tree
+    );
 }
 auto LLIR::BuilderBase::createEmptyVariable(std::string name) -> LLIR::variable {
     LLIR::variable var {
@@ -197,6 +209,88 @@ bool LLIR::BuilderBase::compare_templ(const std::vector<LLIR::var_type>& templ1,
     }
     return true;
 }
+
+auto LLIR::BuilderBase::CllTypeToIR(const TreeAPI::CllType &type) -> LLIR::var_type {
+    if (type.type == "var")
+        return {LLIR::var_types::ANY, {}};
+    else if (type.type == "str")
+        return {LLIR::var_types::STRING, {}};
+    else if (type.type == "bool")
+        return {LLIR::var_types::BOOLEAN, {}};
+    else if (type.type == "num")
+        return {LLIR::var_types::NUMBER, {}};
+    else if (type.type == "arr") {
+        LLIR::var_types tp = LLIR::var_types::ARRAY;
+        LLIR::var_type _template = CllTypeToIR(type.templ[0]);
+        return {tp, {_template}};
+    } else if (type.type == "obj") {
+        LLIR::var_types tp = LLIR::var_types::OBJECT;
+        LLIR::var_type _template1 = CllTypeToIR(type.templ[0]);
+        LLIR::var_type _template2 = CllTypeToIR(type.templ[1]);
+        return {tp, {_template1, _template2}};
+    }
+    throw Error("Undefined type");
+}
+auto LLIR::BuilderBase::CllOpToIR(const char op) -> LLIR::var_assign_types {
+    // all other is single character so can use switch
+    switch (op) {
+        case '+':
+            return LLIR::var_assign_types::ADD;
+        case '-':
+            return LLIR::var_assign_types::SUBSTR;
+        case '*':
+            return LLIR::var_assign_types::MULTIPLY;
+        case '/':
+            return LLIR::var_assign_types::DIVIDE;
+        case '%':
+            return LLIR::var_assign_types::MODULO;
+    }
+    throw Error("Undefined operator");
+}
+auto LLIR::BuilderBase::CllOpToExpr(const char op) -> LLIR::expr {
+    switch (op) {
+        case '+':
+            return {LLIR::condition_types::ADD};
+        case '-':
+            return {LLIR::condition_types::SUBSTR};
+        case '*':
+            return {LLIR::condition_types::MULTIPLY};
+        case '/':
+            return {LLIR::condition_types::DIVIDE};
+        case '%':
+            return {LLIR::condition_types::MODULO};
+    }
+    throw Error("Undefined operator");
+}
+auto LLIR::BuilderBase::CllCompareOpToExpr(const TreeAPI::CllCompareOp &op) -> expr {
+    if (op.op == "==")
+        return {LLIR::condition_types::EQUAL};
+    if (op.op == "!=")
+        return {LLIR::condition_types::NOT_EQUAL};
+    if (op.op == ">")
+        return {LLIR::condition_types::HIGHER};
+    if (op.op == "<")
+        return {LLIR::condition_types::LOWER};
+    if (op.op == ">=")
+        return {LLIR::condition_types::HIGHER_OR_EQUAL};
+    if (op.op == "<=")
+        return {LLIR::condition_types::LOWER_OR_EQUAL};
+    throw Error("undefined compare operator");
+}
+auto LLIR::BuilderBase::CllLogicalOpToIR(const TreeAPI::CllLogicalOp &lop) -> LLIR::condition_types {
+    if (lop.isAnd)
+        return {LLIR::condition_types::AND};
+    return {LLIR::condition_types::OR};
+}
+LLIR::var_assign_types LLIR::BuilderBase::CllAssignmentOpToIR(const char op) {
+    if (op == '\0')
+        return LLIR::var_assign_types::ASSIGN;
+    auto v = CllOpToIR(op);
+    v = static_cast<LLIR::var_assign_types>(static_cast<int>(v) + static_cast<int>(LLIR::var_assign_types::ASSIGN));
+    return v;
+}
+
+
 auto LLIR::BuilderBase::getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) -> std::set<std::vector<std::string>> {
     std::set<std::vector<std::string>> terminals;
     for (size_t i = pos; i < symbols.size(); i++) {
@@ -305,6 +399,7 @@ auto LLIR::BuilderBase::getErrorName(const TreeAPI::RuleMember &rule) -> std::st
     }
     throw Error("Undefined rule member");
 }
+
 auto LLIR::BuilderBase::deduceUvarType(const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::var_type {
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
@@ -342,117 +437,66 @@ auto LLIR::BuilderBase::deduceVarTypeByProd(const TreeAPI::RuleMember &mem) -> L
     } else type.type = LLIR::var_types::STRING;
     return type;
 }
-auto LLIR::BuilderBase::deduceTypeFromRvalue(const TreeAPI::rvalue &value) -> LLIR::var_type {
-    LLIR::var_type type = {LLIR::var_types::UNDEFINED};
-    if (value.isString())
-        type.type = LLIR::var_types::STRING;
-    else if (value.isBoolean())
-        type.type = LLIR::var_types::BOOLEAN;
-    else if (value.isNumber())
-        type.type = LLIR::var_types::NUMBER;
-    else if (value.isID()) {
-        // likely never execute
-        auto find_it = std::find_if(vars->begin(), vars->end(), [&value](const LLIR::variable &var) { return var.name == value.getID().value; });
-        if (find_it == vars->end())
-            throw Error("Not found variable to deduce type from expr");
-        if (find_it->type.type == LLIR::var_types::Rule_result)
-            type = {LLIR::var_types::Rule};
-        else if (find_it->type.type == LLIR::var_types::Token_result)
-            type = {LLIR::var_types::Token};
-        else type = find_it->type;
-    } else if (value.isAt()) {
-        if (unnamed_datablock_units->empty())
-            throw Error("no more data accamulated with @");
-        const auto &t = unnamed_datablock_units->front().type;
-        if (t.type == LLIR::var_types::Rule_result)
-            type = {LLIR::var_types::Rule};
-        else if (t.type == LLIR::var_types::Token_result)
-            type = {LLIR::var_types::Token};
-        else type = t;
-    } else if (value.isArray()) {
-        LLIR::var_type types;
-        for (const auto &el : value.getArray().value) {
-            if (types.type == LLIR::var_types::UNDEFINED) {
-                types = deduceTypeFromExpr(el);
-            } else {
-                auto newType = deduceTypeFromExpr(el);
-                if (newType.type != types.type || !compare_templ(newType.templ, types.templ)) {
-                    type.type = LLIR::var_types::ANY;
-                    break;
-                }
+
+void LLIR::getVariablesToTable(std::vector<LLIR::member>& data, std::vector<LLIR::member>& table, std::string& var_name, bool retain_value, bool recursive) {
+    for (size_t i = 0; i < data.size(); /* manual increment */) {
+        if (data[i].type == LLIR::types::VARIABLE) {
+            auto variable = std::any_cast<LLIR::variable>(data[i].value);
+            if (!var_name.empty() && var_name != variable.name) {
+                ++i;
+                continue;
             }
-        }
-        if (types.type != LLIR::var_types::ANY) {
-            type.templ = {types};
-            type.type = LLIR::var_types::ARRAY;
-        }
-    } else if (value.isObject()) {
-        // todo: add handle key of different types (int or string)
-        LLIR::var_type types;
-        for (const auto &[key, value] : value.getObject().value) {
-            if (types.type == LLIR::var_types::UNDEFINED) {
-                types = deduceTypeFromExpr(value);
-            } else {
-                auto newType = deduceTypeFromExpr(value);
-                if (newType.type != types.type || !compare_templ(newType.templ, types.templ)) {
-                    type.type = LLIR::var_types::ANY;
-                    break;
-                }
+
+            // Optionally retain value
+            if (variable.value.kind != LLIR::var_assign_values::NONE && retain_value) {
+                data.insert(data.begin() + i, LLIR::member{
+                    LLIR::types::ASSIGN_VARIABLE,
+                    LLIR::variable_assign{variable.name, LLIR::var_assign_types::ASSIGN, variable.value}
+                });
+                ++i; // skip over inserted assignment
             }
+
+            // Move variable declaration to table
+            table.push_back(data[i]);
+            data.erase(data.begin() + i); // do NOT increment i, stay at current index
+            if (!var_name.empty())
+                break;
+        } else if ((data[i].type == LLIR::types::IF || data[i].type == LLIR::types::WHILE || data[i].type == LLIR::types::DOWHILE) && recursive) {
+            auto block = std::any_cast<LLIR::condition>(data[i].value);
+            getVariablesToTable(block.block, table, var_name, retain_value, recursive);
+            getVariablesToTable(block.else_block, table, var_name, retain_value, recursive);
+            data[i].value = block;
+            ++i;
+        } else {
+            ++i;
         }
-        if (types.type != LLIR::var_types::ANY) {
-            type.templ = {types};
-            type.type = LLIR::var_types::OBJECT;
-        }
-    } else {
-        throw Error("Undefined rule");
     }
-    return type;
 }
-auto LLIR::BuilderBase::deduceTypeFromExprValue(const TreeAPI::CllExprValue &value) -> LLIR::var_type {
-    if (value.isFunctionCall()) {
-        // todo - get function call type
-    } else if (value.isGroup()) {
-        return deduceTypeFromExpr(value.getGroup());
-    } else if (value.isMethodCall()) {
-        // todo - get method call type
-    } else if (value.isVariable()) {
-        auto find_it = std::find_if(vars->begin(), vars->end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
-        if (find_it == vars->end())
-            throw Error("Not found variable to deduce type from expr");
-        if (find_it->type.type == LLIR::var_types::Rule_result)
-            return {LLIR::var_types::Rule};
-        if (find_it->type.type == LLIR::var_types::Token_result)
-            return {LLIR::var_types::Token};
-        return find_it->type;
-    } else if (value.isrvalue()) {
-        return deduceTypeFromRvalue(value.getrvalue());
-    } else
-        throw Error("Undefined expr value member: %s in rule %s", value.value.type().name(), fullname);
-    return {};
+
+
+void LLIR::BuilderBase::insertVariablesOnTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member>& table) {
+    size_t i = 0;
+    // cpuf::printf("Raise vars on top : table size %$\n", table.size());
+    for (auto& el : table) {
+        insertPlace.insert(insertPlace.begin() + i++, el);
+    }
 }
-auto LLIR::BuilderBase::deduceTypeFromExprTerm(const TreeAPI::CllExprTerm &term) -> LLIR::var_type {
-    // type is explicitly based on value. We may not check others in addition
-    return deduceTypeFromExprValue(term.value);
+
+void LLIR::BuilderBase::raiseVarsTop(std::vector<LLIR::member> &insertPlace, std::vector<LLIR::member> &readPlace, std::string var_name, bool all_rule, bool retain_value, bool recursive) {
+    std::vector<LLIR::member> table;
+    getVariablesToTable(readPlace, table, var_name, retain_value, recursive);
+    insertVariablesOnTop(insertPlace, table);
 }
-auto LLIR::BuilderBase::deduceTypeFromExprAddition(const TreeAPI::CllExprAddition &addition) -> LLIR::var_type{
-    // same as with term
-    return deduceTypeFromExprTerm(addition.value);
-}
-auto LLIR::BuilderBase::deduceTypeFromExprCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type {
-    // if any comparasion exists it is boolean
-    if (compare.rights.size() != 0)
-        return {LLIR::var_types::BOOLEAN};
-    return deduceTypeFromExprAddition(compare.value);
-}
-auto LLIR::BuilderBase::deduceTypeFromExprLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type {
-    // if &&/|| exists it is always boolean
-    if (logical.rights.size() != 0)
-        return {LLIR::var_types::BOOLEAN};
-    return deduceTypeFromExprCompare(logical.value);
-}
-auto LLIR::BuilderBase::deduceTypeFromExpr(const TreeAPI::CllExpr &expr) -> LLIR::var_type {
-    return deduceTypeFromExprLogical(expr.value);
+void LLIR::BuilderBase::optimizeIR() {
+    // cpuf::printf("Optimze IR\n");
+    if (data.empty()) {
+        raiseVarsTop(data, data);
+    } else {
+        // cpuf::printf("Optimze IR on non-empty data\n");
+        for (auto &d : data) {
+            raiseVarsTop(data, data);
+        }
+    }
 }
 
 void LLIR::BuilderBase::push(LLIR::member mem) {
