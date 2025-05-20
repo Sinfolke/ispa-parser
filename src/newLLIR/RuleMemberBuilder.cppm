@@ -62,6 +62,18 @@ export namespace LLIR {
 
     class NameBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
+        auto pushBasedOnQualifier(
+            const TreeAPI::RuleMember &rule,
+            std::vector<LLIR::expr> &expr,
+            std::vector<LLIR::member> &block,
+            LLIR::variable &uvar,
+            const LLIR::variable &var,
+            const LLIR::variable &svar,
+            const LLIR::member &call,
+            char quantifier,
+            bool add_shadow_var
+        ) -> LLIR::variable;
+
     public:
         void build() override;
         NameBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}

@@ -1,55 +1,90 @@
-module;
-#include <vector>
-#include <set>
-#include <unordered_set>
 export module hash;
+import std;
 export inline void hash_combine(std::size_t& seed) {}
 
 export template <typename T, typename... Rest>
 inline void hash_combine(std::size_t& seed, const T& v, const Rest&... rest) {
     seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    hash_combine(seed, rest...);
+    if constexpr (sizeof...(rest) > 0) {
+        hash_combine(seed, rest...);
+    }
 }
-export namespace std {
+
+template<typename T>
+concept is_Hashable = requires(T a) {
+    { std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
+};
+
+struct uhash {
+    // hash for optional and variant
     template <typename T>
-    struct hash<vector<T>> {
-        size_t operator()(const vector<T>& vec) const noexcept {
-            size_t seed = vec.size();  // Start with size as base
-            for (const auto& elem : vec) {
-                // Combine element hash with seed using the same method as boost::hash_combine
-                seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-            return seed;
-        }
-    };
-    template<typename T>
-    struct hash<set<T>> {
-        size_t operator()(const set<T>& set) const noexcept {
-            size_t seed = set.size();  // Include size in hash
-            for (const auto& elem : set) {
-                seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-            return seed;
-        }
-    };
+    std::size_t operator()(const std::optional<T>& opt) const {
+        if (!opt.has_value()) return 0;
+        return uhash{}(*opt);
+    }
+    template <typename... Ts>
+    std::size_t operator()(const std::variant<Ts...>& v) const {
+        std::size_t h = std::hash<std::size_t>{}(v.index()); // include the index in the hash
+        std::visit([&](const auto& value) {
+            hash_combine(h, uhash{}(value));
+        }, v);
+        return h;
+    }
+
+    template<is_Hashable T>
+    std::size_t operator()(const T& value) const {
+        return std::hash<T>{}(value);
+    }
+
+    // Fallback for pairs
+    template <typename T1, typename T2>
+    std::size_t operator()(const std::pair<T1, T2>& p) const {
+        std::size_t h = 0;
+        hash_combine(h, uhash{}(p.first), uhash{}(p.second));
+        return h;
+    }
 
     template<typename T>
-    struct hash<unordered_set<T>> {
-        size_t operator()(const unordered_set<T>& set) const noexcept {
-            size_t seed = set.size();  // Include size in hash
-            for (const auto& elem : set) {
-                seed ^= hash<T>{}(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-            return seed;
+    requires (!is_Hashable<T> && requires(T a) { a.begin(); a.end(); })
+    std::size_t operator()(const T& container) const {
+        std::size_t h = 0;
+        for (const auto& item : container) {
+            std::size_t item_hash = uhash{}(item);
+            hash_combine(h, item_hash);
         }
-    };
-    template<typename T1, typename T2>
-    struct hash<std::pair<T1, T2>> {
-        std::size_t operator()(const std::pair<T1, T2>& p) const {
-            std::size_t h1 = std::hash<T1>{}(p.first);
-            std::size_t h2 = std::hash<T2>{}(p.second);
-            // Combine the hashes (standard way)
-            return h1 ^ (h2 << 1); // or use boost::hash_combine style if needed
+        return h;
+    }
+    template<typename T>
+    requires (!is_Hashable<T> && requires(T a) { a.members(); })
+    std::size_t operator()(const T& structure) const {
+        std::size_t h = 0;
+        for (const auto& member : structure.members()) {
+            std::size_t member_hash = uhash{}(member);
+            hash_combine(h, member_hash);
         }
-    };
-}
+        return h;
+    }
+    // Fallback or static_assert for unsupported types
+    template<typename T>
+    requires (!is_Hashable<T> && !requires(T a) { a.begin(); a.end(); })
+    std::size_t operator()(const T&) const {
+        static_assert(sizeof(T) == 0, "uhash: cannot hash type: not default hashable, not container and does not provide members method");
+        return 0;
+    }
+};
+// exports
+export namespace utype {
+    template<typename Key, typename Value>
+    using unordered_map = std::unordered_map<Key, Value, uhash>;
+    template<typename T>
+    using unordered_set = std::unordered_set<T, uhash>;
+};
+export struct Hashable {
+    friend struct uhash;
+};
+export struct EmptyHashable : Hashable {
+protected:
+    auto members() {
+        return std::tuple<> {};
+    }
+};

@@ -14,3 +14,13 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
         data.push_back(builder.getData());
     }
 }
+auto LLIR::Builder::get() -> IR {
+    return IR(data);
+}
+auto LLIR::Builder::getRawData() -> std::vector<Data> & {
+    return data;
+}
+auto LLIR::Builder::getRawData() const -> const std::vector<Data> & {
+    return data;
+}
+

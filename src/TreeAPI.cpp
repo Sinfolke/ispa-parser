@@ -120,51 +120,51 @@ namespace TreeAPI {
         return std::get<ID>(value);
     }    
     bool CllExprValue::isGroup() const {
-        return value.type() == typeid(CllExpr);
+        return std::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
     }
     bool CllExprValue::isVariable() const {
-        return value.type() == typeid(CllVariable);
+        return std::holds_alternative<std::shared_ptr<CllVariable>>(value);
     }
     bool CllExprValue::isFunctionCall() const {
-        return value.type() == typeid(CllFunctionCall);
+        return std::holds_alternative<CllFunctionCall>(value);
     }
     bool CllExprValue::isMethodCall() const {
-        return value.type() == typeid(CllMethodCall);
+        return std::holds_alternative<CllMethodCall>(value);
     }
     bool CllExprValue::isrvalue() const {
-        return value.type() == typeid(rvalue);
+        return std::holds_alternative<rvalue>(value);
     }
     CllExprGroup& CllExprValue::getGroup() {
-        return std::any_cast<CllExprGroup&>(value);
+        return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
     CllVariable& CllExprValue::getVariable() {
-        return std::any_cast<CllVariable&>(value);
+        return *std::get<std::shared_ptr<CllVariable>>(value);
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
-        return std::any_cast<CllFunctionCall&>(value);
+        return std::get<CllFunctionCall>(value);
     }
     CllMethodCall& CllExprValue::getMethodCall() {
-        return std::any_cast<CllMethodCall&>(value);
+        return std::get<CllMethodCall>(value);
     }
     rvalue& CllExprValue::getrvalue() {
-        return std::any_cast<rvalue&>(value);
+        return std::get<rvalue>(value);
     };
-    const CllExpr& CllExprValue::getGroup() const {
-        return std::any_cast<const CllExpr&>(value);
+    const CllExprGroup& CllExprValue::getGroup() const {
+        return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
     
     const CllVariable& CllExprValue::getVariable() const {
-        return std::any_cast<const CllVariable&>(value);
+        return *std::get<std::shared_ptr<CllVariable>>(value);
     }
     
     const CllFunctionCall& CllExprValue::getFunctionCall() const {
-        return std::any_cast<const CllFunctionCall&>(value);
+        return std::get<CllFunctionCall>(value);
     }
     const CllMethodCall& CllExprValue::getMethodCall() const {
-        return std::any_cast<const CllMethodCall&>(value);
+        return std::get<CllMethodCall>(value);
     }    
     const rvalue& CllExprValue::getrvalue() const {
-        return std::any_cast<const rvalue&>(value);
+        return std::get<rvalue>(value);
     }    
     bool TreeAPI::Cll::isVar() const {
         return std::holds_alternative<CllVar>(value);
@@ -458,6 +458,9 @@ namespace TreeAPI {
         return lhs.name == rhs.name &&
             lhs.body == rhs.body;
     }
+    bool operator==(const TreeAPI::CllMethodCall &lhs, const TreeAPI::CllMethodCall &rhs) {
+        return lhs.name == rhs.name && lhs.body == rhs.body;
+    }
     bool operator==(const CllExpr &lhs, const CllExpr &rhs) {
         return lhs.value == rhs.value;
     }
@@ -479,7 +482,15 @@ namespace TreeAPI {
     }
     
     bool operator==(const CllExprValue &lhs, const CllExprValue &rhs) {
-        return lhs.value.type() == rhs.value.type() && lhs == rhs;
+        return std::visit([] (auto &&a, auto &&b) -> bool {
+            using A = std::decay_t<decltype(a)>;
+            using B = std::decay_t<decltype(b)>;
+            if constexpr (std::is_same_v<A, B>) {
+                return a == b;
+            } else {
+                return false;
+            }
+        }, lhs.value, rhs.value);
     }
     
     bool operator==(const CllVariable &lhs, const CllVariable &rhs) {
@@ -514,7 +525,7 @@ namespace TreeAPI {
     }
     
     bool operator==(const Rule &lhs, const Rule &rhs) {
-        return lhs.members == rhs.members && lhs.data_block == rhs.data_block;
+        return lhs.rule_members == rhs.rule_members && lhs.data_block == rhs.data_block;
     }
 
     bool operator==(const RulePrefix &first, const RulePrefix &second) {
@@ -741,7 +752,7 @@ namespace TreeAPI {
 
     std::ostream& operator<<(std::ostream& os, const Rule& r) {
         os << "Rule {\n";
-        for (const auto& m : r.members)
+        for (const auto& m : r.rule_members)
             os << "  " << m << "\n";
         os << "  Data: " << r.data_block << "\n";
         os << "}";

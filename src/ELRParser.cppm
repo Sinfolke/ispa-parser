@@ -4,12 +4,13 @@
 export module ELRParser;
 import LRParser;
 import AST;
+import hash;
 import std;
 import std.compat;
 export class ELRParser : public LRParser {
     public:
         struct NFA_state {
-            std::unordered_map<std::vector<std::string>, size_t> transitions;
+            utype::unordered_map<std::vector<std::string>, size_t> transitions;
             std::optional<Action> reduce_action;
             bool is_starting_state = false;
             Action* place = nullptr;
@@ -17,7 +18,7 @@ export class ELRParser : public LRParser {
         };
         struct DFA_state {
             std::set<size_t> nfa_states; // the NFA states this DFA state represents
-            std::unordered_map<std::vector<std::string>, size_t> transitions;
+            utype::unordered_map<std::vector<std::string>, size_t> transitions;
             std::optional<Action> action; // optional
             std::vector<Action*> places;
             size_t epsilon_transition = 0;

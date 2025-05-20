@@ -15,7 +15,7 @@ public:
         size_t state;
     };
 
-    struct LR0Core {
+    struct LR0Core : Hashable {
         std::vector<std::string> lhs;
         TreeAPI::Rule rhs;
         size_t dot_pos;
@@ -26,35 +26,26 @@ public:
                    rhs == other.rhs &&
                    dot_pos == other.dot_pos;
         }
-
-    };
-
-    struct LR1Core : public LR0Core {
-        mutable std::set<std::vector<std::string>> lookahead;
-    };
-    struct LR0CoreHash {
-        std::size_t operator()(const LRParser::LR0Core& core) const {
-            std::size_t seed = 0;
-            for (const auto& elem : core.lhs) {
-                hash_combine(seed, std::hash<std::string>{}(elem));
-            }
-            hash_combine(seed, std::hash<TreeAPI::Rule>{}(core.rhs));
-            hash_combine(seed, std::hash<size_t>{}(core.dot_pos));
-            return seed;
+    private:
+        auto members() {
+            return std::tie(lhs, rhs, dot_pos);
         }
     };
 
-    struct LR1CoreHash {
-        std::size_t operator()(const LRParser::LR1Core& core) const noexcept {
-            size_t seed = LR0CoreHash{}(core);  // reuse LR0Core hash
-
-            std::hash<std::vector<std::string>> vec_hasher;
-            for (const auto& la_set : core.lookahead) {
-                seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-
-            return seed;
+    struct LR1Core : LR0Core {
+        mutable utype::unordered_set<std::vector<std::string>> lookahead;
+        bool operator==(const LR1Core other) const {
+            return lhs == other.lhs &&
+                   rhs == other.rhs &&
+                   dot_pos == other.dot_pos &&
+                   lookahead == other.lookahead;
+            ;
         }
+    private:
+        auto members() {
+            return std::tie(lhs, rhs, dot_pos, lookahead);
+        }
+
     };
     struct Conflict {
         std::vector<LR1Core> item;
@@ -62,35 +53,24 @@ public:
         std::vector<Action> conflicts;
         size_t state;
     };
-    using InitialItemSet = std::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
-    using ActionTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, Action>>;
-    using GotoTable = std::unordered_map<size_t, std::unordered_map<std::vector<std::string>, size_t>>;
+    using InitialItemSet = utype::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
+    using ActionTable = utype::unordered_map<size_t, utype::unordered_map<std::vector<std::string>, Action>>;
+    using GotoTable = utype::unordered_map<size_t, utype::unordered_map<std::vector<std::string>, size_t>>;
     using ItemSet = std::vector<TreeAPI::Rule>;
-    using CanonicalItem = std::unordered_set<LR1Core, LR1CoreHash>;
+    using CanonicalItem = utype::unordered_set<LR1Core>;
     using CanonicalItemSet = std::vector<CanonicalItem>;
 
-    using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
+    using First = utype::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
     using Follow = First;
     using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<TreeAPI::RuleMember>>>;
     using Rules = std::vector<Rules_part>;
-    using Priority = std::unordered_map<std::vector<std::string>, size_t>;
+    using Priority = utype::unordered_map<std::vector<std::string>, size_t>;
     using Conflicts = std::vector<Conflict>;
-
-    struct CanonicalItemHash {
-        std::size_t operator()(const CanonicalItem& item) const noexcept {
-            std::size_t seed = item.size();
-            LR1CoreHash core_hash;  // assumes this is a functor like std::hash<LR1Core>
-            for (const auto& elem : item) {
-                seed ^= core_hash(elem) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-            return seed;
-        }
-    };
 protected:
     AST *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>> use_places;
+    utype::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>> use_places;
 
     InitialItemSet initial_item_set;
     CanonicalItemSet canonical_item_set;
@@ -103,7 +83,7 @@ protected:
     Priority priority;
     Conflicts conflicts;
     void createInitialItemSet();
-    void transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements);
+    void transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements);
     void transform();
     // void getPriorityTree(const std::vector<std::vector<std::string>> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
     // void getPriorityTree();
@@ -156,8 +136,8 @@ public:
     auto getActionTable() const -> const ActionTable&;
     auto getGotoTable() const -> const GotoTable&;
     auto getRulesTable() const -> const Rules&; 
-    auto getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>>;
-    auto getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t>>;
+    auto getActionTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, LRParser::Action>>;
+    auto getGotoTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, size_t>>;
     // helper functions
     auto getMaxStatesCount() const -> size_t;
 
@@ -170,40 +150,3 @@ public:
     void printFirstSet(const std::string &fileName);
     void printFollowSet(const std::string &fileName);
 };
-namespace std {
-
-    // Hash specialization for TreeAPI::LR0Core
-    template <>
-    struct hash<LRParser::LR0Core> {
-        std::size_t operator()(const LRParser::LR0Core& core) const {
-            std::size_t seed = 0;
-            // Hash the lhs vector (std::vector<std::string>)
-            for (const auto& elem : core.lhs) {
-                hash_combine(seed, std::hash<std::string>{}(elem));
-            }
-            
-            // Hash the rhs (which is a TreeAPI::Rule)
-            hash_combine(seed, std::hash<TreeAPI::Rule>{}(core.rhs));
-            
-            // Hash the dot_pos size_t value
-            hash_combine(seed, std::hash<size_t>{}(core.dot_pos));
-            
-            return seed;
-        }
-    };
-    template<>
-    struct hash<LRParser::LR1Core> {
-        size_t operator()(const LRParser::LR1Core& core) const noexcept {
-            // Start with hash of LR0Core base
-            size_t seed = hash<LRParser::LR0Core>{}(core);
-            
-            // Hash each lookahead set
-            hash<vector<string>> vec_hasher;
-            for (const auto& la_set : core.lookahead) {
-                seed ^= vec_hasher(la_set) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-            }
-            
-            return seed;
-        }
-    };
-}

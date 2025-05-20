@@ -4,6 +4,7 @@ import logging;
 import TreeAPI;
 import LLIRBuilder;
 import std;
+import std.compat;
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);
@@ -572,7 +573,7 @@ void AST::createRules(const Parser::Types::rule &rule) {
     size_t previous_size = nested_rule_names.size();
     getNestedRuleNames(rule);
     createRuleMembers(rule.rule);
-    newRule.members = newRules;
+    newRule.rule_members = newRules;
     newRule.data_block = createDataBlock(rule.data_block);
     tree_map[fullname] = newRule;
     newRules.clear();
@@ -623,7 +624,7 @@ void AST::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, con
 }
 void AST::createUsePlacesTable() {
     for (const auto &[name, value] : tree_map) {
-        getUsePlacesTable(value.members, name);
+        getUsePlacesTable(value.rule_members, name);
     }
 }
 auto AST::getUsePlacesTable() -> UsePlaceTable& {
@@ -638,7 +639,7 @@ void AST::constructNullableSet() {
             if (nullable[name]) continue;
 
             bool all_nullable = true;
-            for (const auto &member : value.members) {
+            for (const auto &member : value.rule_members) {
                 if (member.isName()) {
                     const auto &n = member.getName().name;
                     if (corelib::text::isUpper(n.back()) || !nullable[n]) {
@@ -661,9 +662,9 @@ void AST::constructNullableSet() {
         }
     } while (changed);
 }
-auto AST::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>> {
+auto AST::constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> utype::unordered_set<std::vector<std::string>> {
     bool nullable_prefix = true;
-    std::set<std::vector<std::string>> set;
+    utype::unordered_set<std::vector<std::string>> set;
     for (const auto &member : members) {
         if (member.isGroup()) {
             auto group_set = constructFirstSet(member.getGroup().values, nonterminal);
@@ -720,7 +721,7 @@ void AST::constructFirstSet() {
                 continue;
             }
             std::set<std::vector<std::string>> visited;
-            auto set = constructFirstSet(value.members, name);
+            auto set = constructFirstSet(value.rule_members, name);
             auto size = first[name].size();
             first[name].insert(set.begin(), set.end());
             if (first[name].size() != size)
@@ -744,10 +745,10 @@ void AST::constructFollowSet() {
                 continue;
             }
             bool is_left_recursive = false;
-            if (value.members.size() > 0 && value.members[0].isName() && name == value.members[0].getName().name) {
+            if (value.rule_members.size() > 0 && value.rule_members[0].isName() && name == value.rule_members[0].getName().name) {
                 is_left_recursive = true;
             }
-            for (auto it = value.members.begin(); it != value.members.end(); it++) {
+            for (auto it = value.rule_members.begin(); it != value.rule_members.end(); it++) {
                 if (!it->isName()) {
                     continue;
                 }
@@ -771,7 +772,7 @@ void AST::constructFollowSet() {
                         hasChanges = true;
                     prev_depend.push_back(current.name);
                 }
-                if (it + 1 == value.members.end()) {
+                if (it + 1 == value.rule_members.end()) {
                     // Add FOLLOW of LHS (the left-hand-side nonterminal)
                     auto &f_lhs = follow[name];
                     for (auto &sym : f_lhs) {
@@ -780,10 +781,10 @@ void AST::constructFollowSet() {
                     }
                 } else {
                     auto next = (it + 1);
-                    while (!next->isName() && next != value.members.end()) {
+                    while (!next->isName() && next != value.rule_members.end()) {
                         next++;
                     }
-                    if (next == value.members.end()) {
+                    if (next == value.rule_members.end()) {
                         // Add FOLLOW of LHS (the left-hand-side nonterminal)
                         auto &f_lhs = follow[name];
                         for (auto &sym : f_lhs) {

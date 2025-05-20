@@ -3,19 +3,20 @@ import TreeAPI;
 import corelib;
 import LLIR;
 import Parser;
+import hash;
 import std;
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */
 export class AST {
-    public:        
+    public:
         enum class SpacemodeStates {
             MIXED, MANUAL, SKIPPED 
         };
-        using TreeMap = std::unordered_map<std::vector<std::string>, TreeAPI::Rule>;
-        using Use = std::unordered_map<std::string, TreeAPI::rvalue>;
-        using UsePlaceTable = std::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
-        using First = std::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
+        using TreeMap = utype::unordered_map<std::vector<std::string>, TreeAPI::Rule>;
+        using Use = utype::unordered_map<std::string, TreeAPI::rvalue>;
+        using UsePlaceTable = utype::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
+        using First = utype::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
         using Follow = First;
         using lexer_code = std::pair<LLIR::IR, LLIR::variable>;
     private:
@@ -40,7 +41,7 @@ export class AST {
         UsePlaceTable use_places;
         First first;
         Follow follow;
-        std::unordered_map<std::vector<std::string>, bool> nullable;
+        utype::unordered_map<std::vector<std::string>, bool> nullable;
         TreeAPI::Array createArray(const Parser::Rule &array);
         TreeAPI::Object createObject(const Parser::Rule &object);
         TreeAPI::String createString(const Parser::Token &token);
@@ -71,7 +72,7 @@ export class AST {
         void flushOpSequence();
         // build Tree API from AST
         void createRules(const Parser::Types::rule &rule);
-        AST(const std::vector<Parser::Rule> &modules, const  std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, bool isModule) {
+        AST(const std::vector<Parser::Rule> &modules, const std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, bool isModule) {
             this->nested_rule_names = nested_rule_names;
             if (isModule)
                 constructor(modules);
@@ -79,11 +80,11 @@ export class AST {
                 createRuleMembers(modules);
             }
         }
-        std::vector<TreeAPI::RuleMember> &getRules();
+        auto getRules() -> std::vector<TreeAPI::RuleMember>&;
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
         void createUsePlacesTable();
         void constructNullableSet();
-        auto constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> std::set<std::vector<std::string>>;
+        auto constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> utype::unordered_set<std::vector<std::string>>;
         void constructFirstSet();
         void constructFollowSet();
     public:

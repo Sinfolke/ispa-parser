@@ -22,15 +22,19 @@ export namespace TreeAPI {
     using CllFunctionBodyCall = CllFunctionArguments;
     using CllFunctionBodyDecl = CllFunctionParameters;
 
-    struct String {
+    struct String : Hashable {
         std::string value;
         static size_t count_strlen(const std::string &str);
         static std::string format_str(std::string str);
         size_t count_strlen() const;
         std::string format_str() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct Number {
+    struct Number : Hashable {
         char sign = '\0';
         std::string main;
         std::string dec;
@@ -40,28 +44,47 @@ export namespace TreeAPI {
         double getFullNumber() const;
         unsigned getMain() const;
         unsigned getDecimal() const;
+    private:
+        auto members() {
+            return std::tie(sign, main, dec);
+        }
     };
 
-    struct Boolean {
+    struct Boolean : Hashable {
         std::string value;
         bool getBoolean() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct Array {
+    struct Array : Hashable {
         std::vector<CllExpr> value;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct Object {
+    struct Object : Hashable {
         std::unordered_map<std::string, CllExpr> value;
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct At {};
+    struct At : EmptyHashable {};
 
-    struct ID {
+    struct ID : Hashable {
         std::string value;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct rvalue {
+    struct rvalue : Hashable {
         std::variant<String, Number, Boolean, Array, Object, At, ID> value;
         bool isString() const;
         bool isNumber() const;
@@ -82,44 +105,79 @@ export namespace TreeAPI {
         const Array& getArray() const;
         const Object& getObject() const;
         const ID& getID() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct CllCompareOp {
+    struct CllCompareOp : Hashable {
         std::string op;
+    private:
+        auto members() {
+            return std::tie(op);
+        }
     };
 
-    struct CllLogicalOp {
+    struct CllLogicalOp : Hashable {
         bool isAnd;
+    private:
+        auto members() {
+            return std::tie(isAnd);
+        }
     };
 
-    struct CllType {
+    struct CllType : Hashable {
         std::string type;
         std::vector<CllType> templ;
+    private:
+        auto members() {
+            return std::tie(type, templ);
+        }
     };
 
-    struct CllFunctionArguments {
+    struct CllFunctionArguments : Hashable {
         std::vector<CllExpr> expr;
+    private:
+        auto members() {
+            return std::tie(expr);
+        }
     };
 
-    struct CllFunctionParameters {
+    struct CllFunctionParameters : Hashable {
         std::vector<std::string> names;
+    private:
+        auto members() {
+            return std::tie(names);
+        }
     };
 
-    struct CllFunctionCall {
+    struct CllFunctionCall : Hashable {
         std::string name;
         CllFunctionBodyCall body;
+    private:
+        auto members() {
+            return std::tie(name, body);
+        }
     };
 
-    struct CllFunctionDecl {
+    struct CllFunctionDecl : Hashable {
         std::string name;
         CllFunctionBodyDecl body;
+        auto members() {
+            return std::tie(name, body);
+        }
     };
-    struct CllMethodCall {
+    struct CllMethodCall : Hashable {
         std::string name;
         CllFunctionCall body;
+    private:
+        auto members() {
+            return std::tie(name, body);
+        }
     };
-    struct CllExprValue {
-        std::any value;
+    struct CllExprValue : Hashable {
+        std::variant<std::shared_ptr<CllExprGroup>, std::shared_ptr<CllVariable>, CllFunctionCall, CllMethodCall, rvalue> value;
         bool isGroup() const;
         bool isVariable() const;
         bool isFunctionCall() const;
@@ -130,66 +188,108 @@ export namespace TreeAPI {
         CllFunctionCall &getFunctionCall();
         CllMethodCall &getMethodCall();
         rvalue &getrvalue();
-        const CllExpr &getGroup() const;
+        const CllExprGroup &getGroup() const;
         const CllVariable &getVariable() const;
         const CllFunctionCall &getFunctionCall() const;
         const CllMethodCall &getMethodCall() const;
         const rvalue &getrvalue() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct CllExprTerm {
+    struct CllExprTerm : Hashable {
         CllExprValue value;
         std::vector<std::pair<char, CllExprValue>> rights;
+    private:
+        auto members() {
+            return std::tie(value, rights);
+        }
     };
 
-    struct CllExprAddition {
+    struct CllExprAddition : Hashable {
         CllExprTerm value;
         std::vector<std::pair<char, CllExprTerm>> rights;
+    private:
+        auto members() {
+            return std::tie(value, rights);
+        }
     };
 
-    struct CllExprCompare {
+    struct CllExprCompare : Hashable {
         CllExprAddition value;
         std::vector<std::pair<CllCompareOp, CllExprAddition>> rights;
+    private:
+        auto members() {}
     };
 
-    struct CllExprLogical {
+    struct CllExprLogical : Hashable {
         CllExprCompare value;
         std::vector<std::pair<CllLogicalOp, CllExprCompare>> rights;
+    private:
+        auto members() {
+            return std::tie(value, rights);
+        }
     };
 
-    struct CllExpr {
+    struct CllExpr : Hashable {
         CllExprLogical value;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
-    struct CllExprGroup {
+    struct CllExprGroup : Hashable {
         CllExpr expr;
+    private:
+        auto members() {
+            return std::tie(expr);
+        }
     };
-    struct CllVariable {
+    struct CllVariable : Hashable {
         std::optional<char> pre_increament;
         std::optional<char> post_increament;
         std::string name;
         std::optional<CllExpr> braceExpression;
+    private:
+        auto members() {
+            std::tie(pre_increament, post_increament, name, braceExpression);
+        }
     };
 
-    struct CllIf {
+    struct CllIf : Hashable {
         CllExpr expr;
         std::vector<RuleMember> stmt;
+    private:
+        auto members() {
+            return std::tie(expr, stmt);
+        }
     };
 
-    struct CllVar {
+    struct CllVar : Hashable {
         CllType type;
         std::string name;
         char op = '\0';
         CllExpr value;
+    private:
+        auto members() {
+            return std::tie(type, name, op, value);
+        }
     };
 
-    struct CllLoopWhile {
+    struct CllLoopWhile : Hashable {
         CllExpr expr;
         std::vector<RuleMember> stmt;
+    private:
+        auto members() {
+            return std::tie(expr, stmt);
+        }
     };
 
-    struct CllLoopFor {};
+    struct CllLoopFor : EmptyHashable {};
 
-    struct Cll {
+    struct Cll : Hashable {
         std::variant<CllVar, CllIf, CllExpr> value;
         bool isVar() const;
         bool isIf() const;
@@ -200,43 +300,72 @@ export namespace TreeAPI {
         const CllVar &getVar() const;
         const CllIf &getIf() const;
         const CllExpr &getExpr() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct RulePrefix {
+    struct RulePrefix : Hashable {
         bool is_key_value = false;
         std::string name;
         void clear();
         bool empty() const;
+    private:
+        auto members() {
+            return std::tie(is_key_value, name);
+        }
     };
 
-    struct RuleMemberName {
+    struct RuleMemberName : Hashable {
         std::vector<std::string> name;
         bool isAutoGenerated = false;
+    private:
+        auto members() {
+            return std::tie(name, isAutoGenerated);
+        }
     };
 
-    struct RuleMemberGroup {
+    struct RuleMemberGroup : Hashable {
         std::vector<RuleMember> values;
+    private:
+        auto members() {
+            return std::tie(values);
+        }
     };
 
-    struct RuleMemberOp {
+    struct RuleMemberOp : Hashable {
         std::vector<RuleMember> options;
+    private:
+        auto members() {
+            return std::tie(options);
+        }
     };
 
-    struct RuleMemberCsequence {
+    struct RuleMemberCsequence : Hashable {
         bool negative = false;
         std::vector<char> characters;
         std::vector<char> escaped;
         std::vector<std::pair<char, char>> diapasons;
+    private:
+        auto members() {
+            return std::tie(negative, characters, escaped, diapasons);
+        }
     };
 
-    struct RuleMemberAny {};
+    struct RuleMemberAny : EmptyHashable {};
 
-    struct RuleMemberNospace {};
+    struct RuleMemberNospace : EmptyHashable {};
 
-    struct RuleMemberEscaped {
+    struct RuleMemberEscaped : Hashable {
         char c;
+    private:
+        auto members() {
+            return std::tie(c);
+        }
     };
 
+    // these structure are hashable by begin and end methods
     struct RuleMemberHex {
         std::string hex_chars;
         std::string::iterator begin();
@@ -249,7 +378,7 @@ export namespace TreeAPI {
         std::string::iterator end();
     };
 
-    struct RuleMember {
+    struct RuleMember : Hashable {
         RulePrefix prefix;
         char quantifier = '\0';
         bool isAutoGenerated = false;
@@ -291,17 +420,29 @@ export namespace TreeAPI {
         const RuleMemberBin& getBin() const;
         const Cll& getCll() const;
         bool fullCompare(const RuleMember &second);
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
-    struct RuleMemberKey {
+    struct RuleMemberKey : Hashable {
         RuleMember base;
+    private:
+        auto members() {
+            return std::tie(base);
+        }
     };
-    struct RegularDataBlockWKeys {
+    struct RegularDataBlockWKeys : Hashable {
         std::unordered_map<std::string, CllExpr> value;
 
         bool empty() const;
         std::unordered_map<std::string, CllExpr>::iterator begin();
         std::unordered_map<std::string, CllExpr>::iterator end();
         CllExpr &operator[](const std::string &name);
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
     using RegularDataBlock = CllExpr;
@@ -314,7 +455,7 @@ export namespace TreeAPI {
         std::vector<std::string>::iterator end();
     };
 
-    struct DataBlock {
+    struct DataBlock : Hashable {
         std::variant<std::monostate, RegularDataBlock, RegularDataBlockWKeys, TemplatedDataBlock> value;
         bool isRegularDataBlock() const;
         bool isWithKeys() const;
@@ -326,12 +467,22 @@ export namespace TreeAPI {
         const RegularDataBlock &getRegDataBlock() const;
         const RegularDataBlockWKeys &getRegDataBlockWKeys() const;
         const TemplatedDataBlock &getTemplatedDataBlock() const;
+    private:
+        auto members() {
+            return std::tie(value);
+        }
     };
 
-    struct Rule {
-        std::vector<TreeAPI::RuleMember> members;
+    struct Rule : Hashable {
+        std::vector<TreeAPI::RuleMember> rule_members;
         TreeAPI::DataBlock data_block;
+    private:
+        auto members() {
+            return std::tie(rule_members, data_block);
+        }
     };
+    // helper functions
+    CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 
     // Define operator== outside structures
     bool operator==(const String &lhs, const String &rhs);
@@ -348,6 +499,7 @@ export namespace TreeAPI {
     bool operator==(const CllFunctionParameters &lhs, const CllFunctionParameters &rhs);
     bool operator==(const CllFunctionCall &lhs, const CllFunctionCall &rhs);
     bool operator==(const CllFunctionDecl &lhs, const CllFunctionDecl &rhs);
+    bool operator==(const CllMethodCall &lhs, const CllMethodCall &rhs);
     bool operator==(const CllExprValue &lhs, const CllExprValue &rhs);
     bool operator==(const CllExprTerm &lhs, const CllExprTerm &rhs);
     bool operator==(const CllExprAddition &lhs, const CllExprAddition &rhs);
@@ -392,483 +544,4 @@ export namespace TreeAPI {
     std::ostream& operator<<(std::ostream& os, const TemplatedDataBlock& block);
     std::ostream& operator<<(std::ostream& os, const DataBlock& block);
     std::ostream& operator<<(std::ostream& os, const Rule& rule);
-    CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 };
-
-namespace std {
-    // Hash specialization for TreeAPI::CllCompareOp
-    template<> struct hash<TreeAPI::CllCompareOp>;
-    template<> struct hash<TreeAPI::CllLogicalOp>;
-    template<> struct hash<TreeAPI::CllType>;
-    template<> struct hash<TreeAPI::CllExpr>;
-    template<> struct hash<TreeAPI::CllExprGroup>;
-    template<> struct hash<TreeAPI::CllExprLogical>;
-    template<> struct hash<TreeAPI::CllExprCompare>;
-    template<> struct hash<TreeAPI::CllExprAddition>;
-    template<> struct hash<TreeAPI::CllExprTerm>;
-    template<> struct hash<TreeAPI::CllExprValue>;
-    template<> struct hash<TreeAPI::CllVariable>;
-    template<> struct hash<TreeAPI::CllIf>;
-    template<> struct hash<TreeAPI::CllVar>;
-    template<> struct hash<TreeAPI::CllLoopWhile>;
-    template<> struct hash<TreeAPI::Cll>;
-    template<> struct hash<TreeAPI::RulePrefix>;
-    template<> struct hash<TreeAPI::RuleMemberName>;
-    template<> struct hash<TreeAPI::RuleMemberOp>;
-    template<> struct hash<TreeAPI::RuleMemberCsequence>;
-    template<> struct hash<TreeAPI::RuleMemberEscaped>;
-    template<> struct hash<TreeAPI::RuleMemberHex>;
-    template<> struct hash<TreeAPI::RuleMemberBin>;
-    template<> struct hash<TreeAPI::RuleMember>;
-    template<> struct hash<TreeAPI::RegularDataBlockWKeys>;
-    template<> struct hash<TreeAPI::TemplatedDataBlock>;
-    template<> struct hash<TreeAPI::DataBlock>;
-    template<> struct hash<TreeAPI::Rule>;
-    template<> struct hash<TreeAPI::String>;
-    template<> struct hash<TreeAPI::Number>;
-    template<> struct hash<TreeAPI::Boolean>;
-    template<> struct hash<TreeAPI::Array>;
-    template<> struct hash<TreeAPI::Object>;
-    template<> struct hash<TreeAPI::At>;
-    template<> struct hash<TreeAPI::ID>;
-    // Hash specialization for TreeAPI::CllCompareOp
-    template <>
-    struct hash<TreeAPI::CllCompareOp> {
-        std::size_t operator()(const TreeAPI::CllCompareOp& op) const {
-            std::size_t seed = 0;
-            // Hash the 'op' string
-            hash_combine(seed, std::hash<std::string>{}(op.op));
-            return seed;
-        }
-    };
-
-    // Hash specialization for TreeAPI::CllLogicalOp
-    template <>
-    struct hash<TreeAPI::CllLogicalOp> {
-        std::size_t operator()(const TreeAPI::CllLogicalOp& op) const {
-            std::size_t seed = 0;
-            // Hash the 'isAnd' boolean value
-            hash_combine(seed, std::hash<bool>{}(op.isAnd));
-            return seed;
-        }
-    };
-    template <>
-    struct hash<TreeAPI::CllType> {
-        std::size_t operator()(const TreeAPI::CllType& cll) const {
-            std::size_t seed = 0;
-            // Hash the type string
-            hash_combine(seed, std::hash<std::string>{}(cll.type));
-
-            // Hash the templ vector recursively
-            for (const auto& t : cll.templ) {
-                hash_combine(seed, std::hash<TreeAPI::CllType>{}(t));
-            }
-
-            return seed;
-        }
-    };
-    template <>
-    struct hash<TreeAPI::CllExprValue> {
-        std::size_t operator()(const TreeAPI::CllExprValue& v) const {
-            if (v.isGroup()) return std::hash<const void*>{}(static_cast<const void*>(&v.getGroup()));
-            if (v.isVariable()) return std::hash<const void*>{}(static_cast<const void*>(&v.getVariable()));
-            if (v.isFunctionCall()) return std::hash<const void*>{}(static_cast<const void*>(&v.getFunctionCall()));
-            if (v.isMethodCall()) return std::hash<const void*>{}(static_cast<const void*>(&v.getMethodCall()));
-            if (v.isrvalue()) return std::hash<const void*>{}(static_cast<const void*>(&v.getrvalue()));
-            return 0;
-        }
-    };
-
-
-    template <>
-    struct hash<TreeAPI::CllExprTerm> {
-        std::size_t operator()(const TreeAPI::CllExprTerm& t) const {
-            std::size_t seed = std::hash<TreeAPI::CllExprValue>{}(t.value);
-            for (const auto& [op, rhs] : t.rights) {
-                hash_combine(seed, std::hash<char>{}(op),
-                                   std::hash<TreeAPI::CllExprValue>{}(rhs));
-            }
-            return seed;
-        }
-    };
-
-
-    template <>
-    struct hash<TreeAPI::CllExprAddition> {
-        std::size_t operator()(const TreeAPI::CllExprAddition& a) const {
-            std::size_t seed = std::hash<TreeAPI::CllExprTerm>{}(a.value);
-            for (const auto& [op, rhs] : a.rights) {
-                hash_combine(seed, std::hash<char>{}(op),
-                                   std::hash<TreeAPI::CllExprTerm>{}(rhs));
-            }
-            return seed;
-        }
-    };
-
-
-    template <>
-    struct hash<TreeAPI::CllExprCompare> {
-        std::size_t operator()(const TreeAPI::CllExprCompare& c) const {
-            std::size_t seed = std::hash<TreeAPI::CllExprAddition>{}(c.value);
-            for (const auto& [op, rhs] : c.rights) {
-                hash_combine(seed, std::hash<TreeAPI::CllCompareOp>{}(op),
-                                   std::hash<TreeAPI::CllExprAddition>{}(rhs));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::CllExprLogical> {
-        std::size_t operator()(const TreeAPI::CllExprLogical& l) const {
-            std::size_t seed = std::hash<TreeAPI::CllExprCompare>{}(l.value);
-            for (const auto& [op, rhs] : l.rights) {
-                hash_combine(seed, std::hash<TreeAPI::CllLogicalOp>{}(op),
-                                   std::hash<TreeAPI::CllExprCompare>{}(rhs));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::CllExpr> {
-        std::size_t operator()(const TreeAPI::CllExpr& e) const {
-            return std::hash<TreeAPI::CllExprLogical>{}(e.value);
-        }
-    };
-
-
-
-    template <>
-    struct hash<TreeAPI::CllExprGroup> {
-        std::size_t operator()(const TreeAPI::CllExprGroup& g) const {
-            return std::hash<TreeAPI::CllExpr>{}(g.expr);
-        }
-    };
-    // Hash for RulePrefix
-    template <>
-    struct hash<TreeAPI::RulePrefix> {
-        std::size_t operator()(const TreeAPI::RulePrefix& prefix) const {
-            std::size_t seed = 0;
-            hash_combine(seed, prefix.is_key_value);
-            hash_combine(seed, std::hash<std::string>{}(prefix.name));
-            return seed;
-        }
-    };
-
-    // Hash for RuleMemberName
-    template <>
-    struct hash<TreeAPI::RuleMemberName> {
-        std::size_t operator()(const TreeAPI::RuleMemberName& name) const {
-            std::size_t seed = 0;
-            for (const auto& n : name.name) {
-                hash_combine(seed, std::hash<std::string>{}(n));
-            }
-            hash_combine(seed, name.isAutoGenerated);
-            return seed;
-        }
-    };
-
-
-    // Hash for RuleMemberCsequence
-    template <>
-    struct hash<TreeAPI::RuleMemberCsequence> {
-        std::size_t operator()(const TreeAPI::RuleMemberCsequence& cseq) const {
-            std::size_t seed = 0;
-            hash_combine(seed, cseq.negative);
-            for (const auto& character : cseq.characters) {
-                hash_combine(seed, std::hash<char>{}(character));
-            }
-            for (const auto& escaped : cseq.escaped) {
-                hash_combine(seed, std::hash<char>{}(escaped));
-            }
-            for (const auto& diapason : cseq.diapasons) {
-                hash_combine(seed, std::hash<char>{}(diapason.first));
-                hash_combine(seed, std::hash<char>{}(diapason.second));
-            }
-            return seed;
-        }
-    };
-
-    // Hash for RuleMemberEscaped
-    template <>
-    struct hash<TreeAPI::RuleMemberEscaped> {
-        std::size_t operator()(const TreeAPI::RuleMemberEscaped& escaped) const {
-            return std::hash<char>{}(escaped.c);
-        }
-    };
-
-    // Hash for RuleMemberHex
-    template <>
-    struct hash<TreeAPI::RuleMemberHex> {
-        std::size_t operator()(const TreeAPI::RuleMemberHex& hex) const {
-            std::size_t seed = 0;
-            for (const auto& hex_char : hex.hex_chars) {
-                hash_combine(seed, std::hash<char>{}(hex_char));
-            }
-            return seed;
-        }
-    };
-
-    // Hash for RuleMemberBin
-    template <>
-    struct hash<TreeAPI::RuleMemberBin> {
-        std::size_t operator()(const TreeAPI::RuleMemberBin& bin) const {
-            std::size_t seed = 0;
-            for (const auto& bin_char : bin.bin_chars) {
-                hash_combine(seed, std::hash<char>{}(bin_char));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::String> {
-        std::size_t operator()(const TreeAPI::String& s) const {
-            return std::hash<std::string>{}(s.value);
-        }
-    };
-    // Hash for RuleMember
-    template <>
-    struct hash<TreeAPI::RuleMember> {
-        std::size_t operator()(const TreeAPI::RuleMember& member) const {
-            std::size_t seed = 0;
-            hash_combine(seed, std::hash<TreeAPI::RulePrefix>{}(member.prefix));
-            hash_combine(seed, std::hash<char>{}(member.quantifier));
-            hash_combine(seed, member.isAutoGenerated);
-            hash_combine(seed, member.isInline);
-
-            // Handle the variant
-            if (member.isString()) {
-                hash_combine(seed, std::hash<TreeAPI::String>{}(member.getString()));
-            } else if (member.isName()) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMemberName>{}(member.getName()));
-            } else if (member.isGroup()) {
-                for (const auto& value : member.getGroup().values) {
-                    hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(value));
-                }
-            } else if (member.isOp()) {
-                for (const auto& option : member.getOp().options) {
-                    hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(option));
-                }
-            } else if (member.isCsequence()) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMemberCsequence>{}(member.getCsequence()));
-            } else if (member.isAny()) {
-                // Hash nothing for RuleMemberAny as it doesn't have data
-            } else if (member.isNospace()) {
-                // Hash nothing for RuleMemberNospace as it doesn't have data
-            } else if (member.isEscaped()) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMemberEscaped>{}(member.getEscaped()));
-            } else if (member.isHex()) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMemberHex>{}(member.getHex()));
-            } else if (member.isBin()) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMemberBin>{}(member.getBin()));
-            } else if (member.isCll()) {
-                const auto &cll = member.getCll();
-
-                // Inlined Cll handling to keep hash consistent
-                if (cll.isExpr()) {
-                    hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(cll.getExpr()));
-                } else if (cll.isIf()) {
-                    const auto &i = cll.getIf();
-                    hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(i.expr));
-                    for (const auto& stmt : i.stmt) {
-                        hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(stmt));
-                    }
-                } else if (cll.isVar()) {
-                    const auto &v = cll.getVar();
-                    hash_combine(seed, std::hash<TreeAPI::CllType>{}(v.type));
-                    hash_combine(seed, std::hash<std::string>{}(v.name));
-                    hash_combine(seed, std::hash<char>{}(v.op));
-                    hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(v.value));
-                }
-            }
-            return seed;
-        }
-    };
-    template <>
-    struct hash<TreeAPI::RuleMemberKey> {
-        size_t operator()(const TreeAPI::RuleMemberKey& key) const {
-            TreeAPI::RuleMember copy = key.base;
-            copy.quantifier = '\0';
-            return std::hash<TreeAPI::RuleMember>{}(copy);
-        }
-    };
-    // Hash for RuleMemberOp
-    template <>
-    struct hash<TreeAPI::RuleMemberOp> {
-        std::size_t operator()(const TreeAPI::RuleMemberOp& op) const {
-            std::size_t seed = 0;
-            for (const auto& option : op.options) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(option));
-            }
-            return seed;
-        }
-    };
-    // Hash for RegularDataBlockWKeys
-    template <>
-    struct hash<TreeAPI::RegularDataBlockWKeys> {
-        std::size_t operator()(const TreeAPI::RegularDataBlockWKeys& block) const {
-            std::size_t seed = 0;
-            for (const auto& [key, value] : block.value) {
-                hash_combine(seed, std::hash<std::string>{}(key));
-                hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(value));
-            }
-            return seed;
-        }
-    };
-
-    // Hash for TemplatedDataBlock
-    template <>
-    struct hash<TreeAPI::TemplatedDataBlock> {
-        std::size_t operator()(const TreeAPI::TemplatedDataBlock& block) const {
-            std::size_t seed = 0;
-            for (const auto& name : block.names) {
-                hash_combine(seed, std::hash<std::string>{}(name));
-            }
-            return seed;
-        }
-    };
-
-    // Hash for DataBlock
-    template <>
-    struct hash<TreeAPI::DataBlock> {
-        std::size_t operator()(const TreeAPI::DataBlock& block) const {
-            std::size_t seed = 0;
-            if (block.isRegularDataBlock()) {
-                hash_combine(seed, std::hash<TreeAPI::RegularDataBlock>{}(block.getRegDataBlock()));
-            } else if (block.isWithKeys()) {
-                hash_combine(seed, std::hash<TreeAPI::RegularDataBlockWKeys>{}(block.getRegDataBlockWKeys()));
-            } else if (block.isTemplatedDataBlock()) {
-                hash_combine(seed, std::hash<TreeAPI::TemplatedDataBlock>{}(block.getTemplatedDataBlock()));
-            }
-            return seed;
-        }
-    };
-
-    // Hash for Rule
-    template <>
-    struct hash<TreeAPI::Rule> {
-        std::size_t operator()(const TreeAPI::Rule& rule) const {
-            std::size_t seed = 0;
-            for (const auto& member : rule.members) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(member));
-            }
-            hash_combine(seed, std::hash<TreeAPI::DataBlock>{}(rule.data_block));
-            return seed;
-        }
-    };
-    template <>
-    struct hash<TreeAPI::CllVariable> {
-        std::size_t operator()(const TreeAPI::CllVariable& v) const {
-            std::size_t seed = 0;
-            hash_combine(seed, v.pre_increament.has_value());
-            hash_combine(seed, v.post_increament.has_value());
-            hash_combine(seed, std::hash<std::string>{}(v.name));
-            if (v.braceExpression) {
-                hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(*v.braceExpression));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::CllIf> {
-        std::size_t operator()(const TreeAPI::CllIf& i) const {
-            std::size_t seed = std::hash<TreeAPI::CllExpr>{}(i.expr);
-            for (const auto& stmt : i.stmt) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(stmt));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::CllVar> {
-        std::size_t operator()(const TreeAPI::CllVar& v) const {
-            std::size_t seed = std::hash<TreeAPI::CllType>{}(v.type);
-            hash_combine(seed, std::hash<std::string>{}(v.name));
-            hash_combine(seed, std::hash<char>{}(v.op));
-            hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(v.value));
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::CllLoopWhile> {
-        std::size_t operator()(const TreeAPI::CllLoopWhile& lw) const {
-            std::size_t seed = std::hash<TreeAPI::CllExpr>{}(lw.expr);
-            for (const auto& stmt : lw.stmt) {
-                hash_combine(seed, std::hash<TreeAPI::RuleMember>{}(stmt));
-            }
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::Cll> {
-        std::size_t operator()(const TreeAPI::Cll& c) const {
-            std::size_t seed = 0;
-            if (c.isVar()) {
-                hash_combine(seed, std::hash<TreeAPI::CllVar>{}(c.getVar()));
-            } else if (c.isIf()) {
-                hash_combine(seed, std::hash<TreeAPI::CllIf>{}(c.getIf()));
-            } else if (c.isExpr()) {
-                hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(c.getExpr()));
-            }
-            return seed;
-        }
-    };
-
-
-    template <>
-    struct hash<TreeAPI::Number> {
-        std::size_t operator()(const TreeAPI::Number& n) const {
-            std::size_t seed = 0;
-            hash_combine(seed, n.sign, n.main, n.dec);
-            return seed;
-        }
-    };
-    template <>
-    struct hash<TreeAPI::Boolean> {
-        std::size_t operator()(const TreeAPI::Boolean& b) const {
-            return std::hash<std::string>{}(b.value);
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::Array> {
-        std::size_t operator()(const TreeAPI::Array& a) const {
-            std::size_t seed = 0;
-            for (const auto& val : a.value)
-                hash_combine(seed, std::hash<TreeAPI::CllExpr>{}(val));
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::Object> {
-        std::size_t operator()(const TreeAPI::Object& o) const {
-            std::size_t seed = 0;
-            for (const auto& [k, v] : o.value)
-                hash_combine(seed, std::hash<std::string>{}(k), std::hash<TreeAPI::CllExpr>{}(v));
-            return seed;
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::At> {
-        std::size_t operator()(const TreeAPI::At&) const {
-            return 0x13371337;  // arbitrary constant
-        }
-    };
-
-    template <>
-    struct hash<TreeAPI::ID> {
-        std::size_t operator()(const TreeAPI::ID& id) const {
-            return std::hash<std::string>{}(id.value);
-        }
-    };
-
-    
-} // namespace std

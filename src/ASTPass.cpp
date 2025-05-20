@@ -9,7 +9,7 @@ void ASTPass::removeEmptyRule(AST &ast) {
     auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
-        if (value.members.size() == 0) {
+        if (value.rule_members.size() == 0) {
             it = treeMap.erase(it);
             continue;
         }
@@ -18,7 +18,7 @@ void ASTPass::removeEmptyRule(AST &ast) {
 }
 void ASTPass::inlineSingleGroups(AST &ast) {
     for (auto &[name, value] : ast.getTreeMap()) {
-        for (auto &member : value.members) {
+        for (auto &member : value.rule_members) {
             if (member.isGroup()) {
                 if (member.quantifier != '\0')
                     continue;
@@ -61,7 +61,7 @@ void ASTPass::literalsToToken(
                 // add data block
                 newRule.data_block = TreeAPI::DataBlock {TreeAPI::RegularDataBlock {TreeAPI::make_expr_from_value(TreeAPI::CllExprValue {TreeAPI::rvalue {TreeAPI::At()}})}};
                 // add copied member
-                newRule.members = {newRuleMember};
+                newRule.rule_members = {newRuleMember};
 
                 // Store the generated member
                 generated.push_back({mem_copy_for_generated, member});
@@ -84,7 +84,7 @@ void ASTPass::literalsToToken(AST &ast) {
     ASTPass pass(ast);
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
-            pass.literalsToToken(value.members, count, toInsert, generated);
+            pass.literalsToToken(value.rule_members, count, toInsert, generated);
         }
     }
     for (const auto &[name, newRule] : toInsert) {
@@ -112,8 +112,8 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMemberName &first, const TreeAPI::
         throw Error("Not found Rule_name in map");
     if (second_data == treeMap.end())
         throw Error("Not found Rule_name in map");
-    const auto &first_rules = first_data->second.members;
-    const auto &second_rules = second_data->second.members;
+    const auto &first_rules = first_data->second.rule_members;
+    const auto &second_rules = second_data->second.rule_members;
     for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
         if (first_rules[i] == second_rules[i]) {
             continue;
@@ -185,7 +185,7 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         if (find_it == ast->getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", first.getName().name, second);
         }
-        const auto &members = find_it->second.members;
+        const auto &members = find_it->second.rule_members;
         return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return false;
@@ -197,7 +197,7 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         if (find_it == ast->getTreeMap().end()) {
             throw Error("Not found Rule_name in map: %$ against %$\n", second.getName().name, second);
         }
-        const auto &members = find_it->second.members;
+        const auto &members = find_it->second.rule_members;
         return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return true;
@@ -274,11 +274,11 @@ void ASTPass::sortByPriority(AST &ast, std::vector<TreeAPI::RuleMember>& members
 }
 void ASTPass::sortByPriority(AST &ast) {
     for (auto &[name, value] : ast.getTreeMap()) {
-        if (value.members.empty()) {
+        if (value.rule_members.empty()) {
             throw Error("Empty rule\n");
         }
         ASTPass pass(ast);
-        pass.sortByPriority(value.members);
+        pass.sortByPriority(value.rule_members);
     }
 }
 void ASTPass::addSpaceToken(AST &ast) {
@@ -286,7 +286,7 @@ void ASTPass::addSpaceToken(AST &ast) {
     TreeAPI::RuleMemberCsequence csequence;
     csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
     csequence.characters = {' '};
-    spaceTokenRule.members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
+    spaceTokenRule.rule_members = { TreeAPI::RuleMember { .quantifier = '+', .value = csequence } };
     ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
 }
 void ASTPass::removeEmptyRule() {

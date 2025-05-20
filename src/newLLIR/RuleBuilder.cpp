@@ -12,7 +12,7 @@ auto LLIR::RuleBuilder::getData() -> LLIR::Data {
 void LLIR::RuleBuilder::build() {
     auto builderData = getBuilderData();
     data.block = createDataBlock(rule->data_block);
-    data.members = MemberBuilder(builderData, rule->members).getData();
+    data.members = MemberBuilder(builderData, rule->rule_members).getData();
     data.name = *name;
 
 }

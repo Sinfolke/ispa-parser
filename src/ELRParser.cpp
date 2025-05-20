@@ -33,13 +33,13 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::stri
         const auto &options = initial_item_set[place];
         for (const auto &option : options) {
             // get next symbol
-            for (auto it = option.members.begin(); it != option.members.end(); it++) {
+            for (auto it = option.rule_members.begin(); it != option.rule_members.end(); it++) {
                 const auto &rule = *it;
                 const auto &name = rule.getName();
                 if (name.name == fullname) {
                     // found this rule, get all next possible symbols
                     lookahead_set.emplace_back();
-                    for (auto it2 = it + 1; it2 != option.members.end(); it2++) {
+                    for (auto it2 = it + 1; it2 != option.rule_members.end(); it2++) {
                         const auto &next_rule = *it2;
                         const auto &next_rule_name = next_rule.getName();
                         if (corelib::text::isUpper(next_rule_name.name.back())) {
@@ -111,8 +111,8 @@ void ELRParser::build() {
             auto current = nfa_state;
             if (conflict.type == Action_type::SHIFT) {
                 // handle shift action as defaultly in NFA
-                for (size_t j = item.dot_pos; j < item.rhs.members.size(); ++j) {
-                    auto sym = item.rhs.members[j];
+                for (size_t j = item.dot_pos; j < item.rhs.rule_members.size(); ++j) {
+                    auto sym = item.rhs.rule_members[j];
                     size_t next = nfa_states.size();
                     nfa_states.emplace_back();
                     const auto &name = sym.getName();

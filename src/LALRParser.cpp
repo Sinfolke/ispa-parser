@@ -51,7 +51,7 @@ std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRPars
 
 void LALRParser::build() {
     // identify merge states
-    std::unordered_map<CanonicalItem, std::vector<size_t>, CanonicalItemHash> core_to_states;
+    utype::unordered_map<CanonicalItem, std::vector<size_t>> core_to_states;
     size_t i = 0;
     for (auto item : canonical_item_set) {
         CanonicalItem core;
@@ -124,7 +124,7 @@ void LALRParser::build() {
         }
 
     }
-    std::unordered_map<size_t, size_t> compact_state_map;
+    utype::unordered_map<size_t, size_t> compact_state_map;
     size_t compact_index = 0;
     
     for (auto& idx : state_mapping) {

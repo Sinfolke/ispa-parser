@@ -1,4 +1,5 @@
 export module LLIR;
+import hash;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -130,7 +131,7 @@ export namespace LLIR {
         std::vector<std::string> name;
         std::vector<member> members;
     };
-    using DataBlockList = std::unordered_map<std::vector<std::string>, DataBlock>;
+    using DataBlockList = utype::unordered_map<std::vector<std::string>, DataBlock>;
     using Nodes = std::vector<member>;
     using Expression = std::vector<expr>;
     class IR {
@@ -138,6 +139,8 @@ export namespace LLIR {
     protected:
         std::vector<Data> data;
     public:
+        explicit IR(const std::vector<Data> &data) : data(data) {}
+        IR() = default;
         auto getData() const -> const std::vector<Data>&;
         auto operator[](size_t pos) const -> const Data&;
         auto begin() -> std::vector<Data>::iterator;
