@@ -1,5 +1,10 @@
+module;
+#include <cpuf/printf.h>
 module ELRParser;
 import std;
+import hash;
+import corelib;
+import logging;
 bool ELRParser::isELR() const {
     return true;
 }
@@ -24,7 +29,7 @@ std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
     }
     return closure;
 }
-ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::string> &fullname, std::unordered_set<std::vector<std::string>> &visited) {
+ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::string> &fullname, utype::unordered_set<std::vector<std::string>> &visited) {
     if (visited.count(fullname))
         return {};
     visited.insert(fullname);
@@ -138,7 +143,7 @@ void ELRParser::build() {
                 // perform automatic conflict resolution based on following cotext of this rule
                 // 1. Get all possible next lookahead entries for this rule
                 cpuf::printf("REDUCE/REDUCE resolution for %$ on %$\n", state, nfa_state);
-                std::unordered_set<std::vector<std::string>> visited;
+                utype::unordered_set<std::vector<std::string>> visited;
                 Lookahead_set lookahead_set = getLookeaheadSet(item.lhs, visited);
                 processLookaheadSet(lookahead_set, nfa_state, conflict);
 
@@ -151,7 +156,7 @@ void ELRParser::build() {
     if (nfa_states.empty()) // return if nfa is empty
         return;
 
-    std::unordered_map<std::set<size_t>, size_t> dfa_state_map;
+    utype::unordered_map<std::set<size_t>, size_t> dfa_state_map;
     std::queue<std::set<size_t>> worklist;
 
     for (size_t i = 0; i < nfa_states.size(); ++i) {
@@ -170,7 +175,7 @@ void ELRParser::build() {
         worklist.pop();
         size_t current_dfa_index = dfa_state_map[current_set];
 
-        std::unordered_map<std::vector<std::string>, std::set<size_t>> symbol_to_nfa_targets;
+        utype::unordered_map<std::vector<std::string>, std::set<size_t>> symbol_to_nfa_targets;
 
         // Populate symbol_to_nfa_targets for all transitions in the current NFA set
         for (size_t state : current_set) {

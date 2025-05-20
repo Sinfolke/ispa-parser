@@ -205,10 +205,22 @@ namespace TreeAPI {
     std::string::iterator RuleMemberHex::end() {
         return hex_chars.end();
     }
+    std::string::const_iterator RuleMemberHex::begin() const{
+        return hex_chars.begin();
+    }
+    std::string::const_iterator RuleMemberHex::end() const {
+        return hex_chars.end();
+    }
     std::string::iterator RuleMemberBin::begin() {
         return bin_chars.begin();
     }
     std::string::iterator RuleMemberBin::end() {
+        return bin_chars.end();
+    }
+    std::string::const_iterator RuleMemberBin::begin() const {
+        return bin_chars.begin();
+    }
+    std::string::const_iterator RuleMemberBin::end() const {
         return bin_chars.end();
     }
     void RulePrefix::clear() {
@@ -326,6 +338,12 @@ namespace TreeAPI {
     std::unordered_map<std::string, CllExpr>::iterator RegularDataBlockWKeys::end() {
         return value.end();
     }
+    std::unordered_map<std::string, CllExpr>::const_iterator RegularDataBlockWKeys::begin() const {
+        return value.begin();
+    }
+    std::unordered_map<std::string, CllExpr>::const_iterator RegularDataBlockWKeys::end() const {
+        return value.end();
+    }
     CllExpr& RegularDataBlockWKeys::operator[](const std::string &name) {
         return value[name];
     }
@@ -340,7 +358,14 @@ namespace TreeAPI {
     std::vector<std::string>::iterator TemplatedDataBlock::end() {
         return names.end();
     }
-    
+    std::vector<std::string>::const_iterator TemplatedDataBlock::begin() const {
+        return names.begin();
+    }
+
+    std::vector<std::string>::const_iterator TemplatedDataBlock::end() const {
+        return names.end();
+    }
+
     bool DataBlock::isRegularDataBlock() const {
         return std::holds_alternative<RegularDataBlock>(value) || std::holds_alternative<RegularDataBlockWKeys>(value);
     }

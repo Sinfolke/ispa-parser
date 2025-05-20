@@ -14,7 +14,6 @@ export namespace LLIR {
         int *tokensOnly = nullptr;
         std::vector<std::string> *fullname = nullptr;
         std::vector<variable> *vars = nullptr;
-        Nodes *members = nullptr;
         std::vector<ConvertionResult> conv_res;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
@@ -29,7 +28,6 @@ export namespace LLIR {
             int &tokensOnly,
             std::vector<std::string> &fullname,
             std::vector<variable> &vars,
-            std::vector<member> &members,
             std::vector<std::pair<std::string, variable>> &key_vars,
             std::vector<variable> &unnamed_datablock_units,
             AST *tree
@@ -42,7 +40,6 @@ export namespace LLIR {
             tokensOnly(&tokensOnly),
             fullname(&fullname),
             vars(&vars),
-            members(&members),
             key_vars(&key_vars),
             unnamed_datablock_units(&unnamed_datablock_units),
             tree(tree)

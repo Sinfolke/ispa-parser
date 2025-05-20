@@ -37,8 +37,8 @@ export namespace LLIR {
         auto addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError = true) -> void;
         auto handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, const LLIR::variable &uvar, const LLIR::variable &var, LLIR::variable &shadow_var, bool addError = true) -> void;
         auto add_shadow_variable(std::vector<LLIR::member> &block, const LLIR::variable &var) -> LLIR::variable;
-        virtual auto pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var = true) -> LLIR::variable;
-
+        virtual auto pushBasedOnQualifier(const TreeAPI::RuleMember &rule, std::vector<LLIR::expr> &expr, std::vector<LLIR::member> &block, LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &svar, char quantifier, bool add_shadow_var) -> LLIR::variable;
+        void pushConvResult(const TreeAPI::RuleMember &rule, const LLIR::variable &var, const LLIR::variable &uvar, const LLIR::variable &svar, const LLIR::variable &shadow_var, char quantifier);
 
         // error handling functions
         auto getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) ->  std::set<std::vector<std::string>>;

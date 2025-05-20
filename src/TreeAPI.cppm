@@ -22,19 +22,20 @@ export namespace TreeAPI {
     using CllFunctionBodyCall = CllFunctionArguments;
     using CllFunctionBodyDecl = CllFunctionParameters;
 
-    struct String : Hashable {
+    struct String {
         std::string value;
         static size_t count_strlen(const std::string &str);
         static std::string format_str(std::string str);
         size_t count_strlen() const;
         std::string format_str() const;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
-    struct Number : Hashable {
+    struct Number {
         char sign = '\0';
         std::string main;
         std::string dec;
@@ -45,46 +46,52 @@ export namespace TreeAPI {
         unsigned getMain() const;
         unsigned getDecimal() const;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(sign, main, dec);
         }
     };
 
-    struct Boolean : Hashable {
+    struct Boolean {
         std::string value;
         bool getBoolean() const;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
-    struct Array : Hashable {
+    struct Array {
         std::vector<CllExpr> value;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
-    struct Object : Hashable {
+    struct Object {
         std::unordered_map<std::string, CllExpr> value;
-        auto members() {
+    private:
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
     struct At : EmptyHashable {};
 
-    struct ID : Hashable {
+    struct ID {
         std::string value;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
-    struct rvalue : Hashable {
+    struct rvalue {
         std::variant<String, Number, Boolean, Array, Object, At, ID> value;
         bool isString() const;
         bool isNumber() const;
@@ -106,77 +113,89 @@ export namespace TreeAPI {
         const Object& getObject() const;
         const ID& getID() const;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
 
-    struct CllCompareOp : Hashable {
+    struct CllCompareOp {
         std::string op;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(op);
         }
+        friend struct ::uhash;
     };
 
-    struct CllLogicalOp : Hashable {
+    struct CllLogicalOp {
         bool isAnd;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(isAnd);
         }
+        friend struct ::uhash;
     };
 
-    struct CllType : Hashable {
+    struct CllType {
         std::string type;
         std::vector<CllType> templ;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(type, templ);
         }
+        friend struct ::uhash;
     };
 
-    struct CllFunctionArguments : Hashable {
+    struct CllFunctionArguments {
         std::vector<CllExpr> expr;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(expr);
         }
+        friend struct ::uhash;
     };
 
-    struct CllFunctionParameters : Hashable {
+    struct CllFunctionParameters {
         std::vector<std::string> names;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(names);
         }
+        friend struct ::uhash;
     };
 
-    struct CllFunctionCall : Hashable {
+    struct CllFunctionCall {
         std::string name;
         CllFunctionBodyCall body;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(name, body);
         }
+        friend struct ::uhash;
     };
 
-    struct CllFunctionDecl : Hashable {
+    struct CllFunctionDecl {
         std::string name;
         CllFunctionBodyDecl body;
-        auto members() {
+    private:
+        auto members() const  {
             return std::tie(name, body);
         }
+        friend struct ::uhash;
     };
-    struct CllMethodCall : Hashable {
+
+    struct CllMethodCall {
         std::string name;
         CllFunctionCall body;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(name, body);
         }
+        friend struct ::uhash;
     };
-    struct CllExprValue : Hashable {
+
+    struct CllExprValue {
         std::variant<std::shared_ptr<CllExprGroup>, std::shared_ptr<CllVariable>, CllFunctionCall, CllMethodCall, rvalue> value;
         bool isGroup() const;
         bool isVariable() const;
@@ -194,102 +213,117 @@ export namespace TreeAPI {
         const CllMethodCall &getMethodCall() const;
         const rvalue &getrvalue() const;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
 
-    struct CllExprTerm : Hashable {
+    struct CllExprTerm {
         CllExprValue value;
         std::vector<std::pair<char, CllExprValue>> rights;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value, rights);
         }
+        friend struct ::uhash;
     };
 
-    struct CllExprAddition : Hashable {
+    struct CllExprAddition {
         CllExprTerm value;
         std::vector<std::pair<char, CllExprTerm>> rights;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value, rights);
         }
+        friend struct ::uhash;
     };
 
-    struct CllExprCompare : Hashable {
+    struct CllExprCompare {
         CllExprAddition value;
         std::vector<std::pair<CllCompareOp, CllExprAddition>> rights;
     private:
-        auto members() {}
+        auto members() const  {
+            return std::tie(value, rights);
+        }
+        friend struct ::uhash;
     };
 
-    struct CllExprLogical : Hashable {
+    struct CllExprLogical {
         CllExprCompare value;
         std::vector<std::pair<CllLogicalOp, CllExprCompare>> rights;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value, rights);
         }
+        friend struct ::uhash;
     };
 
-    struct CllExpr : Hashable {
+    struct CllExpr {
         CllExprLogical value;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
-    struct CllExprGroup : Hashable {
+
+    struct CllExprGroup {
         CllExpr expr;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(expr);
         }
+        friend struct ::uhash;
     };
-    struct CllVariable : Hashable {
+
+    struct CllVariable {
         std::optional<char> pre_increament;
         std::optional<char> post_increament;
         std::string name;
         std::optional<CllExpr> braceExpression;
     private:
-        auto members() {
-            std::tie(pre_increament, post_increament, name, braceExpression);
+        auto members() const  {
+            return std::tie(pre_increament, post_increament, name, braceExpression);
         }
+        friend struct ::uhash;
     };
 
-    struct CllIf : Hashable {
+    struct CllIf {
         CllExpr expr;
         std::vector<RuleMember> stmt;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(expr, stmt);
         }
+        friend struct ::uhash;
     };
 
-    struct CllVar : Hashable {
+    struct CllVar {
         CllType type;
         std::string name;
         char op = '\0';
         CllExpr value;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(type, name, op, value);
         }
+        friend struct ::uhash;
     };
 
-    struct CllLoopWhile : Hashable {
+    struct CllLoopWhile {
         CllExpr expr;
         std::vector<RuleMember> stmt;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(expr, stmt);
         }
+        friend struct ::uhash;
     };
 
     struct CllLoopFor : EmptyHashable {};
 
-    struct Cll : Hashable {
+    struct Cll {
         std::variant<CllVar, CllIf, CllExpr> value;
         bool isVar() const;
         bool isIf() const;
@@ -301,84 +335,96 @@ export namespace TreeAPI {
         const CllIf &getIf() const;
         const CllExpr &getExpr() const;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
 
-    struct RulePrefix : Hashable {
+    struct RulePrefix {
         bool is_key_value = false;
         std::string name;
         void clear();
         bool empty() const;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(is_key_value, name);
         }
+        friend struct ::uhash;
     };
 
-    struct RuleMemberName : Hashable {
+    struct RuleMemberName {
         std::vector<std::string> name;
         bool isAutoGenerated = false;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(name, isAutoGenerated);
         }
+        friend struct ::uhash;
     };
 
-    struct RuleMemberGroup : Hashable {
+    struct RuleMemberGroup {
         std::vector<RuleMember> values;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(values);
         }
+        friend struct ::uhash;
     };
 
-    struct RuleMemberOp : Hashable {
+
+    struct RuleMemberOp {
         std::vector<RuleMember> options;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(options);
         }
+        friend struct ::uhash;
     };
 
-    struct RuleMemberCsequence : Hashable {
+    struct RuleMemberCsequence {
         bool negative = false;
         std::vector<char> characters;
         std::vector<char> escaped;
         std::vector<std::pair<char, char>> diapasons;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(negative, characters, escaped, diapasons);
         }
+        friend struct ::uhash;
     };
 
     struct RuleMemberAny : EmptyHashable {};
 
-    struct RuleMemberNospace : EmptyHashable {};
+    struct RuleMemberNospace : EmptyHashable { };
 
-    struct RuleMemberEscaped : Hashable {
+    struct RuleMemberEscaped {
         char c;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(c);
         }
+        friend struct ::uhash;
     };
 
-    // these structure are hashable by begin and end methods
+    // these structures are hashable by begin and end methods
     struct RuleMemberHex {
         std::string hex_chars;
         std::string::iterator begin();
         std::string::iterator end();
+        std::string::const_iterator begin() const;
+        std::string::const_iterator end() const;
     };
 
     struct RuleMemberBin {
         std::string bin_chars;
         std::string::iterator begin();
         std::string::iterator end();
+        std::string::const_iterator begin() const;
+        std::string::const_iterator end() const;
     };
 
-    struct RuleMember : Hashable {
+    struct RuleMember {
         RulePrefix prefix;
         char quantifier = '\0';
         bool isAutoGenerated = false;
@@ -398,6 +444,7 @@ export namespace TreeAPI {
         bool isCll() const;
         bool emptyQuantifier() const;
         bool empty() const;
+
         // Non-const overloads
         String& getString();
         RuleMemberName& getName();
@@ -419,30 +466,39 @@ export namespace TreeAPI {
         const RuleMemberHex& getHex() const;
         const RuleMemberBin& getBin() const;
         const Cll& getCll() const;
+
         bool fullCompare(const RuleMember &second);
+
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
-    struct RuleMemberKey : Hashable {
+
+    struct RuleMemberKey {
         RuleMember base;
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(base);
         }
+        friend struct ::uhash;
     };
-    struct RegularDataBlockWKeys : Hashable {
+
+    struct RegularDataBlockWKeys {
         std::unordered_map<std::string, CllExpr> value;
 
         bool empty() const;
         std::unordered_map<std::string, CllExpr>::iterator begin();
         std::unordered_map<std::string, CllExpr>::iterator end();
+        std::unordered_map<std::string, CllExpr>::const_iterator begin() const;
+        std::unordered_map<std::string, CllExpr>::const_iterator end() const;
         CllExpr &operator[](const std::string &name);
     private:
-        auto members() {
+        auto members() const  {
             return std::tie(value);
         }
+        friend struct ::uhash;
     };
 
     using RegularDataBlock = CllExpr;
@@ -453,34 +509,42 @@ export namespace TreeAPI {
         bool empty() const;
         std::vector<std::string>::iterator begin();
         std::vector<std::string>::iterator end();
+        std::vector<std::string>::const_iterator begin() const;
+        std::vector<std::string>::const_iterator end() const;
     };
 
-    struct DataBlock : Hashable {
+    struct DataBlock {
         std::variant<std::monostate, RegularDataBlock, RegularDataBlockWKeys, TemplatedDataBlock> value;
+
         bool isRegularDataBlock() const;
         bool isWithKeys() const;
         bool isTemplatedDataBlock() const;
         bool empty() const;
+
         RegularDataBlock &getRegDataBlock();
         RegularDataBlockWKeys &getRegDataBlockWKeys();
         TemplatedDataBlock &getTemplatedDataBlock();
+
         const RegularDataBlock &getRegDataBlock() const;
         const RegularDataBlockWKeys &getRegDataBlockWKeys() const;
         const TemplatedDataBlock &getTemplatedDataBlock() const;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(value);
         }
     };
 
-    struct Rule : Hashable {
+    struct Rule {
         std::vector<TreeAPI::RuleMember> rule_members;
         TreeAPI::DataBlock data_block;
     private:
-        auto members() {
+        friend struct ::uhash;
+        auto members() const  {
             return std::tie(rule_members, data_block);
         }
     };
+
     // helper functions
     CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val);
 

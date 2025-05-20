@@ -18,7 +18,7 @@ export class AST {
         using UsePlaceTable = utype::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
         using First = utype::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
         using Follow = First;
-        using lexer_code = std::pair<LLIR::IR, LLIR::variable>;
+        using lexer_code = std::pair<LLIR::Nodes, LLIR::variable>;
     private:
         TreeMap tree_map;
         Use use;
@@ -102,7 +102,7 @@ export class AST {
         auto getTerminals() -> std::vector<std::vector<std::string>>;
         auto getNonTerminals() -> std::vector<std::vector<std::string>>;
         auto getUsePlacesTable() -> UsePlaceTable&;
-        auto getCodeForLexer() -> std::pair<LLIR::IR, LLIR::variable>;
+        auto getCodeForLexer() -> lexer_code;
         auto getFirstSet()-> First&;
         auto getFollowSet() -> Follow&;
 };

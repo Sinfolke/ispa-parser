@@ -16,7 +16,6 @@ export namespace LLIR {
         int tokensOnly = -1;
         std::vector<std::string> fullname;
         std::vector<LLIR::variable> vars;
-        std::vector<LLIR::member> members;
         std::vector<LLIR::ConvertionResult> success_vars;
         std::vector<std::pair<std::string, LLIR::variable>> key_vars;
         std::vector<LLIR::variable> unnamed_datablock_units;

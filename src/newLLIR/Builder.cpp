@@ -1,6 +1,8 @@
 
 module LLIRBuilder;
 import LLIRRuleBuilder;
+import LLIRRuleMemberBuilder;
+import LLIRBuilderData;
 import corelib;
 LLIR::Builder::Builder(AST &tree, int tokensOnly) {
     for (const auto &[name, value] : tree.getTreeMap()) {

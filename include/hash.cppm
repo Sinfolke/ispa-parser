@@ -14,8 +14,18 @@ template<typename T>
 concept is_Hashable = requires(T a) {
     { std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
 };
+// Helper to apply a function to each element of a tuple
+template <typename Tuple, typename Func, std::size_t... I>
+void for_each_in_tuple_impl(const Tuple& t, Func f, std::index_sequence<I...>) {
+    (f(std::get<I>(t)), ...);  // Fold expression over comma operator (C++17)
+}
 
-struct uhash {
+template <typename Tuple, typename Func>
+void for_each_in_tuple(const Tuple& t, Func f) {
+    for_each_in_tuple_impl(t, f, std::make_index_sequence<std::tuple_size_v<Tuple>>{});
+}
+
+export struct uhash {
     // hash for optional and variant
     template <typename T>
     std::size_t operator()(const std::optional<T>& opt) const {
@@ -30,7 +40,9 @@ struct uhash {
         }, v);
         return h;
     }
-
+    std::size_t operator()(const std::monostate&) const {
+        return 0;
+    }
     template<is_Hashable T>
     std::size_t operator()(const T& value) const {
         return std::hash<T>{}(value);
@@ -55,19 +67,21 @@ struct uhash {
         return h;
     }
     template<typename T>
-    requires (!is_Hashable<T> && requires(T a) { a.members(); })
+    requires (!is_Hashable<T> && !requires(T a) {a.begin(); a.end();} && requires(T a) { a.members(); })
     std::size_t operator()(const T& structure) const {
         std::size_t h = 0;
-        for (const auto& member : structure.members()) {
+        auto members = structure.members();
+        for_each_in_tuple(members, [&](const auto& member) {
             std::size_t member_hash = uhash{}(member);
             hash_combine(h, member_hash);
-        }
+        });
         return h;
     }
     // Fallback or static_assert for unsupported types
     template<typename T>
-    requires (!is_Hashable<T> && !requires(T a) { a.begin(); a.end(); })
-    std::size_t operator()(const T&) const {
+    requires (!is_Hashable<T> && !requires(T a) { a.begin(); a.end(); } && !requires(T a) { a.members(); } && sizeof(T) != 0)
+    std::size_t operator()(const T& structure) const {
+        static_assert(std::tuple_size<decltype(structure.members())>::value >= 0, "members() must return a tuple");
         static_assert(sizeof(T) == 0, "uhash: cannot hash type: not default hashable, not container and does not provide members method");
         return 0;
     }
@@ -78,13 +92,11 @@ export namespace utype {
     using unordered_map = std::unordered_map<Key, Value, uhash>;
     template<typename T>
     using unordered_set = std::unordered_set<T, uhash>;
-};
-export struct Hashable {
-    friend struct uhash;
-};
-export struct EmptyHashable : Hashable {
+}
+export struct EmptyHashable {
 protected:
-    auto members() {
+    friend struct ::uhash;
+    auto members() const  {
         return std::tuple<> {};
     }
 };

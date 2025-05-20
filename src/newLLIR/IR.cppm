@@ -119,7 +119,7 @@ export namespace LLIR {
         variable uvar;
         variable var;
         variable shadow_var;
-        char qualifier;
+        char quantifier;
     };
     struct var_group {
         variable var;

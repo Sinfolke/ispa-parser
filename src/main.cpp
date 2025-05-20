@@ -15,6 +15,8 @@ import LLIRBuilder;
 import LLIR;
 import fmt;
 import hash;
+import Parser;
+import TreeAPI;
 import std;
 void printHelp() {
     fmt::printf(R"(
@@ -138,7 +140,7 @@ int main(int argc, char** argv) {
         LRIR.printCanonicalCollection("canonical_collection.txt");
         // LRIR.printFirstSet("first_set.txt");
         // LRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "LALR") {
@@ -147,7 +149,7 @@ int main(int argc, char** argv) {
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
         // LALRIR.printFirstSet("first_set.txt");
         // LALRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "ELR") {
@@ -158,14 +160,15 @@ int main(int argc, char** argv) {
         ELRIR.printFollowSet("follow_set.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, ASTPass&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
         converter->output(output_path);
     } else if (algorithm == "LL") {
-        LLIRBuilder ir(ast);
-        ir.outputIRToFile("output_ir.txt");
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, IR&, ASTPass&>("getLLConverter");
-        auto converter = std::unique_ptr<LLConverter_base>(converter_fun(ir, ast));
+        LLIR::Builder builder(ast);
+        auto IR = builder.get();
+        IR.outputIRToFile("output_ir.txt");
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST&>("getLLConverter");
+        auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast));
         converter->outputIR(output_path);
     } else {
         throw UError("Unknown algorithm '%s'", algorithm);

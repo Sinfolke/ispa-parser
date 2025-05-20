@@ -7,7 +7,6 @@ auto LLIR::BuilderData::initializationCheck() -> bool {
         isFirst != nullptr &&
         tokensOnly != nullptr &&
         fullname != nullptr &&
-        members != nullptr &&
         vars != nullptr &&
         key_vars != nullptr &&
         unnamed_datablock_units != nullptr &&

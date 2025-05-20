@@ -1,6 +1,9 @@
+module;
+#include <cpuf/printf.h>
 module LRParser;
 import TreeAPI;
 import logging;
+import hash;
 import std;
 static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group) {
     size_t count = 0;
@@ -44,8 +47,8 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
     }
     throw Error("Undefined action type: %$", (int) type);
 }
-auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> {
-    std::vector<std::unordered_map<std::vector<std::string>, LRParser::Action>> row_table;
+auto LRParser::getActionTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, LRParser::Action>> {
+    std::vector<utype::unordered_map<std::vector<std::string>, LRParser::Action>> row_table;
     for (auto [state, value] : action_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -54,8 +57,8 @@ auto LRParser::getActionTableAsRow() const -> std::vector<std::unordered_map<std
     }
     return row_table;
 }
-auto LRParser::getGotoTableAsRow() const -> std::vector<std::unordered_map<std::vector<std::string>, size_t>> {
-    std::vector<std::unordered_map<std::vector<std::string>, size_t>> row_table;
+auto LRParser::getGotoTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, size_t>> {
+    std::vector<utype::unordered_map<std::vector<std::string>, size_t>> row_table;
     for (auto [state, value] : goto_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -73,7 +76,7 @@ void LRParser::createInitialItemSet() {
     }
     tree->getTreeMap().clear();
 }
-void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements) {
+void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements) {
     for (size_t i = 0; i < members.size(); i++) {
         auto &member = members[i];
         if (member.isGroup()) {
@@ -94,14 +97,14 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                     auto new_fullname = fullname;
                     new_fullname.back() = quant_rule_name;
                     // Replace with reference to new quant rule
-                    member = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {new_fullname}};
+                    member = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
         
                     std::vector<std::vector<TreeAPI::RuleMember>> new_alternatives;
                     auto quant_fullname = fullname;
                     quant_fullname.back() = quant_rule_name;
                 
                     // Replace current member with reference to new rule
-                    member = TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {quant_fullname} };
+                    member = TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} };
                 
                     std::vector<std::vector<TreeAPI::RuleMember>> new_alts;
                 
@@ -119,18 +122,18 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                 
                             // A → data tail
                             auto base = data.values;
-                            base.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {tail_fullname} });
+                            base.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
                             new_alts.push_back(base);
                 
                             // A* tail: ε | data tail
                             std::vector<std::vector<TreeAPI::RuleMember>> tail_alts;
                             tail_alts.push_back({});
                             auto recur = data.values;
-                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {tail_fullname} });
+                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
                             tail_alts.push_back(recur);
                 
                             for (auto &alt : tail_alts)
-                                initial_item_set[tail_fullname].push_back(TreeAPI::Rule {alt});
+                                initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
                             break;
                         }
                 
@@ -138,14 +141,14 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                             // * = ε | data A*
                             new_alts.push_back({});
                             auto recur = data.values;
-                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {quant_fullname} });
+                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} });
                             new_alts.push_back(recur);
                             break;
                         }
                     }
                 
                     for (auto &alt : new_alts) {
-                        initial_item_set[quant_fullname].push_back(TreeAPI::Rule {alt});
+                        initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
                     }
 
                     continue;
@@ -196,7 +199,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                         auto new_fullname = fullname;
                         new_fullname.back() = name;
                         push_name = new_fullname;
-                        members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {new_fullname}};
+                        members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
                 
                         transform_helper(data.options, fullname, replacements); // process internal ops/groups
                         val_it = data.options.begin();
@@ -211,7 +214,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                             val_it--;
                             _count--;
                         } else values.push_back(*val_it);
-                        initial_item_set[push_name].push_back(TreeAPI::Rule {values});
+                        initial_item_set[push_name].push_back(TreeAPI::Rule {.rule_members = values});
                     }
                     continue;
                 }
@@ -221,7 +224,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
             auto find = replacements.find(fullname);
             if (find != replacements.end()) {
                 if (find->second.first == member.quantifier) {
-                    members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {find->second.second}};
+                    members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = find->second.second}};
                     continue;
                 }
                 
@@ -236,7 +239,7 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
             }
             new_fullname.back() = quant_rule_name;
             // Replace with reference to new quant rule
-            members[i].value = TreeAPI::RuleMemberName {new_fullname};
+            members[i].value = TreeAPI::RuleMemberName {.name = new_fullname};
             std::vector<std::vector<TreeAPI::RuleMember>> new_alternatives;
 
             if (member.quantifier == '?') {
@@ -250,19 +253,19 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                 
                 new_alternatives.push_back({
                     member,
-                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{recurse_fullname}}
+                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
                 });
                 
                 std::vector<std::vector<TreeAPI::RuleMember>> recurse_alternatives = {
                     {},
                     {
                         member,
-                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{recurse_fullname}}
+                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
                     }
                 };
                 
                 for (auto &alt : recurse_alternatives) {
-                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{alt});
+                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
                 }
                 
             } else if (member.quantifier == '*') {
@@ -273,24 +276,24 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
                 new_alternatives.push_back({}); // ε
                 new_alternatives.push_back({
                     member,
-                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{recurse_fullname}}
+                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
                 });
             
                 std::vector<std::vector<TreeAPI::RuleMember>> recurse_alternatives = {
                     {},
                     {
                         member,
-                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{recurse_fullname}}
+                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
                     }
                 };
             
                 for (auto &alt : recurse_alternatives) {
-                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{alt});
+                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
                 }
             }
 
             for (auto &alt : new_alternatives) {
-                initial_item_set[new_fullname].push_back(TreeAPI::Rule{alt});
+                initial_item_set[new_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
             }
             replacements[fullname] = {member.quantifier, new_fullname};
         }
@@ -299,12 +302,12 @@ void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const 
 
 void LRParser::transform() {
     size_t size = initial_item_set.size();
-    std::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> replacement;
+    utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> replacement;
     for (auto &[name, value] : initial_item_set) {
         transform_helper(value[0].rule_members, name, replacement);
     }
 }
-// void LRParser::getPriorityTree(const std::vector<TreeAPI::Rule> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth) {
+// void LRParser::getPriorityTree(const std::vector<TreeAPI::Rule> *rule, utype::unordered_set<std::vector<std::string>> &visited, size_t depth) {
 //     for (const auto &r : *rule) {
 //         // Avoid re-expansion of already visited rules
 //         if (!corelib::text::isLower(r.members.name) || visited.count(r.fullname))
@@ -328,7 +331,7 @@ void LRParser::transform() {
 // }
 
 // void LRParser::getPriorityTree() {
-//     std::unordered_set<std::vector<std::string>> visited;
+//     utype::unordered_set<std::vector<std::string>> visited;
 
 //     auto it = initial_item_set.find({"main"});
 //     if (it != initial_item_set.end()) {
@@ -341,7 +344,7 @@ void LRParser::transform() {
 // }
 
 void LRParser::addAugmentedRule() {
-    initial_item_set[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {{"main"}}}}}};
+    initial_item_set[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = {"main"}}}}}};
 }
 void LRParser::constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed) {
     for (const auto &option : options) {
@@ -376,7 +379,7 @@ void LRParser::constructFirstSet(const std::vector<TreeAPI::Rule>& options, cons
                 auto &rules = initial_item_set[rule.name];
                 for (const auto &r : rules) {
                     bool break_this = false;
-                    for (const auto &member : r.members) {
+                    for (const auto &member : r.rule_members) {
                         if (member.empty()) {
                             isNullable = true;
                             break_this = true;
@@ -623,7 +626,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
         worklist.pop();
 
         // You likely need to aggregate per symbol with a merged lookahead set
-        std::unordered_map<std::vector<std::string>, CanonicalItem> transitions;
+        utype::unordered_map<std::vector<std::string>, CanonicalItem> transitions;
 
         for (const auto& item : current) {
             if (item.dot_pos < item.rhs.rule_members.size()) {
@@ -738,7 +741,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-bool isInUsePlace(const AST::UsePlaceTable &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, std::unordered_set<std::vector<std::string>> &checked) {
+bool isInUsePlace(const AST::UsePlaceTable &use_places, const std::vector<std::string> &first, const std::vector<std::string> &second, utype::unordered_set<std::vector<std::string>> &checked) {
     checked.insert(first);
     auto find_it = use_places.find(first);
     if (find_it == use_places.end())
@@ -781,7 +784,7 @@ void LRParser::resolveCertainConflict(const Conflict &conflict) {
     } else if (first.rhs.rule_members.empty() && second.rhs.rule_members.empty()) {
         throw Error("REDUCE/REDUCE conflict for two epsilon rules");
     }
-    std::unordered_set<std::vector<std::string>> checked;
+    utype::unordered_set<std::vector<std::string>> checked;
     // check whether second rule is nested in first
     if (isInUsePlace(use_places, first.lhs, second.lhs, checked)) {
         *place = conflicts[0];

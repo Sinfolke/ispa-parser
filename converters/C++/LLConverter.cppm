@@ -21,7 +21,7 @@ export class LLConverter : public LLConverter_base, public LLHeader {
 
 
 public:
-    LLConverter(LLIR::IR &ir, AST &tree, LLIR::IR *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
+    LLConverter(LLIR::IR &ir, AST &tree, LLIR::Nodes *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, custom_lexer_code, access_var) {
         this->namespace_name = namespace_name;
         current_pos_counter.push("pos");
     }

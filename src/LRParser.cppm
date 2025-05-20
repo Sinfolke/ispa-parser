@@ -15,26 +15,30 @@ public:
         size_t state;
     };
 
-    struct LR0Core : Hashable {
+    struct LR0Core {
         std::vector<std::string> lhs;
         TreeAPI::Rule rhs;
         size_t dot_pos;
     
         // This is important for set/hash/set comparison
-        bool operator==(const LR0Core other) const {
+        bool operator==(const LR0Core &other) const {
             return lhs == other.lhs &&
                    rhs == other.rhs &&
                    dot_pos == other.dot_pos;
         }
     private:
-        auto members() {
+        friend struct uhash;
+        auto members() const  {
             return std::tie(lhs, rhs, dot_pos);
         }
     };
 
-    struct LR1Core : LR0Core {
+    struct LR1Core {
+        std::vector<std::string> lhs;
+        TreeAPI::Rule rhs;
+        size_t dot_pos;
         mutable utype::unordered_set<std::vector<std::string>> lookahead;
-        bool operator==(const LR1Core other) const {
+        virtual bool operator==(const LR1Core &other) const {
             return lhs == other.lhs &&
                    rhs == other.rhs &&
                    dot_pos == other.dot_pos &&
@@ -42,10 +46,10 @@ public:
             ;
         }
     private:
-        auto members() {
+        friend struct uhash;
+        auto members() const  {
             return std::tie(lhs, rhs, dot_pos, lookahead);
         }
-
     };
     struct Conflict {
         std::vector<LR1Core> item;

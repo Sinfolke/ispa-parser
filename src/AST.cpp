@@ -3,6 +3,8 @@ import ASTPass;
 import logging;
 import TreeAPI;
 import LLIRBuilder;
+import LLIRBuilderData;
+import LLIRRuleMemberBuilder;
 import std;
 import std.compat;
 void AST::constructor(const Parser::Rule &mod) {
@@ -195,10 +197,10 @@ TreeAPI::CllExprValue AST::createCllExprValue(const Parser::Rule &logical) {
     switch (data.name())
     {
     case Parser::Rules::cll_expr_group:
-        result.value = TreeAPI::CllExprGroup {createCllExpr(Parser::get::cll_expr(data))};
+        result.value = std::make_shared<TreeAPI::CllExprGroup>(TreeAPI::CllExprGroup {createCllExpr(Parser::get::cll_expr(data))});
         break;
     case Parser::Rules::cll__variable:
-        result.value = createCllVariable(data);
+        result.value = std::make_shared<TreeAPI::CllVariable>(createCllVariable(data));
         break;
     case Parser::Rules::cll_function_call:
         result.value = createCllFunctionCall(data);
@@ -867,10 +869,22 @@ auto AST::getCodeForLexer() -> lexer_code {
     ASTPass::sortByPriority(*this, options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
-    LLIR::Builder code(this, resultRule, true);
-    const auto &success_var = code.getSuccessVars();
+    size_t variable_count = 0;
+    bool isToken = false;
+    bool insideLoop = false;
+    bool addSpaceSkip = false;
+    bool isFirst = true;
+    int tokensOnly = -1;
+    std::vector<std::string> fullname;
+    std::vector<LLIR::variable> vars;
+    std::vector<LLIR::ConvertionResult> success_vars;
+    std::vector<std::pair<std::string, LLIR::variable>> key_vars;
+    std::vector<LLIR::variable> unnamed_datablock_units;
+    LLIR::BuilderData bd(variable_count, isToken, insideLoop, addSpaceSkip, isFirst, tokensOnly, fullname, vars, key_vars, unnamed_datablock_units, this);
+    LLIR::MemberBuilder code(bd, resultRule);
+    const auto &return_vars = code.getReturnVars();
     code.pop(); // remove space skip
-    if (success_var.empty())
+    if (return_vars.empty())
         throw Error("Empty success var\n");
-    return {code, success_var[0].var};
+    return std::make_pair(code.getData(), return_vars[0].var);
 }

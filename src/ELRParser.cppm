@@ -37,7 +37,7 @@ export class ELRParser : public LRParser {
         std::vector<DFA_state> dfa_states;
         void build() override;
         std::set<size_t> epsilon_closure(const std::set<size_t>& states);
-        ELRParser::Lookahead_set getLookeaheadSet(const std::vector<std::string> &fullname, std::unordered_set<std::vector<std::string>> &visited);
+        ELRParser::Lookahead_set getLookeaheadSet(const std::vector<std::string> &fullname, utype::unordered_set<std::vector<std::string>> &visited);
         void processLookaheadSet(const Lookahead_set &lookahead_set, size_t nfa_initial_index, const Action& action);
         public:
         ELRParser(AST *tree) : LRParser(tree, false) {

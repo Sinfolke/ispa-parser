@@ -164,8 +164,9 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR::Builder tokens_ir(tree, true);
-    LLConverter converter(tokens_ir, *tree, &lexer_code, &success_var, filename);
+    LLIR::Builder tokens_ir(*tree, true);
+    auto IR = tokens_ir.get();
+    LLConverter converter(IR, *tree, &lexer_code, &return_var, filename);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);
@@ -179,8 +180,8 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addparseFromFunctions(out, data->isELR());
     //converter.addStandardFunctionsParser();
     converter.addLexerCode_Header(out);
-    converter.convertLexerCode(lexer_code.getData()[0].members, out);
-    converter.addLexerCode_Bottom(out, success_var);
+    converter.convertLexerCode(lexer_code, out);
+    converter.addLexerCode_Bottom(out, return_var);
     converter.convertData(out);
     max_states = data->getMaxStatesCount();
     createActionTable(out);

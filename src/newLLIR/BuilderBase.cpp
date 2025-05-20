@@ -23,7 +23,6 @@ auto LLIR::BuilderBase::getBuilderData() -> BuilderData {
         *tokensOnly,
         *fullname,
         *vars,
-        *members,
         *key_vars,
         *unnamed_datablock_units,
         tree
@@ -200,6 +199,34 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
     push(createAssignUvarBlock(uvar, var, shadow_variable));
     return shadow_variable;
 }
+void LLIR::BuilderBase::pushConvResult(const TreeAPI::RuleMember &rule, const LLIR::variable &var, const LLIR::variable &uvar, const LLIR::variable &svar, const LLIR::variable &shadow_var, char quantifier) {
+    const auto insert_var = [this](const LLIR::variable &var) {
+        if (!var.name.empty()) {
+            vars->push_back(var);
+        }
+    };
+    const auto v_or_empty = [this](const LLIR::variable &var) -> LLIR::variable {
+        if (!var.name.empty() && var.type.type != LLIR::var_types::UNDEFINED) {
+            return var;
+        } else {
+            return {};
+        }
+    };
+    insert_var(uvar);
+    insert_var(svar);
+    insert_var(var);
+    insert_var(shadow_var);
+    if (rule.prefix.is_key_value) {
+        if (rule.prefix.name.empty()) {
+            unnamed_datablock_units->push_back(uvar.name.empty() ? (shadow_var.name.empty() ?var : shadow_var) : uvar);
+        } else {
+            key_vars->emplace_back(rule.prefix.name, uvar);
+        }
+    }
+    conv_res.push_back({v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
+}
+
+
 bool LLIR::BuilderBase::compare_templ(const std::vector<LLIR::var_type>& templ1, const std::vector<LLIR::var_type>& templ2) {
     if (templ1.size() != templ2.size()) return false;
 

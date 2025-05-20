@@ -71,7 +71,7 @@ export namespace LLIR {
             const LLIR::variable &svar,
             const LLIR::member &call,
             char quantifier,
-            bool add_shadow_var
+            bool add_shadow_var = false
         ) -> LLIR::variable;
 
     public:
@@ -93,9 +93,10 @@ export namespace LLIR {
     };
 
     class AnyBuilder : public BuilderBase {
+        const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        AnyBuilder(BuilderData &data) : BuilderBase(data) {}
+        AnyBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class OpBuilder : public BuilderBase {

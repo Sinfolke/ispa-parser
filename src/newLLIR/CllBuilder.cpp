@@ -27,7 +27,7 @@ auto LLIR::CllExprBuilder::CllExprGroupToIR(const TreeAPI::CllExpr &group) -> Ex
 auto LLIR::CllExprBuilder::CllExprValueToIR(const TreeAPI::CllExprValue &value) -> Expression {
     std::vector<LLIR::expr> expr;
     if (value.isGroup()) {
-        expr = CllExprGroupToIR(value.getGroup());
+        expr = CllExprGroupToIR(value.getGroup().expr);
     } else if (value.isMethodCall()) {
         CllMethodCallBuilder builder(*this, value.getMethodCall());
         builder.build();
@@ -97,7 +97,7 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const TreeAPI::CllExprValue &
     if (value.isFunctionCall()) {
         // todo - get function call type
     } else if (value.isGroup()) {
-        return CllExprBuilder(*this, value.getGroup()).deduceType();
+        return CllExprBuilder(*this, value.getGroup().expr).deduceType();
     } else if (value.isMethodCall()) {
         // todo - get method call type
     } else if (value.isVariable()) {

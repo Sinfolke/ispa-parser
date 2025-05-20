@@ -11,11 +11,11 @@ export class LLConverter_base {
         std::vector<std::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;
-        LLIR::IR lexer_code;
+        LLIR::Nodes lexer_code;
         LLIR::variable lexer_code_access_var;
         AST* tree;
     public:
-        LLConverter_base(LLIR::IR &ir, AST &tree, const LLIR::IR *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : tree(&tree) {
+        LLConverter_base(LLIR::IR &ir, AST &tree, const LLIR::Nodes *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -31,7 +31,7 @@ export class LLConverter_base {
                 lexer_code = *custom_lexer_code;
                 lexer_code_access_var = *access_var;
             }
-            this->data = std::move(ir.getData());
+            this->data = ir.getData();
         }
         virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {
@@ -45,15 +45,15 @@ export class LRConverter_base {
     protected:
         // data
         const LRParser* data;
-        LLIR::IR lexer_code;
-        LLIR::variable success_var;
+        LLIR::Nodes lexer_code;
+        LLIR::variable return_var;
         AST* tree;
     public:
         LRConverter_base(const LRParser &data, AST &tree) : data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer();
             lexer_code = lc.first;
-            success_var = lc.second;
+            return_var = lc.second;
         }
         virtual void output(std::filesystem::path filename) = 0;
 };

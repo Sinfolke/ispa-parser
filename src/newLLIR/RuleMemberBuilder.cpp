@@ -1,3 +1,7 @@
+module;
+#include <cpuf/hex.h>
+
+#include "../../Parser.h"
 module LLIRRuleMemberBuilder;
 import CllBuilder;
 import logging;
@@ -132,7 +136,6 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 
 auto LLIR::MemberBuilder::build() -> void {
     *addSpaceSkip = true;
-    LLIR::ConvertionResult success_var;
     std::unique_ptr<BuilderBase> builder = nullptr;
     if (rule->isGroup()) {
         builder = std::make_unique<GroupBuilder>(*this, *rule);
@@ -149,36 +152,20 @@ auto LLIR::MemberBuilder::build() -> void {
     } else if (rule->isEscaped()) {
         builder = std::make_unique<EscapedBuilder>(*this, *rule);
     } else if (rule->isNospace()) {
-        builder = std::make_unique<NospaceBuilder>(*this, *rule);
+        builder = std::make_unique<NospaceBuilder>(*this);
     } else if (rule->isOp()) {
         builder = std::make_unique<OpBuilder>(*this, *rule);
     } else if (rule->isAny()) {
         builder = std::make_unique<AnyBuilder>(*this, *rule);
     } else if (rule->isCll()) {
-        builder = std::make_unique<LLIR::CllBuilder>(rule->getCll());
+        builder = std::make_unique<LLIR::CllBuilder>(*this, rule->getCll());
     } else if (rule->empty()) {
-        throw Error("Empty rule in %$", fullname);
+        throw Error("Empty rule");
     } else throw Error("Undefined rule");
     data = builder->getData();
-    if (rule->prefix.is_key_value) {
-        if (rule->prefix.name.empty()) {
-            unnamed_datablock_units->push_back(success_var.uvar.name.empty() ? (success_var.shadow_var.name.empty() ? success_var.var : success_var.shadow_var) : success_var.uvar);
-        } else {
-            key_vars->emplace_back(rule->prefix.name, success_var.uvar);
-        }
-    }
-    const auto insert_var = [this](const LLIR::variable &var) {
-        if (!var.name.empty())
-            vars->push_back(var);
-    };
-    insert_var(success_var.uvar);
-    insert_var(success_var.svar);
-    insert_var(success_var.var);
-    insert_var(success_var.shadow_var);
     *isFirst = false;
     if (addSpaceSkip)
         push({LLIR::types::SKIP_SPACES, isToken});
-    conv_res.push_back(success_var);
 }
 void LLIR::GroupBuilder::build() {
     auto var = createEmptyVariable(generateVariableName());
@@ -244,7 +231,7 @@ void LLIR::GroupBuilder::build() {
     if (!builder.getReturnVars().empty()) {
         bool first = true;
         for (auto el : builder.getReturnVars()) {
-            if (el.qualifier == '*' || el.qualifier == '?' || el.svar.name.empty())
+            if (el.quantifier == '*' || el.quantifier == '?' || el.svar.name.empty())
                 continue;
             if (!first)
                 svar_expr.push_back({LLIR::condition_types::AND});
@@ -305,6 +292,7 @@ void LLIR::GroupBuilder::build() {
         }
     // }
     add(svar_cond);
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::CsequenceBuilder::build() {
     //cpuf::printf("csequence\n");
@@ -375,6 +363,7 @@ void LLIR::CsequenceBuilder::build() {
     push({LLIR::types::VARIABLE, svar});
     std::vector<LLIR::member> block = createDefaultBlock(var, svar);
     auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::StringBuilder::build() {
     //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
@@ -426,12 +415,13 @@ void LLIR::StringBuilder::build() {
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
     pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
+    pushConvResult(*rule, var, uvar, svar, {}, rule->quantifier);
 }
 void LLIR::HexBuilder::build() {
     //cpuf::printf("hex\n");
-    auto data = rule.getHex().hex_chars;
+    auto data = rule->getHex().hex_chars;
     std::vector<LLIR::expr> expr = {};
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::STRING};
@@ -459,13 +449,14 @@ void LLIR::HexBuilder::build() {
     //cpuf::printf("hex_open\n");
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule.quantifier, false);
+    auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::BinBuilder::build() {
     //cpuf::printf("hex\n");
     auto data = rule->getBin().bin_chars;
     std::vector<LLIR::expr> expr = {};
-    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     std::vector<LLIR::member> block = {
@@ -473,7 +464,7 @@ void LLIR::BinBuilder::build() {
         {LLIR::types::INCREASE_POS_COUNTER},
     };
     bool is_first = true, is_negative = false;
-    if (rule.quantifier == '\0') {
+    if (rule->quantifier == '\0') {
         expr.push_back({LLIR::condition_types::NOT});
         expr.push_back({LLIR::condition_types::GROUP_OPEN});
         is_negative = true;
@@ -496,21 +487,21 @@ void LLIR::BinBuilder::build() {
     }
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule.quantifier, false);
-    return {svar, uvar, var, shadow_var, rule->quantifier};
+    auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::NameBuilder::build() {
     //cpuf::printf("Rule_other");
     auto name = rule->getName().name;
     //cpuf::printf(", name: %s\n", name_str);
-    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
     if (has_symbol_follow) {
         if (symbol_follow.empty())
-            throw Error("empty symbol follow on rule %$\n", fullname);
+            throw Error("empty symbol follow on rule");
         symbol_follow.back().first = name;
     }
     if (!isToken && isCallingToken) {
@@ -547,7 +538,7 @@ void LLIR::NameBuilder::build() {
             std::vector<LLIR::expr> expr = {
                 {LLIR::condition_types::CURRENT_TOKEN, LLIR::current_token {LLIR::condition_types::EQUAL, corelib::text::join(name, "_")}},
             };
-            shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier);
+            shadow_var = BuilderBase::pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
         } else {
             block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
             block.back().value = var.name;
@@ -556,44 +547,27 @@ void LLIR::NameBuilder::build() {
             std::vector<LLIR::expr> expr;
             auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
             push(call);
-            shadow_var = pushBasedOnQualifier_Rule_name(rule, expr, block, uvar, var, svar, call, rule.quantifier);
+            shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, call, rule->quantifier);
 
         }
 
     }
-    return {svar, uvar, var, shadow_var, rule.quantifier};
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
-LLIR::NospaceBuilder::build() {
-    addSpaceSkip = false;
-    if (members.size() > 0) {
-        // remove previous skip of spaces if it does exists
-        for (auto rit = this->members.rbegin(); rit != this->members.rend(); rit++) {
-            if (rit->type == LLIR::types::SKIP_SPACES) {
-                this->members.erase(rit.base());
-                break;
-            }
-        }
-    }
-    return {};
+void LLIR::NospaceBuilder::build() {
+    *addSpaceSkip = false;
+    removePrevSpaceSkip();
 }
 void LLIR::EscapedBuilder::build() {
     //cpuf::printf("Rule_escaped\n");
-    const auto &escaped_c = rule.getEscaped();
+    const auto &escaped_c = rule->getEscaped();
 
     std::vector<LLIR::expr> expression;
     switch (escaped_c.c) {
         case 's':
             // do not add skip of spaces
-            addSpaceSkip = false;
-            if (data.size() > 0) {
-                // remove previous skip of spaces if it does exists
-                for (auto rit = this->members.rbegin(); rit != this->members.rend(); rit++) {
-                    if (rit->type == LLIR::types::SKIP_SPACES) {
-                        this->members.erase(rit.base());
-                        break;
-                    }
-                }
-            }
+            *addSpaceSkip = false;
+            removePrevSpaceSkip();
             //cpuf::printf("ON_EXPRESSION\n");
             expression = {
                 {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
@@ -602,30 +576,30 @@ void LLIR::EscapedBuilder::build() {
             };
             break;
         default:
-            throw Error("Undefined char '%c'", escaped_c);
+            throw Error("Undefined char");
 
     }
     //cpuf::printf("escaped_open\n");
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     var.type = {LLIR::var_types::CHAR};
     std::vector<LLIR::member> block = {{LLIR::types::EXIT}};
     if (!isFirst) {
-        block.insert(block.begin(), {LLIR::types::ERR, getErrorName(rule)});
+        block.insert(block.begin(), {LLIR::types::ERR, getErrorName(*rule)});
     }
     auto block_after = createDefaultBlock(var, svar);
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expression, block, uvar, var, svar, rule.quantifier);
+    auto shadow_var = pushBasedOnQualifier(*rule, expression, block, uvar, var, svar, rule->quantifier, true);
     push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
     //cpuf::printf("escaped_close\n");
-    return {svar, uvar, var, shadow_var, rule.quantifier};
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::AnyBuilder::build() {
     //cpuf::printf("Rule_any\n");
-    auto var = prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(prefix.name);
+    auto var = rule->prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule->prefix.name);
     auto svar = createSuccessVariable();
     var.type = {isToken ? LLIR::var_types::CHAR : LLIR::var_types::Token};
     std::vector<LLIR::expr> expression;
@@ -652,9 +626,9 @@ void LLIR::AnyBuilder::build() {
     push({LLIR::types::VARIABLE, svar});
     push({LLIR::types::IF, LLIR::condition{expression, block}});
     add(block_after);
-    return {svar, {}, var};
+    pushConvResult(*rule, var, {}, svar, {}, rule->quantifier);
 }
-auto OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> std::vector<LLIR::member> {
+auto LLIR::OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> std::vector<LLIR::member> {
     //[[assume(rules.size() >= 2)]];
     if (index >= rules.size()) {
         return {{LLIR::types::EXIT}};
@@ -664,9 +638,7 @@ auto OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_
     std::vector<std::vector<LLIR::member>> blocks;
     std::vector<std::vector<LLIR::expr>> conditions;
     auto rule = rules[index++];
-    LLIR:: new_LLIR::(tree, -1, false);
-    new_LLIR::.proceed(*this);
-
+    std::unique_ptr<LLIR::MemberBuilder> builder = nullptr;
     if (rule.isGroup()) {
         char new_qualifier;
         if (rule.quantifier == '+')
@@ -675,26 +647,24 @@ auto OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_
             new_qualifier = '?';
         auto prev_quantifier = rule.quantifier;
         rule.quantifier = new_qualifier;
-        new_LLIR::.ruleToLLIR::(rule);
+        builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
+        builder->build();
         rule.quantifier = prev_quantifier;
     }
     else {
-        new_LLIR::.ruleToLLIR::(rule);
+        builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
+        builder->build();
     }
-    variable_count = new_LLIR::.variable_count;
-    vars = new_LLIR::.vars;
-    unnamed_datablock_units = new_LLIR::.unnamed_datablock_units;
-    key_vars = new_LLIR::.key_vars;
-    success_var = new_LLIR::.success_vars[0];
+    builder->getData();
     std::vector<int> erase_indices;
     std::vector<int> push_indices;
     if (rule.isGroup()) {
-        new_LLIR::.members.back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
+        builder->getData().back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
         auto cond = LLIR::condition {
             std::vector<LLIR::expr> {
                 {LLIR::condition_types::NOT}, {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.svar}}
             },
-            convert_op_rule(rules, index, var, svar),
+            createBlock(rules, index, var, svar),
         };
         auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
         auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
@@ -712,17 +682,17 @@ auto OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_
                 }
             }};
         }
-        new_LLIR::.push({LLIR::types::IF, cond});
+        push({LLIR::types::IF, cond});
     } else {
-        for (int i = 0; i < new_LLIR::.members.size(); i++) {
-            auto &el = new_LLIR::.members[i];
+        for (int i = 0; i < builder->getData().size(); i++) {
+            auto &el = builder->getData()[i];
             if (el.type == LLIR::types::IF) {
                 auto val = std::any_cast<LLIR::condition>(el.value);
                 // get recursively nested block
-                val.block = convert_op_rule(rules, index, var, svar);
+                val.block = createBlock(rules, index, var, svar);
                 // change condition and remove it's content into else blocks
-                for (int j = i + 1; j < new_LLIR::.members.size(); j++) {
-                    auto el = new_LLIR::.members[j];
+                for (int j = i + 1; j < builder->getData().size(); j++) {
+                    auto el = builder->getData()[j];
                     erase_indices.push_back(j);
                     if (el.type != LLIR::types::SKIP_SPACES) {
                         if (el.type == LLIR::types::ASSIGN_VARIABLE) {
@@ -760,21 +730,21 @@ auto OpBuilder::createBlock(const std::vector<TreeAPI::RuleMember> &rules, size_
     }
 
     for (auto it = erase_indices.rbegin(); it != erase_indices.rend(); ++it) {
-        new_IR::.members.erase(new_LLIR::.members.begin() + *it);
+        builder->getData().erase(builder->getData().begin() + *it);
     }
-    return new_IR::.members;
+    return builder->getData();
 }
 
 void LLIR::OpBuilder::build() {
     // cpuf::printf("Rule_op\n");
-    auto &rules = rule.getOp();
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+    auto &rules = rule->getOp();
+    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
     auto block = createDefaultBlock(var, svar);
     // cpuf::printf("op prefix: %$\n", rule.prefix);
     // Add success variable
-    var.type = {deduceVarTypeByProd(rule)};
+    var.type = {deduceVarTypeByProd(*rule)};
     if (insideLoop && var.type.type != LLIR::var_types::STRING) {
         var.type.templ = {{var.type.type}};
         var.type.type = LLIR::var_types::ARRAY;
@@ -787,7 +757,7 @@ void LLIR::OpBuilder::build() {
         uvar.type = var.type;
         push({LLIR::types::VARIABLE, uvar});
     }
-    const auto res = convert_op_rule(rules.options, 0, var, svar);
+    const auto res = createBlock(rules.options, 0, var, svar);
     add(res);
     block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
     block.erase(block.end() - 1);
@@ -796,24 +766,5 @@ void LLIR::OpBuilder::build() {
     const auto shadow_var = createEmptyVariable("");
     if (!uvar.name.empty())
         push(createAssignUvarBlock(uvar, var, shadow_var));
-    return {svar, uvar, var, {}, rule.quantifier};
-}
-void LLIR::process_cll_var(const TreeAPI::CllVar &var) {
-    // get data section
-    LLIR::var_type LLIR::_type;
-    LLIR::var_assign_types assign_types;
-    LLIR::assign assign;
-    if (!var.type.type.empty())
-        LLIR::_type = cllTreeTypeToLLIR::(var.type);
-    if (var.op != '\0') {
-        assign_types = TreeOpToLLIR::(var.op);
-        assign = {LLIR::var_assign_values::EXPR, TreeExprToLLIR::(var.value)};
-    }
-    if (!var.type.type.empty()) {
-        LLIR::variable v = {var.name, LLIR::_type, assign};
-        push({LLIR::types::VARIABLE, v});
-        vars.push_back(v);
-    } else {
-        push({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, assign_types, assign}});
-    }
+    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
