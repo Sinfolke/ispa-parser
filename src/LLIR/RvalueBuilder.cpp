@@ -93,7 +93,7 @@ void LLIR::RvalueBuilder::build() {
     } else if (value->isAt()) {
         data.kind = LLIR::var_assign_values::VAR_REFER;
         data.data = LLIR::var_refer {.var = unnamed_datablock_units->front()};
-        unnamed_datablock_units->erase(unnamed_datablock_units->end());
+        unnamed_datablock_units->erase(unnamed_datablock_units->end() - 1);
     } else if (value->isArray()) {
         data.kind = LLIR::var_assign_values::ARRAY;
         LLIR::array arr;

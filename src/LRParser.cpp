@@ -1,9 +1,8 @@
-module;
-#include <cpuf/printf.h>
 module LRParser;
 import TreeAPI;
 import logging;
 import hash;
+import cpuf.printf;
 import std;
 static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group) {
     size_t count = 0;
@@ -1063,8 +1062,6 @@ void LRParser::printCanonicalCollection(const std::string &fileName) {
 }
 
 // Helper function to format the Action Table into a string
-#include <iomanip> // For std::setw
-
 std::string LRParser::formatActionTable() const {
     std::ostringstream oss;
     const int stateWidth = 6;

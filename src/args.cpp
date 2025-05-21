@@ -1,5 +1,7 @@
+module;
 module args;
 import logging;
+import cpuf.printf;
 import std;
 bool Arg::empty() const {
     return values.empty() && !isBool;

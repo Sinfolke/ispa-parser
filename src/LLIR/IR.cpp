@@ -2,6 +2,7 @@ module LLIR;
 import corelib;
 import hash;
 import logging;
+import cpuf.printf;
 import std;
 bool LLIR::DataBlock::is_inclosed_map() const {
     return std::holds_alternative<LLIR::inclosed_map>(value);

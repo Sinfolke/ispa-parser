@@ -1,6 +1,7 @@
-#include <cpuf/color.h>
-#include <cpuf/dlib.h>
-#include <cpuf/operator.h>
+import cpuf.color;
+import cpuf.dlib;
+import cpuf.printf;
+import cpuf.dlib;
 import init;
 import args;
 import corelib;
@@ -13,13 +14,12 @@ import LALRParser;
 import Converter;
 import LLIRBuilder;
 import LLIR;
-import fmt;
 import hash;
 import Parser;
 import TreeAPI;
 import std;
 void printHelp() {
-    fmt::printf(R"(
+    cpuf::printf(R"(
 usage: 
     [parameters] [individual files]
     -help show this help message
@@ -27,7 +27,7 @@ usage:
     --dir specify the directories where to locate sources
     --lang specify target language to generate to. Use --help-lang to see all languages
     )", color::yellow, color::reset);
-    fmt::printf("\n");
+    cpuf::printf("\n");
 }
 std::vector<const char*> parameters_required {
     "lang"
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
         return 0;
     }
     if (args.has("version")) {
-        fmt::printf("%$\n", PROGRAM_VERSION);
+        cpuf::printf("%$\n", PROGRAM_VERSION);
         return 0;
     }
     // throw error if required argument missing or not having parameters
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     if (!args.unnamed().size() && !args.has("dir"))
         throw UError("No input files");
     for (const auto file : args.unnamed()) {
-        fmt::printf("file: %$\n", file);
+        cpuf::printf("file: %$\n", file);
         std::string fileContent;
         try {
             fileContent = corelib::file::readFile(std::string(file));
@@ -93,13 +93,13 @@ int main(int argc, char** argv) {
         for (const auto dirPath : args.get("dir").values) {
             auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
-                printf("file %s\n", file.c_str());
+                cpuf::printf("file {}\n", file.c_str());
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
                 Parser::Parser parser;
                 auto current_tree = parser.parse(content.c_str());
                 for (const auto &err : parser.getErrors()) {
-                    printf("Parser error[%zu, %zu]: %s\n", err.line, err.column, err.message.c_str());
+                    cpuf::printf("Parser error[{}, {}]: %s\n", err.line, err.column, err.message.c_str());
                 }
                 modules.push_back(current_tree);
             }

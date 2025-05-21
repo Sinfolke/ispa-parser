@@ -1,13 +1,16 @@
+module;
 export module logging;
-import fmt;
+import cpuf.printf;
+import cpuf.color;
 import std;
+
 export class Error : public std::exception {
 public:
     std::string message;
     template<typename ...Args>
     Error(const char* format, Args&&... args)
-        : message( fmt::sprintf(format, args...) ) {}
-    void print();
+        : message( cpuf::sprintf(format, args...) ) {}
+    void print() const;
     const char* what() const noexcept override;
 };
 export template<typename ...Args>
@@ -21,14 +24,14 @@ export class UBase : std::exception {
 public:
     const std::string message;
     template<typename ...Args>
-    UBase(const char* message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
+    UBase(const char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(char* message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
+    UBase(char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
     template<typename ...Args>
-    UBase(std::string message, Args&&... args) : message( fmt::sprintf(message, args...) ) {}
+    UBase(std::string message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
 
 
-    void print();
+    void print() const;
     const char* what() const noexcept override;
 };
 export class UError : public UBase {
@@ -41,7 +44,7 @@ public:
     UError(std::string message, Args&&... args)
         : UBase(std::move(message), std::forward<Args>(args)...) {}
 
-    void print();
+    void print() const;
 };
 export class UWarning : public UBase {
 public:
@@ -53,7 +56,7 @@ public:
     UWarning(std::string message, Args&&... args)
         : UBase(std::move(message), std::forward<Args>(args)...) {}
 
-    void print();
+    void print() const;
 };
 
 

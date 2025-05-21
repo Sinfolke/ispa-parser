@@ -31,8 +31,6 @@ export namespace LLIR {
     protected:
         LLIR::Nodes data;
         std::vector<LLIR::ConvertionResult> return_vars;
-        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> symbol_follow;
-        bool has_symbol_follow = true;
         // helper functions
         auto generateVariableName() -> std::string;
         auto createSuccessVariable() -> LLIR::variable;

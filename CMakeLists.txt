@@ -100,12 +100,12 @@ include(FetchContent)
 # Try to find system-installed fmt
 #find_package(fmt QUIET)
 # If not found, fetch it
-message(STATUS "fmt not found, using FetchContent to download it")
-FetchContent_Declare(fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        GIT_TAG master
-)
-FetchContent_MakeAvailable(fmt)
+#message(STATUS "fmt not found, using FetchContent to download it")
+#FetchContent_Declare(fmt
+#        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+#        GIT_TAG master
+#)
+#FetchContent_MakeAvailable(fmt)
 
 # =============================================
 # Global Configuration
@@ -115,6 +115,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    add_compile_definitions(DEBUG)
+endif()
 # =============================================
 # Project Structure
 # =============================================
@@ -161,15 +164,15 @@ add_compile_definitions(
         PROGRAM_VERSION="0.1.0 beta"
         O_LEVEL=${O_LEVEL}
 )
-get_file_range(FMT_MODULES ${fmt_SOURCE_DIR}/src/fmt.cc)
-add_library(fmt_m STATIC)
-target_sources(fmt_m
-    PUBLIC
-    FILE_SET cxx_modules TYPE CXX_MODULES FILES
-    ${FMT_MODULES}
-)
-target_sources(fmt_m PRIVATE ${ISPA_SOURCES})
-target_include_directories(fmt_m PRIVATE ${fmt_SOURCE_DIR}/include)
+#get_file_range(FMT_MODULES ${fmt_SOURCE_DIR}/src/fmt.cc)
+#add_library(fmt_m STATIC)
+#target_sources(fmt_m
+#    PUBLIC
+#    FILE_SET cxx_modules TYPE CXX_MODULES FILES
+#    ${FMT_MODULES}
+#)
+#target_sources(fmt_m PRIVATE ${ISPA_SOURCES})
+#target_include_directories(fmt_m PRIVATE ${fmt_SOURCE_DIR}/include)
 # =============================================
 # ISPA MAIN EXECUTABLE MODULES
 # =============================================
@@ -178,6 +181,7 @@ get_file_range(ISPA_MODULES
         ${SRC_DIR}/*.cppm
         ${PARSER_DIR}/*.cppm
         ${INCLUDE_DIR}/*.cppm
+        external/*.cppm
 )
 target_sources(ispa_modules
         PUBLIC
@@ -195,9 +199,7 @@ add_executable(ispa)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
-        external/cpuf/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/color.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cc
+        external/*.cpp
 )
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
@@ -242,15 +244,14 @@ target_sources(ispa-converter-cpp
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
 add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
-target_link_libraries(ispa-converter-cpp
-        PRIVATE
-            ispa_modules
+target_link_libraries(ispa-converter-cpp PRIVATE
+        ispa_modules
 )
-target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
+#target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp
-    fmt::fmt
-    fmt_m
+    #fmt::fmt
+    #fmt_m
 )
 # =============================================
 # Testing Configuration

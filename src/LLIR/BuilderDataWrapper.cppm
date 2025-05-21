@@ -17,6 +17,8 @@ export namespace LLIR {
         std::vector<variable> *vars = nullptr;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
+        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> *symbol_follow = nullptr;
+        bool *has_symbol_follow = nullptr;
         AST *tree = nullptr;
 
         auto initializationCheck() -> bool;
@@ -31,6 +33,8 @@ export namespace LLIR {
         vars(&data.vars),
         key_vars(&data.key_vars),
         unnamed_datablock_units(&data.unnamed_datablock_units),
+        symbol_follow(&data.symbol_follow),
+        has_symbol_follow(&data.has_symbol_follow),
         tree(data.tree)
         {}
         BuilderDataWrapper(
@@ -44,6 +48,8 @@ export namespace LLIR {
             std::vector<variable> &vars,
             std::vector<std::pair<std::string, variable>> &key_vars,
             std::vector<variable> &unnamed_datablock_units,
+            std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> &symbol_follow,
+            bool &has_symbol_follow,
             AST *tree
         ) :
             variable_count(&variable_count),
@@ -56,6 +62,8 @@ export namespace LLIR {
             vars(&vars),
             key_vars(&key_vars),
             unnamed_datablock_units(&unnamed_datablock_units),
+            symbol_follow(&symbol_follow),
+            has_symbol_follow(&has_symbol_follow),
             tree(tree)
         {}
     };

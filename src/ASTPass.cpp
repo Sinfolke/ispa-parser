@@ -81,7 +81,7 @@ void ASTPass::literalsToToken(AST &ast) {
     std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
     std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
     auto &treeMap = ast.getTreeMap();
-    ASTPass pass(ast);
+    ASTPass pass(ast, true);
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
             pass.literalsToToken(value.rule_members, count, toInsert, generated);
@@ -252,7 +252,7 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
     }, first.value, second.value);
 }
 void ASTPass::sortByPriority(AST &ast, TreeAPI::RuleMemberOp& options) {
-    ASTPass pass(ast);
+    ASTPass pass(ast, true);
     std::sort(options.options.begin(), options.options.end(), [&](TreeAPI::RuleMember &first, TreeAPI::RuleMember &second) {
         return pass.prioritySort(first, second);
     });
@@ -277,7 +277,7 @@ void ASTPass::sortByPriority(AST &ast) {
         if (value.rule_members.empty()) {
             throw Error("Empty rule");
         }
-        ASTPass pass(ast);
+        ASTPass pass(ast, true);
         pass.sortByPriority(ast, value.rule_members);
     }
 }

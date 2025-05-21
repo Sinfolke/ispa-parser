@@ -1,5 +1,7 @@
+module;
 module corelib;
 import logging;
+import cpuf.printf;
 import std;
 import std.compat;
 namespace corelib::file {

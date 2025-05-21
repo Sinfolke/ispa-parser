@@ -1,11 +1,10 @@
-module;
-#include <cpuf/hex.h>
-
 module LLIRRuleMemberBuilder;
 import ErrorIR;
 import CllBuilder;
 import logging;
 import corelib;
+import cpuf.hex;
+import cpuf.printf;
 import std;
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
@@ -94,7 +93,7 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             // add exit statement
             std::vector<LLIR::member> blk;
             if (has_symbol_follow) {
-                ErrorIR::IR error(tree, rule, symbol_follow, isFirst);
+                ErrorIR::IR error(tree, rule, *symbol_follow, isFirst);
                 blk = {error.lowerToLLIR(*variable_count)};
             } else {
                 blk = {{LLIR::types::EXIT}};
@@ -116,31 +115,32 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
     *addSpaceSkip = true;
     std::unique_ptr<BuilderBase> builder = nullptr;
-    if (rule->isGroup()) {
-        builder = std::make_unique<GroupBuilder>(*this, *rule);
-    } else if (rule->isCsequence()) {
-        builder = std::make_unique<CsequenceBuilder>(*this, *rule);
-    } else if (rule->isString()) {
-        builder = std::make_unique<StringBuilder>(*this, *rule);
-    } else if (rule->isHex()) {
-        builder = std::make_unique<HexBuilder>(*this, *rule);
-    } else if (rule->isBin()) {
-        builder = std::make_unique<BinBuilder>(*this, *rule);
-    } else if (rule->isName()) {
-        builder = std::make_unique<NameBuilder>(*this, *rule);
-    } else if (rule->isEscaped()) {
-        builder = std::make_unique<EscapedBuilder>(*this, *rule);
-    } else if (rule->isNospace()) {
+    if (member.isGroup()) {
+        builder = std::make_unique<GroupBuilder>(*this, member);
+    } else if (member.isCsequence()) {
+        builder = std::make_unique<CsequenceBuilder>(*this, member);
+    } else if (member.isString()) {
+        builder = std::make_unique<StringBuilder>(*this, member);
+    } else if (member.isHex()) {
+        builder = std::make_unique<HexBuilder>(*this, member);
+    } else if (member.isBin()) {
+        builder = std::make_unique<BinBuilder>(*this, member);
+    } else if (member.isName()) {
+        builder = std::make_unique<NameBuilder>(*this, member);
+    } else if (member.isEscaped()) {
+        builder = std::make_unique<EscapedBuilder>(*this, member);
+    } else if (member.isNospace()) {
         builder = std::make_unique<NospaceBuilder>(*this);
-    } else if (rule->isOp()) {
-        builder = std::make_unique<OpBuilder>(*this, *rule);
-    } else if (rule->isAny()) {
-        builder = std::make_unique<AnyBuilder>(*this, *rule);
-    } else if (rule->isCll()) {
-        builder = std::make_unique<LLIR::CllBuilder>(*this, rule->getCll());
-    } else if (rule->empty()) {
+    } else if (member.isOp()) {
+        builder = std::make_unique<OpBuilder>(*this, member);
+    } else if (member.isAny()) {
+        builder = std::make_unique<AnyBuilder>(*this, member);
+    } else if (member.isCll()) {
+        builder = std::make_unique<LLIR::CllBuilder>(*this, member.getCll());
+    } else if (member.empty()) {
         throw Error("Empty rule");
     } else throw Error("Undefined rule");
+    builder->build();
     data = builder->getData();
     *isFirst = false;
     if (*addSpaceSkip)
@@ -150,13 +150,13 @@ auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     size_t pos = 0;
     for (const auto &mem : rules) {
-        rule = &mem;
-        if (rule->isName()) {
-            symbol_follow.push_back(std::make_pair(std::vector<std::string> {}, getNextTerminal(rules, pos)));
+        if (mem.isName()) {
+            symbol_follow->push_back(std::make_pair(std::vector<std::string> {}, getNextTerminal(rules, pos)));
         }
-        build();
-        if (rule->isName()) {
-            symbol_follow.pop_back();
+        cpuf::printf("Before build\n");
+        buildMember(mem);
+        if (mem.isName()) {
+            symbol_follow->pop_back();
         }
         if (isFirst && addSpaceSkipFirst != nullptr) {
             *addSpaceSkipFirst = *addSpaceSkip;
@@ -177,7 +177,7 @@ void LLIR::GroupBuilder::build() {
     bool addSpaceSkipFirst;
     MemberBuilder builder(*this, group, addSpaceSkipFirst);
     *insideLoop = prev_insideLoop;
-    // remove previous space skip it there was \s0
+    // remove the previous space skip if there was \s0
     if (addSpaceSkipFirst) {
         removePrevSpaceSkip();
     }
@@ -364,7 +364,6 @@ void LLIR::CsequenceBuilder::build() {
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::StringBuilder::build() {
-    //cpuf::printf("string, data: %s\n", std::any_cast<std::string>(rule.data));
     const auto &str = rule->getString();
     const auto &value = str.value;
     auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
@@ -497,10 +496,11 @@ void LLIR::NameBuilder::build() {
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
-    if (has_symbol_follow) {
-        if (symbol_follow.empty())
+    if (*has_symbol_follow) {
+        cpuf::printf("Rule: {} on {}\n", *fullname, name);
+        if (symbol_follow->empty())
             throw Error("empty symbol follow on rule");
-        symbol_follow.back().first = name;
+        symbol_follow->back().first = name;
     }
     if (!isToken && isCallingToken) {
         var.type.type = LLIR::var_types::Token;
@@ -511,8 +511,8 @@ void LLIR::NameBuilder::build() {
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
     if (isToken) {
-        if (!isCallingToken)
-            throw Error("Cannot call rule from token");
+        // if (!isCallingToken)
+        //     throw Error("Cannot call rule from token");
         // remove variable assignemnt
         block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
         block.back().value = var.name;

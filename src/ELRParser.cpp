@@ -1,10 +1,9 @@
-module;
-#include <cpuf/printf.h>
 module ELRParser;
-import std;
 import hash;
 import corelib;
 import logging;
+import cpuf.printf;
+import std;
 bool ELRParser::isELR() const {
     return true;
 }
