@@ -260,12 +260,12 @@ void ASTPass::sortByPriority(AST &ast, TreeAPI::RuleMemberOp& options) {
 void ASTPass::sortByPriority(AST &ast, std::vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
-            sortByPriority(member.getGroup().values);
+            sortByPriority(ast, member.getGroup().values);
         }
         if (member.isOp()) {
             for (auto &option : member.getOp().options) {
                 if (option.isGroup()) {
-                    sortByPriority(option.getGroup().values);
+                    sortByPriority(ast, option.getGroup().values);
                 }
             }
             sortByPriority(ast, member.getOp());
@@ -278,7 +278,7 @@ void ASTPass::sortByPriority(AST &ast) {
             throw Error("Empty rule");
         }
         ASTPass pass(ast);
-        pass.sortByPriority(value.rule_members);
+        pass.sortByPriority(ast, value.rule_members);
     }
 }
 void ASTPass::addSpaceToken(AST &ast) {

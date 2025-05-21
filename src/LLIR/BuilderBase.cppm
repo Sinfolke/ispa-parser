@@ -1,12 +1,12 @@
 export module LLIRBuilderBase;
 import TreeAPI;
 import LLIR;
-import LLIRBuilderData;
+import LLIRBuilderDataWrapper;
 import LLIRBuilderUtility;
 import std;
 import std.compat;
 export namespace LLIR {
-    class BuilderBase : public BuilderData, public BuilderUtility {
+    class BuilderBase : public BuilderDataWrapper, public BuilderUtility {
     public:
         // public static functions
         static auto createEmptyVariable(std::string name) -> LLIR::variable;
@@ -27,10 +27,12 @@ export namespace LLIR {
         static auto CllCompareOpToExpr(const TreeAPI::CllCompareOp &op) -> expr;
         static auto CllLogicalOpToIR(const TreeAPI::CllLogicalOp &lop) -> condition_types;
         static auto CllAssignmentOpToIR(const char op) -> var_assign_types;
-        auto getBuilderData() -> BuilderData;
+        auto getBuilderData() -> BuilderDataWrapper;
     protected:
         LLIR::Nodes data;
         std::vector<LLIR::ConvertionResult> return_vars;
+        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> symbol_follow;
+        bool has_symbol_follow = true;
         // helper functions
         auto generateVariableName() -> std::string;
         auto createSuccessVariable() -> LLIR::variable;
@@ -65,7 +67,7 @@ export namespace LLIR {
         virtual auto getData() -> LLIR::Nodes&;
         virtual auto getReturnVars() const -> const std::vector<LLIR::ConvertionResult>&;
 
-        BuilderBase(BuilderData& data) : BuilderData(data), BuilderUtility(nullptr) {
+        BuilderBase(BuilderDataWrapper& data) : BuilderDataWrapper(data), BuilderUtility(nullptr) {
             setUtilityPointer(&this->data);
         }
         virtual ~BuilderBase() = default;

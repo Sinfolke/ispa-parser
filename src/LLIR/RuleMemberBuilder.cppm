@@ -1,7 +1,7 @@
 export module LLIRRuleMemberBuilder;
 
 import LLIRBuilderBase;
-import LLIRBuilderData;
+import LLIRBuilderDataWrapper;
 import TreeAPI;
 import LLIR;
 import std;
@@ -9,12 +9,16 @@ import std.compat;
 
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
-        const TreeAPI::RuleMember *rule;
+        std::vector<TreeAPI::RuleMember> rules;
+        const TreeAPI::RuleMember *rule = nullptr;
+        bool *addSpaceSkipFirst = nullptr;
+        void buildMember(const TreeAPI::RuleMember &member);
     public:
         void build() override;
-        MemberBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
-        MemberBuilder(BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules);
-        MemberBuilder(BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst);
+        MemberBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rules({rule}) {}
+        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules) : BuilderBase(data), rules(rules) {}
+        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst)
+        : BuilderBase(data), rules(rules), addSpaceSkipFirst(&addSpaceSkipFirst) {}
     };
 
     class GroupBuilder : public BuilderBase {
@@ -29,35 +33,35 @@ export namespace LLIR {
         );
     public:
         void build() override;
-        GroupBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        GroupBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class CsequenceBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        CsequenceBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        CsequenceBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class StringBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        StringBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        StringBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class HexBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        HexBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        HexBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class BinBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        BinBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        BinBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class NameBuilder : public BuilderBase {
@@ -76,27 +80,27 @@ export namespace LLIR {
 
     public:
         void build() override;
-        NameBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        NameBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class NospaceBuilder : public BuilderBase {
     public:
         void build() override;
-        NospaceBuilder(BuilderData &data) : BuilderBase(data) {}
+        NospaceBuilder(BuilderDataWrapper &data) : BuilderBase(data) {}
     };
 
     class EscapedBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        EscapedBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        EscapedBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class AnyBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
     public:
         void build() override;
-        AnyBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        AnyBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 
     class OpBuilder : public BuilderBase {
@@ -109,6 +113,6 @@ export namespace LLIR {
         ) -> std::vector<LLIR::member>;
     public:
         void build() override;
-        OpBuilder(BuilderData &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        OpBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
     };
 }

@@ -5,12 +5,13 @@ import LLIRRuleMemberBuilder;
 import logging;
 import std;
 import CllBuilder;
+
 auto LLIR::RuleBuilder::getData() -> LLIR::Data {
     return data;
 }
 
 void LLIR::RuleBuilder::build() {
-    auto builderData = getBuilderData();
+    BuilderDataWrapper builderData(*this);
     data.block = createDataBlock(rule->data_block);
     data.members = MemberBuilder(builderData, rule->rule_members).getData();
     data.name = *name;
@@ -35,14 +36,14 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const TreeAPI::DataBlock &dat
             LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
             const auto &key_based_data_block = data_block.getRegDataBlockWKeys();
             for (const auto &[name, expr] : key_based_data_block.value) {
-                auto bd = getBuilderData();
+                BuilderDataWrapper bd(*this);
                 CllExprBuilder expr_builder(bd, expr);
                 initial_map.try_emplace(name, expr_builder.get(), expr_builder.deduceType());
             }
             block.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
-            auto bd = getBuilderData();
+            BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
             auto type = expr_builder.deduceType();
             if (type.type == LLIR::var_types::Rule_result) {

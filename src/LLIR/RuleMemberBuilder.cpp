@@ -3,30 +3,11 @@ module;
 
 #include "../../Parser.h"
 module LLIRRuleMemberBuilder;
+import ErrorIR;
 import CllBuilder;
 import logging;
 import corelib;
 import std;
-// constructors
-
-LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules) : LLIR::BuilderBase(data) {
-    for (const auto &mem : rules) {
-        rule = &mem;
-        build();
-    }
-}
-LLIR::MemberBuilder::MemberBuilder(LLIR::BuilderData &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst) : LLIR::BuilderBase(data) {
-    bool isFirst = true;
-    for (const auto &mem : rules) {
-        rule = &mem;
-        build();
-        if (isFirst) {
-            addSpaceSkipFirst = addSpaceSkip;
-        }
-        isFirst = false;
-    }
-}
-
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
@@ -114,8 +95,8 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             // add exit statement
             std::vector<LLIR::member> blk;
             if (has_symbol_follow) {
-                ErrorIR error(tree, rule, symbol_follow, isFirst);
-                blk = {error.lowerToLLIR(variable_count)};
+                ErrorIR::IR error(tree, rule, symbol_follow, isFirst);
+                blk = {error.lowerToLLIR(*variable_count)};
             } else {
                 blk = {{LLIR::types::EXIT}};
                 if (!isFirst) {
@@ -133,8 +114,7 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
     }
     return shadow_variable;
 }
-
-auto LLIR::MemberBuilder::build() -> void {
+void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
     *addSpaceSkip = true;
     std::unique_ptr<BuilderBase> builder = nullptr;
     if (rule->isGroup()) {
@@ -164,8 +144,27 @@ auto LLIR::MemberBuilder::build() -> void {
     } else throw Error("Undefined rule");
     data = builder->getData();
     *isFirst = false;
-    if (addSpaceSkip)
+    if (*addSpaceSkip)
         push({LLIR::types::SKIP_SPACES, isToken});
+}
+auto LLIR::MemberBuilder::build() -> void {
+    bool isFirst = true;
+    size_t pos = 0;
+    for (const auto &mem : rules) {
+        rule = &mem;
+        if (rule->isName()) {
+            symbol_follow.push_back(std::make_pair(std::vector<std::string> {}, getNextTerminal(rules, pos)));
+        }
+        build();
+        if (rule->isName()) {
+            symbol_follow.pop_back();
+        }
+        if (isFirst && addSpaceSkipFirst != nullptr) {
+            *addSpaceSkipFirst = *addSpaceSkip;
+        }
+        isFirst = false;
+        pos++;
+    }
 }
 void LLIR::GroupBuilder::build() {
     auto var = createEmptyVariable(generateVariableName());
@@ -210,7 +209,7 @@ void LLIR::GroupBuilder::build() {
             var_members.push_back( LLIR::member
                 {
                     LLIR::types::ASSIGN_VARIABLE,
-                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VAR_REFER,  LLIR::var_refer {.var = builder.conv_res[0].var}}}
+                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VAR_REFER,  LLIR::var_refer {.var = builder.getReturnVars()[0].var}}}
                 }
             );
 

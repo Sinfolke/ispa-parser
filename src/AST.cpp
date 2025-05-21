@@ -3,8 +3,9 @@ import ASTPass;
 import logging;
 import TreeAPI;
 import LLIRBuilder;
-import LLIRBuilderData;
+import LLIRBuilderDataWrapper;
 import LLIRRuleMemberBuilder;
+import LLIRBuilderData;
 import std;
 import std.compat;
 void AST::constructor(const Parser::Rule &mod) {
@@ -869,19 +870,9 @@ auto AST::getCodeForLexer() -> lexer_code {
     ASTPass::sortByPriority(*this, options);
     TreeAPI::RuleMember resultRule = { .value = options };
     // get lexer code
-    size_t variable_count = 0;
-    bool isToken = false;
-    bool insideLoop = false;
-    bool addSpaceSkip = false;
-    bool isFirst = true;
-    int tokensOnly = -1;
-    std::vector<std::string> fullname;
-    std::vector<LLIR::variable> vars;
-    std::vector<LLIR::ConvertionResult> success_vars;
-    std::vector<std::pair<std::string, LLIR::variable>> key_vars;
-    std::vector<LLIR::variable> unnamed_datablock_units;
-    LLIR::BuilderData bd(variable_count, isToken, insideLoop, addSpaceSkip, isFirst, tokensOnly, fullname, vars, key_vars, unnamed_datablock_units, this);
-    LLIR::MemberBuilder code(bd, resultRule);
+    LLIR::BuilderData bd(*this);
+    LLIR::BuilderDataWrapper wrapper(bd);
+    LLIR::MemberBuilder code(wrapper, resultRule);
     const auto &return_vars = code.getReturnVars();
     code.pop(); // remove space skip
     if (return_vars.empty())

@@ -1,7 +1,7 @@
 export module CllBuilder;
 import LLIRBuilderBase;
 import TreeAPI;
-import LLIRBuilderData;
+import LLIRBuilderDataWrapper;
 import LLIR;
 import std;
 export namespace LLIR {
@@ -9,22 +9,22 @@ export namespace LLIR {
         const TreeAPI::Cll *cll;
     public:
         void build();
-        CllBuilder(BuilderData &data, const TreeAPI::Cll &rule) : BuilderBase(data), cll(&rule) {}
+        CllBuilder(BuilderDataWrapper &data, const TreeAPI::Cll &rule) : BuilderBase(data), cll(&rule) {}
     };
 
     class CllVarBuilder : public BuilderBase {
         const TreeAPI::CllVar *var;
     public:
         void build() override;
-        CllVarBuilder(BuilderData &data, const TreeAPI::CllVar &rule) : BuilderBase(data), var(&rule) {}
+        CllVarBuilder(BuilderDataWrapper &data, const TreeAPI::CllVar &rule) : BuilderBase(data), var(&rule) {}
     };
     class CllIfBuilder : public BuilderBase {
         const TreeAPI::CllIf *cond;
     public:
         void build() override;
-        CllIfBuilder(BuilderData &data, const TreeAPI::CllIf &rule) : BuilderBase(data), cond(&rule) {}
+        CllIfBuilder(BuilderDataWrapper &data, const TreeAPI::CllIf &rule) : BuilderBase(data), cond(&rule) {}
     };
-    class CllExprBuilder : BuilderData {
+    class CllExprBuilder : BuilderDataWrapper {
         const TreeAPI::CllExpr *expr;
         Expression result;
         auto CllExprGroupToIR(const TreeAPI::CllExpr &group) -> Expression;
@@ -39,26 +39,26 @@ export namespace LLIR {
         auto deduceTypeFromExprCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type;
         auto deduceTypeFromExprLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type;
     public:
-        CllExprBuilder(BuilderData &bd, const TreeAPI::CllExpr &expr) : BuilderData(bd), expr(&expr) {}
+        CllExprBuilder(BuilderDataWrapper &bd, const TreeAPI::CllExpr &expr) : BuilderDataWrapper(bd), expr(&expr) {}
         void build();
         auto get() -> Expression;
         auto deduceType() -> LLIR::var_type;
     };
-    class CllFunctionBuilder : public BuilderData {
+    class CllFunctionBuilder : public BuilderDataWrapper {
         const TreeAPI::CllFunctionCall *call;
         function_call result;
         auto FunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) -> std::vector<Expression>;
     public:
         void build();
         auto get() -> function_call;
-        CllFunctionBuilder(BuilderData bd, const TreeAPI::CllFunctionCall &call) : BuilderData(bd), call(&call) {}
+        CllFunctionBuilder(BuilderDataWrapper bd, const TreeAPI::CllFunctionCall &call) : BuilderDataWrapper(bd), call(&call) {}
     };
-    class CllMethodCallBuilder : public BuilderData {
+    class CllMethodCallBuilder : public BuilderDataWrapper {
         const TreeAPI::CllMethodCall *call;
         method_call result;
     public:
         void build();
         auto get() -> method_call;
-        CllMethodCallBuilder(BuilderData &bd, const TreeAPI::CllMethodCall &call) : BuilderData(bd), call(&call) {}
+        CllMethodCallBuilder(BuilderDataWrapper &bd, const TreeAPI::CllMethodCall &call) : BuilderDataWrapper(bd), call(&call) {}
     };
 };

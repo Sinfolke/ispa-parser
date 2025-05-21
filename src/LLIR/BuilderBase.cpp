@@ -13,21 +13,6 @@ auto LLIR::BuilderBase::getData() const -> const ::LLIR::Nodes & {
 auto LLIR::BuilderBase::getReturnVars() const -> const std::vector<LLIR::ConvertionResult> & {
     return return_vars;
 }
-auto LLIR::BuilderBase::getBuilderData() -> BuilderData {
-    return BuilderData(
-        *variable_count,
-        *isToken,
-        *insideLoop,
-        *addSpaceSkip,
-        *isFirst,
-        *tokensOnly,
-        *fullname,
-        *vars,
-        *key_vars,
-        *unnamed_datablock_units,
-        tree
-    );
-}
 auto LLIR::BuilderBase::createEmptyVariable(std::string name) -> LLIR::variable {
     LLIR::variable var {
         name,
@@ -67,6 +52,12 @@ auto LLIR::BuilderBase::createSuccessVariable(size_t &variable_count) -> LLIR::v
     var.type = {LLIR::var_types::BOOLEAN};
     var.value = {LLIR::var_assign_values::False};
     return var;
+}
+auto LLIR::BuilderBase::generateVariableName() -> std::string {
+    return generateVariableName(*variable_count);
+}
+auto LLIR::BuilderBase::createSuccessVariable() -> LLIR::variable {
+    return createSuccessVariable(*variable_count);
 }
 auto LLIR::BuilderBase::createAssignUvarBlock(const LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::member {
     return !uvar.name.empty() ?
@@ -223,7 +214,7 @@ void LLIR::BuilderBase::pushConvResult(const TreeAPI::RuleMember &rule, const LL
             key_vars->emplace_back(rule.prefix.name, uvar);
         }
     }
-    conv_res.push_back({v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
+    return_vars.push_back({v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
 }
 
 

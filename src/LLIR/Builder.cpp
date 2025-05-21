@@ -2,7 +2,7 @@
 module LLIRBuilder;
 import LLIRRuleBuilder;
 import LLIRRuleMemberBuilder;
-import LLIRBuilderData;
+import LLIRBuilderDataWrapper;
 import corelib;
 LLIR::Builder::Builder(AST &tree, int tokensOnly) {
     for (const auto &[name, value] : tree.getTreeMap()) {
@@ -12,7 +12,7 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
             if (corelib::text::isLower(name.back()) && tokensOnly)
                 continue;
         }
-        LLIR::RuleBuilder builder(name, value);
+        LLIR::RuleBuilder builder(tree, name, value);
         data.push_back(builder.getData());
     }
 }

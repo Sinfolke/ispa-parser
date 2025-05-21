@@ -195,6 +195,7 @@ add_executable(ispa)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
+        external/cpuf/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/color.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cc
 )

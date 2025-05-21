@@ -2,6 +2,9 @@ module LLIRBuilderUtility;
 import LLIR;
 import std;
 import std.compat;
+void LLIR::BuilderUtility::setUtilityPointer(LLIR::Nodes *data) {
+    this->data = data;
+}
 void LLIR::BuilderUtility::removePrevSpaceSkip() {
     if (!data->empty()) {
         // remove previous skip of spaces if it does exists

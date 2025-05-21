@@ -1,10 +1,11 @@
-export module LLIRBuilderData;
+export module LLIRBuilderDataWrapper;
 import LLIR;
+import LLIRBuilderData;
 import AST;
 import std;
 import std.compat;
 export namespace LLIR {
-    class BuilderData {
+    class BuilderDataWrapper {
     public:
         size_t *variable_count = nullptr;
         bool *isToken = nullptr;
@@ -14,12 +15,25 @@ export namespace LLIR {
         int *tokensOnly = nullptr;
         std::vector<std::string> *fullname = nullptr;
         std::vector<variable> *vars = nullptr;
-        std::vector<ConvertionResult> conv_res;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
         AST *tree = nullptr;
+
         auto initializationCheck() -> bool;
-        BuilderData(
+        explicit BuilderDataWrapper(LLIR::BuilderData &data)
+            : variable_count(&data.variable_count),
+        isToken(&data.isToken),
+        insideLoop(&data.insideLoop),
+        addSpaceSkip(&data.addSpaceSkip),
+        isFirst(&data.isFirst),
+        tokensOnly(&data.tokensOnly),
+        fullname(&data.fullname),
+        vars(&data.vars),
+        key_vars(&data.key_vars),
+        unnamed_datablock_units(&data.unnamed_datablock_units),
+        tree(data.tree)
+        {}
+        BuilderDataWrapper(
             size_t &variable_count,
             bool &isToken,
             bool &insideLoop,

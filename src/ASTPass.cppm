@@ -48,8 +48,6 @@ export class ASTPass {
             if (!rawAssign)
                 constructor();
         }
-        static void sortByPriority(TreeAPI::RuleMemberOp& options);
-        static void sortByPriority(std::vector<TreeAPI::RuleMember>& members);
         static void removeEmptyRule(AST &ast);
         static void inlineSingleGroups(AST &ast);
         static void literalsToToken(AST &ast);

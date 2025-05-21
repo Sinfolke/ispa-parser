@@ -1,5 +1,5 @@
-module LLIRBuilderData;
-auto LLIR::BuilderData::initializationCheck() -> bool {
+module LLIRBuilderDataWrapper;
+auto LLIR::BuilderDataWrapper::initializationCheck() -> bool {
     return
         variable_count != nullptr &&
         isToken != nullptr &&
