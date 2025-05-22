@@ -4,6 +4,7 @@ import LLIRBuilderBase;
 import LLIRBuilderData;
 import LLIRRuleMemberBuilder;
 import LLIRBuilderDataWrapper;
+import cpuf.printf;
 import corelib;
 import logging;
 import std;
@@ -15,6 +16,7 @@ auto ErrorIR::IR::panic_mode() -> Instructions {
     Instruction instruction = {InstructionType::IIF};
     iif_condition condition;
     bool first = true;
+    cpuf::printf("follow.back().second: {}", follow.back().second.size());
     for (const auto &el : follow.back().second) {
         if (!first)
             condition.cond.push_back({ConditionTypes::OR});
@@ -105,7 +107,8 @@ auto ErrorIR::IR::lowerToLLIRMember(const Instruction &member) -> std::vector<LL
         case InstructionType::PERFORM: {
             LLIR::BuilderData data(*tree);
             LLIR::BuilderDataWrapper wrapper(data);
-            LLIR::MemberBuilder perform(wrapper, std::any_cast<TreeAPI::RuleMember>(member.value));
+            LLIR::MemberBuilder perform(wrapper, std::any_cast<TreeAPI::RuleMember>(member.value), false);
+            perform.build();
             return perform.getData();
         }
     }
@@ -129,7 +132,6 @@ auto ErrorIR::IR::lowerToLLIR(size_t &variable_count) -> std::vector<LLIR::membe
 void ErrorIR::IR::lower() {
     if (!member->isName())
         throw Error("ErrorIR is not used in Lexer, but non-name member detected");
-
     // lower based on follow set
     const auto &name = member->getName().name;
     if (corelib::text::isUpper(name.back())) {

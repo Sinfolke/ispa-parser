@@ -208,7 +208,6 @@ void LLIR::BuilderBase::pushConvResult(const TreeAPI::RuleMember &rule, const LL
     insert_var(shadow_var);
     if (rule.prefix.is_key_value) {
         if (rule.prefix.name.empty()) {
-            cpuf::printf("Adding key to unnamed dtb of size {}", unnamed_datablock_units->size());
             unnamed_datablock_units->push_back(uvar.name.empty() ? (shadow_var.name.empty() ? var : shadow_var) : uvar);
         } else {
             key_vars->emplace_back(rule.prefix.name, uvar);

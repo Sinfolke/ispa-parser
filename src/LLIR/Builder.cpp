@@ -4,6 +4,7 @@ import LLIRRuleBuilder;
 import LLIRRuleMemberBuilder;
 import LLIRBuilderDataWrapper;
 import corelib;
+import cpuf.printf;
 LLIR::Builder::Builder(AST &tree, int tokensOnly) {
     for (const auto &[name, value] : tree.getTreeMap()) {
         if (tokensOnly != -1) {
@@ -12,6 +13,7 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
             if (corelib::text::isLower(name.back()) && tokensOnly)
                 continue;
         }
+        cpuf::printf("name: {}", name);
         LLIR::RuleBuilder builder(tree, name, value);
         data.push_back(builder.getData());
     }

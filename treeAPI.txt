@@ -106,8 +106,9 @@ name<[rule, BIN]> : Rule {
 }name<[moduleDeclaration]> : Rule {
    String (module)
   @  Name(ID)
+   Group( String (->), @  Name(ID))?;
    String (;)
-  Data: [RegularDataBlock: CllExpr]
+  Data: TemplatedDataBlock(name, base)
 }name<[cll, OP]> : Rule {
   @  Op( String (+) |  String (-) |  String (*) |  String (/) |  String (%))
   Data: [RegularDataBlock: CllExpr]

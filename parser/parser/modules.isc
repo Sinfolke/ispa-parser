@@ -1,6 +1,6 @@
 moduleDeclaration:
-    'module' @ ID ';'
-    {@}
+    'module' @ ID ('->' @ ID)? ';'
+    @{name, base}
 ;
 moduleImport:
     'import' @ ID | #from

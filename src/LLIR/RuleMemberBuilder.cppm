@@ -10,15 +10,21 @@ import std.compat;
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
         std::vector<TreeAPI::RuleMember> rules;
-        const TreeAPI::RuleMember *rule = nullptr;
         bool *addSpaceSkipFirst = nullptr;
         void buildMember(const TreeAPI::RuleMember &member);
     public:
         void build() override;
-        MemberBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rules({rule}) {}
-        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules) : BuilderBase(data), rules(rules) {}
-        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool &addSpaceSkipFirst)
-        : BuilderBase(data), rules(rules), addSpaceSkipFirst(&addSpaceSkipFirst) {}
+        MemberBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule, bool has_symbol_follow = true) : BuilderBase(data), rules(std::vector<TreeAPI::RuleMember> {rule}) {
+            *this->has_symbol_follow = has_symbol_follow;
+        }
+        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow = true) : BuilderBase(data), rules(rules) {
+            *this->has_symbol_follow = has_symbol_follow;
+        }
+        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow, bool &addSpaceSkipFirst) :
+            BuilderBase(data), rules(rules), addSpaceSkipFirst(&addSpaceSkipFirst) {
+            *this->has_symbol_follow = has_symbol_follow;
+        }
+
     };
 
     class GroupBuilder : public BuilderBase {

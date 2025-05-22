@@ -9,7 +9,7 @@ void ASTPass::removeEmptyRule(AST &ast) {
     auto &treeMap = ast.getTreeMap();
     for (auto it = treeMap.begin(); it != treeMap.end();) {
         auto &[name, value] = *it;
-        if (value.rule_members.size() == 0) {
+        if (value.rule_members.empty()) {
             it = treeMap.erase(it);
             continue;
         }

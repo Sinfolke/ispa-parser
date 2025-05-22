@@ -11,6 +11,7 @@ auto LLIR::RuleBuilder::getData() -> LLIR::Data {
 
 void LLIR::RuleBuilder::build() {
     BuilderDataWrapper builderData(*this);
+    cpuf::printf("Rule members size passed to MemberBuilder: {}\n", rule->rule_members.size());
     MemberBuilder builder(builderData, rule->rule_members);
     builder.build();
     data.members = builder.getData();
@@ -45,7 +46,6 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const TreeAPI::DataBlock &dat
             block.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
-            cpuf::printf("Having keys size: {} ,rule: {}, {}\n", unnamed_datablock_units.size(), fullname, *rule);
             std::flush(std::cout);
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
@@ -63,7 +63,6 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const TreeAPI::DataBlock &dat
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
         for (const auto &name : templated_datablock.names) {
-            cpuf::printf("Having keys size: {} ,rule: {}, {}\n", unnamed_datablock_units.size(), fullname, *rule);
             Assert(!unnamed_datablock_units.empty(), "More keys than values");
             auto type = unnamed_datablock_units.front().type;
             if (type.type == LLIR::var_types::Rule_result) {

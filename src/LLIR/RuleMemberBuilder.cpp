@@ -65,15 +65,11 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
     }
     switch (quantifier) {
         case '+':
-            if (add_shadow_var)
-                shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
             block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             handle_plus_qualifier(rule, LLIR::condition {expr, block}, uvar, var, shadow_variable);
             break;
         case '*': {
-            if (add_shadow_var)
-                shadow_variable = add_shadow_variable(block, var);
             block.push_back(call);
             block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
             push({LLIR::types::WHILE, LLIR::condition{expr, block}});
@@ -92,7 +88,7 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             expr.push_back({LLIR::condition_types::GROUP_CLOSE});
             // add exit statement
             std::vector<LLIR::member> blk;
-            if (has_symbol_follow) {
+            if (*has_symbol_follow) {
                 ErrorIR::IR error(tree, rule, *symbol_follow, isFirst);
                 blk = {error.lowerToLLIR(*variable_count)};
             } else {
@@ -142,7 +138,7 @@ void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
     } else throw Error("Undefined rule");
     builder->build();
     return_vars.insert(return_vars.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
-    data = builder->getData();
+    data.insert(data.end(), builder->getData().begin(), builder->getData().end());
     *isFirst = false;
     if (*addSpaceSkip)
         push({LLIR::types::SKIP_SPACES, *isToken});
@@ -150,13 +146,13 @@ void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     size_t pos = 0;
+    cpuf::printf("Received: {}", rules.size());
     for (const auto &mem : rules) {
-        if (mem.isName()) {
-            symbol_follow->push_back(std::make_pair(std::vector<std::string> {}, getNextTerminal(rules, pos)));
+        if (mem.isName() && *has_symbol_follow) {
+            symbol_follow->emplace_back(std::vector<std::string> {}, getNextTerminal(rules, pos));
         }
-        cpuf::printf("Before build, name: {}\n", *fullname);
         buildMember(mem);
-        if (mem.isName()) {
+        if (mem.isName() && *has_symbol_follow) {
             symbol_follow->pop_back();
         }
         if (isFirst && addSpaceSkipFirst != nullptr) {
@@ -176,7 +172,7 @@ void LLIR::GroupBuilder::build() {
     if (quantifier == '*' || quantifier == '+')
         *insideLoop = true;
     bool addSpaceSkipFirst = false;
-    MemberBuilder builder(*this, group, addSpaceSkipFirst);
+    MemberBuilder builder(*this, group, false, addSpaceSkipFirst);
     builder.build();
     return_vars.insert(return_vars.end(), builder.getReturnVars().begin(), builder.getReturnVars().end());
     *insideLoop = prev_insideLoop;
@@ -294,7 +290,6 @@ void LLIR::GroupBuilder::build() {
         }
     // }
     add(svar_cond);
-    cpuf::printf("group rule: {}", *rule);
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::CsequenceBuilder::build() {
@@ -502,12 +497,11 @@ void LLIR::NameBuilder::build() {
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
     if (*has_symbol_follow) {
-        cpuf::printf("Rule: {} on {}\n", *fullname, name);
         if (symbol_follow->empty())
             throw Error("empty symbol follow on rule");
         symbol_follow->back().first = name;
     }
-    if (!isToken && isCallingToken) {
+    if (!*isToken && isCallingToken) {
         var.type.type = LLIR::var_types::Token;
     } else {
         var.type = isCallingToken ? LLIR::var_type {LLIR::var_types::Token_result} : LLIR::var_type {LLIR::var_types::Rule_result};
@@ -515,7 +509,7 @@ void LLIR::NameBuilder::build() {
     auto block = createDefaultBlock(var, svar);
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    if (isToken) {
+    if (*isToken) {
         // if (!isCallingToken)
         //     throw Error("Cannot call rule from token");
         // remove variable assignemnt
@@ -526,7 +520,7 @@ void LLIR::NameBuilder::build() {
         std::vector<LLIR::expr> expr;
         auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
         push(call);
-        shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, call, rule->quantifier, false);
+        shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, call, rule->quantifier, true);
 
     } else {
         if (isCallingToken) {
@@ -541,7 +535,7 @@ void LLIR::NameBuilder::build() {
             std::vector<LLIR::expr> expr = {
                 {LLIR::condition_types::CURRENT_TOKEN, LLIR::current_token {LLIR::condition_types::EQUAL, corelib::text::join(name, "_")}},
             };
-            shadow_var = BuilderBase::pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
+            shadow_var = BuilderBase::pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, true);
         } else {
             block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
             block.back().value = var.name;
@@ -555,7 +549,6 @@ void LLIR::NameBuilder::build() {
         }
 
     }
-    cpuf::printf("Name rule: {}", *rule);
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::NospaceBuilder::build() {
