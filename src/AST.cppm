@@ -82,7 +82,6 @@ export class AST {
         }
         auto getRules() -> std::vector<TreeAPI::RuleMember>&;
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
-        void createUsePlacesTable();
         void constructNullableSet();
         auto constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> utype::unordered_set<std::vector<std::string>>;
         void constructFirstSet();
@@ -102,6 +101,7 @@ export class AST {
         auto getTerminals() -> std::vector<std::vector<std::string>>;
         auto getNonTerminals() -> std::vector<std::vector<std::string>>;
         auto getUsePlacesTable() -> UsePlaceTable&;
+        auto createUsePlacesTable() -> UsePlaceTable&;
         auto getCodeForLexer() -> lexer_code;
         auto getFirstSet()-> First&;
         auto getFollowSet() -> Follow&;

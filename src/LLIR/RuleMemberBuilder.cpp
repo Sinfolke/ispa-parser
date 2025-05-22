@@ -141,10 +141,11 @@ void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
         throw Error("Empty rule");
     } else throw Error("Undefined rule");
     builder->build();
+    return_vars.insert(return_vars.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
     data = builder->getData();
     *isFirst = false;
     if (*addSpaceSkip)
-        push({LLIR::types::SKIP_SPACES, isToken});
+        push({LLIR::types::SKIP_SPACES, *isToken});
 }
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
@@ -177,6 +178,7 @@ void LLIR::GroupBuilder::build() {
     bool addSpaceSkipFirst = false;
     MemberBuilder builder(*this, group, addSpaceSkipFirst);
     builder.build();
+    return_vars.insert(return_vars.end(), builder.getReturnVars().begin(), builder.getReturnVars().end());
     *insideLoop = prev_insideLoop;
     // remove the previous space skip if there was \s0
     if (addSpaceSkipFirst) {
@@ -362,7 +364,7 @@ void LLIR::CsequenceBuilder::build() {
         var.type = {LLIR::var_types::STRING};
     push({LLIR::types::VARIABLE, var});
     push({LLIR::types::VARIABLE, svar});
-    std::vector<LLIR::member> block = createDefaultBlock(var, svar);
+    auto block = createDefaultBlock(var, svar);
     auto shadow_var = pushBasedOnQualifier(*rule, expr, block, uvar, var, svar, rule->quantifier, false);
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }

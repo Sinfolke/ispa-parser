@@ -173,7 +173,7 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         break;
     }
     default:
-        throw Error("Undefined IR member\n");
+        throw Error("Undefined IR member: {}", (int) mem.type);
     }
     auto back = out.str().back();
     if (back != '{' && back != '}' && back != ';' && add_semicolon)

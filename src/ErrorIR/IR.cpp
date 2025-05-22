@@ -15,7 +15,7 @@ auto ErrorIR::IR::panic_mode() -> Instructions {
     Instruction instruction = {InstructionType::IIF};
     iif_condition condition;
     bool first = true;
-    for (const auto el : follow.back().second) {
+    for (const auto &el : follow.back().second) {
         if (!first)
             condition.cond.push_back({ConditionTypes::OR});
         condition.cond.insert(condition.cond.end(), {

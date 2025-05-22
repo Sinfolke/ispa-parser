@@ -107,10 +107,10 @@ include(FetchContent)
 
 # get spdlog library
 
-if(NOT TARGET spdlog)
-    # Stand-alone build
-    find_package(spdlog REQUIRED)
-endif()
+#if(NOT TARGET spdlog)
+#    # Stand-alone build
+#    find_package(spdlog REQUIRED)
+#endif()
 
 # ---------------------------------------------------------------------------------------
 # Example of using pre-compiled library

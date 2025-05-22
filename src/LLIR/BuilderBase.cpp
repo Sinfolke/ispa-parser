@@ -70,6 +70,8 @@ auto LLIR::BuilderBase::createAssignUvarBlock(const LLIR::variable &uvar, const 
 void LLIR::BuilderBase::handle_plus_qualifier(const TreeAPI::RuleMember &rule, LLIR::condition loop, const LLIR::variable &uvar, const LLIR::variable &var, LLIR::variable &shadow_var, bool addError) {
     auto postCheckVar = createSuccessVariable();
     loop.block.push_back({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {postCheckVar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}});
+    push({LLIR::types::VARIABLE, postCheckVar});
+    push({LLIR::types::WHILE, loop});
     addPostLoopCheck(rule, postCheckVar, addError);
 }
 void LLIR::BuilderBase::addPostLoopCheck(const TreeAPI::RuleMember &rule, const LLIR::variable &var, bool addError) {
@@ -160,15 +162,10 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
     }
     switch (quantifier) {
         case '+':
-            if (add_shadow_var)
-                shadow_variable = add_shadow_variable(block, var);
             handle_plus_qualifier(rule, LLIR::condition {expr, block}, uvar, var, shadow_variable);
             break;
         case '*': {
-            if (add_shadow_var)
-                shadow_variable = add_shadow_variable(block, var);
             push({LLIR::types::WHILE, LLIR::condition{expr, block}});
-            //member.push(pop);
             break;
         }
         case '?':

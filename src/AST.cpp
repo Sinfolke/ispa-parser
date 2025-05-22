@@ -625,10 +625,11 @@ void AST::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, con
         }
     }
 }
-void AST::createUsePlacesTable() {
+auto AST::createUsePlacesTable() -> UsePlaceTable& {
     for (const auto &[name, value] : tree_map) {
         getUsePlacesTable(value.rule_members, name);
     }
+    return use_places;
 }
 auto AST::getUsePlacesTable() -> UsePlaceTable& {
     return use_places;
@@ -873,6 +874,7 @@ auto AST::getCodeForLexer() -> lexer_code {
     LLIR::BuilderData bd(*this);
     LLIR::BuilderDataWrapper wrapper(bd);
     LLIR::MemberBuilder code(wrapper, resultRule);
+    code.build();
     const auto &return_vars = code.getReturnVars();
     code.pop(); // remove space skip
     if (return_vars.empty())

@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
         TREE CHANGES BELOW
     */
     ASTPass treePass(ast);
-
+    ast.createUsePlacesTable();
     //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
