@@ -2,6 +2,7 @@ import cpuf.color;
 import cpuf.dlib;
 import cpuf.printf;
 import cpuf.dlib;
+import CLI;
 import init;
 import args;
 import corelib;
@@ -46,36 +47,16 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 int main(int argc, char** argv) {
     std::vector<Parser::Rule> modules;
-    init();
-    Args args(argc, argv);
-    args.parse();
+    auto args = init(argc, argv);
 
-    // Register listener for --help
-    if (args.has("help")) {
-        printHelp();
-        return 0;
-    }
-    if (args.has("version")) {
+    if (args.version) {
         cpuf::printf("%$\n", PROGRAM_VERSION);
         return 0;
     }
-    // throw error if required argument missing or not having parameters
-    for (auto& el : parameters_required) {
-        if (!args.has(el))
-            throw UError("Missing parameter '%s'", el);
-    }
-    for (auto el : parameters_with_arguments) {
-        if (args.has(el) && args.get(el).values.empty())
-            throw UError("Parameter '%s' must have a parameter", el);
-    }
-    for (auto pair : parameters_with_fixes_arguments_amount) {
-        if (args.has(pair.first) && args.get(pair.first).values.size() > pair.second)
-            UWarning("Parameter %s expects maximum %d arguments", pair.first, pair.second).print();
-    }
     // get tree from sources
-    if (!args.unnamed().size() && !args.has("dir"))
+    if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
-    for (const auto file : args.unnamed()) {
+    for (const auto file : args.files) {
         cpuf::printf("file: %$\n", file);
         std::string fileContent;
         try {
@@ -89,9 +70,10 @@ int main(int argc, char** argv) {
         // assign tree
         modules.push_back(current_tree);
     }
-    if (args.has("dir")) {
-        for (const auto dirPath : args.get("dir").values) {
-            auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
+    if (!args.dir.empty()) {
+        for (const auto &dirPath : args.dir) {
+            std::string dir = dirPath;
+            auto files = corelib::file::getFilesRecursively(dir, ".isc");
             for (auto file : files) {
                 cpuf::printf("file {}\n", file.c_str());
                 //cpuf::printf("file: %s\n", file);
@@ -104,9 +86,6 @@ int main(int argc, char** argv) {
                 modules.push_back(current_tree);
             }
         }
-    }
-    if (args.get("lang").values.size() > 1) {
-        UWarning("Parameter 'lang' having more than 1 argument. Only first is used.").print();
     }
     AST ast(modules);
     std::ofstream treeAPIOutput("treeAPI.txt");
@@ -121,20 +100,15 @@ int main(int argc, char** argv) {
     ASTPass treePass(ast);
 
     //tree.resolveConflicts();
-    dlib converter_dlib(std::string("libispa-converter-") + args.get("lang").first());  // get dynamically library for convertion
+    dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
-    std::string algorithm = "LL";
     std::string opath;
-    if (!args.get("a").empty()) {
-        // if no argument is passed, use default
-        algorithm = args.get("a").first();
-    }
-    if (!args.get("o").empty()) {
-        opath = args.get("o").first();
+    if (!args.output.empty()) {
+        opath = args.output;
     }
     std::filesystem::path output_path = opath;
     output_path.append(name);
-    if (algorithm == "LR") {
+    if (args.algorithm == Args::Algorithm::LR0) {
         LRParser LRIR(ast);
         // LRIR.printTables("tables");
         LRIR.printCanonicalCollection("canonical_collection.txt");
@@ -143,7 +117,7 @@ int main(int argc, char** argv) {
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
         converter->output(output_path);
-    } else if (algorithm == "LALR") {
+    } else if (args.algorithm == Args::Algorithm::LALR) {
         LALRParser LALRIR(ast);
         // LALRIR.printTables("tables");
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
@@ -152,7 +126,7 @@ int main(int argc, char** argv) {
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
         converter->output(output_path);
-    } else if (algorithm == "ELR") {
+    } else if (args.algorithm == Args::Algorithm::ELR) {
         ELRParser ELRIR(ast);
         ELRIR.printTables("tables");
         ELRIR.printCanonicalCollection("canonical_collection.txt");
@@ -163,7 +137,7 @@ int main(int argc, char** argv) {
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
         converter->output(output_path);
-    } else if (algorithm == "LL") {
+    } else if (args.algorithm == Args::Algorithm::LL) {
         LLIR::Builder builder(ast);
         auto IR = builder.get();
         IR.outputIRToFile("output_ir.txt");
@@ -171,7 +145,7 @@ int main(int argc, char** argv) {
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast));
         converter->outputIR(output_path);
     } else {
-        throw UError("Unknown algorithm '%s'", algorithm);
+        throw Error("Unknown algorithm");
     }
     return 0;
 }

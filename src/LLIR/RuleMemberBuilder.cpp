@@ -136,7 +136,7 @@ void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
     } else if (member.isAny()) {
         builder = std::make_unique<AnyBuilder>(*this, member);
     } else if (member.isCll()) {
-        builder = std::make_unique<LLIR::CllBuilder>(*this, member.getCll());
+        builder = std::make_unique<CllBuilder>(*this, member.getCll());
     } else if (member.empty()) {
         throw Error("Empty rule");
     } else throw Error("Undefined rule");
@@ -153,7 +153,7 @@ auto LLIR::MemberBuilder::build() -> void {
         if (mem.isName()) {
             symbol_follow->push_back(std::make_pair(std::vector<std::string> {}, getNextTerminal(rules, pos)));
         }
-        cpuf::printf("Before build\n");
+        cpuf::printf("Before build, name: {}\n", *fullname);
         buildMember(mem);
         if (mem.isName()) {
             symbol_follow->pop_back();
@@ -174,8 +174,9 @@ void LLIR::GroupBuilder::build() {
     const auto &group = rule->getGroup().values;
     if (quantifier == '*' || quantifier == '+')
         *insideLoop = true;
-    bool addSpaceSkipFirst;
+    bool addSpaceSkipFirst = false;
     MemberBuilder builder(*this, group, addSpaceSkipFirst);
+    builder.build();
     *insideLoop = prev_insideLoop;
     // remove the previous space skip if there was \s0
     if (addSpaceSkipFirst) {
@@ -188,6 +189,7 @@ void LLIR::GroupBuilder::build() {
         var.type.type = LLIR::var_types::ARRAY;
     }
     std::vector<LLIR::member> var_members;
+    cpuf::printf("returnVars size {}", builder.getReturnVars().size());
     switch (var.type.type == LLIR::var_types::ARRAY ? var.type.templ[0].type : var.type.type) {
         case LLIR::var_types::STRING:
             // it is a string so add all values
@@ -277,7 +279,7 @@ void LLIR::GroupBuilder::build() {
     }
     push({LLIR::types::VARIABLE, svar});
     push({LLIR::types::PUSH_POS_COUNTER, begin_var_name});
-    // maybe implemente later
+    // maybe implement later
     // if (!variable.empty() && variable.name == Parser::Rules::method_call)
     // {
     //     LLIR::method_call method_call = TreeMethodCallToLLIR::(std::any_cast<Parser::Rule>(variable.data));
@@ -290,6 +292,7 @@ void LLIR::GroupBuilder::build() {
         }
     // }
     add(svar_cond);
+    cpuf::printf("group rule: {}", *rule);
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::CsequenceBuilder::build() {
@@ -550,6 +553,7 @@ void LLIR::NameBuilder::build() {
         }
 
     }
+    cpuf::printf("Name rule: {}", *rule);
     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 }
 void LLIR::NospaceBuilder::build() {

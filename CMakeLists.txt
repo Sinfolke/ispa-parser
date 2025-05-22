@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.30 FATAL_ERROR)
-set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 project(ISPA LANGUAGES CXX)
-set(CMAKE_CXX_MODULE_STD 1) # this is important
 # =============================================
 # FUNCTIONS
 # =============================================
@@ -106,6 +104,18 @@ include(FetchContent)
 #        GIT_TAG master
 #)
 #FetchContent_MakeAvailable(fmt)
+
+# get spdlog library
+
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
+
+# ---------------------------------------------------------------------------------------
+# Example of using pre-compiled library
+# ---------------------------------------------------------------------------------------
+
 
 # =============================================
 # Global Configuration

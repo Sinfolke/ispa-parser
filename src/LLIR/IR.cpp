@@ -470,7 +470,7 @@ void LLIR::IR::convertData(const LLIR::Data &data, std::ostream& out) {
     indentLevel++;
     convertMembers(data.members, out);
     if (!data.block.empty()) {
-        out << '\t' << convertDataBlock(data.block);
+        out << "\n\t" << convertDataBlock(data.block);
     }
     indentLevel--;
     out << "}\n";
