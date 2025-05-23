@@ -9,18 +9,18 @@ const char* Error::what() const noexcept {
 void Error::print() const {
 // Capture the stack trace
 
-    std::cerr << cpuf::sprintf("ispa: %sinternal error%s: %$\n", color::red, color::reset, message);
-    exit(2);
+    std::cerr << cpuf::sprintf("ispa: {}internal error{}: {}\n", color::red, color::reset, message);
+    abort();
 }
 const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() const {
-    std::cerr << cpuf::sprintf("ispa: %serror%s: %$\n", color::red, color::reset, message);
-    exit(1);
+    std::cerr << cpuf::sprintf("ispa: {}error{}: {}\n", color::red, color::reset, message);
+    abort();
 }
 void UWarning::print() const {
-    cpuf::printf("ispa: %swarning%s: %$\n", color::yellow, color::reset, message);
+    cpuf::printf("ispa: {}warning{}: {}\n", color::yellow, color::reset, message);
 }
 
 /*
@@ -41,17 +41,9 @@ void custom_terminate_handler() {
     } catch (const UWarning& e) {
         e.print();
     } catch (const std::exception& e) {
-        cpuf::printf("ispa: %sException%s: %s\n", color::red, color::reset, e.what());
+        cpuf::printf("ispa: {}Exception{}: {}\n", color::red, color::reset, e.what());
     } catch (...) {
         cpuf::printf("Unknown exception\n");
     }
-
-    // Now crash deliberately to trigger debugger
-#if defined(_MSC_VER)
-    __debugbreak(); // MSVC-specific
-#elif defined(__GNUC__) || defined(__clang__)
-    __builtin_trap(); // GCC/Clang
-#else
     std::abort();
-#endif
 }

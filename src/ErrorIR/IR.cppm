@@ -38,7 +38,7 @@ export namespace ErrorIR {
         std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> follow;
         AST *tree;
 
-        // duirng lower to LLIR variables
+        // variables used for lower to LLIR
         size_t variable_count;
         LLIR::variable panic_mode_variable;
 
@@ -58,8 +58,8 @@ export namespace ErrorIR {
         // lower to LLIR functions
         auto lowerIIFPart(const iif_condition_part &part) -> LLIR::expr;
         auto lowerIIF(const std::vector<iif_condition_part> &condition) -> std::vector<LLIR::expr>;
-        auto lowerToLLIRMember(const Instruction &member) -> std::vector<LLIR::member>;
-        auto lowerToLLIRMembers(const Instructions &members) -> std::vector<LLIR::member>;
+        auto lowerMemberToLLIR(const Instruction &member) -> std::vector<LLIR::member>;
+        auto lowerMembersToLLIR(const Instructions &members) -> std::vector<LLIR::member>;
         auto lowerToLLIR(size_t &variable_count) -> std::vector<LLIR::member>;
     };
 }

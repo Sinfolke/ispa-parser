@@ -4,16 +4,6 @@ import logging;
 import hash;
 import cpuf.printf;
 import std;
-static size_t compute_group_length(const std::vector<TreeAPI::RuleMember> &group) {
-    size_t count = 0;
-    for (auto &rule : group) {
-        TreeAPI::RuleMemberGroup quantifier;
-        if (rule.isGroup() && rule.quantifier == '\0') {
-            count += compute_group_length(rule.getGroup().values);
-        } else count++;
-    }
-    return count;
-};
 auto LRParser::getActionTable() const -> const ActionTable& {
     return action_table;
 }
@@ -69,243 +59,7 @@ auto LRParser::getGotoTableAsRow() const -> std::vector<utype::unordered_map<std
 bool LRParser::isELR() const {
     return false;
 }
-void LRParser::createInitialItemSet() {
-    for (auto &[name, value] : tree->getTreeMap()) {
-        initial_item_set[name] = {value};
-    }
-    tree->getTreeMap().clear();
-}
-void LRParser::transform_helper(std::vector<TreeAPI::RuleMember> members, const std::vector<std::string> &fullname, utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements) {
-    for (size_t i = 0; i < members.size(); i++) {
-        auto &member = members[i];
-        if (member.isGroup()) {
-            for (auto &member : members) {
-                if (member.isGroup()) {
-                    auto data = member.getGroup();
-                    // Recursively process the group
-                    transform_helper(data.values, fullname, replacements);
-        
-                    if (member.quantifier == '\0') {
-                        // Replace current rule with expanded group
-                        members.erase(members.begin() + i);
-                        members.insert(members.begin() + i, data.values.begin(), data.values.end());
-                        i += data.values.size() - 2;
-                        continue;
-                    }
-                    std::string quant_rule_name = "__grp" + std::to_string(i);
-                    auto new_fullname = fullname;
-                    new_fullname.back() = quant_rule_name;
-                    // Replace with reference to new quant rule
-                    member = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
-        
-                    std::vector<std::vector<TreeAPI::RuleMember>> new_alternatives;
-                    auto quant_fullname = fullname;
-                    quant_fullname.back() = quant_rule_name;
-                
-                    // Replace current member with reference to new rule
-                    member = TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} };
-                
-                    std::vector<std::vector<TreeAPI::RuleMember>> new_alts;
-                
-                    switch (member.quantifier) {
-                        case '?':
-                            new_alts.push_back({}); // empty
-                            new_alts.push_back(data.values);
-                            break;
-                
-                        case '+': {
-                            // + = A A*
-                            std::string tail_name = quant_rule_name + "_tail";
-                            auto tail_fullname = quant_fullname;
-                            tail_fullname.back() = tail_name;
-                
-                            // A → data tail
-                            auto base = data.values;
-                            base.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
-                            new_alts.push_back(base);
-                
-                            // A* tail: ε | data tail
-                            std::vector<std::vector<TreeAPI::RuleMember>> tail_alts;
-                            tail_alts.push_back({});
-                            auto recur = data.values;
-                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
-                            tail_alts.push_back(recur);
-                
-                            for (auto &alt : tail_alts)
-                                initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
-                            break;
-                        }
-                
-                        case '*': {
-                            // * = ε | data A*
-                            new_alts.push_back({});
-                            auto recur = data.values;
-                            recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} });
-                            new_alts.push_back(recur);
-                            break;
-                        }
-                    }
-                
-                    for (auto &alt : new_alts) {
-                        initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
-                    }
 
-                    continue;
-                } else if (member.isOp()) {
-       
-                    auto &data = member.getOp();
-        
-                    std::vector<std::string> push_name;
-                    std::vector<TreeAPI::RuleMember>::iterator val_it;
-                    std::vector<std::pair<size_t, size_t>> group_pos = {};
-                    size_t _count = 0;
-                    if (members.size() == 1) {
-                        size_t count = 0;
-                        bool is_first_going_group = false;
-                
-                        for (const auto &rule : data.options) {
-                            if (rule.isGroup() && rule.quantifier != '\0') {
-                                if (count == 0)
-                                    is_first_going_group = true;
-                
-                                auto len = compute_group_length(rule.getGroup().values);
-                                group_pos.push_back({count, len});
-                                count += len;
-                                continue;
-                            }
-                            count++;
-                        }        
-                        transform_helper(data.options, fullname, replacements); // process internal ops/groups
-                        if (is_first_going_group) {
-                            auto [pos, len] = group_pos[0];
-                            group_pos.erase(group_pos.begin());
-                
-                            members.erase(members.begin() + i);
-                            size_t j = 0;
-                            for (; j < len; j++, val_it++, _count++) {
-                                members.insert(members.begin() + i + j, *val_it);
-                            }
-                            val_it = data.options.begin() + j;
-                        } else {
-                            members[i] = data.options[0];
-                            val_it = data.options.begin() + 1;
-                            _count++;
-                        }
-                
-                        push_name = fullname;
-                    } else {
-                        std::string name ="__rop" + std::to_string(i);
-                        auto new_fullname = fullname;
-                        new_fullname.back() = name;
-                        push_name = new_fullname;
-                        members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
-                
-                        transform_helper(data.options, fullname, replacements); // process internal ops/groups
-                        val_it = data.options.begin();
-                    }
-                    for (; val_it != data.options.end(); val_it++, _count++) {
-                        auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<size_t, size_t> &unit) {return unit.first == _count;});
-                        std::vector<TreeAPI::RuleMember> values;
-                        if (group != group_pos.end()) {
-                            for (size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
-                                values.push_back(*val_it);
-                            }
-                            val_it--;
-                            _count--;
-                        } else values.push_back(*val_it);
-                        initial_item_set[push_name].push_back(TreeAPI::Rule {.rule_members = values});
-                    }
-                    continue;
-                }
-            }
-            if (member.quantifier == '\0')
-                continue;
-            auto find = replacements.find(fullname);
-            if (find != replacements.end()) {
-                if (find->second.first == member.quantifier) {
-                    members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = find->second.second}};
-                    continue;
-                }
-                
-            }
-            // Quantifier handling
-            std::string quant_rule_name;
-            auto new_fullname = fullname;
-            if (fullname.size() == 1) {
-                quant_rule_name = fullname.back() + "__q" + std::to_string(i);
-            } else {
-                quant_rule_name = "__q" + std::to_string(i);
-            }
-            new_fullname.back() = quant_rule_name;
-            // Replace with reference to new quant rule
-            members[i].value = TreeAPI::RuleMemberName {.name = new_fullname};
-            std::vector<std::vector<TreeAPI::RuleMember>> new_alternatives;
-
-            if (member.quantifier == '?') {
-                new_alternatives.push_back({});
-                new_alternatives.push_back({member});
-            }
-            else if (member.quantifier == '+') {
-                std::string recurse_name = quant_rule_name + "_tail";
-                auto recurse_fullname = new_fullname;
-                recurse_fullname.back() = recurse_name;
-                
-                new_alternatives.push_back({
-                    member,
-                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
-                });
-                
-                std::vector<std::vector<TreeAPI::RuleMember>> recurse_alternatives = {
-                    {},
-                    {
-                        member,
-                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
-                    }
-                };
-                
-                for (auto &alt : recurse_alternatives) {
-                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
-                }
-                
-            } else if (member.quantifier == '*') {
-                std::string recurse_name = quant_rule_name + "_tail";
-                auto recurse_fullname = new_fullname;
-                recurse_fullname.back() = recurse_name;
-            
-                new_alternatives.push_back({}); // ε
-                new_alternatives.push_back({
-                    member,
-                    TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
-                });
-            
-                std::vector<std::vector<TreeAPI::RuleMember>> recurse_alternatives = {
-                    {},
-                    {
-                        member,
-                        TreeAPI::RuleMember{.value = TreeAPI::RuleMemberName{.name = recurse_fullname}}
-                    }
-                };
-            
-                for (auto &alt : recurse_alternatives) {
-                    initial_item_set[recurse_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
-                }
-            }
-
-            for (auto &alt : new_alternatives) {
-                initial_item_set[new_fullname].push_back(TreeAPI::Rule{.rule_members = alt});
-            }
-            replacements[fullname] = {member.quantifier, new_fullname};
-        }
-    }
-}
-
-void LRParser::transform() {
-    size_t size = initial_item_set.size();
-    utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> replacement;
-    for (auto &[name, value] : initial_item_set) {
-        transform_helper(value[0].rule_members, name, replacement);
-    }
-}
 // void LRParser::getPriorityTree(const std::vector<TreeAPI::Rule> *rule, utype::unordered_set<std::vector<std::string>> &visited, size_t depth) {
 //     for (const auto &r : *rule) {
 //         // Avoid re-expansion of already visited rules
@@ -320,8 +74,8 @@ void LRParser::transform() {
 //         visited.insert(r.fullname);
 
 //         // Recurse into rule alternatives
-//         auto it = initial_item_set.find(r.fullname);
-//         if (it != initial_item_set.end()) {
+//         auto it = tree->getInitialItemSet().find(r.fullname);
+//         if (it != tree->getInitialItemSet().end()) {
 //             for (const auto &subrule : it->second) {
 //                 getPriorityTree(&subrule, visited, depth + 1);
 //             }
@@ -332,8 +86,8 @@ void LRParser::transform() {
 // void LRParser::getPriorityTree() {
 //     utype::unordered_set<std::vector<std::string>> visited;
 
-//     auto it = initial_item_set.find({"main"});
-//     if (it != initial_item_set.end()) {
+//     auto it = tree->getInitialItemSet().find({"main"});
+//     if (it != tree->getInitialItemSet().end()) {
 //         for (const auto &r : it->second) {
 //             getPriorityTree(&r, visited, 0);
 //         }
@@ -343,194 +97,14 @@ void LRParser::transform() {
 // }
 
 void LRParser::addAugmentedRule() {
-    initial_item_set[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = {"main"}}}}}};
-}
-void LRParser::constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed) {
-    for (const auto &option : options) {
-        bool nullable_prefix = true;
-        for (const auto &member : option.rule_members) {
-            if (!member.isName())
-                throw Error("Non-RuleMemberName class");
-            const auto &rule = member.getName();
-            auto &currentFirst = first[nonterminal];
-            if (rule.name == nonterminal) {
-                continue;
-            }
-            if (corelib::text::isLower(rule.name.back())) {
-                // Nonterminal: take FIRST(rule.fullname)
-                // cpuf::printf("[nonterminal %$] ", rule.fullname);
-                auto find = first.find(rule.name);
-                const auto &otherFirst = first[rule.name];
-                // cpuf::printf("FIRST(%$) = ", rule.fullname);
-                for (const auto& el : otherFirst) {
-                    // cpuf::printf("%$, ", el);
-                }
-                auto currentFirst_size = currentFirst.size();
-                currentFirst.insert(otherFirst.begin(), otherFirst.end());
-                if (currentFirst_size > currentFirst.size()) {
-                    changed = true;
-                    // cpuf::printf("(changed), ");
-                } else {
-                    // cpuf::printf("(not changed), ");
-                }
-                // Check if nullable
-                bool isNullable = false;
-                auto &rules = initial_item_set[rule.name];
-                for (const auto &r : rules) {
-                    bool break_this = false;
-                    for (const auto &member : r.rule_members) {
-                        if (member.empty()) {
-                            isNullable = true;
-                            break_this = true;
-                            break;
-                        }
-                    }
-                    if (break_this)
-                        break;
-                }
-
-                if (!isNullable) {
-                    nullable_prefix = false;
-                    break;
-                }
-
-            } else {
-                // Terminal: add directly
-                // cpuf::printf("[terminal %$] ", rule.fullname);
-                if (first[nonterminal].insert(rule.name).second) {
-                    // cpuf::printf("(added), ");
-                    changed = true;
-                }
-
-                nullable_prefix = false;
-                break;
-            }
-        }
-        // cpuf::printf("\n");
-        // If all symbols in this production were nullable
-        if (nullable_prefix) {
-            if (first[nonterminal].insert({"ε"}).second)
-                changed = true;
-        }
-    }
-}
-void LRParser::constructFirstSet() {
-    bool changed;
-    do {
-        changed = false;
-        for (const auto &[nonterminal, productions] : initial_item_set) {
-            // cpuf::printf("constructing first set for %$ -> ", nonterminal);
-            constructFirstSet(productions, nonterminal, changed);
-        }
-    } while (changed);
-}
-
-void LRParser::constructFollowSet() {
-    follow[{"__start"}] = {{"$"}};
-    bool hasChanges;
-    bool prevDependedChanged;
-    std::vector<std::vector<std::string>> prev_depend;
-    std::vector<std::vector<std::string>> changed;
-    do {
-        hasChanges = false;
-        prevDependedChanged = false;
-        prev_depend.clear();
-        changed.clear();
-        for (const auto &[name, options] : initial_item_set) {
-            bool is_left_recursive = false;
-            for (const auto &rules : options) {
-                if (!rules.rule_members[0].isName())
-                    throw Error("Not RuleMemberName");
-                if (rules.rule_members.size() > 0 && name == rules.rule_members[0].getName().name) {
-                    is_left_recursive = true;
-                }
-                for (auto it = rules.rule_members.begin(); it != rules.rule_members.end(); it++) {
-                    if (!it->isName()) {
-                        throw Error("Not RuleMemberName");
-                    }
-                    auto current = it->getName();
-
-                    if (corelib::text::isUpper(current.name.back())) {
-                        continue;
-                    }
-                    if (name == current.name) {
-                        // include first(name)
-                        auto f = first[name];
-                        for (auto &e : f) {
-                            if (e == std::vector<std::string>{"ε"}) {
-                                continue;
-                            }
-                            if (follow[name].insert(e).second)
-                                hasChanges = true;
-                        }
-                        prev_depend.push_back(name);
-                    } else if (is_left_recursive && corelib::text::isLower(current.name.back())) {
-                        auto prev_size = follow[current.name].size();
-                        follow[current.name].insert(follow[name].begin(), follow[name].end());
-                        if (prev_size != follow[current.name].size())
-                            hasChanges = true;
-                        prev_depend.push_back(current.name);
-                    }
-                    if (it + 1 == rules.rule_members.end()) {
-                        // Add FOLLOW of LHS (the left-hand-side nonterminal)
-                        auto &f_lhs = follow[name];
-                        for (auto &sym : f_lhs) {
-                            if (follow[current.name].insert(sym).second)
-                                hasChanges = true;
-                        }
-                    } else {
-                        auto next = (it + 1)->getName();
-                        if (corelib::text::isUpper(next.name.back())) {
-                            // terminal, just push
-                            if (follow[current.name].insert(next.name).second)
-                                hasChanges = true;
-                        } else {
-                            // non-terminal, insert it's first
-                            auto f = first[next.name];
-                            bool has_epsilon = false;
-                            for (auto &e : f) {
-                                if (e == std::vector<std::string>{"ε"}) {
-                                    has_epsilon = true;
-                                    continue;
-                                }
-                                if (follow[current.name].insert(e).second)
-                                    hasChanges = true;
-                            }
-                            if (has_epsilon) {
-                                // if ε in FIRST(next), add FOLLOW of LHS
-                                auto &f_lhs = follow[name];
-                                for (auto &sym : f_lhs) {
-                                    if (follow[current.name].insert(sym).second)
-                                        hasChanges = true;
-                                }
-                            }
-                            prev_depend.push_back(next.name);
-                        }
-                    }
-                }
-
-            }
-            if (hasChanges) {
-                changed.push_back(name);
-            }
-        }
-        if (!hasChanges) {
-            // slight optimization: perform check only if this could be last iteration
-            for (auto change_symbol : changed) {
-                if (std::find(prev_depend.begin(), prev_depend.end(), change_symbol) != prev_depend.end()) {
-                    prevDependedChanged = true;
-                    break;
-                }
-            }
-        }
-    } while(hasChanges || prevDependedChanged);
+    tree->getInitialItemSet()[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = {"main"}}}}}};
 }
 void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item) {
     size_t next_pos = new_item.dot_pos + 1;
     // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
     if (rhs_group.rule_members.empty() || next_pos >= rhs_group.rule_members.size()) {
         // end of rule, compute lookahead of follow(current)
-        auto &lookahead = follow[lhs_name];
+        auto &lookahead = tree->getFollowSet()[lhs_name];
         new_item.lookahead.insert(lookahead.begin(), lookahead.end());
         return;
     }
@@ -549,7 +123,7 @@ void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::
             break;
         } else {
             // non-terminal, insert FIRST of next symbol
-            auto &first_set = first[name.name];
+            auto &first_set = tree->getFirstSet()[name.name];
             bool has_espsilon = false;
             // cpuf::printf("[non-terminal %$] ", symbol.fullname);
             for (const auto& el : first_set) {
@@ -564,7 +138,7 @@ void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::
     }
     // If all symbols after dot can derive ε, add FOLLOW(lhs)
     if (epsilon_in_all) {
-        const auto& follow_set = follow[lhs_name];
+        const auto& follow_set = tree->getFollowSet()[lhs_name];
         new_item.lookahead.insert(follow_set.begin(), follow_set.end());
     }
     // for (auto el : new_item.lookahead) {
@@ -596,8 +170,8 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
         const auto& sym = rhs_group.rule_members[0];
         const auto& name = sym.getName();
         if (corelib::text::isLower(name.name.back())) {
-            auto rule = initial_item_set.find(name.name);
-            if (rule != initial_item_set.end()) {
+            auto rule = tree->getInitialItemSet().find(name.name);
+            if (rule != tree->getInitialItemSet().end()) {
                 create_item_collection(closure, rule->second, name.name);
             }
         }
@@ -608,8 +182,8 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
 LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items() {
     CanonicalItemSet cci;
 
-    auto begin_rule = initial_item_set.find({"__start"});
-    if (begin_rule == initial_item_set.end()) {
+    auto begin_rule = tree->getInitialItemSet().find({"__start"});
+    if (begin_rule == tree->getInitialItemSet().end()) {
         throw Error("No augmented rule\n");
     }
 
@@ -662,8 +236,8 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
                     const auto& sym_rhs = el.rhs.rule_members[el.dot_pos];
                     const auto &sym_rhs_name = sym_rhs.getName();
                     if (corelib::text::isLower(sym_rhs_name.name.back())) {
-                        auto rule = initial_item_set.find(sym_rhs_name.name);
-                        if (rule != initial_item_set.end()) {
+                        auto rule = tree->getInitialItemSet().find(sym_rhs_name.name);
+                        if (rule != tree->getInitialItemSet().end()) {
                             create_item_collection(closure, rule->second, sym_rhs_name.name);
                         }
                     }
@@ -700,8 +274,8 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const std::vecto
             const auto &next_sym_name = next_sym.getName();
             if (corelib::text::isLower(next_sym_name.name.back())) {
                 // Non-terminal → expand it
-                auto rule = initial_item_set.find(next_sym_name.name);
-                if (rule != initial_item_set.end()) {
+                auto rule = tree->getInitialItemSet().find(next_sym_name.name);
+                if (rule != tree->getInitialItemSet().end()) {
                     create_item_collection(closure, rule->second, rule->first);
                 }
             }
@@ -949,10 +523,9 @@ void LRParser::buildTable() {
 
 void LRParser::prepare() {
     addAugmentedRule();
+    tree->getFirstSet()[{"__start"}] = tree->getFirstSet()[{"main"}];
+    tree->getRawFollowSet()[{"__start"}] = {{"$"}};
     use_places = tree->getUsePlacesTable();
-    // getPriorityTree();
-    constructFirstSet();
-    constructFollowSet();
     canonical_item_set = construct_cannonical_collections_of_items();
 }
 void LRParser::build() {
@@ -962,7 +535,7 @@ void LRParser::build() {
 }
 
 
-void LRParser::formatFirstOrFollowSet(std::ostringstream &oss, First &set) {
+void LRParser::formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set) {
     for (auto &el : set) {
         oss << corelib::text::join(el.first, "_") << ": " << '{';
         for (auto name : el.second) {
@@ -975,7 +548,7 @@ void LRParser::formatFirstOrFollowSet(std::ostringstream &oss, First &set) {
 void LRParser::printFirstSet(const std::string &fileName) {
     // Step 1: Print to std::ostringstream
     std::ostringstream oss;
-    formatFirstOrFollowSet(oss, first);
+    formatFirstOrFollowSet(oss, tree->getFirstSet());
 
     // Step 2: Output the stringstream content to a file
     std::ofstream outFile(fileName);
@@ -989,7 +562,7 @@ void LRParser::printFirstSet(const std::string &fileName) {
 void LRParser::printFollowSet(const std::string &fileName) {
     // Step 1: Print to std::ostringstream
     std::ostringstream oss;
-    formatFirstOrFollowSet(oss, follow);
+    formatFirstOrFollowSet(oss, tree->getFollowSet());
 
     // Step 2: Output the stringstream content to a file
     std::ofstream outFile(fileName);

@@ -22,10 +22,10 @@ void ASTPass::inlineSingleGroups(AST &ast) {
             if (member.isGroup()) {
                 if (member.quantifier != '\0')
                     continue;
-                const auto &grp = member.getGroup();
+                auto &grp = member.getGroup();
                 if (grp.values.size() == 1) {
-                    auto replacement = grp.values[0].value; // make a safe copy
-                    member.value = replacement; // replace only after you're done accessing
+                    auto replacement = grp.values[0].value; // fully decoupled from original
+                    member.value = replacement;
                 }
             }
         }

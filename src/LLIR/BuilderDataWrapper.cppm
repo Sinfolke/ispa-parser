@@ -17,7 +17,7 @@ export namespace LLIR {
         std::vector<variable> *vars = nullptr;
         std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
         std::vector<variable> *unnamed_datablock_units = nullptr;
-        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> *symbol_follow = nullptr;
+        BuilderData::SymbolFollow *symbol_follow = nullptr;
         bool *has_symbol_follow = nullptr;
         AST *tree = nullptr;
 

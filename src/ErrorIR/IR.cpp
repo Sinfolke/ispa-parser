@@ -61,7 +61,7 @@ auto ErrorIR::IR::lowerIIF(const std::vector<iif_condition_part> &condition) -> 
     return result;
 }
 
-auto ErrorIR::IR::lowerToLLIRMember(const Instruction &member) -> std::vector<LLIR::member> {
+auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> std::vector<LLIR::member> {
     switch (member.type) {
         case InstructionType::EMPTY:
             return {{LLIR::types::EMPTY}};
@@ -70,8 +70,8 @@ auto ErrorIR::IR::lowerToLLIRMember(const Instruction &member) -> std::vector<LL
             const auto &data = std::any_cast<const ErrorIR::condition&>(member.value);
             LLIR::condition newCondition;
             newCondition.expression = data.cond;
-            newCondition.block = lowerToLLIRMembers(data.block);
-            newCondition.else_block = lowerToLLIRMembers(data.else_block);
+            newCondition.block = lowerMembersToLLIR(data.block);
+            newCondition.else_block = lowerMembersToLLIR(data.else_block);
             return {{LLIR::types::IF, newCondition}};
             break;
         }
@@ -79,8 +79,8 @@ auto ErrorIR::IR::lowerToLLIRMember(const Instruction &member) -> std::vector<LL
             const auto &data = std::any_cast<const ErrorIR::iif_condition&>(member.value);
             LLIR::condition newCondition;
             newCondition.expression = lowerIIF(data.cond);
-            newCondition.block = lowerToLLIRMembers(data.block);
-            newCondition.else_block = lowerToLLIRMembers(data.else_block);
+            newCondition.block = lowerMembersToLLIR(data.block);
+            newCondition.else_block = lowerMembersToLLIR(data.else_block);
             return {{LLIR::types::IF, newCondition}};
         }
         case InstructionType::JUMP:
@@ -115,10 +115,10 @@ auto ErrorIR::IR::lowerToLLIRMember(const Instruction &member) -> std::vector<LL
     return {};
 }
 
-auto ErrorIR::IR::lowerToLLIRMembers(const Instructions &members) -> std::vector<LLIR::member> {
+auto ErrorIR::IR::lowerMembersToLLIR(const Instructions &members) -> std::vector<LLIR::member> {
     std::vector<LLIR::member> result;
     for (const auto &instruction : members) {
-        auto instructions = lowerToLLIRMember(instruction);
+        auto instructions = lowerMemberToLLIR(instruction);
         result.insert(result.end(), instructions.begin(), instructions.end());
     }
     return result;
@@ -126,7 +126,7 @@ auto ErrorIR::IR::lowerToLLIRMembers(const Instructions &members) -> std::vector
 
 auto ErrorIR::IR::lowerToLLIR(size_t &variable_count) -> std::vector<LLIR::member> {
     this->variable_count = variable_count;
-    return lowerToLLIRMembers(instructions);
+    return lowerMembersToLLIR(instructions);
 }
 
 void ErrorIR::IR::lower() {

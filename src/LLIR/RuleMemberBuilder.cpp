@@ -146,15 +146,12 @@ void LLIR::MemberBuilder::buildMember(const TreeAPI::RuleMember &member) {
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     size_t pos = 0;
-    cpuf::printf("Received: {}", rules.size());
     for (const auto &mem : rules) {
         if (mem.isName() && *has_symbol_follow) {
-            symbol_follow->emplace_back(std::vector<std::string> {}, getNextTerminal(rules, pos));
+            *symbol_follow = getLookaheadTerminals(mem, *fullname);
+            symbol_follow->emplace_back(std::vector<std::string>{}, getNextTerminal(rules, pos));
         }
         buildMember(mem);
-        if (mem.isName() && *has_symbol_follow) {
-            symbol_follow->pop_back();
-        }
         if (isFirst && addSpaceSkipFirst != nullptr) {
             *addSpaceSkipFirst = *addSpaceSkip;
         }
@@ -187,7 +184,6 @@ void LLIR::GroupBuilder::build() {
         var.type.type = LLIR::var_types::ARRAY;
     }
     std::vector<LLIR::member> var_members;
-    cpuf::printf("returnVars size {}", builder.getReturnVars().size());
     switch (var.type.type == LLIR::var_types::ARRAY ? var.type.templ[0].type : var.type.type) {
         case LLIR::var_types::STRING:
             // it is a string so add all values
@@ -497,8 +493,6 @@ void LLIR::NameBuilder::build() {
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
     if (*has_symbol_follow) {
-        if (symbol_follow->empty())
-            throw Error("empty symbol follow on rule");
         symbol_follow->back().first = name;
     }
     if (!*isToken && isCallingToken) {

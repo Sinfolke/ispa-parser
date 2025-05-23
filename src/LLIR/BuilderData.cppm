@@ -7,6 +7,7 @@ import std.compat;
 namespace LLIR {
     export class BuilderData {
     public:
+        using SymbolFollow = std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>>;
         size_t variable_count = 0;
         bool isToken = false;
         bool insideLoop = false;
@@ -17,7 +18,7 @@ namespace LLIR {
         std::vector<LLIR::variable> vars;
         std::vector<std::pair<std::string, LLIR::variable>> key_vars;
         std::vector<LLIR::variable> unnamed_datablock_units;
-        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> symbol_follow;
+        SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
         AST *tree;
         BuilderData(AST &tree) : tree(&tree) {}

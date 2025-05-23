@@ -13,7 +13,6 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
             if (corelib::text::isLower(name.back()) && tokensOnly)
                 continue;
         }
-        cpuf::printf("name: {}", name);
         LLIR::RuleBuilder builder(tree, name, value);
         data.push_back(builder.getData());
     }

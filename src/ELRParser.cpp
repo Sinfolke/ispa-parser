@@ -34,7 +34,7 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::stri
     visited.insert(fullname);
     Lookahead_set lookahead_set;
     for (const auto &place : use_places[fullname]) {
-        const auto &options = initial_item_set[place];
+        const auto &options = tree->getInitialItemSet()[place];
         for (const auto &option : options) {
             // get next symbol
             for (auto it = option.rule_members.begin(); it != option.rule_members.end(); it++) {
@@ -84,7 +84,6 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
     }
 }
 void ELRParser::build() {
-    transform();
     prepare();
     buildTable();
     // build nfa
@@ -125,7 +124,7 @@ void ELRParser::build() {
                         nfa_states[current].transitions[name.name] = next;
                     } else {
                         // non terminal, unroll using first set
-                        auto f = first[name.name];
+                        auto f = tree->getFirstSet()[name.name];
                         for (const auto &token : f) {
                             if (token == std::vector<std::string>{"ε"}) {
                                 nfa_states[current].epsilon_transition = next;

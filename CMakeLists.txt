@@ -13,8 +13,6 @@ function(get_file_range output_var)
     set(${output_var} ${result} PARENT_SCOPE)
 endfunction()
 function(add_raw_module target source_target)
-    # Ensure that source_target builds before this one
-
     foreach(module IN LISTS ARGN)
         target_compile_options(${target} PRIVATE
                 "-fmodule-file=${module}=${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${source_target}.dir/${module}.pcm"
@@ -126,7 +124,9 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    add_compile_definitions(DEBUG)
+    set(CMAKE_CXX_COMPILER clang++)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
 endif()
 # =============================================
 # Project Structure
@@ -247,6 +247,26 @@ target_sources(ispa-converter-cpp
         ${CPP_CONVERTER_MODULES}
         ${CONVERTERS_DIR}/Converter.cppm
 )
+# export modules from main executable to shared library
+add_raw_module(ispa-converter-cpp ispa_modules
+        corelib
+        hash
+        logging
+        cpuf.printf
+        cpuf.color
+        Parser
+        ispastdlibcpp
+        TreeAPI
+        AST
+        LRParser
+        ELRParser
+        LLIRBuilder
+        LLIR
+)
+add_raw_module(ispa-converter-cpp cxx_std_module
+        std
+        std.compat
+)
 #target_compile_options(ispa-converter-cpp PRIVATE ${MODULE_COMPILATION})
 # =============================================
 # Link Dependencies
@@ -254,9 +274,6 @@ target_sources(ispa-converter-cpp
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
 add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
-target_link_libraries(ispa-converter-cpp PRIVATE
-        ispa_modules
-)
 #target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp

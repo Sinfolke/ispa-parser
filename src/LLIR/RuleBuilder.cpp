@@ -11,7 +11,6 @@ auto LLIR::RuleBuilder::getData() -> LLIR::Data {
 
 void LLIR::RuleBuilder::build() {
     BuilderDataWrapper builderData(*this);
-    cpuf::printf("Rule members size passed to MemberBuilder: {}\n", rule->rule_members.size());
     MemberBuilder builder(builderData, rule->rule_members);
     builder.build();
     data.members = builder.getData();

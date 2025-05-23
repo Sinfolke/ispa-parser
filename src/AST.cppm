@@ -5,6 +5,7 @@ import LLIR;
 import Parser;
 import hash;
 import std;
+import std.compat;
 /*
     class to perfrom native pass through AST and convert into TreeAPI
 */
@@ -19,8 +20,10 @@ export class AST {
         using First = utype::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
         using Follow = First;
         using lexer_code = std::pair<LLIR::Nodes, LLIR::variable>;
+        using InitialItemSet = utype::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
     private:
         TreeMap tree_map;
+        InitialItemSet initial_item_set;
         Use use;
         std::string name;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
@@ -80,10 +83,18 @@ export class AST {
                 createRuleMembers(modules);
             }
         }
+        static auto compute_group_length(const std::vector<TreeAPI::RuleMember> &group) -> size_t;
         auto getRules() -> std::vector<TreeAPI::RuleMember>&;
         void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
-        void constructNullableSet();
-        auto constructFirstSet(const std::vector<TreeAPI::RuleMember>& members, const std::vector<std::string> &nonterminal) -> utype::unordered_set<std::vector<std::string>>;
+        void transform_helper(
+            std::vector<TreeAPI::RuleMember> &members,
+            const std::vector<std::string> &fullname,
+            utype::unordered_map<std::vector<std::string>,
+            std::pair<char, std::vector<std::string>>> &replacements
+        );
+        void transform();
+        void createInitialItemSet();
+        void constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed);
         void constructFirstSet();
         void constructFollowSet();
     public:
@@ -105,4 +116,8 @@ export class AST {
         auto getCodeForLexer() -> lexer_code;
         auto getFirstSet()-> First&;
         auto getFollowSet() -> Follow&;
+        auto getRawFirstSet()-> First&;
+        auto getRawFollowSet() -> Follow&;
+        auto getInitialItemSet() -> InitialItemSet&;
+        auto getInitialItemSet() const -> const InitialItemSet&;
 };

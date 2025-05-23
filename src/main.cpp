@@ -75,13 +75,13 @@ int main(int argc, char** argv) {
             std::string dir = dirPath;
             auto files = corelib::file::getFilesRecursively(dir, ".isc");
             for (auto file : files) {
-                cpuf::printf("file {}\n", file.c_str());
+                cpuf::printf("file {}", file.c_str());
                 //cpuf::printf("file: %s\n", file);
                 std::string content = corelib::file::readFile(file);
                 Parser::Parser parser;
                 auto current_tree = parser.parse(content.c_str());
                 for (const auto &err : parser.getErrors()) {
-                    cpuf::printf("Parser error[{}, {}]: %s\n", err.line, err.column, err.message.c_str());
+                    cpuf::printf("Parser error[{}, {}]: {}", err.line, err.column, err.message.c_str());
                 }
                 modules.push_back(current_tree);
             }
@@ -98,8 +98,6 @@ int main(int argc, char** argv) {
         TREE CHANGES BELOW
     */
     ASTPass treePass(ast);
-    ast.createUsePlacesTable();
-    //tree.resolveConflicts();
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
     std::string opath;

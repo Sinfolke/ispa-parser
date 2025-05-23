@@ -3,6 +3,7 @@ import TreeAPI;
 import LLIR;
 import LLIRBuilderDataWrapper;
 import LLIRBuilderUtility;
+import LLIRBuilderData;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -42,6 +43,7 @@ export namespace LLIR {
 
         // error handling functions
         auto getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) ->  std::set<std::vector<std::string>>;
+        auto getLookaheadTerminals(const TreeAPI::RuleMember& symbols, const std::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
         auto getErrorName(const TreeAPI::RuleMember &rule) -> std::string;
 
         // deduce type functions

@@ -120,7 +120,7 @@ auto LLIR::BuilderBase::createDefaultCall(LLIR::Nodes &block, LLIR::variable &va
         LLIR::var_assign_types::ASSIGN,
         { LLIR::var_assign_values::FUNCTION_CALL, function_call }
     };
-    var.property_access = {"status"};
+    var.property_access = {"node"};
     expr = {
         {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = var}}
     };
@@ -310,21 +310,51 @@ LLIR::var_assign_types LLIR::BuilderBase::CllAssignmentOpToIR(const char op) {
 
 auto LLIR::BuilderBase::getNextTerminal(std::vector<TreeAPI::RuleMember> symbols, size_t pos) -> std::set<std::vector<std::string>> {
     std::set<std::vector<std::string>> terminals;
-    for (size_t i = pos; i < symbols.size(); i++) {
-        const auto &sym = symbols[i];
-        if (!sym.isName())
-            continue;
-        const auto n = sym.getName();
-        if (corelib::text::isUpper(n.name.back())) {
-            terminals.insert(n.name);
-        } else {
-            auto &terms = tree->getFirstSet()[n.name];
-            terminals.insert(terms.begin(), terms.end());
+    bool found_terminal = false;
+
+    for (size_t i = pos + 1; i < symbols.size(); ++i) {
+        const auto& sym = symbols[i];
+        if (!sym.isName()) {
+            continue; // skip non-names
         }
-        if (sym.quantifier == '?' || sym.quantifier == '*')
-            continue;
-        break;
+
+        const auto& n = sym.getName();
+
+        if (corelib::text::isUpper(n.name.back())) {
+            // It's a terminal
+            terminals.insert({ n.name });
+            found_terminal = true;
+        } else {
+            // Nonterminal: insert its FIRST set
+            const auto& firsts = tree->getFirstSet().at(n.name);
+            bool has_epsilon = false;
+            for (const auto& seq : firsts) {
+                if (seq.empty()) {
+                    has_epsilon = true;
+                } else {
+                    terminals.insert(seq);
+                    found_terminal = true;
+                }
+            }
+
+            if (!has_epsilon) {
+                break;
+            }
+        }
+
+        // If this is not optional, break after processing it
+        if (sym.quantifier != '?' && sym.quantifier != '*') {
+            break;
+        }
     }
+
+    if (!found_terminal) {
+        // Fallback to FOLLOW set of the current symbol
+        cpuf::printf("symbol: {}", symbols[pos].getName().name);
+        const auto& follow = tree->getFollowSet().at(symbols[pos].getName().name);
+        terminals.insert(follow.begin(), follow.end());
+    }
+
     return terminals;
 }
 auto LLIR::BuilderBase::getErrorName(const TreeAPI::RuleMember &rule) -> std::string {
@@ -416,6 +446,72 @@ auto LLIR::BuilderBase::getErrorName(const TreeAPI::RuleMember &rule) -> std::st
     }
     throw Error("Undefined rule member");
 }
+auto LLIR::BuilderBase::getLookaheadTerminals(const TreeAPI::RuleMember& symbol, const std::vector<std::string> &lhs_name) -> LLIR::BuilderData::SymbolFollow {
+    const auto& symbol_name = symbol.getName();
+    const auto& use_places = tree->getUsePlacesTable()[symbol_name.name];
+    const auto& first_set = tree->getFirstSet();
+    const auto& follow_set = tree->getFollowSet();
+
+    LLIR::BuilderData::SymbolFollow result;
+
+    for (const auto& use_place : use_places) {
+        const auto& rule = tree->getTreeMap()[use_place];
+        const auto& rhs = rule.rule_members;
+
+        for (auto it = rhs.begin(); it != rhs.end(); ++it) {
+            if (!it->isName() || it->getName().name != symbol_name.name)
+                continue;
+
+            // Begin collecting lookahead tokens
+            std::vector<std::vector<std::string>> sequences;
+
+            auto next = it + 1;
+
+            while (next != rhs.end()) {
+                if (!next->isName()) {
+                    ++next;
+                    continue;
+                }
+
+                const auto& next_name = next->getName();
+
+                if (corelib::text::isUpper(next_name.name.back())) {
+                    // Terminal: one token sequence
+                    sequences.push_back({ next_name.name });
+                    break;
+                } else {
+                    // Nonterminal: expand FIRST set
+                    const auto& firsts = first_set.at(next_name.name);
+                    bool epsilon_included = false;
+
+                    for (const auto& seq : firsts) {
+                        if (seq.empty()) {
+                            epsilon_included = true;
+                        } else {
+                            sequences.push_back(seq);
+                        }
+                    }
+
+                    if (!epsilon_included) break;
+                    ++next;
+                }
+            }
+
+            if (next == rhs.end()) {
+                // We're at the end of the rule body — use FOLLOW of the rule LHS
+                const auto& follows = follow_set.at(lhs_name);
+                for (const auto& seq : follows) {
+                    sequences.push_back(seq);
+                }
+            }
+
+            result.emplace_back(use_place, std::set(sequences.begin(), sequences.end()));
+        }
+    }
+
+    return result;
+}
+
 
 auto LLIR::BuilderBase::deduceUvarType(const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::var_type {
     return shadow_var.name.empty() ? var.type : shadow_var.type;
