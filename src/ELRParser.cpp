@@ -7,7 +7,7 @@ import std;
 bool ELRParser::isELR() const {
     return true;
 }
-const std::vector<ELRParser::DFA_state>& ELRParser::getDFA() const {
+const vector<ELRParser::DFA_state>& ELRParser::getDFA() const {
     return dfa_states;
 }
 std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
@@ -28,7 +28,7 @@ std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
     }
     return closure;
 }
-ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const std::vector<std::string> &fullname, utype::unordered_set<std::vector<std::string>> &visited) {
+ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const vector<std::string> &fullname, utype::unordered_set<vector<std::string>> &visited) {
     if (visited.count(fullname))
         return {};
     visited.insert(fullname);
@@ -63,9 +63,9 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
     for (const auto &option : lookahead_set) {
         size_t current = nfa_initial_index;
         for (const auto &token : option.token_sequence) {
-            if (std::holds_alternative<std::vector<std::string>>(token)) {
+            if (std::holds_alternative<vector<std::string>>(token)) {
                 // token, add
-                auto name = std::get<std::vector<std::string>>(token);
+                auto name = std::get<vector<std::string>>(token);
                 auto &current_nfa_state = nfa_states[current];
                 if (current_nfa_state.transitions.count(name)) {
                     // already exists; jump to it's index to add one more alternative
@@ -126,7 +126,7 @@ void ELRParser::build() {
                         // non terminal, unroll using first set
                         auto f = tree->getFirstSet()[name.name];
                         for (const auto &token : f) {
-                            if (token == std::vector<std::string>{"ε"}) {
+                            if (token == vector<std::string>{"ε"}) {
                                 nfa_states[current].epsilon_transition = next;
                                 continue;
                             }
@@ -141,7 +141,7 @@ void ELRParser::build() {
                 // perform automatic conflict resolution based on following cotext of this rule
                 // 1. Get all possible next lookahead entries for this rule
                 cpuf::printf("REDUCE/REDUCE resolution for %$ on %$\n", state, nfa_state);
-                utype::unordered_set<std::vector<std::string>> visited;
+                utype::unordered_set<vector<std::string>> visited;
                 Lookahead_set lookahead_set = getLookeaheadSet(item.lhs, visited);
                 processLookaheadSet(lookahead_set, nfa_state, conflict);
 
@@ -173,7 +173,7 @@ void ELRParser::build() {
         worklist.pop();
         size_t current_dfa_index = dfa_state_map[current_set];
 
-        utype::unordered_map<std::vector<std::string>, std::set<size_t>> symbol_to_nfa_targets;
+        utype::unordered_map<vector<std::string>, std::set<size_t>> symbol_to_nfa_targets;
 
         // Populate symbol_to_nfa_targets for all transitions in the current NFA set
         for (size_t state : current_set) {

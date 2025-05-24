@@ -18,7 +18,9 @@ import LLIR;
 import hash;
 import Parser;
 import TreeAPI;
+import types;
 import std;
+import std.compat;
 void printHelp() {
     cpuf::printf(R"(
 usage: 
@@ -30,10 +32,10 @@ usage:
     )", color::yellow, color::reset);
     cpuf::printf("\n");
 }
-std::vector<const char*> parameters_required {
+vector<const char*> parameters_required {
     "lang"
 };
-std::vector<const char*> parameters_with_arguments {
+vector<const char*> parameters_with_arguments {
     "lang", "a"
 };
 std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
@@ -46,7 +48,7 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const std::unordered_map<const char*, std::any> data, int tabs);
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 int main(int argc, char** argv) {
-    std::vector<Parser::Rule> modules;
+    vector<Parser::Rule> modules;
     auto args = init(argc, argv);
 
     if (args.version) {
@@ -88,16 +90,23 @@ int main(int argc, char** argv) {
         }
     }
     AST ast(modules);
-    std::ofstream treeAPIOutput("treeAPI.txt");
+    std::ofstream treeAPIO("treeAPI.txt");
+    std::ofstream initialItemSetO("tree.txt");
     for (const auto &[name, value] : ast.getTreeMap()) {
-        treeAPIOutput << "name<" << name << "> : " << value;
+        treeAPIO << "name<" << name << "> : " << value;
     }
-    treeAPIOutput.close();
+    treeAPIO.close();
     /*
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
     ASTPass treePass(ast);
+    for (const auto &[name, value] : ast.getInitialItemSet()) {
+        initialItemSetO << "name<" << name << "> : " << value;
+    }
+    initialItemSetO.close();
+    ast.printFirstSet("first");
+    ast.printFollowSet("follow");
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
     std::string opath;
@@ -128,8 +137,6 @@ int main(int argc, char** argv) {
         ELRParser ELRIR(ast);
         ELRIR.printTables("tables");
         ELRIR.printCanonicalCollection("canonical_collection.txt");
-        ELRIR.printFirstSet("first_set.txt");
-        ELRIR.printFollowSet("follow_set.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
         auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");

@@ -32,10 +32,10 @@ void ASTPass::inlineSingleGroups(AST &ast) {
     }
 }
 void ASTPass::literalsToToken(
-    std::vector<TreeAPI::RuleMember> &literals,
+    vector<TreeAPI::RuleMember> &literals,
     size_t &count,
-    std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> &toInsert,
-    std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> &generated
+    vector<std::pair<vector<std::string>, TreeAPI::Rule>> &toInsert,
+    vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> &generated
     ) {
     for (auto &member : literals) {
         if (member.isString() || member.isHex() || member.isBin() || member.isEscaped() || member.isCsequence()) {
@@ -46,7 +46,7 @@ void ASTPass::literalsToToken(
                 member.value = find_it->second.value; // Use the generated member
             } else {
                 // create new token
-                std::vector<std::string> new_name = {"AUTO_" + std::to_string(count++)};
+                vector<std::string> new_name = {"AUTO_" + std::to_string(count++)};
                 auto mem_copy_for_generated = member;
                 auto newRuleMember = member;
                 member.value = TreeAPI::RuleMemberName {.name = new_name};
@@ -78,8 +78,8 @@ void ASTPass::literalsToToken(
 }
 void ASTPass::literalsToToken(AST &ast) {
     size_t count = 0;
-    std::vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
-    std::vector<std::pair<std::vector<std::string>, TreeAPI::Rule>> toInsert;
+    vector<std::pair<TreeAPI::RuleMember, TreeAPI::RuleMember>> generated;
+    vector<std::pair<vector<std::string>, TreeAPI::Rule>> toInsert;
     auto &treeMap = ast.getTreeMap();
     ASTPass pass(ast, true);
     for (auto &[name, value] : treeMap) {
@@ -144,22 +144,6 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMemberGroup &first, const TreeAPI:
 bool ASTPass::prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second) {
     return prioritySort(first.options.back(), second.options.back());
 }
-enum class Types {
-    string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll, name, group, nospace, op, empty
-};
-Types getTypes(const TreeAPI::String&) { return Types::string; }
-Types getTypes(const TreeAPI::RuleMemberEscaped &) { return Types::Rule_escaped; }
-Types getTypes(const TreeAPI::RuleMemberCsequence &) { return Types::Rule_csequence; }
-Types getTypes(const TreeAPI::RuleMemberBin&) { return Types::Rule_bin; }
-Types getTypes(const TreeAPI::RuleMemberHex&) { return Types::Rule_hex; }
-Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
-Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
-// never meet types
-Types getTypes(const TreeAPI::RuleMemberName&) { return Types::name; };
-Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::group; }
-Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::nospace; }
-Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::op; }
-Types getTypes(const std::monostate&) { return Types::empty; }
 bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second) {
     if (first.isName() && second.isName())
         return prioritySort(first.getName(), second.getName());
@@ -229,7 +213,7 @@ bool ASTPass::prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::Rule
         return prioritySort(first, dt.options[0]);
     }
     return std::visit([&](const auto &f, const auto &s) -> bool {
-        std::vector<Types> priority_order = {
+        vector<Types> priority_order = {
             Types::string,
             Types::Rule_escaped,
             Types::Rule_csequence,
@@ -257,7 +241,7 @@ void ASTPass::sortByPriority(AST &ast, TreeAPI::RuleMemberOp& options) {
         return pass.prioritySort(first, second);
     });
 }
-void ASTPass::sortByPriority(AST &ast, std::vector<TreeAPI::RuleMember>& members) {
+void ASTPass::sortByPriority(AST &ast, vector<TreeAPI::RuleMember>& members) {
     for (auto &member : members) {
         if (member.isGroup()) {
             sortByPriority(ast, member.getGroup().values);

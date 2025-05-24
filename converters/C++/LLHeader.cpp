@@ -27,7 +27,7 @@ void LLHeader::createDefaultTypes(std::ostringstream &out) const {
         {"NUM_TYPE", "double"},
         {"STR_TYPE", "std::string"},
         {"ANY_TYPE", "std::any"},
-        {"ARR_TYPE", "std::vector"},
+        {"ARR_TYPE", "vector"},
         {"OBJ_TYPE", "std::unordered_map"}
     };
 
@@ -60,7 +60,7 @@ void LLHeader::createTypes(std::ostringstream &out, std::string namespace_name) 
     out << "\tusing obj_t = " << ns << "_OBJ_TYPE<Key, Value>;\n";
 }
 
-void LLHeader::writeEnum(std::ostringstream& out, const std::vector<std::vector<std::string>>& enm) const {
+void LLHeader::writeEnum(std::ostringstream& out, const vector<vector<std::string>>& enm) const {
     out << "\t\t";
     for (auto it = enm.begin(); it != enm.end() - 1; it++) {
         out << corelib::text::join(*it, "_") << ", ";
@@ -68,13 +68,13 @@ void LLHeader::writeEnum(std::ostringstream& out, const std::vector<std::vector<
     out << corelib::text::join(*(enm.end() - 1), "_");
 }
 
-void LLHeader::createTokensEnum(std::ostringstream &out, const std::vector<std::vector<std::string>>& tokens) const {
+void LLHeader::createTokensEnum(std::ostringstream &out, const vector<vector<std::string>>& tokens) const {
     out << "\tenum class Tokens {\n";
     writeEnum(out, tokens);
     out << "\n\t};\n";
 }
 
-void LLHeader::createRulesEnum(std::ostringstream &out, const std::vector<std::vector<std::string>>& rules) const {
+void LLHeader::createRulesEnum(std::ostringstream &out, const vector<vector<std::string>>& rules) const {
     out << "\tenum class Rules {\n";
     writeEnum(out, rules);
     out << "\n\t};\n";
@@ -88,7 +88,7 @@ void LLHeader::getTypesFromStdlib(std::ostringstream& out) const {
     out << "\tusing RuleSeq = ISPA_STD::Seq<Rules>;\n";
     out << "\tusing TokenSeq = ISPA_STD::Seq<Tokens>;\n";
 }
-void LLHeader::addTokensToString(const std::vector<std::vector<std::string>> &tokens, std::ostringstream &out) const {
+void LLHeader::addTokensToString(const vector<vector<std::string>> &tokens, std::ostringstream &out) const {
     // Implement method call conversion with proper indentation
     out << "\tconstexpr const char* TokensToString(Tokens token) {\n";
     out << "\t\tswitch (token) {\n";
@@ -99,7 +99,7 @@ void LLHeader::addTokensToString(const std::vector<std::vector<std::string>> &to
     out << "\t\treturn \"NONE\";\n";
     out << "\t}\n";
 }
-void LLHeader::addRulesToString(const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const {
+void LLHeader::addRulesToString(const vector<vector<std::string>> &rules, std::ostringstream &out) const {
     // Implement method call conversion with proper indentation
     out << "\tconstexpr const char* RulesToString(Rules rule) {\n";
     out << "\t\tswitch (rule) {\n";
@@ -110,7 +110,7 @@ void LLHeader::addRulesToString(const std::vector<std::vector<std::string>> &rul
     out << "\t\treturn \"NONE\";\n";
     out << "\t}\n";
 }
-void LLHeader::createToStringFunction(const std::vector<std::vector<std::string>> &tokens, const std::vector<std::vector<std::string>> &rules, std::ostringstream &out) const {
+void LLHeader::createToStringFunction(const vector<vector<std::string>> &tokens, const vector<vector<std::string>> &rules, std::ostringstream &out) const {
     addTokensToString(tokens, out);
     addRulesToString(rules, out);
 }
@@ -174,7 +174,7 @@ void LLHeader::createTypesNamespace(std::ostringstream &out, const LLIR::DataBlo
     write_data_block(out, data_block_rules); 
     out << "\t}\n";
 }
-void LLHeader::create_lexer_header(std::ostringstream &out, const std::vector<std::vector<std::string>> &tokens) const {
+void LLHeader::create_lexer_header(std::ostringstream &out, const vector<vector<std::string>> &tokens) const {
     out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tToken makeToken(const char*& pos);\n";

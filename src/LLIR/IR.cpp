@@ -26,16 +26,16 @@ const LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() const {
 const LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() const {
     return std::get<LLIR::inclosed_map>(value);
 };
-auto LLIR::IR::begin() -> ::std::vector<Data>::iterator {
+auto LLIR::IR::begin() -> ::vector<Data>::iterator {
     return data.begin();
 }
-auto LLIR::IR::end() -> std::vector<Data>::iterator {
+auto LLIR::IR::end() -> vector<Data>::iterator {
     return data.end();
 }
-auto LLIR::IR::cbegin() -> std::vector<Data>::const_iterator {
+auto LLIR::IR::cbegin() -> vector<Data>::const_iterator {
     return data.cbegin();
 }
-auto LLIR::IR::cend() -> std::vector<Data>::const_iterator {
+auto LLIR::IR::cend() -> vector<Data>::const_iterator {
     return data.cend();
 }
 auto LLIR::IR::size() -> size_t {
@@ -65,7 +65,7 @@ LLIR::DataBlockList LLIR::IR::getDataBlocksTerminals() {
 LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() {
     return getDataBlocks(false);
 }
-auto LLIR::IR::getData() const -> const std::vector<Data> & {
+auto LLIR::IR::getData() const -> const vector<Data> & {
     return data;
 }
 
@@ -156,7 +156,7 @@ std::string LLIR::IR::convert_var_assing_values(LLIR::var_assign_values value, s
             return convertFunctionCall(std::any_cast<function_call>(data));
         case LLIR::var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<std::vector<LLIR::expr>>(data), false);
+            return convertExpression(std::any_cast<vector<LLIR::expr>>(data), false);
         case LLIR::var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -316,7 +316,7 @@ std::string LLIR::IR::convertExpression(LLIR::Expression expression, bool with_b
         result += ")\n";
     return result;
 }
-void LLIR::IR::convertBlock(std::vector<LLIR::member> block, std::ostream& out) {
+void LLIR::IR::convertBlock(vector<LLIR::member> block, std::ostream& out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
@@ -441,7 +441,7 @@ void LLIR::IR::convertMember(const LLIR::member& mem, std::ostream& out) {
         break;
     }
     case types::JUMP:
-        out << "jump " << corelib::text::join(std::any_cast<std::vector<std::string>>(mem.value), "_");
+        out << "jump " << corelib::text::join(std::any_cast<vector<std::string>>(mem.value), "_");
         break;
     case types::JUMP_FROM_VARIABLE:
         out << "jump $" << std::any_cast<std::string>(mem.value);

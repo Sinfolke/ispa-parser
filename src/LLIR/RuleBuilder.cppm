@@ -5,6 +5,7 @@ import LLIR;
 import TreeAPI;
 import AST;
 import LLIRBuilderData;
+import types;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -15,7 +16,7 @@ export namespace LLIR {
         auto createDataBlock(const TreeAPI::DataBlock &data_block) -> LLIR::DataBlock;
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
     public:
-        RuleBuilder(AST& ast, const std::vector<std::string> &name, const TreeAPI::Rule &rule) : BuilderData(ast), rule(&rule) {
+        RuleBuilder(AST& ast, const vector<std::string> &name, const TreeAPI::Rule &rule) : BuilderData(ast), rule(&rule) {
             fullname = name;
             build();
         }

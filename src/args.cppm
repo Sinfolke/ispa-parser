@@ -1,5 +1,6 @@
 export module args;
 import CLI;
+import types;
 import std;
 export struct Args {
     enum class Algorithm {

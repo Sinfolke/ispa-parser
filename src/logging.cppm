@@ -2,6 +2,7 @@ module;
 export module logging;
 import cpuf.printf;
 import cpuf.color;
+import types;
 import std;
 
 export class Error : public std::exception {

@@ -3,6 +3,7 @@ import corelib;
 import AST;
 import hash;
 import TreeAPI;
+import types;
 import std;
 import std.compat;
 export class LRParser {
@@ -16,7 +17,7 @@ public:
     };
 
     struct LR0Core {
-        std::vector<std::string> lhs;
+        vector<std::string> lhs;
         TreeAPI::Rule rhs;
         size_t dot_pos;
     
@@ -34,10 +35,10 @@ public:
     };
 
     struct LR1Core {
-        std::vector<std::string> lhs;
+        vector<std::string> lhs;
         TreeAPI::Rule rhs;
         size_t dot_pos;
-        mutable utype::unordered_set<std::vector<std::string>> lookahead;
+        mutable utype::unordered_set<vector<std::string>> lookahead;
         virtual bool operator==(const LR1Core &other) const {
             return lhs == other.lhs &&
                    rhs == other.rhs &&
@@ -52,26 +53,26 @@ public:
         }
     };
     struct Conflict {
-        std::vector<LR1Core> item;
+        vector<LR1Core> item;
         Action* place = nullptr;
-        std::vector<Action> conflicts;
+        vector<Action> conflicts;
         size_t state;
     };
-    using ActionTable = utype::unordered_map<size_t, utype::unordered_map<std::vector<std::string>, Action>>;
-    using GotoTable = utype::unordered_map<size_t, utype::unordered_map<std::vector<std::string>, size_t>>;
-    using ItemSet = std::vector<TreeAPI::Rule>;
+    using ActionTable = utype::unordered_map<size_t, utype::unordered_map<vector<std::string>, Action>>;
+    using GotoTable = utype::unordered_map<size_t, utype::unordered_map<vector<std::string>, size_t>>;
+    using ItemSet = vector<TreeAPI::Rule>;
     using CanonicalItem = utype::unordered_set<LR1Core>;
-    using CanonicalItemSet = std::vector<CanonicalItem>;
+    using CanonicalItemSet = vector<CanonicalItem>;
 
-    using Rules_part = std::pair<std::vector<std::string>, std::pair<size_t, std::vector<TreeAPI::RuleMember>>>;
-    using Rules = std::vector<Rules_part>;
-    using Priority = utype::unordered_map<std::vector<std::string>, size_t>;
-    using Conflicts = std::vector<Conflict>;
+    using Rules_part = std::pair<vector<std::string>, std::pair<size_t, vector<TreeAPI::RuleMember>>>;
+    using Rules = vector<Rules_part>;
+    using Priority = utype::unordered_map<vector<std::string>, size_t>;
+    using Conflicts = vector<Conflict>;
 protected:
     AST *tree;
     ActionTable action_table;
     GotoTable goto_table;
-    utype::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>> use_places;
+    utype::unordered_map<vector<std::string>, vector<vector<std::string>>> use_places;
 
     CanonicalItemSet canonical_item_set;
 
@@ -79,15 +80,15 @@ protected:
 
     Priority priority;
     Conflicts conflicts;
-    // void getPriorityTree(const std::vector<std::vector<std::string>> *rule, std::unordered_set<std::vector<std::string>> &visited, size_t depth);
+    // void getPriorityTree(const vector<vector<std::string>> *rule, std::unordered_set<vector<std::string>> &visited, size_t depth);
     // void getPriorityTree();
     void addAugmentedRule();
-    // void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, std::vector<std::string> &fullname);
+    // void construct_initial_item_set(Parser::Tree &tree, InitialItemSet &initial_item_set, vector<std::string> &fullname);
     // auto construct_initial_item_set() -> InitialItemSet;
-    void compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const std::vector<std::string> &lhs_name, LR1Core &new_item);
-    void create_item_collection(CanonicalItem &closure, const ItemSet &item, const std::vector<std::string> &lhs_name);
+    void compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const vector<std::string> &lhs_name, LR1Core &new_item);
+    void create_item_collection(CanonicalItem &closure, const ItemSet &item, const vector<std::string> &lhs_name);
     auto construct_cannonical_collections_of_items() -> CanonicalItemSet;
-    auto find_goto_state(const CanonicalItem &item_set, const std::vector<std::string> &symbol) -> size_t;
+    auto find_goto_state(const CanonicalItem &item_set, const vector<std::string> &symbol) -> size_t;
     auto find_rules_index(const LR1Core &rule) -> size_t;
     void resolveCertainConflict(const Conflict &conflict);
     void resolveConflictsStatically();
@@ -121,8 +122,8 @@ public:
     auto getActionTable() const -> const ActionTable&;
     auto getGotoTable() const -> const GotoTable&;
     auto getRulesTable() const -> const Rules&; 
-    auto getActionTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, LRParser::Action>>;
-    auto getGotoTableAsRow() const -> std::vector<utype::unordered_map<std::vector<std::string>, size_t>>;
+    auto getActionTableAsRow() const -> vector<utype::unordered_map<vector<std::string>, LRParser::Action>>;
+    auto getGotoTableAsRow() const -> vector<utype::unordered_map<vector<std::string>, size_t>>;
     // helper functions
     auto getMaxStatesCount() const -> size_t;
 
@@ -131,7 +132,4 @@ public:
     void printTables(const std::string& filename);
     // print cannonical collection
     void printCanonicalCollection(const std::string &fileName);
-
-    void printFirstSet(const std::string &fileName);
-    void printFollowSet(const std::string &fileName);
 };

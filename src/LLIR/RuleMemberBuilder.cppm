@@ -4,23 +4,24 @@ import LLIRBuilderBase;
 import LLIRBuilderDataWrapper;
 import TreeAPI;
 import LLIR;
+import types;
 import std;
 import std.compat;
 
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
-        std::vector<TreeAPI::RuleMember> rules;
+        vector<TreeAPI::RuleMember> rules;
         bool *addSpaceSkipFirst = nullptr;
         void buildMember(const TreeAPI::RuleMember &member);
     public:
         void build() override;
-        MemberBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule, bool has_symbol_follow = true) : BuilderBase(data), rules(std::vector<TreeAPI::RuleMember> {rule}) {
+        MemberBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule, bool has_symbol_follow = true) : BuilderBase(data), rules(vector<TreeAPI::RuleMember> {rule}) {
             *this->has_symbol_follow = has_symbol_follow;
         }
-        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow = true) : BuilderBase(data), rules(rules) {
+        MemberBuilder(BuilderDataWrapper &data, const vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow = true) : BuilderBase(data), rules(rules) {
             *this->has_symbol_follow = has_symbol_follow;
         }
-        MemberBuilder(BuilderDataWrapper &data, const std::vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow, bool &addSpaceSkipFirst) :
+        MemberBuilder(BuilderDataWrapper &data, const vector<TreeAPI::RuleMember> &rules, bool has_symbol_follow, bool &addSpaceSkipFirst) :
             BuilderBase(data), rules(rules), addSpaceSkipFirst(&addSpaceSkipFirst) {
             *this->has_symbol_follow = has_symbol_follow;
         }
@@ -74,8 +75,8 @@ export namespace LLIR {
         const TreeAPI::RuleMember *rule;
         auto pushBasedOnQualifier(
             const TreeAPI::RuleMember &rule,
-            std::vector<LLIR::expr> &expr,
-            std::vector<LLIR::member> &block,
+            vector<LLIR::expr> &expr,
+            vector<LLIR::member> &block,
             LLIR::variable &uvar,
             const LLIR::variable &var,
             const LLIR::variable &svar,
@@ -112,11 +113,11 @@ export namespace LLIR {
     class OpBuilder : public BuilderBase {
         const TreeAPI::RuleMember *rule;
         auto createBlock(
-            const std::vector<TreeAPI::RuleMember> &rules,
+            const vector<TreeAPI::RuleMember> &rules,
             size_t index,
             LLIR::variable &var,
             LLIR::variable &svar
-        ) -> std::vector<LLIR::member>;
+        ) -> vector<LLIR::member>;
     public:
         void build() override;
         OpBuilder(BuilderDataWrapper &data, const TreeAPI::RuleMember &rule) : BuilderBase(data), rule(&rule) {}

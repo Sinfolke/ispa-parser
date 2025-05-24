@@ -50,7 +50,7 @@ CMakeFiles
 build
 buildw
 Testing
-!.build
+cmake-build-release
 
 doc
 cpuid

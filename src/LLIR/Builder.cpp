@@ -20,10 +20,10 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
 auto LLIR::Builder::get() -> IR {
     return IR(data);
 }
-auto LLIR::Builder::getRawData() -> std::vector<Data> & {
+auto LLIR::Builder::getRawData() -> vector<Data> & {
     return data;
 }
-auto LLIR::Builder::getRawData() const -> const std::vector<Data> & {
+auto LLIR::Builder::getRawData() const -> const vector<Data> & {
     return data;
 }
 

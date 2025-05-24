@@ -3,7 +3,7 @@ import TreeAPI;
 import LRParser;
 import hash;
 import std;
-void LALRParser::rebuildActionTable(const std::vector<size_t>& state_mapping) {
+void LALRParser::rebuildActionTable(const vector<size_t>& state_mapping) {
     ActionTable new_action_table;
 
     for (size_t i = 0; i < action_table.size(); ++i) {
@@ -21,7 +21,7 @@ void LALRParser::rebuildActionTable(const std::vector<size_t>& state_mapping) {
 }
 
 
-void LALRParser::rebuildGotoTable(const std::vector<size_t>& state_mapping) {
+void LALRParser::rebuildGotoTable(const vector<size_t>& state_mapping) {
     GotoTable new_goto_table;
 
     for (size_t i = 0; i < goto_table.size(); ++i) {
@@ -34,9 +34,9 @@ void LALRParser::rebuildGotoTable(const std::vector<size_t>& state_mapping) {
 
     goto_table = std::move(new_goto_table);
 }
-std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRParser::getActionType(const LR1Core& item, size_t state) {
+vector<std::pair<vector<std::string>, LRParser::Action_type>> LALRParser::getActionType(const LR1Core& item, size_t state) {
     // Check if the item is in the action table
-    std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> action_types;
+    vector<std::pair<vector<std::string>, LRParser::Action_type>> action_types;
     auto it = action_table.find(state);
     if (it != action_table.end()) {
         for (auto lookahead : item.lookahead) {
@@ -51,7 +51,7 @@ std::vector<std::pair<std::vector<std::string>, LRParser::Action_type>> LALRPars
 
 void LALRParser::build() {
     // identify merge states
-    utype::unordered_map<CanonicalItem, std::vector<size_t>> core_to_states;
+    utype::unordered_map<CanonicalItem, vector<size_t>> core_to_states;
     size_t i = 0;
     for (auto item : canonical_item_set) {
         CanonicalItem core;
@@ -64,7 +64,7 @@ void LALRParser::build() {
 
     // Step 2: Create merged states
     CanonicalItemSet merged_states;
-    std::vector<size_t> state_mapping(canonical_item_set.size());
+    vector<size_t> state_mapping(canonical_item_set.size());
     
     for (const auto &[core, states] : core_to_states) {
         auto new_state = merged_states.size();

@@ -3,6 +3,7 @@ export module ErrorIR;
 import TreeAPI;
 import LLIR;
 import AST;
+import types;
 import std;
 import std.compat;
 
@@ -18,24 +19,24 @@ export namespace ErrorIR {
         std::any value;
     };
     struct condition {
-        std::vector<LLIR::expr> cond;
-        std::vector<Instruction> block;
-        std::vector<Instruction> else_block;
+        vector<LLIR::expr> cond;
+        vector<Instruction> block;
+        vector<Instruction> else_block;
     };
     struct iif_condition_part {
         ConditionTypes type;
         std::any value;
     };
     struct iif_condition {
-        std::vector<iif_condition_part> cond;
-        std::vector<Instruction> block;
-        std::vector<Instruction> else_block;
+        vector<iif_condition_part> cond;
+        vector<Instruction> block;
+        vector<Instruction> else_block;
     };
-    using Instructions = std::vector<Instruction>;
+    using Instructions = vector<Instruction>;
     class IR {
         Instructions instructions;
         const TreeAPI::RuleMember *member;
-        std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> follow;
+        vector<std::pair<vector<std::string>, std::set<vector<std::string>>>> follow;
         AST *tree;
 
         // variables used for lower to LLIR
@@ -47,7 +48,7 @@ export namespace ErrorIR {
         void lower();
     public:
         // construct an error element based on tree value
-        IR(AST *tree, const TreeAPI::RuleMember &member, const std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> &follow, bool isFirst)
+        IR(AST *tree, const TreeAPI::RuleMember &member, const vector<std::pair<vector<std::string>, std::set<vector<std::string>>>> &follow, bool isFirst)
         : tree(tree), member(&member), follow(follow), isFirst(isFirst) { lower(); }
         // todo add constructor for custom error messages
 
@@ -57,9 +58,9 @@ export namespace ErrorIR {
 
         // lower to LLIR functions
         auto lowerIIFPart(const iif_condition_part &part) -> LLIR::expr;
-        auto lowerIIF(const std::vector<iif_condition_part> &condition) -> std::vector<LLIR::expr>;
-        auto lowerMemberToLLIR(const Instruction &member) -> std::vector<LLIR::member>;
-        auto lowerMembersToLLIR(const Instructions &members) -> std::vector<LLIR::member>;
-        auto lowerToLLIR(size_t &variable_count) -> std::vector<LLIR::member>;
+        auto lowerIIF(const vector<iif_condition_part> &condition) -> vector<LLIR::expr>;
+        auto lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::member>;
+        auto lowerMembersToLLIR(const Instructions &members) -> vector<LLIR::member>;
+        auto lowerToLLIR(size_t &variable_count) -> vector<LLIR::member>;
     };
 }

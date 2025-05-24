@@ -2,13 +2,14 @@ export module Converter;
 import LLIR;
 import LRParser;
 import AST;
+import types;
 import std;
 export class LLConverter_base {
     protected:
         // data
-        std::vector<LLIR::Data> data;
-        std::vector<std::vector<std::string>> tokens;
-        std::vector<std::vector<std::string>> rules;
+        vector<LLIR::Data> data;
+        vector<vector<std::string>> tokens;
+        vector<vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;
         LLIR::Nodes lexer_code;

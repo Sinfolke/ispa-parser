@@ -3,6 +3,7 @@ export module LLConverter;
 import Converter;
 import corelib;
 import logging;
+import types;
 import AST;
 import LLIR;
 import LLHeader;
@@ -13,11 +14,11 @@ export class LLConverter : public LLConverter_base, public LLHeader {
     // cpp output functions
     void writeRules(std::ostringstream &out, bool startName);
     void convertVariable(LLIR::variable var, std::ostringstream &out);
-    void convertBlock(std::vector<LLIR::member> block, std::ostringstream &out);
+    void convertBlock(vector<LLIR::member> block, std::ostringstream &out);
     void convertCondition(LLIR::condition cond, std::ostringstream &out);
     void convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out);
     void convertMember(const LLIR::member& mem, std::ostringstream &out);
-    void convertMembers(const std::vector<LLIR::member> &members, std::ostringstream &out);
+    void convertMembers(const vector<LLIR::member> &members, std::ostringstream &out);
 
 
 public:
@@ -35,7 +36,7 @@ public:
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules);
     void addLexerCode_Header(std::ostringstream &out);
-    void convertLexerCode(const std::vector<LLIR::member> &members, std::ostringstream &out);
+    void convertLexerCode(const vector<LLIR::member> &members, std::ostringstream &out);
     void addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var);
     void outputIR(std::filesystem::path filename);
 };

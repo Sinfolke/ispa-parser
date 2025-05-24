@@ -352,19 +352,19 @@ namespace TreeAPI {
         return names.empty();
     }
     
-    std::vector<std::string>::iterator TemplatedDataBlock::begin() {
+    vector<std::string>::iterator TemplatedDataBlock::begin() {
         return names.begin();
     }
     
-    std::vector<std::string>::iterator TemplatedDataBlock::end() {
+    vector<std::string>::iterator TemplatedDataBlock::end() {
         return names.end();
     }
-    std::vector<std::string>::const_iterator TemplatedDataBlock::begin() const {
-        return names.begin();
+    vector<std::string>::const_iterator TemplatedDataBlock::begin() const {
+        return names.cbegin();
     }
 
-    std::vector<std::string>::const_iterator TemplatedDataBlock::end() const {
-        return names.end();
+    vector<std::string>::const_iterator TemplatedDataBlock::end() const {
+        return names.cend();
     }
 
     bool DataBlock::isRegularDataBlock() const {

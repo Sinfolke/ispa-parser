@@ -263,9 +263,9 @@ struct match_result {
 };
 
 template<class TOKEN_T>
-using TokenFlow = std::vector<Node<TOKEN_T>>;
+using TokenFlow = vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Seq = std::vector<Node<RULE_T>>;
+using Seq = vector<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
@@ -279,7 +279,7 @@ class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
-    std::vector<error> errors;
+    vector<error> errors;
     ErrorController error_controller;
 /* internal integration functionality */
     /**
@@ -655,7 +655,7 @@ protected:
     Lexer_base<TOKEN_T>* lexer = nullptr;
     const char* text = nullptr;
     Node<RULE_T> tree;
-    std::vector<error> errors;
+    vector<error> errors;
     ErrorController error_controller;
     // skip spaces for tokens
     template <class IT>
@@ -728,7 +728,7 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 protected:
-    std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
         stack.push_back({pos->name(), state});

@@ -4,6 +4,7 @@ import LLConverter;
 import logging;
 import ELRParser;
 import LLIRBuilder;
+import types;
 import std;
 import std.compat;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
@@ -17,11 +18,11 @@ void LRConverter::createActionTable(std::ostringstream &out) const {
     for (size_t state = 0; state < row_table.size(); ++state) {
         out << "\t{{/*" << state << "*/";
         const auto &value = row_table[state];
-        std::vector<std::string> row(max_terminals, "std::nullopt");
+        vector<std::string> row(max_terminals, "std::nullopt");
         for (const auto &[name, action] : value) {
             auto search_name = name;
-            if (search_name == std::vector<std::string>{"$"})
-                search_name = std::vector<std::string>{"NONE"};
+            if (search_name == vector<std::string>{"$"})
+                search_name = vector<std::string>{"NONE"};
             auto find_it = std::find(tokens.begin(), tokens.end(), search_name);
             if (find_it == tokens.end())
                 throw Error("Token '%$' in action table not found among 'tokens'. State '%$'", corelib::text::join(name, "_"), state);
@@ -45,11 +46,11 @@ void LRConverter::createGotoTable(std::ostringstream &out) const {
     for (size_t state = 0; state < row_table.size(); ++state) {
         out << "\t{{";
         const auto &value = row_table[state];
-        std::vector<std::string> row(max_nonterminals, "std::nullopt");
+        vector<std::string> row(max_nonterminals, "std::nullopt");
         for (auto [name, new_state] : value) {
             auto search_name = name;
-            if (search_name == std::vector<std::string>{"$"})
-                search_name = std::vector<std::string>{"NONE"};
+            if (search_name == vector<std::string>{"$"})
+                search_name = vector<std::string>{"NONE"};
             auto find_it = std::find(rules.begin(), rules.end(), search_name);
             if (find_it == rules.end())
                 throw Error("Token '%$' in goto table not found among 'rules'", corelib::text::join(name, "_"));

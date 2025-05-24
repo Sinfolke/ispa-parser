@@ -125,8 +125,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     set(CMAKE_CXX_COMPILER clang++)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -mllvm -asan-use-private-alias=1 -fno-sanitize-address-use-odr-indicator")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+    add_compile_definitions(DEBUG)
 endif()
 # =============================================
 # Project Structure
@@ -209,7 +210,7 @@ add_executable(ispa)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
-        external/*.cpp
+        external/cpuf/*.cpp
 )
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
 target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
@@ -274,6 +275,7 @@ add_raw_module(ispa-converter-cpp cxx_std_module
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
 add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
+target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
 #target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
 target_link_libraries(ispa PRIVATE
     ispa-converter-cpp

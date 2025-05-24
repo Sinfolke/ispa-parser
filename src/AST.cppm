@@ -4,6 +4,7 @@ import corelib;
 import LLIR;
 import Parser;
 import hash;
+import types;
 import std;
 import std.compat;
 /*
@@ -14,37 +15,36 @@ export class AST {
         enum class SpacemodeStates {
             MIXED, MANUAL, SKIPPED 
         };
-        using TreeMap = utype::unordered_map<std::vector<std::string>, TreeAPI::Rule>;
+        using TreeMap = utype::unordered_map<vector<std::string>, TreeAPI::Rule>;
         using Use = utype::unordered_map<std::string, TreeAPI::rvalue>;
-        using UsePlaceTable = utype::unordered_map<std::vector<std::string>, std::vector<std::vector<std::string>>>;
-        using First = utype::unordered_map<std::vector<std::string>, std::set<std::vector<std::string>>>;
+        using UsePlaceTable = utype::unordered_map<vector<std::string>, vector<vector<std::string>>>;
+        using First = utype::unordered_map<vector<std::string>, std::set<vector<std::string>>>;
         using Follow = First;
         using lexer_code = std::pair<LLIR::Nodes, LLIR::variable>;
-        using InitialItemSet = utype::unordered_map<std::vector<std::string>, std::vector<TreeAPI::Rule>>;
+        using InitialItemSet = utype::unordered_map<vector<std::string>, vector<TreeAPI::Rule>>;
     private:
         TreeMap tree_map;
         InitialItemSet initial_item_set;
         Use use;
         std::string name;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
-        void constructor(const std::vector<Parser::Rule> &modules);
+        void constructor(const vector<Parser::Rule> &modules);
         void constructor(const Parser::Rule &mod);
     
     protected:
         // convertion functions & variables
-        std::vector<TreeAPI::RuleMember> newRules;
+        vector<TreeAPI::RuleMember> newRules;
         bool in_op;
         bool prev_op;
         bool add_prev;
-        std::vector<std::string> fullname;
-        std::vector<std::pair<std::string, std::vector<std::string>>> nested_rule_names;
+        vector<std::string> fullname;
+        vector<std::pair<std::string, vector<std::string>>> nested_rule_names;
         TreeAPI::RulePrefix ops_prefix;
-        std::vector<TreeAPI::RuleMember> ops;
+        vector<TreeAPI::RuleMember> ops;
 
         UsePlaceTable use_places;
         First first;
         Follow follow;
-        utype::unordered_map<std::vector<std::string>, bool> nullable;
         TreeAPI::Array createArray(const Parser::Rule &array);
         TreeAPI::Object createObject(const Parser::Rule &object);
         TreeAPI::String createString(const Parser::Token &token);
@@ -67,7 +67,7 @@ export class AST {
         TreeAPI::CllVar createCllVar(const Parser::Rule &var);
         TreeAPI::Cll convertCll(const Parser::Rule &cll);
         void createRuleMember(const Parser::Rule &rule);
-        void createRuleMembers(const std::vector<Parser::Rule> &rules);
+        void createRuleMembers(const vector<Parser::Rule> &rules);
         TreeAPI::DataBlock createDataBlock(const Parser::Rule &rule);
 
         // helper
@@ -75,7 +75,7 @@ export class AST {
         void flushOpSequence();
         // build Tree API from AST
         void createRules(const Parser::Types::rule &rule);
-        AST(const std::vector<Parser::Rule> &modules, const std::vector<std::pair<std::string, std::vector<std::string>>> &nested_rule_names, bool isModule) {
+        AST(const vector<Parser::Rule> &modules, const vector<std::pair<std::string, vector<std::string>>> &nested_rule_names, bool isModule) {
             this->nested_rule_names = nested_rule_names;
             if (isModule)
                 constructor(modules);
@@ -83,41 +83,44 @@ export class AST {
                 createRuleMembers(modules);
             }
         }
-        static auto compute_group_length(const std::vector<TreeAPI::RuleMember> &group) -> size_t;
-        auto getRules() -> std::vector<TreeAPI::RuleMember>&;
-        void getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name);
+        static auto compute_group_length(const vector<TreeAPI::RuleMember> &group) -> size_t;
+        auto getRules() -> vector<TreeAPI::RuleMember>&;
+        void getUsePlacesTable(const vector<TreeAPI::RuleMember> &members, const vector<std::string> &name);
         void transform_helper(
-            std::vector<TreeAPI::RuleMember> &members,
-            const std::vector<std::string> &fullname,
-            utype::unordered_map<std::vector<std::string>,
-            std::pair<char, std::vector<std::string>>> &replacements
+            vector<TreeAPI::RuleMember> &members,
+            const vector<std::string> &fullname,
+            utype::unordered_map<vector<std::string>,
+            std::pair<char, vector<std::string>>> &replacements
         );
         void transform();
         void createInitialItemSet();
-        void constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed);
+        auto createUsePlacesTable() -> UsePlaceTable&;
+        void constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string> &nonterminal, bool &changed);
         void constructFirstSet();
         void constructFollowSet();
+        void formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set);
     public:
         TreeMap &getTreeMap();
         Use &getUse();
         std::string &getName();
         SpacemodeStates &getSpacemode();
 
-        AST(const std::vector<Parser::Rule> &modules) {
-            constructor(modules);\
+        AST(const vector<Parser::Rule> &modules) {
+            constructor(modules);
         }
         AST(const Parser::Rule &mod) {
             constructor(mod);
         }
-        auto getTerminals() -> std::vector<std::vector<std::string>>;
-        auto getNonTerminals() -> std::vector<std::vector<std::string>>;
+        auto getTerminals() -> vector<vector<std::string>>;
+        auto getNonTerminals() -> vector<vector<std::string>>;
         auto getUsePlacesTable() -> UsePlaceTable&;
-        auto createUsePlacesTable() -> UsePlaceTable&;
         auto getCodeForLexer() -> lexer_code;
         auto getFirstSet()-> First&;
         auto getFollowSet() -> Follow&;
         auto getRawFirstSet()-> First&;
         auto getRawFollowSet() -> Follow&;
         auto getInitialItemSet() -> InitialItemSet&;
-        auto getInitialItemSet() const -> const InitialItemSet&;
+
+        void printFirstSet(const std::string &fileName);
+        void printFollowSet(const std::string &fileName);
 };

@@ -1,6 +1,7 @@
 module AST;
 import ASTPass;
 import logging;
+import types;
 import TreeAPI;
 import LLIRBuilder;
 import LLIRBuilderDataWrapper;
@@ -52,7 +53,7 @@ void AST::constructor(const Parser::Rule &mod) {
         }
     }
 }
-void AST::constructor(const std::vector<Parser::Rule> &modules) {
+void AST::constructor(const vector<Parser::Rule> &modules) {
     for (const auto &mod : modules) {
         constructor(mod);
     }
@@ -69,7 +70,7 @@ std::string &AST::getName() {
 AST::SpacemodeStates &AST::getSpacemode() {
     return spacemode;
 }
-std::vector<TreeAPI::RuleMember> &AST::getRules() {
+vector<TreeAPI::RuleMember> &AST::getRules() {
     return newRules;
 }
 TreeAPI::Array AST::createArray(const Parser::Rule &array) {
@@ -461,8 +462,8 @@ void AST::createRuleMember(const Parser::Rule &rule) {
         {
             auto data = Parser::get::rule_name(rule);
 
-            std::vector<std::string> rule_name;
-            auto res = std::find_if(nested_rule_names.begin(), nested_rule_names.end(), [&data](const  std::pair<std::string, std::vector<std::string>> &p) {
+            vector<std::string> rule_name;
+            auto res = std::find_if(nested_rule_names.begin(), nested_rule_names.end(), [&data](const  std::pair<std::string, vector<std::string>> &p) {
                 return p.first == Parser::get::ID(data.name);
             });
             if (res != nested_rule_names.end()) {
@@ -507,7 +508,7 @@ void AST::createRuleMember(const Parser::Rule &rule) {
         newRules.push_back(member);
     }
 }
-void AST::createRuleMembers(const std::vector<Parser::Rule> &rules) {
+void AST::createRuleMembers(const vector<Parser::Rule> &rules) {
     for (const auto &rule : rules) {
         createRuleMember(rule);
     }
@@ -611,23 +612,23 @@ auto AST::getRawFollowSet() -> Follow & {
 }
 
 
-auto AST::getTerminals() -> std::vector<std::vector<std::string>> {
-    std::vector<std::vector<std::string>> set;
+auto AST::getTerminals() -> vector<vector<std::string>> {
+    vector<vector<std::string>> set;
     for (const auto &[name, value] : tree_map) {
         if (corelib::text::isUpper(name.back()))
             set.push_back(name);
     }
     return set;
 }
-auto AST::getNonTerminals() -> std::vector<std::vector<std::string>> {
-    std::vector<std::vector<std::string>> set;
+auto AST::getNonTerminals() -> vector<vector<std::string>> {
+    vector<vector<std::string>> set;
     for (const auto &[name, value] : tree_map) {
         if (corelib::text::isLower(name.back()))
             set.push_back(name);
     }
     return set;
 }
-void AST::getUsePlacesTable(const std::vector<TreeAPI::RuleMember> &members, const std::vector<std::string> &name) {
+void AST::getUsePlacesTable(const vector<TreeAPI::RuleMember> &members, const vector<std::string> &name) {
     for (const auto &member : members) {
         if (member.isGroup()) {
             getUsePlacesTable(member.getGroup().values, name);
@@ -649,7 +650,7 @@ auto AST::getUsePlacesTable() -> UsePlaceTable& {
         createUsePlacesTable();
     return use_places;
 }
-auto AST::compute_group_length(const std::vector<TreeAPI::RuleMember> &group) -> size_t {
+auto AST::compute_group_length(const vector<TreeAPI::RuleMember> &group) -> size_t {
     size_t count = 0;
     for (auto &rule : group) {
         if (rule.isGroup() && rule.quantifier == '\0') {
@@ -659,9 +660,9 @@ auto AST::compute_group_length(const std::vector<TreeAPI::RuleMember> &group) ->
     return count;
 };
 void AST::transform_helper(
-    std::vector<TreeAPI::RuleMember> &members,
-    const std::vector<std::string> &fullname,
-    utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> &replacements
+    vector<TreeAPI::RuleMember> &members,
+    const vector<std::string> &fullname,
+    utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> &replacements
 ) {
     for (size_t i = 0; i < members.size(); ++i) {
         auto &member = members[i];
@@ -681,15 +682,15 @@ void AST::transform_helper(
             // Create a rule for the quantified group
             std::string quant_rule_name = "__grp" + std::to_string(i);
             auto quant_fullname = fullname;
-            quant_fullname.back() = quant_rule_name;
+            quant_fullname.push_back(quant_rule_name);
 
             // Replace the group with a reference to the new rule
             members[i] = TreeAPI::RuleMember {
-                .value = TreeAPI::RuleMemberName {.name = quant_fullname},
-                .quantifier = '\0'
+                .quantifier = '\0',
+                .value = TreeAPI::RuleMemberName {.name = quant_fullname}
             };
 
-            std::vector<std::vector<TreeAPI::RuleMember>> new_alts;
+            vector<vector<TreeAPI::RuleMember>> new_alts;
 
             switch (member.quantifier) {
                 case '?':
@@ -700,7 +701,7 @@ void AST::transform_helper(
                 case '+': {
                     std::string tail_name = quant_rule_name + "_tail";
                     auto tail_fullname = quant_fullname;
-                    tail_fullname.back() = tail_name;
+                    tail_fullname.push_back(tail_name);
 
                     auto base = data.values;
                     base.push_back(TreeAPI::RuleMember {
@@ -708,7 +709,7 @@ void AST::transform_helper(
                     });
                     new_alts.push_back(base);
 
-                    std::vector<std::vector<TreeAPI::RuleMember>> tail_alts = {
+                    vector<vector<TreeAPI::RuleMember>> tail_alts = {
                         {},
                         data.values
                     };
@@ -745,7 +746,7 @@ void AST::transform_helper(
 
             std::string rule_name = "__rop" + std::to_string(i);
             auto new_fullname = fullname;
-            new_fullname.back() = rule_name;
+            new_fullname.push_back(rule_name);
 
             members[i] = TreeAPI::RuleMember {
                 .value = TreeAPI::RuleMemberName {.name = new_fullname}
@@ -763,28 +764,26 @@ void AST::transform_helper(
             auto find = replacements.find(fullname);
             if (find != replacements.end() && find->second.first == member.quantifier) {
                 members[i] = TreeAPI::RuleMember {
-                    .value = TreeAPI::RuleMemberName {.name = find->second.second},
-                    .quantifier = '\0'
+                    .quantifier = '\0',
+                    .value = TreeAPI::RuleMemberName {.name = find->second.second}
                 };
                 continue;
             }
 
-            std::string quant_rule_name = fullname.size() == 1
-                ? fullname.back() + "__q" + std::to_string(i)
-                : "__q" + std::to_string(i);
+            std::string quant_rule_name = "__q" + std::to_string(i);
 
             auto quant_fullname = fullname;
-            quant_fullname.back() = quant_rule_name;
+            quant_fullname.push_back(quant_rule_name);
 
             TreeAPI::RuleMember replaced = member;
             replaced.quantifier = '\0';
 
             members[i] = TreeAPI::RuleMember {
-                .value = TreeAPI::RuleMemberName {.name = quant_fullname},
-                .quantifier = '\0'
+                .quantifier = '\0',
+                .value = TreeAPI::RuleMemberName {.name = quant_fullname}
             };
 
-            std::vector<std::vector<TreeAPI::RuleMember>> new_alts;
+            vector<vector<TreeAPI::RuleMember>> new_alts;
             switch (member.quantifier) {
                 case '?':
                     new_alts.push_back({});
@@ -793,7 +792,7 @@ void AST::transform_helper(
                 case '+': {
                     std::string tail_name = quant_rule_name + "_tail";
                     auto tail_fullname = quant_fullname;
-                    tail_fullname.back() = tail_name;
+                    tail_fullname.push_back(tail_name);
 
                     new_alts.push_back({
                         replaced,
@@ -802,7 +801,7 @@ void AST::transform_helper(
                         }
                     });
 
-                    std::vector<std::vector<TreeAPI::RuleMember>> tail_alts = {
+                    vector<vector<TreeAPI::RuleMember>> tail_alts = {
                         {},
                         {
                             replaced,
@@ -834,15 +833,14 @@ void AST::transform_helper(
     }
 }
 void AST::transform() {
-    std::vector<std::vector<std::string>> keys;
+    vector<vector<std::string>> keys;
     for (const auto &pair : initial_item_set) {
         keys.push_back(pair.first);
     }
 
-    utype::unordered_map<std::vector<std::string>, std::pair<char, std::vector<std::string>>> replacement;
+    utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> replacement;
 
     for (const auto &name : keys) {
-        cpuf::printf("Processing rule: {}", name);
         if (corelib::text::isUpper(name.back()))
             continue;
         auto it = initial_item_set.find(name);
@@ -860,39 +858,16 @@ void AST::createInitialItemSet() {
     transform();
 }
 auto AST::getInitialItemSet() -> InitialItemSet & {
+    if (initial_item_set.empty())
+        createInitialItemSet();
     return initial_item_set;
 }
-auto AST::getInitialItemSet() const -> const InitialItemSet & {
-    return initial_item_set;
-}
-
-enum class Types {
-    string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll, name, group, nospace, op, empty
-};
-Types getTypes(const TreeAPI::String&) { return Types::string; }
-Types getTypes(const TreeAPI::RuleMemberEscaped &) { return Types::Rule_escaped; }
-Types getTypes(const TreeAPI::RuleMemberCsequence &) { return Types::Rule_csequence; }
-Types getTypes(const TreeAPI::RuleMemberBin&) { return Types::Rule_bin; }
-Types getTypes(const TreeAPI::RuleMemberHex&) { return Types::Rule_hex; }
-Types getTypes(const TreeAPI::RuleMemberAny&) { return Types::Rule_any; }
-Types getTypes(const TreeAPI::Cll&) { return Types::cll; }
-// never meet types
-Types getTypes(const TreeAPI::RuleMemberName&) { return Types::name; };
-Types getTypes(const TreeAPI::RuleMemberGroup&) { return Types::group; }
-Types getTypes(const TreeAPI::RuleMemberNospace&) {return Types::nospace; }
-Types getTypes(const TreeAPI::RuleMemberOp&) { return Types::op; }
-Types getTypes(const std::monostate&) { return Types::empty; }
-void AST::constructFirstSet(const std::vector<TreeAPI::Rule>& options, const std::vector<std::string> &nonterminal, bool &changed) {
+void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string> &nonterminal, bool &changed) {
     for (const auto &option : options) {
         bool nullable_prefix = true;
         for (const auto &member : option.rule_members) {
             if (member.isNospace())
                 continue;
-            std::visit([&](const auto &f) -> bool {
-                cpuf::printf("type: {}", (int) getTypes(f));
-                cpuf::printf("f: {}", typeid(f).name());
-                return 0;
-            }, member.value);
             if (!member.isName())
                 throw Error("Non-RuleMemberName class, rule {}", nonterminal);
             const auto &rule = member.getName();
@@ -981,8 +956,8 @@ void AST::constructFollowSet() {
     follow[{"__start"}] = {{"$"}};
     bool hasChanges;
     bool prevDependedChanged;
-    std::vector<std::vector<std::string>> prev_depend;
-    std::vector<std::vector<std::string>> changed;
+    vector<vector<std::string>> prev_depend;
+    vector<vector<std::string>> changed;
     do {
         hasChanges = false;
         prevDependedChanged = false;
@@ -995,23 +970,26 @@ void AST::constructFollowSet() {
             for (const auto &rules : options) {
                 if (!rules.rule_members[0].isName())
                     throw Error("Not RuleMemberName");
-                if (rules.rule_members.size() > 0 && name == rules.rule_members[0].getName().name) {
+                if (!rules.rule_members.empty() && name == rules.rule_members[0].getName().name) {
                     is_left_recursive = true;
                 }
+                cpuf::dprintf("Processing {}-> ", name);
                 for (auto it = rules.rule_members.begin(); it != rules.rule_members.end(); it++) {
+                    if (it->isNospace())
+                        continue;
                     if (!it->isName()) {
                         throw Error("Not RuleMemberName");
                     }
                     auto current = it->getName();
-
                     if (corelib::text::isUpper(current.name.back())) {
                         continue;
                     }
                     if (name == current.name) {
                         // include first(name)
                         auto f = first[name];
+                        cpuf::dprintf("[right recursion] first[name: {}]: {}, ", name, first[name]);
                         for (auto &e : f) {
-                            if (e == std::vector<std::string>{"ε"}) {
+                            if (e == vector<std::string>{"ε"}) {
                                 continue;
                             }
                             if (follow[name].insert(e).second)
@@ -1020,6 +998,7 @@ void AST::constructFollowSet() {
                         prev_depend.push_back(name);
                     } else if (is_left_recursive && corelib::text::isLower(current.name.back())) {
                         auto prev_size = follow[current.name].size();
+                        cpuf::printf("[left_recursion] follow[current.name: {}]: {}, ", current.name, follow[current.name]);
                         follow[current.name].insert(follow[name].begin(), follow[name].end());
                         if (prev_size != follow[current.name].size())
                             hasChanges = true;
@@ -1028,6 +1007,7 @@ void AST::constructFollowSet() {
                     if (it + 1 == rules.rule_members.end()) {
                         // Add FOLLOW of LHS (the left-hand-side nonterminal)
                         auto &f_lhs = follow[name];
+                        cpuf::dprintf("[end of rule] follow[name: {}]: {}, ", name, follow[name]);
                         for (auto &sym : f_lhs) {
                             if (follow[current.name].insert(sym).second)
                                 hasChanges = true;
@@ -1035,15 +1015,17 @@ void AST::constructFollowSet() {
                     } else {
                         auto next = (it + 1)->getName();
                         if (corelib::text::isUpper(next.name.back())) {
-                            // terminal, just push
+                            // terminal - just push
+                            cpuf::dprintf("[next is terminal] follow[name: {}]: {} insert {}, ", name, follow[name], next.name);
                             if (follow[current.name].insert(next.name).second)
                                 hasChanges = true;
                         } else {
                             // non-terminal, insert it's first
+                            cpuf::dprintf("[next is non-terminal] first[name: {}]: {}, ", name, follow[name]);
                             auto f = first[next.name];
                             bool has_epsilon = false;
                             for (auto &e : f) {
-                                if (e == std::vector<std::string>{"ε"}) {
+                                if (e == vector<std::string>{"ε"}) {
                                     has_epsilon = true;
                                     continue;
                                 }
@@ -1053,6 +1035,7 @@ void AST::constructFollowSet() {
                             if (has_epsilon) {
                                 // if ε in FIRST(next), add FOLLOW of LHS
                                 auto &f_lhs = follow[name];
+                                cpuf::dprintf("[has_epsilon] follow[name: {}]: {}", name, follow[name]);
                                 for (auto &sym : f_lhs) {
                                     if (follow[current.name].insert(sym).second)
                                         hasChanges = true;
@@ -1062,7 +1045,7 @@ void AST::constructFollowSet() {
                         }
                     }
                 }
-
+                cpuf::printf("");
             }
             if (hasChanges) {
                 changed.push_back(name);
@@ -1085,7 +1068,7 @@ auto AST::getCodeForLexer() -> lexer_code {
         if (corelib::text::isLower(name.back()))
             continue;
         auto find_it = use_places.find(name);
-        if (find_it != use_places.end() && name != std::vector<std::string>{"__WHITESPACE"}) {
+        if (find_it != use_places.end() && name != vector<std::string>{"__WHITESPACE"}) {
             bool to_add = false;
             for (const auto &use_name : find_it->second) {
                 if (corelib::text::isLower(use_name.back())) {
@@ -1097,7 +1080,7 @@ auto AST::getCodeForLexer() -> lexer_code {
                 // add this token
                 options.options.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName { name } });
             }
-        } else if (name == std::vector<std::string> { "__WHITESPACE" }) {
+        } else if (name == vector<std::string> { "__WHITESPACE" }) {
             options.options.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName { name } });
         } else {
             printf("Not found %s in use_places\n", name.back().c_str());
@@ -1116,4 +1099,43 @@ auto AST::getCodeForLexer() -> lexer_code {
     if (return_vars.empty())
         throw Error("Empty success var\n");
     return std::make_pair(code.getData(), return_vars[0].var);
+}
+
+void AST::formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set) {
+    for (auto &el : set) {
+        oss << corelib::text::join(el.first, "_") << ": " << '{';
+        for (auto name : el.second) {
+            oss << corelib::text::join(name, "_") << ", ";
+        }
+        oss << "}\n";
+    }
+}
+
+void AST::printFirstSet(const std::string &fileName) {
+    // Step 1: Print to std::ostringstream
+    std::ostringstream oss;
+    formatFirstOrFollowSet(oss, getFirstSet());
+
+    // Step 2: Output the stringstream content to a file
+    std::ofstream outFile(fileName);
+    if (outFile.is_open()) {
+        outFile << oss.str();
+        outFile.close();
+    } else {
+        std::cerr << "Failed to open the file for writing: " << fileName << "\n";
+    }
+}
+void AST::printFollowSet(const std::string &fileName) {
+    // Step 1: Print to std::ostringstream
+    std::ostringstream oss;
+    formatFirstOrFollowSet(oss, getFollowSet());
+
+    // Step 2: Output the stringstream content to a file
+    std::ofstream outFile(fileName);
+    if (outFile.is_open()) {
+        outFile << oss.str();
+        outFile.close();
+    } else {
+        std::cerr << "Failed to open the file for writing: " << fileName << "\n";
+    }
 }

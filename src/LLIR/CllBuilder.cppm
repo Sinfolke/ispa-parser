@@ -3,6 +3,7 @@ import LLIRBuilderBase;
 import TreeAPI;
 import LLIRBuilderDataWrapper;
 import LLIR;
+import types;
 import std;
 export namespace LLIR {
     class CllBuilder : public BuilderBase {
@@ -47,7 +48,7 @@ export namespace LLIR {
     class CllFunctionBuilder : public BuilderDataWrapper {
         const TreeAPI::CllFunctionCall *call;
         function_call result;
-        auto FunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) -> std::vector<Expression>;
+        auto FunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) -> vector<Expression>;
     public:
         void build();
         auto get() -> function_call;

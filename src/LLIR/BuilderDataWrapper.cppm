@@ -2,6 +2,7 @@ export module LLIRBuilderDataWrapper;
 import LLIR;
 import LLIRBuilderData;
 import AST;
+import types;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -13,10 +14,10 @@ export namespace LLIR {
         bool *addSpaceSkip = nullptr;
         bool *isFirst = nullptr;
         int *tokensOnly = nullptr;
-        std::vector<std::string> *fullname = nullptr;
-        std::vector<variable> *vars = nullptr;
-        std::vector<std::pair<std::string, variable>> *key_vars = nullptr;
-        std::vector<variable> *unnamed_datablock_units = nullptr;
+        vector<std::string> *fullname = nullptr;
+        vector<variable> *vars = nullptr;
+        vector<std::pair<std::string, variable>> *key_vars = nullptr;
+        vector<variable> *unnamed_datablock_units = nullptr;
         BuilderData::SymbolFollow *symbol_follow = nullptr;
         bool *has_symbol_follow = nullptr;
         AST *tree = nullptr;
@@ -44,11 +45,11 @@ export namespace LLIR {
             bool &addSpaceSkip,
             bool &isFirst,
             int &tokensOnly,
-            std::vector<std::string> &fullname,
-            std::vector<variable> &vars,
-            std::vector<std::pair<std::string, variable>> &key_vars,
-            std::vector<variable> &unnamed_datablock_units,
-            std::vector<std::pair<std::vector<std::string>, std::set<std::vector<std::string>>>> &symbol_follow,
+            vector<std::string> &fullname,
+            vector<variable> &vars,
+            vector<std::pair<std::string, variable>> &key_vars,
+            vector<variable> &unnamed_datablock_units,
+            vector<std::pair<vector<std::string>, std::set<vector<std::string>>>> &symbol_follow,
             bool &has_symbol_follow,
             AST *tree
         ) :
