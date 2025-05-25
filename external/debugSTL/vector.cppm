@@ -329,32 +329,26 @@ class vector {
         }
 
         bool operator==(const iterator_base& other) const {
-            check();
             return ptr == other.ptr;
         }
 
         bool operator!=(const iterator_base& other) const {
-            check();
             return ptr != other.ptr;
         }
 
         bool operator<(const iterator_base& other) const {
-            check();
             return ptr < other.ptr;
         }
 
         bool operator>(const iterator_base& other) const {
-            check();
             return ptr > other.ptr;
         }
 
         bool operator<=(const iterator_base& other) const {
-            check();
             return ptr <= other.ptr;
         }
 
         bool operator>=(const iterator_base& other) const {
-            check();
             return ptr >= other.ptr;
         }
     };

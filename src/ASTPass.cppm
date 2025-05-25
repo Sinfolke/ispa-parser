@@ -36,7 +36,8 @@ export class ASTPass {
         bool prioritySort(const TreeAPI::RuleMemberOp &first, const TreeAPI::RuleMemberOp &second);
         bool prioritySort(const TreeAPI::RuleMember &first, const TreeAPI::RuleMember &second);
         
-
+        static auto inlineGroup(TreeAPI::RuleMemberGroup group, vector<TreeAPI::RuleMember> &members, vector<TreeAPI::RuleMember>::iterator toInsert)
+             -> vector<TreeAPI::RuleMember>::iterator;
         void constructor() {
             removeEmptyRule();
             inlineSingleGroups();

@@ -8,8 +8,10 @@ import LLIRBuilderDataWrapper;
 import LLIRRuleMemberBuilder;
 import LLIRBuilderData;
 import cpuf.printf;
+import Tlog.Logger;
 import std;
 import std.compat;
+#define log(format, ...) log("[{}]" format,__LINE__, ##__VA_ARGS__)
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);
@@ -664,58 +666,54 @@ void AST::transform_helper(
     const vector<std::string> &fullname,
     utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> &replacements
 ) {
-    for (size_t i = 0; i < members.size(); ++i) {
+    logger.increaseIndentLevel();
+    auto size = members.size();
+    for (size_t i = 0; i < size; ++i) {
         auto &member = members[i];
-
         if (member.isGroup()) {
-            auto data = member.getGroup();
-            transform_helper(data.values, fullname, replacements);  // recursive call
-
-            if (member.quantifier == '\0') {
-                // Inline group content directly
-                members.erase(members.begin() + i);
-                members.insert(members.begin() + i, data.values.begin(), data.values.end());
-                i += data.values.size() - 1;
-                continue;
-            }
-
-            // Create a rule for the quantified group
+            logger.increaseIndentLevel();
+            logger.log("IsGroup, data: ");
+            logger.increaseIndentLevel();
+            logger.log("{}", member.getGroup().values);
+            logger.decreaseIndentLevel();
+            auto data = member.getGroup(); // should be copy!!!
             std::string quant_rule_name = "__grp" + std::to_string(i);
             auto quant_fullname = fullname;
             quant_fullname.push_back(quant_rule_name);
+            // Recursively process the group
+            logger.log("running transform_helper on group");
+            transform_helper(data.values, quant_fullname, replacements);
 
-            // Replace the group with a reference to the new rule
-            members[i] = TreeAPI::RuleMember {
-                .quantifier = '\0',
-                .value = TreeAPI::RuleMemberName {.name = quant_fullname}
-            };
+            vector<vector<TreeAPI::RuleMember>> new_alternatives;
+            logger.log("quant_fullname: {}", quant_fullname);
+            // Replace current member with reference to new rule
+            member = TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} };
 
             vector<vector<TreeAPI::RuleMember>> new_alts;
-
+            logger.log("dealing with quantifier {}", member.quantifier);
             switch (member.quantifier) {
                 case '?':
-                    new_alts.push_back({});
+                    new_alts.push_back({}); // empty
                     new_alts.push_back(data.values);
                     break;
 
                 case '+': {
+                    // + = A A*
                     std::string tail_name = quant_rule_name + "_tail";
                     auto tail_fullname = quant_fullname;
                     tail_fullname.push_back(tail_name);
 
+                    // A → data tail
                     auto base = data.values;
-                    base.push_back(TreeAPI::RuleMember {
-                        .value = TreeAPI::RuleMemberName {.name = tail_fullname}
-                    });
+                    base.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
                     new_alts.push_back(base);
 
-                    vector<vector<TreeAPI::RuleMember>> tail_alts = {
-                        {},
-                        data.values
-                    };
-                    tail_alts[1].push_back(TreeAPI::RuleMember {
-                        .value = TreeAPI::RuleMemberName {.name = tail_fullname}
-                    });
+                    // A* tail: ε | data tail
+                    vector<vector<TreeAPI::RuleMember>> tail_alts;
+                    tail_alts.push_back({});
+                    auto recur = data.values;
+                    recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = tail_fullname} });
+                    tail_alts.push_back(recur);
 
                     for (auto &alt : tail_alts)
                         initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
@@ -723,42 +721,115 @@ void AST::transform_helper(
                 }
 
                 case '*': {
+                    // * = ε | data A*
                     new_alts.push_back({});
                     auto recur = data.values;
-                    recur.push_back(TreeAPI::RuleMember {
-                        .value = TreeAPI::RuleMemberName {.name = quant_fullname}
-                    });
+                    recur.push_back(TreeAPI::RuleMember { .value = TreeAPI::RuleMemberName {.name = quant_fullname} });
                     new_alts.push_back(recur);
                     break;
                 }
             }
 
             for (auto &alt : new_alts) {
+                logger.log("alt: ", alt);
+                logger.increaseIndentLevel();
+                logger.log("{}", alt);
+                logger.decreaseIndentLevel();
                 initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
             }
-
+            logger.log("<leaving group>");
+            logger.decreaseIndentLevel();
             continue;
         }
-
         if (member.isOp()) {
-            auto data = member.getOp();
-            transform_helper(data.options, fullname, replacements);
+            logger.log("in Op: {}", member.getOp());
+            auto data = member.getOp(); // should be copy !!!
+            vector<std::string> push_name;
+            vector<TreeAPI::RuleMember>::iterator val_it;
+            vector<std::pair<size_t, size_t>> group_pos = {};
+            size_t _count = 0;
+            if (members.size() == 1) {
+                logger.log("[branch] members.size() == 1");
+                size_t count = 0;
+                bool is_first_going_group = false;
 
-            std::string rule_name = "__rop" + std::to_string(i);
-            auto new_fullname = fullname;
-            new_fullname.push_back(rule_name);
+                for (const auto &rule : data.options) {
+                    if (rule.isGroup()) {
+                        if (count == 0)
+                            is_first_going_group = true;
 
-            members[i] = TreeAPI::RuleMember {
-                .value = TreeAPI::RuleMemberName {.name = new_fullname}
-            };
+                        auto len = compute_group_length(rule.getGroup().values);
+                        group_pos.push_back({count, len});
+                        count += len;
+                        continue;
+                    }
+                    count++;
+                }
+                logger.log("group_pos: {}", group_pos);
+                logger.log("running transform_helper on op");
+                transform_helper(data.options, fullname, replacements); // process internal ops/groups
+                if (is_first_going_group) {
+                    logger.log("[branch] is_first_going_group == true");
+                    logger.log("group_pos[0]: {}", group_pos[0]);
+                    auto [pos, len] = group_pos[0];
+                    group_pos.erase(group_pos.begin());
 
-            for (auto &opt : data.options) {
-                initial_item_set[new_fullname].push_back(TreeAPI::Rule {.rule_members = {opt}});
+                    members.erase(members.begin() + i);
+                    size_t j = 0;
+                    val_it = data.options.begin();
+                    logger.increaseIndentLevel();
+                    for (; j < len; j++, val_it++, _count++, i++) {
+                        logger.log("j: {}, _count: {}, i: {}, val_it: {}", j, _count, i, &(*val_it));
+                        members.insert(members.begin() + i + j, *val_it);
+                    }
+                    logger.decreaseIndentLevel();
+                    val_it = data.options.begin() + j;
+                } else {
+                    logger.log("[branch] is_first_going_group == false");
+                    logger.log("data.options[0]: {}, data.options.begin(): {}, data.options.begin() + 1: {}, _count: {}, _count + 1: {}",
+                        data.options[0], &(*data.options.begin()), &(*data.options.begin()) + 1, _count, _count + 1
+                    );
+                    logger.log("remain element {} in set", data.options[0]);
+                    members[i] = data.options[0];
+                    val_it = data.options.begin() + 1;
+                    _count++;
+                }
+
+                push_name = fullname;
+            } else {
+                logger.log("[branch] members.size() == {} (!= 1)", members.size());
+                std::string name ="__rop" + std::to_string(i);
+                auto new_fullname = fullname;
+                new_fullname.push_back(name);
+                members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
+
+                transform_helper(data.options, fullname, replacements); // process internal ops/groups
+                val_it = data.options.begin();
+                push_name = new_fullname;
+                logger.log("new_fullname: {}", new_fullname);
             }
-
+            for (; val_it != data.options.end(); val_it++, _count++) {
+                auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<size_t, size_t> &unit) {return unit.first == _count;});
+                std::vector<TreeAPI::RuleMember> values;
+                logger.log("found group: {}", group != group_pos.end());
+                if (group != group_pos.end()) {
+                    logger.log("iterating through group");
+                    for (size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
+                        logger.log("i: {}, _count: {}, val_it: {}", i, _count, &(*val_it));
+                        values.push_back(*val_it);
+                    }
+                    val_it--;
+                    _count--;
+                    logger.log("final _count: {}, val_it: {}", _count, &(*val_it));
+                } else {
+                    logger.log("inserting raw element {}", *val_it);
+                    values.push_back(*val_it);
+                }
+                initial_item_set[push_name].push_back(TreeAPI::Rule {.rule_members = values});
+            }
+            logger.log("<Leaving Op>");
             continue;
         }
-
         // Handle standalone quantifier case (e.g., id?, id+, id*)
         if (member.quantifier != '\0') {
             auto find = replacements.find(fullname);
@@ -831,22 +902,26 @@ void AST::transform_helper(
             }
         }
     }
+    logger.decreaseIndentLevel();
 }
 void AST::transform() {
     vector<vector<std::string>> keys;
     for (const auto &pair : initial_item_set) {
-        keys.push_back(pair.first);
+        if (corelib::text::isLower(pair.first.back()))
+            keys.push_back(pair.first);
     }
 
     utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> replacement;
-
+    Tlog::Branch lb(logger, "AST/transform.log");
     for (const auto &name : keys) {
-        if (corelib::text::isUpper(name.back()))
-            continue;
         auto it = initial_item_set.find(name);
         if (it == initial_item_set.end())
             throw Error("Previous key dissappeared");
+        if (it->second.empty())
+            throw Error("Rule {} empty", name);
+        logger.log("transforming {}: {}", name, it->second[0].rule_members);
         transform_helper(it->second[0].rule_members, name, replacement);
+        logger.log("new rule {}: {}", name, it->second[0].rule_members);
     }
 }
 void AST::createInitialItemSet() {
@@ -862,74 +937,77 @@ auto AST::getInitialItemSet() -> InitialItemSet & {
         createInitialItemSet();
     return initial_item_set;
 }
-void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string> &nonterminal, bool &changed) {
-    for (const auto &option : options) {
+
+void AST::computeNullableSet() {
+    bool changed;
+    do {
+        changed = false;
+        for (const auto &[nonterminal, productions] : initial_item_set) {
+            for (const auto &prod : productions) {
+                bool allNullable = true;
+                for (const auto &sym : prod.rule_members) {
+                    if (!sym.isName()) {
+                        allNullable = false;
+                        break;
+                    }
+                    const auto &rule = sym.getName();
+                    if (!nullable.count(rule.name)) {
+                        allNullable = false;
+                        break;
+                    }
+                }
+                if (allNullable && nullable.insert(nonterminal).second)
+                    changed = true;
+            }
+        }
+    } while (changed);
+}
+
+void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string>& nonterminal, bool& changed) {
+    for (const auto& option : options) {
         bool nullable_prefix = true;
-        for (const auto &member : option.rule_members) {
+        for (const auto& member : option.rule_members) {
             if (member.isNospace())
                 continue;
             if (!member.isName())
                 throw Error("Non-RuleMemberName class, rule {}", nonterminal);
-            const auto &rule = member.getName();
-            auto &currentFirst = first[nonterminal];
+
+            const auto& rule = member.getName();
+            auto& currentFirst = first[nonterminal];
+
             if (rule.name == nonterminal) {
-                continue;
+                continue;  // Avoid self-loop
             }
+
             if (corelib::text::isLower(rule.name.back())) {
-                // Nonterminal: take FIRST(rule.fullname)
-                // cpuf::printf("[nonterminal %$] ", rule.fullname);
-                auto find = first.find(rule.name);
-                const auto &otherFirst = first[rule.name];
-                // cpuf::printf("FIRST(%$) = ", rule.fullname);
+                // Nonterminal
+                const auto& otherFirst = first[rule.name];
+                cpuf::printf("[first] inserting non-terminal's[{}] first set: {}", rule.name, otherFirst);
                 for (const auto& el : otherFirst) {
-                    // cpuf::printf("%$, ", el);
-                }
-                auto currentFirst_size = currentFirst.size();
-                currentFirst.insert(otherFirst.begin(), otherFirst.end());
-                if (currentFirst_size > currentFirst.size()) {
-                    changed = true;
-                    // cpuf::printf("(changed), ");
-                } else {
-                    // cpuf::printf("(not changed), ");
-                }
-                // Check if nullable
-                bool isNullable = false;
-                auto &rules = initial_item_set[rule.name];
-                for (const auto &r : rules) {
-                    bool break_this = false;
-                    for (const auto &member : r.rule_members) {
-                        if (member.empty()) {
-                            isNullable = true;
-                            break_this = true;
-                            break;
-                        }
-                    }
-                    if (break_this)
-                        break;
+                    if (corelib::text::isUpper(el.back()) && el != std::vector<std::string>{"ε"}) continue;
+                    if (currentFirst.insert(el).second)
+                        changed = true;
                 }
 
-                if (!isNullable) {
+                if (nullable.find(rule.name) == nullable.end()) {
                     nullable_prefix = false;
                     break;
                 }
 
             } else {
-                // Terminal: add directly
-                // cpuf::printf("[terminal %$] ", rule.fullname);
-                if (first[nonterminal].insert(rule.name).second) {
-                    // cpuf::printf("(added), ");
+                // Terminal
+                if (currentFirst.insert(rule.name).second) {
                     changed = true;
                 }
-
                 nullable_prefix = false;
                 break;
             }
         }
-        // cpuf::printf("\n");
-        // If all symbols in this production were nullable
+
         if (nullable_prefix) {
-            if (first[nonterminal].insert({"ε"}).second)
+            if (first[nonterminal].insert({"ε"}).second) {
                 changed = true;
+            }
         }
     }
 }
@@ -937,13 +1015,18 @@ void AST::constructFirstSet() {
     if (!first.empty())
         return;
     createInitialItemSet();
+    computeNullableSet();
     bool changed;
     do {
         changed = false;
+        cpuf::printf("------------enter first set------------------");
         for (const auto &[nonterminal, productions] : initial_item_set) {
-            // cpuf::printf("constructing first set for %$ -> ", nonterminal);
-            if (corelib::text::isUpper(nonterminal.back()))
+            cpuf::dprintf("constructing first set for {} -> ", nonterminal);
+            if (corelib::text::isUpper(nonterminal.back())) {
+                cpuf::printf("skipped\n");
                 continue;
+            }
+            cpuf::printf("");
             constructFirstSet(productions, nonterminal, changed);
         }
     } while (changed);
@@ -973,7 +1056,7 @@ void AST::constructFollowSet() {
                 if (!rules.rule_members.empty() && name == rules.rule_members[0].getName().name) {
                     is_left_recursive = true;
                 }
-                cpuf::dprintf("Processing {}-> ", name);
+                cpuf::dprintf("Processing {} -> ", name);
                 for (auto it = rules.rule_members.begin(); it != rules.rule_members.end(); it++) {
                     if (it->isNospace())
                         continue;
@@ -996,7 +1079,9 @@ void AST::constructFollowSet() {
                                 hasChanges = true;
                         }
                         prev_depend.push_back(name);
-                    } else if (is_left_recursive && corelib::text::isLower(current.name.back())) {
+                        continue;
+                    }
+                    if (is_left_recursive && corelib::text::isLower(current.name.back())) {
                         auto prev_size = follow[current.name].size();
                         cpuf::printf("[left_recursion] follow[current.name: {}]: {}, ", current.name, follow[current.name]);
                         follow[current.name].insert(follow[name].begin(), follow[name].end());
@@ -1005,12 +1090,15 @@ void AST::constructFollowSet() {
                         prev_depend.push_back(current.name);
                     }
                     if (it + 1 == rules.rule_members.end()) {
-                        // Add FOLLOW of LHS (the left-hand-side nonterminal)
-                        auto &f_lhs = follow[name];
-                        cpuf::dprintf("[end of rule] follow[name: {}]: {}, ", name, follow[name]);
-                        for (auto &sym : f_lhs) {
-                            if (follow[current.name].insert(sym).second)
-                                hasChanges = true;
+                        if (name != current.name) { // prevent self-insertion
+                            auto &f_lhs = follow[name];
+                            cpuf::dprintf("current -> {}, [end of rule] follow[name: {}]: {}, ", current.name, name, follow[name]);
+                            for (auto &sym : f_lhs) {
+                                if (follow[current.name].insert(sym).second)
+                                    hasChanges = true;
+                            }
+                        } else {
+                            cpuf::dprintf("[end of rule - skip self follow insertion] {} ", name);
                         }
                     } else {
                         auto next = (it + 1)->getName();

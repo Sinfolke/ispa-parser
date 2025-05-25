@@ -3,6 +3,7 @@ import hash;
 import corelib;
 import logging;
 import cpuf.printf;
+import cpuf.op;
 import std;
 bool ELRParser::isELR() const {
     return true;

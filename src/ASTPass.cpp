@@ -16,17 +16,30 @@ void ASTPass::removeEmptyRule(AST &ast) {
         it++;
     }
 }
+auto ASTPass::inlineGroup(TreeAPI::RuleMemberGroup group, vector<TreeAPI::RuleMember> &members, vector<TreeAPI::RuleMember>::iterator toInsert)
+    -> vector<TreeAPI::RuleMember>::iterator // group must be copy else on element insertion iterators will invalidate
+{
+    // recursively inline nested groups
+    for (size_t i = 0; i < group.values.size(); ++i) {
+        auto &el = group.values[i];
+        if (el.isGroup() && el.quantifier == '\0') {
+            // Careful: this may still reallocate and change size
+            inlineGroup(el.getGroup(), group.values, group.values.begin() + i);
+            i += el.getGroup().values.size();
+            // You might need to adjust `i` after the insertion depending on behavior
+        }
+    }
+    // inline this group
+    return members.insert(toInsert, group.values.begin(), group.values.end()) + static_cast<std::vector<TreeAPI::RuleMember>::difference_type>(group.values.size());
+}
 void ASTPass::inlineSingleGroups(AST &ast) {
     for (auto &[name, value] : ast.getTreeMap()) {
-        for (auto &member : value.rule_members) {
+        for (auto it = value.rule_members.begin(); it != value.rule_members.end(); ++it) {
+            auto &member = *it;
             if (member.isGroup()) {
                 if (member.quantifier != '\0')
                     continue;
-                auto &grp = member.getGroup();
-                if (grp.values.size() == 1) {
-                    auto replacement = grp.values[0].value; // fully decoupled from original
-                    member.value = replacement;
-                }
+                it = inlineGroup(member.getGroup(), value.rule_members, it);
             }
         }
     }

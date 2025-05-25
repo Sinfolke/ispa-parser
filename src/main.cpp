@@ -1,6 +1,7 @@
 import cpuf.color;
 import cpuf.dlib;
 import cpuf.printf;
+import cpuf.op;
 import cpuf.dlib;
 import CLI;
 import init;

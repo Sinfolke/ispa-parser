@@ -43,6 +43,7 @@ export class AST {
         vector<TreeAPI::RuleMember> ops;
 
         UsePlaceTable use_places;
+        utype::unordered_set<vector<std::string>> nullable;
         First first;
         Follow follow;
         TreeAPI::Array createArray(const Parser::Rule &array);
@@ -95,6 +96,7 @@ export class AST {
         void transform();
         void createInitialItemSet();
         auto createUsePlacesTable() -> UsePlaceTable&;
+        void computeNullableSet();
         void constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string> &nonterminal, bool &changed);
         void constructFirstSet();
         void constructFollowSet();
