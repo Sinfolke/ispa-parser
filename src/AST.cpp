@@ -11,7 +11,6 @@ import cpuf.printf;
 import Tlog.Logger;
 import std;
 import std.compat;
-#define log(format, ...) log("[{}]" format,__LINE__, ##__VA_ARGS__)
 void AST::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);
@@ -664,6 +663,7 @@ auto AST::compute_group_length(const vector<TreeAPI::RuleMember> &group) -> size
 void AST::transform_helper(
     vector<TreeAPI::RuleMember> &members,
     const vector<std::string> &fullname,
+    const vector<std::string> &original_fullname,
     utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> &replacements
 ) {
     logger.increaseIndentLevel();
@@ -682,7 +682,7 @@ void AST::transform_helper(
             quant_fullname.push_back(quant_rule_name);
             // Recursively process the group
             logger.log("running transform_helper on group");
-            transform_helper(data.values, quant_fullname, replacements);
+            transform_helper(data.values, quant_fullname, original_fullname, replacements);
 
             vector<vector<TreeAPI::RuleMember>> new_alternatives;
             logger.log("quant_fullname: {}", quant_fullname);
@@ -716,7 +716,7 @@ void AST::transform_helper(
                     tail_alts.push_back(recur);
 
                     for (auto &alt : tail_alts)
-                        initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
+                        initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt, .original_rules = original_fullname});
                     break;
                 }
 
@@ -728,6 +728,11 @@ void AST::transform_helper(
                     new_alts.push_back(recur);
                     break;
                 }
+                default:
+                    initial_item_set[quant_fullname].push_back(TreeAPI::Rule {
+                        .rule_members = data.values,
+                        .original_rules = original_fullname
+                    });
             }
 
             for (auto &alt : new_alts) {
@@ -735,7 +740,7 @@ void AST::transform_helper(
                 logger.increaseIndentLevel();
                 logger.log("{}", alt);
                 logger.decreaseIndentLevel();
-                initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
+                initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt, .original_rules = original_fullname});
             }
             logger.log("<leaving group>");
             logger.decreaseIndentLevel();
@@ -767,7 +772,7 @@ void AST::transform_helper(
                 }
                 logger.log("group_pos: {}", group_pos);
                 logger.log("running transform_helper on op");
-                transform_helper(data.options, fullname, replacements); // process internal ops/groups
+                transform_helper(data.options, fullname, original_fullname, replacements); // process internal ops/groups
                 if (is_first_going_group) {
                     logger.log("[branch] is_first_going_group == true");
                     logger.log("group_pos[0]: {}", group_pos[0]);
@@ -803,7 +808,7 @@ void AST::transform_helper(
                 new_fullname.push_back(name);
                 members[i] = TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = new_fullname}};
 
-                transform_helper(data.options, fullname, replacements); // process internal ops/groups
+                transform_helper(data.options, fullname, original_fullname, replacements); // process internal ops/groups
                 val_it = data.options.begin();
                 push_name = new_fullname;
                 logger.log("new_fullname: {}", new_fullname);
@@ -825,81 +830,78 @@ void AST::transform_helper(
                     logger.log("inserting raw element {}", *val_it);
                     values.push_back(*val_it);
                 }
-                initial_item_set[push_name].push_back(TreeAPI::Rule {.rule_members = values});
+                initial_item_set[push_name].push_back(TreeAPI::Rule {.rule_members = values, .original_rules = original_fullname});
             }
             logger.log("<Leaving Op>");
             continue;
         }
         // Handle standalone quantifier case (e.g., id?, id+, id*)
-        if (member.quantifier != '\0') {
-            auto find = replacements.find(fullname);
-            if (find != replacements.end() && find->second.first == member.quantifier) {
-                members[i] = TreeAPI::RuleMember {
-                    .quantifier = '\0',
-                    .value = TreeAPI::RuleMemberName {.name = find->second.second}
-                };
-                continue;
-            }
+        if (member.quantifier == '\0')
+            continue;
 
-            std::string quant_rule_name = "__q" + std::to_string(i);
-
-            auto quant_fullname = fullname;
-            quant_fullname.push_back(quant_rule_name);
-
-            TreeAPI::RuleMember replaced = member;
-            replaced.quantifier = '\0';
-
+        auto find = replacements.find(fullname);
+        if (find != replacements.end() && find->second.first == member.quantifier) {
             members[i] = TreeAPI::RuleMember {
                 .quantifier = '\0',
-                .value = TreeAPI::RuleMemberName {.name = quant_fullname}
+                .value = TreeAPI::RuleMemberName {.name = find->second.second}
             };
+            continue;
+        }
 
-            vector<vector<TreeAPI::RuleMember>> new_alts;
-            switch (member.quantifier) {
-                case '?':
-                    new_alts.push_back({});
-                    new_alts.push_back({replaced});
-                    break;
-                case '+': {
-                    std::string tail_name = quant_rule_name + "_tail";
-                    auto tail_fullname = quant_fullname;
-                    tail_fullname.push_back(tail_name);
+        std::string quant_rule_name = "__q" + std::to_string(i);
 
-                    new_alts.push_back({
+        auto quant_fullname = fullname;
+        quant_fullname.push_back(quant_rule_name);
+
+        TreeAPI::RuleMember replaced = member;
+        replaced.quantifier = '\0';
+
+        vector<vector<TreeAPI::RuleMember>> new_alts;
+        logger.log("dealing with quantifier {} for rule {}", member.quantifier, member);
+        switch (member.quantifier) {
+            case '?':
+                new_alts.push_back({});
+                new_alts.push_back({replaced});
+                break;
+            case '+': {
+                std::string tail_name = quant_rule_name + "_tail";
+                auto tail_fullname = quant_fullname;
+                tail_fullname.push_back(tail_name);
+
+                new_alts.push_back({
+                    replaced,
+                    TreeAPI::RuleMember {
+                        .value = TreeAPI::RuleMemberName {.name = tail_fullname}
+                    }
+                });
+
+                vector<vector<TreeAPI::RuleMember>> tail_alts = {
+                    {},
+                    {
                         replaced,
                         TreeAPI::RuleMember {
                             .value = TreeAPI::RuleMemberName {.name = tail_fullname}
                         }
-                    });
-
-                    vector<vector<TreeAPI::RuleMember>> tail_alts = {
-                        {},
-                        {
-                            replaced,
-                            TreeAPI::RuleMember {
-                                .value = TreeAPI::RuleMemberName {.name = tail_fullname}
-                            }
-                        }
-                    };
-                    for (auto &alt : tail_alts) {
-                        initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
                     }
-                    break;
+                };
+                for (auto &alt : tail_alts) {
+                    initial_item_set[tail_fullname].push_back(TreeAPI::Rule {.rule_members = alt, .original_rules = original_fullname});
                 }
-                case '*':
-                    new_alts.push_back({});
-                    new_alts.push_back({
-                        replaced,
-                        TreeAPI::RuleMember {
-                            .value = TreeAPI::RuleMemberName {.name = quant_fullname}
-                        }
-                    });
-                    break;
+                break;
             }
+            case '*':
+                new_alts.push_back({});
+                new_alts.push_back({
+                    replaced,
+                    TreeAPI::RuleMember {
+                        .value = TreeAPI::RuleMemberName {.name = quant_fullname}
+                    }
+                });
+                break;
+        }
 
-            for (auto &alt : new_alts) {
-                initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt});
-            }
+        for (auto &alt : new_alts) {
+            initial_item_set[quant_fullname].push_back(TreeAPI::Rule {.rule_members = alt, .original_rules = original_fullname});
         }
     }
     logger.decreaseIndentLevel();
@@ -920,14 +922,15 @@ void AST::transform() {
         if (it->second.empty())
             throw Error("Rule {} empty", name);
         logger.log("transforming {}: {}", name, it->second[0].rule_members);
-        transform_helper(it->second[0].rule_members, name, replacement);
+        transform_helper(it->second[0].rule_members, name, name, replacement);
         logger.log("new rule {}: {}", name, it->second[0].rule_members);
     }
 }
 void AST::createInitialItemSet() {
     if (!initial_item_set.empty())
         return;
-    for (auto &[name, value] : tree_map) {
+    for (auto [name, value] : tree_map) {
+        value.original_rules = {name};
         initial_item_set[name] = {value};
     }
     transform();
@@ -964,6 +967,7 @@ void AST::computeNullableSet() {
 }
 
 void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<std::string>& nonterminal, bool& changed) {
+    logger.increaseIndentLevel();
     for (const auto& option : options) {
         bool nullable_prefix = true;
         for (const auto& member : option.rule_members) {
@@ -976,13 +980,14 @@ void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<s
             auto& currentFirst = first[nonterminal];
 
             if (rule.name == nonterminal) {
+                logger.log("rule.name == non-terminal -> continue");
                 continue;  // Avoid self-loop
             }
 
             if (corelib::text::isLower(rule.name.back())) {
                 // Nonterminal
                 const auto& otherFirst = first[rule.name];
-                cpuf::printf("[first] inserting non-terminal's[{}] first set: {}", rule.name, otherFirst);
+                logger.log("inserting non-terminal's[{}] first set: {} to {}", rule.name, otherFirst, nonterminal);
                 for (const auto& el : otherFirst) {
                     if (corelib::text::isUpper(el.back()) && el != std::vector<std::string>{"ε"}) continue;
                     if (currentFirst.insert(el).second)
@@ -996,6 +1001,7 @@ void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<s
 
             } else {
                 // Terminal
+                logger.log("inserting terminal {} to {}", rule.name, nonterminal);
                 if (currentFirst.insert(rule.name).second) {
                     changed = true;
                 }
@@ -1010,6 +1016,7 @@ void AST::constructFirstSet(const vector<TreeAPI::Rule>& options, const vector<s
             }
         }
     }
+    logger.decreaseIndentLevel();
 }
 void AST::constructFirstSet() {
     if (!first.empty())
@@ -1017,16 +1024,17 @@ void AST::constructFirstSet() {
     createInitialItemSet();
     computeNullableSet();
     bool changed;
+    Tlog::Branch lb(logger, "AST/constructFirstSet.log");
     do {
         changed = false;
-        cpuf::printf("------------enter first set------------------");
+        logger.log("------------enter first set------------------");
         for (const auto &[nonterminal, productions] : initial_item_set) {
-            cpuf::dprintf("constructing first set for {} -> ", nonterminal);
+            logger.dlog("constructing first set for {} -> ", nonterminal);
             if (corelib::text::isUpper(nonterminal.back())) {
-                cpuf::printf("skipped\n");
+                logger.log("skipped\n");
                 continue;
             }
-            cpuf::printf("");
+            logger.dlog("\n");
             constructFirstSet(productions, nonterminal, changed);
         }
     } while (changed);
@@ -1051,23 +1059,37 @@ void AST::constructFollowSet() {
             if (corelib::text::isUpper(name.back()))
                 continue;
             for (const auto &rules : options) {
-                if (!rules.rule_members[0].isName())
-                    throw Error("Not RuleMemberName");
-                if (!rules.rule_members.empty() && name == rules.rule_members[0].getName().name) {
+                if (rules.rule_members.empty())
+                    continue;
+                auto rules_members_it = rules.rule_members.begin();
+                while (rules_members_it->isNospace())
+                    rules_members_it++;
+                if (!rules_members_it->isName())
+                    throw Error("Not RuleMemberName for rule {}", name);
+                if (!rules.rule_members.empty() && name == rules_members_it->getName().name) {
                     is_left_recursive = true;
                 }
                 cpuf::dprintf("Processing {} -> ", name);
-                for (auto it = rules.rule_members.begin(); it != rules.rule_members.end(); it++) {
+                for (auto it = rules_members_it; it != rules.rule_members.end(); it++) {
                     if (it->isNospace())
                         continue;
                     if (!it->isName()) {
                         throw Error("Not RuleMemberName");
                     }
-                    auto current = it->getName();
-                    if (corelib::text::isUpper(current.name.back())) {
+                    auto current_n = it->getName().name;
+                    vector<std::string> *current;
+                    if (corelib::text::isUpper(current_n.back())) {
                         continue;
                     }
-                    if (name == current.name) {
+                    cpuf::printf("\n\nrule size for name {}: {}\n\n", current_n, rules.rule_members.size());
+                    std::flush(std::cout);
+                    if (!initial_item_set[current_n][0].original_rules.empty()) {
+                        current = &initial_item_set[current_n][0].original_rules;
+                    } else {
+                        current = &it->getName().name;
+                    }
+
+                    if (name == *current) {
                         // include first(name)
                         auto f = first[name];
                         cpuf::dprintf("[right recursion] first[name: {}]: {}, ", name, first[name]);
@@ -1081,20 +1103,20 @@ void AST::constructFollowSet() {
                         prev_depend.push_back(name);
                         continue;
                     }
-                    if (is_left_recursive && corelib::text::isLower(current.name.back())) {
-                        auto prev_size = follow[current.name].size();
-                        cpuf::printf("[left_recursion] follow[current.name: {}]: {}, ", current.name, follow[current.name]);
-                        follow[current.name].insert(follow[name].begin(), follow[name].end());
-                        if (prev_size != follow[current.name].size())
+                    if (is_left_recursive && corelib::text::isLower(current->back())) {
+                        auto prev_size = follow[*current].size();
+                        cpuf::printf("[left_recursion] follow[current.name: {}]: {}, ", *current, follow[*current]);
+                        follow[*current].insert(follow[name].begin(), follow[name].end());
+                        if (prev_size != follow[*current].size())
                             hasChanges = true;
-                        prev_depend.push_back(current.name);
+                        prev_depend.push_back(*current);
                     }
                     if (it + 1 == rules.rule_members.end()) {
-                        if (name != current.name) { // prevent self-insertion
+                        if (name != *current) { // prevent self-insertion
                             auto &f_lhs = follow[name];
-                            cpuf::dprintf("current -> {}, [end of rule] follow[name: {}]: {}, ", current.name, name, follow[name]);
+                            cpuf::dprintf("current -> {}, [end of rule] follow[name: {}]: {}, ", *current, name, follow[name]);
                             for (auto &sym : f_lhs) {
-                                if (follow[current.name].insert(sym).second)
+                                if (follow[*current].insert(sym).second)
                                     hasChanges = true;
                             }
                         } else {
@@ -1105,7 +1127,7 @@ void AST::constructFollowSet() {
                         if (corelib::text::isUpper(next.name.back())) {
                             // terminal - just push
                             cpuf::dprintf("[next is terminal] follow[name: {}]: {} insert {}, ", name, follow[name], next.name);
-                            if (follow[current.name].insert(next.name).second)
+                            if (follow[*current].insert(next.name).second)
                                 hasChanges = true;
                         } else {
                             // non-terminal, insert it's first
@@ -1117,7 +1139,7 @@ void AST::constructFollowSet() {
                                     has_epsilon = true;
                                     continue;
                                 }
-                                if (follow[current.name].insert(e).second)
+                                if (follow[*current].insert(e).second)
                                     hasChanges = true;
                             }
                             if (has_epsilon) {
@@ -1125,7 +1147,7 @@ void AST::constructFollowSet() {
                                 auto &f_lhs = follow[name];
                                 cpuf::dprintf("[has_epsilon] follow[name: {}]: {}", name, follow[name]);
                                 for (auto &sym : f_lhs) {
-                                    if (follow[current.name].insert(sym).second)
+                                    if (follow[*current].insert(sym).second)
                                         hasChanges = true;
                                 }
                             }

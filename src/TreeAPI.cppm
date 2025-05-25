@@ -539,6 +539,7 @@ export namespace TreeAPI {
     struct Rule {
         vector<TreeAPI::RuleMember> rule_members;
         TreeAPI::DataBlock data_block;
+        vector<std::string> original_rules;
     private:
         friend struct ::uhash;
         auto members() const  {

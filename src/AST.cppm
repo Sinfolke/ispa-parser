@@ -87,12 +87,12 @@ export class AST {
         static auto compute_group_length(const vector<TreeAPI::RuleMember> &group) -> size_t;
         auto getRules() -> vector<TreeAPI::RuleMember>&;
         void getUsePlacesTable(const vector<TreeAPI::RuleMember> &members, const vector<std::string> &name);
-        void transform_helper(
-            vector<TreeAPI::RuleMember> &members,
-            const vector<std::string> &fullname,
-            utype::unordered_map<vector<std::string>,
-            std::pair<char, vector<std::string>>> &replacements
-        );
+    void transform_helper(
+        vector<TreeAPI::RuleMember> &members,
+        const vector<std::string> &fullname,
+        const vector<std::string> &original_fullname,
+        utype::unordered_map<vector<std::string>, std::pair<char, vector<std::string>>> &replacements
+    );
         void transform();
         void createInitialItemSet();
         auto createUsePlacesTable() -> UsePlaceTable&;
