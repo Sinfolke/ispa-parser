@@ -1,8 +1,8 @@
-export module LLIRBuilderDataWrapper;
+export module LLIR.Builder.DataWrapper;
 import LLIR;
-import LLIRBuilderData;
-import AST;
-import types;
+import LLIR.Builder.Data;
+import AST.Tree;
+import dstd;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -14,13 +14,13 @@ export namespace LLIR {
         bool *addSpaceSkip = nullptr;
         bool *isFirst = nullptr;
         int *tokensOnly = nullptr;
-        vector<std::string> *fullname = nullptr;
-        vector<variable> *vars = nullptr;
-        vector<std::pair<std::string, variable>> *key_vars = nullptr;
-        vector<variable> *unnamed_datablock_units = nullptr;
+        stdu::vector<std::string> *fullname = nullptr;
+        stdu::vector<variable> *vars = nullptr;
+        stdu::vector<std::pair<std::string, variable>> *key_vars = nullptr;
+        stdu::vector<variable> *unnamed_datablock_units = nullptr;
         BuilderData::SymbolFollow *symbol_follow = nullptr;
         bool *has_symbol_follow = nullptr;
-        AST *tree = nullptr;
+        AST::Tree *tree = nullptr;
 
         auto initializationCheck() -> bool;
         explicit BuilderDataWrapper(LLIR::BuilderData &data)
@@ -45,13 +45,13 @@ export namespace LLIR {
             bool &addSpaceSkip,
             bool &isFirst,
             int &tokensOnly,
-            vector<std::string> &fullname,
-            vector<variable> &vars,
-            vector<std::pair<std::string, variable>> &key_vars,
-            vector<variable> &unnamed_datablock_units,
-            vector<std::pair<vector<std::string>, std::set<vector<std::string>>>> &symbol_follow,
+            stdu::vector<std::string> &fullname,
+            stdu::vector<variable> &vars,
+            stdu::vector<std::pair<std::string, variable>> &key_vars,
+            stdu::vector<variable> &unnamed_datablock_units,
+            stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &symbol_follow,
             bool &has_symbol_follow,
-            AST *tree
+            AST::Tree *tree
         ) :
             variable_count(&variable_count),
             isToken(&isToken),

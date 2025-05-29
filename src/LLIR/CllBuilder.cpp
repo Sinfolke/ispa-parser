@@ -1,7 +1,7 @@
-module CllBuilder;
+module LLIR.CllBuilder;
 import LLIR;
-import LLIRRuleMemberBuilder;
-import RvalueBuilder;
+import LLIR.Rule.MemberBuilder;
+import LLIR.RvalueBuilder;
 import logging;
 import std;
 // get functions
@@ -16,16 +16,16 @@ auto LLIR::CllMethodCallBuilder::get() -> method_call {
     return result;
 }
 
-auto LLIR::CllExprBuilder::CllExprGroupToIR(const TreeAPI::CllExpr &group) -> Expression {
-    vector<LLIR::expr> expr;
+auto LLIR::CllExprBuilder::CllExprGroupToIR(const AST::CllExpr &group) -> Expression {
+    stdu::vector<LLIR::expr> expr;
     auto expression = CllExprLogicalToIR(group.value);
     expr.push_back({LLIR::condition_types::GROUP_OPEN});
     expr.insert(expr.end(), expression.begin(), expression.end());
     expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     return expr;
 }
-auto LLIR::CllExprBuilder::CllExprValueToIR(const TreeAPI::CllExprValue &value) -> Expression {
-    vector<LLIR::expr> expr;
+auto LLIR::CllExprBuilder::CllExprValueToIR(const AST::CllExprValue &value) -> Expression {
+    stdu::vector<LLIR::expr> expr;
     if (value.isGroup()) {
         expr = CllExprGroupToIR(value.getGroup().expr);
     } else if (value.isMethodCall()) {
@@ -55,9 +55,9 @@ auto LLIR::CllExprBuilder::CllExprValueToIR(const TreeAPI::CllExprValue &value) 
     } else throw Error("Undefined expression");
     return expr;
 }
-auto LLIR::CllExprBuilder::CllExprTermToIR(const TreeAPI::CllExprTerm &term) -> Expression {
+auto LLIR::CllExprBuilder::CllExprTermToIR(const AST::CllExprTerm &term) -> Expression {
     // if (rule.name == Parser::Rules::cll_function_call)
-    vector<LLIR::expr> cond = CllExprValueToIR(term.value);
+    stdu::vector<LLIR::expr> cond = CllExprValueToIR(term.value);
     for (int i = 0; i < term.rights.size(); i++) {
         cond.push_back(BuilderBase::CllOpToExpr(term.rights[i].first));
         auto res = CllExprValueToIR(term.rights[i].second);
@@ -65,9 +65,9 @@ auto LLIR::CllExprBuilder::CllExprTermToIR(const TreeAPI::CllExprTerm &term) -> 
     }
     return cond;
 }
-auto LLIR::CllExprBuilder::CllExprAdditionToIR(const TreeAPI::CllExprAddition &addition) -> Expression {
+auto LLIR::CllExprBuilder::CllExprAdditionToIR(const AST::CllExprAddition &addition) -> Expression {
     // if (rule.name == Parser::Rules::cll_function_call)
-    vector<LLIR::expr> cond = CllExprTermToIR(addition.value);
+    stdu::vector<LLIR::expr> cond = CllExprTermToIR(addition.value);
     for (int i = 0; i < addition.rights.size(); i++) {
         cond.push_back(BuilderBase::CllOpToExpr(addition.rights[i].first));
         auto res = CllExprTermToIR(addition.rights[i].second);
@@ -75,8 +75,8 @@ auto LLIR::CllExprBuilder::CllExprAdditionToIR(const TreeAPI::CllExprAddition &a
     }
     return cond;
 }
-auto LLIR::CllExprBuilder::CllExprCompareToIR(const TreeAPI::CllExprCompare &compare) -> Expression {
-    vector<LLIR::expr> cond = CllExprAdditionToIR(compare.value);
+auto LLIR::CllExprBuilder::CllExprCompareToIR(const AST::CllExprCompare &compare) -> Expression {
+    stdu::vector<LLIR::expr> cond = CllExprAdditionToIR(compare.value);
     for (int i = 0; i < compare.rights.size(); i++) {
         cond.push_back(BuilderBase::CllCompareOpToExpr(compare.rights[i].first));
         auto res = CllExprAdditionToIR(compare.rights[i].second);
@@ -84,8 +84,8 @@ auto LLIR::CllExprBuilder::CllExprCompareToIR(const TreeAPI::CllExprCompare &com
     }
     return cond;
 }
-auto LLIR::CllExprBuilder::CllExprLogicalToIR(const TreeAPI::CllExprLogical &logical) -> Expression {
-    vector<LLIR::expr> cond = CllExprCompareToIR(logical.value);
+auto LLIR::CllExprBuilder::CllExprLogicalToIR(const AST::CllExprLogical &logical) -> Expression {
+    stdu::vector<LLIR::expr> cond = CllExprCompareToIR(logical.value);
     for (int i = 0; i < logical.rights.size(); i++) {
         cond.push_back({BuilderBase::CllLogicalOpToIR(logical.rights[i].first)});
         auto res = CllExprCompareToIR(logical.rights[i].second);
@@ -93,7 +93,7 @@ auto LLIR::CllExprBuilder::CllExprLogicalToIR(const TreeAPI::CllExprLogical &log
     }
     return cond;
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const TreeAPI::CllExprValue &value) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &value) -> LLIR::var_type {
     if (value.isFunctionCall()) {
         // todo - get function call type
     } else if (value.isGroup()) {
@@ -116,21 +116,21 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const TreeAPI::CllExprValue &
         throw Error("Undefined expr value member");
     return {};
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprTerm(const TreeAPI::CllExprTerm &term) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprTerm(const AST::CllExprTerm &term) -> LLIR::var_type {
     // type is explicitly based on value. We may not check others in addition
     return deduceTypeFromExprValue(term.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprAddition(const TreeAPI::CllExprAddition &addition) -> LLIR::var_type{
+auto LLIR::CllExprBuilder::deduceTypeFromExprAddition(const AST::CllExprAddition &addition) -> LLIR::var_type{
     // same as with term
     return deduceTypeFromExprTerm(addition.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprCompare(const TreeAPI::CllExprCompare &compare) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprCompare(const AST::CllExprCompare &compare) -> LLIR::var_type {
     // if any comparasion exists it is boolean
     if (compare.rights.size() != 0)
         return {LLIR::var_types::BOOLEAN};
     return deduceTypeFromExprAddition(compare.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const TreeAPI::CllExprLogical &logical) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> LLIR::var_type {
     // if &&/|| exists it is always boolean
     if (logical.rights.size() != 0)
         return {LLIR::var_types::BOOLEAN};
@@ -139,8 +139,8 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const TreeAPI::CllExprLogic
 auto LLIR::CllExprBuilder::deduceType() -> LLIR::var_type {
     return deduceTypeFromExprLogical(expr->value);
 }
-auto LLIR::CllFunctionBuilder::FunctionBodyCallToIR(const TreeAPI::CllFunctionBodyCall &body) -> vector<Expression> {
-    vector<Expression> newExpr;
+auto LLIR::CllFunctionBuilder::FunctionBodyCallToIR(const AST::CllFunctionBodyCall &body) -> stdu::vector<Expression> {
+    stdu::vector<Expression> newExpr;
     for (const auto &expr : body.expr) {
         CllExprBuilder builder(*this, expr);
         builder.build();

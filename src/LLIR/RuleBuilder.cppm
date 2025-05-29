@@ -1,22 +1,22 @@
-export module LLIRRuleBuilder;
-import LLIRBuilderDataWrapper;
-import LLIRBuilderBase;
+export module LLIR.RuleBuilder;
+import LLIR.Builder.DataWrapper;
+import LLIR.Builder.Base;
 import LLIR;
-import TreeAPI;
-import AST;
-import LLIRBuilderData;
-import types;
+import AST.API;
+import AST.Tree;
+import LLIR.Builder.Data;
+import dstd;
 import std;
 import std.compat;
 export namespace LLIR {
     class RuleBuilder : private BuilderData {
         LLIR::Data data;
-        const TreeAPI::Rule *rule;
+        const AST::Rule *rule;
         void build();
-        auto createDataBlock(const TreeAPI::DataBlock &data_block) -> LLIR::DataBlock;
+        auto createDataBlock(const AST::DataBlock &data_block) -> LLIR::DataBlock;
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
     public:
-        RuleBuilder(AST& ast, const vector<std::string> &name, const TreeAPI::Rule &rule) : BuilderData(ast), rule(&rule) {
+        RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule) : BuilderData(ast), rule(&rule) {
             fullname = name;
             build();
         }

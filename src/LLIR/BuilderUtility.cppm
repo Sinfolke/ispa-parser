@@ -1,4 +1,4 @@
-export module LLIRBuilderUtility;
+export module LLIR.Builder.Utility;
 import LLIR;
 export namespace LLIR {
     class BuilderUtility {

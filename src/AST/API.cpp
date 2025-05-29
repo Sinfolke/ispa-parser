@@ -1,7 +1,7 @@
-module TreeAPI;
+module AST.API;
 import std;
 
-namespace TreeAPI {
+namespace AST {
     size_t String::count_strlen(const std::string &str) {
         size_t count = 0;
         for (auto it = str.begin(); it != str.end(); it++) {
@@ -59,146 +59,146 @@ namespace TreeAPI {
         return value == "true";
     }
     bool rvalue::isString() const {
-        return std::holds_alternative<String>(value);
+        return stdu::holds_alternative<String>(value);
     }
     bool rvalue::isNumber() const {
-        return std::holds_alternative<Number>(value);
+        return stdu::holds_alternative<Number>(value);
     }
     bool rvalue::isBoolean() const {
-        return std::holds_alternative<Boolean>(value);
+        return stdu::holds_alternative<Boolean>(value);
     }
     bool rvalue::isArray() const {
-        return std::holds_alternative<Array>(value);
+        return stdu::holds_alternative<Array>(value);
     }
     bool rvalue::isObject() const {
-        return std::holds_alternative<Object>(value);
+        return stdu::holds_alternative<Object>(value);
     };
     bool rvalue::isAt() const {
-        return std::holds_alternative<At>(value);
+        return stdu::holds_alternative<At>(value);
     }
     bool rvalue::isID() const {
-        return std::holds_alternative<ID>(value);
+        return stdu::holds_alternative<ID>(value);
     }
     String& rvalue::getString() {
-        return std::get<String>(value);
+        return stdu::get<String>(value);
     }
     Number& rvalue::getNumber() {
-        return std::get<Number>(value);
+        return stdu::get<Number>(value);
     }
     Boolean& rvalue::getBoolean() {
-        return std::get<Boolean>(value);
+        return stdu::get<Boolean>(value);
     }
     Array& rvalue::getArray() {
-        return std::get<Array>(value);
+        return stdu::get<Array>(value);
     }
     Object& rvalue::getObject() {
-        return std::get<Object>(value);
+        return stdu::get<Object>(value);
     }
     ID& rvalue::getID() {
-        return std::get<ID>(value);
+        return stdu::get<ID>(value);
     }
     const String& rvalue::getString() const {
-        return std::get<String>(value);
+        return stdu::get<String>(value);
     }
-    
+
     const Number& rvalue::getNumber() const {
-        return std::get<Number>(value);
+        return stdu::get<Number>(value);
     }
-    
+
     const Boolean& rvalue::getBoolean() const {
-        return std::get<Boolean>(value);
+        return stdu::get<Boolean>(value);
     }
-    
+
     const Array& rvalue::getArray() const {
-        return std::get<Array>(value);
+        return stdu::get<Array>(value);
     }
-    
+
     const Object& rvalue::getObject() const {
-        return std::get<Object>(value);
+        return stdu::get<Object>(value);
     }
-    
+
     const ID& rvalue::getID() const {
-        return std::get<ID>(value);
-    }    
+        return stdu::get<ID>(value);
+    }
     bool CllExprValue::isGroup() const {
-        return std::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
+        return stdu::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
     }
     bool CllExprValue::isVariable() const {
-        return std::holds_alternative<std::shared_ptr<CllVariable>>(value);
+        return stdu::holds_alternative<std::shared_ptr<CllVariable>>(value);
     }
     bool CllExprValue::isFunctionCall() const {
-        return std::holds_alternative<CllFunctionCall>(value);
+        return stdu::holds_alternative<CllFunctionCall>(value);
     }
     bool CllExprValue::isMethodCall() const {
-        return std::holds_alternative<CllMethodCall>(value);
+        return stdu::holds_alternative<CllMethodCall>(value);
     }
     bool CllExprValue::isrvalue() const {
-        return std::holds_alternative<rvalue>(value);
+        return stdu::holds_alternative<rvalue>(value);
     }
     CllExprGroup& CllExprValue::getGroup() {
-        return *std::get<std::shared_ptr<CllExprGroup>>(value);
+        return *stdu::get<std::shared_ptr<CllExprGroup>>(value);
     }
     CllVariable& CllExprValue::getVariable() {
-        return *std::get<std::shared_ptr<CllVariable>>(value);
+        return *stdu::get<std::shared_ptr<CllVariable>>(value);
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
-        return std::get<CllFunctionCall>(value);
+        return stdu::get<CllFunctionCall>(value);
     }
     CllMethodCall& CllExprValue::getMethodCall() {
-        return std::get<CllMethodCall>(value);
+        return stdu::get<CllMethodCall>(value);
     }
     rvalue& CllExprValue::getrvalue() {
-        return std::get<rvalue>(value);
+        return stdu::get<rvalue>(value);
     };
     const CllExprGroup& CllExprValue::getGroup() const {
-        return *std::get<std::shared_ptr<CllExprGroup>>(value);
+        return *stdu::get<std::shared_ptr<CllExprGroup>>(value);
     }
-    
+
     const CllVariable& CllExprValue::getVariable() const {
-        return *std::get<std::shared_ptr<CllVariable>>(value);
+        return *stdu::get<std::shared_ptr<CllVariable>>(value);
     }
-    
+
     const CllFunctionCall& CllExprValue::getFunctionCall() const {
-        return std::get<CllFunctionCall>(value);
+        return stdu::get<CllFunctionCall>(value);
     }
     const CllMethodCall& CllExprValue::getMethodCall() const {
-        return std::get<CllMethodCall>(value);
-    }    
+        return stdu::get<CllMethodCall>(value);
+    }
     const rvalue& CllExprValue::getrvalue() const {
-        return std::get<rvalue>(value);
-    }    
-    bool TreeAPI::Cll::isVar() const {
-        return std::holds_alternative<CllVar>(value);
+        return stdu::get<rvalue>(value);
     }
-    
-    bool TreeAPI::Cll::isIf() const {
-        return std::holds_alternative<CllIf>(value);
+    bool AST::Cll::isVar() const {
+        return stdu::holds_alternative<CllVar>(value);
     }
-    
-    bool TreeAPI::Cll::isExpr() const {
-        return std::holds_alternative<CllExpr>(value);
+
+    bool AST::Cll::isIf() const {
+        return stdu::holds_alternative<CllIf>(value);
     }
-    TreeAPI::CllVar &TreeAPI::Cll::getVar() {
-        return std::get<CllVar>(value);
+
+    bool AST::Cll::isExpr() const {
+        return stdu::holds_alternative<CllExpr>(value);
     }
-    
-    TreeAPI::CllIf &TreeAPI::Cll::getIf() {
-        return std::get<CllIf>(value);
+    AST::CllVar &AST::Cll::getVar() {
+        return stdu::get<CllVar>(value);
     }
-    
-    const TreeAPI::CllExpr &TreeAPI::Cll::getExpr() const {
-        return std::get<CllExpr>(value);
+
+    AST::CllIf &AST::Cll::getIf() {
+        return stdu::get<CllIf>(value);
     }
-    const TreeAPI::CllVar &TreeAPI::Cll::getVar() const {
-        return std::get<CllVar>(value);
+
+    const AST::CllExpr &AST::Cll::getExpr() const {
+        return stdu::get<CllExpr>(value);
     }
-    
-    const TreeAPI::CllIf &TreeAPI::Cll::getIf() const {
-        return std::get<CllIf>(value);
+    const AST::CllVar &AST::Cll::getVar() const {
+        return stdu::get<CllVar>(value);
     }
-    
-    TreeAPI::CllExpr &TreeAPI::Cll::getExpr() {
-        return std::get<CllExpr>(value);
+
+    const AST::CllIf &AST::Cll::getIf() const {
+        return stdu::get<CllIf>(value);
+    }
+
+    AST::CllExpr &AST::Cll::getExpr() {
+        return stdu::get<CllExpr>(value);
     }
     std::string::iterator RuleMemberHex::begin() {
         return hex_chars.begin();
@@ -232,107 +232,107 @@ namespace TreeAPI {
         return name.empty() && !is_key_value;
     }
     bool RuleMember::isString() const {
-        return std::holds_alternative<String>(value);
+        return stdu::holds_alternative<String>(value);
     }
     bool RuleMember::isName() const {
-        return std::holds_alternative<RuleMemberName>(value);
+        return stdu::holds_alternative<RuleMemberName>(value);
     }
     bool RuleMember::isGroup() const {
-        return std::holds_alternative<RuleMemberGroup>(value);
+        return stdu::holds_alternative<RuleMemberGroup>(value);
     }
     bool RuleMember::isOp() const {
-        return std::holds_alternative<RuleMemberOp>(value);
+        return stdu::holds_alternative<RuleMemberOp>(value);
     }
     bool RuleMember::isCsequence() const {
-        return std::holds_alternative<RuleMemberCsequence>(value);
+        return stdu::holds_alternative<RuleMemberCsequence>(value);
     }
     bool RuleMember::isAny() const {
-        return std::holds_alternative<RuleMemberAny>(value);
+        return stdu::holds_alternative<RuleMemberAny>(value);
     }
     bool RuleMember::isNospace() const {
-        return std::holds_alternative<RuleMemberNospace>(value);
+        return stdu::holds_alternative<RuleMemberNospace>(value);
     }
     bool RuleMember::isEscaped() const {
-        return std::holds_alternative<RuleMemberEscaped>(value);
+        return stdu::holds_alternative<RuleMemberEscaped>(value);
     }
     bool RuleMember::isHex() const {
-        return std::holds_alternative<RuleMemberHex>(value);
+        return stdu::holds_alternative<RuleMemberHex>(value);
     }
     bool RuleMember::isBin() const {
-        return std::holds_alternative<RuleMemberBin>(value);
+        return stdu::holds_alternative<RuleMemberBin>(value);
     }
     bool RuleMember::isCll() const {
-        return std::holds_alternative<Cll>(value);
+        return stdu::holds_alternative<Cll>(value);
     }
     bool RuleMember::emptyQuantifier() const {
         return quantifier == '\0';
     }
     bool RuleMember::empty() const {
-        return std::holds_alternative<std::monostate>(value);
+        return stdu::holds_alternative<std::monostate>(value);
     }
     String& RuleMember::getString() {
-        return std::get<String>(value);
+        return stdu::get<String>(value);
     }
     RuleMemberName& RuleMember::getName() {
-        return std::get<RuleMemberName>(value);
+        return stdu::get<RuleMemberName>(value);
     }
     RuleMemberGroup &RuleMember::getGroup() {
-        return std::get<RuleMemberGroup>(value);
+        return stdu::get<RuleMemberGroup>(value);
     }
     RuleMemberOp& RuleMember::getOp() {
-        return std::get<RuleMemberOp>(value);
+        return stdu::get<RuleMemberOp>(value);
     }
     RuleMemberCsequence& RuleMember::getCsequence() {
-        return std::get<RuleMemberCsequence>(value);
+        return stdu::get<RuleMemberCsequence>(value);
     }
     RuleMemberEscaped& RuleMember::getEscaped() {
-        return std::get<RuleMemberEscaped>(value);
+        return stdu::get<RuleMemberEscaped>(value);
     }
     RuleMemberHex& RuleMember::getHex() {
-        return std::get<RuleMemberHex>(value);
+        return stdu::get<RuleMemberHex>(value);
     }
     RuleMemberBin& RuleMember::getBin() {
-        return std::get<RuleMemberBin>(value);
+        return stdu::get<RuleMemberBin>(value);
     }
     Cll& RuleMember::getCll() {
-        return std::get<Cll>(value);
+        return stdu::get<Cll>(value);
     }
     const String& RuleMember::getString() const {
-        return std::get<String>(value);
+        return stdu::get<String>(value);
     }
-    
+
     const RuleMemberName& RuleMember::getName() const {
-        return std::get<RuleMemberName>(value);
+        return stdu::get<RuleMemberName>(value);
     }
-    
+
     const RuleMemberGroup& RuleMember::getGroup() const {
-        return std::get<RuleMemberGroup>(value);
+        return stdu::get<RuleMemberGroup>(value);
     }
-    
+
     const RuleMemberOp& RuleMember::getOp() const {
-        return std::get<RuleMemberOp>(value);
+        return stdu::get<RuleMemberOp>(value);
     }
-    
+
     const RuleMemberCsequence& RuleMember::getCsequence() const {
-        return std::get<RuleMemberCsequence>(value);
+        return stdu::get<RuleMemberCsequence>(value);
     }
-    
+
     const RuleMemberEscaped& RuleMember::getEscaped() const {
-        return std::get<RuleMemberEscaped>(value);
+        return stdu::get<RuleMemberEscaped>(value);
     }
-    
+
     const RuleMemberHex& RuleMember::getHex() const {
-        return std::get<RuleMemberHex>(value);
+        return stdu::get<RuleMemberHex>(value);
     }
-    
+
     const RuleMemberBin& RuleMember::getBin() const {
-        return std::get<RuleMemberBin>(value);
+        return stdu::get<RuleMemberBin>(value);
     }
-    
+
     const Cll& RuleMember::getCll() const {
-        return std::get<Cll>(value);
+        return stdu::get<Cll>(value);
     }
-    
+
     std::unordered_map<std::string, CllExpr>::iterator RegularDataBlockWKeys::begin() {
         return value.begin();
     }
@@ -351,97 +351,97 @@ namespace TreeAPI {
     bool TemplatedDataBlock::empty() const {
         return names.empty();
     }
-    
-    vector<std::string>::iterator TemplatedDataBlock::begin() {
+
+    stdu::vector<std::string>::iterator TemplatedDataBlock::begin() {
         return names.begin();
     }
-    
-    vector<std::string>::iterator TemplatedDataBlock::end() {
+
+    stdu::vector<std::string>::iterator TemplatedDataBlock::end() {
         return names.end();
     }
-    vector<std::string>::const_iterator TemplatedDataBlock::begin() const {
+    stdu::vector<std::string>::const_iterator TemplatedDataBlock::begin() const {
         return names.cbegin();
     }
 
-    vector<std::string>::const_iterator TemplatedDataBlock::end() const {
+    stdu::vector<std::string>::const_iterator TemplatedDataBlock::end() const {
         return names.cend();
     }
 
     bool DataBlock::isRegularDataBlock() const {
-        return std::holds_alternative<RegularDataBlock>(value) || std::holds_alternative<RegularDataBlockWKeys>(value);
+        return stdu::holds_alternative<RegularDataBlock>(value) || stdu::holds_alternative<RegularDataBlockWKeys>(value);
     }
-    
+
     bool DataBlock::isWithKeys() const {
-        return std::holds_alternative<RegularDataBlockWKeys>(value);
+        return stdu::holds_alternative<RegularDataBlockWKeys>(value);
     }
-    
+
     bool DataBlock::isTemplatedDataBlock() const {
-        return std::holds_alternative<TemplatedDataBlock>(value);
+        return stdu::holds_alternative<TemplatedDataBlock>(value);
     }
     bool DataBlock::empty() const {
-        return std::holds_alternative<std::monostate>(value);
+        return stdu::holds_alternative<std::monostate>(value);
     }
     RegularDataBlock& DataBlock::getRegDataBlock() {
-        return std::get<RegularDataBlock>(value);
+        return stdu::get<RegularDataBlock>(value);
     }
-    
+
     RegularDataBlockWKeys& DataBlock::getRegDataBlockWKeys() {
-        return std::get<RegularDataBlockWKeys>(value);
+        return stdu::get<RegularDataBlockWKeys>(value);
     }
-    
+
     TemplatedDataBlock& DataBlock::getTemplatedDataBlock() {
-        return std::get<TemplatedDataBlock>(value);
+        return stdu::get<TemplatedDataBlock>(value);
     }
     const RegularDataBlock& DataBlock::getRegDataBlock() const {
-        return std::get<RegularDataBlock>(value);
+        return stdu::get<RegularDataBlock>(value);
     }
-    
+
     const RegularDataBlockWKeys& DataBlock::getRegDataBlockWKeys() const {
-        return std::get<RegularDataBlockWKeys>(value);
+        return stdu::get<RegularDataBlockWKeys>(value);
     }
-    
+
     const TemplatedDataBlock& DataBlock::getTemplatedDataBlock() const {
-        return std::get<TemplatedDataBlock>(value);
+        return stdu::get<TemplatedDataBlock>(value);
     }
     // operator== for rules
-        
+
     bool operator==(const String &first, const String &second) {
         return first.value == second.value;
     }
     // Comparison operator for Number
-    bool operator==(const TreeAPI::Number &lhs, const TreeAPI::Number &rhs) {
+    bool operator==(const AST::Number &lhs, const AST::Number &rhs) {
         return lhs.sign == rhs.sign &&
             lhs.main == rhs.main &&
             lhs.dec == rhs.dec;
     }
 
     // Comparison operator for Boolean
-    bool operator==(const TreeAPI::Boolean &lhs, const TreeAPI::Boolean &rhs) {
+    bool operator==(const AST::Boolean &lhs, const AST::Boolean &rhs) {
         return lhs.value == rhs.value;
     }
 
     // Comparison operator for Array
-    bool operator==(const TreeAPI::Array &lhs, const TreeAPI::Array &rhs) {
+    bool operator==(const AST::Array &lhs, const AST::Array &rhs) {
         return lhs.value == rhs.value;
     }
 
 
     // Comparison operator for Object
-    bool operator==(const TreeAPI::Object &lhs, const TreeAPI::Object &rhs) {
+    bool operator==(const AST::Object &lhs, const AST::Object &rhs) {
         return lhs.value == rhs.value;
     }
     // Comparison operator for ID
-    bool operator==(const TreeAPI::At &lhs, const TreeAPI::At &rhs) {
+    bool operator==(const AST::At &lhs, const AST::At &rhs) {
         return true;
     }
     // Comparison operator for ID
-    bool operator==(const TreeAPI::ID &lhs, const TreeAPI::ID &rhs) {
+    bool operator==(const AST::ID &lhs, const AST::ID &rhs) {
         return lhs.value == rhs.value;
     }
 
     // Comparison operator for rvalue
     bool operator==(const rvalue& lhs, const rvalue& rhs) {
-        return std::visit([](const auto& a, const auto& b) -> bool {
+        return stdu::visit([](const auto& a, const auto& b) -> bool {
             using A = std::decay_t<decltype(a)>;
             using B = std::decay_t<decltype(b)>;
             if constexpr (std::is_same_v<A, B>) {
@@ -452,63 +452,63 @@ namespace TreeAPI {
         }, lhs.value, rhs.value);
     }
     // Comparison operator for CllCompareOp
-    bool operator==(const TreeAPI::CllCompareOp &lhs, const TreeAPI::CllCompareOp &rhs) {
+    bool operator==(const AST::CllCompareOp &lhs, const AST::CllCompareOp &rhs) {
         return lhs.op == rhs.op;
     }
 
     // Comparison operator for CllLogicalOp
-    bool operator==(const TreeAPI::CllLogicalOp &lhs, const TreeAPI::CllLogicalOp &rhs) {
+    bool operator==(const AST::CllLogicalOp &lhs, const AST::CllLogicalOp &rhs) {
         return lhs.isAnd == rhs.isAnd;
     }
 
     bool operator==(const CllType &lhs, const CllType &rhs) {
         return lhs.type == rhs.type && lhs.templ == rhs.templ;
     }
-    
+
     bool operator==(const CllFunctionArguments &lhs, const CllFunctionArguments &rhs) {
         return lhs.expr == rhs.expr;
     }
-    
+
     bool operator==(const CllFunctionParameters &lhs, const CllFunctionParameters &rhs) {
         return lhs.names == rhs.names;
     }
-    
+
     // Comparison operator for CllFunctionCall
-    bool operator==(const TreeAPI::CllFunctionCall &lhs, const TreeAPI::CllFunctionCall &rhs) {
+    bool operator==(const AST::CllFunctionCall &lhs, const AST::CllFunctionCall &rhs) {
         return lhs.name == rhs.name &&
             lhs.body == rhs.body;
     }
 
     // Comparison operator for CllFunctionDecl
-    bool operator==(const TreeAPI::CllFunctionDecl &lhs, const TreeAPI::CllFunctionDecl &rhs) {
+    bool operator==(const AST::CllFunctionDecl &lhs, const AST::CllFunctionDecl &rhs) {
         return lhs.name == rhs.name &&
             lhs.body == rhs.body;
     }
-    bool operator==(const TreeAPI::CllMethodCall &lhs, const TreeAPI::CllMethodCall &rhs) {
+    bool operator==(const AST::CllMethodCall &lhs, const AST::CllMethodCall &rhs) {
         return lhs.name == rhs.name && lhs.body == rhs.body;
     }
     bool operator==(const CllExpr &lhs, const CllExpr &rhs) {
         return lhs.value == rhs.value;
     }
-    
+
     bool operator==(const CllExprLogical &lhs, const CllExprLogical &rhs) {
         return lhs.value == rhs.value && lhs.rights == rhs.rights;
     }
-    
+
     bool operator==(const CllExprCompare &lhs, const CllExprCompare &rhs) {
         return lhs.value == rhs.value && lhs.rights == rhs.rights;
     }
-    
+
     bool operator==(const CllExprAddition &lhs, const CllExprAddition &rhs) {
         return lhs.value == rhs.value && lhs.rights == rhs.rights;
     }
-    
+
     bool operator==(const CllExprTerm &lhs, const CllExprTerm &rhs) {
         return lhs.value == rhs.value && lhs.rights == rhs.rights;
     }
-    
+
     bool operator==(const CllExprValue &lhs, const CllExprValue &rhs) {
-        return std::visit([] (auto &&a, auto &&b) -> bool {
+        return stdu::visit([] (auto &&a, auto &&b) -> bool {
             using A = std::decay_t<decltype(a)>;
             using B = std::decay_t<decltype(b)>;
             if constexpr (std::is_same_v<A, B>) {
@@ -518,38 +518,44 @@ namespace TreeAPI {
             }
         }, lhs.value, rhs.value);
     }
-    
+
     bool operator==(const CllVariable &lhs, const CllVariable &rhs) {
         return lhs.pre_increament == rhs.pre_increament &&
                lhs.post_increament == rhs.post_increament &&
                lhs.name == rhs.name &&
                lhs.braceExpression == rhs.braceExpression;
     }
-    
+
     bool operator==(const CllIf &lhs, const CllIf &rhs) {
         return lhs.expr == rhs.expr && lhs.stmt == rhs.stmt;
     }
-    
+
     bool operator==(const CllVar &lhs, const CllVar &rhs) {
         return lhs.type == rhs.type && lhs.name == rhs.name && lhs.op == rhs.op && lhs.value == rhs.value;
     }
-    
+
     bool operator==(const CllLoopWhile &lhs, const CllLoopWhile &rhs) {
         return lhs.expr == rhs.expr && lhs.stmt == rhs.stmt;
     }
-    
+
     bool operator==(const DataBlock &lhs, const DataBlock &rhs) {
-        return lhs.value == rhs.value;
+        stdu::visit([](auto &&a, auto &&b) -> bool {
+            if constexpr(!std::is_same_v<decltype(a), decltype(b)>) {
+                return false;
+            } else {
+                return a == b;
+            }
+        }, lhs.value, rhs.value);
     }
-    
+
     bool operator==(const RegularDataBlockWKeys &lhs, const RegularDataBlockWKeys &rhs) {
         return lhs.value == rhs.value;
     }
-    
+
     bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs) {
         return lhs.names == rhs.names;
     }
-    
+
     bool operator==(const Rule &lhs, const Rule &rhs) {
         return lhs.rule_members == rhs.rule_members && lhs.data_block == rhs.data_block;
     }
@@ -559,7 +565,7 @@ namespace TreeAPI {
     }
 
     bool operator==(const Cll &first, const Cll &second) {
-        return std::visit([](auto &&first, auto &&second) -> bool {
+        return stdu::visit([](auto &&first, auto &&second) -> bool {
             if constexpr (std::is_same_v<decltype(first), decltype(second)>) {
                 return first == second;
             } else {
@@ -571,20 +577,20 @@ namespace TreeAPI {
     bool operator==(const RuleMemberName &first, const RuleMemberName &second) {
         return first.name == second.name;
     }
-    
+
     bool operator==(const RuleMemberGroup &first, const RuleMemberGroup &second) {
         return first.values == second.values;
     }
-    
+
     bool operator==(const RuleMemberOp &first, const RuleMemberOp &second) {
         return first.options == second.options;
     }
-    
+
     bool operator==(const RuleMemberCsequence &first, const RuleMemberCsequence &second) {
         // Compare independently of character position in csequence
-        if (first.negative != second.negative || 
-            first.characters.size() != second.characters.size() || 
-            first.escaped.size() != second.escaped.size() || 
+        if (first.negative != second.negative ||
+            first.characters.size() != second.characters.size() ||
+            first.escaped.size() != second.escaped.size() ||
             first.diapasons.size() != second.diapasons.size()) {
             return false;
         }
@@ -599,7 +605,7 @@ namespace TreeAPI {
             }
         }
         for (size_t i = 0; i < first.diapasons.size(); i++) {
-            if (std::find_if(second.diapasons.begin(), second.diapasons.end(), 
+            if (std::find_if(second.diapasons.begin(), second.diapasons.end(),
                              [&first, i](const std::pair<char, char> &pair) {
                                  return pair.first == first.diapasons[i].first && pair.second == first.diapasons[i].second;
                              }) == second.diapasons.end()) {
@@ -608,29 +614,29 @@ namespace TreeAPI {
         }
         return true;
     }
-    
+
     bool operator==(const RuleMemberAny &first, const RuleMemberAny &second) {
         return true; // Always equal
     }
-    
+
     bool operator==(const RuleMemberNospace &first, const RuleMemberNospace &second) {
         return true; // Always equal
     }
-    
+
     bool operator==(const RuleMemberEscaped &first, const RuleMemberEscaped &second) {
         return first.c == second.c;
     }
-    
+
     bool operator==(const RuleMemberHex &first, const RuleMemberHex &second) {
         return first.hex_chars == second.hex_chars;
     }
-    
+
     bool operator==(const RuleMemberBin &first, const RuleMemberBin &second) {
         return first.bin_chars == second.bin_chars;
     }
-    
+
     bool operator==(const RuleMember &first, const RuleMember &second) {
-        return std::visit([](auto&& lhs, auto&& rhs) -> bool {
+        return stdu::visit([](auto&& lhs, auto&& rhs) -> bool {
             using L = std::decay_t<decltype(lhs)>;
             using R = std::decay_t<decltype(rhs)>;
             if constexpr (std::is_same_v<L, R> && requires (L a, R b) { a == b; }) {
@@ -638,7 +644,7 @@ namespace TreeAPI {
             } else {
                 return false;
             }
-        }, first.value, second.value);        
+        }, first.value, second.value);
     }
     bool operator==(const RuleMemberKey &first, const RuleMemberKey &second) {
         return first.base == second.base;
@@ -728,8 +734,7 @@ namespace TreeAPI {
     std::ostream& operator<<(std::ostream& os, const RuleMember& rm) {
         os << rm.prefix << " ";
 
-
-        std::visit([&os](auto&& arg) {
+        stdu::visit([&os](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (!std::is_same_v<T, std::monostate>)
                 os << arg;
@@ -761,7 +766,7 @@ namespace TreeAPI {
     }
 
     std::ostream& operator<<(std::ostream& os, const DataBlock& db) {
-        std::visit([&os](auto&& arg) {
+        stdu::visit([&os](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::monostate>) {
                 os << "EmptyDataBlock";
@@ -788,20 +793,20 @@ namespace TreeAPI {
     bool RuleMember::fullCompare(const RuleMember &second) {
         return *this == second && quantifier == second.quantifier && prefix == second.prefix && isAutoGenerated == second.isAutoGenerated && isInline == second.isInline;
     }
-    CllExpr make_expr_from_value(const TreeAPI::CllExprValue& val) {
-        TreeAPI::CllExprTerm term;
+    CllExpr make_expr_from_value(const AST::CllExprValue& val) {
+        AST::CllExprTerm term;
         term.value = val;
-    
-        TreeAPI::CllExprAddition addition;
+
+        AST::CllExprAddition addition;
         addition.value = term;
-    
-        TreeAPI::CllExprCompare compare;
+
+        AST::CllExprCompare compare;
         compare.value = addition;
-    
-        TreeAPI::CllExprLogical logical;
+
+        AST::CllExprLogical logical;
         logical.value = compare;
-    
-        TreeAPI::CllExpr expr;
+
+        AST::CllExpr expr;
         expr.value = logical;
     
         return expr;

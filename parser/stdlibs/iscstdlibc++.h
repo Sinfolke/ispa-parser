@@ -10,7 +10,7 @@
 #ifndef _ISPA_STD_LIB_CPP
 #define _ISPA_STD_LIB_CPP
 #include <map>
-#include <vector>
+#include <stdu::vector>
 #include <deque>
 #include <string>
 #include <any>
@@ -263,9 +263,9 @@ struct match_result {
 };
 
 template<class TOKEN_T>
-using TokenFlow = vector<Node<TOKEN_T>>;
+using TokenFlow = stdu::vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Seq = vector<Node<RULE_T>>;
+using Seq = stdu::vector<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
@@ -279,7 +279,7 @@ class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
-    vector<error> errors;
+    stdu::vector<error> errors;
     ErrorController error_controller;
 /* internal integration functionality */
     /**
@@ -655,7 +655,7 @@ protected:
     Lexer_base<TOKEN_T>* lexer = nullptr;
     const char* text = nullptr;
     Node<RULE_T> tree;
-    vector<error> errors;
+    stdu::vector<error> errors;
     ErrorController error_controller;
     // skip spaces for tokens
     template <class IT>
@@ -728,7 +728,7 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 protected:
-    vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    stdu::vector<std::pair<stdu::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
         stack.push_back({pos->name(), state});

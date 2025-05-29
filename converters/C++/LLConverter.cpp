@@ -69,7 +69,7 @@ void LLConverter::convertVariable(LLIR::variable var, std::ostringstream &out) {
     out << ';';
 }
 
-void LLConverter::convertBlock(vector<LLIR::member> block, std::ostringstream &out) {
+void LLConverter::convertBlock(stdu::vector<LLIR::member> block, std::ostringstream &out) {
     out << std::string(indentLevel, '\t') << "{\n";
     indentLevel++;
     convertMembers(block, out);
@@ -182,11 +182,11 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
     add_semicolon = true;
 }
 
-void LLConverter::convertMembers(const vector<LLIR::member> &members, std::ostringstream &out) {
+void LLConverter::convertMembers(const stdu::vector<LLIR::member> &members, std::ostringstream &out) {
     for (auto mem : members)
         convertMember(mem, out);
 }
-void LLConverter::convertLexerCode(const vector<LLIR::member> &members, std::ostringstream &out) {
+void LLConverter::convertLexerCode(const stdu::vector<LLIR::member> &members, std::ostringstream &out) {
     isToken = true;
     if (!members.empty()) {
         for (auto it = members.begin() + 1; it != members.end() - 1; it++) {
@@ -467,7 +467,7 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST& tree) {
+extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree) {
     return new LLConverter(ir, tree);
 }
 

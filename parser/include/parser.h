@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <cctype>
-#include <vector>
+#include <stdu::vector>
 #include <cstring>
 #include <cstddef>
 #include <cstdio>

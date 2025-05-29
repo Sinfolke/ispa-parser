@@ -8,6 +8,7 @@ export namespace Tlog {
     struct Branch_data {
         std::filesystem::path path;
         oss oss;
+        bool isExcluded = false;
     };
     class Logger {
         std::filesystem::path base_path;
@@ -15,6 +16,15 @@ export namespace Tlog {
         std::vector<Branch_data> branches_stack;
         std::string file;
         size_t line;
+#ifdef DEBUG
+        bool isExcludeAll = false;
+#else
+        bool isExcludeAll = true;
+#endif
+        std::vector<std::string> exclude_branches;
+        std::vector<std::string> exclude_paths;
+        std::vector<std::string> include_branches;
+        std::vector<std::string> include_paths;
         std::string getFormattedPath(std::string path) {
             std::string final_path;
             for (auto it = path.begin(); it != path.end(); ++it) {
@@ -60,11 +70,29 @@ export namespace Tlog {
                 return full.string(); // fallback: not under source root
             }
         }
+        std::vector<bool> exclude_stack;
+        void exclude_if_found(const std::filesystem::path &path) {
+            if (!exclude_paths.empty()) {
+                if (std::find(exclude_paths.begin(), exclude_paths.end(), path.string()) != exclude_paths.end()) {
+                    exclude_stack.push_back(true);
+                }
+            }
+        }
+        void exclude_if_found(const std::string &branch) {
+            if (!exclude_branches.empty()) {
+                if (std::find(exclude_branches.begin(), exclude_branches.end(), branch) != exclude_paths.end()) {
+                    branches.at(branch).isExcluded = true;
+                }
+            }
+        }
     public:
         explicit Logger(const std::filesystem::path path) : base_path(path) {}
         Logger() : base_path("./") {}
 
         void createBranch(const std::string& name, const std::string& path) {
+            if (branches.count(name) != 0)
+                throw std::runtime_error("Branch '" + name + "' already exists");
+            exclude_if_found(name);
             auto final_path = getFormattedPath(name);
             branches.insert_or_assign(name, Branch_data{final_path, oss(final_path)});
         }
@@ -118,24 +146,59 @@ export namespace Tlog {
             this->file = get_relative_source_path(file);
             this->line = line;
         }
+        bool enabled() {
+            return !isExcludeAll || isExcludeAll && !include_branches.empty() && !include_paths.empty();
+        }
+        void excludeBranch(std::string branch) {
+            exclude_branches.push_back(branch);
+        }
+        void exclude(std::string path) {
+            exclude_paths.push_back(path);
+        }
+        void includeBranch(std::string branch) {
+            include_branches.push_back(branch);
+        }
+        void include(std::string path) {
+            include_paths.push_back(path);
+        }
+        void excludeAll() {
+            isExcludeAll = true;
+        }
+        void includeAll() {
+            isExcludeAll = false;
+        }
+        void clearExcludes() {
+            exclude_branches.clear();
+            exclude_paths.clear();
+        }
     };
     class Branch {
-        Logger *logger;
+        Logger *logger = nullptr;
     public:
         Branch(Logger &logger, std::string path, std::source_location loc = std::source_location::current()) : logger(&logger) {
             logger.set_location(loc.file_name(), loc.line());
             this->logger->pushBranch(path);
         }
+        Branch() = default;
         ~Branch() {
+            if (logger == nullptr)
+                return;
             logger->popBranch();
         }
-        template<typename ...Args>
-        void print(const char* message, Args ...args) {
-            logger->log(message, args...);
+        void open(Logger &logger, std::string path, std::source_location loc = std::source_location::current()) {
+
+            this->logger = &logger;
+            this->logger->pushBranch(path);
         }
-        template<typename ...Args>
-        void print(std::string message, Args ...args) {
-            logger->log(message, args...);
+        template<typename Format, typename... Args>
+        void log(Format str, Args&&... args) {
+            //branches_stack.back().oss.vprintf("[{}, {}] ", file, line);
+            logger->log(str, std::forward<Args>(args)...);
+        }
+        template<typename Format, typename ...Args>
+        void dlog(Format str, Args ...args) {
+            //branches_stack.back().oss.vprintf("[{}, {}] ", file, line);
+            logger->dlog(str, std::forward<Args>(args)...);
         }
     };
 };

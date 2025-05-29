@@ -1,9 +1,9 @@
 module ErrorIR;
 import LLIR;
-import LLIRBuilderBase;
-import LLIRBuilderData;
-import LLIRRuleMemberBuilder;
-import LLIRBuilderDataWrapper;
+import LLIR.Builder.Base;
+import LLIR.Builder.Data;
+import LLIR.Rule.MemberBuilder;
+import LLIR.Builder.DataWrapper;
 import cpuf.printf;
 import corelib;
 import logging;
@@ -29,7 +29,7 @@ auto ErrorIR::IR::panic_mode() -> Instructions {
         first = false;
     }
     condition.block = {
-        Instruction {InstructionType::PERFORM, TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {follow.back().first}}},
+        Instruction {InstructionType::PERFORM, AST::RuleMember {.value = AST::RuleMemberName {follow.back().first}}},
     };
     condition.else_block = {
         Instruction {InstructionType::JUMP_PM_RESULT},
@@ -45,7 +45,7 @@ auto ErrorIR::IR::lowerIIFPart(const iif_condition_part &part) -> LLIR::expr {
         case ConditionTypes::TOKEN:
             return {
                 LLIR::condition_types::TOKEN,
-                corelib::text::join(std::any_cast<vector<std::string>> (part.value), "_")
+                corelib::text::join(std::any_cast<stdu::vector<std::string>> (part.value), "_")
             };
         case ConditionTypes::PANIC_MODE_RESULT:
             return {LLIR::condition_types::TOKEN_NAME, panic_mode_variable};
@@ -53,15 +53,15 @@ auto ErrorIR::IR::lowerIIFPart(const iif_condition_part &part) -> LLIR::expr {
             return {LLIR::condition_types::OR};
     }
 }
-auto ErrorIR::IR::lowerIIF(const vector<iif_condition_part> &condition) -> vector<LLIR::expr> {
-    vector<LLIR::expr> result;
+auto ErrorIR::IR::lowerIIF(const stdu::vector<iif_condition_part> &condition) -> stdu::vector<LLIR::expr> {
+    stdu::vector<LLIR::expr> result;
     for (const auto &part : condition) {
         result.push_back(lowerIIFPart(part));
     }
     return result;
 }
 
-auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::member> {
+auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> stdu::vector<LLIR::member> {
     switch (member.type) {
         case InstructionType::EMPTY:
             return {{LLIR::types::EMPTY}};
@@ -84,7 +84,7 @@ auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::m
             return {{LLIR::types::IF, newCondition}};
         }
         case InstructionType::JUMP:
-            return {{LLIR::types::JUMP,  std::any_cast<vector<std::string>>(member.value)}};
+            return {{LLIR::types::JUMP,  std::any_cast<stdu::vector<std::string>>(member.value)}};
         case InstructionType::JUMP_PM_RESULT:
             return {{LLIR::types::JUMP_FROM_VARIABLE, panic_mode_variable.name}};
         case InstructionType::ADVANCE:
@@ -99,7 +99,7 @@ auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::m
             panic_mode_variable = LLIR::BuilderBase::createEmptyVariable("_" + std::to_string(variable_count));
             LLIR::function_call function_call =  {
                 "PANIC_MODE",
-                vector<vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = panic_mode_variable}}}},
+                stdu::vector<stdu::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = panic_mode_variable}}}},
             };
             panic_mode_variable.value = {LLIR::var_assign_values::FUNCTION_CALL, function_call};
             return {{LLIR::types::VARIABLE, panic_mode_variable}};
@@ -107,7 +107,7 @@ auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::m
         case InstructionType::PERFORM: {
             LLIR::BuilderData data(*tree);
             LLIR::BuilderDataWrapper wrapper(data);
-            LLIR::MemberBuilder perform(wrapper, std::any_cast<TreeAPI::RuleMember>(member.value), false);
+            LLIR::MemberBuilder perform(wrapper, std::any_cast<AST::RuleMember>(member.value), false);
             perform.build();
             return perform.getData();
         }
@@ -115,8 +115,8 @@ auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> vector<LLIR::m
     return {};
 }
 
-auto ErrorIR::IR::lowerMembersToLLIR(const Instructions &members) -> vector<LLIR::member> {
-    vector<LLIR::member> result;
+auto ErrorIR::IR::lowerMembersToLLIR(const Instructions &members) -> stdu::vector<LLIR::member> {
+    stdu::vector<LLIR::member> result;
     for (const auto &instruction : members) {
         auto instructions = lowerMemberToLLIR(instruction);
         result.insert(result.end(), instructions.begin(), instructions.end());
@@ -124,7 +124,7 @@ auto ErrorIR::IR::lowerMembersToLLIR(const Instructions &members) -> vector<LLIR
     return result;
 }
 
-auto ErrorIR::IR::lowerToLLIR(size_t &variable_count) -> vector<LLIR::member> {
+auto ErrorIR::IR::lowerToLLIR(size_t &variable_count) -> stdu::vector<LLIR::member> {
     this->variable_count = variable_count;
     return lowerMembersToLLIR(instructions);
 }
@@ -136,7 +136,7 @@ void ErrorIR::IR::lower() {
     const auto &name = member->getName().name;
     if (corelib::text::isUpper(name.back())) {
         // try to apply error production
-        vector<LLIR::expr> condition;
+        stdu::vector<LLIR::expr> condition;
         bool first = true;
         for (const auto &el : follow.back().second) {
             if (!first) {

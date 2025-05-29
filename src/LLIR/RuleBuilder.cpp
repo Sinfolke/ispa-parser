@@ -1,7 +1,7 @@
-module LLIRRuleBuilder;
-import LLIRRuleMemberBuilder;
+module LLIR.RuleBuilder;
+import LLIR.Rule.MemberBuilder;
 import logging;
-import CllBuilder;
+import LLIR.CllBuilder;
 import cpuf.printf;
 import std;
 
@@ -23,11 +23,11 @@ void LLIR::RuleBuilder::build() {
 LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
     LLIR::inclosed_map map;
     for (const auto &[name, variable] : key_vars) {
-        map.try_emplace(name, vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = variable}}}, variable.type);
+        map.try_emplace(name, stdu::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = variable}}}, variable.type);
     }
     return map;
 }
-LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const TreeAPI::DataBlock &data_block) {
+LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block) {
     LLIR::DataBlock block;
     if (data_block.empty()) {
         return block;
@@ -69,7 +69,7 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const TreeAPI::DataBlock &dat
             } else if (type.type == LLIR::var_types::Token_result) {
                 type.type = LLIR::var_types::Token;
             }
-            initial_map.try_emplace(name, vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = unnamed_datablock_units.front()}}}, type);
+            initial_map.try_emplace(name, stdu::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = unnamed_datablock_units.front()}}}, type);
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
         block.value = initial_map;

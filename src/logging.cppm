@@ -2,7 +2,7 @@ module;
 export module logging;
 import cpuf.printf;
 import cpuf.color;
-import types;
+import dstd;
 import Tlog.Logger;
 import std;
 export inline Tlog::Logger logger("Logs");  // <<== IMPORTANT: must be `inline` if defined in module interface

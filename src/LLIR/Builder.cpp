@@ -1,11 +1,11 @@
 
-module LLIRBuilder;
-import LLIRRuleBuilder;
-import LLIRRuleMemberBuilder;
-import LLIRBuilderDataWrapper;
+module LLIR.Builder;
+import LLIR.RuleBuilder;
+import LLIR.Rule.MemberBuilder;
+import LLIR.Builder.DataWrapper;
 import corelib;
 import cpuf.printf;
-LLIR::Builder::Builder(AST &tree, int tokensOnly) {
+LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
     for (const auto &[name, value] : tree.getTreeMap()) {
         if (tokensOnly != -1) {
             if (corelib::text::isUpper(name.back()) && !tokensOnly)
@@ -17,13 +17,14 @@ LLIR::Builder::Builder(AST &tree, int tokensOnly) {
         data.push_back(builder.getData());
     }
 }
+
 auto LLIR::Builder::get() -> IR {
     return IR(data);
 }
-auto LLIR::Builder::getRawData() -> vector<Data> & {
+auto LLIR::Builder::getRawData() -> stdu::vector<Data> & {
     return data;
 }
-auto LLIR::Builder::getRawData() const -> const vector<Data> & {
+auto LLIR::Builder::getRawData() const -> const stdu::vector<Data> & {
     return data;
 }
 

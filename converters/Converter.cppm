@@ -1,22 +1,22 @@
 export module Converter;
 import LLIR;
 import LRParser;
-import AST;
-import types;
+import AST.Tree;
+import dstd;
 import std;
 export class LLConverter_base {
     protected:
         // data
-        vector<LLIR::Data> data;
-        vector<vector<std::string>> tokens;
-        vector<vector<std::string>> rules;
+        stdu::vector<LLIR::Data> data;
+        stdu::vector<stdu::vector<std::string>> tokens;
+        stdu::vector<stdu::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;
         LLIR::Nodes lexer_code;
         LLIR::variable lexer_code_access_var;
-        AST* tree;
+        AST::Tree *tree;
     public:
-        LLConverter_base(LLIR::IR &ir, AST &tree, const LLIR::Nodes *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : tree(&tree) {
+        LLConverter_base(LLIR::IR &ir, AST::Tree &tree, const LLIR::Nodes *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr) : tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -48,9 +48,9 @@ export class LRConverter_base {
         const LRParser* data;
         LLIR::Nodes lexer_code;
         LLIR::variable return_var;
-        AST* tree;
+        AST::Tree * tree;
     public:
-        LRConverter_base(const LRParser &data, AST &tree) : data(&data), tree(&tree) {
+        LRConverter_base(const LRParser &data, AST::Tree &tree) : data(&data), tree(&tree) {
             auto use_places = tree.getUsePlacesTable();
             auto lc = tree.getCodeForLexer();
             lexer_code = lc.first;

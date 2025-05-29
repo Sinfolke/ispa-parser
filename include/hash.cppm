@@ -1,5 +1,6 @@
 export module hash;
 import std;
+import dstd;
 export inline void hash_combine(std::size_t& seed) {}
 
 export template <typename T, typename... Rest>
@@ -33,9 +34,9 @@ export struct uhash {
         return uhash{}(*opt);
     }
     template <typename... Ts>
-    std::size_t operator()(const std::variant<Ts...>& v) const {
+    std::size_t operator()(const stdu::variant<Ts...>& v) const {
         std::size_t h = std::hash<std::size_t>{}(v.index()); // include the index in the hash
-        std::visit([&](const auto& value) {
+        stdu::visit([&](const auto& value) {
             hash_combine(h, uhash{}(value));
         }, v);
         return h;

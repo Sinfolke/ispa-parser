@@ -24,9 +24,9 @@ static std::string format_str(std::string str) {
     }
     return res;
 }
-std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, const vector<LLIR::var_type> &data) const {
+std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, const stdu::vector<LLIR::var_type> &data) const {
     if (type == LLIR::var_types::ARRAY) {
-        vector<LLIR::var_type> type = data;
+        stdu::vector<LLIR::var_type> type = data;
         if (data.empty())
             type.push_back({LLIR::var_types::ANY});
         std::string t = "::" + namespace_name + "::arr_t";
@@ -35,7 +35,7 @@ std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, c
         t += ">";
         return t;
     } else if (type == LLIR::var_types::OBJECT) {
-        vector<LLIR::var_type> type = data;
+        stdu::vector<LLIR::var_type> type = data;
         if (data.size() < 1) {
             type.push_back({LLIR::var_types::ANY});
         }
@@ -140,7 +140,7 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             return convertFunctionCall(std::any_cast<LLIR::function_call>(data));
         case LLIR::var_assign_values::EXPR:
             //cpuf::printf("On expr\n");
-            return convertExpression(std::any_cast<vector<LLIR::expr>>(data), false);
+            return convertExpression(std::any_cast<stdu::vector<LLIR::expr>>(data), false);
         case LLIR::var_assign_values::CURRENT_POS:
         {
             auto dt = std::any_cast<double>(data);
@@ -331,7 +331,7 @@ std::string LLStringConvertions::convertDataBlock(const LLIR::DataBlock &dtb) {
     }
     return res;
 }
-std::string LLStringConvertions::convertExpression(const vector<LLIR::expr> &expression, bool with_braces) {
+std::string LLStringConvertions::convertExpression(const stdu::vector<LLIR::expr> &expression, bool with_braces) {
     std::string result;
     pos_counter = 0;
     if (with_braces)

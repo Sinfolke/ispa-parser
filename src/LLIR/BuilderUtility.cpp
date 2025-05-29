@@ -1,4 +1,4 @@
-module LLIRBuilderUtility;
+module LLIR.Builder.Utility;
 import LLIR;
 import std;
 import std.compat;

@@ -1,6 +1,6 @@
 module;
 export module LLInternalData;
-import types;
+import dstd;
 import std;
 import std.compat;
 export class LLInternalData {
@@ -10,8 +10,8 @@ export class LLInternalData {
     size_t indentLevel = 0;
     std::stack<size_t> pos_counter_stack;
     std::stack<std::string> current_pos_counter;
-    vector<std::string> dynamic_pos_counter = {};
-    vector<std::string> rule_prev_name;
+    stdu::vector<std::string> dynamic_pos_counter = {};
+    stdu::vector<std::string> rule_prev_name;
     std::string rule_prev_name_str;
     std::string namespace_name;
     bool add_semicolon = false;

@@ -1,16 +1,16 @@
-export module RvalueBuilder;
-import TreeAPI;
+export module LLIR.RvalueBuilder;
+import AST.API;
 import LLIR;
-import LLIRBuilderBase;
-import LLIRBuilderDataWrapper;
+import LLIR.Builder.Base;
+import LLIR.Builder.DataWrapper;
 export namespace LLIR {
     class RvalueBuilder : BuilderBase {
-        const TreeAPI::rvalue *value;
+        const AST::rvalue *value;
         assign data = {};
     public:
         void build();
         auto get() -> assign;
         auto deduceType() -> var_type;
-        RvalueBuilder(BuilderDataWrapper &data, const TreeAPI::rvalue &value) : BuilderBase(data), value(&value)  {}
+        RvalueBuilder(BuilderDataWrapper &data, const AST::rvalue &value) : BuilderBase(data), value(&value)  {}
     };
 }

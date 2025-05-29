@@ -1,11 +1,11 @@
 export module corelib;
-import types;
+import dstd;
 import std;
 export namespace corelib {
     namespace file {
         std::string readFile(const std::filesystem::path filePath);
         std::string readFile(const std::string& filePath);
-        vector<std::string> getFilesRecursively(const std::string& dir, const std::string& ext);
+        stdu::vector<std::string> getFilesRecursively(const std::string& dir, const std::string& ext);
     }
     namespace text {
         bool startsWith(const std::string& str, const std::string& prefix);
@@ -17,7 +17,7 @@ export namespace corelib {
         bool isLower(const std::string str);
         std::string ToUpper(std::string str);
         std::string ToLower(std::string str);
-        std::string join(const vector<std::string> &elements, const std::string &delimiter);
+        std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter);
         char getCharFromEscaped(char in);
         std::string getCharFromEscapedAsStr(char in, bool string);
     }

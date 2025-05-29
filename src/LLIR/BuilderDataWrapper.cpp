@@ -1,4 +1,4 @@
-module LLIRBuilderDataWrapper;
+module LLIR.Builder.DataWrapper;
 auto LLIR::BuilderDataWrapper::initializationCheck() -> bool {
     return
         variable_count != nullptr &&

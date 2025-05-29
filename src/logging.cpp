@@ -29,6 +29,10 @@ void UWarning::print() const {
 void custom_terminate_handler() {
     std::flush(std::cout);
     std::flush(std::cerr);
+    Tlog::Branch b;
+    if (logger.enabled()) {
+        b.open(logger, "exception");
+    }
     try {
         // Try to rethrow active exception
         if (auto eptr = std::current_exception()) {
@@ -36,13 +40,18 @@ void custom_terminate_handler() {
         }
     } catch (const Error& e) {
         e.print();
+        b.log("<Error>: {}", e.message);
     } catch (const UError& e) {
         e.print();
+        b.log("<UError>: {}", e.message);
     } catch (const UWarning& e) {
+        b.log("<UWarning> {}", e.message);
         e.print();
     } catch (const std::exception& e) {
+        b.log("<std::exception>: {}", e.what());
         cpuf::printf("ispa: {}Exception{}: {}\n", color::red, color::reset, e.what());
     } catch (...) {
+        b.log("<unknown exception>");
         cpuf::printf("Unknown exception\n");
     }
     std::abort();

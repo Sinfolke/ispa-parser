@@ -1,19 +1,19 @@
-export module LLIRBuilder;
+export module LLIR.Builder;
 import LLIR;
-import AST;
-import TreeAPI;
-import types;
+import AST.Tree;
+import AST.API;
+import dstd;
 import std;
 import std.compat;
 namespace LLIR {
     export class Builder {
-        vector<LLIR::Data> data;
+        stdu::vector<LLIR::Data> data;
     public:
-        Builder(AST &tree, int tokensOnly = -1);
-        Builder(AST &tree, const TreeAPI::RuleMember& rule);
-        Builder(AST &tree, const vector<TreeAPI::RuleMember>& rules);
+        Builder(AST::Tree &tree, int tokensOnly = -1);
+        Builder(AST::Tree &tree, const AST::RuleMember& rule);
+        Builder(AST::Tree &tree, const stdu::vector<AST::RuleMember>& rules);
         auto get() -> IR;
-        auto getRawData() -> vector<Data>&;
-        auto getRawData() const -> const vector<Data>&;
+        auto getRawData() -> stdu::vector<Data>&;
+        auto getRawData() const -> const stdu::vector<Data>&;
     };
 }

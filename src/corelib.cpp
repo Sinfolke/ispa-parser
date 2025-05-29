@@ -27,8 +27,8 @@ namespace corelib::file {
         return content;
     }
     // Function to recursively get file contents
-    vector<std::string> getFilesRecursively(const std::string& dir, const std::string& ext = "") {
-        vector<std::string> contents;
+    stdu::vector<std::string> getFilesRecursively(const std::string& dir, const std::string& ext = "") {
+        stdu::vector<std::string> contents;
 
         try {
             for (const auto& entry : std::filesystem::recursive_directory_iterator(dir)) {
@@ -129,7 +129,7 @@ namespace corelib::text {
         default: return std::string(1, in);      // Return the character itself if not an escape sequence
         }
     }
-    std::string join(const vector<std::string> &elements, const std::string &delimiter) {
+    std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter) {
         if (elements.empty()) return "";
         std::string joined = elements.front();
         for (auto it = elements.begin() + 1; it != elements.end(); ++it) {

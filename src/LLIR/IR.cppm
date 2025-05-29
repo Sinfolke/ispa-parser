@@ -1,6 +1,6 @@
 export module LLIR;
 import hash;
-import types;
+import dstd;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -34,8 +34,8 @@ export namespace LLIR {
     };
     struct var_type {
         var_types type = var_types::UNDEFINED;
-        vector<var_type> templ = {};
-        std::size_t operator()(const vector<std::string>& key) const {
+        stdu::vector<var_type> templ = {};
+        std::size_t operator()(const stdu::vector<std::string>& key) const {
             std::size_t h = 0;
             std::hash<std::string> hasher;
             for (const auto& s : key) {
@@ -54,7 +54,7 @@ export namespace LLIR {
     };
     struct property {
         std::string obj;
-        vector<std::string> properties;
+        stdu::vector<std::string> properties;
     };
     struct current_token {
         condition_types op;
@@ -69,28 +69,28 @@ export namespace LLIR {
         std::string name;
         var_type type = {var_types::UNDEFINED};
         assign value = {var_assign_values::NONE};
-        vector<std::string> property_access = {};
+        stdu::vector<std::string> property_access = {};
     };
     struct var_refer {
         std::optional<char> pre_increament;
         std::optional<char> post_increament;
         variable var;
-        vector<expr> brace_expression;
+        stdu::vector<expr> brace_expression;
     };
-    using array = vector<vector<expr>>;
-    using object = std::unordered_map<std::string, vector<expr>>;
+    using array = stdu::vector<stdu::vector<expr>>;
+    using object = std::unordered_map<std::string, stdu::vector<expr>>;
     struct function_call {
         std::string name;
-        vector<vector<expr>> params;
+        stdu::vector<stdu::vector<expr>> params;
     };
     struct method_call {
         std::string var_name;
-        vector<function_call> calls;
+        stdu::vector<function_call> calls;
     };
     struct condition {
-        vector<expr> expression;
-        vector<member> block;
-        vector<member> else_block = {};
+        stdu::vector<expr> expression;
+        stdu::vector<member> block;
+        stdu::vector<member> else_block = {};
     };
 
     struct variable_assign {
@@ -103,10 +103,10 @@ export namespace LLIR {
         variable value;
         size_t begin = 0;
     };
-    using inclosed_map = std::unordered_map<std::string, std::pair<vector<expr>, var_type>>;
-    using regular_data_block = std::pair<vector<expr>, var_type>;
+    using inclosed_map = std::unordered_map<std::string, std::pair<stdu::vector<expr>, var_type>>;
+    using regular_data_block = std::pair<stdu::vector<expr>, var_type>;
     struct DataBlock {
-        std::variant<std::monostate, regular_data_block, inclosed_map> value;
+        stdu::variant<std::monostate, regular_data_block, inclosed_map> value;
         bool is_inclosed_map() const;
         bool is_raw_expr() const;
         bool empty() const;
@@ -129,12 +129,12 @@ export namespace LLIR {
     };
     struct Data {
         DataBlock block;
-        vector<std::string> name;
-        vector<member> members;
+        stdu::vector<std::string> name;
+        stdu::vector<member> members;
     };
-    using DataBlockList = utype::unordered_map<vector<std::string>, DataBlock>;
-    using Nodes = vector<member>;
-    using Expression = vector<expr>;
+    using DataBlockList = utype::unordered_map<stdu::vector<std::string>, DataBlock>;
+    using Nodes = stdu::vector<member>;
+    using Expression = stdu::vector<expr>;
     class IR {
         auto getDataBlocks(bool isToken) -> DataBlockList;
     protected:
@@ -155,19 +155,19 @@ export namespace LLIR {
         void convertMembers(const LLIR::Nodes &members, std::ostream& out);
         void convertData(const LLIR::Data &data, std::ostream& out);
         void printIR(std::ostream& out);
-        vector<Data> data;
+        stdu::vector<Data> data;
         // output functions
         std::stack<std::string> current_pos_counter;
         size_t indentLevel = 0;
     public:
-        explicit IR(const vector<Data> &data) : data(data) {}
+        explicit IR(const stdu::vector<Data> &data) : data(data) {}
         IR() = default;
-        auto getData() const -> const vector<Data>&;
+        auto getData() const -> const stdu::vector<Data>&;
         auto operator[](size_t pos) const -> const Data&;
-        auto begin() -> vector<Data>::iterator;
-        auto end() -> vector<Data>::iterator;
-        auto cbegin() -> vector<Data>::const_iterator;
-        auto cend() -> vector<Data>::const_iterator;
+        auto begin() -> stdu::vector<Data>::iterator;
+        auto end() -> stdu::vector<Data>::iterator;
+        auto cbegin() -> stdu::vector<Data>::const_iterator;
+        auto cend() -> stdu::vector<Data>::const_iterator;
         auto size() -> size_t;
         auto empty() -> bool;
         auto clear() -> void;

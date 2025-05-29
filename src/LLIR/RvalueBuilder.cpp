@@ -1,7 +1,7 @@
-module RvalueBuilder;
+module LLIR.RvalueBuilder;
 import std;
 import logging;
-import CllBuilder;
+import LLIR.CllBuilder;
 import std;
 auto LLIR::RvalueBuilder::get() -> assign {
     return data;

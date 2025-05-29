@@ -1,5 +1,5 @@
 module LRParser;
-import TreeAPI;
+import AST.API;
 import logging;
 import hash;
 import cpuf.printf;
@@ -36,8 +36,8 @@ auto LRParser::ActionTypeToString(const Action_type &type) -> std::string {
     }
     throw Error("Undefined action type: %$", (int) type);
 }
-auto LRParser::getActionTableAsRow() const -> vector<utype::unordered_map<vector<std::string>, LRParser::Action>> {
-    vector<utype::unordered_map<vector<std::string>, LRParser::Action>> row_table;
+auto LRParser::getActionTableAsRow() const -> stdu::vector<utype::unordered_map<stdu::vector<std::string>, LRParser::Action>> {
+    stdu::vector<utype::unordered_map<stdu::vector<std::string>, LRParser::Action>> row_table;
     for (auto [state, value] : action_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -46,8 +46,8 @@ auto LRParser::getActionTableAsRow() const -> vector<utype::unordered_map<vector
     }
     return row_table;
 }
-auto LRParser::getGotoTableAsRow() const -> vector<utype::unordered_map<vector<std::string>, size_t>> {
-    vector<utype::unordered_map<vector<std::string>, size_t>> row_table;
+auto LRParser::getGotoTableAsRow() const -> stdu::vector<utype::unordered_map<stdu::vector<std::string>, size_t>> {
+    stdu::vector<utype::unordered_map<stdu::vector<std::string>, size_t>> row_table;
     for (auto [state, value] : goto_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -60,7 +60,7 @@ bool LRParser::isELR() const {
     return false;
 }
 
-// void LRParser::getPriorityTree(const vector<TreeAPI::Rule> *rule, utype::unordered_set<vector<std::string>> &visited, size_t depth) {
+// void LRParser::getPriorityTree(const stdu::vector<TreeAPI::Rule> *rule, utype::unordered_set<stdu::vector<std::string>> &visited, size_t depth) {
 //     for (const auto &r : *rule) {
 //         // Avoid re-expansion of already visited rules
 //         if (!corelib::text::isLower(r.members.name) || visited.count(r.fullname))
@@ -84,7 +84,7 @@ bool LRParser::isELR() const {
 // }
 
 // void LRParser::getPriorityTree() {
-//     utype::unordered_set<vector<std::string>> visited;
+//     utype::unordered_set<stdu::vector<std::string>> visited;
 
 //     auto it = tree->getInitialItemSet().find({"main"});
 //     if (it != tree->getInitialItemSet().end()) {
@@ -97,9 +97,9 @@ bool LRParser::isELR() const {
 // }
 
 void LRParser::addAugmentedRule() {
-    tree->getInitialItemSet()[{"__start"}] = {TreeAPI::Rule { { TreeAPI::RuleMember {.value = TreeAPI::RuleMemberName {.name = {"main"}}}}}};
+    tree->getInitialItemSet()[{"__start"}] = {AST::Rule { { AST::RuleMember {.value = AST::RuleMemberName {.name = {"main"}}}}}};
 }
-void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const vector<std::string> &lhs_name, LR1Core &new_item) {
+void LRParser::compute_cci_lookahead(const AST::Rule &rhs_group, const stdu::vector<std::string> &lhs_name, LR1Core &new_item) {
     size_t next_pos = new_item.dot_pos + 1;
     // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
     if (rhs_group.rule_members.empty() || next_pos >= rhs_group.rule_members.size()) {
@@ -127,7 +127,7 @@ void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const vecto
             bool has_espsilon = false;
             // cpuf::printf("[non-terminal %$] ", symbol.fullname);
             for (const auto& el : first_set) {
-                if (el == vector<std::string>{"ε"}) {
+                if (el == stdu::vector<std::string>{"ε"}) {
                     has_espsilon = true;
                     continue;
                 }
@@ -146,7 +146,7 @@ void LRParser::compute_cci_lookahead(const TreeAPI::Rule &rhs_group, const vecto
     // }
     // cpuf::printf("\n");
 }
-void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item, const vector<std::string> &lhs_name) {
+void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &item, const stdu::vector<std::string> &lhs_name) {
     for (const auto& rhs_group : item) {
         LR1Core new_item;
         // Create LHS rule_other
@@ -199,7 +199,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
         worklist.pop();
 
         // You likely need to aggregate per symbol with a merged lookahead set
-        utype::unordered_map<vector<std::string>, CanonicalItem> transitions;
+        utype::unordered_map<stdu::vector<std::string>, CanonicalItem> transitions;
 
         for (const auto& item : current) {
             if (item.dot_pos < item.rhs.rule_members.size()) {
@@ -255,7 +255,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 }
 
 
-size_t LRParser::find_goto_state(const CanonicalItem &item_set, const vector<std::string> &symbol) {
+size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu::vector<std::string> &symbol) {
     CanonicalItem next_state;
 
     // Step 1: Shift dot over symbol where possible
@@ -314,7 +314,7 @@ size_t LRParser::find_rules_index(const LR1Core &rule) {
     }
     return reduce_index;
 }
-bool isInUsePlace(const AST::UsePlaceTable &use_places, const vector<std::string> &first, const vector<std::string> &second, utype::unordered_set<vector<std::string>> &checked) {
+bool isInUsePlace(const AST::UsePlaceTable &use_places, const stdu::vector<std::string> &first, const stdu::vector<std::string> &second, utype::unordered_set<stdu::vector<std::string>> &checked) {
     checked.insert(first);
     auto find_it = use_places.find(first);
     if (find_it == use_places.end())
@@ -357,7 +357,7 @@ void LRParser::resolveCertainConflict(const Conflict &conflict) {
     } else if (first.rhs.rule_members.empty() && second.rhs.rule_members.empty()) {
         throw Error("REDUCE/REDUCE conflict for two epsilon rules");
     }
-    utype::unordered_set<vector<std::string>> checked;
+    utype::unordered_set<stdu::vector<std::string>> checked;
     // check whether second rule is nested in first
     if (isInUsePlace(use_places, first.lhs, second.lhs, checked)) {
         *place = conflicts[0];
@@ -410,7 +410,7 @@ void LRParser::buildTable() {
             // Dot is at the end → Reduce or Accept
             if (rule.dot_pos >= rule.rhs.rule_members.size()) {
                 // Accept condition: augmented rule with start symbol
-                if (rule.lhs == vector<std::string> {"__start"} && rule.rhs.rule_members.size() == 1) {
+                if (rule.lhs == stdu::vector<std::string> {"__start"} && rule.rhs.rule_members.size() == 1) {
                     action_table[I][{"$"}] = Action{Action_type::ACCEPT, 0};
                     continue;
                 }

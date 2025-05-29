@@ -8,18 +8,18 @@ import init;
 import args;
 import corelib;
 import logging;
-import AST;
+import AST.Tree;
 import ASTPass;
 import LRParser;
 import ELRParser;
 import LALRParser;
 import Converter;
-import LLIRBuilder;
+import LLIR.Builder;
 import LLIR;
 import hash;
 import Parser;
-import TreeAPI;
-import types;
+import AST.Builder;
+import dstd;
 import std;
 import std.compat;
 void printHelp() {
@@ -33,10 +33,10 @@ usage:
     )", color::yellow, color::reset);
     cpuf::printf("\n");
 }
-vector<const char*> parameters_required {
+stdu::vector<const char*> parameters_required {
     "lang"
 };
-vector<const char*> parameters_with_arguments {
+stdu::vector<const char*> parameters_with_arguments {
     "lang", "a"
 };
 std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
@@ -49,7 +49,7 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 // void printData(const std::unordered_map<const char*, std::any> data, int tabs);
 // void printData(const std::unordered_map<std::string, std::any> data, int tabs);
 int main(int argc, char** argv) {
-    vector<Parser::Rule> modules;
+    stdu::vector<Parser::Rule> modules;
     auto args = init(argc, argv);
 
     if (args.version) {
@@ -90,9 +90,11 @@ int main(int argc, char** argv) {
             }
         }
     }
-    AST ast(modules);
+    AST::Builder ast_builder(modules);
+    ast_builder.build();
+    auto ast = ast_builder.get();
     std::ofstream treeAPIO("treeAPI.txt");
-    std::ofstream initialItemSetO("tree.txt");
+    std::ofstream initialItemSet("tree.txt");
     for (const auto &[name, value] : ast.getTreeMap()) {
         treeAPIO << "name<" << name << "> : " << value;
     }
@@ -101,11 +103,11 @@ int main(int argc, char** argv) {
         LEXICAL CHECKS SHALL GO ABOVE
         TREE CHANGES BELOW
     */
-    ASTPass treePass(ast);
+    AST::TreePass pass(ast);
     for (const auto &[name, value] : ast.getInitialItemSet()) {
-        initialItemSetO << "name<" << name << "> : " << value;
+        initialItemSet << "name<" << name << "> : " << value;
     }
-    initialItemSetO.close();
+    initialItemSet.close();
     ast.printFirstSet("first");
     ast.printFollowSet("follow");
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
@@ -122,7 +124,7 @@ int main(int argc, char** argv) {
         LRIR.printCanonicalCollection("canonical_collection.txt");
         // LRIR.printFirstSet("first_set.txt");
         // LRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::LALR) {
@@ -131,7 +133,7 @@ int main(int argc, char** argv) {
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
         // LALRIR.printFirstSet("first_set.txt");
         // LALRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::ELR) {
@@ -140,14 +142,14 @@ int main(int argc, char** argv) {
         ELRIR.printCanonicalCollection("canonical_collection.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST&>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::LL) {
         LLIR::Builder builder(ast);
         auto IR = builder.get();
         IR.outputIRToFile("output_ir.txt");
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST&>("getLLConverter");
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST::Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast));
         converter->outputIR(output_path);
     } else {
