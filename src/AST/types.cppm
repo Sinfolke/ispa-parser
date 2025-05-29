@@ -17,5 +17,4 @@ export namespace AST {
     using Follow = First;
     using lexer_code = std::pair<LLIR::Nodes, LLIR::variable>;
     using InitialItemSet = utype::unordered_map<stdu::vector<std::string>, stdu::vector<AST::Rule>>;
-
 };

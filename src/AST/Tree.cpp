@@ -475,7 +475,7 @@ void AST::Tree::constructFollowSet() {
                         throw Error("Not RuleMemberName");
                     }
                     auto current_n = it->getName().name;
-                    stdu::vector<std::string> *current;
+                    const stdu::vector<std::string> *current;
                     if (corelib::text::isUpper(current_n.back())) {
                         continue;
                     }

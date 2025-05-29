@@ -1,6 +1,7 @@
 module AST.Builder;
 import AST.types;
 import AST.Tree;
+import cpuf.printf;
 import logging;
 import dstd;
 import std;
@@ -260,6 +261,7 @@ AST::CllIf AST::Builder::createCllIf(const Parser::Rule &cond) {
     auto data = Parser::get::cll__if(cond);
     newCond.expr = createCllExpr(data.expr);
     Builder newAst(Parser::get::cll_stmt(data.stmt), nested_rule_names, false);
+    newAst.build();
     newCond.stmt = newAst.newRules;
     return newCond;
 }
@@ -462,8 +464,10 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
         }
         case Parser::Rules::rule_group:
         {
-            auto data = Parser::get::rule_group(rule);
-            Builder group_ast(data, nested_rule_names, false);
+            const auto &data = Parser::get::rule_group(rule);
+            stdu::vector<Parser::Rule> ustd_c = data;
+            Builder group_ast(ustd_c, nested_rule_names, false);
+            group_ast.build();
             member.value = AST::RuleMemberGroup {group_ast.newRules};
             break;
         }

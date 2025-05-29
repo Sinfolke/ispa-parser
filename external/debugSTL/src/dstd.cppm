@@ -9,4 +9,4 @@ export namespace stdu {
 #else
     using namespace std;
 #endif
-};
+}

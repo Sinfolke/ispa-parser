@@ -1,0 +1,51 @@
+_use_unit: {ID, }
+cll_function_body_decl: {AUTO_3, }
+cll_expr_compare: {cll_COMPARE_OP, }
+moduleDeclaration: {AUTO_10, }
+moduleImport_from_import_list: {AUTO_1, }
+cll_expr_value: {}
+cll_function_call: {ID, }
+rvalue: {BOOLEAN, }
+rule_data_block: {ε, }
+rule_nested_rule: {AUTO_5, }
+cll_function_body_call: {AUTO_3, }
+cll_expr_arithmetic___grp1___rop0: {}
+rule_name: {DOT, }
+cll_function_arguments: {AUTO_1, }
+moduleImport_from: {MULTIPLE, }
+cll_expr_logical: {cll_LOGICAL_OP, }
+cll_function_decl: {ID, }
+array___grp1___grp0: {}
+object___grp1___rop0: {}
+rule_quantifier: {QUESTION_MARK, }
+cll__if: {AUTO_15, }
+cll_loop_for: {ε, }
+cll__variable___grp0: {}
+cll_function_parameters: {AUTO_1, }
+object: {AUTO_1, }
+rule_value: {AUTO_23, }
+cll_stmt: {ε, }
+_use: {AUTO_1, }
+cll_expr_arithmetic: {MINUS, }
+rule: {ε, }
+main: {NAME, }
+array: {AUTO_13, }
+moduleImport_from___rop0: {}
+rule_keyvalue: {AT, }
+rule_member: {ε, rule_NOSPACE, }
+rule_member___grp0: {}
+rule_data_block_regular_datablock: {ε, }
+rule_data_block_templated_datablock: {ID, }
+rule_group: {ε, }
+main___grp0: {}
+cll_method_call: {ID, }
+cll_expr_term___grp1___rop0: {}
+rule_data_block_regular_datablock_key: {ID, }
+cll__var: {ε, cll_ASSIGNMENT_OP, }
+cll__variable: {AUTO_13, }
+cll_loop_while: {AUTO_18, }
+cll_expr_group: {AUTO_3, }
+moduleImport: {ID, }
+cll: {ε, }
+cll_expr_term: {DIVIDE, }
+cll_expr: {}

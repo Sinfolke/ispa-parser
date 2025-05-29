@@ -128,13 +128,6 @@ bool AST::TreePass::prioritySort(const AST::RuleMemberName &first, const AST::Ru
     const auto &first_rules = first_data->second.rule_members;
     const auto &second_rules = second_data->second.rule_members;
     for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
-        if (first_rules[i].value.valueless_by_exception()) {
-            throw Error("Valueless rule member");
-        }
-        if (second_rules[i].value.valueless_by_exception()) {
-            throw Error("Valueless rule member");
-        }
-        cpuf::printf("Comparing {} with {}", first_rules[i], second_rules[i]);
         if (first_rules[i] == second_rules[i]) {
             continue;
         }

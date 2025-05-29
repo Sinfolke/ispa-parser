@@ -1,6 +1,7 @@
 export module dstd.variant;
 import std;
 import std.compat;
+
 template<typename T, typename... Ts>
 union VariantUnion {
     T head;
@@ -245,10 +246,7 @@ export namespace dstd {
         }
 
         void destroy() {
-            if (index_storage != std::numeric_limits<size_t>::max()) {
-                destroy_element_dynamic(index_storage, data);
-                index_storage = std::numeric_limits<size_t>::max();
-            }
+            destroy_element_dynamic(index_storage, data);
         }
         template<typename T, typename U, typename... Us>
         T& internal_get(size_t idx, VariantUnion<U, Us...>& u) const {
@@ -354,13 +352,19 @@ export namespace dstd {
         }
         // for copying
         void copy_from(const variant& other) {
-            if (other.index_storage == std::numeric_limits<size_t>::max()) {
-                index_storage = other.index_storage;
+            if (other.index_storage == variant_npos) {
+                std::cout << "Warning: variant become valueless by in copy assignment operator because assign variant is valueless" << std::endl;
+                index_storage = other.index_storage; // valueless
                 return;
             }
 
-            copy_construct_at_index(other.index_storage, other.data);
-            index_storage = other.index_storage;
+            try {
+                copy_construct_at_index(other.index_storage, other.data);
+                index_storage = other.index_storage;
+            } catch (...) {
+                index_storage = variant_npos; // valueless
+                std::cout << "Warning: variant become valueless by in copy assignment operator because an exception is thrown" << std::endl;
+            }
         }
 
         template<size_t I = 0>
@@ -369,7 +373,15 @@ export namespace dstd {
                 if (index == I) {
                     using T = type_at_t<I, Types...>;
                     const T& other_val = internal_get<I>(index, other_data);
-                    new (&data.head) T(other_val);
+                    try {
+                        new (&data.head) T(other_val);
+                    } catch (std::exception &e) {
+                        std::cout << "Warning: variant become valueless by in operator= with exception: " << e.what() << std::endl;
+                        index_storage = std::variant_npos;
+                    } catch (...) {
+                        std::cout << "Warning: variant become valueless by unknown exception in operator=" << std::endl;
+                        index_storage = std::variant_npos;
+                    }
                 } else {
                     copy_construct_at_index<I + 1>(index, other_data);
                 }
@@ -394,7 +406,20 @@ export namespace dstd {
             return data;
         }
         static constexpr size_t variant_npos = static_cast<size_t>(-1);
-        variant() noexcept = default;
+        variant(std::source_location loc = std::source_location::current()) {
+            try {
+                new (&data.head) decltype(data.head)();
+                index_storage = 0;
+            } catch (std::exception &e) {
+                std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
+                std::cout << "Warning: variant become valueless by in move constructor with exception: " << e.what() << std::endl;
+                index_storage = std::variant_npos;
+            } catch (...) {
+                std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
+                std::cout << "Warning: variant become valueless by unknown exception in move constructor" << std::endl;
+                index_storage = std::variant_npos;
+            }
+        };
 
         ~variant() {
             destroy();
@@ -451,12 +476,14 @@ export namespace dstd {
         variant(variant&& other, const std::source_location loc = std::source_location::current()) noexcept {
             try {
                 if (other.index_storage == std::numeric_limits<size_t>::max()) {
+
+                    std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
+                    std::cout << "Warning: variant become valueless by in move constructor because assign variant is valueless" << std::endl;
                     index_storage = other.index_storage;
                     // No active member, nothing to construct
                 } else {
                     move_construct_at_index(other.index_storage, std::move(other.data));
                     index_storage = other.index_storage;
-                    other.destroy(); // optional but good hygiene
                 }
             } catch (std::exception &e) {
                 std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
@@ -471,6 +498,8 @@ export namespace dstd {
         variant(const variant& other, const std::source_location loc = std::source_location::current()) {
             try {
                 if (other.index_storage == std::variant_npos) {
+                    std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
+                    std::cout << "Warning: variant become valueless by in move constructor because assign variant is valueless" << std::endl;
                     index_storage = std::variant_npos;
                 } else {
                     copy_construct_at_index(other.index_storage, other.data);
@@ -503,7 +532,7 @@ export namespace dstd {
         requires one_of<T, Types...> || constructible_from_one<T, Types...>
         T& emplace(Args&&... args) {
             destroy();
-            construct_impl<T>(std::forward<Args>(args)..., data);
+            construct_impl<T>(data, std::forward<Args>(args)...);
             index_storage = index_of<T>();
             return get<T>(*this);
         }

@@ -418,14 +418,22 @@ public:
         other.cap = 0;
     }
     // Copy constructor from std::vector<T>
-    vector(const std::vector<T>& other) {
-        sz = other.size();
-        cap = sz;
+    vector(const std::vector<T>& other)
+        : sz(other.size()), cap(sz), element(nullptr), modification_count(0)
+    {
         element = allocator.allocate(cap);
-        for (size_t i = 0; i < sz; ++i) {
-            std::construct_at(element + i, other[i]);
+        size_t i = 0;
+        try {
+            for (; i < sz; ++i) {
+                std::construct_at(element + i, other[i]);
+            }
+            modification_count++;
+        } catch (...) {
+            for (size_t j = 0; j < i; ++j)
+                std::destroy_at(element + j);
+            allocator.deallocate(element, cap);
+            throw;
         }
-        modification_count++;
     }
 
     // Move constructor from std::vector<T>
@@ -433,11 +441,20 @@ public:
         sz = other.size();
         cap = sz;
         element = allocator.allocate(cap);
-        for (size_t i = 0; i < sz; ++i) {
-            std::construct_at(element + i, std::move(other[i]));
+
+        size_t i = 0;
+        try {
+            for (; i < sz; ++i) {
+                std::construct_at(element + i, std::move(other[i]));
+            }
+        } catch (...) {
+            for (size_t j = 0; j < i; ++j)
+                std::destroy_at(element + j);
+            allocator.deallocate(element, cap);
+            throw;
         }
+
         modification_count++;
-        other.clear();  // Clear moved-from std::vector to leave it in valid state
     }
     vector(std::initializer_list<T> il) : sz(il.size()), cap(il.size()) {
         element = allocator.allocate(cap);
@@ -477,13 +494,42 @@ public:
         return *this;
     }
     vector& operator=(const std::vector<T>& other) {
-        sz = std::distance(other.begin, other.end);
-        cap = sz;
-        element = allocator.allocate(cap);
+        if (this == &other)
+            return *this;
+
+        // Make a temporary copy of `other`, with strong exception safety
+        vector temp;
+        temp.sz = other.size();
+        temp.cap = temp.sz;
+        temp.element = temp.allocator.allocate(temp.cap);
+
         size_t i = 0;
-        for (auto it = other.begin(); it != other.end(); ++it, ++i) {
-            std::construct_at(element + i, *it);
+        try {
+            for (const auto& item : other) {
+                std::construct_at(temp.element + i, item);
+                ++i;
+            }
+        } catch (...) {
+            for (size_t j = 0; j < i; ++j)
+                std::destroy_at(temp.element + j);
+            temp.allocator.deallocate(temp.element, temp.cap);
+            throw;
         }
+
+        // Destroy old contents
+        for (size_t i = 0; i < sz; ++i)
+            std::destroy_at(element + i);
+        allocator.deallocate(element, cap);
+
+        // Move from temp
+        element = temp.element;
+        sz = temp.sz;
+        cap = temp.cap;
+
+        temp.element = nullptr;  // prevent double free
+        temp.sz = 0;
+        temp.cap = 0;
+
         modification_count++;
         return *this;
     }
@@ -741,14 +787,14 @@ public:
         return element[index];
     }
     // iterators
-    auto begin() const -> iterator {return iterator(*this, element); };
-    auto end() const -> iterator {return iterator(*this, element + sz); };
-    auto cbegin() const -> const_iterator {return const_iterator(*this, element); };
-    auto cend() const -> const_iterator {return const_iterator(*this, element + sz); };
-    auto rbegin() const -> reverse_iterator {return reverse_iterator(*this, element + sz); };
+    auto begin() const -> iterator {return iterator(*this, element); }
+    auto end() const -> iterator {return iterator(*this, element + sz); }
+    auto cbegin() const -> const_iterator {return const_iterator(*this, element); }
+    auto cend() const -> const_iterator {return const_iterator(*this, element + sz); }
+    auto rbegin() const -> reverse_iterator {return reverse_iterator(*this, element + sz); }
     auto rend() const -> reverse_iterator { return reverse_iterator(*this, element); }
-    auto crbegin() const -> const_reverse_iterator {return const_reverse_iterator(*this, element + sz - 1); };
-    auto crend() const -> const_reverse_iterator {return const_reverse_iterator(*this, element - 1); };
+    auto crbegin() const -> const_reverse_iterator {return const_reverse_iterator(*this, element + sz - 1); }
+    auto crend() const -> const_reverse_iterator {return const_reverse_iterator(*this, element - 1); }
 
     bool operator==(const vector &other) const {
         if (sz != other.sz)
