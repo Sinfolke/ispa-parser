@@ -4,7 +4,7 @@ import std;
 import std.compat;
 import cpuf.op;
 export namespace Tlog {
-    class oss {
+    class Oss {
         std::ofstream of;
         size_t indent_level = 0;
         // Base case: no arguments left
@@ -59,7 +59,7 @@ export namespace Tlog {
             return format_str(std::string(str));
         }
     public:
-        oss(std::filesystem::path path) {
+        Oss(std::filesystem::path path) {
             std::filesystem::create_directories(path.parent_path());
             of.open(path);
             if (!of.is_open()) {

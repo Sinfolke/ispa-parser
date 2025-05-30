@@ -64,27 +64,66 @@ function(precompile_std target)
         if(NOT EXISTS "${STD_COMPATCXX_MODULE_PATH}")
             message(FATAL_ERROR "std.compat.cppm not found at expected location: ${STD_COMPATCXX_MODULE_PATH}")
         endif()
-
-        # Copy both to build dir
-        file(COPY ${STDCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
-        file(COPY ${STD_COMPATCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
-
-        set(STDCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/std.cppm")
-        set(STD_COMPATCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/std.compat.cppm")
-
-        target_compile_options(${target} PRIVATE
-                -stdlib=libc++
-                -Wno-reserved-identifier
-                -Wno-reserved-module-identifier
-        )
-        target_include_directories(${target} PRIVATE ${STDCXX_MODULE_DIR})
-        target_sources(${target}
-                PUBLIC
-                FILE_SET cxx_modules TYPE CXX_MODULES FILES
-                ${STDCXX_MODULE_CMAKE_PATH}
-                ${STD_COMPATCXX_MODULE_CMAKE_PATH}
-        )
+        set(STDCXX_MODULE_NAME std.cppm)
+        set(STDCXX_COMPAT_MODULE_NAME std.compat.cppm)
     endif()
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if (NOT DEFINED COMPILER_INSTALL_DIR)
+            get_filename_component(COMPILER_PATH "${CMAKE_CXX_COMPILER}" REALPATH)
+            get_filename_component(COMPILER_BIN_DIR "${COMPILER_PATH}" DIRECTORY)
+            get_filename_component(COMPILER_ROOT_DIR "${COMPILER_BIN_DIR}" DIRECTORY)
+        endif()
+        message(STATUS "Using gcc installation dir: ${COMPILER_ROOT_DIR}")
+
+        # Use cache variable if already set
+        if(NOT DEFINED STDCXX_MODULE_PATH OR NOT EXISTS "${STDCXX_MODULE_PATH}")
+            message(STATUS "Searching for std.cc module...")
+            file(GLOB_RECURSE STDCXX_MODULE_LIST
+                    "${COMPILER_ROOT_DIR}/include/**/std.cc"
+            )
+            if(STDCXX_MODULE_LIST)
+                list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE_PATH)
+                set(STDCXX_MODULE_PATH "${STDCXX_MODULE_PATH}" CACHE FILEPATH "Path to std.cc module")
+            else()
+                message(FATAL_ERROR "std.cc module not found in gcc installation dir")
+            endif()
+            message(STATUS "Module found at ${STDCXX_MODULE_PATH}")
+        else()
+            message(STATUS "Using cached std module location: ${STDCXX_MODULE_PATH}")
+        endif()
+
+        # Get compat module next to it
+        get_filename_component(STDCXX_MODULE_DIR ${STDCXX_MODULE_PATH} DIRECTORY)
+        set(STD_COMPATCXX_MODULE_PATH "${STDCXX_MODULE_DIR}/std.compat.cc")
+        if(NOT EXISTS "${STD_COMPATCXX_MODULE_PATH}")
+            message(FATAL_ERROR "std.compat.cc not found at expected location: ${STD_COMPATCXX_MODULE_PATH}")
+        endif()
+        set(STDCXX_MODULE_NAME std.cc)
+        set(STDCXX_COMPAT_MODULE_NAME std.compat.cc)
+    endif()
+    # Copy both to build dir
+    file(COPY ${STDCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+    file(COPY ${STD_COMPATCXX_MODULE_PATH} DESTINATION ${CMAKE_BINARY_DIR}/prebuilt_std)
+
+    set(STDCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/${STDCXX_MODULE_NAME}")
+    set(STD_COMPATCXX_MODULE_CMAKE_PATH "${CMAKE_BINARY_DIR}/prebuilt_std/${STDCXX_COMPAT_MODULE_NAME}")
+
+    target_compile_options(${target} PRIVATE
+            -Wno-reserved-identifier
+            -Wno-reserved-module-identifier
+    )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(${target} PRIVATE -stdlib=libc++)
+    endif()
+
+    target_include_directories(${target} PRIVATE ${STDCXX_MODULE_DIR})
+    target_sources(${target}
+            PUBLIC
+            FILE_SET cxx_modules TYPE CXX_MODULES FILES
+            ${STDCXX_MODULE_CMAKE_PATH}
+            ${STD_COMPATCXX_MODULE_CMAKE_PATH}
+    )
+    set_target_properties(${target} PROPERTIES LINKER_LANGUAGE CXX)
 endfunction()
 
 # =============================================
@@ -118,14 +157,16 @@ include(FetchContent)
 # =============================================
 # Global Configuration
 # =============================================
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -mllvm -asan-use-private-alias=1 -fno-sanitize-address-use-odr-indicator")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-sanitize-address-use-odr-indicator")
+#        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+    endif()
     add_compile_definitions(DEBUG)
 endif()
 # =============================================
@@ -164,8 +205,11 @@ set(CLANG_MODULE_CACHE_DIR "${CMAKE_BINARY_DIR}/clang-modules")
 set(MODULE_COMPILATION
         -fmodules-cache-path=${CLANG_MODULE_CACHE_DIR}
 )
-add_compile_options(-stdlib=libc++)
-add_link_options(-stdlib=libc++)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-stdlib=libc++)
+    add_link_options(-stdlib=libc++)
+endif()
+
 # =============================================
 # Project Definitions
 # =============================================
@@ -217,7 +261,7 @@ target_include_directories(ispa PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(ispa
         PRIVATE
             ispa_modules
-            cxx_std_module
+#            cxx_std_module
 )
 # =============================================
 # Converter Configuration
@@ -248,25 +292,25 @@ target_sources(ispa-converter-cpp
         ${CONVERTERS_DIR}/Converter.cppm
 )
 # export modules from main executable to shared library
-add_raw_module(ispa-converter-cpp ispa_modules
-        corelib
-        hash
-        logging
-        cpuf.printf
-        cpuf.color
-        Parser
-        ispastdlibcpp
-        TreeAPI
-        AST
-        LRParser
-        ELRParser
-        LLIRBuilder
-        LLIR
-)
-add_raw_module(ispa-converter-cpp cxx_std_module
-        std
-        std.compat
-)
+#add_raw_module(ispa-converter-cpp ispa_modules
+#        corelib
+#        hash
+#        logging
+#        cpuf.printf
+#        cpuf.color
+#        Parser
+#        ispastdlibcpp
+#        TreeAPI
+#        AST
+#        LRParser
+#        ELRParser
+#        LLIRBuilder
+#        LLIR
+#)
+#add_raw_module(ispa-converter-cpp cxx_std_module
+#        std
+#        std.compat
+#)
 #target_compile_options(ispa-converter-cpp PRIVATE ${MODULE_COMPILATION})
 # =============================================
 # Link Dependencies

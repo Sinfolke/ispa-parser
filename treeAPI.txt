@@ -8,16 +8,16 @@ name<[rule, BIN]> : Rule {
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, ESCAPED]> : Rule {
    String (\\)
-   Any
+   NoSpace
   @  Any
-   Any
+   NoSpace
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, NOSPACE]> : Rule {
    String (\\s0)
   Data: EmptyDataBlock
 }name<[rule, CSEQUENCE, ESCAPE]> : Rule {
    String (\\)
-   Any
+   NoSpace
   @  Any
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, CSEQUENCE, SYMBOL]> : Rule {
@@ -49,7 +49,7 @@ name<[rule, BIN]> : Rule {
   Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<[rule, keyvalue]> : Rule {
    Name(AT)
-   Group( Any, @  Name(ID))?;
+   Group( NoSpace, @  Name(ID))?;
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, member]> : Rule {
   @  Group( Op( Name(rule::keyvalue) |  Name(rule::value)))?;
@@ -173,7 +173,7 @@ name<[rule, BIN]> : Rule {
   @  Op( Name(cll::expr::group) |  Name(cll::_variable) |  Name(cll::function_call) |  Name(cll::method_call) |  Name(rvalue))
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, CSEQUENCE, DIAPASON]> : Rule {
-   Group(@  Name(rule::CSEQUENCE::SYMBOL),  Any,  String (-),  Any, @  Name(rule::CSEQUENCE::SYMBOL))
+   Group(@  Name(rule::CSEQUENCE::SYMBOL),  NoSpace,  String (-),  NoSpace, @  Name(rule::CSEQUENCE::SYMBOL))
   Data: TemplatedDataBlock(from, to)
 }name<[cll, _var]> : Rule {
   @  Name(cll::TYPE)?;
@@ -219,7 +219,7 @@ name<[rule, BIN]> : Rule {
   @  Name(cll::function_body_call)
   Data: TemplatedDataBlock(name, body)
 }name<[STRING]> : Rule {
-   Group( String (\'), @  Group( Op( Group( String (\\),  Any,  Any) |  !Cseq(['])))*;,  String (\'))
+   Group( String (\'), @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;,  String (\'))
   Data: [RegularDataBlock: CllExpr]
 }name<[SPACEMODE]> : Rule {
    String (spacemode)
@@ -239,7 +239,7 @@ name<[rule, BIN]> : Rule {
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, nested_rule]> : Rule {
    String (#)
-   Any
+   NoSpace
   @  Name(rule)
   Data: [RegularDataBlock: CllExpr]
 }name<[cll, function_body_call]> : Rule {

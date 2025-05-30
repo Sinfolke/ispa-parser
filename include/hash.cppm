@@ -34,9 +34,9 @@ export struct uhash {
         return uhash{}(*opt);
     }
     template <typename... Ts>
-    std::size_t operator()(const stdu::variant<Ts...>& v) const {
+    std::size_t operator()(const std::variant<Ts...>& v) const {
         std::size_t h = std::hash<std::size_t>{}(v.index()); // include the index in the hash
-        stdu::visit([&](const auto& value) {
+        std::visit([&](const auto& value) {
             hash_combine(h, uhash{}(value));
         }, v);
         return h;

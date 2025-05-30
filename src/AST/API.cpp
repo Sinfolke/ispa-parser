@@ -59,146 +59,146 @@ namespace AST {
         return value == "true";
     }
     bool rvalue::isString() const {
-        return stdu::holds_alternative<String>(value);
+        return std::holds_alternative<String>(value);
     }
     bool rvalue::isNumber() const {
-        return stdu::holds_alternative<Number>(value);
+        return std::holds_alternative<Number>(value);
     }
     bool rvalue::isBoolean() const {
-        return stdu::holds_alternative<Boolean>(value);
+        return std::holds_alternative<Boolean>(value);
     }
     bool rvalue::isArray() const {
-        return stdu::holds_alternative<Array>(value);
+        return std::holds_alternative<Array>(value);
     }
     bool rvalue::isObject() const {
-        return stdu::holds_alternative<Object>(value);
+        return std::holds_alternative<Object>(value);
     };
     bool rvalue::isAt() const {
-        return stdu::holds_alternative<At>(value);
+        return std::holds_alternative<At>(value);
     }
     bool rvalue::isID() const {
-        return stdu::holds_alternative<ID>(value);
+        return std::holds_alternative<ID>(value);
     }
     String& rvalue::getString() {
-        return stdu::get<String>(value);
+        return std::get<String>(value);
     }
     Number& rvalue::getNumber() {
-        return stdu::get<Number>(value);
+        return std::get<Number>(value);
     }
     Boolean& rvalue::getBoolean() {
-        return stdu::get<Boolean>(value);
+        return std::get<Boolean>(value);
     }
     Array& rvalue::getArray() {
-        return stdu::get<Array>(value);
+        return std::get<Array>(value);
     }
     Object& rvalue::getObject() {
-        return stdu::get<Object>(value);
+        return std::get<Object>(value);
     }
     ID& rvalue::getID() {
-        return stdu::get<ID>(value);
+        return std::get<ID>(value);
     }
     const String& rvalue::getString() const {
-        return stdu::get<String>(value);
+        return std::get<String>(value);
     }
 
     const Number& rvalue::getNumber() const {
-        return stdu::get<Number>(value);
+        return std::get<Number>(value);
     }
 
     const Boolean& rvalue::getBoolean() const {
-        return stdu::get<Boolean>(value);
+        return std::get<Boolean>(value);
     }
 
     const Array& rvalue::getArray() const {
-        return stdu::get<Array>(value);
+        return std::get<Array>(value);
     }
 
     const Object& rvalue::getObject() const {
-        return stdu::get<Object>(value);
+        return std::get<Object>(value);
     }
 
     const ID& rvalue::getID() const {
-        return stdu::get<ID>(value);
+        return std::get<ID>(value);
     }
     bool CllExprValue::isGroup() const {
-        return stdu::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
+        return std::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
     }
     bool CllExprValue::isVariable() const {
-        return stdu::holds_alternative<std::shared_ptr<CllVariable>>(value);
+        return std::holds_alternative<std::shared_ptr<CllVariable>>(value);
     }
     bool CllExprValue::isFunctionCall() const {
-        return stdu::holds_alternative<CllFunctionCall>(value);
+        return std::holds_alternative<CllFunctionCall>(value);
     }
     bool CllExprValue::isMethodCall() const {
-        return stdu::holds_alternative<CllMethodCall>(value);
+        return std::holds_alternative<CllMethodCall>(value);
     }
     bool CllExprValue::isrvalue() const {
-        return stdu::holds_alternative<rvalue>(value);
+        return std::holds_alternative<rvalue>(value);
     }
     CllExprGroup& CllExprValue::getGroup() {
-        return *stdu::get<std::shared_ptr<CllExprGroup>>(value);
+        return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
     CllVariable& CllExprValue::getVariable() {
-        return *stdu::get<std::shared_ptr<CllVariable>>(value);
+        return *std::get<std::shared_ptr<CllVariable>>(value);
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
-        return stdu::get<CllFunctionCall>(value);
+        return std::get<CllFunctionCall>(value);
     }
     CllMethodCall& CllExprValue::getMethodCall() {
-        return stdu::get<CllMethodCall>(value);
+        return std::get<CllMethodCall>(value);
     }
     rvalue& CllExprValue::getrvalue() {
-        return stdu::get<rvalue>(value);
+        return std::get<rvalue>(value);
     };
     const CllExprGroup& CllExprValue::getGroup() const {
-        return *stdu::get<std::shared_ptr<CllExprGroup>>(value);
+        return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
 
     const CllVariable& CllExprValue::getVariable() const {
-        return *stdu::get<std::shared_ptr<CllVariable>>(value);
+        return *std::get<std::shared_ptr<CllVariable>>(value);
     }
 
     const CllFunctionCall& CllExprValue::getFunctionCall() const {
-        return stdu::get<CllFunctionCall>(value);
+        return std::get<CllFunctionCall>(value);
     }
     const CllMethodCall& CllExprValue::getMethodCall() const {
-        return stdu::get<CllMethodCall>(value);
+        return std::get<CllMethodCall>(value);
     }
     const rvalue& CllExprValue::getrvalue() const {
-        return stdu::get<rvalue>(value);
+        return std::get<rvalue>(value);
     }
     bool AST::Cll::isVar() const {
-        return stdu::holds_alternative<CllVar>(value);
+        return std::holds_alternative<CllVar>(value);
     }
 
     bool AST::Cll::isIf() const {
-        return stdu::holds_alternative<CllIf>(value);
+        return std::holds_alternative<CllIf>(value);
     }
 
     bool AST::Cll::isExpr() const {
-        return stdu::holds_alternative<CllExpr>(value);
+        return std::holds_alternative<CllExpr>(value);
     }
     AST::CllVar &AST::Cll::getVar() {
-        return stdu::get<CllVar>(value);
+        return std::get<CllVar>(value);
     }
 
     AST::CllIf &AST::Cll::getIf() {
-        return stdu::get<CllIf>(value);
+        return std::get<CllIf>(value);
     }
 
     const AST::CllExpr &AST::Cll::getExpr() const {
-        return stdu::get<CllExpr>(value);
+        return std::get<CllExpr>(value);
     }
     const AST::CllVar &AST::Cll::getVar() const {
-        return stdu::get<CllVar>(value);
+        return std::get<CllVar>(value);
     }
 
     const AST::CllIf &AST::Cll::getIf() const {
-        return stdu::get<CllIf>(value);
+        return std::get<CllIf>(value);
     }
 
     AST::CllExpr &AST::Cll::getExpr() {
-        return stdu::get<CllExpr>(value);
+        return std::get<CllExpr>(value);
     }
     std::string::iterator RuleMemberHex::begin() {
         return hex_chars.begin();
@@ -232,105 +232,105 @@ namespace AST {
         return name.empty() && !is_key_value;
     }
     bool RuleMember::isString() const {
-        return stdu::holds_alternative<String>(value);
+        return std::holds_alternative<String>(value);
     }
     bool RuleMember::isName() const {
-        return stdu::holds_alternative<RuleMemberName>(value);
+        return std::holds_alternative<RuleMemberName>(value);
     }
     bool RuleMember::isGroup() const {
-        return stdu::holds_alternative<RuleMemberGroup>(value);
+        return std::holds_alternative<RuleMemberGroup>(value);
     }
     bool RuleMember::isOp() const {
-        return stdu::holds_alternative<RuleMemberOp>(value);
+        return std::holds_alternative<RuleMemberOp>(value);
     }
     bool RuleMember::isCsequence() const {
-        return stdu::holds_alternative<RuleMemberCsequence>(value);
+        return std::holds_alternative<RuleMemberCsequence>(value);
     }
     bool RuleMember::isAny() const {
-        return stdu::holds_alternative<RuleMemberAny>(value);
+        return std::holds_alternative<RuleMemberAny>(value);
     }
     bool RuleMember::isNospace() const {
-        return stdu::holds_alternative<RuleMemberNospace>(value);
+        return std::holds_alternative<RuleMemberNospace>(value);
     }
     bool RuleMember::isEscaped() const {
-        return stdu::holds_alternative<RuleMemberEscaped>(value);
+        return std::holds_alternative<RuleMemberEscaped>(value);
     }
     bool RuleMember::isHex() const {
-        return stdu::holds_alternative<RuleMemberHex>(value);
+        return std::holds_alternative<RuleMemberHex>(value);
     }
     bool RuleMember::isBin() const {
-        return stdu::holds_alternative<RuleMemberBin>(value);
+        return std::holds_alternative<RuleMemberBin>(value);
     }
     bool RuleMember::isCll() const {
-        return stdu::holds_alternative<Cll>(value);
+        return std::holds_alternative<Cll>(value);
     }
     bool RuleMember::emptyQuantifier() const {
         return quantifier == '\0';
     }
     bool RuleMember::empty() const {
-        return stdu::holds_alternative<std::monostate>(value);
+        return std::holds_alternative<std::monostate>(value);
     }
     String& RuleMember::getString() {
-        return stdu::get<String>(value);
+        return std::get<String>(value);
     }
     RuleMemberName& RuleMember::getName() {
-        return stdu::get<RuleMemberName>(value);
+        return std::get<RuleMemberName>(value);
     }
     RuleMemberGroup &RuleMember::getGroup() {
-        return stdu::get<RuleMemberGroup>(value);
+        return std::get<RuleMemberGroup>(value);
     }
     RuleMemberOp& RuleMember::getOp() {
-        return stdu::get<RuleMemberOp>(value);
+        return std::get<RuleMemberOp>(value);
     }
     RuleMemberCsequence& RuleMember::getCsequence() {
-        return stdu::get<RuleMemberCsequence>(value);
+        return std::get<RuleMemberCsequence>(value);
     }
     RuleMemberEscaped& RuleMember::getEscaped() {
-        return stdu::get<RuleMemberEscaped>(value);
+        return std::get<RuleMemberEscaped>(value);
     }
     RuleMemberHex& RuleMember::getHex() {
-        return stdu::get<RuleMemberHex>(value);
+        return std::get<RuleMemberHex>(value);
     }
     RuleMemberBin& RuleMember::getBin() {
-        return stdu::get<RuleMemberBin>(value);
+        return std::get<RuleMemberBin>(value);
     }
     Cll& RuleMember::getCll() {
-        return stdu::get<Cll>(value);
+        return std::get<Cll>(value);
     }
     const String& RuleMember::getString() const {
-        return stdu::get<String>(value);
+        return std::get<String>(value);
     }
 
     const RuleMemberName& RuleMember::getName() const {
-        return stdu::get<RuleMemberName>(value);
+        return std::get<RuleMemberName>(value);
     }
 
     const RuleMemberGroup& RuleMember::getGroup() const {
-        return stdu::get<RuleMemberGroup>(value);
+        return std::get<RuleMemberGroup>(value);
     }
 
     const RuleMemberOp& RuleMember::getOp() const {
-        return stdu::get<RuleMemberOp>(value);
+        return std::get<RuleMemberOp>(value);
     }
 
     const RuleMemberCsequence& RuleMember::getCsequence() const {
-        return stdu::get<RuleMemberCsequence>(value);
+        return std::get<RuleMemberCsequence>(value);
     }
 
     const RuleMemberEscaped& RuleMember::getEscaped() const {
-        return stdu::get<RuleMemberEscaped>(value);
+        return std::get<RuleMemberEscaped>(value);
     }
 
     const RuleMemberHex& RuleMember::getHex() const {
-        return stdu::get<RuleMemberHex>(value);
+        return std::get<RuleMemberHex>(value);
     }
 
     const RuleMemberBin& RuleMember::getBin() const {
-        return stdu::get<RuleMemberBin>(value);
+        return std::get<RuleMemberBin>(value);
     }
 
     const Cll& RuleMember::getCll() const {
-        return stdu::get<Cll>(value);
+        return std::get<Cll>(value);
     }
 
     std::unordered_map<std::string, CllExpr>::iterator RegularDataBlockWKeys::begin() {
@@ -368,40 +368,40 @@ namespace AST {
     }
 
     bool DataBlock::isRegularDataBlock() const {
-        return stdu::holds_alternative<RegularDataBlock>(value) || stdu::holds_alternative<RegularDataBlockWKeys>(value);
+        return std::holds_alternative<RegularDataBlock>(value) || std::holds_alternative<RegularDataBlockWKeys>(value);
     }
 
     bool DataBlock::isWithKeys() const {
-        return stdu::holds_alternative<RegularDataBlockWKeys>(value);
+        return std::holds_alternative<RegularDataBlockWKeys>(value);
     }
 
     bool DataBlock::isTemplatedDataBlock() const {
-        return stdu::holds_alternative<TemplatedDataBlock>(value);
+        return std::holds_alternative<TemplatedDataBlock>(value);
     }
     bool DataBlock::empty() const {
-        return stdu::holds_alternative<std::monostate>(value);
+        return std::holds_alternative<std::monostate>(value);
     }
     RegularDataBlock& DataBlock::getRegDataBlock() {
-        return stdu::get<RegularDataBlock>(value);
+        return std::get<RegularDataBlock>(value);
     }
 
     RegularDataBlockWKeys& DataBlock::getRegDataBlockWKeys() {
-        return stdu::get<RegularDataBlockWKeys>(value);
+        return std::get<RegularDataBlockWKeys>(value);
     }
 
     TemplatedDataBlock& DataBlock::getTemplatedDataBlock() {
-        return stdu::get<TemplatedDataBlock>(value);
+        return std::get<TemplatedDataBlock>(value);
     }
     const RegularDataBlock& DataBlock::getRegDataBlock() const {
-        return stdu::get<RegularDataBlock>(value);
+        return std::get<RegularDataBlock>(value);
     }
 
     const RegularDataBlockWKeys& DataBlock::getRegDataBlockWKeys() const {
-        return stdu::get<RegularDataBlockWKeys>(value);
+        return std::get<RegularDataBlockWKeys>(value);
     }
 
     const TemplatedDataBlock& DataBlock::getTemplatedDataBlock() const {
-        return stdu::get<TemplatedDataBlock>(value);
+        return std::get<TemplatedDataBlock>(value);
     }
     // operator== for rules
 
@@ -441,7 +441,7 @@ namespace AST {
 
     // Comparison operator for rvalue
     bool operator==(const rvalue& lhs, const rvalue& rhs) {
-        return stdu::visit([](const auto& a, const auto& b) -> bool {
+        return std::visit([](const auto& a, const auto& b) -> bool {
             using A = std::decay_t<decltype(a)>;
             using B = std::decay_t<decltype(b)>;
             if constexpr (std::is_same_v<A, B>) {
@@ -508,7 +508,7 @@ namespace AST {
     }
 
     bool operator==(const CllExprValue &lhs, const CllExprValue &rhs) {
-        return stdu::visit([] (auto &&a, auto &&b) -> bool {
+        return std::visit([] (auto &&a, auto &&b) -> bool {
             using A = std::decay_t<decltype(a)>;
             using B = std::decay_t<decltype(b)>;
             if constexpr (std::is_same_v<A, B>) {
@@ -539,7 +539,7 @@ namespace AST {
     }
 
     bool operator==(const DataBlock &lhs, const DataBlock &rhs) {
-        stdu::visit([](auto &&a, auto &&b) -> bool {
+        return std::visit([](auto &&a, auto &&b) -> bool {
             if constexpr(!std::is_same_v<decltype(a), decltype(b)>) {
                 return false;
             } else {
@@ -565,7 +565,7 @@ namespace AST {
     }
 
     bool operator==(const Cll &first, const Cll &second) {
-        return stdu::visit([](auto &&first, auto &&second) -> bool {
+        return std::visit([](auto &&first, auto &&second) -> bool {
             if constexpr (std::is_same_v<decltype(first), decltype(second)>) {
                 return first == second;
             } else {
@@ -636,7 +636,7 @@ namespace AST {
     }
 
     bool operator==(const RuleMember &first, const RuleMember &second) {
-        return stdu::visit([](auto&& lhs, auto&& rhs) -> bool {
+        return std::visit([](auto&& lhs, auto&& rhs) -> bool {
             using L = std::decay_t<decltype(lhs)>;
             using R = std::decay_t<decltype(rhs)>;
             if constexpr (std::is_same_v<L, R> && requires (L a, R b) { a == b; }) {
@@ -734,7 +734,7 @@ namespace AST {
     std::ostream& operator<<(std::ostream& os, const RuleMember& rm) {
         os << rm.prefix << " ";
 
-        stdu::visit([&os](auto&& arg) {
+        std::visit([&os](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (!std::is_same_v<T, std::monostate>)
                 os << arg;
@@ -766,7 +766,7 @@ namespace AST {
     }
 
     std::ostream& operator<<(std::ostream& os, const DataBlock& db) {
-        stdu::visit([&os](auto&& arg) {
+        std::visit([&os](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::monostate>) {
                 os << "EmptyDataBlock";

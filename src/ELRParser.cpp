@@ -64,9 +64,9 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
     for (const auto &option : lookahead_set) {
         size_t current = nfa_initial_index;
         for (const auto &token : option.token_sequence) {
-            if (stdu::holds_alternative<stdu::vector<std::string>>(token)) {
+            if (std::holds_alternative<stdu::vector<std::string>>(token)) {
                 // token, add
-                auto name = stdu::get<stdu::vector<std::string>>(token);
+                auto name = std::get<stdu::vector<std::string>>(token);
                 auto &current_nfa_state = nfa_states[current];
                 if (current_nfa_state.transitions.count(name)) {
                     // already exists; jump to it's index to add one more alternative
@@ -76,8 +76,8 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
                     current_nfa_state.transitions[name] = current;
                     nfa_states.emplace_back();
                 }
-            } else if (stdu::holds_alternative<size_t>(token)) {
-                auto nested_id = stdu::get<size_t>(token);
+            } else if (std::holds_alternative<size_t>(token)) {
+                auto nested_id = std::get<size_t>(token);
                 processLookaheadSet(option.nested[nested_id], current, action);
             }
         }

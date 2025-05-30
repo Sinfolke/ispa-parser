@@ -106,7 +106,7 @@ export namespace LLIR {
     using inclosed_map = std::unordered_map<std::string, std::pair<stdu::vector<expr>, var_type>>;
     using regular_data_block = std::pair<stdu::vector<expr>, var_type>;
     struct DataBlock {
-        stdu::variant<std::monostate, regular_data_block, inclosed_map> value;
+        std::variant<std::monostate, regular_data_block, inclosed_map> value;
         bool is_inclosed_map() const;
         bool is_raw_expr() const;
         bool empty() const;

@@ -728,7 +728,7 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 protected:
-    stdu::vector<std::pair<stdu::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    stdu::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
         stack.push_back({pos->name(), state});

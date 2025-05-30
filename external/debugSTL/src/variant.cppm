@@ -110,6 +110,50 @@ requires AllIsVariant<Variant, Variants...> && (sizeof ...(Heads) == 0)
 decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... variants) {
     return visit_impl_vu(visitor, variant.getRawData(), variant.index(), variants...);
 }
+
+// Comparison functors
+struct Equal {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a == b) {
+        return a == b;
+    }
+};
+
+struct NotEqual {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a != b) {
+        return a != b;
+    }
+};
+
+struct Greater {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a > b) {
+        return a > b;
+    }
+};
+
+struct Less {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a < b) {
+        return a < b;
+    }
+};
+
+struct GreaterEqual {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a >= b) {
+        return a >= b;
+    }
+};
+
+struct LessEqual {
+    template<typename A, typename B>
+    constexpr auto operator()(A&& a, B&& b) const -> decltype(a <= b) {
+        return a <= b;
+    }
+};
+
 export namespace dstd {
     template<typename ...Types>
     class variant {
@@ -195,7 +239,8 @@ export namespace dstd {
         template <size_t I, typename U>
         void destroy_element(U& u) {
             if constexpr (I == 0) {
-                u.head.~decltype(u.head)();
+                using HeadType = decltype(u.head);
+                u.head.~HeadType();
             } else {
                 destroy_element<I-1>(u.tail);
             }
@@ -622,88 +667,61 @@ export namespace dstd {
     }
     template<std::size_t I, typename... Types>
     requires in_types_range<I, Types...>
-    constexpr std::variant_alternative_t<I, variant<Types...>>& get_if(const variant<Types...>& v) {
+    std::variant_alternative_t<I, variant<Types...>>& get_if(const variant<Types...>& v) {
         if (v.index() != I)
             return nullptr;
         return &get<I>(v);
     }
+    // Operators using function objects — safe across modules and TU boundaries
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a == b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(Equal{}, lhs, rhs);
     }
-    constexpr bool operator==(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a == b;
-        }, lhs, rhs);
+    constexpr auto operator==(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(Equal{}, lhs, rhs);
     }
 
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a != b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(NotEqual{}, lhs, rhs);
     }
-    constexpr bool operator!=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a != b;
-        }, lhs, rhs);
+    constexpr auto operator!=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(NotEqual{}, lhs, rhs);
     }
 
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a > b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(Greater{}, lhs, rhs);
     }
-    constexpr bool operator>(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a > b;
-        }, lhs, rhs);
+    constexpr auto operator>(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(Greater{}, lhs, rhs);
     }
 
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a < b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(Less{}, lhs, rhs);
     }
-    constexpr bool operator<(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a < b;
-        }, lhs, rhs);
+    constexpr auto operator<(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(Less{}, lhs, rhs);
     }
+
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a >= b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(GreaterEqual{}, lhs, rhs);
     }
-    constexpr bool operator>=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a < b;
-        }, lhs, rhs);
+    constexpr auto operator>=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(GreaterEqual{}, lhs, rhs);
     }
+
     template<typename ...Types>
-    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs)
-    {
-        visit([](auto&& a, auto&& b) {
-            return a <= b;
-        }, lhs, rhs) -> std::template same_as<bool>;
+    requires requires(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        visit(LessEqual{}, lhs, rhs);
     }
-    constexpr bool operator<=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
-        return visit([](auto&& a, auto&& b) {
-            return a < b;
-        }, lhs, rhs);
+    constexpr auto operator<=(const variant<Types...>& lhs, const variant<Types...>& rhs) {
+        return visit(LessEqual{}, lhs, rhs);
     }
 }
-namespace std {
+export namespace std {
     template<typename ...Types>
     void swap(dstd::variant<Types...>& lhs, dstd::variant<Types...>& rhs) noexcept {
         lhs.swap(rhs);

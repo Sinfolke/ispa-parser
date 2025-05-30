@@ -5,26 +5,26 @@ import logging;
 import cpuf.printf;
 import std;
 bool LLIR::DataBlock::is_inclosed_map() const {
-    return stdu::holds_alternative<LLIR::inclosed_map>(value);
+    return std::holds_alternative<LLIR::inclosed_map>(value);
 }
 bool LLIR::DataBlock::is_raw_expr() const {
-    return stdu::holds_alternative<LLIR::regular_data_block>(value);
+    return std::holds_alternative<LLIR::regular_data_block>(value);
 }
 bool LLIR::DataBlock::empty() const {
-    return stdu::holds_alternative<std::monostate>(value);
+    return std::holds_alternative<std::monostate>(value);
 }
 
 LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() {
-    return stdu::get<LLIR::regular_data_block>(value);
+    return std::get<LLIR::regular_data_block>(value);
 };
 LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() {
-    return stdu::get<LLIR::inclosed_map>(value);
+    return std::get<LLIR::inclosed_map>(value);
 };
 const LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() const {
-    return stdu::get<LLIR::regular_data_block>(value);
+    return std::get<LLIR::regular_data_block>(value);
 };
 const LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() const {
-    return stdu::get<LLIR::inclosed_map>(value);
+    return std::get<LLIR::inclosed_map>(value);
 };
 auto LLIR::IR::begin() -> ::stdu::vector<Data>::iterator {
     return data.begin();

@@ -54,5 +54,6 @@ void custom_terminate_handler() {
         b.log("<unknown exception>");
         cpuf::printf("Unknown exception\n");
     }
+    b.close();
     std::abort();
 }

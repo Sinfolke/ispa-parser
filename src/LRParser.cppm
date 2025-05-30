@@ -116,6 +116,7 @@ public:
     LRParser(AST::Tree &tree) : tree(&tree) {
         build();
     }
+    ~LRParser() = default;
     // get data functions
     virtual bool isELR() const;    
     static auto ActionTypeToString(const Action_type &type) -> std::string;

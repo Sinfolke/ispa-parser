@@ -300,9 +300,9 @@ name<[cll, function_arguments, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[STRING]> : [Rule {
    String (\')
-  @  Group( Op( Group( String (\\),  Any,  Any) |  !Cseq(['])))*;
+  @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;
    String (\')
-   Group( String (\'), @  Group( Op( Group( String (\\),  Any,  Any) |  !Cseq(['])))*;,  String (\'))
+   Group( String (\'), @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;,  String (\'))
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, expr, arithmetic, __grp1]> : [Rule {
    Name(cll::expr::arithmetic::__grp1::__rop0)
@@ -319,7 +319,7 @@ name<[cll, function_arguments, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[rule, nested_rule]> : [Rule {
    Name(AUTO_5)
-   Any
+   NoSpace
   @  Name(rule)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, function_call]> : [Rule {
@@ -551,7 +551,7 @@ name<[cll, function_arguments, __grp2]> : [Rule {
    Name(AUTO_2)
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, keyvalue, __grp1]> : [Rule {
-   Any
+   NoSpace
   @  Name(ID)
   Data: EmptyDataBlock
 }]name<[rule, data_block, templated_datablock]> : [Rule {
@@ -615,11 +615,11 @@ name<[cll, function_arguments, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[rule, CSEQUENCE, DIAPASON]> : [Rule {
   @  Name(rule::CSEQUENCE::SYMBOL)
-   Any
+   NoSpace
    String (-)
-   Any
+   NoSpace
   @  Name(rule::CSEQUENCE::SYMBOL)
-   Group(@  Name(rule::CSEQUENCE::SYMBOL),  Any,  String (-),  Any, @  Name(rule::CSEQUENCE::SYMBOL))
+   Group(@  Name(rule::CSEQUENCE::SYMBOL),  NoSpace,  String (-),  NoSpace, @  Name(rule::CSEQUENCE::SYMBOL))
   Data: TemplatedDataBlock(from, to)
 }]name<[rule, CSEQUENCE, SYMBOL]> : [Rule {
   @  Op( String (\\) |  !Cseq([]]))
@@ -641,7 +641,7 @@ name<[cll, function_arguments, __grp2]> : [Rule {
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, CSEQUENCE, ESCAPE]> : [Rule {
    String (\\)
-   Any
+   NoSpace
   @  Any
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, name]> : [Rule {
@@ -751,9 +751,9 @@ name<[cll, function_arguments, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[rule, ESCAPED]> : [Rule {
    String (\\)
-   Any
+   NoSpace
   @  Any
-   Any
+   NoSpace
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_20]> : [Rule {
   @  String (++)

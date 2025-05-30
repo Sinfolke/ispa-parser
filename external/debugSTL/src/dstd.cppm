@@ -5,8 +5,10 @@ export import dstd.variant;
 export import std;
 export namespace stdu {
 #ifdef DEBUG
-    using namespace dstd;
+    using dstd::vector;
+    using dstd::variant;
 #else
-    using namespace std;
+    using std::vector;
+    using std::variant;
 #endif
 }

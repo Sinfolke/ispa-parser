@@ -11,9 +11,6 @@ import cpuf.printf;
 import Tlog.Logger;
 import std;
 import std.compat;
-// helper functions
-
-
 
 auto AST::Tree::getTerminals() -> stdu::vector<stdu::vector<std::string>> {
     stdu::vector<stdu::vector<std::string>> set;
@@ -551,7 +548,6 @@ void AST::Tree::constructFollowSet() {
                         }
                     }
                 }
-                cpuf::printf("");
             }
             if (hasChanges) {
                 changed.push_back(name);

@@ -25,7 +25,7 @@ export class ELRParser : public LRParser {
             size_t epsilon_transition = 0;
         };
         struct LookaheadOption {
-            stdu::vector<stdu::variant<stdu::vector<std::string>, size_t>> token_sequence; // one possible sequence
+            stdu::vector<std::variant<stdu::vector<std::string>, size_t>> token_sequence; // one possible sequence
             stdu::vector<stdu::vector<LookaheadOption>> nested;      // options after that
         };
         using Lookahead_set = stdu::vector<LookaheadOption>;

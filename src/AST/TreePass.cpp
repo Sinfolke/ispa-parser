@@ -183,7 +183,7 @@ bool AST::TreePass::prioritySort(const AST::RuleMember &first, const AST::RuleMe
             throw Error("Not found Rule_name in map");
         }
         const auto &members = find_it->second.rule_members;
-        return stdu::visit([&](const auto &f, const auto &s) -> bool {
+        return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return false;
             return prioritySort(members[0], second);
@@ -195,7 +195,7 @@ bool AST::TreePass::prioritySort(const AST::RuleMember &first, const AST::RuleMe
             throw Error("Not found Rule_name in map");
         }
         const auto &members = find_it->second.rule_members;
-        return stdu::visit([&](const auto &f, const auto &s) -> bool {
+        return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return true;
             return prioritySort(first, members[0]);
@@ -225,7 +225,7 @@ bool AST::TreePass::prioritySort(const AST::RuleMember &first, const AST::RuleMe
             throw Error("Empty op");
         return prioritySort(first, dt.options[0]);
     }
-    return stdu::visit([&](const auto &f, const auto &s) -> bool {
+    return std::visit([&](const auto &f, const auto &s) -> bool {
         stdu::vector<Types> priority_order = {
             Types::string,
             Types::Rule_escaped,

@@ -19,6 +19,7 @@ import LLIR;
 import hash;
 import Parser;
 import AST.Builder;
+import NFA;
 import dstd;
 import std;
 import std.compat;
@@ -110,6 +111,19 @@ int main(int argc, char** argv) {
     initialItemSet.close();
     ast.printFirstSet("first");
     ast.printFollowSet("follow");
+    std::stringstream ss;
+    for (const auto &[name, value] : ast.getTreeMap()) {
+        if (corelib::text::isUpper(name.back()))
+            continue;
+        for (const auto &member : value.rule_members) {
+            NFA nfa(ast, member);
+            nfa.build();
+            ss << nfa;
+        }
+    }
+    std::ofstream NFA_file("NFA_states");
+    NFA_file << ss.str();
+    NFA_file.close();
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
     std::string opath;

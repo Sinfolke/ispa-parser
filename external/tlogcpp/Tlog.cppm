@@ -7,7 +7,7 @@ import std.compat;
 export namespace Tlog {
     struct Branch_data {
         std::filesystem::path path;
-        oss oss;
+        Oss oss;
         bool isExcluded = false;
     };
     class Logger {
@@ -94,11 +94,11 @@ export namespace Tlog {
                 throw std::runtime_error("Branch '" + name + "' already exists");
             exclude_if_found(name);
             auto final_path = getFormattedPath(name);
-            branches.insert_or_assign(name, Branch_data{final_path, oss(final_path)});
+            branches.insert_or_assign(name, Branch_data{final_path, Oss(final_path)});
         }
         void pushBranch(std::string path) {
             auto final_path = getFormattedPath(path);
-            branches_stack.emplace_back(final_path, oss(final_path));
+            branches_stack.emplace_back(final_path, Oss(final_path));
         }
         void popBranch() {
             if (branches_stack.empty())
@@ -189,6 +189,9 @@ export namespace Tlog {
 
             this->logger = &logger;
             this->logger->pushBranch(path);
+        }
+        void close() {
+            logger->popBranch();
         }
         template<typename Format, typename... Args>
         void log(Format str, Args&&... args) {

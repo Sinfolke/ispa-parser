@@ -13,7 +13,7 @@ export namespace AST {
      * Tree class that holds features could be done on it. Contains tree_map map
      */
     class Tree {
-    protected:
+    private:
         TreeMap tree_map;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
         Use use;
@@ -55,6 +55,7 @@ export namespace AST {
               spacemode(spacemode),
               use(use),
               tree_map(map) {}
+        ~Tree() = default;
         auto getUsePlacesTable() -> UsePlaceTable& {
             if (use_places.empty())
                 createUsePlacesTable();
@@ -79,5 +80,9 @@ export namespace AST {
 
         void printFirstSet(const std::string &fileName);
         void printFollowSet(const std::string &fileName);
-};
+
+        auto operator[](const stdu::vector<std::string> &name) const -> const Rule& {
+            return tree_map.at(name);
+        }
+    };
 };

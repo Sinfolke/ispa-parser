@@ -66,6 +66,7 @@ export namespace AST {
     public:
         Builder(const stdu::vector<Parser::Rule> &modules) : modules(&modules) {}
         Builder(const Parser::Rule &mod) : md(&mod) {}
+        ~Builder() = default;
         void build();
         auto get() -> Tree { return {std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)}; }
     };
