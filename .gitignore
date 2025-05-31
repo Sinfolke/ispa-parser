@@ -64,3 +64,6 @@ perf*
 test_LL
 test_LR
 output_ir.txt
+
+# dir where dumps are located
+Dumps

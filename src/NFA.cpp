@@ -3,6 +3,128 @@ import logging;
 import corelib;
 import cpuf.op;
 import std;
+void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry) {
+    states[start].transitions[name] = end;
+    if (isEntry) {
+        states[end].accept_index = accept_index++;
+    }
+    // handle quantifier
+    switch (member.quantifier) {
+        case '?':
+            // NUMBER -> end
+            // epsilon -> end
+            states[start].epsilon_transitions.push_back(end);
+            break;
+        case '+': {
+            // NUMBER -> next:
+            //  NUMBER -> this
+            //  epsilon -> end
+            auto loop_state = states.size();
+            states.emplace_back();
+            states[loop_state].transitions[name] = loop_state;
+            states[loop_state].epsilon_transitions.push_back(end);
+            break;
+        } case '*':
+            // NUMBER -> this
+            // epsilon -> end
+            states[start].transitions[name] = start;
+            states[start].epsilon_transitions.push_back(end);
+            break;
+        default:
+            break;
+    }
+}
+void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry) {
+    processing.insert(name);
+    size_t inner_start = states.size();
+    size_t inner_end = inner_start + 1;
+    states.emplace_back(); // inner start
+    states.emplace_back(); // inner end
+    size_t last = inner_start;
+
+    const auto &prod_rules = tree->operator[](name);
+    for (auto &prod : prod_rules.rule_members) {
+        auto fragment = buildStateFragment(prod, false);
+        if (fragment.invalid())
+            continue;
+        states[last].epsilon_transitions.push_back(fragment.start);
+        last = fragment.end;
+    }
+    states[last].epsilon_transitions.push_back(inner_end);
+    // now handle quantifier
+    switch (member.quantifier) {
+        case '?':
+            // epsilon -> end
+            // fragment -> end
+            states[start].epsilon_transitions.push_back(inner_start);
+            states[start].epsilon_transitions.push_back(end);
+            states[inner_end].epsilon_transitions.push_back(end);
+            break;
+        case '+': {
+            // loop at end
+            size_t loop_start = inner_start;
+            size_t loop_end = inner_end;
+            states[start].epsilon_transitions.push_back(loop_start);
+            states[loop_end].epsilon_transitions.push_back(loop_start);
+            states[loop_end].epsilon_transitions.push_back(end);
+            break;
+        }
+        case '*': {
+            // epsilon -> end
+            // loop zero or more
+            size_t loop_start = inner_start;
+            size_t loop_end = inner_end;
+            states[start].epsilon_transitions.push_back(loop_start);
+            states[start].epsilon_transitions.push_back(end);
+            states[loop_end].epsilon_transitions.push_back(loop_start);
+            states[loop_end].epsilon_transitions.push_back(end);
+            break;
+        }
+        default:
+            // normal sequence
+            states[start].epsilon_transitions.push_back(inner_start);
+            states[inner_end].epsilon_transitions.push_back(end);
+            break;
+    }
+
+    if (isEntry) {
+        states[inner_end].accept_index = accept_index++;
+    }
+}
+void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry) {
+    size_t last = start;
+    for (const auto &sub : group) {
+        auto fragment = buildStateFragment(sub, false);
+        if (fragment.invalid())
+            continue;
+        states[last].epsilon_transitions.push_back(fragment.start);
+        last = fragment.end;
+    }
+    // Link final fragment to end
+    states[last].epsilon_transitions.push_back(end);
+    if (isEntry) {
+        states[last].accept_index = accept_index++;
+    }
+    switch (member.quantifier) {
+        case '?':
+            // Allow skipping the group entirely
+            states[start].epsilon_transitions.push_back(end);
+            break;
+        case '*':
+            // Loop and allow skipping
+            states[last].epsilon_transitions.push_back(start); // loop back
+            states[start].epsilon_transitions.push_back(end);  // skip
+            break;
+        case '+':
+            // Loop back, but no skipping
+            states[last].epsilon_transitions.push_back(start);
+            break;
+        default:
+            break;
+    }
+
+}
+
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange {
     if (member.isNospace())
         return {NO_STATE_RANGE, NO_STATE_RANGE};
@@ -12,47 +134,12 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
     if (member.isName()) {
         const auto &name = member.getName();
         if (name.isTerminal()) {
-            states[start].transitions[name.name] = end;
-            if (isEntry) {
-                states[end].accept_index = accept_index++;
-            }
-            // handle quantifier
-            switch (member.quantifier) {
-                case '?':
-                    // NUMBER -> end
-                    // epsilon -> end
-                    states[start].epsilon_transitions.push_back(end);
-                    break;
-                case '+':
-                    // NUMBER -> next:
-                    //  NUMBER -> this
-                    //  epsilon -> end
-                    auto loop_state = states.size();
-                    states.emplace_back();
-                    states[loop_state].transitions[name.name] = loop_state;
-                    states[loop_state].epsilon_transitions.push_back(end);
-                    break;
-                case '*':
-                    // NUMBER -> this
-                    // epsilon -> end
-                    states[start].transitions[name.name] = start;
-                    states[start].epsilon_transitions.push_back(end);
-                    break;
-            }
+            handleTerminal(member, name.name, start, end, isEntry);
         } else {
-            size_t last = start;
-            const auto &prod_rules = tree->operator[](name.name);
-            for (auto &prod : prod_rules.rule_members) {
-                auto fragment = buildStateFragment(prod, false);
-                if (fragment.invalid())
-                    continue;
-                states[last].epsilon_transitions.push_back(fragment.start);
-                last = fragment.end;
-            }
-            states[last].epsilon_transitions.push_back(end);
-            if (isEntry) {
-                states[last].accept_index = accept_index++;
-            }
+            if (processing.contains(name.name))
+                return {NO_STATE_RANGE, NO_STATE_RANGE};
+            processing.insert(name.name);
+            handleNonTermnal(member, name.name, start, end, isEntry);
         }
     } else if (member.isOp()) {
         const auto &op = member.getOp();
@@ -69,20 +156,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
             }
         }
     } else if (member.isGroup()) {
-        const auto &group = member.getGroup().values;
-        size_t last = start;
-        for (const auto &sub : group) {
-            auto fragment = buildStateFragment(sub, false);
-            if (fragment.invalid())
-                continue;
-            states[last].epsilon_transitions.push_back(fragment.start);
-            last = fragment.end;
-        }
-        // Link final fragment to end
-        states[last].epsilon_transitions.push_back(end);
-        if (isEntry) {
-            states[last].accept_index = accept_index++;
-        }
+        handleGroup(member, member.getGroup().values, start, end, isEntry);
     } else {
         throw Error("Undefined member");
     }
@@ -111,33 +185,25 @@ std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& vec) 
 }
 // Print a single state
 std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
-    os << "State {\n";
-    os << "  accept_index: ";
-    if (s.accept_index == NFA::NO_ACCEPT)
-        os << "NO_ACCEPT";
-    else
-        os << s.accept_index;
-    os << "\n";
-    os << "  is_starting_state: " << (s.is_starting_state ? "true" : "false") << "\n";
-
-    os << "  transitions:\n";
     if (s.transitions.empty()) {
-        os << "    (none)\n";
+        os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            os << "    " << key << " -> State " << target << "\n";
+            os << "\t" << key << " -> State " << target << "\n";
         }
     }
 
-    os << "  epsilon_transitions:\n";
+    os << "\te -> ";
     if (s.epsilon_transitions.empty()) {
-        os << "    (none)\n";
+        os << "(none)\n";
     } else {
         for (size_t t : s.epsilon_transitions) {
-            os << "    State " << t << "\n";
+            os << t << ", ";
         }
     }
-    os << "}\n";
+    if (s.accept_index != NFA::NO_ACCEPT) {
+        os << "\n\taccept -> " << s.accept_index << "\n";
+    }
     return os;
 }
 

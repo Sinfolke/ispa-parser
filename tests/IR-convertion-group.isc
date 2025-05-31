@@ -1,3 +1,0 @@
-Rule:
-    'a' | 'ab' | ("hello" "world" | "null")
-;

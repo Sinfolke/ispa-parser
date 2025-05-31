@@ -29,8 +29,12 @@ private:
     const stdu::vector<AST::RuleMember> *rules = nullptr;
     const AST::RuleMember *member = nullptr;
     stdu::vector<state> states;
+    utype::unordered_set<stdu::vector<std::string>> processing;
     size_t accept_index = 0;
     size_t nested_count = 0;
+    void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry);
+    void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry);
+    void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry);
     auto buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange;
 public:
     NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules) : tree(&tree), rules(&rules) {}

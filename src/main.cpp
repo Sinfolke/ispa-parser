@@ -52,7 +52,7 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 int main(int argc, char** argv) {
     stdu::vector<Parser::Rule> modules;
     auto args = init(argc, argv);
-
+    args.initDumpDirectory();
     if (args.version) {
         cpuf::printf("%$\n", PROGRAM_VERSION);
         return 0;
@@ -109,21 +109,27 @@ int main(int argc, char** argv) {
         initialItemSet << "name<" << name << "> : " << value;
     }
     initialItemSet.close();
-    ast.printFirstSet("first");
-    ast.printFollowSet("follow");
-    std::stringstream ss;
-    for (const auto &[name, value] : ast.getTreeMap()) {
-        if (corelib::text::isUpper(name.back()))
-            continue;
-        for (const auto &member : value.rule_members) {
-            NFA nfa(ast, member);
-            nfa.build();
-            ss << nfa;
+    cpuf::printf("dumps: {}", args.dump);
+    if (args.shouldDump(args.dump_dir + "/first"))
+        ast.printFirstSet(args.makeDumpPath("first"));
+    if (args.shouldDump("follow"))
+        ast.printFollowSet(args.makeDumpPath("follow"));
+    if (args.shouldDump("NFA")) {
+        std::stringstream ss;
+        for (const auto &[name, value] : ast.getTreeMap()) {
+            if (corelib::text::isUpper(name.back()))
+                continue;
+            for (const auto &member : value.rule_members) {
+                NFA nfa(ast, member);
+                nfa.build();
+                ss << "\n-------rule \"" << name << "\"----------\n";
+                ss << nfa;
+            }
         }
+        std::ofstream NFA_file(args.makeDumpPath("NFA"));
+        NFA_file << ss.str();
+        NFA_file.close();
     }
-    std::ofstream NFA_file("NFA_states");
-    NFA_file << ss.str();
-    NFA_file.close();
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
     std::string opath;
@@ -162,7 +168,8 @@ int main(int argc, char** argv) {
     } else if (args.algorithm == Args::Algorithm::LL) {
         LLIR::Builder builder(ast);
         auto IR = builder.get();
-        IR.outputIRToFile("output_ir.txt");
+        if (args.shouldDump("IR"))
+            IR.outputIRToFile(args.makeDumpPath("output_ir.txt"));
         auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST::Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast));
         converter->outputIR(output_path);

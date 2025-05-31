@@ -1,6 +1,0 @@
-Rule:
-    "true" | "false"
-    $if %1 == "true" {
-        "member"
-    }
-;

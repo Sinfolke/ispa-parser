@@ -1,3 +1,0 @@
-Rule:
-    ("spacemode" ("mixed" | "allowed" | "disallowed") | ("MIXED" | "ALLOWED" | "DISALLOWED") | ID) \s0 "status" ("zero" | "max" | "min")
-;

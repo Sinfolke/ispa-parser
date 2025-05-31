@@ -1,7 +1,0 @@
-Rule:
-    &first("a") |
-    &second(ID | 'b') |
-    &third(ID) |
-    &fourth(id) |
-    &fifth(ID | id)
-;

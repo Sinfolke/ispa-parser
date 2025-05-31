@@ -2,7 +2,6 @@ module LLIR.Builder.Base;
 import logging;
 import corelib;
 import LLIR;
-import LLIR.CllBuilder;
 import cpuf.printf;
 import std;
 
