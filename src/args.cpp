@@ -8,8 +8,8 @@ import std;
 Args parse_args(int argc, char** argv) {
     Args args;
     CLI::App app{"ISPA Parser Generator"};
-    app.allow_extras(false);
     std::string algorithm;
+    app.allow_extras();
     app.add_flag("-v,--version",  args.version, "Print version");
     app.add_option("-d,--dir", args.dir, "Directory where input modules files are located")->expected(1);
     app.add_option("-o", args.output, "Directory where to output generated files");
@@ -19,6 +19,7 @@ Args parse_args(int argc, char** argv) {
     app.add_option("--dump", args.dump, "Dump certain parts of program")->expected(0, 1);
     app.add_option("--ddall", args.dump_all, "Dump everything from program")->expected(0);
     app.add_option("--dd", args.dump_dir, "Directory where to dump");
+    app.add_option("--dump-nfa-from-rule", args.dump_nfa_from_rule, "Dump nfa from rule")->expected(0);
     try {
         app.parse(argc, argv);
     } catch (CLI::CallForAllHelp&) {
@@ -47,16 +48,16 @@ Args parse_args(int argc, char** argv) {
         else if (algorithm == "LR(*)" || algorithm == "LR*") args.algorithm = Args::Algorithm::ELR;
         else throw Error("Unknown algorithm {}", algorithm);
     }
-
+    args.files = app.remaining();
     return args;
 }
 
 void Args::initDumpDirectory() const {
-    if (!dump_all || !dump.empty())
+    if (dump_all && dump.empty() && !dump_nfa_from_rule)
         return;
-    if (!std::filesystem::exists(dump_dir)) {
-        std::filesystem::create_directories(dump_dir);
-    } else {
+    cpuf::printf("Initializing dump directory {}\n", dump_dir);
+    if (std::filesystem::exists(dump_dir))
         std::filesystem::remove_all(dump_dir);
-    }
+
+    std::filesystem::create_directories(dump_dir);
 }

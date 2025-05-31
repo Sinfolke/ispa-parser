@@ -2,6 +2,7 @@ module NFA;
 import logging;
 import corelib;
 import cpuf.op;
+import cpuf.printf;
 import std;
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry) {
     states[start].transitions[name] = end;
@@ -103,6 +104,7 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     // Link final fragment to end
     states[last].epsilon_transitions.push_back(end);
     if (isEntry) {
+        cpuf::printf("registering accept state for state \"{}\"", states[last]);
         states[last].accept_index = accept_index++;
     }
     switch (member.quantifier) {
@@ -122,7 +124,6 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         default:
             break;
     }
-
 }
 
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange {
@@ -149,8 +150,6 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
                 continue;
             // Link entry to fragment start with epsilon
             states[start].epsilon_transitions.push_back(fragment.start);
-            // Link fragment end to exit with epsilon
-            states[fragment.end].epsilon_transitions.push_back(end);
             if (isEntry) {
                 states[fragment.end].accept_index = accept_index++;
             }
@@ -164,15 +163,28 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
     states[start].transitions[{"__WHITESPACE"}] = start;
     return {start, end};
 }
+void NFA::removeDeadStates() {
+    for (auto it = states.begin(); it != states.end(); /* no increment here */) {
+        const auto &state = *it;
+        if (state.accept_index == NO_ACCEPT && state.transitions.empty() && state.epsilon_transitions.empty()) {
+            it = states.erase(it); // erase returns next valid iterator
+        } else {
+            ++it;
+        }
+    }
+}
 
 void NFA::build() {
     if (rules != nullptr) {
-        for (const auto &rule : *rules) {
-            buildStateFragment(rule, true);
+        for (auto it = rules->begin(); it != rules->end() - 1; ++it) {
+            buildStateFragment(*it, false);
         }
+        // register one accept state for the last state in rule sequence
+        buildStateFragment(rules->back(), true);
     } else {
         buildStateFragment(*member, true);
     }
+    //removeDeadStates();
 }
 std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& vec) {
     os << '"';

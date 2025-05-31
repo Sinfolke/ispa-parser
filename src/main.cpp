@@ -114,17 +114,16 @@ int main(int argc, char** argv) {
         ast.printFirstSet(args.makeDumpPath("first"));
     if (args.shouldDump("follow"))
         ast.printFollowSet(args.makeDumpPath("follow"));
-    if (args.shouldDump("NFA")) {
+    if (args.dump_nfa_from_rule) {
+        cpuf::printf("Performing dump_nfa_from_rule dump\n");
         std::stringstream ss;
         for (const auto &[name, value] : ast.getTreeMap()) {
             if (corelib::text::isUpper(name.back()))
                 continue;
-            for (const auto &member : value.rule_members) {
-                NFA nfa(ast, member);
-                nfa.build();
-                ss << "\n-------rule \"" << name << "\"----------\n";
-                ss << nfa;
-            }
+            NFA nfa(ast, value.rule_members);
+            nfa.build();
+            ss << "\n-------rule \"" << name << "\"----------\n";
+            ss << nfa;
         }
         std::ofstream NFA_file(args.makeDumpPath("NFA"));
         NFA_file << ss.str();

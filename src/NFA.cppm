@@ -36,6 +36,7 @@ private:
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry);
     void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry);
     auto buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange;
+    void removeDeadStates();
 public:
     NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules) : tree(&tree), rules(&rules) {}
     NFA(const AST::Tree &tree, const AST::RuleMember &member) : tree(&tree), member(&member) {}

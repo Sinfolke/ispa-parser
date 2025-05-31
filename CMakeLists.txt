@@ -328,36 +328,41 @@ target_link_libraries(ispa PRIVATE
 # =============================================
 # Testing Configuration
 # =============================================
-#add_library(tests INTERFACE)
-#target_compile_definitions(tests INTERFACE
-#        __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests"
-#)
-#target_include_directories(tests INTERFACE
-#        parser/include
-#        parser/stdlibs/old
-#)
+add_library(tests INTERFACE)
+target_compile_definitions(tests INTERFACE
+        __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests"
+)
+target_include_directories(tests INTERFACE
+        tests
+)
+function(add_ispa_test test_name test_file test_dir tester)
+    if(NOT EXISTS "${tester}")
+        message(FATAL_ERROR "Tester not found: ${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory}/tester.cpp")
+    endif()
+    add_executable(${test_name} ${tester})
+    target_link_libraries(${test_name} PRIVATE tests)
+    target_compile_definitions(${test_name} PRIVATE
+            __PROCESS_FILE__="${test_file}"
+            __TEST_DIR__="${test_dir}"
+    )
+    add_test(NAME ${test_name} COMMAND ${test_name})
+    set_tests_properties(${test_name} PROPERTIES TIMEOUT 2)
+endfunction()
+function(add_test_dir directory)
+    get_file_range(TEST_FILES tests/${directory}/*.isc)
 
-# Uncomment and modify as needed for test executables
-# function(add_ispa_test test_name)
-#     add_executable(${test_name} tests/tester.cpp)
-#     target_link_libraries(${test_name} PRIVATE tests)
-#     target_compile_definitions(${test_name} PRIVATE
-#         __PROCESS_FILE__="${test_name}.isc"
-#     )
-# endfunction()
-#
-# add_ispa_test(IR-convertion-group)
-# add_ispa_test(IR-skip-spaces)
-# add_ispa_test(hex-bin)
-# add_ispa_test(group-variable-type)
-# add_ispa_test(accessor)
-# add_ispa_test(inline-accessor-if-test)
-# add_ispa_test(inline-test)
-# add_ispa_test(insideLoop-test)
+    foreach(TEST_FILE IN LISTS TEST_FILES)
+        get_filename_component(TEST_NAME "${TEST_FILE}" NAME_WE)
+        add_ispa_test(${TEST_NAME} "${TEST_FILE}" ${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory} "${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory}/tester.cpp")
+    endforeach()
+endfunction()
 
 # =============================================
 # Testing
 # =============================================
+enable_testing()
+add_test_dir(NFA)
+
 #add_test(
 #        NAME mainTest
 #        COMMAND ${CMAKE_BINARY_DIR}/ispa --dir parser/parser --lang cpp -a LL
