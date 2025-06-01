@@ -1,4 +1,4 @@
-expr: term '+' term | NUMBER;
+expr: (term '+' term) | NUMBER;
 term: NUMBER | STRING '+' NUMBER | STRING;
 NUMBER: [0-9]+;
 STRING: '"' NUMBER '"';

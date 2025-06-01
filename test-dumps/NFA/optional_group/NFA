@@ -1,0 +1,178 @@
+
+-------rule "[term]"----------
+State 0:
+	[__WHITESPACE] -> State 0
+	e -> 2, 4, 
+State 1:
+	(none)
+	e -> (none)
+
+State 2:
+	[STRING] -> State 3
+	[__WHITESPACE] -> State 2
+	e -> (none)
+
+State 3:
+	(none)
+	e -> (none)
+
+State 4:
+	[NUMBER] -> State 5
+	[__WHITESPACE] -> State 4
+	e -> (none)
+
+State 5:
+	(none)
+	e -> (none)
+
+State 6:
+	[AUTO_0] -> State 7
+	[__WHITESPACE] -> State 6
+	e -> (none)
+
+State 7:
+	(none)
+	e -> (none)
+
+State 8:
+	[__WHITESPACE] -> State 8
+	e -> 10, 12, 
+State 9:
+	(none)
+	e -> (none)
+
+State 10:
+	[STRING] -> State 11
+	[__WHITESPACE] -> State 10
+	e -> (none)
+
+State 11:
+	(none)
+	e -> (none)
+
+	accept -> 0
+
+State 12:
+	[NUMBER] -> State 13
+	[__WHITESPACE] -> State 12
+	e -> (none)
+
+State 13:
+	(none)
+	e -> (none)
+
+	accept -> 1
+
+
+-------rule "[expr]"----------
+State 0:
+	[__WHITESPACE] -> State 0
+	e -> 2, 26, 
+State 1:
+	(none)
+	e -> (none)
+
+State 2:
+	[__WHITESPACE] -> State 2
+	e -> 4, 
+State 3:
+	(none)
+	e -> (none)
+
+	accept -> 0
+
+State 4:
+	[__WHITESPACE] -> State 4
+	e -> 6, 
+State 5:
+	(none)
+	e -> 22, 
+State 6:
+	(none)
+	e -> 8, 
+State 7:
+	(none)
+	e -> 5, 
+State 8:
+	[__WHITESPACE] -> State 8
+	e -> 10, 12, 
+State 9:
+	(none)
+	e -> 14, 
+State 10:
+	[STRING] -> State 11
+	[__WHITESPACE] -> State 10
+	e -> (none)
+
+State 11:
+	(none)
+	e -> (none)
+
+State 12:
+	[NUMBER] -> State 13
+	[__WHITESPACE] -> State 12
+	e -> (none)
+
+State 13:
+	(none)
+	e -> (none)
+
+State 14:
+	[AUTO_0] -> State 15
+	[__WHITESPACE] -> State 14
+	e -> (none)
+
+State 15:
+	(none)
+	e -> 16, 
+State 16:
+	[__WHITESPACE] -> State 16
+	e -> 18, 20, 
+State 17:
+	(none)
+	e -> 7, 
+State 18:
+	[STRING] -> State 19
+	[__WHITESPACE] -> State 18
+	e -> (none)
+
+State 19:
+	(none)
+	e -> (none)
+
+State 20:
+	[NUMBER] -> State 21
+	[__WHITESPACE] -> State 20
+	e -> (none)
+
+State 21:
+	(none)
+	e -> (none)
+
+State 22:
+	[AUTO_0] -> State 23
+	[__WHITESPACE] -> State 22
+	e -> (none)
+
+State 23:
+	(none)
+	e -> 3, 
+State 24:
+	(none)
+	e -> (none)
+
+State 25:
+	(none)
+	e -> (none)
+
+State 26:
+	[NUMBER] -> State 27
+	[__WHITESPACE] -> State 26
+	e -> (none)
+
+State 27:
+	(none)
+	e -> (none)
+
+	accept -> 1
+

@@ -1,0 +1,40 @@
+name<[term, __rop2]> : [Rule {
+   Name(STRING)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(NUMBER)
+  Data: EmptyDataBlock
+}]name<[term, __rop0]> : [Rule {
+   Name(STRING)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(NUMBER)
+  Data: EmptyDataBlock
+}]name<[expr]> : [Rule {
+   Name(term)
+   Name(AUTO_0)
+   Name(term)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(NUMBER)
+  Data: EmptyDataBlock
+}]name<[term]> : [Rule {
+   Name(term::__rop0)
+   Name(AUTO_0)
+   Name(term::__rop2)
+  Data: EmptyDataBlock
+}]name<[NUMBER]> : [Rule {
+   Cseq([], Diapasons:[0-9 ])+;
+  Data: EmptyDataBlock
+}]name<[AUTO_0]> : [Rule {
+  @  String (+)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[STRING]> : [Rule {
+   String (")
+   Name(NUMBER)
+   String (")
+  Data: EmptyDataBlock
+}]name<[__WHITESPACE]> : [Rule {
+   Cseq([ ], Escaped:[\t\n\r\v\f])+;
+  Data: EmptyDataBlock
+}]

@@ -71,6 +71,14 @@ void AST::Tree::transform_helper(
             logger.log("{}", member.getGroup().values);
             logger.decreaseIndentLevel();
             auto data = member.getGroup(); // should be copy!!!
+            if (member.quantifier == '\0') { // note: meet in optional groups only
+                logger.log("Unrolling group with empty quantifier: {}", members);
+                auto it = members.erase(members.begin() + i);
+                members.insert(it, data.values.begin(), data.values.end());
+                logger.log("Unrolled to {}, new i: {}", members, i);
+                i += data.values.size();
+                continue;
+            }
             std::string quant_rule_name = "__grp" + std::to_string(i);
             auto quant_fullname = fullname;
             quant_fullname.push_back(quant_rule_name);
@@ -171,17 +179,23 @@ void AST::Tree::transform_helper(
                     logger.log("[branch] is_first_going_group == true");
                     logger.log("group_pos[0]: {}", group_pos[0]);
                     auto [pos, len] = group_pos[0];
-                    group_pos.erase(group_pos.begin());
+                    auto insert_pos = members.begin() + i;
+                    members.erase(insert_pos);  // erase original group placeholder
 
-                    members.erase(members.begin() + i);
+                    // Reset insert_pos, because erase invalidates it
+                    insert_pos = members.begin() + i;
+
                     size_t j = 0;
                     val_it = data.options.begin();
                     logger.increaseIndentLevel();
-                    for (; j < len; j++, val_it++, _count++, i++) {
-                        logger.log("j: {}, _count: {}, i: {}, val_it: {}", j, _count, i, &(*val_it));
-                        members.insert(members.begin() + i + j, *val_it);
+                    for (; j < len; ++j, ++val_it, ++_count) {
+                        logger.log("j: {}, _count: {}, val_it: {}", j, _count, &(*val_it));
+                        insert_pos = members.insert(insert_pos, *val_it);
+                        ++insert_pos; // move insert position forward for next item
                     }
                     logger.decreaseIndentLevel();
+
+                    // val_it now correctly points to the remaining options, if any
                     val_it = data.options.begin() + j;
                 } else {
                     logger.log("[branch] is_first_going_group == false");
@@ -312,7 +326,7 @@ void AST::Tree::transform() {
     for (const auto &name : keys) {
         auto it = initial_item_set.find(name);
         if (it == initial_item_set.end())
-            throw Error("Previous key dissappeared");
+            throw Error("Previous key disappeared");
         if (it->second.empty())
             throw Error("Rule {} empty", name);
         logger.log("transforming {}: {}", name, it->second[0].rule_members);
