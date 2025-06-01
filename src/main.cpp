@@ -20,6 +20,7 @@ import hash;
 import Parser;
 import AST.Builder;
 import NFA;
+import DFA;
 import dstd;
 import std;
 import std.compat;
@@ -115,19 +116,30 @@ int main(int argc, char** argv) {
     if (args.shouldDump("follow"))
         ast.printFollowSet(args.makeDumpPath("follow"));
     if (args.dump_nfa_from_rule) {
-        cpuf::printf("Performing dump_nfa_from_rule dump\n");
-        std::stringstream ss;
+        std::stringstream nfa_ss, dfa_ss;
         for (const auto &[name, value] : ast.getTreeMap()) {
             if (corelib::text::isUpper(name.back()))
                 continue;
-            NFA nfa(ast, value.rule_members);
-            nfa.build();
-            ss << "\n-------rule \"" << name << "\"----------\n";
-            ss << nfa;
+            for (const auto &el : value.rule_members) {
+                if (el.isOp()) {
+                    NFA nfa(ast, el);
+                    nfa.build();
+                    nfa_ss << "\n-------rule \"" << name << "\"----------\n";
+                    nfa_ss << nfa;
+                    dfa_ss << "\n-------rule \"" << name << "\"----------\n";
+                    DFA dfa(nfa);
+                    dfa.build();
+                    dfa_ss << dfa;
+                }
+            }
+
         }
         std::ofstream NFA_file(args.makeDumpPath("NFA"));
-        NFA_file << ss.str();
+        std::ofstream DFA_file(args.makeDumpPath("DFA"));
+        NFA_file << nfa_ss.str();
+        DFA_file << dfa_ss.str();
         NFA_file.close();
+        DFA_file.close();
     }
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();

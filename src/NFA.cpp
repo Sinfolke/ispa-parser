@@ -14,7 +14,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
         case '?':
             // NUMBER -> end
             // epsilon -> end
-            states[start].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(end);
             break;
         case '+': {
             // NUMBER -> next:
@@ -23,13 +23,13 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             auto loop_state = states.size();
             states.emplace_back();
             states[loop_state].transitions[name] = loop_state;
-            states[loop_state].epsilon_transitions.push_back(end);
+            states[loop_state].epsilon_transitions.insert(end);
             break;
         } case '*':
             // NUMBER -> this
             // epsilon -> end
             states[start].transitions[name] = start;
-            states[start].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(end);
             break;
         default:
             break;
@@ -48,26 +48,26 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         auto fragment = buildStateFragment(prod, false);
         if (fragment.invalid())
             continue;
-        states[last].epsilon_transitions.push_back(fragment.start);
+        states[last].epsilon_transitions.insert(fragment.start);
         last = fragment.end;
     }
-    states[last].epsilon_transitions.push_back(inner_end);
+    states[last].epsilon_transitions.insert(inner_end);
     // now handle quantifier
     switch (member.quantifier) {
         case '?':
             // epsilon -> end
             // fragment -> end
-            states[start].epsilon_transitions.push_back(inner_start);
-            states[start].epsilon_transitions.push_back(end);
-            states[inner_end].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(inner_start);
+            states[start].epsilon_transitions.insert(end);
+            states[inner_end].epsilon_transitions.insert(end);
             break;
         case '+': {
             // loop at end
             size_t loop_start = inner_start;
             size_t loop_end = inner_end;
-            states[start].epsilon_transitions.push_back(loop_start);
-            states[loop_end].epsilon_transitions.push_back(loop_start);
-            states[loop_end].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(loop_start);
+            states[loop_end].epsilon_transitions.insert(loop_start);
+            states[loop_end].epsilon_transitions.insert(end);
             break;
         }
         case '*': {
@@ -75,16 +75,16 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             // loop zero or more
             size_t loop_start = inner_start;
             size_t loop_end = inner_end;
-            states[start].epsilon_transitions.push_back(loop_start);
-            states[start].epsilon_transitions.push_back(end);
-            states[loop_end].epsilon_transitions.push_back(loop_start);
-            states[loop_end].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(loop_start);
+            states[start].epsilon_transitions.insert(end);
+            states[loop_end].epsilon_transitions.insert(loop_start);
+            states[loop_end].epsilon_transitions.insert(end);
             break;
         }
         default:
             // normal sequence
-            states[start].epsilon_transitions.push_back(inner_start);
-            states[inner_end].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(inner_start);
+            states[inner_end].epsilon_transitions.insert(end);
             break;
     }
 
@@ -98,11 +98,11 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         auto fragment = buildStateFragment(sub, false);
         if (fragment.invalid())
             continue;
-        states[last].epsilon_transitions.push_back(fragment.start);
+        states[last].epsilon_transitions.insert(fragment.start);
         last = fragment.end;
     }
     // Link final fragment to end
-    states[last].epsilon_transitions.push_back(end);
+    states[last].epsilon_transitions.insert(end);
     if (isEntry) {
         cpuf::printf("registering accept state for state \"{}\"", states[last]);
         states[last].accept_index = accept_index++;
@@ -110,16 +110,16 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     switch (member.quantifier) {
         case '?':
             // Allow skipping the group entirely
-            states[start].epsilon_transitions.push_back(end);
+            states[start].epsilon_transitions.insert(end);
             break;
         case '*':
             // Loop and allow skipping
-            states[last].epsilon_transitions.push_back(start); // loop back
-            states[start].epsilon_transitions.push_back(end);  // skip
+            states[last].epsilon_transitions.insert(start); // loop back
+            states[start].epsilon_transitions.insert(end);  // skip
             break;
         case '+':
             // Loop back, but no skipping
-            states[last].epsilon_transitions.push_back(start);
+            states[last].epsilon_transitions.insert(start);
             break;
         default:
             break;
@@ -149,7 +149,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
             if (fragment.invalid())
                 continue;
             // Link entry to fragment start with epsilon
-            states[start].epsilon_transitions.push_back(fragment.start);
+            states[start].epsilon_transitions.insert(fragment.start);
             if (isEntry) {
                 states[fragment.end].accept_index = accept_index++;
             }

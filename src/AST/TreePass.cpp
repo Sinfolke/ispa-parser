@@ -22,11 +22,10 @@ auto AST::TreePass::inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::Ru
 {
     // recursively inline nested groups
     for (size_t i = 0; i < group.values.size(); ++i) {
-        auto &el = group.values[i];
-        if (el.isGroup() && el.quantifier == '\0') {
-            // Careful: this may still reallocate and change size
-            inlineGroup(el.getGroup(), group.values, group.values.begin() + i);
-            i += el.getGroup().values.size();
+        if (group.values[i].isGroup() && group.values[i].quantifier == '\0') {
+            auto nested = group.values[i].getGroup(); // copy to avoid stale ref
+            inlineGroup(nested, group.values, group.values.begin() + i);
+            i += nested.values.size(); // move past inserted
         }
     }
     // inline this group
@@ -34,14 +33,16 @@ auto AST::TreePass::inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::Ru
 }
 void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
     for (auto &[name, value] : ast.getTreeMap()) {
-        for (auto it = value.rule_members.begin(); it != value.rule_members.end(); ++it) {
-            auto &member = *it;
-            if (member.isGroup()) {
-                if (member.quantifier != '\0')
-                    continue;
-                it = inlineGroup(member.getGroup(), value.rule_members, it);
+        for (auto it = value.rule_members.begin(); it != value.rule_members.end(); /* no increment here */) {
+            if (it->isGroup() && it->quantifier == '\0') {
+                auto group = it->getGroup(); // make a copy
+                it = value.rule_members.erase(it); // erase the group first
+                it = inlineGroup(group, value.rule_members, it); // insert unwrapped group
+                continue; // check inserted group members
             }
+            ++it;
         }
+
     }
 }
 void AST::TreePass::literalsToToken(

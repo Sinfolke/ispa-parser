@@ -12,7 +12,7 @@ public:
         utype::unordered_map<stdu::vector<std::string>, size_t> transitions;
         size_t accept_index = NO_ACCEPT;
         bool is_starting_state = false;
-        stdu::vector<size_t> epsilon_transitions;
+        std::set<size_t> epsilon_transitions;
     };
     struct StateRange {
         size_t start;
@@ -41,7 +41,7 @@ public:
     NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules) : tree(&tree), rules(&rules) {}
     NFA(const AST::Tree &tree, const AST::RuleMember &member) : tree(&tree), member(&member) {}
     void build();
-    auto getStates() const {
+    auto& getStates() const {
         return states;
     }
 };

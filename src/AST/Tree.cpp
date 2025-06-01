@@ -71,12 +71,21 @@ void AST::Tree::transform_helper(
             logger.log("{}", member.getGroup().values);
             logger.decreaseIndentLevel();
             auto data = member.getGroup(); // should be copy!!!
-            if (member.quantifier == '\0') { // note: meet in optional groups only
+            if (member.quantifier == '\0') {
+                transform_helper(data.values, fullname, original_fullname, replacements);
                 logger.log("Unrolling group with empty quantifier: {}", members);
+
+                // Remove the group at position i
                 auto it = members.erase(members.begin() + i);
+
+                // Insert inlined values at position i
                 members.insert(it, data.values.begin(), data.values.end());
-                logger.log("Unrolled to {}, new i: {}", members, i);
-                i += data.values.size();
+
+                logger.log("Unrolled to {}, inserted {} elements at {}", members, data.values.size(), i);
+
+                // Move i past inserted values
+                i += data.values.size();  // Already erased 1, inserted N — so we skip N
+
                 continue;
             }
             std::string quant_rule_name = "__grp" + std::to_string(i);
@@ -483,7 +492,7 @@ void AST::Tree::constructFollowSet() {
                     if (it->isNospace())
                         continue;
                     if (!it->isName()) {
-                        throw Error("Not RuleMemberName");
+                        throw Error("Not RuleMemberName: {}, {}, name: {}", it->isGroup(), it->isOp(), name);
                     }
                     auto current_n = it->getName().name;
                     const stdu::vector<std::string> *current;
@@ -518,7 +527,10 @@ void AST::Tree::constructFollowSet() {
                             hasChanges = true;
                         prev_depend.push_back(*current);
                     }
-                    if (it + 1 == rules.rule_members.end()) {
+                    auto next_it = it + 1;
+                    while (next_it != rules.rule_members.end() && !next_it->isName())
+                        next_it++;
+                    if (next_it == rules.rule_members.end()) {
                         if (name != *current) { // prevent self-insertion
                             auto &f_lhs = follow[name];
                             logger.log("current -> {}, [end of rule] follow[name: {}]: {}, ", *current, name, follow[name]);
@@ -530,8 +542,8 @@ void AST::Tree::constructFollowSet() {
                             logger.log("[end of rule - skip self follow insertion] {} ", name);
                         }
                     } else {
-                        auto next = (it + 1)->getName();
-                        if (corelib::text::isUpper(next.name.back())) {
+                        auto next = next_it->getName();
+                        if (next.isTerminal()) {
                             // terminal - just push
                             logger.dlog("[next is terminal] follow[name: {}]: {} insert {}, ", name, follow[name], next.name);
                             if (follow[*current].insert(next.name).second)
