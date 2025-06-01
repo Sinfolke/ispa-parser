@@ -3,8 +3,8 @@ import cpuf.op;
 import cpuf.printf;
 import std;
 
-auto DFA::epsilonClosure(const std::set<size_t>& states) -> std::set<size_t> {
-    std::set<size_t> closure = states;
+auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vector<size_t> {
+    stdu::vector<size_t> closure = states;
     std::queue<size_t> work;
     for (size_t s : states) work.push(s);
 
@@ -15,8 +15,8 @@ auto DFA::epsilonClosure(const std::set<size_t>& states) -> std::set<size_t> {
         const auto &epsilons = nfa_states->at(current).epsilon_transitions;
 
         for (size_t target_state : epsilons) {
-            if (!closure.count(target_state)) {
-                closure.insert(target_state);
+            if (std::find(closure.begin(), closure.end(), target_state) == closure.end()) {
+                closure.push_back(target_state);
                 work.push(target_state);
             }
         }
@@ -24,14 +24,14 @@ auto DFA::epsilonClosure(const std::set<size_t>& states) -> std::set<size_t> {
 
     return closure;
 }
-auto DFA::move(const std::set<size_t> &states, const stdu::vector<std::string> &symbol) -> std::set<size_t> {
-    std::set<size_t> result;
+auto DFA::move(const stdu::vector<size_t> &states, const stdu::vector<std::string> &symbol) const -> std::vector<size_t> {
+    std::vector<size_t> result;
 
     for (auto state_id : states) {
         const auto &state = nfa_states->at(state_id);
         auto it = state.transitions.find(symbol);
         if (it != state.transitions.end()) {
-            result.insert(it->second);  // assuming only one target per symbol
+            result.push_back(it->second);  // assuming only one target per symbol
         }
     }
 
@@ -40,7 +40,7 @@ auto DFA::move(const std::set<size_t> &states, const stdu::vector<std::string> &
 void DFA::build() {
     if (nfa_states->empty()) return;
 
-    using StateSet = std::set<size_t>;
+    using StateSet = stdu::vector<size_t>;
 
     utype::unordered_map<StateSet, size_t> dfa_state_map;  // DFA state ID per NFA state set
     std::queue<StateSet> work;
@@ -61,25 +61,16 @@ void DFA::build() {
         size_t current_dfa_index = dfa_state_map[current];
 
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
-        utype::unordered_set<stdu::vector<std::string>> input_symbols;
+        utype::unordered_map<stdu::vector<std::string>, transition_value> input_symbols;
         for (size_t nfa_index : current) {
             const auto &state = nfa_states->at(nfa_index);
-            for (const auto &[symbol, _] : state.transitions) {
+            for (const auto &[symbol, id] : state.transitions) {
                 if (!symbol.empty())
-                    input_symbols.insert(symbol);
+                    input_symbols[symbol] = {id, state.accept_index};
             }
         }
-        // Assign accept_index here, once per DFA state
-        size_t accept_index = NFA::NO_ACCEPT;
-        for (size_t nfa_state_id : current) {
-            const auto &nfa_state = nfa_states->at(nfa_state_id);
-            if (nfa_state.accept_index != NFA::NO_ACCEPT) {
-                accept_index = nfa_state.accept_index;
-                break;
-            }
-        }
-        states[current_dfa_index].accept_index = accept_index;
-        for (const auto &symbol : input_symbols) {
+        size_t accept_count = 0;
+        for (const auto &[symbol, data] : input_symbols) {
             // 3. Move on symbol, then epsilonClosure
             StateSet move_set = move(current, symbol);
             StateSet closure_set = epsilonClosure(move_set);
@@ -92,29 +83,41 @@ void DFA::build() {
                 dfa_state_map[closure_set] = new_index;
                 states.emplace_back();
                 work.push(closure_set);
-                cpuf::printf("Pushing {} to work", closure_set);
             }
 
             // Record transition
             size_t target_index = dfa_state_map[closure_set];
-            states[current_dfa_index].transitions[symbol] = target_index;
-            // Determine accept index for current DFA state, if any
+            states[current_dfa_index].transitions[symbol] = {target_index, data.ACCEPT_STATE};
+            size_t current_accept_count = accept_count;
+            if (symbol == std::vector<std::string>{"__WHITESPACE"}) {
+                states[current_dfa_index].transitions[symbol].ACCEPT_STATE = NFA::NO_ACCEPT;
+                continue;
+            }
+            for (const auto &c : current) {
+                if (nfa_states->at(c).accept_index != NFA::NO_ACCEPT) {
+                    if (current_accept_count != 0) {
+                        current_accept_count--;
+                        continue;
+                    }
+                    accept_count++;
+                    states[current_dfa_index].transitions[symbol].ACCEPT_STATE = nfa_states->at(c).accept_index;
+                    break;
+                }
+            }
         }
     }
 }
 
 // Print a single state
-std::ostream& operator<<(std::ostream& os, const DFA::state& s) {
+std::ostream &operator<<(std::ostream &os, const DFA::state &s) {
     if (s.transitions.empty()) {
         os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            os << "\t" << key << " -> State " << target << "\n";
+            os << "\t" << key << " -> State " << target.next
+            << (target.ACCEPT_STATE != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.ACCEPT_STATE) + " } " : std::string(""))
+            << "\n";
         }
-    }
-
-    if (s.accept_index != NFA::NO_ACCEPT) {
-        os << "\n\taccept -> " << s.accept_index << "\n";
     }
     return os;
 }

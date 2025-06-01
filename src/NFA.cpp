@@ -150,8 +150,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
                 continue;
             // Link entry to fragment start with epsilon
             states[start].epsilon_transitions.insert(fragment.start);
+            states[fragment.end].epsilon_transitions.insert(end);
             if (isEntry) {
-                states[fragment.end].accept_index = accept_index++;
+                states[fragment.start].accept_index = accept_index++;
             }
         }
     } else if (member.isGroup()) {
