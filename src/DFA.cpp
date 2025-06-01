@@ -12,17 +12,16 @@ auto DFA::epsilonClosure(const std::set<size_t>& states) -> std::set<size_t> {
         size_t current = work.front();
         work.pop();
 
-        const auto &transitions = nfa_states->operator[](current).transitions;
+        const auto &epsilons = nfa_states->at(current).epsilon_transitions;
 
-        for (const auto& [symbol, target_state] : transitions) {
-            if (symbol.empty()) {  // This is an epsilon transition
-                if (!closure.count(target_state)) {
-                    closure.insert(target_state);
-                    work.push(target_state);
-                }
+        for (size_t target_state : epsilons) {
+            if (!closure.count(target_state)) {
+                closure.insert(target_state);
+                work.push(target_state);
             }
         }
     }
+
     return closure;
 }
 auto DFA::move(const std::set<size_t> &states, const stdu::vector<std::string> &symbol) -> std::set<size_t> {

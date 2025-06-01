@@ -361,7 +361,7 @@ endfunction()
 # Testing
 # =============================================
 enable_testing()
-add_test_dir(NFA)
+add_test_dir(NFA-DFA)
 
 #add_test(
 #        NAME mainTest

@@ -32,6 +32,8 @@
 
   Necessary:
 
+    Add proper linking between rules for non-terminal
+
     Add handle of qualifier in matched() function
 
     Add remove of unused variables (required IR optimization)
