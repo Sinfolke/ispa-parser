@@ -14,7 +14,6 @@ public:
     struct state {
         utype::unordered_set<size_t> nfa_states; // the NFA states this DFA state represents
         utype::unordered_map<stdu::vector<std::string>, std::vector<transition_value>> transitions;
-        bool is_terminate_state = false;
 
         bool operator==(const state &other) const = default;
     };

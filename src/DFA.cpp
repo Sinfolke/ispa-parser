@@ -122,26 +122,25 @@ void DFA::build() {
             }
         }
         // Early cutoff opportunity
-        // if (input_symbols.size() == 1 || input_symbols.size() == 2 && input_symbols.contains({"__WHITESPACE"})) {
-        //     const auto &[symbol, data] = *input_symbols.begin();
-        //     StateSet move_set = move(current, symbol);
-        //     StateSet closure_set = epsilonClosure(move_set);
-        //
-        //     // Check if closure_set contains only accepting NFA states
-        //     bool has_accepting = false;
-        //     for (auto c : closure_set) {
-        //         if (nfa_states->at(c).accept_index != NFA::NO_ACCEPT) {
-        //             has_accepting = true;
-        //             break;
-        //         }
-        //     }
-        //
-        //     if (!has_accepting) {
-        //         // Mark this transition as final, no need to explore further
-        //         states[current_dfa_index].is_terminate_state = true;
-        //         continue; // Don't push to work queue
-        //     }
-        // }
+        if (input_symbols.size() == 1 || input_symbols.size() == 2 && input_symbols.contains({"__WHITESPACE"})) {
+            const auto &[symbol, data] = *input_symbols.begin();
+            StateSet move_set = move(current, symbol);
+            StateSet closure_set = epsilonClosure(move_set);
+
+            // Check if closure_set contains only accepting NFA states
+            bool all_non_accepting = true;
+            for (auto c : closure_set) {
+                if (nfa->getStates().at(c).accept_index != NFA::NO_ACCEPT) {
+                    all_non_accepting = false;
+                    break;
+                }
+            }
+
+            if (all_non_accepting) {
+                // Mark this transition as final, no need to explore further
+                continue; // Don't push to work queue
+            }
+        }
         // determine conflict symbols
         stdu::vector<const stdu::vector<transition_value>*> conflicts;
         for (const auto &[symbol, data] : input_symbols) {
@@ -239,9 +238,6 @@ std::ostream &operator<<(std::ostream &os, const DFA::state &s) {
             if (target.size() != 1)
                 os << " }";
             os << "\n";
-        }
-        if (s.is_terminate_state) {
-            os << "[terminate]\n";
         }
     }
     return os;

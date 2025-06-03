@@ -23,6 +23,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             //  epsilon -> end
             auto loop_state = states.size();
             states.emplace_back();
+            states[start].transitions[name] = loop_state;
             states[loop_state].transitions[name] = loop_state;
             states[loop_state].epsilon_transitions.insert(end);
             break;
@@ -37,7 +38,6 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
     }
 }
 void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry) {
-    processing.insert(name);
     size_t inner_start = states.size();
     size_t inner_end = inner_start + 1;
     states.emplace_back(); // inner start
@@ -141,6 +141,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
                 return {NO_STATE_RANGE, NO_STATE_RANGE};
             processing.insert(name.name);
             handleNonTermnal(member, name.name, start, end, isEntry);
+            processing.erase(name.name);
         }
     } else if (member.isOp()) {
         const auto &op = member.getOp();
