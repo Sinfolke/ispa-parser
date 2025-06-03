@@ -21,4 +21,30 @@ export namespace corelib {
         char getCharFromEscaped(char in);
         std::string getCharFromEscapedAsStr(char in, bool string);
     }
+    namespace range {
+        template<typename InputIt, typename T>
+        std::vector<InputIt> find_all(InputIt first, InputIt last, const T& value) {
+            std::vector<InputIt> result;
+            while (first != last) {
+                first = std::find(first, last, value);
+                if (first != last) {
+                    result.push_back(first);
+                    ++first;
+                }
+            }
+            return result;
+        }
+        template<typename InputIt, typename Func>
+        std::vector<InputIt> find_all_if(InputIt first, InputIt last, const Func func) {
+            std::vector<InputIt> result;
+            while (first != last) {
+                first = std::find_if(first, last, func);
+                if (first != last) {
+                    result.push_back(first);
+                    ++first;
+                }
+            }
+            return result;
+        }
+    }
 }

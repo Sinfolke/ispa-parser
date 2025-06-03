@@ -3,7 +3,7 @@ export module logging;
 import cpuf.printf;
 import cpuf.color;
 import dstd;
-import Tlog.Logger;
+export import Tlog.Logger;
 import std;
 export inline Tlog::Logger logger("Logs");  // <<== IMPORTANT: must be `inline` if defined in module interface
 export class Error : public std::exception {

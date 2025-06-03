@@ -8,20 +8,24 @@ export class DFA {
 public:
     struct transition_value {
         size_t next;
-        size_t ACCEPT_STATE = NFA::NO_ACCEPT;
+        size_t accept_index = NFA::NO_ACCEPT;
+        bool operator==(const transition_value &other) const = default;
     };
     struct state {
         utype::unordered_set<size_t> nfa_states; // the NFA states this DFA state represents
-        utype::unordered_map<stdu::vector<std::string>, transition_value> transitions;
+        utype::unordered_map<stdu::vector<std::string>, std::vector<transition_value>> transitions;
+        bool is_terminate_state = false;
+
+        bool operator==(const state &other) const = default;
     };
 private:
-    const stdu::vector<NFA::state> *nfa_states;
+    const NFA *nfa;
     stdu::vector<state> states;
     auto epsilonClosure(const stdu::vector<size_t>& state_indices) const -> stdu::vector<size_t>;
     auto move(const stdu::vector<size_t> &states, const stdu::vector<std::string> &symbol) const -> std::vector<size_t>;
+    void removeDublicateStates();
 public:
-    DFA(const stdu::vector<NFA::state> &states) : nfa_states(&states) {}
-    DFA(const NFA &nfa) : nfa_states(&nfa.getStates()) {}
+    DFA(const NFA &nfa) : nfa(&nfa) {}
     DFA(const stdu::vector<state> &already_build_states) : states(already_build_states) {}
     void build();
 

@@ -3,11 +3,12 @@ import logging;
 import corelib;
 import cpuf.op;
 import cpuf.printf;
+import logging;
 import std;
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry) {
     states[start].transitions[name] = end;
     if (isEntry) {
-        states[end].accept_index = accept_index++;
+        states[start].accept_index = accept_index++;
     }
     // handle quantifier
     switch (member.quantifier) {
@@ -89,7 +90,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
     }
 
     if (isEntry) {
-        states[inner_end].accept_index = accept_index++;
+        states[inner_start].accept_index = accept_index++;
     }
 }
 void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry) {
@@ -104,8 +105,7 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     // Link final fragment to end
     states[last].epsilon_transitions.insert(end);
     if (isEntry) {
-        cpuf::printf("registering accept state for state \"{}\"", states[last]);
-        states[last].accept_index = accept_index++;
+        states[start].accept_index = accept_index++;
     }
     switch (member.quantifier) {
         case '?':
@@ -174,6 +174,36 @@ void NFA::removeDeadStates() {
         }
     }
 }
+void NFA::AccessMapVisitState(size_t index, size_t accept_index, std::unordered_set<size_t>& visited) {
+    // Stop if already visited with this accept_index (to prevent infinite recursion)
+    if (!visited.insert(index).second)
+        return;
+
+    if (states[index].accept_index != NO_ACCEPT) {
+        accept_index = states[index].accept_index;
+    }
+    accept_map[index] = accept_index;
+
+    // Recurse through all transitions, including epsilon
+    for (const auto &[symbol, target] : states[index].transitions) {
+        AccessMapVisitState(target, accept_index, visited);
+    }
+    for (const auto &e : states[index].epsilon_transitions) {
+        AccessMapVisitState(e + 1, accept_index, visited);
+    }
+}
+void NFA::buildAcceptMap() {
+    accept_map.clear();
+    for (size_t i = 0; i < states.size(); ++i) {
+        if (states[i].accept_index != NO_ACCEPT) {
+            std::unordered_set<size_t> local_visited;
+            AccessMapVisitState(i, states[i].accept_index, local_visited);
+        } else if (!accept_map.contains(i)) {
+            accept_map[i] = NO_ACCEPT;
+        }
+    }
+}
+
 
 void NFA::build() {
     if (rules != nullptr) {
@@ -186,6 +216,7 @@ void NFA::build() {
         buildStateFragment(*member, true);
     }
     //removeDeadStates();
+    buildAcceptMap();
 }
 std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& vec) {
     os << '"';
