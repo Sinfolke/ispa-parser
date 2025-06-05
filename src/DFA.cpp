@@ -71,7 +71,7 @@ void DFA::removeDublicateStates() {
     for (const auto& [dup, orig] : remove_states) {
         auto o = orig;
         while (remove_states.contains(o)) {
-            o = remove_states.at(orig);
+            o = remove_states.at(o);
         }
         old_to_new[dup] = old_to_new.at(o);
     }
@@ -104,7 +104,7 @@ auto DFA::findEmptyState() -> size_t {
         if (states[i].transitions.empty())
             return i;
     }
-    return std::numeric_limits<size_t>::max();
+    return states.size();
 }
 bool DFA::leadToEmptyState(size_t current) {
     if (!nfa->getStates().at(current).transitions.empty())
@@ -219,9 +219,9 @@ void DFA::unrollMultiTransitionPaths() {
     }
 }
 void DFA::build() {
+    using StateSet = stdu::vector<size_t>;
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
-    using StateSet = stdu::vector<size_t>;
 
     utype::unordered_map<StateSet, size_t> dfa_state_map;  // DFA state ID per NFA state set
     std::queue<StateSet> work;
@@ -245,10 +245,6 @@ void DFA::build() {
         for (size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                if (leadToEmptyState(id)) {
-                    input_symbols[{}].emplace_back(id,  nfa->getAcceptMap().at(id));
-                    continue;
-                }
                 logger.log("Registering input symbol {}: id: {}, accept_index: {}", symbol, id, nfa->getAcceptMap().at(id));
                 input_symbols[symbol].emplace_back(id, nfa->getAcceptMap().at(id));
             }
@@ -290,6 +286,15 @@ void DFA::build() {
         }
         // DFA construction
         for (const auto &[symbol, data] : input_symbols) {
+            size_t empty_state_accept = 0;
+            bool goto_empty_state = std::any_of(current.begin(), current.end(), [&](auto &el) {
+                if (leadToEmptyState(el)) {
+                    empty_state_accept = nfa->getAcceptMap().at(el);
+                    return true;
+                }
+                return false;
+            });
+
             StateSet move_set = move(current, symbol);
             StateSet closure_set = epsilonClosure(move_set);
             logger.log("move_set: {}", move_set);
@@ -344,13 +349,22 @@ void DFA::build() {
                     target_index, transition->accept_index
                 );
             }
+            if (goto_empty_state) {
+                auto empty_state = findEmptyState();
+                if (empty_state == states.size()) {
+                    states.emplace_back();
+                    work.push({empty_state});
+                }
+                states[current_dfa_index].else_goto = empty_state;
+                states[current_dfa_index].else_goto_accept = empty_state_accept;
+            }
         }
 
     }
 
     // various optimizations
-    removeDublicateStates();
     //terminateEarly();
+    removeDublicateStates();
     unrollMultiTransitionPaths();
 }
 
