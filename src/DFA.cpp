@@ -88,7 +88,136 @@ void DFA::removeDublicateStates() {
     // Step 5: Finalize
     states = std::move(new_states);
 }
+// void DFA::walkDfaToTerminate(size_t i) {
+//     std::unordered_set<size_t> visited;
+//     std::vector<size_t> path;
+//     Tlog::Branch b(logger, "DFA/walkDfaToTerminate.log");
+//
+//
+// }
+//
+// void DFA::terminateEarly() {
+//     walkDfaToTerminate(0);
+// }
+auto DFA::findEmptyState() -> size_t {
+    for (size_t i = 0; i < states.size(); ++i) {
+        if (states[i].transitions.empty())
+            return i;
+    }
+    return std::numeric_limits<size_t>::max();
+}
+bool DFA::leadToEmptyState(size_t current) {
+    if (!nfa->getStates().at(current).transitions.empty())
+        return false;
+    bool all_lead_o_empty = true;
+    for (const auto &t : nfa->getStates().at(current).epsilon_transitions) {
+        if (!leadToEmptyState(t)) {
+            return false;
+        }
+    }
+    return true;
+}
 
+void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::vector<transition_value> &val, SeenSymbol &seen, WalkedState &walked_state) {
+    // step 1: get lookaheads for every transition's goto
+    using LookaheadSet = stdu::vector<Transitions>;
+    using Lookaheads = stdu::vector<LookaheadSet>;
+    Lookaheads lookaheads;
+    std::queue<size_t> work;
+    size_t work_size = 0;
+    for (const auto &v: val) {
+        work.push(v.next);
+        walked_state.insert(v.next);
+        work_size++;
+    };
+    while (!work.empty()) {
+        // substep 1: for every symbol in val push new lookahead set
+        if (work.size() == work_size) {
+            lookaheads.emplace_back();
+            // should reach 0 when all is computed. Indicates that work has only initial conflict symbols and so lookahead should be pushed
+            work_size--;
+        }
+        auto current = work.front();
+        work.pop();
+        if (lookaheads.back().size() >= 1)
+            continue; // 1 lookahead enough
+        // substep 2: push lookaheads to latest lookahead set
+        lookaheads.back().emplace_back();
+        for (const auto &t : states[current].transitions) {
+            for (const auto &next : t.second) {
+                if (!walked_state.contains(next.next)) {
+                    // not loop, push
+                    cpuf::dprintf("{}", next.next);
+                    lookaheads.back().back()[t.first].push_back(next);
+                    walked_state.insert(next.next);
+                }
+            }
+        }
+        //lookaheads.back().push_back(states[current].transitions);
+        // further accumulation is not yet needed
+
+
+        // substep 3: push to work every transition & transform if it has several goto states
+
+        // for (const auto &t : states[current].transitions) {
+        //     if (t.second.size() > 1) {
+        //         // unroll if has several goto states
+        //         unrollMultiTransition(t.first, t.second);
+        //     }
+        //     work.push(t.second.back().next);
+        // }
+    }
+    // step 2: based on lookaheads compute new states
+    size_t current_dfa_state = states.size();
+    states.emplace_back();
+    for (size_t i = 0; i < lookaheads.size(); ++i) {
+        const auto &l = lookaheads[i];
+        if (l[0].empty()) {
+            states[current_dfa_state].else_goto = findEmptyState();
+            states[current_dfa_state].else_goto_accept = val[i].accept_index;
+            continue;
+        }
+        for (const auto &[sym, go]: l[0]) {
+            states[current_dfa_state].transitions[sym].push_back(go.back());
+            // should be only one state even thoguh it is an array
+        }
+    }
+
+    // find more dublicate states and unroll
+    std::unordered_set<size_t> next_indices;
+    for (const auto &s : states[current_dfa_state].transitions) {
+        for (const auto &t : s.second) {
+            next_indices.insert(t.next);
+        }
+    }
+    if (seen[symbol].contains(next_indices))
+        return;
+    seen[symbol].insert(next_indices);
+    for (auto &[sym, go]: states[current_dfa_state].transitions) {
+        if (go.size() > 1) {
+            unrollMultiTransition(sym, go, seen, walked_state);
+        }
+    }
+    val = {{current_dfa_state}};
+}
+
+void DFA::unrollMultiTransitionPaths() {
+    SeenSymbol seen;
+    WalkedState walked_state;
+    for (size_t i = 0; i < states.size(); ++i) {
+        auto &state = states[i];
+        for (auto &t : state.transitions) {
+            if (i >= 1000) {
+                break;
+            }
+            if (t.second.size() > 1) {
+                unrollMultiTransition(t.first, t.second, seen, walked_state);
+                seen.clear();
+                walked_state.clear();
+            }
+        }
+    }
+}
 void DFA::build() {
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
@@ -105,7 +234,6 @@ void DFA::build() {
     dfa_state_map[start_closure] = dfa_start_index;
     states.emplace_back(); // for DFA state 0
     work.push(start_closure);
-
     while (!work.empty()) {
         StateSet current = work.front();
         work.pop();
@@ -117,30 +245,34 @@ void DFA::build() {
         for (size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
+                if (leadToEmptyState(id)) {
+                    input_symbols[{}].emplace_back(id,  nfa->getAcceptMap().at(id));
+                    continue;
+                }
                 logger.log("Registering input symbol {}: id: {}, accept_index: {}", symbol, id, nfa->getAcceptMap().at(id));
                 input_symbols[symbol].emplace_back(id, nfa->getAcceptMap().at(id));
             }
         }
         // Early cutoff opportunity
-        if (input_symbols.size() == 1 || input_symbols.size() == 2 && input_symbols.contains({"__WHITESPACE"})) {
-            const auto &[symbol, data] = *input_symbols.begin();
-            StateSet move_set = move(current, symbol);
-            StateSet closure_set = epsilonClosure(move_set);
-
-            // Check if closure_set contains only accepting NFA states
-            bool all_non_accepting = true;
-            for (auto c : closure_set) {
-                if (nfa->getStates().at(c).accept_index != NFA::NO_ACCEPT) {
-                    all_non_accepting = false;
-                    break;
-                }
-            }
-
-            if (all_non_accepting) {
-                // Mark this transition as final, no need to explore further
-                continue; // Don't push to work queue
-            }
-        }
+        // if (input_symbols.size() == 1 || input_symbols.size() == 2 && input_symbols.contains({"__WHITESPACE"})) {
+        //     const auto &[symbol, data] = *input_symbols.begin();
+        //     StateSet move_set = move(current, symbol);
+        //     StateSet closure_set = epsilonClosure(move_set);
+        //
+        //     // Check if closure_set contains only accepting NFA states
+        //     bool all_non_accepting = true;
+        //     for (auto c : closure_set) {
+        //         if (nfa->getStates().at(c).accept_index != NFA::NO_ACCEPT) {
+        //             all_non_accepting = false;
+        //             break;
+        //         }
+        //     }
+        //
+        //     if (all_non_accepting) {
+        //         // Mark this transition as final, no need to explore further
+        //         continue; // Don't push to work queue
+        //     }
+        // }
         // determine conflict symbols
         stdu::vector<const stdu::vector<transition_value>*> conflicts;
         for (const auto &[symbol, data] : input_symbols) {
@@ -218,6 +350,8 @@ void DFA::build() {
 
     // various optimizations
     removeDublicateStates();
+    //terminateEarly();
+    unrollMultiTransitionPaths();
 }
 
 // Print a single state
@@ -239,6 +373,13 @@ std::ostream &operator<<(std::ostream &os, const DFA::state &s) {
                 os << " }";
             os << "\n";
         }
+    }
+    if (s.else_goto != 0) {
+        os << "\t[else goto] -> " << s.else_goto;
+        if (s.else_goto_accept != NFA::NO_ACCEPT) {
+            os << " { accept -> " << s.else_goto_accept << " }";
+        }
+        os << '\n';
     }
     return os;
 }

@@ -114,8 +114,11 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
             break;
         case '*':
             // Loop and allow skipping
-            states[last].epsilon_transitions.insert(start); // loop back
-            states[start].epsilon_transitions.insert(end);  // skip
+            // Allow skipping entire group before any run
+            states[start].epsilon_transitions.insert(end);
+            // After completing the group, loop back to start (but not skip again)
+            states[last].epsilon_transitions.insert(start);
+
             break;
         case '+':
             // Loop back, but no skipping

@@ -1,39 +1,31 @@
-name<[term, __rop2]> : [Rule {
-   Name(STRING)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(NUMBER)
-  Data: EmptyDataBlock
-}]name<[term, __rop0]> : [Rule {
-   Name(STRING)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(NUMBER)
-  Data: EmptyDataBlock
-}]name<[expr]> : [Rule {
-   Name(term)
+name<[cond]> : [Rule {
    Name(AUTO_0)
-   Name(term)
+   Name(stmt)
+   Name(cond::__grp2)
+   Name(AUTO_1)
+   Name(stmt)
   Data: EmptyDataBlock
 }, Rule {
+   Group( Name(AUTO_0),  Name(stmt),  Group( Name(AUTO_1),  Name(AUTO_0),  Name(stmt))*;)
+   Group( Name(AUTO_0),  Name(stmt))
+  Data: EmptyDataBlock
+}]name<[stmt]> : [Rule {
    Name(NUMBER)
   Data: EmptyDataBlock
-}]name<[term]> : [Rule {
-   Name(term::__rop0)
+}]name<[cond, __grp2]> : [Rule {
+   Name(AUTO_1)
    Name(AUTO_0)
-   Name(term::__rop2)
+   Name(stmt)
   Data: EmptyDataBlock
 }]name<[NUMBER]> : [Rule {
    Cseq([], Diapasons:[0-9 ])+;
   Data: EmptyDataBlock
 }]name<[AUTO_0]> : [Rule {
-  @  String (+)
+  @  String (if)
   Data: [RegularDataBlock: CllExpr]
-}]name<[STRING]> : [Rule {
-   String (")
-   Name(NUMBER)
-   String (")
-  Data: EmptyDataBlock
+}]name<[AUTO_1]> : [Rule {
+  @  String (else)
+  Data: [RegularDataBlock: CllExpr]
 }]name<[__WHITESPACE]> : [Rule {
    Cseq([ ], Escaped:[\t\n\r\v\f])+;
   Data: EmptyDataBlock

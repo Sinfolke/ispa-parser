@@ -1,0 +1,11 @@
+cond:
+    ('if' stmt )
+    | ('if' stmt ('else' 'if' stmt)*)
+    | ('if' stmt ('else' 'if' stmt)* 'else' stmt)
+    ;
+stmt:
+    NUMBER
+;
+NUMBER:
+    [0-9]+
+;

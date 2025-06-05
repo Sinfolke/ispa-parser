@@ -1,17 +1,10 @@
-name<[STRING]> : Rule {
-   String (")
-   Name(NUMBER)
-   String (")
-  Data: EmptyDataBlock
-}name<[NUMBER]> : Rule {
+name<[NUMBER]> : Rule {
    Cseq([], Diapasons:[0-9 ])+;
   Data: EmptyDataBlock
-}name<[term]> : Rule {
-   Op( Name(NUMBER) |  Name(STRING))
-   String (+)
-   Op( Name(NUMBER) |  Name(STRING))
+}name<[stmt]> : Rule {
+   Name(NUMBER)
   Data: EmptyDataBlock
-}name<[expr]> : Rule {
-   Op( Group( Name(term),  String (+),  Name(term)) |  Name(NUMBER))
+}name<[cond]> : Rule {
+   Op( Group( String (if),  Name(stmt)) |  Group( String (if),  Name(stmt),  Group( String (else),  String (if),  Name(stmt))*;) |  Group( String (if),  Name(stmt),  Group( String (else),  String (if),  Name(stmt))*;,  String (else),  Name(stmt)))
   Data: EmptyDataBlock
 }
