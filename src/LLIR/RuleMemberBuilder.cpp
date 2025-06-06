@@ -5,6 +5,7 @@ import logging;
 import corelib;
 import cpuf.hex;
 import cpuf.printf;
+import DFA;
 import std;
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
@@ -619,143 +620,152 @@ void LLIR::AnyBuilder::build() {
     add(block_after);
     pushConvResult(*rule, var, {}, svar, {}, rule->quantifier);
 }
-auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> stdu::vector<LLIR::member> {
-    //[[assume(rules.size() >= 2)]];
-    if (index >= rules.size()) {
-        return {{LLIR::types::EXIT}};
-    }
+/*
+ * build PEG style parser. Right now DFA based is preffered
+ * But may come back later
+ */
 
-    LLIR::ConvertionResult success_var;
-    stdu::vector<stdu::vector<LLIR::member>> blocks;
-    stdu::vector<stdu::vector<LLIR::expr>> conditions;
-    auto rule = rules[index++];
-    std::unique_ptr<LLIR::MemberBuilder> builder = nullptr;
-    if (rule.isGroup()) {
-        char new_qualifier;
-        if (rule.quantifier == '+')
-            new_qualifier = '*';
-        else if (rule.quantifier == '\0')
-            new_qualifier = '?';
-        auto prev_quantifier = rule.quantifier;
-        rule.quantifier = new_qualifier;
-        builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
-        builder->build();
-        rule.quantifier = prev_quantifier;
-    }
-    else {
-        builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
-        builder->build();
-    }
-    builder->getData();
-    stdu::vector<int> erase_indices;
-    stdu::vector<int> push_indices;
-    if (rule.isGroup()) {
-        builder->getData().back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
-        auto cond = LLIR::condition {
-            stdu::vector<LLIR::expr> {
-                {LLIR::condition_types::NOT}, {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.svar}}
-            },
-            createBlock(rules, index, var, svar),
-        };
-        auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
-        auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
-        if (!v.name.empty() && v.type.type != LLIR::var_types::UNDEFINED) {
-            cond.else_block = {{
-                LLIR::types::ASSIGN_VARIABLE,
-                LLIR::variable_assign
-                {
-                    var.name,
-                    LLIR::var_assign_types::ASSIGN,
-                    LLIR::assign {
-                        LLIR::var_assign_values::VAR_REFER,
-                        LLIR::var_refer {.var = v }
-                    }
-                }
-            }};
-        }
-        push({LLIR::types::IF, cond});
-    } else {
-        for (int i = 0; i < builder->getData().size(); i++) {
-            auto &el = builder->getData()[i];
-            if (el.type == LLIR::types::IF) {
-                auto val = std::any_cast<LLIR::condition>(el.value);
-                // get recursively nested block
-                val.block = createBlock(rules, index, var, svar);
-                // change condition and remove it's content into else blocks
-                for (int j = i + 1; j < builder->getData().size(); j++) {
-                    auto el = builder->getData()[j];
-                    erase_indices.push_back(j);
-                    if (el.type != LLIR::types::SKIP_SPACES) {
-                        if (el.type == LLIR::types::ASSIGN_VARIABLE) {
-                            auto assignment = std::any_cast<LLIR::variable_assign>(el.value);
-                            assignment.assign_type = LLIR::var_assign_types::ASSIGN;
-                            el.value = assignment;
-                        }
-                        val.else_block.push_back(el);
-                    }
-                }
-                // push into else block an assignment to variable
-                if (var.type.type == LLIR::var_types::ARRAY) {
-                    val.else_block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { var.name, {LLIR::function_call {"push", {stdu::vector<stdu::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.var}}}}}}}}});
-                } else {
-                    auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
-                    auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
-                    val.else_block.push_back({
-                        LLIR::types::ASSIGN_VARIABLE,
-                        LLIR::variable_assign
-                        {
-                            var.name,
-                            LLIR::var_assign_types::ASSIGN,
-                            LLIR::assign {
-                                LLIR::var_assign_values::VAR_REFER,
-                                LLIR::var_refer {.var = v}
-                            }
-                        }
-                    });
-                }
-
-                // update the value
-                el.value = val;
-            }
-        }
-    }
-
-    for (auto it = erase_indices.rbegin(); it != erase_indices.rend(); ++it) {
-        builder->getData().erase(builder->getData().begin() + *it);
-    }
-    return builder->getData();
-}
-
+// auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> stdu::vector<LLIR::member> {
+//     //[[assume(rules.size() >= 2)]];
+//     if (index >= rules.size()) {
+//         return {{LLIR::types::EXIT}};
+//     }
+//
+//     LLIR::ConvertionResult success_var;
+//     stdu::vector<stdu::vector<LLIR::member>> blocks;
+//     stdu::vector<stdu::vector<LLIR::expr>> conditions;
+//     auto rule = rules[index++];
+//     std::unique_ptr<LLIR::MemberBuilder> builder = nullptr;
+//     if (rule.isGroup()) {
+//         char new_qualifier;
+//         if (rule.quantifier == '+')
+//             new_qualifier = '*';
+//         else if (rule.quantifier == '\0')
+//             new_qualifier = '?';
+//         auto prev_quantifier = rule.quantifier;
+//         rule.quantifier = new_qualifier;
+//         builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
+//         builder->build();
+//         rule.quantifier = prev_quantifier;
+//     }
+//     else {
+//         builder = std::make_unique<LLIR::MemberBuilder>(*this, rule);
+//         builder->build();
+//     }
+//     builder->getData();
+//     stdu::vector<int> erase_indices;
+//     stdu::vector<int> push_indices;
+//     if (rule.isGroup()) {
+//         builder->getData().back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
+//         auto cond = LLIR::condition {
+//             stdu::vector<LLIR::expr> {
+//                 {LLIR::condition_types::NOT}, {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.svar}}
+//             },
+//             createBlock(rules, index, var, svar),
+//         };
+//         auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
+//         auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
+//         if (!v.name.empty() && v.type.type != LLIR::var_types::UNDEFINED) {
+//             cond.else_block = {{
+//                 LLIR::types::ASSIGN_VARIABLE,
+//                 LLIR::variable_assign
+//                 {
+//                     var.name,
+//                     LLIR::var_assign_types::ASSIGN,
+//                     LLIR::assign {
+//                         LLIR::var_assign_values::VAR_REFER,
+//                         LLIR::var_refer {.var = v }
+//                     }
+//                 }
+//             }};
+//         }
+//         push({LLIR::types::IF, cond});
+//     } else {
+//         for (int i = 0; i < builder->getData().size(); i++) {
+//             auto &el = builder->getData()[i];
+//             if (el.type == LLIR::types::IF) {
+//                 auto val = std::any_cast<LLIR::condition>(el.value);
+//                 // get recursively nested block
+//                 val.block = createBlock(rules, index, var, svar);
+//                 // change condition and remove it's content into else blocks
+//                 for (int j = i + 1; j < builder->getData().size(); j++) {
+//                     auto el = builder->getData()[j];
+//                     erase_indices.push_back(j);
+//                     if (el.type != LLIR::types::SKIP_SPACES) {
+//                         if (el.type == LLIR::types::ASSIGN_VARIABLE) {
+//                             auto assignment = std::any_cast<LLIR::variable_assign>(el.value);
+//                             assignment.assign_type = LLIR::var_assign_types::ASSIGN;
+//                             el.value = assignment;
+//                         }
+//                         val.else_block.push_back(el);
+//                     }
+//                 }
+//                 // push into else block an assignment to variable
+//                 if (var.type.type == LLIR::var_types::ARRAY) {
+//                     val.else_block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { var.name, {LLIR::function_call {"push", {stdu::vector<stdu::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.var}}}}}}}}});
+//                 } else {
+//                     auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
+//                     auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
+//                     val.else_block.push_back({
+//                         LLIR::types::ASSIGN_VARIABLE,
+//                         LLIR::variable_assign
+//                         {
+//                             var.name,
+//                             LLIR::var_assign_types::ASSIGN,
+//                             LLIR::assign {
+//                                 LLIR::var_assign_values::VAR_REFER,
+//                                 LLIR::var_refer {.var = v}
+//                             }
+//                         }
+//                     });
+//                 }
+//
+//                 // update the value
+//                 el.value = val;
+//             }
+//         }
+//     }
+//
+//     for (auto it = erase_indices.rbegin(); it != erase_indices.rend(); ++it) {
+//         builder->getData().erase(builder->getData().begin() + *it);
+//     }
+//     return builder->getData();
+// }
+//
+// void LLIR::OpBuilder::build() {
+//     // cpuf::printf("Rule_op\n");
+//     auto &rules = rule->getOp();
+//     auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
+//     auto var = createEmptyVariable(generateVariableName());
+//     auto svar = createSuccessVariable();
+//     auto block = createDefaultBlock(var, svar);
+//     // cpuf::printf("op prefix: %$\n", rule.prefix);
+//     // Add success variable
+//     var.type = {deduceVarTypeByProd(*rule)};
+//     if (insideLoop && var.type.type != LLIR::var_types::STRING) {
+//         var.type.templ = {{var.type.type}};
+//         var.type.type = LLIR::var_types::ARRAY;
+//     }
+//     if (var.type.type != LLIR::var_types::UNDEFINED) {
+//         push({LLIR::types::VARIABLE, var});
+//     }
+//     push({LLIR::types::VARIABLE, svar});
+//     if (!uvar.name.empty()) {
+//         uvar.type = var.type;
+//         push({LLIR::types::VARIABLE, uvar});
+//     }
+//     const auto res = createBlock(rules.options, 0, var, svar);
+//     add(res);
+//     block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
+//     block.erase(block.end() - 1);
+//     // Append default block
+//     add(block);
+//     const auto shadow_var = createEmptyVariable("");
+//     if (!uvar.name.empty())
+//         push(createAssignUvarBlock(uvar, var, shadow_var));
+//     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
+// }
 void LLIR::OpBuilder::build() {
-    // cpuf::printf("Rule_op\n");
-    auto &rules = rule->getOp();
-    auto uvar = !rule->prefix.name.empty() ? createEmptyVariable(rule->prefix.name) : createEmptyVariable("");
-    auto var = createEmptyVariable(generateVariableName());
-    auto svar = createSuccessVariable();
-    auto block = createDefaultBlock(var, svar);
-    // cpuf::printf("op prefix: %$\n", rule.prefix);
-    // Add success variable
-    var.type = {deduceVarTypeByProd(*rule)};
-    if (insideLoop && var.type.type != LLIR::var_types::STRING) {
-        var.type.templ = {{var.type.type}};
-        var.type.type = LLIR::var_types::ARRAY;
-    }
-    if (var.type.type != LLIR::var_types::UNDEFINED) {
-        push({LLIR::types::VARIABLE, var});
-    }
-    push({LLIR::types::VARIABLE, svar});
-    if (!uvar.name.empty()) {
-        uvar.type = var.type;
-        push({LLIR::types::VARIABLE, uvar});
-    }
-    const auto res = createBlock(rules.options, 0, var, svar);
-    add(res);
-    block.erase(block.begin()); // remove variable assignment (it is done in else blocks)
-    block.erase(block.end() - 1);
-    // Append default block
-    add(block);
-    const auto shadow_var = createEmptyVariable("");
-    if (!uvar.name.empty())
-        push(createAssignUvarBlock(uvar, var, shadow_var));
-    pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
+    auto DFA = std::move(DFABuilder(*tree, *rule).get());
+
 }

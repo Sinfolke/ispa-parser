@@ -1,32 +1,748 @@
-name<[cond]> : [Rule {
-   Name(AUTO_0)
-   Name(stmt)
-   Name(cond::__grp2)
-   Name(AUTO_1)
-   Name(stmt)
+name<[cll, _var, __grp2]> : [Rule {
+  @  Name(cll::ASSIGNMENT_OP)
+  @  Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[cll, _var, __q0]> : [Rule {
   Data: EmptyDataBlock
 }, Rule {
-   Group( Name(AUTO_0),  Name(stmt),  Group( Name(AUTO_1),  Name(AUTO_0),  Name(stmt))*;)
-   Group( Name(AUTO_0),  Name(stmt))
+  @  Name(cll::TYPE)
   Data: EmptyDataBlock
-}]name<[stmt]> : [Rule {
+}]name<[cll, function_parameters, __grp1]> : [Rule {
+   Name(AUTO_1)
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[rule, data_block, regular_datablock, __q1]> : [Rule {
+   Name(rule::data_block::regular_datablock::key)
+   Name(rule::data_block::regular_datablock::__q1::__q1_tail)
+  Data: EmptyDataBlock
+}]name<[rule, data_block, regular_datablock, __q1, __q1_tail]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::data_block::regular_datablock::key)
+   Name(rule::data_block::regular_datablock::__q1::__q1_tail)
+  Data: EmptyDataBlock
+}]name<[rule, group, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::member)
+   Name(rule::group::__q1)
+  Data: EmptyDataBlock
+}]name<[rule, member, __q2]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::quantifier)
+  Data: EmptyDataBlock
+}]name<[cll, function_arguments, __grp1]> : [Rule {
+   Name(AUTO_1)
+  @  Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[rule, member, __grp0]> : [Rule {
+   Name(rule::value)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::keyvalue)
+  Data: EmptyDataBlock
+}]name<[rule, __q3]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::data_block)
+  Data: EmptyDataBlock
+}]name<[rule, __q2]> : [Rule {
+  @  Name(rule::member)
+   Name(rule::__q2::__q2_tail)
+  Data: EmptyDataBlock
+}]name<[rule, __q2, __q2_tail]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::member)
+   Name(rule::__q2::__q2_tail)
+  Data: EmptyDataBlock
+}]name<[rule, data_block, templated_datablock, __grp2]> : [Rule {
+  @  Name(ID)
+   Name(rule::data_block::templated_datablock::__grp2::__grp1)
+  Data: EmptyDataBlock
+}]name<[main, __grp0]> : [Rule {
+   Name(NAME)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(_use)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(SPACEMODE)
+  Data: EmptyDataBlock
+}]name<[cll, expr, compare, __grp1]> : [Rule {
+  @  Name(cll::COMPARE_OP)
+  @  Name(cll::expr::arithmetic)
+  Data: EmptyDataBlock
+}]name<[cll, stmt, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::member)
+   Name(cll::stmt::__q1)
+  Data: EmptyDataBlock
+}]name<[cll, __rop1]> : [Rule {
+   Name(cll::loop_while)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::_var)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::loop_for)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::_if)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[array, __grp1]> : [Rule {
+   Name(array::__grp1::__grp0)
+  Data: EmptyDataBlock
+}]name<[rule, data_block, templated_datablock, __grp2, __grp1]> : [Rule {
+   Name(AUTO_1)
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[cll, _variable, __grp2]> : [Rule {
+   Name(AUTO_13)
+  @  Name(cll::expr)
+   Name(AUTO_14)
+  Data: EmptyDataBlock
+}]name<[cll, _variable, __grp0]> : [Rule {
+   Name(AUTO_20)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AUTO_19)
+  Data: EmptyDataBlock
+}]name<[array, __grp1, __grp0]> : [Rule {
+  @  Name(cll::expr)
+   Name(AUTO_1)
+  Data: EmptyDataBlock
+}]name<[object, __grp1]> : [Rule {
+   Name(object::__grp1::__rop0)
+   Name(AUTO_6)
+  @  Name(cll::expr)
+   Name(object::__grp1::__grp3)
+   Name(AUTO_7)
+  Data: EmptyDataBlock
+}]name<[object, __grp1, __grp3]> : [Rule {
+   Name(AUTO_1)
+   Name(object::__grp1::__grp3::__rop1)
+   Name(AUTO_6)
+  @  Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[object, __grp1, __grp3, __rop1]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}, Rule {
    Name(NUMBER)
   Data: EmptyDataBlock
-}]name<[cond, __grp2]> : [Rule {
-   Name(AUTO_1)
-   Name(AUTO_0)
-   Name(stmt)
+}]name<[object, __grp1, __rop0]> : [Rule {
+   Name(ID)
   Data: EmptyDataBlock
-}]name<[NUMBER]> : [Rule {
-   Cseq([], Diapasons:[0-9 ])+;
+}, Rule {
+   Name(NUMBER)
+  Data: EmptyDataBlock
+}]name<[cll, expr, logical, __grp1]> : [Rule {
+  @  Name(cll::LOGICAL_OP)
+  @  Name(cll::expr::compare)
+  Data: EmptyDataBlock
+}]name<[cll, expr, arithmetic, __grp1, __rop0]> : [Rule {
+   Name(MINUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(PLUS)
+  Data: EmptyDataBlock
+}]name<[cll, loop_for, __q6]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[cll, loop_for, __q4]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[moduleImport, __rop1]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(moduleImport::from)
+  Data: EmptyDataBlock
+}]name<[DIVIDE]> : [Rule {
+   String (/)
+  Data: EmptyDataBlock
+}]name<[rule, value]> : [Rule {
+   Name(AUTO_23)
+  @  Name(ID)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, LOGICAL_OP]> : [Rule {
+  @  Op( Name(cll::LOGICAL_OR) |  Name(cll::LOGICAL_AND))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport]> : [Rule {
+   Name(AUTO_22)
+   Name(moduleImport::__rop1)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_4]> : [Rule {
+  @  String ())
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, TEMPLATE]> : [Rule {
+   String (<)
+  @  Name(cll::TYPE)
+   Group( String (,), @  Name(cll::TYPE))*;
+   String (>)
+  Data: TemplatedDataBlock(first, second)
+}]name<[cll, TYPE]> : [Rule {
+  @  Op( String (bool) |  String (var) |  String (str) |  Group(@  String (obj), @  Name(cll::TEMPLATE)) |  String (num) |  Group(@  String (arr), @  Name(cll::TEMPLATE)))
+  Data: TemplatedDataBlock(type, templ)
+}]name<[cll, LOGICAL_AND]> : [Rule {
+   Op( String (and) |  String (&&))
+  Data: EmptyDataBlock
+}]name<[cll, loop_while]> : [Rule {
+   Name(AUTO_18)
+  @  Name(cll::expr)
+  @  Name(cll::stmt)
+  Data: TemplatedDataBlock(expr, stmt)
+}]name<[rule, member, __rop1]> : [Rule {
+   Name(rule::NOSPACE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::ESCAPED)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(STRING)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::HEX)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::BIN)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(LINEAR_COMMENT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::OP)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::CSEQUENCE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(DOT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::group)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::name)
+  Data: EmptyDataBlock
+}]name<[cll, function_decl, __q1]> : [Rule {
+  @  Name(ID)
+   Name(cll::function_decl::__q1::__q1_tail)
+  Data: EmptyDataBlock
+}]name<[NAME]> : [Rule {
+   String (name)
+  @  Name(ID)
+   String (;)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_2]> : [Rule {
+  @  String (})
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, loop_for]> : [Rule {
+   Name(AUTO_17)
+   Name(AUTO_3)
+   Name(cll::loop_for::__grp2)
+   Name(AUTO_7)
+  @  Name(cll::expr)?;
+   Name(AUTO_7)
+  @  Name(cll::expr)?;
+   Name(AUTO_4)
+  @  Name(cll::stmt)
+  Data: TemplatedDataBlock(decl, cond, end, stmt)
+}]name<[cll, function_decl, __q3]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(cll::stmt)
+  Data: EmptyDataBlock
+}]name<[cll, ASSIGNMENT_OP]> : [Rule {
+   Name(cll::OP)?;
+  @  String (=)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, COMPARE_OP]> : [Rule {
+  @  Op( String (>=) |  String (==) |  String (<=) |  String (!=) |  String (>) |  String (<))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_5]> : [Rule {
+  @  String (#)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[_use, __grp2]> : [Rule {
+   Name(AUTO_1)
+  @  Name(_use::unit)
+  Data: EmptyDataBlock
+}]name<[rule, data_block]> : [Rule {
+   Name(rule::data_block::regular_datablock)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(rule::data_block::templated_datablock)
+  Data: EmptyDataBlock
+}]name<[STRING]> : [Rule {
+   String (\')
+  @  Group( Op( Group( String (\\),  NoSpace,  Any) |  !Cseq(['])))*;
+   String (\')
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, expr, arithmetic, __grp1]> : [Rule {
+   Name(cll::expr::arithmetic::__grp1::__rop0)
+  @  Name(cll::expr::term)
+  Data: EmptyDataBlock
+}]name<[cll, function_body_call]> : [Rule {
+   Name(AUTO_3)
+  @  Name(cll::function_arguments)
+   Name(AUTO_4)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, nested_rule]> : [Rule {
+   Name(AUTO_5)
+   NoSpace
+  @  Name(rule)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_call]> : [Rule {
+  @  Name(ID)
+  @  Name(cll::function_body_call)
+  Data: TemplatedDataBlock(name, body)
+}]name<[DOT]> : [Rule {
+   String (.)
+  Data: EmptyDataBlock
+}]name<[AUTO_11]> : [Rule {
+  @  String (->)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_decl]> : [Rule {
+   Name(AUTO_16)
+  @  Name(ID)+;
+  @  Name(cll::function_body_decl)
+  @  Name(cll::stmt)?;
+  Data: TemplatedDataBlock(type, name, stmt)
+}]name<[cll, _if]> : [Rule {
+   Name(AUTO_15)
+  @  Name(cll::expr)
+  @  Name(cll::stmt)
+  Data: TemplatedDataBlock(expr, stmt)
+}]name<[cll, expr, arithmetic]> : [Rule {
+  @  Name(cll::expr::term)
+   Name(cll::expr::arithmetic::__grp1)
+  Data: TemplatedDataBlock(first, operators, sequence)
+}]name<[cll, expr]> : [Rule {
+  @  Name(cll::expr::logical)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, expr, term]> : [Rule {
+  @  Name(cll::expr::value)
+   Name(cll::expr::term::__grp1)
+  Data: TemplatedDataBlock(first, operators, sequence)
+}]name<[cll, expr, logical]> : [Rule {
+  @  Name(cll::expr::compare)
+   Name(cll::expr::logical::__grp1)
+  Data: TemplatedDataBlock(left, op, right)
+}]name<[object]> : [Rule {
+   Name(AUTO_0)
+   Name(object::__grp1)
+   Name(AUTO_2)
+  Data: TemplatedDataBlock(key, value, keys, values)
+}]name<[cll, _variable]> : [Rule {
+   Name(cll::_variable::__grp0)
+  @  Name(ID)
+   Name(cll::_variable::__grp2)
+   Name(cll::_variable::__grp3)
+  Data: TemplatedDataBlock(pre, name, brace_expression, pos)
+}]name<[array]> : [Rule {
+   Name(AUTO_13)
+   Name(array::__grp1)
+   Name(AUTO_14)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, loop_for, __grp2]> : [Rule {
+   Name(cll::_var)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::expr)
+  Data: EmptyDataBlock
+}]name<[QUESTION_MARK]> : [Rule {
+   String (?)
+  Data: EmptyDataBlock
+}]name<[cll, expr, group]> : [Rule {
+   Name(AUTO_3)
+  @  Name(cll::expr)
+   Name(AUTO_4)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport, from, import_list, __grp1]> : [Rule {
+   Name(AUTO_1)
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[PLUS]> : [Rule {
+   String (+)
+  Data: EmptyDataBlock
+}]name<[rule, __q4]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rule::nested_rule)
+   Name(rule::__q4)
+  Data: EmptyDataBlock
+}]name<[MINUS]> : [Rule {
+   String (-)
+  Data: EmptyDataBlock
+}]name<[cll]> : [Rule {
+   Name(AUTO_12)
+   Name(cll::__rop1)
+   Name(AUTO_7)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, name, __grp2]> : [Rule {
+   Name(DOT)
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[cll, stmt]> : [Rule {
+   Name(AUTO_0)
+  @  Name(rule::member)*;
+   Name(AUTO_2)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_decl, __q1, __q1_tail]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(ID)
+   Name(cll::function_decl::__q1::__q1_tail)
+  Data: EmptyDataBlock
+}]name<[cll, OP]> : [Rule {
+  @  Op( String (/) |  String (-) |  String (+) |  String (*) |  String (%))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[MODULO]> : [Rule {
+   String (%)
+  Data: EmptyDataBlock
+}]name<[moduleDeclaration]> : [Rule {
+   Name(AUTO_10)
+  @  Name(ID)
+   Name(moduleDeclaration::__grp2)
+   Name(AUTO_7)
+  Data: TemplatedDataBlock(name, base)
+}]name<[cll, expr, compare]> : [Rule {
+  @  Name(cll::expr::arithmetic)
+   Name(cll::expr::compare::__grp1)
+  Data: TemplatedDataBlock(first, operators, sequence)
+}]name<[moduleImport, from, import_list]> : [Rule {
+  @  Name(ID)
+   Name(moduleImport::from::import_list::__grp1)
+  Data: TemplatedDataBlock(first, sequence)
+}]name<[rule, OP]> : [Rule {
+   String (|)
+  Data: EmptyDataBlock
+}]name<[LINEAR_COMMENT]> : [Rule {
+   String (//)
+   !Cseq([n])*;
+  Data: EmptyDataBlock
+}]name<[_use]> : [Rule {
+   Name(AUTO_8)
+  @  Name(_use::unit)
+   Name(_use::__grp2)
+   Name(AUTO_7)
+  Data: TemplatedDataBlock(first, second)
+}]name<[cll, expr, term, __grp1]> : [Rule {
+   Name(cll::expr::term::__grp1::__rop0)
+  @  Name(cll::expr::value)
   Data: EmptyDataBlock
 }]name<[AUTO_0]> : [Rule {
-  @  String (if)
+  @  String ({)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[main]> : [Rule {
+   Name(main::__grp0)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule]> : [Rule {
+  @  Name(ID)
+   Name(AUTO_6)
+  @  Name(rule::member)+;
+  @  Name(rule::data_block)?;
+  @  Name(rule::nested_rule)*;
+   Name(AUTO_7)
+  Data: TemplatedDataBlock(name, rule, data_block, nested_rules)
+}]name<[AUTO_21]> : [Rule {
+  @  String (=)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, _variable, __grp3]> : [Rule {
+   Name(AUTO_20)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AUTO_19)
+  Data: EmptyDataBlock
+}]name<[NUMBER]> : [Rule {
+  @  Cseq([+-])?;
+   Cseq([], Diapasons:[0-9 ])+;
+  @  Group( Cseq([.,]),  Cseq([], Diapasons:[0-9 ])+;)?;
+  Data: TemplatedDataBlock(sign, main, dec)
+}]name<[rule, keyvalue]> : [Rule {
+   Name(AT)
+   Name(rule::keyvalue::__grp1)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, member]> : [Rule {
+   Name(rule::member::__grp0)
+   Name(rule::member::__rop1)
+  @  Name(rule::quantifier)?;
+  Data: TemplatedDataBlock(prefix, val, quantifier)
+}]name<[rvalue]> : [Rule {
+   Name(BOOLEAN)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(STRING)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(object)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(array)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(NUMBER)
+  Data: EmptyDataBlock
+}]name<[rule, CSEQUENCE]> : [Rule {
+   String ([)
+  @  String (^)?;
+  @  Group( Op( Name(rule::CSEQUENCE::DIAPASON) |  Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::SYMBOL)))*;
+   String (])
+  Data: TemplatedDataBlock(_not, val)
+}]name<[AUTO_3]> : [Rule {
+  @  String (()
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_body_decl]> : [Rule {
+   Name(AUTO_3)
+  @  Name(cll::function_parameters)
+   Name(AUTO_4)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, group]> : [Rule {
+   Name(AUTO_3)
+  @  Name(rule::member)*;
+   Name(AUTO_4)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_9]> : [Rule {
+  @  String (from)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_13]> : [Rule {
+  @  String ([)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, data_block, regular_datablock]> : [Rule {
+   Name(AUTO_0)
+   Name(rule::data_block::regular_datablock::__rop1)
+   Name(AUTO_2)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, keyvalue, __grp1]> : [Rule {
+   NoSpace
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[rule, data_block, templated_datablock]> : [Rule {
+   Name(AT)
+   Name(AUTO_0)
+   Name(rule::data_block::templated_datablock::__grp2)
+   Name(AUTO_2)
+  Data: TemplatedDataBlock(first_name, second_name)
+}]name<[rule, name, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AUTO_5)
+  Data: EmptyDataBlock
+}]name<[_use, unit]> : [Rule {
+  @  Name(ID)
+  @  Name(rvalue)?;
+  Data: TemplatedDataBlock(name, value)
+}]name<[moduleDeclaration, __grp2]> : [Rule {
+   Name(AUTO_11)
+  @  Name(ID)
+  Data: EmptyDataBlock
+}]name<[cll, LOGICAL_OR]> : [Rule {
+   Op( String (||) |  String (or))
+  Data: EmptyDataBlock
+}]name<[cll, function_parameters]> : [Rule {
+  @  Name(ID)
+   Name(cll::function_parameters::__grp1)
+  Data: TemplatedDataBlock(first, second)
+}]name<[rule, quantifier]> : [Rule {
+   Name(QUESTION_MARK)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(PLUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MULTIPLE)
+  Data: EmptyDataBlock
+}]name<[MULTIPLE]> : [Rule {
+   String (*)
+  Data: EmptyDataBlock
+}]name<[moduleImport, from, __rop0]> : [Rule {
+   Name(MULTIPLE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(moduleImport::from::import_list)
+  Data: EmptyDataBlock
+}]name<[SPACEMODE]> : [Rule {
+   String (spacemode)
+  @  Op( String (skipped) |  String (allowed) |  String (mixed))
+   String (;)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, expr, term, __grp1, __rop0]> : [Rule {
+   Name(DIVIDE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MULTIPLE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MODULO)
+  Data: EmptyDataBlock
+}]name<[rule, CSEQUENCE, DIAPASON]> : [Rule {
+  @  Name(rule::CSEQUENCE::SYMBOL)
+   NoSpace
+   String (-)
+   NoSpace
+  @  Name(rule::CSEQUENCE::SYMBOL)
+  Data: TemplatedDataBlock(from, to)
+}]name<[rule, CSEQUENCE, SYMBOL]> : [Rule {
+  @  Op( String (\\) |  !Cseq([]]))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AT]> : [Rule {
+   String (@)
+  Data: EmptyDataBlock
+}]name<[cll, _var]> : [Rule {
+  @  Name(cll::TYPE)?;
+  @  Name(ID)
+   Name(cll::_var::__grp2)
+  Data: TemplatedDataBlock(type, id, op, value)
+}]name<[BOOLEAN]> : [Rule {
+   Op( String (false) |  String (true))
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_1]> : [Rule {
-  @  String (else)
+  @  String (,)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, CSEQUENCE, ESCAPE]> : [Rule {
+   String (\\)
+   NoSpace
+  @  Any
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, name]> : [Rule {
+  @  Name(AUTO_5)?;
+  @  Name(ID)
+   Name(rule::name::__grp2)
+  Data: TemplatedDataBlock(is_nested, name, nested_name)
+}]name<[AUTO_7]> : [Rule {
+  @  String (;)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, NOSPACE]> : [Rule {
+   String (\\s0)
+  Data: EmptyDataBlock
+}]name<[rule, BIN]> : [Rule {
+   String (0b)
+  @  Cseq([01])+;
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_6]> : [Rule {
+  @  String (:)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, LOGICAL_NOT]> : [Rule {
+   Op( String (not) |  String (!))
+  Data: EmptyDataBlock
+}]name<[rule, HEX]> : [Rule {
+   String (0x)
+  @  Cseq([], Diapasons:[0-9 A-F a-f ])+;
+  Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport, from]> : [Rule {
+   Name(moduleImport::from::__rop0)
+   Name(AUTO_9)
+  @  Name(ID)
+  Data: TemplatedDataBlock(what, from)
+}]name<[AUTO_14]> : [Rule {
+  @  String (])
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_arguments]> : [Rule {
+  @  Name(cll::expr)
+   Name(cll::function_arguments::__grp1)
+  Data: TemplatedDataBlock(first, second)
+}]name<[AUTO_8]> : [Rule {
+  @  String (use)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, method_call]> : [Rule {
+  @  Name(ID)
+   Name(DOT)
+  @  Name(cll::function_call)
+  Data: TemplatedDataBlock(name, body)
+}]name<[AUTO_17]> : [Rule {
+  @  String (for)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_10]> : [Rule {
+  @  String (module)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_16]> : [Rule {
+  @  String (fn)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_19]> : [Rule {
+  @  String (--)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, expr, value]> : [Rule {
+   Name(cll::_variable)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(cll::expr::group)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::method_call)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::function_call)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rvalue)
+  Data: EmptyDataBlock
+}]name<[AUTO_15]> : [Rule {
+  @  String (if)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, data_block, regular_datablock, key]> : [Rule {
+  @  Name(ID)
+   Name(AUTO_21)
+  @  Name(cll::expr)
+  Data: TemplatedDataBlock(name, dt)
+}]name<[_use, unit, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(rvalue)
+  Data: EmptyDataBlock
+}]name<[AUTO_12]> : [Rule {
+  @  String ($)
   Data: [RegularDataBlock: CllExpr]
 }]name<[__WHITESPACE]> : [Rule {
    Cseq([ ], Escaped:[\t\n\r\v\f])+;
   Data: EmptyDataBlock
+}]name<[AUTO_18]> : [Rule {
+  @  String (while)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, data_block, regular_datablock, __rop1]> : [Rule {
+   Name(cll::expr)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::data_block::regular_datablock::key)+;
+  Data: EmptyDataBlock
+}]name<[rule, ESCAPED]> : [Rule {
+   String (\\)
+   NoSpace
+  @  Any
+   NoSpace
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_20]> : [Rule {
+  @  String (++)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_23]> : [Rule {
+  @  String (&)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[ID]> : [Rule {
+   Cseq([_], Diapasons:[a-z A-Z ])
+   Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_22]> : [Rule {
+  @  String (import)
+  Data: [RegularDataBlock: CllExpr]
 }]

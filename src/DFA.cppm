@@ -1,47 +1,78 @@
 export module DFA;
 import hash;
 import NFA;
+import AST.API;
+import AST.Tree;
 import dstd;
 import std;
 import std.compat;
 export class DFA {
 public:
-    struct transition_value;
-    using Transitions = utype::unordered_map<stdu::vector<std::string>, stdu::vector<transition_value>>;
-    struct transition_value {
+    struct TransitionValue {
         size_t next;
         size_t accept_index = NFA::NO_ACCEPT;
-        bool operator==(const transition_value &other) const = default;
+        bool operator==(const TransitionValue &other) const = default;
     };
-    struct state {
+    template<typename Transition>
+    struct State {
         utype::unordered_set<size_t> nfa_states; // the NFA states this DFA state represents
-        Transitions transitions;
+        Transition transitions;
         size_t else_goto = 0;
         size_t else_goto_accept = NFA::NO_ACCEPT;
-        bool operator==(const state &other) const = default;
+        bool operator==(const State &other) const = default;
     };
+    using Transitions = utype::unordered_map<stdu::vector<std::string>, TransitionValue>;
+    using MultiTransitions = utype::unordered_map<stdu::vector<std::string>, stdu::vector<TransitionValue>>;
+
+    using MultiState = State<MultiTransitions>;
+    using SingleState = State<Transitions>;
     using SeenSymbol = utype::unordered_map<stdu::vector<std::string>, utype::unordered_set<std::unordered_set<size_t>>>;
     using WalkedState = utype::unordered_set<size_t>;
 private:
     const NFA *nfa;
-    stdu::vector<state> states;
+    stdu::vector<MultiState> mstates;
+    stdu::vector<SingleState> states;
     auto epsilonClosure(const stdu::vector<size_t>& state_indices) const -> stdu::vector<size_t>;
     auto move(const stdu::vector<size_t> &states, const stdu::vector<std::string> &symbol) const -> std::vector<size_t>;
-    void walkDfaToTerminate(size_t i);
-    void removeDublicateStates();
     auto findEmptyState() -> size_t;
     bool leadToEmptyState(size_t current);
-    void unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::vector<transition_value> &val, SeenSymbol &seen, WalkedState &walked_state);
+    bool includesWhitespace(const MultiState &state);
+    bool isTerminateState(const MultiState &state);
+    void removeDublicateStates();
+    void unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
     void unrollMultiTransitionPaths();
+    void switchToSingleState();
+    void accumulateTerminalStates(size_t i, std::unordered_set<size_t> &terminals, std::unordered_set<size_t> &visited);
     void terminateEarly();
+    void WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable);
+    void removeUnreachableStates();
 public:
     DFA(const NFA &nfa) : nfa(&nfa) {}
-    DFA(const stdu::vector<state> &already_build_states) : states(already_build_states) {}
+    DFA(const stdu::vector<SingleState> &already_build_states) : states(already_build_states) {}
     void build();
-
     auto &getStates() const { return states; }
+    auto &getMultiStates() const { return mstates; }
+};
+export class DFABuilder {
+    DFA dfa;
+    public:
+    DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule) : dfa({}) {
+        NFA nfa(ast, rule);
+        nfa.build();
+        DFA dfa_tmp(nfa);
+        dfa_tmp.build();
+        dfa = std::move(dfa_tmp);
+    }
+    DFA& get() {
+        return dfa;
+    }
 };
 // Print a single state
-export std::ostream& operator<<(std::ostream& os, const DFA::state& s);
+export std::ostream& operator<<(std::ostream& os, const DFA::MultiState& s);
 // Print all states in the vector
 export std::ostream& operator<<(std::ostream& os, const DFA& states);
+
+// Outside the struct
+std::ostream &operator<<(std::ostream &os, const DFA::TransitionValue &tv) {
+    return os << "(" << tv.next << ", " << tv.accept_index << ")";
+}
