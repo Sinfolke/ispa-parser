@@ -69,7 +69,7 @@ bool DFA::isTerminateState(const MultiState &state) {
     if (state.else_goto != 0)
         return false;
     bool was = false;
-    for (const auto t : state.transitions) {
+    for (const auto &t : state.transitions) {
         if (t.second.size() > 1)
             return false;
         if (t.first == std::vector<std::string> {"__WHITESPACE"})
@@ -78,7 +78,7 @@ bool DFA::isTerminateState(const MultiState &state) {
             return false;
         was = true;
     }
-    return true;
+    return was;
 }
 
 void DFA::removeDublicateStates() {
@@ -137,9 +137,9 @@ void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::v
     size_t work_size = 0;
     for (const auto &v: val) {
         work.push(v.next);
-        walked_state.insert(v.next);
         work_size++;
     };
+    Tlog::Branch b(logger, "DFA/unrollMultiTransition");
     while (!work.empty()) {
         // substep 1: for every symbol in val push new lookahead set
         if (work.size() == work_size) {
@@ -149,10 +149,12 @@ void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::v
         }
         auto current = work.front();
         work.pop();
-        if (lookaheads.back().size() >= 1)
-            continue; // 1 lookahead enough
         // substep 2: push lookaheads to latest lookahead set
         lookaheads.back().emplace_back();
+        logger.log("mstates[current].transitions: ");
+        for (const auto &t : mstates[current].transitions) {
+            logger.log("{} -> {}, walked_state.contains(next.next): {}", t.first, t.second, walked_state.contains(t.second.back().next));
+        }
         for (const auto &t : mstates[current].transitions) {
             for (const auto &next : t.second) {
                 if (!walked_state.contains(next.next)) {
@@ -180,19 +182,21 @@ void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::v
     // step 2: based on lookaheads compute new states
     size_t current_dfa_state = mstates.size();
     mstates.emplace_back();
+    logger.log("Lookaheads size: {}", lookaheads.size());
     for (size_t i = 0; i < lookaheads.size(); ++i) {
         const auto &l = lookaheads[i];
+        logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
             mstates[current_dfa_state].else_goto = findEmptyState();
             mstates[current_dfa_state].else_goto_accept = val[i].accept_index;
             continue;
         }
         for (const auto &[sym, go]: l[0]) {
+            logger.log("Lookahead symbol {}", sym);
             mstates[current_dfa_state].transitions[sym].push_back(go.back());
-            // should be only one state even thoguh it is an array
+            // should be only one state even thoguh it is an array right now
         }
     }
-
     // find more dublicate states and unroll
     std::unordered_set<size_t> next_indices;
     for (const auto &s : mstates[current_dfa_state].transitions) {
@@ -217,9 +221,6 @@ void DFA::unrollMultiTransitionPaths() {
     for (size_t i = 0; i < mstates.size(); ++i) {
         auto &state = mstates[i];
         for (auto &t : state.transitions) {
-            if (i >= 1000) {
-                break;
-            }
             if (t.second.size() > 1) {
                 unrollMultiTransition(t.first, t.second, seen, walked_state);
                 seen.clear();
@@ -269,7 +270,6 @@ void DFA::terminateEarly() {
     accumulateTerminalStates(0, terminals, visited);
     if (terminals.empty())
         return;
-    // accumulate states where this remove state is used
     // terminate states
     auto empty_state = findEmptyState();
     if (empty_state == mstates.size()) {
@@ -481,9 +481,17 @@ void DFA::build() {
     // various optimizations
     removeDublicateStates();
     terminateEarly();
+    cpuf::printf("after terminateEarly: ");
+    for (size_t i = 0; i < mstates.size(); ++i) {
+        std::cout << "State " << i << ":\n" << mstates[i] << "\n";
+    }
     unrollMultiTransitionPaths();
+    cpuf::printf("after unrollMultiTransitionPaths: ");
+    for (size_t i = 0; i < mstates.size(); ++i) {
+        std::cout << "State " << i << ":\n" << mstates[i] << "\n";
+    }
     switchToSingleState();
-    //removeUnreachableStates();
+    removeUnreachableStates();
 }
 
 // Print a single state
