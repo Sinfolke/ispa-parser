@@ -8,8 +8,9 @@ export class NFA {
 public:
     static constexpr auto NO_ACCEPT = std::numeric_limits<size_t>::max();
     static constexpr auto NO_STATE_RANGE = std::numeric_limits<size_t>::max();
+    using TransitionKey = std::variant<stdu::vector<std::string>, char>;
     struct state {
-        utype::unordered_map<stdu::vector<std::string>, size_t> transitions;
+        utype::unordered_map<TransitionKey, size_t> transitions;
         size_t accept_index = NO_ACCEPT;
         bool is_starting_state = false;
         std::set<size_t> epsilon_transitions;
@@ -36,6 +37,8 @@ private:
     void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry);
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry);
     void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry);
+    void handleString(const AST::RuleMember &member, const std::string &str, const size_t &start, const size_t &end, bool isEntry);
+    void handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const size_t &start, const size_t &end, bool isEntry);
     auto buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange;
     void removeDeadStates();
     void AccessMapVisitState(size_t index, size_t accept_index, std::unordered_set<size_t>& visited);

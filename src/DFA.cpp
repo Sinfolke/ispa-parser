@@ -3,10 +3,12 @@ import cpuf.op;
 import cpuf.printf;
 import corelib;
 import logging;
+import hash;
 import std;
 
 auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vector<size_t> {
-    stdu::vector<size_t> closure = states;
+    stdu::vector<size_t> closure(states.begin(), states.end());
+    std::unordered_set<size_t> visited;
     std::queue<size_t> work;
     for (size_t s : states) work.push(s);
 
@@ -17,8 +19,9 @@ auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vect
         const auto &epsilons = nfa->getStates().at(current).epsilon_transitions;
 
         for (size_t target_state : epsilons) {
-            if (std::find(closure.begin(), closure.end(), target_state) == closure.end()) {
+            if (!visited.contains(target_state)) {
                 closure.push_back(target_state);
+                visited.insert(target_state);
                 work.push(target_state);
             }
         }
@@ -26,7 +29,7 @@ auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vect
 
     return closure;
 }
-auto DFA::move(const stdu::vector<size_t> &states, const stdu::vector<std::string> &symbol) const -> std::vector<size_t> {
+auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t> {
     std::vector<size_t> result;
 
     for (auto state_id : states) {
@@ -60,7 +63,7 @@ bool DFA::leadToEmptyState(size_t current) {
 }
 bool DFA::includesWhitespace(const MultiState &state) {
     for (const auto &t : state.transitions) {
-        if (t.first == std::vector<std::string>{"__WHITESPACE"})
+        if (t.first == NFA::TransitionKey {std::vector<std::string> {"__WHITESPACE"} })
             return true;
     }
     return false;
@@ -70,9 +73,13 @@ bool DFA::isTerminateState(const MultiState &state) {
         return false;
     bool was = false;
     for (const auto &t : state.transitions) {
+        if (std::visit([](auto &el) {
+            return typeid(el) == typeid(char);
+        }, t.first))
+            return false;
         if (t.second.size() > 1)
             return false;
-        if (t.first == std::vector<std::string> {"__WHITESPACE"})
+        if (t.first == NFA::TransitionKey {std::vector<std::string> {"__WHITESPACE"}})
             continue;
         if (was)
             return false;
@@ -82,18 +89,41 @@ bool DFA::isTerminateState(const MultiState &state) {
 }
 
 void DFA::removeDublicateStates() {
-    std::unordered_map<size_t, size_t> remove_states;
+    std::unordered_map<size_t, size_t> remove_states;  // duplicate idx -> original idx
+    std::unordered_map<size_t, std::vector<size_t>> hash_buckets;
 
-    // Step 1: Identify duplicate states
+    uhash hasher;
+
+    // Step 1: Identify duplicate states with custom uhash
     for (size_t i = 0; i < mstates.size(); ++i) {
-        for (size_t j = i + 1; j < mstates.size(); ++j) {
-            if (mstates[i] == mstates[j]) {
-                remove_states[j] = i;
+        size_t h = hasher(mstates[i]);
+        auto& bucket = hash_buckets[h];
+
+        bool found_duplicate = false;
+        for (size_t idx : bucket) {
+            if (mstates[i] == mstates[idx]) {
+                remove_states[i] = idx;
+                found_duplicate = true;
+                break;
             }
+        }
+        if (!found_duplicate) {
+            bucket.push_back(i);
         }
     }
 
-    // Step 2: Build new_states and mapping from old to new index
+    // Union-find style representative finder with path compression
+    auto find_representative = [&](size_t idx) {
+        while (remove_states.contains(idx)) {
+            size_t parent = remove_states[idx];
+            if (!remove_states.contains(parent))
+                break;
+            idx = parent;
+        }
+        return idx;
+    };
+
+    // Step 2: Build new_states and old_to_new mapping
     stdu::vector<MultiState> new_states;
     std::unordered_map<size_t, size_t> old_to_new;
 
@@ -102,21 +132,16 @@ void DFA::removeDublicateStates() {
             size_t new_index = new_states.size();
             new_states.push_back(mstates[i]);
             old_to_new[i] = new_index;
-        } else {
-            old_to_new[i] = remove_states.at(i);
         }
     }
 
-    // Step 3: Map removed duplicates to their original state’s new index
+    // Step 3: Map duplicates to their representative’s new index
     for (const auto& [dup, orig] : remove_states) {
-        auto o = orig;
-        while (remove_states.contains(o)) {
-            o = remove_states.at(o);
-        }
-        old_to_new[dup] = old_to_new.at(o);
+        size_t rep = find_representative(orig);
+        old_to_new[dup] = old_to_new.at(rep);
     }
 
-    // Step 4: Update all transitions to use new indices
+    // Step 4: Update transitions
     for (auto& s : new_states) {
         for (auto& [sym, vec] : s.transitions) {
             for (auto& t : vec) {
@@ -128,7 +153,7 @@ void DFA::removeDublicateStates() {
     // Step 5: Finalize
     mstates = std::move(new_states);
 }
-void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state) {
+void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state) {
     // step 1: get lookaheads for every transition's goto
     using LookaheadSet = stdu::vector<MultiTransitions>;
     using Lookaheads = stdu::vector<LookaheadSet>;
@@ -151,15 +176,10 @@ void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::v
         work.pop();
         // substep 2: push lookaheads to latest lookahead set
         lookaheads.back().emplace_back();
-        logger.log("mstates[current].transitions: ");
-        for (const auto &t : mstates[current].transitions) {
-            logger.log("{} -> {}, walked_state.contains(next.next): {}", t.first, t.second, walked_state.contains(t.second.back().next));
-        }
         for (const auto &t : mstates[current].transitions) {
             for (const auto &next : t.second) {
                 if (!walked_state.contains(next.next)) {
                     // not loop, push
-                    cpuf::dprintf("{}", next.next);
                     lookaheads.back().back()[t.first].push_back(next);
                     walked_state.insert(next.next);
                 }
@@ -192,9 +212,8 @@ void DFA::unrollMultiTransition(const stdu::vector<std::string> &symbol, stdu::v
             continue;
         }
         for (const auto &[sym, go]: l[0]) {
-            logger.log("Lookahead symbol {}", sym);
             mstates[current_dfa_state].transitions[sym].push_back(go.back());
-            // should be only one state even thoguh it is an array right now
+            // should be only one state even though it is an array right now
         }
     }
     // find more dublicate states and unroll
@@ -277,16 +296,14 @@ void DFA::terminateEarly() {
     }
     for (const auto &id : terminals) {
         for (auto &t : mstates[id].transitions) {
-            if (t.first != std::vector<std::string>{"__WHITESPACE"}) {
+            if (t.first != NFA::TransitionKey {std::vector<std::string>{"__WHITESPACE"}}) {
                 for (auto &next : t.second) {
                     next.next = empty_state;
                 }
             }
-            cpuf::printf("t: ({}, {})", t.first, t.second);
         }
         if (mstates[id].else_goto != 0)
             mstates[id].else_goto = empty_state;
-        cpuf::printf("New state: {}", mstates[id]);
     }
 }
 void DFA::WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable) {
@@ -322,8 +339,6 @@ void DFA::removeUnreachableStates() {
     }
     logger.log("reachable: {}", reachable);
     logger.log("old_to_new: {}", old_to_new);
-    cpuf::printf("reachable: {}", reachable);
-    cpuf::printf("old_to_new: {}", old_to_new);
     // Step 2: Fix transitions
     for (auto& state : new_states) {
         for (auto& [symbol, trans] : state.transitions) {
@@ -357,7 +372,7 @@ void DFA::build() {
         size_t current_dfa_index = dfa_state_map[current];
 
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
-        utype::unordered_map<stdu::vector<std::string>, stdu::vector<TransitionValue>> input_symbols;
+        utype::unordered_map<NFA::TransitionKey, stdu::vector<TransitionValue>> input_symbols;
         for (size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
@@ -413,6 +428,7 @@ void DFA::build() {
 
             StateSet move_set = move(current, symbol);
             StateSet closure_set = epsilonClosure(move_set);
+            std::unordered_set<size_t> closure_uset(closure_set.begin(), closure_set.end());
             logger.log("move_set: {}", move_set);
             logger.log("closure: {}", closure_set);
             if (closure_set.empty()) continue;
@@ -422,13 +438,15 @@ void DFA::build() {
             for (const auto &closure : conflict_closures) {
                 const StateSet &conf_set = closure.first;
                 bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](size_t s) {
-                    return std::find(closure_set.begin(), closure_set.end(), s) != closure_set.end();
+                    return closure_uset.contains(s);
                 });
                 if (is_subset) {
                     for (size_t s : conf_set) {
                         auto it = std::find(closure_set.begin(), closure_set.end(), s);
-                        if (it != closure_set.end())
+                        if (it != closure_set.end()) {
+                            closure_uset.erase(*it);
                             closure_set.erase(it);
+                        }
                     }
                     process_conflict_list.push_back(&closure);
                 }
@@ -481,15 +499,7 @@ void DFA::build() {
     // various optimizations
     removeDublicateStates();
     terminateEarly();
-    cpuf::printf("after terminateEarly: ");
-    for (size_t i = 0; i < mstates.size(); ++i) {
-        std::cout << "State " << i << ":\n" << mstates[i] << "\n";
-    }
     unrollMultiTransitionPaths();
-    cpuf::printf("after unrollMultiTransitionPaths: ");
-    for (size_t i = 0; i < mstates.size(); ++i) {
-        std::cout << "State " << i << ":\n" << mstates[i] << "\n";
-    }
     switchToSingleState();
     removeUnreachableStates();
 }
@@ -500,7 +510,9 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
         os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            os << "\t" << key << " -> State ";
+            std::visit([&os](auto &key) {
+                os << "\t" << key << " -> State ";
+            }, key);
             if (target.size() != 1) {
                os << "{ ";
             }
@@ -528,7 +540,9 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
         os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            os << "\t" << key << " -> State ";
+            std::visit([&os](auto &key) {
+                os << "\t" << key << " -> State ";
+            }, key);
             os << target.next << (target.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.accept_index) + " } " : std::string(""));
             os << "\n";
         }

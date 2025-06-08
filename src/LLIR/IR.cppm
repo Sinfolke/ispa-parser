@@ -4,11 +4,14 @@ import dstd;
 import std;
 import std.compat;
 export namespace LLIR {
+    namespace internal_functions {
+        constexpr auto dfa_lookup = "dfa_lookup";
+    };
     enum class types {
         NONE, RULE, TOKEN, RULE_END, VARIABLE, IF, WHILE, DOWHILE, ACCESSOR,
-        METHOD_CALL, FUNCTION_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
+        METHOD_CALL, FUNCTION_CALL, INTERNAL_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
         ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER,
-        SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR, JUMP, JUMP_FROM_VARIABLE, EMPTY
+        SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, INSIDE_LOOP, ERR, JUMP, JUMP_FROM_VARIABLE, SWITCH, DFA_LOOKUP, EMPTY
     };
     enum class condition_types {
         GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL,
@@ -16,7 +19,7 @@ export namespace LLIR {
         LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
         ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,
         CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_NAME, TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
-        VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL
+        VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL, DFA
     };
     enum class var_types {
         UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result,
@@ -25,7 +28,7 @@ export namespace LLIR {
     enum class var_assign_values {
         NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VAR_REFER, ACCESSOR,
         UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG, CURRENT_POS,
-        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, FUNCTION_CALL, EXPR, INCLOSED_MAP
+        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, TOKEN_NAME, FUNCTION_CALL, INTERNAL_FUNCTION_CALL, EXPR, INCLOSED_MAP
     };
     enum class var_assign_types {
         ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO, BITWISE_AND, BITWISE_OR, BITWISE_ANDR, BITWISE_RIGHTSHFT, BITWISE_LEFTSHIFT, ASSIGN,
@@ -102,6 +105,14 @@ export namespace LLIR {
         bool is_string;
         variable value;
         size_t begin = 0;
+    };
+    struct switch_statement {
+        struct unit {
+            assign name;
+            stdu::vector<member> block;
+        };
+        stdu::vector<expr> expression;
+        stdu::vector<unit> cases;
     };
     using inclosed_map = std::unordered_map<std::string, std::pair<stdu::vector<expr>, var_type>>;
     using regular_data_block = std::pair<stdu::vector<expr>, var_type>;

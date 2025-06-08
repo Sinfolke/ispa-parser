@@ -5,8 +5,10 @@ import logging;
 import corelib;
 import cpuf.hex;
 import cpuf.printf;
+import NFA;
 import DFA;
 import std;
+#include <assert.h>
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
@@ -766,6 +768,55 @@ void LLIR::AnyBuilder::build() {
 //     pushConvResult(*rule, var, uvar, svar, shadow_var, rule->quantifier);
 // }
 void LLIR::OpBuilder::build() {
+    const auto &op = rule->getOp().options;
     auto DFA = std::move(DFABuilder(*tree, *rule).get());
-
+    auto var = createEmptyVariable(generateVariableName());
+    auto svar = createSuccessVariable();
+    svar.value = {var_assign_values::NUMBER, 1};
+    push({types::VARIABLE, var});
+    push({types::VARIABLE, svar});
+    if (DFA.getStates().size() == 2) { // first state plus end state
+        // optimize to single switch instead of DFA lookup
+        switch_statement ss;
+        ss.expression = stdu::vector<expr>{ {LLIR::condition_types::CURRENT_TOKEN} };
+        auto state = DFA.getStates()[0];
+        for (const auto &t : state.transitions) {
+            ss.cases.emplace_back();
+            ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, t.first};
+            Assert(t.second.accept_index != NFA::NO_ACCEPT, "NO_ACCEPT shouldn't be here");
+            MemberBuilder builder(*this, op[t.second.accept_index]);
+            builder.build();
+            auto &block = builder.getData();
+            block.emplace_back(LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {
+                var.name, var_assign_types::ASSIGN,
+                assign {var_assign_values::VAR_REFER, var_refer {.var = builder.getReturnVars().back().uvar}}
+            });
+            ss.cases.back().block = builder.getData();
+        }
+        push({types::SWITCH, ss});
+    } else {
+        auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
+        push({types::ASSIGN_VARIABLE, LLIR::variable_assign { dfa_call_result.name, var_assign_types::ASSIGN, LLIR::assign {
+            var_assign_values::INTERNAL_FUNCTION_CALL, LLIR::function_call {
+                        internal_functions::dfa_lookup, {
+                            {
+                                LLIR::expr { condition_types::DFA, DFA }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        switch_statement ss;
+        ss.expression = {LLIR::expr {condition_types::VARIABLE, dfa_call_result}};
+        for (size_t i = 0; i < op.size(); ++i) {
+            ss.cases.emplace_back();
+            ss.cases.back().name = {LLIR::var_assign_values::NUMBER, i};
+            MemberBuilder builder(*this, op[i]);
+            builder.build();
+            ss.cases.back().block = builder.getData();
+        }
+        push({types::SWITCH, ss});
+    }
+    pushConvResult(*rule,  var, var, svar, {}, rule->quantifier);
 }

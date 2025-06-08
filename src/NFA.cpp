@@ -128,7 +128,84 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
             break;
     }
 }
+void NFA::handleString(const AST::RuleMember &member, const std::string &str, const size_t &start, const size_t &end, bool isEntry) {
+    size_t current = start;
 
+    // Construct linear NFA for each character in the string
+    for (size_t i = 0; i < str.size(); ++i) {
+        size_t next = (i == str.size() - 1) ? end : states.size(); // last char points to `end`
+
+        states.emplace_back(); // make sure enough space exists
+        if (next >= states.size()) states.resize(next + 1);
+
+        // Add transition for character
+        states[current].transitions[str[i]] = next;
+
+        current = next;
+    }
+
+    // Mark accepting state if needed
+    if (isEntry) {
+        states[start].accept_index = accept_index++;
+    }
+
+    // Handle quantifiers
+    switch (member.quantifier) {
+        case '?':
+            // Can skip the entire string
+            states[start].epsilon_transitions.insert(end);
+            break;
+        case '*':
+            // Skip and loop
+            states[start].epsilon_transitions.insert(end); // skip
+            states[end].epsilon_transitions.insert(start); // loop
+            break;
+        case '+':
+            // Loop only
+            states[end].epsilon_transitions.insert(start);
+            break;
+        default:
+            break;
+    }
+}
+void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const size_t &start, const size_t &end, bool isEntry) {
+    const auto &chars = csequence.characters;
+    const auto &escaped = csequence.escaped;
+    // Add transitions for each character from start to end
+    for (char c : chars) {
+        states[start].transitions[c] = end;
+    }
+    for (char c : escaped) {
+        states[start].transitions[corelib::text::getEscapedFromChar(c)] = end;
+    }
+    for (auto [from, to] : csequence.diapasons) {
+        for (char c = from; c <= to; ++c) {
+            states[start].transitions[c] = end;
+        }
+    }
+    // Mark accepting state if needed
+    if (isEntry) {
+        states[end].accept_index = accept_index++;
+    }
+    // Quantifier handling
+    switch (member.quantifier) {
+        case '?':
+            // Allow skipping the group
+            states[start].epsilon_transitions.insert(end);
+            break;
+        case '*':
+            // Allow skipping and looping
+            states[start].epsilon_transitions.insert(end);
+            states[end].epsilon_transitions.insert(start);
+            break;
+        case '+':
+            // Allow looping only
+            states[end].epsilon_transitions.insert(start);
+            break;
+        default:
+            break;
+    }
+}
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange {
     if (member.isNospace())
         return {NO_STATE_RANGE, NO_STATE_RANGE};
@@ -161,11 +238,15 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
         }
     } else if (member.isGroup()) {
         handleGroup(member, member.getGroup().values, start, end, isEntry);
+    } else if (member.isString()) {
+        handleString(member, member.getString().value, start, end, isEntry);
+    } else if (member.isCsequence()) {
+        handleCsequence(member, member.getCsequence(), start, end, isEntry);
     } else {
         throw Error("Undefined member");
     }
     // create new transition __WHITESPACE -> itself
-    states[start].transitions[{"__WHITESPACE"}] = start;
+    states[start].transitions[TransitionKey{stdu::vector<std::string> { "__WHITESPACE" }}] = start;
     return {start, end};
 }
 void NFA::removeDeadStates() {
@@ -237,7 +318,9 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
         os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            os << "\t" << key << " -> State " << target << "\n";
+            std::visit([&os, &target](auto &key) {
+                os << "\t" << key << " -> State " << target << "\n";
+            }, key);
         }
     }
 

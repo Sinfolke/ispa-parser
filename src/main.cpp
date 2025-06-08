@@ -118,8 +118,8 @@ int main(int argc, char** argv) {
     if (args.dump_nfa_from_rule) {
         std::stringstream nfa_ss, dfa_ss;
         for (const auto &[name, value] : ast.getTreeMap()) {
-            if (corelib::text::isUpper(name.back()))
-                continue;
+            // if (corelib::text::isUpper(name.back()))
+            //     continue;
             for (const auto &el : value.rule_members) {
                 if (el.isOp()) {
                     NFA nfa(ast, el);

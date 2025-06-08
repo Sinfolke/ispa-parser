@@ -129,6 +129,39 @@ namespace corelib::text {
         default: return std::string(1, in);      // Return the character itself if not an escape sequence
         }
     }
+    char getEscapedFromChar(char in) {
+        switch (in)
+        {
+            case 'n': return '\n';
+            case 'r': return '\r';
+            case 't': return '\t';
+            case 'a': return '\a';
+            case 'b': return '\b';
+            case 'f': return '\f';
+            case 'v': return '\v';
+            case '0': return '\0';
+            default: return in; // return as-is if not an escape code
+        }
+    }
+    char getEscapedFromStr(const std::string& in, bool isStringContext) {
+        if (in == "\\\"") return '\"';
+        if (in == "\\'") return '\'';
+        if (in == "\\\\") return '\\';
+
+        // Non-prefixed cases (used by getCharFromEscapedAsStr with string=false)
+        if (in == "n") return '\n';
+        if (in == "r") return '\r';
+        if (in == "t") return '\t';
+        if (in == "a") return '\a';
+        if (in == "b") return '\b';
+        if (in == "f") return '\f';
+        if (in == "v") return '\v';
+        if (in == "0") return '\0';
+
+        // Fallback: return first character
+        return in.empty() ? '\0' : in[0];
+    }
+
     std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter) {
         if (elements.empty()) return "";
         std::string joined = elements.front();

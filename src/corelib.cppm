@@ -20,6 +20,8 @@ export namespace corelib {
         std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter);
         char getCharFromEscaped(char in);
         std::string getCharFromEscapedAsStr(char in, bool string);
+        char getEscapedFromChar(char in);
+        char getEscapedFromStr(const std::string& in, bool isStringContext);
     }
     namespace range {
         template<typename InputIt, typename T>

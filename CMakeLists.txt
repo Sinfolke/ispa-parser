@@ -167,7 +167,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-sanitize-address-use-odr-indicator")
 #        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
     endif()
-    add_compile_definitions(DEBUG)
 endif()
 # =============================================
 # Project Structure
