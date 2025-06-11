@@ -3,6 +3,7 @@ import LLIR;
 import LLIR.Rule.MemberBuilder;
 import LLIR.RvalueBuilder;
 import logging;
+import cpuf.printf;
 import std;
 // get functions
 auto LLIR::CllExprBuilder::get() -> Expression {

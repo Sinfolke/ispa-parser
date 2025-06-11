@@ -15,6 +15,7 @@ int main() {
         __PROCESS_FILE__,
         "--lang", "cpp",
         "--dump", "NFA",
+        "--dump", "DFA",
         "--dump-nfa-from-rule",
         "--dd", __TEST_DIR__ "/test-dump/" + getFileNameWithoutExtension(__PROCESS_FILE__)
     });

@@ -1,0 +1,9 @@
+CSEQUENCE_REGULAR:
+    'a' | [bc]
+;
+CSEQUENCE_ESCAPED:
+    'a' | [\s]
+;
+CSEQUENCE_DIAPASON:
+    'const' | [a-zA-Z0-9_]
+;

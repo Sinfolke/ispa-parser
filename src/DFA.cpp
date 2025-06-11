@@ -6,9 +6,8 @@ import logging;
 import hash;
 import std;
 
-auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vector<size_t> {
-    stdu::vector<size_t> closure(states.begin(), states.end());
-    std::unordered_set<size_t> visited;
+auto DFA::epsilonClosure(const std::vector<size_t>& states) const -> std::vector<size_t> {
+    std::set<size_t> closure(states.begin(), states.end());
     std::queue<size_t> work;
     for (size_t s : states) work.push(s);
 
@@ -19,28 +18,27 @@ auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vect
         const auto &epsilons = nfa->getStates().at(current).epsilon_transitions;
 
         for (size_t target_state : epsilons) {
-            if (!visited.contains(target_state)) {
-                closure.push_back(target_state);
-                visited.insert(target_state);
+            if (!closure.contains(target_state)) {
+                closure.insert(target_state);
                 work.push(target_state);
             }
         }
     }
 
-    return closure;
+    return { closure.begin(), closure.end() };
 }
-auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t> {
-    std::vector<size_t> result;
+auto DFA::move(const std::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t> {
+    std::set<size_t> result;
 
     for (auto state_id : states) {
         const auto &state = nfa->getStates().at(state_id);
         auto it = state.transitions.find(symbol);
         if (it != state.transitions.end()) {
-            result.push_back(it->second);  // assuming only one target per symbol
+            result.insert(it->second);  // assuming only one target per symbol
         }
     }
 
-    return result;
+    return { result.begin(), result.end() };
 }
 
 auto DFA::findEmptyState() -> size_t {
@@ -350,11 +348,13 @@ void DFA::removeUnreachableStates() {
 }
 
 void DFA::build() {
-    using StateSet = stdu::vector<size_t>;
+    using StateSet = std::vector<size_t>;
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
 
     utype::unordered_map<StateSet, size_t> dfa_state_map;  // DFA state ID per NFA state set
+    utype::unordered_map<std::pair<StateSet, std::variant<stdu::vector<std::string>, char>>, StateSet> closure_cache;
+    std::unordered_map<size_t, StateSet> closure_index_cache;
     std::queue<StateSet> work;
 
     // 1. Start state closure
@@ -367,6 +367,7 @@ void DFA::build() {
     work.push(start_closure);
     while (!work.empty()) {
         StateSet current = work.front();
+        std::sort(current.begin(), current.end());
         work.pop();
         logger.log("current: {}", current);
         size_t current_dfa_index = dfa_state_map[current];
@@ -412,7 +413,10 @@ void DFA::build() {
         std::vector<Conflict> conflict_closures;
         for (const auto &conf : conflicts) {
             for (const auto &next_state : *conf) {
-                conflict_closures.emplace_back(epsilonClosure({next_state.next}), &next_state);
+                if (!closure_index_cache.contains(next_state.next)) {
+                    closure_index_cache[next_state.next] = epsilonClosure({next_state.next});
+                }
+                conflict_closures.emplace_back(closure_index_cache.at(next_state.next), &next_state);
             }
         }
         // DFA construction
@@ -425,11 +429,15 @@ void DFA::build() {
                 }
                 return false;
             });
+            StateSet closure_set;
 
-            StateSet move_set = move(current, symbol);
-            StateSet closure_set = epsilonClosure(move_set);
-            std::unordered_set<size_t> closure_uset(closure_set.begin(), closure_set.end());
-            logger.log("move_set: {}", move_set);
+            if (closure_cache.contains(std::make_pair(current, symbol))) {
+                closure_set = closure_cache.at(std::make_pair(current, symbol));
+            } else {
+                StateSet move_set = move(current, symbol);
+                closure_set = epsilonClosure(move_set);
+                closure_cache.emplace(std::make_pair(current, symbol), closure_set);
+            }
             logger.log("closure: {}", closure_set);
             if (closure_set.empty()) continue;
 
@@ -438,14 +446,13 @@ void DFA::build() {
             for (const auto &closure : conflict_closures) {
                 const StateSet &conf_set = closure.first;
                 bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](size_t s) {
-                    return closure_uset.contains(s);
+                    return std::find(closure_set.begin(), closure_set.end(), s) != closure_set.end();
                 });
                 if (is_subset) {
                     for (size_t s : conf_set) {
-                        auto it = std::find(closure_set.begin(), closure_set.end(), s);
-                        if (it != closure_set.end()) {
-                            closure_uset.erase(*it);
-                            closure_set.erase(it);
+                        auto find_it = std::find(closure_set.begin(), closure_set.end(), s);
+                        if (find_it != closure_set.end()) {
+                            closure_set.erase(find_it);
                         }
                     }
                     process_conflict_list.push_back(&closure);
@@ -495,7 +502,6 @@ void DFA::build() {
         }
 
     }
-
     // various optimizations
     removeDublicateStates();
     terminateEarly();

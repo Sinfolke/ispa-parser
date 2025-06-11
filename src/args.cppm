@@ -23,13 +23,6 @@ export struct Args {
     std::string dump_dir;
     bool dump_all = false;
     bool dump_nfa_from_rule = false;
-    bool shouldDump(const std::string &s) const {
-        return dump_all || dump.contains(s);
-    }
-    auto makeDumpPath(const std::string &s) const {
-        return dump_dir + "/" + s;
-    }
-    void initDumpDirectory() const;
 
 };
 export Args parse_args(int argc, char** argv);

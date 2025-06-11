@@ -41,6 +41,15 @@ export struct uhash {
         }, v);
         return h;
     }
+    template<typename T>
+    std::size_t operator()(const std::unordered_set<T>& s) const {
+        std::size_t hash = 0;
+        for (const T& item : s) {
+            hash ^= uhash{}(item) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+        }
+        return hash;
+    }
+
     std::size_t operator()(const std::monostate&) const {
         return 0;
     }
@@ -87,6 +96,15 @@ export struct uhash {
         return 0;
     }
 };
+export template<typename T>
+bool operator==(std::unordered_set<T> a, std::unordered_set<T> b) {
+    if (a.size() != b.size()) return false;
+    for (const auto& item : a) {
+        if (!b.contains(item))
+            return false;
+    }
+    return true;
+}
 // exports
 export namespace utype {
     template<typename Key, typename Value>

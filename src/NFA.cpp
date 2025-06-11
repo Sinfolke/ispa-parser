@@ -27,12 +27,15 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             states[loop_state].transitions[name] = loop_state;
             states[loop_state].epsilon_transitions.insert(end);
             break;
-        } case '*':
-            // NUMBER -> this
-            // epsilon -> end
-            states[start].transitions[name] = start;
-            states[start].epsilon_transitions.insert(end);
+        } case '*': {
+            // Instead of direct self-loop, use epsilon transitions
+            auto loop_state = states.size();
+            states.emplace_back();
+            states[start].epsilon_transitions.insert(loop_state);
+            states[start].epsilon_transitions.insert(end);  // skip option
+            states[loop_state].epsilon_transitions.insert(end);  // exit option
             break;
+        }
         default:
             break;
     }
@@ -64,11 +67,9 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             break;
         case '+': {
             // loop at end
-            size_t loop_start = inner_start;
-            size_t loop_end = inner_end;
-            states[start].epsilon_transitions.insert(loop_start);
-            states[loop_end].epsilon_transitions.insert(loop_start);
-            states[loop_end].epsilon_transitions.insert(end);
+            states[start].epsilon_transitions.insert(inner_start);
+            states[inner_end].epsilon_transitions.insert(inner_start); // loop
+            states[inner_end].epsilon_transitions.insert(end);         // or exit
             break;
         }
         case '*': {
@@ -76,10 +77,10 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             // loop zero or more
             size_t loop_start = inner_start;
             size_t loop_end = inner_end;
-            states[start].epsilon_transitions.insert(loop_start);
-            states[start].epsilon_transitions.insert(end);
-            states[loop_end].epsilon_transitions.insert(loop_start);
-            states[loop_end].epsilon_transitions.insert(end);
+            states[start].epsilon_transitions.insert(inner_start);  // enter
+            states[start].epsilon_transitions.insert(end);          // or skip
+            states[inner_end].epsilon_transitions.insert(inner_start); // loop
+            states[inner_end].epsilon_transitions.insert(end);         // or exit
             break;
         }
         default:
@@ -217,11 +218,21 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
         if (name.isTerminal()) {
             handleTerminal(member, name.name, start, end, isEntry);
         } else {
-            if (processing.contains(name.name))
+            // Check cache
+            auto it = fragment_cache.find(name.name);
+            if (it != fragment_cache.end()) {
+                return {it->second.start, it->second.end};
+            }
+
+            if (!processing.insert(name.name).second)
                 return {NO_STATE_RANGE, NO_STATE_RANGE};
-            processing.insert(name.name);
+
             handleNonTermnal(member, name.name, start, end, isEntry);
+
             processing.erase(name.name);
+
+            // Cache the constructed fragment
+            fragment_cache[name.name] = {start, end};
         }
     } else if (member.isOp()) {
         const auto &op = member.getOp();

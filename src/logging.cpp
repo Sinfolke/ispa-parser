@@ -1,3 +1,5 @@
+module;
+#include <valgrind/callgrind.h>
 module logging;
 import cpuf.printf;
 import cpuf.color;
@@ -55,5 +57,6 @@ void custom_terminate_handler() {
         cpuf::printf("Unknown exception\n");
     }
     b.close();
+    CALLGRIND_DUMP_STATS;
     std::abort();
 }

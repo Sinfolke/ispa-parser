@@ -31,6 +31,7 @@ private:
     const AST::RuleMember *member = nullptr;
     stdu::vector<state> states;
     utype::unordered_set<stdu::vector<std::string>> processing;
+    utype::unordered_map<stdu::vector<std::string>, StateRange> fragment_cache;
     size_t accept_index = 0;
     size_t nested_count = 0;
     std::unordered_map<size_t, size_t> accept_map;

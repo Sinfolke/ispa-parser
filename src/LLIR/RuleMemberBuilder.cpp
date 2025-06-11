@@ -4,7 +4,9 @@ import LLIR.CllBuilder;
 import logging;
 import corelib;
 import cpuf.hex;
+import cpuf.op;
 import cpuf.printf;
+import Dump;
 import NFA;
 import DFA;
 import std;
@@ -769,8 +771,41 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule->getOp().options;
+    std::ofstream NFA_dump_file;
+    std::ofstream DFA_dump_file;
+    if (dumper.shouldDump("NFA")) {
+        NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
+        if (!NFA_dump_file.is_open()) {
+            throw Error("Couldn't open NFA file");
+        }
+    }
+    if (dumper.shouldDump("DFA")) {
+        DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
+        if (!DFA_dump_file.is_open()) {
+            throw Error("Couldn't open DFA file");
+        }
+    }
+    NFA nfa(*tree, *rule);
+    nfa.build();
+    DFA dfa(nfa);
+    dfa.build();
+    if (dumper.shouldDump("NFA")) {
+        NFA_dump_file << "---------- " << *fullname << "----------\n";
+        NFA_dump_file << nfa;
+        NFA_dump_file.close();
+    }
+    if (dumper.shouldDump("DFA")) {
+        DFA_dump_file << "---------- " << *fullname << "----------\n";
+        DFA_dump_file << dfa;
+        DFA_dump_file.close();
+    }
     auto DFA = std::move(DFABuilder(*tree, *rule).get());
-    auto var = createEmptyVariable(generateVariableName());
+    LLIR::variable var = createEmptyVariable("");
+    if (rule->prefix.empty()) {
+        var.name = generateVariableName();
+    } else if (!rule->prefix.is_key_value) {
+        var.name = rule->prefix.name;
+    }
     auto svar = createSuccessVariable();
     svar.value = {var_assign_values::NUMBER, 1};
     push({types::VARIABLE, var});

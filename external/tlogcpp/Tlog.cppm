@@ -147,7 +147,7 @@ export namespace Tlog {
             this->line = line;
         }
         bool enabled() {
-            return !isExcludeAll || isExcludeAll && !include_branches.empty() && !include_paths.empty();
+            return !isExcludeAll || (isExcludeAll && !include_branches.empty() && !include_paths.empty());
         }
         void excludeBranch(std::string branch) {
             exclude_branches.push_back(branch);
@@ -186,20 +186,25 @@ export namespace Tlog {
             logger->popBranch();
         }
         void open(Logger &logger, std::string path, std::source_location loc = std::source_location::current()) {
-
             this->logger = &logger;
             this->logger->pushBranch(path);
         }
         void close() {
+            if (logger == nullptr)
+                return;
             logger->popBranch();
         }
         template<typename Format, typename... Args>
         void log(Format str, Args&&... args) {
+            if (logger == nullptr)
+                return;
             //branches_stack.back().oss.vprintf("[{}, {}] ", file, line);
             logger->log(str, std::forward<Args>(args)...);
         }
         template<typename Format, typename ...Args>
         void dlog(Format str, Args ...args) {
+            if (logger == nullptr)
+                return;
             //branches_stack.back().oss.vprintf("[{}, {}] ", file, line);
             logger->dlog(str, std::forward<Args>(args)...);
         }

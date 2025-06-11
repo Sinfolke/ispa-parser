@@ -42,8 +42,8 @@ private:
     const NFA *nfa;
     stdu::vector<MultiState> mstates;
     stdu::vector<SingleState> states;
-    auto epsilonClosure(const std::vector<size_t>& state_indices) const -> stdu::vector<size_t>;
-    auto move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t>;
+    auto epsilonClosure(const std::vector<size_t>& state_indices) const -> std::vector<size_t>;
+    auto move(const std::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t>;
     auto findEmptyState() -> size_t;
     bool leadToEmptyState(size_t current);
     bool includesWhitespace(const MultiState &state);

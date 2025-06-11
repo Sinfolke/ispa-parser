@@ -16,7 +16,7 @@ Args parse_args(int argc, char** argv) {
     app.add_option("-l,--lang", args.language, "Set build language")->required();
     app.add_option("-a,--algorithm", algorithm, "Set one of algorithms: LL, LR(0), LR(1), LALR, LR(*)");
     app.add_option("--debug", args.debug, "Output debug logs into Logs directory");
-    app.add_option("--dump", args.dump, "Dump certain parts of program")->expected(0, 1);
+    app.add_option("--dump", args.dump, "Dump certain parts of program")->expected(0, -1);
     app.add_option("--ddall", args.dump_all, "Dump everything from program")->expected(0);
     app.add_option("--dd", args.dump_dir, "Directory where to dump");
     app.add_option("--dump-nfa-from-rule", args.dump_nfa_from_rule, "Dump nfa from rule")->expected(0);
@@ -50,14 +50,4 @@ Args parse_args(int argc, char** argv) {
     }
     args.files = app.remaining();
     return args;
-}
-
-void Args::initDumpDirectory() const {
-    if (dump_all && dump.empty() && !dump_nfa_from_rule)
-        return;
-    cpuf::printf("Initializing dump directory {}\n", dump_dir);
-    if (std::filesystem::exists(dump_dir))
-        std::filesystem::remove_all(dump_dir);
-
-    std::filesystem::create_directories(dump_dir);
 }

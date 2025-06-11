@@ -8,6 +8,7 @@ import init;
 import args;
 import corelib;
 import logging;
+import Dump;
 import AST.Tree;
 import ASTPass;
 import LRParser;
@@ -53,7 +54,9 @@ std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
 int main(int argc, char** argv) {
     stdu::vector<Parser::Rule> modules;
     auto args = init(argc, argv);
-    args.initDumpDirectory();
+    dumper.setArgsPointer(&args);
+    dumper.setDumpDirectory(args.dump_dir);
+    dumper.initDumpDirectory();
     if (args.version) {
         cpuf::printf("%$\n", PROGRAM_VERSION);
         return 0;
@@ -92,6 +95,11 @@ int main(int argc, char** argv) {
             }
         }
     }
+    // init DFA and NFA files if dump DFA and NFA
+    if (dumper.shouldDump("NFA"))
+        std::ofstream dumpFile(dumper.makeDumpPath("NFA"), std::ios::trunc);
+    if (dumper.shouldDump("DFA"))
+        std::ofstream dumpFile(dumper.makeDumpPath("DFA"), std::ios::trunc);
     AST::Builder ast_builder(modules);
     ast_builder.build();
     auto ast = ast_builder.get();
@@ -111,36 +119,10 @@ int main(int argc, char** argv) {
     }
     initialItemSet.close();
     cpuf::printf("dumps: {}", args.dump);
-    if (args.shouldDump(args.dump_dir + "/first"))
-        ast.printFirstSet(args.makeDumpPath("first"));
-    if (args.shouldDump("follow"))
-        ast.printFollowSet(args.makeDumpPath("follow"));
-    if (args.dump_nfa_from_rule) {
-        std::stringstream nfa_ss, dfa_ss;
-        for (const auto &[name, value] : ast.getTreeMap()) {
-            // if (corelib::text::isUpper(name.back()))
-            //     continue;
-            for (const auto &el : value.rule_members) {
-                if (el.isOp()) {
-                    NFA nfa(ast, el);
-                    nfa.build();
-                    nfa_ss << "\n-------rule \"" << name << "\"----------\n";
-                    nfa_ss << nfa;
-                    dfa_ss << "\n-------rule \"" << name << "\"----------\n";
-                    DFA dfa(nfa);
-                    dfa.build();
-                    dfa_ss << dfa;
-                }
-            }
-
-        }
-        std::ofstream NFA_file(args.makeDumpPath("NFA"));
-        std::ofstream DFA_file(args.makeDumpPath("DFA"));
-        NFA_file << nfa_ss.str();
-        DFA_file << dfa_ss.str();
-        NFA_file.close();
-        DFA_file.close();
-    }
+    if (dumper.shouldDump(args.dump_dir + "/first"))
+        ast.printFirstSet(dumper.makeDumpPath("first"));
+    if (dumper.shouldDump("follow"))
+        ast.printFollowSet(dumper.makeDumpPath("follow"));
     dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
     auto name = ast.getName();
     std::string opath;
@@ -179,8 +161,8 @@ int main(int argc, char** argv) {
     } else if (args.algorithm == Args::Algorithm::LL) {
         LLIR::Builder builder(ast);
         auto IR = builder.get();
-        if (args.shouldDump("IR"))
-            IR.outputIRToFile(args.makeDumpPath("output_ir.txt"));
+        if (dumper.shouldDump("IR"))
+            IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
         auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST::Tree&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast));
         converter->outputIR(output_path);
