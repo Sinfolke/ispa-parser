@@ -221,9 +221,8 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
             next_indices.insert(t.next);
         }
     }
-    if (seen[symbol].contains(next_indices))
+    if (!seen[symbol].insert(next_indices).second)
         return;
-    seen[symbol].insert(next_indices);
     for (auto &[sym, go]: mstates[current_dfa_state].transitions) {
         if (go.size() > 1) {
             unrollMultiTransition(sym, go, seen, walked_state);
@@ -235,10 +234,17 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
 void DFA::unrollMultiTransitionPaths() {
     SeenSymbol seen;
     WalkedState walked_state;
+    SeenSymbol global_seen;
     for (size_t i = 0; i < mstates.size(); ++i) {
         auto &state = mstates[i];
         for (auto &t : state.transitions) {
             if (t.second.size() > 1) {
+                std::unordered_set<size_t> next_indices;
+                for (const auto el : t.second) {
+                    next_indices.insert(el.next);
+                }
+                if (!global_seen[t.first].insert(next_indices).second)
+                    break;
                 unrollMultiTransition(t.first, t.second, seen, walked_state);
                 seen.clear();
                 walked_state.clear();

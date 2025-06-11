@@ -773,6 +773,7 @@ void LLIR::OpBuilder::build() {
     const auto &op = rule->getOp().options;
     std::ofstream NFA_dump_file;
     std::ofstream DFA_dump_file;
+    cpuf::printf("Building DFA for rule {}", *fullname);
     NFA nfa(*tree, *rule);
     nfa.build();
     DFA dfa(nfa);
