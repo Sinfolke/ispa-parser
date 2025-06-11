@@ -10,7 +10,6 @@ import Dump;
 import NFA;
 import DFA;
 import std;
-#include <assert.h>
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
@@ -116,6 +115,7 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     *addSpaceSkip = true;
     std::unique_ptr<BuilderBase> builder = nullptr;
+    cpuf::printf("rule {}, Processing {}", *fullname, member);
     if (member.isGroup()) {
         builder = std::make_unique<GroupBuilder>(*this, member);
     } else if (member.isCsequence()) {
@@ -773,28 +773,24 @@ void LLIR::OpBuilder::build() {
     const auto &op = rule->getOp().options;
     std::ofstream NFA_dump_file;
     std::ofstream DFA_dump_file;
+    NFA nfa(*tree, *rule);
+    nfa.build();
+    DFA dfa(nfa);
+    dfa.build();
     if (dumper.shouldDump("NFA")) {
         NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
         if (!NFA_dump_file.is_open()) {
             throw Error("Couldn't open NFA file");
         }
+        NFA_dump_file << "---------- " << *fullname << "----------\n";
+        NFA_dump_file << nfa;
+        NFA_dump_file.close();
     }
     if (dumper.shouldDump("DFA")) {
         DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
         if (!DFA_dump_file.is_open()) {
             throw Error("Couldn't open DFA file");
         }
-    }
-    NFA nfa(*tree, *rule);
-    nfa.build();
-    DFA dfa(nfa);
-    dfa.build();
-    if (dumper.shouldDump("NFA")) {
-        NFA_dump_file << "---------- " << *fullname << "----------\n";
-        NFA_dump_file << nfa;
-        NFA_dump_file.close();
-    }
-    if (dumper.shouldDump("DFA")) {
         DFA_dump_file << "---------- " << *fullname << "----------\n";
         DFA_dump_file << dfa;
         DFA_dump_file.close();
@@ -815,7 +811,10 @@ void LLIR::OpBuilder::build() {
         switch_statement ss;
         ss.expression = stdu::vector<expr>{ {LLIR::condition_types::CURRENT_TOKEN} };
         auto state = DFA.getStates()[0];
+        push({types::SKIP_SPACES, *isToken});
         for (const auto &t : state.transitions) {
+            if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == stdu::vector<std::string> {"__WHITESPACE"})
+                continue;
             ss.cases.emplace_back();
             ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, t.first};
             Assert(t.second.accept_index != NFA::NO_ACCEPT, "NO_ACCEPT shouldn't be here");

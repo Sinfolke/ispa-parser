@@ -34,7 +34,7 @@ auto AST::TreePass::inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::Ru
 void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
     for (auto &[name, value] : ast.getTreeMap()) {
         for (auto it = value.rule_members.begin(); it != value.rule_members.end(); /* no increment here */) {
-            if (it->isGroup() && it->quantifier == '\0') {
+            if (it->isGroup() && it->quantifier == '\0' && it->prefix.empty()) {
                 auto group = it->getGroup(); // make a copy
                 it = value.rule_members.erase(it); // erase the group first
                 it = inlineGroup(group, value.rule_members, it); // insert unwrapped group

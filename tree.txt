@@ -472,7 +472,7 @@ name<[cll, _var, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[NUMBER]> : [Rule {
   @  Cseq([+-])?;
-   Cseq([], Diapasons:[0-9 ])+;
+  @  Group( Cseq([], Diapasons:[0-9 ])+;)
   @  Group( Cseq([.,]),  Cseq([], Diapasons:[0-9 ])+;)?;
   Data: TemplatedDataBlock(sign, main, dec)
 }]name<[rule, keyvalue]> : [Rule {
@@ -616,7 +616,7 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(cll::_var::__grp2)
   Data: TemplatedDataBlock(type, id, op, value)
 }]name<[BOOLEAN]> : [Rule {
-   Op( String (false) |  String (true))
+  d Group( Op( String (false) |  String (true)))
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_1]> : [Rule {
   @  String (,)
@@ -739,8 +739,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  String (&)
   Data: [RegularDataBlock: CllExpr]
 }]name<[ID]> : [Rule {
-   Cseq([_], Diapasons:[a-z A-Z ])
-   Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;
+  @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_22]> : [Rule {
   @  String (import)

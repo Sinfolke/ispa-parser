@@ -104,7 +104,7 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &valu
     } else if (value.isVariable()) {
         auto find_it = std::find_if(vars->begin(), vars->end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
         if (find_it == vars->end())
-            throw Error("Not found variable to deduce type from expr");
+            throw Error("Not found variable to deduce type from expr: {}",  value.getVariable().name);
         if (find_it->type.type == LLIR::var_types::Rule_result)
             return {LLIR::var_types::Rule};
         if (find_it->type.type == LLIR::var_types::Token_result)
