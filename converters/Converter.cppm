@@ -1,13 +1,16 @@
 export module Converter;
+import LLIR.API;
 import LLIR;
 import LRParser;
 import AST.Tree;
+import DFA;
 import dstd;
 import std;
 export class LLConverter_base {
     protected:
         // data
         stdu::vector<LLIR::Data> data;
+        stdu::vector<DFA> dfas;
         stdu::vector<stdu::vector<std::string>> tokens;
         stdu::vector<stdu::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
@@ -32,7 +35,8 @@ export class LLConverter_base {
                 lexer_code = *custom_lexer_code;
                 lexer_code_access_var = *access_var;
             }
-            this->data = ir.getData();
+            data = ir.getData();
+            dfas = ir.getDfas();
         }
         virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {

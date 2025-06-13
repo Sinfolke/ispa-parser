@@ -379,12 +379,12 @@ void DFA::build() {
         size_t current_dfa_index = dfa_state_map[current];
 
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
-        utype::unordered_map<NFA::TransitionKey, stdu::vector<TransitionValue>> input_symbols;
+        utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, size_t>>> input_symbols;
         for (size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
                 logger.log("Registering input symbol {}: id: {}, accept_index: {}", symbol, id, nfa->getAcceptMap().at(id));
-                input_symbols[symbol].emplace_back(id, nfa->getAcceptMap().at(id));
+                input_symbols[symbol].emplace_back(TransitionValue {id, nfa->getAcceptMap().at(id)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
         // Early cutoff opportunity
@@ -408,21 +408,25 @@ void DFA::build() {
         //     }
         // }
         // determine conflict symbols
-        stdu::vector<const stdu::vector<TransitionValue>*> conflicts;
+        stdu::vector<const stdu::vector<std::pair<TransitionValue, size_t>>*> conflicts;
         for (const auto &[symbol, data] : input_symbols) {
             if (data.size() > 1) {
                 conflicts.push_back(&data);
             }
         }
         // build epsilon closures for each conflict symbol
-        using Conflict = std::pair<StateSet, const TransitionValue*>;
+        struct Conflict {
+            const StateSet *closure;
+            const TransitionValue *value;
+            size_t any;
+        };
         std::vector<Conflict> conflict_closures;
         for (const auto &conf : conflicts) {
             for (const auto &next_state : *conf) {
-                if (!closure_index_cache.contains(next_state.next)) {
-                    closure_index_cache[next_state.next] = epsilonClosure({next_state.next});
+                if (!closure_index_cache.contains(next_state.first.next)) {
+                    closure_index_cache[next_state.first.next] = epsilonClosure({next_state.first.next});
                 }
-                conflict_closures.emplace_back(closure_index_cache.at(next_state.next), &next_state);
+                conflict_closures.emplace_back(&closure_index_cache.at(next_state.first.next), &next_state.first, next_state.second);
             }
         }
         // DFA construction
@@ -450,7 +454,7 @@ void DFA::build() {
             // Separate conflicting closure subsets
             std::vector<const Conflict*> process_conflict_list;
             for (const auto &closure : conflict_closures) {
-                const StateSet &conf_set = closure.first;
+                const StateSet &conf_set = *closure.closure;
                 bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](size_t s) {
                     return std::find(closure_set.begin(), closure_set.end(), s) != closure_set.end();
                 });
@@ -475,14 +479,14 @@ void DFA::build() {
                 }
                 size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
-                    target_index, data.back().accept_index
+                    target_index, data.back().first.accept_index
                 );
             }
 
             // Add split conflict transitions
             for (const auto *conf : process_conflict_list) {
-                const auto &conf_closure = conf->first;
-                const auto *transition = conf->second;
+                const auto &conf_closure = *conf->closure;
+                const auto *transition = conf->value;
 
                 if (!dfa_state_map.count(conf_closure)) {
                     size_t new_index = mstates.size();
@@ -495,6 +499,9 @@ void DFA::build() {
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
                     target_index, transition->accept_index
                 );
+                if (conf->any != NFA::NO_ANY) {
+                    mstates[current_dfa_index].else_goto = conf->any;
+                }
             }
             if (goto_empty_state) {
                 auto empty_state = findEmptyState();

@@ -1,7 +1,8 @@
 export module LLIR.Builder.DataWrapper;
-import LLIR;
+import LLIR.API;
 import LLIR.Builder.Data;
 import AST.Tree;
+import DFA;
 import dstd;
 import std;
 import std.compat;
@@ -21,7 +22,7 @@ export namespace LLIR {
         BuilderData::SymbolFollow *symbol_follow = nullptr;
         bool *has_symbol_follow = nullptr;
         AST::Tree *tree = nullptr;
-
+        stdu::vector<DFA> *dfas = nullptr;
         auto initializationCheck() -> bool;
         explicit BuilderDataWrapper(LLIR::BuilderData &data)
             : variable_count(&data.variable_count),
@@ -36,7 +37,8 @@ export namespace LLIR {
         unnamed_datablock_units(&data.unnamed_datablock_units),
         symbol_follow(&data.symbol_follow),
         has_symbol_follow(&data.has_symbol_follow),
-        tree(data.tree)
+        tree(data.tree),
+        dfas(data.dfas)
         {}
         BuilderDataWrapper(
             size_t &variable_count,
@@ -51,7 +53,8 @@ export namespace LLIR {
             stdu::vector<variable> &unnamed_datablock_units,
             stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &symbol_follow,
             bool &has_symbol_follow,
-            AST::Tree *tree
+            AST::Tree *tree,
+            stdu::vector<DFA> *dfas
         ) :
             variable_count(&variable_count),
             isToken(&isToken),
@@ -65,7 +68,8 @@ export namespace LLIR {
             unnamed_datablock_units(&unnamed_datablock_units),
             symbol_follow(&symbol_follow),
             has_symbol_follow(&has_symbol_follow),
-            tree(tree)
+            tree(tree),
+            dfas(dfas)
         {}
     };
 }

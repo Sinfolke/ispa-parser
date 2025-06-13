@@ -92,8 +92,8 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             expr.push_back({LLIR::condition_types::GROUP_CLOSE});
             // add exit statement
             stdu::vector<LLIR::member> blk;
-            if (*has_symbol_follow) {
-                ErrorIR::IR error(tree, rule, *symbol_follow, isFirst);
+            if (/* *has_symbol_follow */false) {
+                ErrorIR::IR error(tree, rule, *symbol_follow, dfas, isFirst);
                 blk = {error.lowerToLLIR(*variable_count)};
             } else {
                 blk = {{LLIR::types::EXIT}};
@@ -771,34 +771,31 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule->getOp().options;
-    std::ofstream NFA_dump_file;
-    std::ofstream DFA_dump_file;
-    cpuf::printf("Building DFA for rule {}", *fullname);
     NFA nfa(*tree, *rule);
     nfa.build();
     DFA dfa(nfa);
     dfa.build();
     if (dumper.shouldDump("NFA")) {
+        std::ofstream NFA_dump_file;
         NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
         if (!NFA_dump_file.is_open()) {
             throw Error("Couldn't open NFA file");
         }
         NFA_dump_file << "---------- " << *fullname << "----------\n";
         NFA_dump_file << nfa;
-        NFA_dump_file.close();
     }
     if (dumper.shouldDump("DFA")) {
+        std::ofstream DFA_dump_file;
         DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
         if (!DFA_dump_file.is_open()) {
             throw Error("Couldn't open DFA file");
         }
         DFA_dump_file << "---------- " << *fullname << "----------\n";
         DFA_dump_file << dfa;
-        DFA_dump_file.close();
     }
     auto DFA = std::move(DFABuilder(*tree, *rule).get());
     LLIR::variable var = createEmptyVariable("");
-    if (rule->prefix.empty()) {
+    if (rule->prefix.name.empty()) {
         var.name = generateVariableName();
     } else if (!rule->prefix.is_key_value) {
         var.name = rule->prefix.name;
@@ -817,7 +814,11 @@ void LLIR::OpBuilder::build() {
             if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == stdu::vector<std::string> {"__WHITESPACE"})
                 continue;
             ss.cases.emplace_back();
-            ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, t.first};
+            if (std::holds_alternative<stdu::vector<std::string>>(t.first)) {
+                ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, std::get<stdu::vector<std::string>>(t.first)};
+            } else {
+                ss.cases.back().name = assign {var_assign_values::CHAR, std::get<char>(t.first)};
+            }
             Assert(t.second.accept_index != NFA::NO_ACCEPT, "NO_ACCEPT shouldn't be here");
             MemberBuilder builder(*this, op[t.second.accept_index]);
             builder.build();
@@ -830,12 +831,14 @@ void LLIR::OpBuilder::build() {
         }
         push({types::SWITCH, ss});
     } else {
+        auto dfa_index = dfas->size();
+        dfas->push_back(std::move(DFA));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
         push({types::ASSIGN_VARIABLE, LLIR::variable_assign { dfa_call_result.name, var_assign_types::ASSIGN, LLIR::assign {
             var_assign_values::INTERNAL_FUNCTION_CALL, LLIR::function_call {
-                        internal_functions::dfa_lookup, {
+                        internal_functions::dfa_decide, {
                             {
-                                LLIR::expr { condition_types::DFA, DFA }
+                                LLIR::expr { condition_types::DFA, dfa_index }
                             }
                         }
                     }
@@ -843,13 +846,31 @@ void LLIR::OpBuilder::build() {
             }
         });
         switch_statement ss;
-        ss.expression = {LLIR::expr {condition_types::VARIABLE, dfa_call_result}};
-        for (size_t i = 0; i < op.size(); ++i) {
+        ss.expression = {LLIR::expr {condition_types::VARIABLE, var_refer {.var = dfa_call_result}}};
+        for (int i = 0; i < op.size(); ++i) {
             ss.cases.emplace_back();
-            ss.cases.back().name = {LLIR::var_assign_values::NUMBER, i};
-            MemberBuilder builder(*this, op[i]);
-            builder.build();
-            ss.cases.back().block = builder.getData();
+            auto &cs = ss.cases.back();
+            cs.name = {LLIR::var_assign_values::NUMBER, i};
+            if (op[i].isName() && op[i].getName().isTerminal()) {
+                // insert variable assignment
+                //cs.block.push_back(assignSvar(svar, var_assign_values::True));
+                cs.block.emplace_back(types::ASSIGN_VARIABLE, LLIR::variable_assign {
+                    var.name, var_assign_types::ASSIGN, LLIR::assign {var_assign_values::CURRENT_TOKEN}
+                });
+            } else if (op[i].isName() && op[i].getName().isNonterminal()) {
+                const auto &nonterminal = op[i].getName().name;
+                cs.block.emplace_back(types::ASSIGN_VARIABLE, LLIR::variable_assign {
+                    var.name, var_assign_types::ASSIGN, LLIR::assign {
+                        var_assign_values::FUNCTION_CALL, LLIR::function_call {
+                            corelib::text::join(nonterminal, "_"), stdu::vector<stdu::vector<expr>>{ {{condition_types::CURRENT_TOKEN}} }
+                        }
+                    }
+                });
+            } else {
+                MemberBuilder builder(*this, op[i]);
+                builder.build();
+                cs.block = std::move(builder.getData());
+            }
         }
         push({types::SWITCH, ss});
     }

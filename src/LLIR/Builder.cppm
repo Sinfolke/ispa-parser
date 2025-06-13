@@ -1,13 +1,16 @@
 export module LLIR.Builder;
+import LLIR.API;
 import LLIR;
 import AST.Tree;
 import AST.API;
+import DFA;
 import dstd;
 import std;
 import std.compat;
 namespace LLIR {
     export class Builder {
         stdu::vector<LLIR::Data> data;
+        stdu::vector<DFA> dfas;
     public:
         Builder(AST::Tree &tree, int tokensOnly = -1);
         Builder(AST::Tree &tree, const AST::RuleMember& rule);

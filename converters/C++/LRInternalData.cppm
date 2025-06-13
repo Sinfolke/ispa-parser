@@ -1,6 +1,6 @@
 export module LRInternalData;
 import LRParser;
-import LLIR;
+import LLIR.API;
 import dstd;
 import std;
 export class LRInternalData {

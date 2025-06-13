@@ -1,5 +1,6 @@
 module;
 export module LLInternalData;
+import DFA;
 import dstd;
 import std;
 import std.compat;

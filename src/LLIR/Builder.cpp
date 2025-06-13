@@ -13,13 +13,13 @@ LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
             if (corelib::text::isLower(name.back()) && tokensOnly)
                 continue;
         }
-        LLIR::RuleBuilder builder(tree, name, value);
+        LLIR::RuleBuilder builder(tree, name, value, dfas);
         data.push_back(builder.getData());
     }
 }
 
 auto LLIR::Builder::get() -> IR {
-    return IR(data);
+    return IR(std::move(data), std::move(dfas));
 }
 auto LLIR::Builder::getRawData() -> stdu::vector<Data> & {
     return data;

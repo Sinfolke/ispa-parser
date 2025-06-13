@@ -5,7 +5,7 @@ import LLIR.CllBuilder;
 import cpuf.printf;
 import std;
 
-auto LLIR::RuleBuilder::getData() -> LLIR::Data {
+auto LLIR::RuleBuilder::getData() -> LLIR::Data& {
     return data;
 }
 

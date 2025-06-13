@@ -3,7 +3,7 @@ export module LLIR.Rule.MemberBuilder;
 import LLIR.Builder.Base;
 import LLIR.Builder.DataWrapper;
 import AST.API;
-import LLIR;
+import LLIR.API;
 import dstd;
 import std;
 import std.compat;

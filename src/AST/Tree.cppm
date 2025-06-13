@@ -2,7 +2,6 @@ export module AST.Tree;
 import AST.types;
 import AST.API;
 import corelib;
-import LLIR;
 import Parser;
 import hash;
 import dstd;

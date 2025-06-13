@@ -1,6 +1,6 @@
 export module LLIR.Builder.Base;
 import AST.API;
-import LLIR;
+import LLIR.API;
 import LLIR.Builder.DataWrapper;
 import LLIR.Builder.Utility;
 import LLIR.Builder.Data;
@@ -29,6 +29,9 @@ export namespace LLIR {
         static auto CllCompareOpToExpr(const AST::CllCompareOp &op) -> expr;
         static auto CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> condition_types;
         static auto CllAssignmentOpToIR(const char op) -> var_assign_types;
+
+        // helper functions to create structures
+        auto assignSvar(const variable &svar, var_assign_values value) -> LLIR::member;
         auto getBuilderData() -> BuilderDataWrapper;
     protected:
         LLIR::Nodes data;

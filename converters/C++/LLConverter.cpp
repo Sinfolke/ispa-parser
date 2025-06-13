@@ -1,6 +1,7 @@
 module;
 module LLConverter;
 import LLIR;
+import Converter.DFA;
 import logging;
 import std;
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
@@ -84,8 +85,20 @@ void LLConverter::convertCondition(LLIR::condition cond, std::ostringstream &out
         convertBlock(cond.else_block, out);
     }
 }
-
-
+void LLConverter::convertSwitch(const LLIR::switch_statement &statement, std::ostringstream &out) {
+    out << "switch " << convertExpression(statement.expression, true) << std::string(indentLevel, '\t') << "{\n";
+    indentLevel++;
+    for (const auto &c : statement.cases) {
+        out << std::string(indentLevel, '\t') << "case " << convertAssign(c.name) << ": {\n";
+        indentLevel++;
+        convertMembers(c.block, out);
+        out << '\n' << std::string(indentLevel, '\t') << "break;\n";
+        indentLevel--;
+        out << '\n' << std::string(indentLevel, '\t') << "}\n";
+    }
+    indentLevel--;
+    out << std::string(indentLevel, '\t') << "}\n";
+}
 void LLConverter::convertAssignVariable(LLIR::variable_assign var, std::ostringstream &out) {
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
@@ -172,6 +185,9 @@ void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out
         out << current_pos_counter.top() << " = " << el;
         break;
     }
+    case LLIR::types::SWITCH:
+        convertSwitch(std::any_cast<LLIR::switch_statement>(mem.value), out);
+        break;
     default:
         throw Error("Undefined IR member: {}", (int) mem.type);
     }
@@ -202,12 +218,19 @@ void LLConverter::convertData(std::ostringstream &out) {
 
     }
 }
+void LLConverter::addDFATables(std::ostringstream &out) {
+    DFAConverter tables_builder(this->dfas);
+    tables_builder.create();
+    out << tables_builder.get().str();
+}
+
 void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
     namespace_name = filename;
     addHeader(out);
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
+    addDFATables(out);
     addLexerCode_Header(out);
     convertLexerCode(lexer_code, out);
     addLexerCode_Bottom(out,  lexer_code_access_var);

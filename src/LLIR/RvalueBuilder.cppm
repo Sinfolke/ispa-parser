@@ -1,6 +1,6 @@
 export module LLIR.RvalueBuilder;
 import AST.API;
-import LLIR;
+import LLIR.API;
 import LLIR.Builder.Base;
 import LLIR.Builder.DataWrapper;
 export namespace LLIR {

@@ -1,5 +1,5 @@
 export module LLIR.Builder.Utility;
-import LLIR;
+import LLIR.API;
 export namespace LLIR {
     class BuilderUtility {
         LLIR::Nodes *data = nullptr;

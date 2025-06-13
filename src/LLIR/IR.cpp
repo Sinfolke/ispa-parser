@@ -4,28 +4,7 @@ import hash;
 import logging;
 import cpuf.printf;
 import std;
-bool LLIR::DataBlock::is_inclosed_map() const {
-    return std::holds_alternative<LLIR::inclosed_map>(value);
-}
-bool LLIR::DataBlock::is_raw_expr() const {
-    return std::holds_alternative<LLIR::regular_data_block>(value);
-}
-bool LLIR::DataBlock::empty() const {
-    return std::holds_alternative<std::monostate>(value);
-}
 
-LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() {
-    return std::get<LLIR::regular_data_block>(value);
-};
-LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() {
-    return std::get<LLIR::inclosed_map>(value);
-};
-const LLIR::regular_data_block &LLIR::DataBlock::getRegularDataBlock() const {
-    return std::get<LLIR::regular_data_block>(value);
-};
-const LLIR::inclosed_map &LLIR::DataBlock::getInclosedMap() const {
-    return std::get<LLIR::inclosed_map>(value);
-};
 auto LLIR::IR::begin() -> ::stdu::vector<Data>::iterator {
     return data.begin();
 }
@@ -68,6 +47,9 @@ LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() {
 auto LLIR::IR::getData() const -> const stdu::vector<Data> & {
     return data;
 }
+auto LLIR::IR::getDfas() const -> const stdu::vector<DFA> & {
+    return dfas;
+}
 
 auto LLIR::IR::operator[](size_t index) const -> const Data& {
     return data[index];
@@ -86,11 +68,7 @@ std::string LLIR::IR::convert_var_type(LLIR::var_types type) {
         {LLIR::var_types::ARRAY, "array"}, {LLIR::var_types::OBJECT, "object"}, {LLIR::var_types::FUNCTION, "function"},
         {LLIR::var_types::ANY, "any"}, {LLIR::var_types::Rule, "rule"}, {LLIR::var_types::Token, "token"},
         {LLIR::var_types::Rule_result, "Rule_result"}, {LLIR::var_types::Token_result, "Token_result"},
-        {LLIR::var_types::CHAR, "char"}, {LLIR::var_types::UCHAR, "unsigned char"},
-        {LLIR::var_types::SHORT, "short"}, {LLIR::var_types::USHORT, "unsigned short"},
-        {LLIR::var_types::INT, "int"}, {LLIR::var_types::UINT, "unsigned int"},
-        {LLIR::var_types::LONG, "long"}, {LLIR::var_types::ULONG, "unsigned long"},
-        {LLIR::var_types::LONGLONG, "long long"}, {LLIR::var_types::ULONGLONG, "unsigned long long"}
+        {LLIR::var_types::CHAR, "char"}
     };
     return typesMap.at(type);
 }
@@ -123,9 +101,9 @@ std::string LLIR::IR::convert_var_assing_values(LLIR::var_assign_values value, s
             }
             return name;
         }
-        case LLIR::var_assign_values::INT:
-            //cpuf::printf("on INT, type: %s\n", data.type().name());
-            return std::any_cast<std::string>(data);
+        case LLIR::var_assign_values::NUMBER:
+            cpuf::printf("on INT, type: {}\n", data.type().name());
+            return std::to_string(std::any_cast<int>(data));
         case LLIR::var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
@@ -167,6 +145,9 @@ std::string LLIR::IR::convert_var_assing_values(LLIR::var_assign_values value, s
         }
         case LLIR::var_assign_values::CURRENT_CHARACTER:
             return "*pos";
+        case LLIR::var_assign_values::TOKEN_NAME:
+            // cpuf::printf("TOKEN_NAME: {}\n", data.type().name());
+            return std::string("Tokens::") + corelib::text::join(std::any_cast<stdu::vector<std::string>>(data), "_");
     }
     switch (value) {
         case LLIR::var_assign_values::NONE:                  return "NONE";
@@ -218,6 +199,7 @@ std::string LLIR::IR::conditionTypesToString(LLIR::condition_types type, std::an
             return std::string("!STRNCMP(pos, ") + dt.value.name + std::string(")");
         }
     } else if (type == LLIR::condition_types::VARIABLE) {
+        cpuf::printf("type: {}", data.type().name());
         auto dt = std::any_cast<LLIR::var_refer>(data);
         std::string name = dt.var.name;
         for (const auto &el : dt.var.property_access)
@@ -373,7 +355,20 @@ std::string LLIR::IR::convertDataBlock(const LLIR::DataBlock &dtb) {
     res += '\n';
     return res;
 }
-
+void LLIR::IR::convertSwitch(const switch_statement &statement, std::ostream &out) {
+    out << "switch " << convertExpression(statement.expression, true) << std::string(indentLevel, '\t') << "{\n";
+    indentLevel++;
+    for (const auto &c : statement.cases) {
+        out << std::string(indentLevel, '\t') << "case " << convertAssign(c.name) << ": {\n";
+        indentLevel++;
+        convertMembers(c.block, out);
+        out << '\n' << std::string(indentLevel, '\t') << "break;\n";
+        indentLevel--;
+        out << '\n' << std::string(indentLevel, '\t') << "}\n";
+    }
+    indentLevel--;
+    out << std::string(indentLevel, '\t') << "}\n";
+}
 void LLIR::IR::convertMember(const LLIR::member& mem, std::ostream& out) {
     out << std::string(indentLevel, '\t');
     switch (mem.type)
@@ -448,8 +443,11 @@ void LLIR::IR::convertMember(const LLIR::member& mem, std::ostream& out) {
         break;
     case types::EMPTY:
         return;
+    case types::SWITCH:
+        convertSwitch(std::any_cast<const switch_statement&>(mem.value), out);
+        break;
     default:
-        throw Error("Undefined IR member: %$\n", (int) mem.type);
+        throw Error("Undefined IR member: {}\n", (int) mem.type);
     }
     out << '\n';
 }

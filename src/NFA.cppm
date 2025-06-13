@@ -7,13 +7,15 @@ import std.compat;
 export class NFA {
 public:
     static constexpr auto NO_ACCEPT = std::numeric_limits<size_t>::max();
+    static constexpr auto NO_ANY = std::numeric_limits<size_t>::max();
     static constexpr auto NO_STATE_RANGE = std::numeric_limits<size_t>::max();
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
     struct state {
         utype::unordered_map<TransitionKey, size_t> transitions;
         size_t accept_index = NO_ACCEPT;
-        bool is_starting_state = false;
         std::set<size_t> epsilon_transitions;
+        bool is_starting_state = false;
+        size_t any = NO_ANY;
     };
     struct StateRange {
         size_t start;

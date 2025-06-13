@@ -56,11 +56,7 @@ std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, c
         {LLIR::var_types::FUNCTION, "function"},
         {LLIR::var_types::ANY, "any_t"}, {LLIR::var_types::Rule, "Rule"}, {LLIR::var_types::Token, "Token"},
         {LLIR::var_types::Rule_result, "Rule_res"}, {LLIR::var_types::Token_result, "Token_res"},
-        {LLIR::var_types::CHAR, "char"}, {LLIR::var_types::UCHAR, "unsigned char"},
-        {LLIR::var_types::SHORT, "short"}, {LLIR::var_types::USHORT, "unsigned short"},
-        {LLIR::var_types::INT, "int"}, {LLIR::var_types::UINT, "unsigned int"},
-        {LLIR::var_types::LONG, "long"}, {LLIR::var_types::ULONG, "unsigned long"},
-        {LLIR::var_types::LONGLONG, "long long"}, {LLIR::var_types::ULONGLONG, "unsigned long long"}
+        {LLIR::var_types::CHAR, "char"}
     };
     if (type < LLIR::var_types::CHAR)
         return "::" + namespace_name + "::" + typesMap.at(type);
@@ -95,9 +91,9 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             }
             return name;
         }
-        case LLIR::var_assign_values::INT:
+        case LLIR::var_assign_values::NUMBER:
             //cpuf::printf("on INT\n");
-            return std::any_cast<std::string>(data);
+            return std::to_string(std::any_cast<int>(data));
         case LLIR::var_assign_values::ARRAY:
         {
             //cpuf::printf("on array\n");
@@ -150,6 +146,15 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
                 return current_pos_counter.top();
             return current_pos_counter.top() + sign + std::to_string((int) dt);
         }
+        case LLIR::var_assign_values::TOKEN_NAME:
+            return std::string("Tokens::") + corelib::text::join(std::any_cast<stdu::vector<std::string>>(data), "_");
+        case LLIR::var_assign_values::INTERNAL_FUNCTION_CALL:
+            cpuf::printf("type: {}", data.type().name());
+            const auto &dt = std::any_cast<const LLIR::function_call&>(data);
+            if (dt.name == LLIR::internal_functions::dfa_decide)
+            {
+                return "DFA_DECIDE(" + current_pos_counter.top() + ")";
+            }
     }
     switch (value) {
         case LLIR::var_assign_values::NONE:

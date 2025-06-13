@@ -105,7 +105,7 @@ auto ErrorIR::IR::lowerMemberToLLIR(const Instruction &member) -> stdu::vector<L
             return {{LLIR::types::VARIABLE, panic_mode_variable}};
         }
         case InstructionType::PERFORM: {
-            LLIR::BuilderData data(*tree);
+            LLIR::BuilderData data(*tree, dfas);
             LLIR::BuilderDataWrapper wrapper(data);
             LLIR::MemberBuilder perform(wrapper, std::any_cast<AST::RuleMember>(member.value), false);
             perform.build();

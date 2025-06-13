@@ -253,8 +253,12 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
         handleString(member, member.getString().value, start, end, isEntry);
     } else if (member.isCsequence()) {
         handleCsequence(member, member.getCsequence(), start, end, isEntry);
+    } else if (member.isAny()) {
+        states[start].any = end;
     } else {
-        throw Error("Undefined member");
+        std::visit([](auto &m) {
+            throw Error("Undefined member: {}", typeid(m).name());
+        }, member.value);
     }
     // create new transition __WHITESPACE -> itself
     states[start].transitions[TransitionKey{stdu::vector<std::string> { "__WHITESPACE" }}] = start;

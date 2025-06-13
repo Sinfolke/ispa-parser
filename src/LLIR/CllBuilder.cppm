@@ -2,7 +2,7 @@ export module LLIR.CllBuilder;
 import LLIR.Builder.Base;
 import AST.API;
 import LLIR.Builder.DataWrapper;
-import LLIR;
+import LLIR.API;
 import dstd;
 import std;
 export namespace LLIR {

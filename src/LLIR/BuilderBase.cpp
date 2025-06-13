@@ -305,6 +305,14 @@ LLIR::var_assign_types LLIR::BuilderBase::CllAssignmentOpToIR(const char op) {
     v = static_cast<LLIR::var_assign_types>(static_cast<int>(v) + static_cast<int>(LLIR::var_assign_types::ASSIGN));
     return v;
 }
+auto LLIR::BuilderBase::assignSvar(const variable &svar, var_assign_values value) -> LLIR::member {
+    return {types::ASSIGN_VARIABLE, LLIR::variable_assign {
+            svar.name, var_assign_types::ASSIGN, LLIR::assign {
+                var_assign_values::True,
+            }
+        }
+    };
+}
 
 
 auto LLIR::BuilderBase::getNextTerminal(stdu::vector<AST::RuleMember> symbols, size_t pos) -> std::set<stdu::vector<std::string>> {
@@ -504,10 +512,12 @@ auto LLIR::BuilderBase::getLookaheadTerminals(const AST::RuleMember& symbol, con
                 if (corelib::text::isUpper(lhs_name.back())) {
                     sequences.push_back({lhs_name});
                 } else {
-                    const auto& follows = follow_set.at(lhs_name);
-                    for (const auto& seq : follows) {
-                        sequences.push_back(seq);
-                    }
+                    try {
+                        const auto& follows = follow_set.at(lhs_name);
+                        for (const auto& seq : follows) {
+                            sequences.push_back(seq);
+                        }
+                    } catch (...) {}
                 }
             }
 

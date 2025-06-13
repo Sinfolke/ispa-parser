@@ -3,7 +3,7 @@ export module AST.types;
 import hash;
 import dstd;
 import AST.API;
-import LLIR;
+import LLIR.API;
 import Parser;
 import std;
 export namespace AST {

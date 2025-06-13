@@ -1,8 +1,9 @@
 export module ErrorIR;
 
 import AST.API;
-import LLIR;
+import LLIR.API;
 import AST.Tree;
+import DFA;
 import dstd;
 import std;
 import std.compat;
@@ -38,6 +39,7 @@ export namespace ErrorIR {
         const AST::RuleMember *member;
         stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> follow;
         AST::Tree *tree;
+        stdu::vector<DFA> *dfas;
 
         // variables used for lower to LLIR
         size_t variable_count;
@@ -48,8 +50,14 @@ export namespace ErrorIR {
         void lower();
     public:
         // construct an error element based on tree value
-        IR(AST::Tree *tree, const AST::RuleMember &member, const stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &follow, bool isFirst)
-        : tree(tree), member(&member), follow(follow), isFirst(isFirst) { lower(); }
+        IR(
+            AST::Tree *tree,
+            const AST::RuleMember &member,
+            const stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &follow,
+            stdu::vector<DFA> *dfas,
+            bool isFirst
+            )
+        : tree(tree), member(&member), follow(follow), dfas(dfas), isFirst(isFirst) { lower(); }
         // todo add constructor for custom error messages
 
         auto getInstructions() -> const Instructions&;

@@ -1,7 +1,7 @@
 export module LLHeader;
 import dstd;
 import LLStringConvertions;
-import LLIR;
+import LLIR.API;
 import std;
 export class LLHeader : public LLStringConvertions {
     protected:

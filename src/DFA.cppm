@@ -31,6 +31,7 @@ public:
             return std::tie(nfa_states, transitions, else_goto, else_goto_accept);
         }
     };
+
     using Transitions = utype::unordered_map<NFA::TransitionKey, TransitionValue>;
     using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<TransitionValue>>;
 

@@ -619,7 +619,8 @@ auto AST::Tree::getCodeForLexer() -> lexer_code {
     TreePass::sortByPriority(*this, options);
     AST::RuleMember resultRule = { .value = options };
     // get lexer code
-    LLIR::BuilderData bd(*this);
+    // TODO: add proper handling for lexer
+    LLIR::BuilderData bd(*this, nullptr);
     LLIR::BuilderDataWrapper wrapper(bd);
     bd.fullname = {""};
     LLIR::MemberBuilder code(wrapper, resultRule);

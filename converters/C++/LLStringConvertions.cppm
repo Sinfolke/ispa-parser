@@ -3,7 +3,7 @@ import corelib;
 import logging;
 import dstd;
 import LLInternalData;
-import LLIR;
+import LLIR.API;
 import cpuf.printf;
 import std;
 export class LLStringConvertions : public LLInternalData {
