@@ -53,6 +53,7 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createRulesEnum(out, rules);
     getTypesFromStdlib(out);
     createToStringFunction(tokens, rules, out);
+    createDFATypes(out);
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
@@ -219,7 +220,7 @@ void LLConverter::convertData(std::ostringstream &out) {
     }
 }
 void LLConverter::addDFATables(std::ostringstream &out) {
-    DFAConverter tables_builder(this->dfas);
+    DFAConverter tables_builder(this->dfas, namespace_name);
     tables_builder.create();
     out << tables_builder.get().str();
 }

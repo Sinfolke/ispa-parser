@@ -18,6 +18,7 @@ export class LLHeader : public LLStringConvertions {
     void getTypesFromStdlib(std::ostringstream& out) const;
     void addTokensToString(const stdu::vector<stdu::vector<std::string>> &tokens, std::ostringstream &out) const;
     void addRulesToString(const stdu::vector<stdu::vector<std::string>> &rules, std::ostringstream &out) const;
+    void createDFATypes(std::ostringstream &out);
     void createToStringFunction(const stdu::vector<stdu::vector<std::string>> &tokens, const stdu::vector<stdu::vector<std::string>> &rules, std::ostringstream &out) const;
     void addStandardFunctionsLexer(std::ostringstream &out) const;
     void addStandardFunctionsParser(std::ostringstream &out) const;

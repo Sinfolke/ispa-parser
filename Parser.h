@@ -163,6 +163,20 @@ namespace Parser {
 		}
 		return "NONE";
 	}
+
+    namespace DFA {
+        size_t null_state = std::numeric_limits<size_t>::max();
+        template<size_t MAX, typename Key>
+        struct Unit {
+            size_t else_goto;
+            size_t else_goto_accept;
+            std::array<std::pair<Key, size_t>, MAX> transitions;
+        };
+        template<size_t N, size_t MAX>
+        using TokenTable = std::array<DFAUnit<MAX, Tokens>, N>;
+        template<size_t N, size_t MAX>
+        using CharTable = std::array<DFAUnit<MAX, char>, N>;
+    }
 	namespace Types {
 		using AUTO_4 = char;
 		struct cll_TYPE {

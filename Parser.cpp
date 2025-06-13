@@ -1177,781 +1177,781 @@ const ::Parser::Types::cll_function_parameters& Parser::get::cll_function_parame
 	if (rule.name() != ::Parser::Rules::cll_function_parameters) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_parameters, "Parser");
 	return std::any_cast<Types::cll_function_parameters&>(rule.data());
 }
-const DFATokenTable table_0 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AUTO_19", 23, 18446744073709551615}, {"AUTO_3", 10, 1}, {"AUTO_20", 22, 18446744073709551615}, {"ID", 20, 18446744073709551615}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 2, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"AUTO_1", 24, 18446744073709551615}, {"AUTO_14", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"ID", 18, 18446744073709551615}, {"AUTO_2", 16, 18446744073709551615}, {"NUMBER", 18, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 6, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 7, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"ID", 8, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 18446744073709551615}, {"AUTO_4", 8, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 18446744073709551615}, {"AUTO_3", 10, 1}, {"ID", 25, 18446744073709551615}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"AUTO_3", 10, 1}, {"ID", 16, 4}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_3", 10, 1}, {"ID", 16, 4}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 8, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"AUTO_3", 10, 1}, {"ID", 16, 4}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 8, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"DIVIDE", 13, 18446744073709551615}, {"MINUS", 12, 18446744073709551615}, {"MULTIPLE", 13, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 17, 18446744073709551615}, {"AUTO_1", 17, 18446744073709551615}, {"AUTO_14", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 18, 18446744073709551615}, {"AUTO_6", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 19, 18446744073709551615}, {"AUTO_3", 10, 1}, {"ID", 16, 4}, {"BOOLEAN", 6, 4}, {"STRING", 5, 4}, {"AT", 4, 4}, {"AUTO_0", 3, 18446744073709551615}, {"AUTO_13", 2, 18446744073709551615}, {"NUMBER", 1, 4}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 21, 18446744073709551615}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}, {"AUTO_13", 19, 18446744073709551615}} }
-{ 8, DFA_NULL, {
-} }
+const Parser::DFA::TokenTable<27, 11> Parser::Parser::table_0 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::AUTO_20, 22, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 2, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 16, ::Parser::DFA::null_state}, {Tokens::NUMBER, 18, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 6, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 7, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 8, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 25, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 16, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 16, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 8, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 16, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 8, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, ::Parser::DFA::null_state}, {Tokens::MINUS, 12, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 16, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 19, ::Parser::DFA::null_state}} },
+{ 8, ::Parser::DFA::null_state, {
+} },
 { 8, 0, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"ID", 8, 0}} }
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
 { 8, 0, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"ID", 8, 0}} }
-{ 8, DFA_NULL, {
-{"AUTO_1", 17, 18446744073709551615}, {"AUTO_14", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"DOT", 8, 2}, {"cll_COMPARE_OP", 15, 18446744073709551615}, {"__WHITESPACE", 26, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}, {"MODULO", 13, 18446744073709551615}, {"PLUS", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 11, 18446744073709551615}} }
-{ 8, DFA_NULL, {
-} }
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
+{ 8, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::DOT, 8, 2}, {Tokens::cll_COMPARE_OP, 15, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{ 8, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_1 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"MULTIPLE", 2, 0}, {"ID", 1, 1}} }
-{ 2, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"AUTO_1", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"ID", 2, 18446744073709551615}} }
+const Parser::DFA::TokenTable<4, 3> Parser::Parser::table_1 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 2, 0}, {Tokens::ID, 1, 1}} },
+{ 2, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 2, ::Parser::DFA::null_state}} },
 };
-DFACharTable table_2 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'f', 2, 0}, {'t', 1, 1}} }
-{ 0, DFA_NULL, {
-{'r', 3, 1}} }
-{ 0, DFA_NULL, {
-{'a', 4, 0}} }
-{ 0, DFA_NULL, {
-{'u', 5, 1}} }
-{ 0, DFA_NULL, {
-{'l', 6, 0}} }
-{ 0, DFA_NULL, {
-{'e', 7, 1}} }
-{ 0, DFA_NULL, {
-{'s', 8, 0}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'e', 7, 0}} }
+const Parser::DFA::CharTable<9, 3> Parser::Parser::table_2 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'f', 2, 0}, {'t', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 7, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'s', 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 7, 0}} },
 };
-DFACharTable table_3 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {']', 2, 1}, {'\', 1, 0}} }
-{ 0, DFA_NULL, {
-{'\', 2, 0}} }
-{ 0, DFA_NULL, {
-} }
+const Parser::DFA::CharTable<3, 3> Parser::Parser::table_3 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {']', 2, 1}, {'\', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_4 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AUTO_19", 27, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 26, 18446744073709551615}, {"ID", 24, 18446744073709551615}, {"BOOLEAN", 22, 18446744073709551615}, {"STRING", 20, 18446744073709551615}, {"AT", 18, 18446744073709551615}, {"AUTO_0", 2, 18446744073709551615}, {"AUTO_13", 1, 18446744073709551615}, {"NUMBER", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"AUTO_1", 28, 18446744073709551615}, {"AUTO_14", 12, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"ID", 14, 18446744073709551615}, {"AUTO_2", 12, 18446744073709551615}, {"NUMBER", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 4, 18446744073709551615}, {"AUTO_3", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"AUTO_21", 3, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"ID", 3, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"AUTO_4", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 0}, {"AUTO_19", 6, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 6, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"BOOLEAN", 12, 18446744073709551615}, {"STRING", 12, 18446744073709551615}, {"AT", 12, 18446744073709551615}, {"AUTO_0", 2, 18446744073709551615}, {"AUTO_13", 1, 18446744073709551615}, {"NUMBER", 12, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 0}, {"AUTO_19", 6, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 6, 18446744073709551615}, {"ID", 4, 18446744073709551615}, {"BOOLEAN", 12, 18446744073709551615}, {"STRING", 12, 18446744073709551615}, {"AT", 12, 18446744073709551615}, {"AUTO_0", 2, 18446744073709551615}, {"AUTO_13", 1, 18446744073709551615}, {"NUMBER", 12, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 0}, {"AUTO_19", 6, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 6, 18446744073709551615}, {"ID", 4, 18446744073709551615}, {"BOOLEAN", 12, 18446744073709551615}, {"STRING", 12, 18446744073709551615}, {"AT", 12, 18446744073709551615}, {"AUTO_0", 2, 18446744073709551615}, {"AUTO_13", 1, 18446744073709551615}, {"NUMBER", 12, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 0}, {"AUTO_19", 6, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 6, 18446744073709551615}, {"ID", 4, 18446744073709551615}, {"BOOLEAN", 12, 18446744073709551615}, {"STRING", 12, 18446744073709551615}, {"AT", 12, 18446744073709551615}, {"AUTO_0", 2, 18446744073709551615}, {"AUTO_13", 1, 18446744073709551615}, {"NUMBER", 12, 18446744073709551615}} }
-{ 3, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"cll_COMPARE_OP", 11, 0}, {"DIVIDE", 10, 0}, {"MINUS", 9, 0}, {"MULTIPLE", 10, 0}, {"cll_LOGICAL_OP", 8, 0}, {"MODULO", 10, 0}, {"PLUS", 9, 0}, {"ID", 5, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_1", 13, 18446744073709551615}, {"AUTO_14", 12, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"AUTO_6", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"AUTO_14", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"MODULO", 10, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 17, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"PLUS", 9, 0}, {"ID", 3, 1}} }
+const Parser::DFA::TokenTable<33, 11> Parser::Parser::table_4 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 26, ::Parser::DFA::null_state}, {Tokens::ID, 24, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 22, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::AT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 12, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_21, 3, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, 0}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 12, ::Parser::DFA::null_state}, {Tokens::STRING, 12, ::Parser::DFA::null_state}, {Tokens::AT, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, 0}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::ID, 4, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 12, ::Parser::DFA::null_state}, {Tokens::STRING, 12, ::Parser::DFA::null_state}, {Tokens::AT, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, 0}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::ID, 4, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 12, ::Parser::DFA::null_state}, {Tokens::STRING, 12, ::Parser::DFA::null_state}, {Tokens::AT, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, 0}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::ID, 4, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 12, ::Parser::DFA::null_state}, {Tokens::STRING, 12, ::Parser::DFA::null_state}, {Tokens::AT, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::DIVIDE, 10, 0}, {Tokens::MINUS, 9, 0}, {Tokens::MULTIPLE, 10, 0}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::MODULO, 10, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::MODULO, 10, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 3, 1}} },
 { 3, 1, {
-{"ID", 5, 1}} }
-{ 0, DFA_NULL, {
-{"MODULO", 10, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 19, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"PLUS", 9, 0}, {"ID", 3, 1}} }
+{Tokens::ID, 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::MODULO, 10, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 3, 1}} },
 { 3, 1, {
-{"ID", 5, 1}} }
-{ 0, DFA_NULL, {
-{"MODULO", 10, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 21, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"PLUS", 9, 0}, {"ID", 3, 1}} }
+{Tokens::ID, 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::MODULO, 10, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 3, 1}} },
 { 3, 1, {
-{"ID", 5, 1}} }
-{ 0, DFA_NULL, {
-{"MODULO", 10, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 23, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"PLUS", 9, 0}, {"ID", 3, 1}} }
+{Tokens::ID, 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::MODULO, 10, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 3, 1}} },
 { 3, 1, {
-{"ID", 5, 1}} }
+{Tokens::ID, 5, 1}} },
 { 3, 1, {
-{"AUTO_13", 15, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 25, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"MULTIPLE", 10, 0}, {"PLUS", 9, 0}, {"ID", 5, 1}} }
-{ 3, DFA_NULL, {
-} }
+{Tokens::AUTO_13, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::MULTIPLE, 10, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 5, 1}} },
+{ 3, ::Parser::DFA::null_state, {
+} },
 { 3, 0, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"ID", 3, 0}} }
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
 { 3, 0, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"ID", 3, 0}} }
-{ 3, DFA_NULL, {
-{"AUTO_1", 13, 18446744073709551615}, {"AUTO_14", 12, 18446744073709551615}} }
-{ 3, DFA_NULL, {
-{"cll_LOGICAL_OP", 8, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 12, 18446744073709551615}, {"MODULO", 10, 0}, {"PLUS", 9, 0}, {"ID", 5, 1}} }
-{ 3, DFA_NULL, {
-{"cll_LOGICAL_OP", 8, 0}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 12, 18446744073709551615}, {"MODULO", 10, 0}, {"PLUS", 9, 0}, {"ID", 5, 1}} }
-{ 3, DFA_NULL, {
-{"AUTO_13", 15, 18446744073709551615}, {"AUTO_19", 30, 18446744073709551615}, {"AUTO_20", 29, 18446744073709551615}, {"cll_COMPARE_OP", 11, 0}, {"__WHITESPACE", 32, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 0}, {"MULTIPLE", 10, 0}, {"PLUS", 9, 0}, {"ID", 5, 1}, {"DOT", 3, 0}} }
-{ 3, DFA_NULL, {
-} }
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::MODULO, 10, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 5, 1}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::MODULO, 10, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 5, 1}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 29, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::MULTIPLE, 10, 0}, {Tokens::PLUS, 9, 0}, {Tokens::ID, 5, 1}, {Tokens::DOT, 3, 0}} },
+{ 3, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_5 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AT", 2, 0}, {"AUTO_23", 1, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"ID", 3, 1}} }
-{ 3, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"ID", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
+const Parser::DFA::TokenTable<4, 3> Parser::Parser::table_5 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AT, 2, 0}, {Tokens::AUTO_23, 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::ID, 3, 1}} },
+{ 3, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_6 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"LINEAR_COMMENT", 1, 5}, {"rule_CSEQUENCE", 1, 7}, {"rule_NOSPACE", 1, 0}, {"rule_HEX", 1, 3}, {"DOT", 1, 8}, {"AUTO_3", 40, 18446744073709551615}, {"ID", 38, 18446744073709551615}, {"STRING", 1, 2}, {"rule_BIN", 1, 4}, {"AUTO_12", 3, 10}, {"rule_ESCAPED", 1, 1}, {"rule_OP", 1, 6}, {"AUTO_5", 37, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 11}, {"ID", 1, 11}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"AUTO_18", 48, 18446744073709551615}, {"AUTO_17", 14, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"AUTO_20", 47, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"ID", 45, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}, {"cll_TYPE", 42, 18446744073709551615}, {"AUTO_19", 43, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"AUTO_15", 44, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 4, 11}, {"AUTO_5", 2, 11}, {"ID", 49, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"LINEAR_COMMENT", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"rule_CSEQUENCE", 15, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"STRING", 15, 18446744073709551615}, {"ID", 15, 18446744073709551615}, {"rule_BIN", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 19, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}, {"rule_ESCAPED", 15, 18446744073709551615}, {"rule_OP", 15, 18446744073709551615}, {"AUTO_12", 3, 10}, {"AUTO_5", 2, 11}, {"QUESTION_MARK", 15, 18446744073709551615}, {"rule_NOSPACE", 15, 18446744073709551615}, {"rule_HEX", 15, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_19", 12, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 50, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"cll_COMPARE_OP", 28, 18446744073709551615}, {"DIVIDE", 26, 18446744073709551615}, {"AUTO_0", 27, 18446744073709551615}, {"MINUS", 25, 18446744073709551615}, {"MULTIPLE", 26, 18446744073709551615}, {"PLUS", 25, 18446744073709551615}, {"AUTO_4", 55, 18446744073709551615}, {"cll_LOGICAL_OP", 23, 18446744073709551615}, {"MODULO", 26, 18446744073709551615}, {"AUTO_7", 52, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"AUTO_3", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 18446744073709551615}, {"ID", 30, 18446744073709551615}, {"AUTO_2", 8, 18446744073709551615}, {"NUMBER", 30, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 18446744073709551615}, {"AUTO_4", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_1", 56, 18446744073709551615}, {"AUTO_14", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"AUTO_3", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"AUTO_4", 1, 9}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 16, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 17, 18446744073709551615}, {"LINEAR_COMMENT", 17, 18446744073709551615}, {"rule_CSEQUENCE", 17, 18446744073709551615}, {"rule_NOSPACE", 17, 18446744073709551615}, {"rule_HEX", 17, 18446744073709551615}, {"rule_ESCAPED", 17, 18446744073709551615}, {"rule_OP", 17, 18446744073709551615}, {"AUTO_12", 3, 10}, {"STRING", 59, 18446744073709551615}, {"ID", 60, 18446744073709551615}, {"AUTO_5", 2, 11}, {"rule_BIN", 58, 18446744073709551615}, {"DOT", 57, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"LINEAR_COMMENT", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"rule_CSEQUENCE", 15, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"STRING", 15, 18446744073709551615}, {"ID", 15, 18446744073709551615}, {"rule_BIN", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 15, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}, {"rule_ESCAPED", 15, 18446744073709551615}, {"rule_OP", 15, 18446744073709551615}, {"AUTO_12", 3, 10}, {"AUTO_5", 2, 11}, {"QUESTION_MARK", 15, 18446744073709551615}, {"rule_NOSPACE", 15, 18446744073709551615}, {"rule_HEX", 15, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 19, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"QUESTION_MARK", 32, 18446744073709551615}, {"PLUS", 32, 18446744073709551615}, {"MULTIPLE", 32, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 21, 18446744073709551615}, {"DOT", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"LINEAR_COMMENT", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"rule_CSEQUENCE", 15, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"STRING", 15, 18446744073709551615}, {"ID", 15, 18446744073709551615}, {"rule_BIN", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 15, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}, {"rule_ESCAPED", 15, 18446744073709551615}, {"rule_OP", 15, 18446744073709551615}, {"AUTO_12", 3, 10}, {"AUTO_5", 2, 11}, {"QUESTION_MARK", 15, 18446744073709551615}, {"rule_NOSPACE", 15, 18446744073709551615}, {"rule_HEX", 15, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 23, 18446744073709551615}, {"AUTO_19", 12, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 24, 18446744073709551615}, {"AUTO_0", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 25, 18446744073709551615}, {"AUTO_19", 12, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 26, 18446744073709551615}, {"AUTO_19", 12, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 27, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 28, 18446744073709551615}, {"AUTO_19", 12, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"BOOLEAN", 8, 18446744073709551615}, {"STRING", 8, 18446744073709551615}, {"AT", 8, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 29, 18446744073709551615}, {"AUTO_14", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 30, 18446744073709551615}, {"AUTO_6", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 31, 18446744073709551615}, {"AUTO_1", 31, 18446744073709551615}, {"AUTO_14", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"LINEAR_COMMENT", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"rule_CSEQUENCE", 15, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"ID", 15, 18446744073709551615}, {"STRING", 15, 18446744073709551615}, {"rule_BIN", 15, 18446744073709551615}, {"rule_NOSPACE", 15, 18446744073709551615}, {"rule_HEX", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 15, 18446744073709551615}, {"AUTO_12", 3, 10}, {"rule_ESCAPED", 15, 18446744073709551615}, {"rule_OP", 15, 18446744073709551615}, {"AUTO_5", 2, 11}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 33, 18446744073709551615}, {"LINEAR_COMMENT", 17, 18446744073709551615}, {"rule_CSEQUENCE", 17, 18446744073709551615}, {"rule_NOSPACE", 17, 18446744073709551615}, {"rule_HEX", 17, 18446744073709551615}, {"DOT", 17, 18446744073709551615}, {"ID", 17, 18446744073709551615}, {"STRING", 17, 18446744073709551615}, {"rule_BIN", 17, 18446744073709551615}, {"AUTO_12", 3, 10}, {"rule_ESCAPED", 17, 18446744073709551615}, {"rule_OP", 17, 18446744073709551615}, {"AUTO_5", 2, 11}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"QUESTION_MARK", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"AT", 33, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"QUESTION_MARK", 15, 18446744073709551615}, {"AT", 33, 18446744073709551615}, {"DOT", 19, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}, {"AUTO_4", 1, 9}, {"MULTIPLE", 15, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"QUESTION_MARK", 32, 18446744073709551615}, {"DOT", 19, 18446744073709551615}, {"PLUS", 32, 18446744073709551615}, {"MULTIPLE", 32, 18446744073709551615}} }
+const Parser::DFA::TokenTable<62, 19> Parser::Parser::table_6 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 1, 5}, {Tokens::rule_CSEQUENCE, 1, 7}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::rule_HEX, 1, 3}, {Tokens::DOT, 1, 8}, {Tokens::AUTO_3, 40, ::Parser::DFA::null_state}, {Tokens::ID, 38, ::Parser::DFA::null_state}, {Tokens::STRING, 1, 2}, {Tokens::rule_BIN, 1, 4}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 1, 1}, {Tokens::rule_OP, 1, 6}, {Tokens::AUTO_5, 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, 11}, {Tokens::ID, 1, 11}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 48, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 47, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::ID, 45, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 42, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 43, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 44, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 15, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::STRING, 15, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 15, ::Parser::DFA::null_state}, {Tokens::rule_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 15, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 50, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 28, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 27, ::Parser::DFA::null_state}, {Tokens::MINUS, 25, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 26, ::Parser::DFA::null_state}, {Tokens::PLUS, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 55, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::MODULO, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 52, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 8, ::Parser::DFA::null_state}, {Tokens::NUMBER, 30, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 56, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 17, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 17, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 17, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 17, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 17, ::Parser::DFA::null_state}, {Tokens::rule_OP, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::STRING, 59, ::Parser::DFA::null_state}, {Tokens::ID, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::rule_BIN, 58, ::Parser::DFA::null_state}, {Tokens::DOT, 57, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 15, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::STRING, 15, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 15, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 15, ::Parser::DFA::null_state}, {Tokens::rule_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 15, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 32, ::Parser::DFA::null_state}, {Tokens::PLUS, 32, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 32, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 15, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::STRING, 15, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 15, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 15, ::Parser::DFA::null_state}, {Tokens::rule_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 15, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 8, ::Parser::DFA::null_state}, {Tokens::STRING, 8, ::Parser::DFA::null_state}, {Tokens::AT, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 15, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::STRING, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 15, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 15, ::Parser::DFA::null_state}, {Tokens::rule_OP, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 17, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 17, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 17, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 17, ::Parser::DFA::null_state}, {Tokens::DOT, 17, ::Parser::DFA::null_state}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::STRING, 17, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 17, ::Parser::DFA::null_state}, {Tokens::rule_OP, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 32, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::PLUS, 32, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 32, ::Parser::DFA::null_state}} },
 { 1, 11, {
-{"__WHITESPACE", 2, 11}, {"ID", 1, 11}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 39, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 19, 18446744073709551615}, {"rule_NOSPACE", 20, 18446744073709551615}, {"QUESTION_MARK", 15, 18446744073709551615}, {"AUTO_5", 2, 11}, {"ID", 4, 11}} }
+{Tokens::__WHITESPACE, 2, 11}, {Tokens::ID, 1, 11}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 39, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 20, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 4, 11}} },
 { 1, 10, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 41, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"AUTO_4", 1, 9}, {"rule_HEX", 15, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"AUTO_5", 2, 11}, {"ID", 4, 11}} }
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_HEX, 15, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 4, 11}} },
 { 1, 10, {
-{"ID", 36, 11}, {"AUTO_12", 3, 10}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"cll_ASSIGNMENT_OP", 1, 18446744073709551615}, {"AUTO_13", 29, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"cll_COMPARE_OP", 28, 18446744073709551615}, {"__WHITESPACE", 46, 18446744073709551615}, {"AUTO_7", 22, 10}, {"AUTO_4", 24, 18446744073709551615}, {"PLUS", 25, 18446744073709551615}, {"cll_LOGICAL_OP", 23, 18446744073709551615}, {"MULTIPLE", 26, 18446744073709551615}, {"AUTO_0", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"ID", 9, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"AUTO_13", 13, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 21, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}, {"rule_HEX", 20, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 19, 18446744073709551615}, {"AUTO_5", 2, 11}, {"AUTO_12", 3, 10}, {"ID", 4, 11}} }
-{ 1, DFA_NULL, {
-{"AUTO_13", 29, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"cll_COMPARE_OP", 28, 18446744073709551615}, {"__WHITESPACE", 51, 18446744073709551615}, {"AUTO_7", 22, 10}, {"AUTO_4", 24, 18446744073709551615}, {"PLUS", 25, 18446744073709551615}, {"cll_LOGICAL_OP", 23, 18446744073709551615}, {"MULTIPLE", 26, 18446744073709551615}, {"AUTO_0", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
+{Tokens::ID, 36, 11}, {Tokens::AUTO_12, 3, 10}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 28, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 46, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 22, 10}, {Tokens::AUTO_4, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 25, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::ID, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 4, 11}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 28, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 51, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 22, 10}, {Tokens::AUTO_4, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 25, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
 { 1, 10, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_20", 12, 18446744073709551615}, {"AUTO_0", 10, 18446744073709551615}, {"ID", 53, 18446744073709551615}, {"AUTO_12", 3, 10}, {"AUTO_5", 2, 11}, {"AUTO_13", 13, 18446744073709551615}, {"AT", 17, 18446744073709551615}, {"AUTO_3", 11, 18446744073709551615}, {"NUMBER", 8, 18446744073709551615}, {"rule_HEX", 20, 18446744073709551615}, {"PLUS", 15, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"AUTO_13", 29, 18446744073709551615}, {"AUTO_4", 24, 18446744073709551615}, {"PLUS", 25, 18446744073709551615}, {"__WHITESPACE", 54, 18446744073709551615}, {"cll_COMPARE_OP", 28, 18446744073709551615}, {"AUTO_7", 22, 10}, {"cll_LOGICAL_OP", 23, 18446744073709551615}, {"MULTIPLE", 26, 18446744073709551615}, {"AUTO_0", 27, 18446744073709551615}, {"DOT", 19, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"ID", 21, 18446744073709551615}, {"DOT", 18, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 24, 18446744073709551615}, {"AUTO_0", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AUTO_1", 31, 18446744073709551615}, {"AUTO_14", 8, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 17, 18446744073709551615}, {"AT", 33, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}, {"AUTO_5", 2, 11}, {"AUTO_12", 3, 10}, {"ID", 35, 11}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 57, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}, {"ID", 35, 11}, {"AUTO_12", 3, 10}, {"AUTO_5", 2, 11}, {"AT", 33, 18446744073709551615}, {"rule_BIN", 17, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"DOT", 57, 18446744073709551615}, {"STRING", 17, 18446744073709551615}, {"AT", 33, 18446744073709551615}, {"rule_BIN", 58, 18446744073709551615}, {"AUTO_12", 3, 10}, {"ID", 35, 11}, {"AUTO_5", 2, 11}, {"MULTIPLE", 15, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"DOT", 61, 18446744073709551615}, {"AUTO_23", 16, 18446744073709551615}, {"AT", 33, 18446744073709551615}, {"STRING", 59, 18446744073709551615}, {"rule_BIN", 58, 18446744073709551615}, {"AUTO_5", 2, 11}, {"rule_OP", 34, 18446744073709551615}, {"AUTO_12", 3, 10}, {"ID", 17, 18446744073709551615}, {"MULTIPLE", 15, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::ID, 53, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::AT, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::NUMBER, 8, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 20, ::Parser::DFA::null_state}, {Tokens::PLUS, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 25, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 54, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 22, 10}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 27, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 21, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 17, ::Parser::DFA::null_state}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 35, 11}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 57, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 35, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::DOT, 57, ::Parser::DFA::null_state}, {Tokens::STRING, 17, ::Parser::DFA::null_state}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 58, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 35, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 61, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 16, ::Parser::DFA::null_state}, {Tokens::AT, 33, ::Parser::DFA::null_state}, {Tokens::STRING, 59, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 58, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::rule_OP, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 15, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_7 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"SPACEMODE", 3, 0}, {"NAME", 3, 1}, {"AUTO_8", 2, 2}, {"ID", 1, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"AUTO_6", 3, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"ID", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
+const Parser::DFA::TokenTable<4, 5> Parser::Parser::table_7 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::SPACEMODE, 3, 0}, {Tokens::NAME, 3, 1}, {Tokens::AUTO_8, 2, 2}, {Tokens::ID, 1, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 3, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
 };
-DFACharTable table_8 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'n', 2, 0}, {'!', 1, 1}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'o', 3, 0}} }
-{ 0, DFA_NULL, {
-{'t', 1, 0}} }
+const Parser::DFA::CharTable<4, 3> Parser::Parser::table_8 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'n', 2, 0}, {'!', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 1, 0}} },
 };
-const DFATokenTable table_9 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AUTO_18", 44, 18446744073709551615}, {"AUTO_17", 10, 3}, {"AUTO_13", 9, 18446744073709551615}, {"AUTO_20", 43, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"ID", 41, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}, {"cll_TYPE", 38, 18446744073709551615}, {"AUTO_19", 39, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"AUTO_15", 40, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 4}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 45, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 1}, {"ID", 1, 1}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 4, 18446744073709551615}, {"cll_COMPARE_OP", 17, 4}, {"DIVIDE", 15, 4}, {"AUTO_0", 16, 18446744073709551615}, {"MINUS", 14, 4}, {"MULTIPLE", 15, 4}, {"PLUS", 14, 4}, {"AUTO_4", 51, 18446744073709551615}, {"cll_LOGICAL_OP", 12, 4}, {"MODULO", 15, 4}, {"AUTO_7", 47, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"AUTO_3", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"ID", 19, 18446744073709551615}, {"AUTO_2", 4, 18446744073709551615}, {"NUMBER", 19, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"AUTO_4", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 4}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"AUTO_1", 52, 18446744073709551615}, {"AUTO_14", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 18446744073709551615}, {"AUTO_3", 1, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 79, 18446744073709551615}, {"LINEAR_COMMENT", 77, 18446744073709551615}, {"rule_CSEQUENCE", 75, 18446744073709551615}, {"AT", 73, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"STRING", 71, 18446744073709551615}, {"ID", 69, 18446744073709551615}, {"rule_BIN", 67, 18446744073709551615}, {"rule_ESCAPED", 65, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 4}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_7", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 4}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 4}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 16, 18446744073709551615}, {"LINEAR_COMMENT", 22, 18446744073709551615}, {"rule_CSEQUENCE", 22, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"rule_BIN", 22, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}, {"rule_NOSPACE", 22, 18446744073709551615}, {"rule_HEX", 22, 18446744073709551615}, {"DOT", 22, 18446744073709551615}, {"STRING", 22, 18446744073709551615}, {"ID", 22, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_ESCAPED", 22, 18446744073709551615}, {"rule_OP", 22, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 17, 4}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 18, 18446744073709551615}, {"AUTO_14", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 19, 18446744073709551615}, {"AUTO_6", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 20, 18446744073709551615}, {"AUTO_1", 20, 18446744073709551615}, {"AUTO_14", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 21, 18446744073709551615}, {"LINEAR_COMMENT", 21, 18446744073709551615}, {"rule_CSEQUENCE", 21, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"ID", 21, 18446744073709551615}, {"STRING", 21, 18446744073709551615}, {"rule_BIN", 21, 18446744073709551615}, {"rule_NOSPACE", 21, 18446744073709551615}, {"rule_HEX", 21, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"DOT", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_ESCAPED", 21, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 22, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 23, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 33, 3}, {"AUTO_17", 10, 3}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"AT", 4, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"STRING", 4, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}, {"BOOLEAN", 4, 18446744073709551615}, {"AUTO_15", 2, 4}, {"cll_TYPE", 3, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 26, 18446744073709551615}, {"QUESTION_MARK", 34, 18446744073709551615}, {"PLUS", 34, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 27, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 32, 18446744073709551615}, {"DOT", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 29, 18446744073709551615}, {"AUTO_4", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 30, 18446744073709551615}, {"LINEAR_COMMENT", 30, 18446744073709551615}, {"rule_CSEQUENCE", 30, 18446744073709551615}, {"rule_NOSPACE", 30, 18446744073709551615}, {"rule_HEX", 30, 18446744073709551615}, {"DOT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"ID", 30, 18446744073709551615}, {"STRING", 30, 18446744073709551615}, {"rule_BIN", 30, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_ESCAPED", 30, 18446744073709551615}, {"rule_OP", 30, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 32, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}, {"QUESTION_MARK", 22, 18446744073709551615}, {"DOT", 35, 18446744073709551615}, {"PLUS", 22, 18446744073709551615}, {"MULTIPLE", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 22, 18446744073709551615}, {"LINEAR_COMMENT", 22, 18446744073709551615}, {"rule_CSEQUENCE", 22, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"STRING", 22, 18446744073709551615}, {"ID", 22, 18446744073709551615}, {"rule_BIN", 22, 18446744073709551615}, {"rule_ESCAPED", 22, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"DOT", 35, 18446744073709551615}, {"MULTIPLE", 22, 18446744073709551615}, {"rule_OP", 22, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"QUESTION_MARK", 22, 18446744073709551615}, {"rule_NOSPACE", 22, 18446744073709551615}, {"rule_HEX", 22, 18446744073709551615}, {"PLUS", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 33, 3}, {"AUTO_15", 1, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 22, 18446744073709551615}, {"LINEAR_COMMENT", 22, 18446744073709551615}, {"rule_CSEQUENCE", 22, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"rule_BIN", 22, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"AUTO_2", 1, 18446744073709551615}, {"rule_NOSPACE", 22, 18446744073709551615}, {"rule_HEX", 22, 18446744073709551615}, {"DOT", 22, 18446744073709551615}, {"STRING", 22, 18446744073709551615}, {"ID", 22, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_ESCAPED", 22, 18446744073709551615}, {"rule_OP", 22, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 35, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 36, 18446744073709551615}, {"LINEAR_COMMENT", 30, 18446744073709551615}, {"rule_CSEQUENCE", 30, 18446744073709551615}, {"rule_NOSPACE", 30, 18446744073709551615}, {"ID", 30, 18446744073709551615}, {"STRING", 30, 18446744073709551615}, {"rule_BIN", 30, 18446744073709551615}, {"DOT", 30, 18446744073709551615}, {"rule_HEX", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_ESCAPED", 30, 18446744073709551615}, {"rule_OP", 30, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 37, 18446744073709551615}, {"DOT", 1, 18446744073709551615}} }
+const Parser::DFA::TokenTable<81, 20> Parser::Parser::table_9 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 44, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 43, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::ID, 41, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 38, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 40, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, 4}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 45, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, 1}, {Tokens::ID, 1, 1}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 17, 4}, {Tokens::DIVIDE, 15, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}, {Tokens::MINUS, 14, 4}, {Tokens::MULTIPLE, 15, 4}, {Tokens::PLUS, 14, 4}, {Tokens::AUTO_4, 51, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 12, 4}, {Tokens::MODULO, 15, 4}, {Tokens::AUTO_7, 47, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 52, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 79, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 77, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 75, ::Parser::DFA::null_state}, {Tokens::AT, 73, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::STRING, 71, ::Parser::DFA::null_state}, {Tokens::ID, 69, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 67, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, 4}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, 4}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, 4}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 22, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 22, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 22, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 22, ::Parser::DFA::null_state}, {Tokens::DOT, 22, ::Parser::DFA::null_state}, {Tokens::STRING, 22, ::Parser::DFA::null_state}, {Tokens::ID, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 17, 4}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 21, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 21, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::ID, 21, ::Parser::DFA::null_state}, {Tokens::STRING, 21, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 21, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 21, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::DOT, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 33, 3}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 2, 4}, {Tokens::cll_TYPE, 3, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 34, ::Parser::DFA::null_state}, {Tokens::PLUS, 34, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 30, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 30, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 30, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 30, ::Parser::DFA::null_state}, {Tokens::DOT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::STRING, 30, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 30, ::Parser::DFA::null_state}, {Tokens::rule_OP, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 22, ::Parser::DFA::null_state}, {Tokens::DOT, 35, ::Parser::DFA::null_state}, {Tokens::PLUS, 22, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 22, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 22, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::STRING, 22, ::Parser::DFA::null_state}, {Tokens::ID, 22, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 22, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::DOT, 35, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 22, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 22, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 22, ::Parser::DFA::null_state}, {Tokens::PLUS, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 33, 3}, {Tokens::AUTO_15, 1, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 22, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 22, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 22, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 22, ::Parser::DFA::null_state}, {Tokens::DOT, 22, ::Parser::DFA::null_state}, {Tokens::STRING, 22, ::Parser::DFA::null_state}, {Tokens::ID, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 35, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 30, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 30, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 30, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::STRING, 30, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 30, ::Parser::DFA::null_state}, {Tokens::DOT, 30, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 30, ::Parser::DFA::null_state}, {Tokens::rule_OP, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 37, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}} },
 { 1, 1, {
-{"__WHITESPACE", 3, 1}, {"ID", 1, 1}} }
+{Tokens::__WHITESPACE, 3, 1}, {Tokens::ID, 1, 1}} },
 { 1, 4, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 4}} }
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
 { 1, 3, {
-{"__WHITESPACE", 2, 4}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"cll_ASSIGNMENT_OP", 1, 3}, {"AUTO_13", 18, 18446744073709551615}, {"AUTO_20", 4, 18446744073709551615}, {"cll_COMPARE_OP", 17, 4}, {"__WHITESPACE", 42, 18446744073709551615}, {"AUTO_7", 11, 18446744073709551615}, {"AUTO_4", 13, 18446744073709551615}, {"PLUS", 14, 4}, {"cll_LOGICAL_OP", 12, 4}, {"MULTIPLE", 15, 4}, {"AUTO_0", 16, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
+{Tokens::__WHITESPACE, 2, 4}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::cll_ASSIGNMENT_OP, 1, 3}, {Tokens::AUTO_13, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 4, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 17, 4}, {Tokens::__WHITESPACE, 42, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, 4}, {Tokens::cll_LOGICAL_OP, 12, 4}, {Tokens::MULTIPLE, 15, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
 { 1, 4, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 4}} }
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
 { 1, 0, {
-{"__WHITESPACE", 2, 4}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AUTO_13", 18, 18446744073709551615}, {"AUTO_20", 4, 18446744073709551615}, {"cll_COMPARE_OP", 17, 4}, {"__WHITESPACE", 46, 18446744073709551615}, {"AUTO_7", 11, 18446744073709551615}, {"AUTO_4", 13, 18446744073709551615}, {"PLUS", 14, 4}, {"cll_LOGICAL_OP", 12, 4}, {"MULTIPLE", 15, 4}, {"AUTO_0", 16, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 2, 4}, {"AUTO_20", 8, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"ID", 49, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"AUTO_13", 9, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 48, 18446744073709551615}, {"NUMBER", 4, 18446744073709551615}, {"rule_HEX", 26, 18446744073709551615}, {"PLUS", 22, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"AUTO_13", 18, 18446744073709551615}, {"AUTO_4", 13, 18446744073709551615}, {"PLUS", 14, 4}, {"AUTO_7", 11, 18446744073709551615}, {"cll_LOGICAL_OP", 12, 4}, {"__WHITESPACE", 50, 18446744073709551615}, {"cll_COMPARE_OP", 17, 4}, {"MULTIPLE", 15, 4}, {"AUTO_0", 16, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"ID", 37, 18446744073709551615}, {"DOT", 35, 18446744073709551615}} }
+{Tokens::__WHITESPACE, 2, 4}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 4, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 17, 4}, {Tokens::__WHITESPACE, 46, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, 4}, {Tokens::cll_LOGICAL_OP, 12, 4}, {Tokens::MULTIPLE, 15, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, 4}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 48, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 26, ::Parser::DFA::null_state}, {Tokens::PLUS, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 13, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, 4}, {Tokens::AUTO_7, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 12, 4}, {Tokens::__WHITESPACE, 50, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 17, 4}, {Tokens::MULTIPLE, 15, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 37, ::Parser::DFA::null_state}, {Tokens::DOT, 35, ::Parser::DFA::null_state}} },
 { 1, 3, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_7", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AUTO_1", 20, 18446744073709551615}, {"AUTO_14", 4, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"__WHITESPACE", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 55, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"rule_HEX", 25, 18446744073709551615}, {"ID", 28, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"__WHITESPACE", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 58, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 25, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"ID", 28, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 23, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 61, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"ID", 28, 18446744073709551615}, {"rule_OP", 25, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"__WHITESPACE", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 64, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"DOT", 25, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"ID", 28, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 66, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"rule_ESCAPED", 25, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"ID", 28, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 68, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"rule_BIN", 25, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"rule_ESCAPED", 65, 18446744073709551615}, {"ID", 28, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 70, 18446744073709551615}, {"DOT", 1, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"ID", 37, 18446744073709551615}, {"DOT", 35, 18446744073709551615}, {"rule_HEX", 25, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 72, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"rule_ESCAPED", 65, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"STRING", 25, 18446744073709551615}, {"ID", 69, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"rule_BIN", 67, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 36, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 74, 18446744073709551615}, {"rule_OP", 30, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 26, 18446744073709551615}, {"DOT", 35, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}, {"MULTIPLE", 22, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 76, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"rule_CSEQUENCE", 25, 18446744073709551615}, {"rule_BIN", 67, 18446744073709551615}, {"AT", 73, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"STRING", 71, 18446744073709551615}, {"ID", 69, 18446744073709551615}, {"rule_ESCAPED", 65, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 78, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"rule_CSEQUENCE", 75, 18446744073709551615}, {"LINEAR_COMMENT", 25, 18446744073709551615}, {"AT", 73, 18446744073709551615}, {"rule_BIN", 67, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"STRING", 71, 18446744073709551615}, {"ID", 69, 18446744073709551615}, {"rule_ESCAPED", 65, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 80, 18446744073709551615}, {"AT", 30, 18446744073709551615}, {"AUTO_3", 29, 18446744073709551615}, {"MULTIPLE", 34, 18446744073709551615}, {"AUTO_5", 23, 18446744073709551615}, {"rule_OP", 21, 18446744073709551615}, {"AUTO_12", 24, 18446744073709551615}, {"ID", 31, 18446744073709551615}, {"AUTO_23", 27, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 25, 18446744073709551615}, {"rule_CSEQUENCE", 75, 18446744073709551615}, {"LINEAR_COMMENT", 77, 18446744073709551615}, {"AT", 73, 18446744073709551615}, {"rule_BIN", 67, 18446744073709551615}, {"DOT", 63, 18446744073709551615}, {"MULTIPLE", 62, 18446744073709551615}, {"STRING", 71, 18446744073709551615}, {"ID", 69, 18446744073709551615}, {"rule_ESCAPED", 65, 18446744073709551615}, {"rule_OP", 60, 18446744073709551615}, {"AUTO_5", 59, 18446744073709551615}, {"QUESTION_MARK", 56, 18446744073709551615}, {"rule_NOSPACE", 57, 18446744073709551615}, {"rule_HEX", 54, 18446744073709551615}, {"PLUS", 53, 18446744073709551615}} }
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 55, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::rule_HEX, 25, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 58, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 25, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 61, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::rule_OP, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 64, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::DOT, 25, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 66, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 25, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 68, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::rule_BIN, 25, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 70, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 37, ::Parser::DFA::null_state}, {Tokens::DOT, 35, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 25, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 72, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::STRING, 25, ::Parser::DFA::null_state}, {Tokens::ID, 69, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 67, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 74, ::Parser::DFA::null_state}, {Tokens::rule_OP, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::DOT, 35, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 22, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 76, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::rule_CSEQUENCE, 25, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 67, ::Parser::DFA::null_state}, {Tokens::AT, 73, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::STRING, 71, ::Parser::DFA::null_state}, {Tokens::ID, 69, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 78, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::rule_CSEQUENCE, 75, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 25, ::Parser::DFA::null_state}, {Tokens::AT, 73, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 67, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::STRING, 71, ::Parser::DFA::null_state}, {Tokens::ID, 69, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 80, ::Parser::DFA::null_state}, {Tokens::AT, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 23, ::Parser::DFA::null_state}, {Tokens::rule_OP, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 24, ::Parser::DFA::null_state}, {Tokens::ID, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 27, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 75, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 77, ::Parser::DFA::null_state}, {Tokens::AT, 73, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 67, ::Parser::DFA::null_state}, {Tokens::DOT, 63, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 62, ::Parser::DFA::null_state}, {Tokens::STRING, 71, ::Parser::DFA::null_state}, {Tokens::ID, 69, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 65, ::Parser::DFA::null_state}, {Tokens::rule_OP, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 59, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 56, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 57, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 54, ::Parser::DFA::null_state}, {Tokens::PLUS, 53, ::Parser::DFA::null_state}} },
 };
-const DFATokenTable table_10 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"BOOLEAN", 1, 0}, {"ID", 1, 5}, {"STRING", 1, 1}, {"AT", 1, 4}, {"AUTO_0", 3, 2}, {"AUTO_13", 2, 3}, {"NUMBER", 1, 6}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"AUTO_1", 19, 18446744073709551615}, {"AUTO_14", 4, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"ID", 6, 18446744073709551615}, {"AUTO_2", 1, 2}, {"NUMBER", 6, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"cll_COMPARE_OP", 12, 18446744073709551615}, {"DIVIDE", 10, 18446744073709551615}, {"MINUS", 9, 18446744073709551615}, {"MULTIPLE", 10, 18446744073709551615}, {"AUTO_1", 11, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 18446744073709551615}, {"MODULO", 10, 18446744073709551615}, {"PLUS", 9, 18446744073709551615}, {"AUTO_7", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"AUTO_1", 5, 18446744073709551615}, {"AUTO_14", 4, 3}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_6", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"AUTO_2", 1, 2}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"AUTO_19", 23, 18446744073709551615}, {"AUTO_3", 16, 18446744073709551615}, {"AUTO_20", 22, 18446744073709551615}, {"ID", 20, 18446744073709551615}, {"BOOLEAN", 13, 18446744073709551615}, {"STRING", 13, 18446744073709551615}, {"AT", 13, 18446744073709551615}, {"AUTO_13", 2, 3}, {"NUMBER", 13, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"AUTO_19", 15, 18446744073709551615}, {"AUTO_3", 16, 18446744073709551615}, {"AUTO_20", 15, 18446744073709551615}, {"ID", 14, 18446744073709551615}, {"BOOLEAN", 13, 18446744073709551615}, {"STRING", 13, 18446744073709551615}, {"AT", 13, 18446744073709551615}, {"AUTO_13", 2, 3}, {"NUMBER", 13, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 18446744073709551615}, {"AUTO_19", 15, 18446744073709551615}, {"AUTO_3", 16, 18446744073709551615}, {"AUTO_20", 15, 18446744073709551615}, {"ID", 14, 18446744073709551615}, {"BOOLEAN", 13, 18446744073709551615}, {"STRING", 13, 18446744073709551615}, {"AT", 13, 18446744073709551615}, {"AUTO_13", 2, 3}, {"NUMBER", 13, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 18446744073709551615}, {"ID", 17, 18446744073709551615}, {"NUMBER", 17, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"AUTO_19", 15, 18446744073709551615}, {"AUTO_3", 16, 18446744073709551615}, {"AUTO_20", 15, 18446744073709551615}, {"ID", 14, 18446744073709551615}, {"BOOLEAN", 13, 18446744073709551615}, {"STRING", 13, 18446744073709551615}, {"AT", 13, 18446744073709551615}, {"AUTO_13", 2, 3}, {"NUMBER", 13, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"cll_COMPARE_OP", 12, 18446744073709551615}, {"DIVIDE", 10, 18446744073709551615}, {"MINUS", 9, 18446744073709551615}, {"MULTIPLE", 10, 18446744073709551615}, {"AUTO_1", 11, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 18446744073709551615}, {"MODULO", 10, 18446744073709551615}, {"PLUS", 9, 18446744073709551615}, {"AUTO_7", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"AUTO_3", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 16, 18446744073709551615}, {"AUTO_4", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 17, 18446744073709551615}, {"AUTO_6", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 18, 18446744073709551615}, {"AUTO_14", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"AUTO_1", 5, 18446744073709551615}, {"AUTO_14", 4, 3}} }
-{ 1, DFA_NULL, {
-{"AUTO_13", 18, 18446744073709551615}, {"AUTO_20", 13, 18446744073709551615}, {"cll_COMPARE_OP", 12, 18446744073709551615}, {"__WHITESPACE", 21, 18446744073709551615}, {"AUTO_7", 7, 18446744073709551615}, {"PLUS", 9, 18446744073709551615}, {"cll_LOGICAL_OP", 8, 18446744073709551615}, {"MULTIPLE", 10, 18446744073709551615}, {"AUTO_1", 11, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"ID", 1, 18446744073709551615}} }
+const Parser::DFA::TokenTable<24, 10> Parser::Parser::table_10 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 1, 0}, {Tokens::ID, 1, 5}, {Tokens::STRING, 1, 1}, {Tokens::AT, 1, 4}, {Tokens::AUTO_0, 3, 2}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 1, 6}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, 2}, {Tokens::NUMBER, 6, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 10, ::Parser::DFA::null_state}, {Tokens::MINUS, 9, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, ::Parser::DFA::null_state}, {Tokens::MODULO, 10, ::Parser::DFA::null_state}, {Tokens::PLUS, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 22, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 13, ::Parser::DFA::null_state}, {Tokens::STRING, 13, ::Parser::DFA::null_state}, {Tokens::AT, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 15, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 13, ::Parser::DFA::null_state}, {Tokens::STRING, 13, ::Parser::DFA::null_state}, {Tokens::AT, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 15, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 13, ::Parser::DFA::null_state}, {Tokens::STRING, 13, ::Parser::DFA::null_state}, {Tokens::AT, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::NUMBER, 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 15, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 13, ::Parser::DFA::null_state}, {Tokens::STRING, 13, ::Parser::DFA::null_state}, {Tokens::AT, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 10, ::Parser::DFA::null_state}, {Tokens::MINUS, 9, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, ::Parser::DFA::null_state}, {Tokens::MODULO, 10, ::Parser::DFA::null_state}, {Tokens::PLUS, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, 3}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 7, ::Parser::DFA::null_state}, {Tokens::PLUS, 9, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 11, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
 };
-DFACharTable table_11 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'|', 2, 0}, {'o', 1, 1}} }
-{ 0, DFA_NULL, {
-{'r', 3, 1}} }
-{ 0, DFA_NULL, {
-{'|', 3, 0}} }
-{ 0, DFA_NULL, {
-} }
+const Parser::DFA::CharTable<4, 3> Parser::Parser::table_11 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'|', 2, 0}, {'o', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'|', 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_12 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AUTO_0", 2, 0}, {"AT", 1, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"AUTO_0", 5, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 18446744073709551615}, {"AUTO_19", 29, 18446744073709551615}, {"AUTO_3", 9, 18446744073709551615}, {"AUTO_20", 28, 18446744073709551615}, {"ID", 26, 18446744073709551615}, {"BOOLEAN", 24, 18446744073709551615}, {"STRING", 22, 18446744073709551615}, {"AT", 20, 18446744073709551615}, {"AUTO_0", 4, 18446744073709551615}, {"AUTO_13", 3, 18446744073709551615}, {"NUMBER", 18, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"AUTO_1", 30, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 4, 18446744073709551615}, {"ID", 16, 18446744073709551615}, {"AUTO_2", 14, 18446744073709551615}, {"NUMBER", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"AUTO_3", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"AUTO_21", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 18446744073709551615}, {"AUTO_4", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 18446744073709551615}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 9, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 33, 18446744073709551615}, {"BOOLEAN", 14, 18446744073709551615}, {"STRING", 14, 18446744073709551615}, {"AT", 14, 18446744073709551615}, {"AUTO_0", 4, 18446744073709551615}, {"AUTO_13", 3, 18446744073709551615}, {"NUMBER", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 18446744073709551615}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 9, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 6, 18446744073709551615}, {"BOOLEAN", 14, 18446744073709551615}, {"STRING", 14, 18446744073709551615}, {"AT", 14, 18446744073709551615}, {"AUTO_0", 4, 18446744073709551615}, {"AUTO_13", 3, 18446744073709551615}, {"NUMBER", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 18446744073709551615}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 9, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 6, 18446744073709551615}, {"BOOLEAN", 14, 18446744073709551615}, {"STRING", 14, 18446744073709551615}, {"AT", 14, 18446744073709551615}, {"AUTO_0", 4, 18446744073709551615}, {"AUTO_13", 3, 18446744073709551615}, {"NUMBER", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 9, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 6, 18446744073709551615}, {"BOOLEAN", 14, 18446744073709551615}, {"STRING", 14, 18446744073709551615}, {"AT", 14, 18446744073709551615}, {"AUTO_0", 4, 18446744073709551615}, {"AUTO_13", 3, 18446744073709551615}, {"NUMBER", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"DIVIDE", 12, 18446744073709551615}, {"MINUS", 11, 18446744073709551615}, {"MULTIPLE", 12, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}, {"ID", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"AUTO_1", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 16, 18446744073709551615}, {"AUTO_6", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 17, 18446744073709551615}, {"AUTO_14", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 19, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"ID", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 21, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"ID", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 23, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"ID", 7, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 25, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"ID", 7, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"AUTO_13", 17, 18446744073709551615}, {"AUTO_20", 14, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"__WHITESPACE", 27, 18446744073709551615}, {"AUTO_2", 5, 0}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"MULTIPLE", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}, {"ID", 7, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-} }
-{ 5, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"AUTO_1", 15, 18446744073709551615}, {"AUTO_14", 14, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}, {"ID", 7, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"__WHITESPACE", 14, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"AUTO_2", 5, 0}, {"MODULO", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}, {"ID", 7, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-{"AUTO_13", 17, 18446744073709551615}, {"AUTO_19", 32, 18446744073709551615}, {"AUTO_20", 31, 18446744073709551615}, {"cll_COMPARE_OP", 13, 18446744073709551615}, {"__WHITESPACE", 34, 18446744073709551615}, {"AUTO_2", 5, 0}, {"cll_LOGICAL_OP", 10, 18446744073709551615}, {"MULTIPLE", 12, 18446744073709551615}, {"PLUS", 11, 18446744073709551615}, {"ID", 7, 18446744073709551615}} }
-{ 5, DFA_NULL, {
-} }
+const Parser::DFA::TokenTable<35, 11> Parser::Parser::table_12 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, 0}, {Tokens::AT, 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 28, ::Parser::DFA::null_state}, {Tokens::ID, 26, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 24, ::Parser::DFA::null_state}, {Tokens::STRING, 22, ::Parser::DFA::null_state}, {Tokens::AT, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::ID, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 14, ::Parser::DFA::null_state}, {Tokens::NUMBER, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_21, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 12, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 12, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 14, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+{Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 32, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 31, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 12, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::ID, 7, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+} },
 };
-const DFATokenTable table_13 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'\', 2, 0}, {''', 1, 1}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'\', 3, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}} }
+const Parser::DFA::TokenTable<4, 3> Parser::Parser::table_13 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'\', 2, 0}, {''', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'\', 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 };
-DFACharTable table_14 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'s', 3, 0}, {'a', 2, 1}, {'m', 1, 2}} }
-{ 0, DFA_NULL, {
-{'i', 4, 2}} }
-{ 0, DFA_NULL, {
-{'l', 5, 1}} }
-{ 0, DFA_NULL, {
-{'k', 6, 0}} }
-{ 0, DFA_NULL, {
-{'x', 7, 2}} }
-{ 0, DFA_NULL, {
-{'l', 8, 1}} }
-{ 0, DFA_NULL, {
-{'i', 9, 0}} }
-{ 0, DFA_NULL, {
-{'e', 10, 2}} }
-{ 0, DFA_NULL, {
-{'o', 11, 1}} }
-{ 0, DFA_NULL, {
-{'p', 12, 0}} }
-{ 0, DFA_NULL, {
-{'d', 13, 2}} }
-{ 0, DFA_NULL, {
-{'w', 14, 1}} }
-{ 0, DFA_NULL, {
-{'p', 15, 0}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'e', 16, 1}} }
-{ 0, DFA_NULL, {
-{'e', 17, 0}} }
-{ 0, DFA_NULL, {
-{'d', 13, 1}} }
-{ 0, DFA_NULL, {
-{'d', 13, 0}} }
+const Parser::DFA::CharTable<18, 4> Parser::Parser::table_14 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'s', 3, 0}, {'a', 2, 1}, {'m', 1, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'i', 4, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 5, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'k', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'x', 7, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 8, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'i', 9, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 10, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 11, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'p', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 13, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'w', 14, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'p', 15, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 16, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 17, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 13, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 13, 0}} },
 };
-DFACharTable table_15 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'<', 5, 18446744073709551615}, {'!', 3, 3}, {'>', 4, 18446744073709551615}, {'=', 1, 1}} }
-{ 0, DFA_NULL, {
-{'=', 2, 1}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'=', 2, 3}} }
+const Parser::DFA::CharTable<6, 5> Parser::Parser::table_15 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'<', 5, ::Parser::DFA::null_state}, {'!', 3, 3}, {'>', 4, ::Parser::DFA::null_state}, {'=', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 2, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 2, 3}} },
 { 2, 4, {
-{'=', 2, 0}} }
+{'=', 2, 0}} },
 { 2, 5, {
-{'=', 2, 2}} }
+{'=', 2, 2}} },
 };
-const DFATokenTable table_16 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"AUTO_20", 21, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"ID", 19, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}, {"cll_TYPE", 17, 18446744073709551615}, {"AUTO_19", 18, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 2, 1}, {"ID", 1, 1}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"cll_COMPARE_OP", 12, 0}, {"DIVIDE", 11, 0}, {"MINUS", 10, 0}, {"MULTIPLE", 11, 0}, {"MODULO", 11, 0}, {"PLUS", 10, 0}, {"cll_LOGICAL_OP", 9, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 4, 18446744073709551615}, {"AUTO_1", 22, 18446744073709551615}, {"AUTO_14", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"AUTO_3", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 6, 18446744073709551615}, {"ID", 16, 18446744073709551615}, {"AUTO_2", 3, 18446744073709551615}, {"NUMBER", 16, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 7, 18446744073709551615}, {"AUTO_4", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 9, 0}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 25, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 10, 0}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 11, 0}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 12, 0}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"AUTO_1", 13, 18446744073709551615}, {"AUTO_14", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 14, 0}, {"AUTO_19", 8, 18446744073709551615}, {"AUTO_3", 7, 18446744073709551615}, {"AUTO_20", 8, 18446744073709551615}, {"ID", 5, 18446744073709551615}, {"BOOLEAN", 3, 18446744073709551615}, {"STRING", 3, 18446744073709551615}, {"AT", 3, 18446744073709551615}, {"AUTO_0", 6, 18446744073709551615}, {"AUTO_13", 4, 18446744073709551615}, {"NUMBER", 3, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"AUTO_14", 1, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 16, 18446744073709551615}, {"AUTO_6", 1, 18446744073709551615}} }
+const Parser::DFA::TokenTable<27, 12> Parser::Parser::table_16 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 18, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 2, 1}, {Tokens::ID, 1, 1}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, 0}, {Tokens::DIVIDE, 11, 0}, {Tokens::MINUS, 10, 0}, {Tokens::MULTIPLE, 11, 0}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 10, 0}, {Tokens::cll_LOGICAL_OP, 9, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 9, 0}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 25, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 10, 0}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 11, 0}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 12, 0}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 14, 0}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
 { 1, 1, {
-{"__WHITESPACE", 2, 1}, {"ID", 1, 1}} }
+{Tokens::__WHITESPACE, 2, 1}, {Tokens::ID, 1, 1}} },
 { 1, 0, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 0}} }
-{ 0, DFA_NULL, {
-{"cll_ASSIGNMENT_OP", 1, 18446744073709551615}, {"cll_COMPARE_OP", 12, 0}, {"__WHITESPACE", 20, 18446744073709551615}, {"AUTO_13", 15, 18446744073709551615}, {"AUTO_20", 3, 18446744073709551615}, {"MODULO", 11, 0}, {"PLUS", 10, 0}, {"cll_LOGICAL_OP", 9, 0}} }
-{ 1, DFA_NULL, {
-{"cll_ASSIGNMENT_OP", 14, 18446744073709551615}} }
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, 0}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 3, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 10, 0}, {Tokens::cll_LOGICAL_OP, 9, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::cll_ASSIGNMENT_OP, 14, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{"__WHITESPACE", 8, 18446744073709551615}, {"ID", 1, 0}} }
-{ 1, DFA_NULL, {
-{"AUTO_1", 13, 18446744073709551615}, {"AUTO_14", 3, 18446744073709551615}} }
-{ 1, DFA_NULL, {
-{"cll_COMPARE_OP", 12, 0}, {"MODULO", 11, 0}, {"PLUS", 10, 0}, {"__WHITESPACE", 3, 18446744073709551615}, {"cll_LOGICAL_OP", 9, 0}} }
-{ 1, DFA_NULL, {
-{"cll_COMPARE_OP", 12, 0}, {"MODULO", 11, 0}, {"PLUS", 10, 0}, {"__WHITESPACE", 3, 18446744073709551615}, {"cll_LOGICAL_OP", 9, 0}} }
-{ 1, DFA_NULL, {
-{"__WHITESPACE", 26, 18446744073709551615}, {"cll_COMPARE_OP", 12, 0}, {"AUTO_13", 15, 18446744073709551615}, {"AUTO_19", 24, 18446744073709551615}, {"AUTO_20", 23, 18446744073709551615}, {"MODULO", 11, 0}, {"PLUS", 10, 0}, {"cll_LOGICAL_OP", 9, 0}, {"DOT", 1, 0}} }
-{ 1, DFA_NULL, {
-} }
+{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::cll_COMPARE_OP, 12, 0}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 10, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 9, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::cll_COMPARE_OP, 12, 0}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 10, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 9, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 12, 0}, {Tokens::AUTO_13, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 23, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 10, 0}, {Tokens::cll_LOGICAL_OP, 9, 0}, {Tokens::DOT, 1, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
 };
-DFACharTable table_17 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'a', 2, 0}, {'&', 1, 1}} }
-{ 0, DFA_NULL, {
-{'&', 3, 1}} }
-{ 0, DFA_NULL, {
-{'n', 4, 0}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{'d', 3, 0}} }
+const Parser::DFA::CharTable<5, 3> Parser::Parser::table_17 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'a', 2, 0}, {'&', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'&', 3, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 3, 0}} },
 };
-DFACharTable table_18 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {'b', 6, 0}, {'v', 5, 1}, {'o', 4, 3}, {'s', 3, 2}, {'n', 2, 4}, {'a', 1, 5}} }
-{ 0, DFA_NULL, {
-{'r', 7, 5}} }
-{ 0, DFA_NULL, {
-{'u', 8, 4}} }
-{ 0, DFA_NULL, {
-{'t', 9, 2}} }
-{ 0, DFA_NULL, {
-{'b', 10, 3}} }
-{ 0, DFA_NULL, {
-{'a', 11, 1}} }
-{ 0, DFA_NULL, {
-{'o', 12, 0}} }
-{ 0, DFA_NULL, {
-{'r', 13, 5}} }
-{ 0, DFA_NULL, {
-{'m', 14, 4}} }
-{ 0, DFA_NULL, {
-{'r', 14, 2}} }
-{ 0, DFA_NULL, {
-{'j', 15, 3}} }
-{ 0, DFA_NULL, {
-{'r', 14, 1}} }
-{ 0, DFA_NULL, {
-{'o', 16, 0}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 13, 18446744073709551615}, {"cll_TEMPLATE", 14, 5}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 15, 18446744073709551615}, {"cll_TEMPLATE", 14, 3}} }
-{ 0, DFA_NULL, {
-{'l', 14, 0}} }
+const Parser::DFA::CharTable<17, 7> Parser::Parser::table_18 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'b', 6, 0}, {'v', 5, 1}, {'o', 4, 3}, {'s', 3, 2}, {'n', 2, 4}, {'a', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 7, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 8, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 9, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 10, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 11, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 14, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 14, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'j', 15, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 14, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 16, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 14, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 14, 3}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 14, 0}} },
 };
-const DFATokenTable table_19 = {{ 0, DFA_NULL, {
-{"__WHITESPACE", 0, 18446744073709551615}, {"ID", 6, 18446744073709551615}, {"MULTIPLE", 1, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 1, 18446744073709551615}, {"AUTO_9", 2, 1}} }
-{ 0, DFA_NULL, {
-} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"AUTO_9", 4, 1}, {"AUTO_1", 5, 18446744073709551615}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 4, 18446744073709551615}, {"ID", 2, 1}} }
-{ 0, DFA_NULL, {
-{"__WHITESPACE", 5, 18446744073709551615}, {"ID", 2, 18446744073709551615}} }
+const Parser::DFA::TokenTable<7, 3> Parser::Parser::table_19 = {{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 2, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 4, 1}, {Tokens::AUTO_1, 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::ID, 2, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 2, ::Parser::DFA::null_state}} },
 { 2, 0, {
-{"__WHITESPACE", 3, 18446744073709551615}, {"AUTO_9", 4, 1}, {"AUTO_1", 5, 18446744073709551615}} }
+{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 4, 1}, {Tokens::AUTO_1, 5, ::Parser::DFA::null_state}} },
 };
 
 Parser::Token Parser::Lexer::makeToken(const char*& pos) {
