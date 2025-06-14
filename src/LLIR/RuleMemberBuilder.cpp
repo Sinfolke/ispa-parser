@@ -795,6 +795,7 @@ void LLIR::OpBuilder::build() {
     }
     auto DFA = std::move(DFABuilder(*tree, *rule).get());
     LLIR::variable var = createEmptyVariable("");
+    var.type = {*isToken ? var_types::Token_result : var_types::Rule_result} ;
     if (rule->prefix.name.empty()) {
         var.name = generateVariableName();
     } else if (!rule->prefix.is_key_value) {

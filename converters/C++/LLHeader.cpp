@@ -8,7 +8,7 @@ void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <list>\n";
     out << "#include <unordered_map>\n";
-    out << "#include <iscstdlibc++.h>\n";
+    out << "#include <ispastdlib.hpp>\n";
     out << "#include <fstream>\n";
     out << "#include <iterator>\n\n";
     out << "#include <iostream>\n";
@@ -118,16 +118,22 @@ void LLHeader::createDFATypes(std::ostringstream &out) {
     out << R"(
     namespace DFA {
         size_t null_state = std::numeric_limits<size_t>::max();
+        template<typename Key>
+        struct Transition {
+            Key symbol;
+            size_t next;
+            size_t accept;
+        };
         template<size_t MAX, typename Key>
         struct Unit {
             size_t else_goto;
             size_t else_goto_accept;
-            std::array<std::pair<Key, size_t>, MAX> transitions;
+            std::array<Transition<Key>, MAX> transitions;
         };
         template<size_t N, size_t MAX>
-        using TokenTable = std::array<DFAUnit<MAX, Tokens>, N>;
+        using TokenTable = std::array<Unit<MAX, Tokens>, N>;
         template<size_t N, size_t MAX>
-        using CharTable = std::array<DFAUnit<MAX, char>, N>;
+        using CharTable = std::array<Unit<MAX, char>, N>;
     }
 )";
 }

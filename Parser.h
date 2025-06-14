@@ -5,7 +5,7 @@
 #include <string>
 #include <list>
 #include <unordered_map>
-#include <iscstdlibc++.h>
+#include <ispastdlib.hpp>
 #include <fstream>
 #include <iterator>
 
@@ -166,16 +166,22 @@ namespace Parser {
 
     namespace DFA {
         size_t null_state = std::numeric_limits<size_t>::max();
+        template<typename Key>
+        struct Transition {
+            Key symbol;
+            size_t next;
+            size_t accept;
+        };
         template<size_t MAX, typename Key>
         struct Unit {
             size_t else_goto;
             size_t else_goto_accept;
-            std::array<std::pair<Key, size_t>, MAX> transitions;
+            std::array<Transition<Key>, MAX> transitions;
         };
         template<size_t N, size_t MAX>
-        using TokenTable = std::array<DFAUnit<MAX, Tokens>, N>;
+        using TokenTable = std::array<Unit<MAX, Tokens>, N>;
         template<size_t N, size_t MAX>
-        using CharTable = std::array<DFAUnit<MAX, char>, N>;
+        using CharTable = std::array<Unit<MAX, char>, N>;
     }
 	namespace Types {
 		using AUTO_4 = char;
@@ -185,17 +191,17 @@ namespace Parser {
 		};
 		using NAME = ::Parser::Token;
 		using AUTO_2 = char;
-		using cll_COMPARE_OP = ::Parser::UNDEF;
+		using cll_COMPARE_OP = ::Parser::Rule;
 		using AUTO_11 = ::Parser::str_t;
 		struct rule_CSEQUENCE_DIAPASON {
 			::Parser::Token to;
 			::Parser::Token from;
 		};
-		using cll_OP = ::Parser::UNDEF;
+		using cll_OP = ::Parser::Rule;
 		using AUTO_9 = ::Parser::str_t;
 		using AUTO_0 = char;
 		struct rule_CSEQUENCE {
-			::Parser::UNDEF val;
+			::Parser::arr_t<::Parser::Rule> val;
 			char _not;
 		};
 		struct NUMBER {
@@ -203,13 +209,13 @@ namespace Parser {
 			::Parser::str_t dec;
 			::Parser::str_t sign;
 		};
-		using cll_LOGICAL_OP = ::Parser::UNDEF;
+		using cll_LOGICAL_OP = ::Parser::Rule;
 		using AUTO_3 = char;
 		using AUTO_13 = char;
 		using AUTO_18 = ::Parser::str_t;
 		using rule_CSEQUENCE_ESCAPE = char;
 		using AUTO_1 = char;
-		using SPACEMODE = ::Parser::UNDEF;
+		using SPACEMODE = ::Parser::Rule;
 		using AUTO_7 = char;
 		using BOOLEAN = ::Parser::str_t;
 		using rule_BIN = ::Parser::str_t;
@@ -232,7 +238,7 @@ namespace Parser {
 		using AUTO_8 = ::Parser::str_t;
 		using AUTO_21 = char;
 		using STRING = ::Parser::str_t;
-		using rule_CSEQUENCE_SYMBOL = ::Parser::UNDEF;
+		using rule_CSEQUENCE_SYMBOL = ::Parser::Rule;
 		using AUTO_23 = char;
 		using ID = ::Parser::str_t;
 		using AUTO_22 = ::Parser::str_t;
@@ -242,7 +248,7 @@ namespace Parser {
 			::Parser::Token name;
 		};
 		using cll_function_body_call = ::Parser::Rule;
-		using rule_data_block = ::Parser::UNDEF;
+		using rule_data_block = ::Parser::Rule;
 		struct cll_function_call {
 			::Parser::Rule body;
 			::Parser::Token name;
@@ -255,7 +261,7 @@ namespace Parser {
 		using cll_expr = ::Parser::Rule;
 		struct cll_expr_term {
 			::Parser::arr_t<::Parser::Rule> sequence;
-			::Parser::UNDEF operators;
+			::Parser::Rule operators;
 			::Parser::Rule first;
 		};
 		struct cll_expr_logical {
@@ -277,16 +283,16 @@ namespace Parser {
 			::Parser::Rule stmt;
 			::Parser::Rule cond;
 			::Parser::Rule end;
-			::Parser::UNDEF decl;
+			::Parser::Rule decl;
 		};
 		struct cll__variable {
 			::Parser::Token name;
-			::Parser::UNDEF pos;
+			::Parser::Rule pos;
 			::Parser::Rule brace_expression;
-			::Parser::UNDEF pre;
+			::Parser::Rule pre;
 		};
 		using rule_nested_rule = ::Parser::Rule;
-		using rvalue = ::Parser::UNDEF;
+		using rvalue = ::Parser::Rule;
 		struct _use_unit {
 			::Parser::Rule value;
 			::Parser::Token name;
@@ -301,7 +307,7 @@ namespace Parser {
 		};
 		struct cll_expr_arithmetic {
 			::Parser::arr_t<::Parser::Rule> sequence;
-			::Parser::UNDEF operators;
+			::Parser::Rule operators;
 			::Parser::Rule first;
 		};
 		struct rule {
@@ -310,29 +316,29 @@ namespace Parser {
 			::Parser::Rule data_block;
 			::Parser::Token name;
 		};
-		using main = ::Parser::UNDEF;
+		using main = ::Parser::Rule;
 		using array = ::Parser::arr_t<::Parser::Rule>;
 		struct rule_member {
-			::Parser::UNDEF val;
+			::Parser::Rule val;
 			::Parser::Rule quantifier;
-			::Parser::UNDEF prefix;
+			::Parser::Rule prefix;
 		};
 		struct rule_data_block_templated_datablock {
 			::Parser::arr_t<::Parser::Token> second_name;
 			::Parser::Token first_name;
 		};
 		using rule_group = ::Parser::arr_t<::Parser::Rule>;
-		using cll_expr_value = ::Parser::UNDEF;
+		using cll_expr_value = ::Parser::Rule;
 		using cll_function_body_decl = ::Parser::Rule;
 		struct rule_name {
 			::Parser::arr_t<::Parser::Token> nested_name;
 			::Parser::Token name;
 			::Parser::Token is_nested;
 		};
-		using rule_data_block_regular_datablock = ::Parser::UNDEF;
-		using moduleImport = ::Parser::UNDEF;
+		using rule_data_block_regular_datablock = ::Parser::Rule;
+		using moduleImport = ::Parser::Rule;
 		using cll_expr_group = ::Parser::Rule;
-		using cll = ::Parser::UNDEF;
+		using cll = ::Parser::Rule;
 		struct moduleDeclaration {
 			::Parser::Token base;
 			::Parser::Token name;
@@ -341,17 +347,17 @@ namespace Parser {
 			::Parser::Rule stmt;
 			::Parser::Rule expr;
 		};
-		using rule_quantifier = ::Parser::UNDEF;
+		using rule_quantifier = ::Parser::Rule;
 		struct moduleImport_from {
 			::Parser::Token from;
-			::Parser::UNDEF what;
+			::Parser::Rule what;
 		};
 		using rule_value = ::Parser::Token;
 		struct object {
 			::Parser::arr_t<::Parser::Rule> values;
-			::Parser::UNDEF keys;
+			::Parser::Rule keys;
 			::Parser::Rule value;
-			::Parser::UNDEF key;
+			::Parser::Rule key;
 		};
 		using cll_stmt = ::Parser::arr_t<::Parser::Rule>;
 		struct cll_expr_compare {
@@ -651,7 +657,7 @@ namespace Parser {
 		::Parser::Rule_res cll_expr_value(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::UNDEF _0;
+			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = 1;
 			dfa_lookup_result_2 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_2)
@@ -790,7 +796,7 @@ namespace Parser {
 		::Parser::Rule_res moduleImport_from(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::UNDEF _0;
+			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = 1;
 			dfa_lookup_result_2 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_2)
@@ -894,7 +900,7 @@ namespace Parser {
 		::Parser::Rule_res rule_quantifier(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::UNDEF _0;
+			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = 1;
 			skip_spaces(pos);
 			switch (*pos)
@@ -1062,7 +1068,7 @@ namespace Parser {
 			success_1 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::UNDEF _2;
+			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = 1;
 			dfa_lookup_result_4 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_4)
@@ -1278,11 +1284,12 @@ namespace Parser {
 			auto in = pos;
 			skip_spaces(pos);
 			::Parser::bool_t success_3 = 1;
+			::Parser::Rule _0;
 			::Parser::bool_t success_1 = false;
 			auto begin_5 = pos;
 			do
 			{
-				::Parser::UNDEF _2;
+				::Parser::Rule_res _2;
 				dfa_lookup_result_4 = DFA_DECIDE(begin_5);
 				switch (dfa_lookup_result_4)
 				{
@@ -1300,7 +1307,7 @@ namespace Parser {
 					}
 				}
 ;
-				_0 = ;
+				_0 = _2;
 			}
 			while(0);
 			if (success_3)
@@ -1309,7 +1316,7 @@ namespace Parser {
 				pos = begin_5;
 			}
 			skip_spaces(pos);
-			::Parser::UNDEF _6;
+			::Parser::Rule_res _6;
 			::Parser::bool_t success_7 = 1;
 			dfa_lookup_result_8 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_8)
@@ -1526,7 +1533,7 @@ namespace Parser {
 			::Parser::bool_t success_6 = false;
 			while (1)
 			{
-				::Parser::UNDEF _2;
+				::Parser::Rule_res _2;
 				dfa_lookup_result_4 = DFA_DECIDE(begin_5);
 				switch (dfa_lookup_result_4)
 				{
@@ -1879,7 +1886,7 @@ namespace Parser {
 			success_1 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::UNDEF _2;
+			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = 1;
 			dfa_lookup_result_4 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_4)
@@ -1971,7 +1978,7 @@ namespace Parser {
 		::Parser::Rule_res rvalue(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::UNDEF _0;
+			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = 1;
 			dfa_lookup_result_2 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_2)
@@ -2101,11 +2108,12 @@ namespace Parser {
 			auto in = pos;
 			skip_spaces(pos);
 			::Parser::bool_t success_3 = 1;
+			::Parser::Rule _0;
 			::Parser::bool_t success_1 = false;
 			auto begin_8 = pos;
 			do
 			{
-				::Parser::UNDEF _2;
+				::Parser::Rule_res _2;
 				skip_spaces(begin_8);
 				switch (*begin_8)
 				{
@@ -2143,7 +2151,7 @@ namespace Parser {
 					}
 				}
 ;
-				_0 = ;
+				_0 = _2;
 			}
 			while(0);
 			if (success_3)
@@ -2204,11 +2212,12 @@ namespace Parser {
 			}
 			skip_spaces(pos);
 			::Parser::bool_t success_23 = 1;
+			::Parser::Rule _20;
 			::Parser::bool_t success_21 = false;
 			auto begin_28 = pos;
 			do
 			{
-				::Parser::UNDEF _22;
+				::Parser::Rule_res _22;
 				skip_spaces(begin_28);
 				switch (*begin_28)
 				{
@@ -2246,7 +2255,7 @@ namespace Parser {
 					}
 				}
 ;
-				_20 = ;
+				_20 = _22;
 			}
 			while(0);
 			if (success_23)
@@ -2289,7 +2298,7 @@ namespace Parser {
 			auto begin_36 = pos;
 			do
 			{
-				::Parser::UNDEF _4;
+				::Parser::Rule_res _4;
 				skip_spaces(begin_36);
 				switch (*begin_36)
 				{
@@ -2361,7 +2370,7 @@ namespace Parser {
 					begin_33 += 1;
 					shadow_18.push_back(_16);
 					skip_spaces(begin_33);
-					::Parser::UNDEF _19;
+					::Parser::Rule_res _19;
 					skip_spaces(begin_33);
 					switch (*begin_33)
 					{
@@ -2603,7 +2612,7 @@ namespace Parser {
 			auto begin_18 = pos;
 			while (1)
 			{
-				::Parser::UNDEF _4;
+				::Parser::Rule_res _4;
 				skip_spaces(begin_18);
 				switch (*begin_18)
 				{
@@ -2725,7 +2734,7 @@ namespace Parser {
 			auto begin_15 = pos;
 			while (1)
 			{
-				::Parser::UNDEF _4;
+				::Parser::Rule_res _4;
 				skip_spaces(begin_15);
 				switch (*begin_15)
 				{
@@ -2924,7 +2933,7 @@ namespace Parser {
 		::Parser::Rule_res rule_data_block(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::UNDEF _0;
+			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = 1;
 			dfa_lookup_result_2 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_2)
@@ -3036,11 +3045,12 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			::Parser::bool_t success_7 = 1;
+			::Parser::Rule _4;
 			::Parser::bool_t success_5 = false;
 			auto begin_9 = pos;
 			do
 			{
-				::Parser::UNDEF _6;
+				::Parser::Rule_res _6;
 				dfa_lookup_result_8 = DFA_DECIDE(begin_9);
 				switch (dfa_lookup_result_8)
 				{
@@ -3058,7 +3068,7 @@ namespace Parser {
 					}
 				}
 ;
-				_4 = ;
+				_4 = _6;
 			}
 			while(0);
 			if (success_7)
@@ -3227,7 +3237,7 @@ namespace Parser {
 			success_1 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::UNDEF _2;
+			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = 1;
 			dfa_lookup_result_4 = DFA_DECIDE(pos);
 			switch (dfa_lookup_result_4)

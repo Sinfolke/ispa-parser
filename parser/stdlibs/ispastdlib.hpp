@@ -10,17 +10,16 @@
 #ifndef _ISPA_STD_LIB_CPP
 #define _ISPA_STD_LIB_CPP
 #include <map>
-#include <stdu::vector>
+#include <vector>
 #include <deque>
 #include <string>
 #include <any>
 #include <stdexcept>
 #include <cctype>
-#include <cstring>
 #include <fstream>
 #include <variant>
 #include <optional>
-#include <queue>
+#include <limits>
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -263,25 +262,67 @@ struct match_result {
 };
 
 template<class TOKEN_T>
-using TokenFlow = stdu::vector<Node<TOKEN_T>>;
+using TokenFlow = std::vector<Node<TOKEN_T>>;
 template<class RULE_T>
-using Seq = stdu::vector<Node<RULE_T>>;
+using Seq = std::vector<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
     std::size_t column;
     std::string message;
 };
+class DFA {
+    template <typename Transitions, typename IT, typename Transition, typename Tokens>
+    auto find_key(const Transitions &transitions, IT &pos) -> Transition {
+        for (const auto &t : transitions) {
+            if constexpr (std::is_same_v<decltype(t.symbol), char>) {
+                if (t.symbol == *pos) {
+                    return t;
+                }
+            } else {
+                if (t.symbol == pos->name()) {
+                    return t;
+                }
+            }
 
+        }
+        return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
+    };
+protected:
+    template<typename Table, typename IT, typename PanicModeFunc, typename Transition, typename Tokens>
+    auto decide(const Table &table, IT &pos, PanicModeFunc panic_mode) -> size_t {
+        size_t state = 0;
+        size_t accept = std::numeric_limits<size_t>::max();
+        do {
+            auto new_state = find_key<Table, IT, Transition, Tokens>(table[state].transitions, pos);
+            if (new_state.next != std::numeric_limits<size_t>::max()) {
+                pos++;
+                state = new_state.next;
+                if (table[state].accept != std::numeric_limits<size_t>::max()) {
+                    accept = new_state.accept;
+                }
+            } else if (table[state].else_goto != std::numeric_limits<size_t>::max()) {
+                state = table[state].else_goto;
+                if (table[state].else_goto_accept != std::numeric_limits<size_t>::max()) {
+                    accept = table[state].else_goto_accept;
+                }
+            } else {
+                // TODO: Throw error here
+                panic_mode(new_state.symbol);
+            }
+        } while (!table[state].transitions.empty());
+        return accept;
+    }
+};
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
 class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
-    stdu::vector<error> errors;
+    std::vector<error> errors;
     ErrorController error_controller;
-/* internal integration functionality */
+    /* internal integration functionality */
     /**
      * @brief Get the current position in the text (compares first input point with the current)
      * 
@@ -655,7 +696,7 @@ protected:
     Lexer_base<TOKEN_T>* lexer = nullptr;
     const char* text = nullptr;
     Node<RULE_T> tree;
-    stdu::vector<error> errors;
+    std::vector<error> errors;
     ErrorController error_controller;
     // skip spaces for tokens
     template <class IT>
@@ -728,7 +769,7 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 protected:
-    stdu::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
     template <class IT>
     void shift(IT& pos, size_t state) {
         stack.push_back({pos->name(), state});

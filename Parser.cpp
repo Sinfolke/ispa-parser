@@ -1957,7 +1957,7 @@ const Parser::DFA::TokenTable<7, 3> Parser::Parser::table_19 = {{ 0, ::Parser::D
 Parser::Token Parser::Lexer::makeToken(const char*& pos) {
 	::Parser::bool_t success_1 = 1;
 	skip_spaces(pos);
-	return ;
+	return _0;
 }
 Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
 	auto in = pos;
@@ -2370,7 +2370,7 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::rule_CSEQUENCE_SYMBOL(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -2606,7 +2606,7 @@ Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_NOT(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -2662,7 +2662,7 @@ Parser::Token_res Parser::Lexer::MODULO(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_OP(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	skip_spaces(pos);
 	switch (*pos)
@@ -2817,11 +2817,13 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 	}
 	skip_spaces(pos);
 	::Parser::bool_t success_7 = 1;
+	::Parser::arr_t<::Parser::Rule> shadow_18;
+	::Parser::Rule _4;
 	::Parser::bool_t success_5 = false;
 	auto begin_17 = pos;
 	while (1)
 	{
-		::Parser::UNDEF _6;
+		::Parser::Rule_res _6;
 		skip_spaces(begin_17);
 		switch (*begin_17)
 		{
@@ -2881,7 +2883,8 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 			}
 		}
 ;
-		_4 = ;
+		_4 = _6;
+		shadow_18.push_back(_4);
 	}
 	if (success_7)
 	{
@@ -2889,19 +2892,19 @@ Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
 		pos = begin_17;
 	}
 	skip_spaces(pos);
-	char _18;
-	::Parser::bool_t success_19 = false;
+	char _19;
+	::Parser::bool_t success_20 = false;
 	if (!(*(pos + 0) == ']'))
 	{
 		return {};
 	}
-	_18 = *(pos + 0);
-	success_19 = true;
+	_19 = *(pos + 0);
+	success_20 = true;
 	pos += 1;
 	skip_spaces(pos);
 	::Parser::Types::rule_CSEQUENCE data;
 	data._not = _2;
-	data.val = _4;
+	data.val = shadow_18;
 
 	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_CSEQUENCE, data)};
 }
@@ -2935,7 +2938,7 @@ Parser::Token_res Parser::Lexer::AT(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -3022,7 +3025,7 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 	auto begin_16 = pos;
 	while (1)
 	{
-		::Parser::UNDEF _4;
+		::Parser::Rule_res _4;
 		dfa_lookup_result_6 = DFA_DECIDE(begin_16);
 		switch (dfa_lookup_result_6)
 		{
@@ -3057,6 +3060,7 @@ Parser::Token_res Parser::Lexer::STRING(const char* pos) {
 			}
 		}
 ;
+		_2 += _4;
 	}
 	if (success_5)
 	{
@@ -3089,7 +3093,7 @@ Parser::Token_res Parser::Lexer::SPACEMODE(const char* pos) {
 	success_1 = true;
 	pos += 9;
 	skip_spaces(pos);
-	::Parser::UNDEF _2;
+	::Parser::Rule_res _2;
 	::Parser::bool_t success_3 = 1;
 	dfa_lookup_result_4 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_4)
@@ -3181,7 +3185,7 @@ Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -3334,7 +3338,7 @@ Parser::Token_res Parser::Lexer::NAME(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -3476,7 +3480,7 @@ Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	dfa_lookup_result_2 = DFA_DECIDE(pos);
 	switch (dfa_lookup_result_2)
@@ -3593,7 +3597,7 @@ Parser::Token_res Parser::Lexer::AUTO_4(const char* pos) {
 }
 Parser::Token_res Parser::Lexer::cll_LOGICAL_OP(const char* pos) {
 	auto in = pos;
-	::Parser::UNDEF _0;
+	::Parser::Rule_res _0;
 	::Parser::bool_t success_1 = 1;
 	skip_spaces(pos);
 	switch (*pos)
