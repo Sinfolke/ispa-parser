@@ -40,10 +40,16 @@ export namespace AST {
         void constructFollowSet();
         void formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set);
     public:
-        auto getTreeMap() -> TreeMap& { return tree_map; };
-        auto getUse() -> Use& { return use; };
+        auto getTreeMap() const -> const TreeMap& { return tree_map; };
+        auto getUse() const -> const Use& { return use; };
+        auto getSpacemode() const -> const SpacemodeStates& { return spacemode; };
+        auto getName() const -> const std::string& { return name; }
+        auto getTreeMap() ->  TreeMap& { return tree_map; };
+        auto getUse() ->  Use& { return use; };
         auto getSpacemode() -> SpacemodeStates& { return spacemode; };
-        auto getName() -> std::string { return name; }
+        auto getName() -> std::string& { return name; }
+        auto begin() const { return tree_map.begin(); };
+        auto end() const { return tree_map.end(); };
         Tree(std::string&& name, SpacemodeStates&& spacemode, Use&& use, TreeMap&& map)
             : name(std::move(name)),
               spacemode(std::move(spacemode)),

@@ -3,6 +3,7 @@ import hash;
 import NFA;
 import AST.API;
 import AST.Tree;
+import Dump;
 import dstd;
 import std;
 import std.compat;
@@ -66,14 +67,10 @@ public:
 };
 export class DFABuilder {
     DFA dfa;
+    void log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const;
     public:
-    DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule) : dfa({}) {
-        NFA nfa(ast, rule);
-        nfa.build();
-        DFA dfa_tmp(nfa);
-        dfa_tmp.build();
-        dfa = std::move(dfa_tmp);
-    }
+    DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname);
+    DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname);
     DFA& get() {
         return dfa;
     }

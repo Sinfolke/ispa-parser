@@ -1241,8 +1241,8 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::table_1 = {{ 0, ::Parser::DF
 { 0, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 2, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<9, 3> Parser::Parser::table_2 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'f', 2, 0}, {'t', 1, 1}} },
+const Parser::DFA::CharTable<9, 8> Parser::Parser::table_2 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'f', 2, 0}, {'t', 0, ::Parser::DFA::null_state}, {'t', 1, 1}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 3, 1}} },
 { 0, ::Parser::DFA::null_state, {
@@ -1260,12 +1260,12 @@ const Parser::DFA::CharTable<9, 3> Parser::Parser::table_2 = {{ 0, ::Parser::DFA
 { 0, ::Parser::DFA::null_state, {
 {'e', 7, 0}} },
 };
-const Parser::DFA::CharTable<3, 3> Parser::Parser::table_3 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {']', 2, 1}, {'\', 1, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\', 2, 0}} },
+const Parser::DFA::CharTable<3, 8> Parser::Parser::table_3 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {'\', 2, 0}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'t', 0, ::Parser::DFA::null_state}, {']', 1, 1}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 0, ::Parser::DFA::null_state, {
+{'\', 1, 0}} },
 };
 const Parser::DFA::TokenTable<33, 11> Parser::Parser::table_4 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 26, ::Parser::DFA::null_state}, {Tokens::ID, 24, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 22, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::AT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 16, ::Parser::DFA::null_state}} },
@@ -1477,14 +1477,14 @@ const Parser::DFA::TokenTable<4, 5> Parser::Parser::table_7 = {{ 0, ::Parser::DF
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<4, 3> Parser::Parser::table_8 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'n', 2, 0}, {'!', 1, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
+const Parser::DFA::CharTable<4, 8> Parser::Parser::table_8 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'!', 2, 1}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'t', 0, ::Parser::DFA::null_state}, {'n', 1, 0}, {'r', 0, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'t', 1, 0}} },
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 2, 0}} },
 };
 const Parser::DFA::TokenTable<81, 20> Parser::Parser::table_9 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 44, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 43, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AT, 4, ::Parser::DFA::null_state}, {Tokens::ID, 41, ::Parser::DFA::null_state}, {Tokens::STRING, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::NUMBER, 4, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 38, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 40, ::Parser::DFA::null_state}} },
@@ -1698,10 +1698,20 @@ const Parser::DFA::TokenTable<24, 10> Parser::Parser::table_10 = {{ 0, ::Parser:
 { 1, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<4, 3> Parser::Parser::table_11 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'|', 2, 0}, {'o', 1, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 3, 1}} },
+const Parser::DFA::CharTable<4, 8> Parser::Parser::table_11 = {
+	{
+		0, ::Parser::DFA::null_state, {
+
+			{'f', 0, ::Parser::DFA::null_state},
+				{'v', 0, ::Parser::DFA::null_state},
+				{'r', 0, ::Parser::DFA::null_state},
+				{'n', 0, ::Parser::DFA::null_state},
+				{' ', 0, ::Parser::DFA::null_state},
+				{'t', 0, ::Parser::DFA::null_state},
+				{'|', 2, 0}, {'o', 1, 1},
+				{'r', 3, 1}
+		}
+	},
 { 0, ::Parser::DFA::null_state, {
 {'|', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
@@ -1778,64 +1788,64 @@ const Parser::DFA::TokenTable<35, 11> Parser::Parser::table_12 = {{ 0, ::Parser:
 { 5, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::table_13 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'\', 2, 0}, {''', 1, 1}} },
+const Parser::DFA::CharTable<4, 8> Parser::Parser::table_13 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {'\', 2, 0}, {'t', 0, ::Parser::DFA::null_state}, {''', 1, 1}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
 {'\', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
+{'f', 3, ::Parser::DFA::null_state}, {'v', 3, ::Parser::DFA::null_state}, {'r', 3, ::Parser::DFA::null_state}, {'n', 3, ::Parser::DFA::null_state}, {' ', 3, ::Parser::DFA::null_state}, {'t', 3, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<18, 4> Parser::Parser::table_14 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'s', 3, 0}, {'a', 2, 1}, {'m', 1, 2}} },
+const Parser::DFA::CharTable<18, 9> Parser::Parser::table_14 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'m', 3, 2}, {'v', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {'t', 0, ::Parser::DFA::null_state}, {'a', 2, 1}, {'s', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 4, 2}} },
+{'k', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'l', 5, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'k', 6, 0}} },
+{'i', 6, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'x', 7, 2}} },
+{'i', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'l', 8, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 9, 0}} },
+{'x', 9, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 10, 2}} },
+{'p', 10, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 11, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 12, 0}} },
+{'e', 12, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 13, 2}} },
+{'p', 13, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'w', 14, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 15, 0}} },
+{'d', 15, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 16, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 17, 1}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'e', 16, 1}} },
+{'d', 15, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 17, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 13, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 13, 0}} },
+{'d', 15, 1}} },
 };
-const Parser::DFA::CharTable<6, 5> Parser::Parser::table_15 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'<', 5, ::Parser::DFA::null_state}, {'!', 3, 3}, {'>', 4, ::Parser::DFA::null_state}, {'=', 1, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'=', 2, 1}} },
+const Parser::DFA::CharTable<6, 10> Parser::Parser::table_15 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'!', 3, 3}, {'r', 0, ::Parser::DFA::null_state}, {'t', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'>', 5, ::Parser::DFA::null_state}, {'=', 2, 1}, {'<', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'=', 2, 3}} },
-{ 2, 4, {
-{'=', 2, 0}} },
-{ 2, 5, {
-{'=', 2, 2}} },
+{'=', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 3}} },
+{ 1, 5, {
+{'=', 1, 2}} },
+{ 1, 4, {
+{'=', 1, 0}} },
 };
 const Parser::DFA::TokenTable<27, 12> Parser::Parser::table_16 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 18, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}} },
@@ -1892,8 +1902,8 @@ const Parser::DFA::TokenTable<27, 12> Parser::Parser::table_16 = {{ 0, ::Parser:
 { 1, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<5, 3> Parser::Parser::table_17 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'a', 2, 0}, {'&', 1, 1}} },
+const Parser::DFA::CharTable<5, 8> Parser::Parser::table_17 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'t', 0, ::Parser::DFA::null_state}, {'a', 2, 0}, {'&', 1, 1}} },
 { 0, ::Parser::DFA::null_state, {
 {'&', 3, 1}} },
 { 0, ::Parser::DFA::null_state, {
@@ -1903,40 +1913,40 @@ const Parser::DFA::CharTable<5, 3> Parser::Parser::table_17 = {{ 0, ::Parser::DF
 { 0, ::Parser::DFA::null_state, {
 {'d', 3, 0}} },
 };
-const Parser::DFA::CharTable<17, 7> Parser::Parser::table_18 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {'b', 6, 0}, {'v', 5, 1}, {'o', 4, 3}, {'s', 3, 2}, {'n', 2, 4}, {'a', 1, 5}} },
+const Parser::DFA::CharTable<17, 12> Parser::Parser::table_18 = {{ 0, ::Parser::DFA::null_state, {
+{'f', 0, ::Parser::DFA::null_state}, {'v', 0, ::Parser::DFA::null_state}, {'r', 0, ::Parser::DFA::null_state}, {'n', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'b', 6, 0}, {'t', 0, ::Parser::DFA::null_state}, {'a', 1, 5}, {'n', 5, 4}, {'s', 3, 2}, {'v', 4, 1}, {'o', 2, 3}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 7, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'u', 8, 4}} },
+{'b', 8, 3}} },
 { 0, ::Parser::DFA::null_state, {
 {'t', 9, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'b', 10, 3}} },
+{'a', 10, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 11, 1}} },
+{'u', 11, 4}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 13, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'m', 14, 4}} },
+{'j', 14, 3}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 14, 2}} },
+{'r', 15, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'j', 15, 3}} },
+{'r', 15, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 14, 1}} },
+{'m', 15, 4}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 16, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 14, 5}} },
+{'v', 13, ::Parser::DFA::null_state}, {'t', 13, ::Parser::DFA::null_state}, {'n', 13, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'f', 13, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 15, 5}, {'r', 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'v', 14, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'n', 14, ::Parser::DFA::null_state}, {' ', 14, ::Parser::DFA::null_state}, {'f', 14, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 15, 3}, {'r', 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::cll_TEMPLATE, 14, 3}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 14, 0}} },
+{'l', 15, 0}} },
 };
 const Parser::DFA::TokenTable<7, 3> Parser::Parser::table_19 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 0, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 1, 1}} },

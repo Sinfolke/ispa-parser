@@ -102,7 +102,6 @@ std::string LLIR::IR::convert_var_assing_values(LLIR::var_assign_values value, s
             return name;
         }
         case LLIR::var_assign_values::NUMBER:
-            cpuf::printf("on INT, type: {}\n", data.type().name());
             return std::to_string(std::any_cast<int>(data));
         case LLIR::var_assign_values::ARRAY:
         {
@@ -199,7 +198,6 @@ std::string LLIR::IR::conditionTypesToString(LLIR::condition_types type, std::an
             return std::string("!STRNCMP(pos, ") + dt.value.name + std::string(")");
         }
     } else if (type == LLIR::condition_types::VARIABLE) {
-        cpuf::printf("type: {}", data.type().name());
         auto dt = std::any_cast<LLIR::var_refer>(data);
         std::string name = dt.var.name;
         for (const auto &el : dt.var.property_access)

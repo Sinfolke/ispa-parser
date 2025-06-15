@@ -6,9 +6,9 @@ def replace_std_vector_in_file(filepath):
         content = f.read()
 
     # Regex pattern to match std::vector exactly (not part of bigger word)
-    pattern = r'\bstdu\b::\bvisit\b'
+    pattern = r'stdu::vector<std::string>\s*{"__WHITESPACE"}'
 
-    new_content, count = re.subn(pattern, 'std::visit', content)
+    new_content, count = re.subn(pattern, 'constants::whitespace', content)
 
     if count > 0:
         print(f"Replaced {count} occurrences in {filepath}")

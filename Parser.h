@@ -8,13 +8,12 @@
 #include <ispastdlib.hpp>
 #include <fstream>
 #include <iterator>
-
 #include <iostream>
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif
 #ifndef PARSER_ARR_TYPE
-#define PARSER_ARR_TYPE stdu::vector
+#define PARSER_ARR_TYPE std::vector
 #endif
 #ifndef PARSER_ANY_TYPE
 #define PARSER_ANY_TYPE std::any
@@ -165,7 +164,7 @@ namespace Parser {
 	}
 
     namespace DFA {
-        size_t null_state = std::numeric_limits<size_t>::max();
+        constexpr size_t null_state = std::numeric_limits<size_t>::max();
         template<typename Key>
         struct Transition {
             Key symbol;
@@ -182,6 +181,8 @@ namespace Parser {
         using TokenTable = std::array<Unit<MAX, Tokens>, N>;
         template<size_t N, size_t MAX>
         using CharTable = std::array<Unit<MAX, char>, N>;
+        template<size_t N, size_t MAX>
+        using MultiTable = std::array<Unit<MAX, std::variant<char, Token_res (*) (const char*)>>, N>;
     }
 	namespace Types {
 		using AUTO_4 = char;
@@ -649,7 +650,28 @@ namespace Parser {
             static void printRule(std::ostream &os, const Token &token, size_t &indentLevel, bool addSpaceOnBegin);
             static void printRule(std::ostream &os, const Rule &rule, size_t &indentLevel, bool addSpaceOnBegin);
             static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);
-		private:			Rule_res getRule(Lexer::lazy_iterator&);
+		private:
+			const DFA::TokenTable<27, 11> table_0;
+			const DFA::TokenTable<4, 3> table_1;
+			const DFA::CharTable<9, 8> table_2;
+			const DFA::CharTable<3, 8> table_3;
+			const DFA::TokenTable<33, 11> table_4;
+			const DFA::TokenTable<4, 3> table_5;
+			const DFA::TokenTable<62, 19> table_6;
+			const DFA::TokenTable<4, 5> table_7;
+			const DFA::CharTable<4, 8> table_8;
+			const DFA::TokenTable<81, 20> table_9;
+			const DFA::TokenTable<24, 10> table_10;
+			const DFA::CharTable<4, 8> table_11;
+			const DFA::TokenTable<35, 11> table_12;
+			const DFA::CharTable<4, 8> table_13;
+			const DFA::CharTable<18, 9> table_14;
+			const DFA::CharTable<6, 10> table_15;
+			const DFA::TokenTable<27, 12> table_16;
+			const DFA::CharTable<5, 8> table_17;
+			const DFA::MultiTable<17, 12> table_18;
+			const DFA::TokenTable<7, 3> table_19;
+			Rule_res getRule(Lexer::lazy_iterator&);
 			Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();
 		void lazyParse();

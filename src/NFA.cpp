@@ -4,6 +4,7 @@ import corelib;
 import cpuf.op;
 import cpuf.printf;
 import logging;
+import constants;
 import std;
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry) {
     states[start].transitions[name] = end;
@@ -250,8 +251,10 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
     } else if (member.isGroup()) {
         handleGroup(member, member.getGroup().values, start, end, isEntry);
     } else if (member.isString()) {
+        if (first) is_char_table = true;
         handleString(member, member.getString().value, start, end, isEntry);
     } else if (member.isCsequence()) {
+        if (first) is_char_table = true;
         handleCsequence(member, member.getCsequence(), start, end, isEntry);
     } else if (member.isAny()) {
         states[start].any = end;
@@ -261,7 +264,13 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
         }, member.value);
     }
     // create new transition __WHITESPACE -> itself
-    states[start].transitions[TransitionKey{stdu::vector<std::string> { "__WHITESPACE" }}] = start;
+    first = false;
+    if (is_char_table) {
+        for (const auto c : constants::whitespace_chars)
+            states[start].transitions[c] = start;
+    } else {
+        states[start].transitions[TransitionKey{stdu::vector<std::string> { "__WHITESPACE" }}] = start;
+    }
     return {start, end};
 }
 void NFA::removeDeadStates() {

@@ -357,7 +357,6 @@ auto LLIR::BuilderBase::getNextTerminal(stdu::vector<AST::RuleMember> symbols, s
 
     if (!found_terminal) {
         // Fallback to FOLLOW set of the current symbol
-        cpuf::printf("symbol: {}", symbols[pos].getName().name);
         if (corelib::text::isUpper(symbols[pos].getName().name.back())) {
             return {symbols[pos].getName().name};
         }

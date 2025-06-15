@@ -298,7 +298,59 @@ protected:
             if (new_state.next != std::numeric_limits<size_t>::max()) {
                 pos++;
                 state = new_state.next;
-                if (table[state].accept != std::numeric_limits<size_t>::max()) {
+                if (new_state.accept != std::numeric_limits<size_t>::max()) {
+                    accept = new_state.accept;
+                }
+            } else if (table[state].else_goto != std::numeric_limits<size_t>::max()) {
+                state = table[state].else_goto;
+                if (table[state].else_goto_accept != std::numeric_limits<size_t>::max()) {
+                    accept = table[state].else_goto_accept;
+                }
+            } else {
+                // TODO: Throw error here
+                panic_mode(new_state.symbol);
+            }
+        } while (!table[state].transitions.empty());
+        return accept;
+    }
+};
+template<typename Tokens>
+class AdvancedDFA : DFA {
+    template <typename Transitions, typename Transition>
+    auto find_key(const Transitions &transitions, const char* &pos) -> Transition {
+        using Token_res = match_result<Tokens>;
+        using func = Token_res(*)(const char*);
+        std::vector<Transition*> tokens;
+        for (const auto &t : transitions) {
+            if (std::holds_alternative<char>(t.symbol)) {
+                if (t.symbol == *pos) {
+                    pos++;
+                    return t;
+                }
+            } else {
+                tokens.push_back(&t);
+            }
+        }
+        for (const auto t : tokens) {
+            auto fun = std::get<func>(t.first);
+            auto result = fun(pos);
+            if (result.status) {
+                pos += result.node.length();
+                return t.second;
+            }
+        }
+        return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
+    };
+protected:
+    template<typename Table, typename PanicModeFunc, typename Transition>
+    auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> size_t {
+        size_t state = 0;
+        size_t accept = std::numeric_limits<size_t>::max();
+        do {
+            auto new_state = find_key<Table, Transition, Tokens>(table[state].transitions, pos);
+            if (new_state.next != std::numeric_limits<size_t>::max()) {
+                state = new_state.next;
+                if (new_state.accept != std::numeric_limits<size_t>::max()) {
                     accept = new_state.accept;
                 }
             } else if (table[state].else_goto != std::numeric_limits<size_t>::max()) {

@@ -5,6 +5,7 @@ import logging;
 import ELRParser;
 import LLIR.Builder;
 import dstd;
+import fcdt;
 import std;
 import std.compat;
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
@@ -165,9 +166,9 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR::Builder tokens_ir(*tree, true);
+    LLIR::Builder tokens_ir(tree, true);
     auto IR = tokens_ir.get();
-    LLConverter converter(IR, *tree, &lexer_code, &return_var, filename);
+    LLConverter converter(IR, tree, first_character_dispatch_table, &lexer_code, &return_var, filename);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);
@@ -218,8 +219,8 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
 void LRConverter::output(std::filesystem::path name) {
     namespace_name = name.filename().string();
     std::ostringstream cpp_out, h_out;
-    this->tokens = tree->getTerminals();
-    this->rules = tree->getNonTerminals();
+    this->tokens = tree.getTerminals();
+    this->rules = tree.getNonTerminals();
     tokens.insert(tokens.begin(), {"NONE"});
     rules.insert(rules.begin(), {"NONE"});
     outputIR(cpp_out, namespace_name);
@@ -233,6 +234,6 @@ void LRConverter::output(std::filesystem::path name) {
     cpp << cpp_out.str();
     h << h_out.str();
 }
-extern "C" LRConverter_base* getLRConverter(LRParser& data, AST::Tree& tree) {
-    return new LRConverter(data, tree);
+extern "C" LRConverter_base* getLRConverter(LRParser& data, const FCDT &fcdt, AST::Tree& tree) {
+    return new LRConverter(data, fcdt, tree);
 }

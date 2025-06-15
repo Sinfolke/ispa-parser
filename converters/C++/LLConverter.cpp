@@ -57,7 +57,7 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
-    create_parser_header(out);
+    create_parser_header(out, dfas);
     indentLevel = 2;
     writeRules(out, true);
     indentLevel = 1;
@@ -491,8 +491,8 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree) {
-    return new LLConverter(ir, tree);
+extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree, const FCDT &fcdt) {
+    return new LLConverter(ir, tree, fcdt);
 }
 
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

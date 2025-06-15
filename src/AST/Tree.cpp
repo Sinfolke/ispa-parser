@@ -8,7 +8,7 @@ import LLIR.Builder.DataWrapper;
 import LLIR.Rule.MemberBuilder;
 import LLIR.Builder.Data;
 import cpuf.printf;
-import Tlog.Logger;
+import constants;
 import std;
 import std.compat;
 
@@ -597,7 +597,7 @@ auto AST::Tree::getCodeForLexer() -> lexer_code {
         if (corelib::text::isLower(name.back()))
             continue;
         auto find_it = use_places.find(name);
-        if (find_it != use_places.end() && name != stdu::vector<std::string>{"__WHITESPACE"}) {
+        if (find_it != use_places.end() && name != constants::whitespace) {
             bool to_add = false;
             for (const auto &use_name : find_it->second) {
                 if (corelib::text::isLower(use_name.back())) {

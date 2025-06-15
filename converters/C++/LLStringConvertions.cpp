@@ -149,7 +149,6 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
         case LLIR::var_assign_values::TOKEN_NAME:
             return std::string("Tokens::") + corelib::text::join(std::any_cast<stdu::vector<std::string>>(data), "_");
         case LLIR::var_assign_values::INTERNAL_FUNCTION_CALL:
-            cpuf::printf("type: {}", data.type().name());
             const auto &dt = std::any_cast<const LLIR::function_call&>(data);
             if (dt.name == LLIR::internal_functions::dfa_decide)
             {

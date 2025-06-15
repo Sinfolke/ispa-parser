@@ -4,6 +4,7 @@ import cpuf.printf;
 import corelib;
 import logging;
 import hash;
+import constants;
 import std;
 
 auto DFA::epsilonClosure(const std::vector<size_t>& states) const -> std::vector<size_t> {
@@ -61,7 +62,7 @@ bool DFA::leadToEmptyState(size_t current) {
 }
 bool DFA::includesWhitespace(const MultiState &state) {
     for (const auto &t : state.transitions) {
-        if (t.first == NFA::TransitionKey {std::vector<std::string> {"__WHITESPACE"} })
+        if (t.first == NFA::TransitionKey {constants::whitespace})
             return true;
     }
     return false;
@@ -77,7 +78,7 @@ bool DFA::isTerminateState(const MultiState &state) {
             return false;
         if (t.second.size() > 1)
             return false;
-        if (t.first == NFA::TransitionKey {std::vector<std::string> {"__WHITESPACE"}})
+        if (t.first == NFA::TransitionKey {constants::whitespace})
             continue;
         if (was)
             return false;
@@ -300,7 +301,7 @@ void DFA::terminateEarly() {
     }
     for (const auto &id : terminals) {
         for (auto &t : mstates[id].transitions) {
-            if (t.first != NFA::TransitionKey {std::vector<std::string>{"__WHITESPACE"}}) {
+            if (t.first != NFA::TransitionKey {constants::whitespace}) {
                 for (auto &next : t.second) {
                     next.next = empty_state;
                 }
@@ -522,7 +523,42 @@ void DFA::build() {
     switchToSingleState();
     removeUnreachableStates();
 }
-
+void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const {
+    if (dumper.shouldDump("NFA")) {
+        std::ofstream NFA_dump_file;
+        NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
+        if (!NFA_dump_file.is_open()) {
+            throw Error("Couldn't open NFA file");
+        }
+        NFA_dump_file << "---------- " << fullname << "----------\n";
+        NFA_dump_file << nfa;
+    }
+    if (dumper.shouldDump("DFA")) {
+        std::ofstream DFA_dump_file;
+        DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
+        if (!DFA_dump_file.is_open()) {
+            throw Error("Couldn't open DFA file");
+        }
+        DFA_dump_file << "---------- " << fullname << "----------\n";
+        DFA_dump_file << dfa;
+    };
+}
+DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname) : dfa({}) {
+    NFA nfa(ast, rule);
+    nfa.build();
+    DFA dfa_tmp(nfa);
+    dfa_tmp.build();
+    log(nfa, dfa_tmp, fullname);
+    dfa = std::move(dfa_tmp);
+}
+DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname) : dfa({}) {
+    NFA nfa(ast, rules);
+    nfa.build();
+    DFA dfa_tmp(nfa);
+    dfa.build();
+    log(nfa, dfa, fullname);
+    dfa = std::move(dfa_tmp);
+}
 // Print a single state
 std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
     if (s.transitions.empty()) {

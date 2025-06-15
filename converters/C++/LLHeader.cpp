@@ -4,13 +4,14 @@ import LLIR;
 import logging;
 import corelib;
 import std;
+import std.compat;
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <list>\n";
     out << "#include <unordered_map>\n";
     out << "#include <ispastdlib.hpp>\n";
     out << "#include <fstream>\n";
-    out << "#include <iterator>\n\n";
+    out << "#include <iterator>\n";
     out << "#include <iostream>\n";
 }
 void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name) const {
@@ -27,7 +28,7 @@ void LLHeader::createDefaultTypes(std::ostringstream &out) const {
         {"NUM_TYPE", "double"},
         {"STR_TYPE", "std::string"},
         {"ANY_TYPE", "std::any"},
-        {"ARR_TYPE", "stdu::vector"},
+        {"ARR_TYPE", "std::vector"},
         {"OBJ_TYPE", "std::unordered_map"}
     };
 
@@ -114,10 +115,10 @@ void LLHeader::createToStringFunction(const stdu::vector<stdu::vector<std::strin
     addTokensToString(tokens, out);
     addRulesToString(rules, out);
 }
-void LLHeader::createDFATypes(std::ostringstream &out) {
+void LLHeader::createDFATypes(std::ostringstream &out) const {
     out << R"(
     namespace DFA {
-        size_t null_state = std::numeric_limits<size_t>::max();
+        constexpr size_t null_state = std::numeric_limits<size_t>::max();
         template<typename Key>
         struct Transition {
             Key symbol;
@@ -134,9 +135,54 @@ void LLHeader::createDFATypes(std::ostringstream &out) {
         using TokenTable = std::array<Unit<MAX, Tokens>, N>;
         template<size_t N, size_t MAX>
         using CharTable = std::array<Unit<MAX, char>, N>;
+        template<size_t N, size_t MAX>
+        using MultiTable = std::array<Unit<MAX, std::variant<char, Token_res (*) (const char*)>>, N>;
     }
 )";
 }
+void LLHeader::createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const {
+    size_t count = 0;
+    for (const auto dfa : dfas) {
+        auto states_size = dfa.getStates().size();
+        size_t transitions_size = 0;
+        enum {CHAR, TOKEN, MULTI, NONE} type = NONE;;
+        for (const auto &state : dfa.getStates()) {
+            transitions_size = std::max(transitions_size, state.transitions.size());
+            for (const auto &transition : state.transitions) {
+                if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
+                    if (type == CHAR) {
+                        type = MULTI;
+                    } else if (type != MULTI) {
+                        type = TOKEN;
+                    }
+                } else {
+                    if (type == TOKEN) {
+                        type = MULTI;
+                    } else if (type != MULTI) {
+                        type = CHAR;
+                    }
+                }
+            }
+        }
+        const char* type_str;
+        switch (type) {
+            case CHAR:
+                type_str = "CharTable";
+                break;
+            case TOKEN:
+                type_str = "TokenTable";
+                break;
+            case MULTI:
+                type_str = "MultiTable";
+                break;
+            default:
+                throw Error("Undefined DFA table type");
+        }
+        out << "\n\t\t\tconst " << "DFA::" << type_str << '<' << states_size << ", " << transitions_size << "> table_" << count++ << ';';
+    }
+    out << '\n';
+}
+
 
 void LLHeader::addStandardFunctionsLexer(std::ostringstream &out) const {
     out << R"(
@@ -220,11 +266,13 @@ void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
 void LLHeader::close_parser_header(std::ostringstream &out) const {
     out << "\t};\n";
 }
-void LLHeader::create_parser_header(std::ostringstream &out) const {
+void LLHeader::create_parser_header(std::ostringstream &out, const stdu::vector<DFA> &dfas) const {
     out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
         << "\t\tpublic:";
         addStandardFunctionsParser(out);
-    out << "\t\tprivate:"
+    out << "\t\tprivate:";
+        createDFAVars(dfas, out);
+    out
         << "\t\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
         << "\t\t\tRule_res getRule(Lexer::iterator&);\n"
         ;

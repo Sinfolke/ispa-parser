@@ -7,7 +7,7 @@ import std.compat;
 
 void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
     auto number_or_null = [this](size_t index) {
-        return index == std::numeric_limits<size_t>::max() ? std::string("::" + *namespace_name + "::DFA::null_state") : std::to_string(index);
+        return index == std::numeric_limits<size_t>::max() ? std::string("::" + namespace_name + "::DFA::null_state") : std::to_string(index);
     };
     bool token_type = true;
     std::ostringstream table_out;
@@ -37,8 +37,8 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
         }
         table_out << "} },\n";
     }
-    out << "const " << *namespace_name << "::" << (token_type ? "DFA::TokenTable" : "DFA::CharTable") << '<' << max_states_count << ", " << max_transition_count << "> "
-    << *namespace_name << "::Parser::table_" << count << " = " << "{" << table_out.str() << "};\n";
+    out << "const " << namespace_name << "::" << (token_type ? "DFA::TokenTable" : "DFA::CharTable") << '<' << max_states_count << ", " << max_transition_count << "> "
+    << namespace_name << "::Parser::table_" << count << " = " << "{" << table_out.str() << "};\n";
 }
 
 

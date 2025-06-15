@@ -9,6 +9,7 @@ import cpuf.printf;
 import Dump;
 import NFA;
 import DFA;
+import constants;
 import std;
 // helper functions
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
@@ -115,7 +116,6 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     *addSpaceSkip = true;
     std::unique_ptr<BuilderBase> builder = nullptr;
-    cpuf::printf("rule {}, Processing {}", *fullname, member);
     if (member.isGroup()) {
         builder = std::make_unique<GroupBuilder>(*this, member);
     } else if (member.isCsequence()) {
@@ -771,29 +771,7 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule->getOp().options;
-    NFA nfa(*tree, *rule);
-    nfa.build();
-    DFA dfa(nfa);
-    dfa.build();
-    if (dumper.shouldDump("NFA")) {
-        std::ofstream NFA_dump_file;
-        NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
-        if (!NFA_dump_file.is_open()) {
-            throw Error("Couldn't open NFA file");
-        }
-        NFA_dump_file << "---------- " << *fullname << "----------\n";
-        NFA_dump_file << nfa;
-    }
-    if (dumper.shouldDump("DFA")) {
-        std::ofstream DFA_dump_file;
-        DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
-        if (!DFA_dump_file.is_open()) {
-            throw Error("Couldn't open DFA file");
-        }
-        DFA_dump_file << "---------- " << *fullname << "----------\n";
-        DFA_dump_file << dfa;
-    }
-    auto DFA = std::move(DFABuilder(*tree, *rule).get());
+    DFA dfa = std::move(DFABuilder(*tree, *rule, *fullname).get());
     LLIR::variable var = createEmptyVariable("");
     var.type = {*isToken ? var_types::Token_result : var_types::Rule_result} ;
     if (rule->prefix.name.empty()) {
@@ -805,15 +783,21 @@ void LLIR::OpBuilder::build() {
     svar.value = {var_assign_values::NUMBER, 1};
     push({types::VARIABLE, var});
     push({types::VARIABLE, svar});
-    if (DFA.getStates().size() == 2) { // first state plus end state
+    if (dfa.getStates().size() == 2) { // first state plus end state
         // optimize to single switch instead of DFA lookup
         switch_statement ss;
         ss.expression = stdu::vector<expr>{ {LLIR::condition_types::CURRENT_TOKEN} };
-        auto state = DFA.getStates()[0];
+        auto state = dfa.getStates()[0];
         push({types::SKIP_SPACES, *isToken});
         for (const auto &t : state.transitions) {
-            if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == stdu::vector<std::string> {"__WHITESPACE"})
+            if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == constants::whitespace)
                 continue;
+            if (std::holds_alternative<char>(t.first)) {
+                auto c = std::get<char>(t.first);
+                if (std::any_of(constants::whitespace_chars.begin(), constants::whitespace_chars.end(), [&](char _c) { return _c == c; }) && t.second.next == 0) {
+                    continue;
+                }
+            }
             ss.cases.emplace_back();
             if (std::holds_alternative<stdu::vector<std::string>>(t.first)) {
                 ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, std::get<stdu::vector<std::string>>(t.first)};
@@ -833,7 +817,7 @@ void LLIR::OpBuilder::build() {
         push({types::SWITCH, ss});
     } else {
         auto dfa_index = dfas->size();
-        dfas->push_back(std::move(DFA));
+        dfas->push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
         push({types::ASSIGN_VARIABLE, LLIR::variable_assign { dfa_call_result.name, var_assign_types::ASSIGN, LLIR::assign {
             var_assign_values::INTERNAL_FUNCTION_CALL, LLIR::function_call {
