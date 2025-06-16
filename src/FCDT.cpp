@@ -1,16 +1,32 @@
 module fcdt;
 import corelib;
 import logging;
+import cpuf.printf;
 import dstd;
 import std;
+void FCDT::skipNospace(stdu::vector<AST::RuleMember>::iterator &it, const stdu::vector<AST::RuleMember>::iterator &end) {
+    while (it != end) {
+        if (it->isNospace()) {
+            it++;
+            continue;
+        }
+        break;
+    };
+}
+
+
 auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char> {
     if (mem.isGroup()) {
-        return determineFirstCharacter(mem.getGroup().values[0]);
+        auto it = mem.getGroup().values.begin();
+        skipNospace(it, mem.getGroup().values.end());
+        return determineFirstCharacter(*it);
     }
     if (mem.isOp()) {
         std::unordered_set<char> chars;
         for (const auto &option :  mem.getOp().options) {
-            auto result = determineFirstCharacter(option);
+            auto it = mem.getOp().options.begin();
+            skipNospace(it, mem.getOp().options.end());
+            auto result = determineFirstCharacter(*it);
             chars.insert(result.begin(), result.end());
         }
         return chars;
@@ -44,6 +60,9 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
         }
         return chars;
     }
+    if (mem.isName()) {
+        return determineFirstCharacter(ast[mem.getName().name].rule_members[0]);
+    }
     throw Error("Unexpected member");
 
 }
@@ -52,20 +71,19 @@ void FCDT::build() {
         if (corelib::text::isLower(rule.first.back()))
             continue;
         auto it = rule.second.rule_members.begin();
-        while (it != rule.second.rule_members.end()) {
-            if (it->isNospace()) {
-                it++;
-                continue;
-            }
-            break;
-        };
+        skipNospace(it, rule.second.rule_members.end());
         for (const auto &c : determineFirstCharacter(*it)) {
             table[c].insert(rule.first);
         }
     }
+    cpuf::printf("fcdt table size: {}", table.size());
 }
 
 
-auto FCDT::get() -> Table {
+auto FCDT::get() -> Table& {
     return table;
 }
+auto FCDT::get() const -> const Table & {
+    return table;
+}
+

@@ -5,6 +5,7 @@ import LRHeader;
 import corelib;
 import LRParser;
 import AST.Tree;
+import LexerBuilder;
 import fcdt;
 import std;
 class LRConverter : public LRConverter_base, public LRHeader {
@@ -19,7 +20,7 @@ private:
     void outputIR(std::ostringstream &out, std::string &filename);
     void outputHeader(std::ostringstream& out, std::string &filename) const;
 public:
-    LRConverter(LRParser &parser, const FCDT &fcdt, AST::Tree &tree) : LRConverter_base(parser, fcdt, tree) {}
+    LRConverter(LRParser &parser, const LexerBuilder &lexer_data, AST::Tree &tree) : LRConverter_base(parser, lexer_data, tree) {}
     ~LRConverter() {}
     void output(std::filesystem::path filename);
 };

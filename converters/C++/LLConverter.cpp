@@ -2,6 +2,7 @@ module;
 module LLConverter;
 import LLIR;
 import Converter.DFA;
+import LexerConverter;
 import logging;
 import std;
 void LLConverter::writeRules(std::ostringstream &out, bool startName) {
@@ -220,7 +221,7 @@ void LLConverter::convertData(std::ostringstream &out) {
     }
 }
 void LLConverter::addDFATables(std::ostringstream &out) {
-    DFAConverter tables_builder(this->dfas, namespace_name);
+    DFAConverter tables_builder(this->dfas, namespace_name, "Parser", "dfa_table");
     tables_builder.create();
     out << tables_builder.get().str();
 }
@@ -228,6 +229,8 @@ void LLConverter::addDFATables(std::ostringstream &out) {
 void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
     namespace_name = filename;
     addHeader(out);
+    LexerConverter lc(out, lexer_data, namespace_name);
+    lc.output();
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
@@ -491,8 +494,8 @@ void LLConverter::outputIR(std::filesystem::path name) {
     cpp << cpp_ss.str();
     h << h_ss.str();
 }
-extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree, const FCDT &fcdt) {
-    return new LLConverter(ir, tree, fcdt);
+extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree, const LexerBuilder &lexer_builder) {
+    return new LLConverter(ir, tree, lexer_builder);
 }
 
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

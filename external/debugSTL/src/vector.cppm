@@ -400,14 +400,25 @@ public:
         modification_count++;
     }
 
-    vector(const vector<T>& other) {
-        element = allocator.allocate(other.sz);
-        for (size_t i = 0; i < other.sz; ++i) {
-            std::construct_at(element + i, other.element[i]);
+    vector(const vector<T>& other)
+        : allocator(), element(nullptr), sz(0), cap(0), modification_count(0) {
+        if (other.sz > 0) {
+            element = allocator.allocate(other.sz);
+            try {
+                for (size_t i = 0; i < other.sz; ++i) {
+                    std::construct_at(element + i, other.element[i]);
+                }
+            } catch (...) {
+                // clean up on exception
+                for (size_t j = 0; j < other.sz; ++j) {
+                    std::destroy_at(element + j);
+                }
+                allocator.deallocate(element, other.sz);
+                throw;
+            }
+            sz = cap = other.sz;
         }
         modification_count++;
-        sz = other.sz;
-        cap = other.sz;
     }
 
     vector(vector<T>&& other) noexcept

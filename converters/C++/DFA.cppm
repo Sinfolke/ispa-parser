@@ -6,10 +6,13 @@ import std.compat;
 export class DFAConverter {
     const stdu::vector<DFA> &dfas;
     const std::string &namespace_name;
+    const std::string &prefix;
+    const std::string &name;
     std::ostringstream out;
     void createDFATable(const DFA& dfa, size_t count);
 public:
-    DFAConverter(const stdu::vector<DFA> &dfa, const std::string& namespace_name) : dfas(dfa), namespace_name(namespace_name) {}
+    DFAConverter(const stdu::vector<DFA> &dfa, const std::string& namespace_name, const std::string &prefix, const std::string &name)
+    : dfas(dfa), namespace_name(namespace_name), prefix(prefix), name(name) {}
     void create();
     auto get() -> std::ostringstream &;
 };

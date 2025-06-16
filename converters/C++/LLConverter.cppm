@@ -8,6 +8,7 @@ import AST.Tree;
 import LLIR.API;
 import LLIR;
 import LLHeader;
+import LexerBuilder;
 import fcdt;
 import std;
 export class LLConverter : public LLConverter_base, public LLHeader {
@@ -25,7 +26,7 @@ export class LLConverter : public LLConverter_base, public LLHeader {
 
     void addDFATables(std::ostringstream &out);
 public:
-    LLConverter(LLIR::IR &ir, AST::Tree &tree, const FCDT &fcdt, LLIR::Nodes *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, fcdt, custom_lexer_code, access_var) {
+    LLConverter(LLIR::IR &ir, AST::Tree &tree, const LexerBuilder &lexer_data, LLIR::Nodes *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, lexer_data, custom_lexer_code, access_var) {
         this->namespace_name = namespace_name;
         current_pos_counter.push("pos");
     }

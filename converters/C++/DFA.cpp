@@ -28,7 +28,7 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
             } else {
                 token_type = false;
                 const auto &symbol = std::get<char>(transition.first);
-                table_out << "'" << corelib::text::getCharFromEscaped(symbol) << "'" << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
+                table_out << "'" << corelib::text::getEscapedAsStr(symbol, false) << "'" << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
             }
             table_out << "}";
             if (std::next(it) != state.transitions.end()) {
@@ -38,7 +38,7 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
         table_out << "} },\n";
     }
     out << "const " << namespace_name << "::" << (token_type ? "DFA::TokenTable" : "DFA::CharTable") << '<' << max_states_count << ", " << max_transition_count << "> "
-    << namespace_name << "::Parser::table_" << count << " = " << "{" << table_out.str() << "};\n";
+    << namespace_name << "::" << prefix << "::" << name << '_' << count << " = " << "{" << table_out.str() << "};\n";
 }
 
 

@@ -15,15 +15,17 @@ bool LexerBuilder::isDfaCompatible(const stdu::vector<AST::RuleMember> &member) 
 }
 
 void LexerBuilder::build() {
+    fcdt.build();
     for (const auto &[name, rule] : ast) {
         if (corelib::text::isLower(name.back()))
             continue;
         if (isDfaCompatible(rule.rule_members)) {
             dfas.push_back(DFABuilder(ast, rule.rule_members, name).get());
+            is_dfa_involved_table[name] = true;
         } else {
             LLIR::RuleBuilder builder(ast, name, rule, function_dfas);
             functions.push_back(builder.getData());
+            is_dfa_involved_table[name] = false;
         }
     }
-    fcdt.build();
 }

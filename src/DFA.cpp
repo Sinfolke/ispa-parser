@@ -555,8 +555,8 @@ DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember>
     NFA nfa(ast, rules);
     nfa.build();
     DFA dfa_tmp(nfa);
-    dfa.build();
-    log(nfa, dfa, fullname);
+    dfa_tmp.build();
+    log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
 // Print a single state

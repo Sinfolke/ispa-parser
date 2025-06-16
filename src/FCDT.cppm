@@ -6,14 +6,15 @@ import dstd;
 import std;
 export class FCDT {
 public:
-    using Table = std::unordered_map<char, utype::unordered_set<stdu::vector<std::string>>>;
+    using Table = std::array<utype::unordered_set<stdu::vector<std::string>>, std::numeric_limits<unsigned char>::max() + 1>;
 private:
     Table table;
     const AST::Tree &ast;
-
+    void skipNospace(stdu::vector<AST::RuleMember>::iterator &it, const stdu::vector<AST::RuleMember>::iterator &end);
     auto determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char>;
 public:
     FCDT(const AST::Tree &ast) : ast(ast) {}
     void build();
-    auto get() -> Table;
+    auto get() -> Table&;
+    auto get() const -> const Table&;
 };

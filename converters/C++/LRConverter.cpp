@@ -168,7 +168,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
     LLIR::Builder tokens_ir(tree, true);
     auto IR = tokens_ir.get();
-    LLConverter converter(IR, tree, first_character_dispatch_table, &lexer_code, &return_var, filename);
+    LLConverter converter(IR, tree, lexer_data, &lexer_code, &return_var, filename);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);
@@ -234,6 +234,6 @@ void LRConverter::output(std::filesystem::path name) {
     cpp << cpp_out.str();
     h << h_out.str();
 }
-extern "C" LRConverter_base* getLRConverter(LRParser& data, const FCDT &fcdt, AST::Tree& tree) {
-    return new LRConverter(data, fcdt, tree);
+extern "C" LRConverter_base* getLRConverter(LRParser& data, const LexerBuilder &lexer_builder, AST::Tree& tree) {
+    return new LRConverter(data, lexer_builder, tree);
 }
