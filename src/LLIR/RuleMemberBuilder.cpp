@@ -9,6 +9,7 @@ import cpuf.printf;
 import Dump;
 import NFA;
 import DFA;
+import DFABuilder;
 import constants;
 import std;
 // helper functions

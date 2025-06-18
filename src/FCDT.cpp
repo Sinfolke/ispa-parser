@@ -73,7 +73,7 @@ void FCDT::build() {
         auto it = rule.second.rule_members.begin();
         skipNospace(it, rule.second.rule_members.end());
         for (const auto &c : determineFirstCharacter(*it)) {
-            table[c].insert(rule.first);
+            table[c].emplace(ast, rule.first);
         }
     }
     cpuf::printf("fcdt table size: {}", table.size());

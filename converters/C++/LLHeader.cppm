@@ -1,11 +1,16 @@
 export module LLHeader;
 import dstd;
 import LLStringConvertions;
+import buildLLParser;
 import LLIR.API;
+import LLIR;
+import LexerBuilder;
+import AST.Tree;
 import DFA;
 import std;
 export class LLHeader : public LLStringConvertions {
-    protected:
+    friend void buildLLParser(const std::filesystem::path name, const LLIR::IR &ir, const LexerBuilder &lexer_data, AST::Tree& ast);
+    public:
     // header output functions
     void createIncludes(std::ostringstream &out) const;
     void createLibrary(std::ostringstream& out, std::string namespace_name) const;

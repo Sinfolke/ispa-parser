@@ -1,4 +1,4 @@
-export module ASTPass;
+export module AST.Pass;
 import corelib;
 import LLIR;
 import AST.Tree;
@@ -26,16 +26,6 @@ export namespace AST {
             stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
             stdu::vector<std::pair<AST::RuleMember, AST::RuleMember>> &generated
         );
-
-        // sort by priority functions
-        bool prioritySort(const AST::String &first, const AST::String &second);
-        bool prioritySort(const AST::RuleMemberBin &first, const AST::RuleMemberBin &second);
-        bool prioritySort(const AST::RuleMemberHex &first, const AST::RuleMemberHex &second);
-        bool prioritySort(const AST::RuleMemberName &first, const AST::RuleMemberName &second);
-        bool prioritySort(const AST::RuleMemberCsequence &first, const AST::RuleMemberCsequence &second);
-        bool prioritySort(const AST::RuleMemberGroup &first, const AST::RuleMemberGroup &second);
-        bool prioritySort(const AST::RuleMemberOp &first, const AST::RuleMemberOp &second);
-        bool prioritySort(const AST::RuleMember &first, const AST::RuleMember &second);
         
         static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::RuleMember> &members, stdu::vector<AST::RuleMember>::iterator toInsert)
              -> stdu::vector<AST::RuleMember>::iterator;
@@ -49,24 +39,34 @@ export namespace AST {
         enum class Types {
             string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll, name, group, nospace, op, empty
         };
-        Types getTypes(const AST::String&) { return Types::string; }
-        Types getTypes(const AST::RuleMemberEscaped &) { return Types::Rule_escaped; }
-        Types getTypes(const AST::RuleMemberCsequence &) { return Types::Rule_csequence; }
-        Types getTypes(const AST::RuleMemberBin&) { return Types::Rule_bin; }
-        Types getTypes(const AST::RuleMemberHex&) { return Types::Rule_hex; }
-        Types getTypes(const AST::RuleMemberAny&) { return Types::Rule_any; }
-        Types getTypes(const AST::Cll&) { return Types::cll; }
+        static Types getTypes(const AST::String&) { return Types::string; }
+        static Types getTypes(const AST::RuleMemberEscaped &) { return Types::Rule_escaped; }
+        static Types getTypes(const AST::RuleMemberCsequence &) { return Types::Rule_csequence; }
+        static Types getTypes(const AST::RuleMemberBin&) { return Types::Rule_bin; }
+        static Types getTypes(const AST::RuleMemberHex&) { return Types::Rule_hex; }
+        static Types getTypes(const AST::RuleMemberAny&) { return Types::Rule_any; }
+        static Types getTypes(const AST::Cll&) { return Types::cll; }
         // never meet types
-        Types getTypes(const AST::RuleMemberName&) { return Types::name; };
-        Types getTypes(const AST::RuleMemberGroup&) { return Types::group; }
-        Types getTypes(const AST::RuleMemberNospace&) {return Types::nospace; }
-        Types getTypes(const AST::RuleMemberOp&) { return Types::op; }
-        Types getTypes(const std::monostate&) { return Types::empty; }
+        static Types getTypes(const AST::RuleMemberName&) { return Types::name; };
+        static Types getTypes(const AST::RuleMemberGroup&) { return Types::group; }
+        static Types getTypes(const AST::RuleMemberNospace&) {return Types::nospace; }
+        static Types getTypes(const AST::RuleMemberOp&) { return Types::op; }
+        static Types getTypes(const std::monostate&) { return Types::empty; }
     public:
         explicit TreePass(Tree &ast, bool rawAssign = false) : ast(&ast) {
             if (!rawAssign)
                 constructor();
         }
+        // sort by priority functions
+        static bool prioritySort(const AST::Tree& ast, const AST::String &first, const AST::String &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberBin &first, const AST::RuleMemberBin &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberHex &first, const AST::RuleMemberHex &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberName &first, const AST::RuleMemberName &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberCsequence &first, const AST::RuleMemberCsequence &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberGroup &first, const AST::RuleMemberGroup &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMemberOp &first, const AST::RuleMemberOp &second);
+        static bool prioritySort(const AST::Tree& ast, const AST::RuleMember &first, const AST::RuleMember &second);
+
         static void removeEmptyRule(Tree &ast);
         static void inlineSingleGroups(Tree &ast);
         static void literalsToToken(Tree &ast);

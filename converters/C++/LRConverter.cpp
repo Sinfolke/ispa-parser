@@ -168,7 +168,7 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
     LLIR::Builder tokens_ir(tree, true);
     auto IR = tokens_ir.get();
-    LLConverter converter(IR, tree, lexer_data, &lexer_code, &return_var, filename);
+    LLConverter converter(IR, tree, namespace_name);
     data_block_tokens = converter.getDataBlockToken();
     data_block_rules = converter.getDataBlockRules();
     converter.addHeader(out);

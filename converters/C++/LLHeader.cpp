@@ -7,12 +7,10 @@ import std;
 import std.compat;
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
-    out << "#include <list>\n";
     out << "#include <unordered_map>\n";
-    out << "#include <ispastdlib.hpp>\n";
-    out << "#include <fstream>\n";
     out << "#include <iterator>\n";
-    out << "#include <iostream>\n";
+    out << "#include <array>\n";
+    out << "#include <ispastdlib.hpp>\n";
 }
 void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name) const {
 

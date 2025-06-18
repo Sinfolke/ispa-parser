@@ -1,4 +1,4 @@
-module ASTPass;
+module AST.Pass;
 import corelib;
 import LLIR;
 import AST.Tree;
@@ -106,21 +106,21 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
         treeMap[name] = newRule;
     }
 }
-bool AST::TreePass::prioritySort(const AST::String &first, const AST::String &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::String &first, const AST::String &second) {
     if (first.value.size() != second.value.size())
         return first.value.size() > second.value.size();
     return first.value > second.value;
 }
-bool AST::TreePass::prioritySort(const AST::RuleMemberBin &first, const AST::RuleMemberBin &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberBin &first, const AST::RuleMemberBin &second) {
     return first.bin_chars.size() > second.bin_chars.size();
 }
 
-bool AST::TreePass::prioritySort(const AST::RuleMemberHex &first, const AST::RuleMemberHex &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberHex &first, const AST::RuleMemberHex &second) {
     return first.hex_chars.size() > second.hex_chars.size();
 }
 
-bool AST::TreePass::prioritySort(const AST::RuleMemberName &first, const AST::RuleMemberName &second) {
-    auto &treeMap = ast->getTreeMap();
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberName &first, const AST::RuleMemberName &second) {
+    auto &treeMap = ast.getTreeMap();
     const auto first_data = treeMap.find(first.name);
     const auto second_data = treeMap.find(second.name);
     if (first_data == treeMap.end())
@@ -133,12 +133,12 @@ bool AST::TreePass::prioritySort(const AST::RuleMemberName &first, const AST::Ru
         if (first_rules[i] == second_rules[i]) {
             continue;
         }
-        return prioritySort(first_rules[i], second_rules[i]);
+        return prioritySort(ast, first_rules[i], second_rules[i]);
     }
     return first_rules.size() > second_rules.size();
 }
 
-bool AST::TreePass::prioritySort(const AST::RuleMemberCsequence &first, const AST::RuleMemberCsequence &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberCsequence &first, const AST::RuleMemberCsequence &second) {
     if (!first.negative && second.negative)
         return true;
     if (first.negative && !second.negative)
@@ -147,85 +147,85 @@ bool AST::TreePass::prioritySort(const AST::RuleMemberCsequence &first, const AS
            second.characters.size() + second.escaped.size() + second.diapasons.size();
 }
 
-bool AST::TreePass::prioritySort(const AST::RuleMemberGroup &first, const AST::RuleMemberGroup &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberGroup &first, const AST::RuleMemberGroup &second) {
     for (size_t i = 0; i < first.values.size() && i < second.values.size(); ++i) {
         if (first.values[i] == second.values[i])
             continue;
-        return prioritySort(first.values[i], second.values[i]);
+        return prioritySort(ast, first.values[i], second.values[i]);
     }
     return first.values.size() > second.values.size();
 }
 
-bool AST::TreePass::prioritySort(const AST::RuleMemberOp &first, const AST::RuleMemberOp &second) {
-    return prioritySort(first.options.back(), second.options.back());
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberOp &first, const AST::RuleMemberOp &second) {
+    return prioritySort(ast, first.options.back(), second.options.back());
 }
-bool AST::TreePass::prioritySort(const AST::RuleMember &first, const AST::RuleMember &second) {
+bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMember &first, const AST::RuleMember &second) {
     if (first.isName() && second.isName())
-        return prioritySort(first.getName(), second.getName());
+        return prioritySort(ast, first.getName(), second.getName());
     if (first.isGroup() && second.isGroup())
-        return prioritySort(first.getGroup(), second.getGroup());
+        return prioritySort(ast, first.getGroup(), second.getGroup());
     if (first.isOp() && second.isOp())
-        return prioritySort(first.getOp(), second.getOp());
+        return prioritySort(ast, first.getOp(), second.getOp());
     if (first.isString() && second.isString())
-        return prioritySort(first.getString(), second.getString());
+        return prioritySort(ast, first.getString(), second.getString());
     if (first.isEscaped() && second.isEscaped())
         return false;
     if (first.isCsequence() && second.isCsequence())
-        return prioritySort(first.getCsequence(), second.getCsequence());
+        return prioritySort(ast, first.getCsequence(), second.getCsequence());
     if (first.isBin() && second.isBin())
-        return prioritySort(first.getBin(), second.getBin());
+        return prioritySort(ast, first.getBin(), second.getBin());
     if (first.isHex() && second.isHex())
-        return prioritySort(first.getHex(), second.getHex());
+        return prioritySort(ast, first.getHex(), second.getHex());
     if (first.isAny() && second.isAny())
         return false;
 
     if (first.isName()) {
-        auto find_it = ast->getTreeMap().find(first.getName().name);
-        if (find_it == ast->getTreeMap().end()) {
+        auto find_it = ast.getTreeMap().find(first.getName().name);
+        if (find_it == ast.getTreeMap().end()) {
             throw Error("Not found Rule_name in map");
         }
         const auto &members = find_it->second.rule_members;
         return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return false;
-            return prioritySort(members[0], second);
+            return prioritySort(ast, members[0], second);
         }, members[0].value, second.value);
     }
     if (second.isName()){
-        auto find_it = ast->getTreeMap().find(second.getName().name);
-        if (find_it == ast->getTreeMap().end()) {
+        auto find_it = ast.getTreeMap().find(second.getName().name);
+        if (find_it == ast.getTreeMap().end()) {
             throw Error("Not found Rule_name in map");
         }
         const auto &members = find_it->second.rule_members;
         return std::visit([&](const auto &f, const auto &s) -> bool {
             if (members.size() > 1 && getTypes(f) == getTypes(s))
                 return true;
-            return prioritySort(first, members[0]);
+            return prioritySort(ast, first, members[0]);
         }, first.value, members[0].value);
     }
     if (first.isGroup()) {
         auto &dt = first.getGroup();
         if (dt.values.empty())
             throw Error("Empty group");
-        return prioritySort(dt.values[0], second);
+        return prioritySort(ast, dt.values[0], second);
     }
     if (second.isGroup()) {
         auto &dt = second.getGroup();
         if (dt.values.empty())
             throw Error("Empty group");
-        return prioritySort(first, dt.values[0]);
+        return prioritySort(ast, first, dt.values[0]);
     }
     if (first.isOp()) {
         auto &dt = first.getOp();
         if (dt.options.empty())
             throw Error("Empty op");
-        return prioritySort(dt.options.back(), second);
+        return prioritySort(ast, dt.options.back(), second);
     }
     if (second.isOp()) {
         auto &dt = second.getOp();
         if (dt.options.empty())
             throw Error("Empty op");
-        return prioritySort(first, dt.options[0]);
+        return prioritySort(ast, first, dt.options[0]);
     }
     return std::visit([&](const auto &f, const auto &s) -> bool {
         stdu::vector<Types> priority_order = {
@@ -253,7 +253,7 @@ bool AST::TreePass::prioritySort(const AST::RuleMember &first, const AST::RuleMe
 void AST::TreePass::sortByPriority(AST::Tree &ast, AST::RuleMemberOp& options) {
     AST::TreePass pass(ast, true);
     std::sort(options.options.begin(), options.options.end(), [&](AST::RuleMember &first, AST::RuleMember &second) {
-        return pass.prioritySort(first, second);
+        return pass.prioritySort(ast, first, second);
     });
 }
 void AST::TreePass::sortByPriority(AST::Tree &ast, stdu::vector<AST::RuleMember>& members) {

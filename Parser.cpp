@@ -4,98 +4,71 @@ const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_0 = {{ 1, ::Parser::
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_1 = {{ 1, ::Parser::DFA::null_state, {
-{'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_2 = {{ 1, ::Parser::DFA::null_state, {
-{'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_3 = {{ 1, ::Parser::DFA::null_state, {
-{'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_4 = {{ 1, ::Parser::DFA::null_state, {
-{'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_5 = {{ 1, ::Parser::DFA::null_state, {
-{'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\v', 0, 0}, {'#', 1, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
 {'$', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
 {'%', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
 {'&', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
 {'(', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {')', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
 {'*', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<22, 20> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
-{'6', 21, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 20, ::Parser::DFA::null_state}, {'2', 19, ::Parser::DFA::null_state}, {'1', 18, ::Parser::DFA::null_state}, {'3', 17, ::Parser::DFA::null_state}, {'-', 2, 0}, {'+', 16, ::Parser::DFA::null_state}, {'\f', 15, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'7', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}} },
+const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
+{'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 2, 0}, {'+', 15, ::Parser::DFA::null_state}, {'\f', 14, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'+', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 4, 0, {
+{ 5, 0, {
 {'\f', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {'8', 3, 0}, {'6', 3, 0}, {',', 3, 0}, {'5', 3, 0}, {' ', 3, 0}, {'.', 3, 0}, {'7', 3, 0}, {'\t', 3, 0}, {'4', 3, 0}, {'2', 3, 0}, {'1', 3, 0}, {'0', 3, 0}, {'9', 3, 0}, {'\v', 3, 0}, {'3', 3, 0}, {'-', 2, 0}, {'+', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\v', 4, 0}, {'\r', 4, 0}, {'\t', 4, 0}, {'\n', 4, 0}, {' ', 4, 0}, {'\f', 4, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'9', 2, 0}, {'+', 1, 0}, {'\r', 4, 0}} },
+{'9', 2, 0}, {'+', 1, 0}, {'\r', 3, 0}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'0', 2, 0}, {'\v', 4, 0}, {'9', 6, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\r', 5, ::Parser::DFA::null_state}} },
+{'0', 2, 0}, {'\v', 3, 0}, {'9', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\r', 4, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'+', 1, 0}, {'5', 2, 0}, {' ', 4, 0}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}} },
+{'+', 1, 0}, {'5', 2, 0}, {' ', 3, 0}, {'9', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'5', 10, ::Parser::DFA::null_state}, {'8', 2, 0}, {'+', 1, 0}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 4, 0}, {'\r', 5, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}} },
+{'5', 9, ::Parser::DFA::null_state}, {'8', 2, 0}, {'+', 1, 0}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 3, 0}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'\n', 11, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\t', 4, 0}, {'5', 10, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\v', 7, ::Parser::DFA::null_state}} },
+{'\n', 10, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\t', 3, 0}, {'5', 9, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\v', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'\n', 11, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'\f', 4, 0}, {'+', 2, 0}, {'7', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}} },
+{'\n', 10, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'\f', 3, 0}, {'+', 2, 0}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'+', 2, 0}} },
 { 2, 0, {
@@ -109,69 +82,65 @@ const Parser::DFA::CharTable<22, 20> Parser::Lexer::dfa_table_13 = {{ 0, ::Parse
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
 {',', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<23, 20> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
-{'6', 22, ::Parser::DFA::null_state}, {',', 2, 0}, {'.', 2, 0}, {'4', 21, ::Parser::DFA::null_state}, {'2', 20, ::Parser::DFA::null_state}, {'1', 19, ::Parser::DFA::null_state}, {'3', 18, ::Parser::DFA::null_state}, {'-', 17, ::Parser::DFA::null_state}, {'7', 16, ::Parser::DFA::null_state}, {'\t', 15, ::Parser::DFA::null_state}, {'5', 14, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
+const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
+{'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 15, ::Parser::DFA::null_state}, {'7', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'5', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'8', 10, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 3, 0, {
-{'\f', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {'8', 2, 0}, {'6', 2, 0}, {',', 2, 0}, {'5', 2, 0}, {' ', 2, 0}, {'.', 2, 0}, {'7', 2, 0}, {'\t', 2, 0}, {'4', 2, 0}, {'2', 2, 0}, {'1', 2, 0}, {'0', 2, 0}, {'9', 2, 0}, {'\v', 2, 0}, {'3', 2, 0}, {'-', 1, 0}, {'+', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 3, 0}, {'\v', 3, 0}, {'\r', 3, 0}, {' ', 3, 0}, {'\n', 3, 0}, {'\t', 3, 0}, {'-', 4, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'>', 1, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 5, 0}, {'\v', 5, 0}, {'\r', 5, 0}, {' ', 5, 0}, {'\n', 5, 0}, {'\t', 5, 0}, {'-', 1, 0}} },
-{ 1, 0, {
-{'+', 1, 0}, {'-', 4, 0}, {'\f', 5, 0}} },
-{ 1, 0, {
-{'\r', 5, 0}, {'+', 1, 0}, {'-', 4, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 4, 0}, {'\v', 5, 0}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 4, 0}, {'\n', 5, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 4, 0}, {' ', 5, 0}, {'\n', 11, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 4, 0}, {'8', 12, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'5', 14, ::Parser::DFA::null_state}, {'\t', 5, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
-{ 1, 0, {
 {'-', 1, 0}} },
+{ 6, 0, {
+{'\f', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {'8', 3, 0}, {'6', 3, 0}, {',', 3, 0}, {'5', 3, 0}, {' ', 3, 0}, {'.', 3, 0}, {'7', 3, 0}, {'\t', 3, 0}, {'4', 3, 0}, {'2', 3, 0}, {'1', 3, 0}, {'0', 3, 0}, {'9', 3, 0}, {'\v', 3, 0}, {'3', 3, 0}, {'-', 1, 0}, {'+', 1, 0}} },
 { 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
+{'+', 1, 0}, {'-', 2, 0}, {'\f', 3, 0}} },
 { 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
+{'\r', 3, 0}, {'+', 1, 0}, {'-', 2, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
+{'3', 3, 0}, {'+', 1, 0}} },
 { 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
+{'-', 2, 0}, {'\v', 3, 0}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'3', 2, 0}, {'+', 1, 0}} },
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 2, 0}, {'\n', 3, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 2, 0}, {' ', 3, 0}, {'\n', 9, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'8', 10, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 2, 0}, {'8', 10, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'5', 12, ::Parser::DFA::null_state}, {'\t', 3, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'>', 1, 0}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 3, 0}, {'+', 1, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_16 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
 {'.', 1, 0}, {'\v', 0, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<10, 14> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
-{'=', 1, 0}, {'+', 1, 0}, {'*', 1, 0}, {&dfa_table_17, 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 9, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
+{'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 9, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 5, 0, {
-{'\f', 2, 0}, {'\v', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'=', 1, 0}, {'\r', 2, 0}, {&dfa_table_17, 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'\f', 2, 0}, {'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 1, 0}} },
 { 1, 0, {
 {'/', 1, 0}, {'\f', 2, 0}} },
 { 1, 0, {
@@ -187,58 +156,58 @@ const Parser::DFA::CharTable<10, 14> Parser::Lexer::dfa_table_17 = {{ 0, ::Parse
 { 1, 0, {
 {'/', 1, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
-{'D', 2, 0}, {'F', 2, 0}, {'C', 2, 0}, {'8', 2, 0}, {'e', 2, 0}, {'B', 2, 0}, {'A', 2, 0}, {'3', 2, 0}, {'d', 2, 0}, {'c', 2, 0}, {'6', 2, 0}, {'1', 11, ::Parser::DFA::null_state}, {'b', 2, 0}, {'4', 2, 0}, {'a', 2, 0}, {'2', 2, 0}, {'0', 10, ::Parser::DFA::null_state}, {'E', 2, 0}, {'9', 2, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'5', 2, 0}, {'f', 2, 0}} },
+const Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
+{'9', 0, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'E', 0, 0}, {'2', 0, 0}, {'a', 0, 0}, {'4', 0, 0}, {'b', 0, 0}, {'1', 9, ::Parser::DFA::null_state}, {'c', 0, 0}, {'6', 0, 0}, {'d', 0, 0}, {'3', 0, 0}, {'A', 0, 0}, {' ', 8, ::Parser::DFA::null_state}, {'5', 0, 0}, {'f', 0, 0}, {'7', 0, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'e', 0, 0}, {'8', 0, 0}, {'C', 0, 0}, {'B', 0, 0}, {'\t', 6, ::Parser::DFA::null_state}, {'F', 0, 0}, {'\r', 5, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\v', 2, ::Parser::DFA::null_state}, {'D', 2, 0}, {'\r', 2, ::Parser::DFA::null_state}, {'F', 2, 0}, {'\t', 2, ::Parser::DFA::null_state}, {'C', 2, 0}, {'8', 2, 0}, {'e', 2, 0}, {'\n', 2, ::Parser::DFA::null_state}, {'7', 2, 0}, {'B', 2, 0}, {'5', 2, 0}, {'f', 2, 0}, {'A', 2, 0}, {' ', 2, ::Parser::DFA::null_state}, {'6', 2, 0}, {'c', 2, 0}, {'b', 2, 0}, {'1', 2, 0}, {'3', 2, 0}, {'d', 2, 0}, {'4', 2, 0}, {'a', 2, 0}, {'2', 2, 0}, {'0', 13, ::Parser::DFA::null_state}, {'E', 2, 0}, {'9', 2, 0}, {'\f', 2, ::Parser::DFA::null_state}} },
+{'\f', 2, ::Parser::DFA::null_state}, {'\v', 2, ::Parser::DFA::null_state}, {'\n', 2, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}, {'\t', 2, ::Parser::DFA::null_state}, {'1', 2, 0}, {'\r', 2, ::Parser::DFA::null_state}, {'0', 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'x', 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'0', 3, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'0', 3, ::Parser::DFA::null_state}, {'\t', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'0', 3, ::Parser::DFA::null_state}, {'\t', 5, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\f', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\v', 0, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\t', 5, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'b', 1, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'1', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 12, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
 {'b', 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'0', 3, ::Parser::DFA::null_state}, {'\v', 2, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\r', 2, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\t', 2, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\t', 6, ::Parser::DFA::null_state}, {'\n', 2, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\t', 6, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'1', 2, 0}, {'\t', 6, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'1', 9, ::Parser::DFA::null_state}, {'\t', 6, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'x', 1, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 2, 0}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'x', 1, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'9', 2, 0}} },
+{'\f', 2, ::Parser::DFA::null_state}, {'1', 9, ::Parser::DFA::null_state}, {'\t', 6, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 12, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'x', 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 1, ::Parser::DFA::null_state}, {'0', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
 {':', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
 {';', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<3, 10> Parser::Lexer::dfa_table_21 = {{ 1, 0, {
-{'<', 1, 0}, {&dfa_table_57, 2, ::Parser::DFA::null_state}, {'\t', 0, 0}, {',', 0, 0}, {'>', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
+const Parser::DFA::CharTable<3, 10> Parser::Lexer::dfa_table_16 = {{ 1, 0, {
+{'<', 1, 0}, {&dfa_table_1, 2, ::Parser::DFA::null_state}, {'\t', 0, 0}, {',', 0, 0}, {'>', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 1, 0, {
 {'>', 1, 0}, {'\f', 0, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_22 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
 {'=', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
 {'>', 4, ::Parser::DFA::null_state}, {'=', 1, 1}, {'<', 3, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\v', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'=', 2, 0}} },
@@ -249,441 +218,212 @@ const Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser
 { 2, 0, {
 {'=', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
 {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'?', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
 {'@', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_26 = {{ 1, 0, {
+const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_21 = {{ 1, 0, {
 {'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_27 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
+{Tokens::rule_CSEQUENCE_DIAPASON, 0, 0}, {'^', 1, 0}, {&dfa_table_1, 0, 0}, {']', 1, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'[', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_28 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_29 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_30 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_31 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_32 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_33 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_34 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_35 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_36 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_37 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_38 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_39 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_40 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_41 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_42 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_43 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_44 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_45 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_46 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_47 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_48 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_49 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_50 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_51 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_52 = {{ 0, ::Parser::DFA::null_state, {
-{']', 1, 0}, {&dfa_table_53, 2, 0}, {'^', 1, 0}, {&dfa_table_53, 2, 0}, {'\t', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'[', 9, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {&dfa_table_53, 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 3, 0, {
-{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {&dfa_table_53, 2, 0}, {'[', 1, 0}, {'\t', 2, 0}, {']', 1, 0}, {&dfa_table_53, 2, 0}, {'^', 1, 0}, {&dfa_table_53, 2, 0}} },
+{'\f', 2, 0}, {'\v', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {'\r', 2, 0}, {'\t', 2, 0}, {'[', 1, 0}} },
 { 1, 0, {
 {'[', 1, 0}, {'\f', 2, 0}} },
 { 1, 0, {
-{'[', 1, 0}, {'\v', 2, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'[', 1, 0}, {' ', 2, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\n', 2, 0}, {'[', 1, 0}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'[', 1, 0}, {'\v', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\v', 4, ::Parser::DFA::null_state}, {&dfa_table_53, 2, 0}, {'[', 1, 0}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 0, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'\r', 2, 0}, {'[', 1, 0}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\r', 0, 0}, {'[', 1, 0}, {&dfa_table_53, 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'\t', 0, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'[', 1, 0}, {&dfa_table_53, 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'\v', 5, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'[', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\n', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
 } },
+{ 1, 0, {
+{']', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'[', 8, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<15, 10> Parser::Lexer::dfa_table_53 = {{ 0, ::Parser::DFA::null_state, {
-{'\'', 3, 0}, {']', 2, 1}, {&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 10, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
+const Parser::DFA::CharTable<15, 8> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
+{'\'', 3, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 10, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'0', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 6, 0, {
+{ 4, 0, {
 {'\f', 3, 0}, {'\v', 3, 0}, {'\t', 3, 0}, {'\'', 3, 0}, {'\\', 14, ::Parser::DFA::null_state}, {'\r', 3, 0}, {'\n', 3, 0}, {' ', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'\'', 2, 0}} },
 { 2, 0, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\\', 4, 0}, {'\f', 3, 0}} },
+{'\\', 4, 0}, {'\f', 3, 0}} },
 { 2, 0, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\\', 4, 0}, {' ', 3, 0}, {'\f', 5, ::Parser::DFA::null_state}} },
+{'\\', 4, 0}, {' ', 3, 0}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 2, 0, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\n', 3, 0}, {'\\', 4, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
+{'\n', 3, 0}, {'\\', 4, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 2, 0, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\v', 3, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\\', 4, 0}, {'\f', 5, ::Parser::DFA::null_state}} },
+{'\v', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'\\', 4, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 2, 0, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 4, 0}, {'\r', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
+{'\v', 8, ::Parser::DFA::null_state}, {'\\', 4, 0}, {'\r', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'\\', 11, ::Parser::DFA::null_state}, {'\'', 3, 0}} },
 { 2, ::Parser::DFA::null_state, {
 {'s', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{&dfa_table_53, 2, ::Parser::DFA::null_state}, {'\t', 3, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 13, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\\', 11, ::Parser::DFA::null_state}} },
+{'\t', 3, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 13, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 11, ::Parser::DFA::null_state}, {'\'', 2, 0}} },
 { 2, 0, {
 {'\'', 3, 0}, {'\\', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_54 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
 {']', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_55 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 5, 0}, {'P', 5, 0}, {'9', 5, 0}, {'R', 5, 0}, {'0', 5, 0}, {'6', 5, 0}, {'8', 5, 0}, {'5', 5, 0}, {'M', 5, 0}, {'4', 5, 0}, {'3', 5, 0}, {'2', 5, 0}, {'1', 5, 0}, {'Z', 5, 0}, {'Y', 5, 0}, {'X', 5, 0}, {'W', 5, 0}, {'V', 5, 0}, {'U', 5, 0}, {'T', 5, 0}, {'S', 5, 0}, {'Q', 5, 0}, {'O', 5, 0}, {'N', 5, 0}, {'K', 5, 0}, {'I', 5, 0}, {'z', 5, 0}, {'L', 5, 0}, {'y', 5, 0}, {'G', 5, 0}, {'x', 5, 0}, {'J', 5, 0}, {'w', 5, 0}, {'E', 5, 0}, {'v', 5, 0}, {'H', 5, 0}, {'u', 5, 0}, {'C', 5, 0}, {'t', 5, 0}, {'F', 5, 0}, {'s', 5, 0}, {'A', 5, 0}, {'r', 5, 0}, {'D', 5, 0}, {'q', 5, 0}, {'\r', 12, ::Parser::DFA::null_state}, {'p', 5, 0}, {'B', 5, 0}, {'o', 5, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'n', 5, 0}, {'m', 5, 0}, {'\t', 10, ::Parser::DFA::null_state}, {'l', 5, 0}, {'k', 5, 0}, {'\f', 9, ::Parser::DFA::null_state}, {'j', 5, 0}, {'d', 5, 0}, {'_', 5, 0}, {'&', 2, 1}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 5, 0}, {'g', 5, 0}, {'e', 5, 0}, {'a', 7, ::Parser::DFA::null_state}, {'f', 5, 0}, {'h', 5, 0}, {'c', 5, 0}, {' ', 6, ::Parser::DFA::null_state}, {'b', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'&', 4, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 4, 0, {
+{'7', 5, 0}, {'P', 5, 0}, {'9', 5, 0}, {'R', 5, 0}, {'0', 5, 0}, {'6', 5, 0}, {'8', 5, 0}, {'5', 5, 0}, {' ', 5, 0}, {'M', 5, 0}, {'4', 5, 0}, {'3', 5, 0}, {'2', 5, 0}, {'1', 5, 0}, {'Z', 5, 0}, {'Y', 5, 0}, {'X', 5, 0}, {'W', 5, 0}, {'V', 5, 0}, {'U', 5, 0}, {'T', 5, 0}, {'S', 5, 0}, {'Q', 5, 0}, {'O', 5, 0}, {'N', 5, 0}, {'K', 5, 0}, {'I', 5, 0}, {'z', 5, 0}, {'L', 5, 0}, {'y', 5, 0}, {'G', 5, 0}, {'x', 5, 0}, {'J', 5, 0}, {'w', 5, 0}, {'E', 5, 0}, {'v', 5, 0}, {'H', 5, 0}, {'u', 5, 0}, {'C', 5, 0}, {'t', 5, 0}, {'F', 5, 0}, {'s', 5, 0}, {'A', 5, 0}, {'r', 5, 0}, {'D', 5, 0}, {'q', 5, 0}, {'\r', 5, 0}, {'p', 5, 0}, {'B', 5, 0}, {'o', 5, 0}, {'\v', 5, 0}, {'n', 5, 0}, {'m', 5, 0}, {'\t', 5, 0}, {'l', 5, 0}, {'k', 5, 0}, {'\f', 5, 0}, {'j', 5, 0}, {'i', 5, 0}, {'\n', 5, 0}, {'h', 5, 0}, {'g', 5, 0}, {'f', 5, 0}, {'e', 5, 0}, {'d', 5, 0}, {'c', 5, 0}, {'b', 5, 0}, {'a', 5, 0}, {'_', 5, 0}} },
+{ 4, 0, {
+{'&', 2, 1}, {' ', 0, 0}, {'a', 1, 0}, {'h', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 3, 0}, {'_', 5, 0}} },
+{ 4, 0, {
+{'\n', 0, 0}, {'&', 2, 1}, {' ', 6, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}, {'h', 5, 0}} },
+{ 4, 0, {
+{'\f', 0, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'&', 2, 1}, {'h', 5, 0}, {'a', 7, ::Parser::DFA::null_state}} },
+{ 4, 0, {
+{'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 0, 0}, {'a', 7, ::Parser::DFA::null_state}} },
+{ 4, 0, {
+{'\v', 0, 0}, {'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 10, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}} },
+{ 4, 0, {
+{'\r', 0, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 10, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_56 = {{ 1, 0, {
-{'&', 4, 1}, {'_', 0, 0}, {'a', 12, ::Parser::DFA::null_state}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 11, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 10, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 6, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::TokenTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 25, ::Parser::DFA::null_state}, {'p', 12, 0}, {'m', 12, 0}, {'\t', 24, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'i', 12, 0}, {'\n', 21, ::Parser::DFA::null_state}, {'h', 12, 0}, {'n', 15, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'f', 12, 0}, {'c', 12, 0}, {' ', 20, ::Parser::DFA::null_state}, {'E', 12, 0}, {'v', 19, ::Parser::DFA::null_state}, {'B', 12, 0}, {'o', 18, ::Parser::DFA::null_state}, {'F', 12, 0}, {'s', 17, ::Parser::DFA::null_state}, {'g', 12, 0}, {'e', 12, 0}, {'_', 12, 0}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}, {'w', 12, 0}, {'J', 12, 0}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'a', 3, 0}, {'\t', 2, 0}, {'&', 4, 1}} },
+{'t', 8, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'n', 5, 0}} },
+{'b', 9, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'&', 1, 1}} },
+{'a', 8, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 1, 0}} },
-{ 1, 0, {
-{'&', 4, 1}, {'a', 3, 0}, {' ', 2, 0}, {'7', 0, 0}} },
-{ 1, 0, {
-{'&', 4, 1}, {'a', 3, 0}, {'\r', 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'7', 0, 0}} },
-{ 1, 0, {
-{'&', 4, 1}, {'a', 3, 0}, {'7', 0, 0}, {'\v', 2, 0}, {'\r', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'&', 4, 1}, {'a', 3, 0}, {'\t', 2, 0}, {'7', 0, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'&', 4, 1}, {'\f', 2, 0}, {'7', 0, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'a', 3, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'&', 4, 1}, {'\f', 10, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'a', 3, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 2, 0}, {' ', 6, ::Parser::DFA::null_state}} },
+{'o', 10, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'&', 4, 1}, {'\f', 10, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'a', 3, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'n', 5, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}} },
-};
-const Parser::DFA::CharTable<59, 70> Parser::Lexer::dfa_table_57 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 58, ::Parser::DFA::null_state}, {'b', 55, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 48, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 41, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'m', 0, 0}, {'n', 33, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}, {'o', 25, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 21, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 20, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 17, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'S', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 15, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 2, 5}, {&dfa_table_21, 1, 5}, {'\v', 2, 5}, {'\r', 2, 5}, {'\t', 2, 5}, {'a', 3, 5}, {'n', 4, 4}, {'s', 5, 2}, {'b', 8, 0}, {' ', 2, 5}, {'\n', 2, 5}, {'o', 6, 5}, {'v', 7, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 9, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'u', 10, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-{'t', 11, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 12, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 11, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 13, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 2, 5}} },
+{'r', 0, 5}} },
 { 0, ::Parser::DFA::null_state, {
 {'m', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'j', 2, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 14, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 1, 5}} },
-{ 1, 5, {
-{'a', 3, 5}, {'n', 4, 4}, {&dfa_table_21, 1, 5}, {'o', 6, 5}, {'v', 7, 1}, {' ', 2, 5}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}} },
-{ 1, 5, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 18, ::Parser::DFA::null_state}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 7, 1}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 19, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 3, 5}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 17, ::Parser::DFA::null_state}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}, {'t', 11, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 3, 5}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 24, ::Parser::DFA::null_state}, {&dfa_table_21, 23, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 22, ::Parser::DFA::null_state}, {'7', 0, 0}} },
-{ 1, 2, {
-{'t', 11, 2}} },
-{ 1, 5, {
-} },
-{ 1, 1, {
-{'a', 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 3, 5}, {'n', 4, 4}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 6, 5}, {'v', 17, ::Parser::DFA::null_state}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 26, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 2, 5}, {'s', 20, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-{'o', 13, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 3, 5}, {'n', 4, 4}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 31, ::Parser::DFA::null_state}, {'v', 30, ::Parser::DFA::null_state}, {&dfa_table_21, 29, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'7', 0, 0}, {'\v', 2, 5}, {'s', 28, ::Parser::DFA::null_state}} },
-{ 1, 2, {
-{'t', 11, 2}} },
-{ 1, 5, {
-} },
-{ 1, 1, {
-{'a', 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 32, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-{'o', 13, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'7', 0, 0}, {'\t', 2, 5}, {'n', 4, 4}, {'a', 3, 5}, {'o', 25, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'\v', 27, ::Parser::DFA::null_state}, {'u', 10, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-{'7', 0, 0}, {'\t', 2, 5}, {'n', 40, ::Parser::DFA::null_state}, {'a', 3, 5}, {'o', 38, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 37, ::Parser::DFA::null_state}, {&dfa_table_21, 36, ::Parser::DFA::null_state}, {'s', 35, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'\v', 27, ::Parser::DFA::null_state}} },
-{ 1, 2, {
-{'t', 11, 2}} },
-{ 1, 5, {
-} },
-{ 1, 1, {
-{'a', 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 39, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-{'o', 13, 0}} },
-{ 1, 4, {
-{'u', 10, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 8, 0}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'n', 47, ::Parser::DFA::null_state}, {'a', 3, 5}, {'o', 45, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 44, ::Parser::DFA::null_state}, {&dfa_table_21, 43, ::Parser::DFA::null_state}, {'\f', 2, 5}, {'s', 42, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
-{ 1, 2, {
-{'t', 11, 2}} },
-{ 1, 5, {
-} },
-{ 1, 1, {
-{'a', 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 46, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-{'o', 13, 0}} },
-{ 1, 4, {
-{'u', 10, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 8, 0}, {'\n', 2, 5}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 54, ::Parser::DFA::null_state}, {'o', 52, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 51, ::Parser::DFA::null_state}, {&dfa_table_21, 50, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {'s', 49, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
-{ 1, 2, {
-{'t', 11, 2}} },
-{ 1, 5, {
-} },
-{ 1, 1, {
-{'a', 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 53, ::Parser::DFA::null_state}} },
-{ 1, 5, {
-{'o', 13, 0}} },
-{ 1, 4, {
-{'u', 10, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 8, 0}, {'\n', 48, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 33, ::Parser::DFA::null_state}, {'o', 56, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'n', 4, 4}, {'o', 57, ::Parser::DFA::null_state}, {'b', 26, ::Parser::DFA::null_state}, {'\v', 2, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 12, 5}, {'l', 1, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 55, ::Parser::DFA::null_state}, {'\n', 48, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 33, ::Parser::DFA::null_state}, {'o', 25, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {&dfa_table_21, 16, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'r', 9, 5}} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_58 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_59 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_60 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<30, 69> Parser::Lexer::dfa_table_61 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 27, ::Parser::DFA::null_state}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 24, ::Parser::DFA::null_state}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 21, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'_', 12, 0}, {'t', 17, ::Parser::DFA::null_state}, {'C', 12, 0}, {'i', 12, 0}, {'\n', 15, ::Parser::DFA::null_state}, {'h', 12, 0}, {'f', 14, ::Parser::DFA::null_state}, {'a', 12, 0}, {'g', 12, 0}, {'e', 12, 0}, {'c', 12, 0}, {' ', 13, ::Parser::DFA::null_state}, {'b', 12, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'u', 6, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 7, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'s', 6, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 8, 0}, {'\v', 8, 0}, {'\r', 8, 0}, {' ', 8, 0}, {'\n', 8, 0}, {'\t', 8, 0}, {'f', 9, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 10, 0}} },
+{'j', 0, 5}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 11, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'m', 2, 0}} },
-{ 2, 0, {
+{'l', 1, 5}} },
+{ 1, 0, {
 {'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {' ', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 12, 0}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 12, 0}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 12, 0}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 12, 0}, {'j', 12, 0}, {'i', 12, 0}, {'\n', 12, 0}, {'h', 12, 0}, {'g', 12, 0}, {'f', 12, 0}, {'e', 12, 0}, {'d', 12, 0}, {'c', 12, 0}, {'b', 12, 0}, {'a', 12, 0}, {'_', 12, 0}} },
-{ 2, 0, {
-{'t', 3, ::Parser::DFA::null_state}, {'f', 9, 0}, {' ', 12, 0}} },
+{ 1, 5, {
+} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}, {'_', 12, 0}} },
-{ 2, 0, {
-{'\n', 8, 0}, {'t', 3, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 16, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}} },
+{'r', 6, 5}, {'_', 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}, {'_', 12, 0}} },
-{ 2, 0, {
-{'\f', 8, 0}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'t', 20, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 19, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}} },
-{ 2, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\t', 8, 0}, {'t', 23, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'f', 22, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}} },
-{ 2, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\t', 21, ::Parser::DFA::null_state}, {'t', 26, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'\v', 8, 0}, {'c', 12, 0}, {'f', 25, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}} },
-{ 2, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\r', 8, 0}, {'\t', 21, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\v', 24, ::Parser::DFA::null_state}, {'t', 29, ::Parser::DFA::null_state}, {'f', 28, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'o', 1, 0}, {'a', 5, 0}, {'r', 10, 0}, {'n', 2, 0}} },
-{ 2, ::Parser::DFA::null_state, {
-{'r', 4, ::Parser::DFA::null_state}} },
+{'u', 7, 4}, {'_', 12, 0}} },
+{ 1, 0, {
+{'b', 5, 0}, {'v', 4, 1}, {'\v', 0, 5}, {'s', 2, 2}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 3, 5}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 8, 2}, {'_', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 9, 5}, {'_', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 8, 1}, {'_', 12, 0}} },
+{ 1, 0, {
+{'v', 19, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {' ', 0, 5}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'v', 19, ::Parser::DFA::null_state}, {'\n', 0, 5}, {' ', 20, ::Parser::DFA::null_state}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 10, 0}, {'_', 12, 0}} },
+{ 1, 0, {
+{'\f', 0, 5}, {'v', 19, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\t', 0, 5}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\r', 0, 5}, {'\t', 24, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_62 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::CharTable<26, 69> Parser::Lexer::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 22, ::Parser::DFA::null_state}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 20, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'_', 12, 0}, {'i', 12, 0}, {'\n', 16, ::Parser::DFA::null_state}, {'h', 12, 0}, {'f', 15, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'C', 12, 0}, {'a', 12, 0}, {'g', 12, 0}, {'e', 12, 0}, {'c', 12, 0}, {' ', 13, ::Parser::DFA::null_state}, {'b', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 2, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'s', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_63 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
-} },
+{'o', 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 10, 0}, {'\v', 10, 0}, {'\r', 10, 0}, {' ', 10, 0}, {'\n', 10, 0}, {'\t', 10, 0}, {'f', 11, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 6, 0}} },
+{ 6, 0, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {' ', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 12, 0}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 12, 0}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 12, 0}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 12, 0}, {'j', 12, 0}, {'i', 12, 0}, {'\n', 12, 0}, {'h', 12, 0}, {'g', 12, 0}, {'f', 12, 0}, {'e', 12, 0}, {'d', 12, 0}, {'c', 12, 0}, {'b', 12, 0}, {'a', 12, 0}, {'_', 12, 0}} },
+{ 6, 0, {
+{'t', 1, ::Parser::DFA::null_state}, {'f', 11, 0}, {' ', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 2, ::Parser::DFA::null_state}, {'_', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}, {'_', 12, 0}} },
+{ 6, 0, {
+{'\n', 10, 0}, {'t', 14, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 17, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}} },
+{ 6, 0, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
+{ 6, 0, {
+{'\f', 10, 0}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 19, ::Parser::DFA::null_state}} },
+{ 6, 0, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
+{ 6, 0, {
+{'\t', 10, 0}, {'t', 14, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'f', 21, ::Parser::DFA::null_state}} },
+{ 6, 0, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
+{ 6, 0, {
+{'\t', 20, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'\v', 10, 0}, {'c', 12, 0}, {'f', 23, ::Parser::DFA::null_state}} },
+{ 6, 0, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
+{ 6, 0, {
+{'\r', 10, 0}, {'\t', 20, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\v', 22, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'f', 25, ::Parser::DFA::null_state}} },
+{ 6, 0, {
+{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
 };
-const Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_64 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 8, 0}, {'P', 8, 0}, {'9', 8, 0}, {'R', 8, 0}, {'0', 8, 0}, {'6', 8, 0}, {'8', 8, 0}, {'5', 8, 0}, {'M', 8, 0}, {'4', 8, 0}, {'3', 8, 0}, {'2', 8, 0}, {'1', 8, 0}, {'Z', 8, 0}, {'Y', 8, 0}, {'X', 8, 0}, {'W', 8, 0}, {'V', 8, 0}, {'U', 8, 0}, {'T', 8, 0}, {'S', 8, 0}, {'Q', 8, 0}, {'O', 8, 0}, {'N', 8, 0}, {'K', 8, 0}, {'I', 8, 0}, {'z', 8, 0}, {'L', 8, 0}, {'y', 8, 0}, {'G', 8, 0}, {'x', 8, 0}, {'J', 8, 0}, {'w', 8, 0}, {'E', 8, 0}, {'v', 8, 0}, {'H', 8, 0}, {'u', 8, 0}, {'C', 8, 0}, {'t', 8, 0}, {'F', 8, 0}, {'s', 8, 0}, {'A', 8, 0}, {'r', 8, 0}, {'D', 8, 0}, {'q', 8, 0}, {'\r', 19, ::Parser::DFA::null_state}, {'p', 8, 0}, {'B', 8, 0}, {'o', 8, 0}, {'\v', 17, ::Parser::DFA::null_state}, {'n', 8, 0}, {'m', 8, 0}, {'\t', 15, ::Parser::DFA::null_state}, {'l', 8, 0}, {'k', 8, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'j', 8, 0}, {'d', 8, 0}, {'_', 8, 0}, {'\n', 11, ::Parser::DFA::null_state}, {'i', 10, ::Parser::DFA::null_state}, {'a', 8, 0}, {'g', 8, 0}, {'e', 8, 0}, {'f', 8, 0}, {'h', 8, 0}, {'c', 8, 0}, {' ', 9, ::Parser::DFA::null_state}, {'b', 8, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'p', 2, 0}} },
@@ -726,22 +466,7 @@ const Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_64 = {{ 0, ::Parse
 { 5, 0, {
 {'m', 1, 0}, {'f', 5, 0}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_65 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_66 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_67 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_68 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 14, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {'\v', 13, ::Parser::DFA::null_state}, {'n', 7, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'_', 7, 0}, {'m', 10, ::Parser::DFA::null_state}, {'i', 7, 0}, {'\n', 9, ::Parser::DFA::null_state}, {'h', 7, 0}, {'a', 7, 0}, {'g', 7, 0}, {'e', 7, 0}, {'f', 7, 0}, {'c', 7, 0}, {' ', 8, ::Parser::DFA::null_state}, {'b', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 2, 0}} },
@@ -772,152 +497,115 @@ const Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_68 = {{ 0, ::Parse
 { 6, 0, {
 {'\r', 0, 0}, {'\t', 12, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'m', 10, ::Parser::DFA::null_state}, {'\f', 11, ::Parser::DFA::null_state}, {'\v', 13, ::Parser::DFA::null_state}, {'c', 7, 0}} },
 };
-const Parser::DFA::CharTable<17, 72> Parser::Lexer::dfa_table_69 = {{ 1, 0, {
-{';', 1, 0}, {'!', 1, 1}, {'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {&dfa_table_81, 1, 0}, {'i', 0, 0}, {'\n', 15, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 11, ::Parser::DFA::null_state}, {'m', 0, 0}, {'n', 10, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 8, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 7, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::CharTable<20, 72> Parser::Lexer::dfa_table_30 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 18, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {';', 1, 0}, {'\t', 16, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 14, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}, {'n', 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {&dfa_table_1, 1, 0}, {'\n', 12, ::Parser::DFA::null_state}, {'i', 7, 0}, {'f', 7, 0}, {'h', 7, 0}, {'c', 7, 0}, {' ', 10, ::Parser::DFA::null_state}, {'m', 7, 0}, {'!', 1, 1}, {'g', 7, 0}, {'e', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 4, 0}, {'\r', 4, 0}, {'\n', 4, 0}, {' ', 4, 0}, {'n', 5, 0}, {'\t', 4, 0}, {'\v', 4, 0}, {'!', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 6, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'t', 1, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 3, 0}, {'\v', 3, 0}, {'\r', 3, 0}, {'n', 4, ::Parser::DFA::null_state}, {'\t', 3, 0}, {';', 1, 0}, {&dfa_table_81, 1, 0}, {' ', 3, 0}, {'\n', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 5, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'m', 6, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 1, 0}} },
 { 1, 0, {
-{&dfa_table_81, 1, 0}, {'n', 4, ::Parser::DFA::null_state}, {' ', 3, 0}, {'7', 0, 0}} },
+{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {' ', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 7, 0}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {'\v', 7, 0}, {'n', 7, 0}, {'m', 7, 0}, {'\t', 7, 0}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 7, 0}, {'j', 7, 0}, {'i', 7, 0}, {'\n', 7, 0}, {'h', 7, 0}, {'g', 7, 0}, {'f', 7, 0}, {'e', 7, 0}, {'d', 7, 0}, {'c', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}} },
 { 1, 0, {
-{&dfa_table_81, 1, 0}, {'n', 4, ::Parser::DFA::null_state}, {'\r', 3, 0}, {' ', 7, ::Parser::DFA::null_state}, {'7', 0, 0}} },
+{'\v', 4, 0}, {'n', 5, 0}, {'g', 7, 0}, {'!', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}, {'_', 7, 0}} },
 { 1, 0, {
-{&dfa_table_81, 1, 0}, {'7', 0, 0}, {'\v', 3, 0}, {'n', 4, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_81, 1, 0}, {'7', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\t', 3, 0}, {'a', 5, ::Parser::DFA::null_state}, {'n', 4, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'o', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_81, 1, 0}, {'7', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\t', 3, 0}, {'n', 12, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'a', 5, ::Parser::DFA::null_state}, {'o', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_81, 1, 0}, {'\f', 3, 0}, {'7', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\t', 11, ::Parser::DFA::null_state}, {'n', 14, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'a', 5, ::Parser::DFA::null_state}, {'o', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_81, 1, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\t', 11, ::Parser::DFA::null_state}, {'n', 16, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {'\n', 3, 0}, {' ', 7, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'a', 5, ::Parser::DFA::null_state}, {'o', 2, 0}} },
+{' ', 4, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'n', 11, ::Parser::DFA::null_state}, {'g', 7, 0}, {'!', 1, 1}} },
+{ 1, 0, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{ 1, 0, {
+{'n', 13, ::Parser::DFA::null_state}, {'\n', 4, 0}, {' ', 10, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'!', 1, 1}, {'g', 7, 0}} },
+{ 1, 0, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{ 1, 0, {
+{'\f', 4, 0}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'g', 7, 0}} },
+{ 1, 0, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{ 1, 0, {
+{'\f', 14, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {'\t', 4, 0}, {'n', 17, ::Parser::DFA::null_state}, {'g', 7, 0}} },
+{ 1, 0, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{ 1, 0, {
+{'\r', 4, 0}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 14, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\t', 16, ::Parser::DFA::null_state}, {'n', 19, ::Parser::DFA::null_state}, {'g', 7, 0}} },
+{ 1, 0, {
+{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_70 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+const Parser::DFA::CharTable<33, 70> Parser::Lexer::dfa_table_31 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 23, 0}, {'P', 23, 0}, {'9', 23, 0}, {'R', 23, 0}, {'0', 23, 0}, {'6', 23, 0}, {'8', 23, 0}, {'5', 23, 0}, {'M', 23, 0}, {'4', 23, 0}, {'3', 23, 0}, {'2', 23, 0}, {'1', 23, 0}, {'Z', 23, 0}, {'Y', 23, 0}, {'X', 23, 0}, {'W', 23, 0}, {'V', 23, 0}, {'U', 23, 0}, {'T', 23, 0}, {'S', 23, 0}, {'Q', 23, 0}, {'O', 23, 0}, {'N', 23, 0}, {'K', 23, 0}, {'I', 23, 0}, {'z', 23, 0}, {'L', 23, 0}, {'y', 23, 0}, {'G', 23, 0}, {'x', 23, 0}, {'J', 23, 0}, {'w', 23, 0}, {'E', 23, 0}, {'v', 23, 0}, {'H', 23, 0}, {'u', 23, 0}, {'C', 23, 0}, {'t', 23, 0}, {'A', 23, 0}, {'r', 23, 0}, {'D', 23, 0}, {'q', 23, 0}, {'\r', 32, ::Parser::DFA::null_state}, {'p', 23, 0}, {'B', 23, 0}, {'o', 23, 0}, {'\v', 31, ::Parser::DFA::null_state}, {'n', 23, 0}, {';', 2, 0}, {'\t', 30, ::Parser::DFA::null_state}, {'l', 23, 0}, {'k', 23, 0}, {'\f', 29, ::Parser::DFA::null_state}, {'j', 23, 0}, {'d', 23, 0}, {'b', 23, 0}, {'_', 23, 0}, {'F', 23, 0}, {'s', 28, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {'i', 23, 0}, {'\n', 26, ::Parser::DFA::null_state}, {'h', 23, 0}, {'g', 23, 0}, {'e', 23, 0}, {'a', 25, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'c', 23, 0}, {'f', 23, 0}} },
 { 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_71 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_72 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_73 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<42, 70> Parser::Lexer::dfa_table_74 = {{ 1, 0, {
-{';', 1, 0}, {'_', 0, 0}, {'a', 40, ::Parser::DFA::null_state}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 37, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 34, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 31, ::Parser::DFA::null_state}, {'m', 30, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 26, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 25, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 24, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+{'l', 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'a', 3, ::Parser::DFA::null_state}, {'\t', 2, 0}, {';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'\f', 2, 0}, {'s', 41, ::Parser::DFA::null_state}} },
+{'i', 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'l', 6, ::Parser::DFA::null_state}} },
+{'k', 8, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 7, ::Parser::DFA::null_state}} },
+{'l', 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'k', 9, 0}} },
+{'x', 10, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'l', 10, ::Parser::DFA::null_state}} },
+{'a', 11, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'x', 11, ::Parser::DFA::null_state}} },
+{'i', 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 12, ::Parser::DFA::null_state}} },
+{'o', 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 13, 0}} },
+{'e', 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 14, ::Parser::DFA::null_state}} },
+{'c', 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 15, ::Parser::DFA::null_state}} },
+{'p', 16, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'c', 16, ::Parser::DFA::null_state}} },
+{'w', 17, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 17, 0}} },
+{'d', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'w', 18, ::Parser::DFA::null_state}} },
+{'e', 18, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 1, 0}} },
+{'p', 19, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 19, ::Parser::DFA::null_state}} },
+{'e', 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 20, 0}} },
+{'m', 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 15, ::Parser::DFA::null_state}} },
+{'e', 14, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'m', 21, ::Parser::DFA::null_state}} },
+{'o', 21, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 15, 0}} },
+{'d', 22, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 22, ::Parser::DFA::null_state}} },
+{'e', 2, 0}} },
+{ 2, 0, {
+{'7', 23, 0}, {'P', 23, 0}, {'9', 23, 0}, {'R', 23, 0}, {'0', 23, 0}, {'6', 23, 0}, {'8', 23, 0}, {'5', 23, 0}, {' ', 23, 0}, {'M', 23, 0}, {'4', 23, 0}, {'3', 23, 0}, {'2', 23, 0}, {'1', 23, 0}, {'Z', 23, 0}, {'Y', 23, 0}, {'X', 23, 0}, {'W', 23, 0}, {'V', 23, 0}, {'U', 23, 0}, {'T', 23, 0}, {'S', 23, 0}, {'Q', 23, 0}, {'O', 23, 0}, {'N', 23, 0}, {'K', 23, 0}, {'I', 23, 0}, {'z', 23, 0}, {'L', 23, 0}, {'y', 23, 0}, {'G', 23, 0}, {'x', 23, 0}, {'J', 23, 0}, {'w', 23, 0}, {'E', 23, 0}, {'v', 23, 0}, {'H', 23, 0}, {'u', 23, 0}, {'C', 23, 0}, {'t', 23, 0}, {'F', 23, 0}, {'s', 23, 0}, {'A', 23, 0}, {'r', 23, 0}, {'D', 23, 0}, {'q', 23, 0}, {'\r', 23, 0}, {'p', 23, 0}, {'B', 23, 0}, {'o', 23, 0}, {'\v', 23, 0}, {'n', 23, 0}, {'m', 23, 0}, {'\t', 23, 0}, {'l', 23, 0}, {'k', 23, 0}, {'\f', 23, 0}, {'j', 23, 0}, {'i', 23, 0}, {'\n', 23, 0}, {'h', 23, 0}, {'g', 23, 0}, {'f', 23, 0}, {'e', 23, 0}, {'d', 23, 0}, {'c', 23, 0}, {'b', 23, 0}, {'a', 23, 0}, {'_', 23, 0}} },
+{ 2, 0, {
+{';', 2, 0}, {'m', 3, ::Parser::DFA::null_state}, {'a', 1, ::Parser::DFA::null_state}, {'s', 4, 0}, {' ', 0, 0}, {'f', 23, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 23, ::Parser::DFA::null_state}} },
+{'l', 5, ::Parser::DFA::null_state}, {'_', 23, 0}} },
+{ 2, 0, {
+{';', 2, 0}, {'m', 3, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 0, 0}, {'a', 25, ::Parser::DFA::null_state}, {'s', 4, 0}, {'f', 23, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 1, 0}} },
-{ 1, 0, {
-{';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'s', 5, 0}, {' ', 2, 0}, {'7', 0, 0}} },
+{'i', 6, ::Parser::DFA::null_state}, {'_', 23, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\r', 2, 0}, {' ', 24, ::Parser::DFA::null_state}, {'k', 9, 0}, {'s', 5, 0}, {'7', 0, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\r', 2, 0}, {'s', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'7', 0, 0}} },
-{ 1, 0, {
-{'k', 9, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 2, 0}, {'\r', 26, ::Parser::DFA::null_state}, {'s', 29, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'k', 9, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'m', 4, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'7', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'\r', 26, ::Parser::DFA::null_state}, {'s', 25, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'i', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'m', 33, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'7', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'\r', 26, ::Parser::DFA::null_state}, {'s', 32, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'k', 9, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'i', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'\t', 31, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\f', 2, 0}, {'m', 36, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'\r', 26, ::Parser::DFA::null_state}, {'s', 35, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'k', 9, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'i', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{';', 1, 0}, {'\t', 31, ::Parser::DFA::null_state}, {'a', 3, ::Parser::DFA::null_state}, {'\f', 34, ::Parser::DFA::null_state}, {'m', 39, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'\r', 26, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 2, 0}, {'s', 38, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'k', 9, 0}, {'p', 8, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'i', 7, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 3, ::Parser::DFA::null_state}, {'\f', 34, ::Parser::DFA::null_state}, {'m', 30, ::Parser::DFA::null_state}, {'\t', 31, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 28, ::Parser::DFA::null_state}, {'\r', 26, ::Parser::DFA::null_state}, {';', 1, 0}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 37, ::Parser::DFA::null_state}, {'s', 25, ::Parser::DFA::null_state}, {'l', 6, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'p', 8, ::Parser::DFA::null_state}, {'k', 9, 0}} },
+{'p', 7, ::Parser::DFA::null_state}, {'_', 23, 0}, {'k', 8, 0}} },
+{ 2, 0, {
+{';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 0, 0}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
+{ 2, 0, {
+{';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 0, 0}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
+{ 2, 0, {
+{'\v', 0, 0}, {';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 30, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
+{ 2, 0, {
+{'\r', 0, 0}, {'\v', 31, ::Parser::DFA::null_state}, {';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 30, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_75 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_76 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 4, 0}, {'P', 4, 0}, {'9', 4, 0}, {'R', 4, 0}, {'0', 4, 0}, {'6', 4, 0}, {'8', 4, 0}, {'5', 4, 0}, {'M', 4, 0}, {'4', 4, 0}, {'3', 4, 0}, {'2', 4, 0}, {'1', 4, 0}, {'Z', 4, 0}, {'Y', 4, 0}, {'X', 4, 0}, {'W', 4, 0}, {'V', 4, 0}, {'U', 4, 0}, {'T', 4, 0}, {'S', 4, 0}, {'Q', 4, 0}, {'O', 4, 0}, {'N', 4, 0}, {'K', 4, 0}, {'I', 4, 0}, {'z', 4, 0}, {'L', 4, 0}, {'y', 4, 0}, {'G', 4, 0}, {'x', 4, 0}, {'J', 4, 0}, {'w', 4, 0}, {'E', 4, 0}, {'v', 4, 0}, {'C', 4, 0}, {'t', 4, 0}, {'F', 4, 0}, {'s', 4, 0}, {'A', 4, 0}, {'r', 4, 0}, {'D', 4, 0}, {'q', 4, 0}, {'\r', 11, ::Parser::DFA::null_state}, {'p', 4, 0}, {'B', 4, 0}, {'o', 4, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'n', 4, 0}, {'m', 4, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'l', 4, 0}, {'k', 4, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'j', 4, 0}, {'d', 4, 0}, {'_', 4, 0}, {'H', 4, 0}, {'u', 7, ::Parser::DFA::null_state}, {'a', 4, 0}, {'g', 4, 0}, {'e', 4, 0}, {'\n', 6, ::Parser::DFA::null_state}, {'i', 4, 0}, {'f', 4, 0}, {'h', 4, 0}, {'c', 4, 0}, {' ', 5, ::Parser::DFA::null_state}, {'b', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'s', 2, 0}} },
@@ -942,12 +630,7 @@ const Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_76 = {{ 0, ::Parse
 { 3, 0, {
 {'\r', 0, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'\t', 9, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 5, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'u', 7, ::Parser::DFA::null_state}, {'h', 4, 0}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_77 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_78 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 6, 0}, {'P', 6, 0}, {'9', 6, 0}, {'R', 6, 0}, {'0', 6, 0}, {'6', 6, 0}, {'8', 6, 0}, {'5', 6, 0}, {'M', 6, 0}, {'4', 6, 0}, {'3', 6, 0}, {'2', 6, 0}, {'1', 6, 0}, {'Z', 6, 0}, {'Y', 6, 0}, {'X', 6, 0}, {'W', 6, 0}, {'V', 6, 0}, {'U', 6, 0}, {'T', 6, 0}, {'S', 6, 0}, {'Q', 6, 0}, {'O', 6, 0}, {'N', 6, 0}, {'K', 6, 0}, {'I', 6, 0}, {'z', 6, 0}, {'L', 6, 0}, {'y', 6, 0}, {'G', 6, 0}, {'x', 6, 0}, {'E', 6, 0}, {'v', 6, 0}, {'H', 6, 0}, {'u', 6, 0}, {'C', 6, 0}, {'t', 6, 0}, {'F', 6, 0}, {'s', 6, 0}, {'A', 6, 0}, {'r', 6, 0}, {'D', 6, 0}, {'q', 6, 0}, {'\r', 13, ::Parser::DFA::null_state}, {'p', 6, 0}, {'B', 6, 0}, {'o', 6, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'n', 6, 0}, {'m', 6, 0}, {'\t', 11, ::Parser::DFA::null_state}, {'l', 6, 0}, {'k', 6, 0}, {'\f', 10, ::Parser::DFA::null_state}, {'j', 6, 0}, {'d', 6, 0}, {'a', 6, 0}, {'b', 6, 0}, {'J', 6, 0}, {'w', 9, ::Parser::DFA::null_state}, {'g', 6, 0}, {'e', 6, 0}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 6, 0}, {' ', 7, ::Parser::DFA::null_state}, {'c', 6, 0}, {'_', 6, 0}, {'h', 6, 0}, {'f', 6, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'h', 2, 0}} },
@@ -976,58 +659,35 @@ const Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_78 = {{ 0, ::Parse
 { 5, 0, {
 {'\r', 0, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'\t', 11, ::Parser::DFA::null_state}, {'w', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\f', 10, ::Parser::DFA::null_state}, {'h', 6, 0}} },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_79 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_80 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_81 = {{ 1, 0, {
-{'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_82 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_34 = {{ 0, ::Parser::DFA::null_state, {
 {'{', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<15, 11> Parser::Lexer::dfa_table_83 = {{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_56, 1, 1}, {&dfa_table_83, 1, 0}, {'o', 3, 1}, {'|', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'\r', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {&dfa_table_5, 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+const Parser::DFA::CharTable<11, 8> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser::DFA::null_state, {
+{'|', 10, ::Parser::DFA::null_state}, {'o', 1, 1}, {'\t', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 2, 1}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'o', 3, 1}, {'|', 4, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 1, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'|', 1, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_5, 5, 1}, {&dfa_table_56, 1, 1}} },
-{ 1, 0, {
-{'o', 3, 1}, {'|', 4, 0}, {&dfa_table_5, 5, 1}, {'\f', 2, 0}} },
-{ 1, 0, {
-{'|', 4, 0}, {&dfa_table_5, 5, 1}, {'o', 3, 1}, {'\v', 2, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{&dfa_table_5, 9, ::Parser::DFA::null_state}, {&dfa_table_83, 1, 0}} },
-{ 1, 1, {
-} },
-{ 1, 0, {
-{'o', 3, 1}, {'|', 4, 0}, {'\n', 2, 0}, {&dfa_table_5, 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'o', 3, 1}, {'|', 4, 0}, {' ', 2, 0}, {'\n', 10, ::Parser::DFA::null_state}, {&dfa_table_5, 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'o', 3, 1}, {'|', 4, 0}, {'\r', 2, 0}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {&dfa_table_5, 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'o', 3, 1}, {'|', 4, 0}, {'\t', 2, 0}, {'\r', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {&dfa_table_5, 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'|', 1, 0}} },
+{'\f', 3, 0}, {'\v', 3, 0}, {' ', 3, 0}, {'\n', 3, 0}, {'\r', 3, 0}, {'\t', 3, 0}, {'|', 2, 0}} },
+{ 2, 0, {
+{'|', 2, 0}, {'o', 1, 1}, {'\f', 3, 0}} },
+{ 2, 0, {
+{'|', 2, 0}, {'o', 1, 1}, {'\v', 3, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'|', 2, 0}, {'\r', 3, 0}, {'o', 1, 1}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'\n', 3, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'|', 2, 0}, {'o', 1, 1}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'|', 2, 0}, {'o', 1, 1}, {' ', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'|', 2, 0}, {'o', 1, 1}, {'\t', 3, 0}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'|', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_84 = {{ 0, ::Parser::DFA::null_state, {
+const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_36 = {{ 0, ::Parser::DFA::null_state, {
 {'}', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -1042,11 +702,11 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 	{ }, // ''
 	{ }, // '\a'
 	{ }, // '\b'
-	{ &dfa_table_5, }, // '\t'
-	{ &dfa_table_5, }, // '\n'
-	{ &dfa_table_5, }, // '\v'
-	{ &dfa_table_5, }, // '\f'
-	{ &dfa_table_5, }, // '\r'
+	{ &dfa_table_0, }, // '\t'
+	{ &dfa_table_0, }, // '\n'
+	{ &dfa_table_0, }, // '\v'
+	{ &dfa_table_0, }, // '\f'
+	{ &dfa_table_0, }, // '\r'
 	{ }, // ''
 	{ }, // ''
 	{ }, // ''
@@ -1065,23 +725,23 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 	{ }, // ''
 	{ }, // ''
 	{ }, // ''
-	{ &dfa_table_5, }, // ' '
+	{ &dfa_table_0, }, // ' '
 	{ }, // '!'
 	{ }, // '"'
-	{ &dfa_table_6, }, // '#'
-	{ &dfa_table_7, }, // '$'
-	{ &dfa_table_8, }, // '%'
-	{ &dfa_table_9, }, // '&'
+	{ &dfa_table_1, }, // '#'
+	{ &dfa_table_2, }, // '$'
+	{ &dfa_table_3, }, // '%'
+	{ &dfa_table_4, }, // '&'
 	{ }, // '\''
-	{ &dfa_table_10, }, // '('
-	{ &dfa_table_11, }, // ')'
-	{ &dfa_table_12, }, // '*'
-	{ &dfa_table_13, &dfa_table_15, &dfa_table_13, }, // '+'
-	{ &dfa_table_14, }, // ','
-	{ &dfa_table_15, &dfa_table_15, &dfa_table_15, &dfa_table_15, }, // '-'
-	{ &dfa_table_16, }, // '.'
-	{ &dfa_table_17, &dfa_table_17, &dfa_table_17, &dfa_table_17, }, // '/'
-	{ &dfa_table_18, &dfa_table_18, }, // '0'
+	{ &dfa_table_5, }, // '('
+	{ &dfa_table_6, }, // ')'
+	{ &dfa_table_7, }, // '*'
+	{ &dfa_table_8, }, // '+'
+	{ &dfa_table_9, }, // ','
+	{ &dfa_table_10, }, // '-'
+	{ &dfa_table_11, }, // '.'
+	{ &dfa_table_12, }, // '/'
+	{ &dfa_table_13, }, // '0'
 	{ }, // '1'
 	{ }, // '2'
 	{ }, // '3'
@@ -1091,74 +751,74 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 	{ }, // '7'
 	{ }, // '8'
 	{ }, // '9'
-	{ &dfa_table_19, }, // ':'
-	{ &dfa_table_20, }, // ';'
-	{ &dfa_table_21, }, // '<'
-	{ &dfa_table_22, }, // '='
-	{ &dfa_table_23, }, // '>'
-	{ &dfa_table_24, }, // '?'
-	{ &dfa_table_25, }, // '@'
-	{ &dfa_table_81, }, // 'A'
-	{ &dfa_table_81, }, // 'B'
-	{ &dfa_table_81, }, // 'C'
-	{ &dfa_table_81, }, // 'D'
-	{ &dfa_table_81, }, // 'E'
-	{ &dfa_table_81, }, // 'F'
-	{ &dfa_table_81, }, // 'G'
-	{ &dfa_table_81, }, // 'H'
-	{ &dfa_table_81, }, // 'I'
-	{ &dfa_table_81, }, // 'J'
-	{ &dfa_table_81, }, // 'K'
-	{ &dfa_table_81, }, // 'L'
-	{ &dfa_table_81, }, // 'M'
-	{ &dfa_table_81, }, // 'N'
-	{ &dfa_table_81, }, // 'O'
-	{ &dfa_table_81, }, // 'P'
-	{ &dfa_table_81, }, // 'Q'
-	{ &dfa_table_81, }, // 'R'
-	{ &dfa_table_81, }, // 'S'
-	{ &dfa_table_81, }, // 'T'
-	{ &dfa_table_81, }, // 'U'
-	{ &dfa_table_81, }, // 'V'
-	{ &dfa_table_81, }, // 'W'
-	{ &dfa_table_81, }, // 'X'
-	{ &dfa_table_81, }, // 'Y'
-	{ &dfa_table_81, }, // 'Z'
-	{ &dfa_table_52, &dfa_table_52, }, // '['
-	{ &dfa_table_53, &dfa_table_53, &dfa_table_53, &dfa_table_53, &dfa_table_53, &dfa_table_53, }, // '\\'
-	{ &dfa_table_54, }, // ']'
+	{ &dfa_table_14, }, // ':'
+	{ &dfa_table_15, }, // ';'
+	{ &dfa_table_16, }, // '<'
+	{ &dfa_table_17, }, // '='
+	{ &dfa_table_18, }, // '>'
+	{ &dfa_table_19, }, // '?'
+	{ &dfa_table_20, }, // '@'
+	{ &dfa_table_21, }, // 'A'
+	{ &dfa_table_21, }, // 'B'
+	{ &dfa_table_21, }, // 'C'
+	{ &dfa_table_21, }, // 'D'
+	{ &dfa_table_21, }, // 'E'
+	{ &dfa_table_21, }, // 'F'
+	{ &dfa_table_21, }, // 'G'
+	{ &dfa_table_21, }, // 'H'
+	{ &dfa_table_21, }, // 'I'
+	{ &dfa_table_21, }, // 'J'
+	{ &dfa_table_21, }, // 'K'
+	{ &dfa_table_21, }, // 'L'
+	{ &dfa_table_21, }, // 'M'
+	{ &dfa_table_21, }, // 'N'
+	{ &dfa_table_21, }, // 'O'
+	{ &dfa_table_21, }, // 'P'
+	{ &dfa_table_21, }, // 'Q'
+	{ &dfa_table_21, }, // 'R'
+	{ &dfa_table_21, }, // 'S'
+	{ &dfa_table_21, }, // 'T'
+	{ &dfa_table_21, }, // 'U'
+	{ &dfa_table_21, }, // 'V'
+	{ &dfa_table_21, }, // 'W'
+	{ &dfa_table_21, }, // 'X'
+	{ &dfa_table_21, }, // 'Y'
+	{ &dfa_table_21, }, // 'Z'
+	{ &dfa_table_22, }, // '['
+	{ &dfa_table_23, }, // '\\'
+	{ &dfa_table_24, }, // ']'
 	{ }, // '^'
-	{ &dfa_table_81, }, // '_'
+	{ &dfa_table_21, }, // '_'
 	{ }, // '`'
-	{ &dfa_table_56, &dfa_table_81, }, // 'a'
-	{ &dfa_table_57, &dfa_table_81, }, // 'b'
-	{ &dfa_table_81, }, // 'c'
-	{ &dfa_table_81, }, // 'd'
-	{ &dfa_table_81, }, // 'e'
-	{ &dfa_table_81, &dfa_table_61, &dfa_table_61, &dfa_table_61, &dfa_table_61, }, // 'f'
-	{ &dfa_table_81, }, // 'g'
-	{ &dfa_table_81, }, // 'h'
-	{ &dfa_table_81, &dfa_table_64, &dfa_table_64, }, // 'i'
-	{ &dfa_table_81, }, // 'j'
-	{ &dfa_table_81, }, // 'k'
-	{ &dfa_table_81, }, // 'l'
-	{ &dfa_table_81, &dfa_table_68, }, // 'm'
-	{ &dfa_table_69, &dfa_table_69, &dfa_table_81, }, // 'n'
-	{ &dfa_table_81, }, // 'o'
-	{ &dfa_table_81, }, // 'p'
-	{ &dfa_table_81, }, // 'q'
-	{ &dfa_table_81, }, // 'r'
-	{ &dfa_table_74, &dfa_table_81, }, // 's'
-	{ &dfa_table_81, }, // 't'
-	{ &dfa_table_81, &dfa_table_76, }, // 'u'
-	{ &dfa_table_81, }, // 'v'
-	{ &dfa_table_81, &dfa_table_78, }, // 'w'
-	{ &dfa_table_81, }, // 'x'
-	{ &dfa_table_81, }, // 'y'
-	{ &dfa_table_81, }, // 'z'
-	{ &dfa_table_82, }, // '{'
-	{ &dfa_table_83, &dfa_table_83, &dfa_table_83, }, // '|'
-	{ &dfa_table_84, }, // '}'
+	{ &dfa_table_25, }, // 'a'
+	{ &dfa_table_26, }, // 'b'
+	{ &dfa_table_21, }, // 'c'
+	{ &dfa_table_21, }, // 'd'
+	{ &dfa_table_21, }, // 'e'
+	{ &dfa_table_27, }, // 'f'
+	{ &dfa_table_21, }, // 'g'
+	{ &dfa_table_21, }, // 'h'
+	{ &dfa_table_28, }, // 'i'
+	{ &dfa_table_21, }, // 'j'
+	{ &dfa_table_21, }, // 'k'
+	{ &dfa_table_21, }, // 'l'
+	{ &dfa_table_29, }, // 'm'
+	{ &dfa_table_30, }, // 'n'
+	{ &dfa_table_21, }, // 'o'
+	{ &dfa_table_21, }, // 'p'
+	{ &dfa_table_21, }, // 'q'
+	{ &dfa_table_21, }, // 'r'
+	{ &dfa_table_31, }, // 's'
+	{ &dfa_table_21, }, // 't'
+	{ &dfa_table_32, }, // 'u'
+	{ &dfa_table_21, }, // 'v'
+	{ &dfa_table_33, }, // 'w'
+	{ &dfa_table_21, }, // 'x'
+	{ &dfa_table_21, }, // 'y'
+	{ &dfa_table_21, }, // 'z'
+	{ &dfa_table_34, }, // '{'
+	{ &dfa_table_35, }, // '|'
+	{ &dfa_table_36, }, // '}'
 	{ }, // '~'
 	{ }, // ''
 	{ }, // '€'
@@ -1293,6 +953,171 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 ::Parser::Lexer::makeToken(const char* &pos) {
 	fcdt_lookup<DFA::CharTable, DFA::TokenTable, DFA::MultiTable, DFA::Transition>(first_character_dispatch_table, pos);
 }
+#include "Parser.h"
+void Parser::Lexer::printTokens(std::ostream& os) {
+    for (const auto& token : tokens)
+        printToken(os, token);
+}
+void Parser::Lexer::printToken(std::ostream& os, const Token& token) {
+    os << TokensToString(token.name()) << ": ";
+
+    if (token.data().type() == typeid(str_t)) {
+        os << '"' << std::any_cast<str_t>(token.data()) << '"';
+    } else if (token.data().type() == typeid(num_t)) {
+        os << std::any_cast<num_t>(token.data());
+    } else if (token.data().type() == typeid(bool_t)) {
+        os << std::boolalpha << std::any_cast<bool_t>(token.data());
+    } else if (token.data().type() == typeid(Token)) {
+        os << "{ ";
+        printToken(os, std::any_cast<Token>(token.data())); // Recursive call
+        os << " }";
+    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<Token>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printToken(os, *it);
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<str_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<str_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << '"' << *it << '"';
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<num_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<num_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
+        os << "[ ";
+        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::boolalpha << *it;
+            if (std::next(it) != arr.end()) os << ", ";
+        }
+        os << " ]";
+    }
+    os << " # " << token.startpos();
+    os << '\n';
+}
+void ::Parser::Parser::printAST(std::ostream &os) {
+	size_t indentLevel = 0;
+	printRule(os, tree, indentLevel, false);
+}
+void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Token &token, size_t &indentLevel, bool addSpaceOnBegin) {
+	Lexer::printToken(os, token);
+}
+void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Rule &rule, size_t &indentLevel, bool addSpaceOnBegin) {
+	printRule(os, rule.data(), indentLevel, addSpaceOnBegin);
+}
+void ::Parser::Parser::printRule(std::ostream &os, const std::any &data, size_t &indentLevel, bool addSpaceOnBegin) {
+	using Token = ::Parser::Token;
+	using Rule = ::Parser::Rule;
+
+	if (addSpaceOnBegin) os << std::string(indentLevel, '\t');
+
+if (data.type() == typeid(str_t)) {
+        os << '"' << std::any_cast<str_t>(data) << '"';
+    } else if (data.type() == typeid(num_t)) {
+        os << std::any_cast<num_t>(data);
+    } else if (data.type() == typeid(bool_t)) {
+        os << std::boolalpha << std::any_cast<bool_t>(data);
+    } else if (data.type() == typeid(Token)) {
+        os << std::string(indentLevel, '\t');
+        Lexer::printToken(os, std::any_cast<Token>(data));
+    } else if (data.type() == typeid(arr_t<Token>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<Token>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t');
+            Lexer::printToken(os, *it);
+        }
+        os << std::string(--indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(Rule)) {
+        os << "{\n";
+        indentLevel++;
+        printRule(os, std::any_cast<Rule>(data), indentLevel, true);
+        os << std::string(--indentLevel, '\t') << "}";
+    } else if (data.type() == typeid(arr_t<Rule>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<Rule>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printRule(os, *it, indentLevel, true);
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<str_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<str_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << '"' << *it << '"';
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<num_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<num_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << *it;
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(arr_t<bool_t>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<arr_t<bool_t>>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            os << std::string(indentLevel, '\t') << std::boolalpha << *it;
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    } else if (data.type() == typeid(std::any)) {
+        printRule(os, std::any_cast<const std::any&>(data), indentLevel, addSpaceOnBegin);
+    } else if (data.type() == typeid(arr_t<std::any>)) {
+        os << "[\n";
+        indentLevel++;
+        auto arr = std::any_cast<const arr_t<std::any>&>(data);
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            printRule(os, *it, indentLevel, true);
+            if (std::next(it) != arr.end()) os << ",";
+            os << "\n";
+        }
+        indentLevel--;
+        os << std::string(indentLevel, '\t') << "]";
+    }else os << "<UNDEF TYPE>";
+}Parser::Rule_res Parser::Parser::getRule(Lexer::lazy_iterator &pos) {
+        return main(pos);
+    }
+Parser::Rule_res Parser::Parser::getRule(Lexer::iterator &pos) {
+        return main(pos);
+    }
+void ::Parser::Parser::parseFromTokens() {
+        auto pos = Lexer::iterator(lexer);
+        parseFromPos(pos);
+    }
+void ::Parser::Parser::lazyParse() {
+        auto pos = Lexer::lazy_iterator(lexer, text);
+        parseFromPos(pos);
+    }
 void Parser::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
         printToken(os, token);
@@ -1783,333 +1608,13 @@ void ::Parser::Parser::lazyParse() {
         auto pos = Lexer::lazy_iterator(lexer, text);
         parseFromPos(pos);
     }
-const ::Parser::Types::AUTO_4& Parser::get::AUTO_4(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
-	return std::any_cast<const Types::AUTO_4&>(token.data());
-}
-::Parser::Types::AUTO_4& Parser::get::AUTO_4(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
-	return std::any_cast<Types::AUTO_4&>(token.data());
-}
-const ::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
-	return std::any_cast<const Types::cll_TYPE&>(token.data());
-}
-::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
-	return std::any_cast<Types::cll_TYPE&>(token.data());
-}
-const ::Parser::Types::NAME& Parser::get::NAME(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
-	return std::any_cast<const Types::NAME&>(token.data());
-}
-::Parser::Types::NAME& Parser::get::NAME(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
-	return std::any_cast<Types::NAME&>(token.data());
-}
-const ::Parser::Types::AUTO_2& Parser::get::AUTO_2(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
-	return std::any_cast<const Types::AUTO_2&>(token.data());
-}
-::Parser::Types::AUTO_2& Parser::get::AUTO_2(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
-	return std::any_cast<Types::AUTO_2&>(token.data());
-}
-const ::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<const Types::cll_COMPARE_OP&>(token.data());
-}
-::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<Types::cll_COMPARE_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_11& Parser::get::AUTO_11(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<const Types::AUTO_11&>(token.data());
-}
-::Parser::Types::AUTO_11& Parser::get::AUTO_11(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<Types::AUTO_11&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_DIAPASON&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_DIAPASON&>(token.data());
-}
-const ::Parser::Types::cll_OP& Parser::get::cll_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
-	return std::any_cast<const Types::cll_OP&>(token.data());
-}
-::Parser::Types::cll_OP& Parser::get::cll_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
-	return std::any_cast<Types::cll_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_9& Parser::get::AUTO_9(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
-	return std::any_cast<const Types::AUTO_9&>(token.data());
-}
-::Parser::Types::AUTO_9& Parser::get::AUTO_9(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
-	return std::any_cast<Types::AUTO_9&>(token.data());
-}
-const ::Parser::Types::AUTO_0& Parser::get::AUTO_0(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<const Types::AUTO_0&>(token.data());
-}
-::Parser::Types::AUTO_0& Parser::get::AUTO_0(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<Types::AUTO_0&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE&>(token.data());
-}
-const ::Parser::Types::NUMBER& Parser::get::NUMBER(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
-	return std::any_cast<const Types::NUMBER&>(token.data());
-}
-::Parser::Types::NUMBER& Parser::get::NUMBER(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
-	return std::any_cast<Types::NUMBER&>(token.data());
-}
-const ::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<const Types::cll_LOGICAL_OP&>(token.data());
-}
-::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<Types::cll_LOGICAL_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_3& Parser::get::AUTO_3(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<const Types::AUTO_3&>(token.data());
-}
-::Parser::Types::AUTO_3& Parser::get::AUTO_3(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<Types::AUTO_3&>(token.data());
-}
-const ::Parser::Types::AUTO_13& Parser::get::AUTO_13(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
-	return std::any_cast<const Types::AUTO_13&>(token.data());
-}
-::Parser::Types::AUTO_13& Parser::get::AUTO_13(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
-	return std::any_cast<Types::AUTO_13&>(token.data());
-}
-const ::Parser::Types::AUTO_18& Parser::get::AUTO_18(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
-	return std::any_cast<const Types::AUTO_18&>(token.data());
-}
-::Parser::Types::AUTO_18& Parser::get::AUTO_18(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
-	return std::any_cast<Types::AUTO_18&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_ESCAPE&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_ESCAPE&>(token.data());
-}
-const ::Parser::Types::AUTO_1& Parser::get::AUTO_1(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
-	return std::any_cast<const Types::AUTO_1&>(token.data());
-}
-::Parser::Types::AUTO_1& Parser::get::AUTO_1(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
-	return std::any_cast<Types::AUTO_1&>(token.data());
-}
-const ::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
-	return std::any_cast<const Types::SPACEMODE&>(token.data());
-}
-::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
-	return std::any_cast<Types::SPACEMODE&>(token.data());
-}
-const ::Parser::Types::AUTO_7& Parser::get::AUTO_7(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
-	return std::any_cast<const Types::AUTO_7&>(token.data());
-}
-::Parser::Types::AUTO_7& Parser::get::AUTO_7(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
-	return std::any_cast<Types::AUTO_7&>(token.data());
-}
-const ::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
-	return std::any_cast<const Types::BOOLEAN&>(token.data());
-}
-::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
-	return std::any_cast<Types::BOOLEAN&>(token.data());
-}
-const ::Parser::Types::rule_BIN& Parser::get::rule_BIN(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
-	return std::any_cast<const Types::rule_BIN&>(token.data());
-}
-::Parser::Types::rule_BIN& Parser::get::rule_BIN(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
-	return std::any_cast<Types::rule_BIN&>(token.data());
-}
-const ::Parser::Types::AUTO_10& Parser::get::AUTO_10(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
-	return std::any_cast<const Types::AUTO_10&>(token.data());
-}
-::Parser::Types::AUTO_10& Parser::get::AUTO_10(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
-	return std::any_cast<Types::AUTO_10&>(token.data());
-}
-const ::Parser::Types::rule_HEX& Parser::get::rule_HEX(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
-	return std::any_cast<const Types::rule_HEX&>(token.data());
-}
-::Parser::Types::rule_HEX& Parser::get::rule_HEX(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
-	return std::any_cast<Types::rule_HEX&>(token.data());
-}
-const ::Parser::Types::AUTO_19& Parser::get::AUTO_19(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<const Types::AUTO_19&>(token.data());
-}
-::Parser::Types::AUTO_19& Parser::get::AUTO_19(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<Types::AUTO_19&>(token.data());
-}
-const ::Parser::Types::AUTO_16& Parser::get::AUTO_16(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<const Types::AUTO_16&>(token.data());
-}
-::Parser::Types::AUTO_16& Parser::get::AUTO_16(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<Types::AUTO_16&>(token.data());
-}
-const ::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<const Types::cll_TEMPLATE&>(token.data());
-}
-::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<Types::cll_TEMPLATE&>(token.data());
-}
-const ::Parser::Types::AUTO_12& Parser::get::AUTO_12(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<const Types::AUTO_12&>(token.data());
-}
-::Parser::Types::AUTO_12& Parser::get::AUTO_12(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<Types::AUTO_12&>(token.data());
-}
-const ::Parser::Types::AUTO_15& Parser::get::AUTO_15(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
-	return std::any_cast<const Types::AUTO_15&>(token.data());
-}
-::Parser::Types::AUTO_15& Parser::get::AUTO_15(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
-	return std::any_cast<Types::AUTO_15&>(token.data());
-}
-const ::Parser::Types::AUTO_14& Parser::get::AUTO_14(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
-	return std::any_cast<const Types::AUTO_14&>(token.data());
-}
-::Parser::Types::AUTO_14& Parser::get::AUTO_14(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
-	return std::any_cast<Types::AUTO_14&>(token.data());
-}
-const ::Parser::Types::AUTO_17& Parser::get::AUTO_17(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
-	return std::any_cast<const Types::AUTO_17&>(token.data());
-}
-::Parser::Types::AUTO_17& Parser::get::AUTO_17(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
-	return std::any_cast<Types::AUTO_17&>(token.data());
-}
-const ::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
-	return std::any_cast<const Types::rule_ESCAPED&>(token.data());
-}
-::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
-	return std::any_cast<Types::rule_ESCAPED&>(token.data());
-}
-const ::Parser::Types::AUTO_5& Parser::get::AUTO_5(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
-	return std::any_cast<const Types::AUTO_5&>(token.data());
-}
-::Parser::Types::AUTO_5& Parser::get::AUTO_5(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
-	return std::any_cast<Types::AUTO_5&>(token.data());
-}
-const ::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
-	return std::any_cast<const Types::cll_ASSIGNMENT_OP&>(token.data());
-}
-::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
-	return std::any_cast<Types::cll_ASSIGNMENT_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_20& Parser::get::AUTO_20(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
-	return std::any_cast<const Types::AUTO_20&>(token.data());
-}
-::Parser::Types::AUTO_20& Parser::get::AUTO_20(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
-	return std::any_cast<Types::AUTO_20&>(token.data());
-}
-const ::Parser::Types::AUTO_8& Parser::get::AUTO_8(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<const Types::AUTO_8&>(token.data());
-}
-::Parser::Types::AUTO_8& Parser::get::AUTO_8(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<Types::AUTO_8&>(token.data());
-}
-const ::Parser::Types::AUTO_21& Parser::get::AUTO_21(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
-	return std::any_cast<const Types::AUTO_21&>(token.data());
-}
-::Parser::Types::AUTO_21& Parser::get::AUTO_21(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
-	return std::any_cast<Types::AUTO_21&>(token.data());
-}
-const ::Parser::Types::STRING& Parser::get::STRING(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<const Types::STRING&>(token.data());
-}
-::Parser::Types::STRING& Parser::get::STRING(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<Types::STRING&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_SYMBOL&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_SYMBOL&>(token.data());
-}
-const ::Parser::Types::AUTO_23& Parser::get::AUTO_23(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
-	return std::any_cast<const Types::AUTO_23&>(token.data());
-}
-::Parser::Types::AUTO_23& Parser::get::AUTO_23(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
-	return std::any_cast<Types::AUTO_23&>(token.data());
-}
-const ::Parser::Types::ID& Parser::get::ID(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
-	return std::any_cast<const Types::ID&>(token.data());
-}
-::Parser::Types::ID& Parser::get::ID(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
-	return std::any_cast<Types::ID&>(token.data());
+const ::Parser::Types::AUTO_6& Parser::get::AUTO_6(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
+	return std::any_cast<const Types::AUTO_6&>(token.data());
+}
+::Parser::Types::AUTO_6& Parser::get::AUTO_6(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
+	return std::any_cast<Types::AUTO_6&>(token.data());
 }
 const ::Parser::Types::AUTO_22& Parser::get::AUTO_22(const ::Parser::Token &token) {
 	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
@@ -2119,349 +1624,333 @@ const ::Parser::Types::AUTO_22& Parser::get::AUTO_22(const ::Parser::Token &toke
 	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
 	return std::any_cast<Types::AUTO_22&>(token.data());
 }
-const ::Parser::Types::AUTO_6& Parser::get::AUTO_6(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
-	return std::any_cast<const Types::AUTO_6&>(token.data());
-}
-::Parser::Types::AUTO_6& Parser::get::AUTO_6(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
-	return std::any_cast<Types::AUTO_6&>(token.data());
-}
-const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
-	return std::any_cast<const Types::rule_data_block_regular_datablock_key&>(rule.data());
-}
-::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
-	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
-}
-const ::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_call(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
-	return std::any_cast<const Types::cll_function_body_call&>(rule.data());
-}
-::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_call(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
-	return std::any_cast<Types::cll_function_body_call&>(rule.data());
-}
-const ::Parser::Types::rule_data_block& Parser::get::rule_data_block(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
-	return std::any_cast<const Types::rule_data_block&>(rule.data());
-}
-::Parser::Types::rule_data_block& Parser::get::rule_data_block(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
-	return std::any_cast<Types::rule_data_block&>(rule.data());
-}
-const ::Parser::Types::cll_function_call& Parser::get::cll_function_call(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
-	return std::any_cast<const Types::cll_function_call&>(rule.data());
-}
-::Parser::Types::cll_function_call& Parser::get::cll_function_call(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
-	return std::any_cast<Types::cll_function_call&>(rule.data());
-}
-const ::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
-	return std::any_cast<const Types::cll_function_decl&>(rule.data());
-}
-::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
-	return std::any_cast<Types::cll_function_decl&>(rule.data());
-}
-const ::Parser::Types::cll_expr& Parser::get::cll_expr(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr, "Parser");
-	return std::any_cast<const Types::cll_expr&>(rule.data());
-}
-::Parser::Types::cll_expr& Parser::get::cll_expr(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr, "Parser");
-	return std::any_cast<Types::cll_expr&>(rule.data());
-}
-const ::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
-	return std::any_cast<const Types::cll_expr_term&>(rule.data());
-}
-::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
-	return std::any_cast<Types::cll_expr_term&>(rule.data());
-}
-const ::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
-	return std::any_cast<const Types::cll_expr_logical&>(rule.data());
-}
-::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
-	return std::any_cast<Types::cll_expr_logical&>(rule.data());
-}
-const ::Parser::Types::cll__var& Parser::get::cll__var(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
-	return std::any_cast<const Types::cll__var&>(rule.data());
-}
-::Parser::Types::cll__var& Parser::get::cll__var(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
-	return std::any_cast<Types::cll__var&>(rule.data());
-}
-const ::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
-	return std::any_cast<const Types::cll_loop_while&>(rule.data());
-}
-::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
-	return std::any_cast<Types::cll_loop_while&>(rule.data());
-}
-const ::Parser::Types::cll_loop_for& Parser::get::cll_loop_for(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_for) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_for, "Parser");
-	return std::any_cast<const Types::cll_loop_for&>(rule.data());
-}
-::Parser::Types::cll_loop_for& Parser::get::cll_loop_for(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_loop_for) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_for, "Parser");
-	return std::any_cast<Types::cll_loop_for&>(rule.data());
-}
-const ::Parser::Types::cll__variable& Parser::get::cll__variable(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__variable, "Parser");
-	return std::any_cast<const Types::cll__variable&>(rule.data());
-}
-::Parser::Types::cll__variable& Parser::get::cll__variable(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__variable, "Parser");
-	return std::any_cast<Types::cll__variable&>(rule.data());
-}
-const ::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
-	return std::any_cast<const Types::rule_nested_rule&>(rule.data());
-}
-::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
-	return std::any_cast<Types::rule_nested_rule&>(rule.data());
-}
-const ::Parser::Types::rvalue& Parser::get::rvalue(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
-	return std::any_cast<const Types::rvalue&>(rule.data());
-}
-::Parser::Types::rvalue& Parser::get::rvalue(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
-	return std::any_cast<Types::rvalue&>(rule.data());
-}
-const ::Parser::Types::_use_unit& Parser::get::_use_unit(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
-	return std::any_cast<const Types::_use_unit&>(rule.data());
-}
-::Parser::Types::_use_unit& Parser::get::_use_unit(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
-	return std::any_cast<Types::_use_unit&>(rule.data());
-}
-const ::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
-	return std::any_cast<const Types::moduleImport_from_import_list&>(rule.data());
-}
-::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
-	return std::any_cast<Types::moduleImport_from_import_list&>(rule.data());
-}
-const ::Parser::Types::_use& Parser::get::_use(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
-	return std::any_cast<const Types::_use&>(rule.data());
-}
-::Parser::Types::_use& Parser::get::_use(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
-	return std::any_cast<Types::_use&>(rule.data());
-}
-const ::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
-	return std::any_cast<const Types::cll_expr_arithmetic&>(rule.data());
-}
-::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
-	return std::any_cast<Types::cll_expr_arithmetic&>(rule.data());
-}
-const ::Parser::Types::rule& Parser::get::rule(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
-	return std::any_cast<const Types::rule&>(rule.data());
-}
-::Parser::Types::rule& Parser::get::rule(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
-	return std::any_cast<Types::rule&>(rule.data());
-}
-const ::Parser::Types::main& Parser::get::main(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
-	return std::any_cast<const Types::main&>(rule.data());
-}
-::Parser::Types::main& Parser::get::main(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
-	return std::any_cast<Types::main&>(rule.data());
-}
-const ::Parser::Types::array& Parser::get::array(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
-	return std::any_cast<const Types::array&>(rule.data());
-}
-::Parser::Types::array& Parser::get::array(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
-	return std::any_cast<Types::array&>(rule.data());
-}
-const ::Parser::Types::rule_member& Parser::get::rule_member(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
-	return std::any_cast<const Types::rule_member&>(rule.data());
-}
-::Parser::Types::rule_member& Parser::get::rule_member(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
-	return std::any_cast<Types::rule_member&>(rule.data());
-}
-const ::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
-	return std::any_cast<const Types::rule_data_block_templated_datablock&>(rule.data());
-}
-::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
-	return std::any_cast<Types::rule_data_block_templated_datablock&>(rule.data());
-}
-const ::Parser::Types::rule_group& Parser::get::rule_group(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
-	return std::any_cast<const Types::rule_group&>(rule.data());
-}
-::Parser::Types::rule_group& Parser::get::rule_group(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
-	return std::any_cast<Types::rule_group&>(rule.data());
-}
-const ::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
-	return std::any_cast<const Types::cll_expr_value&>(rule.data());
-}
-::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
-	return std::any_cast<Types::cll_expr_value&>(rule.data());
-}
-const ::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
-	return std::any_cast<const Types::cll_function_body_decl&>(rule.data());
-}
-::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
-	return std::any_cast<Types::cll_function_body_decl&>(rule.data());
-}
-const ::Parser::Types::rule_name& Parser::get::rule_name(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
-	return std::any_cast<const Types::rule_name&>(rule.data());
-}
-::Parser::Types::rule_name& Parser::get::rule_name(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
-	return std::any_cast<Types::rule_name&>(rule.data());
-}
-const ::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
-	return std::any_cast<const Types::rule_data_block_regular_datablock&>(rule.data());
-}
-::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
-	return std::any_cast<Types::rule_data_block_regular_datablock&>(rule.data());
-}
-const ::Parser::Types::moduleImport& Parser::get::moduleImport(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
-	return std::any_cast<const Types::moduleImport&>(rule.data());
-}
-::Parser::Types::moduleImport& Parser::get::moduleImport(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
-	return std::any_cast<Types::moduleImport&>(rule.data());
-}
-const ::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
-	return std::any_cast<const Types::cll_expr_group&>(rule.data());
-}
-::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
-	return std::any_cast<Types::cll_expr_group&>(rule.data());
-}
-const ::Parser::Types::cll& Parser::get::cll(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll, "Parser");
-	return std::any_cast<const Types::cll&>(rule.data());
-}
-::Parser::Types::cll& Parser::get::cll(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll, "Parser");
-	return std::any_cast<Types::cll&>(rule.data());
-}
-const ::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
-	return std::any_cast<const Types::moduleDeclaration&>(rule.data());
-}
-::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
-	return std::any_cast<Types::moduleDeclaration&>(rule.data());
-}
-const ::Parser::Types::cll__if& Parser::get::cll__if(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
-	return std::any_cast<const Types::cll__if&>(rule.data());
-}
-::Parser::Types::cll__if& Parser::get::cll__if(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
-	return std::any_cast<Types::cll__if&>(rule.data());
-}
-const ::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
-	return std::any_cast<const Types::rule_quantifier&>(rule.data());
-}
-::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
-	return std::any_cast<Types::rule_quantifier&>(rule.data());
-}
-const ::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
-	return std::any_cast<const Types::moduleImport_from&>(rule.data());
-}
-::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
-	return std::any_cast<Types::moduleImport_from&>(rule.data());
-}
-const ::Parser::Types::rule_value& Parser::get::rule_value(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
-	return std::any_cast<const Types::rule_value&>(rule.data());
-}
-::Parser::Types::rule_value& Parser::get::rule_value(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
-	return std::any_cast<Types::rule_value&>(rule.data());
-}
-const ::Parser::Types::object& Parser::get::object(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
-	return std::any_cast<const Types::object&>(rule.data());
-}
-::Parser::Types::object& Parser::get::object(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
-	return std::any_cast<Types::object&>(rule.data());
-}
-const ::Parser::Types::cll_stmt& Parser::get::cll_stmt(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_stmt) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_stmt, "Parser");
-	return std::any_cast<const Types::cll_stmt&>(rule.data());
-}
-::Parser::Types::cll_stmt& Parser::get::cll_stmt(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_stmt) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_stmt, "Parser");
-	return std::any_cast<Types::cll_stmt&>(rule.data());
-}
-const ::Parser::Types::cll_expr_compare& Parser::get::cll_expr_compare(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_compare) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_compare, "Parser");
-	return std::any_cast<const Types::cll_expr_compare&>(rule.data());
-}
-::Parser::Types::cll_expr_compare& Parser::get::cll_expr_compare(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_expr_compare) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_compare, "Parser");
-	return std::any_cast<Types::cll_expr_compare&>(rule.data());
-}
-const ::Parser::Types::cll_method_call& Parser::get::cll_method_call(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
-	return std::any_cast<const Types::cll_method_call&>(rule.data());
-}
-::Parser::Types::cll_method_call& Parser::get::cll_method_call(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
-	return std::any_cast<Types::cll_method_call&>(rule.data());
-}
-const ::Parser::Types::cll_function_arguments& Parser::get::cll_function_arguments(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
-	return std::any_cast<const Types::cll_function_arguments&>(rule.data());
-}
-::Parser::Types::cll_function_arguments& Parser::get::cll_function_arguments(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
-	return std::any_cast<Types::cll_function_arguments&>(rule.data());
-}
-const ::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(const ::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
-	return std::any_cast<const Types::rule_keyvalue&>(rule.data());
-}
-::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(::Parser::Rule &rule) {
-	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
-	return std::any_cast<Types::rule_keyvalue&>(rule.data());
+const ::Parser::Types::ID& Parser::get::ID(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
+	return std::any_cast<const Types::ID&>(token.data());
+}
+::Parser::Types::ID& Parser::get::ID(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
+	return std::any_cast<Types::ID&>(token.data());
+}
+const ::Parser::Types::AUTO_23& Parser::get::AUTO_23(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
+	return std::any_cast<const Types::AUTO_23&>(token.data());
+}
+::Parser::Types::AUTO_23& Parser::get::AUTO_23(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
+	return std::any_cast<Types::AUTO_23&>(token.data());
+}
+const ::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
+	return std::any_cast<const Types::rule_CSEQUENCE_SYMBOL&>(token.data());
+}
+::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
+	return std::any_cast<Types::rule_CSEQUENCE_SYMBOL&>(token.data());
+}
+const ::Parser::Types::STRING& Parser::get::STRING(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
+	return std::any_cast<const Types::STRING&>(token.data());
+}
+::Parser::Types::STRING& Parser::get::STRING(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
+	return std::any_cast<Types::STRING&>(token.data());
+}
+const ::Parser::Types::AUTO_21& Parser::get::AUTO_21(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
+	return std::any_cast<const Types::AUTO_21&>(token.data());
+}
+::Parser::Types::AUTO_21& Parser::get::AUTO_21(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
+	return std::any_cast<Types::AUTO_21&>(token.data());
+}
+const ::Parser::Types::AUTO_8& Parser::get::AUTO_8(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
+	return std::any_cast<const Types::AUTO_8&>(token.data());
+}
+::Parser::Types::AUTO_8& Parser::get::AUTO_8(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
+	return std::any_cast<Types::AUTO_8&>(token.data());
+}
+const ::Parser::Types::AUTO_20& Parser::get::AUTO_20(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
+	return std::any_cast<const Types::AUTO_20&>(token.data());
+}
+::Parser::Types::AUTO_20& Parser::get::AUTO_20(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
+	return std::any_cast<Types::AUTO_20&>(token.data());
+}
+const ::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
+	return std::any_cast<const Types::cll_ASSIGNMENT_OP&>(token.data());
+}
+::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
+	return std::any_cast<Types::cll_ASSIGNMENT_OP&>(token.data());
+}
+const ::Parser::Types::AUTO_5& Parser::get::AUTO_5(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
+	return std::any_cast<const Types::AUTO_5&>(token.data());
+}
+::Parser::Types::AUTO_5& Parser::get::AUTO_5(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
+	return std::any_cast<Types::AUTO_5&>(token.data());
+}
+const ::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
+	return std::any_cast<const Types::rule_ESCAPED&>(token.data());
+}
+::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
+	return std::any_cast<Types::rule_ESCAPED&>(token.data());
+}
+const ::Parser::Types::AUTO_17& Parser::get::AUTO_17(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
+	return std::any_cast<const Types::AUTO_17&>(token.data());
+}
+::Parser::Types::AUTO_17& Parser::get::AUTO_17(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
+	return std::any_cast<Types::AUTO_17&>(token.data());
+}
+const ::Parser::Types::AUTO_14& Parser::get::AUTO_14(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
+	return std::any_cast<const Types::AUTO_14&>(token.data());
+}
+::Parser::Types::AUTO_14& Parser::get::AUTO_14(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
+	return std::any_cast<Types::AUTO_14&>(token.data());
+}
+const ::Parser::Types::AUTO_15& Parser::get::AUTO_15(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
+	return std::any_cast<const Types::AUTO_15&>(token.data());
+}
+::Parser::Types::AUTO_15& Parser::get::AUTO_15(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
+	return std::any_cast<Types::AUTO_15&>(token.data());
+}
+const ::Parser::Types::AUTO_12& Parser::get::AUTO_12(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
+	return std::any_cast<const Types::AUTO_12&>(token.data());
+}
+::Parser::Types::AUTO_12& Parser::get::AUTO_12(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
+	return std::any_cast<Types::AUTO_12&>(token.data());
+}
+const ::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
+	return std::any_cast<const Types::cll_TEMPLATE&>(token.data());
+}
+::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
+	return std::any_cast<Types::cll_TEMPLATE&>(token.data());
+}
+const ::Parser::Types::AUTO_16& Parser::get::AUTO_16(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
+	return std::any_cast<const Types::AUTO_16&>(token.data());
+}
+::Parser::Types::AUTO_16& Parser::get::AUTO_16(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
+	return std::any_cast<Types::AUTO_16&>(token.data());
+}
+const ::Parser::Types::AUTO_19& Parser::get::AUTO_19(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
+	return std::any_cast<const Types::AUTO_19&>(token.data());
+}
+::Parser::Types::AUTO_19& Parser::get::AUTO_19(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
+	return std::any_cast<Types::AUTO_19&>(token.data());
+}
+const ::Parser::Types::rule_HEX& Parser::get::rule_HEX(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
+	return std::any_cast<const Types::rule_HEX&>(token.data());
+}
+::Parser::Types::rule_HEX& Parser::get::rule_HEX(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
+	return std::any_cast<Types::rule_HEX&>(token.data());
+}
+const ::Parser::Types::AUTO_10& Parser::get::AUTO_10(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
+	return std::any_cast<const Types::AUTO_10&>(token.data());
+}
+::Parser::Types::AUTO_10& Parser::get::AUTO_10(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
+	return std::any_cast<Types::AUTO_10&>(token.data());
+}
+const ::Parser::Types::rule_BIN& Parser::get::rule_BIN(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
+	return std::any_cast<const Types::rule_BIN&>(token.data());
+}
+::Parser::Types::rule_BIN& Parser::get::rule_BIN(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
+	return std::any_cast<Types::rule_BIN&>(token.data());
+}
+const ::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
+	return std::any_cast<const Types::BOOLEAN&>(token.data());
+}
+::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
+	return std::any_cast<Types::BOOLEAN&>(token.data());
+}
+const ::Parser::Types::AUTO_7& Parser::get::AUTO_7(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
+	return std::any_cast<const Types::AUTO_7&>(token.data());
+}
+::Parser::Types::AUTO_7& Parser::get::AUTO_7(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
+	return std::any_cast<Types::AUTO_7&>(token.data());
+}
+const ::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
+	return std::any_cast<const Types::SPACEMODE&>(token.data());
+}
+::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
+	return std::any_cast<Types::SPACEMODE&>(token.data());
+}
+const ::Parser::Types::AUTO_1& Parser::get::AUTO_1(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
+	return std::any_cast<const Types::AUTO_1&>(token.data());
+}
+::Parser::Types::AUTO_1& Parser::get::AUTO_1(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
+	return std::any_cast<Types::AUTO_1&>(token.data());
+}
+const ::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
+	return std::any_cast<const Types::rule_CSEQUENCE_ESCAPE&>(token.data());
+}
+::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
+	return std::any_cast<Types::rule_CSEQUENCE_ESCAPE&>(token.data());
+}
+const ::Parser::Types::AUTO_18& Parser::get::AUTO_18(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
+	return std::any_cast<const Types::AUTO_18&>(token.data());
+}
+::Parser::Types::AUTO_18& Parser::get::AUTO_18(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
+	return std::any_cast<Types::AUTO_18&>(token.data());
+}
+const ::Parser::Types::AUTO_13& Parser::get::AUTO_13(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
+	return std::any_cast<const Types::AUTO_13&>(token.data());
+}
+::Parser::Types::AUTO_13& Parser::get::AUTO_13(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
+	return std::any_cast<Types::AUTO_13&>(token.data());
+}
+const ::Parser::Types::AUTO_3& Parser::get::AUTO_3(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
+	return std::any_cast<const Types::AUTO_3&>(token.data());
+}
+::Parser::Types::AUTO_3& Parser::get::AUTO_3(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
+	return std::any_cast<Types::AUTO_3&>(token.data());
+}
+const ::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
+	return std::any_cast<const Types::cll_LOGICAL_OP&>(token.data());
+}
+::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
+	return std::any_cast<Types::cll_LOGICAL_OP&>(token.data());
+}
+const ::Parser::Types::NUMBER& Parser::get::NUMBER(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
+	return std::any_cast<const Types::NUMBER&>(token.data());
+}
+::Parser::Types::NUMBER& Parser::get::NUMBER(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
+	return std::any_cast<Types::NUMBER&>(token.data());
+}
+const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
+	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());
+}
+::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
+	return std::any_cast<Types::rule_CSEQUENCE&>(token.data());
+}
+const ::Parser::Types::AUTO_0& Parser::get::AUTO_0(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
+	return std::any_cast<const Types::AUTO_0&>(token.data());
+}
+::Parser::Types::AUTO_0& Parser::get::AUTO_0(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
+	return std::any_cast<Types::AUTO_0&>(token.data());
+}
+const ::Parser::Types::AUTO_9& Parser::get::AUTO_9(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
+	return std::any_cast<const Types::AUTO_9&>(token.data());
+}
+::Parser::Types::AUTO_9& Parser::get::AUTO_9(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
+	return std::any_cast<Types::AUTO_9&>(token.data());
+}
+const ::Parser::Types::cll_OP& Parser::get::cll_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
+	return std::any_cast<const Types::cll_OP&>(token.data());
+}
+::Parser::Types::cll_OP& Parser::get::cll_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
+	return std::any_cast<Types::cll_OP&>(token.data());
+}
+const ::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
+	return std::any_cast<const Types::rule_CSEQUENCE_DIAPASON&>(token.data());
+}
+::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
+	return std::any_cast<Types::rule_CSEQUENCE_DIAPASON&>(token.data());
+}
+const ::Parser::Types::AUTO_11& Parser::get::AUTO_11(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
+	return std::any_cast<const Types::AUTO_11&>(token.data());
+}
+::Parser::Types::AUTO_11& Parser::get::AUTO_11(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
+	return std::any_cast<Types::AUTO_11&>(token.data());
+}
+const ::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
+	return std::any_cast<const Types::cll_COMPARE_OP&>(token.data());
+}
+::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
+	return std::any_cast<Types::cll_COMPARE_OP&>(token.data());
+}
+const ::Parser::Types::AUTO_2& Parser::get::AUTO_2(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
+	return std::any_cast<const Types::AUTO_2&>(token.data());
+}
+::Parser::Types::AUTO_2& Parser::get::AUTO_2(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
+	return std::any_cast<Types::AUTO_2&>(token.data());
+}
+const ::Parser::Types::NAME& Parser::get::NAME(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
+	return std::any_cast<const Types::NAME&>(token.data());
+}
+::Parser::Types::NAME& Parser::get::NAME(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
+	return std::any_cast<Types::NAME&>(token.data());
+}
+const ::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
+	return std::any_cast<const Types::cll_TYPE&>(token.data());
+}
+::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
+	return std::any_cast<Types::cll_TYPE&>(token.data());
+}
+const ::Parser::Types::AUTO_4& Parser::get::AUTO_4(const ::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
+	return std::any_cast<const Types::AUTO_4&>(token.data());
+}
+::Parser::Types::AUTO_4& Parser::get::AUTO_4(::Parser::Token &token) {
+	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
+	return std::any_cast<Types::AUTO_4&>(token.data());
 }
 const ::Parser::Types::cll_function_parameters& Parser::get::cll_function_parameters(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_function_parameters) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_parameters, "Parser");
@@ -2471,96 +1960,432 @@ const ::Parser::Types::cll_function_parameters& Parser::get::cll_function_parame
 	if (rule.name() != ::Parser::Rules::cll_function_parameters) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_parameters, "Parser");
 	return std::any_cast<Types::cll_function_parameters&>(rule.data());
 }
+const ::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
+	return std::any_cast<const Types::rule_keyvalue&>(rule.data());
+}
+::Parser::Types::rule_keyvalue& Parser::get::rule_keyvalue(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_keyvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_keyvalue, "Parser");
+	return std::any_cast<Types::rule_keyvalue&>(rule.data());
+}
+const ::Parser::Types::cll_function_arguments& Parser::get::cll_function_arguments(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
+	return std::any_cast<const Types::cll_function_arguments&>(rule.data());
+}
+::Parser::Types::cll_function_arguments& Parser::get::cll_function_arguments(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_arguments) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_arguments, "Parser");
+	return std::any_cast<Types::cll_function_arguments&>(rule.data());
+}
+const ::Parser::Types::cll_method_call& Parser::get::cll_method_call(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
+	return std::any_cast<const Types::cll_method_call&>(rule.data());
+}
+::Parser::Types::cll_method_call& Parser::get::cll_method_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_method_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_method_call, "Parser");
+	return std::any_cast<Types::cll_method_call&>(rule.data());
+}
+const ::Parser::Types::cll_expr_compare& Parser::get::cll_expr_compare(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_compare) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_compare, "Parser");
+	return std::any_cast<const Types::cll_expr_compare&>(rule.data());
+}
+::Parser::Types::cll_expr_compare& Parser::get::cll_expr_compare(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_compare) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_compare, "Parser");
+	return std::any_cast<Types::cll_expr_compare&>(rule.data());
+}
+const ::Parser::Types::cll_stmt& Parser::get::cll_stmt(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_stmt) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_stmt, "Parser");
+	return std::any_cast<const Types::cll_stmt&>(rule.data());
+}
+::Parser::Types::cll_stmt& Parser::get::cll_stmt(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_stmt) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_stmt, "Parser");
+	return std::any_cast<Types::cll_stmt&>(rule.data());
+}
+const ::Parser::Types::object& Parser::get::object(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
+	return std::any_cast<const Types::object&>(rule.data());
+}
+::Parser::Types::object& Parser::get::object(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::object) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::object, "Parser");
+	return std::any_cast<Types::object&>(rule.data());
+}
+const ::Parser::Types::rule_value& Parser::get::rule_value(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
+	return std::any_cast<const Types::rule_value&>(rule.data());
+}
+::Parser::Types::rule_value& Parser::get::rule_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_value, "Parser");
+	return std::any_cast<Types::rule_value&>(rule.data());
+}
+const ::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
+	return std::any_cast<const Types::moduleImport_from&>(rule.data());
+}
+::Parser::Types::moduleImport_from& Parser::get::moduleImport_from(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from, "Parser");
+	return std::any_cast<Types::moduleImport_from&>(rule.data());
+}
+const ::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
+	return std::any_cast<const Types::rule_quantifier&>(rule.data());
+}
+::Parser::Types::rule_quantifier& Parser::get::rule_quantifier(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_quantifier) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_quantifier, "Parser");
+	return std::any_cast<Types::rule_quantifier&>(rule.data());
+}
+const ::Parser::Types::cll__if& Parser::get::cll__if(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
+	return std::any_cast<const Types::cll__if&>(rule.data());
+}
+::Parser::Types::cll__if& Parser::get::cll__if(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__if) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__if, "Parser");
+	return std::any_cast<Types::cll__if&>(rule.data());
+}
+const ::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
+	return std::any_cast<const Types::moduleDeclaration&>(rule.data());
+}
+::Parser::Types::moduleDeclaration& Parser::get::moduleDeclaration(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleDeclaration) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleDeclaration, "Parser");
+	return std::any_cast<Types::moduleDeclaration&>(rule.data());
+}
+const ::Parser::Types::cll& Parser::get::cll(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll, "Parser");
+	return std::any_cast<const Types::cll&>(rule.data());
+}
+::Parser::Types::cll& Parser::get::cll(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll, "Parser");
+	return std::any_cast<Types::cll&>(rule.data());
+}
+const ::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
+	return std::any_cast<const Types::cll_expr_group&>(rule.data());
+}
+::Parser::Types::cll_expr_group& Parser::get::cll_expr_group(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_group, "Parser");
+	return std::any_cast<Types::cll_expr_group&>(rule.data());
+}
+const ::Parser::Types::moduleImport& Parser::get::moduleImport(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
+	return std::any_cast<const Types::moduleImport&>(rule.data());
+}
+::Parser::Types::moduleImport& Parser::get::moduleImport(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport, "Parser");
+	return std::any_cast<Types::moduleImport&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
+	return std::any_cast<const Types::rule_data_block_regular_datablock&>(rule.data());
+}
+::Parser::Types::rule_data_block_regular_datablock& Parser::get::rule_data_block_regular_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock, "Parser");
+	return std::any_cast<Types::rule_data_block_regular_datablock&>(rule.data());
+}
+const ::Parser::Types::rule_name& Parser::get::rule_name(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
+	return std::any_cast<const Types::rule_name&>(rule.data());
+}
+::Parser::Types::rule_name& Parser::get::rule_name(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_name) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_name, "Parser");
+	return std::any_cast<Types::rule_name&>(rule.data());
+}
+const ::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
+	return std::any_cast<const Types::cll_function_body_decl&>(rule.data());
+}
+::Parser::Types::cll_function_body_decl& Parser::get::cll_function_body_decl(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_decl, "Parser");
+	return std::any_cast<Types::cll_function_body_decl&>(rule.data());
+}
+const ::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
+	return std::any_cast<const Types::cll_expr_value&>(rule.data());
+}
+::Parser::Types::cll_expr_value& Parser::get::cll_expr_value(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_value) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_value, "Parser");
+	return std::any_cast<Types::cll_expr_value&>(rule.data());
+}
+const ::Parser::Types::rule_group& Parser::get::rule_group(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
+	return std::any_cast<const Types::rule_group&>(rule.data());
+}
+::Parser::Types::rule_group& Parser::get::rule_group(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_group) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_group, "Parser");
+	return std::any_cast<Types::rule_group&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
+	return std::any_cast<const Types::rule_data_block_templated_datablock&>(rule.data());
+}
+::Parser::Types::rule_data_block_templated_datablock& Parser::get::rule_data_block_templated_datablock(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_templated_datablock) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_templated_datablock, "Parser");
+	return std::any_cast<Types::rule_data_block_templated_datablock&>(rule.data());
+}
+const ::Parser::Types::rule_member& Parser::get::rule_member(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
+	return std::any_cast<const Types::rule_member&>(rule.data());
+}
+::Parser::Types::rule_member& Parser::get::rule_member(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_member) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_member, "Parser");
+	return std::any_cast<Types::rule_member&>(rule.data());
+}
+const ::Parser::Types::array& Parser::get::array(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
+	return std::any_cast<const Types::array&>(rule.data());
+}
+::Parser::Types::array& Parser::get::array(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::array) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::array, "Parser");
+	return std::any_cast<Types::array&>(rule.data());
+}
+const ::Parser::Types::main& Parser::get::main(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
+	return std::any_cast<const Types::main&>(rule.data());
+}
+::Parser::Types::main& Parser::get::main(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::main) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::main, "Parser");
+	return std::any_cast<Types::main&>(rule.data());
+}
+const ::Parser::Types::rule& Parser::get::rule(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
+	return std::any_cast<const Types::rule&>(rule.data());
+}
+::Parser::Types::rule& Parser::get::rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule, "Parser");
+	return std::any_cast<Types::rule&>(rule.data());
+}
+const ::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
+	return std::any_cast<const Types::cll_expr_arithmetic&>(rule.data());
+}
+::Parser::Types::cll_expr_arithmetic& Parser::get::cll_expr_arithmetic(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_arithmetic) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_arithmetic, "Parser");
+	return std::any_cast<Types::cll_expr_arithmetic&>(rule.data());
+}
+const ::Parser::Types::_use& Parser::get::_use(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
+	return std::any_cast<const Types::_use&>(rule.data());
+}
+::Parser::Types::_use& Parser::get::_use(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use, "Parser");
+	return std::any_cast<Types::_use&>(rule.data());
+}
+const ::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
+	return std::any_cast<const Types::moduleImport_from_import_list&>(rule.data());
+}
+::Parser::Types::moduleImport_from_import_list& Parser::get::moduleImport_from_import_list(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::moduleImport_from_import_list) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::moduleImport_from_import_list, "Parser");
+	return std::any_cast<Types::moduleImport_from_import_list&>(rule.data());
+}
+const ::Parser::Types::_use_unit& Parser::get::_use_unit(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
+	return std::any_cast<const Types::_use_unit&>(rule.data());
+}
+::Parser::Types::_use_unit& Parser::get::_use_unit(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::_use_unit) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::_use_unit, "Parser");
+	return std::any_cast<Types::_use_unit&>(rule.data());
+}
+const ::Parser::Types::rvalue& Parser::get::rvalue(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
+	return std::any_cast<const Types::rvalue&>(rule.data());
+}
+::Parser::Types::rvalue& Parser::get::rvalue(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rvalue) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rvalue, "Parser");
+	return std::any_cast<Types::rvalue&>(rule.data());
+}
+const ::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
+	return std::any_cast<const Types::rule_nested_rule&>(rule.data());
+}
+::Parser::Types::rule_nested_rule& Parser::get::rule_nested_rule(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_nested_rule) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_nested_rule, "Parser");
+	return std::any_cast<Types::rule_nested_rule&>(rule.data());
+}
+const ::Parser::Types::cll__variable& Parser::get::cll__variable(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__variable, "Parser");
+	return std::any_cast<const Types::cll__variable&>(rule.data());
+}
+::Parser::Types::cll__variable& Parser::get::cll__variable(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__variable) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__variable, "Parser");
+	return std::any_cast<Types::cll__variable&>(rule.data());
+}
+const ::Parser::Types::cll_loop_for& Parser::get::cll_loop_for(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_for) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_for, "Parser");
+	return std::any_cast<const Types::cll_loop_for&>(rule.data());
+}
+::Parser::Types::cll_loop_for& Parser::get::cll_loop_for(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_for) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_for, "Parser");
+	return std::any_cast<Types::cll_loop_for&>(rule.data());
+}
+const ::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
+	return std::any_cast<const Types::cll_loop_while&>(rule.data());
+}
+::Parser::Types::cll_loop_while& Parser::get::cll_loop_while(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_loop_while) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_loop_while, "Parser");
+	return std::any_cast<Types::cll_loop_while&>(rule.data());
+}
+const ::Parser::Types::cll__var& Parser::get::cll__var(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
+	return std::any_cast<const Types::cll__var&>(rule.data());
+}
+::Parser::Types::cll__var& Parser::get::cll__var(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll__var) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll__var, "Parser");
+	return std::any_cast<Types::cll__var&>(rule.data());
+}
+const ::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
+	return std::any_cast<const Types::cll_expr_logical&>(rule.data());
+}
+::Parser::Types::cll_expr_logical& Parser::get::cll_expr_logical(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_logical) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_logical, "Parser");
+	return std::any_cast<Types::cll_expr_logical&>(rule.data());
+}
+const ::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
+	return std::any_cast<const Types::cll_expr_term&>(rule.data());
+}
+::Parser::Types::cll_expr_term& Parser::get::cll_expr_term(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr_term) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr_term, "Parser");
+	return std::any_cast<Types::cll_expr_term&>(rule.data());
+}
+const ::Parser::Types::cll_expr& Parser::get::cll_expr(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr, "Parser");
+	return std::any_cast<const Types::cll_expr&>(rule.data());
+}
+::Parser::Types::cll_expr& Parser::get::cll_expr(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_expr) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_expr, "Parser");
+	return std::any_cast<Types::cll_expr&>(rule.data());
+}
+const ::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
+	return std::any_cast<const Types::cll_function_decl&>(rule.data());
+}
+::Parser::Types::cll_function_decl& Parser::get::cll_function_decl(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_decl) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_decl, "Parser");
+	return std::any_cast<Types::cll_function_decl&>(rule.data());
+}
+const ::Parser::Types::cll_function_call& Parser::get::cll_function_call(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
+	return std::any_cast<const Types::cll_function_call&>(rule.data());
+}
+::Parser::Types::cll_function_call& Parser::get::cll_function_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_call, "Parser");
+	return std::any_cast<Types::cll_function_call&>(rule.data());
+}
+const ::Parser::Types::rule_data_block& Parser::get::rule_data_block(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
+	return std::any_cast<const Types::rule_data_block&>(rule.data());
+}
+::Parser::Types::rule_data_block& Parser::get::rule_data_block(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block, "Parser");
+	return std::any_cast<Types::rule_data_block&>(rule.data());
+}
+const ::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_call(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
+	return std::any_cast<const Types::cll_function_body_call&>(rule.data());
+}
+::Parser::Types::cll_function_body_call& Parser::get::cll_function_body_call(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::cll_function_body_call) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_body_call, "Parser");
+	return std::any_cast<Types::cll_function_body_call&>(rule.data());
+}
+const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(const ::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
+	return std::any_cast<const Types::rule_data_block_regular_datablock_key&>(rule.data());
+}
+::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_data_block_regular_datablock_key(::Parser::Rule &rule) {
+	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
+	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
+}
 const Parser::DFA::TokenTable<36, 11> Parser::Parser::dfa_table_0 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::AUTO_20, 18, ::Parser::DFA::null_state}, {Tokens::ID, 16, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{Tokens::NUMBER, 1, 4}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AT, 4, 4}, {Tokens::STRING, 5, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::ID, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::AUTO_19, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 14, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 24, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 14, ::Parser::DFA::null_state}, {Tokens::NUMBER, 15, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 14, ::Parser::DFA::null_state}, {Tokens::ID, 15, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 6, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 7, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
+{Tokens::ID, 8, 0}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 8, 1}} },
+{Tokens::AUTO_4, 8, 1}, {Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 6, 4}, {Tokens::STRING, 5, 4}, {Tokens::AT, 4, 4}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, 4}} },
+{Tokens::NUMBER, 1, 4}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AT, 4, 4}, {Tokens::STRING, 5, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 8, 0, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
+{Tokens::ID, 8, 0}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 8, 0, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::ID, 8, 0}} },
+{Tokens::ID, 8, 0}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, 0}} },
+{Tokens::AUTO_19, 8, 0}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 8, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 8, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}} },
-{ 8, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::ID, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::DOT, 8, 2}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}} },
+{Tokens::ID, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, 1}} },
+{Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::DOT, 8, 2}, {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 35, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_3, 8, 1}, {Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}} },
+{ 8, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 35, ::Parser::DFA::null_state}} },
 { 8, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::TokenTable<7, 3> Parser::Parser::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 2, 0}, {Tokens::ID, 1, 1}} },
+{Tokens::ID, 1, 1}, {Tokens::MULTIPLE, 2, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 2, ::Parser::DFA::null_state}} },
+{Tokens::ID, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 2, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 2, 0}} },
+{Tokens::MULTIPLE, 2, 0}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 2, 1, {
 } },
 };
 const Parser::DFA::CharTable<9, 8> Parser::Parser::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
-{'f', 2, 0}, {'\f', 0, 0}, {'t', 1, 1}, {'\v', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\t', 0, 0}} },
+{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\v', 0, 0}, {'t', 1, 1}, {'\f', 0, 0}, {'f', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 3, 1}} },
 { 0, ::Parser::DFA::null_state, {
@@ -2579,315 +2404,315 @@ const Parser::DFA::CharTable<9, 8> Parser::Parser::dfa_table_2 = {{ 0, ::Parser:
 {'e', 7, 0}} },
 };
 const Parser::DFA::CharTable<3, 8> Parser::Parser::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
-{'\f', 0, 0}, {']', 2, 1}, {'\v', 0, 0}, {'\r', 0, 0}, {'\\', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\t', 0, 0}} },
+{'\t', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\\', 1, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {']', 2, 1}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'\\', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 1, 0}, {Tokens::PLUS, 1, 1}, {Tokens::MULTIPLE, 1, 2}} },
+{Tokens::MULTIPLE, 1, 2}, {Tokens::PLUS, 1, 1}, {Tokens::QUESTION_MARK, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 1, 0}} },
+{Tokens::QUESTION_MARK, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 2, {
 } },
 };
 const Parser::DFA::TokenTable<41, 11> Parser::Parser::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 22, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 18, ::Parser::DFA::null_state}, {Tokens::STRING, 16, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 16, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 18, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 23, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 9, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 26, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}, {Tokens::ID, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 10, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 9, ::Parser::DFA::null_state}, {Tokens::ID, 10, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_21, 3, 1}} },
+{Tokens::AUTO_21, 3, 1}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
+{Tokens::ID, 3, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 5, ::Parser::DFA::null_state}, {Tokens::ID, 37, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::ID, 37, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 39, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 8, 0}, {Tokens::DIVIDE, 8, 0}, {Tokens::MINUS, 8, 0}, {Tokens::MULTIPLE, 8, 0}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::MODULO, 8, 0}, {Tokens::PLUS, 8, 0}, {Tokens::ID, 4, 1}} },
+{Tokens::ID, 4, 1}, {Tokens::PLUS, 8, 0}, {Tokens::MODULO, 8, 0}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::MULTIPLE, 8, 0}, {Tokens::MINUS, 8, 0}, {Tokens::DIVIDE, 8, 0}, {Tokens::cll_COMPARE_OP, 8, 0}, {Tokens::__WHITESPACE, 39, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::ID, 3, 1}} },
+{Tokens::ID, 3, 1}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::ID, 3, 1}} },
+{Tokens::ID, 3, 1}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::ID, 3, 1}} },
+{Tokens::ID, 3, 1}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::ID, 3, 1}} },
+{Tokens::ID, 3, 1}, {Tokens::cll_LOGICAL_OP, 8, 0}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 3, 1, {
-{Tokens::AUTO_13, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::PLUS, 8, 0}, {Tokens::ID, 4, 1}} },
+{Tokens::ID, 4, 1}, {Tokens::PLUS, 8, 0}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 11, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
 } },
 { 3, 0, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
+{Tokens::ID, 3, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 3, 0, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 3, 0}} },
+{Tokens::ID, 3, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 3, 0}} },
+{Tokens::AUTO_19, 3, 0}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 3, ::Parser::DFA::null_state}} },
-{ 3, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::ID, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
+{ 3, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
 } },
 { 3, 1, {
 } },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 3, 0}} },
+{Tokens::DIVIDE, 3, 0}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 3, 0}} },
+{Tokens::DIVIDE, 3, 0}, {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::AUTO_13, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 35, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}, {Tokens::PLUS, 8, 0}, {Tokens::ID, 4, 1}, {Tokens::AUTO_20, 33, ::Parser::DFA::null_state}, {Tokens::DOT, 3, 0}} },
+{Tokens::DOT, 3, 0}, {Tokens::AUTO_20, 33, ::Parser::DFA::null_state}, {Tokens::ID, 4, 1}, {Tokens::PLUS, 8, 0}, {Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 35, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 11, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 3, 0}} },
+{Tokens::DIVIDE, 3, 0}, {Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}} },
 { 3, 1, {
 } },
 };
 const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AT, 2, 0}, {Tokens::AUTO_23, 1, 1}} },
+{Tokens::AUTO_23, 1, 1}, {Tokens::AT, 2, 0}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::ID, 4, 1}} },
+{Tokens::ID, 4, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
 { 3, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 4, ::Parser::DFA::null_state}} },
+{Tokens::ID, 4, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, 0}, {Tokens::AT, 4, 0}} },
+{Tokens::AT, 4, 0}, {Tokens::__WHITESPACE, 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 4, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::ID, 4, ::Parser::DFA::null_state}} },
+{Tokens::ID, 4, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AT, 4, 0}} },
+{Tokens::AT, 4, 0}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 4, 1, {
 } },
 };
 const Parser::DFA::TokenTable<89, 19> Parser::Parser::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 1, 5}, {Tokens::rule_CSEQUENCE, 1, 7}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::rule_HEX, 1, 3}, {Tokens::DOT, 1, 8}, {Tokens::AUTO_3, 35, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::STRING, 1, 2}, {Tokens::rule_BIN, 1, 4}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 1, 1}, {Tokens::rule_OP, 1, 6}, {Tokens::AUTO_5, 32, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 32, ::Parser::DFA::null_state}, {Tokens::rule_OP, 1, 6}, {Tokens::rule_ESCAPED, 1, 1}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_BIN, 1, 4}, {Tokens::STRING, 1, 2}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 35, ::Parser::DFA::null_state}, {Tokens::DOT, 1, 8}, {Tokens::rule_HEX, 1, 3}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::rule_CSEQUENCE, 1, 7}, {Tokens::LINEAR_COMMENT, 1, 5}, {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, 11}, {Tokens::ID, 1, 11}} },
+{Tokens::ID, 1, 11}, {Tokens::__WHITESPACE, 2, 11}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 47, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 45, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 44, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::ID, 42, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 38, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 40, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_15, 40, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 38, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::ID, 42, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 44, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 45, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 47, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, 10}, {Tokens::AUTO_12, 1, 10}} },
+{Tokens::AUTO_12, 1, 10}, {Tokens::__WHITESPACE, 4, 10}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 5, 11}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 53, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 23, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 26, ::Parser::DFA::null_state}, {Tokens::MINUS, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::PLUS, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 52, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::MODULO, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 50, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 50, ::Parser::DFA::null_state}, {Tokens::MODULO, 23, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 52, ::Parser::DFA::null_state}, {Tokens::PLUS, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::MINUS, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 26, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 23, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 23, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 53, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 55, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 28, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 9, ::Parser::DFA::null_state}, {Tokens::ID, 28, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 55, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 59, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 57, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 9, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 57, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 59, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_3, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}} },
+{Tokens::AUTO_4, 1, 9}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}} },
+{Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 14, ::Parser::DFA::null_state}, {Tokens::AT, 4, 10}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 73, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 67, ::Parser::DFA::null_state}, {Tokens::rule_OP, 65, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 63, ::Parser::DFA::null_state}, {Tokens::PLUS, 61, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 61, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 63, ::Parser::DFA::null_state}, {Tokens::rule_OP, 65, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 67, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 73, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 4, 10}, {Tokens::rule_CSEQUENCE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::LINEAR_COMMENT, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 1, ::Parser::DFA::null_state}} },
+{Tokens::MULTIPLE, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}} },
+{Tokens::DOT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 77, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 75, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 75, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 23, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 77, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::ID, 79, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AT, 9, ::Parser::DFA::null_state}, {Tokens::STRING, 9, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 9, ::Parser::DFA::null_state}, {Tokens::ID, 79, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 6, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_CSEQUENCE, 14, ::Parser::DFA::null_state}, {Tokens::AT, 5, 11}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::DOT, 14, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 14, ::Parser::DFA::null_state}, {Tokens::rule_OP, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::QUESTION_MARK, 14, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 14, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 14, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 14, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 14, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_OP, 14, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 14, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::DOT, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 14, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 14, ::Parser::DFA::null_state}, {Tokens::AT, 5, 11}, {Tokens::rule_CSEQUENCE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::LINEAR_COMMENT, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_0, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 5, 11}, {Tokens::rule_CSEQUENCE, 5, 11}, {Tokens::rule_NOSPACE, 5, 11}, {Tokens::rule_HEX, 5, 11}, {Tokens::DOT, 5, 11}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::STRING, 5, 11}, {Tokens::rule_BIN, 5, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_ESCAPED, 5, 11}, {Tokens::rule_OP, 5, 11}, {Tokens::AUTO_5, 2, 11}} },
+{Tokens::AUTO_5, 2, 11}, {Tokens::rule_OP, 5, 11}, {Tokens::rule_ESCAPED, 5, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_BIN, 5, 11}, {Tokens::STRING, 5, 11}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::DOT, 5, 11}, {Tokens::rule_HEX, 5, 11}, {Tokens::rule_NOSPACE, 5, 11}, {Tokens::rule_CSEQUENCE, 5, 11}, {Tokens::LINEAR_COMMENT, 5, 11}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, 11}, {Tokens::LINEAR_COMMENT, 5, 11}, {Tokens::rule_CSEQUENCE, 5, 11}, {Tokens::rule_NOSPACE, 5, 11}, {Tokens::rule_HEX, 5, 11}, {Tokens::rule_ESCAPED, 5, 11}, {Tokens::rule_OP, 5, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::STRING, 85, ::Parser::DFA::null_state}, {Tokens::ID, 87, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::rule_BIN, 83, ::Parser::DFA::null_state}, {Tokens::DOT, 81, ::Parser::DFA::null_state}} },
+{Tokens::DOT, 81, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 83, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 87, ::Parser::DFA::null_state}, {Tokens::STRING, 85, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_OP, 5, 11}, {Tokens::rule_ESCAPED, 5, 11}, {Tokens::rule_HEX, 5, 11}, {Tokens::rule_NOSPACE, 5, 11}, {Tokens::rule_CSEQUENCE, 5, 11}, {Tokens::LINEAR_COMMENT, 5, 11}, {Tokens::__WHITESPACE, 5, 11}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}} },
+{Tokens::AUTO_5, 2, 11}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 1, 11, {
-{Tokens::__WHITESPACE, 2, 11}, {Tokens::ID, 1, 11}} },
+{Tokens::ID, 1, 11}, {Tokens::__WHITESPACE, 2, 11}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 5, 11}} },
+{Tokens::ID, 5, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::QUESTION_MARK, 14, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AT, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}} },
 { 1, 10, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AT, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::rule_HEX, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 4, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 5, 11}} },
+{Tokens::ID, 5, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 4, 10}, {Tokens::rule_HEX, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 37, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 5, 11}} },
+{Tokens::ID, 5, 11}, {Tokens::AUTO_5, 2, 11}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::__WHITESPACE, 37, ::Parser::DFA::null_state}} },
 { 1, 10, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 24, 10}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 26, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 46, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_19, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 41, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 48, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 1, ::Parser::DFA::null_state}, {Tokens::ID, 22, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 8, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_0, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 27, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 24, 10}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_19, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 46, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AT, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 17, 11}} },
+{Tokens::cll_TYPE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 48, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 17, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 31, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 1, 10, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::ID, 51, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AT, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AT, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 51, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}} },
+{Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_0, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 54, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 54, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 56, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 56, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 58, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 58, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 62, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 60, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 64, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 62, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 66, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 64, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 68, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 66, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 70, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 68, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 72, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 70, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 74, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 72, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::ID, 76, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 3, 10}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AT, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 78, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 80, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 24, 10}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 26, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::__WHITESPACE, 74, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 82, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::PLUS, 14, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::NUMBER, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 11, ::Parser::DFA::null_state}, {Tokens::AT, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::AUTO_12, 3, 10}, {Tokens::ID, 76, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 6, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 78, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_0, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 27, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 24, 10}, {Tokens::__WHITESPACE, 80, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 82, ::Parser::DFA::null_state}} },
 { 1, 11, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 84, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 84, ::Parser::DFA::null_state}} },
 { 1, 11, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 86, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 86, ::Parser::DFA::null_state}} },
 { 1, 11, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 88, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::ID, 49, ::Parser::DFA::null_state}} },
+{Tokens::ID, 49, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 2, 11}, {Tokens::MULTIPLE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, 9}, {Tokens::AT, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 15, ::Parser::DFA::null_state}, {Tokens::DOT, 18, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 88, ::Parser::DFA::null_state}} },
 { 1, 11, {
 } },
 };
 const Parser::DFA::TokenTable<6, 5> Parser::Parser::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::SPACEMODE, 3, 0}, {Tokens::NAME, 3, 1}, {Tokens::AUTO_8, 2, 2}, {Tokens::ID, 1, 3}} },
+{Tokens::ID, 1, 3}, {Tokens::AUTO_8, 2, 2}, {Tokens::NAME, 3, 1}, {Tokens::SPACEMODE, 3, 0}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 3, 3}} },
+{Tokens::AUTO_6, 3, 3}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 3, ::Parser::DFA::null_state}} },
+{Tokens::ID, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::SPACEMODE, 3, 0}} },
+{Tokens::SPACEMODE, 3, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 3, 3, {
 } },
 };
 const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
-{'n', 2, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {'!', 1, 1}, {'\v', 0, 0}, {'\f', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}} },
+{'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'!', 1, 1}, {'\r', 0, 0}, {'\t', 0, 0}, {'n', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
@@ -2896,406 +2721,406 @@ const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_9 = {{ 0, ::Parser:
 {'t', 1, 0}} },
 };
 const Parser::DFA::TokenTable<134, 20> Parser::Parser::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 44, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 42, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::ID, 39, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 35, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 36, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 37, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_15, 37, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 36, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 35, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::ID, 39, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_18, 42, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 44, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
+{Tokens::ID, 1, 4}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, 1}, {Tokens::ID, 1, 1}} },
+{Tokens::ID, 1, 1}, {Tokens::__WHITESPACE, 4, 1}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 50, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 13, 4}, {Tokens::DIVIDE, 13, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}, {Tokens::MINUS, 13, 4}, {Tokens::MULTIPLE, 13, 4}, {Tokens::PLUS, 13, 4}, {Tokens::AUTO_4, 49, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 13, 4}, {Tokens::MODULO, 13, 4}, {Tokens::AUTO_7, 46, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 46, ::Parser::DFA::null_state}, {Tokens::MODULO, 13, 4}, {Tokens::cll_LOGICAL_OP, 13, 4}, {Tokens::AUTO_4, 49, ::Parser::DFA::null_state}, {Tokens::PLUS, 13, 4}, {Tokens::MULTIPLE, 13, 4}, {Tokens::MINUS, 13, 4}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 13, 4}, {Tokens::cll_COMPARE_OP, 13, 4}, {Tokens::__WHITESPACE, 50, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_3, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 52, ::Parser::DFA::null_state}, {Tokens::ID, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, ::Parser::DFA::null_state}, {Tokens::NUMBER, 18, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, ::Parser::DFA::null_state}, {Tokens::ID, 18, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 52, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 56, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 54, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 54, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 56, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 1, 3}} },
+{Tokens::AUTO_3, 1, 3}, {Tokens::__WHITESPACE, 10, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, 3}, {Tokens::AUTO_15, 1, 3}} },
+{Tokens::AUTO_15, 1, 3}, {Tokens::__WHITESPACE, 11, 3}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 61, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 13, 3}, {Tokens::AUTO_7, 58, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 58, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 13, 3}, {Tokens::__WHITESPACE, 61, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::ID, 63, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::ID, 63, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 95, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 93, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 91, ::Parser::DFA::null_state}, {Tokens::AT, 88, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::STRING, 86, ::Parser::DFA::null_state}, {Tokens::ID, 84, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 82, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 80, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::DOT, 78, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 76, ::Parser::DFA::null_state}, {Tokens::rule_OP, 74, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 73, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 67, ::Parser::DFA::null_state}, {Tokens::PLUS, 65, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 65, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 67, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 73, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 74, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 76, ::Parser::DFA::null_state}, {Tokens::DOT, 78, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 80, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 82, ::Parser::DFA::null_state}, {Tokens::ID, 84, ::Parser::DFA::null_state}, {Tokens::STRING, 86, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AT, 88, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 91, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 93, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 95, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 20, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 20, ::Parser::DFA::null_state}, {Tokens::AT, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 20, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 20, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 20, ::Parser::DFA::null_state}, {Tokens::rule_OP, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 20, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 20, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 20, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AT, 19, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 20, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 20, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, 3}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_19, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_15, 3, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 4, 1}} },
+{Tokens::cll_TYPE, 4, 1}, {Tokens::AUTO_15, 3, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::__WHITESPACE, 11, 3}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 1, ::Parser::DFA::null_state}} },
+{Tokens::MULTIPLE, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}} },
+{Tokens::DOT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 19, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 19, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::STRING, 19, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 19, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 19, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 19, ::Parser::DFA::null_state}, {Tokens::STRING, 19, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 19, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 124, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 122, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 120, ::Parser::DFA::null_state}, {Tokens::AT, 118, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::STRING, 116, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 114, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::DOT, 112, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 110, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 108, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 106, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 104, ::Parser::DFA::null_state}, {Tokens::rule_OP, 102, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 100, ::Parser::DFA::null_state}, {Tokens::PLUS, 98, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 98, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 100, ::Parser::DFA::null_state}, {Tokens::rule_OP, 102, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 104, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 106, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 108, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 110, ::Parser::DFA::null_state}, {Tokens::DOT, 112, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 114, ::Parser::DFA::null_state}, {Tokens::STRING, 116, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AT, 118, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 120, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 122, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 124, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 19, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 19, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::STRING, 19, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 19, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 19, ::Parser::DFA::null_state}, {Tokens::STRING, 19, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::DOT, 19, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 19, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 19, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 19, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 132, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 130, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 128, ::Parser::DFA::null_state}, {Tokens::AT, 28, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 126, ::Parser::DFA::null_state}} },
+{Tokens::MULTIPLE, 126, ::Parser::DFA::null_state}, {Tokens::AT, 28, ::Parser::DFA::null_state}, {Tokens::PLUS, 128, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 130, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 132, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::DOT, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::AT, 28, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 20, ::Parser::DFA::null_state}} },
+{Tokens::MULTIPLE, 20, ::Parser::DFA::null_state}, {Tokens::AT, 28, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::DOT, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 20, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 1, 1, {
-{Tokens::__WHITESPACE, 4, 1}, {Tokens::ID, 1, 1}} },
+{Tokens::ID, 1, 1}, {Tokens::__WHITESPACE, 4, 1}} },
 { 1, 4, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
+{Tokens::ID, 1, 4}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 1, 3, {
-{Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 4}} },
+{Tokens::AUTO_19, 1, 4}, {Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, 3}, {Tokens::AUTO_7, 14, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, 4}, {Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_0, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, 4}, {Tokens::AUTO_7, 14, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, 3}, {Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, 4, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 1, 4}} },
+{Tokens::ID, 1, 4}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 4}} },
+{Tokens::AUTO_19, 1, 4}, {Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 45, ::Parser::DFA::null_state}, {Tokens::AUTO_18, 1, 0}, {Tokens::ID, 12, 1}, {Tokens::cll_TYPE, 4, 1}} },
+{Tokens::cll_TYPE, 4, 1}, {Tokens::ID, 12, 1}, {Tokens::AUTO_18, 1, 0}, {Tokens::__WHITESPACE, 45, ::Parser::DFA::null_state}} },
 { 1, 3, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::ID, 48, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AT, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 47, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 47, ::Parser::DFA::null_state}, {Tokens::AT, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 48, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, 3, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 51, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 4}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 53, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 55, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 1, 4}, {Tokens::__WHITESPACE, 51, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 57, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 53, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 55, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::ID, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AT, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 59, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 57, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 59, ::Parser::DFA::null_state}, {Tokens::AT, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 60, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 62, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, 3}} },
+{Tokens::cll_ASSIGNMENT_OP, 1, 3}, {Tokens::__WHITESPACE, 62, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 64, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 14, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, 4}, {Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 16, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_0, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 17, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 13, 4}, {Tokens::AUTO_7, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 64, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 66, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 66, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 68, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 68, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 70, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 70, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 72, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 72, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 75, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 77, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 75, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 79, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 77, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 81, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 79, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 83, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 85, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 81, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 87, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 83, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 90, ::Parser::DFA::null_state}, {Tokens::ID, 89, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::DOT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 85, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::rule_OP, 32, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 92, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 94, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 87, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 96, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 89, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 90, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::rule_OP, 32, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 92, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 94, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AT, 34, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::DOT, 31, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 29, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 99, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 96, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 101, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 23, ::Parser::DFA::null_state}, {Tokens::PLUS, 20, ::Parser::DFA::null_state}, {Tokens::DOT, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AT, 34, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 99, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 103, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 101, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 105, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 103, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 107, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 105, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 109, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 107, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 111, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 109, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 113, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 91, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 93, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 82, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::AT, 88, ::Parser::DFA::null_state}, {Tokens::ID, 84, ::Parser::DFA::null_state}, {Tokens::STRING, 86, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 80, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::DOT, 78, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 76, ::Parser::DFA::null_state}, {Tokens::rule_OP, 74, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 73, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 67, ::Parser::DFA::null_state}, {Tokens::PLUS, 65, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 96, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 19, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 115, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 111, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 117, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 65, ::Parser::DFA::null_state}, {Tokens::rule_HEX, 67, ::Parser::DFA::null_state}, {Tokens::rule_NOSPACE, 71, ::Parser::DFA::null_state}, {Tokens::QUESTION_MARK, 69, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 73, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 74, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 76, ::Parser::DFA::null_state}, {Tokens::DOT, 78, ::Parser::DFA::null_state}, {Tokens::AUTO_23, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, ::Parser::DFA::null_state}, {Tokens::rule_ESCAPED, 80, ::Parser::DFA::null_state}, {Tokens::STRING, 86, ::Parser::DFA::null_state}, {Tokens::ID, 84, ::Parser::DFA::null_state}, {Tokens::AT, 88, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::rule_BIN, 82, ::Parser::DFA::null_state}, {Tokens::LINEAR_COMMENT, 93, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE, 91, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 113, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::ID, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 96, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 115, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 119, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 121, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 117, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 123, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 97, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::ID, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 119, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 121, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 125, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 97, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 123, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 127, ::Parser::DFA::null_state}} },
+{Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 125, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 129, ::Parser::DFA::null_state}} },
+{Tokens::__WHITESPACE, 127, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::AUTO_3, 26, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 131, ::Parser::DFA::null_state}} },
+{Tokens::__WHITESPACE, 129, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 133, ::Parser::DFA::null_state}, {Tokens::AT, 1, ::Parser::DFA::null_state}} },
+{Tokens::__WHITESPACE, 131, ::Parser::DFA::null_state}, {Tokens::AUTO_5, 21, ::Parser::DFA::null_state}, {Tokens::rule_OP, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_12, 22, ::Parser::DFA::null_state}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 26, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::AT, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 133, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}, {Tokens::rule_CSEQUENCE_ESCAPE, 1, 1}, {Tokens::rule_CSEQUENCE_SYMBOL, 1, 2}} },
+{Tokens::rule_CSEQUENCE_SYMBOL, 1, 2}, {Tokens::rule_CSEQUENCE_ESCAPE, 1, 1}, {Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}} },
+{Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 2, {
 } },
 };
 const Parser::DFA::TokenTable<33, 10> Parser::Parser::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 1, 0}, {Tokens::ID, 1, 5}, {Tokens::STRING, 1, 1}, {Tokens::AT, 1, 4}, {Tokens::AUTO_0, 3, 2}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 1, 6}} },
+{Tokens::NUMBER, 1, 6}, {Tokens::AUTO_13, 2, 3}, {Tokens::AUTO_0, 3, 2}, {Tokens::AT, 1, 4}, {Tokens::STRING, 1, 1}, {Tokens::ID, 1, 5}, {Tokens::BOOLEAN, 1, 0}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 4, 3}} },
+{Tokens::AUTO_14, 4, 3}, {Tokens::AUTO_1, 17, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, 2}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, 2}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 7, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 7, ::Parser::DFA::null_state}, {Tokens::MINUS, 7, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 7, ::Parser::DFA::null_state}, {Tokens::MODULO, 7, ::Parser::DFA::null_state}, {Tokens::PLUS, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 6, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 6, ::Parser::DFA::null_state}, {Tokens::PLUS, 7, ::Parser::DFA::null_state}, {Tokens::MODULO, 7, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::MINUS, 7, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 7, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 1, 2}} },
+{Tokens::AUTO_2, 1, 2}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 27, ::Parser::DFA::null_state}, {Tokens::ID, 25, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 10, ::Parser::DFA::null_state}, {Tokens::STRING, 10, ::Parser::DFA::null_state}, {Tokens::AT, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::NUMBER, 10, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 2, 3}, {Tokens::AT, 10, ::Parser::DFA::null_state}, {Tokens::STRING, 10, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 10, ::Parser::DFA::null_state}, {Tokens::ID, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 28, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::ID, 13, ::Parser::DFA::null_state}, {Tokens::NUMBER, 13, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 13, ::Parser::DFA::null_state}, {Tokens::ID, 13, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 7, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 7, ::Parser::DFA::null_state}, {Tokens::MINUS, 7, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 7, ::Parser::DFA::null_state}, {Tokens::MODULO, 7, ::Parser::DFA::null_state}, {Tokens::PLUS, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 6, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_7, 6, ::Parser::DFA::null_state}, {Tokens::PLUS, 7, ::Parser::DFA::null_state}, {Tokens::MODULO, 7, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::MINUS, 7, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 7, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 7, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 1, 0}} },
+{Tokens::BOOLEAN, 1, 0}, {Tokens::__WHITESPACE, 16, ::Parser::DFA::null_state}} },
 { 1, 6, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::AUTO_13, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 6, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_20, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 8, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_7, 6, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 14, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 11, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_19, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 30, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 0}, {Tokens::AUTO_20, 1, 1}} },
+{Tokens::AUTO_20, 1, 1}, {Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 0}} },
+{Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 0}, {Tokens::AUTO_20, 1, 1}} },
+{Tokens::AUTO_20, 1, 1}, {Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 0}} },
+{Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}, {Tokens::NUMBER, 1, 1}} },
+{Tokens::NUMBER, 1, 1}, {Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_16 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}, {Tokens::NUMBER, 1, 1}} },
+{Tokens::NUMBER, 1, 1}, {Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
 const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 0}, {Tokens::MULTIPLE, 1, 1}, {Tokens::MODULO, 1, 2}} },
+{Tokens::MODULO, 1, 2}, {Tokens::MULTIPLE, 1, 1}, {Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 0}} },
+{Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 2, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::MINUS, 1, 0}, {Tokens::PLUS, 1, 1}} },
+{Tokens::PLUS, 1, 1}, {Tokens::MINUS, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::MINUS, 1, 0}} },
+{Tokens::MINUS, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
 const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
-{'|', 2, 0}, {'o', 1, 1}, {'\v', 0, 0}, {'\f', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\t', 0, 0}} },
+{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'o', 1, 1}, {'|', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 3, 1}} },
 { 0, ::Parser::DFA::null_state, {
@@ -3304,105 +3129,105 @@ const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_19 = {{ 0, ::Parser
 } },
 };
 const Parser::DFA::TokenTable<45, 11> Parser::Parser::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, 0}, {Tokens::AT, 1, 1}} },
+{Tokens::AT, 1, 1}, {Tokens::AUTO_0, 2, 0}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 5, 1}} },
+{Tokens::AUTO_0, 5, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 26, ::Parser::DFA::null_state}, {Tokens::ID, 24, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 22, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::AT, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 16, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AT, 18, ::Parser::DFA::null_state}, {Tokens::STRING, 20, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 22, ::Parser::DFA::null_state}, {Tokens::ID, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 27, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 11, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::ID, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 11, ::Parser::DFA::null_state}, {Tokens::NUMBER, 12, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 11, ::Parser::DFA::null_state}, {Tokens::ID, 12, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_21, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_21, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 7, ::Parser::DFA::null_state}, {Tokens::ID, 41, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 11, ::Parser::DFA::null_state}, {Tokens::STRING, 11, ::Parser::DFA::null_state}, {Tokens::AT, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 11, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 4, ::Parser::DFA::null_state}, {Tokens::AT, 11, ::Parser::DFA::null_state}, {Tokens::STRING, 11, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 11, ::Parser::DFA::null_state}, {Tokens::ID, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 7, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 10, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 10, ::Parser::DFA::null_state}, {Tokens::MINUS, 10, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 10, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::MODULO, 10, ::Parser::DFA::null_state}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}} },
+{Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::MODULO, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::cll_LOGICAL_OP, 10, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 10, ::Parser::DFA::null_state}, {Tokens::MINUS, 10, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 10, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 10, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 43, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 12, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 5, 0}} },
+{Tokens::AUTO_0, 5, 0}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 5, 1, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 17, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 19, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}} },
+{Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}} },
+{Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_19, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 5, ::Parser::DFA::null_state}} },
-{ 5, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 35, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}} },
+{ 5, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 35, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 5, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 38, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 5, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 40, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 { 5, ::Parser::DFA::null_state, {
-{Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 37, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 42, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::ID, 6, ::Parser::DFA::null_state}} },
+{Tokens::ID, 6, ::Parser::DFA::null_state}, {Tokens::PLUS, 10, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 5, 0}, {Tokens::__WHITESPACE, 42, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 37, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 39, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 44, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 5, ::Parser::DFA::null_state}} },
+{Tokens::DIVIDE, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 44, ::Parser::DFA::null_state}} },
 { 5, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::CharTable<3, 8> Parser::Parser::dfa_table_21 = {{ 0, ::Parser::DFA::null_state, {
-{'\f', 0, 0}, {'\'', 2, 1}, {'\v', 0, 0}, {'\r', 0, 0}, {'\\', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\t', 0, 0}} },
+{'\t', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\\', 1, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\'', 2, 1}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'\\', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::CharTable<18, 9> Parser::Parser::dfa_table_22 = {{ 0, ::Parser::DFA::null_state, {
-{'s', 3, 0}, {'a', 2, 1}, {'\t', 0, 0}, {'\v', 0, 0}, {'m', 1, 2}, {'\f', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}} },
+{'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'m', 1, 2}, {'\v', 0, 0}, {'\t', 0, 0}, {'a', 2, 1}, {'s', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'i', 4, 2}} },
 { 0, ::Parser::DFA::null_state, {
@@ -3439,7 +3264,7 @@ const Parser::DFA::CharTable<18, 9> Parser::Parser::dfa_table_22 = {{ 0, ::Parse
 {'d', 13, 0}} },
 };
 const Parser::DFA::CharTable<6, 10> Parser::Parser::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
-{'>', 5, ::Parser::DFA::null_state}, {'\f', 0, 0}, {'=', 3, 1}, {'<', 4, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\v', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\t', 0, 0}} },
+{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\v', 0, 0}, {'!', 1, 3}, {'<', 4, ::Parser::DFA::null_state}, {'=', 3, 1}, {'\f', 0, 0}, {'>', 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'=', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
@@ -3452,82 +3277,82 @@ const Parser::DFA::CharTable<6, 10> Parser::Parser::dfa_table_23 = {{ 0, ::Parse
 {'=', 2, 0}} },
 };
 const Parser::DFA::TokenTable<37, 12> Parser::Parser::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 19, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 15, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 16, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}} },
+{Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 16, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 15, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, 1}, {Tokens::ID, 1, 1}} },
+{Tokens::ID, 1, 1}, {Tokens::__WHITESPACE, 2, 1}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::DIVIDE, 11, 0}, {Tokens::MINUS, 11, 0}, {Tokens::MULTIPLE, 11, 0}, {Tokens::MODULO, 11, 0}, {Tokens::PLUS, 11, 0}, {Tokens::cll_LOGICAL_OP, 11, 0}} },
+{Tokens::cll_LOGICAL_OP, 11, 0}, {Tokens::PLUS, 11, 0}, {Tokens::MODULO, 11, 0}, {Tokens::MULTIPLE, 11, 0}, {Tokens::MINUS, 11, 0}, {Tokens::DIVIDE, 11, 0}, {Tokens::cll_COMPARE_OP, 11, 0}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 24, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 3, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 24, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 26, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}} },
+{Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 3, ::Parser::DFA::null_state}, {Tokens::NUMBER, 14, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_2, 3, ::Parser::DFA::null_state}, {Tokens::ID, 14, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 33, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_4, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_4, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::NUMBER, 1, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 11, ::Parser::DFA::null_state}} },
+{Tokens::cll_ASSIGNMENT_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::ID, 35, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}} },
+{Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::ID, 35, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 8, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 9, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 12, 0}, {Tokens::cll_LOGICAL_OP, 1, 0}} },
+{Tokens::cll_LOGICAL_OP, 1, 0}, {Tokens::__WHITESPACE, 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_14, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}, {Tokens::AUTO_6, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_6, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 1, 1, {
-{Tokens::__WHITESPACE, 2, 1}, {Tokens::ID, 1, 1}} },
+{Tokens::ID, 1, 1}, {Tokens::__WHITESPACE, 2, 1}} },
 { 1, 0, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, 0}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 12, 0}} },
+{Tokens::AUTO_20, 12, 0}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, 0}, {Tokens::cll_ASSIGNMENT_OP, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 18, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, 0, {
-{Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}, {Tokens::ID, 1, 0}} },
+{Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 8, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 1, 0}, {Tokens::cll_TYPE, 2, 1}, {Tokens::ID, 10, 1}} },
+{Tokens::ID, 10, 1}, {Tokens::cll_TYPE, 2, 1}, {Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 21, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 0}} },
+{Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 23, ::Parser::DFA::null_state}} },
 { 1, 0, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 25, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 1, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 27, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 0}} },
+{Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 29, ::Parser::DFA::null_state}} },
 { 1, 0, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 1, 0}} },
+{Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 31, ::Parser::DFA::null_state}} },
 { 1, 0, {
 } },
 { 1, 0, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}, {Tokens::ID, 1, ::Parser::DFA::null_state}} },
+{Tokens::ID, 1, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 34, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 } },
 { 1, ::Parser::DFA::null_state, {
-{Tokens::AUTO_13, 13, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 30, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, 0}, {Tokens::AUTO_20, 28, ::Parser::DFA::null_state}, {Tokens::DOT, 1, 0}} },
+{Tokens::DOT, 1, 0}, {Tokens::AUTO_20, 28, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OP, 11, 0}, {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 30, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 13, ::Parser::DFA::null_state}} },
 { 1, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 };
 const Parser::DFA::CharTable<5, 8> Parser::Parser::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
-{'a', 2, 0}, {'\t', 0, 0}, {'&', 1, 1}, {'\v', 0, 0}, {'\f', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}} },
+{'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'&', 1, 1}, {'\t', 0, 0}, {'a', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'&', 3, 1}} },
 { 0, ::Parser::DFA::null_state, {
@@ -3538,7 +3363,7 @@ const Parser::DFA::CharTable<5, 8> Parser::Parser::dfa_table_25 = {{ 0, ::Parser
 {'d', 3, 0}} },
 };
 const Parser::DFA::CharTable<16, 13> Parser::Parser::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
-{'b', 7, 0}, {' ', 0, 5}, {'v', 6, 1}, {'o', 5, 5}, {'s', 4, 2}, {Tokens::cll_TEMPLATE, 15, ::Parser::DFA::null_state}, {'\f', 0, 5}, {'n', 2, 4}, {'\t', 0, 5}, {'a', 1, 5}, {'\v', 0, 5}, {'\r', 0, 5}, {'\n', 0, 5}} },
+{'\n', 0, 5}, {'\r', 0, 5}, {'\v', 0, 5}, {'a', 1, 5}, {'\t', 0, 5}, {'n', 2, 4}, {'\f', 0, 5}, {Tokens::cll_TEMPLATE, 15, ::Parser::DFA::null_state}, {'s', 4, 2}, {'o', 5, 5}, {'v', 6, 1}, {' ', 0, 5}, {'b', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 8, 5}} },
 { 0, ::Parser::DFA::null_state, {
@@ -3571,1672 +3396,28 @@ const Parser::DFA::CharTable<16, 13> Parser::Parser::dfa_table_26 = {{ 0, ::Pars
 } },
 };
 const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 1, 1}} },
+{Tokens::MULTIPLE, 1, 1}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 2, 1}} },
+{Tokens::AUTO_9, 2, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::ID, 2, 1}} },
+{Tokens::ID, 2, 1}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}, {Tokens::ID, 2, ::Parser::DFA::null_state}} },
+{Tokens::ID, 2, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 2, 0, {
-{Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 3, 1}, {Tokens::AUTO_1, 4, ::Parser::DFA::null_state}} },
+{Tokens::AUTO_1, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_9, 3, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}, {Tokens::ID, 2, 0}} },
+{Tokens::ID, 2, 0}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
 } },
 };
 const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OR, 1, 0}, {Tokens::cll_LOGICAL_AND, 1, 1}} },
+{Tokens::cll_LOGICAL_AND, 1, 1}, {Tokens::cll_LOGICAL_OR, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}, {Tokens::cll_LOGICAL_OR, 1, 0}} },
+{Tokens::cll_LOGICAL_OR, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
 { 1, 1, {
 } },
 };
-
-Parser::Token Parser::Lexer::makeToken(const char*& pos) {
-	return ;
-}
-Parser::Token_res Parser::Lexer::__WHITESPACE(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	::Parser::bool_t success_2 = false;
-	while (*(pos + 0) == ' ' || *(pos + 0) == '\t' || *(pos + 0) == '\n' || *(pos + 0) == '\r' || *(pos + 0) == '\v' || *(pos + 0) == '\f')
-	{
-		_0 += ::Parser::str_t(pos, 1);
-		success_1 = true;
-		pos += 1;
-		success_2 = true;
-	}
-	if (!success_2)
-	{
-		reportError(pos, " , \t, \n, \r, \v or \f");
-		return {};
-	}
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::__WHITESPACE)};
-}
-Parser::Token_res Parser::Lexer::AUTO_23(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '&'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_23 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_23, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_22(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "import", 6) && !(*(pos + 6)>='a' && *(pos + 6)<='z' || *(pos + 6)>='A' && *(pos + 6)<='Z' || *(pos + 6)>='0' && *(pos + 6)<='9' || *(pos + 6) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 6);
-	success_1 = true;
-	pos += 6;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_22 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_22, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_21(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '='))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_21 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_21, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_20(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "++", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_20 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_20, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_18(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "while", 5) && !(*(pos + 5)>='a' && *(pos + 5)<='z' || *(pos + 5)>='A' && *(pos + 5)<='Z' || *(pos + 5)>='0' && *(pos + 5)<='9' || *(pos + 5) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 5);
-	success_1 = true;
-	pos += 5;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_18 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_18, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_17(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "for", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_17 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_17, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_19(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "--", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_19 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_19, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_16(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "fn", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_16 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_16, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_15(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "if", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_15 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_15, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_14(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ']'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_14 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_14, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_10(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "module", 6) && !(*(pos + 6)>='a' && *(pos + 6)<='z' || *(pos + 6)>='A' && *(pos + 6)<='Z' || *(pos + 6)>='0' && *(pos + 6)<='9' || *(pos + 6) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 6);
-	success_1 = true;
-	pos += 6;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_10 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_10, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_8(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "use", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_8 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_8, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_6(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ':'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_6 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_6, data)};
-}
-Parser::Token_res Parser::Lexer::rule_BIN(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "0b", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_4 = false;
-	while (*(pos + 0) == '0' || *(pos + 0) == '1')
-	{
-		_2 += ::Parser::str_t(pos, 1);
-		success_3 = true;
-		pos += 1;
-		success_4 = true;
-	}
-	if (!success_4)
-	{
-		reportError(pos, "0 or 1");
-		return {};
-	}
-	skip_spaces(pos);
-	::Parser::Types::rule_BIN data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_BIN, data)};
-}
-Parser::Token_res Parser::Lexer::rule_HEX(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "0x", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	::Parser::bool_t success_4 = false;
-	while ((*(pos + 0)>='0' && *(pos + 0)<='9') || (*(pos + 0)>='A' && *(pos + 0)<='F') || (*(pos + 0)>='a' && *(pos + 0)<='f'))
-	{
-		_2 += ::Parser::str_t(pos, 1);
-		success_3 = true;
-		pos += 1;
-		success_4 = true;
-	}
-	if (!success_4)
-	{
-		reportError(pos, "0-9, A-F or a-f");
-		return {};
-	}
-	skip_spaces(pos);
-	::Parser::Types::rule_HEX data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_HEX, data)};
-}
-Parser::Token_res Parser::Lexer::rule_ESCAPED(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '\\'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	char _2;
-	::Parser::bool_t success_3 = false;
-	if (*(pos + 0) == '\0')
-	{
-		return {};
-	}
-	_2 = *(pos + 0);
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::rule_ESCAPED data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_ESCAPED, data)};
-}
-Parser::Token_res Parser::Lexer::rule_NOSPACE(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "\\s0", 3)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 3);
-	success_1 = true;
-	pos += 3;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_NOSPACE)};
-}
-Parser::Token_res Parser::Lexer::BOOLEAN(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	auto begin_9 = pos;
-	::Parser::str_t d;
-	if (success_3)
-	{
-		success_1 = true;
-		d = _0;
-		pos = begin_9;
-	}
-	skip_spaces(pos);
-	::Parser::Types::BOOLEAN data = d;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::BOOLEAN, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_1(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ','))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_1 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_1, data)};
-}
-Parser::Token_res Parser::Lexer::rule_CSEQUENCE_ESCAPE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '\\'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	char _2;
-	::Parser::bool_t success_3 = false;
-	if (*(pos + 0) == '\0')
-	{
-		return {};
-	}
-	_2 = *(pos + 0);
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::rule_CSEQUENCE_ESCAPE data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_CSEQUENCE_ESCAPE, data)};
-}
-Parser::Token_res Parser::Lexer::rule_CSEQUENCE_DIAPASON(const char* pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	if (!(pos->name() == ::Parser::Tokens::rule_CSEQUENCE_SYMBOL))
-	{
-		return {};
-	}
-	_0 = *pos;
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	char _2;
-	::Parser::bool_t success_3 = false;
-	if (!(*(pos + 0) == '-'))
-	{
-		return {};
-	}
-	_2 = *(pos + 0);
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Token _4;
-	::Parser::bool_t success_5 = false;
-	if (!(pos->name() == ::Parser::Tokens::rule_CSEQUENCE_SYMBOL))
-	{
-		return {};
-	}
-	_4 = *pos;
-	success_5 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::rule_CSEQUENCE_DIAPASON data;
-	data.from = _0;
-	data.to = _4;
-
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_CSEQUENCE_DIAPASON, data)};
-}
-Parser::Token_res Parser::Lexer::rule_CSEQUENCE_SYMBOL(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			char _3;
-			::Parser::bool_t success_4 = false;
-			if (!(*(pos + 0) == '\\'))
-			{
-				return {};
-			}
-			_3 = *(pos + 0);
-			success_4 = true;
-			pos += 1;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			char _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!(*(pos + 0) == ']')))
-			{
-				return {};
-			}
-			_5 = *(pos + 0);
-			success_6 = true;
-			pos += 1;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	::Parser::Types::rule_CSEQUENCE_SYMBOL data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_CSEQUENCE_SYMBOL, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_9(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "from", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_9 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_9, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_13(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '['))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_13 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_13, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_3(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '('))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_3 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_3, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_7(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ';'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_7 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_7, data)};
-}
-Parser::Token_res Parser::Lexer::NUMBER(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (*(pos + 0) == '+' || *(pos + 0) == '-')
-	{
-		_0 += ::Parser::str_t(pos, 1);
-		success_1 = true;
-		pos += 1;
-	}
-	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	auto begin_7 = pos;
-	if (success_5)
-	{
-		success_3 = true;
-		pos = begin_7;
-	}
-	skip_spaces(pos);
-	::Parser::bool_t success_13 = false;
-	::Parser::bool_t success_11 = false;
-	::Parser::str_t _8;
-	::Parser::bool_t success_9 = false;
-	auto begin_15 = pos;
-	do
-	{
-		char _10;
-		if (!(*(begin_15 + 0) == '.' || *(begin_15 + 0) == ','))
-		{
-			break;
-		}
-		_10 = *(begin_15 + 0);
-		success_11 = true;
-		begin_15 += 1;
-		skip_spaces(begin_15);
-		::Parser::str_t _12;
-		::Parser::bool_t success_14 = false;
-		while ((*(begin_15 + 0)>='0' && *(begin_15 + 0)<='9'))
-		{
-			_12 += ::Parser::str_t(begin_15, 1);
-			success_13 = true;
-			begin_15 += 1;
-			success_14 = true;
-		}
-		if (!success_14)
-		{
-			reportError(pos, "0-9");
-			break;
-		}
-		_8 += _10;
-		_8 += _12;
-	}
-	while(0);
-	if (success_11 && success_13)
-	{
-		success_9 = true;
-		pos = begin_15;
-	}
-	skip_spaces(pos);
-	::Parser::Types::NUMBER data;
-	data.sign = _0;
-	data.dec = _8;
-	data.main = _2;
-
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NUMBER, data)};
-}
-Parser::Token_res Parser::Lexer::ID(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	auto begin_6 = pos;
-	if (success_3)
-	{
-		success_1 = true;
-		pos = begin_6;
-	}
-	skip_spaces(pos);
-	::Parser::Types::ID data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::ID, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_0(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '{'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_0 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_0, data)};
-}
-Parser::Token_res Parser::Lexer::rule_OP(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '|'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_OP)};
-}
-Parser::Token_res Parser::Lexer::LINEAR_COMMENT(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "//", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	while (!(*(pos + 0) == 'n' && *(pos + 0) != '\0'))
-	{
-		_2 += ::Parser::str_t(pos, 1);
-		success_3 = true;
-		pos += 1;
-	}
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::LINEAR_COMMENT)};
-}
-Parser::Token_res Parser::Lexer::cll_LOGICAL_NOT(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			::Parser::str_t _3;
-			::Parser::bool_t success_4 = false;
-			if (!(!std::strncmp(pos + 0, "not", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-			{
-				return {};
-			}
-			_3 += ::Parser::str_t(pos, 3);
-			success_4 = true;
-			pos += 3;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			char _5;
-			::Parser::bool_t success_6 = false;
-			if (!(*(pos + 0) == '!'))
-			{
-				return {};
-			}
-			_5 = *(pos + 0);
-			success_6 = true;
-			pos += 1;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_LOGICAL_NOT)};
-}
-Parser::Token_res Parser::Lexer::MODULO(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '%'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::MODULO)};
-}
-Parser::Token_res Parser::Lexer::cll_OP(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	skip_spaces(pos);
-	switch (*pos)
-	{
-		case NONE: {
-			char _2;
-			::Parser::bool_t success_3 = false;
-			if (!(*(pos + 0) == '/'))
-			{
-				return {};
-			}
-			_2 = *(pos + 0);
-			success_3 = true;
-			pos += 1;
-			skip_spaces(pos);
-			_0 = ;
-
-			break;
-
-		}
-		case NONE: {
-			char _4;
-			::Parser::bool_t success_5 = false;
-			if (!(*(pos + 0) == '%'))
-			{
-				return {};
-			}
-			_4 = *(pos + 0);
-			success_5 = true;
-			pos += 1;
-			skip_spaces(pos);
-			_0 = ;
-
-			break;
-
-		}
-		case NONE: {
-			char _6;
-			::Parser::bool_t success_7 = false;
-			if (!(*(pos + 0) == '/'))
-			{
-				return {};
-			}
-			_6 = *(pos + 0);
-			success_7 = true;
-			pos += 1;
-			skip_spaces(pos);
-			_0 = ;
-
-			break;
-
-		}
-		case NONE: {
-			char _8;
-			::Parser::bool_t success_9 = false;
-			if (!(*(pos + 0) == '/'))
-			{
-				return {};
-			}
-			_8 = *(pos + 0);
-			success_9 = true;
-			pos += 1;
-			skip_spaces(pos);
-			_0 = ;
-
-			break;
-
-		}
-		case NONE: {
-			char _10;
-			::Parser::bool_t success_11 = false;
-			if (!(*(pos + 0) == '/'))
-			{
-				return {};
-			}
-			_10 = *(pos + 0);
-			success_11 = true;
-			pos += 1;
-			skip_spaces(pos);
-			_0 = ;
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	::Parser::Types::cll_OP data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_OP, data)};
-}
-Parser::Token_res Parser::Lexer::MINUS(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '-'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::MINUS)};
-}
-Parser::Token_res Parser::Lexer::PLUS(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '+'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::PLUS)};
-}
-Parser::Token_res Parser::Lexer::QUESTION_MARK(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '?'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::QUESTION_MARK)};
-}
-Parser::Token_res Parser::Lexer::rule_CSEQUENCE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '['))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	char _2;
-	::Parser::bool_t success_3 = false;
-	if (*(pos + 0) == '^')
-	{
-		_2 = *(pos + 0);
-		success_3 = true;
-		pos += 1;
-	}
-	skip_spaces(pos);
-	::Parser::bool_t success_7 = 1;
-	::Parser::arr_t<::Parser::Rule> shadow_10;
-	::Parser::Rule _4;
-	::Parser::bool_t success_5 = false;
-	auto begin_9 = pos;
-	while (1)
-	{
-		::Parser::Rule_res _6;
-		dfa_lookup_result_8 = DFA_DECIDE(begin_9);
-		switch (dfa_lookup_result_8)
-		{
-			case 0: {
-				_6 = *begin_9;
-
-				break;
-
-			}
-			case 1: {
-				_6 = *begin_9;
-
-				break;
-
-			}
-			case 2: {
-				_6 = *begin_9;
-
-				break;
-
-			}
-		}
-;
-		_4 = _6;
-		shadow_10.push_back(_4);
-	}
-	if (success_7)
-	{
-		success_5 = true;
-		pos = begin_9;
-	}
-	skip_spaces(pos);
-	char _11;
-	::Parser::bool_t success_12 = false;
-	if (!(*(pos + 0) == ']'))
-	{
-		return {};
-	}
-	_11 = *(pos + 0);
-	success_12 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::rule_CSEQUENCE data;
-	data._not = _2;
-	data.val = shadow_10;
-
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::rule_CSEQUENCE, data)};
-}
-Parser::Token_res Parser::Lexer::MULTIPLE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '*'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::MULTIPLE)};
-}
-Parser::Token_res Parser::Lexer::AT(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '@'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AT)};
-}
-Parser::Token_res Parser::Lexer::cll_LOGICAL_OR(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			::Parser::str_t _3;
-			::Parser::bool_t success_4 = false;
-			if (!(!std::strncmp(pos + 0, "||", 2)))
-			{
-				return {};
-			}
-			_3 += ::Parser::str_t(pos, 2);
-			success_4 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			::Parser::str_t _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!std::strncmp(pos + 0, "or", 2) && !(*(pos + 2)>='a' && *(pos + 2)<='z' || *(pos + 2)>='A' && *(pos + 2)<='Z' || *(pos + 2)>='0' && *(pos + 2)<='9' || *(pos + 2) == '_')))
-			{
-				return {};
-			}
-			_5 += ::Parser::str_t(pos, 2);
-			success_6 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_LOGICAL_OR)};
-}
-Parser::Token_res Parser::Lexer::AUTO_11(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "->", 2)))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 2);
-	success_1 = true;
-	pos += 2;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_11 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_11, data)};
-}
-Parser::Token_res Parser::Lexer::DOT(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '.'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::DOT)};
-}
-Parser::Token_res Parser::Lexer::STRING(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '\''))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::bool_t success_5 = 1;
-	::Parser::str_t _2;
-	::Parser::bool_t success_3 = false;
-	auto begin_16 = pos;
-	while (1)
-	{
-		::Parser::Rule_res _4;
-		dfa_lookup_result_6 = DFA_DECIDE(begin_16);
-		switch (dfa_lookup_result_6)
-		{
-			case 0: {
-				::Parser::str_t _7;
-				::Parser::bool_t success_8 = false;
-				auto begin_13 = begin_16;
-				if (success_10 && success_12)
-				{
-					success_8 = true;
-					begin_16 = begin_13;
-				}
-				skip_spaces(begin_16);
-
-				break;
-
-			}
-			case 1: {
-				char _14;
-				::Parser::bool_t success_15 = false;
-				if (!(!(*(begin_16 + 0) == '\'')))
-				{
-					return {};
-				}
-				_14 = *(begin_16 + 0);
-				success_15 = true;
-				begin_16 += 1;
-				skip_spaces(begin_16);
-
-				break;
-
-			}
-		}
-;
-		_2 += _4;
-	}
-	if (success_5)
-	{
-		success_3 = true;
-		pos = begin_16;
-	}
-	skip_spaces(pos);
-	char _17;
-	::Parser::bool_t success_18 = false;
-	if (!(*(pos + 0) == '\''))
-	{
-		return {};
-	}
-	_17 = *(pos + 0);
-	success_18 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::STRING data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::STRING, data)};
-}
-Parser::Token_res Parser::Lexer::SPACEMODE(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "spacemode", 9) && !(*(pos + 9)>='a' && *(pos + 9)<='z' || *(pos + 9)>='A' && *(pos + 9)<='Z' || *(pos + 9)>='0' && *(pos + 9)<='9' || *(pos + 9) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 9);
-	success_1 = true;
-	pos += 9;
-	skip_spaces(pos);
-	::Parser::Rule_res _2;
-	::Parser::bool_t success_3 = 1;
-	dfa_lookup_result_4 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_4)
-	{
-		case 0: {
-			::Parser::str_t _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!std::strncmp(pos + 0, "skipped", 7) && !(*(pos + 7)>='a' && *(pos + 7)<='z' || *(pos + 7)>='A' && *(pos + 7)<='Z' || *(pos + 7)>='0' && *(pos + 7)<='9' || *(pos + 7) == '_')))
-			{
-				return {};
-			}
-			_5 += ::Parser::str_t(pos, 7);
-			success_6 = true;
-			pos += 7;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			::Parser::str_t _7;
-			::Parser::bool_t success_8 = false;
-			if (!(!std::strncmp(pos + 0, "allowed", 7) && !(*(pos + 7)>='a' && *(pos + 7)<='z' || *(pos + 7)>='A' && *(pos + 7)<='Z' || *(pos + 7)>='0' && *(pos + 7)<='9' || *(pos + 7) == '_')))
-			{
-				return {};
-			}
-			_7 += ::Parser::str_t(pos, 7);
-			success_8 = true;
-			pos += 7;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 2: {
-			::Parser::str_t _9;
-			::Parser::bool_t success_10 = false;
-			if (!(!std::strncmp(pos + 0, "mixed", 5) && !(*(pos + 5)>='a' && *(pos + 5)<='z' || *(pos + 5)>='A' && *(pos + 5)<='Z' || *(pos + 5)>='0' && *(pos + 5)<='9' || *(pos + 5) == '_')))
-			{
-				return {};
-			}
-			_9 += ::Parser::str_t(pos, 5);
-			success_10 = true;
-			pos += 5;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	char _11;
-	::Parser::bool_t success_12 = false;
-	if (!(*(pos + 0) == ';'))
-	{
-		return {};
-	}
-	_11 = *(pos + 0);
-	success_12 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::SPACEMODE data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::SPACEMODE, data)};
-}
-Parser::Token_res Parser::Lexer::cll_ASSIGNMENT_OP(const char* pos) {
-	auto in = pos;
-	::Parser::Token _0;
-	::Parser::bool_t success_1 = false;
-	if (pos->name() == ::Parser::Tokens::cll_OP)
-	{
-		_0 = *pos;
-		success_1 = true;
-		pos += 1;
-	}
-	skip_spaces(pos);
-	char _2;
-	::Parser::bool_t success_3 = false;
-	if (!(*(pos + 0) == '='))
-	{
-		return {};
-	}
-	_2 = *(pos + 0);
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::cll_ASSIGNMENT_OP data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_ASSIGNMENT_OP, data)};
-}
-Parser::Token_res Parser::Lexer::cll_COMPARE_OP(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			::Parser::str_t _3;
-			::Parser::bool_t success_4 = false;
-			if (!(!std::strncmp(pos + 0, ">=", 2)))
-			{
-				return {};
-			}
-			_3 += ::Parser::str_t(pos, 2);
-			success_4 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			::Parser::str_t _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!std::strncmp(pos + 0, "==", 2)))
-			{
-				return {};
-			}
-			_5 += ::Parser::str_t(pos, 2);
-			success_6 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 2: {
-			::Parser::str_t _7;
-			::Parser::bool_t success_8 = false;
-			if (!(!std::strncmp(pos + 0, "<=", 2)))
-			{
-				return {};
-			}
-			_7 += ::Parser::str_t(pos, 2);
-			success_8 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 3: {
-			::Parser::str_t _9;
-			::Parser::bool_t success_10 = false;
-			if (!(!std::strncmp(pos + 0, "!=", 2)))
-			{
-				return {};
-			}
-			_9 += ::Parser::str_t(pos, 2);
-			success_10 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 4: {
-			char _11;
-			::Parser::bool_t success_12 = false;
-			if (!(*(pos + 0) == '>'))
-			{
-				return {};
-			}
-			_11 = *(pos + 0);
-			success_12 = true;
-			pos += 1;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 5: {
-			char _13;
-			::Parser::bool_t success_14 = false;
-			if (!(*(pos + 0) == '<'))
-			{
-				return {};
-			}
-			_13 = *(pos + 0);
-			success_14 = true;
-			pos += 1;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	::Parser::Types::cll_COMPARE_OP data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_COMPARE_OP, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_2(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '}'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_2 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_2, data)};
-}
-Parser::Token_res Parser::Lexer::NAME(const char* pos) {
-	auto in = pos;
-	::Parser::str_t _0;
-	::Parser::bool_t success_1 = false;
-	if (!(!std::strncmp(pos + 0, "name", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
-	{
-		return {};
-	}
-	_0 += ::Parser::str_t(pos, 4);
-	success_1 = true;
-	pos += 4;
-	skip_spaces(pos);
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == ::Parser::Tokens::ID))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	char _4;
-	::Parser::bool_t success_5 = false;
-	if (!(*(pos + 0) == ';'))
-	{
-		return {};
-	}
-	_4 = *(pos + 0);
-	success_5 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::NAME data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::NAME, data)};
-}
-Parser::Token_res Parser::Lexer::cll_LOGICAL_AND(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			::Parser::str_t _3;
-			::Parser::bool_t success_4 = false;
-			if (!(!std::strncmp(pos + 0, "and", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-			{
-				return {};
-			}
-			_3 += ::Parser::str_t(pos, 3);
-			success_4 = true;
-			pos += 3;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			::Parser::str_t _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!std::strncmp(pos + 0, "&&", 2)))
-			{
-				return {};
-			}
-			_5 += ::Parser::str_t(pos, 2);
-			success_6 = true;
-			pos += 2;
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_LOGICAL_AND)};
-}
-Parser::Token_res Parser::Lexer::AUTO_5(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '#'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_5 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_5, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_12(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '$'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_12 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_12, data)};
-}
-Parser::Token_res Parser::Lexer::cll_TEMPLATE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '<'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Token _2;
-	::Parser::bool_t success_3 = false;
-	if (!(pos->name() == ::Parser::Tokens::cll_TYPE))
-	{
-		return {};
-	}
-	_2 = *pos;
-	success_3 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::bool_t success_9 = false;
-	::Parser::bool_t success_7 = false;
-	::Parser::bool_t success_5 = false;
-	auto begin_11 = pos;
-	while (1)
-	{
-		char _6;
-		if (!(*(begin_11 + 0) == ','))
-		{
-			break;
-		}
-		_6 = *(begin_11 + 0);
-		success_7 = true;
-		begin_11 += 1;
-		skip_spaces(begin_11);
-		::Parser::Token _8;
-		::Parser::arr_t<::Parser::Token> shadow_10;
-		if (!(begin_11->name() == ::Parser::Tokens::cll_TYPE))
-		{
-			break;
-		}
-		_8 = *begin_11;
-		success_9 = true;
-		begin_11 += 1;
-		shadow_10.push_back(_8);
-	}
-	if (success_7 && success_9)
-	{
-		success_5 = true;
-		pos = begin_11;
-	}
-	skip_spaces(pos);
-	char _12;
-	::Parser::bool_t success_13 = false;
-	if (!(*(pos + 0) == '>'))
-	{
-		return {};
-	}
-	_12 = *(pos + 0);
-	success_13 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::cll_TEMPLATE data;
-	data.first = _2;
-	data.second = shadow_10;
-
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_TEMPLATE, data)};
-}
-Parser::Token_res Parser::Lexer::cll_TYPE(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			::Parser::str_t _3;
-			::Parser::bool_t success_4 = false;
-			if (!(!std::strncmp(pos + 0, "bool", 4) && !(*(pos + 4)>='a' && *(pos + 4)<='z' || *(pos + 4)>='A' && *(pos + 4)<='Z' || *(pos + 4)>='0' && *(pos + 4)<='9' || *(pos + 4) == '_')))
-			{
-				return {};
-			}
-			_3 += ::Parser::str_t(pos, 4);
-			success_4 = true;
-			pos += 4;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 1: {
-			::Parser::str_t _5;
-			::Parser::bool_t success_6 = false;
-			if (!(!std::strncmp(pos + 0, "var", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-			{
-				return {};
-			}
-			_5 += ::Parser::str_t(pos, 3);
-			success_6 = true;
-			pos += 3;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 2: {
-			::Parser::str_t _7;
-			::Parser::bool_t success_8 = false;
-			if (!(!std::strncmp(pos + 0, "str", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-			{
-				return {};
-			}
-			_7 += ::Parser::str_t(pos, 3);
-			success_8 = true;
-			pos += 3;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 3: {
-			::Parser::bool_t success_10 = false;
-			auto begin_15 = pos;
-			if (success_12 && success_14)
-			{
-				success_10 = true;
-				pos = begin_15;
-			}
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 4: {
-			::Parser::str_t _16;
-			::Parser::bool_t success_17 = false;
-			if (!(!std::strncmp(pos + 0, "num", 3) && !(*(pos + 3)>='a' && *(pos + 3)<='z' || *(pos + 3)>='A' && *(pos + 3)<='Z' || *(pos + 3)>='0' && *(pos + 3)<='9' || *(pos + 3) == '_')))
-			{
-				return {};
-			}
-			_16 += ::Parser::str_t(pos, 3);
-			success_17 = true;
-			pos += 3;
-			skip_spaces(pos);
-
-			break;
-
-		}
-		case 5: {
-			::Parser::bool_t success_19 = false;
-			auto begin_24 = pos;
-			if (success_21 && success_23)
-			{
-				success_19 = true;
-				pos = begin_24;
-			}
-			skip_spaces(pos);
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	::Parser::Types::cll_TYPE data;
-	data.type = _11;
-	data.templ = _13;
-
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_TYPE, data)};
-}
-Parser::Token_res Parser::Lexer::AUTO_4(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == ')'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	::Parser::Types::AUTO_4 data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::AUTO_4, data)};
-}
-Parser::Token_res Parser::Lexer::cll_LOGICAL_OP(const char* pos) {
-	auto in = pos;
-	::Parser::Rule_res _0;
-	::Parser::bool_t success_1 = 1;
-	dfa_lookup_result_2 = DFA_DECIDE(pos);
-	switch (dfa_lookup_result_2)
-	{
-		case 0: {
-			_0 = *pos;
-
-			break;
-
-		}
-		case 1: {
-			_0 = *pos;
-
-			break;
-
-		}
-	}
-;
-	skip_spaces(pos);
-	::Parser::Types::cll_LOGICAL_OP data = NONE;
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::cll_LOGICAL_OP, data)};
-}
-Parser::Token_res Parser::Lexer::DIVIDE(const char* pos) {
-	auto in = pos;
-	char _0;
-	::Parser::bool_t success_1 = false;
-	if (!(*(pos + 0) == '/'))
-	{
-		return {};
-	}
-	_0 = *(pos + 0);
-	success_1 = true;
-	pos += 1;
-	skip_spaces(pos);
-	return {true, ::Parser::Token(getCurrentPos(in), in, pos, pos - in, __line(pos), __column(pos), ::Parser::Tokens::DIVIDE)};
-}

@@ -9,13 +9,14 @@ import LLIR.API;
 import LLIR;
 import LLHeader;
 import LexerBuilder;
+import buildLLParser;
 import fcdt;
 import std;
 export class LLConverter : public LLConverter_base, public LLHeader {
+    friend void buildLLParser(const std::filesystem::path name, const LLIR::IR &ir, const LexerBuilder &lexer_data, AST::Tree& ast);
     void outputHeader(std::ostringstream &out, const std::string &filename);
     
     // cpp output functions
-    void writeRules(std::ostringstream &out, bool startName);
     void convertVariable(LLIR::variable var, std::ostringstream &out);
     void convertBlock(stdu::vector<LLIR::member> block, std::ostringstream &out);
     void convertCondition(LLIR::condition cond, std::ostringstream &out);
@@ -24,14 +25,15 @@ export class LLConverter : public LLConverter_base, public LLHeader {
     void convertMember(const LLIR::member& mem, std::ostringstream &out);
     void convertMembers(const stdu::vector<LLIR::member> &members, std::ostringstream &out);
 
-    void addDFATables(std::ostringstream &out);
 public:
-    LLConverter(LLIR::IR &ir, AST::Tree &tree, const LexerBuilder &lexer_data, LLIR::Nodes *custom_lexer_code = nullptr, LLIR::variable *access_var = nullptr, std::string namespace_name = "") : LLConverter_base(ir, tree, lexer_data, custom_lexer_code, access_var) {
-        this->namespace_name = namespace_name;
-        current_pos_counter.push("pos");
+    LLConverter(const LLIR::IR &ir, AST::Tree &tree, const std::string &name) : LLConverter_base(ir, tree) {
+        namespace_name = name;
+        current_pos_counter.emplace("pos");
     }
     ~LLConverter() {}
     void convertData(std::ostringstream &out);
+    void addDFATables(std::ostringstream &out);
+    void writeRules(std::ostringstream &out);
     void printIR(std::ostringstream& out, const std::string &filename);
     void addHeader(std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);

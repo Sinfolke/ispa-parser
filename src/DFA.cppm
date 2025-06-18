@@ -73,21 +73,7 @@ public:
     auto &getStates() const { return states; }
     auto &getMultiStates() const { return mstates; }
 };
-export class DFABuilder {
-    DFA dfa;
-    void log(const NFA &nfa, const stdu::vector<std::string> &fullname) const;
-    void log(const DFA &dfa, const stdu::vector<std::string> &fullname) const;
-    void log(const NFA &nfa, const std::string &fullname) const;
-    void log(const DFA &dfa, const std::string &fullname) const;
-    void log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const;
-    public:
-    DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname);
-    DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname);
-    DFABuilder(const AST::Tree& ast, const utype::unordered_set<stdu::vector<std::string>> &names);
-    DFA& get() {
-        return dfa;
-    }
-};
+
 // Print a single state
 export std::ostream& operator<<(std::ostream& os, const DFA::MultiState& s);
 // Print all states in the vector

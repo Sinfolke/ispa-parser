@@ -4,32 +4,35 @@ import AST.API;
 import AST.Tree;
 import DFA;
 import LLIR.API;
+import LLIR;
 import fcdt;
 import dstd;
 import std;
 export class LexerBuilder {
 public:
-    static constexpr auto DFA_NOT_INVOLVED = std::numeric_limits<std::size_t>::max();
-    using isDfaInvolvedTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
+    static constexpr auto DFA_NOT_COMPATIBLE = std::numeric_limits<std::size_t>::max();
+    using DfaCompatibleTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
+    using NameToDfaMap = utype::unordered_map<FCDT::Name, std::size_t>;
+    using DispatchNamesInvolve = utype::unordered_map<std::set<FCDT::Name>, NameToDfaMap>;
 private:
     AST::Tree &ast;
     stdu::vector<DFA> dfas;
-    stdu::vector<DFA> function_dfas;
-    stdu::vector<LLIR::Data> functions;
+    LLIR::IR function_ir;
     FCDT fcdt;
-    isDfaInvolvedTable is_dfa_involved_table;
+    DfaCompatibleTable dfa_compatible_table;
+    DispatchNamesInvolve dispatch_names_involve;
     bool isDfaCompatible(const stdu::vector<AST::RuleMember> &member);
 public:
     LexerBuilder(AST::Tree &ast) : ast(ast), fcdt(ast) {};
     void build();
-    auto getDFAS() { return dfas; }
-    auto getFunctionDFAS() { return function_dfas; }
-    auto getFunctions() { return functions; }
-    auto getFCDT() { return fcdt; }
-    auto getIsDfaInvolvedTable() { return is_dfa_involved_table; }
+    auto& getDFAS() { return dfas; }
+    auto& getFCDT() { return fcdt; }
+    auto& getDfaCompatibleTable() { return dfa_compatible_table; }
+    auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
+    auto& getFunctionsIR() const { return function_ir; }
     auto& getDFAS() const { return dfas; }
-    auto& getFunctionDFAS() const { return function_dfas; }
-    auto& getFunctions() const { return functions; }
     auto& getFCDT() const { return fcdt; }
-    auto& getIsDfaInvolvedTable() const { return is_dfa_involved_table; }
+    auto& getDfaCompatibleTable() const { return dfa_compatible_table; }
+    auto& getDispatchNamesInvolve() const { return dispatch_names_involve; }
+    auto& getFunctionsIR() { return function_ir; }
 };

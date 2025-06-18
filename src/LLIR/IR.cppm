@@ -7,7 +7,7 @@ import std;
 import std.compat;
 export namespace LLIR {
     class IR {
-        auto getDataBlocks(bool isToken) -> DataBlockList;
+        auto getDataBlocks(bool isToken) const -> DataBlockList;
     protected:
         std::string convert_var_type(var_types type);
         std::string convert_var_assing_values(var_assign_values value, std::any data);
@@ -46,8 +46,8 @@ export namespace LLIR {
         auto size() -> size_t;
         auto empty() -> bool;
         auto clear() -> void;
-        auto getDataBlocksTerminals() -> DataBlockList;
-        auto getDataBlocksNonTerminals() -> DataBlockList;
+        auto getDataBlocksTerminals() const -> DataBlockList;
+        auto getDataBlocksNonTerminals() const -> DataBlockList;
 
         // print function
         void outputIRToFile(std::string filename);

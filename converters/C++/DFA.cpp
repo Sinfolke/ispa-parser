@@ -24,8 +24,8 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
             if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
                 token_type = true;
                 const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
-                if (is_dfa_involved && is_dfa_involved->contains(symbol)) {
-                    table_out << "&dfa_table_" << std::to_string(is_dfa_involved->at(symbol)) << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
+                if (dfa_compatible_table && dfa_compatible_table->contains(symbol)) {
+                    table_out << "&dfa_table_" << std::to_string(dfa_compatible_table->at(symbol)) << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
                 } else {
                     table_out << "Tokens::" << corelib::text::join(symbol, "_") << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
                 }

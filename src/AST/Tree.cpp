@@ -1,5 +1,5 @@
 module AST.Tree;
-import ASTPass;
+import AST.Pass;
 import logging;
 import dstd;
 import AST.API;

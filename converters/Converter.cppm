@@ -10,30 +10,28 @@ import dstd;
 import std;
 export class LexerConverter_base {
 protected:
-    std::ostringstream &out;
+    std::ostringstream &out, &h_out;
     const LexerBuilder &lexer_data;
     const std::string &namespace_name;
+    AST::Tree &ast;
 public:
-    LexerConverter_base(std::ostringstream &out, const LexerBuilder &lexer_data, const std::string &name) : out(out), lexer_data(lexer_data), namespace_name(name) {}
+    LexerConverter_base(AST::Tree &ast, std::ostringstream &out, std::ostringstream &h_out, const LexerBuilder &lexer_data, const std::string &name)
+    : ast(ast), out(out), h_out(h_out), lexer_data(lexer_data), namespace_name(name) {}
     virtual void output() = 0;
     virtual void outputHeader() = 0;
 };
 export class LLConverter_base {
     protected:
         // data
-        stdu::vector<LLIR::Data> data;
-        stdu::vector<DFA> dfas;
         stdu::vector<stdu::vector<std::string>> tokens;
         stdu::vector<stdu::vector<std::string>> rules;
         LLIR::DataBlockList data_block_tokens;
         LLIR::DataBlockList data_block_rules;
-        LLIR::Nodes lexer_code;
-        LLIR::variable lexer_code_access_var;
-        AST::Tree &tree;
-        const LexerBuilder &lexer_data;
+        const LLIR::IR &ir;
+        const AST::Tree &tree;
     public:
-        LLConverter_base(LLIR::IR &ir, AST::Tree &tree, const LexerBuilder &lexer_data, const LLIR::Nodes *custom_lexer_code = nullptr, const LLIR::variable *access_var = nullptr)
-        : tree(tree), lexer_data(lexer_data) {
+        LLConverter_base(const LLIR::IR &ir, AST::Tree &tree)
+        : tree(tree), ir(ir) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
@@ -41,16 +39,6 @@ export class LLConverter_base {
             rules.insert(rules.begin(), {"NONE"});
             data_block_tokens = ir.getDataBlocksTerminals();
             data_block_rules = ir.getDataBlocksNonTerminals();
-            if (custom_lexer_code == nullptr || access_var == nullptr) {
-                auto lc = tree.getCodeForLexer();
-                lexer_code = lc.first;
-                lexer_code_access_var = lc.second;
-            } else {
-                lexer_code = *custom_lexer_code;
-                lexer_code_access_var = *access_var;
-            }
-            data = ir.getData();
-            dfas = ir.getDfas();
         }
         virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {
@@ -58,6 +46,12 @@ export class LLConverter_base {
         }
         auto getDataBlockRules() {
             return data_block_rules;
+        }
+        auto& getTokens() {
+            return tokens;
+        }
+        auto& getRules() {
+            return rules;
         }
 };
 export class LRConverter_base {

@@ -5,10 +5,8 @@ import Converter.DFA;
 import LexerConverter;
 import logging;
 import std;
-void LLConverter::writeRules(std::ostringstream &out, bool startName) {
-    for (auto &[data_block, name, members] : data) {
-        isToken = corelib::text::isUpper(name.back());
-        if (isToken == startName) continue;
+void LLConverter::writeRules(std::ostringstream &out) {
+    for (auto &[data_block, name, members] : ir.getData()) {
         rule_prev_name = name;
         rule_prev_name_str = corelib::text::join(name, "_");
         if (isToken) {
@@ -58,9 +56,9 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
     create_lexer_header(out, tokens);
-    create_parser_header(out, dfas);
+    create_parser_header(out, ir.getDfas());
     indentLevel = 2;
-    writeRules(out, true);
+    writeRules(out);
     indentLevel = 1;
     close_parser_header(out);
     close_library(out, namespace_name);
@@ -215,13 +213,13 @@ void LLConverter::convertLexerCode(const stdu::vector<LLIR::member> &members, st
     isToken = false;
 }
 void LLConverter::convertData(std::ostringstream &out) {
-    for (const auto &dt : data) {
+    for (const auto &dt : ir.getData()) {
         convertMembers(dt.members, out);
 
     }
 }
 void LLConverter::addDFATables(std::ostringstream &out) {
-    DFAConverter tables_builder(this->dfas, nullptr, namespace_name, "Parser", "dfa_table");
+    DFAConverter tables_builder(ir.getDfas(), nullptr, namespace_name, "Parser", "dfa_table");
     tables_builder.create();
     out << tables_builder.get().str();
 }
@@ -229,16 +227,10 @@ void LLConverter::addDFATables(std::ostringstream &out) {
 void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
     namespace_name = filename;
     addHeader(out);
-    LexerConverter lc(out, lexer_data, namespace_name);
-    lc.output();
     addStandardFunctionsLexer(out);
     addStandardFunctionsParser(out);
     addGetFunctions(out, data_block_tokens, data_block_rules);
     addDFATables(out);
-    addLexerCode_Header(out);
-    convertLexerCode(lexer_code, out);
-    addLexerCode_Bottom(out,  lexer_code_access_var);
-    writeRules(out, false);
 }
 void LLConverter::addHeader(std::ostringstream &out) {
     out << "#include \"" << namespace_name << ".h\"\n";
@@ -493,9 +485,6 @@ void LLConverter::outputIR(std::filesystem::path name) {
     outputHeader(h_ss, name.filename().string());
     cpp << cpp_ss.str();
     h << h_ss.str();
-}
-extern "C" LLConverter_base* getLLConverter(LLIR::IR& ir, AST::Tree& tree, const LexerBuilder &lexer_builder) {
-    return new LLConverter(ir, tree, lexer_builder);
 }
 
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

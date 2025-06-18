@@ -19,4 +19,8 @@ export class LLInternalData {
     bool has_data_block = false;
     bool isToken = false;
     bool cpp_file = true;
+public:
+    void setIndentLevet(size_t indent_level) {
+        this->indentLevel = indent_level;
+    }
 };
