@@ -9,6 +9,7 @@ import dstd;
 import std;
 export class LexerBuilder {
 public:
+    static constexpr auto DFA_NOT_INVOLVED = std::numeric_limits<std::size_t>::max();
     using isDfaInvolvedTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
 private:
     AST::Tree &ast;

@@ -42,7 +42,7 @@ auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &sym
     return { result.begin(), result.end() };
 }
 
-auto DFA::findEmptyState() -> size_t {
+auto DFA::findEmptyState() const -> size_t {
     if (mstates.empty()) {
         for (size_t i = 0; i < states.size(); ++i) {
             if (states[i].transitions.empty())
@@ -57,7 +57,7 @@ auto DFA::findEmptyState() -> size_t {
         return mstates.size();
     }
 }
-bool DFA::leadToEmptyState(size_t current) {
+bool DFA::leadToEmptyState(size_t current) const {
     if (!nfa->getStates().at(current).transitions.empty())
         return false;
     bool all_lead_o_empty = true;
@@ -68,14 +68,14 @@ bool DFA::leadToEmptyState(size_t current) {
     }
     return true;
 }
-bool DFA::includesWhitespace(const MultiState &state) {
+bool DFA::includesWhitespace(const MultiState &state) const {
     for (const auto &t : state.transitions) {
         if (t.first == NFA::TransitionKey {constants::whitespace})
             return true;
     }
     return false;
 }
-bool DFA::isTerminateState(const MultiState &state) {
+bool DFA::isTerminateState(const MultiState &state) const {
     if (state.else_goto != 0)
         return false;
     bool was = false;
@@ -381,8 +381,39 @@ void DFA::removeSelfLoop() {
         }
     }
 }
+auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
+    size_t offset = first.getMultiStates().size();
+    auto &f = first.getMultiStates();
+    const auto &s = second.getMultiStates();
+    for (const auto &[symbol, next] : s[0].transitions) {
+        for (const auto &n : next) {
+            f[0].transitions[symbol].emplace_back(offset + n.next, n.accept_index);
+        }
+    }
+    // Copy and fixup second DFA states
+    for (const auto &state : s) {
+        State new_state = state; // assuming State is your DFA state type
+        for (auto &[symbol, nexts] : new_state.transitions) {
+            for (auto &next : nexts) {
+                next.next += offset;
+            }
+        }
+        if (new_state.else_goto)
+            new_state.else_goto += offset;
 
-void DFA::build() {
+        f.emplace_back(std::move(new_state));
+    }
+}
+
+auto DFA::mergeDFAS(stdu::vector<DFA> &dfas) -> DFA {
+    auto &initial_states = dfas[0];
+    for (auto it = dfas.begin() + 1; it != dfas.end(); ++it) {
+        mergeTwoDFA(initial_states, *it);
+    }
+    return initial_states;
+}
+
+void DFA::build(bool switchToSingleState) {
     using StateSet = stdu::vector<size_t>;
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
@@ -545,10 +576,71 @@ void DFA::build() {
     // various optimizations
     removeDublicateStates();
     terminateEarly();
+    if (switchToSingleState) {
+        unrollMultiTransitionPaths();
+        this->switchToSingleState();
+        removeUnreachableStates();
+        removeSelfLoop();
+    }
+}
+void DFA::buildWMerge() {
+    stdu::vector<DFA> dfas;
+    for (const auto &nfa : *mergable_nfas) {
+        DFA d(nfa);
+        d.build(false);
+        dfas.push_back(d);
+    }
+    mstates = std::move(mergeDFAS(dfas)).getMultiStates();
+    removeDublicateStates();
+    terminateEarly();
     unrollMultiTransitionPaths();
     switchToSingleState();
     removeUnreachableStates();
     removeSelfLoop();
+}
+void DFABuilder::log(const NFA &nfa, const stdu::vector<std::string> &fullname) const {
+    if (dumper.shouldDump("NFA")) {
+        std::ofstream NFA_dump_file;
+        NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
+        if (!NFA_dump_file.is_open()) {
+            throw Error("Couldn't open NFA file");
+        }
+        NFA_dump_file << "---------- " << fullname << "----------\n";
+        NFA_dump_file << nfa;
+    }
+}
+void DFABuilder::log(const DFA &dfa, const stdu::vector<std::string> &fullname) const {
+    if (dumper.shouldDump("DFA")) {
+        std::ofstream DFA_dump_file;
+        DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
+        if (!DFA_dump_file.is_open()) {
+            throw Error("Couldn't open DFA file");
+        }
+        DFA_dump_file << "---------- " << fullname << "----------\n";
+        DFA_dump_file << dfa;
+    };
+}
+void DFABuilder::log(const NFA &nfa, const std::string &fullname) const {
+    if (dumper.shouldDump("NFA")) {
+        std::ofstream NFA_dump_file;
+        NFA_dump_file.open(dumper.makeDumpPath("NFA"), std::ios::app);
+        if (!NFA_dump_file.is_open()) {
+            throw Error("Couldn't open NFA file");
+        }
+        NFA_dump_file << "---------- " << fullname << "----------\n";
+        NFA_dump_file << nfa;
+    }
+}
+void DFABuilder::log(const DFA &dfa, const std::string &fullname) const {
+    if (dumper.shouldDump("DFA")) {
+        std::ofstream DFA_dump_file;
+        DFA_dump_file.open(dumper.makeDumpPath("DFA"), std::ios::app);
+        if (!DFA_dump_file.is_open()) {
+            throw Error("Couldn't open DFA file");
+        }
+        DFA_dump_file << "---------- " << fullname << "----------\n";
+        DFA_dump_file << dfa;
+    };
 }
 void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const {
     if (dumper.shouldDump("NFA")) {
@@ -570,7 +662,7 @@ void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::str
         DFA_dump_file << dfa;
     };
 }
-DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname) : dfa({}) {
+DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname) : dfa(stdu::vector<DFA::SingleState> {}) {
     NFA nfa(ast, rule, fullname == constants::whitespace);
     nfa.build();
     DFA dfa_tmp(nfa);
@@ -578,7 +670,7 @@ DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const 
     log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
-DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname) : dfa({}) {
+DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname) : dfa(stdu::vector<DFA::SingleState> {}) {
     NFA nfa(ast, rules, fullname == constants::whitespace);
     nfa.build();
     DFA dfa_tmp(nfa);
@@ -586,6 +678,24 @@ DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember>
     log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
+DFABuilder::DFABuilder(const AST::Tree &ast, const utype::unordered_set<stdu::vector<std::string> > &names) : dfa(stdu::vector<DFA::SingleState> {}) {
+    stdu::vector<NFA> nfas;
+    for (const auto &name : names) {
+        NFA n(ast, ast[name].rule_members, name == constants::whitespace);
+        n.build();
+        nfas.push_back(n);
+        log(n, name);
+    }
+    DFA dfa_tmp(nfas);
+    dfa_tmp.buildWMerge();
+    std::string name;
+    for (const auto &n : names) {
+        name += corelib::text::join(n, "::") + ", ";
+    }
+    log(dfa_tmp, name);
+    dfa = std::move(dfa_tmp);
+}
+
 // Print a single state
 std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
     if (s.transitions.empty()) {

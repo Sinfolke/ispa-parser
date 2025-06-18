@@ -1,5 +1,6 @@
 module LexerConverter;
 import Converter.DFA;
+import LexerBuilder;
 import hash;
 import corelib;
 import dstd;
@@ -21,7 +22,7 @@ void LexerConverter::output() {
         out << "\t{ ";
         for (const auto &name : names) {
             auto index = dfa_involved_table.at(name);
-            if (index != std::numeric_limits<std::size_t>::max()) {
+            if (index != LexerBuilder::DFA_NOT_INVOLVED) {
                 out << "&dfa_table_" << index;
             } else {
                 out << "&" << corelib::text::join(name, "_");

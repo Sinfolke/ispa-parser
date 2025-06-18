@@ -42,14 +42,15 @@ public:
     using WalkedState = utype::unordered_set<size_t>;
 private:
     const NFA *nfa;
+    const stdu::vector<NFA> *mergable_nfas = nullptr;
     stdu::vector<MultiState> mstates;
     stdu::vector<SingleState> states;
     auto epsilonClosure(const stdu::vector<size_t>& state_indices) const -> stdu::vector<size_t>;
     auto move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<size_t>;
-    auto findEmptyState() -> size_t;
-    bool leadToEmptyState(size_t current);
-    bool includesWhitespace(const MultiState &state);
-    bool isTerminateState(const MultiState &state);
+    auto findEmptyState() const -> size_t;
+    bool leadToEmptyState(size_t current) const;
+    bool includesWhitespace(const MultiState &state) const;
+    bool isTerminateState(const MultiState &state) const;
     void removeDublicateStates();
     void unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
     void unrollMultiTransitionPaths();
@@ -59,19 +60,30 @@ private:
     void WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable);
     void removeUnreachableStates();
     void removeSelfLoop();
+    static auto mergeTwoDFA(DFA &first, const DFA &second);
+    auto mergeDFAS(stdu::vector<DFA> &dfas) -> DFA;
 public:
     DFA(const NFA &nfa) : nfa(&nfa) {}
+    DFA(const stdu::vector<NFA> &mergable_nfa) : mergable_nfas(&mergable_nfa) {}
     DFA(const stdu::vector<SingleState> &already_build_states) : states(already_build_states) {}
-    void build();
+    void build(bool switchToSingleState = true);
+    void buildWMerge();
+    auto &getStates() { return states; }
+    auto &getMultiStates() { return mstates; }
     auto &getStates() const { return states; }
     auto &getMultiStates() const { return mstates; }
 };
 export class DFABuilder {
     DFA dfa;
+    void log(const NFA &nfa, const stdu::vector<std::string> &fullname) const;
+    void log(const DFA &dfa, const stdu::vector<std::string> &fullname) const;
+    void log(const NFA &nfa, const std::string &fullname) const;
+    void log(const DFA &dfa, const std::string &fullname) const;
     void log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const;
     public:
     DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname);
     DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname);
+    DFABuilder(const AST::Tree& ast, const utype::unordered_set<stdu::vector<std::string>> &names);
     DFA& get() {
         return dfa;
     }

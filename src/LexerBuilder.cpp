@@ -17,16 +17,21 @@ bool LexerBuilder::isDfaCompatible(const stdu::vector<AST::RuleMember> &member) 
 void LexerBuilder::build() {
     fcdt.build();
     std::size_t dfa_count = 0;
-    for (const auto &[name, rule] : ast) {
-        if (corelib::text::isLower(name.back()))
+    for (auto mem : fcdt.get()) {
+        if (mem.empty())
             continue;
-        if (isDfaCompatible(rule.rule_members)) {
-            dfas.push_back(DFABuilder(ast, rule.rule_members, name).get());
-            is_dfa_involved_table[name] = dfa_count++;;
-        } else {
-            LLIR::RuleBuilder builder(ast, name, rule, function_dfas);
-            functions.push_back(builder.getData());
-            is_dfa_involved_table[name] = std::numeric_limits<std::size_t>::max();
+        std::unordered_set<std::unordered_set<std::vector<std::string>>> build;
+        for (const auto &name : mem) {
+            if (isDfaCompatible(ast[name].rule_members)) {
+                is_dfa_involved_table[name] = dfa_count;
+            } else {
+                is_dfa_involved_table[name] = DFA_NOT_INVOLVED;
+                mem.erase(name);
+                LLIR::RuleBuilder builder(ast, name, ast[name], function_dfas);
+                functions.push_back(builder.getData());
+            }
         }
+        dfas.push_back(DFABuilder(ast, mem).get());
+        dfa_count++;
     }
 }
