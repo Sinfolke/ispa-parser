@@ -619,17 +619,17 @@ auto AST::Tree::getCodeForLexer() -> lexer_code {
     TreePass::sortByPriority(*this, options);
     AST::RuleMember resultRule = { .value = options };
     // get lexer code
-    // TODO: add proper handling for lexer
-    LLIR::BuilderData bd(*this, nullptr);
-    LLIR::BuilderDataWrapper wrapper(bd);
-    bd.fullname = {""};
-    LLIR::MemberBuilder code(wrapper, resultRule);
-    code.build();
-    const auto &return_vars = code.getReturnVars();
-    code.pop(); // remove space skip
-    if (return_vars.empty())
-        throw Error("Empty success var\n");
-    return std::make_pair(code.getData(), return_vars[0].var);
+    // // TODO: add proper handling for lexer
+    // LLIR::BuilderData bd(*this, nullptr);
+    // LLIR::BuilderDataWrapper wrapper(bd);
+    // bd.fullname = {""};
+    // LLIR::MemberBuilder code(wrapper, resultRule);
+    // code.build();
+    // const auto &return_vars = code.getReturnVars();
+    // code.pop(); // remove space skip
+    // if (return_vars.empty())
+    //     throw Error("Empty success var\n");
+    return lexer_code {{}, {}};
 }
 
 void AST::Tree::formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set) {

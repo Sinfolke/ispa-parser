@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
         LRIR.printCanonicalCollection("canonical_collection.txt");
         // LRIR.printFirstSet("first_set.txt");
         // LRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast, lexer_data));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::LALR) {
@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
         // LALRIR.printCanonicalCollection("canonical_collection.txt");
         // LALRIR.printFirstSet("first_set.txt");
         // LALRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast, lexer_data));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::ELR) {
@@ -156,7 +156,7 @@ int main(int argc, char** argv) {
         ELRIR.printCanonicalCollection("canonical_collection.txt");
         ELRIR.printNfa("nfa");
         ELRIR.printDfa("dfa");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder>("getLRConverter");
+        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&, LexerBuilder&>("getLRConverter");
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast, lexer_data));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::LL) {
@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
         auto IR = builder.get();
         if (dumper.shouldDump("IR"))
             IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
-        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST::Tree&, LexerBuilder>("getLLConverter");
+        auto converter_fun = converter_dlib.loadfun<LLConverter_base*, LLIR::IR&, AST::Tree&, LexerBuilder&>("getLLConverter");
         auto converter = std::unique_ptr<LLConverter_base>(converter_fun(IR, ast, lexer_data));
         converter->outputIR(output_path);
     } else {

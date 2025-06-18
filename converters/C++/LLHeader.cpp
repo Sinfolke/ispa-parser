@@ -126,17 +126,17 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
             size_t accept;
         };
         template<size_t MAX, typename Key>
-        struct Unit {
+        struct State {
             size_t else_goto;
             size_t else_goto_accept;
             std::array<Transition<Key>, MAX> transitions;
         };
         template<size_t N, size_t MAX>
-        using TokenTable = std::array<Unit<MAX, Tokens>, N>;
+        using TokenTable = std::array<State<MAX, Tokens>, N>;
         template<size_t N, size_t MAX>
-        using CharTable = std::array<Unit<MAX, char>, N>;
+        using CharTable = std::array<State<MAX, char>, N>;
         template<size_t N, size_t MAX>
-        using MultiTable = std::array<Unit<MAX, std::variant<char, Token_res (*) (const char*)>>, N>;
+        using MultiTable = std::array<State<MAX, std::variant<char, Token_res (*) (const char*)>>, N>;
     }
 )";
 }

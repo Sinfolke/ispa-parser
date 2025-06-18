@@ -7,8 +7,8 @@ import hash;
 import constants;
 import std;
 
-auto DFA::epsilonClosure(const std::vector<size_t>& states) const -> std::vector<size_t> {
-    std::set<size_t> closure(states.begin(), states.end());
+auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vector<size_t> {
+    std::set<size_t> Closure(states.begin(), states.end());
     std::queue<size_t> work;
     for (size_t s : states) work.push(s);
 
@@ -19,16 +19,16 @@ auto DFA::epsilonClosure(const std::vector<size_t>& states) const -> std::vector
         const auto &epsilons = nfa->getStates().at(current).epsilon_transitions;
 
         for (size_t target_state : epsilons) {
-            if (!closure.contains(target_state)) {
-                closure.insert(target_state);
+            if (!Closure.contains(target_state)) {
+               Closure.insert(target_state);
                 work.push(target_state);
             }
         }
     }
 
-    return { closure.begin(), closure.end() };
+    return { Closure.begin(), Closure.end() };
 }
-auto DFA::move(const std::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t> {
+auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<size_t> {
     std::set<size_t> result;
 
     for (auto state_id : states) {
@@ -43,11 +43,19 @@ auto DFA::move(const std::vector<size_t> &states, const NFA::TransitionKey &symb
 }
 
 auto DFA::findEmptyState() -> size_t {
-    for (size_t i = 0; i < mstates.size(); ++i) {
-        if (mstates[i].transitions.empty())
-            return i;
+    if (mstates.empty()) {
+        for (size_t i = 0; i < states.size(); ++i) {
+            if (states[i].transitions.empty())
+                return i;
+        }
+        return states.size();
+    } else {
+        for (size_t i = 0; i < mstates.size(); ++i) {
+            if (mstates[i].transitions.empty())
+                return i;
+        }
+        return mstates.size();
     }
-    return mstates.size();
 }
 bool DFA::leadToEmptyState(size_t current) {
     if (!nfa->getStates().at(current).transitions.empty())
@@ -89,7 +97,7 @@ bool DFA::isTerminateState(const MultiState &state) {
 
 void DFA::removeDublicateStates() {
     std::unordered_map<size_t, size_t> remove_states;  // duplicate idx -> original idx
-    std::unordered_map<size_t, std::vector<size_t>> hash_buckets;
+    std::unordered_map<size_t, stdu::vector<size_t>> hash_buckets;
 
     uhash hasher;
 
@@ -266,7 +274,7 @@ void DFA::switchToSingleState() {
     mstates.clear();
 }
 void DFA::accumulateTerminalStates(size_t i, std::unordered_set<size_t> &terminals, std::unordered_set<size_t> &visited) {
-    std::vector<size_t> path;
+    stdu::vector<size_t> path;
     const auto &state = mstates.at(i);
     if (isTerminateState(state)) {
         // first value transition
@@ -284,6 +292,9 @@ void DFA::accumulateTerminalStates(size_t i, std::unordered_set<size_t> &termina
         }
     }
     if (state.else_goto != 0 && visited.contains(state.else_goto)) {
+        if (visited.contains(state.else_goto))
+            return;
+        visited.insert(state.else_goto);
         accumulateTerminalStates(state.else_goto, terminals, visited);
     }
 
@@ -312,7 +323,7 @@ void DFA::terminateEarly() {
     }
 }
 void DFA::WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable) {
-    std::vector<size_t> path;
+    stdu::vector<size_t> path;
     const auto &state = states.at(i);
     for (const auto &t : state.transitions) {
         const auto &id = t.second.next;
@@ -353,9 +364,26 @@ void DFA::removeUnreachableStates() {
     }
     states = std::move(new_states);
 }
+void DFA::removeSelfLoop() {
+    size_t empty_state = findEmptyState();
+    if (empty_state == states.size()) {
+        states.emplace_back(); // create it once
+    }
+
+    for (size_t i = 0; i < states.size(); ++i) {
+        auto &state = states[i];
+        if (state.transitions.empty())
+            continue;
+        if (std::all_of(state.transitions.begin(), state.transitions.end(), [&](auto &next) {
+            return next.second.next == i;
+        })) {
+            state.else_goto = empty_state;
+        }
+    }
+}
 
 void DFA::build() {
-    using StateSet = std::vector<size_t>;
+    using StateSet = stdu::vector<size_t>;
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
 
@@ -364,9 +392,9 @@ void DFA::build() {
     std::unordered_map<size_t, StateSet> closure_index_cache;
     std::queue<StateSet> work;
 
-    // 1. Start state closure
+    // 1. Start state stdu::vector<size_t>
     StateSet start_set = {0}; // Assuming 0 is NFA start state
-    StateSet start_closure = epsilonClosure(start_set);
+    auto start_closure = epsilonClosure(start_set);
 
     size_t dfa_start_index = 0;
     dfa_state_map[start_closure] = dfa_start_index;
@@ -384,7 +412,6 @@ void DFA::build() {
         for (size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                logger.log("Registering input symbol {}: id: {}, accept_index: {}", symbol, id, nfa->getAcceptMap().at(id));
                 input_symbols[symbol].emplace_back(TransitionValue {id, nfa->getAcceptMap().at(id)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
@@ -421,7 +448,7 @@ void DFA::build() {
             const TransitionValue *value;
             size_t any;
         };
-        std::vector<Conflict> conflict_closures;
+        stdu::vector<Conflict> conflict_closures;
         for (const auto &conf : conflicts) {
             for (const auto &next_state : *conf) {
                 if (!closure_index_cache.contains(next_state.first.next)) {
@@ -449,11 +476,11 @@ void DFA::build() {
                 closure_set = epsilonClosure(move_set);
                 closure_cache.emplace(std::make_pair(current, symbol), closure_set);
             }
-            logger.log("closure: {}", closure_set);
+            logger.log("stdu::vector<size_t>: ({}, {})", closure_set, closure_set);
             if (closure_set.empty()) continue;
 
-            // Separate conflicting closure subsets
-            std::vector<const Conflict*> process_conflict_list;
+            // Separate conflicting stdu::vector<size_t> subsets
+            stdu::vector<const Conflict*> process_conflict_list;
             for (const auto &closure : conflict_closures) {
                 const StateSet &conf_set = *closure.closure;
                 bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](size_t s) {
@@ -470,7 +497,7 @@ void DFA::build() {
                 }
             }
 
-            // Add main (non-conflict) closure if any
+            // Add main (non-conflict) stdu::vector<size_t> if any
             if (!closure_set.empty()) {
                 if (!dfa_state_map.count(closure_set)) {
                     size_t new_index = mstates.size();
@@ -514,7 +541,6 @@ void DFA::build() {
                 mstates[current_dfa_index].else_goto_accept = empty_state_accept;
             }
         }
-
     }
     // various optimizations
     removeDublicateStates();
@@ -522,6 +548,7 @@ void DFA::build() {
     unrollMultiTransitionPaths();
     switchToSingleState();
     removeUnreachableStates();
+    removeSelfLoop();
 }
 void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::string> &fullname) const {
     if (dumper.shouldDump("NFA")) {
@@ -544,7 +571,7 @@ void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::str
     };
 }
 DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname) : dfa({}) {
-    NFA nfa(ast, rule);
+    NFA nfa(ast, rule, fullname == constants::whitespace);
     nfa.build();
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
@@ -552,7 +579,7 @@ DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const 
     dfa = std::move(dfa_tmp);
 }
 DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname) : dfa({}) {
-    NFA nfa(ast, rules);
+    NFA nfa(ast, rules, fullname == constants::whitespace);
     nfa.build();
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
@@ -566,7 +593,10 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
     } else {
         for (const auto& [key, target] : s.transitions) {
             std::visit([&os](auto &key) {
-                os << "\t" << key << " -> State ";
+                if constexpr (std::is_same_v<std::decay_t<decltype(key)>, char>)
+                    os << "\t'" << corelib::text::getEscapedAsStr(key, false) << "' -> State ";
+                else
+                    os << "\t" << key << " -> State ";
             }, key);
             if (target.size() != 1) {
                os << "{ ";
@@ -596,7 +626,11 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
     } else {
         for (const auto& [key, target] : s.transitions) {
             std::visit([&os](auto &key) {
-                os << "\t" << key << " -> State ";
+                if constexpr (std::is_same_v<std::decay_t<decltype(key)>, char>)
+                    os << "\t" << corelib::text::getEscapedAsStr(key, false) << " -> State ";
+                else
+                    os << "\t" << key << " -> State ";
+
             }, key);
             os << target.next << (target.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.accept_index) + " } " : std::string(""));
             os << "\n";

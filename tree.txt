@@ -715,6 +715,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  String ($)
   Data: [RegularDataBlock: CllExpr]
 }]name<[__WHITESPACE]> : [Rule {
+   NoSpace
    Cseq([ ], Escaped:[\t\n\r\v\f])+;
   Data: EmptyDataBlock
 }]name<[AUTO_18]> : [Rule {

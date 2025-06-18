@@ -16,6 +16,7 @@ export namespace ISPA_STD {
     using ISPA_STD::Lexer_No_Tokens_exception;
     using ISPA_STD::Lexer_No_Input_exception;
     using ISPA_STD::Parser_No_Input_exception;
+    using ISPA_STD::AdvancedDFA_exception;
     using ISPA_STD::node_exception;
     using ISPA_STD::bad_get;
     using ISPA_STD::Node;
@@ -24,6 +25,8 @@ export namespace ISPA_STD {
     using ISPA_STD::Seq;
     using ISPA_STD::error;
     using ISPA_STD::ErrorController;
+    using ISPA_STD::DFA;
+    using ISPA_STD::AdvancedDFA;
     using ISPA_STD::Lexer_base;
     using ISPA_STD::LLParser_base;
     using ISPA_STD::LRParser_base;

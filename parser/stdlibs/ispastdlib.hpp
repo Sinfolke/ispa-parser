@@ -92,6 +92,17 @@ class Parser_No_Input_exception : public std::exception {
         return ISC_STD_LIBMARK "Parser_No_Input_exception: the parser has no input provided but the operation required it";
     }
 };
+class AdvancedDFA_exception : public std::exception {
+    std::string message;
+public:
+    AdvancedDFA_exception(const char* message) {
+        this->message = "ispastdlib Internal Error in Advanced DFA: ";
+        this->message += message;
+    }
+    [[nodiscard]] auto what() const noexcept -> const char* override {
+        return message.c_str();
+    }
+};
 class node_exception : public std::exception {
     private:
         std::string mes;
@@ -272,8 +283,8 @@ struct error {
     std::string message;
 };
 class DFA {
-    template <typename Transitions, typename IT, typename Transition, typename Tokens>
-    auto find_key(const Transitions &transitions, IT &pos) -> Transition {
+    template <typename Transition, typename Tokens, typename Transitions, typename IT>
+    auto find_key(const Transitions &transitions, IT &pos) -> Transition& {
         for (const auto &t : transitions) {
             if constexpr (std::is_same_v<decltype(t.symbol), char>) {
                 if (t.symbol == *pos) {
@@ -289,7 +300,7 @@ class DFA {
         return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
     };
 protected:
-    template<typename Table, typename IT, typename PanicModeFunc, typename Transition, typename Tokens>
+    template<typename Transition, typename Tokens, typename Table, typename IT, typename PanicModeFunc>
     auto decide(const Table &table, IT &pos, PanicModeFunc panic_mode) -> size_t {
         size_t state = 0;
         size_t accept = std::numeric_limits<size_t>::max();
@@ -307,31 +318,47 @@ protected:
                     accept = table[state].else_goto_accept;
                 }
             } else {
-                // TODO: Throw error here
-                panic_mode(new_state.symbol);
+                if (panic_mode != nullptr) {
+                    // TODO: Throw error here
+                    panic_mode(new_state.symbol);
+                }
             }
         } while (!table[state].transitions.empty());
         return accept;
     }
 };
 template<typename Tokens>
-class AdvancedDFA : DFA {
-    template <typename Transitions, typename Transition>
-    auto find_key(const Transitions &transitions, const char* &pos) -> Transition {
+class AdvancedDFA {
+    template <typename PanicModeFunc, typename Transition, typename DFATokenTable, typename DFACharTable, typename DFAMultiTable, typename Transitions>
+    auto find_key(const Transitions &transitions, const char* &pos) -> Transition& {
         using Token_res = match_result<Tokens>;
         using func = Token_res(*)(const char*);
-        std::vector<Transition*> tokens;
+        std::size_t current_tokens_index = 0;
+        Transition* tokens[transitions.size()];
         for (const auto &t : transitions) {
+            DFA dfa;
             if (std::holds_alternative<char>(t.symbol)) {
                 if (t.symbol == *pos) {
                     pos++;
                     return t;
                 }
+            } else if (std::holds_alternative<func>()) {
+                tokens[current_tokens_index++] = &t;
+            } else if (std::holds_alternative<DFATokenTable>(t.symbol)) {
+                if (dfa.decide<Transition, Tokens, DFATokenTable, const char*, PanicModeFunc>(std::get<DFATokenTable>(t.symbol), pos, nullptr))
+                    return t;
+            } else if (std::holds_alternative<DFACharTable>(t.symbol)) {
+                if (dfa.decide<Transition, Tokens, DFACharTable, const char*, PanicModeFunc>(std::get<DFACharTable>(t.symbol), pos, nullptr))
+                    return t;
+            } else if (std::holds_alternative<DFAMultiTable>(t.symbol)) {
+                if (decide(std::get<DFAMultiTable>(t.symbol), pos, nullptr))
+                    return t;
             } else {
-                tokens.push_back(&t);
+                throw AdvancedDFA_exception("Undefined transition symbol in AdvancedDFA");
             }
         }
-        for (const auto t : tokens) {
+        for (std::size_t i = 0; i < current_tokens_index; i++) {
+            const auto &t = tokens[i];
             auto fun = std::get<func>(t.first);
             auto result = fun(pos);
             if (result.status) {
@@ -342,12 +369,12 @@ class AdvancedDFA : DFA {
         return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
     };
 protected:
-    template<typename Table, typename PanicModeFunc, typename Transition>
+    template<typename DFATokenTable, typename DFACharTable, typename DFAMultiTable, typename Table, typename PanicModeFunc, typename Transition>
     auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> size_t {
         size_t state = 0;
         size_t accept = std::numeric_limits<size_t>::max();
         do {
-            auto new_state = find_key<Table, Transition, Tokens>(table[state].transitions, pos);
+            auto new_state = find_key<Table, Transition, DFATokenTable, DFACharTable, DFAMultiTable>(table[state].transitions, pos);
             if (new_state.next != std::numeric_limits<size_t>::max()) {
                 state = new_state.next;
                 if (new_state.accept != std::numeric_limits<size_t>::max()) {
@@ -359,8 +386,10 @@ protected:
                     accept = table[state].else_goto_accept;
                 }
             } else {
-                // TODO: Throw error here
-                panic_mode(new_state.symbol);
+                if (panic_mode != nullptr) {
+                    // TODO: Throw error here
+                    panic_mode(new_state.symbol);
+                }
             }
         } while (!table[state].transitions.empty());
         return accept;
@@ -368,7 +397,7 @@ protected:
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
-class Lexer_base {
+class Lexer_base : AdvancedDFA<TOKEN_T> {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
@@ -429,6 +458,31 @@ protected:
     void reportError(const char* pos, std::string mes) {
         if (error_controller.count(pos - _in) == 0)
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
+    }
+    void panic_mode() {}
+    template<typename CharTable, typename TokenTable, typename MultiTable, typename Transition, typename FCDT>
+    void fcdt_lookup(const FCDT &fcdt, const char* &pos) {
+        while (*pos != '\0') {
+            const auto &options = fcdt[*pos];
+            if (options.empty()) {
+                panic_mode();
+            }
+            for (const auto &option : options) {
+                const char* copy = pos;
+                if (std::holds_alternative<CharTable>(option)) {
+                    if (DFA::decide<Transition, TOKEN_T, CharTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<CharTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                        break;
+                } else if (std::holds_alternative<TokenTable>(option)) {
+                    if (DFA::decide<Transition, TOKEN_T, TokenTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<TokenTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                        break;
+                } else if (std::holds_alternative<MultiTable>(option)) {
+                    if (AdvancedDFA<TOKEN_T>::template decide<Transition, TOKEN_T, MultiTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<TokenTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                        break;
+                }
+                pos = copy;
+            }
+        }
+
     }
 public:
     /**

@@ -9,7 +9,7 @@ import dstd;
 import std;
 export class LexerBuilder {
 public:
-    using isDfaInvolvedTable = utype::unordered_map<stdu::vector<std::string>, bool>;
+    using isDfaInvolvedTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
 private:
     AST::Tree &ast;
     stdu::vector<DFA> dfas;

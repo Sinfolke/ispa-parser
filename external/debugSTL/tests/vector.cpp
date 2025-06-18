@@ -1,36 +1,36 @@
-import dstd.stdu::vector;
+import dstd.std::vector;
 import std;
 import std.compat;
 #define assert(cond) do { if (!(cond)) throw std::runtime_error("Assertion failed"); } while(0)
 int main() {
-    using dstd::stdu::vector;
+    using dstd::std::vector;
     // Test default constructor
-    stdu::vector<int> v1;
+    std::vector<int> v1;
     assert(v1.size() == 0);
 
     // Test size constructor
-    stdu::vector<int> v2(5);
+    std::vector<int> v2(5);
     assert(v2.size() == 5);
 
     // Test size + value constructor
-    stdu::vector<int> v3(4, 42);
+    std::vector<int> v3(4, 42);
     assert(v3.size() == 4);
     for (size_t i = 0; i < v3.size(); ++i)
         assert(v3[i] == 42);
 
     // Test initializer list constructor
-    stdu::vector<int> v4{1, 2, 3, 4};
+    std::vector<int> v4{1, 2, 3, 4};
     assert(v4.size() == 4);
     assert(v4[0] == 1 && v4[3] == 4);
 
     // Test copy constructor
-    stdu::vector<int> v5 = v4;
+    std::vector<int> v5 = v4;
     assert(v5.size() == v4.size());
     for (size_t i = 0; i < v5.size(); ++i)
         assert(v5[i] == v4[i]);
 
     // Test move constructor
-    stdu::vector<int> v6 = std::move(v5);
+    std::vector<int> v6 = std::move(v5);
     assert(v6.size() == 4);
 
     // Test push_back
@@ -61,13 +61,13 @@ int main() {
     assert(v1.size() == 0);
 
     // Test copy assignment
-    stdu::vector<int> v7;
+    std::vector<int> v7;
     v7 = v4;
     assert(v7.size() == 4);
     assert(v7[2] == 3);
 
     // Test move assignment
-    stdu::vector<int> v8;
+    std::vector<int> v8;
     v8 = std::move(v7);
     assert(v8.size() == 4);
 
@@ -77,21 +77,21 @@ int main() {
     assert(v8[0] == 7 && v8[2] == 9);
 
     // --- Self-assignment ---
-    stdu::vector<int> v9{1, 2, 3};
+    std::vector<int> v9{1, 2, 3};
     v9 = v9;
     assert(v9.size() == 3);
     assert(v9[0] == 1 && v9[2] == 3);
 
     // --- Move state after move ---
-    stdu::vector<int> v10{5, 6, 7};
-    stdu::vector<int> v11 = std::move(v10);
+    std::vector<int> v10{5, 6, 7};
+    std::vector<int> v11 = std::move(v10);
     assert(v11.size() == 3);
     assert(v11[0] == 5 && v11[2] == 7);
-    // Moved-from stdu::vector is in valid state (likely empty)
+    // Moved-from std::vector is in valid state (likely empty)
     assert(v10.size() == 0 || true);
 
     // --- Reserve / Capacity (if implemented) ---
-    stdu::vector<int> v14;
+    std::vector<int> v14;
     v14.reserve(100);
     size_t cap = v14.capacity();
     assert(cap >= 100);
@@ -100,28 +100,28 @@ int main() {
     assert(v14.capacity() == cap); // Capacity unchanged after push_back
 
     // --- Iterators / range-for (if implemented) ---
-    stdu::vector<int> v15{1, 2, 3, 4};
+    std::vector<int> v15{1, 2, 3, 4};
     int sum = 0;
     for (int x : v15)
         sum += x;
     assert(sum == 10);
 
     // --- Const correctness ---
-    const stdu::vector<int> v16{9, 8, 7};
+    const std::vector<int> v16{9, 8, 7};
     assert(v16.size() == 3);
     assert(v16[0] == 9);
 
     // --- Complex element types ---
 
     // a) std::string
-    stdu::vector<std::string> v17{"hello", "world"};
+    std::vector<std::string> v17{"hello", "world"};
     assert(v17[0] == "hello" && v17[1] == "world");
 
     // b) std::unique_ptr<int>
-    stdu::vector<std::unique_ptr<int>> v18;
+    std::vector<std::unique_ptr<int>> v18;
     v18.push_back(std::make_unique<int>(10));
     v18.emplace_back(new int(20));
     assert(*v18[0] == 10 && *v18[1] == 20);
 
-    std::cout << "All stdu::vector tests passed!\n";
+    std::cout << "All std::vector tests passed!\n";
 }

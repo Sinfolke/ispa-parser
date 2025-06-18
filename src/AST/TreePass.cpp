@@ -5,6 +5,7 @@ import AST.Tree;
 import AST.API;
 import cpuf.printf;
 import logging;
+import constants;
 import std;
 void AST::TreePass::removeEmptyRule(AST::Tree &ast) {
     auto &treeMap = ast.getTreeMap();
@@ -280,12 +281,16 @@ void AST::TreePass::sortByPriority(AST::Tree &ast) {
     }
 }
 void AST::TreePass::addSpaceToken(AST::Tree &ast) {
+    // either was already added, or a user specified a custom one
+    // do not add in this case
+    if (ast.getTreeMap().contains(constants::whitespace))
+        return;
     AST::Rule spaceTokenRule;
     AST::RuleMemberCsequence csequence;
     csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
     csequence.characters = {' '};
-    spaceTokenRule.rule_members = { AST::RuleMember { .quantifier = '+', .value = csequence } };
-    ast.getTreeMap()[{"__WHITESPACE"}] = spaceTokenRule;
+    spaceTokenRule.rule_members = { AST::RuleMember { .value = AST::RuleMemberNospace {} }, AST::RuleMember { .quantifier = '+', .value = csequence } };
+    ast.getTreeMap()[constants::whitespace] = spaceTokenRule;
 }
 void AST::TreePass::removeEmptyRule() {
     removeEmptyRule(*ast);

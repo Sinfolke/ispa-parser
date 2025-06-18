@@ -44,8 +44,8 @@ private:
     const NFA *nfa;
     stdu::vector<MultiState> mstates;
     stdu::vector<SingleState> states;
-    auto epsilonClosure(const std::vector<size_t>& state_indices) const -> std::vector<size_t>;
-    auto move(const std::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> std::vector<size_t>;
+    auto epsilonClosure(const stdu::vector<size_t>& state_indices) const -> stdu::vector<size_t>;
+    auto move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<size_t>;
     auto findEmptyState() -> size_t;
     bool leadToEmptyState(size_t current);
     bool includesWhitespace(const MultiState &state);
@@ -58,6 +58,7 @@ private:
     void terminateEarly();
     void WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable);
     void removeUnreachableStates();
+    void removeSelfLoop();
 public:
     DFA(const NFA &nfa) : nfa(&nfa) {}
     DFA(const stdu::vector<SingleState> &already_build_states) : states(already_build_states) {}
