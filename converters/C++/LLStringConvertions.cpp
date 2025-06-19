@@ -53,12 +53,12 @@ std::string LLStringConvertions::convert_var_type(const LLIR::var_types &type, c
     static const std::unordered_map<LLIR::var_types, std::string> typesMap = {
         {LLIR::var_types::UNDEFINED, "UNDEF"}, {LLIR::var_types::BOOLEAN, "bool_t"},
         {LLIR::var_types::STRING, "str_t"}, {LLIR::var_types::NUMBER, "num_t"},
-        {LLIR::var_types::FUNCTION, "function"},
+        {LLIR::var_types::INT, "int"}, {LLIR::var_types::FUNCTION, "function"},
         {LLIR::var_types::ANY, "any_t"}, {LLIR::var_types::Rule, "Rule"}, {LLIR::var_types::Token, "Token"},
         {LLIR::var_types::Rule_result, "Rule_res"}, {LLIR::var_types::Token_result, "Token_res"},
         {LLIR::var_types::CHAR, "char"}
     };
-    if (type < LLIR::var_types::CHAR)
+    if (type != LLIR::var_types::INT && type != LLIR::var_types::CHAR)
         return "::" + namespace_name + "::" + typesMap.at(type);
     else
         return typesMap.at(type);
@@ -152,7 +152,7 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             const auto &dt = std::any_cast<const LLIR::function_call&>(data);
             if (dt.name == LLIR::internal_functions::dfa_decide)
             {
-                return "DFA_DECIDE(" + current_pos_counter.top() + ")";
+                return std::string("DFA_DECIDE(&table_") + std::to_string(std::any_cast<std::size_t>(dt.params[0][0].value)) + ", " + current_pos_counter.top() + ")";
             }
     }
     switch (value) {

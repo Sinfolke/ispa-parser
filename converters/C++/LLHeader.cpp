@@ -10,6 +10,7 @@ void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <unordered_map>\n";
     out << "#include <iterator>\n";
     out << "#include <array>\n";
+    out << "#include <memory>\n";
     out << "#include <ispastdlib.hpp>\n";
 }
 void LLHeader::createLibrary(std::ostringstream& out, std::string namespace_name) const {
@@ -115,88 +116,67 @@ void LLHeader::createToStringFunction(const stdu::vector<stdu::vector<std::strin
 }
 void LLHeader::createDFATypes(std::ostringstream &out) const {
     out << R"(
-    namespace DFA {
-        constexpr size_t null_state = std::numeric_limits<size_t>::max();
-        template<typename Key>
-        struct Transition {
-            Key symbol;
-            size_t next;
-            size_t accept;
-        };
-        template<size_t MAX, typename Key>
-        struct State {
-            size_t else_goto;
-            size_t else_goto_accept;
-            std::array<Transition<Key>, MAX> transitions;
-        };
-        template<size_t N, size_t MAX>
-        using TokenTable = std::array<State<MAX, Tokens>, N>;
-        template<size_t N, size_t MAX>
-        using CharTable = std::array<State<MAX, char>, N>;
-        template<size_t N, size_t MAX>
-        using MultiTable = std::array<State<MAX, std::variant<char, Token_res (*) (const char*)>>, N>;
-    }
+namespace DFA {
+    constexpr size_t null_state = std::numeric_limits<size_t>::max();
+
+    template<typename Key>
+    struct Transition {
+        Key symbol;
+        size_t next;
+        size_t accept;
+    };
+
+    template<size_t MAX, typename Key>
+    struct State {
+        std::array<Transition<Key>, MAX> transitions;
+    };
+    struct SpanMultiTable;
+
+    template<typename Key>
+    struct SpanState {
+        size_t else_goto;
+        size_t else_goto_accept;
+        ISPA_STD::Span<Transition<Key>> transitions;
+    };
+
+    using MultiKey = std::variant<
+        char,
+        Token_res (*)(const char*),
+        ISPA_STD::Span<SpanState<Tokens>>,     // SpanTokenTable
+        ISPA_STD::Span<SpanState<char>>,       // SpanCharTable
+        std::unique_ptr<SpanMultiTable>        // Recursive wrapped
+    >;
+
+    using SpanTokenTable = ISPA_STD::Span<SpanState<Tokens>>;
+    using SpanCharTable = ISPA_STD::Span<SpanState<char>>;
+    using SpanMultiState = SpanState<MultiKey>;
+
+    struct SpanMultiTable {
+        ISPA_STD::Span<SpanMultiState> states;
+    };
+
+    template<size_t N, size_t MAX>
+    using TokenTable = std::array<State<MAX, Tokens>, N>;
+
+    template<size_t N, size_t MAX>
+    using CharTable = std::array<State<MAX, char>, N>;
+
+    // ⚠️ Avoid direct recursion in this table!
+    template<size_t N, size_t MAX>
+    using MultiTable = std::array<State<MAX, MultiKey>, N>;
+}
 )";
 }
 void LLHeader::createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const {
     size_t count = 0;
-    for (const auto dfa : dfas) {
-        auto states_size = dfa.getStates().size();
-        size_t transitions_size = 0;
-        enum {CHAR, TOKEN, MULTI, NONE} type = NONE;;
-        for (const auto &state : dfa.getStates()) {
-            transitions_size = std::max(transitions_size, state.transitions.size());
-            for (const auto &transition : state.transitions) {
-                if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
-                    if (type == CHAR) {
-                        type = MULTI;
-                    } else if (type != MULTI) {
-                        type = TOKEN;
-                    }
-                } else {
-                    if (type == TOKEN) {
-                        type = MULTI;
-                    } else if (type != MULTI) {
-                        type = CHAR;
-                    }
-                }
-            }
-        }
-        const char* type_str;
-        switch (type) {
-            case CHAR:
-                type_str = "CharTable";
-                break;
-            case TOKEN:
-                type_str = "TokenTable";
-                break;
-            case MULTI:
-                type_str = "MultiTable";
-                break;
-            default:
-                throw Error("Undefined DFA table type");
-        }
-        out << "\n\t\t\tconst " << "DFA::" << type_str << '<' << states_size << ", " << transitions_size << "> table_" << count++ << ';';
+    for (const auto &dfa : dfas) {
+        out << "\n\t\t\tconst " << "DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> table_" << count++ << ';';
     }
     out << '\n';
 }
 
 
-void LLHeader::addStandardFunctionsLexer(std::ostringstream &out) const {
-    out << R"(
-        /**
-         * @param os the output stream
-         * Print the tokens into an output stream
-         */
-        void printTokens(std::ostream& os);
-        /**
-         * @param os the output stream
-         * @param token the token to print
-         * Prints a single token into an output stream
-         */
-        static void printToken(std::ostream& os, const Token& token);)";
-    out << "\n";
-}
+
 void LLHeader::addStandardFunctionsParser(std::ostringstream &out) const {
     out << R"(
             /**
@@ -241,18 +221,6 @@ void LLHeader::createTypesNamespace(std::ostringstream &out, const LLIR::DataBlo
     write_data_block(out, data_block_tokens); 
     write_data_block(out, data_block_rules); 
     out << "\t}\n";
-}
-void LLHeader::create_lexer_header(std::ostringstream &out, const stdu::vector<stdu::vector<std::string>> &tokens) const {
-    out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
-        << "\t\tpublic:\n"
-        << "\t\t\tToken makeToken(const char*& pos);\n";
-    addStandardFunctionsLexer(out);
-    addConstructorsLexer(out);
-    out << "\t\tprivate:\n";
-    for (auto name : tokens) {
-        out << "\t\t\tToken_res " << corelib::text::join(name, "_") << "(const char*);\n";
-    }
-    out << "\t};\n";
 }
 void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
     out << "\t\t"<< R"(Lexer(const std::string& in) : Lexer_base(in) {}

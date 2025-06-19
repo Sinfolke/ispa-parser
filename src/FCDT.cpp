@@ -76,7 +76,6 @@ void FCDT::build() {
             table[c].emplace(ast, rule.first);
         }
     }
-    cpuf::printf("fcdt table size: {}", table.size());
 }
 
 

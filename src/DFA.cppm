@@ -9,6 +9,9 @@ import std;
 import std.compat;
 export class DFA {
 public:
+    enum class DfaType {
+        Char, Token, Multi, NONE
+    };
     struct TransitionValue {
         size_t next;
         size_t accept_index = NFA::NO_ACCEPT;
@@ -72,6 +75,9 @@ public:
     auto &getMultiStates() { return mstates; }
     auto &getStates() const { return states; }
     auto &getMultiStates() const { return mstates; }
+    auto getType() const -> DfaType;
+    auto getTypeStr() const -> std::string;
+    auto getMaxTransitionCount() const -> size_t;
 };
 
 // Print a single state

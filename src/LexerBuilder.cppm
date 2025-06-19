@@ -21,6 +21,9 @@ private:
     FCDT fcdt;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
+    std::vector<std::size_t> token_type;
+    std::size_t highest_states_count = 0;
+    std::size_t highest_transition_count = 0;
     bool isDfaCompatible(const stdu::vector<AST::RuleMember> &member);
 public:
     LexerBuilder(AST::Tree &ast) : ast(ast), fcdt(ast) {};
@@ -29,10 +32,12 @@ public:
     auto& getFCDT() { return fcdt; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
-    auto& getFunctionsIR() const { return function_ir; }
+    auto& getFunctionsIR() { return function_ir; }
     auto& getDFAS() const { return dfas; }
     auto& getFCDT() const { return fcdt; }
     auto& getDfaCompatibleTable() const { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() const { return dispatch_names_involve; }
-    auto& getFunctionsIR() { return function_ir; }
+    auto& getFunctionsIR() const  { return function_ir; }
+    auto& getMaxStatesCount() const{ return highest_states_count; }
+    auto& getMaxTransitionCount() const { return highest_transition_count; }
 };

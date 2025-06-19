@@ -65,6 +65,7 @@ auto LLIR::IR::operator[](size_t index) const -> const Data& {
 std::string LLIR::IR::convert_var_type(LLIR::var_types type) {
     static const std::unordered_map<LLIR::var_types, std::string> typesMap = {
         {LLIR::var_types::UNDEFINED, "UNDEF"}, {LLIR::var_types::BOOLEAN, "bool"}, {LLIR::var_types::STRING, "str"}, {LLIR::var_types::NUMBER, "num"},
+        {LLIR::var_types::INT, "int"},
         {LLIR::var_types::ARRAY, "array"}, {LLIR::var_types::OBJECT, "object"}, {LLIR::var_types::FUNCTION, "function"},
         {LLIR::var_types::ANY, "any"}, {LLIR::var_types::Rule, "rule"}, {LLIR::var_types::Token, "token"},
         {LLIR::var_types::Rule_result, "Rule_result"}, {LLIR::var_types::Token_result, "Token_result"},

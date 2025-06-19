@@ -10,6 +10,23 @@ import AST.Tree;
 import dstd;
 import std;
 
+void LexerConverter::addStandardFunctionsLexer(std::ostringstream &out) const {
+    out << R"(
+        /**
+         * @param os the output stream
+         * Print the tokens into an output stream
+         */
+        void printTokens(std::ostream& os);
+        /**
+         * @param os the output stream
+         * @param token the token to print
+         * Prints a single token into an output stream
+         */
+        static void printToken(std::ostream& os, const Token& token);)";
+    out << "\n";
+}
+
+
 void LexerConverter::output() {
     // 1. print DFAS
     DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_table");
@@ -53,8 +70,22 @@ void LexerConverter::output() {
     out << "}\n";
     // print tokens that are callable functions
     LLConverter converter(lexer_data.getFunctionsIR(), ast, namespace_name);
-    converter.printIR(out, namespace_name);
+    converter.writeRules(out);
 }
 void LexerConverter::outputHeader() {
-
+    h_out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
+        << "\t\tpublic:\n"
+        << "\t\t\tusing ISPA_STD::Lexer_base<Tokens>::Lexer_base;";
+    addStandardFunctionsLexer(h_out);
+    h_out << "\t\tprivate:\n"
+    << "\t\t\tToken makeToken(const char*& pos);\n";
+    for (std::size_t i = 0; i < lexer_data.getDFAS().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().at(i);
+        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
+    }
+    for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().at(i);
+        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
+    }
+    h_out << "\t};\n";
 }

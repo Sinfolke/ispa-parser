@@ -22,7 +22,7 @@ export namespace LLIR {
         VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL, DFA
     };
     enum class var_types {
-        UNDEFINED, STRING, BOOLEAN, NUMBER, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result, CHAR
+        UNDEFINED, STRING, BOOLEAN, NUMBER, INT, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result, CHAR
     };
     enum class var_assign_values {
         NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VAR_REFER, ACCESSOR,

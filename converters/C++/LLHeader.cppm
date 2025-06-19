@@ -27,13 +27,11 @@ export class LLHeader : public LLStringConvertions {
     void createDFATypes(std::ostringstream &out) const;
     void createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const;
     void createToStringFunction(const stdu::vector<stdu::vector<std::string>> &tokens, const stdu::vector<stdu::vector<std::string>> &rules, std::ostringstream &out) const;
-    void addStandardFunctionsLexer(std::ostringstream &out) const;
     void addStandardFunctionsParser(std::ostringstream &out) const;
     void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const;
     void convert_single_assignment_data(std::ostringstream &out, LLIR::var_type type, std::string name) const;
     void write_data_block(std::ostringstream &out, const LLIR::DataBlockList &dtb) const;
     void createTypesNamespace(std::ostringstream &out, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const;
-    void create_lexer_header(std::ostringstream &out, const stdu::vector<stdu::vector<std::string>> &tokens) const;
     void addConstructorsLexer(std::ostringstream &out) const;
     void close_parser_header(std::ostringstream &out) const;
     void create_parser_header(std::ostringstream &out, const stdu::vector<DFA> &dfas) const;

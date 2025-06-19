@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
         auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
         converter->output(output_path);
     } else if (args.algorithm == Args::Algorithm::LL) {
-        LLIR::Builder builder(ast);
+        LLIR::Builder builder(ast, false);
         auto IR = builder.get();
         if (dumper.shouldDump("IR"))
             IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));

@@ -41,7 +41,10 @@ void LexerBuilder::build() {
             }
         }
         dispatch_names_involve.emplace(mem, involved_symbols);
-        dfas.push_back(DFABuilder(ast, mem).get());
+        DFABuilder builder(ast, mem);
+        dfas.push_back(builder.get());
+        highest_states_count = std::max(highest_states_count, builder.get().getStates().size());
+        highest_transition_count = std::max(highest_transition_count, builder.get().getMaxTransitionCount());
         dfa_count++;
     }
     function_ir = std::move(LLIR::IR(functions, function_dfas));

@@ -1,6 +1,7 @@
 module Converter.DFA;
 import DFA;
 import corelib;
+import logging;
 import dstd;
 import std;
 import std.compat;
@@ -9,7 +10,6 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
     auto number_or_null = [this](size_t index) {
         return index == std::numeric_limits<size_t>::max() ? std::string("::" + namespace_name + "::DFA::null_state") : std::to_string(index);
     };
-    bool token_type = true;
     std::ostringstream table_out;
     size_t max_states_count = dfa.getStates().size();
     size_t max_transition_count = 0;
@@ -22,15 +22,15 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
             const auto &transition = *it;
             table_out << "{";
             if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
-                token_type = true;
                 const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
                 if (dfa_compatible_table && dfa_compatible_table->contains(symbol)) {
-                    table_out << "&dfa_table_" << std::to_string(dfa_compatible_table->at(symbol)) << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
+                    const auto &dfa_index = dfa_compatible_table->at(symbol);
+                    const std::string dfa_table_name = "dfa_table_" + std::to_string(dfa_index);
+                    table_out << "DFA::Span" << dfas[dfa_index].getTypeStr() << "(" << dfa_table_name << ".data()), " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
                 } else {
                     table_out << "Tokens::" << corelib::text::join(symbol, "_") << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
                 }
             } else {
-                token_type = false;
                 const auto &symbol = std::get<char>(transition.first);
                 table_out << "'" << corelib::text::getEscapedAsStr(symbol, false) << "'" << ", " << transition.second.next << ", " << number_or_null(transition.second.accept_index);
             }
@@ -41,7 +41,7 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
         }
         table_out << "} },\n";
     }
-    out << "const " << namespace_name << "::" << (token_type ? "DFA::TokenTable" : "DFA::CharTable") << '<' << max_states_count << ", " << max_transition_count << "> "
+    out << "const ::" << namespace_name << "::DFA::" << dfa.getTypeStr() << '<' << max_states_count << ", " << max_transition_count << "> "
     << namespace_name << "::" << prefix << "::" << name << '_' << count << " = " << "{" << table_out.str() << "};\n";
 }
 

@@ -1,45 +1,45 @@
 #include "Parser.h"
-const Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_0 = {{ 1, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_0 = {{ 1, ::Parser::DFA::null_state, {
 {'\t', 0, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}, {' ', 0, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'\v', 0, ::Parser::DFA::null_state}, {'\f', 0, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\v', 0, 0}, {'#', 1, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
 {'$', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
 {'%', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
 {'&', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
 {'(', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {')', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
 {'*', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
 {'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 2, 0}, {'+', 15, ::Parser::DFA::null_state}, {'\f', 14, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'+', 2, 0}} },
@@ -82,12 +82,12 @@ const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
 {',', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
 {'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 15, ::Parser::DFA::null_state}, {'7', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'5', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'8', 10, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -130,12 +130,12 @@ const Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_10 = {{ 0, ::Parse
 { 1, 0, {
 {'3', 3, 0}, {'+', 1, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
 {'.', 1, 0}, {'\v', 0, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
 {'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 9, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -156,7 +156,7 @@ const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Parse
 { 1, 0, {
 {'/', 1, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
 {'9', 0, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'E', 0, 0}, {'2', 0, 0}, {'a', 0, 0}, {'4', 0, 0}, {'b', 0, 0}, {'1', 9, ::Parser::DFA::null_state}, {'c', 0, 0}, {'6', 0, 0}, {'d', 0, 0}, {'3', 0, 0}, {'A', 0, 0}, {' ', 8, ::Parser::DFA::null_state}, {'5', 0, 0}, {'f', 0, 0}, {'7', 0, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'e', 0, 0}, {'8', 0, 0}, {'C', 0, 0}, {'B', 0, 0}, {'\t', 6, ::Parser::DFA::null_state}, {'F', 0, 0}, {'\r', 5, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -185,29 +185,29 @@ const Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_13 = {{ 0, ::Parse
 { 0, ::Parser::DFA::null_state, {
 {'b', 1, ::Parser::DFA::null_state}, {'0', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
 {':', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
 {';', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<3, 10> Parser::Lexer::dfa_table_16 = {{ 1, 0, {
-{'<', 1, 0}, {&dfa_table_1, 2, ::Parser::DFA::null_state}, {'\t', 0, 0}, {',', 0, 0}, {'>', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
+const ::Parser::DFA::MultiTable<3, 10> Parser::Lexer::dfa_table_16 = {{ 1, 0, {
+{'<', 1, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 2, ::Parser::DFA::null_state}, {'\t', 0, 0}, {',', 0, 0}, {'>', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 1, 0, {
 {'>', 1, 0}, {'\f', 0, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
 {'=', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
 {'>', 4, ::Parser::DFA::null_state}, {'=', 1, 1}, {'<', 3, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\v', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'=', 2, 0}} },
@@ -218,23 +218,23 @@ const Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser
 { 2, 0, {
 {'=', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
 {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'?', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
 {'@', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_21 = {{ 1, 0, {
+const ::Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_21 = {{ 1, 0, {
 {'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
-{Tokens::rule_CSEQUENCE_DIAPASON, 0, 0}, {'^', 1, 0}, {&dfa_table_1, 0, 0}, {']', 1, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'[', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<10, 12> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
+{Tokens::rule_CSEQUENCE_DIAPASON, 0, 0}, {'^', 1, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 0, 0}, {']', 1, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'[', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
@@ -254,7 +254,7 @@ const Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
 { 1, 0, {
 {']', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'[', 8, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<15, 8> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<15, 8> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
 {'\'', 3, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 10, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'0', 2, 0}} },
@@ -285,12 +285,12 @@ const Parser::DFA::CharTable<15, 8> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser
 { 2, 0, {
 {'\'', 3, 0}, {'\\', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
 {']', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 5, 0}, {'P', 5, 0}, {'9', 5, 0}, {'R', 5, 0}, {'0', 5, 0}, {'6', 5, 0}, {'8', 5, 0}, {'5', 5, 0}, {'M', 5, 0}, {'4', 5, 0}, {'3', 5, 0}, {'2', 5, 0}, {'1', 5, 0}, {'Z', 5, 0}, {'Y', 5, 0}, {'X', 5, 0}, {'W', 5, 0}, {'V', 5, 0}, {'U', 5, 0}, {'T', 5, 0}, {'S', 5, 0}, {'Q', 5, 0}, {'O', 5, 0}, {'N', 5, 0}, {'K', 5, 0}, {'I', 5, 0}, {'z', 5, 0}, {'L', 5, 0}, {'y', 5, 0}, {'G', 5, 0}, {'x', 5, 0}, {'J', 5, 0}, {'w', 5, 0}, {'E', 5, 0}, {'v', 5, 0}, {'H', 5, 0}, {'u', 5, 0}, {'C', 5, 0}, {'t', 5, 0}, {'F', 5, 0}, {'s', 5, 0}, {'A', 5, 0}, {'r', 5, 0}, {'D', 5, 0}, {'q', 5, 0}, {'\r', 12, ::Parser::DFA::null_state}, {'p', 5, 0}, {'B', 5, 0}, {'o', 5, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'n', 5, 0}, {'m', 5, 0}, {'\t', 10, ::Parser::DFA::null_state}, {'l', 5, 0}, {'k', 5, 0}, {'\f', 9, ::Parser::DFA::null_state}, {'j', 5, 0}, {'d', 5, 0}, {'_', 5, 0}, {'&', 2, 1}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 5, 0}, {'g', 5, 0}, {'e', 5, 0}, {'a', 7, ::Parser::DFA::null_state}, {'f', 5, 0}, {'h', 5, 0}, {'c', 5, 0}, {' ', 6, ::Parser::DFA::null_state}, {'b', 5, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'n', 3, 0}} },
@@ -317,8 +317,8 @@ const Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_25 = {{ 0, ::Parse
 { 4, 0, {
 {'\r', 0, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 10, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::TokenTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 25, ::Parser::DFA::null_state}, {'p', 12, 0}, {'m', 12, 0}, {'\t', 24, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'i', 12, 0}, {'\n', 21, ::Parser::DFA::null_state}, {'h', 12, 0}, {'n', 15, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'f', 12, 0}, {'c', 12, 0}, {' ', 20, ::Parser::DFA::null_state}, {'E', 12, 0}, {'v', 19, ::Parser::DFA::null_state}, {'B', 12, 0}, {'o', 18, ::Parser::DFA::null_state}, {'F', 12, 0}, {'s', 17, ::Parser::DFA::null_state}, {'g', 12, 0}, {'e', 12, 0}, {'_', 12, 0}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}, {'w', 12, 0}, {'J', 12, 0}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 25, ::Parser::DFA::null_state}, {'p', 12, 0}, {'m', 12, 0}, {'\t', 24, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'i', 12, 0}, {'\n', 21, ::Parser::DFA::null_state}, {'h', 12, 0}, {'n', 15, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'f', 12, 0}, {'c', 12, 0}, {' ', 20, ::Parser::DFA::null_state}, {'E', 12, 0}, {'v', 19, ::Parser::DFA::null_state}, {'B', 12, 0}, {'o', 18, ::Parser::DFA::null_state}, {'F', 12, 0}, {'s', 17, ::Parser::DFA::null_state}, {'g', 12, 0}, {'e', 12, 0}, {'_', 12, 0}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}, {'w', 12, 0}, {'J', 12, 0}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
@@ -350,7 +350,7 @@ const Parser::DFA::TokenTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Pars
 { 0, ::Parser::DFA::null_state, {
 {'u', 7, 4}, {'_', 12, 0}} },
 { 1, 0, {
-{'b', 5, 0}, {'v', 4, 1}, {'\v', 0, 5}, {'s', 2, 2}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 3, 5}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'b', 5, 0}, {'v', 4, 1}, {'\v', 0, 5}, {'s', 2, 2}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 3, 5}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'t', 8, 2}, {'_', 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
@@ -358,19 +358,19 @@ const Parser::DFA::TokenTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Pars
 { 0, ::Parser::DFA::null_state, {
 {'a', 8, 1}, {'_', 12, 0}} },
 { 1, 0, {
-{'v', 19, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {' ', 0, 5}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'v', 19, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {' ', 0, 5}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'v', 19, ::Parser::DFA::null_state}, {'\n', 0, 5}, {' ', 20, ::Parser::DFA::null_state}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'v', 19, ::Parser::DFA::null_state}, {'\n', 0, 5}, {' ', 20, ::Parser::DFA::null_state}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 10, 0}, {'_', 12, 0}} },
 { 1, 0, {
-{'\f', 0, 5}, {'v', 19, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'\f', 0, 5}, {'v', 19, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\t', 0, 5}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'\t', 0, 5}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\r', 0, 5}, {'\t', 24, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {&dfa_table_1, 13, ::Parser::DFA::null_state}} },
+{'\r', 0, 5}, {'\t', 24, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<26, 69> Parser::Lexer::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<26, 69> Parser::Lexer::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 22, ::Parser::DFA::null_state}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 20, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'_', 12, 0}, {'i', 12, 0}, {'\n', 16, ::Parser::DFA::null_state}, {'h', 12, 0}, {'f', 15, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'C', 12, 0}, {'a', 12, 0}, {'g', 12, 0}, {'e', 12, 0}, {'c', 12, 0}, {' ', 13, ::Parser::DFA::null_state}, {'b', 12, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 2, ::Parser::DFA::null_state}} },
@@ -423,7 +423,7 @@ const Parser::DFA::CharTable<26, 69> Parser::Lexer::dfa_table_27 = {{ 0, ::Parse
 { 6, 0, {
 {'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
 };
-const Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 8, 0}, {'P', 8, 0}, {'9', 8, 0}, {'R', 8, 0}, {'0', 8, 0}, {'6', 8, 0}, {'8', 8, 0}, {'5', 8, 0}, {'M', 8, 0}, {'4', 8, 0}, {'3', 8, 0}, {'2', 8, 0}, {'1', 8, 0}, {'Z', 8, 0}, {'Y', 8, 0}, {'X', 8, 0}, {'W', 8, 0}, {'V', 8, 0}, {'U', 8, 0}, {'T', 8, 0}, {'S', 8, 0}, {'Q', 8, 0}, {'O', 8, 0}, {'N', 8, 0}, {'K', 8, 0}, {'I', 8, 0}, {'z', 8, 0}, {'L', 8, 0}, {'y', 8, 0}, {'G', 8, 0}, {'x', 8, 0}, {'J', 8, 0}, {'w', 8, 0}, {'E', 8, 0}, {'v', 8, 0}, {'H', 8, 0}, {'u', 8, 0}, {'C', 8, 0}, {'t', 8, 0}, {'F', 8, 0}, {'s', 8, 0}, {'A', 8, 0}, {'r', 8, 0}, {'D', 8, 0}, {'q', 8, 0}, {'\r', 19, ::Parser::DFA::null_state}, {'p', 8, 0}, {'B', 8, 0}, {'o', 8, 0}, {'\v', 17, ::Parser::DFA::null_state}, {'n', 8, 0}, {'m', 8, 0}, {'\t', 15, ::Parser::DFA::null_state}, {'l', 8, 0}, {'k', 8, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'j', 8, 0}, {'d', 8, 0}, {'_', 8, 0}, {'\n', 11, ::Parser::DFA::null_state}, {'i', 10, ::Parser::DFA::null_state}, {'a', 8, 0}, {'g', 8, 0}, {'e', 8, 0}, {'f', 8, 0}, {'h', 8, 0}, {'c', 8, 0}, {' ', 9, ::Parser::DFA::null_state}, {'b', 8, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'p', 2, 0}} },
@@ -466,7 +466,7 @@ const Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parse
 { 5, 0, {
 {'m', 1, 0}, {'f', 5, 0}} },
 };
-const Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 14, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {'\v', 13, ::Parser::DFA::null_state}, {'n', 7, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'_', 7, 0}, {'m', 10, ::Parser::DFA::null_state}, {'i', 7, 0}, {'\n', 9, ::Parser::DFA::null_state}, {'h', 7, 0}, {'a', 7, 0}, {'g', 7, 0}, {'e', 7, 0}, {'f', 7, 0}, {'c', 7, 0}, {' ', 8, ::Parser::DFA::null_state}, {'b', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 2, 0}} },
@@ -497,8 +497,8 @@ const Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parse
 { 6, 0, {
 {'\r', 0, 0}, {'\t', 12, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'m', 10, ::Parser::DFA::null_state}, {'\f', 11, ::Parser::DFA::null_state}, {'\v', 13, ::Parser::DFA::null_state}, {'c', 7, 0}} },
 };
-const Parser::DFA::CharTable<20, 72> Parser::Lexer::dfa_table_30 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 18, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {';', 1, 0}, {'\t', 16, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 14, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}, {'n', 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {&dfa_table_1, 1, 0}, {'\n', 12, ::Parser::DFA::null_state}, {'i', 7, 0}, {'f', 7, 0}, {'h', 7, 0}, {'c', 7, 0}, {' ', 10, ::Parser::DFA::null_state}, {'m', 7, 0}, {'!', 1, 1}, {'g', 7, 0}, {'e', 7, 0}} },
+const ::Parser::DFA::MultiTable<20, 72> Parser::Lexer::dfa_table_30 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 18, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {';', 1, 0}, {'\t', 16, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 14, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}, {'n', 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 1, 0}, {'\n', 12, ::Parser::DFA::null_state}, {'i', 7, 0}, {'f', 7, 0}, {'h', 7, 0}, {'c', 7, 0}, {' ', 10, ::Parser::DFA::null_state}, {'m', 7, 0}, {'!', 1, 1}, {'g', 7, 0}, {'e', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
@@ -538,7 +538,7 @@ const Parser::DFA::CharTable<20, 72> Parser::Lexer::dfa_table_30 = {{ 0, ::Parse
 { 1, 0, {
 {'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
 };
-const Parser::DFA::CharTable<33, 70> Parser::Lexer::dfa_table_31 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<33, 70> Parser::Lexer::dfa_table_31 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 23, 0}, {'P', 23, 0}, {'9', 23, 0}, {'R', 23, 0}, {'0', 23, 0}, {'6', 23, 0}, {'8', 23, 0}, {'5', 23, 0}, {'M', 23, 0}, {'4', 23, 0}, {'3', 23, 0}, {'2', 23, 0}, {'1', 23, 0}, {'Z', 23, 0}, {'Y', 23, 0}, {'X', 23, 0}, {'W', 23, 0}, {'V', 23, 0}, {'U', 23, 0}, {'T', 23, 0}, {'S', 23, 0}, {'Q', 23, 0}, {'O', 23, 0}, {'N', 23, 0}, {'K', 23, 0}, {'I', 23, 0}, {'z', 23, 0}, {'L', 23, 0}, {'y', 23, 0}, {'G', 23, 0}, {'x', 23, 0}, {'J', 23, 0}, {'w', 23, 0}, {'E', 23, 0}, {'v', 23, 0}, {'H', 23, 0}, {'u', 23, 0}, {'C', 23, 0}, {'t', 23, 0}, {'A', 23, 0}, {'r', 23, 0}, {'D', 23, 0}, {'q', 23, 0}, {'\r', 32, ::Parser::DFA::null_state}, {'p', 23, 0}, {'B', 23, 0}, {'o', 23, 0}, {'\v', 31, ::Parser::DFA::null_state}, {'n', 23, 0}, {';', 2, 0}, {'\t', 30, ::Parser::DFA::null_state}, {'l', 23, 0}, {'k', 23, 0}, {'\f', 29, ::Parser::DFA::null_state}, {'j', 23, 0}, {'d', 23, 0}, {'b', 23, 0}, {'_', 23, 0}, {'F', 23, 0}, {'s', 28, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {'i', 23, 0}, {'\n', 26, ::Parser::DFA::null_state}, {'h', 23, 0}, {'g', 23, 0}, {'e', 23, 0}, {'a', 25, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'c', 23, 0}, {'f', 23, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'l', 5, ::Parser::DFA::null_state}} },
@@ -605,7 +605,7 @@ const Parser::DFA::CharTable<33, 70> Parser::Lexer::dfa_table_31 = {{ 0, ::Parse
 { 2, 0, {
 {'\r', 0, 0}, {'\v', 31, ::Parser::DFA::null_state}, {';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 30, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
 };
-const Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 4, 0}, {'P', 4, 0}, {'9', 4, 0}, {'R', 4, 0}, {'0', 4, 0}, {'6', 4, 0}, {'8', 4, 0}, {'5', 4, 0}, {'M', 4, 0}, {'4', 4, 0}, {'3', 4, 0}, {'2', 4, 0}, {'1', 4, 0}, {'Z', 4, 0}, {'Y', 4, 0}, {'X', 4, 0}, {'W', 4, 0}, {'V', 4, 0}, {'U', 4, 0}, {'T', 4, 0}, {'S', 4, 0}, {'Q', 4, 0}, {'O', 4, 0}, {'N', 4, 0}, {'K', 4, 0}, {'I', 4, 0}, {'z', 4, 0}, {'L', 4, 0}, {'y', 4, 0}, {'G', 4, 0}, {'x', 4, 0}, {'J', 4, 0}, {'w', 4, 0}, {'E', 4, 0}, {'v', 4, 0}, {'C', 4, 0}, {'t', 4, 0}, {'F', 4, 0}, {'s', 4, 0}, {'A', 4, 0}, {'r', 4, 0}, {'D', 4, 0}, {'q', 4, 0}, {'\r', 11, ::Parser::DFA::null_state}, {'p', 4, 0}, {'B', 4, 0}, {'o', 4, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'n', 4, 0}, {'m', 4, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'l', 4, 0}, {'k', 4, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'j', 4, 0}, {'d', 4, 0}, {'_', 4, 0}, {'H', 4, 0}, {'u', 7, ::Parser::DFA::null_state}, {'a', 4, 0}, {'g', 4, 0}, {'e', 4, 0}, {'\n', 6, ::Parser::DFA::null_state}, {'i', 4, 0}, {'f', 4, 0}, {'h', 4, 0}, {'c', 4, 0}, {' ', 5, ::Parser::DFA::null_state}, {'b', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'s', 2, 0}} },
@@ -630,7 +630,7 @@ const Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Parse
 { 3, 0, {
 {'\r', 0, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'\t', 9, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 5, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'u', 7, ::Parser::DFA::null_state}, {'h', 4, 0}} },
 };
-const Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 6, 0}, {'P', 6, 0}, {'9', 6, 0}, {'R', 6, 0}, {'0', 6, 0}, {'6', 6, 0}, {'8', 6, 0}, {'5', 6, 0}, {'M', 6, 0}, {'4', 6, 0}, {'3', 6, 0}, {'2', 6, 0}, {'1', 6, 0}, {'Z', 6, 0}, {'Y', 6, 0}, {'X', 6, 0}, {'W', 6, 0}, {'V', 6, 0}, {'U', 6, 0}, {'T', 6, 0}, {'S', 6, 0}, {'Q', 6, 0}, {'O', 6, 0}, {'N', 6, 0}, {'K', 6, 0}, {'I', 6, 0}, {'z', 6, 0}, {'L', 6, 0}, {'y', 6, 0}, {'G', 6, 0}, {'x', 6, 0}, {'E', 6, 0}, {'v', 6, 0}, {'H', 6, 0}, {'u', 6, 0}, {'C', 6, 0}, {'t', 6, 0}, {'F', 6, 0}, {'s', 6, 0}, {'A', 6, 0}, {'r', 6, 0}, {'D', 6, 0}, {'q', 6, 0}, {'\r', 13, ::Parser::DFA::null_state}, {'p', 6, 0}, {'B', 6, 0}, {'o', 6, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'n', 6, 0}, {'m', 6, 0}, {'\t', 11, ::Parser::DFA::null_state}, {'l', 6, 0}, {'k', 6, 0}, {'\f', 10, ::Parser::DFA::null_state}, {'j', 6, 0}, {'d', 6, 0}, {'a', 6, 0}, {'b', 6, 0}, {'J', 6, 0}, {'w', 9, ::Parser::DFA::null_state}, {'g', 6, 0}, {'e', 6, 0}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 6, 0}, {' ', 7, ::Parser::DFA::null_state}, {'c', 6, 0}, {'_', 6, 0}, {'h', 6, 0}, {'f', 6, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'h', 2, 0}} },
@@ -659,12 +659,12 @@ const Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Parse
 { 5, 0, {
 {'\r', 0, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'\t', 11, ::Parser::DFA::null_state}, {'w', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\f', 10, ::Parser::DFA::null_state}, {'h', 6, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_34 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_34 = {{ 0, ::Parser::DFA::null_state, {
 {'{', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<11, 8> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<11, 8> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser::DFA::null_state, {
 {'|', 10, ::Parser::DFA::null_state}, {'o', 1, 1}, {'\t', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 2, 1}} },
@@ -687,7 +687,7 @@ const Parser::DFA::CharTable<11, 8> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser
 { 2, 0, {
 {'|', 2, 0}} },
 };
-const Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_36 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_36 = {{ 0, ::Parser::DFA::null_state, {
 {'}', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -953,171 +953,6 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 ::Parser::Lexer::makeToken(const char* &pos) {
 	fcdt_lookup<DFA::CharTable, DFA::TokenTable, DFA::MultiTable, DFA::Transition>(first_character_dispatch_table, pos);
 }
-#include "Parser.h"
-void Parser::Lexer::printTokens(std::ostream& os) {
-    for (const auto& token : tokens)
-        printToken(os, token);
-}
-void Parser::Lexer::printToken(std::ostream& os, const Token& token) {
-    os << TokensToString(token.name()) << ": ";
-
-    if (token.data().type() == typeid(str_t)) {
-        os << '"' << std::any_cast<str_t>(token.data()) << '"';
-    } else if (token.data().type() == typeid(num_t)) {
-        os << std::any_cast<num_t>(token.data());
-    } else if (token.data().type() == typeid(bool_t)) {
-        os << std::boolalpha << std::any_cast<bool_t>(token.data());
-    } else if (token.data().type() == typeid(Token)) {
-        os << "{ ";
-        printToken(os, std::any_cast<Token>(token.data())); // Recursive call
-        os << " }";
-    } else if (token.data().type() == typeid(arr_t<Token>)) { // Handle array of tokens
-        os << "[ ";
-        auto arr = std::any_cast<arr_t<Token>>(token.data());
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            printToken(os, *it);
-            if (std::next(it) != arr.end()) os << ", ";
-        }
-        os << " ]";
-    } else if (token.data().type() == typeid(arr_t<str_t>)) {
-        os << "[ ";
-        auto arr = std::any_cast<arr_t<str_t>>(token.data());
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << '"' << *it << '"';
-            if (std::next(it) != arr.end()) os << ", ";
-        }
-        os << " ]";
-    } else if (token.data().type() == typeid(arr_t<num_t>)) {
-        os << "[ ";
-        auto arr = std::any_cast<arr_t<num_t>>(token.data());
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << *it;
-            if (std::next(it) != arr.end()) os << ", ";
-        }
-        os << " ]";
-    } else if (token.data().type() == typeid(arr_t<bool_t>)) {
-        os << "[ ";
-        auto arr = std::any_cast<arr_t<bool_t>>(token.data());
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << std::boolalpha << *it;
-            if (std::next(it) != arr.end()) os << ", ";
-        }
-        os << " ]";
-    }
-    os << " # " << token.startpos();
-    os << '\n';
-}
-void ::Parser::Parser::printAST(std::ostream &os) {
-	size_t indentLevel = 0;
-	printRule(os, tree, indentLevel, false);
-}
-void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Token &token, size_t &indentLevel, bool addSpaceOnBegin) {
-	Lexer::printToken(os, token);
-}
-void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Rule &rule, size_t &indentLevel, bool addSpaceOnBegin) {
-	printRule(os, rule.data(), indentLevel, addSpaceOnBegin);
-}
-void ::Parser::Parser::printRule(std::ostream &os, const std::any &data, size_t &indentLevel, bool addSpaceOnBegin) {
-	using Token = ::Parser::Token;
-	using Rule = ::Parser::Rule;
-
-	if (addSpaceOnBegin) os << std::string(indentLevel, '\t');
-
-if (data.type() == typeid(str_t)) {
-        os << '"' << std::any_cast<str_t>(data) << '"';
-    } else if (data.type() == typeid(num_t)) {
-        os << std::any_cast<num_t>(data);
-    } else if (data.type() == typeid(bool_t)) {
-        os << std::boolalpha << std::any_cast<bool_t>(data);
-    } else if (data.type() == typeid(Token)) {
-        os << std::string(indentLevel, '\t');
-        Lexer::printToken(os, std::any_cast<Token>(data));
-    } else if (data.type() == typeid(arr_t<Token>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<arr_t<Token>>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << std::string(indentLevel, '\t');
-            Lexer::printToken(os, *it);
-        }
-        os << std::string(--indentLevel, '\t') << "]";
-    } else if (data.type() == typeid(Rule)) {
-        os << "{\n";
-        indentLevel++;
-        printRule(os, std::any_cast<Rule>(data), indentLevel, true);
-        os << std::string(--indentLevel, '\t') << "}";
-    } else if (data.type() == typeid(arr_t<Rule>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<arr_t<Rule>>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            printRule(os, *it, indentLevel, true);
-            if (std::next(it) != arr.end()) os << ",";
-            os << "\n";
-        }
-        indentLevel--;
-        os << std::string(indentLevel, '\t') << "]";
-    } else if (data.type() == typeid(arr_t<str_t>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<arr_t<str_t>>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << std::string(indentLevel, '\t') << '"' << *it << '"';
-            if (std::next(it) != arr.end()) os << ",";
-            os << "\n";
-        }
-        indentLevel--;
-        os << std::string(indentLevel, '\t') << "]";
-    } else if (data.type() == typeid(arr_t<num_t>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<arr_t<num_t>>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << std::string(indentLevel, '\t') << *it;
-            if (std::next(it) != arr.end()) os << ",";
-            os << "\n";
-        }
-        indentLevel--;
-        os << std::string(indentLevel, '\t') << "]";
-    } else if (data.type() == typeid(arr_t<bool_t>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<arr_t<bool_t>>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            os << std::string(indentLevel, '\t') << std::boolalpha << *it;
-            if (std::next(it) != arr.end()) os << ",";
-            os << "\n";
-        }
-        indentLevel--;
-        os << std::string(indentLevel, '\t') << "]";
-    } else if (data.type() == typeid(std::any)) {
-        printRule(os, std::any_cast<const std::any&>(data), indentLevel, addSpaceOnBegin);
-    } else if (data.type() == typeid(arr_t<std::any>)) {
-        os << "[\n";
-        indentLevel++;
-        auto arr = std::any_cast<const arr_t<std::any>&>(data);
-        for (auto it = arr.begin(); it != arr.end(); ++it) {
-            printRule(os, *it, indentLevel, true);
-            if (std::next(it) != arr.end()) os << ",";
-            os << "\n";
-        }
-        indentLevel--;
-        os << std::string(indentLevel, '\t') << "]";
-    }else os << "<UNDEF TYPE>";
-}Parser::Rule_res Parser::Parser::getRule(Lexer::lazy_iterator &pos) {
-        return main(pos);
-    }
-Parser::Rule_res Parser::Parser::getRule(Lexer::iterator &pos) {
-        return main(pos);
-    }
-void ::Parser::Parser::parseFromTokens() {
-        auto pos = Lexer::iterator(lexer);
-        parseFromPos(pos);
-    }
-void ::Parser::Parser::lazyParse() {
-        auto pos = Lexer::lazy_iterator(lexer, text);
-        parseFromPos(pos);
-    }
 void Parser::Lexer::printTokens(std::ostream& os) {
     for (const auto& token : tokens)
         printToken(os, token);
@@ -1608,350 +1443,6 @@ void ::Parser::Parser::lazyParse() {
         auto pos = Lexer::lazy_iterator(lexer, text);
         parseFromPos(pos);
     }
-const ::Parser::Types::AUTO_6& Parser::get::AUTO_6(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
-	return std::any_cast<const Types::AUTO_6&>(token.data());
-}
-::Parser::Types::AUTO_6& Parser::get::AUTO_6(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_6) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_6, "Parser");
-	return std::any_cast<Types::AUTO_6&>(token.data());
-}
-const ::Parser::Types::AUTO_22& Parser::get::AUTO_22(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
-	return std::any_cast<const Types::AUTO_22&>(token.data());
-}
-::Parser::Types::AUTO_22& Parser::get::AUTO_22(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_22) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_22, "Parser");
-	return std::any_cast<Types::AUTO_22&>(token.data());
-}
-const ::Parser::Types::ID& Parser::get::ID(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
-	return std::any_cast<const Types::ID&>(token.data());
-}
-::Parser::Types::ID& Parser::get::ID(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::ID) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::ID, "Parser");
-	return std::any_cast<Types::ID&>(token.data());
-}
-const ::Parser::Types::AUTO_23& Parser::get::AUTO_23(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
-	return std::any_cast<const Types::AUTO_23&>(token.data());
-}
-::Parser::Types::AUTO_23& Parser::get::AUTO_23(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_23) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_23, "Parser");
-	return std::any_cast<Types::AUTO_23&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_SYMBOL&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_SYMBOL& Parser::get::rule_CSEQUENCE_SYMBOL(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_SYMBOL) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_SYMBOL, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_SYMBOL&>(token.data());
-}
-const ::Parser::Types::STRING& Parser::get::STRING(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<const Types::STRING&>(token.data());
-}
-::Parser::Types::STRING& Parser::get::STRING(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::STRING) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::STRING, "Parser");
-	return std::any_cast<Types::STRING&>(token.data());
-}
-const ::Parser::Types::AUTO_21& Parser::get::AUTO_21(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
-	return std::any_cast<const Types::AUTO_21&>(token.data());
-}
-::Parser::Types::AUTO_21& Parser::get::AUTO_21(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_21) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_21, "Parser");
-	return std::any_cast<Types::AUTO_21&>(token.data());
-}
-const ::Parser::Types::AUTO_8& Parser::get::AUTO_8(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<const Types::AUTO_8&>(token.data());
-}
-::Parser::Types::AUTO_8& Parser::get::AUTO_8(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_8) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_8, "Parser");
-	return std::any_cast<Types::AUTO_8&>(token.data());
-}
-const ::Parser::Types::AUTO_20& Parser::get::AUTO_20(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
-	return std::any_cast<const Types::AUTO_20&>(token.data());
-}
-::Parser::Types::AUTO_20& Parser::get::AUTO_20(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_20) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_20, "Parser");
-	return std::any_cast<Types::AUTO_20&>(token.data());
-}
-const ::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
-	return std::any_cast<const Types::cll_ASSIGNMENT_OP&>(token.data());
-}
-::Parser::Types::cll_ASSIGNMENT_OP& Parser::get::cll_ASSIGNMENT_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_ASSIGNMENT_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_ASSIGNMENT_OP, "Parser");
-	return std::any_cast<Types::cll_ASSIGNMENT_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_5& Parser::get::AUTO_5(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
-	return std::any_cast<const Types::AUTO_5&>(token.data());
-}
-::Parser::Types::AUTO_5& Parser::get::AUTO_5(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_5) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_5, "Parser");
-	return std::any_cast<Types::AUTO_5&>(token.data());
-}
-const ::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
-	return std::any_cast<const Types::rule_ESCAPED&>(token.data());
-}
-::Parser::Types::rule_ESCAPED& Parser::get::rule_ESCAPED(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_ESCAPED) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_ESCAPED, "Parser");
-	return std::any_cast<Types::rule_ESCAPED&>(token.data());
-}
-const ::Parser::Types::AUTO_17& Parser::get::AUTO_17(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
-	return std::any_cast<const Types::AUTO_17&>(token.data());
-}
-::Parser::Types::AUTO_17& Parser::get::AUTO_17(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_17) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_17, "Parser");
-	return std::any_cast<Types::AUTO_17&>(token.data());
-}
-const ::Parser::Types::AUTO_14& Parser::get::AUTO_14(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
-	return std::any_cast<const Types::AUTO_14&>(token.data());
-}
-::Parser::Types::AUTO_14& Parser::get::AUTO_14(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_14) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_14, "Parser");
-	return std::any_cast<Types::AUTO_14&>(token.data());
-}
-const ::Parser::Types::AUTO_15& Parser::get::AUTO_15(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
-	return std::any_cast<const Types::AUTO_15&>(token.data());
-}
-::Parser::Types::AUTO_15& Parser::get::AUTO_15(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_15) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_15, "Parser");
-	return std::any_cast<Types::AUTO_15&>(token.data());
-}
-const ::Parser::Types::AUTO_12& Parser::get::AUTO_12(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<const Types::AUTO_12&>(token.data());
-}
-::Parser::Types::AUTO_12& Parser::get::AUTO_12(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_12) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_12, "Parser");
-	return std::any_cast<Types::AUTO_12&>(token.data());
-}
-const ::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<const Types::cll_TEMPLATE&>(token.data());
-}
-::Parser::Types::cll_TEMPLATE& Parser::get::cll_TEMPLATE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TEMPLATE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TEMPLATE, "Parser");
-	return std::any_cast<Types::cll_TEMPLATE&>(token.data());
-}
-const ::Parser::Types::AUTO_16& Parser::get::AUTO_16(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<const Types::AUTO_16&>(token.data());
-}
-::Parser::Types::AUTO_16& Parser::get::AUTO_16(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_16) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_16, "Parser");
-	return std::any_cast<Types::AUTO_16&>(token.data());
-}
-const ::Parser::Types::AUTO_19& Parser::get::AUTO_19(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<const Types::AUTO_19&>(token.data());
-}
-::Parser::Types::AUTO_19& Parser::get::AUTO_19(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_19) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_19, "Parser");
-	return std::any_cast<Types::AUTO_19&>(token.data());
-}
-const ::Parser::Types::rule_HEX& Parser::get::rule_HEX(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
-	return std::any_cast<const Types::rule_HEX&>(token.data());
-}
-::Parser::Types::rule_HEX& Parser::get::rule_HEX(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_HEX) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_HEX, "Parser");
-	return std::any_cast<Types::rule_HEX&>(token.data());
-}
-const ::Parser::Types::AUTO_10& Parser::get::AUTO_10(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
-	return std::any_cast<const Types::AUTO_10&>(token.data());
-}
-::Parser::Types::AUTO_10& Parser::get::AUTO_10(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_10) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_10, "Parser");
-	return std::any_cast<Types::AUTO_10&>(token.data());
-}
-const ::Parser::Types::rule_BIN& Parser::get::rule_BIN(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
-	return std::any_cast<const Types::rule_BIN&>(token.data());
-}
-::Parser::Types::rule_BIN& Parser::get::rule_BIN(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_BIN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_BIN, "Parser");
-	return std::any_cast<Types::rule_BIN&>(token.data());
-}
-const ::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
-	return std::any_cast<const Types::BOOLEAN&>(token.data());
-}
-::Parser::Types::BOOLEAN& Parser::get::BOOLEAN(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::BOOLEAN) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::BOOLEAN, "Parser");
-	return std::any_cast<Types::BOOLEAN&>(token.data());
-}
-const ::Parser::Types::AUTO_7& Parser::get::AUTO_7(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
-	return std::any_cast<const Types::AUTO_7&>(token.data());
-}
-::Parser::Types::AUTO_7& Parser::get::AUTO_7(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_7) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_7, "Parser");
-	return std::any_cast<Types::AUTO_7&>(token.data());
-}
-const ::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
-	return std::any_cast<const Types::SPACEMODE&>(token.data());
-}
-::Parser::Types::SPACEMODE& Parser::get::SPACEMODE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::SPACEMODE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::SPACEMODE, "Parser");
-	return std::any_cast<Types::SPACEMODE&>(token.data());
-}
-const ::Parser::Types::AUTO_1& Parser::get::AUTO_1(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
-	return std::any_cast<const Types::AUTO_1&>(token.data());
-}
-::Parser::Types::AUTO_1& Parser::get::AUTO_1(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_1) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_1, "Parser");
-	return std::any_cast<Types::AUTO_1&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_ESCAPE&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_ESCAPE& Parser::get::rule_CSEQUENCE_ESCAPE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_ESCAPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_ESCAPE, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_ESCAPE&>(token.data());
-}
-const ::Parser::Types::AUTO_18& Parser::get::AUTO_18(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
-	return std::any_cast<const Types::AUTO_18&>(token.data());
-}
-::Parser::Types::AUTO_18& Parser::get::AUTO_18(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_18) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_18, "Parser");
-	return std::any_cast<Types::AUTO_18&>(token.data());
-}
-const ::Parser::Types::AUTO_13& Parser::get::AUTO_13(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
-	return std::any_cast<const Types::AUTO_13&>(token.data());
-}
-::Parser::Types::AUTO_13& Parser::get::AUTO_13(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_13) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_13, "Parser");
-	return std::any_cast<Types::AUTO_13&>(token.data());
-}
-const ::Parser::Types::AUTO_3& Parser::get::AUTO_3(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<const Types::AUTO_3&>(token.data());
-}
-::Parser::Types::AUTO_3& Parser::get::AUTO_3(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_3) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_3, "Parser");
-	return std::any_cast<Types::AUTO_3&>(token.data());
-}
-const ::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<const Types::cll_LOGICAL_OP&>(token.data());
-}
-::Parser::Types::cll_LOGICAL_OP& Parser::get::cll_LOGICAL_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_LOGICAL_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_LOGICAL_OP, "Parser");
-	return std::any_cast<Types::cll_LOGICAL_OP&>(token.data());
-}
-const ::Parser::Types::NUMBER& Parser::get::NUMBER(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
-	return std::any_cast<const Types::NUMBER&>(token.data());
-}
-::Parser::Types::NUMBER& Parser::get::NUMBER(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NUMBER) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NUMBER, "Parser");
-	return std::any_cast<Types::NUMBER&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE& Parser::get::rule_CSEQUENCE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE&>(token.data());
-}
-const ::Parser::Types::AUTO_0& Parser::get::AUTO_0(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<const Types::AUTO_0&>(token.data());
-}
-::Parser::Types::AUTO_0& Parser::get::AUTO_0(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_0) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_0, "Parser");
-	return std::any_cast<Types::AUTO_0&>(token.data());
-}
-const ::Parser::Types::AUTO_9& Parser::get::AUTO_9(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
-	return std::any_cast<const Types::AUTO_9&>(token.data());
-}
-::Parser::Types::AUTO_9& Parser::get::AUTO_9(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_9) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_9, "Parser");
-	return std::any_cast<Types::AUTO_9&>(token.data());
-}
-const ::Parser::Types::cll_OP& Parser::get::cll_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
-	return std::any_cast<const Types::cll_OP&>(token.data());
-}
-::Parser::Types::cll_OP& Parser::get::cll_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_OP, "Parser");
-	return std::any_cast<Types::cll_OP&>(token.data());
-}
-const ::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
-	return std::any_cast<const Types::rule_CSEQUENCE_DIAPASON&>(token.data());
-}
-::Parser::Types::rule_CSEQUENCE_DIAPASON& Parser::get::rule_CSEQUENCE_DIAPASON(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::rule_CSEQUENCE_DIAPASON) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::rule_CSEQUENCE_DIAPASON, "Parser");
-	return std::any_cast<Types::rule_CSEQUENCE_DIAPASON&>(token.data());
-}
-const ::Parser::Types::AUTO_11& Parser::get::AUTO_11(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<const Types::AUTO_11&>(token.data());
-}
-::Parser::Types::AUTO_11& Parser::get::AUTO_11(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_11) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_11, "Parser");
-	return std::any_cast<Types::AUTO_11&>(token.data());
-}
-const ::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<const Types::cll_COMPARE_OP&>(token.data());
-}
-::Parser::Types::cll_COMPARE_OP& Parser::get::cll_COMPARE_OP(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_COMPARE_OP) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_COMPARE_OP, "Parser");
-	return std::any_cast<Types::cll_COMPARE_OP&>(token.data());
-}
-const ::Parser::Types::AUTO_2& Parser::get::AUTO_2(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
-	return std::any_cast<const Types::AUTO_2&>(token.data());
-}
-::Parser::Types::AUTO_2& Parser::get::AUTO_2(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_2) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_2, "Parser");
-	return std::any_cast<Types::AUTO_2&>(token.data());
-}
-const ::Parser::Types::NAME& Parser::get::NAME(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
-	return std::any_cast<const Types::NAME&>(token.data());
-}
-::Parser::Types::NAME& Parser::get::NAME(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::NAME) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::NAME, "Parser");
-	return std::any_cast<Types::NAME&>(token.data());
-}
-const ::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
-	return std::any_cast<const Types::cll_TYPE&>(token.data());
-}
-::Parser::Types::cll_TYPE& Parser::get::cll_TYPE(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::cll_TYPE) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::cll_TYPE, "Parser");
-	return std::any_cast<Types::cll_TYPE&>(token.data());
-}
-const ::Parser::Types::AUTO_4& Parser::get::AUTO_4(const ::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
-	return std::any_cast<const Types::AUTO_4&>(token.data());
-}
-::Parser::Types::AUTO_4& Parser::get::AUTO_4(::Parser::Token &token) {
-	if (token.name() != ::Parser::Tokens::AUTO_4) throw ISPA_STD::bad_get<Tokens, TokensToString>(token.name(), Tokens::AUTO_4, "Parser");
-	return std::any_cast<Types::AUTO_4&>(token.data());
-}
 const ::Parser::Types::cll_function_parameters& Parser::get::cll_function_parameters(const ::Parser::Rule &rule) {
 	if (rule.name() != ::Parser::Rules::cll_function_parameters) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::cll_function_parameters, "Parser");
 	return std::any_cast<const Types::cll_function_parameters&>(rule.data());
@@ -2296,7 +1787,7 @@ const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_
 	if (rule.name() != ::Parser::Rules::rule_data_block_regular_datablock_key) throw ISPA_STD::bad_get<Rules, RulesToString>(rule.name(), Rules::rule_data_block_regular_datablock_key, "Parser");
 	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
 }
-const Parser::DFA::TokenTable<36, 11> Parser::Parser::dfa_table_0 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<36, 11> Parser::Parser::dfa_table_0 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::NUMBER, 1, 4}, {Tokens::AUTO_13, 2, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 3, ::Parser::DFA::null_state}, {Tokens::AT, 4, 4}, {Tokens::STRING, 5, 4}, {Tokens::BOOLEAN, 6, 4}, {Tokens::ID, 16, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 18, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 10, 1}, {Tokens::AUTO_19, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
 {Tokens::cll_LOGICAL_OP, 11, ::Parser::DFA::null_state}, {Tokens::PLUS, 11, ::Parser::DFA::null_state}, {Tokens::MODULO, 11, ::Parser::DFA::null_state}, {Tokens::MULTIPLE, 11, ::Parser::DFA::null_state}, {Tokens::MINUS, 11, ::Parser::DFA::null_state}, {Tokens::DIVIDE, 11, ::Parser::DFA::null_state}, {Tokens::AUTO_14, 12, ::Parser::DFA::null_state}, {Tokens::cll_COMPARE_OP, 11, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 22, ::Parser::DFA::null_state}} },
@@ -2369,7 +1860,7 @@ const Parser::DFA::TokenTable<36, 11> Parser::Parser::dfa_table_0 = {{ 0, ::Pars
 { 8, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::TokenTable<7, 3> Parser::Parser::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<7, 3> Parser::Parser::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::ID, 1, 1}, {Tokens::MULTIPLE, 2, 0}, {Tokens::__WHITESPACE, 5, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
 {Tokens::AUTO_1, 3, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
@@ -2384,33 +1875,7 @@ const Parser::DFA::TokenTable<7, 3> Parser::Parser::dfa_table_1 = {{ 0, ::Parser
 { 2, 1, {
 } },
 };
-const Parser::DFA::CharTable<9, 8> Parser::Parser::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
-{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\v', 0, 0}, {'t', 1, 1}, {'\f', 0, 0}, {'f', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 3, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 4, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'u', 5, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 6, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 7, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'s', 8, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 7, 0}} },
-};
-const Parser::DFA::CharTable<3, 8> Parser::Parser::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
-{'\t', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\\', 1, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {']', 2, 1}, {'\f', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\\', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::MULTIPLE, 1, 2}, {Tokens::PLUS, 1, 1}, {Tokens::QUESTION_MARK, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -2419,7 +1884,7 @@ const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_4 = {{ 0, ::Parser
 { 1, 2, {
 } },
 };
-const Parser::DFA::TokenTable<41, 11> Parser::Parser::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<41, 11> Parser::Parser::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::NUMBER, 12, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 1, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 2, ::Parser::DFA::null_state}, {Tokens::AT, 14, ::Parser::DFA::null_state}, {Tokens::STRING, 16, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 18, ::Parser::DFA::null_state}, {Tokens::ID, 20, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 22, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 6, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 23, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 24, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_14, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_1, 26, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 28, ::Parser::DFA::null_state}} },
@@ -2502,7 +1967,7 @@ const Parser::DFA::TokenTable<41, 11> Parser::Parser::dfa_table_5 = {{ 0, ::Pars
 { 3, 1, {
 } },
 };
-const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_23, 1, 1}, {Tokens::AT, 2, 0}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {Tokens::ID, 4, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
@@ -2519,7 +1984,7 @@ const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_6 = {{ 0, ::Parser
 { 4, 1, {
 } },
 };
-const Parser::DFA::TokenTable<89, 19> Parser::Parser::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<89, 19> Parser::Parser::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_5, 32, ::Parser::DFA::null_state}, {Tokens::rule_OP, 1, 6}, {Tokens::rule_ESCAPED, 1, 1}, {Tokens::AUTO_12, 3, 10}, {Tokens::rule_BIN, 1, 4}, {Tokens::STRING, 1, 2}, {Tokens::ID, 33, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 35, ::Parser::DFA::null_state}, {Tokens::DOT, 1, 8}, {Tokens::rule_HEX, 1, 3}, {Tokens::rule_NOSPACE, 1, 0}, {Tokens::rule_CSEQUENCE, 1, 7}, {Tokens::LINEAR_COMMENT, 1, 5}, {Tokens::__WHITESPACE, 36, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -2698,7 +2163,7 @@ const Parser::DFA::TokenTable<89, 19> Parser::Parser::dfa_table_7 = {{ 0, ::Pars
 { 1, 11, {
 } },
 };
-const Parser::DFA::TokenTable<6, 5> Parser::Parser::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<6, 5> Parser::Parser::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::ID, 1, 3}, {Tokens::AUTO_8, 2, 2}, {Tokens::NAME, 3, 1}, {Tokens::SPACEMODE, 3, 0}, {Tokens::__WHITESPACE, 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_6, 3, 3}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
@@ -2711,16 +2176,7 @@ const Parser::DFA::TokenTable<6, 5> Parser::Parser::dfa_table_8 = {{ 0, ::Parser
 { 3, 3, {
 } },
 };
-const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
-{'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'!', 1, 1}, {'\r', 0, 0}, {'\t', 0, 0}, {'n', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'t', 1, 0}} },
-};
-const Parser::DFA::TokenTable<134, 20> Parser::Parser::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<134, 20> Parser::Parser::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_15, 37, ::Parser::DFA::null_state}, {Tokens::BOOLEAN, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 36, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 35, ::Parser::DFA::null_state}, {Tokens::NUMBER, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 7, ::Parser::DFA::null_state}, {Tokens::STRING, 5, ::Parser::DFA::null_state}, {Tokens::ID, 39, ::Parser::DFA::null_state}, {Tokens::AT, 5, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 8, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 41, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 9, ::Parser::DFA::null_state}, {Tokens::AUTO_17, 10, 3}, {Tokens::AUTO_18, 42, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 44, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -2989,16 +2445,7 @@ const Parser::DFA::TokenTable<134, 20> Parser::Parser::dfa_table_10 = {{ 0, ::Pa
 { 1, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::rule_CSEQUENCE_SYMBOL, 1, 2}, {Tokens::rule_CSEQUENCE_ESCAPE, 1, 1}, {Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::rule_CSEQUENCE_DIAPASON, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
-{ 1, 2, {
-} },
-};
-const Parser::DFA::TokenTable<33, 10> Parser::Parser::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<33, 10> Parser::Parser::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::NUMBER, 1, 6}, {Tokens::AUTO_13, 2, 3}, {Tokens::AUTO_0, 3, 2}, {Tokens::AT, 1, 4}, {Tokens::STRING, 1, 1}, {Tokens::ID, 1, 5}, {Tokens::BOOLEAN, 1, 0}, {Tokens::__WHITESPACE, 15, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3065,7 +2512,7 @@ const Parser::DFA::TokenTable<33, 10> Parser::Parser::dfa_table_12 = {{ 0, ::Par
 { 1, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_20, 1, 1}, {Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3074,7 +2521,7 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_13 = {{ 0, ::Parse
 { 1, 1, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_20, 1, 1}, {Tokens::AUTO_19, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3083,7 +2530,7 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_14 = {{ 0, ::Parse
 { 1, 1, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::NUMBER, 1, 1}, {Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3092,7 +2539,7 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_15 = {{ 0, ::Parse
 { 1, 1, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_16 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::NUMBER, 1, 1}, {Tokens::ID, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3101,7 +2548,7 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_16 = {{ 0, ::Parse
 { 1, 1, {
 } },
 };
-const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::MODULO, 1, 2}, {Tokens::MULTIPLE, 1, 1}, {Tokens::DIVIDE, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3110,7 +2557,7 @@ const Parser::DFA::TokenTable<4, 4> Parser::Parser::dfa_table_17 = {{ 0, ::Parse
 { 1, 2, {
 } },
 };
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::PLUS, 1, 1}, {Tokens::MINUS, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3119,16 +2566,7 @@ const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_18 = {{ 0, ::Parse
 { 1, 1, {
 } },
 };
-const Parser::DFA::CharTable<4, 8> Parser::Parser::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
-{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'o', 1, 1}, {'|', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 3, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'|', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::TokenTable<45, 11> Parser::Parser::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<45, 11> Parser::Parser::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::AT, 1, 1}, {Tokens::AUTO_0, 2, 0}, {Tokens::__WHITESPACE, 14, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_0, 5, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
@@ -3219,64 +2657,7 @@ const Parser::DFA::TokenTable<45, 11> Parser::Parser::dfa_table_20 = {{ 0, ::Par
 { 5, ::Parser::DFA::null_state, {
 } },
 };
-const Parser::DFA::CharTable<3, 8> Parser::Parser::dfa_table_21 = {{ 0, ::Parser::DFA::null_state, {
-{'\t', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\\', 1, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\'', 2, 1}, {'\f', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\\', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::CharTable<18, 9> Parser::Parser::dfa_table_22 = {{ 0, ::Parser::DFA::null_state, {
-{'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'m', 1, 2}, {'\v', 0, 0}, {'\t', 0, 0}, {'a', 2, 1}, {'s', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'i', 4, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 5, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'k', 6, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'x', 7, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 8, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'i', 9, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 10, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 11, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'p', 12, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 13, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'w', 14, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'p', 15, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 16, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 17, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 13, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 13, 0}} },
-};
-const Parser::DFA::CharTable<6, 10> Parser::Parser::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
-{'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\v', 0, 0}, {'!', 1, 3}, {'<', 4, ::Parser::DFA::null_state}, {'=', 3, 1}, {'\f', 0, 0}, {'>', 5, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'=', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'=', 2, 0}} },
-{ 2, 5, {
-{'=', 2, 0}} },
-{ 2, 0, {
-{'=', 2, 0}} },
-};
-const Parser::DFA::TokenTable<37, 12> Parser::Parser::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<37, 12> Parser::Parser::dfa_table_16 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::BOOLEAN, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_19, 16, ::Parser::DFA::null_state}, {Tokens::cll_TYPE, 15, ::Parser::DFA::null_state}, {Tokens::NUMBER, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_13, 4, ::Parser::DFA::null_state}, {Tokens::AUTO_0, 6, ::Parser::DFA::null_state}, {Tokens::STRING, 3, ::Parser::DFA::null_state}, {Tokens::ID, 17, ::Parser::DFA::null_state}, {Tokens::AT, 3, ::Parser::DFA::null_state}, {Tokens::AUTO_3, 7, ::Parser::DFA::null_state}, {Tokens::AUTO_20, 19, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 20, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -3351,51 +2732,7 @@ const Parser::DFA::TokenTable<37, 12> Parser::Parser::dfa_table_24 = {{ 0, ::Par
 { 1, ::Parser::DFA::null_state, {
 {Tokens::__WHITESPACE, 32, ::Parser::DFA::null_state}} },
 };
-const Parser::DFA::CharTable<5, 8> Parser::Parser::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
-{'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}, {'\v', 0, 0}, {'&', 1, 1}, {'\t', 0, 0}, {'a', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'&', 3, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'n', 4, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 3, 0}} },
-};
-const Parser::DFA::CharTable<16, 13> Parser::Parser::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
-{'\n', 0, 5}, {'\r', 0, 5}, {'\v', 0, 5}, {'a', 1, 5}, {'\t', 0, 5}, {'n', 2, 4}, {'\f', 0, 5}, {Tokens::cll_TEMPLATE, 15, ::Parser::DFA::null_state}, {'s', 4, 2}, {'o', 5, 5}, {'v', 6, 1}, {' ', 0, 5}, {'b', 7, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 8, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'u', 9, 4}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{'t', 10, 2}} },
-{ 0, ::Parser::DFA::null_state, {
-{'b', 11, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'a', 12, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 13, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 0, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'m', 3, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 3, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'j', 0, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 3, 5}} },
-{ 0, ::Parser::DFA::null_state, {
-{'o', 14, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 3, 5}} },
-{ 3, 5, {
-} },
-};
-const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
 {Tokens::MULTIPLE, 1, 1}, {Tokens::ID, 5, ::Parser::DFA::null_state}, {Tokens::__WHITESPACE, 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {Tokens::AUTO_9, 2, 1}, {Tokens::__WHITESPACE, 1, ::Parser::DFA::null_state}} },
@@ -3410,14 +2747,5 @@ const Parser::DFA::TokenTable<8, 3> Parser::Parser::dfa_table_27 = {{ 0, ::Parse
 { 0, ::Parser::DFA::null_state, {
 {Tokens::ID, 2, 0}, {Tokens::__WHITESPACE, 7, ::Parser::DFA::null_state}} },
 { 2, ::Parser::DFA::null_state, {
-} },
-};
-const Parser::DFA::TokenTable<4, 3> Parser::Parser::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
-{Tokens::cll_LOGICAL_AND, 1, 1}, {Tokens::cll_LOGICAL_OR, 1, 0}, {Tokens::__WHITESPACE, 2, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 0, ::Parser::DFA::null_state, {
-{Tokens::cll_LOGICAL_OR, 1, 0}, {Tokens::__WHITESPACE, 3, ::Parser::DFA::null_state}} },
-{ 1, 1, {
 } },
 };

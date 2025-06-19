@@ -116,7 +116,7 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 }
 void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     *addSpaceSkip = true;
-    std::unique_ptr<BuilderBase> builder = nullptr;
+    std::unique_ptr<BuilderBase> builder;
     if (member.isGroup()) {
         builder = std::make_unique<GroupBuilder>(*this, member);
     } else if (member.isCsequence()) {
@@ -820,6 +820,8 @@ void LLIR::OpBuilder::build() {
         auto dfa_index = dfas->size();
         dfas->push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
+        dfa_call_result.type.type = LLIR::var_types::INT;
+        push({types::VARIABLE, dfa_call_result});
         push({types::ASSIGN_VARIABLE, LLIR::variable_assign { dfa_call_result.name, var_assign_types::ASSIGN, LLIR::assign {
             var_assign_values::INTERNAL_FUNCTION_CALL, LLIR::function_call {
                         internal_functions::dfa_decide, {

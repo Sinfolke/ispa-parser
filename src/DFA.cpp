@@ -598,6 +598,77 @@ void DFA::buildWMerge() {
     removeUnreachableStates();
     removeSelfLoop();
 }
+auto DFA::getType() const -> DfaType {
+    DfaType dfa_type = DfaType::NONE;
+    if (mstates.empty()) {
+        for (const auto &state : states) {
+            for (const auto &[symbol, next] : state.transitions) {
+                if (std::holds_alternative<char>(symbol)) {
+                    if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
+                        dfa_type = DfaType::Char;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        break;
+                    }
+                } else {
+                    if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
+                        dfa_type = DfaType::Token;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        for (const auto &state : mstates) {
+            for (const auto &[symbol, next] : state.transitions) {
+                if (std::holds_alternative<char>(symbol)) {
+                    if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
+                        dfa_type = DfaType::Char;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        break;
+                    }
+                } else {
+                    if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
+                        dfa_type = DfaType::Token;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return dfa_type;
+}
+auto DFA::getTypeStr() const -> std::string {
+    switch (getType()) {
+        case DFA::DfaType::Char:
+            return "CharTable";
+        case DFA::DfaType::Token:
+            return "TokenTable";
+        case DFA::DfaType::Multi:
+            return "MultiTable";
+        default:
+            throw Error("Undefined DFA type");;
+    }
+}
+auto DFA::getMaxTransitionCount() const -> size_t {
+    size_t count = 0;
+    if (mstates.empty()) {
+        for (const auto &state : states) {
+            count = std::max<size_t>(count, state.transitions.size());
+        }
+    } else {
+        for (const auto &state : mstates) {
+            count = std::max<size_t>(count, state.transitions.size());
+        }
+    }
+    return count;
+}
+
 
 // Print a single state
 std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {

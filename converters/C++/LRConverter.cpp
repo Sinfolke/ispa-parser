@@ -209,8 +209,6 @@ void LRConverter::outputHeader(std::ostringstream& out, std::string &filename) c
         LRHeader::createTableTypes(out, -1);
     }
     LLHeader::createTypesNamespace(out, data_block_tokens, data_block_rules);
-    // create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
-    LLHeader::create_lexer_header(out, tokens);
     LRHeader::create_parser_header(out, data->isELR());
     LRHeader::addStandardFunctionsParser(out);
     LLHeader::close_parser_header(out);

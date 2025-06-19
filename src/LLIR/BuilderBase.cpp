@@ -197,9 +197,8 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const LLIR::
     const auto v_or_empty = [this](const LLIR::variable &var) -> LLIR::variable {
         if (!var.name.empty() && var.type.type != LLIR::var_types::UNDEFINED) {
             return var;
-        } else {
-            return {};
         }
+        return {};
     };
     insert_var(uvar);
     insert_var(svar);

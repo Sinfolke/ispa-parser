@@ -4,6 +4,7 @@ import LLIR;
 import Converter.DFA;
 import LexerConverter;
 import logging;
+import cpuf.printf;
 import std;
 void LLConverter::writeRules(std::ostringstream &out) {
     for (auto &[data_block, name, members] : ir.getData()) {
@@ -55,7 +56,6 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createDFATypes(out);
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
-    create_lexer_header(out, tokens);
     create_parser_header(out, ir.getDfas());
     indentLevel = 2;
     writeRules(out);
@@ -103,10 +103,6 @@ void LLConverter::convertAssignVariable(LLIR::variable_assign var, std::ostrings
     out << var.name << " " << convert_var_assing_types(var.assign_type) << " " << convertAssign(var.value);
 }
 void LLConverter::convertMember(const LLIR::member& mem, std::ostringstream &out) {
-    if (cpp_file && (!isToken || mem.type == LLIR::types::RULE) && mem.type != LLIR::types::TOKEN) {
-        isToken = false;
-        return;
-    }
     if (mem.type == LLIR::types::EMPTY)
         return;
     if (mem.type != LLIR::types::RULE_END)

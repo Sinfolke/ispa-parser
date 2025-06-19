@@ -11,6 +11,7 @@ export class DFAConverter {
     const std::string &prefix;
     const std::string &name;
     std::ostringstream out;
+    std::vector<size_t> token_type;
     void createDFATable(const DFA& dfa, size_t count);
 public:
     DFAConverter(const stdu::vector<DFA> &dfa, const LexerBuilder::DfaCompatibleTable *dfa_compatible_table, const std::string& namespace_name, const std::string &prefix, const std::string &name)
