@@ -188,12 +188,13 @@ namespace DFA {
     using MultiKey = std::variant<
         char,
         Token_res (*)(const char*),
-        ISPA_STD::Span<SpanState<Tokens>>,     // SpanTokenTable
-        ISPA_STD::Span<SpanState<char>>,       // SpanCharTable
-        std::unique_ptr<SpanMultiTable>        // Recursive wrapped
+        ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>,     // SpanCallableTokenTable
+        ISPA_STD::Span<SpanState<char>>,                            // SpanCharTable
+        std::unique_ptr<SpanMultiTable>                             // Recursive wrapped
     >;
 
     using SpanTokenTable = ISPA_STD::Span<SpanState<Tokens>>;
+    using SpanCallableTokenTable = ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>;
     using SpanCharTable = ISPA_STD::Span<SpanState<char>>;
     using SpanMultiState = SpanState<MultiKey>;
 
@@ -203,6 +204,9 @@ namespace DFA {
 
     template<size_t N, size_t MAX>
     using TokenTable = std::array<State<MAX, Tokens>, N>;
+
+    template<size_t N, size_t MAX>
+    using CallableTokenTable = std::array<State<MAX, Token_res (*) (const char*)>, N>;
 
     template<size_t N, size_t MAX>
     using CharTable = std::array<State<MAX, char>, N>;
@@ -454,42 +458,45 @@ namespace DFA {
 		private:
 			Token makeToken(const char*& pos);
 			const ::Parser::DFA::CharTable<2, 6> dfa_table_0;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_1;
+			const ::Parser::DFA::CharTable<15, 11> dfa_table_1;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_2;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_3;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_4;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_5;
+			const ::Parser::DFA::MultiTable<10, 13> dfa_table_4;
+			const ::Parser::DFA::MultiTable<16, 11> dfa_table_5;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_6;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_7;
-			const ::Parser::DFA::CharTable<21, 20> dfa_table_8;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_9;
-			const ::Parser::DFA::CharTable<21, 20> dfa_table_10;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_11;
-			const ::Parser::DFA::CharTable<10, 12> dfa_table_12;
-			const ::Parser::DFA::CharTable<14, 28> dfa_table_13;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_14;
+			const ::Parser::DFA::MultiTable<10, 13> dfa_table_8;
+			const ::Parser::DFA::MultiTable<24, 25> dfa_table_9;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_10;
+			const ::Parser::DFA::MultiTable<24, 25> dfa_table_11;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_12;
+			const ::Parser::DFA::MultiTable<10, 14> dfa_table_13;
+			const ::Parser::DFA::CharTable<14, 28> dfa_table_14;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_15;
-			const ::Parser::DFA::MultiTable<3, 10> dfa_table_16;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_17;
-			const ::Parser::DFA::CharTable<5, 10> dfa_table_18;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_19;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_16;
+			const ::Parser::DFA::MultiTable<13, 12> dfa_table_17;
+			const ::Parser::DFA::CharTable<13, 10> dfa_table_18;
+			const ::Parser::DFA::CharTable<5, 10> dfa_table_19;
 			const ::Parser::DFA::CharTable<2, 7> dfa_table_20;
-			const ::Parser::DFA::CharTable<2, 69> dfa_table_21;
-			const ::Parser::DFA::MultiTable<10, 12> dfa_table_22;
-			const ::Parser::DFA::CharTable<15, 8> dfa_table_23;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_24;
-			const ::Parser::DFA::CharTable<13, 70> dfa_table_25;
-			const ::Parser::DFA::MultiTable<26, 70> dfa_table_26;
-			const ::Parser::DFA::CharTable<26, 69> dfa_table_27;
-			const ::Parser::DFA::CharTable<21, 69> dfa_table_28;
-			const ::Parser::DFA::CharTable<15, 69> dfa_table_29;
-			const ::Parser::DFA::MultiTable<20, 72> dfa_table_30;
-			const ::Parser::DFA::CharTable<33, 70> dfa_table_31;
-			const ::Parser::DFA::CharTable<12, 69> dfa_table_32;
-			const ::Parser::DFA::CharTable<14, 69> dfa_table_33;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_34;
-			const ::Parser::DFA::CharTable<11, 8> dfa_table_35;
-			const ::Parser::DFA::CharTable<2, 7> dfa_table_36;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_21;
+			const ::Parser::DFA::CharTable<2, 69> dfa_table_22;
+			const ::Parser::DFA::MultiTable<10, 12> dfa_table_23;
+			const ::Parser::DFA::MultiTable<28, 10> dfa_table_24;
+			const ::Parser::DFA::MultiTable<11, 9> dfa_table_25;
+			const ::Parser::DFA::MultiTable<63, 74> dfa_table_26;
+			const ::Parser::DFA::MultiTable<59, 70> dfa_table_27;
+			const ::Parser::DFA::CharTable<30, 69> dfa_table_28;
+			const ::Parser::DFA::CharTable<21, 69> dfa_table_29;
+			const ::Parser::DFA::CharTable<15, 69> dfa_table_30;
+			const ::Parser::DFA::MultiTable<62, 73> dfa_table_31;
+			const ::Parser::DFA::MultiTable<62, 74> dfa_table_32;
+			const ::Parser::DFA::MultiTable<76, 71> dfa_table_33;
+			const ::Parser::DFA::CharTable<17, 69> dfa_table_34;
+			const ::Parser::DFA::CharTable<12, 69> dfa_table_35;
+			const ::Parser::DFA::CharTable<14, 69> dfa_table_36;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_37;
+			const ::Parser::DFA::MultiTable<15, 11> dfa_table_38;
+			const ::Parser::DFA::CharTable<2, 7> dfa_table_39;
 	};
 	class Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {
 		public:

@@ -142,12 +142,13 @@ namespace DFA {
     using MultiKey = std::variant<
         char,
         Token_res (*)(const char*),
-        ISPA_STD::Span<SpanState<Tokens>>,     // SpanTokenTable
-        ISPA_STD::Span<SpanState<char>>,       // SpanCharTable
-        std::unique_ptr<SpanMultiTable>        // Recursive wrapped
+        ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>,     // SpanCallableTokenTable
+        ISPA_STD::Span<SpanState<char>>,                            // SpanCharTable
+        std::unique_ptr<SpanMultiTable>                             // Recursive wrapped
     >;
 
     using SpanTokenTable = ISPA_STD::Span<SpanState<Tokens>>;
+    using SpanCallableTokenTable = ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>;
     using SpanCharTable = ISPA_STD::Span<SpanState<char>>;
     using SpanMultiState = SpanState<MultiKey>;
 
@@ -157,6 +158,9 @@ namespace DFA {
 
     template<size_t N, size_t MAX>
     using TokenTable = std::array<State<MAX, Tokens>, N>;
+
+    template<size_t N, size_t MAX>
+    using CallableTokenTable = std::array<State<MAX, Token_res (*) (const char*)>, N>;
 
     template<size_t N, size_t MAX>
     using CharTable = std::array<State<MAX, char>, N>;
@@ -170,7 +174,7 @@ namespace DFA {
 void LLHeader::createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const {
     size_t count = 0;
     for (const auto &dfa : dfas) {
-        out << "\n\t\t\tconst " << "DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> table_" << count++ << ';';
+        out << "\n\t\t\tconst " << "DFA::" << dfa.getTypeStr(false) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> table_" << count++ << ';';
     }
     out << '\n';
 }

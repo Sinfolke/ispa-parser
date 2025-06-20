@@ -215,7 +215,7 @@ void LLConverter::convertData(std::ostringstream &out) {
     }
 }
 void LLConverter::addDFATables(std::ostringstream &out) {
-    DFAConverter tables_builder(ir.getDfas(), nullptr, namespace_name, "Parser", "dfa_table");
+    DFAConverter tables_builder(ir.getDfas(), nullptr, namespace_name, "Parser", "dfa_table", false);
     tables_builder.create();
     out << tables_builder.get().str();
 }

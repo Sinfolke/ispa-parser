@@ -136,6 +136,7 @@ class node_exception : public std::exception {
         return mes.c_str();
     }
 };
+// prior C++20 span type
 template<typename T>
 class Span {
     public:
@@ -327,8 +328,15 @@ class DFA {
                     return t;
                 }
             } else {
-                if (t.symbol == pos->name()) {
-                    return t;
+                if constexpr (std::is_same_v<std::decay_t<IT>, char*>) {
+                    // handle the case when an entire token consists of other tokens
+                    if (t.symbol(pos)) {
+                        return t;
+                    }
+                } else {
+                    if (t.symbol == pos->name()) {
+                        return t;
+                    }
                 }
             }
 

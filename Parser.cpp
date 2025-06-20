@@ -4,73 +4,170 @@ const ::Parser::DFA::CharTable<2, 6> Parser::Lexer::dfa_table_0 = {{ 1, ::Parser
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<15, 11> Parser::Lexer::dfa_table_1 = {{ 0, ::Parser::DFA::null_state, {
+{'<', 14, ::Parser::DFA::null_state}, {'=', 5, 1}, {'>', 13, ::Parser::DFA::null_state}, {'!', 12, ::Parser::DFA::null_state}, {'\v', 11, ::Parser::DFA::null_state}, {'\t', 10, ::Parser::DFA::null_state}, {'n', 1, 0}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 3, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 4, 0}, {'\r', 4, 0}, {'\n', 4, 0}, {' ', 4, 0}, {'\t', 4, 0}, {'\v', 4, 0}, {'!', 5, 3}, {'<', 2, 5}, {'=', 5, 1}, {'>', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 2, 0}} },
+{ 2, 0, {
+{'!', 5, 3}, {'n', 1, 0}, {'\f', 4, 0}} },
+{ 2, 0, {
+{'!', 5, 3}, {'n', 1, 0}, {'\r', 4, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'!', 5, 3}, {'n', 1, 0}, {'\n', 4, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'!', 5, 3}, {'n', 1, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {' ', 4, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'!', 5, 3}, {'n', 1, 0}, {'\t', 4, 0}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'!', 5, 3}, {'\v', 4, 0}, {'\t', 10, ::Parser::DFA::null_state}, {'n', 1, 0}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 2, 1, {
+{'=', 2, 0}} },
+{ 2, 0, {
+{'=', 2, 0}} },
+{ 2, 5, {
+{'=', 2, 0}} },
+};
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\v', 0, 0}, {'#', 1, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_2 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
 {'$', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_3 = {{ 0, ::Parser::DFA::null_state, {
-{'%', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
+const ::Parser::DFA::MultiTable<10, 13> Parser::Lexer::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 0}, {'*', 1, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}, {'-', 1, 0}, {'/', 1, 0}, {'%', 9, ::Parser::DFA::null_state}, {'\t', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-};
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_4 = {{ 0, ::Parser::DFA::null_state, {
-{'&', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
+{ 4, 0, {
+{'\f', 2, 0}, {'\v', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'=', 1, 0}, {'\r', 2, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\f', 2, 0}} },
+{ 1, 0, {
+{'\v', 2, 0}, {'+', 1, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\v', 4, ::Parser::DFA::null_state}, {'\n', 2, 0}, {'+', 1, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\v', 4, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {' ', 2, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\r', 2, 0}, {'\v', 4, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 3, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\t', 2, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{ 1, 4, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::MultiTable<16, 11> Parser::Lexer::dfa_table_5 = {{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}, {'&', 15, ::Parser::DFA::null_state}, {'a', 3, 0}, {'\t', 14, ::Parser::DFA::null_state}, {'\r', 13, ::Parser::DFA::null_state}, {' ', 12, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'a', 3, 0}, {'\t', 2, 0}, {'&', 4, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'&', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_0.data()), 6, 1}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}} },
+{ 1, 0, {
+{'&', 4, 1}, {'a', 3, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 6, 1}, {'\f', 2, 0}} },
+{ 1, 0, {
+{'a', 3, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 6, 1}, {'&', 4, 1}, {'\v', 2, 0}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_0.data()), 10, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}} },
+{ 1, 1, {
+} },
+{ 1, 0, {
+{'&', 4, 1}, {'a', 3, 0}, {'\n', 2, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'&', 4, 1}, {'a', 3, 0}, {' ', 2, 0}, {'\n', 11, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'&', 4, 1}, {'a', 3, 0}, {'\r', 2, 0}, {' ', 12, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'&', 4, 1}, {'a', 3, 0}, {'\t', 2, 0}, {'\r', 13, ::Parser::DFA::null_state}, {' ', 12, ::Parser::DFA::null_state}, {'\n', 11, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 7, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'&', 1, 1}} },
+};
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
 {'(', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_6 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
 {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {')', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_7 = {{ 0, ::Parser::DFA::null_state, {
-{'*', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
+const ::Parser::DFA::MultiTable<10, 13> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 0}, {'/', 1, 0}, {'%', 1, 4}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}, {'-', 1, 0}, {'*', 9, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'\t', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 4, 0, {
+{'\f', 2, 0}, {'\v', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'=', 1, 0}, {'\r', 2, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\v', 2, 0}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\r', 2, 0}, {'\v', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\n', 2, 0}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{' ', 2, 0}, {'+', 1, 0}, {'\n', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\t', 2, 0}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'+', 1, 0}, {'\f', 2, 0}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\t', 7, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 3, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
 };
-const ::Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Parser::DFA::null_state, {
-{'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 2, 0}, {'+', 15, ::Parser::DFA::null_state}, {'\f', 14, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<24, 25> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
+{'=', 2, 0}, {'*', 2, 0}, {'%', 2, 4}, {'/', 2, 0}, {'6', 23, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 22, ::Parser::DFA::null_state}, {'2', 21, ::Parser::DFA::null_state}, {'1', 20, ::Parser::DFA::null_state}, {'3', 19, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_13.data()), 2, 0}, {'-', 18, ::Parser::DFA::null_state}, {'+', 17, ::Parser::DFA::null_state}, {'9', 16, ::Parser::DFA::null_state}, {'\f', 15, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'\n', 14, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'+', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 5, 0, {
+{ 4, 0, {
 {'\f', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {'8', 3, 0}, {'6', 3, 0}, {',', 3, 0}, {'5', 3, 0}, {' ', 3, 0}, {'.', 3, 0}, {'7', 3, 0}, {'\t', 3, 0}, {'4', 3, 0}, {'2', 3, 0}, {'1', 3, 0}, {'0', 3, 0}, {'9', 3, 0}, {'\v', 3, 0}, {'3', 3, 0}, {'-', 2, 0}, {'+', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\v', 4, 0}, {'\r', 4, 0}, {'\n', 4, 0}, {' ', 4, 0}, {'\t', 4, 0}, {'\f', 4, 0}, {'+', 2, 0}, {'*', 2, 0}, {'-', 2, 0}, {'%', 2, 4}, {'/', 2, 0}} },
+{ 9, 0, {
+{'\f', 5, 0}, {'\v', 5, 0}, {'\n', 5, 0}, {' ', 5, 0}, {'\t', 5, 0}, {'=', 2, 0}, {'\r', 5, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 2, 0}} },
 { 2, 0, {
-{'9', 2, 0}, {'+', 1, 0}, {'\r', 3, 0}} },
+{'0', 2, 0}, {'+', 1, 0}, {'\r', 5, 0}} },
 { 2, 0, {
-{'3', 3, 0}, {'+', 2, 0}} },
-{ 2, 0, {
-{'0', 2, 0}, {'\v', 3, 0}, {'9', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\r', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'3', 3, 0}, {'+', 2, 0}} },
-{ 2, 0, {
-{'+', 1, 0}, {'5', 2, 0}, {' ', 3, 0}, {'9', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
+{'0', 2, 0}, {'\v', 5, 0}, {'+', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'5', 9, ::Parser::DFA::null_state}, {'8', 2, 0}, {'+', 1, 0}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 3, 0}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
+{'+', 1, 0}, {' ', 5, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'5', 2, 0}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'\n', 10, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\t', 3, 0}, {'5', 9, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\v', 6, ::Parser::DFA::null_state}} },
+{'3', 3, 0}, {'+', 2, 0}} },
+{ 2, 0, {
+{'+', 1, 0}, {'8', 11, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}, {'\t', 5, 0}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
-{'\n', 10, ::Parser::DFA::null_state}, {'8', 11, ::Parser::DFA::null_state}, {'\f', 3, 0}, {'+', 2, 0}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'0', 7, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}, {'9', 5, ::Parser::DFA::null_state}, {'\v', 6, ::Parser::DFA::null_state}} },
+{'+', 1, 0}, {'8', 11, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 5, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'9', 2, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'8', 11, ::Parser::DFA::null_state}, {'\n', 14, ::Parser::DFA::null_state}, {'\f', 5, 0}, {'+', 1, 0}, {' ', 9, ::Parser::DFA::null_state}, {'5', 10, ::Parser::DFA::null_state}, {'7', 13, ::Parser::DFA::null_state}, {'\t', 12, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'9', 2, 0}, {'\r', 6, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
 {'+', 2, 0}} },
+{ 2, 0, {
+} },
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 { 2, 0, {
@@ -82,65 +179,71 @@ const ::Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_8 = {{ 0, ::Pars
 { 2, 0, {
 {'3', 3, 0}, {'+', 2, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_9 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
 {',', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<21, 20> Parser::Lexer::dfa_table_10 = {{ 0, ::Parser::DFA::null_state, {
-{'6', 20, ::Parser::DFA::null_state}, {',', 3, 0}, {'.', 3, 0}, {'4', 19, ::Parser::DFA::null_state}, {'2', 18, ::Parser::DFA::null_state}, {'1', 17, ::Parser::DFA::null_state}, {'3', 16, ::Parser::DFA::null_state}, {'-', 15, ::Parser::DFA::null_state}, {'7', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'5', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'8', 10, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<24, 25> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 0}, {'*', 1, 0}, {'%', 1, 4}, {'/', 1, 0}, {'6', 23, ::Parser::DFA::null_state}, {',', 2, 0}, {'.', 2, 0}, {'4', 22, ::Parser::DFA::null_state}, {'2', 21, ::Parser::DFA::null_state}, {'1', 20, ::Parser::DFA::null_state}, {'3', 19, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}, {'-', 18, ::Parser::DFA::null_state}, {'\n', 17, ::Parser::DFA::null_state}, {'7', 16, ::Parser::DFA::null_state}, {'\t', 15, ::Parser::DFA::null_state}, {'5', 14, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\v', 10, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'+', 6, ::Parser::DFA::null_state}, {'0', 11, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 3, 0, {
+{'\f', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {'8', 2, 0}, {'6', 2, 0}, {',', 2, 0}, {'5', 2, 0}, {' ', 2, 0}, {'.', 2, 0}, {'7', 2, 0}, {'\t', 2, 0}, {'4', 2, 0}, {'2', 2, 0}, {'1', 2, 0}, {'0', 2, 0}, {'9', 2, 0}, {'\v', 2, 0}, {'3', 2, 0}, {'-', 1, 0}, {'+', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'-', 1, 0}} },
-{ 6, 0, {
-{'\f', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {'8', 3, 0}, {'6', 3, 0}, {',', 3, 0}, {'5', 3, 0}, {' ', 3, 0}, {'.', 3, 0}, {'7', 3, 0}, {'\t', 3, 0}, {'4', 3, 0}, {'2', 3, 0}, {'1', 3, 0}, {'0', 3, 0}, {'9', 3, 0}, {'\v', 3, 0}, {'3', 3, 0}, {'-', 1, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'+', 1, 0}, {'-', 2, 0}, {'\f', 3, 0}} },
-{ 1, 0, {
-{'\r', 3, 0}, {'+', 1, 0}, {'-', 2, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 2, 0}, {'\v', 3, 0}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 2, 0}, {'\n', 3, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 2, 0}, {' ', 3, 0}, {'\n', 9, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'8', 10, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
-{ 1, 0, {
-{'-', 2, 0}, {'8', 10, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'5', 12, ::Parser::DFA::null_state}, {'\t', 3, 0}, {'\v', 7, ::Parser::DFA::null_state}, {'9', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 8, ::Parser::DFA::null_state}, {'+', 1, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
-{ 1, 0, {
+{'\v', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {' ', 3, 0}, {'\t', 3, 0}, {'\f', 3, 0}, {'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
 {'>', 1, 0}} },
+{ 10, 0, {
+{'\f', 5, 0}, {'\v', 5, 0}, {'\n', 5, 0}, {' ', 5, 0}, {'\t', 5, 0}, {'=', 1, 0}, {'\r', 5, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}} },
 { 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
+} },
 { 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
+{'-', 4, 0}, {'9', 1, 0}, {'\r', 5, 0}, {'+', 6, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
+{'3', 2, 0}, {'+', 1, 0}} },
 { 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
+{'-', 4, 0}, {'\f', 5, 0}, {'+', 6, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'0', 1, 0}} },
 { 1, 0, {
-{'3', 3, 0}, {'+', 1, 0}} },
+{'-', 4, 0}, {'\v', 5, 0}, {'0', 1, 0}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'+', 6, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 4, 0}, {' ', 5, 0}, {'5', 1, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'+', 6, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {'0', 11, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 4, 0}, {'7', 1, 0}, {'\t', 5, 0}, {'5', 14, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\v', 10, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'0', 11, ::Parser::DFA::null_state}, {'8', 12, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {'+', 6, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'-', 4, 0}, {'7', 16, ::Parser::DFA::null_state}, {'\t', 15, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'5', 14, ::Parser::DFA::null_state}, {'9', 8, ::Parser::DFA::null_state}, {'\v', 10, ::Parser::DFA::null_state}, {'\n', 5, 0}, {'8', 12, ::Parser::DFA::null_state}, {'+', 6, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'0', 11, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'-', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
+{ 1, 0, {
+{'3', 2, 0}, {'+', 1, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_11 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
 {'.', 1, 0}, {'\v', 0, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {'\n', 0, 0}, {' ', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Parser::DFA::null_state, {
-{'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 9, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<10, 14> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 0}, {'+', 1, 0}, {'*', 1, 0}, {DFA::SpanMultiTable(dfa_table_13.data()), 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 9, ::Parser::DFA::null_state}, {'n', 0, 0}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'\f', 2, 0}, {'+', 1, 0}, {'*', 1, 0}, {'-', 1, 0}, {'%', 1, 4}, {'/', 1, 0}} },
+{'\f', 2, 0}, {'\v', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {'\r', 2, 0}, {'\t', 2, 0}, {'/', 1, 0}} },
 { 1, 0, {
 {'/', 1, 0}, {'\f', 2, 0}} },
 { 1, 0, {
@@ -156,58 +259,100 @@ const ::Parser::DFA::CharTable<10, 12> Parser::Lexer::dfa_table_12 = {{ 0, ::Par
 { 1, 0, {
 {'/', 1, ::Parser::DFA::null_state}} },
 };
-const ::Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_13 = {{ 0, ::Parser::DFA::null_state, {
-{'9', 0, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'0', 10, ::Parser::DFA::null_state}, {'E', 0, 0}, {'2', 0, 0}, {'a', 0, 0}, {'4', 0, 0}, {'b', 0, 0}, {'1', 9, ::Parser::DFA::null_state}, {'c', 0, 0}, {'6', 0, 0}, {'d', 0, 0}, {'3', 0, 0}, {'A', 0, 0}, {' ', 8, ::Parser::DFA::null_state}, {'5', 0, 0}, {'f', 0, 0}, {'7', 0, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'e', 0, 0}, {'8', 0, 0}, {'C', 0, 0}, {'B', 0, 0}, {'\t', 6, ::Parser::DFA::null_state}, {'F', 0, 0}, {'\r', 5, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::CharTable<14, 28> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
+{'D', 2, 0}, {'F', 2, 0}, {'C', 2, 0}, {'8', 2, 0}, {'e', 2, 0}, {'B', 2, 0}, {'A', 2, 0}, {'3', 2, 0}, {'d', 2, 0}, {'c', 2, 0}, {'6', 2, 0}, {'1', 11, ::Parser::DFA::null_state}, {'b', 2, 0}, {'4', 2, 0}, {'a', 2, 0}, {'2', 2, 0}, {'0', 10, ::Parser::DFA::null_state}, {'E', 2, 0}, {'9', 2, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'7', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'5', 2, 0}, {'f', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 2, ::Parser::DFA::null_state}, {'\v', 2, ::Parser::DFA::null_state}, {'\n', 2, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}, {'\t', 2, ::Parser::DFA::null_state}, {'1', 2, 0}, {'\r', 2, ::Parser::DFA::null_state}, {'0', 13, ::Parser::DFA::null_state}} },
+{'\v', 2, ::Parser::DFA::null_state}, {'D', 2, 0}, {'\r', 2, ::Parser::DFA::null_state}, {'F', 2, 0}, {'\t', 2, ::Parser::DFA::null_state}, {'C', 2, 0}, {'8', 2, 0}, {'e', 2, 0}, {'\n', 2, ::Parser::DFA::null_state}, {'7', 2, 0}, {'B', 2, 0}, {'5', 2, 0}, {'f', 2, 0}, {'A', 2, 0}, {' ', 2, ::Parser::DFA::null_state}, {'6', 2, 0}, {'c', 2, 0}, {'b', 2, 0}, {'1', 2, 0}, {'3', 2, 0}, {'d', 2, 0}, {'4', 2, 0}, {'a', 2, 0}, {'2', 2, 0}, {'0', 13, ::Parser::DFA::null_state}, {'E', 2, 0}, {'9', 2, 0}, {'\f', 2, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'b', 1, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'0', 3, ::Parser::DFA::null_state}, {'\v', 2, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\r', 2, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\t', 2, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\t', 6, ::Parser::DFA::null_state}, {'\n', 2, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
-{'\t', 6, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'1', 2, 0}, {'\t', 6, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'1', 9, ::Parser::DFA::null_state}, {'\t', 6, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'x', 1, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 2, 0}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 2, ::Parser::DFA::null_state}, {'1', 9, ::Parser::DFA::null_state}, {'\t', 6, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\r', 5, ::Parser::DFA::null_state}, {'0', 12, ::Parser::DFA::null_state}, {'D', 0, 0}, {'\v', 4, ::Parser::DFA::null_state}} },
-{ 1, ::Parser::DFA::null_state, {
 {'x', 1, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'0', 3, ::Parser::DFA::null_state}, {' ', 2, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'0', 3, ::Parser::DFA::null_state}, {'\t', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'0', 3, ::Parser::DFA::null_state}, {'\t', 5, ::Parser::DFA::null_state}, {'\n', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 0, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\f', 0, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'\v', 0, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\t', 5, ::Parser::DFA::null_state}, {'5', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'b', 1, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\v', 9, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'b', 1, ::Parser::DFA::null_state}, {'0', 2, 0}} },
+{'1', 0, 0}, {'\v', 9, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'5', 2, 0}, {'\t', 5, ::Parser::DFA::null_state}, {'0', 12, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}} },
+{ 1, ::Parser::DFA::null_state, {
+{'b', 1, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'x', 1, ::Parser::DFA::null_state}, {'0', 3, ::Parser::DFA::null_state}, {'9', 2, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_14 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
 {':', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_15 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_16 = {{ 0, ::Parser::DFA::null_state, {
 {';', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::MultiTable<3, 10> Parser::Lexer::dfa_table_16 = {{ 1, 0, {
-{'<', 1, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 2, ::Parser::DFA::null_state}, {'\t', 0, 0}, {',', 0, 0}, {'>', 1, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
+const ::Parser::DFA::MultiTable<13, 12> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
+{',', 3, 0}, {DFA::SpanMultiTable(dfa_table_33.data()), 12, ::Parser::DFA::null_state}, {'>', 11, ::Parser::DFA::null_state}, {'=', 1, 1}, {'<', 10, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\v', 8, ::Parser::DFA::null_state}, {'\t', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 2, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
+{ 7, 0, {
+{'\f', 3, 0}, {'\v', 3, 0}, {'\r', 3, 0}, {'\n', 3, 0}, {' ', 3, 0}, {'>', 2, 0}, {',', 3, 0}, {'\t', 3, 0}, {DFA::SpanMultiTable(dfa_table_33.data()), 3, 0}, {'<', 2, 0}} },
+{ 2, 0, {
+{'<', 2, 5}, {'!', 1, 3}, {'\r', 3, 0}} },
+{ 2, 0, {
+{'<', 2, 5}, {'!', 1, 3}, {'\n', 3, 0}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{' ', 3, 0}, {'<', 2, 5}, {'!', 1, 3}, {'\n', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'<', 2, 5}, {'\t', 3, 0}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'<', 2, 5}, {'!', 1, 3}, {'\v', 3, 0}, {'\t', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'<', 2, 5}, {'\f', 3, 0}, {'\t', 7, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'=', 2, 0}} },
+{ 2, 0, {
+{'=', 2, 0}} },
+{ 2, 0, {
+{DFA::SpanMultiTable(dfa_table_33.data()), 3, 0}, {'<', 2, 0}} },
+};
+const ::Parser::DFA::CharTable<13, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
+{'<', 12, ::Parser::DFA::null_state}, {'>', 11, ::Parser::DFA::null_state}, {'=', 10, ::Parser::DFA::null_state}, {'\t', 9, ::Parser::DFA::null_state}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'!', 3, 3}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'\v', 2, 0}, {'!', 3, 3}, {'<', 1, 5}, {'=', 3, 1}, {'>', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'=', 1, 0}} },
 { 1, 0, {
-{'>', 1, 0}, {'\f', 0, 0}} },
+{'=', 1, 0}, {'!', 3, 3}, {'\f', 2, 0}} },
+{ 1, 0, {
+{'!', 3, 3}, {'=', 1, 0}, {'\v', 2, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'\n', 2, 0}, {'!', 3, 3}, {'=', 1, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'=', 1, 0}, {' ', 2, 0}, {'\n', 6, ::Parser::DFA::null_state}, {'!', 3, 3}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'=', 1, 0}, {'\r', 2, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'!', 3, 3}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'=', 1, 0}, {'\t', 2, 0}, {'\r', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'!', 3, 3}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'=', 1, 0}} },
+{ 1, 0, {
+{'=', 1, 0}} },
+{ 1, 5, {
+{'=', 1, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_17 = {{ 0, ::Parser::DFA::null_state, {
-{'=', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-};
-const ::Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
 {'>', 4, ::Parser::DFA::null_state}, {'=', 1, 1}, {'<', 3, ::Parser::DFA::null_state}, {'!', 1, 3}, {'\v', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'=', 2, 0}} },
@@ -218,212 +363,430 @@ const ::Parser::DFA::CharTable<5, 10> Parser::Lexer::dfa_table_18 = {{ 0, ::Pars
 { 2, 0, {
 {'=', 2, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_19 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
 {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'?', 1, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_20 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_21 = {{ 0, ::Parser::DFA::null_state, {
 {'@', 1, 0}, {'\t', 0, 0}, {'\r', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_21 = {{ 1, 0, {
+const ::Parser::DFA::CharTable<2, 69> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
 {'_', 0, 0}, {'a', 0, 0}, {'b', 0, 0}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 0, 0}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 0, 0}, {'l', 0, 0}, {'\t', 0, 0}, {'m', 0, 0}, {'n', 0, 0}, {'\v', 0, 0}, {'o', 0, 0}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 0, 0}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 0, 0}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 0, 0}, {'E', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 0, 0}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::MultiTable<10, 12> Parser::Lexer::dfa_table_22 = {{ 1, 0, {
-{Tokens::rule_CSEQUENCE_DIAPASON, 0, 0}, {'^', 1, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 0, 0}, {']', 1, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'[', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<10, 12> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
+{']', 1, 0}, {DFA::SpanMultiTable(dfa_table_24.data()), 2, 0}, {'^', 1, 0}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {'\t', 8, ::Parser::DFA::null_state}, {'\r', 7, ::Parser::DFA::null_state}, {'[', 9, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 0, ::Parser::DFA::null_state, {
-{'\f', 2, 0}, {'\v', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {'\r', 2, 0}, {'\t', 2, 0}, {'[', 1, 0}} },
+{ 3, 0, {
+{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {'[', 1, 0}, {'\t', 2, 0}, {']', 1, 0}, {DFA::SpanMultiTable(dfa_table_24.data()), 2, 0}, {'^', 1, 0}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}} },
 { 1, 0, {
 {'[', 1, 0}, {'\f', 2, 0}} },
 { 1, 0, {
-{'[', 1, 0}, {' ', 2, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'[', 1, 0}, {'\v', 2, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'[', 1, 0}, {'\v', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'\n', 2, 0}, {'[', 1, 0}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\r', 2, 0}, {'[', 1, 0}, {'\v', 5, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'\v', 4, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {'[', 1, 0}, {'\n', 5, ::Parser::DFA::null_state}, {' ', 0, 0}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\v', 5, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'[', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\n', 2, 0}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
+{'\r', 0, 0}, {'[', 1, 0}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-} },
+{'\t', 0, 0}, {'\r', 7, ::Parser::DFA::null_state}, {'[', 1, 0}, {DFA::SpanMultiTable(dfa_table_25.data()), 2, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 5, ::Parser::DFA::null_state}, {'\v', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{']', 1, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'[', 8, ::Parser::DFA::null_state}, {Tokens::rule_CSEQUENCE_SYMBOL, 0, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 4, ::Parser::DFA::null_state}, {'\f', 3, ::Parser::DFA::null_state}} },
-};
-const ::Parser::DFA::CharTable<15, 8> Parser::Lexer::dfa_table_23 = {{ 0, ::Parser::DFA::null_state, {
-{'\'', 3, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 10, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'0', 2, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-} },
-{ 4, 0, {
-{'\f', 3, 0}, {'\v', 3, 0}, {'\t', 3, 0}, {'\'', 3, 0}, {'\\', 14, ::Parser::DFA::null_state}, {'\r', 3, 0}, {'\n', 3, 0}, {' ', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\'', 2, 0}} },
-{ 2, 0, {
-{'\\', 4, 0}, {'\f', 3, 0}} },
-{ 2, 0, {
-{'\\', 4, 0}, {' ', 3, 0}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\n', 3, 0}, {'\\', 4, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\v', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'\\', 4, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\v', 8, ::Parser::DFA::null_state}, {'\\', 4, 0}, {'\r', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\\', 11, ::Parser::DFA::null_state}, {'\'', 3, 0}} },
-{ 2, ::Parser::DFA::null_state, {
-{'s', 1, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\t', 3, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'\\', 13, ::Parser::DFA::null_state}, {'\r', 9, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\f', 5, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'\\', 11, ::Parser::DFA::null_state}, {'\'', 2, 0}} },
-{ 2, 0, {
-{'\'', 3, 0}, {'\\', 2, 0}} },
-};
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
-{']', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
-{ 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<13, 70> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 5, 0}, {'P', 5, 0}, {'9', 5, 0}, {'R', 5, 0}, {'0', 5, 0}, {'6', 5, 0}, {'8', 5, 0}, {'5', 5, 0}, {'M', 5, 0}, {'4', 5, 0}, {'3', 5, 0}, {'2', 5, 0}, {'1', 5, 0}, {'Z', 5, 0}, {'Y', 5, 0}, {'X', 5, 0}, {'W', 5, 0}, {'V', 5, 0}, {'U', 5, 0}, {'T', 5, 0}, {'S', 5, 0}, {'Q', 5, 0}, {'O', 5, 0}, {'N', 5, 0}, {'K', 5, 0}, {'I', 5, 0}, {'z', 5, 0}, {'L', 5, 0}, {'y', 5, 0}, {'G', 5, 0}, {'x', 5, 0}, {'J', 5, 0}, {'w', 5, 0}, {'E', 5, 0}, {'v', 5, 0}, {'H', 5, 0}, {'u', 5, 0}, {'C', 5, 0}, {'t', 5, 0}, {'F', 5, 0}, {'s', 5, 0}, {'A', 5, 0}, {'r', 5, 0}, {'D', 5, 0}, {'q', 5, 0}, {'\r', 12, ::Parser::DFA::null_state}, {'p', 5, 0}, {'B', 5, 0}, {'o', 5, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'n', 5, 0}, {'m', 5, 0}, {'\t', 10, ::Parser::DFA::null_state}, {'l', 5, 0}, {'k', 5, 0}, {'\f', 9, ::Parser::DFA::null_state}, {'j', 5, 0}, {'d', 5, 0}, {'_', 5, 0}, {'&', 2, 1}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 5, 0}, {'g', 5, 0}, {'e', 5, 0}, {'a', 7, ::Parser::DFA::null_state}, {'f', 5, 0}, {'h', 5, 0}, {'c', 5, 0}, {' ', 6, ::Parser::DFA::null_state}, {'b', 5, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'n', 3, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'&', 4, 1}} },
-{ 0, ::Parser::DFA::null_state, {
-{'d', 4, 0}} },
+const ::Parser::DFA::MultiTable<28, 10> Parser::Lexer::dfa_table_24 = {{ 0, ::Parser::DFA::null_state, {
+{'\'', 6, 0}, {']', 1, 1}, {DFA::SpanMultiTable(dfa_table_25.data()), 1, ::Parser::DFA::null_state}, {'\f', 24, ::Parser::DFA::null_state}, {'\v', 21, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {' ', 18, ::Parser::DFA::null_state}, {'\\', 13, ::Parser::DFA::null_state}, {'\r', 10, ::Parser::DFA::null_state}, {'\t', 7, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 4, 0, {
-{'7', 5, 0}, {'P', 5, 0}, {'9', 5, 0}, {'R', 5, 0}, {'0', 5, 0}, {'6', 5, 0}, {'8', 5, 0}, {'5', 5, 0}, {' ', 5, 0}, {'M', 5, 0}, {'4', 5, 0}, {'3', 5, 0}, {'2', 5, 0}, {'1', 5, 0}, {'Z', 5, 0}, {'Y', 5, 0}, {'X', 5, 0}, {'W', 5, 0}, {'V', 5, 0}, {'U', 5, 0}, {'T', 5, 0}, {'S', 5, 0}, {'Q', 5, 0}, {'O', 5, 0}, {'N', 5, 0}, {'K', 5, 0}, {'I', 5, 0}, {'z', 5, 0}, {'L', 5, 0}, {'y', 5, 0}, {'G', 5, 0}, {'x', 5, 0}, {'J', 5, 0}, {'w', 5, 0}, {'E', 5, 0}, {'v', 5, 0}, {'H', 5, 0}, {'u', 5, 0}, {'C', 5, 0}, {'t', 5, 0}, {'F', 5, 0}, {'s', 5, 0}, {'A', 5, 0}, {'r', 5, 0}, {'D', 5, 0}, {'q', 5, 0}, {'\r', 5, 0}, {'p', 5, 0}, {'B', 5, 0}, {'o', 5, 0}, {'\v', 5, 0}, {'n', 5, 0}, {'m', 5, 0}, {'\t', 5, 0}, {'l', 5, 0}, {'k', 5, 0}, {'\f', 5, 0}, {'j', 5, 0}, {'i', 5, 0}, {'\n', 5, 0}, {'h', 5, 0}, {'g', 5, 0}, {'f', 5, 0}, {'e', 5, 0}, {'d', 5, 0}, {'c', 5, 0}, {'b', 5, 0}, {'a', 5, 0}, {'_', 5, 0}} },
-{ 4, 0, {
-{'&', 2, 1}, {' ', 0, 0}, {'a', 1, 0}, {'h', 5, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'n', 3, 0}, {'_', 5, 0}} },
-{ 4, 0, {
-{'\n', 0, 0}, {'&', 2, 1}, {' ', 6, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}, {'h', 5, 0}} },
-{ 4, 0, {
-{'\f', 0, 0}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'&', 2, 1}, {'h', 5, 0}, {'a', 7, ::Parser::DFA::null_state}} },
-{ 4, 0, {
-{'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 0, 0}, {'a', 7, ::Parser::DFA::null_state}} },
-{ 4, 0, {
-{'\v', 0, 0}, {'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 10, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}} },
-{ 4, 0, {
-{'\r', 0, 0}, {'\v', 11, ::Parser::DFA::null_state}, {'\f', 9, ::Parser::DFA::null_state}, {' ', 6, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {'h', 5, 0}, {'&', 2, 1}, {'\t', 10, ::Parser::DFA::null_state}, {'a', 7, ::Parser::DFA::null_state}} },
+{'\f', 2, 0}, {'\v', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {'\r', 2, 0}, {'\\', 3, 0}, {'\t', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'s', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'0', 1, 0}} },
+{ 8, 0, {
+{'\f', 6, 0}, {'\v', 6, 0}, {'\t', 6, 0}, {'\'', 6, 0}, {'\\', 27, ::Parser::DFA::null_state}, {'\r', 6, 0}, {'\n', 6, 0}, {' ', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 9, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 8, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 12, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 11, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 1, 0, {
+{'\\', 14, ::Parser::DFA::null_state}, {'\'', 6, 0}} },
+{ 1, ::Parser::DFA::null_state, {
+{'s', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 17, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 16, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 20, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 19, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 23, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 22, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\\', 26, ::Parser::DFA::null_state}, {'\t', 2, 0}, {']', 1, 1}, {'\r', 25, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+} },
+{ 1, 0, {
+{'\\', 4, 0}} },
+{ 1, 0, {
+{'\'', 6, 0}, {'\\', 1, 0}} },
 };
-const ::Parser::DFA::MultiTable<26, 70> Parser::Lexer::dfa_table_26 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 25, ::Parser::DFA::null_state}, {'p', 12, 0}, {'m', 12, 0}, {'\t', 24, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'i', 12, 0}, {'\n', 21, ::Parser::DFA::null_state}, {'h', 12, 0}, {'n', 15, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'f', 12, 0}, {'c', 12, 0}, {' ', 20, ::Parser::DFA::null_state}, {'E', 12, 0}, {'v', 19, ::Parser::DFA::null_state}, {'B', 12, 0}, {'o', 18, ::Parser::DFA::null_state}, {'F', 12, 0}, {'s', 17, ::Parser::DFA::null_state}, {'g', 12, 0}, {'e', 12, 0}, {'_', 12, 0}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}, {'w', 12, 0}, {'J', 12, 0}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<11, 9> Parser::Lexer::dfa_table_25 = {{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanMultiTable(dfa_table_25.data()), 1, ::Parser::DFA::null_state}, {']', 10, ::Parser::DFA::null_state}, {'\\', 3, 0}, {'\r', 9, ::Parser::DFA::null_state}, {'\t', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'t', 8, 2}} },
+{'\f', 2, 0}, {'\v', 2, 0}, {'\t', 2, 0}, {' ', 2, 0}, {'\n', 2, 0}, {']', 1, 1}, {'\r', 2, 0}, {'\\', 3, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'b', 9, 5}} },
+{'\\', 1, 0}} },
+{ 1, 0, {
+{']', 1, 0}, {'\\', 3, 0}, {'\f', 2, 0}} },
+{ 1, 0, {
+{']', 1, 0}, {'\v', 2, 0}, {'\\', 3, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{']', 1, 0}, {'\n', 2, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\\', 3, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{']', 1, 0}, {' ', 2, 0}, {'\n', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\\', 3, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{']', 1, 0}, {'\\', 3, 0}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\t', 2, 0}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{']', 1, 0}, {'\r', 2, 0}, {'\\', 3, 0}, {' ', 7, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {'\t', 8, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+} },
+};
+const ::Parser::DFA::MultiTable<63, 74> Parser::Lexer::dfa_table_26 = {{ 1, 0, {
+{'&', 2, 1}, {'_', 0, 0}, {'a', 61, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}, {'b', 58, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 51, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 44, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {'m', 0, 0}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'n', 36, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'o', 28, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 23, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 21, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'U', 0, 0}, {'Y', 0, 0}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'w', 0, 0}, {'J', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 17, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 8, 1}} },
+} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 10, 0}} },
+{'&', 1, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 0, 5}} },
+{'\f', 3, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'\v', 3, 5}, {'\r', 3, 5}, {'\t', 3, 5}, {'a', 4, 5}, {'n', 5, 4}, {'s', 6, 2}, {'b', 9, 0}, {' ', 3, 5}, {'\n', 3, 5}, {'o', 7, 5}, {'v', 8, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 10, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 11, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 12, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 12, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, 5}} },
 { 0, ::Parser::DFA::null_state, {
 {'m', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
 {'r', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'j', 0, 5}} },
+{'j', 3, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 11, 0}} },
+{'o', 15, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'l', 1, 5}} },
-{ 1, 0, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {' ', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 12, 0}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 12, 0}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 12, 0}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 12, 0}, {'j', 12, 0}, {'i', 12, 0}, {'\n', 12, 0}, {'h', 12, 0}, {'g', 12, 0}, {'f', 12, 0}, {'e', 12, 0}, {'d', 12, 0}, {'c', 12, 0}, {'b', 12, 0}, {'a', 12, 0}, {'_', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_0.data()), 16, 1}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}} },
+{ 1, 5, {
+{'&', 2, 1}, {'o', 7, 5}, {'a', 4, 5}, {'n', 5, 4}, {'s', 6, 2}, {'v', 8, 1}, {'7', 0, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 16, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'b', 9, 0}, {' ', 3, 5}} },
 { 1, 5, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'r', 6, 5}, {'_', 12, 0}} },
+{DFA::SpanCharTable(dfa_table_0.data()), 20, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}} },
+{ 1, 1, {
+} },
 { 0, ::Parser::DFA::null_state, {
-{'u', 7, 4}, {'_', 12, 0}} },
-{ 1, 0, {
-{'b', 5, 0}, {'v', 4, 1}, {'\v', 0, 5}, {'s', 2, 2}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 3, 5}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 22, ::Parser::DFA::null_state}, {'o', 7, 5}, {'&', 2, 1}, {'\r', 3, 5}, {'s', 6, 2}, {'v', 8, 1}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'b', 9, 0}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'t', 8, 2}, {'_', 12, 0}} },
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 4, 5}, {'o', 7, 5}, {'&', 2, 1}, {'\r', 3, 5}, {'s', 6, 2}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'b', 9, 0}, {' ', 17, ::Parser::DFA::null_state}, {'t', 12, 2}} },
+{ 1, 0, {
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 4, 5}, {'o', 7, 5}, {'&', 2, 1}, {'\r', 3, 5}, {'s', 27, ::Parser::DFA::null_state}, {'v', 25, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'b', 9, 0}, {' ', 17, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'b', 9, 5}, {'_', 12, 0}} },
+{'a', 26, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 8, 1}, {'_', 12, 0}} },
+{'b', 29, ::Parser::DFA::null_state}, {'o', 7, 5}, {'\v', 3, 5}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 5, 4}, {'a', 4, 5}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'7', 0, 0}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
 { 1, 0, {
-{'v', 19, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {' ', 0, 5}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
-{ 1, 0, {
-{'v', 19, ::Parser::DFA::null_state}, {'\n', 0, 5}, {' ', 20, ::Parser::DFA::null_state}, {'b', 5, 0}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
+{'b', 9, 0}, {'o', 34, ::Parser::DFA::null_state}, {'\v', 3, 5}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 5, 4}, {'a', 4, 5}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 33, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 31, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'7', 0, 0}, {' ', 17, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 10, 0}, {'_', 12, 0}} },
+{'a', 32, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 35, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 9, 0}, {'o', 28, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'a', 4, 5}, {'7', 0, 0}, {'\t', 3, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'u', 11, 4}} },
 { 1, 0, {
-{'\f', 0, 5}, {'v', 19, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
+{'b', 9, 0}, {'o', 42, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 40, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 38, ::Parser::DFA::null_state}, {'a', 4, 5}, {'7', 0, 0}, {'\t', 3, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'n', 41, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 39, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 4, {
+{'u', 11, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 43, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
 { 1, 0, {
-{'\t', 0, 5}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
+{'b', 9, 0}, {'\f', 3, 5}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 50, ::Parser::DFA::null_state}, {'a', 4, 5}, {'o', 48, ::Parser::DFA::null_state}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 47, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 45, ::Parser::DFA::null_state}, {'\t', 37, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 30, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 46, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 49, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'u', 11, 4}} },
 { 1, 0, {
-{'\r', 0, 5}, {'\t', 24, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'a', 14, ::Parser::DFA::null_state}, {'b', 22, ::Parser::DFA::null_state}, {'\n', 21, ::Parser::DFA::null_state}, {' ', 20, ::Parser::DFA::null_state}, {'v', 19, ::Parser::DFA::null_state}, {'s', 17, ::Parser::DFA::null_state}, {'\v', 16, ::Parser::DFA::null_state}, {'o', 18, ::Parser::DFA::null_state}, {'Y', 12, 0}, {'\f', 23, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 13, ::Parser::DFA::null_state}} },
+{'a', 4, 5}, {'b', 9, 0}, {'\n', 3, 5}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 57, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'o', 55, ::Parser::DFA::null_state}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 54, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 52, ::Parser::DFA::null_state}, {'\t', 37, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 30, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 53, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 56, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'u', 11, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'b', 9, 0}, {'\n', 51, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 36, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'o', 59, ::Parser::DFA::null_state}, {'&', 2, 1}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'\t', 37, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 30, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 29, ::Parser::DFA::null_state}, {'o', 60, ::Parser::DFA::null_state}, {'\v', 3, 5}, {'n', 5, 4}} },
+{ 1, 0, {
+{'b', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'b', 58, ::Parser::DFA::null_state}, {'\n', 51, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 62, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'o', 28, ::Parser::DFA::null_state}, {'\r', 24, ::Parser::DFA::null_state}, {'&', 2, 1}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'r', 10, 5}} },
+{ 1, 0, {
+{'b', 9, 0}, {'n', 5, 4}, {'\t', 3, 5}, {'u', 11, 4}} },
 };
-const ::Parser::DFA::CharTable<26, 69> Parser::Lexer::dfa_table_27 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 22, ::Parser::DFA::null_state}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 20, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'_', 12, 0}, {'i', 12, 0}, {'\n', 16, ::Parser::DFA::null_state}, {'h', 12, 0}, {'f', 15, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'C', 12, 0}, {'a', 12, 0}, {'g', 12, 0}, {'e', 12, 0}, {'c', 12, 0}, {' ', 13, ::Parser::DFA::null_state}, {'b', 12, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 2, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'u', 4, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 5, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'e', 6, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'s', 4, 0}} },
+const ::Parser::DFA::MultiTable<59, 70> Parser::Lexer::dfa_table_27 = {{ 1, 0, {
+{'_', 0, 0}, {'a', 58, ::Parser::DFA::null_state}, {'b', 55, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 48, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 41, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'m', 0, 0}, {'n', 33, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}, {'o', 25, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 21, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 20, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 17, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'S', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 15, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'o', 8, 0}} },
+{'\f', 2, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'\v', 2, 5}, {'\r', 2, 5}, {'\t', 2, 5}, {'a', 3, 5}, {'n', 4, 4}, {'s', 5, 2}, {'b', 8, 0}, {' ', 2, 5}, {'\n', 2, 5}, {'o', 6, 5}, {'v', 7, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'m', 6, 0}} },
+{'r', 9, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 6, 0}} },
+{'u', 10, 4}} },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 10, 0}, {'\v', 10, 0}, {'\r', 10, 0}, {' ', 10, 0}, {'\n', 10, 0}, {'\t', 10, 0}, {'f', 11, 0}} },
+{'t', 11, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'n', 6, 0}} },
-{ 6, 0, {
-{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {' ', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 12, 0}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 12, 0}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 12, 0}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 12, 0}, {'j', 12, 0}, {'i', 12, 0}, {'\n', 12, 0}, {'h', 12, 0}, {'g', 12, 0}, {'f', 12, 0}, {'e', 12, 0}, {'d', 12, 0}, {'c', 12, 0}, {'b', 12, 0}, {'a', 12, 0}, {'_', 12, 0}} },
-{ 6, 0, {
-{'t', 1, ::Parser::DFA::null_state}, {'f', 11, 0}, {' ', 12, 0}} },
+{'b', 12, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'r', 2, ::Parser::DFA::null_state}, {'_', 12, 0}} },
+{'a', 11, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}, {'_', 12, 0}} },
-{ 6, 0, {
-{'\n', 10, 0}, {'t', 14, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 17, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}} },
-{ 6, 0, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
-{ 6, 0, {
-{'\f', 10, 0}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 19, ::Parser::DFA::null_state}} },
-{ 6, 0, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
-{ 6, 0, {
-{'\t', 10, 0}, {'t', 14, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'f', 21, ::Parser::DFA::null_state}} },
-{ 6, 0, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
-{ 6, 0, {
-{'\t', 20, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'\v', 10, 0}, {'c', 12, 0}, {'f', 23, ::Parser::DFA::null_state}} },
-{ 6, 0, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
-{ 6, 0, {
-{'\r', 10, 0}, {'\t', 20, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 16, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\v', 22, ::Parser::DFA::null_state}, {'t', 14, ::Parser::DFA::null_state}, {'f', 25, ::Parser::DFA::null_state}} },
-{ 6, 0, {
-{'a', 3, 0}, {'r', 7, 0}, {'o', 9, 0}, {'n', 6, 0}} },
+{'o', 13, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 2, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'j', 2, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 1, 5}} },
+{ 1, 5, {
+{'a', 3, 5}, {'n', 4, 4}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'o', 6, 5}, {'v', 7, 1}, {' ', 2, 5}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}} },
+{ 1, 5, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 18, ::Parser::DFA::null_state}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 7, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 19, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 3, 5}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 17, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 5, 2}, {'7', 0, 0}, {'t', 11, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 3, 5}, {'n', 4, 4}, {'\r', 2, 5}, {'o', 6, 5}, {'v', 24, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 23, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'s', 22, ::Parser::DFA::null_state}, {'7', 0, 0}} },
+{ 1, 2, {
+{'t', 11, 2}} },
+{ 1, 5, {
+} },
+{ 1, 1, {
+{'a', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 3, 5}, {'n', 4, 4}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 6, 5}, {'v', 17, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 26, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 2, 5}, {'s', 20, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 13, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 3, 5}, {'n', 4, 4}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 31, ::Parser::DFA::null_state}, {'v', 30, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 29, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'7', 0, 0}, {'\v', 2, 5}, {'s', 28, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 11, 2}} },
+{ 1, 5, {
+} },
+{ 1, 1, {
+{'a', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 32, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 13, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'7', 0, 0}, {'\t', 2, 5}, {'n', 4, 4}, {'a', 3, 5}, {'o', 25, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'\v', 27, ::Parser::DFA::null_state}, {'u', 10, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'7', 0, 0}, {'\t', 2, 5}, {'n', 40, ::Parser::DFA::null_state}, {'a', 3, 5}, {'o', 38, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 36, ::Parser::DFA::null_state}, {'s', 35, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'b', 8, 0}, {'\v', 27, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 11, 2}} },
+{ 1, 5, {
+} },
+{ 1, 1, {
+{'a', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 39, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 13, 0}} },
+{ 1, 4, {
+{'u', 10, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 8, 0}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'n', 47, ::Parser::DFA::null_state}, {'a', 3, 5}, {'o', 45, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 44, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 43, ::Parser::DFA::null_state}, {'\f', 2, 5}, {'s', 42, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 11, 2}} },
+{ 1, 5, {
+} },
+{ 1, 1, {
+{'a', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 46, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 13, 0}} },
+{ 1, 4, {
+{'u', 10, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 8, 0}, {'\n', 2, 5}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 54, ::Parser::DFA::null_state}, {'o', 52, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 51, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 50, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {'s', 49, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 11, 2}} },
+{ 1, 5, {
+} },
+{ 1, 1, {
+{'a', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 53, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 13, 0}} },
+{ 1, 4, {
+{'u', 10, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 8, 0}, {'\n', 48, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 33, ::Parser::DFA::null_state}, {'o', 56, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 4, 4}, {'o', 57, ::Parser::DFA::null_state}, {'b', 26, ::Parser::DFA::null_state}, {'\v', 2, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 12, 5}, {'l', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 55, ::Parser::DFA::null_state}, {'\n', 48, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 3, 5}, {'n', 33, ::Parser::DFA::null_state}, {'o', 25, ::Parser::DFA::null_state}, {'v', 17, ::Parser::DFA::null_state}, {'\f', 41, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 16, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 15, ::Parser::DFA::null_state}, {'\v', 27, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'r', 9, 5}} },
 };
-const ::Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<30, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 27, ::Parser::DFA::null_state}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 24, ::Parser::DFA::null_state}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 21, ::Parser::DFA::null_state}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'j', 12, 0}, {'d', 12, 0}, {'_', 12, 0}, {'t', 17, ::Parser::DFA::null_state}, {'C', 12, 0}, {'i', 12, 0}, {'\n', 15, ::Parser::DFA::null_state}, {'h', 12, 0}, {'f', 14, ::Parser::DFA::null_state}, {'a', 12, 0}, {'g', 12, 0}, {'e', 12, 0}, {'c', 12, 0}, {' ', 13, ::Parser::DFA::null_state}, {'b', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 6, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 7, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 2, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'s', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 8, 0}, {'\v', 8, 0}, {'\r', 8, 0}, {' ', 8, 0}, {'\n', 8, 0}, {'\t', 8, 0}, {'f', 9, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 10, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 11, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 2, 0}} },
+{ 2, 0, {
+{'7', 12, 0}, {'P', 12, 0}, {'9', 12, 0}, {'R', 12, 0}, {'0', 12, 0}, {'6', 12, 0}, {'8', 12, 0}, {'5', 12, 0}, {' ', 12, 0}, {'M', 12, 0}, {'4', 12, 0}, {'3', 12, 0}, {'2', 12, 0}, {'1', 12, 0}, {'Z', 12, 0}, {'Y', 12, 0}, {'X', 12, 0}, {'W', 12, 0}, {'V', 12, 0}, {'U', 12, 0}, {'T', 12, 0}, {'S', 12, 0}, {'Q', 12, 0}, {'O', 12, 0}, {'N', 12, 0}, {'K', 12, 0}, {'I', 12, 0}, {'z', 12, 0}, {'L', 12, 0}, {'y', 12, 0}, {'G', 12, 0}, {'x', 12, 0}, {'J', 12, 0}, {'w', 12, 0}, {'E', 12, 0}, {'v', 12, 0}, {'H', 12, 0}, {'u', 12, 0}, {'C', 12, 0}, {'t', 12, 0}, {'F', 12, 0}, {'s', 12, 0}, {'A', 12, 0}, {'r', 12, 0}, {'D', 12, 0}, {'q', 12, 0}, {'\r', 12, 0}, {'p', 12, 0}, {'B', 12, 0}, {'o', 12, 0}, {'\v', 12, 0}, {'n', 12, 0}, {'m', 12, 0}, {'\t', 12, 0}, {'l', 12, 0}, {'k', 12, 0}, {'\f', 12, 0}, {'j', 12, 0}, {'i', 12, 0}, {'\n', 12, 0}, {'h', 12, 0}, {'g', 12, 0}, {'f', 12, 0}, {'e', 12, 0}, {'d', 12, 0}, {'c', 12, 0}, {'b', 12, 0}, {'a', 12, 0}, {'_', 12, 0}} },
+{ 2, 0, {
+{'t', 3, ::Parser::DFA::null_state}, {'f', 9, 0}, {' ', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}, {'_', 12, 0}} },
+{ 2, 0, {
+{'\n', 8, 0}, {'t', 3, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 16, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}, {'_', 12, 0}} },
+{ 2, 0, {
+{'\f', 8, 0}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'t', 20, ::Parser::DFA::null_state}, {'c', 12, 0}, {'f', 19, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}} },
+{ 2, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'\t', 8, 0}, {'t', 23, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\f', 18, ::Parser::DFA::null_state}, {'f', 22, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}} },
+{ 2, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'\t', 21, ::Parser::DFA::null_state}, {'t', 26, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'\v', 8, 0}, {'c', 12, 0}, {'f', 25, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}} },
+{ 2, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'\r', 8, 0}, {'\t', 21, ::Parser::DFA::null_state}, {'\f', 18, ::Parser::DFA::null_state}, {' ', 13, ::Parser::DFA::null_state}, {'\n', 15, ::Parser::DFA::null_state}, {'c', 12, 0}, {'\v', 24, ::Parser::DFA::null_state}, {'t', 29, ::Parser::DFA::null_state}, {'f', 28, ::Parser::DFA::null_state}} },
+{ 2, 0, {
+{'o', 1, 0}, {'n', 2, 0}, {'a', 5, 0}, {'r', 10, 0}} },
+{ 2, ::Parser::DFA::null_state, {
+{'r', 4, ::Parser::DFA::null_state}} },
+};
+const ::Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 8, 0}, {'P', 8, 0}, {'9', 8, 0}, {'R', 8, 0}, {'0', 8, 0}, {'6', 8, 0}, {'8', 8, 0}, {'5', 8, 0}, {'M', 8, 0}, {'4', 8, 0}, {'3', 8, 0}, {'2', 8, 0}, {'1', 8, 0}, {'Z', 8, 0}, {'Y', 8, 0}, {'X', 8, 0}, {'W', 8, 0}, {'V', 8, 0}, {'U', 8, 0}, {'T', 8, 0}, {'S', 8, 0}, {'Q', 8, 0}, {'O', 8, 0}, {'N', 8, 0}, {'K', 8, 0}, {'I', 8, 0}, {'z', 8, 0}, {'L', 8, 0}, {'y', 8, 0}, {'G', 8, 0}, {'x', 8, 0}, {'J', 8, 0}, {'w', 8, 0}, {'E', 8, 0}, {'v', 8, 0}, {'H', 8, 0}, {'u', 8, 0}, {'C', 8, 0}, {'t', 8, 0}, {'F', 8, 0}, {'s', 8, 0}, {'A', 8, 0}, {'r', 8, 0}, {'D', 8, 0}, {'q', 8, 0}, {'\r', 19, ::Parser::DFA::null_state}, {'p', 8, 0}, {'B', 8, 0}, {'o', 8, 0}, {'\v', 17, ::Parser::DFA::null_state}, {'n', 8, 0}, {'m', 8, 0}, {'\t', 15, ::Parser::DFA::null_state}, {'l', 8, 0}, {'k', 8, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'j', 8, 0}, {'d', 8, 0}, {'_', 8, 0}, {'\n', 11, ::Parser::DFA::null_state}, {'i', 10, ::Parser::DFA::null_state}, {'a', 8, 0}, {'g', 8, 0}, {'e', 8, 0}, {'f', 8, 0}, {'h', 8, 0}, {'c', 8, 0}, {' ', 9, ::Parser::DFA::null_state}, {'b', 8, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'p', 2, 0}} },
@@ -466,7 +829,7 @@ const ::Parser::DFA::CharTable<21, 69> Parser::Lexer::dfa_table_28 = {{ 0, ::Par
 { 5, 0, {
 {'m', 1, 0}, {'f', 5, 0}} },
 };
-const ::Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_30 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 14, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {'\v', 13, ::Parser::DFA::null_state}, {'n', 7, 0}, {'\t', 12, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 11, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'_', 7, 0}, {'m', 10, ::Parser::DFA::null_state}, {'i', 7, 0}, {'\n', 9, ::Parser::DFA::null_state}, {'h', 7, 0}, {'a', 7, 0}, {'g', 7, 0}, {'e', 7, 0}, {'f', 7, 0}, {'c', 7, 0}, {' ', 8, ::Parser::DFA::null_state}, {'b', 7, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'o', 2, 0}} },
@@ -497,115 +860,445 @@ const ::Parser::DFA::CharTable<15, 69> Parser::Lexer::dfa_table_29 = {{ 0, ::Par
 { 6, 0, {
 {'\r', 0, 0}, {'\t', 12, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 9, ::Parser::DFA::null_state}, {'m', 10, ::Parser::DFA::null_state}, {'\f', 11, ::Parser::DFA::null_state}, {'\v', 13, ::Parser::DFA::null_state}, {'c', 7, 0}} },
 };
-const ::Parser::DFA::MultiTable<20, 72> Parser::Lexer::dfa_table_30 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 18, ::Parser::DFA::null_state}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {';', 1, 0}, {'\t', 16, ::Parser::DFA::null_state}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 14, ::Parser::DFA::null_state}, {'j', 7, 0}, {'d', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}, {'n', 9, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_1.data()), 1, 0}, {'\n', 12, ::Parser::DFA::null_state}, {'i', 7, 0}, {'f', 7, 0}, {'h', 7, 0}, {'c', 7, 0}, {' ', 10, ::Parser::DFA::null_state}, {'m', 7, 0}, {'!', 1, 1}, {'g', 7, 0}, {'e', 7, 0}} },
+const ::Parser::DFA::MultiTable<62, 73> Parser::Lexer::dfa_table_31 = {{ 1, 0, {
+{';', 1, 0}, {'!', 1, 1}, {'_', 0, 0}, {'a', 61, ::Parser::DFA::null_state}, {'b', 58, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'i', 0, 0}, {'\n', 50, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 42, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'m', 0, 0}, {'n', 31, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}, {'o', 24, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 21, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 20, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 18, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'S', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 16, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
-{ 0, ::Parser::DFA::null_state, {
-{'m', 3, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 {'e', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 4, 0}, {'\r', 4, 0}, {'\n', 4, 0}, {' ', 4, 0}, {'n', 5, 0}, {'\t', 4, 0}, {'\v', 4, 0}, {'!', 1, 1}} },
+{'\f', 3, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'\v', 3, 5}, {'\r', 3, 5}, {'\t', 3, 5}, {'a', 4, 5}, {'n', 5, 4}, {'s', 6, 2}, {'b', 9, 0}, {' ', 3, 5}, {'\n', 3, 5}, {'o', 7, 5}, {'v', 8, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 6, 0}} },
+{'r', 10, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'t', 1, 0}} },
-{ 1, 0, {
-{'7', 7, 0}, {'P', 7, 0}, {'9', 7, 0}, {'R', 7, 0}, {'0', 7, 0}, {'6', 7, 0}, {'8', 7, 0}, {'5', 7, 0}, {' ', 7, 0}, {'M', 7, 0}, {'4', 7, 0}, {'3', 7, 0}, {'2', 7, 0}, {'1', 7, 0}, {'Z', 7, 0}, {'Y', 7, 0}, {'X', 7, 0}, {'W', 7, 0}, {'V', 7, 0}, {'U', 7, 0}, {'T', 7, 0}, {'S', 7, 0}, {'Q', 7, 0}, {'O', 7, 0}, {'N', 7, 0}, {'K', 7, 0}, {'I', 7, 0}, {'z', 7, 0}, {'L', 7, 0}, {'y', 7, 0}, {'G', 7, 0}, {'x', 7, 0}, {'J', 7, 0}, {'w', 7, 0}, {'E', 7, 0}, {'v', 7, 0}, {'H', 7, 0}, {'u', 7, 0}, {'C', 7, 0}, {'t', 7, 0}, {'F', 7, 0}, {'s', 7, 0}, {'A', 7, 0}, {'r', 7, 0}, {'D', 7, 0}, {'q', 7, 0}, {'\r', 7, 0}, {'p', 7, 0}, {'B', 7, 0}, {'o', 7, 0}, {'\v', 7, 0}, {'n', 7, 0}, {'m', 7, 0}, {'\t', 7, 0}, {'l', 7, 0}, {'k', 7, 0}, {'\f', 7, 0}, {'j', 7, 0}, {'i', 7, 0}, {'\n', 7, 0}, {'h', 7, 0}, {'g', 7, 0}, {'f', 7, 0}, {'e', 7, 0}, {'d', 7, 0}, {'c', 7, 0}, {'b', 7, 0}, {'a', 7, 0}, {'_', 7, 0}} },
-{ 1, 0, {
-{'\v', 4, 0}, {'n', 5, 0}, {'g', 7, 0}, {'!', 1, 1}} },
+{'u', 11, 4}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}, {'_', 7, 0}} },
+{'t', 12, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 12, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'j', 3, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 15, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 1, 5}} },
+{ 1, 5, {
+{'a', 4, 5}, {'n', 5, 4}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'o', 7, 5}, {'v', 8, 1}, {' ', 3, 5}, {'b', 9, 0}, {'s', 6, 2}, {'7', 0, 0}} },
+{ 1, 5, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'a', 19, ::Parser::DFA::null_state}, {'n', 5, 4}, {'\r', 3, 5}, {'o', 7, 5}, {'v', 8, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'b', 9, 0}, {'s', 6, 2}, {'7', 0, 0}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'a', 4, 5}, {'n', 5, 4}, {'\r', 3, 5}, {'o', 7, 5}, {'v', 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'b', 9, 0}, {'s', 6, 2}, {'7', 0, 0}, {'t', 12, 2}} },
 { 1, 0, {
-{' ', 4, 0}, {'\v', 8, ::Parser::DFA::null_state}, {'n', 11, ::Parser::DFA::null_state}, {'g', 7, 0}, {'!', 1, 1}} },
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'a', 4, 5}, {'n', 5, 4}, {'\r', 3, 5}, {'o', 7, 5}, {'v', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'b', 9, 0}, {'s', 22, ::Parser::DFA::null_state}, {'7', 0, 0}} },
+{ 1, 2, {
+{'t', 12, 2}} },
+{ 1, 1, {
+{'a', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'n', 5, 4}, {'a', 4, 5}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 7, 5}, {'v', 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'b', 25, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 3, 5}, {'s', 20, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
 { 1, 0, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'n', 5, 4}, {'a', 4, 5}, {'\r', 21, ::Parser::DFA::null_state}, {'o', 29, ::Parser::DFA::null_state}, {'v', 28, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'b', 9, 0}, {'7', 0, 0}, {'\v', 3, 5}, {'s', 27, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 12, 2}} },
+{ 1, 1, {
+{'a', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 30, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 9, 0}, {'7', 0, 0}, {'\t', 3, 5}, {'a', 33, ::Parser::DFA::null_state}, {'n', 5, 4}, {'o', 32, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}, {'u', 11, 4}} },
 { 1, 0, {
-{'n', 13, ::Parser::DFA::null_state}, {'\n', 4, 0}, {' ', 10, ::Parser::DFA::null_state}, {'\v', 8, ::Parser::DFA::null_state}, {'!', 1, 1}, {'g', 7, 0}} },
+{'o', 7, 5}, {'b', 25, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 10, 5}, {'m', 2, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 9, 0}, {'7', 0, 0}, {'\t', 3, 5}, {'a', 4, 5}, {'n', 39, ::Parser::DFA::null_state}, {'o', 37, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'s', 35, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'v', 36, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 12, 2}} },
+{ 1, 1, {
+{'a', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 38, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'o', 41, ::Parser::DFA::null_state}, {'a', 40, ::Parser::DFA::null_state}, {'u', 11, 4}} },
+{ 1, ::Parser::DFA::null_state, {
+{'r', 10, 5}, {'m', 2, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 9, 0}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'a', 4, 5}, {'n', 47, ::Parser::DFA::null_state}, {'o', 45, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 44, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'\f', 3, 5}, {'s', 43, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 12, 2}} },
+{ 1, 1, {
+{'a', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 46, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'o', 49, ::Parser::DFA::null_state}, {'a', 48, ::Parser::DFA::null_state}, {'u', 11, 4}} },
+{ 1, ::Parser::DFA::null_state, {
+{'r', 10, 5}, {'m', 2, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'\f', 4, 0}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'n', 15, ::Parser::DFA::null_state}, {'g', 7, 0}} },
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'n', 55, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 9, 0}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'o', 53, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 52, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'\f', 42, ::Parser::DFA::null_state}, {'s', 51, ::Parser::DFA::null_state}, {'\n', 3, 5}, {' ', 16, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'t', 12, 2}} },
+{ 1, 1, {
+{'a', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 54, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'o', 57, ::Parser::DFA::null_state}, {'a', 56, ::Parser::DFA::null_state}, {'u', 11, 4}} },
+{ 1, ::Parser::DFA::null_state, {
+{'r', 10, 5}, {'m', 2, ::Parser::DFA::null_state}} },
 { 1, 0, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'n', 31, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 9, 0}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'o', 59, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'v', 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'\f', 42, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {'\n', 50, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 5, 4}, {'o', 60, ::Parser::DFA::null_state}, {'b', 25, ::Parser::DFA::null_state}, {'\v', 3, 5}} },
 { 1, 0, {
-{'\f', 14, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {'\t', 4, 0}, {'n', 17, ::Parser::DFA::null_state}, {'g', 7, 0}} },
-{ 1, 0, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
-{ 1, 0, {
-{'\r', 4, 0}, {'!', 1, 1}, {'\v', 8, ::Parser::DFA::null_state}, {'\f', 14, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {' ', 10, ::Parser::DFA::null_state}, {'\t', 16, ::Parser::DFA::null_state}, {'n', 19, ::Parser::DFA::null_state}, {'g', 7, 0}} },
-{ 1, 0, {
-{'a', 2, ::Parser::DFA::null_state}, {'o', 6, 0}} },
+{'b', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'n', 31, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_36.data()), 1, 0}, {'b', 58, ::Parser::DFA::null_state}, {'\n', 50, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 34, ::Parser::DFA::null_state}, {'o', 24, ::Parser::DFA::null_state}, {'v', 18, ::Parser::DFA::null_state}, {'\f', 42, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 17, ::Parser::DFA::null_state}, {'s', 20, ::Parser::DFA::null_state}, {' ', 16, ::Parser::DFA::null_state}, {'\v', 26, ::Parser::DFA::null_state}, {'\r', 21, ::Parser::DFA::null_state}, {'r', 10, 5}} },
 };
-const ::Parser::DFA::CharTable<33, 70> Parser::Lexer::dfa_table_31 = {{ 0, ::Parser::DFA::null_state, {
-{'7', 23, 0}, {'P', 23, 0}, {'9', 23, 0}, {'R', 23, 0}, {'0', 23, 0}, {'6', 23, 0}, {'8', 23, 0}, {'5', 23, 0}, {'M', 23, 0}, {'4', 23, 0}, {'3', 23, 0}, {'2', 23, 0}, {'1', 23, 0}, {'Z', 23, 0}, {'Y', 23, 0}, {'X', 23, 0}, {'W', 23, 0}, {'V', 23, 0}, {'U', 23, 0}, {'T', 23, 0}, {'S', 23, 0}, {'Q', 23, 0}, {'O', 23, 0}, {'N', 23, 0}, {'K', 23, 0}, {'I', 23, 0}, {'z', 23, 0}, {'L', 23, 0}, {'y', 23, 0}, {'G', 23, 0}, {'x', 23, 0}, {'J', 23, 0}, {'w', 23, 0}, {'E', 23, 0}, {'v', 23, 0}, {'H', 23, 0}, {'u', 23, 0}, {'C', 23, 0}, {'t', 23, 0}, {'A', 23, 0}, {'r', 23, 0}, {'D', 23, 0}, {'q', 23, 0}, {'\r', 32, ::Parser::DFA::null_state}, {'p', 23, 0}, {'B', 23, 0}, {'o', 23, 0}, {'\v', 31, ::Parser::DFA::null_state}, {'n', 23, 0}, {';', 2, 0}, {'\t', 30, ::Parser::DFA::null_state}, {'l', 23, 0}, {'k', 23, 0}, {'\f', 29, ::Parser::DFA::null_state}, {'j', 23, 0}, {'d', 23, 0}, {'b', 23, 0}, {'_', 23, 0}, {'F', 23, 0}, {'s', 28, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {'i', 23, 0}, {'\n', 26, ::Parser::DFA::null_state}, {'h', 23, 0}, {'g', 23, 0}, {'e', 23, 0}, {'a', 25, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'c', 23, 0}, {'f', 23, 0}} },
-{ 0, ::Parser::DFA::null_state, {
-{'l', 5, ::Parser::DFA::null_state}} },
+const ::Parser::DFA::MultiTable<62, 74> Parser::Lexer::dfa_table_32 = {{ 1, 0, {
+{'|', 2, 0}, {'_', 0, 0}, {'a', 61, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}, {'b', 58, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 51, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 44, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {'m', 0, 0}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'n', 36, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'o', 28, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 23, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 21, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'S', 0, 0}, {'T', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'U', 0, 0}, {'Y', 0, 0}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'w', 0, 0}, {'J', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 17, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'i', 6, ::Parser::DFA::null_state}} },
+{'|', 1, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'k', 8, 0}} },
+{'\f', 3, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'\v', 3, 5}, {'\r', 3, 5}, {'\t', 3, 5}, {'a', 4, 5}, {'n', 5, 4}, {'s', 6, 2}, {'b', 9, 0}, {' ', 3, 5}, {'\n', 3, 5}, {'o', 7, 5}, {'v', 8, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'l', 9, ::Parser::DFA::null_state}} },
+{'r', 10, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'x', 10, ::Parser::DFA::null_state}} },
+{'u', 11, 4}} },
 { 0, ::Parser::DFA::null_state, {
-{'a', 11, ::Parser::DFA::null_state}} },
+{'t', 12, 2}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 12, 0}} },
+{'b', 13, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 13, ::Parser::DFA::null_state}} },
+{'a', 12, 1}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 14, ::Parser::DFA::null_state}} },
+{'o', 14, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'c', 15, ::Parser::DFA::null_state}} },
+{'r', 3, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 16, 0}} },
+{'m', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'w', 17, ::Parser::DFA::null_state}} },
+{'r', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 2, 0}} },
+{'j', 3, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 18, ::Parser::DFA::null_state}} },
+{'o', 15, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 19, 0}} },
+{'l', 1, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 14, ::Parser::DFA::null_state}} },
+{DFA::SpanCharTable(dfa_table_0.data()), 16, 1}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}} },
+{ 1, 5, {
+{'a', 4, 5}, {'n', 5, 4}, {'o', 7, 5}, {'|', 2, 0}, {'s', 6, 2}, {'v', 8, 1}, {'7', 0, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 16, 1}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'b', 9, 0}, {' ', 3, 5}} },
+{ 1, 5, {
+} },
 { 0, ::Parser::DFA::null_state, {
-{'m', 20, ::Parser::DFA::null_state}} },
+{DFA::SpanCharTable(dfa_table_0.data()), 20, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}} },
+{ 1, 1, {
+} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 14, 0}} },
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 22, ::Parser::DFA::null_state}, {'\r', 3, 5}, {'s', 6, 2}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 8, 1}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}, {'b', 9, 0}, {'o', 7, 5}} },
+{ 1, 1, {
+{'r', 10, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'o', 21, ::Parser::DFA::null_state}} },
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 4, 5}, {'\r', 3, 5}, {'s', 6, 2}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}, {'b', 9, 0}, {'o', 7, 5}, {'t', 12, 2}} },
+{ 1, 0, {
+{'7', 0, 0}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 4, 5}, {'\r', 3, 5}, {'s', 27, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 25, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}, {'b', 9, 0}, {'o', 7, 5}} },
 { 0, ::Parser::DFA::null_state, {
-{'d', 22, ::Parser::DFA::null_state}} },
+{'a', 26, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 1, {
+{'b', 29, ::Parser::DFA::null_state}, {'o', 7, 5}, {'\v', 3, 5}, {'7', 0, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 5, 4}, {'a', 4, 5}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'e', 2, 0}} },
-{ 2, 0, {
-{'7', 23, 0}, {'P', 23, 0}, {'9', 23, 0}, {'R', 23, 0}, {'0', 23, 0}, {'6', 23, 0}, {'8', 23, 0}, {'5', 23, 0}, {' ', 23, 0}, {'M', 23, 0}, {'4', 23, 0}, {'3', 23, 0}, {'2', 23, 0}, {'1', 23, 0}, {'Z', 23, 0}, {'Y', 23, 0}, {'X', 23, 0}, {'W', 23, 0}, {'V', 23, 0}, {'U', 23, 0}, {'T', 23, 0}, {'S', 23, 0}, {'Q', 23, 0}, {'O', 23, 0}, {'N', 23, 0}, {'K', 23, 0}, {'I', 23, 0}, {'z', 23, 0}, {'L', 23, 0}, {'y', 23, 0}, {'G', 23, 0}, {'x', 23, 0}, {'J', 23, 0}, {'w', 23, 0}, {'E', 23, 0}, {'v', 23, 0}, {'H', 23, 0}, {'u', 23, 0}, {'C', 23, 0}, {'t', 23, 0}, {'F', 23, 0}, {'s', 23, 0}, {'A', 23, 0}, {'r', 23, 0}, {'D', 23, 0}, {'q', 23, 0}, {'\r', 23, 0}, {'p', 23, 0}, {'B', 23, 0}, {'o', 23, 0}, {'\v', 23, 0}, {'n', 23, 0}, {'m', 23, 0}, {'\t', 23, 0}, {'l', 23, 0}, {'k', 23, 0}, {'\f', 23, 0}, {'j', 23, 0}, {'i', 23, 0}, {'\n', 23, 0}, {'h', 23, 0}, {'g', 23, 0}, {'f', 23, 0}, {'e', 23, 0}, {'d', 23, 0}, {'c', 23, 0}, {'b', 23, 0}, {'a', 23, 0}, {'_', 23, 0}} },
-{ 2, 0, {
-{';', 2, 0}, {'m', 3, ::Parser::DFA::null_state}, {'a', 1, ::Parser::DFA::null_state}, {'s', 4, 0}, {' ', 0, 0}, {'f', 23, 0}} },
+{'b', 9, 0}, {'o', 34, ::Parser::DFA::null_state}, {'\v', 3, 5}, {'7', 0, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 5, 4}, {'a', 4, 5}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 33, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 31, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
-{'l', 5, ::Parser::DFA::null_state}, {'_', 23, 0}} },
-{ 2, 0, {
-{';', 2, 0}, {'m', 3, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 0, 0}, {'a', 25, ::Parser::DFA::null_state}, {'s', 4, 0}, {'f', 23, 0}} },
+{'a', 32, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 1, {
+{'b', 35, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
 { 0, ::Parser::DFA::null_state, {
-{'i', 6, ::Parser::DFA::null_state}, {'_', 23, 0}} },
+{'b', 9, 0}, {'o', 28, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'n', 5, 4}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'a', 4, 5}, {'\t', 3, 5}, {'7', 0, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'|', 2, 0}, {'u', 11, 4}} },
 { 0, ::Parser::DFA::null_state, {
-{'p', 7, ::Parser::DFA::null_state}, {'_', 23, 0}, {'k', 8, 0}} },
-{ 2, 0, {
-{';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 0, 0}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
-{ 2, 0, {
-{';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 0, 0}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
-{ 2, 0, {
-{'\v', 0, 0}, {';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 30, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
-{ 2, 0, {
-{'\r', 0, 0}, {'\v', 31, ::Parser::DFA::null_state}, {';', 2, 0}, {'s', 28, ::Parser::DFA::null_state}, {'\f', 29, ::Parser::DFA::null_state}, {'m', 27, ::Parser::DFA::null_state}, {' ', 24, ::Parser::DFA::null_state}, {'\n', 26, ::Parser::DFA::null_state}, {'\t', 30, ::Parser::DFA::null_state}, {'a', 25, ::Parser::DFA::null_state}, {'f', 23, 0}} },
+{'b', 9, 0}, {'o', 42, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {'a', 4, 5}, {'7', 0, 0}, {'\t', 3, 5}, {'n', 41, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 40, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 38, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 39, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 4, {
+{'u', 11, 4}} },
+{ 1, 1, {
+{'b', 43, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 9, 0}, {'\f', 3, 5}, {'\v', 30, ::Parser::DFA::null_state}, {'n', 50, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 47, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 45, ::Parser::DFA::null_state}, {'a', 4, 5}, {'7', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'o', 48, ::Parser::DFA::null_state}, {'|', 2, 0}, {' ', 17, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 46, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 1, {
+{'b', 49, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'u', 11, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'b', 9, 0}, {'\n', 3, 5}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 57, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 54, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 52, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'o', 55, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'|', 2, 0}, {'\v', 30, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 53, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'r', 10, 5}} },
+{ 1, 2, {
+} },
+{ 1, 1, {
+{'b', 56, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 14, 0}} },
+{ 1, 4, {
+{'u', 11, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'b', 9, 0}, {'\n', 51, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 36, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'\r', 24, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'o', 59, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'|', 2, 0}, {'\v', 30, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 29, ::Parser::DFA::null_state}, {'o', 60, ::Parser::DFA::null_state}, {'\v', 3, 5}, {'n', 5, 4}} },
+{ 1, 0, {
+{'b', 13, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 5}, {'b', 58, ::Parser::DFA::null_state}, {'\n', 51, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 19, ::Parser::DFA::null_state}, {'n', 36, ::Parser::DFA::null_state}, {'\f', 44, ::Parser::DFA::null_state}, {'o', 28, ::Parser::DFA::null_state}, {'s', 23, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {'v', 21, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 37, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 18, ::Parser::DFA::null_state}, {'\v', 30, ::Parser::DFA::null_state}, {' ', 17, ::Parser::DFA::null_state}, {'|', 2, 0}, {'\r', 24, ::Parser::DFA::null_state}, {'r', 10, 5}} },
 };
-const ::Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::MultiTable<76, 71> Parser::Lexer::dfa_table_33 = {{ 1, 0, {
+{';', 1, 0}, {'_', 0, 0}, {'a', 75, ::Parser::DFA::null_state}, {'b', 72, ::Parser::DFA::null_state}, {'c', 0, 0}, {'d', 0, 0}, {'e', 0, 0}, {'f', 0, 0}, {'g', 0, 0}, {'h', 0, 0}, {'i', 0, 0}, {'\n', 65, ::Parser::DFA::null_state}, {'j', 0, 0}, {'k', 0, 0}, {'\f', 58, ::Parser::DFA::null_state}, {'l', 0, 0}, {'\t', 51, ::Parser::DFA::null_state}, {'m', 50, ::Parser::DFA::null_state}, {'n', 49, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}, {'o', 42, ::Parser::DFA::null_state}, {'B', 0, 0}, {'p', 0, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'q', 0, 0}, {'D', 0, 0}, {'r', 0, 0}, {'A', 0, 0}, {'s', 38, ::Parser::DFA::null_state}, {'F', 0, 0}, {'t', 0, 0}, {'C', 0, 0}, {'u', 0, 0}, {'H', 0, 0}, {'v', 36, ::Parser::DFA::null_state}, {'E', 0, 0}, {'x', 0, 0}, {'G', 0, 0}, {'y', 0, 0}, {'L', 0, 0}, {'z', 0, 0}, {'I', 0, 0}, {'K', 0, 0}, {'N', 0, 0}, {'O', 0, 0}, {'Q', 0, 0}, {'T', 0, 0}, {'U', 0, 0}, {'V', 0, 0}, {'W', 0, 0}, {'X', 0, 0}, {'S', 0, 0}, {'w', 0, 0}, {'J', 0, 0}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'Y', 0, 0}, {'Z', 0, 0}, {'1', 0, 0}, {'2', 0, 0}, {'3', 0, 0}, {'4', 0, 0}, {'M', 0, 0}, {' ', 34, ::Parser::DFA::null_state}, {'5', 0, 0}, {'8', 0, 0}, {'6', 0, 0}, {'0', 0, 0}, {'R', 0, 0}, {'9', 0, 0}, {'P', 0, 0}, {'7', 0, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'i', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 7, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'x', 8, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 9, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'i', 10, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 11, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'c', 13, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'p', 14, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'w', 15, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 16, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'p', 17, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 12, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 18, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 12, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 19, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'d', 20, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'\f', 21, 5}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {'\v', 21, 5}, {'\r', 21, 5}, {'\t', 21, 5}, {'a', 22, 5}, {'n', 23, 4}, {'s', 24, 2}, {'b', 27, 0}, {' ', 21, 5}, {'\n', 21, 5}, {'o', 25, 5}, {'v', 26, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 28, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 29, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'t', 30, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 31, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 30, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 32, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 21, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'m', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 1, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'j', 21, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'o', 33, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 1, 5}} },
+{ 1, 5, {
+{'a', 22, 5}, {'n', 23, 4}, {'o', 25, 5}, {'v', 26, 1}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 1, 5}, {' ', 21, 5}, {'b', 27, 0}, {'s', 24, 2}, {'7', 0, 0}} },
+{ 1, 5, {
+} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 37, ::Parser::DFA::null_state}, {'n', 23, 4}, {'o', 25, 5}, {';', 1, 0}, {'\r', 21, 5}, {'v', 26, 1}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'b', 27, 0}, {'s', 24, 2}, {'7', 0, 0}} },
+{ 1, 1, {
+{'r', 28, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 23, 4}, {'o', 25, 5}, {';', 1, 0}, {'\r', 21, 5}, {'v', 36, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 24, 2}, {'b', 27, 0}, {'k', 6, 0}, {' ', 34, ::Parser::DFA::null_state}, {'7', 0, 0}, {'p', 5, ::Parser::DFA::null_state}, {'t', 30, 2}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 23, 4}, {'o', 25, 5}, {';', 1, 0}, {'\r', 21, 5}, {'v', 41, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'b', 27, 0}, {'s', 40, ::Parser::DFA::null_state}, {'7', 0, 0}} },
+{ 1, 2, {
+{'p', 5, ::Parser::DFA::null_state}, {'k', 6, 0}, {'t', 30, 2}} },
+{ 1, 1, {
+{'a', 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 23, 4}, {'o', 25, 5}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 36, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'b', 43, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\v', 21, 5}, {'s', 38, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 32, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 23, 4}, {'o', 47, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 46, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'b', 27, 0}, {'7', 0, 0}, {'\v', 21, 5}, {'s', 45, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'p', 5, ::Parser::DFA::null_state}, {'k', 6, 0}, {'t', 30, 2}} },
+{ 1, 1, {
+{'a', 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 48, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 32, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 27, 0}, {'7', 0, 0}, {'\t', 21, 5}, {'n', 23, 4}, {'a', 22, 5}, {'o', 42, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 36, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 38, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}, {'u', 29, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 27, 0}, {'7', 0, 0}, {'\t', 21, 5}, {'n', 49, ::Parser::DFA::null_state}, {'a', 22, 5}, {'o', 42, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'i', 4, ::Parser::DFA::null_state}, {'v', 36, ::Parser::DFA::null_state}, {'m', 2, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 38, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 27, 0}, {'7', 0, 0}, {'\t', 21, 5}, {'n', 57, ::Parser::DFA::null_state}, {'a', 22, 5}, {'o', 55, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 54, ::Parser::DFA::null_state}, {'m', 53, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 52, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'p', 5, ::Parser::DFA::null_state}, {'k', 6, 0}, {'t', 30, 2}} },
+{ 1, ::Parser::DFA::null_state, {
+{'i', 4, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'a', 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 56, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 32, 0}} },
+{ 1, 4, {
+{'u', 29, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 27, 0}, {'\f', 21, 5}, {'m', 64, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 51, ::Parser::DFA::null_state}, {'a', 22, 5}, {'n', 63, ::Parser::DFA::null_state}, {'o', 61, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 59, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'v', 60, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'p', 5, ::Parser::DFA::null_state}, {'k', 6, 0}, {'t', 30, 2}} },
+{ 1, 1, {
+{'a', 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 62, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 32, 0}} },
+{ 1, 4, {
+{'u', 29, 4}} },
+{ 1, ::Parser::DFA::null_state, {
+{'i', 4, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 71, ::Parser::DFA::null_state}, {'b', 27, 0}, {'\n', 21, 5}, {'\f', 58, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 51, ::Parser::DFA::null_state}, {'o', 69, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 68, ::Parser::DFA::null_state}, {'m', 67, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 66, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}} },
+{ 1, 2, {
+{'p', 5, ::Parser::DFA::null_state}, {'k', 6, 0}, {'t', 30, 2}} },
+{ 1, ::Parser::DFA::null_state, {
+{'i', 4, ::Parser::DFA::null_state}} },
+{ 1, 1, {
+{'a', 37, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'b', 70, ::Parser::DFA::null_state}} },
+{ 1, 5, {
+{'o', 32, 0}} },
+{ 1, 4, {
+{'u', 29, 4}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 49, ::Parser::DFA::null_state}, {'b', 27, 0}, {'\n', 65, ::Parser::DFA::null_state}, {'\f', 58, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 51, ::Parser::DFA::null_state}, {'o', 73, ::Parser::DFA::null_state}, {';', 1, 0}, {'\r', 39, ::Parser::DFA::null_state}, {'v', 36, ::Parser::DFA::null_state}, {'m', 50, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 38, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'n', 23, 4}, {'m', 2, ::Parser::DFA::null_state}, {'o', 74, ::Parser::DFA::null_state}, {'b', 43, ::Parser::DFA::null_state}, {'\v', 21, 5}} },
+{ 1, 0, {
+{'b', 31, 5}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 22, 5}, {'n', 49, ::Parser::DFA::null_state}, {'b', 72, ::Parser::DFA::null_state}, {'\n', 65, ::Parser::DFA::null_state}, {'\f', 58, ::Parser::DFA::null_state}, {'7', 0, 0}, {'\t', 51, ::Parser::DFA::null_state}, {'o', 42, ::Parser::DFA::null_state}, {'\r', 39, ::Parser::DFA::null_state}, {';', 1, 0}, {'v', 36, ::Parser::DFA::null_state}, {'m', 50, ::Parser::DFA::null_state}, {'l', 3, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_17.data()), 35, ::Parser::DFA::null_state}, {'s', 38, ::Parser::DFA::null_state}, {' ', 34, ::Parser::DFA::null_state}, {'\v', 44, ::Parser::DFA::null_state}, {'r', 28, 5}} },
+};
+const ::Parser::DFA::CharTable<17, 69> Parser::Lexer::dfa_table_34 = {{ 0, ::Parser::DFA::null_state, {
+{'7', 8, 0}, {'P', 8, 0}, {'9', 8, 0}, {'R', 8, 0}, {'0', 8, 0}, {'6', 8, 0}, {'8', 8, 0}, {'5', 8, 0}, {'M', 8, 0}, {'4', 8, 0}, {'3', 8, 0}, {'2', 8, 0}, {'1', 8, 0}, {'Z', 8, 0}, {'Y', 8, 0}, {'X', 8, 0}, {'W', 8, 0}, {'V', 8, 0}, {'U', 8, 0}, {'T', 8, 0}, {'S', 8, 0}, {'Q', 8, 0}, {'O', 8, 0}, {'N', 8, 0}, {'K', 8, 0}, {'I', 8, 0}, {'z', 8, 0}, {'L', 8, 0}, {'y', 8, 0}, {'G', 8, 0}, {'x', 8, 0}, {'J', 8, 0}, {'w', 8, 0}, {'E', 8, 0}, {'v', 8, 0}, {'H', 8, 0}, {'u', 8, 0}, {'F', 8, 0}, {'s', 8, 0}, {'A', 8, 0}, {'r', 8, 0}, {'D', 8, 0}, {'q', 8, 0}, {'\r', 16, ::Parser::DFA::null_state}, {'p', 8, 0}, {'B', 8, 0}, {'o', 8, 0}, {'\v', 15, ::Parser::DFA::null_state}, {'n', 8, 0}, {'m', 8, 0}, {'\t', 14, ::Parser::DFA::null_state}, {'l', 8, 0}, {'k', 8, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'j', 8, 0}, {'d', 8, 0}, {'_', 8, 0}, {'i', 8, 0}, {'\n', 12, ::Parser::DFA::null_state}, {'h', 8, 0}, {'f', 11, ::Parser::DFA::null_state}, {'t', 10, ::Parser::DFA::null_state}, {'C', 8, 0}, {'a', 8, 0}, {'g', 8, 0}, {'e', 8, 0}, {'c', 8, 0}, {' ', 9, ::Parser::DFA::null_state}, {'b', 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'u', 5, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{'l', 6, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'e', 7, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'s', 5, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+} },
+{ 7, 0, {
+{'7', 8, 0}, {'P', 8, 0}, {'9', 8, 0}, {'R', 8, 0}, {'0', 8, 0}, {'6', 8, 0}, {'8', 8, 0}, {'5', 8, 0}, {' ', 8, 0}, {'M', 8, 0}, {'4', 8, 0}, {'3', 8, 0}, {'2', 8, 0}, {'1', 8, 0}, {'Z', 8, 0}, {'Y', 8, 0}, {'X', 8, 0}, {'W', 8, 0}, {'V', 8, 0}, {'U', 8, 0}, {'T', 8, 0}, {'S', 8, 0}, {'Q', 8, 0}, {'O', 8, 0}, {'N', 8, 0}, {'K', 8, 0}, {'I', 8, 0}, {'z', 8, 0}, {'L', 8, 0}, {'y', 8, 0}, {'G', 8, 0}, {'x', 8, 0}, {'J', 8, 0}, {'w', 8, 0}, {'E', 8, 0}, {'v', 8, 0}, {'H', 8, 0}, {'u', 8, 0}, {'C', 8, 0}, {'t', 8, 0}, {'F', 8, 0}, {'s', 8, 0}, {'A', 8, 0}, {'r', 8, 0}, {'D', 8, 0}, {'q', 8, 0}, {'\r', 8, 0}, {'p', 8, 0}, {'B', 8, 0}, {'o', 8, 0}, {'\v', 8, 0}, {'n', 8, 0}, {'m', 8, 0}, {'\t', 8, 0}, {'l', 8, 0}, {'k', 8, 0}, {'\f', 8, 0}, {'j', 8, 0}, {'i', 8, 0}, {'\n', 8, 0}, {'h', 8, 0}, {'g', 8, 0}, {'f', 8, 0}, {'e', 8, 0}, {'d', 8, 0}, {'c', 8, 0}, {'b', 8, 0}, {'a', 8, 0}, {'_', 8, 0}} },
+{ 7, 0, {
+{'t', 1, ::Parser::DFA::null_state}, {'f', 2, 0}, {' ', 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 3, ::Parser::DFA::null_state}, {'_', 8, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'a', 4, 0}, {'_', 8, 0}} },
+{ 7, 0, {
+{'\n', 0, 0}, {'t', 10, ::Parser::DFA::null_state}, {'c', 8, 0}, {'f', 11, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}} },
+{ 7, 0, {
+{'\f', 0, 0}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'t', 10, ::Parser::DFA::null_state}, {'c', 8, 0}, {'f', 11, ::Parser::DFA::null_state}} },
+{ 7, 0, {
+{'\t', 0, 0}, {'t', 10, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'c', 8, 0}, {'\f', 13, ::Parser::DFA::null_state}, {'f', 11, ::Parser::DFA::null_state}} },
+{ 7, 0, {
+{'\t', 14, ::Parser::DFA::null_state}, {'t', 10, ::Parser::DFA::null_state}, {'\f', 13, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'\v', 0, 0}, {'c', 8, 0}, {'f', 11, ::Parser::DFA::null_state}} },
+{ 7, 0, {
+{'\r', 0, 0}, {'\t', 14, ::Parser::DFA::null_state}, {'\f', 13, ::Parser::DFA::null_state}, {' ', 9, ::Parser::DFA::null_state}, {'\n', 12, ::Parser::DFA::null_state}, {'c', 8, 0}, {'\v', 15, ::Parser::DFA::null_state}, {'t', 10, ::Parser::DFA::null_state}, {'f', 11, ::Parser::DFA::null_state}} },
+};
+const ::Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 4, 0}, {'P', 4, 0}, {'9', 4, 0}, {'R', 4, 0}, {'0', 4, 0}, {'6', 4, 0}, {'8', 4, 0}, {'5', 4, 0}, {'M', 4, 0}, {'4', 4, 0}, {'3', 4, 0}, {'2', 4, 0}, {'1', 4, 0}, {'Z', 4, 0}, {'Y', 4, 0}, {'X', 4, 0}, {'W', 4, 0}, {'V', 4, 0}, {'U', 4, 0}, {'T', 4, 0}, {'S', 4, 0}, {'Q', 4, 0}, {'O', 4, 0}, {'N', 4, 0}, {'K', 4, 0}, {'I', 4, 0}, {'z', 4, 0}, {'L', 4, 0}, {'y', 4, 0}, {'G', 4, 0}, {'x', 4, 0}, {'J', 4, 0}, {'w', 4, 0}, {'E', 4, 0}, {'v', 4, 0}, {'C', 4, 0}, {'t', 4, 0}, {'F', 4, 0}, {'s', 4, 0}, {'A', 4, 0}, {'r', 4, 0}, {'D', 4, 0}, {'q', 4, 0}, {'\r', 11, ::Parser::DFA::null_state}, {'p', 4, 0}, {'B', 4, 0}, {'o', 4, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'n', 4, 0}, {'m', 4, 0}, {'\t', 9, ::Parser::DFA::null_state}, {'l', 4, 0}, {'k', 4, 0}, {'\f', 8, ::Parser::DFA::null_state}, {'j', 4, 0}, {'d', 4, 0}, {'_', 4, 0}, {'H', 4, 0}, {'u', 7, ::Parser::DFA::null_state}, {'a', 4, 0}, {'g', 4, 0}, {'e', 4, 0}, {'\n', 6, ::Parser::DFA::null_state}, {'i', 4, 0}, {'f', 4, 0}, {'h', 4, 0}, {'c', 4, 0}, {' ', 5, ::Parser::DFA::null_state}, {'b', 4, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'s', 2, 0}} },
@@ -630,7 +1323,7 @@ const ::Parser::DFA::CharTable<12, 69> Parser::Lexer::dfa_table_32 = {{ 0, ::Par
 { 3, 0, {
 {'\r', 0, 0}, {'\v', 10, ::Parser::DFA::null_state}, {'\t', 9, ::Parser::DFA::null_state}, {'\n', 6, ::Parser::DFA::null_state}, {' ', 5, ::Parser::DFA::null_state}, {'\f', 8, ::Parser::DFA::null_state}, {'u', 7, ::Parser::DFA::null_state}, {'h', 4, 0}} },
 };
-const ::Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_36 = {{ 0, ::Parser::DFA::null_state, {
 {'7', 6, 0}, {'P', 6, 0}, {'9', 6, 0}, {'R', 6, 0}, {'0', 6, 0}, {'6', 6, 0}, {'8', 6, 0}, {'5', 6, 0}, {'M', 6, 0}, {'4', 6, 0}, {'3', 6, 0}, {'2', 6, 0}, {'1', 6, 0}, {'Z', 6, 0}, {'Y', 6, 0}, {'X', 6, 0}, {'W', 6, 0}, {'V', 6, 0}, {'U', 6, 0}, {'T', 6, 0}, {'S', 6, 0}, {'Q', 6, 0}, {'O', 6, 0}, {'N', 6, 0}, {'K', 6, 0}, {'I', 6, 0}, {'z', 6, 0}, {'L', 6, 0}, {'y', 6, 0}, {'G', 6, 0}, {'x', 6, 0}, {'E', 6, 0}, {'v', 6, 0}, {'H', 6, 0}, {'u', 6, 0}, {'C', 6, 0}, {'t', 6, 0}, {'F', 6, 0}, {'s', 6, 0}, {'A', 6, 0}, {'r', 6, 0}, {'D', 6, 0}, {'q', 6, 0}, {'\r', 13, ::Parser::DFA::null_state}, {'p', 6, 0}, {'B', 6, 0}, {'o', 6, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'n', 6, 0}, {'m', 6, 0}, {'\t', 11, ::Parser::DFA::null_state}, {'l', 6, 0}, {'k', 6, 0}, {'\f', 10, ::Parser::DFA::null_state}, {'j', 6, 0}, {'d', 6, 0}, {'a', 6, 0}, {'b', 6, 0}, {'J', 6, 0}, {'w', 9, ::Parser::DFA::null_state}, {'g', 6, 0}, {'e', 6, 0}, {'\n', 8, ::Parser::DFA::null_state}, {'i', 6, 0}, {' ', 7, ::Parser::DFA::null_state}, {'c', 6, 0}, {'_', 6, 0}, {'h', 6, 0}, {'f', 6, 0}} },
 { 0, ::Parser::DFA::null_state, {
 {'h', 2, 0}} },
@@ -659,35 +1352,43 @@ const ::Parser::DFA::CharTable<14, 69> Parser::Lexer::dfa_table_33 = {{ 0, ::Par
 { 5, 0, {
 {'\r', 0, 0}, {'\v', 12, ::Parser::DFA::null_state}, {'\t', 11, ::Parser::DFA::null_state}, {'w', 9, ::Parser::DFA::null_state}, {'\n', 8, ::Parser::DFA::null_state}, {' ', 7, ::Parser::DFA::null_state}, {'\f', 10, ::Parser::DFA::null_state}, {'h', 6, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_34 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_37 = {{ 0, ::Parser::DFA::null_state, {
 {'{', 1, 0}, {'\r', 0, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 };
-const ::Parser::DFA::CharTable<11, 8> Parser::Lexer::dfa_table_35 = {{ 0, ::Parser::DFA::null_state, {
-{'|', 10, ::Parser::DFA::null_state}, {'o', 1, 1}, {'\t', 9, ::Parser::DFA::null_state}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 0, ::Parser::DFA::null_state, {
-{'r', 2, 1}} },
+const ::Parser::DFA::MultiTable<15, 11> Parser::Lexer::dfa_table_38 = {{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}, {'o', 3, 1}, {'|', 14, ::Parser::DFA::null_state}, {'\t', 13, ::Parser::DFA::null_state}, {'\r', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
 { 0, ::Parser::DFA::null_state, {
 } },
 { 0, ::Parser::DFA::null_state, {
-{'\f', 3, 0}, {'\v', 3, 0}, {' ', 3, 0}, {'\n', 3, 0}, {'\r', 3, 0}, {'\t', 3, 0}, {'|', 2, 0}} },
-{ 2, 0, {
-{'|', 2, 0}, {'o', 1, 1}, {'\f', 3, 0}} },
-{ 2, 0, {
-{'|', 2, 0}, {'o', 1, 1}, {'\v', 3, 0}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'|', 2, 0}, {'\r', 3, 0}, {'o', 1, 1}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'\n', 3, 0}, {'\r', 6, ::Parser::DFA::null_state}, {'|', 2, 0}, {'o', 1, 1}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'|', 2, 0}, {'o', 1, 1}, {' ', 3, 0}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'|', 2, 0}, {'o', 1, 1}, {'\t', 3, 0}, {' ', 8, ::Parser::DFA::null_state}, {'\n', 7, ::Parser::DFA::null_state}, {'\r', 6, ::Parser::DFA::null_state}, {'\v', 5, ::Parser::DFA::null_state}, {'\f', 4, ::Parser::DFA::null_state}} },
-{ 2, 0, {
-{'|', 2, 0}} },
+{'\f', 2, 0}, {'\v', 2, 0}, {'\r', 2, 0}, {'\n', 2, 0}, {' ', 2, 0}, {'\t', 2, 0}, {'o', 3, 1}, {'|', 4, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{'r', 1, 1}} },
+{ 0, ::Parser::DFA::null_state, {
+{'|', 1, 0}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_0.data()), 5, 1}, {DFA::SpanMultiTable(dfa_table_26.data()), 1, 1}} },
+{ 1, 0, {
+{'o', 3, 1}, {'|', 4, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 5, 1}, {'\f', 2, 0}} },
+{ 1, 0, {
+{'|', 4, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 5, 1}, {'o', 3, 1}, {'\v', 2, 0}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 0, ::Parser::DFA::null_state, {
+{DFA::SpanCharTable(dfa_table_0.data()), 9, ::Parser::DFA::null_state}, {DFA::SpanMultiTable(dfa_table_38.data()), 1, 0}} },
+{ 1, 1, {
+} },
+{ 1, 0, {
+{'o', 3, 1}, {'|', 4, 0}, {'\n', 2, 0}, {DFA::SpanCharTable(dfa_table_0.data()), 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'o', 3, 1}, {'|', 4, 0}, {' ', 2, 0}, {'\n', 10, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'o', 3, 1}, {'|', 4, 0}, {'\r', 2, 0}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'o', 3, 1}, {'|', 4, 0}, {'\t', 2, 0}, {'\r', 12, ::Parser::DFA::null_state}, {' ', 11, ::Parser::DFA::null_state}, {'\n', 10, ::Parser::DFA::null_state}, {DFA::SpanCharTable(dfa_table_0.data()), 8, ::Parser::DFA::null_state}, {'\v', 7, ::Parser::DFA::null_state}, {'\f', 6, ::Parser::DFA::null_state}} },
+{ 1, 0, {
+{'|', 1, 0}} },
 };
-const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_36 = {{ 0, ::Parser::DFA::null_state, {
+const ::Parser::DFA::CharTable<2, 7> Parser::Lexer::dfa_table_39 = {{ 0, ::Parser::DFA::null_state, {
 {'}', 1, 0}, {'\t', 0, 0}, {' ', 0, 0}, {'\n', 0, 0}, {'\r', 0, 0}, {'\v', 0, 0}, {'\f', 0, 0}} },
 { 0, ::Parser::DFA::null_state, {
 } },
@@ -726,22 +1427,22 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 	{ }, // ''
 	{ }, // ''
 	{ &dfa_table_0, }, // ' '
-	{ }, // '!'
+	{ &dfa_table_1, }, // '!'
 	{ }, // '"'
-	{ &dfa_table_1, }, // '#'
-	{ &dfa_table_2, }, // '$'
-	{ &dfa_table_3, }, // '%'
-	{ &dfa_table_4, }, // '&'
+	{ &dfa_table_2, }, // '#'
+	{ &dfa_table_3, }, // '$'
+	{ &dfa_table_4, }, // '%'
+	{ &dfa_table_5, }, // '&'
 	{ }, // '\''
-	{ &dfa_table_5, }, // '('
-	{ &dfa_table_6, }, // ')'
-	{ &dfa_table_7, }, // '*'
-	{ &dfa_table_8, }, // '+'
-	{ &dfa_table_9, }, // ','
-	{ &dfa_table_10, }, // '-'
-	{ &dfa_table_11, }, // '.'
-	{ &dfa_table_12, }, // '/'
-	{ &dfa_table_13, }, // '0'
+	{ &dfa_table_6, }, // '('
+	{ &dfa_table_7, }, // ')'
+	{ &dfa_table_8, }, // '*'
+	{ &dfa_table_9, }, // '+'
+	{ &dfa_table_10, }, // ','
+	{ &dfa_table_11, }, // '-'
+	{ &dfa_table_12, }, // '.'
+	{ &dfa_table_13, }, // '/'
+	{ &dfa_table_14, }, // '0'
 	{ }, // '1'
 	{ }, // '2'
 	{ }, // '3'
@@ -751,74 +1452,74 @@ std::array<std::variant<::Parser::DFA::TokenTable, ::Parser::DFA::CharTable, ::P
 	{ }, // '7'
 	{ }, // '8'
 	{ }, // '9'
-	{ &dfa_table_14, }, // ':'
-	{ &dfa_table_15, }, // ';'
-	{ &dfa_table_16, }, // '<'
-	{ &dfa_table_17, }, // '='
-	{ &dfa_table_18, }, // '>'
-	{ &dfa_table_19, }, // '?'
-	{ &dfa_table_20, }, // '@'
-	{ &dfa_table_21, }, // 'A'
-	{ &dfa_table_21, }, // 'B'
-	{ &dfa_table_21, }, // 'C'
-	{ &dfa_table_21, }, // 'D'
-	{ &dfa_table_21, }, // 'E'
-	{ &dfa_table_21, }, // 'F'
-	{ &dfa_table_21, }, // 'G'
-	{ &dfa_table_21, }, // 'H'
-	{ &dfa_table_21, }, // 'I'
-	{ &dfa_table_21, }, // 'J'
-	{ &dfa_table_21, }, // 'K'
-	{ &dfa_table_21, }, // 'L'
-	{ &dfa_table_21, }, // 'M'
-	{ &dfa_table_21, }, // 'N'
-	{ &dfa_table_21, }, // 'O'
-	{ &dfa_table_21, }, // 'P'
-	{ &dfa_table_21, }, // 'Q'
-	{ &dfa_table_21, }, // 'R'
-	{ &dfa_table_21, }, // 'S'
-	{ &dfa_table_21, }, // 'T'
-	{ &dfa_table_21, }, // 'U'
-	{ &dfa_table_21, }, // 'V'
-	{ &dfa_table_21, }, // 'W'
-	{ &dfa_table_21, }, // 'X'
-	{ &dfa_table_21, }, // 'Y'
-	{ &dfa_table_21, }, // 'Z'
-	{ &dfa_table_22, }, // '['
-	{ &dfa_table_23, }, // '\\'
-	{ &dfa_table_24, }, // ']'
+	{ &dfa_table_15, }, // ':'
+	{ &dfa_table_16, }, // ';'
+	{ &dfa_table_17, }, // '<'
+	{ &dfa_table_18, }, // '='
+	{ &dfa_table_19, }, // '>'
+	{ &dfa_table_20, }, // '?'
+	{ &dfa_table_21, }, // '@'
+	{ &dfa_table_22, }, // 'A'
+	{ &dfa_table_22, }, // 'B'
+	{ &dfa_table_22, }, // 'C'
+	{ &dfa_table_22, }, // 'D'
+	{ &dfa_table_22, }, // 'E'
+	{ &dfa_table_22, }, // 'F'
+	{ &dfa_table_22, }, // 'G'
+	{ &dfa_table_22, }, // 'H'
+	{ &dfa_table_22, }, // 'I'
+	{ &dfa_table_22, }, // 'J'
+	{ &dfa_table_22, }, // 'K'
+	{ &dfa_table_22, }, // 'L'
+	{ &dfa_table_22, }, // 'M'
+	{ &dfa_table_22, }, // 'N'
+	{ &dfa_table_22, }, // 'O'
+	{ &dfa_table_22, }, // 'P'
+	{ &dfa_table_22, }, // 'Q'
+	{ &dfa_table_22, }, // 'R'
+	{ &dfa_table_22, }, // 'S'
+	{ &dfa_table_22, }, // 'T'
+	{ &dfa_table_22, }, // 'U'
+	{ &dfa_table_22, }, // 'V'
+	{ &dfa_table_22, }, // 'W'
+	{ &dfa_table_22, }, // 'X'
+	{ &dfa_table_22, }, // 'Y'
+	{ &dfa_table_22, }, // 'Z'
+	{ &dfa_table_23, }, // '['
+	{ &dfa_table_24, }, // '\\'
+	{ &dfa_table_25, }, // ']'
 	{ }, // '^'
-	{ &dfa_table_21, }, // '_'
+	{ &dfa_table_22, }, // '_'
 	{ }, // '`'
-	{ &dfa_table_25, }, // 'a'
-	{ &dfa_table_26, }, // 'b'
-	{ &dfa_table_21, }, // 'c'
-	{ &dfa_table_21, }, // 'd'
-	{ &dfa_table_21, }, // 'e'
-	{ &dfa_table_27, }, // 'f'
-	{ &dfa_table_21, }, // 'g'
-	{ &dfa_table_21, }, // 'h'
-	{ &dfa_table_28, }, // 'i'
-	{ &dfa_table_21, }, // 'j'
-	{ &dfa_table_21, }, // 'k'
-	{ &dfa_table_21, }, // 'l'
-	{ &dfa_table_29, }, // 'm'
-	{ &dfa_table_30, }, // 'n'
-	{ &dfa_table_21, }, // 'o'
-	{ &dfa_table_21, }, // 'p'
-	{ &dfa_table_21, }, // 'q'
-	{ &dfa_table_21, }, // 'r'
-	{ &dfa_table_31, }, // 's'
-	{ &dfa_table_21, }, // 't'
-	{ &dfa_table_32, }, // 'u'
-	{ &dfa_table_21, }, // 'v'
-	{ &dfa_table_33, }, // 'w'
-	{ &dfa_table_21, }, // 'x'
-	{ &dfa_table_21, }, // 'y'
-	{ &dfa_table_21, }, // 'z'
-	{ &dfa_table_34, }, // '{'
-	{ &dfa_table_35, }, // '|'
-	{ &dfa_table_36, }, // '}'
+	{ &dfa_table_26, }, // 'a'
+	{ &dfa_table_27, }, // 'b'
+	{ &dfa_table_22, }, // 'c'
+	{ &dfa_table_22, }, // 'd'
+	{ &dfa_table_22, }, // 'e'
+	{ &dfa_table_28, }, // 'f'
+	{ &dfa_table_22, }, // 'g'
+	{ &dfa_table_22, }, // 'h'
+	{ &dfa_table_29, }, // 'i'
+	{ &dfa_table_22, }, // 'j'
+	{ &dfa_table_22, }, // 'k'
+	{ &dfa_table_22, }, // 'l'
+	{ &dfa_table_30, }, // 'm'
+	{ &dfa_table_31, }, // 'n'
+	{ &dfa_table_32, }, // 'o'
+	{ &dfa_table_22, }, // 'p'
+	{ &dfa_table_22, }, // 'q'
+	{ &dfa_table_22, }, // 'r'
+	{ &dfa_table_33, }, // 's'
+	{ &dfa_table_34, }, // 't'
+	{ &dfa_table_35, }, // 'u'
+	{ &dfa_table_27, }, // 'v'
+	{ &dfa_table_36, }, // 'w'
+	{ &dfa_table_22, }, // 'x'
+	{ &dfa_table_22, }, // 'y'
+	{ &dfa_table_22, }, // 'z'
+	{ &dfa_table_37, }, // '{'
+	{ &dfa_table_38, }, // '|'
+	{ &dfa_table_39, }, // '}'
 	{ }, // '~'
 	{ }, // ''
 	{ }, // '€'

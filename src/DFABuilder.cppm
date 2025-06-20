@@ -16,7 +16,7 @@ export class DFABuilder {
 public:
     DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname);
     DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname);
-    DFABuilder(const AST::Tree& ast, const std::set<FCDT::Name> &names);
+    DFABuilder(const AST::Tree& ast, const stdu::vector<stdu::vector<std::string>> &names);
     DFA& get() {
         return dfa;
     }

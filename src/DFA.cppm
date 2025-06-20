@@ -10,7 +10,7 @@ import std.compat;
 export class DFA {
 public:
     enum class DfaType {
-        Char, Token, Multi, NONE
+        Char, Token, CallableToken, Multi, NONE
     };
     struct TransitionValue {
         size_t next;
@@ -75,8 +75,8 @@ public:
     auto &getMultiStates() { return mstates; }
     auto &getStates() const { return states; }
     auto &getMultiStates() const { return mstates; }
-    auto getType() const -> DfaType;
-    auto getTypeStr() const -> std::string;
+    auto getType(bool isToken) const -> DfaType;
+    auto getTypeStr(bool isToken) const -> std::string;
     auto getMaxTransitionCount() const -> size_t;
 };
 

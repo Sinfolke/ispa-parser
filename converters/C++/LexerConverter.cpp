@@ -29,8 +29,8 @@ void LexerConverter::addStandardFunctionsLexer(std::ostringstream &out) const {
 
 void LexerConverter::output() {
     // 1. print DFAS
-    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_table");
-    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_func_table");
+    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_table", true);
+    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_func_table", true);
     dfa_converter.create();
     dfa_func_table_converter.create();
     out << dfa_converter.get().str();
@@ -47,7 +47,7 @@ void LexerConverter::output() {
         for (const auto &name : names) {
             const auto &involve_tale = dfa_involved_table.at(names);
             auto index = involve_tale.at(name);
-            if (used.contains(index) || used_func.contains(name.name))
+            if (used.contains(index) || used_func.contains(name))
                 continue;
             if (index != LexerBuilder::DFA_NOT_COMPATIBLE) {
                 used.insert(index);
@@ -56,8 +56,8 @@ void LexerConverter::output() {
                 // was_dfa = true;
                 out << "&dfa_table_" << index;
             } else {
-                used_func.insert(name.name);
-                out << "&" << corelib::text::join(name.name, "_");
+                used_func.insert(name);
+                out << "&" << corelib::text::join(name, "_");
             }
             out << ", ";
         }
@@ -81,11 +81,11 @@ void LexerConverter::outputHeader() {
     << "\t\t\tToken makeToken(const char*& pos);\n";
     for (std::size_t i = 0; i < lexer_data.getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().at(i);
-        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
+        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
     }
     for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().at(i);
-        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr() << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
+        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
     }
     h_out << "\t};\n";
 }

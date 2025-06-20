@@ -12,8 +12,8 @@ export class LexerBuilder {
 public:
     static constexpr auto DFA_NOT_COMPATIBLE = std::numeric_limits<std::size_t>::max();
     using DfaCompatibleTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
-    using NameToDfaMap = utype::unordered_map<FCDT::Name, std::size_t>;
-    using DispatchNamesInvolve = utype::unordered_map<std::set<FCDT::Name>, NameToDfaMap>;
+    using NameToDfaMap = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
+    using DispatchNamesInvolve = utype::unordered_map<stdu::vector<stdu::vector<std::string>>, NameToDfaMap>;
 private:
     AST::Tree &ast;
     stdu::vector<DFA> dfas;

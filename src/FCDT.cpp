@@ -24,9 +24,7 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
     if (mem.isOp()) {
         std::unordered_set<char> chars;
         for (const auto &option :  mem.getOp().options) {
-            auto it = mem.getOp().options.begin();
-            skipNospace(it, mem.getOp().options.end());
-            auto result = determineFirstCharacter(*it);
+            auto result = determineFirstCharacter(option);
             chars.insert(result.begin(), result.end());
         }
         return chars;
@@ -73,7 +71,8 @@ void FCDT::build() {
         auto it = rule.second.rule_members.begin();
         skipNospace(it, rule.second.rule_members.end());
         for (const auto &c : determineFirstCharacter(*it)) {
-            table[c].emplace(ast, rule.first);
+            cpuf::printf("Inserting to {} name {}", c, *it);
+            table[static_cast<unsigned char>(c)].push_back(rule.first);
         }
     }
 }

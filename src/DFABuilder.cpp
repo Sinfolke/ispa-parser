@@ -88,19 +88,19 @@ DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember>
     log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
-DFABuilder::DFABuilder(const AST::Tree &ast, const std::set<FCDT::Name> &names) : dfa(stdu::vector<DFA::SingleState> {}) {
+DFABuilder::DFABuilder(const AST::Tree &ast, const stdu::vector<stdu::vector<std::string>> &names) : dfa(stdu::vector<DFA::SingleState> {}) {
     stdu::vector<NFA> nfas;
     for (const auto &name : names) {
-        NFA n(ast, ast[name.name].rule_members, name.name == constants::whitespace);
+        NFA n(ast, ast[name].rule_members, name == constants::whitespace);
         n.build();
         nfas.push_back(n);
-        log(n, name.name);
+        log(n, name);
     }
     DFA dfa_tmp(nfas);
     dfa_tmp.buildWMerge();
     std::string name;
     for (const auto &n : names) {
-        name += corelib::text::join(n.name, "::") + ", ";
+        name += corelib::text::join(n, "::") + ", ";
     }
     log(dfa_tmp, name);
     dfa = std::move(dfa_tmp);

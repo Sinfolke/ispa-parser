@@ -598,7 +598,7 @@ void DFA::buildWMerge() {
     removeUnreachableStates();
     removeSelfLoop();
 }
-auto DFA::getType() const -> DfaType {
+auto DFA::getType(bool isToken) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;
     if (mstates.empty()) {
         for (const auto &state : states) {
@@ -612,7 +612,7 @@ auto DFA::getType() const -> DfaType {
                     }
                 } else {
                     if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
-                        dfa_type = DfaType::Token;
+                        dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
                     } else {
                         dfa_type = DfaType::Multi;
                         break;
@@ -643,12 +643,14 @@ auto DFA::getType() const -> DfaType {
     }
     return dfa_type;
 }
-auto DFA::getTypeStr() const -> std::string {
-    switch (getType()) {
+auto DFA::getTypeStr(bool isToken) const -> std::string {
+    switch (getType(isToken)) {
         case DFA::DfaType::Char:
             return "CharTable";
         case DFA::DfaType::Token:
             return "TokenTable";
+        case DFA::DfaType::CallableToken:
+            return "CallableTokenTable";
         case DFA::DfaType::Multi:
             return "MultiTable";
         default:
