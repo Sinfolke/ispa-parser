@@ -8,6 +8,9 @@ def count_lines_in_cpp_files(directory):
         # Exclude .git directory
         if '.git' in dirs:
             dirs.remove('.git')
+        for dir in dirs:
+            if "build" in dir:
+                dirs.remove(dir)
         
         for file in files:
             if file.endswith('.cpp'):

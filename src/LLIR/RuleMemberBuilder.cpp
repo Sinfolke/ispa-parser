@@ -780,6 +780,7 @@ void LLIR::OpBuilder::build() {
     } else if (!rule->prefix.is_key_value) {
         var.name = rule->prefix.name;
     }
+    var.property_access = {"node"};
     auto svar = createSuccessVariable();
     svar.value = {var_assign_values::NUMBER, 1};
     push({types::VARIABLE, var});

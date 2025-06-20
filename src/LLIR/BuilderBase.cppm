@@ -59,7 +59,6 @@ export namespace LLIR {
         void getVariablesToTable(stdu::vector<LLIR::member> &data, stdu::vector<LLIR::member>& table, std::string &var_name, bool retain_value, bool recursive);
         void insertVariablesOnTop(stdu::vector<LLIR::member> &insertPlace, stdu::vector<LLIR::member>& table);
         void raiseVarsTop(stdu::vector<LLIR::member> &insertPlace, stdu::vector<LLIR::member> &readPlace, std::string var_name = "", bool all_rule = false, bool retain_value = true, bool recursive = true);
-        void optimizeIR();
     public:
         virtual void build() = 0;
         // interaction functions
@@ -70,6 +69,7 @@ export namespace LLIR {
         virtual auto getData() const -> const LLIR::Nodes&;
         virtual auto getData() -> LLIR::Nodes&;
         virtual auto getReturnVars() const -> const stdu::vector<LLIR::ConvertionResult>&;
+        void optimizeIR();
 
         BuilderBase(BuilderDataWrapper& data) : BuilderDataWrapper(data), BuilderUtility(nullptr) {
             setUtilityPointer(&this->data);

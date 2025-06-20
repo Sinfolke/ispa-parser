@@ -77,6 +77,8 @@ public:
     auto &getMultiStates() const { return mstates; }
     auto getType(bool isToken) const -> DfaType;
     auto getTypeStr(bool isToken) const -> std::string;
+    auto getTransitionType(bool isToken) const -> std::string;
+    auto getStateType(bool isToken) const -> std::string;
     auto getMaxTransitionCount() const -> size_t;
 };
 

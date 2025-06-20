@@ -14,6 +14,7 @@ void LLIR::RuleBuilder::build() {
     BuilderDataWrapper builderData(*this);
     MemberBuilder builder(builderData, rule->rule_members);
     builder.build();
+    builder.optimizeIR();
     data.members = builder.getData();
     data.block = createDataBlock(rule->data_block);
     data.name = fullname;

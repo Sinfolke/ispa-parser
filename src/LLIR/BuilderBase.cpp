@@ -616,14 +616,7 @@ void LLIR::BuilderBase::raiseVarsTop(stdu::vector<LLIR::member> &insertPlace, st
 }
 void LLIR::BuilderBase::optimizeIR() {
     // cpuf::printf("Optimze IR\n");
-    if (data.empty()) {
-        raiseVarsTop(data, data);
-    } else {
-        // cpuf::printf("Optimze IR on non-empty data\n");
-        for (auto &d : data) {
-            raiseVarsTop(data, data);
-        }
-    }
+    raiseVarsTop(data, data);
 }
 
 void LLIR::BuilderBase::push(LLIR::member mem) {

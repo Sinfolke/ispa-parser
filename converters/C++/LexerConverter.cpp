@@ -81,11 +81,11 @@ void LexerConverter::outputHeader() {
     << "\t\t\tToken makeToken(const char*& pos);\n";
     for (std::size_t i = 0; i < lexer_data.getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().at(i);
-        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
     }
     for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().at(i);
-        h_out << "\t\t\tconst ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
     }
     h_out << "\t};\n";
 }
