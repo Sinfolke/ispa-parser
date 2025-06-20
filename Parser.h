@@ -579,7 +579,7 @@ namespace DFA {
 			}
 ;
 			skip_spaces(pos);
-			::Parser::Types::cll_expr_value data = NONE;
+			::Parser::Types::cll_expr_value data = _0;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_value, data)};
 		}
 		template <class IT>
@@ -589,7 +589,7 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
@@ -616,7 +616,7 @@ namespace DFA {
 				::Parser::Rule_res _7;
 				_7 = cll_expr(begin_10);
 				::Parser::arr_t<::Parser::Rule> shadow_9;
-				if (!(_7.node))
+				if (!(_7.status))
 				{
 					break;
 				}
@@ -663,7 +663,7 @@ namespace DFA {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			_4 = cll_function_call(pos);
-			if (!(_4.node))
+			if (!(_4.status))
 			{
 				return {};
 			}
@@ -812,7 +812,7 @@ namespace DFA {
 			}
 ;
 			skip_spaces(pos);
-			::Parser::Types::rule_quantifier data = NONE;
+			::Parser::Types::rule_quantifier data = _0;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_quantifier, data)};
 		}
 		template <class IT>
@@ -955,7 +955,7 @@ namespace DFA {
 			success_6 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::rule_data_block_regular_datablock data = NONE;
+			::Parser::Types::rule_data_block_regular_datablock data = _2;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block_regular_datablock, data)};
 		}
 		template <class IT>
@@ -975,7 +975,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_function_parameters(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -992,7 +992,7 @@ namespace DFA {
 			success_5 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::cll_function_body_decl data = NONE;
+			::Parser::Types::cll_function_body_decl data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_body_decl, data)};
 		}
 		template <class IT>
@@ -1013,7 +1013,7 @@ namespace DFA {
 			::Parser::bool_t success_3 = false;
 			_2 = rule_member(pos);
 			::Parser::arr_t<::Parser::Rule> shadow_4;
-			while (_2.node)
+			while (_2.status)
 			{
 				success_3 = true;
 				pos += _2.node.length();
@@ -1031,7 +1031,7 @@ namespace DFA {
 			success_6 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::rule_group data = NONE;
+			::Parser::Types::rule_group data = shadow_4;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_group, data)};
 		}
 		template <class IT>
@@ -1133,7 +1133,7 @@ namespace DFA {
 				pos = begin_6;
 			}
 			skip_spaces(pos);
-			::Parser::Types::rule_keyvalue data = NONE;
+			::Parser::Types::rule_keyvalue data = _4;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_keyvalue, data)};
 		}
 		template <class IT>
@@ -1258,7 +1258,7 @@ namespace DFA {
 			::Parser::Rule_res _9;
 			::Parser::bool_t success_10 = false;
 			_9 = rule_quantifier(pos);
-			if (_9.node)
+			if (_9.status)
 			{
 				success_10 = true;
 				pos += _9.node.length();
@@ -1300,7 +1300,7 @@ namespace DFA {
 			_4 = rule_member(pos);
 			::Parser::arr_t<::Parser::Rule> shadow_6;
 			::Parser::bool_t success_7 = false;
-			while (_4.node)
+			while (_4.status)
 			{
 				success_5 = true;
 				pos += _4.node.length();
@@ -1317,7 +1317,7 @@ namespace DFA {
 			::Parser::Rule_res _8;
 			::Parser::bool_t success_9 = false;
 			_8 = rule_data_block(pos);
-			if (_8.node)
+			if (_8.status)
 			{
 				success_9 = true;
 				pos += _8.node.length();
@@ -1327,7 +1327,7 @@ namespace DFA {
 			::Parser::bool_t success_11 = false;
 			_10 = rule_nested_rule(pos);
 			::Parser::arr_t<::Parser::Rule> shadow_12;
-			while (_10.node)
+			while (_10.status)
 			{
 				success_11 = true;
 				pos += _10.node.length();
@@ -1370,7 +1370,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = rvalue(pos);
-			if (_2.node)
+			if (_2.status)
 			{
 				success_3 = true;
 				pos += _2.node.length();
@@ -1436,7 +1436,7 @@ namespace DFA {
 				pos = begin_5;
 			}
 			skip_spaces(pos);
-			::Parser::Types::main data = NONE;
+			::Parser::Types::main data = _2;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::main, data)};
 		}
 		template <class IT>
@@ -1456,7 +1456,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = _use_unit(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -1483,7 +1483,7 @@ namespace DFA {
 				::Parser::Rule_res _9;
 				_9 = _use_unit(begin_12);
 				::Parser::arr_t<::Parser::Rule> shadow_11;
-				if (!(_9.node))
+				if (!(_9.status))
 				{
 					break;
 				}
@@ -1574,7 +1574,7 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr_arithmetic(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
@@ -1601,7 +1601,7 @@ namespace DFA {
 				::Parser::Rule_res _7;
 				_7 = cll_expr_arithmetic(begin_10);
 				::Parser::arr_t<::Parser::Rule> shadow_9;
-				if (!(_7.node))
+				if (!(_7.status))
 				{
 					break;
 				}
@@ -1711,7 +1711,7 @@ namespace DFA {
 			::Parser::bool_t success_3 = false;
 			_2 = rule_member(pos);
 			::Parser::arr_t<::Parser::Rule> shadow_4;
-			while (_2.node)
+			while (_2.status)
 			{
 				success_3 = true;
 				pos += _2.node.length();
@@ -1729,7 +1729,7 @@ namespace DFA {
 			success_6 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::cll_stmt data = NONE;
+			::Parser::Types::cll_stmt data = shadow_4;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_stmt, data)};
 		}
 		template <class IT>
@@ -1795,7 +1795,7 @@ namespace DFA {
 			success_6 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::cll data = NONE;
+			::Parser::Types::cll data = _2;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll, data)};
 		}
 		template <class IT>
@@ -1815,7 +1815,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_expr(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -1832,7 +1832,7 @@ namespace DFA {
 			success_5 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::cll_expr_group data = NONE;
+			::Parser::Types::cll_expr_group data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_group, data)};
 		}
 		template <class IT>
@@ -1890,7 +1890,7 @@ namespace DFA {
 			}
 ;
 			skip_spaces(pos);
-			::Parser::Types::rvalue data = NONE;
+			::Parser::Types::rvalue data = _0;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rvalue, data)};
 		}
 		template <class IT>
@@ -1920,7 +1920,7 @@ namespace DFA {
 					::Parser::Rule_res _6;
 					_6 = cll_expr(begin_12);
 					::Parser::arr_t<::Parser::Rule> shadow_8;
-					if (!(_6.node))
+					if (!(_6.status))
 					{
 						break;
 					}
@@ -1962,7 +1962,7 @@ namespace DFA {
 			success_15 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::array data = NONE;
+			::Parser::Types::array data = shadow_8;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::array, data)};
 		}
 		template <class IT>
@@ -2031,7 +2031,7 @@ namespace DFA {
 				skip_spaces(begin_16);
 				::Parser::Rule_res _12;
 				_12 = cll_expr(begin_16);
-				if (!(_12.node))
+				if (!(_12.status))
 				{
 					break;
 				}
@@ -2153,7 +2153,7 @@ namespace DFA {
 				skip_spaces(begin_28);
 				::Parser::Rule_res _9;
 				_9 = cll_expr(begin_28);
-				if (!(_9.node))
+				if (!(_9.status))
 				{
 					break;
 				}
@@ -2209,7 +2209,7 @@ namespace DFA {
 					::Parser::Rule_res _22;
 					_22 = cll_expr(begin_25);
 					::Parser::arr_t<::Parser::Rule> shadow_24;
-					if (!(_22.node))
+					if (!(_22.status))
 					{
 						break;
 					}
@@ -2297,7 +2297,7 @@ namespace DFA {
 				skip_spaces(begin_10);
 				::Parser::Rule_res _8;
 				_8 = cll_expr(begin_10);
-				if (!(_8.node))
+				if (!(_8.status))
 				{
 					break;
 				}
@@ -2326,7 +2326,7 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr_compare(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
@@ -2353,7 +2353,7 @@ namespace DFA {
 				::Parser::Rule_res _7;
 				_7 = cll_expr_compare(begin_10);
 				::Parser::arr_t<::Parser::Rule> shadow_9;
-				if (!(_7.node))
+				if (!(_7.status))
 				{
 					break;
 				}
@@ -2381,7 +2381,7 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr_value(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
@@ -2423,7 +2423,7 @@ namespace DFA {
 				::Parser::Rule_res _7;
 				_7 = cll_expr_value(begin_10);
 				::Parser::arr_t<::Parser::Rule> shadow_9;
-				if (!(_7.node))
+				if (!(_7.status))
 				{
 					break;
 				}
@@ -2451,14 +2451,14 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr_logical(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
 			success_1 = true;
 			pos += _0.node.length();
 			skip_spaces(pos);
-			::Parser::Types::cll_expr data = NONE;
+			::Parser::Types::cll_expr data = _0.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr, data)};
 		}
 		template <class IT>
@@ -2468,7 +2468,7 @@ namespace DFA {
 			::Parser::Rule_res _0;
 			::Parser::bool_t success_1 = false;
 			_0 = cll_expr_term(pos);
-			if (!(_0.node))
+			if (!(_0.status))
 			{
 				return {};
 			}
@@ -2504,7 +2504,7 @@ namespace DFA {
 				::Parser::Rule_res _7;
 				_7 = cll_expr_term(begin_10);
 				::Parser::arr_t<::Parser::Rule> shadow_9;
-				if (!(_7.node))
+				if (!(_7.status))
 				{
 					break;
 				}
@@ -2542,7 +2542,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_expr(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -2552,7 +2552,7 @@ namespace DFA {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			_4 = cll_stmt(pos);
-			if (!(_4.node))
+			if (!(_4.status))
 			{
 				return {};
 			}
@@ -2600,7 +2600,7 @@ namespace DFA {
 			::Parser::Rule_res _6;
 			::Parser::bool_t success_7 = false;
 			_6 = cll_function_body_decl(pos);
-			if (!(_6.node))
+			if (!(_6.status))
 			{
 				return {};
 			}
@@ -2610,7 +2610,7 @@ namespace DFA {
 			::Parser::Rule_res _8;
 			::Parser::bool_t success_9 = false;
 			_8 = cll_stmt(pos);
-			if (_8.node)
+			if (_8.status)
 			{
 				success_9 = true;
 				pos += _8.node.length();
@@ -2640,7 +2640,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_function_body_call(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -2678,7 +2678,7 @@ namespace DFA {
 			}
 ;
 			skip_spaces(pos);
-			::Parser::Types::rule_data_block data = NONE;
+			::Parser::Types::rule_data_block data = _0;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_data_block, data)};
 		}
 		template <class IT>
@@ -2698,14 +2698,14 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = rule(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
 			success_3 = true;
 			pos += _2.node.length();
 			skip_spaces(pos);
-			::Parser::Types::rule_nested_rule data = NONE;
+			::Parser::Types::rule_nested_rule data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_nested_rule, data)};
 		}
 		template <class IT>
@@ -2725,7 +2725,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_function_arguments(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -2742,7 +2742,7 @@ namespace DFA {
 			success_5 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::cll_function_body_call data = NONE;
+			::Parser::Types::cll_function_body_call data = _2.node;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_function_body_call, data)};
 		}
 		template <class IT>
@@ -2816,7 +2816,7 @@ namespace DFA {
 			::Parser::Rule_res _12;
 			::Parser::bool_t success_13 = false;
 			_12 = cll_expr(pos);
-			if (_12.node)
+			if (_12.status)
 			{
 				success_13 = true;
 				pos += _12.node.length();
@@ -2835,7 +2835,7 @@ namespace DFA {
 			::Parser::Rule_res _16;
 			::Parser::bool_t success_17 = false;
 			_16 = cll_expr(pos);
-			if (_16.node)
+			if (_16.status)
 			{
 				success_17 = true;
 				pos += _16.node.length();
@@ -2854,7 +2854,7 @@ namespace DFA {
 			::Parser::Rule_res _20;
 			::Parser::bool_t success_21 = false;
 			_20 = cll_stmt(pos);
-			if (!(_20.node))
+			if (!(_20.status))
 			{
 				return {};
 			}
@@ -2886,7 +2886,7 @@ namespace DFA {
 			::Parser::Rule_res _2;
 			::Parser::bool_t success_3 = false;
 			_2 = cll_expr(pos);
-			if (!(_2.node))
+			if (!(_2.status))
 			{
 				return {};
 			}
@@ -2896,7 +2896,7 @@ namespace DFA {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			_4 = cll_stmt(pos);
-			if (!(_4.node))
+			if (!(_4.status))
 			{
 				return {};
 			}
@@ -2936,7 +2936,7 @@ namespace DFA {
 			::Parser::Rule_res _4;
 			::Parser::bool_t success_5 = false;
 			_4 = cll_expr(pos);
-			if (!(_4.node))
+			if (!(_4.status))
 			{
 				return {};
 			}
@@ -2984,7 +2984,7 @@ namespace DFA {
 			}
 ;
 			skip_spaces(pos);
-			::Parser::Types::moduleImport data = NONE;
+			::Parser::Types::moduleImport data = _2;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::moduleImport, data)};
 		}
 		template <class IT>
@@ -3011,7 +3011,7 @@ namespace DFA {
 			success_3 = true;
 			pos += 1;
 			skip_spaces(pos);
-			::Parser::Types::rule_value data = NONE;
+			::Parser::Types::rule_value data = _2;
 			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::rule_value, data)};
 		}
 	};

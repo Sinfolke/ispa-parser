@@ -108,7 +108,7 @@ auto LLIR::BuilderBase::createDefaultBlock() -> LLIR::Nodes {
             {LLIR::types::INCREASE_POS_COUNTER}
     };
 }
-auto LLIR::BuilderBase::createDefaultCall(LLIR::Nodes &block, LLIR::variable &var, const std::string &name, LLIR::Expression &expr) -> LLIR::member  {
+auto LLIR::BuilderBase::createDefaultCall(LLIR::Nodes &block, LLIR::variable var, const std::string &name, LLIR::Expression &expr) -> LLIR::member  { // var must be copy
     auto function_call = LLIR::function_call {
         name,
         stdu::vector<stdu::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::TOKEN_SEQUENCE}}},
@@ -119,7 +119,7 @@ auto LLIR::BuilderBase::createDefaultCall(LLIR::Nodes &block, LLIR::variable &va
         LLIR::var_assign_types::ASSIGN,
         { LLIR::var_assign_values::FUNCTION_CALL, function_call }
     };
-    var.property_access = {"node"};
+    var.property_access = {"status"};
     expr = {
         {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = var}}
     };

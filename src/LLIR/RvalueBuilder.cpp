@@ -74,7 +74,6 @@ auto LLIR::RvalueBuilder::deduceType() -> LLIR::var_type {
     return type;
 }
 void LLIR::RvalueBuilder::build() {
-    LLIR::assign data;
     if (value->isString()) {
         data.kind = LLIR::var_assign_values::STRING;
         data.data = std::any_cast<std::string>(value->getString().value);

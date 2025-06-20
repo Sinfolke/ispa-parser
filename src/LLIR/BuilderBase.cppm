@@ -19,7 +19,7 @@ export namespace LLIR {
         static auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> LLIR::Nodes;
         static auto createDefaultBlock(const LLIR::variable &svar) -> LLIR::Nodes;
         static auto createDefaultBlock() -> LLIR::Nodes;
-        static auto createDefaultCall(LLIR::Nodes &block, LLIR::variable &var, const std::string &name, LLIR::Expression &expr) -> LLIR::member;
+        static auto createDefaultCall(LLIR::Nodes &block, LLIR::variable var, const std::string &name, LLIR::Expression &expr) -> LLIR::member;
         static auto compare_templ(const stdu::vector<LLIR::var_type>& templ1, const stdu::vector<LLIR::var_type>& templ2) -> bool;
 
         // cll helper functions

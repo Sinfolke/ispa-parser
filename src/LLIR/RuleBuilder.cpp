@@ -1,7 +1,8 @@
 module LLIR.RuleBuilder;
 import LLIR.Rule.MemberBuilder;
-import logging;
 import LLIR.CllBuilder;
+import LLIR;
+import logging;
 import cpuf.printf;
 import std;
 
@@ -45,7 +46,6 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
             block.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
-            std::flush(std::cout);
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
             auto type = expr_builder.deduceType();
