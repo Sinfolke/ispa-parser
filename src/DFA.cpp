@@ -657,6 +657,20 @@ auto DFA::getTypeStr(bool isToken) const -> std::string {
             throw Error("Undefined DFA type");;
     }
 }
+auto DFA::getSpanTypeStr(bool isToken) const -> std::string {
+    switch (getType(isToken)) {
+        case DFA::DfaType::Char:
+            return "DFA::SpanCharTable";
+        case DFA::DfaType::Token:
+            return "DFA::SpanTokenTable";
+        case DFA::DfaType::CallableToken:
+            return "DFA::SpanCallableTokenTable";
+        case DFA::DfaType::Multi:
+            return "DFA::SpanMultiTable";
+        default:
+            throw Error("Unknown DFA type for span");
+    }
+}
 auto DFA::getTransitionType(bool isToken) const -> std::string {
     switch (getType(isToken)) {
         case DFA::DfaType::Char:
@@ -674,6 +688,41 @@ auto DFA::getTransitionType(bool isToken) const -> std::string {
 auto DFA::getStateType(bool isToken) const -> std::string {
     return getTypeStr(isToken) + "State";
 }
+auto DFA::getStateType(const Transitions &transitions, bool isToken) -> DfaType {
+    DfaType dfa_type = DfaType::NONE;
+    for (const auto &[symbol, next] : transitions) {
+        if (std::holds_alternative<char>(symbol)) {
+            if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
+                dfa_type = DfaType::Char;
+            } else {
+                dfa_type = DfaType::Multi;
+                break;
+            }
+        } else {
+            if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
+                dfa_type = DfaType::Token;
+            } else {
+                dfa_type = DfaType::Multi;
+                break;
+            }
+        }
+    }
+    return dfa_type;
+}
+auto DFA::getStateTypeStr(const Transitions &transitions, bool isToken) -> std::string {
+    switch (getStateType(transitions, isToken)) {
+        case DFA::DfaType::Char:
+            return "CharTableTransition";
+        case DFA::DfaType::Token:
+            return "TokenTableTransition";
+        case DFA::DfaType::CallableToken:
+            return "CallableTokenTableTransition";
+        case DFA::DfaType::Multi:
+            return "MultiTableTransition";
+        default:
+            throw Error("Undefined DFA type");;
+    }
+}
 
 auto DFA::getMaxTransitionCount() const -> size_t {
     size_t count = 0;
@@ -688,6 +737,7 @@ auto DFA::getMaxTransitionCount() const -> size_t {
     }
     return count;
 }
+
 
 
 // Print a single state

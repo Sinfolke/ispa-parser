@@ -7,6 +7,8 @@ import std.compat;
 export class DFAConverter {
     const stdu::vector<DFA> &dfas;
     const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;
+    const LexerBuilder::StateSet &state_set;
+    const LexerBuilder::StateSetLocationMap location_map;
     const std::string &namespace_name;
     const std::string &prefix;
     const std::string &name;
@@ -17,12 +19,14 @@ public:
     DFAConverter(
         const stdu::vector<DFA> &dfa,
         const LexerBuilder::DfaCompatibleTable *dfa_compatible_table,
+        const LexerBuilder::StateSet &state_set,
+        const LexerBuilder::StateSetLocationMap &location_map,
         const std::string& namespace_name,
         const std::string &prefix,
         const std::string &name,
         bool isToken
         )
-    : dfas(dfa), dfa_compatible_table(dfa_compatible_table), namespace_name(namespace_name), prefix(prefix), name(name), isToken(isToken) {}
+    : dfas(dfa), dfa_compatible_table(dfa_compatible_table), state_set(state_set), location_map(location_map), namespace_name(namespace_name), prefix(prefix), name(name), isToken(isToken) {}
     void create();
     auto get() -> std::ostringstream &;
 };

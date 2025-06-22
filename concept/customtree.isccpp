@@ -1,0 +1,30 @@
+/*
+    this is language specific file inserted at the top of generated parser
+    it allows you to control what is visible to parser and define custom AST structures
+    generally it is just code with custom semantics to interact with abstracted default tree
+*/
+// trick to support both includes and imports
+// handled by generator
+@import std |:
+    #include <vector>
+    #include <variant>
+
+
+struct RuleMember {
+    std::variant</*other types*/> value;
+};
+struct Rule {
+    std::vector<RuleMember> members;
+    std::vector<Modifier> modifiers;
+
+    // how to construct this AST from default AST
+    Rule(#arr<Rule> members, #arr<Rule> modifiers) {
+        for (const auto &mem : members) {
+           members.push_back(mem) // imagine simple construction. In practise it is harder
+        }
+        // same with modifiers
+    }
+
+    auto clearNode() -> void; // only cpp case: allowed left it here undefined and define later in user code
+                              // other languages are forced to define it here
+};

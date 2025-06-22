@@ -17,46 +17,16 @@ void DFAConverter::createDFATable(const DFA &dfa, size_t count) {
     std::ostringstream table_out;
 
     const auto &states = dfa.getStates();
-    size_t max_states_count = states.size();
-    size_t max_transition_count = dfa.getMaxTransitionCount();
+    std::size_t state_count = 0;
 
     for (const auto &state : states) {
 
-        table_out << "\tDFA::" << dfa.getStateType(isToken) << '<' << max_transition_count << '>' << "{ "
+        table_out << "\tDFA::Span" << DFA::getStateTypeStr(state.transitions, isToken) << "{ "
                   << number_or_null(state.else_goto) << ", "
-                  << number_or_null(state.else_goto_accept) << ", {\n";
-
-        size_t transition_index = 0;
-        for (const auto &transition : state.transitions) {
-            table_out << "\tDFA::" << dfa.getTransitionType(isToken) << " { ";
-
-            if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
-                const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
-
-                if (dfa_compatible_table && dfa_compatible_table->contains(symbol)) {
-                    size_t dfa_index = dfa_compatible_table->at(symbol);
-                    const std::string dfa_table_name = "dfa_table_" + std::to_string(dfa_index);
-                    table_out << "DFA::Span" << dfas[dfa_index].getTypeStr(isToken)
-                              << "(" << dfa_table_name << "), ";
-                } else {
-                    cpuf::printf("symbol {} not contained", symbol);
-                    table_out << (isToken ? "&" : "Tokens::") << corelib::text::join(symbol, "_") << ", ";
-                }
-            } else {
-                const auto &ch = std::get<char>(transition.first);
-                table_out << "'" << corelib::text::getEscapedAsStr(ch, false) << "', ";
-            }
-
-            table_out << transition.second.next << ", "
-                      << number_or_null(transition.second.accept_index) << " }";
-
-            if (++transition_index != state.transitions.size())
-                table_out << ",\n";
-            else
-                table_out << "\n";
-        }
-
-        table_out << "    } },\n";
+                  << number_or_null(state.else_goto_accept) << ", "
+                  << '&' << location_map.at({count, state_count})->;
+        table_out << "\t},\n";
+        state_count++;
     }
 
     out << "const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(isToken)

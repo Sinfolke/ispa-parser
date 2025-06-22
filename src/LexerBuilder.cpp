@@ -8,6 +8,8 @@ import LLIR.RuleBuilder;
 import DFABuilder;
 import cpuf.printf;
 import std;
+#include "../Parser.h"
+
 bool LexerBuilder::isDfaCompatible(const stdu::vector<AST::RuleMember> &member) {
     for (const auto &mem : member) {
         if (mem.isCll())
@@ -53,4 +55,30 @@ void LexerBuilder::build() {
         dfa_count++;
     }
     function_ir = std::move(LLIR::IR(functions, function_dfas));
+}
+
+
+auto LexerBuilder::getStateSet() const -> std::pair<TransitionSet, TransitionSetLocationMap> {
+    TransitionSet transitions_set;
+    TransitionSetLocationMap location_in_set;
+    utype::unordered_map<DFA::Transitions, size_t> state_to_map;
+
+    std::size_t dfa_count = 0;
+    for (const auto &dfa : dfas) {
+        std::size_t state_count = 0;
+        for (const auto &state : dfa.getStates()) {
+            auto it = state_to_map.find(state.transitions);
+            size_t index;
+            if (it == state_to_map.end()) {
+                index = transitions_set.size();
+                transitions_set.insert(state.transitions);
+                state_to_map.emplace(state.transitions, index);
+            } else {
+                index = it->second;
+            }
+            location_in_set[{dfa_count, state_count++}] = index;
+        }
+        ++dfa_count;
+    }
+    return {transitions_set, location_in_set};
 }

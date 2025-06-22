@@ -1,0 +1,6 @@
+[inline] // inline AST value if possible
+expression -> expr:
+    NUMBER '+' NUMBER
+;
+[skip]              // if this token is ever meet, skip it
+WHITESPACE: [ ]+;

@@ -14,6 +14,9 @@ public:
     using DfaCompatibleTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
     using NameToDfaMap = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
     using DispatchNamesInvolve = utype::unordered_map<stdu::vector<stdu::vector<std::string>>, NameToDfaMap>;
+
+    using StateSet = utype::unordered_set<DFA::Transitions>;
+    using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
 private:
     AST::Tree &ast;
     stdu::vector<DFA> dfas;
@@ -40,4 +43,7 @@ public:
     auto& getFunctionsIR() const  { return function_ir; }
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
+
+    auto getStateSet() const -> std::pair<StateSet, StateSetLocationMap>;
+
 };
