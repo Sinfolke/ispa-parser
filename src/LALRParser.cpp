@@ -3,11 +3,11 @@ import AST.API;
 import LRParser;
 import hash;
 import std;
-void LALRParser::rebuildActionTable(const stdu::vector<size_t>& state_mapping) {
+void LALRParser::rebuildActionTable(const stdu::vector<std::size_t>& state_mapping) {
     ActionTable new_action_table;
 
-    for (size_t i = 0; i < action_table.size(); ++i) {
-        size_t new_state = state_mapping[i];
+    for (std::size_t i = 0; i < action_table.size(); ++i) {
+        std::size_t new_state = state_mapping[i];
         for (auto& [sym, action] : action_table[i]) {
             if (action.type == Action_type::SHIFT) {
                 action.state = state_mapping[action.state];
@@ -21,20 +21,20 @@ void LALRParser::rebuildActionTable(const stdu::vector<size_t>& state_mapping) {
 }
 
 
-void LALRParser::rebuildGotoTable(const stdu::vector<size_t>& state_mapping) {
+void LALRParser::rebuildGotoTable(const stdu::vector<std::size_t>& state_mapping) {
     GotoTable new_goto_table;
 
-    for (size_t i = 0; i < goto_table.size(); ++i) {
-        size_t new_from_state = state_mapping[i];
+    for (std::size_t i = 0; i < goto_table.size(); ++i) {
+        std::size_t new_from_state = state_mapping[i];
         for (auto& [nonterminal, next_state] : goto_table[i]) {
-            size_t new_to_state = state_mapping[next_state];
+            std::size_t new_to_state = state_mapping[next_state];
             new_goto_table[new_from_state][nonterminal] = new_to_state;
         }
     }
 
     goto_table = std::move(new_goto_table);
 }
-stdu::vector<std::pair<stdu::vector<std::string>, LRParser::Action_type>> LALRParser::getActionType(const LR1Core& item, size_t state) {
+stdu::vector<std::pair<stdu::vector<std::string>, LRParser::Action_type>> LALRParser::getActionType(const LR1Core& item, std::size_t state) {
     // Check if the item is in the action table
     stdu::vector<std::pair<stdu::vector<std::string>, LRParser::Action_type>> action_types;
     auto it = action_table.find(state);
@@ -51,8 +51,8 @@ stdu::vector<std::pair<stdu::vector<std::string>, LRParser::Action_type>> LALRPa
 
 void LALRParser::build() {
     // identify merge states
-    utype::unordered_map<CanonicalItem, stdu::vector<size_t>> core_to_states;
-    size_t i = 0;
+    utype::unordered_map<CanonicalItem, stdu::vector<std::size_t>> core_to_states;
+    std::size_t i = 0;
     for (auto item : canonical_item_set) {
         CanonicalItem core;
         for (auto& el : item) {
@@ -64,13 +64,13 @@ void LALRParser::build() {
 
     // Step 2: Create merged states
     CanonicalItemSet merged_states;
-    stdu::vector<size_t> state_mapping(canonical_item_set.size());
+    stdu::vector<std::size_t> state_mapping(canonical_item_set.size());
     
     for (const auto &[core, states] : core_to_states) {
         auto new_state = merged_states.size();
         merged_states.emplace_back();
         bool conflict = false;
-        for (size_t s : states) {
+        for (std::size_t s : states) {
             for (const auto& item : canonical_item_set[s]) {
                 // We assume that `core` is a collection of items or states to check for conflict
                 for (auto el : core) {
@@ -116,7 +116,7 @@ void LALRParser::build() {
         } else {
             // ⚠️ Conflict: do not merge — assign each state its own slot
             for (auto old_state : states) {
-                size_t new_state = merged_states.size();
+                std::size_t new_state = merged_states.size();
                 merged_states.push_back(canonical_item_set[old_state]);
                 state_mapping[old_state] = new_state;
             }
@@ -124,8 +124,8 @@ void LALRParser::build() {
         }
 
     }
-    utype::unordered_map<size_t, size_t> compact_state_map;
-    size_t compact_index = 0;
+    utype::unordered_map<std::size_t, std::size_t> compact_state_map;
+    std::size_t compact_index = 0;
     
     for (auto& idx : state_mapping) {
         if (!compact_state_map.count(idx)) {

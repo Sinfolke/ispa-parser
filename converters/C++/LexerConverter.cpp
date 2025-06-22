@@ -3,6 +3,7 @@ import Converter.DFA;
 import DFA;
 import LLConverter;
 import LexerBuilder;
+import StateArrayBuilder;
 import hash;
 import corelib;
 import logging;
@@ -57,11 +58,11 @@ void LexerConverter::addDFASpansH() const {
     }
 }
 void LexerConverter::output() {
-    // get states separately
-    const auto [state_set, location_map] = lexer_data.getStateSet();
     // 1. print DFAS
-    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_table", true);
-    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), namespace_name, "Lexer", "dfa_func_table", true);
+    StateArrayBuilder dfa_states(out, true, state_set, namespace_name, lexer_data, "Lexer");
+    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_table", true);
+    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_func_table", true);
+    dfa_states.output();
     dfa_converter.create();
     dfa_func_table_converter.create();
     out << dfa_converter.get().str();
@@ -106,19 +107,21 @@ void LexerConverter::output() {
     converter.writeRules(out);
 }
 void LexerConverter::outputHeader() {
+    StateArrayBuilder dfa_states(h_out, true, state_set, namespace_name, lexer_data, "Lexer");
     h_out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tusing ISPA_STD::Lexer_base<Tokens>::Lexer_base;";
     addStandardFunctionsLexer();
     h_out << "\t\tprivate:\n"
     << "\t\t\tToken makeToken(const char*& pos);\n";
-    for (std::size_t i = 0; i < lexer_data.getDFAS().size(); ++i) {
-        const auto &dfa = lexer_data.getDFAS().at(i);
+    dfa_states.outputHeader();
+    for (std::size_t i = 0; i < lexer_data.getDFAS().getDFAS().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
         h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
     }
     addDFASpansH();
-    for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().size(); ++i) {
-        const auto &dfa = lexer_data.getDFAS().at(i);
+    for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().getDFAS().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
         h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
     }
     // add first character diaptch table

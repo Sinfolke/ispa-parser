@@ -16,7 +16,7 @@ void LRConverter::createActionTable(std::ostringstream &out) const {
     out << namespace_name << "::ActionTable " << namespace_name << "::Parser::action_table = {{\n";
     // convert map of states to row map
     const auto row_table = data->getActionTableAsRow();
-    for (size_t state = 0; state < row_table.size(); ++state) {
+    for (std::size_t state = 0; state < row_table.size(); ++state) {
         out << "\t{{/*" << state << "*/";
         const auto &value = row_table[state];
         stdu::vector<std::string> row(max_terminals, "std::nullopt");
@@ -44,7 +44,7 @@ void LRConverter::createGotoTable(std::ostringstream &out) const {
     auto max_nonterminals = rules.size();
     auto row_table = data->getGotoTableAsRow();
     out << namespace_name << "::GotoTable " << namespace_name << "::Parser::goto_table = {{\n";
-    for (size_t state = 0; state < row_table.size(); ++state) {
+    for (std::size_t state = 0; state < row_table.size(); ++state) {
         out << "\t{{";
         const auto &value = row_table[state];
         stdu::vector<std::string> row(max_nonterminals, "std::nullopt");
@@ -72,7 +72,7 @@ void LRConverter::createRulesTable(std::ostringstream &out) {
     rules_table = data->getRulesTable();
     out << namespace_name << "::RulesTable " << namespace_name << "::Parser::rules_table = {\n";
     out << "\t{\n";
-    for (size_t i = 0; i < rules_table.size(); ++i) {
+    for (std::size_t i = 0; i < rules_table.size(); ++i) {
         const auto &rule = rules_table[i];
         out << "\t{::" << namespace_name << "::Rules::" << corelib::text::join(rule.first, "_") << ", " << rule.second.first << "}";
         if (i + 1 < rules_table.size()) out << ",";
@@ -103,10 +103,10 @@ void LRConverter::createDFATable(std::ostringstream &out) {
             out << "::" << namespace_name << "::Action::ERR, 0"; // Default Action if none (e.g., SHIFT 0)
         }
 
-        out << "}, std::array<std::pair<::" << namespace_name << "::Tokens, size_t>, " << max_dfa_token_map_size + 2 << "> {";
+        out << "}, std::array<std::pair<::" << namespace_name << "::Tokens, std::size_t>, " << max_dfa_token_map_size + 2 << "> {";
 
         // Write transitions array
-        size_t i = 0;
+        std::size_t i = 0;
         for (const auto &[name, transition] : transitions) {
             if (i == 0) {
                 out << "std::make_pair(::" << namespace_name << "::Tokens::NONE, " << epsilon_transition << "), ";

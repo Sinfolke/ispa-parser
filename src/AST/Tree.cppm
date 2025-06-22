@@ -23,7 +23,7 @@ export namespace AST {
         First first;
         Follow follow;
 
-        static auto compute_group_length(const stdu::vector<AST::RuleMember> &group) -> size_t;
+        static auto compute_group_length(const stdu::vector<AST::RuleMember> &group) -> std::size_t;
         void getUsePlacesTable(const stdu::vector<AST::RuleMember> &members, const stdu::vector<std::string> &name);
         void transform_helper(
             stdu::vector<AST::RuleMember> &members,

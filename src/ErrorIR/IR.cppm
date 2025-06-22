@@ -42,7 +42,7 @@ export namespace ErrorIR {
         stdu::vector<DFA> *dfas;
 
         // variables used for lower to LLIR
-        size_t variable_count;
+        std::size_t variable_count;
         LLIR::variable panic_mode_variable;
 
         bool isFirst;
@@ -69,6 +69,6 @@ export namespace ErrorIR {
         auto lowerIIF(const stdu::vector<iif_condition_part> &condition) -> stdu::vector<LLIR::expr>;
         auto lowerMemberToLLIR(const Instruction &member) -> stdu::vector<LLIR::member>;
         auto lowerMembersToLLIR(const Instructions &members) -> stdu::vector<LLIR::member>;
-        auto lowerToLLIR(size_t &variable_count) -> stdu::vector<LLIR::member>;
+        auto lowerToLLIR(std::size_t &variable_count) -> stdu::vector<LLIR::member>;
     };
 }

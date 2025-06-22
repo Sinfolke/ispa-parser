@@ -1,26 +1,27 @@
 export module Converter.DFA;
 import DFA;
 import LexerBuilder;
+import DFAS;
 import dstd;
 import std;
 import std.compat;
 export class DFAConverter {
-    const stdu::vector<DFA> &dfas;
+    const DFAS &dfas;
     const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;
-    const LexerBuilder::StateSet &state_set;
-    const LexerBuilder::StateSetLocationMap location_map;
+    const DFAS::StateSet &state_set;
+    const DFAS::StateSetLocationMap location_map;
     const std::string &namespace_name;
     const std::string &prefix;
     const std::string &name;
     std::ostringstream out;
     bool isToken;
-    void createDFATable(const DFA& dfa, size_t count);
+    void createDFATable(const DFA& dfa, std::size_t count);
 public:
     DFAConverter(
-        const stdu::vector<DFA> &dfa,
+        const DFAS &dfa,
         const LexerBuilder::DfaCompatibleTable *dfa_compatible_table,
-        const LexerBuilder::StateSet &state_set,
-        const LexerBuilder::StateSetLocationMap &location_map,
+        const DFAS::StateSet &state_set,
+        const DFAS::StateSetLocationMap &location_map,
         const std::string& namespace_name,
         const std::string &prefix,
         const std::string &name,

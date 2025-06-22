@@ -124,7 +124,7 @@ auto ErrorIR::IR::lowerMembersToLLIR(const Instructions &members) -> stdu::vecto
     return result;
 }
 
-auto ErrorIR::IR::lowerToLLIR(size_t &variable_count) -> stdu::vector<LLIR::member> {
+auto ErrorIR::IR::lowerToLLIR(std::size_t &variable_count) -> stdu::vector<LLIR::member> {
     this->variable_count = variable_count;
     return lowerMembersToLLIR(instructions);
 }

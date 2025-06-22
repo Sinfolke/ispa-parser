@@ -341,24 +341,24 @@ class DFA {
             }
 
         }
-        return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
+        return {Tokens::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
     };
 protected:
     template<typename Transition, typename Tokens, typename Table, typename IT, typename PanicModeFunc>
-    auto decide(const Table &table, IT &pos, PanicModeFunc panic_mode) -> size_t {
-        size_t state = 0;
-        size_t accept = std::numeric_limits<size_t>::max();
+    auto decide(const Table &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
+        std::size_t state = 0;
+        std::size_t accept = std::numeric_limits<std::size_t>::max();
         do {
             auto new_state = find_key<Table, IT, Transition, Tokens>(table[state].transitions, pos);
-            if (new_state.next != std::numeric_limits<size_t>::max()) {
+            if (new_state.next != std::numeric_limits<std::size_t>::max()) {
                 pos++;
                 state = new_state.next;
-                if (new_state.accept != std::numeric_limits<size_t>::max()) {
+                if (new_state.accept != std::numeric_limits<std::size_t>::max()) {
                     accept = new_state.accept;
                 }
-            } else if (table[state].else_goto != std::numeric_limits<size_t>::max()) {
+            } else if (table[state].else_goto != std::numeric_limits<std::size_t>::max()) {
                 state = table[state].else_goto;
-                if (table[state].else_goto_accept != std::numeric_limits<size_t>::max()) {
+                if (table[state].else_goto_accept != std::numeric_limits<std::size_t>::max()) {
                     accept = table[state].else_goto_accept;
                 }
             } else {
@@ -410,23 +410,23 @@ class AdvancedDFA {
                 return t.second;
             }
         }
-        return {Tokens::NONE, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()};
+        return {Tokens::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
     };
 protected:
     template<typename DFATokenTable, typename DFACharTable, typename DFAMultiTable, typename Table, typename PanicModeFunc, typename Transition>
-    auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> size_t {
-        size_t state = 0;
-        size_t accept = std::numeric_limits<size_t>::max();
+    auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> std::size_t {
+        std::size_t state = 0;
+        std::size_t accept = std::numeric_limits<std::size_t>::max();
         do {
             auto new_state = find_key<Table, Transition, DFATokenTable, DFACharTable, DFAMultiTable>(table[state].transitions, pos);
-            if (new_state.next != std::numeric_limits<size_t>::max()) {
+            if (new_state.next != std::numeric_limits<std::size_t>::max()) {
                 state = new_state.next;
-                if (new_state.accept != std::numeric_limits<size_t>::max()) {
+                if (new_state.accept != std::numeric_limits<std::size_t>::max()) {
                     accept = new_state.accept;
                 }
-            } else if (table[state].else_goto != std::numeric_limits<size_t>::max()) {
+            } else if (table[state].else_goto != std::numeric_limits<std::size_t>::max()) {
                 state = table[state].else_goto;
-                if (table[state].else_goto_accept != std::numeric_limits<size_t>::max()) {
+                if (table[state].else_goto_accept != std::numeric_limits<std::size_t>::max()) {
                     accept = table[state].else_goto_accept;
                 }
             } else {
@@ -537,7 +537,7 @@ public:
         Lexer_base<TOKEN_T>* owner = nullptr;
         Node<TOKEN_T> current;
         const char* pos = nullptr;
-        size_t counter = 0;
+        std::size_t counter = 0;
 
         void advance() {
             if (isEnd())
@@ -588,7 +588,7 @@ public:
             return temp;
         }
 
-        void operator+=(size_t count) {
+        void operator+=(std::size_t count) {
             while (count-- > 0 && !isEnd())
                 advance();
         }
@@ -605,7 +605,7 @@ public:
             return &current;
         }
 
-        size_t distance() const {
+        std::size_t distance() const {
             return counter;
         }
     };
@@ -626,7 +626,7 @@ public:
                 pos = other.pos;
                 return *this;
             }            
-            void operator+=(size_t count) {
+            void operator+=(std::size_t count) {
                 pos += count;
             }
 
@@ -639,10 +639,10 @@ public:
                 this->operator+=(1);
                 return temp;
             }
-            size_t operator-(const iterator &iterator) const  {
+            std::size_t operator-(const iterator &iterator) const  {
                 return pos - iterator.pos;
             }
-            iterator operator+(size_t count) const {
+            iterator operator+(std::size_t count) const {
                 iterator temp = *this;
                 temp += count;
                 return temp;
@@ -736,7 +736,7 @@ public:
     
         std::string str;
         file.seekg(0, std::ios::end);
-        size_t fileSize = file.tellg();
+        std::size_t fileSize = file.tellg();
         str.reserve(fileSize);  // Reserve enough space for the string
     
         file.seekg(0, std::ios::beg);
@@ -850,7 +850,7 @@ protected:
     ErrorController error_controller;
     // skip spaces for tokens
     template <class IT>
-    size_t skip_spaces(IT& pos) {
+    std::size_t skip_spaces(IT& pos) {
         auto prev = pos;
         while (pos->name() == TOKEN_T::__WHITESPACE)
             ++pos;
@@ -919,13 +919,13 @@ public:
 template <class TOKEN_T, class RULE_T, class Action, class ActionTable, class GotoTable, class RulesTable>
 class LRParser_base : public LLParser_base<TOKEN_T, RULE_T> {
 protected:
-    std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, size_t>> stack;
+    std::vector<std::pair<std::variant<TOKEN_T, RULE_T>, std::size_t>> stack;
     template <class IT>
-    void shift(IT& pos, size_t state) {
+    void shift(IT& pos, std::size_t state) {
         stack.push_back({pos->name(), state});
         pos++;
     }
-    void reduce(const size_t rules_id, const GotoTable &goto_table, const RulesTable rules_table) {
+    void reduce(const std::size_t rules_id, const GotoTable &goto_table, const RulesTable rules_table) {
         const auto &rule_data = rules_table[rules_id];
         const auto &rule_name = rule_data.first;
         const auto &reduce_size = rule_data.second;
@@ -935,12 +935,12 @@ protected:
         stack.erase(stack.end() - reduce_size, stack.end());
         printf("Reduce: goto_table[%d][%d]\n", (int) stack.back().second, (int) rule_name);
         // Perform the reduction
-        const auto& goto_entry = goto_table[stack.back().second][static_cast<size_t>(rule_name)];
+        const auto& goto_entry = goto_table[stack.back().second][static_cast<std::size_t>(rule_name)];
         if (!goto_entry.has_value()) {
             throw std::runtime_error("Invalid GOTO after reduction");
         }
 
-        size_t next_state = goto_entry.value();
+        std::size_t next_state = goto_entry.value();
         stack.push_back({rule_name, next_state});
     }
     match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {
@@ -956,7 +956,7 @@ protected:
         stack.push_back({TOKEN_T::NONE, 0});
         while(true) {
             auto &current_state = stack.back().second;
-            const auto &action = action_table[current_state][(size_t) pos->name()];
+            const auto &action = action_table[current_state][(std::size_t) pos->name()];
             printf("Token name: %s", TokensToString(pos->name()).c_str());
             if (pos->data().has_value()) {
                 printf("[%s]", std::any_cast<std::string>(pos->data()).c_str());
@@ -988,7 +988,7 @@ private:
     std::deque<Node<TOKEN_T>> dfa_token_cache;
 protected:
     template <class IT>
-    void shift(IT& pos, size_t state) {
+    void shift(IT& pos, std::size_t state) {
         if (dfa_token_cache.empty()) {
             printf("Pushing directly\n");
             this->stack.push_back({pos->name(), state});
@@ -1007,18 +1007,18 @@ protected:
     template<class IT>
     const std::optional<Action>& getAction(IT &pos, const ActionTable &action_table) {
         auto &current_state = this->stack.back().second;
-        return dfa_token_cache.empty() ? action_table[current_state][(size_t) pos->name()] : action_table[current_state][(size_t) dfa_token_cache.front().name()];
+        return dfa_token_cache.empty() ? action_table[current_state][(std::size_t) pos->name()] : action_table[current_state][(std::size_t) dfa_token_cache.front().name()];
     }
     template<class IT>
-    const Action* resolveDFA(IT &pos, size_t dfa_index, const DFATable &dfa_table) {
+    const Action* resolveDFA(IT &pos, std::size_t dfa_index, const DFATable &dfa_table) {
         const Action* initial_action = nullptr;
         printf("Resolving conflict in DFA table\n");
-        size_t current_dfa_length = dfa_token_cache.size();
-        for (size_t offset = 0;; offset++) {
+        std::size_t current_dfa_length = dfa_token_cache.size();
+        for (std::size_t offset = 0;; offset++) {
             if (offset >= current_dfa_length)
                 dfa_token_cache.push_back(*pos++);
             const auto &[action, table] = dfa_table[dfa_index];
-            size_t i = 1;
+            std::size_t i = 1;
             while(table[i].first != dfa_token_cache[offset].name() && table[i].second != 0) i++;
             const auto &go_state = table[i].second;
             if (initial_action == nullptr) {

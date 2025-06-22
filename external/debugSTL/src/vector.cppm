@@ -6,16 +6,16 @@ export namespace dstd {
 template<typename T, class Allocator = std::allocator<T>>
 class vector {
     T* element = nullptr;
-    size_t sz = 0;
-    size_t cap = 0;
-    size_t modification_count = 0;
+    std::size_t sz = 0;
+    std::size_t cap = 0;
+    std::size_t modification_count = 0;
     Allocator allocator;
 
-    void destroy_elements(size_t from, size_t to) {
+    void destroy_elements(std::size_t from, std::size_t to) {
         if (from > to || to > sz) {
             throw std::out_of_range("destroy_elements: invalid range");
         }
-        for (size_t i = from; i < to; ++i) {
+        for (std::size_t i = from; i < to; ++i) {
             std::destroy_at(element + i);
         }
     }
@@ -38,16 +38,16 @@ class vector {
         }
     }
 
-    void reallocate(size_t new_cap) {
+    void reallocate(std::size_t new_cap) {
         T* new_data = allocator.allocate(new_cap); // throws if allocation fails
-        size_t i = 0;
+        std::size_t i = 0;
         try {
             for (; i < sz; ++i) {
                 std::construct_at(new_data + i, std::move_if_noexcept(element[i])); // may throw
             }
         } catch (...) {
             // Clean up partially constructed new_data
-            for (size_t j = 0; j < i; ++j) {
+            for (std::size_t j = 0; j < i; ++j) {
                 std::destroy_at(new_data + j);
             }
             allocator.deallocate(new_data, new_cap);
@@ -63,15 +63,15 @@ class vector {
         cap = new_cap;
     }
 
-    void grow_if_needed(size_t min_cap) {
+    void grow_if_needed(std::size_t min_cap) {
         if (cap < min_cap) {
-            size_t new_cap = cap == 0 ? 1 : cap * 2;
+            std::size_t new_cap = cap == 0 ? 1 : cap * 2;
             if (new_cap < min_cap) new_cap = min_cap;
             reallocate(new_cap); // already exception-safe
         }
     }
 
-    void check_index(size_t index) const {
+    void check_index(std::size_t index) const {
         if (index == std::string::npos) {
             throw std::out_of_range("check_index: index is npos");
         }
@@ -84,7 +84,7 @@ class vector {
     protected:
         Pointer ptr;
         const vector<T>* vec = nullptr;
-        size_t modification_count = 0;
+        std::size_t modification_count = 0;
 
         void invalidation_check() const {
             if (vec && vec->modification_count != modification_count) {
@@ -228,7 +228,7 @@ class vector {
     class iterator_base {
         Pointer ptr;
         const vector<T> *vec = nullptr;
-        size_t modification_count = 0;
+        std::size_t modification_count = 0;
         void invalidation_check() const {
             if (vec->modification_count != modification_count) {
                 throw std::runtime_error("iterator invalidated");
@@ -355,7 +355,7 @@ class vector {
 public:
     using value_type        = T;
     using allocator_type    = Allocator;
-    using size_type         = size_t;
+    using size_type         = std::size_t;
     using difference_type   = ptrdiff_t;
     using reference         = T&;
     using const_reference   = const T&;
@@ -367,20 +367,20 @@ public:
     using const_reverse_iterator = reverse_iterator_base<const T*, const T&>;
     vector() = default;
 
-    explicit vector(size_t count) {
+    explicit vector(std::size_t count) {
         element = allocator.allocate(count);
         modification_count++;
-        for (size_t i = 0; i < count; ++i) {
+        for (std::size_t i = 0; i < count; ++i) {
             std::construct_at(element + i);
         }
         sz = count;
         cap = count;
     }
 
-    vector(size_t count, const T& value) {
+    vector(std::size_t count, const T& value) {
         element = allocator.allocate(count);
         modification_count++;
-        for (size_t i = 0; i < count; ++i) {
+        for (std::size_t i = 0; i < count; ++i) {
             std::construct_at(element + i, value);
         }
         sz = count;
@@ -393,7 +393,7 @@ public:
         sz = std::distance(begin, end);
         cap = sz;
         element = allocator.allocate(cap);
-        size_t i = 0;
+        std::size_t i = 0;
         for (auto it = begin; it != end; ++it, ++i) {
             std::construct_at(element + i, *it);
         }
@@ -405,12 +405,12 @@ public:
         if (other.sz > 0) {
             element = allocator.allocate(other.sz);
             try {
-                for (size_t i = 0; i < other.sz; ++i) {
+                for (std::size_t i = 0; i < other.sz; ++i) {
                     std::construct_at(element + i, other.element[i]);
                 }
             } catch (...) {
                 // clean up on exception
-                for (size_t j = 0; j < other.sz; ++j) {
+                for (std::size_t j = 0; j < other.sz; ++j) {
                     std::destroy_at(element + j);
                 }
                 allocator.deallocate(element, other.sz);
@@ -433,14 +433,14 @@ public:
         : sz(other.size()), cap(sz), element(nullptr), modification_count(0)
     {
         element = allocator.allocate(cap);
-        size_t i = 0;
+        std::size_t i = 0;
         try {
             for (; i < sz; ++i) {
                 std::construct_at(element + i, other[i]);
             }
             modification_count++;
         } catch (...) {
-            for (size_t j = 0; j < i; ++j)
+            for (std::size_t j = 0; j < i; ++j)
                 std::destroy_at(element + j);
             allocator.deallocate(element, cap);
             throw;
@@ -453,13 +453,13 @@ public:
         cap = sz;
         element = allocator.allocate(cap);
 
-        size_t i = 0;
+        std::size_t i = 0;
         try {
             for (; i < sz; ++i) {
                 std::construct_at(element + i, std::move(other[i]));
             }
         } catch (...) {
-            for (size_t j = 0; j < i; ++j)
+            for (std::size_t j = 0; j < i; ++j)
                 std::destroy_at(element + j);
             allocator.deallocate(element, cap);
             throw;
@@ -469,7 +469,7 @@ public:
     }
     vector(std::initializer_list<T> il) : sz(il.size()), cap(il.size()) {
         element = allocator.allocate(cap);
-        size_t i = 0;
+        std::size_t i = 0;
         for (auto it = il.begin(); it != il.end(); ++it, ++i) {
             std::construct_at(element + i, *it);
         }
@@ -480,7 +480,7 @@ public:
             destroy_all();
             modification_count++;
             element = allocator.allocate(other.sz);
-            for (size_t i = 0; i < other.sz; ++i) {
+            for (std::size_t i = 0; i < other.sz; ++i) {
                 std::construct_at(element + i, other.element[i]);
             }
             sz = other.sz;
@@ -514,21 +514,21 @@ public:
         temp.cap = temp.sz;
         temp.element = temp.allocator.allocate(temp.cap);
 
-        size_t i = 0;
+        std::size_t i = 0;
         try {
             for (const auto& item : other) {
                 std::construct_at(temp.element + i, item);
                 ++i;
             }
         } catch (...) {
-            for (size_t j = 0; j < i; ++j)
+            for (std::size_t j = 0; j < i; ++j)
                 std::destroy_at(temp.element + j);
             temp.allocator.deallocate(temp.element, temp.cap);
             throw;
         }
 
         // Destroy old contents
-        for (size_t i = 0; i < sz; ++i)
+        for (std::size_t i = 0; i < sz; ++i)
             std::destroy_at(element + i);
         allocator.deallocate(element, cap);
 
@@ -548,7 +548,7 @@ public:
         if (il.size() > cap) {
             // Need new allocation
             T* new_element = allocator.allocate(il.size());
-            size_t i = 0;
+            std::size_t i = 0;
             for (auto it = il.begin(); it != il.end(); ++it, ++i)
                 std::construct_at(new_element + i, *it);
             destroy_all();
@@ -556,14 +556,14 @@ public:
             element = new_element;
             cap = sz = il.size();
         } else {
-            size_t i = 0;
+            std::size_t i = 0;
             for (; i < il.size(); ++i) {
                 if (i < sz)
                     element[i] = *(il.begin() + i); // assignment
                 else
                     std::construct_at(element + i, *(il.begin() + i));
             }
-            for (size_t j = i; j < sz; ++j)
+            for (std::size_t j = i; j < sz; ++j)
                 std::destroy_at(element + j);
             sz = il.size();
         }
@@ -613,13 +613,13 @@ public:
         // Note: capacity remains the same, memory is not freed
     }
 
-    void resize(size_t new_size) {
+    void resize(std::size_t new_size) {
         if (new_size > cap) {
             grow_if_needed(new_size);
         }
         modification_count++;
         if (new_size > sz) {
-            for (size_t i = sz; i < new_size; ++i) {
+            for (std::size_t i = sz; i < new_size; ++i) {
                 std::construct_at(element + i);
             }
         } else if (new_size < sz) {
@@ -628,20 +628,20 @@ public:
 
         sz = new_size;
     }
-    void reserve(size_t new_cap) {
+    void reserve(std::size_t new_cap) {
         if (new_cap > cap) {
             reallocate(new_cap);
         }
     }
     iterator erase(iterator pos) {
-        size_t index = pos - begin(); // get index from iterator
+        std::size_t index = pos - begin(); // get index from iterator
         check_index(index);
 
         // Destroy the element at pos
         std::destroy_at(element + index);
 
         // Shift elements left
-        for (size_t i = index; i + 1 < sz; ++i) {
+        for (std::size_t i = index; i + 1 < sz; ++i) {
             std::construct_at(element + i, std::move_if_noexcept(element[i + 1]));
             std::destroy_at(element + i + 1);
         }
@@ -650,15 +650,15 @@ public:
         return iterator(element + index);
     }
     iterator erase(iterator first, iterator last) {
-        size_t index_first = first - begin();
-        size_t index_last  = last - begin();
+        std::size_t index_first = first - begin();
+        std::size_t index_last  = last - begin();
 
         if (index_first > index_last || index_last > sz) {
             throw std::out_of_range("erase: invalid range");
         }
 
-        size_t erase_count = index_last - index_first;
-        size_t move_count  = sz - index_last;
+        std::size_t erase_count = index_last - index_first;
+        std::size_t move_count  = sz - index_last;
 
         if (index_first + move_count > cap) {
             // Should never happen if sz ≤ cap and erase range is valid
@@ -666,12 +666,12 @@ public:
         }
 
         // Destroy elements in [first, last)
-        for (size_t i = index_first; i < index_last; ++i) {
+        for (std::size_t i = index_first; i < index_last; ++i) {
             std::destroy_at(element + i);
         }
 
         // Move trailing elements to fill the gap
-        for (size_t i = 0; i < move_count; ++i) {
+        for (std::size_t i = 0; i < move_count; ++i) {
             std::construct_at(element + index_first + i, std::move_if_noexcept(element[index_last + i]));
             std::destroy_at(element + index_last + i);
         }
@@ -680,7 +680,7 @@ public:
         return iterator(element + index_first);
     }
     iterator insert(iterator pos, const T value) {
-        size_t index = pos - begin(); // validate iterator in range
+        std::size_t index = pos - begin(); // validate iterator in range
         if (index > sz) {
             throw std::out_of_range("insert position out of range");
         }
@@ -688,7 +688,7 @@ public:
         grow_if_needed(sz + 1); // grow capacity if needed
 
         // Shift elements to the right
-        for (size_t i = sz; i > index; --i) {
+        for (std::size_t i = sz; i > index; --i) {
             std::construct_at(element + i, std::move(element[i - 1]));
             std::destroy_at(element + i - 1);
         }
@@ -702,8 +702,8 @@ public:
     }
     template<typename InputIt>
     iterator insert(iterator pos, InputIt first, InputIt last) {
-        size_t index = pos - begin();
-        size_t count = std::distance(first, last);
+        std::size_t index = pos - begin();
+        std::size_t count = std::distance(first, last);
 
         if (index > sz) {
             throw std::out_of_range("insert position out of range");
@@ -712,14 +712,14 @@ public:
         grow_if_needed(sz + count);
 
         // Shift existing elements to the right
-        for (size_t i = sz; i > index; --i) {
+        for (std::size_t i = sz; i > index; --i) {
             if (i + count - 1 >= cap) continue; // prevent overrun (shouldn't happen if grow_if_needed is correct)
             std::construct_at(element + i + count - 1, std::move(element[i - 1]));
             std::destroy_at(element + i - 1);
         }
 
         // Insert new elements
-        size_t insert_pos = index;
+        std::size_t insert_pos = index;
         for (; first != last; ++first, ++insert_pos) {
             std::construct_at(element + insert_pos, *first);
         }
@@ -733,11 +733,11 @@ public:
         return insert(pos, ilist.begin(), ilist.end());
     }
     // Replace content with 'count' copies of 'value'
-    void assign(size_t count, const T& value) {
+    void assign(std::size_t count, const T& value) {
         // Destroy old data
         destroy_all();
         grow_if_needed(count);
-        for (size_t i = 0; i < count; ++i) {
+        for (std::size_t i = 0; i < count; ++i) {
             std::construct_at(element + i, value);
         }
         sz = count;
@@ -748,9 +748,9 @@ public:
     template<typename InputIt>
     void assign(InputIt first, InputIt last) {
         destroy_all();
-        size_t count = std::distance(first, last);
+        std::size_t count = std::distance(first, last);
         grow_if_needed(count);
-        size_t i = 0;
+        std::size_t i = 0;
         for (; first != last; ++first, ++i) {
             std::construct_at(element + i, *first);
         }
@@ -762,8 +762,8 @@ public:
     void assign(std::initializer_list<T> ilist) {
         assign(ilist.begin(), ilist.end());
     }
-    size_t size() const noexcept { return sz; }
-    size_t capacity() const noexcept { return cap; }
+    std::size_t size() const noexcept { return sz; }
+    std::size_t capacity() const noexcept { return cap; }
     bool empty() const noexcept { return sz == 0; }
     T& front() {
         return *element;
@@ -777,23 +777,23 @@ public:
     const T& back() const {
         return *(element + sz - 1);
     }
-    T& operator[](size_t index) {
+    T& operator[](std::size_t index) {
         // no bounds check, add if you want
         check_index(index);
         return element[index];
     }
 
-    const T& operator[](size_t index) const {
+    const T& operator[](std::size_t index) const {
         check_index(index);
         return element[index];
     }
 
-    T& at(size_t index) {
+    T& at(std::size_t index) {
         check_index(index);
         return element[index];
     }
 
-    const T& at(size_t index) const {
+    const T& at(std::size_t index) const {
         check_index(index);
         return element[index];
     }
@@ -810,7 +810,7 @@ public:
     bool operator==(const vector &other) const {
         if (sz != other.sz)
             return false;
-        for (size_t i = 0; i < sz; ++i) {
+        for (std::size_t i = 0; i < sz; ++i) {
             if (element[i] != other.element[i])
                 return false;
         }
@@ -822,7 +822,7 @@ public:
     bool operator==(const std::vector<T> &other) const {
         if (sz != other.size())
             return false;
-        for (size_t i = 0; i < other.size(); ++i) {
+        for (std::size_t i = 0; i < other.size(); ++i) {
             if (element[i] != other[i])
                 return false;
         }

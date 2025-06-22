@@ -117,26 +117,27 @@ void LLHeader::createToStringFunction(const stdu::vector<stdu::vector<std::strin
 void LLHeader::createDFATypes(std::ostringstream &out) const {
     out << R"(
     namespace DFA {
-        constexpr size_t null_state = std::numeric_limits<size_t>::max();
+        constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
         template<typename Key>
         struct Transition {
             Key symbol;
-            size_t next;
-            size_t accept;
+            std::size_t next;
+            std::size_t accept;
         };
 
-        template<size_t MAX, typename Key>
+        template<std::size_t MAX, typename Key>
         struct State {
-            size_t else_goto;
-            size_t else_goto_accept;
+            std::size_t else_goto;
+            std::size_t else_goto_accept;
             std::array<Transition<Key>, MAX> transitions;
         };
+        struct EmptyState {};
         struct SpanMultiTable;
 
         template<typename Key>
         struct SpanState {
-            size_t else_goto;
-            size_t else_goto_accept;
+            std::size_t else_goto;
+            std::size_t else_goto_accept;
             ISPA_STD::Span<Transition<Key>> transitions;
         };
 
@@ -154,17 +155,18 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
         using MultiTableTransition = Transition<MultiKey>;
 
         // state types
-        template<size_t N> using CharTableState = State<N, char>;
-        template<size_t N> using TokenTableState = State<N, Tokens>;
-        template<size_t N> using CallableTokenState = State<N, Token_res (*) (const char*)>;
-        template<size_t N> using MultiTableState = State<N, MultiKey>;
+        template<std::size_t N> using CharTableState = State<N, char>;
+        template<std::size_t N> using TokenTableState = State<N, Tokens>;
+        template<std::size_t N> using CallableTokenState = State<N, Token_res (*) (const char*)>;
+        template<std::size_t N> using MultiTableState = State<N, MultiKey>;
+                                using EmptyTableState = EmptyState;
 
         // span state types
         using SpanCharTableState = SpanState<char>;
         using SpanTokenTableState = SpanState<Tokens>;
         using SpanCallableTokenState = SpanState<Token_res (*) (const char*)>;
         using SpanMultiTableState = SpanState<MultiKey>;
-
+        using SpanEmptyTableState = ISPA_STD::Span<EmptyState>;
         // span types
         using SpanTokenTable = ISPA_STD::Span<SpanState<Tokens>>;
         using SpanCallableTokenTable = ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>;
@@ -172,21 +174,21 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
         using SpanMultiState = ISPA_STD::Span<SpanState<MultiKey>>;
 
         struct SpanMultiTable {
-            size_t else_goto;
-            size_t else_goto_accept;
+            std::size_t else_goto;
+            std::size_t else_goto_accept;
             ISPA_STD::Span<SpanMultiState> states;
         };
 
         // Storage types
-        template<size_t N, size_t MAX> using TokenTable = std::array<State<MAX, Tokens>, N>;
-        template<size_t N, size_t MAX> using CallableTokenTable = std::array<State<MAX, Token_res (*) (const char*)>, N>;
-        template<size_t N, size_t MAX> using CharTable = std::array<State<MAX, char>, N>;
-        template<size_t N, size_t MAX> using MultiTable = std::array<State<MAX, MultiKey>, N>; // avoid direct recursion here
+        template<std::size_t N, std::size_t MAX> using TokenTable = std::array<State<MAX, Tokens>, N>;
+        template<std::size_t N, std::size_t MAX> using CallableTokenTable = std::array<State<MAX, Token_res (*) (const char*)>, N>;
+        template<std::size_t N, std::size_t MAX> using CharTable = std::array<State<MAX, char>, N>;
+        template<std::size_t N, std::size_t MAX> using MultiTable = std::array<State<MAX, MultiKey>, N>; // avoid direct recursion here
     }
 )";
 }
-void LLHeader::createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const {
-    size_t count = 0;
+void LLHeader::createDFAVars(const DFAS &dfas, std::ostringstream &out) const {
+    std::size_t count = 0;
     for (const auto &dfa : dfas) {
         out << "\n\t\t\tconst " << "DFA::" << dfa.getTypeStr(false) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> table_" << count++ << ';';
     }
@@ -207,9 +209,9 @@ void LLHeader::addStandardFunctionsParser(std::ostringstream &out) const {
              * @param rule the rule to print
              * Prints a single rule into an output stream
              */
-            static void printRule(std::ostream &os, const Token &token, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const Rule &rule, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);)";
+            static void printRule(std::ostream &os, const Token &token, std::size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const Rule &rule, std::size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const std::any& data, std::size_t &indentLevel, bool addSpaceOnBegin);)";
     out << "\n";
 }
 void LLHeader::convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const {
@@ -250,7 +252,7 @@ void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
 void LLHeader::close_parser_header(std::ostringstream &out) const {
     out << "\t};\n";
 }
-void LLHeader::create_parser_header(std::ostringstream &out, const stdu::vector<DFA> &dfas) const {
+void LLHeader::create_parser_header(std::ostringstream &out, const DFAS &dfas) const {
     out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
         << "\t\tpublic:";
         addStandardFunctionsParser(out);

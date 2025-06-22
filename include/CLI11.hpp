@@ -447,8 +447,8 @@ CLI11_INLINE std::vector<std::string> compute_win32_argv() {
         throw std::runtime_error("CommandLineToArgvW failed with code " + std::to_string(GetLastError()));
     }
 
-    result.reserve(static_cast<size_t>(argc));
-    for(size_t i = 0; i < static_cast<size_t>(argc); ++i) {
+    result.reserve(static_cast<std::size_t>(argc));
+    for(std::size_t i = 0; i < static_cast<std::size_t>(argc); ++i) {
         result.push_back(narrow(wargv[i]));
     }
 
@@ -1149,7 +1149,7 @@ CLI11_INLINE std::string binary_escape_string(const std::string &string_to_escap
 }
 
 CLI11_INLINE bool is_binary_escaped_string(const std::string &escaped_string) {
-    size_t ssize = escaped_string.size();
+    std::size_t ssize = escaped_string.size();
     if(escaped_string.compare(0, 3, "B\"(") == 0 && escaped_string.compare(ssize - 2, 2, ")\"") == 0) {
         return true;
     }
@@ -1159,7 +1159,7 @@ CLI11_INLINE bool is_binary_escaped_string(const std::string &escaped_string) {
 CLI11_INLINE std::string extract_binary_string(const std::string &escaped_string) {
     std::size_t start{0};
     std::size_t tail{0};
-    size_t ssize = escaped_string.size();
+    std::size_t ssize = escaped_string.size();
     if(escaped_string.compare(0, 3, "B\"(") == 0 && escaped_string.compare(ssize - 2, 2, ")\"") == 0) {
         start = 3;
         tail = 2;

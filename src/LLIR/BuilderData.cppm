@@ -10,7 +10,7 @@ namespace LLIR {
     export class BuilderData {
     public:
         using SymbolFollow = stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>>;
-        size_t variable_count = 0;
+        std::size_t variable_count = 0;
         bool isToken = false;
         bool insideLoop = false;
         bool addSpaceSkip = false;

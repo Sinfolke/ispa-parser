@@ -8,7 +8,6 @@ import LLIR.RuleBuilder;
 import DFABuilder;
 import cpuf.printf;
 import std;
-#include "../Parser.h"
 
 bool LexerBuilder::isDfaCompatible(const stdu::vector<AST::RuleMember> &member) {
     for (const auto &mem : member) {
@@ -49,7 +48,7 @@ void LexerBuilder::build() {
         }
         dispatch_names_involve.emplace(mem, involved_symbols);
         DFABuilder builder(ast, mem);
-        dfas.push_back(builder.get());
+        dfas.getDFAS().push_back(builder.get());
         highest_states_count = std::max(highest_states_count, builder.get().getStates().size());
         highest_transition_count = std::max(highest_transition_count, builder.get().getMaxTransitionCount());
         dfa_count++;
@@ -57,28 +56,11 @@ void LexerBuilder::build() {
     function_ir = std::move(LLIR::IR(functions, function_dfas));
 }
 
-
-auto LexerBuilder::getStateSet() const -> std::pair<TransitionSet, TransitionSetLocationMap> {
-    TransitionSet transitions_set;
-    TransitionSetLocationMap location_in_set;
-    utype::unordered_map<DFA::Transitions, size_t> state_to_map;
+auto LexerBuilder::getStateSet() const -> std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> {
+    utype::unordered_map<DFA::Transitions, std::size_t> state_to_map;
 
     std::size_t dfa_count = 0;
-    for (const auto &dfa : dfas) {
-        std::size_t state_count = 0;
-        for (const auto &state : dfa.getStates()) {
-            auto it = state_to_map.find(state.transitions);
-            size_t index;
-            if (it == state_to_map.end()) {
-                index = transitions_set.size();
-                transitions_set.insert(state.transitions);
-                state_to_map.emplace(state.transitions, index);
-            } else {
-                index = it->second;
-            }
-            location_in_set[{dfa_count, state_count++}] = index;
-        }
-        ++dfa_count;
-    }
-    return {transitions_set, location_in_set};
+    auto [state, location_in_set] = dfas.getStateSet();
+    function_ir.getDfas().getStateSet(state, location_in_set);
+    return {state, location_in_set};
 }

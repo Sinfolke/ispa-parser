@@ -1,4 +1,4 @@
-module TransitionArrayBuilder;
+module StateArrayBuilder;
 import corelib;
 import dstd;
 import std;
@@ -12,11 +12,10 @@ void StateArrayBuilder::output() {
     std::size_t count = 0;
     const auto &dfa_compatible_table = lexer_data.getDfaCompatibleTable();
     for (const auto &t : data.first) {
-        out << "\tDFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> dfa_state_" << count++ << "{ ";
-        cached_h_out << "\tDFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> dfa_state_" << count++ << ";";
+        out << "::" << namespace_name << "::DFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> ::" << namespace_name << "::" << prefix << "::dfa_state_" << count++ << "{ ";
         std::size_t transition_index = 0;
         for (const auto &transition : t) {
-            out << "\tDFA::" << dfa.getTransitionType(isToken) << " { ";
+            out << "\tDFA::" << DFA::getTransitionTypeStr(transition.first, isToken) << " { ";
 
             if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
                 const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
@@ -42,10 +41,13 @@ void StateArrayBuilder::output() {
                 out << "\n";
         }
 
-        out << "    } },\n";
+        out << "};\n";
     }
 }
 
-void StateArrayBuilder::outputHeader() const {
-    h_out << cached_h_out.str();
+void StateArrayBuilder::outputHeader() {
+    std::size_t count = 0;
+    for (const auto &t : data.first) {
+        out << "\t\tDFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> dfa_state_" << count++ << ";\n";
+    }
 }

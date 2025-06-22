@@ -13,8 +13,8 @@ export namespace LLIR {
         // public static functions
         static auto createEmptyVariable(std::string name) -> LLIR::variable;
         static auto processExitStatements(stdu::vector<LLIR::member> &values) -> void;
-        static auto generateVariableName(size_t &variable_count) -> std::string;
-        static auto createSuccessVariable(size_t &variable_count) -> LLIR::variable;
+        static auto generateVariableName(std::size_t &variable_count) -> std::string;
+        static auto createSuccessVariable(std::size_t &variable_count) -> LLIR::variable;
         static auto createAssignUvarBlock(const LLIR::variable &uvar, const LLIR::variable &var, const LLIR::variable &shadow_var) -> LLIR::member;
         static auto createDefaultBlock(const LLIR::variable &var, const LLIR::variable &svar) -> LLIR::Nodes;
         static auto createDefaultBlock(const LLIR::variable &svar) -> LLIR::Nodes;
@@ -46,7 +46,7 @@ export namespace LLIR {
         void pushConvResult(const AST::RuleMember &rule, const LLIR::variable &var, const LLIR::variable &uvar, const LLIR::variable &svar, const LLIR::variable &shadow_var, char quantifier);
 
         // error handling functions
-        auto getNextTerminal(stdu::vector<AST::RuleMember> symbols, size_t pos) ->  std::set<stdu::vector<std::string>>;
+        auto getNextTerminal(stdu::vector<AST::RuleMember> symbols, std::size_t pos) ->  std::set<stdu::vector<std::string>>;
         auto getLookaheadTerminals(const AST::RuleMember& symbols, const stdu::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
         auto getErrorName(const AST::RuleMember &rule) -> std::string;
 

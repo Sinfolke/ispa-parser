@@ -8,7 +8,7 @@ import constants;
 import AST.API;
 import std;
 
-void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool &isEntry) {
+void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry) {
     states[start].transitions[name] = end;
     if (isEntry && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
@@ -43,12 +43,12 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             break;
     }
 }
-void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const size_t &start, const size_t &end, bool isEntry) {
-    size_t inner_start = states.size();
-    size_t inner_end = inner_start + 1;
+void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry) {
+    std::size_t inner_start = states.size();
+    std::size_t inner_end = inner_start + 1;
     states.emplace_back(); // inner start
     states.emplace_back(); // inner end
-    size_t last = inner_start;
+    std::size_t last = inner_start;
 
     const auto &prod_rules = tree->operator[](name);
     for (auto &prod : prod_rules.rule_members) {
@@ -78,8 +78,8 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         case '*': {
             // epsilon -> end
             // loop zero or more
-            size_t loop_start = inner_start;
-            size_t loop_end = inner_end;
+            std::size_t loop_start = inner_start;
+            std::size_t loop_end = inner_end;
             states[start].epsilon_transitions.insert(inner_start);  // enter
             states[start].epsilon_transitions.insert(end);          // or skip
             states[inner_end].epsilon_transitions.insert(inner_start); // loop
@@ -97,8 +97,8 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         states[inner_start].accept_index = accept_index++;
     }
 }
-void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const size_t &start, const size_t &end, bool isEntry) {
-    size_t last = start;
+void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry) {
+    std::size_t last = start;
     for (const auto &sub : group) {
         auto fragment = buildStateFragment(sub, false);
         if (fragment.invalid())
@@ -132,12 +132,12 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
             break;
     }
 }
-void NFA::handleString(const AST::RuleMember &member, const std::string &str, const size_t &start, const size_t &end, bool isEntry) {
-    size_t current = start;
+void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry) {
+    std::size_t current = start;
 
     // Construct linear NFA for each character in the string
-    for (size_t i = 0; i < str.size(); ++i) {
-        size_t next = (i == str.size() - 1) ? end : states.size(); // last char points to `end`
+    for (std::size_t i = 0; i < str.size(); ++i) {
+        std::size_t next = (i == str.size() - 1) ? end : states.size(); // last char points to `end`
 
         states.emplace_back(); // make sure enough space exists
         if (next >= states.size()) states.resize(next + 1);
@@ -172,7 +172,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
             break;
     }
 }
-void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const size_t &start, const size_t &end, bool isEntry) {
+void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
     // Add transitions for each character from start to end
@@ -221,7 +221,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
         no_add_space_skip_next = true;
         return {NO_STATE_RANGE, NO_STATE_RANGE};
     }
-    const size_t start = states.size(), end = start + 1;
+    const std::size_t start = states.size(), end = start + 1;
     states.emplace_back(); // start
     states.emplace_back(); // end
     if (member.isName()) {
@@ -279,7 +279,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry) -> Sta
     no_add_space_skip_next = false;
     return {start, end};
 }
-auto NFA::investigateHasNext(size_t place, char c, std::unordered_set<size_t> &visited) -> bool {
+auto NFA::investigateHasNext(std::size_t place, char c, std::unordered_set<std::size_t> &visited) -> bool {
     for (const auto &[name, next] : states[place].transitions) {
         if (std::holds_alternative<char>(name)) {
             auto this_c = std::get<char>(name);
@@ -296,7 +296,7 @@ auto NFA::investigateHasNext(size_t place, char c, std::unordered_set<size_t> &v
         return investigateHasNext(x, c, visited);
     });
 }
-auto NFA::investigateHasNext(size_t place, const stdu::vector<std::string> &name, std::unordered_set<size_t> &visited) -> bool {
+auto NFA::investigateHasNext(std::size_t place, const stdu::vector<std::string> &name, std::unordered_set<std::size_t> &visited) -> bool {
     for (const auto &[n, next] : states[place].transitions) {
         if (std::holds_alternative<stdu::vector<std::string>>(n)) {
             const auto &this_c = std::get<stdu::vector<std::string>>(n);
@@ -314,7 +314,7 @@ auto NFA::investigateHasNext(size_t place, const stdu::vector<std::string> &name
     });
 }
 void NFA::addSpaceSkip() {
-    size_t start = 0, end = 0;
+    std::size_t start = 0, end = 0;
     if (is_char_table) {
         auto [s, e] = buildStateFragment(AST::RuleMember {.quantifier = '*', .value = AST::RuleMemberCsequence {.characters = constants::whitespace_chars }}, false);
         start = s;
@@ -325,7 +325,7 @@ void NFA::addSpaceSkip() {
         end = e;
     }
     for (const auto &place : add_space_skip_places) {
-        std::unordered_set<size_t> visited;
+        std::unordered_set<std::size_t> visited;
         if (is_char_table) {
             for (const auto c : constants::whitespace_chars) {
                 states[place].epsilon_transitions.insert(start);
@@ -341,7 +341,7 @@ void NFA::addSpaceSkip() {
     }
 }
 
-void NFA::AccessMapVisitState(size_t index, size_t accept_index, std::unordered_set<size_t>& visited) {
+void NFA::AccessMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited) {
     // Stop if already visited with this accept_index (to prevent infinite recursion)
     if (!visited.insert(index).second)
         return;
@@ -361,9 +361,9 @@ void NFA::AccessMapVisitState(size_t index, size_t accept_index, std::unordered_
 }
 void NFA::buildAcceptMap() {
     accept_map.clear();
-    for (size_t i = 0; i < states.size(); ++i) {
+    for (std::size_t i = 0; i < states.size(); ++i) {
         if (states[i].accept_index != NO_ACCEPT) {
-            std::unordered_set<size_t> local_visited;
+            std::unordered_set<std::size_t> local_visited;
             AccessMapVisitState(i, states[i].accept_index, local_visited);
         } else if (!accept_map.contains(i)) {
             accept_map[i] = NO_ACCEPT;
@@ -390,7 +390,7 @@ void NFA::build() {
 }
 std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& vec) {
     os << '"';
-    for (size_t i = 0; i < vec.size(); ++i) {
+    for (std::size_t i = 0; i < vec.size(); ++i) {
         if (i > 0) os << "::";
         os << vec[i];
     }
@@ -418,7 +418,7 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
     if (s.epsilon_transitions.empty()) {
         os << "(none)\n";
     } else {
-        for (size_t t : s.epsilon_transitions) {
+        for (std::size_t t : s.epsilon_transitions) {
             os << t << ", ";
         }
     }
@@ -430,7 +430,7 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
 
 // Print all states in the vector
 std::ostream& operator<<(std::ostream& os, const NFA& nfa) {
-    for (size_t i = 0; i < nfa.getStates().size(); ++i) {
+    for (std::size_t i = 0; i < nfa.getStates().size(); ++i) {
         os << "State " << i << ":\n" << nfa.getStates()[i] << "\n";
     }
     return os;

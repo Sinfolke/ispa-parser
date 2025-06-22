@@ -11,13 +11,13 @@ bool ELRParser::isELR() const {
 const stdu::vector<ELRParser::DFA_state>& ELRParser::getDFA() const {
     return dfa_states;
 }
-std::set<size_t> ELRParser::epsilon_closure(const std::set<size_t>& states) {
-    std::set<size_t> closure = states;
-    std::queue<size_t> work;
-    for (size_t s : states) work.push(s);
+std::set<std::size_t> ELRParser::epsilon_closure(const std::set<std::size_t>& states) {
+    std::set<std::size_t> closure = states;
+    std::queue<std::size_t> work;
+    for (std::size_t s : states) work.push(s);
 
     while (!work.empty()) {
-        size_t current = work.front();
+        std::size_t current = work.front();
         work.pop();
         auto it = nfa_states[current].transitions.find({}); // Empty stdu::vector = ε-transition
         if (it != nfa_states[current].transitions.end()) {
@@ -60,9 +60,9 @@ ELRParser::Lookahead_set ELRParser::getLookeaheadSet(const stdu::vector<std::str
     }
     return lookahead_set;
 }
-void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t nfa_initial_index, const Action& action) {
+void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, std::size_t nfa_initial_index, const Action& action) {
     for (const auto &option : lookahead_set) {
-        size_t current = nfa_initial_index;
+        std::size_t current = nfa_initial_index;
         for (const auto &token : option.token_sequence) {
             if (std::holds_alternative<stdu::vector<std::string>>(token)) {
                 // token, add
@@ -76,8 +76,8 @@ void ELRParser::processLookaheadSet(const Lookahead_set &lookahead_set, size_t n
                     current_nfa_state.transitions[name] = current;
                     nfa_states.emplace_back();
                 }
-            } else if (std::holds_alternative<size_t>(token)) {
-                auto nested_id = std::get<size_t>(token);
+            } else if (std::holds_alternative<std::size_t>(token)) {
+                auto nested_id = std::get<std::size_t>(token);
                 processLookaheadSet(option.nested[nested_id], current, action);
             }
         }
@@ -92,12 +92,12 @@ void ELRParser::build() {
         auto &[items, place, conflicts, state] = conflict;
         if (items.size() != conflicts.size())
             throw Error("Items size differce with conflicts size");
-        size_t nfa_state = nfa_states.size();
+        std::size_t nfa_state = nfa_states.size();
         bool no_process_next = false;
         nfa_states.emplace_back(); // Start state
         nfa_states[nfa_state].is_starting_state = true; // first item is starting state
         nfa_states[nfa_state].place = place;
-        for (size_t i = 0; i < items.size(); i++) {
+        for (std::size_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
             const auto &conflict = conflicts[i];
             // register reduce action on place and shift action later on shift/reduce conflict
@@ -115,9 +115,9 @@ void ELRParser::build() {
             auto current = nfa_state;
             if (conflict.type == Action_type::SHIFT) {
                 // handle shift action as defaultly in NFA
-                for (size_t j = item.dot_pos; j < item.rhs.rule_members.size(); ++j) {
+                for (std::size_t j = item.dot_pos; j < item.rhs.rule_members.size(); ++j) {
                     auto sym = item.rhs.rule_members[j];
-                    size_t next = nfa_states.size();
+                    std::size_t next = nfa_states.size();
                     nfa_states.emplace_back();
                     const auto &name = sym.getName();
                     if (corelib::text::isUpper(name.name.back())) {
@@ -155,14 +155,14 @@ void ELRParser::build() {
     if (nfa_states.empty()) // return if nfa is empty
         return;
 
-    utype::unordered_map<std::set<size_t>, size_t> dfa_state_map;
-    std::queue<std::set<size_t>> worklist;
+    utype::unordered_map<std::set<std::size_t>, std::size_t> dfa_state_map;
+    std::queue<std::set<std::size_t>> worklist;
 
-    for (size_t i = 0; i < nfa_states.size(); ++i) {
+    for (std::size_t i = 0; i < nfa_states.size(); ++i) {
         if (nfa_states[i].is_starting_state) {
-            std::set<size_t> start = epsilon_closure({i});
+            std::set<std::size_t> start = epsilon_closure({i});
             if (!dfa_state_map.count(start)) {
-                size_t index = dfa_states.size();
+                std::size_t index = dfa_states.size();
                 dfa_states.push_back({start});
                 dfa_state_map[start] = index;
                 worklist.push(start);
@@ -170,14 +170,14 @@ void ELRParser::build() {
         }
     }
     while (!worklist.empty()) {
-        std::set<size_t> current_set = worklist.front();
+        std::set<std::size_t> current_set = worklist.front();
         worklist.pop();
-        size_t current_dfa_index = dfa_state_map[current_set];
+        std::size_t current_dfa_index = dfa_state_map[current_set];
 
-        utype::unordered_map<stdu::vector<std::string>, std::set<size_t>> symbol_to_nfa_targets;
+        utype::unordered_map<stdu::vector<std::string>, std::set<std::size_t>> symbol_to_nfa_targets;
 
         // Populate symbol_to_nfa_targets for all transitions in the current NFA set
-        for (size_t state : current_set) {
+        for (std::size_t state : current_set) {
             for (const auto& [symbol, target] : nfa_states[state].transitions) {
                 if (!symbol.empty()) { // Exclude ε-transitions
                     symbol_to_nfa_targets[symbol].insert(target);
@@ -187,11 +187,11 @@ void ELRParser::build() {
 
         // Process each symbol and its target set (for SHIFT actions)
         for (const auto& [symbol, target_set] : symbol_to_nfa_targets) {
-            std::set<size_t> closure = epsilon_closure(target_set);
+            std::set<std::size_t> closure = epsilon_closure(target_set);
 
             // If the target set is not already a DFA state, add it
             if (!dfa_state_map.count(closure)) {
-                size_t new_dfa_index = dfa_states.size();
+                std::size_t new_dfa_index = dfa_states.size();
                 dfa_states.push_back({closure});
                 dfa_state_map[closure] = new_dfa_index;
                 worklist.push(closure);
@@ -204,7 +204,7 @@ void ELRParser::build() {
 
         // Resolve REDUCE actions: assign if all underlying NFA states agree
         std::optional<Action> reduce_action;
-        for (size_t state : current_set) {
+        for (std::size_t state : current_set) {
             if (nfa_states[state].reduce_action.has_value()) {
                 if (!reduce_action.has_value()) {
                     reduce_action = nfa_states[state].reduce_action;
@@ -230,7 +230,7 @@ void ELRParser::build() {
         // Assign the resolved reduce action to the DFA state
         dfa_states[current_dfa_index].action = reduce_action;
     }
-    for (size_t i = 0; i < dfa_states.size(); i++) {
+    for (std::size_t i = 0; i < dfa_states.size(); i++) {
         for (auto place : dfa_states[i].places) {
             if (place != nullptr) {
                 *place = {Action_type::DFA_RESOLVE, i};
@@ -246,7 +246,7 @@ void ELRParser::printNfa(const std::string filename) {
         std::cerr << "Failed to open file: " << filename << "\n";
         return;
     }
-    for (size_t i = 0; i < nfa_states.size(); ++i) {
+    for (std::size_t i = 0; i < nfa_states.size(); ++i) {
         out << "State " << i << ":\n";
         // Print transitions
         for (const auto &[sym, target] : nfa_states[i].transitions) {
@@ -273,7 +273,7 @@ void ELRParser::printDfa(const std::string filename) {
         return;
     }
 
-    for (size_t i = 0; i < dfa_states.size(); ++i) {
+    for (std::size_t i = 0; i < dfa_states.size(); ++i) {
         const auto &state = dfa_states[i];
         out << i << ": {";
         bool first = true;
@@ -286,7 +286,7 @@ void ELRParser::printDfa(const std::string filename) {
 
         for (const auto &[symbols, target] : state.transitions) {
             out << "  --{ ";
-            for (size_t j = 0; j < symbols.size(); ++j) {
+            for (std::size_t j = 0; j < symbols.size(); ++j) {
                 out << symbols[j];
                 if (j + 1 < symbols.size()) out << ", ";
             }

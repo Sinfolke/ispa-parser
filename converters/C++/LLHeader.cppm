@@ -7,6 +7,7 @@ import LLIR;
 import LexerBuilder;
 import AST.Tree;
 import DFA;
+import DFAS;
 import std;
 export class LLHeader : public LLStringConvertions {
     friend void buildLLParser(const std::filesystem::path name, const LLIR::IR &ir, const LexerBuilder &lexer_data, AST::Tree& ast);
@@ -25,7 +26,7 @@ export class LLHeader : public LLStringConvertions {
     void addTokensToString(const stdu::vector<stdu::vector<std::string>> &tokens, std::ostringstream &out) const;
     void addRulesToString(const stdu::vector<stdu::vector<std::string>> &rules, std::ostringstream &out) const;
     void createDFATypes(std::ostringstream &out) const;
-    void createDFAVars(const stdu::vector<DFA> &dfas, std::ostringstream &out) const;
+    void createDFAVars(const DFAS &dfas, std::ostringstream &out) const;
     void createToStringFunction(const stdu::vector<stdu::vector<std::string>> &tokens, const stdu::vector<stdu::vector<std::string>> &rules, std::ostringstream &out) const;
     void addStandardFunctionsParser(std::ostringstream &out) const;
     void convert_inclosed_map(std::ostringstream &out, LLIR::inclosed_map map) const;
@@ -34,6 +35,6 @@ export class LLHeader : public LLStringConvertions {
     void createTypesNamespace(std::ostringstream &out, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const;
     void addConstructorsLexer(std::ostringstream &out) const;
     void close_parser_header(std::ostringstream &out) const;
-    void create_parser_header(std::ostringstream &out, const stdu::vector<DFA> &dfas) const;
+    void create_parser_header(std::ostringstream &out, const DFAS &dfas) const;
     void create_get_namespace(std::ostringstream &out, std::string namespace_name, const LLIR::DataBlockList &data_block_tokens, const LLIR::DataBlockList &data_block_rules) const;
 };

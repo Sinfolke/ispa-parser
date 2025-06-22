@@ -45,10 +45,10 @@ void LLIR::BuilderBase::processExitStatements(stdu::vector<LLIR::member> &values
         }
     }
 }
-auto LLIR::BuilderBase::generateVariableName(size_t &variable_count) -> std::string {
+auto LLIR::BuilderBase::generateVariableName(std::size_t &variable_count) -> std::string {
     return std::string("_") + std::to_string(variable_count++);
 }
-auto LLIR::BuilderBase::createSuccessVariable(size_t &variable_count) -> LLIR::variable {
+auto LLIR::BuilderBase::createSuccessVariable(std::size_t &variable_count) -> LLIR::variable {
     LLIR::variable var = createEmptyVariable("success" + generateVariableName(variable_count));
     var.type = {LLIR::var_types::BOOLEAN};
     var.value = {LLIR::var_assign_values::False};
@@ -218,7 +218,7 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const LLIR::
 bool LLIR::BuilderBase::compare_templ(const stdu::vector<LLIR::var_type>& templ1, const stdu::vector<LLIR::var_type>& templ2) {
     if (templ1.size() != templ2.size()) return false;
 
-    for (size_t i = 0; i < templ1.size(); ++i) {
+    for (std::size_t i = 0; i < templ1.size(); ++i) {
         if (templ1[i].type != templ2[i].type) return false;
         if (!compare_templ(templ1[i].templ, templ2[i].templ)) return false;  // Recursively compare nested `templ`
     }
@@ -314,11 +314,11 @@ auto LLIR::BuilderBase::assignSvar(const variable &svar, var_assign_values value
 }
 
 
-auto LLIR::BuilderBase::getNextTerminal(stdu::vector<AST::RuleMember> symbols, size_t pos) -> std::set<stdu::vector<std::string>> {
+auto LLIR::BuilderBase::getNextTerminal(stdu::vector<AST::RuleMember> symbols, std::size_t pos) -> std::set<stdu::vector<std::string>> {
     std::set<stdu::vector<std::string>> terminals;
     bool found_terminal = false;
 
-    for (size_t i = pos + 1; i < symbols.size(); ++i) {
+    for (std::size_t i = pos + 1; i < symbols.size(); ++i) {
         const auto& sym = symbols[i];
         if (!sym.isName()) {
             continue; // skip non-names
@@ -398,7 +398,7 @@ auto LLIR::BuilderBase::getErrorName(const AST::RuleMember &rule) -> std::string
 
         // Join parts with commas, but "or" only between the last two items
         if (parts.size() > 1) {
-            for (size_t i = 0; i < parts.size(); ++i) {
+            for (std::size_t i = 0; i < parts.size(); ++i) {
                 if (i == parts.size() - 2) {
                     message += parts[i] + " or ";
                 } else if (i < parts.size() - 1) {
@@ -566,7 +566,7 @@ auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> LLIR:
 }
 
 void LLIR::BuilderBase::getVariablesToTable(stdu::vector<LLIR::member>& data, stdu::vector<LLIR::member>& table, std::string& var_name, bool retain_value, bool recursive) {
-    for (size_t i = 0; i < data.size(); /* manual increment */) {
+    for (std::size_t i = 0; i < data.size(); /* manual increment */) {
         if (data[i].type == LLIR::types::VARIABLE) {
             auto variable = std::any_cast<LLIR::variable>(data[i].value);
             if (!var_name.empty() && var_name != variable.name) {
@@ -602,7 +602,7 @@ void LLIR::BuilderBase::getVariablesToTable(stdu::vector<LLIR::member>& data, st
 
 
 void LLIR::BuilderBase::insertVariablesOnTop(stdu::vector<LLIR::member> &insertPlace, stdu::vector<LLIR::member>& table) {
-    size_t i = 0;
+    std::size_t i = 0;
     // cpuf::printf("Raise vars on top : table size %$\n", table.size());
     for (auto& el : table) {
         insertPlace.insert(insertPlace.begin() + i++, el);

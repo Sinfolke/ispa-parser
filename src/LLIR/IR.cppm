@@ -3,6 +3,7 @@ import hash;
 import dstd;
 import DFA;
 import LLIR.API;
+import DFAS;
 import std;
 import std.compat;
 export namespace LLIR {
@@ -28,22 +29,22 @@ export namespace LLIR {
         void convertData(const LLIR::Data &data, std::ostream& out);
         void printIR(std::ostream& out);
         stdu::vector<Data> data;
-        stdu::vector<DFA> dfas;
+        DFAS dfas;
         // output functions
         std::stack<std::string> current_pos_counter;
-        size_t indentLevel = 0;
+        std::size_t indentLevel = 0;
     public:
         explicit IR(const stdu::vector<Data> &data, stdu::vector<DFA> &dfas) : data(data), dfas(dfas) {}
         explicit IR(const stdu::vector<Data> &&data, stdu::vector<DFA> &&dfas) : data(std::move(data)), dfas(std::move(dfas)) {}
         IR() = default;
         auto getData() const -> const stdu::vector<Data>&;
-        auto getDfas() const -> const stdu::vector<DFA>&;
-        auto operator[](size_t pos) const -> const Data&;
+        auto getDfas() const -> const DFAS&;
+        auto operator[](std::size_t pos) const -> const Data&;
         auto begin() -> stdu::vector<Data>::iterator;
         auto end() -> stdu::vector<Data>::iterator;
         auto cbegin() -> stdu::vector<Data>::const_iterator;
         auto cend() -> stdu::vector<Data>::const_iterator;
-        auto size() -> size_t;
+        auto size() -> std::size_t;
         auto empty() -> bool;
         auto clear() -> void;
         auto getDataBlocksTerminals() const -> DataBlockList;

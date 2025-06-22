@@ -13,8 +13,8 @@ auto LRParser::getGotoTable() const -> const GotoTable& {
 auto LRParser::getRulesTable() const -> const Rules& {
     return rules;
 }
-auto LRParser::getMaxStatesCount() const -> size_t {
-    size_t max_state = 0;
+auto LRParser::getMaxStatesCount() const -> std::size_t {
+    std::size_t max_state = 0;
     for (const auto& [state, _] : action_table) {
         max_state = std::max(max_state, state);
     }
@@ -46,8 +46,8 @@ auto LRParser::getActionTableAsRow() const -> stdu::vector<utype::unordered_map<
     }
     return row_table;
 }
-auto LRParser::getGotoTableAsRow() const -> stdu::vector<utype::unordered_map<stdu::vector<std::string>, size_t>> {
-    stdu::vector<utype::unordered_map<stdu::vector<std::string>, size_t>> row_table;
+auto LRParser::getGotoTableAsRow() const -> stdu::vector<utype::unordered_map<stdu::vector<std::string>, std::size_t>> {
+    stdu::vector<utype::unordered_map<stdu::vector<std::string>, std::size_t>> row_table;
     for (auto [state, value] : goto_table) {
         while(row_table.size() <= state) {
             row_table.push_back({});
@@ -60,7 +60,7 @@ bool LRParser::isELR() const {
     return false;
 }
 
-// void LRParser::getPriorityTree(const stdu::vector<TreeAPI::Rule> *rule, utype::unordered_set<stdu::vector<std::string>> &visited, size_t depth) {
+// void LRParser::getPriorityTree(const stdu::vector<TreeAPI::Rule> *rule, utype::unordered_set<stdu::vector<std::string>> &visited, std::size_t depth) {
 //     for (const auto &r : *rule) {
 //         // Avoid re-expansion of already visited rules
 //         if (!corelib::text::isLower(r.members.name) || visited.count(r.fullname))
@@ -100,7 +100,7 @@ void LRParser::addAugmentedRule() {
     tree->getInitialItemSet()[{"__start"}] = {AST::Rule { { AST::RuleMember {.value = AST::RuleMemberName {.name = {"main"}}}}}};
 }
 void LRParser::compute_cci_lookahead(const AST::Rule &rhs_group, const stdu::vector<std::string> &lhs_name, LR1Core &new_item) {
-    size_t next_pos = new_item.dot_pos + 1;
+    std::size_t next_pos = new_item.dot_pos + 1;
     // cpuf::printf("computing lookahead for %$ -> ", lhs_name);
     if (rhs_group.rule_members.empty() || next_pos >= rhs_group.rule_members.size()) {
         // end of rule, compute lookahead of follow(current)
@@ -110,7 +110,7 @@ void LRParser::compute_cci_lookahead(const AST::Rule &rhs_group, const stdu::vec
     }
     // check whether next symbol is terminal or non-terminal
     bool epsilon_in_all = true;
-    for (size_t i = next_pos; i < rhs_group.rule_members.size(); i++) {
+    for (std::size_t i = next_pos; i < rhs_group.rule_members.size(); i++) {
         auto &symbol = rhs_group.rule_members[i];
         if (!symbol.isName())
             throw Error("Symbol is not name");
@@ -255,7 +255,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 }
 
 
-size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu::vector<std::string> &symbol) {
+std::size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu::vector<std::string> &symbol) {
     CanonicalItem next_state;
 
     // Step 1: Shift dot over symbol where possible
@@ -292,15 +292,15 @@ size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu::vect
     // Step 4: If not, add it (only do this if building dynamically — otherwise error)
     throw Error("GOTO leads to non-existent state. Should be precomputed.");
 }
-size_t LRParser::find_rules_index(const LR1Core &rule) {
-    size_t reduce_index;
+std::size_t LRParser::find_rules_index(const LR1Core &rule) {
+    std::size_t reduce_index;
     auto found_rhs = std::find_if(rules.begin(), rules.end(), [&rule](const Rules_part &el) {
         if (rule.lhs != el.first)
             return false;
         auto &rhs = el.second.second;
         if (rhs.size() != rule.rhs.rule_members.size())
             return false;
-        for (size_t i = 0; i < rhs.size(); i++) {
+        for (std::size_t i = 0; i < rhs.size(); i++) {
             if (rhs[i].getName().name != rule.rhs.rule_members[i].getName().name) 
                 return false;
         }
@@ -382,13 +382,13 @@ void LRParser::resolveConflictsStatically() {
     }
 }
 void LRParser::buildTable() {
-    size_t I = 0;
+    std::size_t I = 0;
     for (const auto& item_set : canonical_item_set) {
         const LR1Core* prev_rule = nullptr;
         Action* prev_action = nullptr;
         for (const auto& rule : item_set) {
             // cpuf::printf("I%$: %$ → ", I, rule.lhs.fullname);
-            // for (size_t j = 0; j < rule.rhs.size(); ++j) {
+            // for (std::size_t j = 0; j < rule.rhs.size(); ++j) {
             //     if (j == rule.dot_pos) {
             //         cpuf::printf("• ");
             //     }
@@ -462,7 +462,7 @@ void LRParser::buildTable() {
                 // cpuf::printf("\n");
             } else { // Dot is before a symbol
                 const auto& next = rule.rhs.rule_members[rule.dot_pos].getName();
-                size_t next_state = find_goto_state(item_set, next.name); // goto(I, X)
+                std::size_t next_state = find_goto_state(item_set, next.name); // goto(I, X)
                 if (corelib::text::isUpper(next.name.back())) {
                     // Terminal → SHIFT (unconditionally)
                     if (action_table[I].count(next.name) == 0) {
@@ -542,7 +542,7 @@ void LRParser::formatRulesTable(std::ostringstream& oss) {
         const auto& rule_name_parts = rule.first;
         const auto& lhs = corelib::text::join(rule_name_parts, "_");
 
-        const size_t rule_index = rule.second.first;
+        const std::size_t rule_index = rule.second.first;
         const auto& body = rule.second.second;
 
         oss << '\t' << rule_index << ": " << lhs << " → ";
@@ -554,7 +554,7 @@ void LRParser::formatRulesTable(std::ostringstream& oss) {
     }
 }
 void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
-    size_t count = 0;
+    std::size_t count = 0;
     for (const auto &item_set : canonical_item_set) {
         oss << "I" << count++ << ":\n";
         for (const auto &item : item_set) {
@@ -564,7 +564,7 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
                 << " → ";
 
             // Print RHS with dot position
-            for (size_t i = 0; i <= item.rhs.rule_members.size(); ++i) {
+            for (std::size_t i = 0; i <= item.rhs.rule_members.size(); ++i) {
                 if (i == item.dot_pos) {
                     oss << "• ";
                 }
@@ -614,7 +614,7 @@ std::string LRParser::formatActionTable() const {
         << "\n";
 
     for (const auto& state_entry : action_table) {
-        size_t state = state_entry.first;
+        std::size_t state = state_entry.first;
         for (const auto& token_entry : state_entry.second) {
             const std::string& token = corelib::text::join(token_entry.first, "_");
             const Action& action = token_entry.second;
@@ -646,10 +646,10 @@ std::string LRParser::formatGotoTable() const {
         << "\n";
 
     for (const auto& state_entry : goto_table) {
-        size_t state = state_entry.first;
+        std::size_t state = state_entry.first;
         for (const auto& non_terminal_entry : state_entry.second) {
             const std::string& non_terminal = corelib::text::join(non_terminal_entry.first, "_");
-            size_t next_state = non_terminal_entry.second;
+            std::size_t next_state = non_terminal_entry.second;
 
             oss << std::left
                 << std::setw(stateWidth) << state

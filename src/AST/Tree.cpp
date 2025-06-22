@@ -45,8 +45,8 @@ auto AST::Tree::createUsePlacesTable() -> UsePlaceTable& {
     }
     return use_places;
 }
-auto AST::Tree::compute_group_length(const stdu::vector<AST::RuleMember> &group) -> size_t {
-    size_t count = 0;
+auto AST::Tree::compute_group_length(const stdu::vector<AST::RuleMember> &group) -> std::size_t {
+    std::size_t count = 0;
     for (auto &rule : group) {
         if (rule.isGroup() && rule.quantifier == '\0') {
             count += compute_group_length(rule.getGroup().values);
@@ -62,7 +62,7 @@ void AST::Tree::transform_helper(
 ) {
     logger.increaseIndentLevel();
     auto size = members.size();
-    for (size_t i = 0; i < size; ++i) {
+    for (std::size_t i = 0; i < size; ++i) {
         auto &member = members[i];
         if (member.isGroup()) {
             logger.increaseIndentLevel();
@@ -162,11 +162,11 @@ void AST::Tree::transform_helper(
             auto data = member.getOp(); // should be copy !!!
             stdu::vector<std::string> push_name;
             stdu::vector<AST::RuleMember>::iterator val_it;
-            stdu::vector<std::pair<size_t, size_t>> group_pos = {};
-            size_t _count = 0;
+            stdu::vector<std::pair<std::size_t, std::size_t>> group_pos = {};
+            std::size_t _count = 0;
             if (members.size() == 1) {
                 logger.log("[branch] members.size() == 1");
-                size_t count = 0;
+                std::size_t count = 0;
                 bool is_first_going_group = false;
 
                 for (const auto &rule : data.options) {
@@ -194,7 +194,7 @@ void AST::Tree::transform_helper(
                     // Reset insert_pos, because erase invalidates it
                     insert_pos = members.begin() + i;
 
-                    size_t j = 0;
+                    std::size_t j = 0;
                     val_it = data.options.begin();
                     logger.increaseIndentLevel();
                     for (; j < len; ++j, ++val_it, ++_count) {
@@ -231,12 +231,12 @@ void AST::Tree::transform_helper(
                 logger.log("new_fullname: {}", new_fullname);
             }
             for (; val_it != data.options.end(); val_it++, _count++) {
-                auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<size_t, size_t> &unit) {return unit.first == _count;});
+                auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<std::size_t, std::size_t> &unit) {return unit.first == _count;});
                 stdu::vector<AST::RuleMember> values;
                 logger.log("found group: {}", group != group_pos.end());
                 if (group != group_pos.end()) {
                     logger.log("iterating through group");
-                    for (size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
+                    for (std::size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
                         logger.log("i: {}, _count: {}, val_it: {}", i, _count, &(*val_it));
                         values.push_back(*val_it);
                     }

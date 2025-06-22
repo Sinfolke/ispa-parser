@@ -22,7 +22,7 @@ auto AST::TreePass::inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::Ru
     -> stdu::vector<AST::RuleMember>::iterator // group must be copy else on element insertion iterators will invalidate
 {
     // recursively inline nested groups
-    for (size_t i = 0; i < group.values.size(); ++i) {
+    for (std::size_t i = 0; i < group.values.size(); ++i) {
         if (group.values[i].isGroup() && group.values[i].quantifier == '\0') {
             auto nested = group.values[i].getGroup(); // copy to avoid stale ref
             inlineGroup(nested, group.values, group.values.begin() + i);
@@ -48,7 +48,7 @@ void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
 }
 void AST::TreePass::literalsToToken(
     stdu::vector<AST::RuleMember> &literals,
-    size_t &count,
+    std::size_t &count,
     stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
     stdu::vector<std::pair<AST::RuleMember, AST::RuleMember>> &generated
     ) {
@@ -92,7 +92,7 @@ void AST::TreePass::literalsToToken(
     }
 }
 void AST::TreePass::literalsToToken(AST::Tree &ast) {
-    size_t count = 0;
+    std::size_t count = 0;
     stdu::vector<std::pair<AST::RuleMember, AST::RuleMember>> generated;
     stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> toInsert;
     auto &treeMap = ast.getTreeMap();
@@ -129,7 +129,7 @@ bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberName
         throw Error("Not found Rule_name in map");
     const auto &first_rules = first_data->second.rule_members;
     const auto &second_rules = second_data->second.rule_members;
-    for (size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
+    for (std::size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
         if (first_rules[i] == second_rules[i]) {
             continue;
         }
@@ -148,7 +148,7 @@ bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberCseq
 }
 
 bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberGroup &first, const AST::RuleMemberGroup &second) {
-    for (size_t i = 0; i < first.values.size() && i < second.values.size(); ++i) {
+    for (std::size_t i = 0; i < first.values.size() && i < second.values.size(); ++i) {
         if (first.values[i] == second.values[i])
             continue;
         return prioritySort(ast, first.values[i], second.values[i]);

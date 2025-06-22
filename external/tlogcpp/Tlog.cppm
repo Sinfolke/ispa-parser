@@ -15,7 +15,7 @@ export namespace Tlog {
         std::unordered_map<std::string, Branch_data> branches;
         std::vector<Branch_data> branches_stack;
         std::string file;
-        size_t line;
+        std::size_t line;
 #ifdef DEBUG
         bool isExcludeAll = false;
 #else
@@ -142,7 +142,7 @@ export namespace Tlog {
             file = get_relative_source_path(loc.file_name());
             line = loc.line();
         }
-        void set_location(std::string file, size_t line) {
+        void set_location(std::string file, std::size_t line) {
             this->file = get_relative_source_path(file);
             this->line = line;
         }

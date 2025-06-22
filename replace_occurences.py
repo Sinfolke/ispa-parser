@@ -2,13 +2,14 @@ import os
 import re
 
 def replace_std_vector_in_file(filepath):
+
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
     # Regex pattern to match std::vector exactly (not part of bigger word)
-    pattern = r'\bstd\b::size_t'
+    pattern = r'\bsize_t\b'
 
-    new_content, count = re.subn(pattern, 'size_t', content)
+    new_content, count = re.subn(pattern, 'std::size_t', content)
 
     if count > 0:
         print(f"Replaced {count} occurrences in {filepath}")

@@ -2,8 +2,8 @@ module AST.API;
 import std;
 
 namespace AST {
-    size_t String::count_strlen(const std::string &str) {
-        size_t count = 0;
+    std::size_t String::count_strlen(const std::string &str) {
+        std::size_t count = 0;
         for (auto it = str.begin(); it != str.end(); it++) {
             if (*it == '\\') {
                 if (it + 1 == str.end())
@@ -27,7 +27,7 @@ namespace AST {
         }
         return res;
     }
-    size_t String::count_strlen() const {
+    std::size_t String::count_strlen() const {
         return count_strlen(value);
     }
     std::string String::format_str() const {
@@ -594,17 +594,17 @@ namespace AST {
             first.diapasons.size() != second.diapasons.size()) {
             return false;
         }
-        for (size_t i = 0; i < first.characters.size(); i++) {
+        for (std::size_t i = 0; i < first.characters.size(); i++) {
             if (std::find(second.characters.begin(), second.characters.end(), first.characters[i]) == second.characters.end()) {
                 return false;
             }
         }
-        for (size_t i = 0; i < first.escaped.size(); i++) {
+        for (std::size_t i = 0; i < first.escaped.size(); i++) {
             if (std::find(second.escaped.begin(), second.escaped.end(), first.escaped[i]) == second.escaped.end()) {
                 return false;
             }
         }
-        for (size_t i = 0; i < first.diapasons.size(); i++) {
+        for (std::size_t i = 0; i < first.diapasons.size(); i++) {
             if (std::find_if(second.diapasons.begin(), second.diapasons.end(),
                              [&first, i](const std::pair<char, char> &pair) {
                                  return pair.first == first.diapasons[i].first && pair.second == first.diapasons[i].second;
@@ -658,7 +658,7 @@ namespace AST {
 
     std::ostream& operator<<(std::ostream& os, const RuleMemberName& n) {
         os << "Name(";
-        for (size_t i = 0; i < n.name.size(); ++i) {
+        for (std::size_t i = 0; i < n.name.size(); ++i) {
             os << n.name[i];
             if (i + 1 < n.name.size()) os << "::";
         }
@@ -668,7 +668,7 @@ namespace AST {
 
     std::ostream& operator<<(std::ostream& os, const RuleMemberGroup& g) {
         os << "Group(";
-        for (size_t i = 0; i < g.values.size(); ++i) {
+        for (std::size_t i = 0; i < g.values.size(); ++i) {
             os << g.values[i];
             if (i + 1 < g.values.size()) os << ", ";
         }
@@ -678,7 +678,7 @@ namespace AST {
 
     std::ostream& operator<<(std::ostream& os, const RuleMemberOp& o) {
         os << "Op(";
-        for (size_t i = 0; i < o.options.size(); ++i) {
+        for (std::size_t i = 0; i < o.options.size(); ++i) {
             os << o.options[i];
             if (i + 1 < o.options.size()) os << " | ";
         }
@@ -757,7 +757,7 @@ namespace AST {
 
     std::ostream& operator<<(std::ostream& os, const TemplatedDataBlock& block) {
         os << "TemplatedDataBlock(";
-        for (size_t i = 0; i < block.names.size(); ++i) {
+        for (std::size_t i = 0; i < block.names.size(); ++i) {
             os << block.names[i];
             if (i + 1 < block.names.size()) os << ", ";
         }

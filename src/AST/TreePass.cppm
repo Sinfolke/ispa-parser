@@ -19,10 +19,10 @@ export namespace AST {
 
     private:
         Tree *ast;
-        size_t token_count = 0;
+        std::size_t token_count = 0;
         void literalsToToken(
             stdu::vector<AST::RuleMember> &literals,
-            size_t &count,
+            std::size_t &count,
             stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
             stdu::vector<std::pair<AST::RuleMember, AST::RuleMember>> &generated
         );

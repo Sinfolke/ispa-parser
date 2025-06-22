@@ -7,18 +7,18 @@ import hash;
 import constants;
 import std;
 
-auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vector<size_t> {
-    std::set<size_t> Closure(states.begin(), states.end());
-    std::queue<size_t> work;
-    for (size_t s : states) work.push(s);
+auto DFA::epsilonClosure(const stdu::vector<std::size_t>& states) const -> stdu::vector<std::size_t> {
+    std::set<std::size_t> Closure(states.begin(), states.end());
+    std::queue<std::size_t> work;
+    for (std::size_t s : states) work.push(s);
 
     while (!work.empty()) {
-        size_t current = work.front();
+        std::size_t current = work.front();
         work.pop();
 
         const auto &epsilons = nfa->getStates().at(current).epsilon_transitions;
 
-        for (size_t target_state : epsilons) {
+        for (std::size_t target_state : epsilons) {
             if (!Closure.contains(target_state)) {
                Closure.insert(target_state);
                 work.push(target_state);
@@ -28,8 +28,8 @@ auto DFA::epsilonClosure(const stdu::vector<size_t>& states) const -> stdu::vect
 
     return { Closure.begin(), Closure.end() };
 }
-auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<size_t> {
-    std::set<size_t> result;
+auto DFA::move(const stdu::vector<std::size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<std::size_t> {
+    std::set<std::size_t> result;
 
     for (auto state_id : states) {
         const auto &state = nfa->getStates().at(state_id);
@@ -42,22 +42,22 @@ auto DFA::move(const stdu::vector<size_t> &states, const NFA::TransitionKey &sym
     return { result.begin(), result.end() };
 }
 
-auto DFA::findEmptyState() const -> size_t {
+auto DFA::findEmptyState() const -> std::size_t {
     if (mstates.empty()) {
-        for (size_t i = 0; i < states.size(); ++i) {
+        for (std::size_t i = 0; i < states.size(); ++i) {
             if (states[i].transitions.empty())
                 return i;
         }
         return states.size();
     } else {
-        for (size_t i = 0; i < mstates.size(); ++i) {
+        for (std::size_t i = 0; i < mstates.size(); ++i) {
             if (mstates[i].transitions.empty())
                 return i;
         }
         return mstates.size();
     }
 }
-bool DFA::leadToEmptyState(size_t current) const {
+bool DFA::leadToEmptyState(std::size_t current) const {
     if (!nfa->getStates().at(current).transitions.empty())
         return false;
     bool all_lead_o_empty = true;
@@ -96,18 +96,18 @@ bool DFA::isTerminateState(const MultiState &state) const {
 }
 
 void DFA::removeDublicateStates() {
-    std::unordered_map<size_t, size_t> remove_states;  // duplicate idx -> original idx
-    std::unordered_map<size_t, stdu::vector<size_t>> hash_buckets;
+    std::unordered_map<std::size_t, std::size_t> remove_states;  // duplicate idx -> original idx
+    std::unordered_map<std::size_t, stdu::vector<std::size_t>> hash_buckets;
 
     uhash hasher;
 
     // Step 1: Identify duplicate states with custom uhash
-    for (size_t i = 0; i < mstates.size(); ++i) {
-        size_t h = hasher(mstates[i]);
+    for (std::size_t i = 0; i < mstates.size(); ++i) {
+        std::size_t h = hasher(mstates[i]);
         auto& bucket = hash_buckets[h];
 
         bool found_duplicate = false;
-        for (size_t idx : bucket) {
+        for (std::size_t idx : bucket) {
             if (mstates[i] == mstates[idx]) {
                 remove_states[i] = idx;
                 found_duplicate = true;
@@ -120,9 +120,9 @@ void DFA::removeDublicateStates() {
     }
 
     // Union-find style representative finder with path compression
-    auto find_representative = [&](size_t idx) {
+    auto find_representative = [&](std::size_t idx) {
         while (remove_states.contains(idx)) {
-            size_t parent = remove_states[idx];
+            std::size_t parent = remove_states[idx];
             if (!remove_states.contains(parent))
                 break;
             idx = parent;
@@ -132,11 +132,11 @@ void DFA::removeDublicateStates() {
 
     // Step 2: Build new_states and old_to_new mapping
     stdu::vector<MultiState> new_states;
-    std::unordered_map<size_t, size_t> old_to_new;
+    std::unordered_map<std::size_t, std::size_t> old_to_new;
 
-    for (size_t i = 0; i < mstates.size(); ++i) {
+    for (std::size_t i = 0; i < mstates.size(); ++i) {
         if (!remove_states.contains(i)) {
-            size_t new_index = new_states.size();
+            std::size_t new_index = new_states.size();
             new_states.push_back(mstates[i]);
             old_to_new[i] = new_index;
         }
@@ -144,7 +144,7 @@ void DFA::removeDublicateStates() {
 
     // Step 3: Map duplicates to their representative’s new index
     for (const auto& [dup, orig] : remove_states) {
-        size_t rep = find_representative(orig);
+        std::size_t rep = find_representative(orig);
         old_to_new[dup] = old_to_new.at(rep);
     }
 
@@ -165,8 +165,8 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
     using LookaheadSet = stdu::vector<MultiTransitions>;
     using Lookaheads = stdu::vector<LookaheadSet>;
     Lookaheads lookaheads;
-    std::queue<size_t> work;
-    size_t work_size = 0;
+    std::queue<std::size_t> work;
+    std::size_t work_size = 0;
     for (const auto &v: val) {
         work.push(v.next);
         work_size++;
@@ -207,10 +207,10 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
         // }
     }
     // step 2: based on lookaheads compute new states
-    size_t current_dfa_state = mstates.size();
+    std::size_t current_dfa_state = mstates.size();
     mstates.emplace_back();
     logger.log("Lookaheads size: {}", lookaheads.size());
-    for (size_t i = 0; i < lookaheads.size(); ++i) {
+    for (std::size_t i = 0; i < lookaheads.size(); ++i) {
         const auto &l = lookaheads[i];
         logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
@@ -224,7 +224,7 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
         }
     }
     // find more dublicate states and unroll
-    std::unordered_set<size_t> next_indices;
+    std::unordered_set<std::size_t> next_indices;
     for (const auto &s : mstates[current_dfa_state].transitions) {
         for (const auto &t : s.second) {
             next_indices.insert(t.next);
@@ -244,11 +244,11 @@ void DFA::unrollMultiTransitionPaths() {
     SeenSymbol seen;
     WalkedState walked_state;
     SeenSymbol global_seen;
-    for (size_t i = 0; i < mstates.size(); ++i) {
+    for (std::size_t i = 0; i < mstates.size(); ++i) {
         auto &state = mstates[i];
         for (auto &t : state.transitions) {
             if (t.second.size() > 1) {
-                std::unordered_set<size_t> next_indices;
+                std::unordered_set<std::size_t> next_indices;
                 for (const auto el : t.second) {
                     next_indices.insert(el.next);
                 }
@@ -273,8 +273,8 @@ void DFA::switchToSingleState() {
     }
     mstates.clear();
 }
-void DFA::accumulateTerminalStates(size_t i, std::unordered_set<size_t> &terminals, std::unordered_set<size_t> &visited) {
-    stdu::vector<size_t> path;
+void DFA::accumulateTerminalStates(std::size_t i, std::unordered_set<std::size_t> &terminals, std::unordered_set<std::size_t> &visited) {
+    stdu::vector<std::size_t> path;
     const auto &state = mstates.at(i);
     if (isTerminateState(state)) {
         // first value transition
@@ -300,8 +300,8 @@ void DFA::accumulateTerminalStates(size_t i, std::unordered_set<size_t> &termina
 
 }
 void DFA::terminateEarly() {
-    std::unordered_set<size_t> terminals;
-    std::unordered_set<size_t> visited;
+    std::unordered_set<std::size_t> terminals;
+    std::unordered_set<std::size_t> visited;
     accumulateTerminalStates(0, terminals, visited);
     if (terminals.empty())
         return;
@@ -322,8 +322,8 @@ void DFA::terminateEarly() {
             mstates[id].else_goto = empty_state;
     }
 }
-void DFA::WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &reachable) {
-    stdu::vector<size_t> path;
+void DFA::WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable) {
+    stdu::vector<std::size_t> path;
     const auto &state = states.at(i);
     for (const auto &t : state.transitions) {
         const auto &id = t.second.next;
@@ -339,15 +339,15 @@ void DFA::WalkDfaToGetUnreachableStates(size_t i, std::unordered_set<size_t> &re
     }
 }
 void DFA::removeUnreachableStates() {
-    std::unordered_set<size_t> reachable;
+    std::unordered_set<std::size_t> reachable;
     reachable.insert(0);
     Tlog::Branch b(logger, "DFA/removeUnreachableStates");
     WalkDfaToGetUnreachableStates(0, reachable);
 
     // Step 1: Create mapping from old ID to new ID
-    std::unordered_map<size_t, size_t> old_to_new;
+    std::unordered_map<std::size_t, std::size_t> old_to_new;
     stdu::vector<SingleState> new_states;
-    for (size_t i = 0; i < states.size(); ++i) {
+    for (std::size_t i = 0; i < states.size(); ++i) {
         if (reachable.contains(i)) {
             old_to_new[i] = new_states.size();
             new_states.push_back(states[i]);
@@ -365,12 +365,12 @@ void DFA::removeUnreachableStates() {
     states = std::move(new_states);
 }
 void DFA::removeSelfLoop() {
-    size_t empty_state = findEmptyState();
+    std::size_t empty_state = findEmptyState();
     if (empty_state == states.size()) {
         states.emplace_back(); // create it once
     }
 
-    for (size_t i = 0; i < states.size(); ++i) {
+    for (std::size_t i = 0; i < states.size(); ++i) {
         auto &state = states[i];
         if (state.transitions.empty())
             continue;
@@ -382,7 +382,7 @@ void DFA::removeSelfLoop() {
     }
 }
 auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
-    size_t offset = first.getMultiStates().size();
+    std::size_t offset = first.getMultiStates().size();
     auto &f = first.getMultiStates();
     const auto &s = second.getMultiStates();
     for (const auto &[symbol, next] : s[0].transitions) {
@@ -414,20 +414,20 @@ auto DFA::mergeDFAS(stdu::vector<DFA> &dfas) -> DFA {
 }
 
 void DFA::build(bool switchToSingleState) {
-    using StateSet = stdu::vector<size_t>;
+    using StateSet = stdu::vector<std::size_t>;
     if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
 
-    utype::unordered_map<StateSet, size_t> dfa_state_map;  // DFA state ID per NFA state set
+    utype::unordered_map<StateSet, std::size_t> dfa_state_map;  // DFA state ID per NFA state set
     utype::unordered_map<std::pair<StateSet, std::variant<stdu::vector<std::string>, char>>, StateSet> closure_cache;
-    std::unordered_map<size_t, StateSet> closure_index_cache;
+    std::unordered_map<std::size_t, StateSet> closure_index_cache;
     std::queue<StateSet> work;
 
-    // 1. Start state stdu::vector<size_t>
+    // 1. Start state stdu::vector<std::size_t>
     StateSet start_set = {0}; // Assuming 0 is NFA start state
     auto start_closure = epsilonClosure(start_set);
 
-    size_t dfa_start_index = 0;
+    std::size_t dfa_start_index = 0;
     dfa_state_map[start_closure] = dfa_start_index;
     mstates.emplace_back(); // for DFA state 0
     work.push(start_closure);
@@ -436,11 +436,11 @@ void DFA::build(bool switchToSingleState) {
         std::sort(current.begin(), current.end());
         work.pop();
         logger.log("current: {}", current);
-        size_t current_dfa_index = dfa_state_map[current];
+        std::size_t current_dfa_index = dfa_state_map[current];
 
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
-        utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, size_t>>> input_symbols;
-        for (size_t nfa_index : current) {
+        utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, std::size_t>>> input_symbols;
+        for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
                 input_symbols[symbol].emplace_back(TransitionValue {id, nfa->getAcceptMap().at(id)}, state.any ? state.any : NFA::NO_ANY);
@@ -467,7 +467,7 @@ void DFA::build(bool switchToSingleState) {
         //     }
         // }
         // determine conflict symbols
-        stdu::vector<const stdu::vector<std::pair<TransitionValue, size_t>>*> conflicts;
+        stdu::vector<const stdu::vector<std::pair<TransitionValue, std::size_t>>*> conflicts;
         for (const auto &[symbol, data] : input_symbols) {
             if (data.size() > 1) {
                 conflicts.push_back(&data);
@@ -477,7 +477,7 @@ void DFA::build(bool switchToSingleState) {
         struct Conflict {
             const StateSet *closure;
             const TransitionValue *value;
-            size_t any;
+            std::size_t any;
         };
         stdu::vector<Conflict> conflict_closures;
         for (const auto &conf : conflicts) {
@@ -490,7 +490,7 @@ void DFA::build(bool switchToSingleState) {
         }
         // DFA construction
         for (const auto &[symbol, data] : input_symbols) {
-            size_t empty_state_accept = 0;
+            std::size_t empty_state_accept = 0;
             bool goto_empty_state = std::any_of(current.begin(), current.end(), [&](auto &el) {
                 if (leadToEmptyState(el)) {
                     empty_state_accept = nfa->getAcceptMap().at(el);
@@ -507,18 +507,18 @@ void DFA::build(bool switchToSingleState) {
                 closure_set = epsilonClosure(move_set);
                 closure_cache.emplace(std::make_pair(current, symbol), closure_set);
             }
-            logger.log("stdu::vector<size_t>: ({}, {})", closure_set, closure_set);
+            logger.log("stdu::vector<std::size_t>: ({}, {})", closure_set, closure_set);
             if (closure_set.empty()) continue;
 
-            // Separate conflicting stdu::vector<size_t> subsets
+            // Separate conflicting stdu::vector<std::size_t> subsets
             stdu::vector<const Conflict*> process_conflict_list;
             for (const auto &closure : conflict_closures) {
                 const StateSet &conf_set = *closure.closure;
-                bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](size_t s) {
+                bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](std::size_t s) {
                     return std::find(closure_set.begin(), closure_set.end(), s) != closure_set.end();
                 });
                 if (is_subset) {
-                    for (size_t s : conf_set) {
+                    for (std::size_t s : conf_set) {
                         auto find_it = std::find(closure_set.begin(), closure_set.end(), s);
                         if (find_it != closure_set.end()) {
                             closure_set.erase(find_it);
@@ -528,15 +528,15 @@ void DFA::build(bool switchToSingleState) {
                 }
             }
 
-            // Add main (non-conflict) stdu::vector<size_t> if any
+            // Add main (non-conflict) stdu::vector<std::size_t> if any
             if (!closure_set.empty()) {
                 if (!dfa_state_map.count(closure_set)) {
-                    size_t new_index = mstates.size();
+                    std::size_t new_index = mstates.size();
                     dfa_state_map[closure_set] = new_index;
                     mstates.emplace_back();
                     work.push(closure_set);
                 }
-                size_t target_index = dfa_state_map[closure_set];
+                std::size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
                     target_index, data.back().first.accept_index
                 );
@@ -548,13 +548,13 @@ void DFA::build(bool switchToSingleState) {
                 const auto *transition = conf->value;
 
                 if (!dfa_state_map.count(conf_closure)) {
-                    size_t new_index = mstates.size();
+                    std::size_t new_index = mstates.size();
                     dfa_state_map[conf_closure] = new_index;
                     mstates.emplace_back();
                     work.push(conf_closure);
                 }
 
-                size_t target_index = dfa_state_map[conf_closure];
+                std::size_t target_index = dfa_state_map[conf_closure];
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
                     target_index, transition->accept_index
                 );
@@ -685,6 +685,25 @@ auto DFA::getTransitionType(bool isToken) const -> std::string {
             throw Error("Undefined DFA type");;
     }
 }
+auto DFA::getTransitionType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType {
+    if (std::holds_alternative<char>(transition_key)) {
+        return DfaType::Char;
+    } else {
+        return isToken ? DfaType::CallableToken : DfaType::Token;
+    }
+}
+auto DFA::getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string {
+    switch (getTransitionType(transition_key, isToken)) {
+        case DFA::DfaType::Char:
+            return "CharTableTransition";
+        case DFA::DfaType::Token:
+            return "TokenTableTransition";
+        case DFA::DfaType::CallableToken:
+            return "CallableTokenTableTransition";
+        default:
+            throw Error("Unallowed DFA type");
+    }
+}
 auto DFA::getStateType(bool isToken) const -> std::string {
     return getTypeStr(isToken) + "State";
 }
@@ -712,27 +731,29 @@ auto DFA::getStateType(const Transitions &transitions, bool isToken) -> DfaType 
 auto DFA::getStateTypeStr(const Transitions &transitions, bool isToken) -> std::string {
     switch (getStateType(transitions, isToken)) {
         case DFA::DfaType::Char:
-            return "CharTableTransition";
+            return "CharTableState";
         case DFA::DfaType::Token:
-            return "TokenTableTransition";
+            return "TokenTableState";
         case DFA::DfaType::CallableToken:
-            return "CallableTokenTableTransition";
+            return "CallableTokenTableState";
         case DFA::DfaType::Multi:
-            return "MultiTableTransition";
+            return "MultiTableState";
+        case DfaType::NONE:
+            return "EmptyTableState";
         default:
             throw Error("Undefined DFA type");;
     }
 }
 
-auto DFA::getMaxTransitionCount() const -> size_t {
-    size_t count = 0;
+auto DFA::getMaxTransitionCount() const -> std::size_t {
+    std::size_t count = 0;
     if (mstates.empty()) {
         for (const auto &state : states) {
-            count = std::max<size_t>(count, state.transitions.size());
+            count = std::max<std::size_t>(count, state.transitions.size());
         }
     } else {
         for (const auto &state : mstates) {
-            count = std::max<size_t>(count, state.transitions.size());
+            count = std::max<std::size_t>(count, state.transitions.size());
         }
     }
     return count;
@@ -802,11 +823,11 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
 // Print all states in the vector
 std::ostream& operator<<(std::ostream& os, const DFA& dfa) {
     if (dfa.getMultiStates().empty()) {
-        for (size_t i = 0; i < dfa.getStates().size(); ++i) {
+        for (std::size_t i = 0; i < dfa.getStates().size(); ++i) {
             os << "State " << i << ":\n" << dfa.getStates()[i] << "\n";
         }
     } else {
-        for (size_t i = 0; i < dfa.getMultiStates().size(); ++i) {
+        for (std::size_t i = 0; i < dfa.getMultiStates().size(); ++i) {
             os << "State " << i << ":\n" << dfa.getMultiStates()[i] << "\n";
         }
     }

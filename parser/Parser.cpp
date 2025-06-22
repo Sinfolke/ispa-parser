@@ -54,16 +54,16 @@ void Parser::Lexer::printToken(std::ostream& os, const Token& token) {
     os << '\n';
 }
 void ::Parser::Parser::printAST(std::ostream &os) {
-	size_t indentLevel = 0;
+	std::size_t indentLevel = 0;
 	printRule(os, tree, indentLevel, false);
 }
-void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Token &token, size_t &indentLevel, bool addSpaceOnBegin) {
+void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Token &token, std::size_t &indentLevel, bool addSpaceOnBegin) {
 	Lexer::printToken(os, token);
 }
-void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Rule &rule, size_t &indentLevel, bool addSpaceOnBegin) {
+void ::Parser::Parser::printRule(std::ostream &os, const ::Parser::Rule &rule, std::size_t &indentLevel, bool addSpaceOnBegin) {
 	printRule(os, rule.data(), indentLevel, addSpaceOnBegin);
 }
-void ::Parser::Parser::printRule(std::ostream &os, const std::any &data, size_t &indentLevel, bool addSpaceOnBegin) {
+void ::Parser::Parser::printRule(std::ostream &os, const std::any &data, std::size_t &indentLevel, bool addSpaceOnBegin) {
 	using Token = ::Parser::Token;
 	using Rule = ::Parser::Rule;
 

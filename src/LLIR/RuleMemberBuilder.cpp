@@ -151,7 +151,7 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
 }
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
-    size_t pos = 0;
+    std::size_t pos = 0;
     for (const auto &mem : rules) {
         if (mem.isName() && *has_symbol_follow) {
             *symbol_follow = getLookaheadTerminals(mem, *fullname);
@@ -311,12 +311,12 @@ void LLIR::CsequenceBuilder::build() {
     }
 
     bool first = true;
-    size_t count = 0;
+    std::size_t count = 0;
     for (const auto c : csequence.characters) {
         if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::CHARACTER, c}
         });
@@ -326,7 +326,7 @@ void LLIR::CsequenceBuilder::build() {
         if (!first)
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::EQUAL},
             {LLIR::condition_types::ESCAPED_CHARACTER, c}
         });
@@ -337,11 +337,11 @@ void LLIR::CsequenceBuilder::build() {
             expr.push_back({LLIR::condition_types::OR});
         expr.insert(expr.end(), {
             {LLIR::condition_types::GROUP_OPEN},
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::HIGHER_OR_EQUAL},
             {LLIR::condition_types::CHARACTER, from},
             {LLIR::condition_types::AND},
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::LOWER_OR_EQUAL},
             {LLIR::condition_types::CHARACTER, to},
             {LLIR::condition_types::GROUP_CLOSE}
@@ -351,7 +351,7 @@ void LLIR::CsequenceBuilder::build() {
     if (csequence.negative) {
         if (rule->quantifier == '+' || rule->quantifier == '*')
             expr.insert(expr.end(), {
-                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
+                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
             });
         expr.push_back({LLIR::condition_types::GROUP_CLOSE});
     }
@@ -377,7 +377,7 @@ void LLIR::StringBuilder::build() {
     if (str.count_strlen() == 1) {
         // micro optimization - compare as single character for single character strings
         expr = {
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::EQUAL},
             value[0] == '\\' ? LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, value[1]} :  LLIR::expr {LLIR::condition_types::CHARACTER, value[0]}
         };
@@ -433,7 +433,7 @@ void LLIR::HexBuilder::build() {
     }
     if (data.size() % 2 != 0)
         data.insert(data.begin(), '0');
-    for (size_t i = 0; i < data.size(); i += 2) {
+    for (std::size_t i = 0; i < data.size(); i += 2) {
         std::string hex(data.data() + i, 2);
         if (!is_first)
             expr.push_back({LLIR::condition_types::AND});
@@ -470,7 +470,7 @@ void LLIR::BinBuilder::build() {
     }
     while (data.size() % 8 != 0)
         data.insert(data.begin(), '0');
-    for (size_t i = 0; i < data.size(); i += 8) {
+    for (std::size_t i = 0; i < data.size(); i += 8) {
         std::string bin(data.data() + i, 8);
         auto as_hex = hex::from_binary(bin);
         as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
@@ -567,7 +567,7 @@ void LLIR::EscapedBuilder::build() {
             removePrevSpaceSkip();
             //cpuf::printf("ON_EXPRESSION\n");
             expression = {
-                {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+                {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
                 {LLIR::condition_types::NOT_EQUAL},
                 {LLIR::condition_types::CHARACTER, ' '}
             };
@@ -608,7 +608,7 @@ void LLIR::AnyBuilder::build() {
     stdu::vector<LLIR::member> block_after = createDefaultBlock(var, svar);
     if (isToken) {
         expression = {
-            {LLIR::condition_types::CURRENT_CHARACTER, (size_t) 0},
+            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
             {LLIR::condition_types::EQUAL},
             isToken ?
             LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, '0'}
@@ -630,7 +630,7 @@ void LLIR::AnyBuilder::build() {
  * But may come back later
  */
 
-// auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, size_t index, LLIR::variable &var, LLIR::variable &svar) -> stdu::vector<LLIR::member> {
+// auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, std::size_t index, LLIR::variable &var, LLIR::variable &svar) -> stdu::vector<LLIR::member> {
 //     //[[assume(rules.size() >= 2)]];
 //     if (index >= rules.size()) {
 //         return {{LLIR::types::EXIT}};

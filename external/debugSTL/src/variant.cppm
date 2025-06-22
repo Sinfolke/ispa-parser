@@ -62,7 +62,7 @@ concept AllIsVariant = (is_variant<std::decay_t<Ts>>::value && ...);
 template<typename... Ts>
 concept NoneIsVariant = (!is_variant<std::decay_t<Ts>>::value && ...);
 template<typename... Ts>
-concept NoneIsSizeT = (!(std::is_same_v<size_t, Ts>) && ...);
+concept NoneIsSizeT = (!(std::is_same_v<std::size_t, Ts>) && ...);
 
 template<typename T>
 concept NotVariantUnion = !requires(T t) {t.head;};
@@ -82,7 +82,7 @@ decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... vari
 
 
 template<typename Visitor, typename T, typename ... Ts, typename ...Variants, typename ...Heads>
-decltype(auto) visit_impl_vu(Visitor &visitor, const VariantUnion<T, Ts...> &u, size_t idx, Variants&&... variants, Heads&& ...heads) {
+decltype(auto) visit_impl_vu(Visitor &visitor, const VariantUnion<T, Ts...> &u, std::size_t idx, Variants&&... variants, Heads&& ...heads) {
     if constexpr (sizeof ...(Ts) != 0) {
         if (idx == 0) {
             return visit_impl(visitor, std::forward<Variants>(variants)..., std::forward<Heads>(heads)..., u.head);
@@ -158,7 +158,7 @@ export namespace dstd {
     template<typename ...Types>
     class variant {
         VariantUnion<Types...> data;
-        size_t index_storage = 0;
+        std::size_t index_storage = 0;
 
         template<typename T, typename... Ts> requires one_of<T, Ts...> friend bool holds_alternative(const variant<Ts...>& v);
         template<typename T, typename... Ts> requires one_of<T, Ts...> friend T& get(variant<Ts...>& v);
@@ -197,7 +197,7 @@ export namespace dstd {
 
         // visit implementation
         template<typename Visitor, typename T, typename... Ts>
-        decltype(auto) visit_impl(Visitor&& visitor, size_t idx, VariantUnion<T, Ts...>& u) {
+        decltype(auto) visit_impl(Visitor&& visitor, std::size_t idx, VariantUnion<T, Ts...>& u) {
             if (idx == 0) {
                 return std::invoke(std::forward<Visitor>(visitor), u.head);
             } else {
@@ -207,7 +207,7 @@ export namespace dstd {
 
         // Base case
         template<typename Visitor, typename T>
-        decltype(auto) visit_impl(Visitor&& visitor, size_t idx, VariantUnion<T>& u) {
+        decltype(auto) visit_impl(Visitor&& visitor, std::size_t idx, VariantUnion<T>& u) {
             if (idx != 0) {
                 throw std::runtime_error("variant index out of bounds");
             }
@@ -217,7 +217,7 @@ export namespace dstd {
         // destroy_impl for VariantUnion<T>
         // Recursive case
         template<typename T, typename... Ts>
-        void destroy_element_dynamic(size_t idx, VariantUnion<T, Ts...>& u) {
+        void destroy_element_dynamic(std::size_t idx, VariantUnion<T, Ts...>& u) {
             if (idx == 0) {
                 u.head.~T();
             } else {
@@ -227,7 +227,7 @@ export namespace dstd {
 
         // Base case: only one element left
         template<typename T>
-        void destroy_element_dynamic(size_t idx, VariantUnion<T>& u) {
+        void destroy_element_dynamic(std::size_t idx, VariantUnion<T>& u) {
             if (idx == 0) {
                 u.head.~T();
             } else {
@@ -236,7 +236,7 @@ export namespace dstd {
             }
         }
 
-        template <size_t I, typename U>
+        template <std::size_t I, typename U>
         void destroy_element(U& u) {
             if constexpr (I == 0) {
                 using HeadType = decltype(u.head);
@@ -251,17 +251,17 @@ export namespace dstd {
         // Exact match
         template<typename T, typename U, typename... Ts>
             requires std::same_as<T, U>
-        struct type_index<T, U, Ts...> : std::integral_constant<size_t, 0> {};
+        struct type_index<T, U, Ts...> : std::integral_constant<std::size_t, 0> {};
 
         // Constructible and non-narrowing match
         template<typename T, typename U, typename... Ts>
             requires (!std::same_as<T, U>) && (ConstructibleFromDecay<U, T>) && (!isNarrowingConversion<T, U>)
-        struct type_index<T, U, Ts...> : std::integral_constant<size_t, 0> {};
+        struct type_index<T, U, Ts...> : std::integral_constant<std::size_t, 0> {};
 
         // Recurse if no match or narrowing found
         template<typename T, typename U, typename... Ts>
             requires (!std::same_as<T, U>) && (!ConstructibleFromDecay<U, T> || isNarrowingConversion<T, U>)
-        struct type_index<T, U, Ts...> : std::integral_constant<size_t, 1 + type_index<T, Ts...>::value> {};
+        struct type_index<T, U, Ts...> : std::integral_constant<std::size_t, 1 + type_index<T, Ts...>::value> {};
 
         // Base case: no match
         template<typename T>
@@ -269,7 +269,7 @@ export namespace dstd {
             static_assert(sizeof(T) == 0, "type_index: type not found or not constructible in type list");
         };
 
-        template<size_t I, typename... Ts>
+        template<std::size_t I, typename... Ts>
         struct type_at;
 
         template<typename T, typename... Ts>
@@ -277,16 +277,16 @@ export namespace dstd {
             using type = T;
         };
 
-        template<size_t I, typename T, typename... Ts>
+        template<std::size_t I, typename T, typename... Ts>
         struct type_at<I, T, Ts...> {
             using type = typename type_at<I - 1, Ts...>::type;
         };
 
-        template<size_t I, typename... Ts>
+        template<std::size_t I, typename... Ts>
         using type_at_t = typename type_at<I, Ts...>::type;
 
         template<typename T>
-        static constexpr size_t index_of() {
+        static constexpr std::size_t index_of() {
             return type_index<T, Types...>::value;
         }
 
@@ -294,7 +294,7 @@ export namespace dstd {
             destroy_element_dynamic(index_storage, data);
         }
         template<typename T, typename U, typename... Us>
-        T& internal_get(size_t idx, VariantUnion<U, Us...>& u) const {
+        T& internal_get(std::size_t idx, VariantUnion<U, Us...>& u) const {
             if constexpr (std::is_same_v<T, U>) {
                 // T and U are the same type
                 if (idx != 0)
@@ -309,21 +309,21 @@ export namespace dstd {
         }
 
         template<typename T>
-        const T& internal_get(size_t idx, VariantUnion<T>& u) const {
+        const T& internal_get(std::size_t idx, VariantUnion<T>& u) const {
             if (idx != 0)
                 throw std::bad_variant_access();
             return u.head;
         }
 
         template<typename T>
-        const T& internal_get(size_t idx, const VariantUnion<T>& u) const {
+        const T& internal_get(std::size_t idx, const VariantUnion<T>& u) const {
             if (idx != 0)
                 throw std::bad_variant_access();
             return u.head;
         }
         template<typename T, typename U, typename... Us>
         requires (sizeof ...(Us) > 0)
-        const T& internal_get(size_t idx, const VariantUnion<U, Us...>& u) const {
+        const T& internal_get(std::size_t idx, const VariantUnion<U, Us...>& u) const {
             if constexpr (std::is_same_v<T, U>) {
                 // T and U are the same type
                 if (idx != 0)
@@ -336,8 +336,8 @@ export namespace dstd {
                 return internal_get<T>(idx - 1, u.tail);
             }
         }
-        template<size_t I, typename U, typename... Us>
-        auto& internal_get(size_t idx, const VariantUnion<U, Us...>& u) const {
+        template<std::size_t I, typename U, typename... Us>
+        auto& internal_get(std::size_t idx, const VariantUnion<U, Us...>& u) const {
             if constexpr (I == 0) {
                 // T and U are the same type
                 if (idx != 0)
@@ -349,14 +349,14 @@ export namespace dstd {
             }
         }
 
-        template<size_t I, typename T>
-        auto& internal_get(size_t idx, const VariantUnion<T>& u) const {
+        template<std::size_t I, typename T>
+        auto& internal_get(std::size_t idx, const VariantUnion<T>& u) const {
             if (I != 0 || idx != 0)
                 throw std::bad_variant_access();
             return u.head;
         }
         template<typename T, typename U, typename... Us>
-        T& internal_get(size_t idx, VariantUnion<U, Us...>& u) {
+        T& internal_get(std::size_t idx, VariantUnion<U, Us...>& u) {
             if constexpr (std::is_same_v<T, U>) {
                 // T and U are the same type
                 if (idx != 0)
@@ -369,13 +369,13 @@ export namespace dstd {
         }
 
         template<typename T>
-        T& internal_get(size_t idx, VariantUnion<T>& u) {
+        T& internal_get(std::size_t idx, VariantUnion<T>& u) {
             if (idx != 0)
                 throw std::bad_variant_access();
             return u.head;
         }
-        template<size_t I, typename U, typename... Us>
-        auto& internal_get(size_t idx, VariantUnion<U, Us...>& u) {
+        template<std::size_t I, typename U, typename... Us>
+        auto& internal_get(std::size_t idx, VariantUnion<U, Us...>& u) {
             if constexpr (I == 0) {
                 // T and U are the same type
                 if (idx != 0)
@@ -389,8 +389,8 @@ export namespace dstd {
             }
         }
 
-        template<size_t I, typename T>
-        auto& internal_get(size_t idx, VariantUnion<T>& u) {
+        template<std::size_t I, typename T>
+        auto& internal_get(std::size_t idx, VariantUnion<T>& u) {
             if (I != 0 || idx != 0)
                 throw std::bad_variant_access();
             return u.head;
@@ -412,8 +412,8 @@ export namespace dstd {
             }
         }
 
-        template<size_t I = 0>
-        void copy_construct_at_index(size_t index, const VariantUnion<Types...>& other_data) {
+        template<std::size_t I = 0>
+        void copy_construct_at_index(std::size_t index, const VariantUnion<Types...>& other_data) {
             if constexpr (I < sizeof...(Types)) {
                 if (index == I) {
                     using T = type_at_t<I, Types...>;
@@ -432,8 +432,8 @@ export namespace dstd {
                 }
             }
         }
-        template<size_t I = 0>
-        void move_construct_at_index(size_t index, VariantUnion<Types...>&& other_data) {
+        template<std::size_t I = 0>
+        void move_construct_at_index(std::size_t index, VariantUnion<Types...>&& other_data) {
             if constexpr (I < sizeof...(Types)) {
                 if (index == I) {
                     using T = type_at_t<I, Types...>;
@@ -450,7 +450,7 @@ export namespace dstd {
         auto &getRawData() const {
             return data;
         }
-        static constexpr size_t variant_npos = static_cast<size_t>(-1);
+        static constexpr std::size_t variant_npos = static_cast<std::size_t>(-1);
         variant(std::source_location loc = std::source_location::current()) {
             try {
                 new (&data.head) decltype(data.head)();
@@ -520,7 +520,7 @@ export namespace dstd {
         }
         variant(variant&& other, const std::source_location loc = std::source_location::current()) noexcept {
             try {
-                if (other.index_storage == std::numeric_limits<size_t>::max()) {
+                if (other.index_storage == std::numeric_limits<std::size_t>::max()) {
 
                     std::cout << "[" << loc.file_name() << ":" << loc.line() << "] ";
                     std::cout << "Warning: variant become valueless by in move constructor because assign variant is valueless" << std::endl;
@@ -567,7 +567,7 @@ export namespace dstd {
             }
             return *this;
         }
-        [[nodiscard]] auto index() const noexcept -> const size_t& {
+        [[nodiscard]] auto index() const noexcept -> const std::size_t& {
             return index_storage;
         }
         [[nodiscard]] auto valueless_by_exception() const noexcept -> bool {

@@ -6,7 +6,7 @@ import cpuf.op;
 export namespace Tlog {
     class Oss {
         std::ofstream of;
-        size_t indent_level = 0;
+        std::size_t indent_level = 0;
         // Base case: no arguments left
         inline void print_nth(int index) {
             of << "<none>";
@@ -48,7 +48,7 @@ export namespace Tlog {
         }
         std::string format_str(std::string str) const {
             str.insert(0, std::string(indent_level, '\t'));
-            for (size_t i = 0; i < str.size(); i++) {
+            for (std::size_t i = 0; i < str.size(); i++) {
                 if (str[i] == '\n') {
                     str.insert(i, std::string(indent_level, '\t'));
                 }

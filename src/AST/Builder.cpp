@@ -204,7 +204,7 @@ AST::CllExprTerm AST::Builder::createCllExprTerm(const Parser::Rule &term) {
     AST::CllExprTerm result;
 
     result.value = createCllExprValue(data.first);
-    for (size_t i = 0; i < data.operators.size(); i++) {
+    for (std::size_t i = 0; i < data.operators.size(); i++) {
         char op;
         if (data.operators[i].name() == Parser::Tokens::PLUS)
             op = '+';
@@ -220,7 +220,7 @@ AST::CllExprAddition AST::Builder::createCllExprAddition(const Parser::Rule &add
     AST::CllExprAddition result;
 
     result.value = createCllExprTerm(data.first);
-    for (size_t i = 0; i < data.operators.size(); i++) {
+    for (std::size_t i = 0; i < data.operators.size(); i++) {
         char op;
         if (data.operators[i].name() == Parser::Tokens::PLUS)
             op = '+';
@@ -236,7 +236,7 @@ AST::CllExprCompare AST::Builder::createCllExprCompare(const Parser::Rule &compa
     AST::CllExprCompare result;
 
     result.value = createCllExprAddition(data.first);
-    for (size_t i = 0; i < data.operators.size(); i++) {
+    for (std::size_t i = 0; i < data.operators.size(); i++) {
         result.rights.push_back(std::make_pair(createCllCompareOp(data.operators[i]), createCllExprAddition(data.sequence[i])));
     }
     return result;
@@ -246,7 +246,7 @@ AST::CllExprLogical AST::Builder::createCllExprLogical(const Parser::Rule &logic
     auto data = Parser::get::cll_expr_logical(logical);
     AST::CllExprLogical result;
     result.value = createCllExprCompare(data.left);
-    for (size_t i = 0; i < data.op.size(); i++) {
+    for (std::size_t i = 0; i < data.op.size(); i++) {
         result.rights.push_back(std::make_pair(createCllLogicalOp(data.op[i]), createCllExprCompare(data.right[i])));
     }
     return result;
@@ -559,7 +559,7 @@ void AST::Builder::createRules(const Parser::Types::rule &rule) {
     if (rule.rule.empty())
         return;
     fullname.push_back(Parser::get::ID(rule.name));
-    size_t previous_size = nested_rule_names.size();
+    std::size_t previous_size = nested_rule_names.size();
     getNestedRuleNames(rule);
     createRuleMembers(rule.rule);
     newRule.rule_members = newRules;

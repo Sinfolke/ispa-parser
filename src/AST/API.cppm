@@ -26,9 +26,9 @@ export namespace AST {
 
     struct String {
         std::string value;
-        static size_t count_strlen(const std::string &str);
+        static std::size_t count_strlen(const std::string &str);
         static std::string format_str(std::string str);
-        size_t count_strlen() const;
+        std::size_t count_strlen() const;
         std::string format_str() const;
     private:
         friend struct ::uhash;

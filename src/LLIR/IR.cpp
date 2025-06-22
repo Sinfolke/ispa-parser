@@ -17,7 +17,7 @@ auto LLIR::IR::cbegin() -> stdu::vector<Data>::const_iterator {
 auto LLIR::IR::cend() -> stdu::vector<Data>::const_iterator {
     return data.cend();
 }
-auto LLIR::IR::size() -> size_t {
+auto LLIR::IR::size() -> std::size_t {
     return data.size();
 }
 auto LLIR::IR::empty() -> bool {
@@ -47,11 +47,11 @@ LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() const {
 auto LLIR::IR::getData() const -> const stdu::vector<Data> & {
     return data;
 }
-auto LLIR::IR::getDfas() const -> const stdu::vector<DFA> & {
+auto LLIR::IR::getDfas() const -> const DFAS & {
     return dfas;
 }
 
-auto LLIR::IR::operator[](size_t index) const -> const Data& {
+auto LLIR::IR::operator[](std::size_t index) const -> const Data& {
     return data[index];
 }
 

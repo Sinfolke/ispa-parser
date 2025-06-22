@@ -3,8 +3,8 @@ module LLStringConvertions;
 import LLIR;
 import std;
 import std.compat;
-static size_t count_strlen(const char* str) {
-    size_t count = 0;
+static std::size_t count_strlen(const char* str) {
+    std::size_t count = 0;
     for (const char* pos = str; *pos; pos++) {
         if (*pos == '\\' && *(pos - 1) != '\\') {
             continue;
@@ -210,7 +210,7 @@ std::string LLStringConvertions::conditionTypesToString(const LLIR::condition_ty
         return std::string("'\\") + std::any_cast<char>(data) + std::string("'");
     } else if (type == LLIR::condition_types::CURRENT_CHARACTER) {
         //cpuf::printf("current_character\n");
-        return "*(" + current_pos_counter.top() + " + " + std::to_string(std::any_cast<size_t>(data)) + ")";
+        return "*(" + current_pos_counter.top() + " + " + std::to_string(std::any_cast<std::size_t>(data)) + ")";
     } else if (type == LLIR::condition_types::TOKEN_SEQUENCE) {
         return current_pos_counter.top();
     } else if (type == LLIR::condition_types::NUMBER) {

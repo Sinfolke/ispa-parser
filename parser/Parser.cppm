@@ -573,9 +573,9 @@ export namespace Parser {
              * @param rule the rule to print
              * Prints a single rule into an output stream
              */
-            static void printRule(std::ostream &os, const Token &token, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const Rule &rule, size_t &indentLevel, bool addSpaceOnBegin);
-            static void printRule(std::ostream &os, const std::any& data, size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const Token &token, std::size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const Rule &rule, std::size_t &indentLevel, bool addSpaceOnBegin);
+            static void printRule(std::ostream &os, const std::any& data, std::size_t &indentLevel, bool addSpaceOnBegin);
 		private:			Rule_res getRule(Lexer::lazy_iterator&);
 			Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();

@@ -103,7 +103,7 @@ export namespace LLIR {
     struct strncmp {
         bool is_string;
         variable value;
-        size_t begin = 0;
+        std::size_t begin = 0;
     };
     struct switch_statement {
         struct unit {
@@ -134,8 +134,8 @@ export namespace LLIR {
     };
     struct var_group {
         variable var;
-        size_t begin;
-        size_t end;
+        std::size_t begin;
+        std::size_t end;
     };
     struct Data {
         DataBlock block;

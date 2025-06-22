@@ -15,7 +15,7 @@ int main() {
     // Test size + value constructor
     std::vector<int> v3(4, 42);
     assert(v3.size() == 4);
-    for (size_t i = 0; i < v3.size(); ++i)
+    for (std::size_t i = 0; i < v3.size(); ++i)
         assert(v3[i] == 42);
 
     // Test initializer list constructor
@@ -26,7 +26,7 @@ int main() {
     // Test copy constructor
     std::vector<int> v5 = v4;
     assert(v5.size() == v4.size());
-    for (size_t i = 0; i < v5.size(); ++i)
+    for (std::size_t i = 0; i < v5.size(); ++i)
         assert(v5[i] == v4[i]);
 
     // Test move constructor
@@ -93,7 +93,7 @@ int main() {
     // --- Reserve / Capacity (if implemented) ---
     std::vector<int> v14;
     v14.reserve(100);
-    size_t cap = v14.capacity();
+    std::size_t cap = v14.capacity();
     assert(cap >= 100);
 
     for (int i = 0; i < 50; ++i) v14.push_back(i);

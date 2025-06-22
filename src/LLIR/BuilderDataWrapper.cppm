@@ -9,7 +9,7 @@ import std.compat;
 export namespace LLIR {
     class BuilderDataWrapper {
     public:
-        size_t *variable_count = nullptr;
+        std::size_t *variable_count = nullptr;
         bool *isToken = nullptr;
         bool *insideLoop = nullptr;
         bool *addSpaceSkip = nullptr;
@@ -41,7 +41,7 @@ export namespace LLIR {
         dfas(data.dfas)
         {}
         BuilderDataWrapper(
-            size_t &variable_count,
+            std::size_t &variable_count,
             bool &isToken,
             bool &insideLoop,
             bool &addSpaceSkip,

@@ -114,7 +114,7 @@ export namespace LLIR {
         const AST::RuleMember *rule;
         auto createBlock(
             const stdu::vector<AST::RuleMember> &rules,
-            size_t index,
+            std::size_t index,
             LLIR::variable &var,
             LLIR::variable &svar
         ) -> stdu::vector<LLIR::member>;

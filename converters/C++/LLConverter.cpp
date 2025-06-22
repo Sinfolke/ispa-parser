@@ -215,7 +215,8 @@ void LLConverter::convertData(std::ostringstream &out) {
     }
 }
 void LLConverter::addDFATables(std::ostringstream &out) {
-    DFAConverter tables_builder(ir.getDfas(), nullptr, namespace_name, "Parser", "dfa_table", false);
+    auto [states, location_map] = ir.getDfas().getStateSet();
+    DFAConverter tables_builder(ir.getDfas(), nullptr, states, location_map, namespace_name, "Parser", "dfa_table", false);
     tables_builder.create();
     out << tables_builder.get().str();
 }
@@ -291,13 +292,13 @@ void LLConverter::addStandardFunctionsLexer(std::ostringstream &out) {
     out << "\tsize_t indentLevel = 0;\n";
     out << "\tprintRule(os, tree, indentLevel, false);\n";
     out << "}\n";
-    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Token &token, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Token &token, std::size_t &indentLevel, bool addSpaceOnBegin) {\n";
     out << "\tLexer::printToken(os, token);\n";
     out << "}\n";
-    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Rule &rule, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const ::" << namespace_name << "::Rule &rule, std::size_t &indentLevel, bool addSpaceOnBegin) {\n";
     out << "\tprintRule(os, rule.data(), indentLevel, addSpaceOnBegin);\n";
     out << "}\n";
-    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const std::any &data, size_t &indentLevel, bool addSpaceOnBegin) {\n";
+    out << "void ::" << namespace_name << "::Parser::printRule(std::ostream &os, const std::any &data, std::size_t &indentLevel, bool addSpaceOnBegin) {\n";
     out << "\tusing Token = ::" << namespace_name << "::Token;\n";
     out << "\tusing Rule = ::" << namespace_name << "::Rule;\n\n";
     
