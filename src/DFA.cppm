@@ -83,8 +83,8 @@ public:
     static auto getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string;
 
     auto getStateType(bool isToken) const -> std::string;
-    static auto getStateType(const Transitions &transitions, bool isToken) -> DfaType;
-    static auto getStateTypeStr(const Transitions &transitions, bool isToken) -> std::string;
+    static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
+    static auto getStateTypeStr(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> std::string;
     auto getMaxTransitionCount() const -> std::size_t;
 };
 

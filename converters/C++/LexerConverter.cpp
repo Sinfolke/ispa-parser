@@ -117,12 +117,12 @@ void LexerConverter::outputHeader() {
     dfa_states.outputHeader();
     for (std::size_t i = 0; i < lexer_data.getDFAS().getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << "> dfa_table_" << i << ";\n";
     }
     addDFASpansH();
     for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << "> dfa_func_table_" << i << ";\n";
     }
     // add first character diaptch table
     h_out << "\t\tstatic const std::array<std::variant<::" << namespace_name << "::DFA::SpanTokenTable, ::" << namespace_name << "::DFA::SpanCharTable, ::" << namespace_name << "::DFA::SpanMultiTable, " << namespace_name << "::Token_res (*) (const char*)>, " << std::to_string(std::numeric_limits<unsigned char>::max() + 1) << "> first_character_dispatch_table;\n";

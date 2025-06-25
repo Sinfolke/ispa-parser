@@ -118,35 +118,49 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
     out << R"(
     namespace DFA {
         constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
-        struct AnyTransition;
         struct SpanMultiTable;
         struct EmptyState;
         template<typename Key> struct Transition;
         template<typename T>   struct SpanState;
         template<std::size_t MAX, typename T> struct State;
-        struct SpanMultiTable;
 
         using CharTransition = Transition<char>;
         using TokenTransition = Transition<Tokens>;
-        using CallableTransition = Transition<Token_res (*)(const char*)>;
-
+        using CallableTokenTransition = Transition<Token_res (*)(const char*)>;
+        using CharTableTransition = Transition<ISPA_STD::Span<SpanState<CharTransition>>>;
+        using CallableTokenTableTransition = Transition<ISPA_STD::Span<SpanState<CallableTokenTransition>>>;
+        using MultiTableTransition = Transition<SpanMultiTable>;
+        using AnyTransition = std::variant<
+            Transition<char>,
+            Transition<Token_res (*)(const char*)>,
+            CharTableTransition,
+            CallableTokenTableTransition,
+            MultiTableTransition
+        >;
         // state types
         template<std::size_t N> using CharTableState = State<N, CharTransition>;
         template<std::size_t N> using TokenTableState = State<N, TokenTransition>;
-        template<std::size_t N> using CallableTokenState = State<N, CallableTransition>;
+        template<std::size_t N> using CallableTokenState = State<N, CallableTokenTransition>;
         template<std::size_t N> using MultiTableState = State<N, AnyTransition>;
         using EmptyTableState = EmptyState;
+
+        // span state types
+        using SpanCharTableState = SpanState<CharTransition>;
+        using SpanTokenTableState = SpanState<TokenTransition>;
+        using SpanCallableTokenState = SpanState<CallableTokenTransition>;
+        using SpanMultiTableState = SpanState<AnyTransition>;
 
         // non span types
         template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
         template<std::size_t N> using TokenTable = std::array<SpanState<TokenTransition>, N>;
         template<std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition>, N>;
         template<std::size_t N> using MultiTable = std::array<SpanState<AnyTransition>, N>;
-        // span state types
-        using SpanCharTableState = SpanState<CharTransition>;
-        using SpanTokenTableState = SpanState<TokenTransition>;
-        using SpanCallableTokenState = SpanState<CallableTransition>;
-        using SpanMultiTableState = SpanState<AnyTransition>;
+
+        // span types
+        using SpanCharTable = ISPA_STD::Span<SpanState<CharTransition>>;
+        using SpanTokenTable = ISPA_STD::Span<SpanState<TokenTransition>>;
+        using SpanCallableTokenTable = ISPA_STD::Span<SpanState<CallableTokenTransition>>;
+
 
 
         struct SpanMultiTable;
@@ -168,18 +182,7 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
             std::array<T, MAX> transitions;
         };
         struct SpanMultiTable {
-            std::size_t else_goto;
-            std::size_t else_goto_accept;
             ISPA_STD::Span<SpanMultiTableState> states;
-        };
-        struct AnyTransition {
-            std::variant<
-                char,
-                Token_res (*)(const char*),
-                SpanMultiTable
-            > symbol;
-            std::size_t next;
-            std::size_t accept;
         };
 
     }
@@ -188,7 +191,7 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
 void LLHeader::createDFAVars(const DFAS &dfas, std::ostringstream &out) const {
     std::size_t count = 0;
     for (const auto &dfa : dfas) {
-        out << "\n\t\t\tconst " << "DFA::" << dfa.getTypeStr(false) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> table_" << count++ << ';';
+        out << "\n\t\t\tstatic const " << "DFA::" << dfa.getTypeStr(false) << '<' << dfa.getStates().size() << "> table_" << count++ << ';';
     }
     out << '\n';
 }

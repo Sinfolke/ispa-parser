@@ -164,35 +164,49 @@ namespace Parser {
 
     namespace DFA {
         constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
-        struct AnyTransition;
         struct SpanMultiTable;
         struct EmptyState;
         template<typename Key> struct Transition;
         template<typename T>   struct SpanState;
         template<std::size_t MAX, typename T> struct State;
-        struct SpanMultiTable;
 
         using CharTransition = Transition<char>;
         using TokenTransition = Transition<Tokens>;
-        using CallableTransition = Transition<Token_res (*)(const char*)>;
-
+        using CallableTokenTransition = Transition<Token_res (*)(const char*)>;
+        using CharTableTransition = Transition<ISPA_STD::Span<SpanState<CharTransition>>>;
+        using CallableTokenTableTransition = Transition<ISPA_STD::Span<SpanState<CallableTokenTransition>>>;
+        using MultiTableTransition = Transition<SpanMultiTable>;
+        using AnyTransition = std::variant<
+            Transition<char>,
+            Transition<Token_res (*)(const char*)>,
+            CharTableTransition,
+            CallableTokenTableTransition,
+            MultiTableTransition
+        >;
         // state types
         template<std::size_t N> using CharTableState = State<N, CharTransition>;
         template<std::size_t N> using TokenTableState = State<N, TokenTransition>;
-        template<std::size_t N> using CallableTokenState = State<N, CallableTransition>;
+        template<std::size_t N> using CallableTokenState = State<N, CallableTokenTransition>;
         template<std::size_t N> using MultiTableState = State<N, AnyTransition>;
         using EmptyTableState = EmptyState;
+
+        // span state types
+        using SpanCharTableState = SpanState<CharTransition>;
+        using SpanTokenTableState = SpanState<TokenTransition>;
+        using SpanCallableTokenState = SpanState<CallableTokenTransition>;
+        using SpanMultiTableState = SpanState<AnyTransition>;
 
         // non span types
         template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
         template<std::size_t N> using TokenTable = std::array<SpanState<TokenTransition>, N>;
         template<std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition>, N>;
         template<std::size_t N> using MultiTable = std::array<SpanState<AnyTransition>, N>;
-        // span state types
-        using SpanCharTableState = SpanState<CharTransition>;
-        using SpanTokenTableState = SpanState<TokenTransition>;
-        using SpanCallableTokenState = SpanState<CallableTransition>;
-        using SpanMultiTableState = SpanState<AnyTransition>;
+
+        // span types
+        using SpanCharTable = ISPA_STD::Span<SpanState<CharTransition>>;
+        using SpanTokenTable = ISPA_STD::Span<SpanState<TokenTransition>>;
+        using SpanCallableTokenTable = ISPA_STD::Span<SpanState<CallableTokenTransition>>;
+
 
 
         struct SpanMultiTable;
@@ -214,18 +228,7 @@ namespace Parser {
             std::array<T, MAX> transitions;
         };
         struct SpanMultiTable {
-            std::size_t else_goto;
-            std::size_t else_goto_accept;
             ISPA_STD::Span<SpanMultiTableState> states;
-        };
-        struct AnyTransition {
-            std::variant<
-                char,
-                Token_res (*)(const char*),
-                SpanMultiTable
-            > symbol;
-            std::size_t next;
-            std::size_t accept;
         };
 
     }
@@ -584,7 +587,7 @@ namespace Parser {
 		static DFA::MultiTableState<12> dfa_state_111;
 		static DFA::MultiTableState<16> dfa_state_112;
 		static DFA::MultiTableState<15> dfa_state_113;
-		static DFA::TokenTableState<2> dfa_state_114;
+		static DFA::MultiTableState<2> dfa_state_114;
 		static DFA::CharTableState<3> dfa_state_115;
 		static DFA::CharTableState<1> dfa_state_116;
 		static DFA::CharTableState<1> dfa_state_117;
@@ -772,7 +775,7 @@ namespace Parser {
 		static DFA::CharTableState<1> dfa_state_299;
 		static DFA::CharTableState<3> dfa_state_300;
 		static DFA::CharTableState<12> dfa_state_301;
-		static DFA::TokenTableState<2> dfa_state_302;
+		static DFA::MultiTableState<2> dfa_state_302;
 		static DFA::MultiTableState<25> dfa_state_303;
 		static DFA::CharTableState<4> dfa_state_304;
 		static DFA::CharTableState<10> dfa_state_305;
@@ -789,7 +792,7 @@ namespace Parser {
 		static DFA::CharTableState<7> dfa_state_316;
 		static DFA::CharTableState<1> dfa_state_317;
 		static DFA::CharTableState<8> dfa_state_318;
-		static DFA::TokenTableState<2> dfa_state_319;
+		static DFA::MultiTableState<2> dfa_state_319;
 		static DFA::MultiTableState<12> dfa_state_320;
 		static DFA::CharTableState<4> dfa_state_321;
 		static DFA::CharTableState<1> dfa_state_322;
@@ -799,7 +802,7 @@ namespace Parser {
 		static DFA::CharTableState<2> dfa_state_326;
 		static DFA::CharTableState<8> dfa_state_327;
 		static DFA::CharTableState<1> dfa_state_328;
-		static DFA::TokenTableState<2> dfa_state_329;
+		static DFA::MultiTableState<2> dfa_state_329;
 		static DFA::CharTableState<1> dfa_state_330;
 		static DFA::CharTableState<3> dfa_state_331;
 		static DFA::CharTableState<5> dfa_state_332;
@@ -856,9 +859,9 @@ namespace Parser {
 		static DFA::MultiTableState<15> dfa_state_383;
 		static DFA::CharTableState<7> dfa_state_384;
 		static DFA::MultiTableState<11> dfa_state_385;
-		static DFA::TokenTableState<2> dfa_state_386;
+		static DFA::MultiTableState<2> dfa_state_386;
 		static DFA::CharTableState<7> dfa_state_387;
-		static DFA::TokenTableState<2> dfa_state_388;
+		static DFA::MultiTableState<2> dfa_state_388;
 		static DFA::CharTableState<1> dfa_state_389;
 		static DFA::CharTableState<4> dfa_state_390;
 		static DFA::CharTableState<69> dfa_state_391;
@@ -873,46 +876,46 @@ namespace Parser {
 		static DFA::CharTableState<5> dfa_state_400;
 		static DFA::CharTableState<1> dfa_state_401;
 		static DFA::CharTableState<28> dfa_state_402;
-		static const ::Parser::DFA::CharTable<2, 6> dfa_table_0;
-		static const ::Parser::DFA::CharTable<15, 11> dfa_table_1;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_2;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_3;
-		static const ::Parser::DFA::MultiTable<10, 13> dfa_table_4;
-		static const ::Parser::DFA::MultiTable<16, 11> dfa_table_5;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_6;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_7;
-		static const ::Parser::DFA::MultiTable<10, 13> dfa_table_8;
-		static const ::Parser::DFA::MultiTable<24, 25> dfa_table_9;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_10;
-		static const ::Parser::DFA::MultiTable<24, 25> dfa_table_11;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_12;
-		static const ::Parser::DFA::MultiTable<10, 14> dfa_table_13;
-		static const ::Parser::DFA::CharTable<14, 28> dfa_table_14;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_15;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_16;
-		static const ::Parser::DFA::MultiTable<13, 12> dfa_table_17;
-		static const ::Parser::DFA::CharTable<13, 10> dfa_table_18;
-		static const ::Parser::DFA::CharTable<5, 10> dfa_table_19;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_20;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_21;
-		static const ::Parser::DFA::CharTable<2, 69> dfa_table_22;
-		static const ::Parser::DFA::MultiTable<10, 12> dfa_table_23;
-		static const ::Parser::DFA::MultiTable<28, 10> dfa_table_24;
-		static const ::Parser::DFA::MultiTable<11, 9> dfa_table_25;
-		static const ::Parser::DFA::MultiTable<63, 74> dfa_table_26;
-		static const ::Parser::DFA::MultiTable<59, 70> dfa_table_27;
-		static const ::Parser::DFA::CharTable<30, 69> dfa_table_28;
-		static const ::Parser::DFA::CharTable<21, 69> dfa_table_29;
-		static const ::Parser::DFA::CharTable<15, 69> dfa_table_30;
-		static const ::Parser::DFA::MultiTable<62, 73> dfa_table_31;
-		static const ::Parser::DFA::MultiTable<62, 74> dfa_table_32;
-		static const ::Parser::DFA::MultiTable<76, 71> dfa_table_33;
-		static const ::Parser::DFA::CharTable<17, 69> dfa_table_34;
-		static const ::Parser::DFA::CharTable<12, 69> dfa_table_35;
-		static const ::Parser::DFA::CharTable<14, 69> dfa_table_36;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_37;
-		static const ::Parser::DFA::MultiTable<15, 11> dfa_table_38;
-		static const ::Parser::DFA::CharTable<2, 7> dfa_table_39;
+		static const ::Parser::DFA::CharTable<2> dfa_table_0;
+		static const ::Parser::DFA::CharTable<15> dfa_table_1;
+		static const ::Parser::DFA::CharTable<2> dfa_table_2;
+		static const ::Parser::DFA::CharTable<2> dfa_table_3;
+		static const ::Parser::DFA::MultiTable<10> dfa_table_4;
+		static const ::Parser::DFA::MultiTable<16> dfa_table_5;
+		static const ::Parser::DFA::CharTable<2> dfa_table_6;
+		static const ::Parser::DFA::CharTable<2> dfa_table_7;
+		static const ::Parser::DFA::MultiTable<10> dfa_table_8;
+		static const ::Parser::DFA::MultiTable<24> dfa_table_9;
+		static const ::Parser::DFA::CharTable<2> dfa_table_10;
+		static const ::Parser::DFA::MultiTable<24> dfa_table_11;
+		static const ::Parser::DFA::CharTable<2> dfa_table_12;
+		static const ::Parser::DFA::MultiTable<10> dfa_table_13;
+		static const ::Parser::DFA::CharTable<14> dfa_table_14;
+		static const ::Parser::DFA::CharTable<2> dfa_table_15;
+		static const ::Parser::DFA::CharTable<2> dfa_table_16;
+		static const ::Parser::DFA::MultiTable<13> dfa_table_17;
+		static const ::Parser::DFA::CharTable<13> dfa_table_18;
+		static const ::Parser::DFA::CharTable<5> dfa_table_19;
+		static const ::Parser::DFA::CharTable<2> dfa_table_20;
+		static const ::Parser::DFA::CharTable<2> dfa_table_21;
+		static const ::Parser::DFA::CharTable<2> dfa_table_22;
+		static const ::Parser::DFA::MultiTable<10> dfa_table_23;
+		static const ::Parser::DFA::MultiTable<28> dfa_table_24;
+		static const ::Parser::DFA::MultiTable<11> dfa_table_25;
+		static const ::Parser::DFA::MultiTable<63> dfa_table_26;
+		static const ::Parser::DFA::MultiTable<59> dfa_table_27;
+		static const ::Parser::DFA::CharTable<30> dfa_table_28;
+		static const ::Parser::DFA::CharTable<21> dfa_table_29;
+		static const ::Parser::DFA::CharTable<15> dfa_table_30;
+		static const ::Parser::DFA::MultiTable<62> dfa_table_31;
+		static const ::Parser::DFA::MultiTable<62> dfa_table_32;
+		static const ::Parser::DFA::MultiTable<76> dfa_table_33;
+		static const ::Parser::DFA::CharTable<17> dfa_table_34;
+		static const ::Parser::DFA::CharTable<12> dfa_table_35;
+		static const ::Parser::DFA::CharTable<14> dfa_table_36;
+		static const ::Parser::DFA::CharTable<2> dfa_table_37;
+		static const ::Parser::DFA::MultiTable<15> dfa_table_38;
+		static const ::Parser::DFA::CharTable<2> dfa_table_39;
 		static const ::Parser::DFA::SpanCharTable dfa_span_0;
 		static const ::Parser::DFA::SpanCharTable dfa_span_1;
 		static const ::Parser::DFA::SpanCharTable dfa_span_2;
@@ -971,24 +974,24 @@ namespace Parser {
             static void printRule(std::ostream &os, const Rule &rule, std::size_t &indentLevel, bool addSpaceOnBegin);
             static void printRule(std::ostream &os, const std::any& data, std::size_t &indentLevel, bool addSpaceOnBegin);
 		private:
-			const DFA::TokenTable<36, 11> table_0;
-			const DFA::TokenTable<7, 3> table_1;
-			const DFA::TokenTable<4, 4> table_2;
-			const DFA::TokenTable<41, 11> table_3;
-			const DFA::TokenTable<8, 3> table_4;
-			const DFA::TokenTable<89, 19> table_5;
-			const DFA::TokenTable<6, 5> table_6;
-			const DFA::TokenTable<134, 20> table_7;
-			const DFA::TokenTable<33, 10> table_8;
-			const DFA::TokenTable<4, 3> table_9;
-			const DFA::TokenTable<4, 3> table_10;
-			const DFA::TokenTable<4, 3> table_11;
-			const DFA::TokenTable<4, 3> table_12;
-			const DFA::TokenTable<4, 4> table_13;
-			const DFA::TokenTable<4, 3> table_14;
-			const DFA::TokenTable<45, 11> table_15;
-			const DFA::TokenTable<37, 12> table_16;
-			const DFA::TokenTable<8, 3> table_17;
+			static const DFA::TokenTable<36> table_0;
+			static const DFA::TokenTable<7> table_1;
+			static const DFA::TokenTable<4> table_2;
+			static const DFA::TokenTable<41> table_3;
+			static const DFA::TokenTable<8> table_4;
+			static const DFA::TokenTable<89> table_5;
+			static const DFA::TokenTable<6> table_6;
+			static const DFA::TokenTable<134> table_7;
+			static const DFA::TokenTable<33> table_8;
+			static const DFA::TokenTable<4> table_9;
+			static const DFA::TokenTable<4> table_10;
+			static const DFA::TokenTable<4> table_11;
+			static const DFA::TokenTable<4> table_12;
+			static const DFA::TokenTable<4> table_13;
+			static const DFA::TokenTable<4> table_14;
+			static const DFA::TokenTable<45> table_15;
+			static const DFA::TokenTable<37> table_16;
+			static const DFA::TokenTable<8> table_17;
 			Rule_res getRule(Lexer::lazy_iterator&);
 			Rule_res getRule(Lexer::iterator&);
 		void parseFromTokens();

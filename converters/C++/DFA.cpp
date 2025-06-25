@@ -20,7 +20,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     std::size_t state_count = 0;
 
     for (const auto &state : states) {
-        table_out << "\tDFA::Span" << DFA::getStateTypeStr(state.transitions, isToken) << "{ "
+        table_out << "\tDFA::Span" << DFA::getStateTypeStr(state.transitions, dfa_compatible_table, isToken) << "{ "
                   << number_or_null(state.else_goto) << ", "
                   << number_or_null(state.else_goto_accept) << ", "
                   << (state.transitions.empty() ? "{}" : "&dfa_state_" + std::to_string(location_map.at({count, state_count})));

@@ -674,13 +674,13 @@ auto DFA::getSpanTypeStr(bool isToken) const -> std::string {
 auto DFA::getTransitionType(bool isToken) const -> std::string {
     switch (getType(isToken)) {
         case DFA::DfaType::Char:
-            return "CharTableTransition";
+            return "CharTransition";
         case DFA::DfaType::Token:
-            return "TokenTableTransition";
+            return "TokenTransition";
         case DFA::DfaType::CallableToken:
-            return "CallableTokenTableTransition";
+            return "CallableTokenTransition";
         case DFA::DfaType::Multi:
-            return "MultiTableTransition";
+            return "MultiTransition";
         default:
             throw Error("Undefined DFA type");;
     }
@@ -695,11 +695,11 @@ auto DFA::getTransitionType(const NFA::TransitionKey &transition_key, bool isTok
 auto DFA::getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string {
     switch (getTransitionType(transition_key, isToken)) {
         case DFA::DfaType::Char:
-            return "CharTableTransition";
+            return "CharTransition";
         case DFA::DfaType::Token:
-            return "TokenTableTransition";
+            return "TokenTransition";
         case DFA::DfaType::CallableToken:
-            return "CallableTokenTableTransition";
+            return "CallableTokenTransition";
         default:
             throw Error("Not allowed DFA transition type");
     }
@@ -707,7 +707,7 @@ auto DFA::getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool is
 auto DFA::getStateType(bool isToken) const -> std::string {
     return getTypeStr(isToken) + "State";
 }
-auto DFA::getStateType(const Transitions &transitions, bool isToken) -> DfaType {
+auto DFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
     DfaType dfa_type = DfaType::NONE;
     for (const auto &[symbol, next] : transitions) {
         if (std::holds_alternative<char>(symbol)) {
@@ -718,7 +718,8 @@ auto DFA::getStateType(const Transitions &transitions, bool isToken) -> DfaType 
                 break;
             }
         } else {
-            if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
+            auto &sym = std::get<stdu::vector<std::string>>(symbol);
+            if ((dfa_type == DfaType::Token || dfa_type == DfaType::NONE) && dct && !dct->contains(sym)) {
                 dfa_type = DfaType::Token;
             } else {
                 dfa_type = DfaType::Multi;
@@ -728,8 +729,8 @@ auto DFA::getStateType(const Transitions &transitions, bool isToken) -> DfaType 
     }
     return dfa_type;
 }
-auto DFA::getStateTypeStr(const Transitions &transitions, bool isToken) -> std::string {
-    switch (getStateType(transitions, isToken)) {
+auto DFA::getStateTypeStr(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> std::string {
+    switch (getStateType(transitions, dct, isToken)) {
         case DFA::DfaType::Char:
             return "CharTableState";
         case DFA::DfaType::Token:
