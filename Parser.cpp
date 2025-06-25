@@ -1,5 +1,6 @@
 #include "Parser.h"
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_0{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_0 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
@@ -7,44 +8,53 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { '}', 1, 0 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_1{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_1 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_2{ 	DFA::CharTableTransition { 'r', 21, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_2 = {
+	DFA::CharTableTransition { 'r', 21, 5 }
 };
-::Parser::DFA::MultiTableState<7> ::Parser::Lexer::dfa_state_3{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_3 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_4{ 	DFA::CharTableTransition { 'e', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_4 = {
+	DFA::CharTableTransition { 'e', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_5{ 	DFA::CharTableTransition { 'u', 4, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_5 = {
+	DFA::CharTableTransition { 'u', 4, 0 }
 };
-::Parser::DFA::MultiTableState<6> ::Parser::Lexer::dfa_state_6{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_6 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 }
 };
-::Parser::DFA::MultiTableState<4> ::Parser::Lexer::dfa_state_7{ 	DFA::CharTableTransition { '\f', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 5, 1 },
+::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_7 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
+	DFA::MultiTableTransition { dfa_span_0, 5, 1 },
 	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_8{ 	DFA::CharTableTransition { 'r', 1, 1 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_8 = {
+	DFA::CharTableTransition { 'r', 1, 1 }
 };
-::Parser::DFA::CharTableState<11> ::Parser::Lexer::dfa_state_9{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_9 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
@@ -56,12 +66,14 @@
 	DFA::CharTableTransition { '=', 5, 1 },
 	DFA::CharTableTransition { '<', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_10{ 	DFA::CharTableTransition { '\v', 3, 5 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_10 = {
+	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'b', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 60, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_11{ 	DFA::CharTableTransition { '|', 4, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_11 = {
+	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { ' ', 2, 0 },
@@ -70,28 +82,33 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_12{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_12 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 14, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 3, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 }
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_13{ 	DFA::CharTableTransition { '_', 6, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_13 = {
+	DFA::CharTableTransition { '_', 6, 0 },
 	DFA::CharTableTransition { 'h', 2, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_14{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_14 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
 	DFA::CharTableTransition { 'w', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_15{ 	DFA::CharTableTransition { 'a', 11, 1 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_15 = {
+	DFA::CharTableTransition { 'a', 11, 1 }
 };
-::Parser::DFA::MultiTableState<73> ::Parser::Lexer::dfa_state_16{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<73> Parser::Lexer::dfa_state_16 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -107,7 +124,7 @@
 	DFA::CharTableTransition { '1', 0, 0 },
 	DFA::CharTableTransition { 'Z', 0, 0 },
 	DFA::CharTableTransition { 'Y', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'J', 0, 0 },
 	DFA::CharTableTransition { 'w', 0, 0 },
 	DFA::CharTableTransition { 'S', 0, 0 },
@@ -152,7 +169,7 @@
 	DFA::CharTableTransition { 'j', 0, 0 },
 	DFA::CharTableTransition { '\n', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'i', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 },
 	DFA::CharTableTransition { 'h', 0, 0 },
 	DFA::CharTableTransition { 'g', 0, 0 },
 	DFA::CharTableTransition { 'f', 0, 0 },
@@ -165,7 +182,8 @@
 	DFA::CharTableTransition { '!', 1, 1 },
 	DFA::CharTableTransition { ';', 1, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_17{ 	DFA::CharTableTransition { '_', 6, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_17 = {
+	DFA::CharTableTransition { '_', 6, 0 },
 	DFA::CharTableTransition { 'a', 6, 0 },
 	DFA::CharTableTransition { 'b', 6, 0 },
 	DFA::CharTableTransition { 'c', 6, 0 },
@@ -235,32 +253,39 @@
 	DFA::CharTableTransition { 'P', 6, 0 },
 	DFA::CharTableTransition { '7', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_18{ 	DFA::CharTableTransition { 'i', 10, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_18 = {
+	DFA::CharTableTransition { 'i', 10, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_19{ 	DFA::CharTableTransition { 'i', 3, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_19 = {
+	DFA::CharTableTransition { 'i', 3, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_20{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_20 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'w', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_21{ 	DFA::CharTableTransition { 'h', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_21 = {
+	DFA::CharTableTransition { 'h', 2, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_22{ 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_22 = {
+	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 0, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_23{ 	DFA::CharTableTransition { 'c', 7, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_23 = {
+	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { 'm', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_24{ 	DFA::CharTableTransition { 'f', 6, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_24 = {
+	DFA::CharTableTransition { 'f', 6, 0 },
 	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { '_', 6, 0 },
 	DFA::CharTableTransition { 'c', 6, 0 },
@@ -330,7 +355,8 @@
 	DFA::CharTableTransition { 'P', 6, 0 },
 	DFA::CharTableTransition { '7', 6, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_25{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_25 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 5, ::Parser::DFA::null_state },
@@ -339,9 +365,11 @@
 	DFA::CharTableTransition { '\v', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_26{ 	DFA::CharTableTransition { 'u', 6, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_26 = {
+	DFA::CharTableTransition { 'u', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_27{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_27 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -350,7 +378,8 @@
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_28{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_28 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -358,30 +387,34 @@
 	DFA::CharTableTransition { '\t', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 0, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_29{ 	DFA::CharTableTransition { 'o', 7, 5 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_29 = {
+	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { 'v', 25, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_30{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_30 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_31{ 	DFA::CharTableTransition { 'i', 4, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_31 = {
+	DFA::CharTableTransition { 'i', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_32{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_32 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -389,10 +422,12 @@
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_33{ 	DFA::CharTableTransition { '_', 4, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_33 = {
+	DFA::CharTableTransition { '_', 4, 0 },
 	DFA::CharTableTransition { 's', 2, 0 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_34{ 	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_34 = {
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '\r', 5, 0 },
 	DFA::CharTableTransition { '=', 1, 0 },
 	DFA::CharTableTransition { '\t', 5, 0 },
@@ -401,16 +436,20 @@
 	DFA::CharTableTransition { '\v', 5, 0 },
 	DFA::CharTableTransition { '\f', 5, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_35{ 	DFA::CharTableTransition { ' ', 7, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_35 = {
+	DFA::CharTableTransition { ' ', 7, 0 },
 	DFA::CharTableTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_36{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_36 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 1, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_37{ 	DFA::CharTableTransition { 'e', 3, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_37 = {
+	DFA::CharTableTransition { 'e', 3, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_38{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_38 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -418,7 +457,8 @@
 	DFA::CharTableTransition { '\r', 0, 0 },
 	DFA::CharTableTransition { '(', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_39{ 	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_39 = {
+	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { '\n', 12, ::Parser::DFA::null_state },
@@ -426,11 +466,12 @@
 	DFA::CharTableTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_40{ 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_40 = {
+	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 43, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 3, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 45, ::Parser::DFA::null_state },
@@ -439,39 +480,46 @@
 	DFA::CharTableTransition { '\t', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_41{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_41 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 3, 0 },
 	DFA::CharTableTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_42{ 	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_42 = {
+	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_43{ 	DFA::CharTableTransition { 'e', 7, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_43 = {
+	DFA::CharTableTransition { 'e', 7, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_44{ 	DFA::CharTableTransition { 'l', 6, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_44 = {
+	DFA::CharTableTransition { 'l', 6, 0 }
 };
-::Parser::DFA::MultiTableState<9> ::Parser::Lexer::dfa_state_45{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_45 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 5, 2 },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 2, 5 },
 	DFA::CharTableTransition { 'v', 7, 1 },
 	DFA::CharTableTransition { 'o', 6, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_46{ 	DFA::CharTableTransition { 'l', 7, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_46 = {
+	DFA::CharTableTransition { 'l', 7, 0 }
 };
-::Parser::DFA::MultiTableState<9> ::Parser::Lexer::dfa_state_47{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_47 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
@@ -479,9 +527,10 @@
 	DFA::CharTableTransition { '\r', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { ']', 10, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 1, ::Parser::DFA::null_state }
+	DFA::MultiTableTransition { dfa_span_25, 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_48{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_48 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 3, 3 },
@@ -489,9 +538,11 @@
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_49{ 	DFA::CharTableTransition { 'u', 5, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_49 = {
+	DFA::CharTableTransition { 'u', 5, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_50{ 	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_50 = {
+	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 12, ::Parser::DFA::null_state },
@@ -500,7 +551,8 @@
 	DFA::CharTableTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_51{ 	DFA::CharTableTransition { 'b', 8, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_51 = {
+	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { 'e', 8, 0 },
@@ -570,27 +622,30 @@
 	DFA::CharTableTransition { 'P', 8, 0 },
 	DFA::CharTableTransition { '7', 8, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_52{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_52 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 31, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 33, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'o', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_53{ 	DFA::CharTableTransition { 'b', 70, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_53 = {
+	DFA::CharTableTransition { 'b', 70, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_54{ 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_54 = {
+	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 66, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 67, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 68, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -604,10 +659,11 @@
 	DFA::CharTableTransition { 'n', 71, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_55{ 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_55 = {
+	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 52, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 53, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 54, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -619,20 +675,23 @@
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 27, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_56{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_56 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_57{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_57 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 1, 0 },
 	DFA::CharTableTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 0, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_58{ 	DFA::CharTableTransition { 'u', 29, 4 },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_58 = {
+	DFA::CharTableTransition { 'u', 29, 4 },
 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -644,7 +703,8 @@
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 27, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_59{ 	DFA::CharTableTransition { 'b', 7, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_59 = {
+	DFA::CharTableTransition { 'b', 7, 0 },
 	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { 'f', 7, 0 },
@@ -714,21 +774,26 @@
 	DFA::CharTableTransition { 'P', 7, 0 },
 	DFA::CharTableTransition { '7', 7, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_60{ 	DFA::CharTableTransition { 'b', 48, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_60 = {
+	DFA::CharTableTransition { 'b', 48, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_61{ 	DFA::CharTableTransition { 'a', 37, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_61 = {
+	DFA::CharTableTransition { 'a', 37, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_62{ 	DFA::CharTableTransition { 'l', 1, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_62 = {
+	DFA::CharTableTransition { 'l', 1, 5 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_63{ 	DFA::CharTableTransition { 't', 30, 2 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_63 = {
+	DFA::CharTableTransition { 't', 30, 2 },
 	DFA::CharTableTransition { 'k', 6, 0 },
 	DFA::CharTableTransition { 'p', 5, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_64{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_64 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 40, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 27, 0 },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 41, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, 5 },
@@ -737,33 +802,38 @@
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<10> ::Parser::Lexer::dfa_state_65{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_65 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 24, 2 },
 	DFA::CharTableTransition { 'b', 27, 0 },
 	DFA::CharTableTransition { ' ', 21, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 26, 1 },
 	DFA::CharTableTransition { 'o', 25, 5 },
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_66{ 	DFA::CharTableTransition { 'l', 4, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_66 = {
+	DFA::CharTableTransition { 'l', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_67{ 	DFA::CharTableTransition { 'o', 33, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_67 = {
+	DFA::CharTableTransition { 'o', 33, 0 }
 };
-::Parser::DFA::MultiTableState<6> ::Parser::Lexer::dfa_state_68{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_68 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 0, 0 },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '[', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_69{ 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_69 = {
+	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 60, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 59, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ';', 1, 0 },
 	DFA::CharTableTransition { 'o', 61, ::Parser::DFA::null_state },
@@ -775,7 +845,8 @@
 	DFA::CharTableTransition { '\f', 21, 5 },
 	DFA::CharTableTransition { 'b', 27, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_70{ 	DFA::CharTableTransition { 'b', 12, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_70 = {
+	DFA::CharTableTransition { 'b', 12, 0 },
 	DFA::CharTableTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
 	DFA::CharTableTransition { 'e', 12, 0 },
@@ -845,13 +916,16 @@
 	DFA::CharTableTransition { 'P', 12, 0 },
 	DFA::CharTableTransition { '7', 12, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_71{ 	DFA::CharTableTransition { 'b', 31, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_71 = {
+	DFA::CharTableTransition { 'b', 31, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_72{ 	DFA::CharTableTransition { 'p', 14, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_72 = {
+	DFA::CharTableTransition { 'p', 14, 0 }
 };
-::Parser::DFA::MultiTableState<9> ::Parser::Lexer::dfa_state_73{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_73 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 12, ::Parser::DFA::null_state },
@@ -859,21 +933,24 @@
 	DFA::CharTableTransition { '|', 4, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_74{ 	DFA::CharTableTransition { 't', 30, 2 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_74 = {
+	DFA::CharTableTransition { 't', 30, 2 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_75{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_75 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 22, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_76{ 	DFA::CharTableTransition { 'v', 7, 1 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_76 = {
+	DFA::CharTableTransition { 'v', 7, 1 },
 	DFA::CharTableTransition { 'o', 6, 5 },
 	DFA::CharTableTransition { '\n', 2, 5 },
 	DFA::CharTableTransition { ' ', 2, 5 },
@@ -884,10 +961,11 @@
 	DFA::CharTableTransition { '\t', 2, 5 },
 	DFA::CharTableTransition { '\r', 2, 5 },
 	DFA::CharTableTransition { '\v', 2, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { '\f', 2, 5 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_77{ 	DFA::CharTableTransition { 'v', 26, 1 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_77 = {
+	DFA::CharTableTransition { 'v', 26, 1 },
 	DFA::CharTableTransition { 'o', 25, 5 },
 	DFA::CharTableTransition { '\n', 21, 5 },
 	DFA::CharTableTransition { ' ', 21, 5 },
@@ -898,34 +976,44 @@
 	DFA::CharTableTransition { '\t', 21, 5 },
 	DFA::CharTableTransition { '\r', 21, 5 },
 	DFA::CharTableTransition { '\v', 21, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { '\f', 21, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_78{ 	DFA::CharTableTransition { '>', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_78 = {
+	DFA::CharTableTransition { '>', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_79{ 	DFA::CharTableTransition { 'a', 53, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_79 = {
+	DFA::CharTableTransition { 'a', 53, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_80{ 	DFA::CharTableTransition { 'e', 12, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_80 = {
+	DFA::CharTableTransition { 'e', 12, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_81{ 	DFA::CharTableTransition { 'm', 18, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_81 = {
+	DFA::CharTableTransition { 'm', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_82{ 	DFA::CharTableTransition { 'r', 1, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_82 = {
+	DFA::CharTableTransition { 'r', 1, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_83{ 	DFA::CharTableTransition { 'e', 16, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_83 = {
+	DFA::CharTableTransition { 'e', 16, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_84{ 	DFA::CharTableTransition { 'e', 12, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_84 = {
+	DFA::CharTableTransition { 'e', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_85{ 	DFA::CharTableTransition { '\v', 2, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_85 = {
+	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_86{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_86 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_87{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_87 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
@@ -934,13 +1022,15 @@
 	DFA::CharTableTransition { '\v', 4, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_88{ 	DFA::CharTableTransition { 'x', 8, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_88 = {
+	DFA::CharTableTransition { 'x', 8, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_89{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_89 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 24, 2 },
 	DFA::CharTableTransition { 'b', 27, 0 },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 26, 1 },
 	DFA::CharTableTransition { '\r', 21, 5 },
@@ -949,27 +1039,30 @@
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 37, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_90{ 	DFA::CharTableTransition { 'l', 7, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_90 = {
+	DFA::CharTableTransition { 'l', 7, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<17> ::Parser::Lexer::dfa_state_91{ 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_91 = {
+	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 59, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 36, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_92{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_92 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 7, ::Parser::DFA::null_state },
@@ -977,31 +1070,33 @@
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { '<', 2, 5 }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_93{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_93 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { 'o', 48, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'v', 45, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 47, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_94{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_94 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 40, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 41, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
@@ -1010,60 +1105,65 @@
 	DFA::CharTableTransition { 'o', 42, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_95{ 	DFA::CharTableTransition { 'a', 46, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_95 = {
+	DFA::CharTableTransition { 'a', 46, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_96{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_96 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_97{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_97 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 31, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 33, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'o', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_98{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_98 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_99{ 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_99 = {
+	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 41, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 56, ::Parser::DFA::null_state },
@@ -1074,46 +1174,52 @@
 	DFA::CharTableTransition { '\n', 48, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_100{ 	DFA::CharTableTransition { 's', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_100 = {
+	DFA::CharTableTransition { 's', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_101{ 	DFA::CharTableTransition { 'j', 2, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_101 = {
+	DFA::CharTableTransition { 'j', 2, 5 }
 };
-::Parser::DFA::MultiTableState<18> ::Parser::Lexer::dfa_state_102{ 	DFA::CharTableTransition { 'r', 10, 5 },
+::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_102 = {
+	DFA::CharTableTransition { 'r', 10, 5 },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 36, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 58, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<7> ::Parser::Lexer::dfa_state_103{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_103 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '[', 1, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_104{ 	DFA::CharTableTransition { 'n', 5, 4 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_104 = {
+	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'o', 60, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_105{ 	DFA::CharTableTransition { ' ', 3, 5 },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_105 = {
+	DFA::CharTableTransition { ' ', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 16, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_0, 16, 1 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 's', 6, 2 },
@@ -1122,9 +1228,11 @@
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_106{ 	DFA::CharTableTransition { '|', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_106 = {
+	DFA::CharTableTransition { '|', 1, 0 }
 };
-::Parser::DFA::MultiTableState<74> ::Parser::Lexer::dfa_state_107{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_107 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -1141,8 +1249,8 @@
 	DFA::CharTableTransition { 'Z', 0, 0 },
 	DFA::CharTableTransition { 'J', 0, 0 },
 	DFA::CharTableTransition { 'w', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'Y', 0, 0 },
 	DFA::CharTableTransition { 'U', 0, 0 },
 	DFA::CharTableTransition { 'X', 0, 0 },
@@ -1178,7 +1286,7 @@
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 36, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 'm', 0, 0 },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'l', 0, 0 },
@@ -1194,19 +1302,22 @@
 	DFA::CharTableTransition { 'd', 0, 0 },
 	DFA::CharTableTransition { 'c', 0, 0 },
 	DFA::CharTableTransition { 'b', 58, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::CharTableTransition { 'a', 61, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '_', 0, 0 },
 	DFA::CharTableTransition { '|', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_108{ 	DFA::CharTableTransition { '\r', 16, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_108 = {
+	DFA::CharTableTransition { '\r', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 17, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_109{ 	DFA::CharTableTransition { 'b', 13, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_109 = {
+	DFA::CharTableTransition { 'b', 13, 5 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_110{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_110 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { 'i', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
@@ -1214,25 +1325,27 @@
 	DFA::CharTableTransition { '\t', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 6, 0 }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_111{ 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_111 = {
+	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_112{ 	DFA::CharTableTransition { 'r', 10, 5 },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_112 = {
+	DFA::CharTableTransition { 'r', 10, 5 },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 42, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 24, ::Parser::DFA::null_state },
@@ -1240,68 +1353,77 @@
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\n', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 58, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 },
 	DFA::CharTableTransition { 'n', 31, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_113{ 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_113 = {
+	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 42, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 59, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 },
 	DFA::CharTableTransition { 'n', 31, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_114{ 	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_114 = {
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_115{ 	DFA::CharTableTransition { '\r', 3, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_115 = {
+	DFA::CharTableTransition { '\r', 3, 0 },
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_116{ 	DFA::CharTableTransition { 'b', 54, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_116 = {
+	DFA::CharTableTransition { 'b', 54, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_117{ 	DFA::CharTableTransition { 'u', 29, 4 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_117 = {
+	DFA::CharTableTransition { 'u', 29, 4 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_118{ 	DFA::CharTableTransition { 'w', 15, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_118 = {
+	DFA::CharTableTransition { 'w', 15, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_119{ 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_119 = {
+	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 3, 5 },
 	DFA::CharTableTransition { 's', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 42, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 52, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 53, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 },
 	DFA::CharTableTransition { 'n', 55, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_120{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_120 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'a', 19, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_121{ 	DFA::CharTableTransition { '\t', 2, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_121 = {
+	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '\n', 2, 0 },
@@ -1309,16 +1431,19 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_122{ 	DFA::CharTableTransition { 'b', 38, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_122 = {
+	DFA::CharTableTransition { 'b', 38, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_123{ 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_123 = {
+	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'r', 10, 5 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_124{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_124 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 32, ::Parser::DFA::null_state },
@@ -1327,9 +1452,10 @@
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_125{ 	DFA::CharTableTransition { ' ', 6, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_125 = {
+	DFA::CharTableTransition { ' ', 6, 0 },
 	DFA::CharTableTransition { '\n', 6, 0 },
 	DFA::CharTableTransition { '\r', 6, 0 },
 	DFA::CharTableTransition { '\\', 27, ::Parser::DFA::null_state },
@@ -1338,73 +1464,87 @@
 	DFA::CharTableTransition { '\v', 6, 0 },
 	DFA::CharTableTransition { '\f', 6, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_126{ 	DFA::CharTableTransition { 'b', 25, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_126 = {
+	DFA::CharTableTransition { 'b', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 7, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_127{ 	DFA::CharTableTransition { 'u', 10, 4 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_127 = {
+	DFA::CharTableTransition { 'u', 10, 4 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_128{ 	DFA::CharTableTransition { 'b', 30, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_128 = {
+	DFA::CharTableTransition { 'b', 30, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_129{ 	DFA::CharTableTransition { 'l', 1, 5 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_129 = {
+	DFA::CharTableTransition { 'l', 1, 5 },
 	DFA::CharTableTransition { 'b', 12, 5 }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_130{ 	DFA::CharTableTransition { 's', 27, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_130 = {
+	DFA::CharTableTransition { 's', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 29, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_131{ 	DFA::CharTableTransition { 't', 12, 2 },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_131 = {
+	DFA::CharTableTransition { 't', 12, 2 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<9> ::Parser::Lexer::dfa_state_132{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_132 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 3, 5 },
 	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_133{ 	DFA::CharTableTransition { '_', 7, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_133 = {
+	DFA::CharTableTransition { '_', 7, 0 },
 	DFA::CharTableTransition { 'o', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_134{ 	DFA::CharTableTransition { 'r', 28, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_134 = {
+	DFA::CharTableTransition { 'r', 28, 5 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_135{ 	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_135 = {
+	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { 'm', 1, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_136{ 	DFA::CharTableTransition { 'b', 46, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_136 = {
+	DFA::CharTableTransition { 'b', 46, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_137{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_137 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 4, 0 },
 	DFA::CharTableTransition { 'n', 1, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_138{ 	DFA::CharTableTransition { 'p', 17, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_138 = {
+	DFA::CharTableTransition { 'p', 17, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_139{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_139 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { 'i', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
@@ -1413,38 +1553,46 @@
 	DFA::CharTableTransition { '\v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_140{ 	DFA::CharTableTransition { 'a', 9, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_140 = {
+	DFA::CharTableTransition { 'a', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_141{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_141 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { 'i', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_142{ 	DFA::CharTableTransition { 'o', 14, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_142 = {
+	DFA::CharTableTransition { 'o', 14, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_143{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_143 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'i', 14, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 6, 0 },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_144{ 	DFA::CharTableTransition { 'r', 19, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_144 = {
+	DFA::CharTableTransition { 'r', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_145{ 	DFA::CharTableTransition { 'f', 5, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_145 = {
+	DFA::CharTableTransition { 'f', 5, 0 },
 	DFA::CharTableTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_146{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_146 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { ' ', 6, 0 },
 	DFA::CharTableTransition { 'i', 7, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_147{ 	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_147 = {
+	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 21, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 43, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -1453,7 +1601,8 @@
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_148{ 	DFA::CharTableTransition { '_', 8, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_148 = {
+	DFA::CharTableTransition { '_', 8, 0 },
 	DFA::CharTableTransition { 'a', 8, 0 },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { 'c', 8, 0 },
@@ -1523,9 +1672,11 @@
 	DFA::CharTableTransition { 'P', 8, 0 },
 	DFA::CharTableTransition { '7', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_149{ 	DFA::CharTableTransition { 'a', 30, 1 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_149 = {
+	DFA::CharTableTransition { 'a', 30, 1 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_150{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_150 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -1533,7 +1684,8 @@
 	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_151{ 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_151 = {
+	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state },
@@ -1541,7 +1693,8 @@
 	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { '\f', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_152{ 	DFA::CharTableTransition { 'i', 7, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_152 = {
+	DFA::CharTableTransition { 'i', 7, 0 },
 	DFA::CharTableTransition { '\t', 6, 0 },
 	DFA::CharTableTransition { '\n', 6, 0 },
 	DFA::CharTableTransition { ' ', 6, 0 },
@@ -1549,12 +1702,15 @@
 	DFA::CharTableTransition { '\v', 6, 0 },
 	DFA::CharTableTransition { '\f', 6, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_153{ 	DFA::CharTableTransition { '\f', 2, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_153 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '[', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_154{ 	DFA::CharTableTransition { 'p', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_154 = {
+	DFA::CharTableTransition { 'p', 2, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_155{ 	DFA::CharTableTransition { 'f', 25, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_155 = {
+	DFA::CharTableTransition { 'f', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
 	DFA::CharTableTransition { '\v', 8, 0 },
 	DFA::CharTableTransition { '\n', 15, ::Parser::DFA::null_state },
@@ -1563,7 +1719,8 @@
 	DFA::CharTableTransition { 't', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 21, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_156{ 	DFA::CharTableTransition { 'b', 8, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_156 = {
+	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
 	DFA::CharTableTransition { 'h', 8, 0 },
@@ -1633,26 +1790,29 @@
 	DFA::CharTableTransition { 'P', 8, 0 },
 	DFA::CharTableTransition { '7', 8, 0 }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_157{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_157 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 45, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 47, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 48, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 50, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_158{ 	DFA::CharTableTransition { 'o', 19, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_158 = {
+	DFA::CharTableTransition { 'o', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_159{ 	DFA::CharTableTransition { 'f', 22, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_159 = {
+	DFA::CharTableTransition { 'f', 22, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
 	DFA::CharTableTransition { '\n', 15, ::Parser::DFA::null_state },
@@ -1660,18 +1820,22 @@
 	DFA::CharTableTransition { 't', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 8, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_160{ 	DFA::CharTableTransition { '_', 12, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_160 = {
+	DFA::CharTableTransition { '_', 12, 0 },
 	DFA::CharTableTransition { 'r', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_161{ 	DFA::CharTableTransition { '_', 12, 0 },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_161 = {
+	DFA::CharTableTransition { '_', 12, 0 },
 	DFA::CharTableTransition { 'r', 10, 0 },
 	DFA::CharTableTransition { 'a', 5, 0 },
 	DFA::CharTableTransition { 'n', 2, 0 },
 	DFA::CharTableTransition { 'o', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_162{ 	DFA::CharTableTransition { 'o', 32, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_162 = {
+	DFA::CharTableTransition { 'o', 32, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_163{ 	DFA::CharTableTransition { '_', 12, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_163 = {
+	DFA::CharTableTransition { '_', 12, 0 },
 	DFA::CharTableTransition { 'a', 12, 0 },
 	DFA::CharTableTransition { 'b', 12, 0 },
 	DFA::CharTableTransition { 'c', 12, 0 },
@@ -1741,9 +1905,11 @@
 	DFA::CharTableTransition { 'P', 12, 0 },
 	DFA::CharTableTransition { '7', 12, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_164{ 	DFA::CharTableTransition { 'r', 10, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_164 = {
+	DFA::CharTableTransition { 'r', 10, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_165{ 	DFA::CharTableTransition { 'f', 9, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_165 = {
+	DFA::CharTableTransition { 'f', 9, 0 },
 	DFA::CharTableTransition { '\t', 8, 0 },
 	DFA::CharTableTransition { '\n', 8, 0 },
 	DFA::CharTableTransition { ' ', 8, 0 },
@@ -1751,12 +1917,13 @@
 	DFA::CharTableTransition { '\v', 8, 0 },
 	DFA::CharTableTransition { '\f', 8, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_166{ 	DFA::CharTableTransition { 'r', 9, 5 },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_166 = {
+	DFA::CharTableTransition { 'r', 9, 5 },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 41, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 25, ::Parser::DFA::null_state },
@@ -1767,11 +1934,13 @@
 	DFA::CharTableTransition { '\n', 48, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 55, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_167{ 	DFA::CharTableTransition { ' ', 12, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_167 = {
+	DFA::CharTableTransition { ' ', 12, 0 },
 	DFA::CharTableTransition { 'f', 9, 0 },
 	DFA::CharTableTransition { 't', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_168{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_168 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 7, ::Parser::DFA::null_state },
@@ -1781,18 +1950,21 @@
 	DFA::CharTableTransition { '<', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '=', 1, 1 },
 	DFA::CharTableTransition { '>', 11, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_33, 12, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_33, 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ',', 3, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_169{ 	DFA::CharTableTransition { '\v', 21, 5 },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_169 = {
+	DFA::CharTableTransition { '\v', 21, 5 },
 	DFA::CharTableTransition { 'b', 43, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 74, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 23, 4 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_170{ 	DFA::CharTableTransition { 'b', 53, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_170 = {
+	DFA::CharTableTransition { 'b', 53, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<9> ::Parser::Lexer::dfa_state_171{ 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_171 = {
+	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '5', 2, 0 },
@@ -1802,11 +1974,12 @@
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_172{ 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_172 = {
+	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 49, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 41, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 50, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 52, ::Parser::DFA::null_state },
@@ -1817,28 +1990,31 @@
 	DFA::CharTableTransition { '\n', 2, 5 },
 	DFA::CharTableTransition { 'b', 8, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_173{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_173 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_174{ 	DFA::CharTableTransition { 'o', 7, 5 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_174 = {
+	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { 'v', 8, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'a', 22, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<28> ::Parser::Lexer::dfa_state_175{ 	DFA::CharTableTransition { 'f', 2, 0 },
+::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_175 = {
+	DFA::CharTableTransition { 'f', 2, 0 },
 	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 5, ::Parser::DFA::null_state },
@@ -1867,12 +2043,13 @@
 	DFA::CharTableTransition { 'F', 2, 0 },
 	DFA::CharTableTransition { 'D', 2, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_176{ 	DFA::CharTableTransition { 'u', 10, 4 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_176 = {
+	DFA::CharTableTransition { 'u', 10, 4 },
 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 25, ::Parser::DFA::null_state },
@@ -1881,9 +2058,11 @@
 	DFA::CharTableTransition { '\t', 2, 5 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_177{ 	DFA::CharTableTransition { 'o', 11, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_177 = {
+	DFA::CharTableTransition { 'o', 11, 0 }
 };
-::Parser::DFA::CharTableState<10> ::Parser::Lexer::dfa_state_178{ 	DFA::CharTableTransition { '>', 1, 0 },
+::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_178 = {
+	DFA::CharTableTransition { '>', 1, 0 },
 	DFA::CharTableTransition { '=', 3, 1 },
 	DFA::CharTableTransition { '<', 1, 5 },
 	DFA::CharTableTransition { '!', 3, 3 },
@@ -1894,152 +2073,171 @@
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_179{ 	DFA::CharTableTransition { 'b', 32, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_179 = {
+	DFA::CharTableTransition { 'b', 32, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_180{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_180 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { 'a', 48, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 49, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_181{ 	DFA::CharTableTransition { '5', 2, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_181 = {
+	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 5, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_182{ 	DFA::CharTableTransition { 's', 28, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_182 = {
+	DFA::CharTableTransition { 's', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 29, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 29, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 31, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_183{ 	DFA::CharTableTransition { 'r', 4, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_183 = {
+	DFA::CharTableTransition { 'r', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_184{ 	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_184 = {
+	DFA::CharTableTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 6, 5 },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_185{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_185 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { 'w', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_186{ 	DFA::CharTableTransition { '\v', 2, 5 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_186 = {
+	DFA::CharTableTransition { '\v', 2, 5 },
 	DFA::CharTableTransition { 'b', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 57, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 4, 4 }
 };
-::Parser::DFA::MultiTableState<10> ::Parser::Lexer::dfa_state_187{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_187 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 22, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 23, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 6, 5 },
 	DFA::CharTableTransition { '\r', 2, 5 },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 3, 5 }
 };
-::Parser::DFA::MultiTableState<10> ::Parser::Lexer::dfa_state_188{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_188 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 5, 2 },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 7, 1 },
 	DFA::CharTableTransition { 'o', 6, 5 },
 	DFA::CharTableTransition { '\r', 2, 5 },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_189{ 	DFA::CharTableTransition { '\f', 2, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_189 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_190{ 	DFA::CharTableTransition { 'h', 4, 0 },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_190 = {
+	DFA::CharTableTransition { 'h', 4, 0 },
 	DFA::CharTableTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_191{ 	DFA::CharTableTransition { ' ', 8, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_191 = {
+	DFA::CharTableTransition { ' ', 8, 0 },
 	DFA::CharTableTransition { 'f', 2, 0 },
 	DFA::CharTableTransition { 't', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_192{ 	DFA::CharTableTransition { 't', 11, 2 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_192 = {
+	DFA::CharTableTransition { 't', 11, 2 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_193{ 	DFA::CharTableTransition { 't', 12, 2 },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_193 = {
+	DFA::CharTableTransition { 't', 12, 2 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_194{ 	DFA::CharTableTransition { '\f', 0, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_194 = {
+	DFA::CharTableTransition { '\f', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<18> ::Parser::Lexer::dfa_state_195{ 	DFA::CharTableTransition { 'r', 10, 5 },
+::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_195 = {
+	DFA::CharTableTransition { 'r', 10, 5 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 62, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 58, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<17> ::Parser::Lexer::dfa_state_196{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_196 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 59, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 36, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 51, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<13> ::Parser::Lexer::dfa_state_197{ 	DFA::CharTableTransition { '0', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<13> Parser::Lexer::dfa_state_197 = {
+	DFA::CharTableTransition { '0', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
@@ -2053,11 +2251,14 @@
 	DFA::CharTableTransition { '7', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_198{ 	DFA::CharTableTransition { 'b', 49, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_198 = {
+	DFA::CharTableTransition { 'b', 49, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_199{ 	DFA::CharTableTransition { 'a', 39, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_199 = {
+	DFA::CharTableTransition { 'a', 39, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_200{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_200 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -2065,16 +2266,19 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { ',', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_201{ 	DFA::CharTableTransition { 'r', 3, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_201 = {
+	DFA::CharTableTransition { 'r', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_202{ 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_202 = {
+	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 2, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_203{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_203 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '?', 1, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
@@ -2082,15 +2286,16 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_204{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_204 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 41, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'v', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 40, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
@@ -2098,44 +2303,54 @@
 	DFA::CharTableTransition { 'o', 42, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_205{ 	DFA::CharTableTransition { 'b', 35, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_205 = {
+	DFA::CharTableTransition { 'b', 35, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_206{ 	DFA::CharTableTransition { 's', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_206 = {
+	DFA::CharTableTransition { 's', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_207{ 	DFA::CharTableTransition { 'a', 32, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_207 = {
+	DFA::CharTableTransition { 'a', 32, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_208{ 	DFA::CharTableTransition { 'e', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_208 = {
+	DFA::CharTableTransition { 'e', 1, 0 }
 };
-::Parser::DFA::MultiTableState<17> ::Parser::Lexer::dfa_state_209{ 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_209 = {
+	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '|', 2, 0 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 55, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 52, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 54, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 57, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_210{ 	DFA::CharTableTransition { 'a', 19, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_210 = {
+	DFA::CharTableTransition { 'a', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_211{ 	DFA::CharTableTransition { 'd', 20, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_211 = {
+	DFA::CharTableTransition { 'd', 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_212{ 	DFA::CharTableTransition { 'e', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_212 = {
+	DFA::CharTableTransition { 'e', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_213{ 	DFA::CharTableTransition { 'a', 26, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_213 = {
+	DFA::CharTableTransition { 'a', 26, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_214{ 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_214 = {
+	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -2149,7 +2364,8 @@
 	DFA::CharTableTransition { 'n', 49, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<71> ::Parser::Lexer::dfa_state_215{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<71> Parser::Lexer::dfa_state_215 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -2165,7 +2381,7 @@
 	DFA::CharTableTransition { '1', 0, 0 },
 	DFA::CharTableTransition { 'Z', 0, 0 },
 	DFA::CharTableTransition { 'Y', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'J', 0, 0 },
 	DFA::CharTableTransition { 'w', 0, 0 },
 	DFA::CharTableTransition { 'S', 0, 0 },
@@ -2221,28 +2437,31 @@
 	DFA::CharTableTransition { '_', 0, 0 },
 	DFA::CharTableTransition { ';', 1, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_216{ 	DFA::CharTableTransition { 't', 12, 2 },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_216 = {
+	DFA::CharTableTransition { 't', 12, 2 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_217{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_217 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { '<', 2, 5 },
 	DFA::CharTableTransition { ' ', 3, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_218{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_218 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -2251,46 +2470,50 @@
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '*', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '-', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '%', 1, 4 },
 	DFA::CharTableTransition { '/', 1, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_219{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_219 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 3, 5 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_220{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_220 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 's', 6, 2 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'a', 22, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_221{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_221 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '[', 1, 0 },
 	DFA::CharTableTransition { '\n', 2, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_222{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_222 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -2300,44 +2523,55 @@
 	DFA::CharTableTransition { '%', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '/', 1, 0 },
 	DFA::CharTableTransition { '-', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '*', 1, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_223{ 	DFA::CharTableTransition { 'b', 12, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_223 = {
+	DFA::CharTableTransition { 'b', 12, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_224{ 	DFA::CharTableTransition { 'l', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_224 = {
+	DFA::CharTableTransition { 'l', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_225{ 	DFA::CharTableTransition { 'j', 3, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_225 = {
+	DFA::CharTableTransition { 'j', 3, 5 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_226{ 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_226 = {
+	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\v', 5, 0 },
 	DFA::CharTableTransition { '0', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_227{ 	DFA::CharTableTransition { 'r', 9, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_227 = {
+	DFA::CharTableTransition { 'r', 9, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_228{ 	DFA::CharTableTransition { 'r', 3, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_228 = {
+	DFA::CharTableTransition { 'r', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_229{ 	DFA::CharTableTransition { 't', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_229 = {
+	DFA::CharTableTransition { 't', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_230{ 	DFA::CharTableTransition { 'm', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_230 = {
+	DFA::CharTableTransition { 'm', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_231{ 	DFA::CharTableTransition { 'u', 11, 4 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_231 = {
+	DFA::CharTableTransition { 'u', 11, 4 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_232{ 	DFA::CharTableTransition { 't', 11, 2 },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_232 = {
+	DFA::CharTableTransition { 't', 11, 2 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 's', 5, 2 },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 6, 5 },
 	DFA::CharTableTransition { '\r', 2, 5 },
 	DFA::CharTableTransition { 'n', 4, 4 },
 	DFA::CharTableTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<10> ::Parser::Lexer::dfa_state_233{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_233 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -2348,7 +2582,8 @@
 	DFA::CharTableTransition { '=', 1, 1 },
 	DFA::CharTableTransition { '>', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_234{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_234 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -2356,24 +2591,31 @@
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_235{ 	DFA::CharTableTransition { 'b', 62, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_235 = {
+	DFA::CharTableTransition { 'b', 62, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_236{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_236 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '=', 1, 0 },
 	DFA::CharTableTransition { '!', 3, 3 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_237{ 	DFA::CharTableTransition { '\f', 2, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_237 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_238{ 	DFA::CharTableTransition { 'o', 3, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_238 = {
+	DFA::CharTableTransition { 'o', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_239{ 	DFA::CharTableTransition { 'm', 1, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_239 = {
+	DFA::CharTableTransition { 'm', 1, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_240{ 	DFA::CharTableTransition { '\\', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_240 = {
+	DFA::CharTableTransition { '\\', 1, 0 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_241{ 	DFA::CallableTokenTableTransition { dfa_span_13, 2, 0 },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_241 = {
+	DFA::MultiTableTransition { dfa_span_13, 2, 0 },
 	DFA::CharTableTransition { '\r', 5, 0 },
 	DFA::CharTableTransition { '=', 2, 0 },
 	DFA::CharTableTransition { '\t', 5, 0 },
@@ -2382,42 +2624,48 @@
 	DFA::CharTableTransition { '\v', 5, 0 },
 	DFA::CharTableTransition { '\f', 5, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_242{ 	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_242 = {
+	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { 'm', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_243{ 	DFA::CharTableTransition { '_', 8, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_243 = {
+	DFA::CharTableTransition { '_', 8, 0 },
 	DFA::CharTableTransition { 'r', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_244{ 	DFA::CharTableTransition { ' ', 13, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_244 = {
+	DFA::CharTableTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'f', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
 	DFA::CharTableTransition { 't', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_245{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_245 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '=', 1, 0 },
 	DFA::CharTableTransition { '!', 3, 3 },
 	DFA::CharTableTransition { '\n', 2, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_246{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_246 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 'v', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { 'a', 4, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_247{ 	DFA::CharTableTransition { '\\', 3, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_247 = {
+	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\n', 2, 0 },
@@ -2426,12 +2674,15 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_248{ 	DFA::CharTableTransition { 'j', 21, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_248 = {
+	DFA::CharTableTransition { 'j', 21, 5 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_249{ 	DFA::CharTableTransition { '\\', 1, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_249 = {
+	DFA::CharTableTransition { '\\', 1, 0 },
 	DFA::CharTableTransition { '\'', 6, 0 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_250{ 	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_250 = {
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '=', 1, 0 },
 	DFA::CharTableTransition { '\t', 2, 0 },
@@ -2440,16 +2691,18 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_251{ 	DFA::CharTableTransition { '\r', 22, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_251 = {
+	DFA::CharTableTransition { '\r', 22, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 23, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<18> ::Parser::Lexer::dfa_state_252{ 	DFA::CharTableTransition { 'r', 28, 5 },
+::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_252 = {
+	DFA::CharTableTransition { 'r', 28, 5 },
 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'l', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 50, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
@@ -2464,20 +2717,24 @@
 	DFA::CharTableTransition { 'n', 49, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_253{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_253 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, 0 },
 	DFA::CharTableTransition { 'n', 1, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_254{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_254 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { ' ', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_255{ 	DFA::CharTableTransition { '+', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_255 = {
+	DFA::CharTableTransition { '+', 2, 0 }
 };
-::Parser::DFA::CharTableState<20> ::Parser::Lexer::dfa_state_256{ 	DFA::CharTableTransition { '+', 1, 0 },
+::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_256 = {
+	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '-', 1, 0 },
 	DFA::CharTableTransition { '3', 2, 0 },
 	DFA::CharTableTransition { '\v', 2, 0 },
@@ -2498,36 +2755,40 @@
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::MultiTableState<5> ::Parser::Lexer::dfa_state_257{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_257 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '&', 4, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 6, 1 },
+	DFA::MultiTableTransition { dfa_span_0, 6, 1 },
 	DFA::CharTableTransition { 'a', 3, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_258{ 	DFA::CharTableTransition { '\r', 19, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_258 = {
+	DFA::CharTableTransition { '\r', 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<17> ::Parser::Lexer::dfa_state_259{ 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_259 = {
+	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 52, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 54, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
 	DFA::CharTableTransition { 'o', 55, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 57, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_260{ 	DFA::CharTableTransition { 'c', 7, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_260 = {
+	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 10, ::Parser::DFA::null_state },
@@ -2535,13 +2796,16 @@
 	DFA::CharTableTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_261{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_261 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\v', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_262{ 	DFA::CharTableTransition { 'a', 12, 1 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_262 = {
+	DFA::CharTableTransition { 'a', 12, 1 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_263{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_263 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -2549,27 +2813,33 @@
 	DFA::CharTableTransition { '\t', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 0, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_264{ 	DFA::CharTableTransition { '_', 8, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_264 = {
+	DFA::CharTableTransition { '_', 8, 0 },
 	DFA::CharTableTransition { 'a', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_265{ 	DFA::CharTableTransition { 'f', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_265 = {
+	DFA::CharTableTransition { 'f', 5, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_266{ 	DFA::CharTableTransition { '\'', 6, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_266 = {
+	DFA::CharTableTransition { '\'', 6, 0 },
 	DFA::CharTableTransition { '\\', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_267{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_267 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_268{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_268 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_269{ 	DFA::CharTableTransition { 'v', 8, 1 },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_269 = {
+	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '\n', 3, 5 },
 	DFA::CharTableTransition { ' ', 3, 5 },
@@ -2580,26 +2850,32 @@
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '\r', 3, 5 },
 	DFA::CharTableTransition { '\v', 3, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTableTransition { '\f', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_270{ 	DFA::CharTableTransition { 'b', 43, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_270 = {
+	DFA::CharTableTransition { 'b', 43, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_271{ 	DFA::CharTableTransition { '0', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_271 = {
+	DFA::CharTableTransition { '0', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_272{ 	DFA::CharTableTransition { '_', 8, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_272 = {
+	DFA::CharTableTransition { '_', 8, 0 },
 	DFA::CharTableTransition { 'f', 5, 0 },
 	DFA::CharTableTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_273{ 	DFA::CharTableTransition { '+', 1, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_273 = {
+	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '3', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_274{ 	DFA::CharTableTransition { '\r', 25, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_274 = {
+	DFA::CharTableTransition { '\r', 25, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 26, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<74> ::Parser::Lexer::dfa_state_275{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_275 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -2616,8 +2892,8 @@
 	DFA::CharTableTransition { 'Z', 0, 0 },
 	DFA::CharTableTransition { 'J', 0, 0 },
 	DFA::CharTableTransition { 'w', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'Y', 0, 0 },
 	DFA::CharTableTransition { 'U', 0, 0 },
 	DFA::CharTableTransition { 'X', 0, 0 },
@@ -2653,7 +2929,7 @@
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 36, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 'm', 0, 0 },
 	DFA::CharTableTransition { '\t', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'l', 0, 0 },
@@ -2669,47 +2945,53 @@
 	DFA::CharTableTransition { 'd', 0, 0 },
 	DFA::CharTableTransition { 'c', 0, 0 },
 	DFA::CharTableTransition { 'b', 58, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::CharTableTransition { 'a', 61, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '_', 0, 0 },
 	DFA::CharTableTransition { '&', 2, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_276{ 	DFA::CharTableTransition { '\\', 4, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_276 = {
+	DFA::CharTableTransition { '\\', 4, 0 }
 };
-::Parser::DFA::MultiTableState<10> ::Parser::Lexer::dfa_state_277{ 	DFA::CharTableTransition { '\t', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_277 = {
+	DFA::CharTableTransition { '\t', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\\', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 24, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 1, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_25, 1, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\'', 6, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_278{ 	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_278 = {
+	DFA::CharTableTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_279{ 	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_279 = {
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '^', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_24, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_24, 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '[', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_280{ 	DFA::CharTableTransition { '\f', 2, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_280 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '!', 3, 3 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_281{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_281 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -2717,19 +2999,22 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { '$', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_282{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_282 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 3, 0 },
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_283{ 	DFA::CharTableTransition { 'f', 19, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_283 = {
+	DFA::CharTableTransition { 'f', 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
 	DFA::CharTableTransition { 't', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 8, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_284{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_284 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -2737,48 +3022,55 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { '@', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_285{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_285 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_286{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_286 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'w', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_287{ 	DFA::CharTableTransition { 'r', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_287 = {
+	DFA::CharTableTransition { 'r', 2, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_288{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_288 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 3, 3 },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::MultiTableState<16> ::Parser::Lexer::dfa_state_289{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_289 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { ' ', 17, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { 'v', 21, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { 's', 23, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '&', 2, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_290{ 	DFA::CharTableTransition { 'o', 15, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_290 = {
+	DFA::CharTableTransition { 'o', 15, 0 }
 };
-::Parser::DFA::CharTableState<9> ::Parser::Lexer::dfa_state_291{ 	DFA::CharTableTransition { 'f', 28, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_291 = {
+	DFA::CharTableTransition { 'f', 28, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 't', 29, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 24, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 12, 0 },
@@ -2788,32 +3080,42 @@
 	DFA::CharTableTransition { '\t', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_292{ 	DFA::CharTableTransition { 'r', 4, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_292 = {
+	DFA::CharTableTransition { 'r', 4, 0 }
 };
-::Parser::DFA::EmptyTableState<0> ::Parser::Lexer::dfa_state_293{ };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_294{ 	DFA::CharTableTransition { 'b', 56, ::Parser::DFA::null_state }
+::Parser::DFA::EmptyTableState Parser::Lexer::dfa_state_293 = {
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_295{ 	DFA::CharTableTransition { 'x', 1, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_294 = {
+	DFA::CharTableTransition { 'b', 56, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_296{ 	DFA::CharTableTransition { 'b', 1, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_295 = {
+	DFA::CharTableTransition { 'x', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_297{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_296 = {
+	DFA::CharTableTransition { 'b', 1, ::Parser::DFA::null_state }
+};
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_297 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '[', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_298{ 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_298 = {
+	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { '\n', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_299{ 	DFA::CharTableTransition { '=', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_299 = {
+	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_300{ 	DFA::CharTableTransition { '\f', 4, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_300 = {
+	DFA::CharTableTransition { '\f', 4, 0 },
 	DFA::CharTableTransition { 'n', 1, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<12> ::Parser::Lexer::dfa_state_301{ 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_301 = {
+	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '9', 2, 0 },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 8, ::Parser::DFA::null_state },
@@ -2826,10 +3128,12 @@
 	DFA::CharTableTransition { '\n', 14, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '8', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_302{ 	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 5, 1 }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_302 = {
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_0, 5, 1 }
 };
-::Parser::DFA::MultiTableState<25> ::Parser::Lexer::dfa_state_303{ 	DFA::CharTableTransition { '\t', 12, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_303 = {
+	DFA::CharTableTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 7, ::Parser::DFA::null_state },
@@ -2842,7 +3146,7 @@
 	DFA::CharTableTransition { '9', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '-', 18, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_13, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_13, 2, 0 },
 	DFA::CharTableTransition { '3', 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '1', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '2', 21, ::Parser::DFA::null_state },
@@ -2855,12 +3159,14 @@
 	DFA::CharTableTransition { '*', 2, 0 },
 	DFA::CharTableTransition { '=', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_304{ 	DFA::CharTableTransition { '\r', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_304 = {
+	DFA::CharTableTransition { '\r', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<10> ::Parser::Lexer::dfa_state_305{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_305 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 3, 3 },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -2871,7 +3177,8 @@
 	DFA::CharTableTransition { '>', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '<', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_306{ 	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_306 = {
+	DFA::CharTableTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 1, 3 },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -2880,11 +3187,13 @@
 	DFA::CharTableTransition { '\f', 3, 0 },
 	DFA::CharTableTransition { '<', 2, 5 }
 };
-::Parser::DFA::MultiTableState<2> ::Parser::Lexer::dfa_state_307{ 	DFA::CharTableTransition { '<', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_33, 3, 0 }
+::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_307 = {
+	DFA::CharTableTransition { '<', 2, 0 },
+	DFA::MultiTableTransition { dfa_span_33, 3, 0 }
 };
-::Parser::DFA::MultiTableState<10> ::Parser::Lexer::dfa_state_308{ 	DFA::CharTableTransition { '<', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_33, 3, 0 },
+::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_308 = {
+	DFA::CharTableTransition { '<', 2, 0 },
+	DFA::MultiTableTransition { dfa_span_33, 3, 0 },
 	DFA::CharTableTransition { '\t', 3, 0 },
 	DFA::CharTableTransition { ',', 3, 0 },
 	DFA::CharTableTransition { '>', 2, 0 },
@@ -2894,7 +3203,8 @@
 	DFA::CharTableTransition { '\v', 3, 0 },
 	DFA::CharTableTransition { '\f', 3, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_309{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_309 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { ')', 1, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
@@ -2902,7 +3212,8 @@
 	DFA::CharTableTransition { '\r', 0, 0 },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<9> ::Parser::Lexer::dfa_state_310{ 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_310 = {
+	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 12, ::Parser::DFA::null_state },
@@ -2912,10 +3223,12 @@
 	DFA::CharTableTransition { '\v', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '1', 0, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_311{ 	DFA::CharTableTransition { '\f', 2, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_311 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_312{ 	DFA::CharTableTransition { 'b', 4, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_312 = {
+	DFA::CharTableTransition { 'b', 4, 0 },
 	DFA::CharTableTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 4, 0 },
 	DFA::CharTableTransition { 'h', 4, 0 },
@@ -2985,7 +3298,8 @@
 	DFA::CharTableTransition { 'P', 4, 0 },
 	DFA::CharTableTransition { '7', 4, 0 }
 };
-::Parser::DFA::MultiTableState<70> ::Parser::Lexer::dfa_state_313{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::MultiTableState<70> Parser::Lexer::dfa_state_313 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -3001,7 +3315,7 @@
 	DFA::CharTableTransition { '1', 0, 0 },
 	DFA::CharTableTransition { 'Z', 0, 0 },
 	DFA::CharTableTransition { 'Y', 0, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'J', 0, 0 },
 	DFA::CharTableTransition { 'w', 0, 0 },
 	DFA::CharTableTransition { 'S', 0, 0 },
@@ -3056,7 +3370,8 @@
 	DFA::CharTableTransition { 'a', 58, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '_', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_314{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_314 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -3064,11 +3379,13 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { ';', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_315{ 	DFA::CharTableTransition { '9', 2, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_315 = {
+	DFA::CharTableTransition { '9', 2, 0 },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'x', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_316{ 	DFA::CharTableTransition { '\f', 9, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_316 = {
+	DFA::CharTableTransition { '\f', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '9', 8, ::Parser::DFA::null_state },
@@ -3076,9 +3393,11 @@
 	DFA::CharTableTransition { '\v', 5, 0 },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_317{ 	DFA::CharTableTransition { 'o', 13, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_317 = {
+	DFA::CharTableTransition { 'o', 13, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_318{ 	DFA::CharTableTransition { '\f', 8, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_318 = {
+	DFA::CharTableTransition { '\f', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '5', 2, 0 },
@@ -3087,14 +3406,16 @@
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_319{ 	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 20, ::Parser::DFA::null_state }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_319 = {
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_0, 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_320{ 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_320 = {
+	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'b', 8, 0 },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 35, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 36, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 38, ::Parser::DFA::null_state },
@@ -3103,14 +3424,17 @@
 	DFA::CharTableTransition { '\t', 2, 5 },
 	DFA::CharTableTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_321{ 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_321 = {
+	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { '\t', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_322{ 	DFA::CharTableTransition { 't', 12, 2 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_322 = {
+	DFA::CharTableTransition { 't', 12, 2 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_323{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_323 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 },
@@ -3118,7 +3442,8 @@
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_324{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_324 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -3126,11 +3451,12 @@
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 2, 0 }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_325{ 	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_325 = {
+	DFA::CharTableTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 35, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 37, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 39, ::Parser::DFA::null_state },
@@ -3138,12 +3464,14 @@
 	DFA::CharTableTransition { '\t', 3, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_36, 1, 0 }
+	DFA::MultiTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_326{ 	DFA::CharTableTransition { ' ', 2, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_326 = {
+	DFA::CharTableTransition { ' ', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_327{ 	DFA::CharTableTransition { '&', 4, 1 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_327 = {
+	DFA::CharTableTransition { '&', 4, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { ' ', 2, 0 },
@@ -3152,24 +3480,30 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_328{ 	DFA::CharTableTransition { '/', 1, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_328 = {
+	DFA::CharTableTransition { '/', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_329{ 	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 16, 1 }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_329 = {
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_0, 16, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_330{ 	DFA::CharTableTransition { '&', 1, 1 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_330 = {
+	DFA::CharTableTransition { '&', 1, 1 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_331{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_331 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_332{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_332 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_333{ 	DFA::CharTableTransition { 'h', 6, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_333 = {
+	DFA::CharTableTransition { 'h', 6, 0 },
 	DFA::CharTableTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -3178,7 +3512,8 @@
 	DFA::CharTableTransition { '\v', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_334{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_334 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
@@ -3186,12 +3521,14 @@
 	DFA::CharTableTransition { 'n', 1, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_335{ 	DFA::CharTableTransition { 'r', 10, 0 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_335 = {
+	DFA::CharTableTransition { 'r', 10, 0 },
 	DFA::CharTableTransition { 'a', 5, 0 },
 	DFA::CharTableTransition { 'n', 2, 0 },
 	DFA::CharTableTransition { 'o', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_336{ 	DFA::CharTableTransition { '/', 1, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_336 = {
+	DFA::CharTableTransition { '/', 1, 0 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '\n', 2, 0 },
@@ -3199,13 +3536,15 @@
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { '\f', 2, 0 }
 };
-::Parser::DFA::MultiTableState<5> ::Parser::Lexer::dfa_state_337{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_337 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { 'o', 3, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 5, 1 },
+	DFA::MultiTableTransition { dfa_span_0, 5, 1 },
 	DFA::CharTableTransition { '|', 4, 0 }
 };
-::Parser::DFA::MultiTableState<14> ::Parser::Lexer::dfa_state_338{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_338 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -3215,16 +3554,18 @@
 	DFA::CharTableTransition { '/', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '%', 1, 4 },
 	DFA::CharTableTransition { '-', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '*', 1, 0 },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_339{ 	DFA::CharTableTransition { '\r', 5, 0 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_339 = {
+	DFA::CharTableTransition { '\r', 5, 0 },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '0', 2, 0 }
 };
-::Parser::DFA::CharTableState<10> ::Parser::Lexer::dfa_state_340{ 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_340 = {
+	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '9', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 9, ::Parser::DFA::null_state },
@@ -3235,14 +3576,15 @@
 	DFA::CharTableTransition { ' ', 5, 0 },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_341{ 	DFA::CharTableTransition { 't', 30, 2 },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_341 = {
+	DFA::CharTableTransition { 't', 30, 2 },
 	DFA::CharTableTransition { 'p', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'k', 6, 0 },
 	DFA::CharTableTransition { 'b', 27, 0 },
 	DFA::CharTableTransition { 's', 24, 2 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, 5 },
@@ -3251,7 +3593,8 @@
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<25> ::Parser::Lexer::dfa_state_342{ 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_342 = {
+	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '8', 12, ::Parser::DFA::null_state },
@@ -3264,7 +3607,7 @@
 	DFA::CharTableTransition { '7', 16, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '-', 18, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_13, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTableTransition { '3', 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '1', 20, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '2', 21, ::Parser::DFA::null_state },
@@ -3277,14 +3620,17 @@
 	DFA::CharTableTransition { '*', 1, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_343{ 	DFA::CharTableTransition { '\r', 8, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_343 = {
+	DFA::CharTableTransition { '\r', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ']', 1, 1 },
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '\\', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_344{ 	DFA::CharTableTransition { 'r', 10, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_344 = {
+	DFA::CharTableTransition { 'r', 10, 5 }
 };
-::Parser::DFA::CharTableState<9> ::Parser::Lexer::dfa_state_345{ 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_345 = {
+	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 5, 0 },
 	DFA::CharTableTransition { '5', 10, ::Parser::DFA::null_state },
@@ -3294,7 +3640,8 @@
 	DFA::CharTableTransition { '8', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_346{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_346 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -3302,25 +3649,30 @@
 	DFA::CharTableTransition { '\r', 0, 0 },
 	DFA::CharTableTransition { '{', 1, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_347{ 	DFA::CharTableTransition { '\r', 0, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_347 = {
+	DFA::CharTableTransition { '\r', 0, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '5', 2, 0 },
 	DFA::CharTableTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<6> ::Parser::Lexer::dfa_state_348{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_348 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 4, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_349{ 	DFA::CharTableTransition { 'b', 39, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_349 = {
+	DFA::CharTableTransition { 'b', 39, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_350{ 	DFA::CharTableTransition { '-', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_350 = {
+	DFA::CharTableTransition { '-', 1, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_351{ 	DFA::CharTableTransition { '7', 0, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_351 = {
+	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'P', 0, 0 },
 	DFA::CharTableTransition { '9', 0, 0 },
 	DFA::CharTableTransition { 'R', 0, 0 },
@@ -3390,7 +3742,8 @@
 	DFA::CharTableTransition { 'a', 0, 0 },
 	DFA::CharTableTransition { '_', 0, 0 }
 };
-::Parser::DFA::CharTableState<11> ::Parser::Lexer::dfa_state_352{ 	DFA::CharTableTransition { '5', 10, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_352 = {
+	DFA::CharTableTransition { '5', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 6, ::Parser::DFA::null_state },
@@ -3402,19 +3755,24 @@
 	DFA::CharTableTransition { '8', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> ::Parser::Lexer::dfa_state_353{ 	DFA::CharTableTransition { '+', 2, 0 },
+::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_353 = {
+	DFA::CharTableTransition { '+', 2, 0 },
 	DFA::CharTableTransition { '3', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_354{ 	DFA::CharTableTransition { 'a', 18, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_354 = {
+	DFA::CharTableTransition { 'a', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_355{ 	DFA::CharTableTransition { 'r', 2, 5 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_355 = {
+	DFA::CharTableTransition { 'r', 2, 5 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_356{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_356 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\n', 2, 0 },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_357{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_357 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '!', 3, 3 },
 	DFA::CharTableTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -3423,16 +3781,20 @@
 	DFA::CharTableTransition { '\t', 2, 0 },
 	DFA::CharTableTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_358{ 	DFA::CharTableTransition { 'a', 4, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_358 = {
+	DFA::CharTableTransition { 'a', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_359{ 	DFA::CharTableTransition { 'd', 3, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_359 = {
+	DFA::CharTableTransition { 'd', 3, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_360{ 	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_360 = {
+	DFA::CharTableTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\\', 3, 0 },
 	DFA::CharTableTransition { '\v', 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<11> ::Parser::Lexer::dfa_state_361{ 	DFA::CharTableTransition { '/', 2, 0 },
+::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_361 = {
+	DFA::CharTableTransition { '/', 2, 0 },
 	DFA::CharTableTransition { '%', 2, 4 },
 	DFA::CharTableTransition { '-', 2, 0 },
 	DFA::CharTableTransition { '*', 2, 0 },
@@ -3444,7 +3806,8 @@
 	DFA::CharTableTransition { '\r', 4, 0 },
 	DFA::CharTableTransition { '\v', 4, 0 }
 };
-::Parser::DFA::CharTableState<20> ::Parser::Lexer::dfa_state_362{ 	DFA::CharTableTransition { '+', 2, 0 },
+::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_362 = {
+	DFA::CharTableTransition { '+', 2, 0 },
 	DFA::CharTableTransition { '-', 2, 0 },
 	DFA::CharTableTransition { '3', 3, 0 },
 	DFA::CharTableTransition { '\v', 3, 0 },
@@ -3465,7 +3828,8 @@
 	DFA::CharTableTransition { '\r', 3, 0 },
 	DFA::CharTableTransition { '\f', 3, 0 }
 };
-::Parser::DFA::CharTableState<10> ::Parser::Lexer::dfa_state_363{ 	DFA::CharTableTransition { '>', 2, 0 },
+::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_363 = {
+	DFA::CharTableTransition { '>', 2, 0 },
 	DFA::CharTableTransition { '=', 5, 1 },
 	DFA::CharTableTransition { '<', 2, 5 },
 	DFA::CharTableTransition { '!', 5, 3 },
@@ -3476,20 +3840,22 @@
 	DFA::CharTableTransition { '\r', 4, 0 },
 	DFA::CharTableTransition { '\f', 4, 0 }
 };
-::Parser::DFA::MultiTableState<12> ::Parser::Lexer::dfa_state_364{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_364 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '[', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '^', 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_24, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_24, 2, 0 },
 	DFA::CharTableTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<11> ::Parser::Lexer::dfa_state_365{ 	DFA::CharTableTransition { '/', 1, 0 },
+::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_365 = {
+	DFA::CharTableTransition { '/', 1, 0 },
 	DFA::CharTableTransition { '%', 1, 4 },
 	DFA::CharTableTransition { '-', 1, 0 },
 	DFA::CharTableTransition { '*', 1, 0 },
@@ -3501,21 +3867,25 @@
 	DFA::CharTableTransition { '\r', 3, 0 },
 	DFA::CharTableTransition { '\v', 3, 0 }
 };
-::Parser::DFA::MultiTableState<4> ::Parser::Lexer::dfa_state_366{ 	DFA::CharTableTransition { '\f', 2, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 6, 1 },
+::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_366 = {
+	DFA::CharTableTransition { '\f', 2, 0 },
+	DFA::MultiTableTransition { dfa_span_0, 6, 1 },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 4, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_367{ 	DFA::CharTableTransition { '=', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_367 = {
+	DFA::CharTableTransition { '=', 2, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_368{ 	DFA::CharTableTransition { '0', 1, 0 },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_368 = {
+	DFA::CharTableTransition { '0', 1, 0 },
 	DFA::CharTableTransition { '9', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 5, 0 },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<8> ::Parser::Lexer::dfa_state_369{ 	DFA::CharTableTransition { 'c', 7, 0 },
+::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_369 = {
+	DFA::CharTableTransition { 'c', 7, 0 },
 	DFA::CharTableTransition { '\v', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 10, ::Parser::DFA::null_state },
@@ -3524,7 +3894,8 @@
 	DFA::CharTableTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<12> ::Parser::Lexer::dfa_state_370{ 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_370 = {
+	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '8', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '0', 11, ::Parser::DFA::null_state },
@@ -3537,9 +3908,10 @@
 	DFA::CharTableTransition { '7', 1, 0 },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::MultiTableState<9> ::Parser::Lexer::dfa_state_371{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_371 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 13, ::Parser::DFA::null_state },
@@ -3547,23 +3919,26 @@
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 4, 1 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_372{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_372 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 4, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_373{ 	DFA::CharTableTransition { 'c', 13, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_373 = {
+	DFA::CharTableTransition { 'c', 13, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_374{ 	DFA::CharTableTransition { 's', 45, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_374 = {
+	DFA::CharTableTransition { 's', 45, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 21, 5 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 27, 0 },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 46, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 39, ::Parser::DFA::null_state },
@@ -3572,36 +3947,40 @@
 	DFA::CharTableTransition { 'n', 23, 4 },
 	DFA::CharTableTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_375{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_375 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 13, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 14, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 15, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 }
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 }
 };
-::Parser::DFA::MultiTableState<8> ::Parser::Lexer::dfa_state_376{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_376 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 6, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_25, 2, 0 },
+	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTableTransition { '[', 1, 0 },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_377{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_377 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { 'a', 40, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 41, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> ::Parser::Lexer::dfa_state_378{ 	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_378 = {
+	DFA::CharTableTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 42, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\f', 2, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 43, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 43, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 45, ::Parser::DFA::null_state },
@@ -3611,19 +3990,23 @@
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 8, 0 }
 };
-::Parser::DFA::MultiTableState<7> ::Parser::Lexer::dfa_state_379{ 	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_379 = {
+	DFA::CharTableTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 8, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { 'a', 3, 0 },
 	DFA::CharTableTransition { '&', 4, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_380{ 	DFA::CharTableTransition { 's', 6, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_380 = {
+	DFA::CharTableTransition { 's', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_381{ 	DFA::CharTableTransition { 'o', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_381 = {
+	DFA::CharTableTransition { 'o', 2, 0 }
 };
-::Parser::DFA::CharTableState<9> ::Parser::Lexer::dfa_state_382{ 	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_382 = {
+	DFA::CharTableTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 15, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'c', 8, 0 },
@@ -3633,10 +4016,11 @@
 	DFA::CharTableTransition { '\t', 14, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 0, 0 }
 };
-::Parser::DFA::MultiTableState<15> ::Parser::Lexer::dfa_state_383{ 	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
+::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_383 = {
+	DFA::CharTableTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 's', 38, ::Parser::DFA::null_state },
-	DFA::CallableTokenTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
+	DFA::MultiTableTransition { dfa_span_17, 35, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'i', 4, ::Parser::DFA::null_state },
@@ -3649,7 +4033,8 @@
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'b', 27, 0 }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_384{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_384 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { '\r', 0, 0 },
@@ -3657,10 +4042,11 @@
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '.', 1, 0 }
 };
-::Parser::DFA::MultiTableState<11> ::Parser::Lexer::dfa_state_385{ 	DFA::CharTableTransition { ' ', 3, 5 },
+::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_385 = {
+	DFA::CharTableTransition { ' ', 3, 5 },
 	DFA::CharTableTransition { 'b', 9, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_17, 1, 5 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 16, 1 },
+	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
+	DFA::MultiTableTransition { dfa_span_0, 16, 1 },
 	DFA::CharTableTransition { '7', 0, 0 },
 	DFA::CharTableTransition { 'v', 8, 1 },
 	DFA::CharTableTransition { 's', 6, 2 },
@@ -3669,10 +4055,12 @@
 	DFA::CharTableTransition { 'o', 7, 5 },
 	DFA::CharTableTransition { '&', 2, 1 }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_386{ 	DFA::CallableTokenTableTransition { dfa_span_38, 1, 0 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 10, ::Parser::DFA::null_state }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_386 = {
+	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
+	DFA::MultiTableTransition { dfa_span_0, 10, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> ::Parser::Lexer::dfa_state_387{ 	DFA::CharTableTransition { '\f', 0, 0 },
+::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_387 = {
+	DFA::CharTableTransition { '\f', 0, 0 },
 	DFA::CharTableTransition { '\v', 0, 0 },
 	DFA::CharTableTransition { '\n', 0, 0 },
 	DFA::CharTableTransition { ' ', 0, 0 },
@@ -3680,17 +4068,21 @@
 	DFA::CharTableTransition { '\t', 0, 0 },
 	DFA::CharTableTransition { ':', 1, 0 }
 };
-::Parser::DFA::TokenTableState<2> ::Parser::Lexer::dfa_state_388{ 	DFA::CallableTokenTableTransition { dfa_span_26, 1, 1 },
-	DFA::CallableTokenTableTransition { dfa_span_0, 6, 1 }
+::Parser::DFA::TokenTableState<2> Parser::Lexer::dfa_state_388 = {
+	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
+	DFA::MultiTableTransition { dfa_span_0, 6, 1 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_389{ 	DFA::CharTableTransition { 'o', 11, ::Parser::DFA::null_state }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_389 = {
+	DFA::CharTableTransition { 'o', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_390{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_390 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 2, 0 },
 	DFA::CharTableTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_391{ 	DFA::CharTableTransition { '_', 7, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_391 = {
+	DFA::CharTableTransition { '_', 7, 0 },
 	DFA::CharTableTransition { 'a', 7, 0 },
 	DFA::CharTableTransition { 'b', 7, 0 },
 	DFA::CharTableTransition { 'c', 7, 0 },
@@ -3760,23 +4152,29 @@
 	DFA::CharTableTransition { 'P', 7, 0 },
 	DFA::CharTableTransition { '7', 7, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_392{ 	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_392 = {
+	DFA::CharTableTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 5, 0 },
 	DFA::CharTableTransition { '9', 1, 0 },
 	DFA::CharTableTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<4> ::Parser::Lexer::dfa_state_393{ 	DFA::CharTableTransition { 'h', 8, 0 },
+::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_393 = {
+	DFA::CharTableTransition { 'h', 8, 0 },
 	DFA::CharTableTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'i', 12, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\n', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_394{ 	DFA::CharTableTransition { 'e', 6, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_394 = {
+	DFA::CharTableTransition { 'e', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_395{ 	DFA::CharTableTransition { 'd', 1, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_395 = {
+	DFA::CharTableTransition { 'd', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_396{ 	DFA::CharTableTransition { 'n', 5, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_396 = {
+	DFA::CharTableTransition { 'n', 5, 0 }
 };
-::Parser::DFA::CharTableState<69> ::Parser::Lexer::dfa_state_397{ 	DFA::CharTableTransition { '_', 4, 0 },
+::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_397 = {
+	DFA::CharTableTransition { '_', 4, 0 },
 	DFA::CharTableTransition { 'a', 4, 0 },
 	DFA::CharTableTransition { 'b', 4, 0 },
 	DFA::CharTableTransition { 'c', 4, 0 },
@@ -3846,26 +4244,31 @@
 	DFA::CharTableTransition { 'P', 4, 0 },
 	DFA::CharTableTransition { '7', 4, 0 }
 };
-::Parser::DFA::CharTableState<6> ::Parser::Lexer::dfa_state_398{ 	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_398 = {
+	DFA::CharTableTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 4, 0 },
 	DFA::CharTableTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'n', 1, 0 },
 	DFA::CharTableTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<3> ::Parser::Lexer::dfa_state_399{ 	DFA::CharTableTransition { 'u', 11, 4 },
+::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_399 = {
+	DFA::CharTableTransition { 'u', 11, 4 },
 	DFA::CharTableTransition { 'a', 56, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { 'o', 57, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> ::Parser::Lexer::dfa_state_400{ 	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_400 = {
+	DFA::CharTableTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { ' ', 2, 0 },
 	DFA::CharTableTransition { '+', 1, 0 },
 	DFA::CharTableTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> ::Parser::Lexer::dfa_state_401{ 	DFA::CharTableTransition { 't', 2, 0 }
+::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_401 = {
+	DFA::CharTableTransition { 't', 2, 0 }
 };
-::Parser::DFA::CharTableState<28> ::Parser::Lexer::dfa_state_402{ 	DFA::CharTableTransition { '\f', 2, ::Parser::DFA::null_state },
+::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_402 = {
+	DFA::CharTableTransition { '\f', 2, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { '9', 2, 0 },
 	DFA::CharTableTransition { 'E', 2, 0 },
 	DFA::CharTableTransition { '0', 13, ::Parser::DFA::null_state },

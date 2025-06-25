@@ -28,8 +28,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
         state_count++;
     }
 
-    out << "const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(isToken)
-        << " "
+    out << "const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(isToken) << " "
         << namespace_name << "::" << prefix << "::" << name << '_' << count
         << " = {\n" << table_out.str() << "};\n";
 }

@@ -118,72 +118,70 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
     out << R"(
     namespace DFA {
         constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
+        struct AnyTransition;
+        struct SpanMultiTable;
+        struct EmptyState;
+        template<typename Key> struct Transition;
+        template<typename T>   struct SpanState;
+        template<std::size_t MAX, typename T> struct State;
+        struct SpanMultiTable;
+
+        using CharTransition = Transition<char>;
+        using TokenTransition = Transition<Tokens>;
+        using CallableTransition = Transition<Token_res (*)(const char*)>;
+
+        // state types
+        template<std::size_t N> using CharTableState = State<N, CharTransition>;
+        template<std::size_t N> using TokenTableState = State<N, TokenTransition>;
+        template<std::size_t N> using CallableTokenState = State<N, CallableTransition>;
+        template<std::size_t N> using MultiTableState = State<N, AnyTransition>;
+        using EmptyTableState = EmptyState;
+
+        // non span types
+        template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
+        template<std::size_t N> using TokenTable = std::array<SpanState<TokenTransition>, N>;
+        template<std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition>, N>;
+        template<std::size_t N> using MultiTable = std::array<SpanState<AnyTransition>, N>;
+        // span state types
+        using SpanCharTableState = SpanState<CharTransition>;
+        using SpanTokenTableState = SpanState<TokenTransition>;
+        using SpanCallableTokenState = SpanState<CallableTransition>;
+        using SpanMultiTableState = SpanState<AnyTransition>;
+
+
+        struct SpanMultiTable;
+        struct EmptyState {};
         template<typename Key>
         struct Transition {
             Key symbol;
             std::size_t next;
             std::size_t accept;
         };
-
-        template<std::size_t MAX, typename Key>
-        struct State {
-            std::size_t else_goto;
-            std::size_t else_goto_accept;
-            std::array<Transition<Key>, MAX> transitions;
-        };
-        struct EmptyState {};
-        struct SpanMultiTable;
-
-        template<typename Key>
+        template<typename T>
         struct SpanState {
             std::size_t else_goto;
             std::size_t else_goto_accept;
-            ISPA_STD::Span<Transition<Key>> transitions;
+            ISPA_STD::Span<T> transitions;
         };
-
-        using MultiKey = std::variant<
-            char,
-            Token_res (*)(const char*),
-            const ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>,     // SpanCallableTokenTable
-            const ISPA_STD::Span<SpanState<char>>,                            // SpanCharTable
-            SpanMultiTable                                                  // Recursive wrapped
-        >;
-        // transition types
-        using CharTableTransition = Transition<char>;
-        using TokenTableTransition = Transition<Tokens>;
-        using CallableTokenTableTransition = Transition<Token_res (*) (const char*)>;
-        using MultiTableTransition = Transition<MultiKey>;
-
-        // state types
-        template<std::size_t N> using CharTableState = State<N, char>;
-        template<std::size_t N> using TokenTableState = State<N, Tokens>;
-        template<std::size_t N> using CallableTokenState = State<N, Token_res (*) (const char*)>;
-        template<std::size_t N> using MultiTableState = State<N, MultiKey>;
-                                using EmptyTableState = EmptyState;
-
-        // span state types
-        using SpanCharTableState = SpanState<char>;
-        using SpanTokenTableState = SpanState<Tokens>;
-        using SpanCallableTokenState = SpanState<Token_res (*) (const char*)>;
-        using SpanMultiTableState = SpanState<MultiKey>;
-        using SpanEmptyTableState = ISPA_STD::Span<EmptyState>;
-        // span types
-        using SpanTokenTable = ISPA_STD::Span<SpanState<Tokens>>;
-        using SpanCallableTokenTable = ISPA_STD::Span<SpanState<Token_res (*) (const char*)>>;
-        using SpanCharTable = ISPA_STD::Span<SpanState<char>>;
-        using SpanMultiState = ISPA_STD::Span<SpanState<MultiKey>>;
-
+        template<std::size_t MAX, typename T>
+        struct State {
+            std::array<T, MAX> transitions;
+        };
         struct SpanMultiTable {
             std::size_t else_goto;
             std::size_t else_goto_accept;
-            ISPA_STD::Span<SpanMultiState> states;
+            ISPA_STD::Span<SpanMultiTableState> states;
+        };
+        struct AnyTransition {
+            std::variant<
+                char,
+                Token_res (*)(const char*),
+                SpanMultiTable
+            > symbol;
+            std::size_t next;
+            std::size_t accept;
         };
 
-        // Storage types
-        template<std::size_t N, std::size_t MAX> using TokenTable = std::array<State<MAX, Tokens>, N>;
-        template<std::size_t N, std::size_t MAX> using CallableTokenTable = std::array<State<MAX, Token_res (*) (const char*)>, N>;
-        template<std::size_t N, std::size_t MAX> using CharTable = std::array<State<MAX, char>, N>;
-        template<std::size_t N, std::size_t MAX> using MultiTable = std::array<State<MAX, MultiKey>, N>; // avoid direct recursion here
     }
 )";
 }

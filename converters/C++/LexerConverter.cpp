@@ -125,6 +125,6 @@ void LexerConverter::outputHeader() {
         h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << ", " << dfa.getMaxTransitionCount() << "> dfa_func_table_" << i << ";\n";
     }
     // add first character diaptch table
-    h_out << "static const std::array<std::variant<::" << namespace_name << "::DFA::SpanTokenTable, ::" << namespace_name << "::DFA::SpanCharTable, ::" << namespace_name << "::DFA::SpanMultiTable, " << namespace_name << "::Token_res (*) (const char*)>, " << std::to_string(std::numeric_limits<unsigned char>::max() + 1) << "> first_character_dispatch_table;\n";
+    h_out << "\t\tstatic const std::array<std::variant<::" << namespace_name << "::DFA::SpanTokenTable, ::" << namespace_name << "::DFA::SpanCharTable, ::" << namespace_name << "::DFA::SpanMultiTable, " << namespace_name << "::Token_res (*) (const char*)>, " << std::to_string(std::numeric_limits<unsigned char>::max() + 1) << "> first_character_dispatch_table;\n";
     h_out << "\t};\n";
 }

@@ -689,7 +689,7 @@ auto DFA::getTransitionType(const NFA::TransitionKey &transition_key, bool isTok
     if (std::holds_alternative<char>(transition_key)) {
         return DfaType::Char;
     } else {
-        return isToken ? DfaType::CallableToken : DfaType::Token;
+        return isToken ? DfaType::Token : DfaType::CallableToken;
     }
 }
 auto DFA::getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string {
@@ -701,7 +701,7 @@ auto DFA::getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool is
         case DFA::DfaType::CallableToken:
             return "CallableTokenTableTransition";
         default:
-            throw Error("Unallowed DFA type");
+            throw Error("Not allowed DFA transition type");
     }
 }
 auto DFA::getStateType(bool isToken) const -> std::string {
@@ -776,7 +776,7 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
             if (target.size() != 1) {
                os << "{ ";
             }
-            for (const auto t : target) {
+            for (const auto &t : target) {
                 os << t.next << (t.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(t.accept_index) + " } " : std::string(""));
                 if (target.size() != 1)
                     os << ", ";

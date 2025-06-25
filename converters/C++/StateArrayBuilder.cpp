@@ -12,42 +12,53 @@ void StateArrayBuilder::output() {
     std::size_t count = 0;
     const auto &dfa_compatible_table = lexer_data.getDfaCompatibleTable();
     for (const auto &t : data.first) {
-        out << "::" << namespace_name << "::DFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> ::" << namespace_name << "::" << prefix << "::dfa_state_" << count++ << "{ ";
+        auto type = DFA::getStateType(t, isToken);
+        auto type_str = DFA::getStateTypeStr(t, isToken);
+        std::ostringstream out_content;
         std::size_t transition_index = 0;
-        for (const auto &transition : t) {
-            out << "\tDFA::" << DFA::getTransitionTypeStr(transition.first, isToken) << " { ";
-
-            if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
-                const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
-
-                if (dfa_compatible_table.contains(symbol)) {
-                    std::size_t dfa_index = dfa_compatible_table.at(symbol);
-                    const std::string dfa_table_name = "dfa_span_" + std::to_string(dfa_index);
-                    out << dfa_table_name << ", ";
+        if (type != DFA::DfaType::NONE) {
+            for (const auto &transition : t) {
+                std::string transition_type;
+                if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
+                    const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
+                    if (dfa_compatible_table.contains(symbol)) {
+                        out_content << "\tDFA::MultiTableTransition { ";
+                        std::size_t dfa_index = dfa_compatible_table.at(symbol);
+                        const std::string dfa_table_name = "dfa_span_" + std::to_string(dfa_index);
+                        out_content << dfa_table_name;
+                    } else {
+                        if (isToken) {
+                            out_content << "\tDFA::CallableTokenTableTransition { ";
+                        } else {
+                            out_content << "\tDFA::TokenTableTransition { ";
+                        }
+                        out_content << (isToken ? "&" : "Tokens::") << corelib::text::join(symbol, "_");
+                    }
                 } else {
-                    out << (isToken ? "&" : "Tokens::") << corelib::text::join(symbol, "_") << ", ";
+                    out_content << "\tDFA::CharTableTransition { ";
+                    const auto &ch = std::get<char>(transition.first);
+                    out_content << "'" << corelib::text::getEscapedAsStr(ch, false) << "'";
                 }
-            } else {
-                const auto &ch = std::get<char>(transition.first);
-                out << "'" << corelib::text::getEscapedAsStr(ch, false) << "', ";
+                out_content << ", ";
+                out_content << transition.second.next << ", "
+                          << number_or_null(transition.second.accept_index) << " }";
+
+                if (++transition_index != t.size())
+                    out_content << ",\n";
+                else
+                    out_content << "\n";
             }
-
-            out << transition.second.next << ", "
-                      << number_or_null(transition.second.accept_index) << " }";
-
-            if (++transition_index != t.size())
-                out << ",\n";
-            else
-                out << "\n";
         }
 
-        out << "};\n";
+        out << "::" << namespace_name << "::DFA::" << type_str << (type != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" :  "")
+            << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";
     }
 }
 
 void StateArrayBuilder::outputHeader() {
     std::size_t count = 0;
     for (const auto &t : data.first) {
-        out << "\t\tDFA::" << DFA::getStateTypeStr(t, isToken) << '<' << t.size() << "> dfa_state_" << count++ << ";\n";
+        out << "\t\tstatic DFA::" << DFA::getStateTypeStr(t, isToken) << (DFA::getStateType(t, isToken) != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" : "")
+            << " dfa_state_" << count++ << ";\n";
     }
 }
