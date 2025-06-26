@@ -71,7 +71,6 @@ void FCDT::build() {
         auto it = rule.second.rule_members.begin();
         skipNospace(it, rule.second.rule_members.end());
         for (const auto &c : determineFirstCharacter(*it)) {
-            cpuf::printf("Inserting to {} name {}", c, *it);
             table[static_cast<unsigned char>(c)].push_back(rule.first);
         }
     }

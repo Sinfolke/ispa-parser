@@ -17,18 +17,30 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     std::ostringstream table_out;
 
     const auto &states = dfa.getStates();
+    auto type = dfa.getType(isToken);
     std::size_t state_count = 0;
 
     for (const auto &state : states) {
-        table_out << "\tDFA::Span" << DFA::getStateTypeStr(state.transitions, dfa_compatible_table, isToken) << "{ "
-                  << number_or_null(state.else_goto) << ", "
-                  << number_or_null(state.else_goto_accept) << ", "
-                  << (state.transitions.empty() ? "{}" : "&dfa_state_" + std::to_string(location_map.at({count, state_count})));
-        table_out << "\t},\n";
-        state_count++;
+        std::string state_name = "dfa_state_" + std::to_string(location_map.at({count, state_count++}));
+        auto state_type = DFA::getStateType(state.transitions, dfa_compatible_table, isToken);
+        auto state_type_str = DFA::getStateTypeStr(state.transitions, dfa_compatible_table, isToken);
+        if (state_type == DFA::DfaType::NONE) {
+            // empty state - initialize with empty type or with SpanEmptyState
+            if (type != DFA::DfaType::Multi) {
+                state_type_str = DFA::getStateTypeStr(type);
+                state_type = type;
+            }
+        }
+        if (state_type != DFA::DfaType::NONE) {
+            table_out << "\tDFA::Span" << state_type_str << "{ "
+                      << number_or_null(state.else_goto) << ", "
+                      << number_or_null(state.else_goto_accept) << ", "
+                      << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
+            table_out << "\t},\n";
+        }
     }
 
-    out << "const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(isToken) << " "
+    out << "const ::" << namespace_name << "::DFA::" << DFA::getTypeStr(type) << "<" << states.size() << "> "
         << namespace_name << "::" << prefix << "::" << name << '_' << count
         << " = {\n" << table_out.str() << "};\n";
 }

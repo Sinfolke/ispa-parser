@@ -76,13 +76,19 @@ public:
     auto &getStates() const { return states; }
     auto &getMultiStates() const { return mstates; }
     auto getType(bool isToken) const -> DfaType;
+    static auto getTypeStr(DfaType type) -> std::string;
+    static auto getSpanTypeStr(DfaType type) -> std::string;
+    static auto getTransitionsTypeStr(DfaType type) -> std::string;
     auto getTypeStr(bool isToken) const -> std::string;
     auto getSpanTypeStr(bool isToken) const -> std::string;
-    auto getTransitionType(bool isToken) const -> std::string;
-    static auto getTransitionType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
-    static auto getTransitionTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string;
+    auto getTransitionsTypeStr(bool isToken) const -> std::string;
+    static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
+    static auto getTransitionKeyTypeStr(DfaType type) -> std::string;
+    static auto getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key, bool isToken) -> std::string;
 
     auto getStateType(bool isToken) const -> std::string;
+    static auto getStateType(DfaType type) -> DfaType;
+    static auto getStateTypeStr(DfaType type) -> std::string;
     static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
     static auto getStateTypeStr(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> std::string;
     auto getMaxTransitionCount() const -> std::size_t;

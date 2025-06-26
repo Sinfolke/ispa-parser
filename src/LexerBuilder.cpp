@@ -31,14 +31,11 @@ void LexerBuilder::build() {
         }
         build.insert(mem);
         NameToDfaMap involved_symbols;
-        cpuf::printf("mem: {}", mem);
         for (const auto &name : mem) {
             if (isDfaCompatible(ast[name].rule_members)) {
                 involved_symbols[name] = dfa_count;
                 dfa_compatible_table[name] = dfa_count;
-                cpuf::printf("Symbol {} compatible: true", name);
             } else {
-                cpuf::printf("Symbol {} compatible: false", name);
                 dfa_compatible_table[name] = DFA_NOT_COMPATIBLE;
                 auto it = std::find(mem.begin(), mem.end(), name);
                 mem.erase(it);

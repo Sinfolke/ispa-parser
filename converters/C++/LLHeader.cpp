@@ -122,7 +122,7 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
         struct EmptyState;
         template<typename Key> struct Transition;
         template<typename T>   struct SpanState;
-        template<std::size_t MAX, typename T> struct State;
+        template<std::size_t MAX, typename T> using State = std::array<T, MAX>;
 
         using CharTransition = Transition<char>;
         using TokenTransition = Transition<Tokens>;
@@ -149,12 +149,13 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
         using SpanTokenTableState = SpanState<TokenTransition>;
         using SpanCallableTokenState = SpanState<CallableTokenTransition>;
         using SpanMultiTableState = SpanState<AnyTransition>;
+        using SpanEmptyTableState = EmptyState;
 
         // non span types
         template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
         template<std::size_t N> using TokenTable = std::array<SpanState<TokenTransition>, N>;
         template<std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition>, N>;
-        template<std::size_t N> using MultiTable = std::array<SpanState<AnyTransition>, N>;
+        template<std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState, SpanMultiTableState>, N>;
 
         // span types
         using SpanCharTable = ISPA_STD::Span<SpanState<CharTransition>>;
@@ -176,10 +177,6 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
             std::size_t else_goto;
             std::size_t else_goto_accept;
             ISPA_STD::Span<T> transitions;
-        };
-        template<std::size_t MAX, typename T>
-        struct State {
-            std::array<T, MAX> transitions;
         };
         struct SpanMultiTable {
             ISPA_STD::Span<SpanMultiTableState> states;

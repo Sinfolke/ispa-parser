@@ -5,7 +5,7 @@ import dstd;
 
 export class DFAS {
 public:
-    using StateSet = utype::unordered_set<DFA::Transitions>;
+    using StateSet = stdu::vector<DFA::Transitions>;
     using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
 private:
     stdu::vector<DFA> dfas;
