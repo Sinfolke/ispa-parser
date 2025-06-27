@@ -31,12 +31,16 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
                 state_type = type;
             }
         }
-        if (state_type != DFA::DfaType::NONE) {
-            table_out << "\tDFA::Span" << state_type_str << "{ "
-                      << number_or_null(state.else_goto) << ", "
-                      << number_or_null(state.else_goto_accept) << ", "
-                      << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
-            table_out << "\t},\n";
+            table_out << "\tDFA::Span" << state_type_str;
+            if (state_type != DFA::DfaType::NONE) {
+                table_out << "{ "
+                          << number_or_null(state.else_goto) << ", "
+                          << number_or_null(state.else_goto_accept)
+                          << ", "
+                          << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
+                table_out << "},\n";
+            } else {
+                table_out << "{},\n";
         }
     }
 

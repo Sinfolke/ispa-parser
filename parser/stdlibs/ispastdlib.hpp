@@ -154,24 +154,24 @@ class Span {
         Span(T (&arr)[N]) // from raw array
             : data_(arr), size_(N) {}
 
-        T* data() const { return data_; }
+        pointer data() const { return data_; }
         size_type size() const { return size_; }
         bool empty() const { return size_ == 0; }
 
-        T& operator[](size_type index) const {
+        reference operator[](size_type index) const {
             return data_[index];
         }
 
-        T& at(size_type index) const {
+        reference at(size_type index) const {
             if (index >= size_) throw std::out_of_range("Span::at");
             return data_[index];
         }
 
-        T* begin() const { return data_; }
-        T* end() const { return data_ + size_; }
+        pointer begin() const { return data_; }
+        pointer end() const { return data_ + size_; }
 
     private:
-        T* data_;
+        pointer data_;
         size_type size_;
 };
 template<class TOKEN_T, const char* (*ToString)(TOKEN_T)>

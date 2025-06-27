@@ -41,8 +41,5 @@ public:
     void addparseFromFunctions(std::ostringstream &out);
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules);
-    void addLexerCode_Header(std::ostringstream &out);
-    void convertLexerCode(const stdu::vector<LLIR::member> &members, std::ostringstream &out);
-    void addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var);
     void outputIR(std::filesystem::path filename);
 };

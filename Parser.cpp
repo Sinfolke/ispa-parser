@@ -1,5 +1,5 @@
 #include "Parser.h"
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_0 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_0 = {
 	DFA::CharTransition { '\f', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 0, ::Parser::DFA::null_state },
@@ -7,9 +7,9 @@
 	DFA::CharTransition { '\r', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::EmptyTableState Parser::Lexer::dfa_state_1 = {
+const ::Parser::DFA::EmptyTableState Parser::Lexer::dfa_state_1 = {
 };
-::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_2 = {
+const ::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_2 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -22,13 +22,13 @@
 	DFA::CharTransition { '=', 5, 1 },
 	DFA::CharTransition { '<', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_3 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_3 = {
 	DFA::CharTransition { 'o', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_4 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_4 = {
 	DFA::CharTransition { 't', 2, 0 }
 };
-::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_5 = {
+const ::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_5 = {
 	DFA::CharTransition { '>', 2, 0 },
 	DFA::CharTransition { '=', 5, 1 },
 	DFA::CharTransition { '<', 2, 5 },
@@ -40,28 +40,28 @@
 	DFA::CharTransition { '\r', 4, 0 },
 	DFA::CharTransition { '\f', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_6 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_6 = {
 	DFA::CharTransition { '=', 2, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_7 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_7 = {
 	DFA::CharTransition { '\f', 4, 0 },
 	DFA::CharTransition { 'n', 1, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_8 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_8 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, 0 },
 	DFA::CharTransition { 'n', 1, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_9 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_9 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 4, 0 },
 	DFA::CharTransition { 'n', 1, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_10 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_10 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 4, 0 },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -69,7 +69,7 @@
 	DFA::CharTransition { 'n', 1, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_11 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_11 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -78,7 +78,7 @@
 	DFA::CharTransition { 'n', 1, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_12 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_12 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -88,7 +88,7 @@
 	DFA::CharTransition { '\v', 4, 0 },
 	DFA::CharTransition { '!', 5, 3 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_13 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_13 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { ' ', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -97,7 +97,7 @@
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_14 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_14 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -106,7 +106,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { '$', 1, 0 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_15 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_15 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -121,7 +121,7 @@
 	DFA::CharTransition { '*', 1, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_16 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_16 = {
 	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '=', 1, 0 },
@@ -131,29 +131,29 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_17 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_17 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_18 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_18 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\v', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_19 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_19 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\n', 2, 0 },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_20 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_20 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_21 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_21 = {
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
@@ -161,7 +161,7 @@
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 2, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_22 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_22 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -170,7 +170,7 @@
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 2, 0 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_23 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_23 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
@@ -183,7 +183,7 @@
 	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::MultiTableTransition { dfa_span_26, 1, 1 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_24 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_24 = {
 	DFA::CharTransition { '&', 4, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { 'a', 3, 0 },
@@ -193,37 +193,37 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_25 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_25 = {
 	DFA::CharTransition { 'n', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_26 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_26 = {
 	DFA::CharTransition { '&', 1, 1 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_27 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_27 = {
 	DFA::CharTransition { 'd', 1, 0 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_28 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_28 = {
 	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { dfa_span_0, 6, 1 }
 };
-::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_29 = {
+const ::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_29 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { dfa_span_0, 6, 1 },
 	DFA::CharTransition { 'a', 3, 0 },
 	DFA::CharTransition { '&', 4, 1 }
 };
-::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_30 = {
+const ::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_30 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '&', 4, 1 },
 	DFA::CharTableTransition { dfa_span_0, 6, 1 },
 	DFA::CharTransition { 'a', 3, 0 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_31 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_31 = {
 	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::CharTableTransition { dfa_span_0, 10, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_32 = {
+const ::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_32 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
@@ -231,7 +231,7 @@
 	DFA::CharTransition { 'a', 3, 0 },
 	DFA::CharTransition { '&', 4, 1 }
 };
-::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_33 = {
+const ::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_33 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
@@ -240,7 +240,7 @@
 	DFA::CharTransition { 'a', 3, 0 },
 	DFA::CharTransition { '&', 4, 1 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_34 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_34 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
@@ -250,7 +250,7 @@
 	DFA::CharTransition { 'a', 3, 0 },
 	DFA::CharTransition { '&', 4, 1 }
 };
-::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_35 = {
+const ::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_35 = {
 	DFA::CharTransition { '\f', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state },
@@ -261,7 +261,7 @@
 	DFA::CharTransition { 'a', 3, 0 },
 	DFA::CharTransition { '&', 4, 1 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_36 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_36 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -270,7 +270,7 @@
 	DFA::CharTransition { '\r', 0, 0 },
 	DFA::CharTransition { '(', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_37 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_37 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { ')', 1, 0 },
@@ -279,7 +279,7 @@
 	DFA::CharTransition { '\r', 0, 0 },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_38 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_38 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -294,29 +294,29 @@
 	DFA::CharTransition { '/', 1, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_39 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_39 = {
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_40 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_40 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_41 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_41 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_42 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_42 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { ' ', 2, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_43 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_43 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -324,7 +324,7 @@
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_44 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_44 = {
 	DFA::CharTransition { '\v', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 7, ::Parser::DFA::null_state },
@@ -333,7 +333,7 @@
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_45 = {
+const ::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_45 = {
 	DFA::CharTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 6, ::Parser::DFA::null_state },
@@ -360,10 +360,10 @@
 	DFA::CharTransition { '*', 2, 0 },
 	DFA::CharTransition { '=', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_46 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_46 = {
 	DFA::CharTransition { '+', 2, 0 }
 };
-::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_47 = {
+const ::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_47 = {
 	DFA::CharTransition { '+', 2, 0 },
 	DFA::CharTransition { '-', 2, 0 },
 	DFA::CharTransition { '3', 3, 0 },
@@ -385,7 +385,7 @@
 	DFA::CharTransition { '\r', 3, 0 },
 	DFA::CharTransition { '\f', 3, 0 }
 };
-::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_48 = {
+const ::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_48 = {
 	DFA::CharTransition { '/', 2, 0 },
 	DFA::CharTransition { '%', 2, 4 },
 	DFA::CharTransition { '-', 2, 0 },
@@ -398,7 +398,7 @@
 	DFA::CharTransition { '\r', 4, 0 },
 	DFA::CharTransition { '\v', 4, 0 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_49 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_49 = {
 	DFA::MultiTableTransition { dfa_span_13, 2, 0 },
 	DFA::CharTransition { '\r', 5, 0 },
 	DFA::CharTransition { '=', 2, 0 },
@@ -408,22 +408,22 @@
 	DFA::CharTransition { '\v', 5, 0 },
 	DFA::CharTransition { '\f', 5, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_50 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_50 = {
 	DFA::CharTransition { '\r', 5, 0 },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '0', 2, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_51 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_51 = {
 	DFA::CharTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '\v', 5, 0 },
 	DFA::CharTransition { '0', 2, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_52 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_52 = {
 	DFA::CharTransition { '+', 2, 0 },
 	DFA::CharTransition { '3', 3, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_53 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_53 = {
 	DFA::CharTransition { '5', 2, 0 },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 8, ::Parser::DFA::null_state },
@@ -431,7 +431,7 @@
 	DFA::CharTransition { ' ', 5, 0 },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_54 = {
+const ::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_54 = {
 	DFA::CharTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 5, 0 },
@@ -442,7 +442,7 @@
 	DFA::CharTransition { '8', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_55 = {
+const ::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_55 = {
 	DFA::CharTransition { '5', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 8, ::Parser::DFA::null_state },
@@ -455,7 +455,7 @@
 	DFA::CharTransition { '8', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 1, 0 }
 };
-::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_56 = {
+const ::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_56 = {
 	DFA::CharTransition { '\r', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '9', 2, 0 },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
@@ -469,7 +469,7 @@
 	DFA::CharTransition { '\n', 14, ::Parser::DFA::null_state },
 	DFA::CharTransition { '8', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_57 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_57 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -478,7 +478,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { ',', 1, 0 }
 };
-::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_58 = {
+const ::Parser::DFA::MultiTableState<25> Parser::Lexer::dfa_state_58 = {
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 6, ::Parser::DFA::null_state },
@@ -505,7 +505,7 @@
 	DFA::CharTransition { '*', 1, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_59 = {
+const ::Parser::DFA::CharTableState<20> Parser::Lexer::dfa_state_59 = {
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '-', 1, 0 },
 	DFA::CharTransition { '3', 2, 0 },
@@ -527,7 +527,7 @@
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_60 = {
+const ::Parser::DFA::CharTableState<11> Parser::Lexer::dfa_state_60 = {
 	DFA::CharTransition { '/', 1, 0 },
 	DFA::CharTransition { '%', 1, 4 },
 	DFA::CharTransition { '-', 1, 0 },
@@ -540,10 +540,10 @@
 	DFA::CharTransition { '\r', 3, 0 },
 	DFA::CharTransition { '\v', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_61 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_61 = {
 	DFA::CharTransition { '>', 1, 0 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_62 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_62 = {
 	DFA::MultiTableTransition { dfa_span_13, 1, 0 },
 	DFA::CharTransition { '\r', 5, 0 },
 	DFA::CharTransition { '=', 1, 0 },
@@ -553,17 +553,17 @@
 	DFA::CharTransition { '\v', 5, 0 },
 	DFA::CharTransition { '\f', 5, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_63 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_63 = {
 	DFA::CharTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 5, 0 },
 	DFA::CharTransition { '9', 1, 0 },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_64 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_64 = {
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '3', 2, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_65 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_65 = {
 	DFA::CharTransition { '0', 1, 0 },
 	DFA::CharTransition { '9', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
@@ -571,7 +571,7 @@
 	DFA::CharTransition { '\f', 5, 0 },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_66 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_66 = {
 	DFA::CharTransition { '\f', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
@@ -580,7 +580,7 @@
 	DFA::CharTransition { '\v', 5, 0 },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_67 = {
+const ::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_67 = {
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '9', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 11, ::Parser::DFA::null_state },
@@ -592,7 +592,7 @@
 	DFA::CharTransition { ' ', 5, 0 },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_68 = {
+const ::Parser::DFA::CharTableState<12> Parser::Lexer::dfa_state_68 = {
 	DFA::CharTransition { '+', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '8', 12, ::Parser::DFA::null_state },
@@ -606,7 +606,7 @@
 	DFA::CharTransition { '7', 1, 0 },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<13> Parser::Lexer::dfa_state_69 = {
+const ::Parser::DFA::CharTableState<13> Parser::Lexer::dfa_state_69 = {
 	DFA::CharTransition { '0', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 9, ::Parser::DFA::null_state },
@@ -621,10 +621,10 @@
 	DFA::CharTransition { '7', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { '-', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_70 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_70 = {
 	DFA::CharTransition { '-', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_71 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_71 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { ' ', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -633,7 +633,7 @@
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '.', 1, 0 }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_72 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_72 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 5, ::Parser::DFA::null_state },
@@ -649,7 +649,7 @@
 	DFA::CharTransition { '+', 1, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_73 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_73 = {
 	DFA::CharTransition { '/', 1, 0 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\r', 2, 0 },
@@ -658,29 +658,29 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_74 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_74 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_75 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_75 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_76 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_76 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_77 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_77 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_78 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_78 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 5, ::Parser::DFA::null_state },
@@ -688,7 +688,7 @@
 	DFA::CharTransition { ' ', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_79 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_79 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 5, ::Parser::DFA::null_state },
@@ -697,10 +697,10 @@
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '/', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_80 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_80 = {
 	DFA::CharTransition { '/', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_81 = {
+const ::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_81 = {
 	DFA::CharTransition { 'f', 2, 0 },
 	DFA::CharTransition { '5', 2, 0 },
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
@@ -730,7 +730,7 @@
 	DFA::CharTransition { 'F', 2, 0 },
 	DFA::CharTransition { 'D', 2, 0 }
 };
-::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_82 = {
+const ::Parser::DFA::CharTableState<28> Parser::Lexer::dfa_state_82 = {
 	DFA::CharTransition { '\f', 2, ::Parser::DFA::null_state },
 	DFA::CharTransition { '9', 2, 0 },
 	DFA::CharTransition { 'E', 2, 0 },
@@ -760,27 +760,27 @@
 	DFA::CharTransition { 'D', 2, 0 },
 	DFA::CharTransition { '\v', 2, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_83 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_83 = {
 	DFA::CharTransition { 'x', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_84 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_84 = {
 	DFA::CharTransition { ' ', 2, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_85 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_85 = {
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '5', 2, 0 },
 	DFA::CharTransition { '\t', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_86 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_86 = {
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '5', 2, 0 },
 	DFA::CharTransition { '\n', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_87 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_87 = {
 	DFA::CharTransition { '\r', 0, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 5, ::Parser::DFA::null_state },
@@ -788,7 +788,7 @@
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_88 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_88 = {
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
@@ -797,7 +797,7 @@
 	DFA::CharTransition { '5', 2, 0 },
 	DFA::CharTransition { '\f', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_89 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_89 = {
 	DFA::CharTransition { '\f', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
@@ -807,7 +807,7 @@
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 0, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_90 = {
+const ::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_90 = {
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 5, ::Parser::DFA::null_state },
@@ -818,7 +818,7 @@
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_91 = {
+const ::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_91 = {
 	DFA::CharTransition { ' ', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
@@ -829,15 +829,15 @@
 	DFA::CharTransition { '\v', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '1', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_92 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_92 = {
 	DFA::CharTransition { 'b', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_93 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_93 = {
 	DFA::CharTransition { '9', 2, 0 },
 	DFA::CharTransition { '0', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'x', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_94 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_94 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -846,7 +846,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { ':', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_95 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_95 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -855,7 +855,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { ';', 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_96 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_96 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -869,7 +869,7 @@
 	DFA::MultiTableTransition { dfa_span_33, 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { ',', 3, 0 }
 };
-::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_97 = {
+const ::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_97 = {
 	DFA::CharTransition { '<', 2, 0 },
 	DFA::MultiTableTransition { dfa_span_33, 3, 0 },
 	DFA::CharTransition { '\t', 3, 0 },
@@ -881,25 +881,25 @@
 	DFA::CharTransition { '\v', 3, 0 },
 	DFA::CharTransition { '\f', 3, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_98 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_98 = {
 	DFA::CharTransition { '\r', 3, 0 },
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_99 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_99 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 3, 0 },
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_100 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_100 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { '<', 2, 5 },
 	DFA::CharTransition { ' ', 3, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_101 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_101 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -907,7 +907,7 @@
 	DFA::CharTransition { '\t', 3, 0 },
 	DFA::CharTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_102 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_102 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -916,7 +916,7 @@
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { '<', 2, 5 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_103 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_103 = {
 	DFA::CharTransition { '\r', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 1, 3 },
 	DFA::CharTransition { '\v', 8, ::Parser::DFA::null_state },
@@ -926,11 +926,11 @@
 	DFA::CharTransition { '\f', 3, 0 },
 	DFA::CharTransition { '<', 2, 5 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_104 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_104 = {
 	DFA::CharTransition { '<', 2, 0 },
 	DFA::MultiTableTransition { dfa_span_33, 3, 0 }
 };
-::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_105 = {
+const ::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_105 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 3, 3 },
@@ -942,7 +942,7 @@
 	DFA::CharTransition { '>', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '<', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_106 = {
+const ::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_106 = {
 	DFA::CharTransition { '>', 1, 0 },
 	DFA::CharTransition { '=', 3, 1 },
 	DFA::CharTransition { '<', 1, 5 },
@@ -954,28 +954,28 @@
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_107 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_107 = {
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_108 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_108 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '!', 3, 3 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_109 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_109 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '=', 1, 0 },
 	DFA::CharTransition { '!', 3, 3 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_110 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_110 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '=', 1, 0 },
 	DFA::CharTransition { '!', 3, 3 },
 	DFA::CharTransition { '\n', 2, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_111 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_111 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 3, 3 },
@@ -983,7 +983,7 @@
 	DFA::CharTransition { ' ', 2, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_112 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_112 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -992,7 +992,7 @@
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_113 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_113 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '!', 3, 3 },
@@ -1002,7 +1002,7 @@
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '=', 1, 0 }
 };
-::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_114 = {
+const ::Parser::DFA::CharTableState<10> Parser::Lexer::dfa_state_114 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\r', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -1014,7 +1014,7 @@
 	DFA::CharTransition { '=', 1, 1 },
 	DFA::CharTransition { '>', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_115 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_115 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '?', 1, 0 },
@@ -1023,7 +1023,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_116 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_116 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -1032,7 +1032,7 @@
 	DFA::CharTransition { '\t', 0, 0 },
 	DFA::CharTransition { '@', 1, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_117 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_117 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -1103,7 +1103,7 @@
 	DFA::CharTransition { 'a', 0, 0 },
 	DFA::CharTransition { '_', 0, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_118 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_118 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 6, ::Parser::DFA::null_state },
@@ -1117,7 +1117,7 @@
 	DFA::MultiTableTransition { dfa_span_24, 2, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_119 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_119 = {
 	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTransition { '^', 1, 0 },
 	DFA::MultiTableTransition { dfa_span_24, 2, 0 },
@@ -1131,22 +1131,22 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_120 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_120 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '[', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_121 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_121 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '[', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_122 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_122 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '[', 1, 0 },
 	DFA::CharTransition { '\n', 2, 0 }
 };
-::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_123 = {
+const ::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_123 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 0, 0 },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -1154,7 +1154,7 @@
 	DFA::MultiTableTransition { dfa_span_25, 2, 0 },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_124 = {
+const ::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_124 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -1163,7 +1163,7 @@
 	DFA::CharTransition { '[', 1, 0 },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_125 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_125 = {
 	DFA::CharTransition { '\f', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 5, ::Parser::DFA::null_state },
@@ -1173,7 +1173,7 @@
 	DFA::CharTransition { '\r', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_126 = {
+const ::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_126 = {
 	DFA::CharTransition { '\t', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\\', 13, ::Parser::DFA::null_state },
@@ -1185,7 +1185,7 @@
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\'', 6, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_127 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_127 = {
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { '\r', 2, 0 },
@@ -1194,16 +1194,16 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_128 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_128 = {
 	DFA::CharTransition { '\\', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_129 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_129 = {
 	DFA::CharTransition { 's', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_130 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_130 = {
 	DFA::CharTransition { '0', 1, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_131 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_131 = {
 	DFA::CharTransition { ' ', 6, 0 },
 	DFA::CharTransition { '\n', 6, 0 },
 	DFA::CharTransition { '\r', 6, 0 },
@@ -1213,51 +1213,51 @@
 	DFA::CharTransition { '\v', 6, 0 },
 	DFA::CharTransition { '\f', 6, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_132 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_132 = {
 	DFA::CharTransition { '\r', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_133 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_133 = {
 	DFA::CharTransition { '\r', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_134 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_134 = {
 	DFA::CharTransition { '\'', 6, 0 },
 	DFA::CharTransition { '\\', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_135 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_135 = {
 	DFA::CharTransition { '\r', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 17, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_136 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_136 = {
 	DFA::CharTransition { '\r', 19, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_137 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_137 = {
 	DFA::CharTransition { '\r', 22, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 23, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_138 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_138 = {
 	DFA::CharTransition { '\r', 25, ::Parser::DFA::null_state },
 	DFA::CharTransition { ']', 1, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
 	DFA::CharTransition { '\\', 26, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_139 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_139 = {
 	DFA::CharTransition { '\\', 1, 0 },
 	DFA::CharTransition { '\'', 6, 0 }
 };
-::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_140 = {
+const ::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_140 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state },
@@ -1268,7 +1268,7 @@
 	DFA::CharTransition { ']', 10, ::Parser::DFA::null_state },
 	DFA::MultiTableTransition { dfa_span_25, 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_141 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_141 = {
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { ']', 1, 1 },
@@ -1278,28 +1278,28 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_142 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_142 = {
 	DFA::CharTransition { '\\', 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_143 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_143 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_144 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_144 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_145 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_145 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 2, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_146 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_146 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
@@ -1307,7 +1307,7 @@
 	DFA::CharTransition { ' ', 2, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_147 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_147 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 2, 0 },
@@ -1316,7 +1316,7 @@
 	DFA::CharTransition { '\\', 3, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_148 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_148 = {
 	DFA::CharTransition { '\f', 4, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 8, ::Parser::DFA::null_state },
@@ -1326,7 +1326,7 @@
 	DFA::CharTransition { '\r', 2, 0 },
 	DFA::CharTransition { ']', 1, 0 }
 };
-::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_149 = {
+const ::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_149 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -1402,7 +1402,7 @@
 	DFA::CharTransition { '_', 0, 0 },
 	DFA::CharTransition { '&', 2, 1 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_150 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_150 = {
 	DFA::CharTransition { 'v', 8, 1 },
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { '\n', 3, 5 },
@@ -1417,47 +1417,47 @@
 	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTransition { '\f', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_151 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_151 = {
 	DFA::CharTransition { 'r', 10, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_152 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_152 = {
 	DFA::CharTransition { 'u', 11, 4 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_153 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_153 = {
 	DFA::CharTransition { 't', 12, 2 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_154 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_154 = {
 	DFA::CharTransition { 'b', 13, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_155 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_155 = {
 	DFA::CharTransition { 'a', 12, 1 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_156 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_156 = {
 	DFA::CharTransition { 'o', 14, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_157 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_157 = {
 	DFA::CharTransition { 'r', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_158 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_158 = {
 	DFA::CharTransition { 'm', 1, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_159 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_159 = {
 	DFA::CharTransition { 'r', 1, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_160 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_160 = {
 	DFA::CharTransition { 'j', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_161 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_161 = {
 	DFA::CharTransition { 'o', 15, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_162 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_162 = {
 	DFA::CharTransition { 'l', 1, 5 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_163 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_163 = {
 	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { dfa_span_0, 16, 1 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_164 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_164 = {
 	DFA::CharTransition { ' ', 3, 5 },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
@@ -1470,11 +1470,11 @@
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { '&', 2, 1 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_165 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_165 = {
 	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::CharTableTransition { dfa_span_0, 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_166 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_166 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -1489,7 +1489,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_167 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_167 = {
 	DFA::CharTransition { 't', 12, 2 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 },
@@ -1505,7 +1505,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_168 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_168 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -1520,10 +1520,10 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_169 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_169 = {
 	DFA::CharTransition { 'a', 26, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_170 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_170 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -1539,7 +1539,7 @@
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_171 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_171 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -1555,13 +1555,13 @@
 	DFA::CharTransition { 'o', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_172 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_172 = {
 	DFA::CharTransition { 'a', 32, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_173 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_173 = {
 	DFA::CharTransition { 'b', 35, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_174 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_174 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -1579,7 +1579,7 @@
 	DFA::CharTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_175 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_175 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 19, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'n', 41, ::Parser::DFA::null_state },
@@ -1596,13 +1596,13 @@
 	DFA::CharTransition { 'o', 42, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_176 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_176 = {
 	DFA::CharTransition { 'a', 39, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_177 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_177 = {
 	DFA::CharTransition { 'b', 43, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_178 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_178 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
@@ -1620,13 +1620,13 @@
 	DFA::CharTransition { '\f', 3, 5 },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_179 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_179 = {
 	DFA::CharTransition { 'a', 46, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_180 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_180 = {
 	DFA::CharTransition { 'b', 49, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_181 = {
+const ::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_181 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
@@ -1645,13 +1645,13 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_182 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_182 = {
 	DFA::CharTransition { 'a', 53, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_183 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_183 = {
 	DFA::CharTransition { 'b', 56, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_184 = {
+const ::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_184 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
@@ -1670,13 +1670,13 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_185 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_185 = {
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '\v', 3, 5 },
 	DFA::CharTransition { 'o', 60, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_186 = {
+const ::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_186 = {
 	DFA::CharTransition { 'r', 10, 5 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
@@ -1696,13 +1696,13 @@
 	DFA::CharTransition { 'b', 58, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_187 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_187 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { '\t', 3, 5 },
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<70> Parser::Lexer::dfa_state_188 = {
+const ::Parser::DFA::MultiTableState<70> Parser::Lexer::dfa_state_188 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -1774,7 +1774,7 @@
 	DFA::CharTransition { 'a', 58, ::Parser::DFA::null_state },
 	DFA::CharTransition { '_', 0, 0 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_189 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_189 = {
 	DFA::CharTransition { 'v', 7, 1 },
 	DFA::CharTransition { 'o', 6, 5 },
 	DFA::CharTransition { '\n', 2, 5 },
@@ -1789,31 +1789,31 @@
 	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTransition { '\f', 2, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_190 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_190 = {
 	DFA::CharTransition { 'r', 9, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_191 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_191 = {
 	DFA::CharTransition { 'u', 10, 4 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_192 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_192 = {
 	DFA::CharTransition { 't', 11, 2 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_193 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_193 = {
 	DFA::CharTransition { 'b', 12, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_194 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_194 = {
 	DFA::CharTransition { 'a', 11, 1 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_195 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_195 = {
 	DFA::CharTransition { 'o', 13, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_196 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_196 = {
 	DFA::CharTransition { 'r', 2, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_197 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_197 = {
 	DFA::CharTransition { 'j', 2, 5 }
 };
-::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_198 = {
+const ::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_198 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 5, 2 },
 	DFA::CharTransition { 'b', 8, 0 },
@@ -1824,7 +1824,7 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 3, 5 }
 };
-::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_199 = {
+const ::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_199 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 5, 2 },
 	DFA::CharTransition { 'b', 8, 0 },
@@ -1836,10 +1836,10 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_200 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_200 = {
 	DFA::CharTransition { 'r', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_201 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_201 = {
 	DFA::CharTransition { 't', 11, 2 },
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 5, 2 },
@@ -1852,7 +1852,7 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 3, 5 }
 };
-::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_202 = {
+const ::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_202 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 22, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 8, 0 },
@@ -1864,10 +1864,10 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_203 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_203 = {
 	DFA::CharTransition { 'a', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_204 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_204 = {
 	DFA::CharTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -1880,7 +1880,7 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 3, 5 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_205 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_205 = {
 	DFA::CharTransition { 's', 28, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -1893,10 +1893,10 @@
 	DFA::CharTransition { 'n', 4, 4 },
 	DFA::CharTransition { 'a', 3, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_206 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_206 = {
 	DFA::CharTransition { 'b', 32, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_207 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_207 = {
 	DFA::CharTransition { 'u', 10, 4 },
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 8, 0 },
@@ -1911,7 +1911,7 @@
 	DFA::CharTransition { '\t', 2, 5 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_208 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_208 = {
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 8, 0 },
 	DFA::CharTransition { ' ', 15, ::Parser::DFA::null_state },
@@ -1925,10 +1925,10 @@
 	DFA::CharTransition { '\t', 2, 5 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_209 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_209 = {
 	DFA::CharTransition { 'b', 39, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_210 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_210 = {
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 42, ::Parser::DFA::null_state },
@@ -1943,10 +1943,10 @@
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'b', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_211 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_211 = {
 	DFA::CharTransition { 'b', 46, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_212 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_212 = {
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 49, ::Parser::DFA::null_state },
@@ -1962,10 +1962,10 @@
 	DFA::CharTransition { '\n', 2, 5 },
 	DFA::CharTransition { 'b', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_213 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_213 = {
 	DFA::CharTransition { 'b', 53, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_214 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_214 = {
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 15, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 20, ::Parser::DFA::null_state },
@@ -1981,17 +1981,17 @@
 	DFA::CharTransition { '\n', 48, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 8, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_215 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_215 = {
 	DFA::CharTransition { '\v', 2, 5 },
 	DFA::CharTransition { 'b', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 57, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'n', 4, 4 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_216 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_216 = {
 	DFA::CharTransition { 'l', 1, 5 },
 	DFA::CharTransition { 'b', 12, 5 }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_217 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_217 = {
 	DFA::CharTransition { 'r', 9, 5 },
 	DFA::CharTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 27, ::Parser::DFA::null_state },
@@ -2008,7 +2008,7 @@
 	DFA::CharTransition { '\n', 48, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 55, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_218 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_218 = {
 	DFA::CharTransition { 'b', 12, 0 },
 	DFA::CharTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 12, 0 },
@@ -2079,25 +2079,25 @@
 	DFA::CharTransition { 'P', 12, 0 },
 	DFA::CharTransition { '7', 12, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_219 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_219 = {
 	DFA::CharTransition { 'r', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_220 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_220 = {
 	DFA::CharTransition { 'r', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_221 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_221 = {
 	DFA::CharTransition { 'u', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_222 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_222 = {
 	DFA::CharTransition { 'l', 7, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_223 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_223 = {
 	DFA::CharTransition { 'e', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_224 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_224 = {
 	DFA::CharTransition { 's', 6, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_225 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_225 = {
 	DFA::CharTransition { 'f', 9, 0 },
 	DFA::CharTransition { '\t', 8, 0 },
 	DFA::CharTransition { '\n', 8, 0 },
@@ -2106,16 +2106,16 @@
 	DFA::CharTransition { '\v', 8, 0 },
 	DFA::CharTransition { '\f', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_226 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_226 = {
 	DFA::CharTransition { 'r', 10, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_227 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_227 = {
 	DFA::CharTransition { 'o', 11, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_228 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_228 = {
 	DFA::CharTransition { 'm', 2, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_229 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_229 = {
 	DFA::CharTransition { '_', 12, 0 },
 	DFA::CharTransition { 'a', 12, 0 },
 	DFA::CharTransition { 'b', 12, 0 },
@@ -2186,36 +2186,36 @@
 	DFA::CharTransition { 'P', 12, 0 },
 	DFA::CharTransition { '7', 12, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_230 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_230 = {
 	DFA::CharTransition { ' ', 12, 0 },
 	DFA::CharTransition { 'f', 9, 0 },
 	DFA::CharTransition { 't', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_231 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_231 = {
 	DFA::CharTransition { '_', 12, 0 },
 	DFA::CharTransition { 'r', 10, 0 },
 	DFA::CharTransition { 'a', 5, 0 },
 	DFA::CharTransition { 'n', 2, 0 },
 	DFA::CharTransition { 'o', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_232 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_232 = {
 	DFA::CharTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'f', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 12, 0 },
 	DFA::CharTransition { 't', 3, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 8, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_233 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_233 = {
 	DFA::CharTransition { 'r', 10, 0 },
 	DFA::CharTransition { 'a', 5, 0 },
 	DFA::CharTransition { 'n', 2, 0 },
 	DFA::CharTransition { 'o', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_234 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_234 = {
 	DFA::CharTransition { '_', 12, 0 },
 	DFA::CharTransition { 'r', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_235 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_235 = {
 	DFA::CharTransition { 'f', 19, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 12, 0 },
 	DFA::CharTransition { 't', 20, ::Parser::DFA::null_state },
@@ -2223,7 +2223,7 @@
 	DFA::CharTransition { ' ', 13, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 8, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_236 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_236 = {
 	DFA::CharTransition { 'f', 22, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 18, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 12, 0 },
@@ -2232,7 +2232,7 @@
 	DFA::CharTransition { 't', 23, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 8, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_237 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_237 = {
 	DFA::CharTransition { 'f', 25, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 12, 0 },
 	DFA::CharTransition { '\v', 8, 0 },
@@ -2242,7 +2242,7 @@
 	DFA::CharTransition { 't', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 21, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_238 = {
+const ::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_238 = {
 	DFA::CharTransition { 'f', 28, ::Parser::DFA::null_state },
 	DFA::CharTransition { 't', 29, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 24, ::Parser::DFA::null_state },
@@ -2253,7 +2253,7 @@
 	DFA::CharTransition { '\t', 21, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 8, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_239 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_239 = {
 	DFA::CharTransition { 'b', 8, 0 },
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
@@ -2324,16 +2324,16 @@
 	DFA::CharTransition { 'P', 8, 0 },
 	DFA::CharTransition { '7', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_240 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_240 = {
 	DFA::CharTransition { 'p', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_241 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_241 = {
 	DFA::CharTransition { 'r', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_242 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_242 = {
 	DFA::CharTransition { 't', 5, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_243 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_243 = {
 	DFA::CharTransition { 'i', 7, 0 },
 	DFA::CharTransition { '\t', 6, 0 },
 	DFA::CharTransition { '\n', 6, 0 },
@@ -2342,10 +2342,10 @@
 	DFA::CharTransition { '\v', 6, 0 },
 	DFA::CharTransition { '\f', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_244 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_244 = {
 	DFA::CharTransition { 'f', 5, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_245 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_245 = {
 	DFA::CharTransition { '_', 8, 0 },
 	DFA::CharTransition { 'a', 8, 0 },
 	DFA::CharTransition { 'b', 8, 0 },
@@ -2416,34 +2416,34 @@
 	DFA::CharTransition { 'P', 8, 0 },
 	DFA::CharTransition { '7', 8, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_246 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_246 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { ' ', 6, 0 },
 	DFA::CharTransition { 'i', 7, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_247 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_247 = {
 	DFA::CharTransition { '_', 8, 0 },
 	DFA::CharTransition { 'f', 5, 0 },
 	DFA::CharTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_248 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_248 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'i', 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 6, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_249 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_249 = {
 	DFA::CharTransition { 'f', 5, 0 },
 	DFA::CharTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_250 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_250 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'i', 14, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 6, 0 },
 	DFA::CharTransition { '\n', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_251 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_251 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { 'i', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 13, ::Parser::DFA::null_state },
@@ -2451,7 +2451,7 @@
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 6, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_252 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_252 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { 'i', 18, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 13, ::Parser::DFA::null_state },
@@ -2460,7 +2460,7 @@
 	DFA::CharTransition { '\t', 15, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 6, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_253 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_253 = {
 	DFA::CharTransition { 'h', 8, 0 },
 	DFA::CharTransition { 'i', 20, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 13, ::Parser::DFA::null_state },
@@ -2470,7 +2470,7 @@
 	DFA::CharTransition { '\v', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 6, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_254 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_254 = {
 	DFA::CharTransition { 'b', 7, 0 },
 	DFA::CharTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 7, 0 },
@@ -2541,22 +2541,22 @@
 	DFA::CharTransition { 'P', 7, 0 },
 	DFA::CharTransition { '7', 7, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_255 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_255 = {
 	DFA::CharTransition { 'o', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_256 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_256 = {
 	DFA::CharTransition { 'd', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_257 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_257 = {
 	DFA::CharTransition { 'u', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_258 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_258 = {
 	DFA::CharTransition { 'l', 5, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_259 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_259 = {
 	DFA::CharTransition { 'e', 6, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_260 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_260 = {
 	DFA::CharTransition { '_', 7, 0 },
 	DFA::CharTransition { 'a', 7, 0 },
 	DFA::CharTransition { 'b', 7, 0 },
@@ -2627,28 +2627,28 @@
 	DFA::CharTransition { 'P', 7, 0 },
 	DFA::CharTransition { '7', 7, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_261 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_261 = {
 	DFA::CharTransition { ' ', 7, 0 },
 	DFA::CharTransition { 'm', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_262 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_262 = {
 	DFA::CharTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 7, 0 },
 	DFA::CharTransition { 'm', 1, 0 },
 	DFA::CharTransition { '\n', 0, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_263 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_263 = {
 	DFA::CharTransition { '_', 7, 0 },
 	DFA::CharTransition { 'o', 2, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_264 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_264 = {
 	DFA::CharTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { 'c', 7, 0 },
 	DFA::CharTransition { 'm', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_265 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_265 = {
 	DFA::CharTransition { 'c', 7, 0 },
 	DFA::CharTransition { 'm', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 11, ::Parser::DFA::null_state },
@@ -2656,7 +2656,7 @@
 	DFA::CharTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_266 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_266 = {
 	DFA::CharTransition { 'c', 7, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\f', 11, ::Parser::DFA::null_state },
@@ -2665,7 +2665,7 @@
 	DFA::CharTransition { ' ', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_267 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_267 = {
 	DFA::CharTransition { 'c', 7, 0 },
 	DFA::CharTransition { '\v', 13, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 11, ::Parser::DFA::null_state },
@@ -2675,7 +2675,7 @@
 	DFA::CharTransition { '\t', 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::MultiTableState<73> Parser::Lexer::dfa_state_268 = {
+const ::Parser::DFA::MultiTableState<73> Parser::Lexer::dfa_state_268 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -2750,10 +2750,10 @@
 	DFA::CharTransition { '!', 1, 1 },
 	DFA::CharTransition { ';', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_269 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_269 = {
 	DFA::CharTransition { 'e', 1, 0 }
 };
-::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_270 = {
+const ::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_270 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 6, 2 },
 	DFA::CharTransition { 'b', 9, 0 },
@@ -2764,7 +2764,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_271 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_271 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 6, 2 },
 	DFA::CharTransition { 'b', 9, 0 },
@@ -2777,7 +2777,7 @@
 	DFA::CharTransition { 'a', 19, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_272 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_272 = {
 	DFA::CharTransition { 't', 12, 2 },
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 6, 2 },
@@ -2791,7 +2791,7 @@
 	DFA::CharTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_273 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_273 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 22, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 },
@@ -2804,10 +2804,10 @@
 	DFA::CharTransition { 'a', 4, 5 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_274 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_274 = {
 	DFA::CharTransition { 'a', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_275 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_275 = {
 	DFA::CharTransition { 's', 20, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 3, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -2821,7 +2821,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_276 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_276 = {
 	DFA::CharTransition { 's', 27, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 3, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -2835,10 +2835,10 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_277 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_277 = {
 	DFA::CharTransition { 'b', 30, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_278 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_278 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 16, ::Parser::DFA::null_state },
@@ -2854,15 +2854,15 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_279 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_279 = {
 	DFA::CharTransition { 'b', 25, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 7, 5 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_280 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_280 = {
 	DFA::CharTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'r', 10, 5 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_281 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_281 = {
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'v', 36, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 16, ::Parser::DFA::null_state },
@@ -2877,15 +2877,15 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_282 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_282 = {
 	DFA::CharTransition { 'b', 38, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_283 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_283 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { 'a', 40, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 41, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_284 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_284 = {
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 43, ::Parser::DFA::null_state },
@@ -2901,12 +2901,12 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTableTransition { dfa_span_36, 1, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_285 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_285 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { 'a', 48, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 49, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_286 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_286 = {
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 3, 5 },
@@ -2923,15 +2923,15 @@
 	DFA::CharTransition { 'n', 55, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_287 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_287 = {
 	DFA::CharTransition { 'b', 54, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_288 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_288 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { 'a', 56, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 57, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_289 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_289 = {
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 16, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 50, ::Parser::DFA::null_state },
@@ -2948,13 +2948,13 @@
 	DFA::CharTransition { 'n', 31, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_290 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_290 = {
 	DFA::CharTransition { '\v', 3, 5 },
 	DFA::CharTransition { 'b', 25, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 60, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'n', 5, 4 }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_291 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_291 = {
 	DFA::CharTransition { 'r', 10, 5 },
 	DFA::CharTransition { '\r', 21, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 26, ::Parser::DFA::null_state },
@@ -2972,7 +2972,7 @@
 	DFA::CharTransition { 'n', 31, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_292 = {
+const ::Parser::DFA::MultiTableState<74> Parser::Lexer::dfa_state_292 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -3048,10 +3048,10 @@
 	DFA::CharTransition { '_', 0, 0 },
 	DFA::CharTransition { '|', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_293 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_293 = {
 	DFA::CharTransition { '|', 1, 0 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_294 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_294 = {
 	DFA::CharTransition { ' ', 3, 5 },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
@@ -3064,7 +3064,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_295 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_295 = {
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
@@ -3079,7 +3079,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_296 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_296 = {
 	DFA::CharTransition { 't', 12, 2 },
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { 'b', 9, 0 },
@@ -3095,7 +3095,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_297 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_297 = {
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
@@ -3110,7 +3110,7 @@
 	DFA::CharTransition { 'n', 5, 4 },
 	DFA::CharTransition { '7', 0, 0 }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_298 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_298 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -3126,7 +3126,7 @@
 	DFA::CharTransition { 'o', 7, 5 },
 	DFA::CharTransition { 'b', 29, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_299 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_299 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -3142,7 +3142,7 @@
 	DFA::CharTransition { 'o', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_300 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_300 = {
 	DFA::CharTransition { 'u', 11, 4 },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
@@ -3160,7 +3160,7 @@
 	DFA::CharTransition { 'o', 28, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_301 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_301 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::MultiTableTransition { dfa_span_17, 18, ::Parser::DFA::null_state },
@@ -3177,7 +3177,7 @@
 	DFA::CharTransition { 'o', 42, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_302 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_302 = {
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::CharTransition { 'o', 48, ::Parser::DFA::null_state },
@@ -3195,7 +3195,7 @@
 	DFA::CharTransition { '\f', 3, 5 },
 	DFA::CharTransition { 'b', 9, 0 }
 };
-::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_303 = {
+const ::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_303 = {
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
@@ -3214,7 +3214,7 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_304 = {
+const ::Parser::DFA::MultiTableState<17> Parser::Lexer::dfa_state_304 = {
 	DFA::CharTransition { '\v', 30, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
 	DFA::CharTransition { ' ', 17, ::Parser::DFA::null_state },
@@ -3233,7 +3233,7 @@
 	DFA::CharTransition { 'b', 9, 0 },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_305 = {
+const ::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_305 = {
 	DFA::CharTransition { 'r', 10, 5 },
 	DFA::CharTransition { '\r', 24, ::Parser::DFA::null_state },
 	DFA::CharTransition { '|', 2, 0 },
@@ -3253,7 +3253,7 @@
 	DFA::CharTransition { 'b', 58, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 4, 5 }
 };
-::Parser::DFA::MultiTableState<71> Parser::Lexer::dfa_state_306 = {
+const ::Parser::DFA::MultiTableState<71> Parser::Lexer::dfa_state_306 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'P', 0, 0 },
 	DFA::CharTransition { '9', 0, 0 },
@@ -3326,55 +3326,55 @@
 	DFA::CharTransition { '_', 0, 0 },
 	DFA::CharTransition { ';', 1, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_307 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_307 = {
 	DFA::CharTransition { 'i', 4, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_308 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_308 = {
 	DFA::CharTransition { 'l', 7, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_309 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_309 = {
 	DFA::CharTransition { 'x', 8, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_310 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_310 = {
 	DFA::CharTransition { 'a', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_311 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_311 = {
 	DFA::CharTransition { 'i', 10, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_312 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_312 = {
 	DFA::CharTransition { 'o', 11, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_313 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_313 = {
 	DFA::CharTransition { 'e', 12, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_314 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_314 = {
 	DFA::CharTransition { 'c', 13, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_315 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_315 = {
 	DFA::CharTransition { 'p', 14, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_316 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_316 = {
 	DFA::CharTransition { 'w', 15, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_317 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_317 = {
 	DFA::CharTransition { 'e', 16, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_318 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_318 = {
 	DFA::CharTransition { 'p', 17, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_319 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_319 = {
 	DFA::CharTransition { 'm', 18, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_320 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_320 = {
 	DFA::CharTransition { 'e', 12, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_321 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_321 = {
 	DFA::CharTransition { 'o', 19, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_322 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_322 = {
 	DFA::CharTransition { 'd', 20, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_323 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_323 = {
 	DFA::CharTransition { 'v', 26, 1 },
 	DFA::CharTransition { 'o', 25, 5 },
 	DFA::CharTransition { '\n', 21, 5 },
@@ -3389,34 +3389,34 @@
 	DFA::MultiTableTransition { dfa_span_17, 1, 5 },
 	DFA::CharTransition { '\f', 21, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_324 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_324 = {
 	DFA::CharTransition { 'r', 28, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_325 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_325 = {
 	DFA::CharTransition { 'u', 29, 4 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_326 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_326 = {
 	DFA::CharTransition { 't', 30, 2 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_327 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_327 = {
 	DFA::CharTransition { 'b', 31, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_328 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_328 = {
 	DFA::CharTransition { 'a', 30, 1 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_329 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_329 = {
 	DFA::CharTransition { 'o', 32, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_330 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_330 = {
 	DFA::CharTransition { 'r', 21, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_331 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_331 = {
 	DFA::CharTransition { 'j', 21, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_332 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_332 = {
 	DFA::CharTransition { 'o', 33, 0 }
 };
-::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_333 = {
+const ::Parser::DFA::MultiTableState<10> Parser::Lexer::dfa_state_333 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 24, 2 },
 	DFA::CharTransition { 'b', 27, 0 },
@@ -3428,7 +3428,7 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_334 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_334 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 24, 2 },
 	DFA::CharTransition { 'b', 27, 0 },
@@ -3442,7 +3442,7 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 37, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_335 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_335 = {
 	DFA::CharTransition { 't', 30, 2 },
 	DFA::CharTransition { 'p', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '7', 0, 0 },
@@ -3459,7 +3459,7 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_336 = {
+const ::Parser::DFA::MultiTableState<12> Parser::Lexer::dfa_state_336 = {
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 's', 40, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'b', 27, 0 },
@@ -3473,15 +3473,15 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_337 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_337 = {
 	DFA::CharTransition { 't', 30, 2 },
 	DFA::CharTransition { 'k', 6, 0 },
 	DFA::CharTransition { 'p', 5, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_338 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_338 = {
 	DFA::CharTransition { 'a', 37, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_339 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_339 = {
 	DFA::CharTransition { 's', 38, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 21, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -3496,7 +3496,7 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_340 = {
+const ::Parser::DFA::MultiTableState<13> Parser::Lexer::dfa_state_340 = {
 	DFA::CharTransition { 's', 45, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 21, 5 },
 	DFA::CharTransition { '7', 0, 0 },
@@ -3511,10 +3511,10 @@
 	DFA::CharTransition { 'n', 23, 4 },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_341 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_341 = {
 	DFA::CharTransition { 'b', 48, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_342 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_342 = {
 	DFA::CharTransition { 'u', 29, 4 },
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
@@ -3531,7 +3531,7 @@
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'b', 27, 0 }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_343 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_343 = {
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 38, ::Parser::DFA::null_state },
@@ -3548,7 +3548,7 @@
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'b', 27, 0 }
 };
-::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_344 = {
+const ::Parser::DFA::MultiTableState<14> Parser::Lexer::dfa_state_344 = {
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 52, ::Parser::DFA::null_state },
@@ -3564,7 +3564,7 @@
 	DFA::CharTransition { '7', 0, 0 },
 	DFA::CharTransition { 'b', 27, 0 }
 };
-::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_345 = {
+const ::Parser::DFA::MultiTableState<15> Parser::Lexer::dfa_state_345 = {
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'v', 60, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
@@ -3581,10 +3581,10 @@
 	DFA::CharTransition { '\f', 21, 5 },
 	DFA::CharTransition { 'b', 27, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_346 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_346 = {
 	DFA::CharTransition { 'b', 62, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_347 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_347 = {
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 66, ::Parser::DFA::null_state },
@@ -3602,10 +3602,10 @@
 	DFA::CharTransition { 'n', 71, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_348 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_348 = {
 	DFA::CharTransition { 'b', 70, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_349 = {
+const ::Parser::DFA::MultiTableState<16> Parser::Lexer::dfa_state_349 = {
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
 	DFA::CharTransition { 's', 38, ::Parser::DFA::null_state },
@@ -3623,14 +3623,14 @@
 	DFA::CharTransition { 'n', 49, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_350 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_350 = {
 	DFA::CharTransition { '\v', 21, 5 },
 	DFA::CharTransition { 'b', 43, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'o', 74, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'm', 2, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'n', 23, 4 }
 };
-::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_351 = {
+const ::Parser::DFA::MultiTableState<18> Parser::Lexer::dfa_state_351 = {
 	DFA::CharTransition { 'r', 28, 5 },
 	DFA::CharTransition { '\v', 44, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 34, ::Parser::DFA::null_state },
@@ -3650,7 +3650,7 @@
 	DFA::CharTransition { 'n', 49, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'a', 22, 5 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_352 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_352 = {
 	DFA::CharTransition { 'b', 8, 0 },
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
@@ -3721,42 +3721,42 @@
 	DFA::CharTransition { 'P', 8, 0 },
 	DFA::CharTransition { '7', 8, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_353 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_353 = {
 	DFA::CharTransition { 'r', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_354 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_354 = {
 	DFA::CharTransition { 'a', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_355 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_355 = {
 	DFA::CharTransition { 'u', 5, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_356 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_356 = {
 	DFA::CharTransition { 'l', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_357 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_357 = {
 	DFA::CharTransition { 'e', 7, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_358 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_358 = {
 	DFA::CharTransition { ' ', 8, 0 },
 	DFA::CharTransition { 'f', 2, 0 },
 	DFA::CharTransition { 't', 1, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_359 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_359 = {
 	DFA::CharTransition { '_', 8, 0 },
 	DFA::CharTransition { 'r', 3, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_360 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_360 = {
 	DFA::CharTransition { '_', 8, 0 },
 	DFA::CharTransition { 'a', 4, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_361 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_361 = {
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
 	DFA::CharTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 0, 0 }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_362 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_362 = {
 	DFA::CharTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
 	DFA::CharTransition { 't', 10, ::Parser::DFA::null_state },
@@ -3764,7 +3764,7 @@
 	DFA::CharTransition { ' ', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_363 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_363 = {
 	DFA::CharTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 13, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
@@ -3773,7 +3773,7 @@
 	DFA::CharTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_364 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_364 = {
 	DFA::CharTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 8, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
@@ -3783,7 +3783,7 @@
 	DFA::CharTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 14, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_365 = {
+const ::Parser::DFA::CharTableState<9> Parser::Lexer::dfa_state_365 = {
 	DFA::CharTransition { 'f', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { 't', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 15, ::Parser::DFA::null_state },
@@ -3794,7 +3794,7 @@
 	DFA::CharTransition { '\t', 14, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_366 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_366 = {
 	DFA::CharTransition { 'b', 4, 0 },
 	DFA::CharTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'c', 4, 0 },
@@ -3865,13 +3865,13 @@
 	DFA::CharTransition { 'P', 4, 0 },
 	DFA::CharTransition { '7', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_367 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_367 = {
 	DFA::CharTransition { 's', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_368 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_368 = {
 	DFA::CharTransition { 'e', 3, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_369 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_369 = {
 	DFA::CharTransition { '_', 4, 0 },
 	DFA::CharTransition { 'a', 4, 0 },
 	DFA::CharTransition { 'b', 4, 0 },
@@ -3942,29 +3942,29 @@
 	DFA::CharTransition { 'P', 4, 0 },
 	DFA::CharTransition { '7', 4, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_370 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_370 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 1, 0 },
 	DFA::CharTransition { ' ', 0, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_371 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_371 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 1, 0 },
 	DFA::CharTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 0, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_372 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_372 = {
 	DFA::CharTransition { '_', 4, 0 },
 	DFA::CharTransition { 's', 2, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_373 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_373 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\n', 6, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_374 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_374 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 8, ::Parser::DFA::null_state },
@@ -3972,7 +3972,7 @@
 	DFA::CharTransition { ' ', 5, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_375 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_375 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 8, ::Parser::DFA::null_state },
@@ -3981,7 +3981,7 @@
 	DFA::CharTransition { '\t', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 0, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_376 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_376 = {
 	DFA::CharTransition { 'h', 4, 0 },
 	DFA::CharTransition { 'u', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 8, ::Parser::DFA::null_state },
@@ -3991,7 +3991,7 @@
 	DFA::CharTransition { '\v', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_377 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_377 = {
 	DFA::CharTransition { 'f', 6, 0 },
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { '_', 6, 0 },
@@ -4062,19 +4062,19 @@
 	DFA::CharTransition { 'P', 6, 0 },
 	DFA::CharTransition { '7', 6, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_378 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_378 = {
 	DFA::CharTransition { 'h', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_379 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_379 = {
 	DFA::CharTransition { 'i', 3, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_380 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_380 = {
 	DFA::CharTransition { 'l', 4, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_381 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_381 = {
 	DFA::CharTransition { 'e', 5, 0 }
 };
-::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_382 = {
+const ::Parser::DFA::CharTableState<69> Parser::Lexer::dfa_state_382 = {
 	DFA::CharTransition { '_', 6, 0 },
 	DFA::CharTransition { 'a', 6, 0 },
 	DFA::CharTransition { 'b', 6, 0 },
@@ -4145,29 +4145,29 @@
 	DFA::CharTransition { 'P', 6, 0 },
 	DFA::CharTransition { '7', 6, 0 }
 };
-::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_383 = {
+const ::Parser::DFA::CharTableState<3> Parser::Lexer::dfa_state_383 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { ' ', 0, 0 },
 	DFA::CharTransition { 'w', 1, 0 }
 };
-::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_384 = {
+const ::Parser::DFA::CharTableState<4> Parser::Lexer::dfa_state_384 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 0, 0 },
 	DFA::CharTransition { 'w', 1, 0 }
 };
-::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_385 = {
+const ::Parser::DFA::CharTableState<2> Parser::Lexer::dfa_state_385 = {
 	DFA::CharTransition { '_', 6, 0 },
 	DFA::CharTransition { 'h', 2, 0 }
 };
-::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_386 = {
+const ::Parser::DFA::CharTableState<5> Parser::Lexer::dfa_state_386 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { ' ', 7, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
 	DFA::CharTransition { 'w', 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_387 = {
+const ::Parser::DFA::CharTableState<6> Parser::Lexer::dfa_state_387 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\n', 8, ::Parser::DFA::null_state },
@@ -4175,7 +4175,7 @@
 	DFA::CharTransition { 'w', 9, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\t', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_388 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_388 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 7, ::Parser::DFA::null_state },
@@ -4184,7 +4184,7 @@
 	DFA::CharTransition { '\t', 11, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 0, 0 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_389 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_389 = {
 	DFA::CharTransition { 'h', 6, 0 },
 	DFA::CharTransition { '\f', 10, ::Parser::DFA::null_state },
 	DFA::CharTransition { ' ', 7, ::Parser::DFA::null_state },
@@ -4194,7 +4194,7 @@
 	DFA::CharTransition { '\v', 12, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\r', 0, 0 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_390 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_390 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\n', 0, 0 },
@@ -4203,7 +4203,7 @@
 	DFA::CharTransition { '\r', 0, 0 },
 	DFA::CharTransition { '{', 1, 0 }
 };
-::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_391 = {
+const ::Parser::DFA::MultiTableState<11> Parser::Lexer::dfa_state_391 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
@@ -4216,7 +4216,7 @@
 	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::MultiTableTransition { dfa_span_26, 1, 1 }
 };
-::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_392 = {
+const ::Parser::DFA::CharTableState<8> Parser::Lexer::dfa_state_392 = {
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 },
 	DFA::CharTransition { '\t', 2, 0 },
@@ -4226,31 +4226,31 @@
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { '\f', 2, 0 }
 };
-::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_393 = {
+const ::Parser::DFA::CharTableState<1> Parser::Lexer::dfa_state_393 = {
 	DFA::CharTransition { 'r', 1, 1 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_394 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_394 = {
 	DFA::MultiTableTransition { dfa_span_26, 1, 1 },
 	DFA::CharTableTransition { dfa_span_0, 5, 1 }
 };
-::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_395 = {
+const ::Parser::DFA::MultiTableState<4> Parser::Lexer::dfa_state_395 = {
 	DFA::CharTransition { '\f', 2, 0 },
 	DFA::CharTableTransition { dfa_span_0, 5, 1 },
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 }
 };
-::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_396 = {
+const ::Parser::DFA::MultiTableState<5> Parser::Lexer::dfa_state_396 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 2, 0 },
 	DFA::CharTransition { 'o', 3, 1 },
 	DFA::CharTableTransition { dfa_span_0, 5, 1 },
 	DFA::CharTransition { '|', 4, 0 }
 };
-::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_397 = {
+const ::Parser::DFA::MultiTableState<2> Parser::Lexer::dfa_state_397 = {
 	DFA::MultiTableTransition { dfa_span_38, 1, 0 },
 	DFA::CharTableTransition { dfa_span_0, 9, ::Parser::DFA::null_state }
 };
-::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_398 = {
+const ::Parser::DFA::MultiTableState<6> Parser::Lexer::dfa_state_398 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
@@ -4258,7 +4258,7 @@
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 }
 };
-::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_399 = {
+const ::Parser::DFA::MultiTableState<7> Parser::Lexer::dfa_state_399 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
@@ -4267,7 +4267,7 @@
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 }
 };
-::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_400 = {
+const ::Parser::DFA::MultiTableState<8> Parser::Lexer::dfa_state_400 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
@@ -4277,7 +4277,7 @@
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 }
 };
-::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_401 = {
+const ::Parser::DFA::MultiTableState<9> Parser::Lexer::dfa_state_401 = {
 	DFA::CharTransition { '\f', 6, ::Parser::DFA::null_state },
 	DFA::CharTransition { '\v', 7, ::Parser::DFA::null_state },
 	DFA::CharTableTransition { dfa_span_0, 8, ::Parser::DFA::null_state },
@@ -4288,7 +4288,7 @@
 	DFA::CharTransition { '|', 4, 0 },
 	DFA::CharTransition { 'o', 3, 1 }
 };
-::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_402 = {
+const ::Parser::DFA::CharTableState<7> Parser::Lexer::dfa_state_402 = {
 	DFA::CharTransition { '\f', 0, 0 },
 	DFA::CharTransition { '\v', 0, 0 },
 	DFA::CharTransition { '\r', 0, 0 },
@@ -4298,1085 +4298,1142 @@
 	DFA::CharTransition { '}', 1, 0 }
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_0 = {
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_0.data(), dfa_state_0.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_0.data(), dfa_state_0.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<15> Parser::Lexer::dfa_table_1 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_2.data(), dfa_state_2.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_5.data(), dfa_state_5.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_7.data(), dfa_state_7.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_8.data(), dfa_state_8.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_9.data(), dfa_state_9.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_10.data(), dfa_state_10.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_11.data(), dfa_state_11.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_12.data(), dfa_state_12.size()}	},
-	DFA::SpanCharTableState{ 2, 1, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 2, 5, {dfa_state_6.data(), dfa_state_6.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_2.data(), dfa_state_2.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_5.data(), dfa_state_5.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_7.data(), dfa_state_7.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_8.data(), dfa_state_8.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_9.data(), dfa_state_9.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_10.data(), dfa_state_10.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_11.data(), dfa_state_11.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_12.data(), dfa_state_12.size()}},
+	DFA::SpanCharTableState{ 2, 1, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 2, 5, {dfa_state_6.data(), dfa_state_6.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_2 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_13.data(), dfa_state_13.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_13.data(), dfa_state_13.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_3 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_14.data(), dfa_state_14.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_14.data(), dfa_state_14.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<10> Parser::Lexer::dfa_table_4 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_15.data(), dfa_state_15.size()}	},
-	DFA::SpanMultiTableState{ 4, 0, {dfa_state_16.data(), dfa_state_16.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_17.data(), dfa_state_17.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_18.data(), dfa_state_18.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_19.data(), dfa_state_19.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_20.data(), dfa_state_20.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_21.data(), dfa_state_21.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_22.data(), dfa_state_22.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_15.data(), dfa_state_15.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 4, 0, {dfa_state_16.data(), dfa_state_16.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_17.data(), dfa_state_17.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_18.data(), dfa_state_18.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_19.data(), dfa_state_19.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_20.data(), dfa_state_20.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_21.data(), dfa_state_21.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_22.data(), dfa_state_22.size()}},
+	DFA::SpanEmptyTableState{},
 };
 const ::Parser::DFA::MultiTable<16> Parser::Lexer::dfa_table_5 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_23.data(), dfa_state_23.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_24.data(), dfa_state_24.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_25.data(), dfa_state_25.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_28.data(), dfa_state_28.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_29.data(), dfa_state_29.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_30.data(), dfa_state_30.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_31.data(), dfa_state_31.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_32.data(), dfa_state_32.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_33.data(), dfa_state_33.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_34.data(), dfa_state_34.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_35.data(), dfa_state_35.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_26.data(), dfa_state_26.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_23.data(), dfa_state_23.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_24.data(), dfa_state_24.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_25.data(), dfa_state_25.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_28.data(), dfa_state_28.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_29.data(), dfa_state_29.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_30.data(), dfa_state_30.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_31.data(), dfa_state_31.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_32.data(), dfa_state_32.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_33.data(), dfa_state_33.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_34.data(), dfa_state_34.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_35.data(), dfa_state_35.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_26.data(), dfa_state_26.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_6 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_36.data(), dfa_state_36.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_36.data(), dfa_state_36.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_7 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_37.data(), dfa_state_37.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_37.data(), dfa_state_37.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<10> Parser::Lexer::dfa_table_8 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_38.data(), dfa_state_38.size()}	},
-	DFA::SpanMultiTableState{ 4, 0, {dfa_state_16.data(), dfa_state_16.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_39.data(), dfa_state_39.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_40.data(), dfa_state_40.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_41.data(), dfa_state_41.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_42.data(), dfa_state_42.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_43.data(), dfa_state_43.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_44.data(), dfa_state_44.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_38.data(), dfa_state_38.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 4, 0, {dfa_state_16.data(), dfa_state_16.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_39.data(), dfa_state_39.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_40.data(), dfa_state_40.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_41.data(), dfa_state_41.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_42.data(), dfa_state_42.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_43.data(), dfa_state_43.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_44.data(), dfa_state_44.size()}},
+	DFA::SpanEmptyTableState{},
 };
 const ::Parser::DFA::MultiTable<24> Parser::Lexer::dfa_table_9 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_45.data(), dfa_state_45.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_46.data(), dfa_state_46.size()}	},
-	DFA::SpanCharTableState{ 4, 0, {dfa_state_47.data(), dfa_state_47.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_48.data(), dfa_state_48.size()}	},
-	DFA::SpanMultiTableState{ 9, 0, {dfa_state_49.data(), dfa_state_49.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_50.data(), dfa_state_50.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_51.data(), dfa_state_51.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_53.data(), dfa_state_53.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_54.data(), dfa_state_54.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_55.data(), dfa_state_55.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_56.data(), dfa_state_56.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_46.data(), dfa_state_46.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_45.data(), dfa_state_45.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_46.data(), dfa_state_46.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 4, 0, {dfa_state_47.data(), dfa_state_47.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_48.data(), dfa_state_48.size()}},
+	DFA::SpanMultiTableState{ 9, 0, {dfa_state_49.data(), dfa_state_49.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_50.data(), dfa_state_50.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_51.data(), dfa_state_51.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_53.data(), dfa_state_53.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_54.data(), dfa_state_54.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_55.data(), dfa_state_55.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_56.data(), dfa_state_56.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_46.data(), dfa_state_46.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_10 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_57.data(), dfa_state_57.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<24> Parser::Lexer::dfa_table_11 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_58.data(), dfa_state_58.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_59.data(), dfa_state_59.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_60.data(), dfa_state_60.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_61.data(), dfa_state_61.size()}	},
-	DFA::SpanMultiTableState{ 10, 0, {dfa_state_62.data(), dfa_state_62.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_63.data(), dfa_state_63.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_65.data(), dfa_state_65.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_66.data(), dfa_state_66.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_67.data(), dfa_state_67.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_68.data(), dfa_state_68.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_69.data(), dfa_state_69.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_70.data(), dfa_state_70.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_58.data(), dfa_state_58.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_59.data(), dfa_state_59.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
+	DFA::SpanMultiTableState{ 10, 0, {dfa_state_62.data(), dfa_state_62.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_63.data(), dfa_state_63.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_65.data(), dfa_state_65.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_66.data(), dfa_state_66.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_67.data(), dfa_state_67.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_68.data(), dfa_state_68.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_69.data(), dfa_state_69.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_70.data(), dfa_state_70.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_64.data(), dfa_state_64.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_12 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_71.data(), dfa_state_71.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_71.data(), dfa_state_71.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<10> Parser::Lexer::dfa_table_13 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_72.data(), dfa_state_72.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_73.data(), dfa_state_73.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_74.data(), dfa_state_74.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_75.data(), dfa_state_75.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_76.data(), dfa_state_76.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_77.data(), dfa_state_77.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_78.data(), dfa_state_78.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_79.data(), dfa_state_79.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_80.data(), dfa_state_80.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_72.data(), dfa_state_72.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_73.data(), dfa_state_73.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_74.data(), dfa_state_74.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_75.data(), dfa_state_75.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_76.data(), dfa_state_76.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_77.data(), dfa_state_77.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_78.data(), dfa_state_78.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_79.data(), dfa_state_79.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_80.data(), dfa_state_80.size()}},
 };
 const ::Parser::DFA::CharTable<14> Parser::Lexer::dfa_table_14 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_81.data(), dfa_state_81.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_83.data(), dfa_state_83.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_84.data(), dfa_state_84.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_85.data(), dfa_state_85.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_86.data(), dfa_state_86.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_87.data(), dfa_state_87.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_88.data(), dfa_state_88.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_89.data(), dfa_state_89.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_90.data(), dfa_state_90.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_91.data(), dfa_state_91.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_92.data(), dfa_state_92.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_93.data(), dfa_state_93.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_81.data(), dfa_state_81.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_83.data(), dfa_state_83.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_84.data(), dfa_state_84.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_86.data(), dfa_state_86.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_88.data(), dfa_state_88.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_89.data(), dfa_state_89.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_90.data(), dfa_state_90.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_91.data(), dfa_state_91.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_92.data(), dfa_state_92.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_93.data(), dfa_state_93.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_15 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_94.data(), dfa_state_94.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_94.data(), dfa_state_94.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_16 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_95.data(), dfa_state_95.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_95.data(), dfa_state_95.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<13> Parser::Lexer::dfa_table_17 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_96.data(), dfa_state_96.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanMultiTableState{ 7, 0, {dfa_state_97.data(), dfa_state_97.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_98.data(), dfa_state_98.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_99.data(), dfa_state_99.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_100.data(), dfa_state_100.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_101.data(), dfa_state_101.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_102.data(), dfa_state_102.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_103.data(), dfa_state_103.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanMultiTableState{ 2, 0, {dfa_state_104.data(), dfa_state_104.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_96.data(), dfa_state_96.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 7, 0, {dfa_state_97.data(), dfa_state_97.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_98.data(), dfa_state_98.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_99.data(), dfa_state_99.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_100.data(), dfa_state_100.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_101.data(), dfa_state_101.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_102.data(), dfa_state_102.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_103.data(), dfa_state_103.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanMultiTableState{ 2, 0, {dfa_state_104.data(), dfa_state_104.size()}},
 };
 const ::Parser::DFA::CharTable<13> Parser::Lexer::dfa_table_18 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_105.data(), dfa_state_105.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_106.data(), dfa_state_106.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_107.data(), dfa_state_107.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_108.data(), dfa_state_108.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_109.data(), dfa_state_109.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_110.data(), dfa_state_110.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_111.data(), dfa_state_111.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_112.data(), dfa_state_112.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_113.data(), dfa_state_113.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_107.data(), dfa_state_107.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_107.data(), dfa_state_107.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_107.data(), dfa_state_107.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_106.data(), dfa_state_106.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_107.data(), dfa_state_107.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_108.data(), dfa_state_108.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_109.data(), dfa_state_109.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_110.data(), dfa_state_110.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_111.data(), dfa_state_111.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_112.data(), dfa_state_112.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_113.data(), dfa_state_113.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_107.data(), dfa_state_107.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_107.data(), dfa_state_107.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_107.data(), dfa_state_107.size()}},
 };
 const ::Parser::DFA::CharTable<5> Parser::Lexer::dfa_table_19 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_114.data(), dfa_state_114.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 2, 5, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_114.data(), dfa_state_114.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 2, 5, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_20 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_115.data(), dfa_state_115.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_21 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_116.data(), dfa_state_116.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_116.data(), dfa_state_116.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_22 = {
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_117.data(), dfa_state_117.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_117.data(), dfa_state_117.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<10> Parser::Lexer::dfa_table_23 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_118.data(), dfa_state_118.size()}	},
-	DFA::SpanMultiTableState{ 3, 0, {dfa_state_119.data(), dfa_state_119.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_120.data(), dfa_state_120.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_121.data(), dfa_state_121.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_122.data(), dfa_state_122.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_123.data(), dfa_state_123.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_124.data(), dfa_state_124.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_125.data(), dfa_state_125.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_118.data(), dfa_state_118.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 3, 0, {dfa_state_119.data(), dfa_state_119.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_120.data(), dfa_state_120.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_121.data(), dfa_state_121.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_122.data(), dfa_state_122.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_123.data(), dfa_state_123.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_124.data(), dfa_state_124.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_125.data(), dfa_state_125.size()}},
+	DFA::SpanEmptyTableState{},
 };
 const ::Parser::DFA::MultiTable<28> Parser::Lexer::dfa_table_24 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_126.data(), dfa_state_126.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_127.data(), dfa_state_127.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_130.data(), dfa_state_130.size()}	},
-	DFA::SpanCharTableState{ 8, 0, {dfa_state_131.data(), dfa_state_131.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_132.data(), dfa_state_132.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_133.data(), dfa_state_133.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_134.data(), dfa_state_134.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_135.data(), dfa_state_135.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_136.data(), dfa_state_136.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_137.data(), dfa_state_137.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_138.data(), dfa_state_138.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_139.data(), dfa_state_139.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_126.data(), dfa_state_126.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_130.data(), dfa_state_130.size()}},
+	DFA::SpanCharTableState{ 8, 0, {dfa_state_131.data(), dfa_state_131.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_132.data(), dfa_state_132.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_133.data(), dfa_state_133.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_134.data(), dfa_state_134.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_135.data(), dfa_state_135.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_136.data(), dfa_state_136.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_138.data(), dfa_state_138.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_139.data(), dfa_state_139.size()}},
 };
 const ::Parser::DFA::MultiTable<11> Parser::Lexer::dfa_table_25 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_140.data(), dfa_state_140.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_142.data(), dfa_state_142.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_143.data(), dfa_state_143.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_144.data(), dfa_state_144.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_145.data(), dfa_state_145.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_146.data(), dfa_state_146.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_147.data(), dfa_state_147.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_148.data(), dfa_state_148.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_140.data(), dfa_state_140.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_142.data(), dfa_state_142.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_143.data(), dfa_state_143.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_144.data(), dfa_state_144.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_145.data(), dfa_state_145.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_146.data(), dfa_state_146.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_147.data(), dfa_state_147.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_148.data(), dfa_state_148.size()}},
+	DFA::SpanEmptyTableState{},
 };
 const ::Parser::DFA::MultiTable<63> Parser::Lexer::dfa_table_26 = {
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_149.data(), dfa_state_149.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}	},
-	DFA::SpanMultiTableState{ 1, 5, {dfa_state_164.data(), dfa_state_164.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_166.data(), dfa_state_166.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_167.data(), dfa_state_167.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_168.data(), dfa_state_168.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_170.data(), dfa_state_170.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_171.data(), dfa_state_171.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_173.data(), dfa_state_173.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_174.data(), dfa_state_174.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_175.data(), dfa_state_175.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_177.data(), dfa_state_177.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_178.data(), dfa_state_178.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_180.data(), dfa_state_180.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_181.data(), dfa_state_181.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_184.data(), dfa_state_184.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_186.data(), dfa_state_186.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_187.data(), dfa_state_187.size()}	},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_149.data(), dfa_state_149.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
+	DFA::SpanMultiTableState{ 1, 5, {dfa_state_164.data(), dfa_state_164.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_166.data(), dfa_state_166.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_167.data(), dfa_state_167.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_168.data(), dfa_state_168.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_170.data(), dfa_state_170.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_171.data(), dfa_state_171.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_173.data(), dfa_state_173.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_174.data(), dfa_state_174.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_175.data(), dfa_state_175.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_177.data(), dfa_state_177.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_178.data(), dfa_state_178.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_180.data(), dfa_state_180.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_181.data(), dfa_state_181.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_184.data(), dfa_state_184.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_186.data(), dfa_state_186.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_187.data(), dfa_state_187.size()}},
 };
 const ::Parser::DFA::MultiTable<59> Parser::Lexer::dfa_table_27 = {
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_188.data(), dfa_state_188.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_189.data(), dfa_state_189.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_190.data(), dfa_state_190.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_191.data(), dfa_state_191.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_193.data(), dfa_state_193.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_194.data(), dfa_state_194.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_196.data(), dfa_state_196.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_197.data(), dfa_state_197.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanMultiTableState{ 1, 5, {dfa_state_198.data(), dfa_state_198.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_199.data(), dfa_state_199.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_200.data(), dfa_state_200.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_201.data(), dfa_state_201.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_202.data(), dfa_state_202.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_204.data(), dfa_state_204.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_205.data(), dfa_state_205.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_206.data(), dfa_state_206.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_207.data(), dfa_state_207.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_208.data(), dfa_state_208.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_209.data(), dfa_state_209.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_210.data(), dfa_state_210.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_212.data(), dfa_state_212.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_213.data(), dfa_state_213.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_215.data(), dfa_state_215.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_216.data(), dfa_state_216.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_217.data(), dfa_state_217.size()}	},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_188.data(), dfa_state_188.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_189.data(), dfa_state_189.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_190.data(), dfa_state_190.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_191.data(), dfa_state_191.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_193.data(), dfa_state_193.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_194.data(), dfa_state_194.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_196.data(), dfa_state_196.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_197.data(), dfa_state_197.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanMultiTableState{ 1, 5, {dfa_state_198.data(), dfa_state_198.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_199.data(), dfa_state_199.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_200.data(), dfa_state_200.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_201.data(), dfa_state_201.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_202.data(), dfa_state_202.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_204.data(), dfa_state_204.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_205.data(), dfa_state_205.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_206.data(), dfa_state_206.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_207.data(), dfa_state_207.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_208.data(), dfa_state_208.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_209.data(), dfa_state_209.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_210.data(), dfa_state_210.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_212.data(), dfa_state_212.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_213.data(), dfa_state_213.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_191.data(), dfa_state_191.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_215.data(), dfa_state_215.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_216.data(), dfa_state_216.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_217.data(), dfa_state_217.size()}},
 };
 const ::Parser::DFA::CharTable<30> Parser::Lexer::dfa_table_28 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_218.data(), dfa_state_218.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_219.data(), dfa_state_219.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_221.data(), dfa_state_221.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_222.data(), dfa_state_222.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_223.data(), dfa_state_223.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_224.data(), dfa_state_224.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_225.data(), dfa_state_225.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_229.data(), dfa_state_229.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_230.data(), dfa_state_230.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_231.data(), dfa_state_231.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_232.data(), dfa_state_232.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_234.data(), dfa_state_234.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_235.data(), dfa_state_235.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_236.data(), dfa_state_236.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_237.data(), dfa_state_237.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_238.data(), dfa_state_238.size()}	},
-	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_218.data(), dfa_state_218.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_219.data(), dfa_state_219.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_221.data(), dfa_state_221.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_222.data(), dfa_state_222.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_223.data(), dfa_state_223.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_224.data(), dfa_state_224.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_225.data(), dfa_state_225.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_229.data(), dfa_state_229.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_230.data(), dfa_state_230.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_231.data(), dfa_state_231.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_232.data(), dfa_state_232.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_234.data(), dfa_state_234.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_235.data(), dfa_state_235.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_236.data(), dfa_state_236.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_237.data(), dfa_state_237.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_238.data(), dfa_state_238.size()}},
+	DFA::SpanCharTableState{ 2, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanCharTableState{ 2, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
 };
 const ::Parser::DFA::CharTable<21> Parser::Lexer::dfa_table_29 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_239.data(), dfa_state_239.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_241.data(), dfa_state_241.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_242.data(), dfa_state_242.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_243.data(), dfa_state_243.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_244.data(), dfa_state_244.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_245.data(), dfa_state_245.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_246.data(), dfa_state_246.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_247.data(), dfa_state_247.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_248.data(), dfa_state_248.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_250.data(), dfa_state_250.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_251.data(), dfa_state_251.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_252.data(), dfa_state_252.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_253.data(), dfa_state_253.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_239.data(), dfa_state_239.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_241.data(), dfa_state_241.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_242.data(), dfa_state_242.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_243.data(), dfa_state_243.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_244.data(), dfa_state_244.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_245.data(), dfa_state_245.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_246.data(), dfa_state_246.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_247.data(), dfa_state_247.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_248.data(), dfa_state_248.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_250.data(), dfa_state_250.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_251.data(), dfa_state_251.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_252.data(), dfa_state_252.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_253.data(), dfa_state_253.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_249.data(), dfa_state_249.size()}},
 };
 const ::Parser::DFA::CharTable<15> Parser::Lexer::dfa_table_30 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_254.data(), dfa_state_254.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_255.data(), dfa_state_255.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_256.data(), dfa_state_256.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_257.data(), dfa_state_257.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_258.data(), dfa_state_258.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_259.data(), dfa_state_259.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_260.data(), dfa_state_260.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_261.data(), dfa_state_261.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_262.data(), dfa_state_262.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_263.data(), dfa_state_263.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_264.data(), dfa_state_264.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_265.data(), dfa_state_265.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_266.data(), dfa_state_266.size()}	},
-	DFA::SpanCharTableState{ 6, 0, {dfa_state_267.data(), dfa_state_267.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_254.data(), dfa_state_254.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_255.data(), dfa_state_255.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_256.data(), dfa_state_256.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_257.data(), dfa_state_257.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_258.data(), dfa_state_258.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_259.data(), dfa_state_259.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_260.data(), dfa_state_260.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_261.data(), dfa_state_261.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_262.data(), dfa_state_262.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_263.data(), dfa_state_263.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_264.data(), dfa_state_264.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_265.data(), dfa_state_265.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_266.data(), dfa_state_266.size()}},
+	DFA::SpanCharTableState{ 6, 0, {dfa_state_267.data(), dfa_state_267.size()}},
 };
 const ::Parser::DFA::MultiTable<62> Parser::Lexer::dfa_table_31 = {
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_268.data(), dfa_state_268.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanMultiTableState{ 1, 5, {dfa_state_270.data(), dfa_state_270.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_271.data(), dfa_state_271.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_272.data(), dfa_state_272.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_273.data(), dfa_state_273.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_275.data(), dfa_state_275.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_276.data(), dfa_state_276.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_277.data(), dfa_state_277.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_278.data(), dfa_state_278.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_279.data(), dfa_state_279.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_281.data(), dfa_state_281.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_282.data(), dfa_state_282.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_283.data(), dfa_state_283.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_284.data(), dfa_state_284.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_285.data(), dfa_state_285.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_286.data(), dfa_state_286.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_287.data(), dfa_state_287.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_288.data(), dfa_state_288.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_289.data(), dfa_state_289.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_290.data(), dfa_state_290.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_291.data(), dfa_state_291.size()}	},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_268.data(), dfa_state_268.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanMultiTableState{ 1, 5, {dfa_state_270.data(), dfa_state_270.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_271.data(), dfa_state_271.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_272.data(), dfa_state_272.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_273.data(), dfa_state_273.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_275.data(), dfa_state_275.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_276.data(), dfa_state_276.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_277.data(), dfa_state_277.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_278.data(), dfa_state_278.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_279.data(), dfa_state_279.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_281.data(), dfa_state_281.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_282.data(), dfa_state_282.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_283.data(), dfa_state_283.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_284.data(), dfa_state_284.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_285.data(), dfa_state_285.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_286.data(), dfa_state_286.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_287.data(), dfa_state_287.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_288.data(), dfa_state_288.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_289.data(), dfa_state_289.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_290.data(), dfa_state_290.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_291.data(), dfa_state_291.size()}},
 };
 const ::Parser::DFA::MultiTable<62> Parser::Lexer::dfa_table_32 = {
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_292.data(), dfa_state_292.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_293.data(), dfa_state_293.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}	},
-	DFA::SpanMultiTableState{ 1, 5, {dfa_state_294.data(), dfa_state_294.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_295.data(), dfa_state_295.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_296.data(), dfa_state_296.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_297.data(), dfa_state_297.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 1, 1, {dfa_state_298.data(), dfa_state_298.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_299.data(), dfa_state_299.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_173.data(), dfa_state_173.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_300.data(), dfa_state_300.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_301.data(), dfa_state_301.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_177.data(), dfa_state_177.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_302.data(), dfa_state_302.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_180.data(), dfa_state_180.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_303.data(), dfa_state_303.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_183.data(), dfa_state_183.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_304.data(), dfa_state_304.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_305.data(), dfa_state_305.size()}	},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_292.data(), dfa_state_292.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_293.data(), dfa_state_293.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_157.data(), dfa_state_157.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
+	DFA::SpanMultiTableState{ 1, 5, {dfa_state_294.data(), dfa_state_294.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_295.data(), dfa_state_295.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_296.data(), dfa_state_296.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_297.data(), dfa_state_297.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 1, 1, {dfa_state_298.data(), dfa_state_298.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_299.data(), dfa_state_299.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_173.data(), dfa_state_173.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_300.data(), dfa_state_300.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_301.data(), dfa_state_301.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_177.data(), dfa_state_177.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_302.data(), dfa_state_302.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_180.data(), dfa_state_180.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_303.data(), dfa_state_303.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_183.data(), dfa_state_183.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_304.data(), dfa_state_304.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_305.data(), dfa_state_305.size()}},
 };
 const ::Parser::DFA::MultiTable<76> Parser::Lexer::dfa_table_33 = {
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_306.data(), dfa_state_306.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_308.data(), dfa_state_308.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_309.data(), dfa_state_309.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_310.data(), dfa_state_310.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_311.data(), dfa_state_311.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_312.data(), dfa_state_312.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_313.data(), dfa_state_313.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_314.data(), dfa_state_314.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_315.data(), dfa_state_315.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_316.data(), dfa_state_316.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_317.data(), dfa_state_317.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_318.data(), dfa_state_318.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_313.data(), dfa_state_313.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_319.data(), dfa_state_319.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_320.data(), dfa_state_320.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_321.data(), dfa_state_321.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_322.data(), dfa_state_322.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_323.data(), dfa_state_323.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_324.data(), dfa_state_324.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_325.data(), dfa_state_325.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_326.data(), dfa_state_326.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_327.data(), dfa_state_327.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_328.data(), dfa_state_328.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_330.data(), dfa_state_330.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_331.data(), dfa_state_331.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_332.data(), dfa_state_332.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanMultiTableState{ 1, 5, {dfa_state_333.data(), dfa_state_333.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_334.data(), dfa_state_334.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_324.data(), dfa_state_324.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_335.data(), dfa_state_335.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_336.data(), dfa_state_336.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_339.data(), dfa_state_339.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_340.data(), dfa_state_340.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_341.data(), dfa_state_341.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_342.data(), dfa_state_342.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_343.data(), dfa_state_343.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_344.data(), dfa_state_344.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_345.data(), dfa_state_345.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_346.data(), dfa_state_346.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_347.data(), dfa_state_347.size()}	},
-	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}	},
-	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}	},
-	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_348.data(), dfa_state_348.size()}	},
-	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}	},
-	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_349.data(), dfa_state_349.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_350.data(), dfa_state_350.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_327.data(), dfa_state_327.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_351.data(), dfa_state_351.size()}	},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_306.data(), dfa_state_306.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_308.data(), dfa_state_308.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_309.data(), dfa_state_309.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_310.data(), dfa_state_310.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_311.data(), dfa_state_311.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_312.data(), dfa_state_312.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_313.data(), dfa_state_313.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_314.data(), dfa_state_314.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_315.data(), dfa_state_315.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_316.data(), dfa_state_316.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_317.data(), dfa_state_317.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_318.data(), dfa_state_318.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_313.data(), dfa_state_313.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_319.data(), dfa_state_319.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_320.data(), dfa_state_320.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_321.data(), dfa_state_321.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_322.data(), dfa_state_322.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_323.data(), dfa_state_323.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_324.data(), dfa_state_324.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_325.data(), dfa_state_325.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_326.data(), dfa_state_326.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_327.data(), dfa_state_327.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_328.data(), dfa_state_328.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_330.data(), dfa_state_330.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_331.data(), dfa_state_331.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_332.data(), dfa_state_332.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanMultiTableState{ 1, 5, {dfa_state_333.data(), dfa_state_333.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_334.data(), dfa_state_334.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_324.data(), dfa_state_324.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_335.data(), dfa_state_335.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_336.data(), dfa_state_336.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_339.data(), dfa_state_339.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_340.data(), dfa_state_340.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_341.data(), dfa_state_341.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_342.data(), dfa_state_342.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_343.data(), dfa_state_343.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_344.data(), dfa_state_344.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_345.data(), dfa_state_345.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_346.data(), dfa_state_346.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_347.data(), dfa_state_347.size()}},
+	DFA::SpanCharTableState{ 1, 2, {dfa_state_337.data(), dfa_state_337.size()}},
+	DFA::SpanCharTableState{ 1, ::Parser::DFA::null_state, {dfa_state_307.data(), dfa_state_307.size()}},
+	DFA::SpanCharTableState{ 1, 1, {dfa_state_338.data(), dfa_state_338.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_348.data(), dfa_state_348.size()}},
+	DFA::SpanCharTableState{ 1, 5, {dfa_state_329.data(), dfa_state_329.size()}},
+	DFA::SpanCharTableState{ 1, 4, {dfa_state_325.data(), dfa_state_325.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_349.data(), dfa_state_349.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_350.data(), dfa_state_350.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_327.data(), dfa_state_327.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_351.data(), dfa_state_351.size()}},
 };
 const ::Parser::DFA::CharTable<17> Parser::Lexer::dfa_table_34 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_352.data(), dfa_state_352.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_353.data(), dfa_state_353.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_354.data(), dfa_state_354.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_355.data(), dfa_state_355.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_356.data(), dfa_state_356.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_357.data(), dfa_state_357.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_245.data(), dfa_state_245.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_358.data(), dfa_state_358.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_359.data(), dfa_state_359.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_360.data(), dfa_state_360.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_361.data(), dfa_state_361.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_362.data(), dfa_state_362.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_363.data(), dfa_state_363.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_364.data(), dfa_state_364.size()}	},
-	DFA::SpanCharTableState{ 7, 0, {dfa_state_365.data(), dfa_state_365.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_352.data(), dfa_state_352.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_353.data(), dfa_state_353.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_354.data(), dfa_state_354.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_355.data(), dfa_state_355.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_356.data(), dfa_state_356.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_357.data(), dfa_state_357.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_245.data(), dfa_state_245.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_358.data(), dfa_state_358.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_359.data(), dfa_state_359.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_360.data(), dfa_state_360.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_361.data(), dfa_state_361.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_362.data(), dfa_state_362.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_363.data(), dfa_state_363.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_364.data(), dfa_state_364.size()}},
+	DFA::SpanCharTableState{ 7, 0, {dfa_state_365.data(), dfa_state_365.size()}},
 };
 const ::Parser::DFA::CharTable<12> Parser::Lexer::dfa_table_35 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_366.data(), dfa_state_366.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_367.data(), dfa_state_367.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_368.data(), dfa_state_368.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_369.data(), dfa_state_369.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_370.data(), dfa_state_370.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_371.data(), dfa_state_371.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_372.data(), dfa_state_372.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_373.data(), dfa_state_373.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_374.data(), dfa_state_374.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_375.data(), dfa_state_375.size()}	},
-	DFA::SpanCharTableState{ 3, 0, {dfa_state_376.data(), dfa_state_376.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_366.data(), dfa_state_366.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_367.data(), dfa_state_367.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_368.data(), dfa_state_368.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_369.data(), dfa_state_369.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_370.data(), dfa_state_370.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_371.data(), dfa_state_371.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_372.data(), dfa_state_372.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_373.data(), dfa_state_373.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_374.data(), dfa_state_374.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_375.data(), dfa_state_375.size()}},
+	DFA::SpanCharTableState{ 3, 0, {dfa_state_376.data(), dfa_state_376.size()}},
 };
 const ::Parser::DFA::CharTable<14> Parser::Lexer::dfa_table_36 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_377.data(), dfa_state_377.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_378.data(), dfa_state_378.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_379.data(), dfa_state_379.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_380.data(), dfa_state_380.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_381.data(), dfa_state_381.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_382.data(), dfa_state_382.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_383.data(), dfa_state_383.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_384.data(), dfa_state_384.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_385.data(), dfa_state_385.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_386.data(), dfa_state_386.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_387.data(), dfa_state_387.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_388.data(), dfa_state_388.size()}	},
-	DFA::SpanCharTableState{ 5, 0, {dfa_state_389.data(), dfa_state_389.size()}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_377.data(), dfa_state_377.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_378.data(), dfa_state_378.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_379.data(), dfa_state_379.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_380.data(), dfa_state_380.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_381.data(), dfa_state_381.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_382.data(), dfa_state_382.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_383.data(), dfa_state_383.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_384.data(), dfa_state_384.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_385.data(), dfa_state_385.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_386.data(), dfa_state_386.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_387.data(), dfa_state_387.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_388.data(), dfa_state_388.size()}},
+	DFA::SpanCharTableState{ 5, 0, {dfa_state_389.data(), dfa_state_389.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_37 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_390.data(), dfa_state_390.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_390.data(), dfa_state_390.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::MultiTable<15> Parser::Lexer::dfa_table_38 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_391.data(), dfa_state_391.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_392.data(), dfa_state_392.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_393.data(), dfa_state_393.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_293.data(), dfa_state_293.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_394.data(), dfa_state_394.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_395.data(), dfa_state_395.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_396.data(), dfa_state_396.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_397.data(), dfa_state_397.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_398.data(), dfa_state_398.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_399.data(), dfa_state_399.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_400.data(), dfa_state_400.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_401.data(), dfa_state_401.size()}	},
-	DFA::SpanCharTableState{ 1, 0, {dfa_state_293.data(), dfa_state_293.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_391.data(), dfa_state_391.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_392.data(), dfa_state_392.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_393.data(), dfa_state_393.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_293.data(), dfa_state_293.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_394.data(), dfa_state_394.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_395.data(), dfa_state_395.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_396.data(), dfa_state_396.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_397.data(), dfa_state_397.size()}},
+	DFA::SpanEmptyTableState{},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_398.data(), dfa_state_398.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_399.data(), dfa_state_399.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_400.data(), dfa_state_400.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_401.data(), dfa_state_401.size()}},
+	DFA::SpanCharTableState{ 1, 0, {dfa_state_293.data(), dfa_state_293.size()}},
 };
 const ::Parser::DFA::CharTable<2> Parser::Lexer::dfa_table_39 = {
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_402.data(), dfa_state_402.size()}	},
-	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {dfa_state_402.data(), dfa_state_402.size()}},
+	DFA::SpanCharTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
 };
-const std::array<std::variant<::Parser::DFA::SpanTokenTable, ::Parser::DFA::SpanCharTable, ::Parser::DFA::SpanMultiTable, Parser::Token_res (*) (const char*)>, 257> Parser::Lexer::first_character_dispatch_table = {
-	{ }, // '\0'
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // '\a'
-	{ }, // '\b'
-	{ dfa_span_0, }, // '\t'
-	{ dfa_span_0, }, // '\n'
-	{ dfa_span_0, }, // '\v'
-	{ dfa_span_0, }, // '\f'
-	{ dfa_span_0, }, // '\r'
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ }, // ''
-	{ dfa_span_0, }, // ' '
-	{ dfa_span_1, }, // '!'
-	{ }, // '"'
-	{ dfa_span_2, }, // '#'
-	{ dfa_span_3, }, // '$'
-	{ dfa_span_4, }, // '%'
-	{ dfa_span_5, }, // '&'
-	{ }, // '\''
-	{ dfa_span_6, }, // '('
-	{ dfa_span_7, }, // ')'
-	{ dfa_span_8, }, // '*'
-	{ dfa_span_9, }, // '+'
-	{ dfa_span_10, }, // ','
-	{ dfa_span_11, }, // '-'
-	{ dfa_span_12, }, // '.'
-	{ dfa_span_13, }, // '/'
-	{ dfa_span_14, }, // '0'
-	{ }, // '1'
-	{ }, // '2'
-	{ }, // '3'
-	{ }, // '4'
-	{ }, // '5'
-	{ }, // '6'
-	{ }, // '7'
-	{ }, // '8'
-	{ }, // '9'
-	{ dfa_span_15, }, // ':'
-	{ dfa_span_16, }, // ';'
-	{ dfa_span_17, }, // '<'
-	{ dfa_span_18, }, // '='
-	{ dfa_span_19, }, // '>'
-	{ dfa_span_20, }, // '?'
-	{ dfa_span_21, }, // '@'
-	{ dfa_span_22, }, // 'A'
-	{ dfa_span_22, }, // 'B'
-	{ dfa_span_22, }, // 'C'
-	{ dfa_span_22, }, // 'D'
-	{ dfa_span_22, }, // 'E'
-	{ dfa_span_22, }, // 'F'
-	{ dfa_span_22, }, // 'G'
-	{ dfa_span_22, }, // 'H'
-	{ dfa_span_22, }, // 'I'
-	{ dfa_span_22, }, // 'J'
-	{ dfa_span_22, }, // 'K'
-	{ dfa_span_22, }, // 'L'
-	{ dfa_span_22, }, // 'M'
-	{ dfa_span_22, }, // 'N'
-	{ dfa_span_22, }, // 'O'
-	{ dfa_span_22, }, // 'P'
-	{ dfa_span_22, }, // 'Q'
-	{ dfa_span_22, }, // 'R'
-	{ dfa_span_22, }, // 'S'
-	{ dfa_span_22, }, // 'T'
-	{ dfa_span_22, }, // 'U'
-	{ dfa_span_22, }, // 'V'
-	{ dfa_span_22, }, // 'W'
-	{ dfa_span_22, }, // 'X'
-	{ dfa_span_22, }, // 'Y'
-	{ dfa_span_22, }, // 'Z'
-	{ dfa_span_23, }, // '['
-	{ dfa_span_24, }, // '\\'
-	{ dfa_span_25, }, // ']'
-	{ }, // '^'
-	{ dfa_span_22, }, // '_'
-	{ }, // '`'
-	{ dfa_span_26, }, // 'a'
-	{ dfa_span_27, }, // 'b'
-	{ dfa_span_22, }, // 'c'
-	{ dfa_span_22, }, // 'd'
-	{ dfa_span_22, }, // 'e'
-	{ dfa_span_28, }, // 'f'
-	{ dfa_span_22, }, // 'g'
-	{ dfa_span_22, }, // 'h'
-	{ dfa_span_29, }, // 'i'
-	{ dfa_span_22, }, // 'j'
-	{ dfa_span_22, }, // 'k'
-	{ dfa_span_22, }, // 'l'
-	{ dfa_span_30, }, // 'm'
-	{ dfa_span_31, }, // 'n'
-	{ dfa_span_32, }, // 'o'
-	{ dfa_span_22, }, // 'p'
-	{ dfa_span_22, }, // 'q'
-	{ dfa_span_22, }, // 'r'
-	{ dfa_span_33, }, // 's'
-	{ dfa_span_34, }, // 't'
-	{ dfa_span_35, }, // 'u'
-	{ dfa_span_27, }, // 'v'
-	{ dfa_span_36, }, // 'w'
-	{ dfa_span_22, }, // 'x'
-	{ dfa_span_22, }, // 'y'
-	{ dfa_span_22, }, // 'z'
-	{ dfa_span_37, }, // '{'
-	{ dfa_span_38, }, // '|'
-	{ dfa_span_39, }, // '}'
-	{ }, // '~'
-	{ }, // ''
-	{ }, // 'Ä'
-	{ }, // 'Å'
-	{ }, // 'Ç'
-	{ }, // 'É'
-	{ }, // 'Ñ'
-	{ }, // 'Ö'
-	{ }, // 'Ü'
-	{ }, // 'á'
-	{ }, // 'à'
-	{ }, // 'â'
-	{ }, // 'ä'
-	{ }, // 'ã'
-	{ }, // 'å'
-	{ }, // 'ç'
-	{ }, // 'é'
-	{ }, // 'è'
-	{ }, // 'ê'
-	{ }, // 'ë'
-	{ }, // 'í'
-	{ }, // 'ì'
-	{ }, // 'î'
-	{ }, // 'ï'
-	{ }, // 'ñ'
-	{ }, // 'ó'
-	{ }, // 'ò'
-	{ }, // 'ô'
-	{ }, // 'ö'
-	{ }, // 'õ'
-	{ }, // 'ú'
-	{ }, // 'ù'
-	{ }, // 'û'
-	{ }, // 'ü'
-	{ }, // '†'
-	{ }, // '°'
-	{ }, // '¢'
-	{ }, // '£'
-	{ }, // '§'
-	{ }, // '•'
-	{ }, // '¶'
-	{ }, // 'ß'
-	{ }, // '®'
-	{ }, // '©'
-	{ }, // '™'
-	{ }, // '´'
-	{ }, // '¨'
-	{ }, // '≠'
-	{ }, // 'Æ'
-	{ }, // 'Ø'
-	{ }, // '∞'
-	{ }, // '±'
-	{ }, // '≤'
-	{ }, // '≥'
-	{ }, // '¥'
-	{ }, // 'µ'
-	{ }, // '∂'
-	{ }, // '∑'
-	{ }, // '∏'
-	{ }, // 'π'
-	{ }, // '∫'
-	{ }, // 'ª'
-	{ }, // 'º'
-	{ }, // 'Ω'
-	{ }, // 'æ'
-	{ }, // 'ø'
-	{ }, // '¿'
-	{ }, // '¡'
-	{ }, // '¬'
-	{ }, // '√'
-	{ }, // 'ƒ'
-	{ }, // '≈'
-	{ }, // '∆'
-	{ }, // '«'
-	{ }, // '»'
-	{ }, // '…'
-	{ }, // ' '
-	{ }, // 'À'
-	{ }, // 'Ã'
-	{ }, // 'Õ'
-	{ }, // 'Œ'
-	{ }, // 'œ'
-	{ }, // '–'
-	{ }, // '—'
-	{ }, // '“'
-	{ }, // '”'
-	{ }, // '‘'
-	{ }, // '’'
-	{ }, // '÷'
-	{ }, // '◊'
-	{ }, // 'ÿ'
-	{ }, // 'Ÿ'
-	{ }, // '⁄'
-	{ }, // '€'
-	{ }, // '‹'
-	{ }, // '›'
-	{ }, // 'ﬁ'
-	{ }, // 'ﬂ'
-	{ }, // '‡'
-	{ }, // '·'
-	{ }, // '‚'
-	{ }, // '„'
-	{ }, // '‰'
-	{ }, // 'Â'
-	{ }, // 'Ê'
-	{ }, // 'Á'
-	{ }, // 'Ë'
-	{ }, // 'È'
-	{ }, // 'Í'
-	{ }, // 'Î'
-	{ }, // 'Ï'
-	{ }, // 'Ì'
-	{ }, // 'Ó'
-	{ }, // 'Ô'
-	{ }, // ''
-	{ }, // 'Ò'
-	{ }, // 'Ú'
-	{ }, // 'Û'
-	{ }, // 'Ù'
-	{ }, // 'ı'
-	{ }, // 'ˆ'
-	{ }, // '˜'
-	{ }, // '¯'
-	{ }, // '˘'
-	{ }, // '˙'
-	{ }, // '˚'
-	{ }, // '¸'
-	{ }, // '˝'
-	{ }, // '˛'
-	{ }, // 'ˇ'
+using FCDT_VARIANT = std::variant<std::monostate, ::Parser::DFA::SpanTokenTable, ::Parser::DFA::SpanCharTable, ::Parser::DFA::SpanMultiTable, ::Parser::Token_res (*) (const char*)>;
+const std::array<FCDT_VARIANT, 256> Parser::Lexer::first_character_dispatch_table = {
+	FCDT_VARIANT { std::monostate {} }, // '\0'
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // '\a'
+	FCDT_VARIANT { std::monostate {} }, // '\b'
+	FCDT_VARIANT { dfa_span_0, }, // '\t'
+	FCDT_VARIANT { dfa_span_0, }, // '\n'
+	FCDT_VARIANT { dfa_span_0, }, // '\v'
+	FCDT_VARIANT { dfa_span_0, }, // '\f'
+	FCDT_VARIANT { dfa_span_0, }, // '\r'
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { dfa_span_0, }, // ' '
+	FCDT_VARIANT { dfa_span_1, }, // '!'
+	FCDT_VARIANT { std::monostate {} }, // '"'
+	FCDT_VARIANT { dfa_span_2, }, // '#'
+	FCDT_VARIANT { dfa_span_3, }, // '$'
+	FCDT_VARIANT { dfa_span_4, }, // '%'
+	FCDT_VARIANT { dfa_span_5, }, // '&'
+	FCDT_VARIANT { std::monostate {} }, // '\''
+	FCDT_VARIANT { dfa_span_6, }, // '('
+	FCDT_VARIANT { dfa_span_7, }, // ')'
+	FCDT_VARIANT { dfa_span_8, }, // '*'
+	FCDT_VARIANT { dfa_span_9, }, // '+'
+	FCDT_VARIANT { dfa_span_10, }, // ','
+	FCDT_VARIANT { dfa_span_11, }, // '-'
+	FCDT_VARIANT { dfa_span_12, }, // '.'
+	FCDT_VARIANT { dfa_span_13, }, // '/'
+	FCDT_VARIANT { dfa_span_14, }, // '0'
+	FCDT_VARIANT { std::monostate {} }, // '1'
+	FCDT_VARIANT { std::monostate {} }, // '2'
+	FCDT_VARIANT { std::monostate {} }, // '3'
+	FCDT_VARIANT { std::monostate {} }, // '4'
+	FCDT_VARIANT { std::monostate {} }, // '5'
+	FCDT_VARIANT { std::monostate {} }, // '6'
+	FCDT_VARIANT { std::monostate {} }, // '7'
+	FCDT_VARIANT { std::monostate {} }, // '8'
+	FCDT_VARIANT { std::monostate {} }, // '9'
+	FCDT_VARIANT { dfa_span_15, }, // ':'
+	FCDT_VARIANT { dfa_span_16, }, // ';'
+	FCDT_VARIANT { dfa_span_17, }, // '<'
+	FCDT_VARIANT { dfa_span_18, }, // '='
+	FCDT_VARIANT { dfa_span_19, }, // '>'
+	FCDT_VARIANT { dfa_span_20, }, // '?'
+	FCDT_VARIANT { dfa_span_21, }, // '@'
+	FCDT_VARIANT { dfa_span_22, }, // 'A'
+	FCDT_VARIANT { dfa_span_22, }, // 'B'
+	FCDT_VARIANT { dfa_span_22, }, // 'C'
+	FCDT_VARIANT { dfa_span_22, }, // 'D'
+	FCDT_VARIANT { dfa_span_22, }, // 'E'
+	FCDT_VARIANT { dfa_span_22, }, // 'F'
+	FCDT_VARIANT { dfa_span_22, }, // 'G'
+	FCDT_VARIANT { dfa_span_22, }, // 'H'
+	FCDT_VARIANT { dfa_span_22, }, // 'I'
+	FCDT_VARIANT { dfa_span_22, }, // 'J'
+	FCDT_VARIANT { dfa_span_22, }, // 'K'
+	FCDT_VARIANT { dfa_span_22, }, // 'L'
+	FCDT_VARIANT { dfa_span_22, }, // 'M'
+	FCDT_VARIANT { dfa_span_22, }, // 'N'
+	FCDT_VARIANT { dfa_span_22, }, // 'O'
+	FCDT_VARIANT { dfa_span_22, }, // 'P'
+	FCDT_VARIANT { dfa_span_22, }, // 'Q'
+	FCDT_VARIANT { dfa_span_22, }, // 'R'
+	FCDT_VARIANT { dfa_span_22, }, // 'S'
+	FCDT_VARIANT { dfa_span_22, }, // 'T'
+	FCDT_VARIANT { dfa_span_22, }, // 'U'
+	FCDT_VARIANT { dfa_span_22, }, // 'V'
+	FCDT_VARIANT { dfa_span_22, }, // 'W'
+	FCDT_VARIANT { dfa_span_22, }, // 'X'
+	FCDT_VARIANT { dfa_span_22, }, // 'Y'
+	FCDT_VARIANT { dfa_span_22, }, // 'Z'
+	FCDT_VARIANT { dfa_span_23, }, // '['
+	FCDT_VARIANT { dfa_span_24, }, // '\\'
+	FCDT_VARIANT { dfa_span_25, }, // ']'
+	FCDT_VARIANT { std::monostate {} }, // '^'
+	FCDT_VARIANT { dfa_span_22, }, // '_'
+	FCDT_VARIANT { std::monostate {} }, // '`'
+	FCDT_VARIANT { dfa_span_26, }, // 'a'
+	FCDT_VARIANT { dfa_span_27, }, // 'b'
+	FCDT_VARIANT { dfa_span_22, }, // 'c'
+	FCDT_VARIANT { dfa_span_22, }, // 'd'
+	FCDT_VARIANT { dfa_span_22, }, // 'e'
+	FCDT_VARIANT { dfa_span_28, }, // 'f'
+	FCDT_VARIANT { dfa_span_22, }, // 'g'
+	FCDT_VARIANT { dfa_span_22, }, // 'h'
+	FCDT_VARIANT { dfa_span_29, }, // 'i'
+	FCDT_VARIANT { dfa_span_22, }, // 'j'
+	FCDT_VARIANT { dfa_span_22, }, // 'k'
+	FCDT_VARIANT { dfa_span_22, }, // 'l'
+	FCDT_VARIANT { dfa_span_30, }, // 'm'
+	FCDT_VARIANT { dfa_span_31, }, // 'n'
+	FCDT_VARIANT { dfa_span_32, }, // 'o'
+	FCDT_VARIANT { dfa_span_22, }, // 'p'
+	FCDT_VARIANT { dfa_span_22, }, // 'q'
+	FCDT_VARIANT { dfa_span_22, }, // 'r'
+	FCDT_VARIANT { dfa_span_33, }, // 's'
+	FCDT_VARIANT { dfa_span_34, }, // 't'
+	FCDT_VARIANT { dfa_span_35, }, // 'u'
+	FCDT_VARIANT { dfa_span_27, }, // 'v'
+	FCDT_VARIANT { dfa_span_36, }, // 'w'
+	FCDT_VARIANT { dfa_span_22, }, // 'x'
+	FCDT_VARIANT { dfa_span_22, }, // 'y'
+	FCDT_VARIANT { dfa_span_22, }, // 'z'
+	FCDT_VARIANT { dfa_span_37, }, // '{'
+	FCDT_VARIANT { dfa_span_38, }, // '|'
+	FCDT_VARIANT { dfa_span_39, }, // '}'
+	FCDT_VARIANT { std::monostate {} }, // '~'
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // 'Ä'
+	FCDT_VARIANT { std::monostate {} }, // 'Å'
+	FCDT_VARIANT { std::monostate {} }, // 'Ç'
+	FCDT_VARIANT { std::monostate {} }, // 'É'
+	FCDT_VARIANT { std::monostate {} }, // 'Ñ'
+	FCDT_VARIANT { std::monostate {} }, // 'Ö'
+	FCDT_VARIANT { std::monostate {} }, // 'Ü'
+	FCDT_VARIANT { std::monostate {} }, // 'á'
+	FCDT_VARIANT { std::monostate {} }, // 'à'
+	FCDT_VARIANT { std::monostate {} }, // 'â'
+	FCDT_VARIANT { std::monostate {} }, // 'ä'
+	FCDT_VARIANT { std::monostate {} }, // 'ã'
+	FCDT_VARIANT { std::monostate {} }, // 'å'
+	FCDT_VARIANT { std::monostate {} }, // 'ç'
+	FCDT_VARIANT { std::monostate {} }, // 'é'
+	FCDT_VARIANT { std::monostate {} }, // 'è'
+	FCDT_VARIANT { std::monostate {} }, // 'ê'
+	FCDT_VARIANT { std::monostate {} }, // 'ë'
+	FCDT_VARIANT { std::monostate {} }, // 'í'
+	FCDT_VARIANT { std::monostate {} }, // 'ì'
+	FCDT_VARIANT { std::monostate {} }, // 'î'
+	FCDT_VARIANT { std::monostate {} }, // 'ï'
+	FCDT_VARIANT { std::monostate {} }, // 'ñ'
+	FCDT_VARIANT { std::monostate {} }, // 'ó'
+	FCDT_VARIANT { std::monostate {} }, // 'ò'
+	FCDT_VARIANT { std::monostate {} }, // 'ô'
+	FCDT_VARIANT { std::monostate {} }, // 'ö'
+	FCDT_VARIANT { std::monostate {} }, // 'õ'
+	FCDT_VARIANT { std::monostate {} }, // 'ú'
+	FCDT_VARIANT { std::monostate {} }, // 'ù'
+	FCDT_VARIANT { std::monostate {} }, // 'û'
+	FCDT_VARIANT { std::monostate {} }, // 'ü'
+	FCDT_VARIANT { std::monostate {} }, // '†'
+	FCDT_VARIANT { std::monostate {} }, // '°'
+	FCDT_VARIANT { std::monostate {} }, // '¢'
+	FCDT_VARIANT { std::monostate {} }, // '£'
+	FCDT_VARIANT { std::monostate {} }, // '§'
+	FCDT_VARIANT { std::monostate {} }, // '•'
+	FCDT_VARIANT { std::monostate {} }, // '¶'
+	FCDT_VARIANT { std::monostate {} }, // 'ß'
+	FCDT_VARIANT { std::monostate {} }, // '®'
+	FCDT_VARIANT { std::monostate {} }, // '©'
+	FCDT_VARIANT { std::monostate {} }, // '™'
+	FCDT_VARIANT { std::monostate {} }, // '´'
+	FCDT_VARIANT { std::monostate {} }, // '¨'
+	FCDT_VARIANT { std::monostate {} }, // '≠'
+	FCDT_VARIANT { std::monostate {} }, // 'Æ'
+	FCDT_VARIANT { std::monostate {} }, // 'Ø'
+	FCDT_VARIANT { std::monostate {} }, // '∞'
+	FCDT_VARIANT { std::monostate {} }, // '±'
+	FCDT_VARIANT { std::monostate {} }, // '≤'
+	FCDT_VARIANT { std::monostate {} }, // '≥'
+	FCDT_VARIANT { std::monostate {} }, // '¥'
+	FCDT_VARIANT { std::monostate {} }, // 'µ'
+	FCDT_VARIANT { std::monostate {} }, // '∂'
+	FCDT_VARIANT { std::monostate {} }, // '∑'
+	FCDT_VARIANT { std::monostate {} }, // '∏'
+	FCDT_VARIANT { std::monostate {} }, // 'π'
+	FCDT_VARIANT { std::monostate {} }, // '∫'
+	FCDT_VARIANT { std::monostate {} }, // 'ª'
+	FCDT_VARIANT { std::monostate {} }, // 'º'
+	FCDT_VARIANT { std::monostate {} }, // 'Ω'
+	FCDT_VARIANT { std::monostate {} }, // 'æ'
+	FCDT_VARIANT { std::monostate {} }, // 'ø'
+	FCDT_VARIANT { std::monostate {} }, // '¿'
+	FCDT_VARIANT { std::monostate {} }, // '¡'
+	FCDT_VARIANT { std::monostate {} }, // '¬'
+	FCDT_VARIANT { std::monostate {} }, // '√'
+	FCDT_VARIANT { std::monostate {} }, // 'ƒ'
+	FCDT_VARIANT { std::monostate {} }, // '≈'
+	FCDT_VARIANT { std::monostate {} }, // '∆'
+	FCDT_VARIANT { std::monostate {} }, // '«'
+	FCDT_VARIANT { std::monostate {} }, // '»'
+	FCDT_VARIANT { std::monostate {} }, // '…'
+	FCDT_VARIANT { std::monostate {} }, // ' '
+	FCDT_VARIANT { std::monostate {} }, // 'À'
+	FCDT_VARIANT { std::monostate {} }, // 'Ã'
+	FCDT_VARIANT { std::monostate {} }, // 'Õ'
+	FCDT_VARIANT { std::monostate {} }, // 'Œ'
+	FCDT_VARIANT { std::monostate {} }, // 'œ'
+	FCDT_VARIANT { std::monostate {} }, // '–'
+	FCDT_VARIANT { std::monostate {} }, // '—'
+	FCDT_VARIANT { std::monostate {} }, // '“'
+	FCDT_VARIANT { std::monostate {} }, // '”'
+	FCDT_VARIANT { std::monostate {} }, // '‘'
+	FCDT_VARIANT { std::monostate {} }, // '’'
+	FCDT_VARIANT { std::monostate {} }, // '÷'
+	FCDT_VARIANT { std::monostate {} }, // '◊'
+	FCDT_VARIANT { std::monostate {} }, // 'ÿ'
+	FCDT_VARIANT { std::monostate {} }, // 'Ÿ'
+	FCDT_VARIANT { std::monostate {} }, // '⁄'
+	FCDT_VARIANT { std::monostate {} }, // '€'
+	FCDT_VARIANT { std::monostate {} }, // '‹'
+	FCDT_VARIANT { std::monostate {} }, // '›'
+	FCDT_VARIANT { std::monostate {} }, // 'ﬁ'
+	FCDT_VARIANT { std::monostate {} }, // 'ﬂ'
+	FCDT_VARIANT { std::monostate {} }, // '‡'
+	FCDT_VARIANT { std::monostate {} }, // '·'
+	FCDT_VARIANT { std::monostate {} }, // '‚'
+	FCDT_VARIANT { std::monostate {} }, // '„'
+	FCDT_VARIANT { std::monostate {} }, // '‰'
+	FCDT_VARIANT { std::monostate {} }, // 'Â'
+	FCDT_VARIANT { std::monostate {} }, // 'Ê'
+	FCDT_VARIANT { std::monostate {} }, // 'Á'
+	FCDT_VARIANT { std::monostate {} }, // 'Ë'
+	FCDT_VARIANT { std::monostate {} }, // 'È'
+	FCDT_VARIANT { std::monostate {} }, // 'Í'
+	FCDT_VARIANT { std::monostate {} }, // 'Î'
+	FCDT_VARIANT { std::monostate {} }, // 'Ï'
+	FCDT_VARIANT { std::monostate {} }, // 'Ì'
+	FCDT_VARIANT { std::monostate {} }, // 'Ó'
+	FCDT_VARIANT { std::monostate {} }, // 'Ô'
+	FCDT_VARIANT { std::monostate {} }, // ''
+	FCDT_VARIANT { std::monostate {} }, // 'Ò'
+	FCDT_VARIANT { std::monostate {} }, // 'Ú'
+	FCDT_VARIANT { std::monostate {} }, // 'Û'
+	FCDT_VARIANT { std::monostate {} }, // 'Ù'
+	FCDT_VARIANT { std::monostate {} }, // 'ı'
+	FCDT_VARIANT { std::monostate {} }, // 'ˆ'
+	FCDT_VARIANT { std::monostate {} }, // '˜'
+	FCDT_VARIANT { std::monostate {} }, // '¯'
+	FCDT_VARIANT { std::monostate {} }, // '˘'
+	FCDT_VARIANT { std::monostate {} }, // '˙'
+	FCDT_VARIANT { std::monostate {} }, // '˚'
+	FCDT_VARIANT { std::monostate {} }, // '¸'
+	FCDT_VARIANT { std::monostate {} }, // '˝'
+	FCDT_VARIANT { std::monostate {} }, // '˛'
+	FCDT_VARIANT { std::monostate {} }, // 'ˇ'
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_0 = {
-    dfa_table_0.data(), dfa_table_0.size()
+	dfa_table_0.data(), dfa_table_0.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_1 = {
-    dfa_table_1.data(), dfa_table_1.size()
+	dfa_table_1.data(), dfa_table_1.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_2 = {
-    dfa_table_2.data(), dfa_table_2.size()
+	dfa_table_2.data(), dfa_table_2.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_3 = {
-    dfa_table_3.data(), dfa_table_3.size()
+	dfa_table_3.data(), dfa_table_3.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_4 = {
-    dfa_table_4.data(), dfa_table_4.size()
+	{ 	dfa_table_4.data(), dfa_table_4.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_5 = {
-    dfa_table_5.data(), dfa_table_5.size()
+	{ 	dfa_table_5.data(), dfa_table_5.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_6 = {
-    dfa_table_6.data(), dfa_table_6.size()
+	dfa_table_6.data(), dfa_table_6.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_7 = {
-    dfa_table_7.data(), dfa_table_7.size()
+	dfa_table_7.data(), dfa_table_7.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_8 = {
-    dfa_table_8.data(), dfa_table_8.size()
+	{ 	dfa_table_8.data(), dfa_table_8.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_9 = {
-    dfa_table_9.data(), dfa_table_9.size()
+	{ 	dfa_table_9.data(), dfa_table_9.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_10 = {
-    dfa_table_10.data(), dfa_table_10.size()
+	dfa_table_10.data(), dfa_table_10.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_11 = {
-    dfa_table_11.data(), dfa_table_11.size()
+	{ 	dfa_table_11.data(), dfa_table_11.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_12 = {
-    dfa_table_12.data(), dfa_table_12.size()
+	dfa_table_12.data(), dfa_table_12.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_13 = {
-    dfa_table_13.data(), dfa_table_13.size()
+	{ 	dfa_table_13.data(), dfa_table_13.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_14 = {
-    dfa_table_14.data(), dfa_table_14.size()
+	dfa_table_14.data(), dfa_table_14.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_15 = {
-    dfa_table_15.data(), dfa_table_15.size()
+	dfa_table_15.data(), dfa_table_15.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_16 = {
-    dfa_table_16.data(), dfa_table_16.size()
+	dfa_table_16.data(), dfa_table_16.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_17 = {
-    dfa_table_17.data(), dfa_table_17.size()
+	{ 	dfa_table_17.data(), dfa_table_17.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_18 = {
-    dfa_table_18.data(), dfa_table_18.size()
+	dfa_table_18.data(), dfa_table_18.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_19 = {
-    dfa_table_19.data(), dfa_table_19.size()
+	dfa_table_19.data(), dfa_table_19.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_20 = {
-    dfa_table_20.data(), dfa_table_20.size()
+	dfa_table_20.data(), dfa_table_20.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_21 = {
-    dfa_table_21.data(), dfa_table_21.size()
+	dfa_table_21.data(), dfa_table_21.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_22 = {
-    dfa_table_22.data(), dfa_table_22.size()
+	dfa_table_22.data(), dfa_table_22.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_23 = {
-    dfa_table_23.data(), dfa_table_23.size()
+	{ 	dfa_table_23.data(), dfa_table_23.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_24 = {
-    dfa_table_24.data(), dfa_table_24.size()
+	{ 	dfa_table_24.data(), dfa_table_24.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_25 = {
-    dfa_table_25.data(), dfa_table_25.size()
+	{ 	dfa_table_25.data(), dfa_table_25.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_26 = {
-    dfa_table_26.data(), dfa_table_26.size()
+	{ 	dfa_table_26.data(), dfa_table_26.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_27 = {
-    dfa_table_27.data(), dfa_table_27.size()
+	{ 	dfa_table_27.data(), dfa_table_27.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_28 = {
-    dfa_table_28.data(), dfa_table_28.size()
+	dfa_table_28.data(), dfa_table_28.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_29 = {
-    dfa_table_29.data(), dfa_table_29.size()
+	dfa_table_29.data(), dfa_table_29.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_30 = {
-    dfa_table_30.data(), dfa_table_30.size()
+	dfa_table_30.data(), dfa_table_30.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_31 = {
-    dfa_table_31.data(), dfa_table_31.size()
+	{ 	dfa_table_31.data(), dfa_table_31.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_32 = {
-    dfa_table_32.data(), dfa_table_32.size()
+	{ 	dfa_table_32.data(), dfa_table_32.size() }
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_33 = {
-    dfa_table_33.data(), dfa_table_33.size()
+	{ 	dfa_table_33.data(), dfa_table_33.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_34 = {
-    dfa_table_34.data(), dfa_table_34.size()
+	dfa_table_34.data(), dfa_table_34.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_35 = {
-    dfa_table_35.data(), dfa_table_35.size()
+	dfa_table_35.data(), dfa_table_35.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_36 = {
-    dfa_table_36.data(), dfa_table_36.size()
+	dfa_table_36.data(), dfa_table_36.size()
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_37 = {
-    dfa_table_37.data(), dfa_table_37.size()
+	dfa_table_37.data(), dfa_table_37.size()
 };
 const ::Parser::DFA::SpanMultiTable Parser::Lexer::dfa_span_38 = {
-    dfa_table_38.data(), dfa_table_38.size()
+	{ 	dfa_table_38.data(), dfa_table_38.size() }
 };
 const ::Parser::DFA::SpanCharTable Parser::Lexer::dfa_span_39 = {
-    dfa_table_39.data(), dfa_table_39.size()
+	dfa_table_39.data(), dfa_table_39.size()
 };
-::Parser::Lexer::makeToken(const char* &pos) {
+auto ::Parser::Lexer::makeToken(const char* &pos) -> Token {
 	fcdt_lookup<DFA::CharTable, DFA::TokenTable, DFA::MultiTable, DFA::Transition>(first_character_dispatch_table, pos);
 }
 void Parser::Lexer::printTokens(std::ostream& os) {
@@ -6214,511 +6271,511 @@ const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_
 	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
 }
 const ::Parser::DFA::TokenTable<36> Parser::Parser::dfa_table_0 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_0.data(), dfa_state_0.size()}	},
-	DFA::SpanMultiTableState{ 2, ::Parser::DFA::null_state, {dfa_state_1.data(), dfa_state_1.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_2.data(), dfa_state_2.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanMultiTableState{ 6, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanMultiTableState{ 7, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_7.data(), dfa_state_7.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_8.data(), dfa_state_8.size()}	},
-	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_9.data(), dfa_state_9.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_10.data(), dfa_state_10.size()}	},
-	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_11.data(), dfa_state_11.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_12.data(), dfa_state_12.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 8, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanMultiTableState{ 8, 0, {dfa_state_6.data(), dfa_state_6.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_13.data(), dfa_state_13.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_14.data(), dfa_state_14.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_15.data(), dfa_state_15.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_16.data(), dfa_state_16.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_17.data(), dfa_state_17.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_18.data(), dfa_state_18.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_19.data(), dfa_state_19.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_20.data(), dfa_state_20.size()}	},
-	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_0.data(), dfa_state_0.size()}},
+	DFA::SpanMultiTableState{ 2, ::Parser::DFA::null_state, {dfa_state_1.data(), dfa_state_1.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_2.data(), dfa_state_2.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_3.data(), dfa_state_3.size()}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanMultiTableState{ 6, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanMultiTableState{ 7, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_7.data(), dfa_state_7.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_8.data(), dfa_state_8.size()}},
+	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_9.data(), dfa_state_9.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_10.data(), dfa_state_10.size()}},
+	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_4.data(), dfa_state_4.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_11.data(), dfa_state_11.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_12.data(), dfa_state_12.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 8, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanMultiTableState{ 8, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_13.data(), dfa_state_13.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_14.data(), dfa_state_14.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 8, ::Parser::DFA::null_state, {dfa_state_15.data(), dfa_state_15.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_16.data(), dfa_state_16.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_17.data(), dfa_state_17.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_18.data(), dfa_state_18.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_19.data(), dfa_state_19.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_20.data(), dfa_state_20.size()}},
+	DFA::SpanTokenTableState{ 8, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<7> Parser::Parser::dfa_table_1 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_21.data(), dfa_state_21.size()}	},
-	DFA::SpanMultiTableState{ 2, ::Parser::DFA::null_state, {dfa_state_22.data(), dfa_state_22.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_23.data(), dfa_state_23.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_24.data(), dfa_state_24.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_25.data(), dfa_state_25.size()}	},
-	DFA::SpanTokenTableState{ 2, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_21.data(), dfa_state_21.size()}},
+	DFA::SpanMultiTableState{ 2, ::Parser::DFA::null_state, {dfa_state_22.data(), dfa_state_22.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_23.data(), dfa_state_23.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_24.data(), dfa_state_24.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_25.data(), dfa_state_25.size()}},
+	DFA::SpanTokenTableState{ 2, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_2 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}	},
-	DFA::SpanTokenTableState{ 1, 2, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_26.data(), dfa_state_26.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_27.data(), dfa_state_27.size()}},
+	DFA::SpanTokenTableState{ 1, 2, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<41> Parser::Parser::dfa_table_3 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_28.data(), dfa_state_28.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_29.data(), dfa_state_29.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_30.data(), dfa_state_30.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_31.data(), dfa_state_31.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_32.data(), dfa_state_32.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_33.data(), dfa_state_33.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_34.data(), dfa_state_34.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_35.data(), dfa_state_35.size()}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_36.data(), dfa_state_36.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_37.data(), dfa_state_37.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_38.data(), dfa_state_38.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_39.data(), dfa_state_39.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_40.data(), dfa_state_40.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_41.data(), dfa_state_41.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_42.data(), dfa_state_42.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, 1, {dfa_state_43.data(), dfa_state_43.size()}	},
-	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, 0, {dfa_state_32.data(), dfa_state_32.size()}	},
-	DFA::SpanMultiTableState{ 3, 0, {dfa_state_32.data(), dfa_state_32.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_44.data(), dfa_state_44.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_45.data(), dfa_state_45.size()}	},
-	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_46.data(), dfa_state_46.size()}	},
-	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_47.data(), dfa_state_47.size()}	},
-	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_48.data(), dfa_state_48.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_49.data(), dfa_state_49.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_50.data(), dfa_state_50.size()}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_51.data(), dfa_state_51.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_52.data(), dfa_state_52.size()}	},
-	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_28.data(), dfa_state_28.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_29.data(), dfa_state_29.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_30.data(), dfa_state_30.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_31.data(), dfa_state_31.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_32.data(), dfa_state_32.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_33.data(), dfa_state_33.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_34.data(), dfa_state_34.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_35.data(), dfa_state_35.size()}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_36.data(), dfa_state_36.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_37.data(), dfa_state_37.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_38.data(), dfa_state_38.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_39.data(), dfa_state_39.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_40.data(), dfa_state_40.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_41.data(), dfa_state_41.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_42.data(), dfa_state_42.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, 1, {dfa_state_43.data(), dfa_state_43.size()}},
+	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, 0, {dfa_state_32.data(), dfa_state_32.size()}},
+	DFA::SpanMultiTableState{ 3, 0, {dfa_state_32.data(), dfa_state_32.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_45.data(), dfa_state_45.size()}},
+	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_46.data(), dfa_state_46.size()}},
+	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_47.data(), dfa_state_47.size()}},
+	DFA::SpanTokenTableState{ 3, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_48.data(), dfa_state_48.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_49.data(), dfa_state_49.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_50.data(), dfa_state_50.size()}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_51.data(), dfa_state_51.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_52.data(), dfa_state_52.size()}},
+	DFA::SpanTokenTableState{ 3, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<8> Parser::Parser::dfa_table_4 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_53.data(), dfa_state_53.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_54.data(), dfa_state_54.size()}	},
-	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_55.data(), dfa_state_55.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_56.data(), dfa_state_56.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 4, ::Parser::DFA::null_state, {dfa_state_55.data(), dfa_state_55.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_57.data(), dfa_state_57.size()}	},
-	DFA::SpanTokenTableState{ 4, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_53.data(), dfa_state_53.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_54.data(), dfa_state_54.size()}},
+	DFA::SpanMultiTableState{ 3, ::Parser::DFA::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_56.data(), dfa_state_56.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 4, ::Parser::DFA::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
+	DFA::SpanTokenTableState{ 4, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<89> Parser::Parser::dfa_table_5 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_58.data(), dfa_state_58.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_59.data(), dfa_state_59.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_60.data(), dfa_state_60.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_61.data(), dfa_state_61.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_62.data(), dfa_state_62.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_64.data(), dfa_state_64.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_65.data(), dfa_state_65.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_66.data(), dfa_state_66.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_67.data(), dfa_state_67.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_68.data(), dfa_state_68.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_69.data(), dfa_state_69.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_70.data(), dfa_state_70.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_71.data(), dfa_state_71.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_72.data(), dfa_state_72.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_73.data(), dfa_state_73.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_74.data(), dfa_state_74.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_75.data(), dfa_state_75.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_76.data(), dfa_state_76.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_77.data(), dfa_state_77.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_78.data(), dfa_state_78.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_79.data(), dfa_state_79.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_80.data(), dfa_state_80.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_81.data(), dfa_state_81.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_83.data(), dfa_state_83.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_84.data(), dfa_state_84.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_85.data(), dfa_state_85.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_86.data(), dfa_state_86.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_87.data(), dfa_state_87.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_88.data(), dfa_state_88.size()}	},
-	DFA::SpanMultiTableState{ 1, 11, {dfa_state_59.data(), dfa_state_59.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_89.data(), dfa_state_89.size()}	},
-	DFA::SpanTokenTableState{ 1, 10, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_90.data(), dfa_state_90.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_91.data(), dfa_state_91.size()}	},
-	DFA::SpanTokenTableState{ 1, 10, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_65.data(), dfa_state_65.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_92.data(), dfa_state_92.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_93.data(), dfa_state_93.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_94.data(), dfa_state_94.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_95.data(), dfa_state_95.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_96.data(), dfa_state_96.size()}	},
-	DFA::SpanMultiTableState{ 1, 10, {dfa_state_97.data(), dfa_state_97.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_98.data(), dfa_state_98.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_99.data(), dfa_state_99.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_100.data(), dfa_state_100.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_101.data(), dfa_state_101.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_102.data(), dfa_state_102.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_103.data(), dfa_state_103.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_104.data(), dfa_state_104.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_105.data(), dfa_state_105.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_106.data(), dfa_state_106.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_107.data(), dfa_state_107.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_108.data(), dfa_state_108.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_109.data(), dfa_state_109.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_110.data(), dfa_state_110.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_98.data(), dfa_state_98.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_111.data(), dfa_state_111.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_112.data(), dfa_state_112.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_113.data(), dfa_state_113.size()}	},
-	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_114.data(), dfa_state_114.size()}	},
-	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_115.data(), dfa_state_115.size()}	},
-	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_116.data(), dfa_state_116.size()}	},
-	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_58.data(), dfa_state_58.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_67.data(), dfa_state_67.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_68.data(), dfa_state_68.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_69.data(), dfa_state_69.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_70.data(), dfa_state_70.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_71.data(), dfa_state_71.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_72.data(), dfa_state_72.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_73.data(), dfa_state_73.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_74.data(), dfa_state_74.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_75.data(), dfa_state_75.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_76.data(), dfa_state_76.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_77.data(), dfa_state_77.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_78.data(), dfa_state_78.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_79.data(), dfa_state_79.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_80.data(), dfa_state_80.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_81.data(), dfa_state_81.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_83.data(), dfa_state_83.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_84.data(), dfa_state_84.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_86.data(), dfa_state_86.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_88.data(), dfa_state_88.size()}},
+	DFA::SpanMultiTableState{ 1, 11, {dfa_state_59.data(), dfa_state_59.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_89.data(), dfa_state_89.size()}},
+	DFA::SpanTokenTableState{ 1, 10, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_90.data(), dfa_state_90.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_91.data(), dfa_state_91.size()}},
+	DFA::SpanTokenTableState{ 1, 10, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_92.data(), dfa_state_92.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_93.data(), dfa_state_93.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_94.data(), dfa_state_94.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_95.data(), dfa_state_95.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_96.data(), dfa_state_96.size()}},
+	DFA::SpanMultiTableState{ 1, 10, {dfa_state_97.data(), dfa_state_97.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_100.data(), dfa_state_100.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_101.data(), dfa_state_101.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_102.data(), dfa_state_102.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_103.data(), dfa_state_103.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_104.data(), dfa_state_104.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_106.data(), dfa_state_106.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_107.data(), dfa_state_107.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_108.data(), dfa_state_108.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_109.data(), dfa_state_109.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_110.data(), dfa_state_110.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_111.data(), dfa_state_111.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_112.data(), dfa_state_112.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_113.data(), dfa_state_113.size()}},
+	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_114.data(), dfa_state_114.size()}},
+	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
+	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_116.data(), dfa_state_116.size()}},
+	DFA::SpanTokenTableState{ 1, 11, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<6> Parser::Parser::dfa_table_6 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_117.data(), dfa_state_117.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_118.data(), dfa_state_118.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_119.data(), dfa_state_119.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_120.data(), dfa_state_120.size()}	},
-	DFA::SpanTokenTableState{ 3, 3, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_117.data(), dfa_state_117.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_118.data(), dfa_state_118.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_119.data(), dfa_state_119.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_120.data(), dfa_state_120.size()}},
+	DFA::SpanTokenTableState{ 3, 3, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<134> Parser::Parser::dfa_table_7 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_121.data(), dfa_state_121.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_122.data(), dfa_state_122.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_123.data(), dfa_state_123.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_124.data(), dfa_state_124.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_125.data(), dfa_state_125.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_126.data(), dfa_state_126.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_127.data(), dfa_state_127.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_128.data(), dfa_state_128.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_130.data(), dfa_state_130.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_131.data(), dfa_state_131.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_132.data(), dfa_state_132.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_133.data(), dfa_state_133.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_134.data(), dfa_state_134.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_135.data(), dfa_state_135.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_136.data(), dfa_state_136.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_137.data(), dfa_state_137.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_138.data(), dfa_state_138.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_139.data(), dfa_state_139.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_140.data(), dfa_state_140.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_142.data(), dfa_state_142.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_143.data(), dfa_state_143.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_144.data(), dfa_state_144.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_145.data(), dfa_state_145.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_146.data(), dfa_state_146.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_147.data(), dfa_state_147.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_148.data(), dfa_state_148.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_149.data(), dfa_state_149.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}	},
-	DFA::SpanMultiTableState{ 1, 1, {dfa_state_124.data(), dfa_state_124.size()}	},
-	DFA::SpanMultiTableState{ 1, 4, {dfa_state_122.data(), dfa_state_122.size()}	},
-	DFA::SpanMultiTableState{ 1, 3, {dfa_state_155.data(), dfa_state_155.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, 4, {dfa_state_122.data(), dfa_state_122.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_157.data(), dfa_state_157.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}	},
-	DFA::SpanTokenTableState{ 1, 3, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, 3, {dfa_state_135.data(), dfa_state_135.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_164.data(), dfa_state_164.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_166.data(), dfa_state_166.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_167.data(), dfa_state_167.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_168.data(), dfa_state_168.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_170.data(), dfa_state_170.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_171.data(), dfa_state_171.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_173.data(), dfa_state_173.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_174.data(), dfa_state_174.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_175.data(), dfa_state_175.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_177.data(), dfa_state_177.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_178.data(), dfa_state_178.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_180.data(), dfa_state_180.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_181.data(), dfa_state_181.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_184.data(), dfa_state_184.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_186.data(), dfa_state_186.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_187.data(), dfa_state_187.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_188.data(), dfa_state_188.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_189.data(), dfa_state_189.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_190.data(), dfa_state_190.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_191.data(), dfa_state_191.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_192.data(), dfa_state_192.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_193.data(), dfa_state_193.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_194.data(), dfa_state_194.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_195.data(), dfa_state_195.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_196.data(), dfa_state_196.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_197.data(), dfa_state_197.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_198.data(), dfa_state_198.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_199.data(), dfa_state_199.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_200.data(), dfa_state_200.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_201.data(), dfa_state_201.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_202.data(), dfa_state_202.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_203.data(), dfa_state_203.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_121.data(), dfa_state_121.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_122.data(), dfa_state_122.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_123.data(), dfa_state_123.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_124.data(), dfa_state_124.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_125.data(), dfa_state_125.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_126.data(), dfa_state_126.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_128.data(), dfa_state_128.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_129.data(), dfa_state_129.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_130.data(), dfa_state_130.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_131.data(), dfa_state_131.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_132.data(), dfa_state_132.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_133.data(), dfa_state_133.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_134.data(), dfa_state_134.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_135.data(), dfa_state_135.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_136.data(), dfa_state_136.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_138.data(), dfa_state_138.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_139.data(), dfa_state_139.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_140.data(), dfa_state_140.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_142.data(), dfa_state_142.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_143.data(), dfa_state_143.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_144.data(), dfa_state_144.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_145.data(), dfa_state_145.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_146.data(), dfa_state_146.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_147.data(), dfa_state_147.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_148.data(), dfa_state_148.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_149.data(), dfa_state_149.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	DFA::SpanMultiTableState{ 1, 1, {dfa_state_124.data(), dfa_state_124.size()}},
+	DFA::SpanMultiTableState{ 1, 4, {dfa_state_122.data(), dfa_state_122.size()}},
+	DFA::SpanMultiTableState{ 1, 3, {dfa_state_155.data(), dfa_state_155.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, 4, {dfa_state_122.data(), dfa_state_122.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_157.data(), dfa_state_157.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
+	DFA::SpanTokenTableState{ 1, 3, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, 3, {dfa_state_135.data(), dfa_state_135.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_164.data(), dfa_state_164.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_166.data(), dfa_state_166.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_167.data(), dfa_state_167.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_168.data(), dfa_state_168.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_169.data(), dfa_state_169.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_170.data(), dfa_state_170.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_141.data(), dfa_state_141.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_171.data(), dfa_state_171.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_172.data(), dfa_state_172.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_173.data(), dfa_state_173.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_174.data(), dfa_state_174.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_175.data(), dfa_state_175.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_177.data(), dfa_state_177.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_178.data(), dfa_state_178.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_179.data(), dfa_state_179.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_180.data(), dfa_state_180.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_181.data(), dfa_state_181.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_182.data(), dfa_state_182.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_183.data(), dfa_state_183.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_184.data(), dfa_state_184.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_185.data(), dfa_state_185.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_186.data(), dfa_state_186.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_187.data(), dfa_state_187.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_188.data(), dfa_state_188.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_189.data(), dfa_state_189.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_190.data(), dfa_state_190.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_191.data(), dfa_state_191.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_192.data(), dfa_state_192.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_193.data(), dfa_state_193.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_194.data(), dfa_state_194.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_196.data(), dfa_state_196.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_197.data(), dfa_state_197.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_198.data(), dfa_state_198.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_199.data(), dfa_state_199.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_200.data(), dfa_state_200.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_201.data(), dfa_state_201.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_202.data(), dfa_state_202.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_203.data(), dfa_state_203.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<33> Parser::Parser::dfa_table_8 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_204.data(), dfa_state_204.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_205.data(), dfa_state_205.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_206.data(), dfa_state_206.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_207.data(), dfa_state_207.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_208.data(), dfa_state_208.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_209.data(), dfa_state_209.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_210.data(), dfa_state_210.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_212.data(), dfa_state_212.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_213.data(), dfa_state_213.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_215.data(), dfa_state_215.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_216.data(), dfa_state_216.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_217.data(), dfa_state_217.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_218.data(), dfa_state_218.size()}	},
-	DFA::SpanTokenTableState{ 1, 6, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_219.data(), dfa_state_219.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_221.data(), dfa_state_221.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_222.data(), dfa_state_222.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_223.data(), dfa_state_223.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_224.data(), dfa_state_224.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_225.data(), dfa_state_225.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_204.data(), dfa_state_204.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_205.data(), dfa_state_205.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_206.data(), dfa_state_206.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_207.data(), dfa_state_207.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_208.data(), dfa_state_208.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_209.data(), dfa_state_209.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_210.data(), dfa_state_210.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_211.data(), dfa_state_211.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_212.data(), dfa_state_212.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_213.data(), dfa_state_213.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_215.data(), dfa_state_215.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_216.data(), dfa_state_216.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_217.data(), dfa_state_217.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_218.data(), dfa_state_218.size()}},
+	DFA::SpanTokenTableState{ 1, 6, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_219.data(), dfa_state_219.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_220.data(), dfa_state_220.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_221.data(), dfa_state_221.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_222.data(), dfa_state_222.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_223.data(), dfa_state_223.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_224.data(), dfa_state_224.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_225.data(), dfa_state_225.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_9 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_10 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_226.data(), dfa_state_226.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_227.data(), dfa_state_227.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_11 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_229.data(), dfa_state_229.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_229.data(), dfa_state_229.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_12 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_229.data(), dfa_state_229.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_228.data(), dfa_state_228.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_229.data(), dfa_state_229.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_13 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_230.data(), dfa_state_230.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_231.data(), dfa_state_231.size()}	},
-	DFA::SpanTokenTableState{ 1, 2, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_230.data(), dfa_state_230.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_231.data(), dfa_state_231.size()}},
+	DFA::SpanTokenTableState{ 1, 2, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<4> Parser::Parser::dfa_table_14 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_232.data(), dfa_state_232.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_233.data(), dfa_state_233.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_232.data(), dfa_state_232.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_233.data(), dfa_state_233.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<45> Parser::Parser::dfa_table_15 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_234.data(), dfa_state_234.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_235.data(), dfa_state_235.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_236.data(), dfa_state_236.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_237.data(), dfa_state_237.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_238.data(), dfa_state_238.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_239.data(), dfa_state_239.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_241.data(), dfa_state_241.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_242.data(), dfa_state_242.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_243.data(), dfa_state_243.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_244.data(), dfa_state_244.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_245.data(), dfa_state_245.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_246.data(), dfa_state_246.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_247.data(), dfa_state_247.size()}	},
-	DFA::SpanTokenTableState{ 5, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_248.data(), dfa_state_248.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_249.data(), dfa_state_249.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_250.data(), dfa_state_250.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_251.data(), dfa_state_251.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_252.data(), dfa_state_252.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_253.data(), dfa_state_253.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_254.data(), dfa_state_254.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_255.data(), dfa_state_255.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_256.data(), dfa_state_256.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_257.data(), dfa_state_257.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_258.data(), dfa_state_258.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_259.data(), dfa_state_259.size()}	},
-	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_260.data(), dfa_state_260.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_261.data(), dfa_state_261.size()}	},
-	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_234.data(), dfa_state_234.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_235.data(), dfa_state_235.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_236.data(), dfa_state_236.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_237.data(), dfa_state_237.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_238.data(), dfa_state_238.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_239.data(), dfa_state_239.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_241.data(), dfa_state_241.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_242.data(), dfa_state_242.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_243.data(), dfa_state_243.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_244.data(), dfa_state_244.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_245.data(), dfa_state_245.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_246.data(), dfa_state_246.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_247.data(), dfa_state_247.size()}},
+	DFA::SpanTokenTableState{ 5, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_248.data(), dfa_state_248.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_249.data(), dfa_state_249.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_250.data(), dfa_state_250.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_251.data(), dfa_state_251.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_252.data(), dfa_state_252.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_240.data(), dfa_state_240.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_253.data(), dfa_state_253.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_254.data(), dfa_state_254.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_255.data(), dfa_state_255.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_256.data(), dfa_state_256.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_257.data(), dfa_state_257.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_258.data(), dfa_state_258.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_259.data(), dfa_state_259.size()}},
+	DFA::SpanMultiTableState{ 5, ::Parser::DFA::null_state, {dfa_state_260.data(), dfa_state_260.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_261.data(), dfa_state_261.size()}},
+	DFA::SpanTokenTableState{ 5, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 const ::Parser::DFA::TokenTable<37> Parser::Parser::dfa_table_16 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_262.data(), dfa_state_262.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_263.data(), dfa_state_263.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_264.data(), dfa_state_264.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_265.data(), dfa_state_265.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_266.data(), dfa_state_266.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_267.data(), dfa_state_267.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_268.data(), dfa_state_268.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_270.data(), dfa_state_270.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_271.data(), dfa_state_271.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_272.data(), dfa_state_272.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_273.data(), dfa_state_273.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_274.data(), dfa_state_274.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_275.data(), dfa_state_275.size()}	},
-	DFA::SpanMultiTableState{ 1, 1, {dfa_state_263.data(), dfa_state_263.size()}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_269.data(), dfa_state_269.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_276.data(), dfa_state_276.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, 0, {dfa_state_269.data(), dfa_state_269.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_277.data(), dfa_state_277.size()}	},
-	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_278.data(), dfa_state_278.size()}	},
-	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_279.data(), dfa_state_279.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_281.data(), dfa_state_281.size()}	},
-	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_282.data(), dfa_state_282.size()}	},
-	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}	},
-	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_283.data(), dfa_state_283.size()}	},
-	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_284.data(), dfa_state_284.size()}	},
-	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_51.data(), dfa_state_51.size()}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_262.data(), dfa_state_262.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_263.data(), dfa_state_263.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_264.data(), dfa_state_264.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_265.data(), dfa_state_265.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_266.data(), dfa_state_266.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_267.data(), dfa_state_267.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_268.data(), dfa_state_268.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_269.data(), dfa_state_269.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_270.data(), dfa_state_270.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_271.data(), dfa_state_271.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_272.data(), dfa_state_272.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_273.data(), dfa_state_273.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_274.data(), dfa_state_274.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_275.data(), dfa_state_275.size()}},
+	DFA::SpanMultiTableState{ 1, 1, {dfa_state_263.data(), dfa_state_263.size()}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_269.data(), dfa_state_269.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_276.data(), dfa_state_276.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, 0, {dfa_state_269.data(), dfa_state_269.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_277.data(), dfa_state_277.size()}},
+	DFA::SpanTokenTableState{ 1, 1, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_278.data(), dfa_state_278.size()}},
+	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_279.data(), dfa_state_279.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_280.data(), dfa_state_280.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_281.data(), dfa_state_281.size()}},
+	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_282.data(), dfa_state_282.size()}},
+	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}},
+	DFA::SpanTokenTableState{ 1, 0, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_283.data(), dfa_state_283.size()}},
+	DFA::SpanTokenTableState{ 1, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_284.data(), dfa_state_284.size()}},
+	DFA::SpanMultiTableState{ 1, ::Parser::DFA::null_state, {dfa_state_51.data(), dfa_state_51.size()}},
 };
 const ::Parser::DFA::TokenTable<8> Parser::Parser::dfa_table_17 = {
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_285.data(), dfa_state_285.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_286.data(), dfa_state_286.size()}	},
-	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_287.data(), dfa_state_287.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_288.data(), dfa_state_288.size()}	},
-	DFA::SpanMultiTableState{ 2, 0, {dfa_state_289.data(), dfa_state_289.size()}	},
-	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_290.data(), dfa_state_290.size()}	},
-	DFA::SpanTokenTableState{ 2, ::Parser::DFA::null_state, {nullptr, 0}	},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_285.data(), dfa_state_285.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_286.data(), dfa_state_286.size()}},
+	DFA::SpanTokenTableState{ 0, ::Parser::DFA::null_state, {nullptr, 0}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_287.data(), dfa_state_287.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_288.data(), dfa_state_288.size()}},
+	DFA::SpanMultiTableState{ 2, 0, {dfa_state_289.data(), dfa_state_289.size()}},
+	DFA::SpanMultiTableState{ 0, ::Parser::DFA::null_state, {dfa_state_290.data(), dfa_state_290.size()}},
+	DFA::SpanTokenTableState{ 2, ::Parser::DFA::null_state, {nullptr, 0}},
 };
 

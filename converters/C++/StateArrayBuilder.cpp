@@ -50,7 +50,7 @@ void StateArrayBuilder::output() {
             }
         }
 
-        out << "::" << namespace_name << "::DFA::" << type_str << (type != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" :  "")
+        out << "const ::" << namespace_name << "::DFA::" << type_str << (type != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" :  "")
             << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";
     }
 }
@@ -59,7 +59,7 @@ void StateArrayBuilder::outputHeader() {
     std::size_t count = 0;
     const auto dfa_compatible_table = lexer_data.getDfaCompatibleTable();
     for (const auto &t : data.first) {
-        out << "\t\tstatic DFA::" << DFA::getStateTypeStr(t, &dfa_compatible_table, isToken) << (DFA::getStateType(t, &dfa_compatible_table, isToken) != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" : "")
+        out << "\t\tstatic const DFA::" << DFA::getStateTypeStr(t, &dfa_compatible_table, isToken) << (DFA::getStateType(t, &dfa_compatible_table, isToken) != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" : "")
             << " dfa_state_" << count++ << ";\n";
     }
 }

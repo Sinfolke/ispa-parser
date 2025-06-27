@@ -181,9 +181,6 @@ void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     converter.addStandardFunctionsLexer(out);
     addparseFromFunctions(out, data->isELR());
     //converter.addStandardFunctionsParser();
-    converter.addLexerCode_Header(out);
-    converter.convertLexerCode(lexer_code, out);
-    converter.addLexerCode_Bottom(out, return_var);
     converter.convertData(out);
     max_states = data->getMaxStatesCount();
     createActionTable(out);

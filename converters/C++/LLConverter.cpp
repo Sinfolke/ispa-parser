@@ -198,16 +198,6 @@ void LLConverter::convertMembers(const stdu::vector<LLIR::member> &members, std:
     for (auto mem : members)
         convertMember(mem, out);
 }
-void LLConverter::convertLexerCode(const stdu::vector<LLIR::member> &members, std::ostringstream &out) {
-    isToken = true;
-    if (!members.empty()) {
-        for (auto it = members.begin() + 1; it != members.end() - 1; it++) {
-            auto mem = *it;
-            convertMember(mem, out);
-        }
-    }
-    isToken = false;
-}
 void LLConverter::convertData(std::ostringstream &out) {
     for (const auto &dt : ir.getData()) {
         convertMembers(dt.members, out);
@@ -457,16 +447,6 @@ void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlock
         out << "\treturn std::any_cast<Types::" << name << "&>(rule.data());";
         out << "\n}\n";
     }
-}
-
-void LLConverter::addLexerCode_Header(std::ostringstream &out) {
-    out << "\n" << namespace_name << "::Token " << namespace_name << "::Lexer::makeToken(const char*& pos) {\n";
-    indentLevel++;
-}
-void LLConverter::addLexerCode_Bottom(std::ostringstream &out, LLIR::variable var) {
-    out << "\treturn " << var.name << ";\n";
-    out << "}\n";
-    indentLevel--;
 }
 void LLConverter::outputIR(std::filesystem::path name) {
     std::ofstream cpp(name.string() + ".cpp");
