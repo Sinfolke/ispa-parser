@@ -9,6 +9,7 @@ import corelib;
 import logging;
 import LLIR;
 import AST.Tree;
+import DFATypes;
 import dstd;
 import std;
 
@@ -31,9 +32,8 @@ void LexerConverter::addStandardFunctionsLexer() const {
 void LexerConverter::addDFASpansCpp() const {
     std::size_t count = 0;
     for (const auto &dfa : lexer_data.getDFAS()) {
-        const std::string type_str = dfa.getTypeStr(true); // e.g. "CharTable<4, 6>"
         const auto span_type = dfa.getType(true);
-        const std::string span_type_str = DFA::getSpanTypeStr(span_type);
+        const std::string span_type_str = DFATypes::getSpanTypeStr(span_type, namespace_name);
 
         const std::string table_name = "dfa_table_" + std::to_string(count);
 
@@ -54,12 +54,11 @@ void LexerConverter::addDFASpansCpp() const {
 void LexerConverter::addDFASpansH() const {
     std::size_t count = 0;
     for (const auto &dfa : lexer_data.getDFAS()) {
-        const std::string type_str = dfa.getTypeStr(true); // e.g. "CharTable<4, 6>"
-        const std::string span_type = dfa.getSpanTypeStr(true);
+        const std::string span_type = DFATypes(dfa).getSpanTypeStr(true, namespace_name);
 
         const std::string table_name = "dfa_table_" + std::to_string(count);
 
-        h_out << "\t\tstatic const ::" << namespace_name << "::" << span_type << " dfa_span_" << count << ";\n";
+        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << span_type << " dfa_span_" << count << ";\n";
 
         ++count;
     }
@@ -75,12 +74,11 @@ void LexerConverter::output() {
     out << dfa_converter.get().str();
     out << dfa_func_table_converter.get().str();
     // 2. Print First Character Dispatch Table
-    out << "using FCDT_VARIANT = " << "std::variant<std::monostate, ::" << namespace_name << "::DFA::SpanTokenTable, ::" << namespace_name << "::DFA::SpanCharTable, ::" << namespace_name << "::DFA::SpanMultiTable, ::" << namespace_name << "::Token_res (*) (const char*)>;\n";
-    out << "const std::array<FCDT_VARIANT, " << std::to_string(std::numeric_limits<unsigned char>::max() + 1) <<"> " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
+    out << "const ISPA_STD::fcdt_table " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
     const auto &dfa_involved_table = lexer_data.getDispatchNamesInvolve();
     char c = 0;
     for (const auto &names : lexer_data.getFCDT().get()) {
-        out << "\tFCDT_VARIANT { ";
+        out << "\tISPA_STD::fcdt_variant { ";
         std::unordered_set<std::size_t> used;
         utype::unordered_set<stdu::vector<std::string>> used_func;
         bool was_dfa = false;
@@ -110,7 +108,7 @@ void LexerConverter::output() {
     addDFASpansCpp();
     // 2. Print makeToken function
     out << "auto ::" << namespace_name << "::Lexer::makeToken(const char* &pos) -> Token {\n";
-    out << "\tfcdt_lookup<DFA::CharTable, DFA::TokenTable, DFA::MultiTable, DFA::Transition>(first_character_dispatch_table, pos);\n";
+    out << "\tfcdt_lookup(first_character_dispatch_table, pos);\n";
     out << "}\n";
     // print tokens that are callable functions
     LLConverter converter(lexer_data.getFunctionsIR(), ast, namespace_name);
@@ -127,14 +125,14 @@ void LexerConverter::outputHeader() {
     dfa_states.outputHeader();
     for (std::size_t i = 0; i < lexer_data.getDFAS().getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << "> dfa_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, namespace_name, dfa.getStates().size()) << " dfa_table_" << i << ";\n";
     }
     addDFASpansH();
     for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::" << namespace_name << "::DFA::" << dfa.getTypeStr(true) << '<' << dfa.getStates().size() << "> dfa_func_table_" << i << ";\n";
+        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, namespace_name, dfa.getStates().size()) << " dfa_func_table_" << i << ";\n";
     }
-    // add first character diaptch table
-    h_out << "\t\tstatic const std::array<std::variant<std::monostate, ::" << namespace_name << "::DFA::SpanTokenTable, ::" << namespace_name << "::DFA::SpanCharTable, ::" << namespace_name << "::DFA::SpanMultiTable, " << namespace_name << "::Token_res (*) (const char*)>, " << std::to_string(std::numeric_limits<unsigned char>::max() + 1) << "> first_character_dispatch_table;\n";
+    // add first character dispatch table
+    h_out << "\t\tstatic const ISPA_STD::fcdt_table<Tokens> first_character_dispatch_table;\n";
     h_out << "\t};\n";
 }

@@ -3,6 +3,7 @@ import DFA;
 import corelib;
 import logging;
 import cpuf.printf;
+import DFATypes;
 import dstd;
 import std;
 import std.compat;
@@ -23,15 +24,15 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     for (const auto &state : states) {
         std::string state_name = "dfa_state_" + std::to_string(location_map.at({count, state_count++}));
         auto state_type = DFA::getStateType(state.transitions, dfa_compatible_table, isToken);
-        auto state_type_str = DFA::getStateTypeStr(state.transitions, dfa_compatible_table, isToken);
+        auto state_type_str = DFATypes::getSpanStateTypeStr(state.transitions, dfa_compatible_table, namespace_name, isToken);
         if (state_type == DFA::DfaType::NONE) {
             // empty state - initialize with empty type or with SpanEmptyState
             if (type != DFA::DfaType::Multi) {
-                state_type_str = DFA::getStateTypeStr(type);
+                state_type_str = DFATypes::getSpanStateTypeStr(type, namespace_name);
                 state_type = type;
             }
         }
-            table_out << "\tDFA::Span" << state_type_str;
+            table_out << "\tISPA_STD::DFAAPI::Span" << state_type_str;
             if (state_type != DFA::DfaType::NONE) {
                 table_out << "{ "
                           << number_or_null(state.else_goto) << ", "
@@ -44,7 +45,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
         }
     }
 
-    out << "const ::" << namespace_name << "::DFA::" << DFA::getTypeStr(type) << "<" << states.size() << "> "
+    out << "const ::" << namespace_name << "::DFA::" << DFATypes::getTypeStr(type, namespace_name, states.size())
         << namespace_name << "::" << prefix << "::" << name << '_' << count
         << " = {\n" << table_out.str() << "};\n";
 }

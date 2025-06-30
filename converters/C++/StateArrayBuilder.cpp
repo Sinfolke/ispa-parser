@@ -1,19 +1,20 @@
 module StateArrayBuilder;
 import corelib;
+import DFATypes;
 import dstd;
 import std;
 
 void StateArrayBuilder::output() {
     auto number_or_null = [this](std::size_t index) {
         return index == std::numeric_limits<std::size_t>::max()
-            ? "::" + namespace_name + "::DFA::null_state"
+            ? "::ISPA_STD::DFAAPI::null_state"
             : std::to_string(index);
     };
     std::size_t count = 0;
     const auto &dfa_compatible_table = lexer_data.getDfaCompatibleTable();
     for (const auto &t : data.first) {
         auto type = DFA::getStateType(t, &dfa_compatible_table, isToken);
-        auto type_str = DFA::getStateTypeStr(t, &dfa_compatible_table, isToken);
+        auto type_str = DFATypes::getStateTypeStr(t, &dfa_compatible_table, isToken, namespace_name, t.size());
         std::ostringstream out_content;
         std::size_t transition_index = 0;
         if (type != DFA::DfaType::NONE) {
@@ -23,19 +24,19 @@ void StateArrayBuilder::output() {
                     const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
                     if (dfa_compatible_table.contains(symbol)) {
                         std::size_t dfa_index = dfa_compatible_table.at(symbol);
-                        out_content << "\tDFA::" << lexer_data.getDFAS().getDFAS()[dfa_index].getTypeStr(isToken) << "Transition { ";
+                        out_content << "\tISPA_STD::DFAAPI::" << DFATypes(lexer_data.getDFAS().getDFAS()[dfa_index]).getTransitionsTypeStr(isToken, namespace_name) << " { ";
                         const std::string dfa_table_name = "dfa_span_" + std::to_string(dfa_index);
                         out_content << dfa_table_name;
                     } else {
                         if (isToken) {
-                            out_content << "\tDFA::CallableTokenTransition { ";
+                            out_content << "\tISPA_STD::DFAAPI::CallableTokenTransition { ";
                         } else {
-                            out_content << "\tDFA::TokenTransition { ";
+                            out_content << "\tISPA_STD::DFAAPI::TokenTransition { ";
                         }
                         out_content << (isToken ? "&" : "Tokens::") << corelib::text::join(symbol, "_");
                     }
                 } else {
-                    out_content << "\tDFA::CharTransition { ";
+                    out_content << "\tISPA_STD::DFAAPI::CharTransition { ";
                     const auto &ch = std::get<char>(transition.first);
                     out_content << "'" << corelib::text::getEscapedAsStr(ch, false) << "'";
                 }
@@ -50,7 +51,7 @@ void StateArrayBuilder::output() {
             }
         }
 
-        out << "const ::" << namespace_name << "::DFA::" << type_str << (type != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" :  "")
+        out << "const ::ISPA_STD::DFAAPI::" << type_str
             << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";
     }
 }
@@ -59,7 +60,6 @@ void StateArrayBuilder::outputHeader() {
     std::size_t count = 0;
     const auto dfa_compatible_table = lexer_data.getDfaCompatibleTable();
     for (const auto &t : data.first) {
-        out << "\t\tstatic const DFA::" << DFA::getStateTypeStr(t, &dfa_compatible_table, isToken) << (DFA::getStateType(t, &dfa_compatible_table, isToken) != DFA::DfaType::NONE ? std::string("<") + std::to_string(t.size()) + ">" : "")
-            << " dfa_state_" << count++ << ";\n";
+        out << "\t\tstatic const ISPA_STD::DFAAPI::" << DFATypes::getStateTypeStr(t, &dfa_compatible_table, isToken, namespace_name, t.size()) << " dfa_state_" << count++ << ";\n";
     }
 }

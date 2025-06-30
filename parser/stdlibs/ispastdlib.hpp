@@ -319,8 +319,78 @@ struct error {
     std::size_t column;
     std::string message;
 };
+namespace DFAAPI {
+    constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
+    template<typename TOKEN_T> struct SpanMultiTable;
+    struct EmptyState;
+    template<typename Key> struct Transition;
+    template<typename T>   struct SpanState;
+    template<std::size_t MAX, typename T> using State = std::array<T, MAX>;
+
+    using CharTransition = Transition<char>;
+    template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
+    template<typename TOKEN_T> using CallableTokenTransition = Transition<match_result<TOKEN_T> (*)(const char*)>;
+    using CharTableTransition = Transition<Span<const SpanState<CharTransition>>>;
+    template<typename TOKEN_T> using CallableTokenTableTransition = Transition<Span<const SpanState<CallableTokenTransition<TOKEN_T>>>>;
+    template<typename TOKEN_T> using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T>>;
+    template<typename TOKEN_T>
+    using AnyTransition = std::variant<
+        Transition<char>,
+        Transition<match_result<TOKEN_T> (*)(const char*)>,
+        CharTableTransition,
+        CallableTokenTableTransition<TOKEN_T>,
+        MultiTableTransition<TOKEN_T>,
+        EmptyState
+    >;
+    // state types
+    template<std::size_t N> using CharTableState = State<N, CharTransition>;
+    template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
+    template<typename TOKEN_T, std::size_t N> using CallableTokenState = State<N, CallableTokenTransition<TOKEN_T>>;
+    template<typename TOKEN_T, std::size_t N> using MultiTableState = State<N, AnyTransition<TOKEN_T>>;
+    using EmptyTableState = EmptyState;
+
+    // span state types
+    using SpanCharTableState = SpanState<CharTransition>;
+    template<typename TOKEN_T> using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
+    template<typename TOKEN_T> using SpanCallableTokenState = SpanState<CallableTokenTransition<TOKEN_T>>;
+    template<typename TOKEN_T> using SpanMultiTableState = SpanState<AnyTransition<TOKEN_T>>;
+    using SpanEmptyTableState = EmptyState;
+
+    // non span types
+    template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
+    template<typename TOKEN_T, std::size_t N> using TokenTable = std::array<SpanState<TokenTransition<TOKEN_T>>, N>;
+    template<typename TOKEN_T, std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition<TOKEN_T>>, N>;
+    template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>, N>;
+
+    // span types
+    using SpanCharTable = Span<const SpanState<CharTransition>>;
+    template<typename TOKEN_T> using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
+    template<typename TOKEN_T> using SpanCallableTokenTable = Span<const SpanState<CallableTokenTransition<TOKEN_T>>>;
+
+    struct EmptyState {};
+    template<typename Key>
+    struct Transition {
+        Key symbol;
+        std::size_t next;
+        std::size_t accept;
+    };
+    template<typename T>
+    struct SpanState {
+        std::size_t else_goto;
+        std::size_t else_goto_accept;
+        Span<const T> transitions;
+    };
+    template<typename TOKEN_T>
+    struct SpanMultiTable {
+        Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>> states;
+    };
+}
+template<typename TOKEN_T>
+using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanTokenTable<TOKEN_T>, DFAAPI::SpanCharTable, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;
+template<typename TOKEN_T>
+using fcdt_table = std::array<fcdt_variant<TOKEN_T>, std::numeric_limits<unsigned char>::max() + 1>;
 class DFA {
-    template <typename Transition, typename Tokens, typename Transitions, typename IT>
+    template <typename TOKEN_T, typename Transitions, typename Transition, typename IT>
     auto find_key(const Transitions &transitions, IT &pos) -> Transition& {
         for (const auto &t : transitions) {
             if constexpr (std::is_same_v<decltype(t.symbol), char>) {
@@ -341,15 +411,15 @@ class DFA {
             }
 
         }
-        return {Tokens::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
+        return {TOKEN_T::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
     };
 protected:
-    template<typename Transition, typename Tokens, typename Table, typename IT, typename PanicModeFunc>
+    template<typename TOKEN_T, typename Table, typename IT, typename PanicModeFunc>
     auto decide(const Table &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
         std::size_t state = 0;
         std::size_t accept = std::numeric_limits<std::size_t>::max();
         do {
-            auto new_state = find_key<Table, IT, Transition, Tokens>(table[state].transitions, pos);
+            auto new_state = find_key<TOKEN_T, decltype(table[0]), decltype(table[0][0]), IT>(table[state].transitions, pos);
             if (new_state.next != std::numeric_limits<std::size_t>::max()) {
                 pos++;
                 state = new_state.next;
@@ -373,7 +443,7 @@ protected:
 };
 template<typename Tokens>
 class AdvancedDFA {
-    template <typename PanicModeFunc, typename Transition, typename DFATokenTable, typename DFACharTable, typename DFAMultiTable, typename Transitions>
+    template <typename TOKEN_T, typename PanicModeFunc, typename Transitions, typename Transition>
     auto find_key(const Transitions &transitions, const char* &pos) -> Transition& {
         using Token_res = match_result<Tokens>;
         using func = Token_res(*)(const char*);
@@ -388,14 +458,14 @@ class AdvancedDFA {
                 }
             } else if (std::holds_alternative<func>()) {
                 tokens[current_tokens_index++] = &t;
-            } else if (std::holds_alternative<DFATokenTable>(t.symbol)) {
-                if (dfa.decide<Transition, Tokens, DFATokenTable, const char*, PanicModeFunc>(std::get<DFATokenTable>(t.symbol), pos, nullptr))
+            } else if (std::holds_alternative<DFAAPI::SpanTokenTable<TOKEN_T>>(t.symbol)) {
+                if (dfa.decide<Tokens, DFAAPI::SpanTokenTable<TOKEN_T>, const char*, PanicModeFunc>(std::get<DFAAPI::SpanTokenTable<TOKEN_T>>(t.symbol), pos, nullptr))
                     return t;
-            } else if (std::holds_alternative<DFACharTable>(t.symbol)) {
-                if (dfa.decide<Transition, Tokens, DFACharTable, const char*, PanicModeFunc>(std::get<DFACharTable>(t.symbol), pos, nullptr))
+            } else if (std::holds_alternative<DFAAPI::SpanCharTable>(t.symbol)) {
+                if (dfa.decide<Tokens, DFAAPI::SpanCharTable, const char*, PanicModeFunc>(std::get<DFAAPI::SpanCharTable>(t.symbol), pos, nullptr))
                     return t;
-            } else if (std::holds_alternative<DFAMultiTable>(t.symbol)) {
-                if (decide(std::get<DFAMultiTable>(t.symbol), pos, nullptr))
+            } else if (std::holds_alternative<DFAAPI::SpanMultiTable<TOKEN_T>>(t.symbol)) {
+                if (decide(std::get<DFAAPI::SpanMultiTable<TOKEN_T>>(t.symbol), pos, nullptr))
                     return t;
             } else {
                 throw AdvancedDFA_exception("Undefined transition symbol in AdvancedDFA");
@@ -413,12 +483,12 @@ class AdvancedDFA {
         return {Tokens::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
     };
 protected:
-    template<typename DFATokenTable, typename DFACharTable, typename DFAMultiTable, typename Table, typename PanicModeFunc, typename Transition>
+    template<typename TOKEN_T, typename Table, typename PanicModeFunc, typename Transition>
     auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> std::size_t {
         std::size_t state = 0;
         std::size_t accept = std::numeric_limits<std::size_t>::max();
         do {
-            auto new_state = find_key<Table, Transition, DFATokenTable, DFACharTable, DFAMultiTable>(table[state].transitions, pos);
+            auto new_state = find_key<TOKEN_T, PanicModeFunc, decltype(table[0]), decltype(table[0][0])>(table[state].transitions, pos);
             if (new_state.next != std::numeric_limits<std::size_t>::max()) {
                 state = new_state.next;
                 if (new_state.accept != std::numeric_limits<std::size_t>::max()) {
@@ -504,7 +574,7 @@ protected:
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
     void panic_mode() {}
-    template<typename CharTable, typename TokenTable, typename MultiTable, typename Transition, typename FCDT>
+    template<typename Transition, typename CharTable, typename TokenTable, typename MultiTable, typename FCDT>
     void fcdt_lookup(const FCDT &fcdt, const char* &pos) {
         while (*pos != '\0') {
             const auto &options = fcdt[*pos];
