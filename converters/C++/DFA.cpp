@@ -11,7 +11,7 @@ import std.compat;
 void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     auto number_or_null = [this](std::size_t index) {
         return index == std::numeric_limits<std::size_t>::max()
-            ? "::" + namespace_name + "::DFA::null_state"
+            ? "::ISPA_STD::DFAAPI::null_state"
             : std::to_string(index);
     };
 
@@ -45,7 +45,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
         }
     }
 
-    out << "const ::" << namespace_name << "::DFA::" << DFATypes::getTypeStr(type, namespace_name, states.size())
+    out << "const ::ISPA_STD::DFAAPI::" << DFATypes::getTypeStr(type, namespace_name, states.size())
         << namespace_name << "::" << prefix << "::" << name << '_' << count
         << " = {\n" << table_out.str() << "};\n";
 }

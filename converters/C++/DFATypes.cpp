@@ -42,7 +42,7 @@ auto DFATypes::getSpanTypeStr(bool isToken, const std::string &namespace_name) c
 auto DFATypes::getTransitionsTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return "CharTransition";
+            return "CharTableTransition";
         case DFA::DfaType::Token:
             return "TokenTableTransition<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -79,11 +79,11 @@ auto DFATypes::getStateTypeStr(DFA::DfaType type, const std::string &namespace_n
         case DFA::DfaType::Char:
             return std::string("CharTableState<") + std::to_string(size) + std::string(">");
         case DFA::DfaType::Token:
-            return std::string("TokenTableState<") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
+            return std::string("TokenTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::CallableToken:
             return std::string("CallableTokenTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::Multi:
-            return std::string("MultiTableState<") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
+            return std::string("MultiTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::NONE:
             return "EmptyTableState";
         default:
@@ -98,11 +98,11 @@ auto DFATypes::getSpanStateTypeStr(DFA::DfaType type, const std::string &namespa
         case DFA::DfaType::Char:
             return "CharTableState";
         case DFA::DfaType::Token:
-            return "TokenTableState<" + namespace_name + "::Tokens>";
+            return "TokenTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
-            return "CallableTokenTableState<" + namespace_name + "::Tokens>";
+            return "CallableTokenTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Multi:
-            return "MultiTableState<" + namespace_name + "::Tokens>";
+            return "MultiTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::NONE:
             return "EmptyTableState";
         default:

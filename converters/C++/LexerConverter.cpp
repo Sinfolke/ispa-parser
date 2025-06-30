@@ -37,7 +37,7 @@ void LexerConverter::addDFASpansCpp() const {
 
         const std::string table_name = "dfa_table_" + std::to_string(count);
 
-        out << "const ::" << namespace_name << "::" << span_type_str << " "
+        out << "const ::ISPA_STD::DFAAPI::" << span_type_str << " "
             << namespace_name << "::Lexer::dfa_span_" << count << " = {\n";
         if (span_type == DFA::DfaType::Multi)
             out << "\t{ ";
@@ -74,11 +74,11 @@ void LexerConverter::output() {
     out << dfa_converter.get().str();
     out << dfa_func_table_converter.get().str();
     // 2. Print First Character Dispatch Table
-    out << "const ISPA_STD::fcdt_table " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
+    out << "const ISPA_STD::fcdt_table<::" << namespace_name << "::Tokens> " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
     const auto &dfa_involved_table = lexer_data.getDispatchNamesInvolve();
     char c = 0;
     for (const auto &names : lexer_data.getFCDT().get()) {
-        out << "\tISPA_STD::fcdt_variant { ";
+        out << "\tISPA_STD::fcdt_variant<::" << namespace_name << "::Tokens> { ";
         std::unordered_set<std::size_t> used;
         utype::unordered_set<stdu::vector<std::string>> used_func;
         bool was_dfa = false;
