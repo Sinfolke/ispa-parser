@@ -400,7 +400,8 @@ namespace Parser {
          * @param token the token to print
          * Prints a single token into an output stream
          */
-        static void printToken(std::ostream& os, const Token& token);		private:
+        static void printToken(std::ostream& os, const Token& token);
+	private:
 			Token makeToken(const char*& pos);
 		static const ISPA_STD::DFAAPI::CharTableState<6> dfa_state_0;
 		static const ISPA_STD::DFAAPI::EmptyTableState dfa_state_1;
