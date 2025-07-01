@@ -14,8 +14,8 @@ public:
     auto getTypeStr(bool isToken, const std::string &namespace_name, std::size_t count) const -> std::string;
     auto getSpanTypeStr(bool isToken, const std::string &namespace_name) const -> std::string;
     auto getTransitionsTypeStr(bool isToken, const std::string &namespace_name) const -> std::string;
-    static auto getTransitionKeyTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t count) -> std::string;
-    static auto getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key, bool isToken, const std::string &namespace_name, std::size_t count) -> std::string;
+    static auto getTransitionKeyTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string;
+    static auto getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key, bool isToken, const std::string &namespace_name) -> std::string;
 
     auto getStatesTypeStr(bool isToken, const std::string &namespace_name, std::size_t count) const -> std::string;
     static auto getStateTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string;

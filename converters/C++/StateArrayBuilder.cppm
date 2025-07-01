@@ -9,7 +9,8 @@ export class StateArrayBuilder {
     const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &data;
     bool isToken;
     const std::string &namespace_name;
-    const LexerBuilder &lexer_data;
+    const DFAS dfas;
+    const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;
     const std::string &prefix;
 public:
     void output();
@@ -19,8 +20,9 @@ public:
         bool isToken,
         const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &data,
         const std::string &namespace_name,
-        const LexerBuilder &lexer_data,
+        const DFAS &dfas,
+        const LexerBuilder::DfaCompatibleTable *compatible_table,
         const std::string &prefix
         )
-    : out(out), isToken(isToken), data(data), namespace_name(namespace_name), lexer_data(lexer_data), prefix(prefix) {};
+    : out(out), isToken(isToken), data(data), namespace_name(namespace_name), dfas(dfas), dfa_compatible_table(compatible_table), prefix(prefix) {};
 };

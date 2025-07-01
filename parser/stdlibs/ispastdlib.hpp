@@ -386,7 +386,7 @@ namespace DFAAPI {
     };
 }
 template<typename TOKEN_T>
-using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanTokenTable<TOKEN_T>, DFAAPI::SpanCharTable, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;
+using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCallableTokenTable<TOKEN_T>, DFAAPI::SpanCharTable, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;
 template<typename TOKEN_T>
 using fcdt_table = std::array<fcdt_variant<TOKEN_T>, std::numeric_limits<unsigned char>::max() + 1>;
 class DFA {
@@ -399,7 +399,6 @@ class DFA {
                 }
             } else {
                 if constexpr (std::is_same_v<std::decay_t<IT>, char*>) {
-                    // handle the case when an entire token consists of other tokens
                     if (t.symbol(pos)) {
                         return t;
                     }
@@ -483,7 +482,7 @@ class AdvancedDFA {
         return {Tokens::NONE, std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()};
     };
 protected:
-    template<typename TOKEN_T, typename Table, typename PanicModeFunc, typename Transition>
+    template<typename TOKEN_T, typename Table, typename PanicModeFunc>
     auto decide(const Table &table, const char* pos, PanicModeFunc panic_mode) -> std::size_t {
         std::size_t state = 0;
         std::size_t accept = std::numeric_limits<std::size_t>::max();
@@ -511,7 +510,7 @@ protected:
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
-class Lexer_base : AdvancedDFA<TOKEN_T> {
+class Lexer_base : DFA, AdvancedDFA<TOKEN_T> {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
@@ -574,27 +573,25 @@ protected:
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
     void panic_mode() {}
-    template<typename Transition, typename CharTable, typename TokenTable, typename MultiTable, typename FCDT>
-    void fcdt_lookup(const FCDT &fcdt, const char* &pos) {
+    void fcdt_lookup(const fcdt_table<TOKEN_T> &fcdt, const char* &pos) {
         while (*pos != '\0') {
-            const auto &options = fcdt[*pos];
-            if (options.empty()) {
+            const auto &option = fcdt[*pos];
+            if (std::holds_alternative<std::monostate>(option)) {
                 panic_mode();
             }
-            for (const auto &option : options) {
-                const char* copy = pos;
-                if (std::holds_alternative<CharTable>(option)) {
-                    if (DFA::decide<Transition, TOKEN_T, CharTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<CharTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
-                        break;
-                } else if (std::holds_alternative<TokenTable>(option)) {
-                    if (DFA::decide<Transition, TOKEN_T, TokenTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<TokenTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
-                        break;
-                } else if (std::holds_alternative<MultiTable>(option)) {
-                    if (AdvancedDFA<TOKEN_T>::template decide<Transition, TOKEN_T, MultiTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<TokenTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
-                        break;
-                }
-                pos = copy;
+            const char* copy = pos;
+            if (std::holds_alternative<DFAAPI::SpanCharTable>(option)) {
+                if (DFA::decide<TOKEN_T, DFAAPI::SpanCharTable, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<DFAAPI::SpanCharTable>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                    break;
+            } else if (std::holds_alternative<DFAAPI::SpanCallableTokenTable<TOKEN_T>>(option)) {
+                if (DFA::decide<TOKEN_T, DFAAPI::SpanCallableTokenTable<TOKEN_T>, const char*, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<DFAAPI::SpanCallableTokenTable<TOKEN_T>>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                    break;
+            } else if (std::holds_alternative<DFAAPI::SpanMultiTable<TOKEN_T>>(option)) {
+                if (AdvancedDFA<TOKEN_T>::template decide<TOKEN_T, DFAAPI::SpanMultiTable<TOKEN_T>, decltype(&Lexer_base<TOKEN_T>::panic_mode)>(std::get<DFAAPI::SpanMultiTable<TOKEN_T>>(option), pos, &Lexer_base<TOKEN_T>::panic_mode))
+                    break;
             }
+            pos = copy;
+            panic_mode();
         }
 
     }

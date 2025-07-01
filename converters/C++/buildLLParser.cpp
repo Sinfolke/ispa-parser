@@ -4,6 +4,7 @@ import LexerBuilder;
 import LLConverter;
 import LLHeader;
 import LLIR;
+import StateArrayBuilder;
 import AST.Tree;
 extern "C" void buildLLParser(const std::filesystem::path name, const LLIR::IR &ir, const LexerBuilder &lexer_data, AST::Tree& ast) {
     std::ofstream cpp(name.string() + ".cpp");
@@ -15,6 +16,7 @@ extern "C" void buildLLParser(const std::filesystem::path name, const LLIR::IR &
         throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".h");
     }
     std::ostringstream cpp_ss, h_ss;
+    auto states_pair = ir.getDfas().getStateSet();
     LexerConverter lexer(ast, cpp_ss, h_ss, lexer_data, name.string());
     LLConverter parser(ir, ast, name.string());
     // print Lexer (into cpp file)
@@ -23,7 +25,7 @@ extern "C" void buildLLParser(const std::filesystem::path name, const LLIR::IR &
     parser.addStandardFunctionsLexer(cpp_ss);
     parser.addStandardFunctionsParser(cpp_ss);
     parser.addGetFunctions(cpp_ss, parser.getDataBlockToken(), parser.getDataBlockRules());
-    parser.addDFATables(cpp_ss);
+    parser.addDFATables(cpp_ss, states_pair);
 
     // print header (including Parser)
     parser.createLibrary(h_ss, name.string());
@@ -39,7 +41,7 @@ extern "C" void buildLLParser(const std::filesystem::path name, const LLIR::IR &
     parser.createTypesNamespace(h_ss, parser.getDataBlockToken(), parser.getDataBlockRules());
     parser.create_get_namespace(h_ss, name.string(), parser.getDataBlockToken(), parser.getDataBlockRules());
     lexer.outputHeader();
-    parser.create_parser_header(h_ss, ir.getDfas().getDFAS());
+    parser.create_parser_header(h_ss, ir.getDfas().getDFAS(), states_pair);
     parser.setIndentLevet(2);
     parser.writeRules(h_ss);
     parser.setIndentLevet(1);

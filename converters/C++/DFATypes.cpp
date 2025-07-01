@@ -44,7 +44,7 @@ auto DFATypes::getTransitionsTypeStr(DFA::DfaType type, const std::string &names
         case DFA::DfaType::Char:
             return "CharTableTransition";
         case DFA::DfaType::Token:
-            return "TokenTableTransition<::" + namespace_name + "::Tokens>";
+            return "TokenTransition<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
             return "CallableTableTokenTransition<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Multi:
@@ -56,20 +56,20 @@ auto DFATypes::getTransitionsTypeStr(DFA::DfaType type, const std::string &names
 auto DFATypes::getTransitionsTypeStr(bool isToken, const std::string &namespace_name) const -> std::string {
     return getTransitionsTypeStr(dfa.getType(isToken), namespace_name);
 }
-auto DFATypes::getTransitionKeyTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string {
+auto DFATypes::getTransitionKeyTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return std::string("CharTableTransition<") + std::to_string(size) + std::string(">");
+            return std::string("CharTableTransition");
         case DFA::DfaType::Token:
-            return std::string("TokenTableTransition<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
+            return std::string("TokenTransition<::") + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
-            return std::string("CallableTokenTableTransition<") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
+            return std::string("CallableTokenTableTransition<") + namespace_name + "::Tokens>";
         default:
             throw Error("Not allowed DFA transition type");
     }
 }
-auto DFATypes::getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key, bool isToken, const std::string &namespace_name, std::size_t count) -> std::string {
-    return getTransitionKeyTypeStr(DFA::getTransitionKeyType(transition_key, isToken), namespace_name, count);
+auto DFATypes::getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key, bool isToken, const std::string &namespace_name) -> std::string {
+    return getTransitionKeyTypeStr(DFA::getTransitionKeyType(transition_key, isToken), namespace_name);
 }
 auto DFATypes::getStatesTypeStr(bool isToken, const std::string &namespace_name, std::size_t count) const -> std::string {
     return getTypeStr(isToken, namespace_name, count) + "State";

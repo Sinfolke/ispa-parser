@@ -40,7 +40,6 @@ export class LLConverter_base {
             data_block_tokens = ir.getDataBlocksTerminals();
             data_block_rules = ir.getDataBlocksNonTerminals();
         }
-        virtual void outputIR(std::filesystem::path filename) = 0;
         auto getDataBlockToken() {
             return data_block_tokens;
         }

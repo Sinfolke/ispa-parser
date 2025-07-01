@@ -2,6 +2,7 @@ module;
 module LLConverter;
 import LLIR;
 import Converter.DFA;
+import StateArrayBuilder;
 import LexerConverter;
 import logging;
 import cpuf.printf;
@@ -56,7 +57,7 @@ void LLConverter::outputHeader(std::ostringstream &out, const std::string &filen
     createDFATypes(out);
     createTypesNamespace(out, data_block_tokens, data_block_rules);
     create_get_namespace(out, namespace_name, data_block_tokens, data_block_rules);
-    create_parser_header(out, ir.getDfas());
+    create_parser_header(out, ir.getDfas(), {});
     indentLevel = 2;
     writeRules(out);
     indentLevel = 1;
@@ -204,21 +205,14 @@ void LLConverter::convertData(std::ostringstream &out) {
 
     }
 }
-void LLConverter::addDFATables(std::ostringstream &out) {
-    auto [states, location_map] = ir.getDfas().getStateSet();
-    DFAConverter tables_builder(ir.getDfas(), nullptr, states, location_map, namespace_name, "Parser", "dfa_table", false);
+void LLConverter::addDFATables(std::ostringstream &out, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair) {
+    StateArrayBuilder states_builder(out, isToken, states_pair, namespace_name, ir.getDfas(), nullptr, "Parser");
+    DFAConverter tables_builder(ir.getDfas(), nullptr, states_pair.first, states_pair.second, namespace_name, "Parser", "dfa_table", false);
     tables_builder.create();
+    states_builder.output();
     out << tables_builder.get().str();
 }
 
-void LLConverter::printIR(std::ostringstream &out, const std::string &filename) {
-    namespace_name = filename;
-    addHeader(out);
-    addStandardFunctionsLexer(out);
-    addStandardFunctionsParser(out);
-    addGetFunctions(out, data_block_tokens, data_block_rules);
-    addDFATables(out);
-}
 void LLConverter::addHeader(std::ostringstream &out) {
     out << "#include \"" << namespace_name << ".h\"\n";
 }
@@ -448,20 +442,20 @@ void LLConverter::addGetFunctions(std::ostringstream &out, const LLIR::DataBlock
         out << "\n}\n";
     }
 }
-void LLConverter::outputIR(std::filesystem::path name) {
-    std::ofstream cpp(name.string() + ".cpp");
-    std::ofstream h(name.string() + ".h");
-    if (!cpp) {
-        throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".cpp");
-    }
-    if (!h) {
-        throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".h");
-    }
-    std::ostringstream cpp_ss, h_ss;
-    printIR(cpp_ss, name.filename().string());
-    outputHeader(h_ss, name.filename().string());
-    cpp << cpp_ss.str();
-    h << h_ss.str();
-}
+// void LLConverter::outputIR(std::filesystem::path name) {
+//     std::ofstream cpp(name.string() + ".cpp");
+//     std::ofstream h(name.string() + ".h");
+//     if (!cpp) {
+//         throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".cpp");
+//     }
+//     if (!h) {
+//         throw std::runtime_error("Unable to open file for writing: " + name.filename().string() + ".h");
+//     }
+//     std::ostringstream cpp_ss, h_ss;
+//     // printIR(cpp_ss, name.filename().string());
+//     // outputHeader(h_ss, name.filename().string());
+//     cpp << cpp_ss.str();
+//     h << h_ss.str();
+// }
 
 // IR &ir, IR &lexer_code, IR::node_ret_t& tokenizator_access_var, std::list<std::string> tokens, std::list<std::string> rules, data_block_t datablocks_tokens, data_block_t datablocks_rules, const use_prop_t &use

@@ -4,6 +4,7 @@ import LLIR;
 import logging;
 import corelib;
 import DFATypes;
+import StateArrayBuilder;
 import std;
 import std.compat;
 void LLHeader::createIncludes(std::ostringstream &out) const {
@@ -184,10 +185,12 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
 //     }
 // )";
 }
-void LLHeader::createDFAVars(const DFAS &dfas, std::ostringstream &out) const {
+void LLHeader::createDFAVars(const DFAS &dfas, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair, std::ostringstream &out) const {
     std::size_t count = 0;
+    StateArrayBuilder builder(out, isToken, states_pair, namespace_name, dfas, nullptr, "Parser");
+    builder.outputHeader();
     for (const auto &dfa : dfas) {
-        out << "\n\t\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(false, namespace_name, dfa.getStates().size()) << " table_" << count++ << ';';
+        out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(false, namespace_name, dfa.getStates().size()) << " dfa_table_" << count++ << ";\n";
     }
     out << '\n';
 }
@@ -249,12 +252,12 @@ void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
 void LLHeader::close_parser_header(std::ostringstream &out) const {
     out << "\t};\n";
 }
-void LLHeader::create_parser_header(std::ostringstream &out, const DFAS &dfas) const {
+void LLHeader::create_parser_header(std::ostringstream &out, const DFAS &dfas, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair) const {
     out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
         << "\t\tpublic:";
         addStandardFunctionsParser(out);
-    out << "\t\tprivate:";
-        createDFAVars(dfas, out);
+    out << "\t\tprivate:\n";
+        createDFAVars(dfas, states_pair, out);
     out
         << "\t\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
         << "\t\t\tRule_res getRule(Lexer::iterator&);\n"

@@ -662,9 +662,9 @@ auto DFA::getStateType(const Transitions &transitions, const utype::unordered_ma
             }
         } else {
             auto &sym = std::get<stdu::vector<std::string>>(symbol);
-            if ((dfa_type == DfaType::Token || dfa_type == DfaType::NONE) && dct && !dct->contains(sym)) {
+            if ((dfa_type == DfaType::Token || dfa_type == DfaType::NONE) && ((isToken && dct && !dct->contains(sym)) || !isToken)) {
                 dfa_type = DfaType::Token;
-            } else {
+            } else if (dfa_type != DfaType::Token) {
                 dfa_type = DfaType::Multi;
                 break;
             }

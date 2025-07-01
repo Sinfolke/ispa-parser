@@ -46,7 +46,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     }
 
     out << "const ::ISPA_STD::DFAAPI::" << DFATypes::getTypeStr(type, namespace_name, states.size())
-        << namespace_name << "::" << prefix << "::" << name << '_' << count
+        << ' ' << namespace_name << "::" << prefix << "::" << name << '_' << count
         << " = {\n" << table_out.str() << "};\n";
 }
 

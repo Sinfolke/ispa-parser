@@ -10,6 +10,7 @@ import LLIR;
 import LLHeader;
 import LexerBuilder;
 import buildLLParser;
+import DFAS;
 import fcdt;
 import std;
 export class LLConverter : public LLConverter_base, public LLHeader {
@@ -32,14 +33,12 @@ public:
     }
     ~LLConverter() {}
     void convertData(std::ostringstream &out);
-    void addDFATables(std::ostringstream &out);
+    void addDFATables(std::ostringstream &out, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair);
     void writeRules(std::ostringstream &out);
-    void printIR(std::ostringstream& out, const std::string &filename);
     void addHeader(std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);
     void addGetRuleFunction(std::ostringstream &out);
     void addparseFromFunctions(std::ostringstream &out);
     void addStandardFunctionsParser(std::ostringstream &out);
     void addGetFunctions(std::ostringstream &out, const LLIR::DataBlockList &datablocks_tokens, const LLIR::DataBlockList &datablocks_rules);
-    void outputIR(std::filesystem::path filename);
 };
