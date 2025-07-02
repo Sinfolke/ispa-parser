@@ -4,6 +4,7 @@ import LLIR;
 import logging;
 import corelib;
 import DFATypes;
+import DFASpans;
 import StateArrayBuilder;
 import std;
 import std.compat;
@@ -188,11 +189,15 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
 void LLHeader::createDFAVars(const DFAS &dfas, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair, std::ostringstream &out) const {
     std::size_t count = 0;
     StateArrayBuilder builder(out, isToken, states_pair, namespace_name, dfas, nullptr, "Parser");
+    DFASpans dfa_spans(out, namespace_name, dfas);
+
     builder.outputHeader();
     for (const auto &dfa : dfas) {
         out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(false, namespace_name, dfa.getStates().size()) << " dfa_table_" << count++ << ";\n";
     }
     out << '\n';
+    // output spans
+    dfa_spans.outputH(false);
 }
 
 

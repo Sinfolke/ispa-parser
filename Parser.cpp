@@ -8580,4 +8580,58 @@ const ::ISPA_STD::DFAAPI::TokenTable<::Parser::Tokens, 8> Parser::Parser::dfa_ta
 	ISPA_STD::DFAAPI::SpanTokenTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_290.data(), dfa_state_290.size()}},
 	ISPA_STD::DFAAPI::SpanTokenTableState<::Parser::Tokens>{ 2, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 };
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_0 = {
+	dfa_table_0.data(), dfa_table_0.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_1 = {
+	dfa_table_1.data(), dfa_table_1.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_2 = {
+	dfa_table_2.data(), dfa_table_2.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_3 = {
+	dfa_table_3.data(), dfa_table_3.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_4 = {
+	dfa_table_4.data(), dfa_table_4.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_5 = {
+	dfa_table_5.data(), dfa_table_5.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_6 = {
+	dfa_table_6.data(), dfa_table_6.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_7 = {
+	dfa_table_7.data(), dfa_table_7.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_8 = {
+	dfa_table_8.data(), dfa_table_8.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_9 = {
+	dfa_table_9.data(), dfa_table_9.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_10 = {
+	dfa_table_10.data(), dfa_table_10.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_11 = {
+	dfa_table_11.data(), dfa_table_11.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_12 = {
+	dfa_table_12.data(), dfa_table_12.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_13 = {
+	dfa_table_13.data(), dfa_table_13.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_14 = {
+	dfa_table_14.data(), dfa_table_14.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_15 = {
+	dfa_table_15.data(), dfa_table_15.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_16 = {
+	dfa_table_16.data(), dfa_table_16.size()
+};
+const ::ISPA_STD::DFAAPI::SpanTokenTable<::Parser::Tokens> Parser::Parser::dfa_span_17 = {
+	dfa_table_17.data(), dfa_table_17.size()
+};
 

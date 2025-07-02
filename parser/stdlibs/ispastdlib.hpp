@@ -556,7 +556,7 @@ protected:
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T>
-class Lexer_base : DFA, AdvancedDFA<TOKEN_T> {
+class Lexer_base : AdvancedDFA<TOKEN_T> {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T> tokens;
@@ -940,7 +940,7 @@ public:
 };
 /* PARSER */
 template<class TOKEN_T, class RULE_T>
-class LLParser_base {
+class LLParser_base : DFA {
 protected:
     template<class IT>
     void parseFromPos(IT& pos) {
@@ -978,6 +978,7 @@ protected:
         if (error_controller.count(pos.distance()) == 0)
             error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
+    static void PANIC_MODE() {}
 public:
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
     virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;

@@ -10,6 +10,7 @@ import logging;
 import LLIR;
 import AST.Tree;
 import DFATypes;
+import DFASpans;
 import dstd;
 import std;
 
@@ -28,46 +29,12 @@ void LexerConverter::addStandardFunctionsLexer() const {
         static void printToken(std::ostream& os, const Token& token);)";
     out << "\n";
 }
-
-void LexerConverter::addDFASpansCpp() const {
-    std::size_t count = 0;
-    for (const auto &dfa : lexer_data.getDFAS()) {
-        const auto span_type = dfa.getType(true);
-        const std::string span_type_str = DFATypes::getSpanTypeStr(span_type, namespace_name);
-
-        const std::string table_name = "dfa_table_" + std::to_string(count);
-
-        out << "const ::ISPA_STD::DFAAPI::" << span_type_str << " "
-            << namespace_name << "::Lexer::dfa_span_" << count << " = {\n";
-        if (span_type == DFA::DfaType::Multi)
-            out << "\t{ ";
-        out << "\t" << table_name << ".data(), " << table_name << ".size()";
-        if (span_type == DFA::DfaType::Multi)
-            out << " }\n";
-        else
-            out << "\n";
-        out << "};\n";
-
-        ++count;
-    }
-}
-void LexerConverter::addDFASpansH() const {
-    std::size_t count = 0;
-    for (const auto &dfa : lexer_data.getDFAS()) {
-        const std::string span_type = DFATypes(dfa).getSpanTypeStr(true, namespace_name);
-
-        const std::string table_name = "dfa_table_" + std::to_string(count);
-
-        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << span_type << " dfa_span_" << count << ";\n";
-
-        ++count;
-    }
-}
 void LexerConverter::output() {
     // 1. print DFAS
     StateArrayBuilder dfa_states(out, true, state_set, namespace_name, lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), "Lexer");
     DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_table", true);
     DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_func_table", true);
+    DFASpans dfa_spans(out, namespace_name, lexer_data.getDFAS());
     dfa_states.output();
     dfa_converter.create();
     dfa_func_table_converter.create();
@@ -105,7 +72,7 @@ void LexerConverter::output() {
     }
     out << "};\n";
     // print spans tables
-    addDFASpansCpp();
+    dfa_spans.output(true, "Lexer");
     // 2. Print makeToken function
     out << "auto ::" << namespace_name << "::Lexer::makeToken(const char* &pos) -> Token {\n";
     out << "\tfcdt_lookup(first_character_dispatch_table, pos);\n";
@@ -116,6 +83,7 @@ void LexerConverter::output() {
 }
 void LexerConverter::outputHeader() {
     StateArrayBuilder dfa_states(h_out, true, state_set, namespace_name, lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), "Lexer");
+    DFASpans dfa_spans(h_out, namespace_name, lexer_data.getDFAS());
     h_out << "\tclass Lexer : public ISPA_STD::Lexer_base<Tokens> {\n"
         << "\t\tpublic:\n"
         << "\t\t\tusing ISPA_STD::Lexer_base<Tokens>::Lexer_base;";
@@ -127,7 +95,7 @@ void LexerConverter::outputHeader() {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
         h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, namespace_name, dfa.getStates().size()) << " dfa_table_" << i << ";\n";
     }
-    addDFASpansH();
+    dfa_spans.outputH(true);
     for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().getDFAS().size(); ++i) {
         const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
         h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, namespace_name, dfa.getStates().size()) << " dfa_func_table_" << i << ";\n";

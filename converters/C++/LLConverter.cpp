@@ -5,6 +5,7 @@ import Converter.DFA;
 import StateArrayBuilder;
 import LexerConverter;
 import logging;
+import DFASpans;
 import cpuf.printf;
 import std;
 void LLConverter::writeRules(std::ostringstream &out) {
@@ -208,9 +209,11 @@ void LLConverter::convertData(std::ostringstream &out) {
 void LLConverter::addDFATables(std::ostringstream &out, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair) {
     StateArrayBuilder states_builder(out, isToken, states_pair, namespace_name, ir.getDfas(), nullptr, "Parser");
     DFAConverter tables_builder(ir.getDfas(), nullptr, states_pair.first, states_pair.second, namespace_name, "Parser", "dfa_table", false);
+    DFASpans dfa_spans(out, namespace_name, ir.getDfas());
     tables_builder.create();
     states_builder.output();
     out << tables_builder.get().str();
+    dfa_spans.output(false, "Parser");
 }
 
 void LLConverter::addHeader(std::ostringstream &out) {
