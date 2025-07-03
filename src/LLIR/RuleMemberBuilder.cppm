@@ -29,7 +29,7 @@ export namespace LLIR {
     };
 
     class GroupBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
         void pushBasedOnQuantifier(
             MemberBuilder &builder,
             const AST::RuleMember &rule,
@@ -40,39 +40,39 @@ export namespace LLIR {
         );
     public:
         void build() override;
-        GroupBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        GroupBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class CsequenceBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        CsequenceBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        CsequenceBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class StringBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        StringBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        StringBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class HexBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        HexBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        HexBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class BinBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        BinBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        BinBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class NameBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
         auto pushBasedOnQualifier(
             const AST::RuleMember &rule,
             stdu::vector<LLIR::expr> &expr,
@@ -87,7 +87,7 @@ export namespace LLIR {
 
     public:
         void build() override;
-        NameBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        NameBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class NospaceBuilder : public BuilderBase {
@@ -97,21 +97,21 @@ export namespace LLIR {
     };
 
     class EscapedBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        EscapedBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        EscapedBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class AnyBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
     public:
         void build() override;
-        AnyBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        AnyBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
     class OpBuilder : public BuilderBase {
-        const AST::RuleMember *rule;
+        const AST::RuleMember &rule;
         auto createBlock(
             const stdu::vector<AST::RuleMember> &rules,
             std::size_t index,
@@ -120,6 +120,6 @@ export namespace LLIR {
         ) -> stdu::vector<LLIR::member>;
     public:
         void build() override;
-        OpBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        OpBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 }
