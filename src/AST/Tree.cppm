@@ -6,7 +6,7 @@ import Parser;
 import hash;
 import dstd;
 import std;
-import std.compat;
+
 export namespace AST {
     /*
      * Tree class that holds features could be done on it. Contains tree_map map

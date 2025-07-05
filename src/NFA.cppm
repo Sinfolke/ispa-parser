@@ -3,7 +3,8 @@ import AST.API;
 import AST.Tree;
 import hash;
 import dstd;
-import std.compat;
+
+
 export class NFA {
 public:
     static constexpr auto NO_ACCEPT = std::numeric_limits<std::size_t>::max();
@@ -11,11 +12,14 @@ public:
     static constexpr auto NO_STATE_RANGE = std::numeric_limits<std::size_t>::max();
     static constexpr auto NO_EPSILON = std::numeric_limits<std::size_t>::max();
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
+    struct TransitionValue {
+        std::size_t next;
+    };
     struct state {
-        utype::unordered_map<TransitionKey, std::size_t> transitions;
+        utype::unordered_map<TransitionKey, TransitionValue> transitions;
+        bool new_cst_node = false;
         std::size_t accept_index = NO_ACCEPT;
         std::set<std::size_t> epsilon_transitions;
-        bool is_starting_state = false;
         std::size_t any = NO_ANY;
     };
     struct StateRange {

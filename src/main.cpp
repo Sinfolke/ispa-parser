@@ -26,7 +26,7 @@ import Converter;
 import buildLLParser;
 import dstd;
 import std;
-import std.compat;
+
 void printHelp() {
     cpuf::printf(R"(
 usage: 

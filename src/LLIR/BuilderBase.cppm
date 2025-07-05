@@ -6,7 +6,7 @@ import LLIR.Builder.Utility;
 import LLIR.Builder.Data;
 import dstd;
 import std;
-import std.compat;
+
 export namespace LLIR {
     class BuilderBase : public BuilderDataWrapper, public BuilderUtility {
     public:

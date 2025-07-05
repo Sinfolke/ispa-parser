@@ -8,7 +8,7 @@ import DFA;
 import LLIR.Builder.Data;
 import dstd;
 import std;
-import std.compat;
+
 export namespace LLIR {
     class RuleBuilder : private BuilderData {
         LLIR::Data data;

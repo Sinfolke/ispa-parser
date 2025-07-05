@@ -4,7 +4,7 @@ module logging;
 import cpuf.printf;
 import cpuf.color;
 import std;
-import std.compat;
+
 const char* Error::what() const noexcept {
     return message.c_str();
 }
@@ -12,14 +12,14 @@ void Error::print() const {
 // Capture the stack trace
 
     std::cerr << cpuf::sprintf("ispa: {}internal error{}: {}\n", color::red, color::reset, message);
-    abort();
+    std::abort();
 }
 const char* UBase::what() const noexcept {
     return message.c_str();
 }
 void UError::print() const {
     std::cerr << cpuf::sprintf("ispa: {}error{}: {}\n", color::red, color::reset, message);
-    abort();
+    std::abort();
 }
 void UWarning::print() const {
     cpuf::printf("ispa: {}warning{}: {}\n", color::yellow, color::reset, message);

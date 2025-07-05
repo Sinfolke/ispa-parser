@@ -35,7 +35,7 @@ auto DFA::move(const stdu::vector<std::size_t> &states, const NFA::TransitionKey
         const auto &state = nfa->getStates().at(state_id);
         auto it = state.transitions.find(symbol);
         if (it != state.transitions.end()) {
-            result.insert(it->second);  // assuming only one target per symbol
+            result.insert(it->second.next);  // assuming only one target per symbol
         }
     }
 
@@ -443,7 +443,7 @@ void DFA::build(bool switchToSingleState) {
         for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                input_symbols[symbol].emplace_back(TransitionValue {id, nfa->getAcceptMap().at(id)}, state.any ? state.any : NFA::NO_ANY);
+                input_symbols[symbol].emplace_back(TransitionValue {id.next, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
         // Early cutoff opportunity
@@ -559,7 +559,7 @@ void DFA::build(bool switchToSingleState) {
                     target_index, transition->accept_index
                 );
                 if (conf->any != NFA::NO_ANY) {
-                    mstates[current_dfa_index].else_goto = conf->any;
+                    mstates[current_dfa_index].any_goto = conf->any;
                 }
             }
             if (goto_empty_state) {
@@ -734,12 +734,19 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
                     os << "\t" << key << " -> State ";
 
             }, key);
-            os << target.next << (target.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.accept_index) + " } " : std::string(""));
-            os << "\n";
+            os << target.next << (target.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.accept_index) + " }" : std::string(""));
+            os << '\n';
         }
     }
     if (s.else_goto != 0) {
         os << "\t[else goto] -> " << s.else_goto;
+        if (s.else_goto_accept != NFA::NO_ACCEPT) {
+            os << " { accept -> " << s.else_goto_accept << " }";
+        }
+        os << '\n';
+    }
+    if (s.any_goto != 0) {
+        os << "\t[any goto] -> " << s.any_goto;
         if (s.else_goto_accept != NFA::NO_ACCEPT) {
             os << " { accept -> " << s.else_goto_accept << " }";
         }

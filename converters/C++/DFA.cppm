@@ -4,7 +4,7 @@ import LexerBuilder;
 import DFAS;
 import dstd;
 import std;
-import std.compat;
+
 export class DFAConverter {
     const DFAS &dfas;
     const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;

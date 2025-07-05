@@ -5,7 +5,7 @@ import AST.API;
 import DFA;
 import dstd;
 import std;
-import std.compat;
+
 namespace LLIR {
     export class BuilderData {
     public:

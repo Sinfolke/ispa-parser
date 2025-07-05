@@ -7,7 +7,7 @@ import LLIR.Builder;
 import dstd;
 import fcdt;
 import std;
-import std.compat;
+
 void LRConverter::addIncludesCpp(std::ostringstream &out, const std::string &name) const {
     out << "#include \"" << name << ".h\"\n";
 }

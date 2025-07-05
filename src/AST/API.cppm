@@ -4,7 +4,7 @@ import corelib;
 import hash;
 import dstd;
 import std;
-import std.compat;
+
 export namespace AST {
     // forward declarations
     struct CllType;

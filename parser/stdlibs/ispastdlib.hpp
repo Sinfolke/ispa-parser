@@ -323,7 +323,10 @@ struct error {
     std::string message;
 };
 namespace DFAAPI {
-    constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
+    enum class StoreType {
+        NOT_STORE, STORE, STORE_NEW
+    };
+    inline constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
     template<typename TOKEN_T> struct SpanMultiTable;
     struct EmptyState;
     template<typename Key> struct Transition;
@@ -375,11 +378,13 @@ namespace DFAAPI {
     struct Transition {
         Key symbol;
         std::size_t next;
+        StoreType store;
         std::size_t accept;
     };
     template<typename T>
     struct SpanState {
         std::size_t else_goto;
+        std::size_t any_goto;
         std::size_t else_goto_accept;
         Span<const T> transitions;
     };

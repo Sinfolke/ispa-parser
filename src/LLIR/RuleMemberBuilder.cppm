@@ -6,7 +6,6 @@ import AST.API;
 import LLIR.API;
 import dstd;
 import std;
-import std.compat;
 
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {

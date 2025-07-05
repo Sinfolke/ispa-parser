@@ -5,7 +5,7 @@ import AST.Tree;
 import DFA;
 import dstd;
 import std;
-import std.compat;
+
 export namespace LLIR {
     class BuilderDataWrapper {
     public:

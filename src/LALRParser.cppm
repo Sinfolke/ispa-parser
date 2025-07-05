@@ -3,7 +3,7 @@ import LRParser;
 import AST.Tree;
 import dstd;
 import std;
-import std.compat;
+
 export class LALRParser : public LRParser {
 protected:
     void rebuildActionTable(const stdu::vector<std::size_t>& state_mapping);

@@ -2,7 +2,7 @@ module;
 module LLStringConvertions;
 import LLIR;
 import std;
-import std.compat;
+
 static std::size_t count_strlen(const char* str) {
     std::size_t count = 0;
     for (const char* pos = str; *pos; pos++) {

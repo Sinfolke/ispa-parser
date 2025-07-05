@@ -4,9 +4,10 @@ import NFA;
 import AST.API;
 import AST.Tree;
 import Dump;
+import ispastdlibcpp;
 import dstd;
 import std;
-import std.compat;
+
 export class DFA {
 public:
     enum class DfaType {
@@ -27,6 +28,7 @@ public:
         utype::unordered_set<std::size_t> nfa_states; // the NFA states this DFA state represents
         Transition transitions;
         std::size_t else_goto = 0;
+        std::size_t any_goto = 0;
         std::size_t else_goto_accept = NFA::NO_ACCEPT;
         bool operator==(const State &other) const = default;
     private:

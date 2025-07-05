@@ -1,7 +1,7 @@
 module LLIR.Builder.Utility;
 import LLIR;
 import std;
-import std.compat;
+
 void LLIR::BuilderUtility::setUtilityPointer(LLIR::Nodes *data) {
     this->data = data;
 }

@@ -5,7 +5,7 @@ import AST.Tree;
 import AST.API;
 import dstd;
 import std;
-import std.compat;
+
 export namespace AST {
     class TreePass {
     public:

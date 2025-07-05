@@ -5,7 +5,7 @@ import DFA;
 import LLIR.API;
 import DFAS;
 import std;
-import std.compat;
+
 export namespace LLIR {
     class IR {
         auto getDataBlocks(bool isToken) const -> DataBlockList;

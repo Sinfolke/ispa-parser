@@ -6,7 +6,7 @@ import AST.API;
 import AST.types;
 import dstd;
 import std;
-import std.compat;
+
 export class LRParser {
 public:
     enum class Action_type {

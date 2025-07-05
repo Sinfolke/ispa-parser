@@ -10,7 +10,6 @@ import LLIR.Builder.Data;
 import cpuf.printf;
 import constants;
 import std;
-import std.compat;
 
 auto AST::Tree::getTerminals() -> stdu::vector<stdu::vector<std::string>> {
     stdu::vector<stdu::vector<std::string>> set;
@@ -612,7 +611,7 @@ auto AST::Tree::getCodeForLexer() -> lexer_code {
         } else if (name == stdu::vector<std::string> { "__WHITESPACE" }) {
             options.options.push_back(AST::RuleMember { .value = AST::RuleMemberName { name } });
         } else {
-            printf("Not found %s in use_places\n", name.back().c_str());
+            cpuf::printf("Not found %s in use_places\n", name.back());
         }
         // if not found, do not add this means the token is never used
     }

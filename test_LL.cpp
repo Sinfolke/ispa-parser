@@ -1,11 +1,11 @@
-#include <parser/Parser.h>
+#include <Parser.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 int main() {
     Parser::Lexer lexer;
     Parser::Parser parser;
-    lexer.makeTokensFromFile("parser/parser/Rule.isc");
+    lexer.makeTokensFromFile("parser/parser/rule.isc");
     std::ofstream ofile("tokens");
     if (!ofile) {
         std::cerr << "could not open token file\n";

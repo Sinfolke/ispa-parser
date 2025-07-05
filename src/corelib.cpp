@@ -3,7 +3,7 @@ module corelib;
 import logging;
 import cpuf.printf;
 import std;
-import std.compat;
+
 namespace corelib::file {
     // Function to read the content of a file into a string
     std::string readFile(const std::filesystem::path filePath) {
@@ -59,7 +59,7 @@ namespace corelib::text {
     }
     bool isAllAlpha(const std::string& str) {
         for (const char &ch : str) {
-            if (!isalpha(ch))
+            if (!std::isalpha(ch))
                 return false;
         }
         return true;
@@ -67,7 +67,7 @@ namespace corelib::text {
 
     bool isUpper(const char* str) {
         for (; *str; str++) {
-            if (isalpha(*str) && std::islower(*str))
+            if (std::isalpha(*str) && std::islower(*str))
                 return false;
         }
         return true;
@@ -75,7 +75,7 @@ namespace corelib::text {
 
     bool isUpper(const std::string str) {
         for (char ch : str) {
-            if (isalpha(ch) && std::islower(ch))
+            if (std::isalpha(ch) && std::islower(ch))
                 return false;
         }
         return true;
@@ -88,12 +88,12 @@ namespace corelib::text {
     }
     std::string ToUpper(std::string str) {
         for (auto &c : str)
-            c = toupper(c);
+            c = std::toupper(c);
         return str; 
     }
     std::string ToLower(std::string str) {
         for (auto &c : str)
-            c = tolower(c);
+            c = std::tolower(c);
         return str; 
     }
     char getCharFromEscaped(char in) {

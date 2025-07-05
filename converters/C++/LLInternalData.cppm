@@ -2,7 +2,7 @@ export module LLInternalData;
 import DFA;
 import dstd;
 import std;
-import std.compat;
+
 export class LLInternalData {
     protected:
     // private variables used for convertion

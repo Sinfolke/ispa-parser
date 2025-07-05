@@ -5,7 +5,7 @@ import cpuf.printf;
 import logging;
 import dstd;
 import std;
-import std.compat;
+
 void AST::Builder::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
     const auto &entries = Parser::get::main(mod);

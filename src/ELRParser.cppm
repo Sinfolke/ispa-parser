@@ -7,7 +7,7 @@ import AST.Tree;
 import hash;
 import dstd;
 import std;
-import std.compat;
+
 export class ELRParser : public LRParser {
     public:
         struct NFA_state {

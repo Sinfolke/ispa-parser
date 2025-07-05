@@ -9,7 +9,9 @@ import AST.API;
 import std;
 
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry) {
-    states[start].transitions[name] = end;
+    bool store = !member.prefix.empty(); // never has variable name here
+    states[start].transitions[name] = {end};
+    states[end].new_cst_node = true;
     if (isEntry && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
     }
@@ -26,9 +28,10 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             //  epsilon -> end
             auto loop_state = states.size();
             states.emplace_back();
-            states[start].transitions[name] = loop_state;
-            states[loop_state].transitions[name] = loop_state;
+            states[start].transitions[name] = {loop_state};
+            states[loop_state].transitions[name] = {loop_state};
             states[loop_state].epsilon_transitions.insert(end);
+            states[loop_state].new_cst_node = true;
             break;
         } case '*': {
             // Instead of direct self-loop, use epsilon transitions
@@ -37,6 +40,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             states[start].epsilon_transitions.insert(loop_state);
             states[start].epsilon_transitions.insert(end);  // skip option
             states[loop_state].epsilon_transitions.insert(end);  // exit option
+            states[loop_state].new_cst_node = true;
             break;
         }
         default:
@@ -44,6 +48,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
     }
 }
 void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry) {
+    // NO STORE ACTIONS IN THIS FUNCTION AS IT ONLY MEET FOR DECISTION LOOKUP NOT LEXING
     std::size_t inner_start = states.size();
     std::size_t inner_end = inner_start + 1;
     states.emplace_back(); // inner start
@@ -51,7 +56,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
     std::size_t last = inner_start;
 
     const auto &prod_rules = tree->operator[](name);
-    for (auto &prod : prod_rules.rule_members) {
+    for (const auto &prod : prod_rules.rule_members) {
         auto fragment = buildStateFragment(prod, false);
         if (fragment.invalid())
             continue;
@@ -99,6 +104,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
 }
 void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry) {
     std::size_t last = start;
+    states[start].new_cst_node = true;
     for (const auto &sub : group) {
         auto fragment = buildStateFragment(sub, false);
         if (fragment.invalid())
@@ -134,7 +140,9 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
 }
 void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry) {
     std::size_t current = start;
-
+    bool store = !member.prefix.empty(); // never has variable name here
+    stdu::vector<std::size_t> store_states;
+    states[start].new_cst_node = true;
     // Construct linear NFA for each character in the string
     for (std::size_t i = 0; i < str.size(); ++i) {
         std::size_t next = (i == str.size() - 1) ? end : states.size(); // last char points to `end`
@@ -143,11 +151,10 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
         if (next >= states.size()) states.resize(next + 1);
 
         // Add transition for character
-        states[current].transitions[str[i]] = next;
-
+        states[current].transitions[str[i]] = {next};
+        store_states.push_back(current);
         current = next;
     }
-
     // Mark accepting state if needed
     if (isEntry && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
@@ -175,16 +182,17 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
 void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
+    states[start].new_cst_node = true;
     // Add transitions for each character from start to end
     for (char c : chars) {
-        states[start].transitions[c] = end;
+        states[start].transitions[c] = {end};
     }
     for (char c : escaped) {
-        states[start].transitions[corelib::text::getEscapedFromChar(c)] = end;
+        states[start].transitions[corelib::text::getEscapedFromChar(c)] = {end};
     }
     for (auto [from, to] : csequence.diapasons) {
         for (char c = from; c <= to; ++c) {
-            states[start].transitions[c] = end;
+            states[start].transitions[c] = {end};
         }
     }
     // Mark accepting state if needed
@@ -335,7 +343,7 @@ void NFA::addSpaceSkip() {
             }
         } else {
             if (!investigateHasNext(place, constants::whitespace, visited)) {
-                states[place].transitions[constants::whitespace] = place;
+                states[place].transitions[constants::whitespace] = {place};
             }
         }
     }
@@ -353,7 +361,7 @@ void NFA::AccessMapVisitState(std::size_t index, std::size_t accept_index, std::
 
     // Recurse through all transitions, including epsilon
     for (const auto &[symbol, target] : states[index].transitions) {
-        AccessMapVisitState(target, accept_index, visited);
+        AccessMapVisitState(target.next, accept_index, visited);
     }
     for (const auto &e : states[index].epsilon_transitions) {
         AccessMapVisitState(e + 1, accept_index, visited);
@@ -410,7 +418,7 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
                     os << "\t '" << key << "' -> State ";
                 }
             }, key);
-            os << target << '\n';
+            os << '(' << target.next << '\n';
         }
     }
 

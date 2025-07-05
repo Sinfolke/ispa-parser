@@ -2,7 +2,7 @@ export module LLIR.API;
 import hash;
 import dstd;
 import std;
-import std.compat;
+
 export namespace LLIR {
     namespace internal_functions {
         constexpr auto dfa_decide = "dfa_decide";

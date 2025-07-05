@@ -6,7 +6,6 @@ import cpuf.printf;
 import DFATypes;
 import dstd;
 import std;
-import std.compat;
 
 void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     auto number_or_null = [this](std::size_t index) {

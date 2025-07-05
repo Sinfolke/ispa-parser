@@ -7,7 +7,7 @@ import DFATypes;
 import DFASpans;
 import StateArrayBuilder;
 import std;
-import std.compat;
+
 void LLHeader::createIncludes(std::ostringstream &out) const {
     out << "#include <string>\n";
     out << "#include <unordered_map>\n";
