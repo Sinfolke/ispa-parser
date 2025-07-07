@@ -387,7 +387,7 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
     const auto &s = second.getMultiStates();
     for (const auto &[symbol, next] : s[0].transitions) {
         for (const auto &n : next) {
-            f[0].transitions[symbol].emplace_back(offset + n.next, n.accept_index);
+            f[0].transitions[symbol].emplace_back(offset + n.next, n.new_cst_node, n.new_member, n.accept_index);
         }
     }
     // Copy and fixup second DFA states
@@ -443,7 +443,10 @@ void DFA::build(bool switchToSingleState) {
         for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                input_symbols[symbol].emplace_back(TransitionValue {id.next, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
+                auto &cst_member_map = nfa->getCstMemberMap();
+                auto cst_pair = cst_member_map.empty() ? std::make_pair(false, false) : cst_member_map.at(id.next);
+                cpuf::printf("pair for state {}: {}", nfa_index, cst_pair);
+                input_symbols[symbol].emplace_back(TransitionValue {id.next, cst_pair.first, cst_pair.second, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
         // Early cutoff opportunity
@@ -574,13 +577,13 @@ void DFA::build(bool switchToSingleState) {
         }
     }
     // various optimizations
-    removeDublicateStates();
-    terminateEarly();
+    // removeDublicateStates();
+    // terminateEarly();
     if (switchToSingleState) {
-        unrollMultiTransitionPaths();
-        this->switchToSingleState();
-        removeUnreachableStates();
-        removeSelfLoop();
+        //unrollMultiTransitionPaths();
+        //this->switchToSingleState();
+        // removeUnreachableStates();
+        // removeSelfLoop();
     }
 }
 void DFA::buildWMerge() {
@@ -591,12 +594,12 @@ void DFA::buildWMerge() {
         dfas.push_back(d);
     }
     mstates = std::move(mergeDFAS(dfas)).getMultiStates();
-    removeDublicateStates();
-    terminateEarly();
-    unrollMultiTransitionPaths();
-    switchToSingleState();
-    removeUnreachableStates();
-    removeSelfLoop();
+    // removeDublicateStates();
+    // terminateEarly();
+    //unrollMultiTransitionPaths();
+    //switchToSingleState();
+    // removeUnreachableStates();
+    // removeSelfLoop();
 }
 auto DFA::getType(bool isToken) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;
@@ -696,15 +699,25 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
         for (const auto& [key, target] : s.transitions) {
             std::visit([&os](auto &key) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(key)>, char>)
-                    os << "\t'" << corelib::text::getEscapedAsStr(key, false) << "' -> State ";
+                    os << "\t'" << corelib::text::getEscapedAsStr(key, false) << "'";
                 else
-                    os << "\t" << key << " -> State ";
+                    os << "\t" << key;
             }, key);
+            os << " -> ";
             if (target.size() != 1) {
                os << "{ ";
             }
             for (const auto &t : target) {
-                os << t.next << (t.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(t.accept_index) + " } " : std::string(""));
+                os << t.next << " ";
+                if (t.accept_index != NFA::NO_ACCEPT) {
+                    os << "{ accept -> " << t.accept_index << " }";
+                }
+                if (t.new_cst_node) {
+                    os << "[new_cst_node] ";
+                }
+                if (t.new_member) {
+                    os << "[new_member] ";
+                }
                 if (target.size() != 1)
                     os << ", ";
             }
@@ -729,12 +742,21 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
         for (const auto& [key, target] : s.transitions) {
             std::visit([&os](auto &key) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(key)>, char>)
-                    os << "\t" << corelib::text::getEscapedAsStr(key, false) << " -> State ";
+                    os << "\t" << corelib::text::getEscapedAsStr(key, false);
                 else
-                    os << "\t" << key << " -> State ";
+                    os << "\t" << key;
 
             }, key);
-            os << target.next << (target.accept_index != NFA::NO_ACCEPT ? std::string(" { accept -> ") + std::to_string(target.accept_index) + " }" : std::string(""));
+            os << " -> " << target.next << " ";
+            if (target.accept_index != NFA::NO_ACCEPT) {
+                os << "{ accept -> " << target.accept_index << " }";
+            }
+            if (target.new_cst_node) {
+                os << "[new_cst_node] ";
+            }
+            if (target.new_member) {
+                os << "[new_member] ";
+            }
             os << '\n';
         }
     }

@@ -15,12 +15,14 @@ public:
     };
     struct TransitionValue {
         std::size_t next;
+        bool new_cst_node;
+        bool new_member;
         std::size_t accept_index = NFA::NO_ACCEPT;
         bool operator==(const TransitionValue &other) const = default;
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(next, accept_index);
+            return std::tie(next, new_cst_node, new_member, accept_index);
         }
     };
     template<typename Transition>

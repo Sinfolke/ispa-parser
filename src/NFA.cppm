@@ -4,7 +4,6 @@ import AST.Tree;
 import hash;
 import dstd;
 
-
 export class NFA {
 public:
     static constexpr auto NO_ACCEPT = std::numeric_limits<std::size_t>::max();
@@ -18,6 +17,7 @@ public:
     struct state {
         utype::unordered_map<TransitionKey, TransitionValue> transitions;
         bool new_cst_node = false;
+        bool new_member = false;
         std::size_t accept_index = NO_ACCEPT;
         std::set<std::size_t> epsilon_transitions;
         std::size_t any = NO_ANY;
@@ -47,29 +47,37 @@ private:
     bool first = true;
     bool isWhitespaceToken = false;
     std::unordered_map<std::size_t, std::size_t> accept_map;
-    void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry);
-    void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry);
-    void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry);
-    void handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry);
-    void handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry);
-    auto buildStateFragment(const AST::RuleMember &member, bool isEntry) -> StateRange;
+    std::unordered_map<std::size_t, std::pair<bool, bool>> cst_member_map;;
+    void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry, bool addStoreActions);
+    void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
+    void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
+    void handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
+    void handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
+    auto buildStateFragment(const AST::RuleMember &member, bool isEntry, bool addStoreActions) -> StateRange;
     auto investigateHasNext(std::size_t place, char c, std::unordered_set<std::size_t> &visited) -> bool;
     auto investigateHasNext(std::size_t place, const stdu::vector<std::string> &name, std::unordered_set<std::size_t> &visited) -> bool;
     void addSpaceSkip();
-    void AccessMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
+    void acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
     void buildAcceptMap();
+    void cstMemberMapVisitState(std::size_t index, bool propagate_new_cst_node, bool propagate_new_member, std::unordered_set<std::size_t>& visited);
+    void buildCstMemberMap();
 public:
     NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken) : tree(&tree), rules(&rules), isWhitespaceToken(isWhitespaceToken) {}
     NFA(const AST::Tree &tree, const AST::RuleMember &member, bool isWhitespaceToken) : tree(&tree), member(&member), isWhitespaceToken(isWhitespaceToken) {}
-    void build();
+    void build(bool addStoreActions);
     auto& getStates() const {
         return states;
     }
     auto &getAcceptMap() const {
         return accept_map;
     }
+    auto &getCstMemberMap() const {
+        return cst_member_map;
+    }
+    auto &getCstMemberMap() {
+        return cst_member_map;
+    }
 };
-export std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& vec);
 // Print a single state
 export std::ostream& operator<<(std::ostream& os, const NFA::state& s);
 

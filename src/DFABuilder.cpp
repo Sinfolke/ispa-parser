@@ -72,27 +72,33 @@ void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::str
         DFA_dump_file << dfa;
     };
 }
-DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname) : dfa(stdu::vector<DFA::SingleState> {}) {
+DFABuilder::DFABuilder(const AST::Tree& ast, const AST::RuleMember &rule, const stdu::vector<std::string> &fullname, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
+    if (fullname !=stdu::vector<std::string> {"cll", "COMPARE_OP"})
+        return;
     NFA nfa(ast, rule, fullname == constants::whitespace);
-    nfa.build();
+    nfa.build(addStoreActions);
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
     log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
-DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname) : dfa(stdu::vector<DFA::SingleState> {}) {
+DFABuilder::DFABuilder(const AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const stdu::vector<std::string> &fullname, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
+    if (fullname !=stdu::vector<std::string> {"cll", "COMPARE_OP"})
+        return;
     NFA nfa(ast, rules, fullname == constants::whitespace);
-    nfa.build();
+    nfa.build(addStoreActions);
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
     log(nfa, dfa_tmp, fullname);
     dfa = std::move(dfa_tmp);
 }
-DFABuilder::DFABuilder(const AST::Tree &ast, const stdu::vector<stdu::vector<std::string>> &names) : dfa(stdu::vector<DFA::SingleState> {}) {
+DFABuilder::DFABuilder(const AST::Tree &ast, const stdu::vector<stdu::vector<std::string>> &names, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
+    if (names[0] != stdu::vector<std::string>{"cll", "LOGICAL_NOT"} || names[1] != stdu::vector<std::string> {"cll", "COMPARE_OP"})
+        return;
     stdu::vector<NFA> nfas;
     for (const auto &name : names) {
         NFA n(ast, ast[name].rule_members, name == constants::whitespace);
-        n.build();
+        n.build(addStoreActions);
         nfas.push_back(n);
         log(n, name);
     }
