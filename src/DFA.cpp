@@ -445,7 +445,6 @@ void DFA::build(bool switchToSingleState) {
             for (const auto &[symbol, id] : state.transitions) {
                 auto &cst_member_map = nfa->getCstMemberMap();
                 auto cst_pair = cst_member_map.empty() ? std::make_pair(false, false) : cst_member_map.at(id.next);
-                cpuf::printf("pair for state {}: {}", nfa_index, cst_pair);
                 input_symbols[symbol].emplace_back(TransitionValue {id.next, cst_pair.first, cst_pair.second, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
@@ -577,13 +576,13 @@ void DFA::build(bool switchToSingleState) {
         }
     }
     // various optimizations
-    // removeDublicateStates();
-    // terminateEarly();
+    removeDublicateStates();
+    terminateEarly();
     if (switchToSingleState) {
-        //unrollMultiTransitionPaths();
-        //this->switchToSingleState();
-        // removeUnreachableStates();
-        // removeSelfLoop();
+        unrollMultiTransitionPaths();
+        this->switchToSingleState();
+         removeUnreachableStates();
+         removeSelfLoop();
     }
 }
 void DFA::buildWMerge() {
@@ -594,12 +593,12 @@ void DFA::buildWMerge() {
         dfas.push_back(d);
     }
     mstates = std::move(mergeDFAS(dfas)).getMultiStates();
-    // removeDublicateStates();
-    // terminateEarly();
-    //unrollMultiTransitionPaths();
-    //switchToSingleState();
-    // removeUnreachableStates();
-    // removeSelfLoop();
+    removeDublicateStates();
+    terminateEarly();
+    unrollMultiTransitionPaths();
+    switchToSingleState();
+    removeUnreachableStates();
+    removeSelfLoop();
 }
 auto DFA::getType(bool isToken) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;

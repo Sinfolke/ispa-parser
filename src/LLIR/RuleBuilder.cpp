@@ -63,7 +63,9 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
         LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
         const auto &templated_datablock = data_block.getTemplatedDataBlock();
         for (const auto &name : templated_datablock.names) {
-            Assert(!unnamed_datablock_units.empty(), "More keys than values");
+            if (unnamed_datablock_units.empty()) {
+                throw Error("More keys than values: {}", name);
+            }
             auto type = unnamed_datablock_units.front().type;
             if (type.type == LLIR::var_types::Rule_result) {
                 type.type = LLIR::var_types::Rule;

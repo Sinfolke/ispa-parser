@@ -1,0 +1,35 @@
+AND: '&';
+OR: '|';
+ASSIGN: '=';
+DOT: '.';
+ARROW: '->';
+STAR: '*';
+DIV: '/';
+MOD: '%';
+PLUS: '+';
+TILDE: '~';
+MINUS: '-';
+NOT: '!';
+SIZEOF: 'sizeof';
+ALIGNOF: 'alignof';
+DOTSTAR: '.*';
+ARROWSTAR: '->*';
+GREATER: '>';
+LESS: '<';
+GREATEREQUAL: '>=';
+LESSEQUAL: '<=';
+CARET: '^';
+POSTFIX:
+    #INCREMENT | #DECREMENT
+
+    #INCREMENT: '++';
+    #DECREMENT: '--';
+;
+CAST:
+    #DYNAMIC_CAST | #STATIC_CAST | #REINTERPRET_CAST | #CONST_CAST
+
+    #DYNAMIC_CAST: 'dynamic_cast';
+    #STATIC_CAST: 'static_cast';
+    #REINTERPRET_CAST: 'reinterpret_cast';
+    #CONST_CAST: 'const_cast';
+;

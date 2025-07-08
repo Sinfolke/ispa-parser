@@ -82,8 +82,7 @@ int main(int argc, char** argv) {
     }
     if (!args.dir.empty()) {
         for (const auto &dirPath : args.dir) {
-            std::string dir = dirPath;
-            auto files = corelib::file::getFilesRecursively(dir, ".isc");
+            auto files = corelib::file::getFilesRecursively(dirPath, ".isc");
             for (auto file : files) {
                 cpuf::printf("file {}", file.c_str());
                 //cpuf::printf("file: %s\n", file);

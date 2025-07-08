@@ -153,10 +153,10 @@ auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     std::size_t pos = 0;
     for (const auto &mem : rules) {
-        if (mem.isName() && *has_symbol_follow) {
-            *symbol_follow = getLookaheadTerminals(mem, *fullname);
-            symbol_follow->emplace_back(stdu::vector<std::string>{}, getNextTerminal(rules, pos));
-        }
+        // if (mem.isName() && *has_symbol_follow) {
+        //     *symbol_follow = getLookaheadTerminals(mem, *fullname);
+        //     symbol_follow->emplace_back(stdu::vector<std::string>{}, getNextTerminal(rules, pos));
+        // }
         buildMember(mem);
         if (isFirst && addSpaceSkipFirst != nullptr) {
             *addSpaceSkipFirst = *addSpaceSkip;
@@ -498,9 +498,9 @@ void LLIR::NameBuilder::build() {
     auto svar = createSuccessVariable();
     LLIR::variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
-    if (*has_symbol_follow) {
-        symbol_follow->back().first = name;
-    }
+    // if (*has_symbol_follow) {
+    //     symbol_follow->back().first = name;
+    // }
     if (!*isToken && isCallingToken) {
         var.type.type = LLIR::var_types::Token;
     } else {

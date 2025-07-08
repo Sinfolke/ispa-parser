@@ -4,6 +4,7 @@ import AST.API;
 import corelib;
 import Parser;
 import hash;
+import cpuf.printf;
 import dstd;
 import std;
 

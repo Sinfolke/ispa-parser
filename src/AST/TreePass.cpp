@@ -124,9 +124,9 @@ bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMemberName
     const auto first_data = treeMap.find(first.name);
     const auto second_data = treeMap.find(second.name);
     if (first_data == treeMap.end())
-        throw Error("Not found Rule_name in map");
+        throw Error("Not found Rule_name in map: {}", first.name);
     if (second_data == treeMap.end())
-        throw Error("Not found Rule_name in map");
+        throw Error("Not found Rule_name in map: {}", second.name);
     const auto &first_rules = first_data->second.rule_members;
     const auto &second_rules = second_data->second.rule_members;
     for (std::size_t i = 0; i < first_rules.size() && i < second_rules.size(); ++i) {
@@ -194,7 +194,7 @@ bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::RuleMember &fi
     if (second.isName()){
         auto find_it = ast.getTreeMap().find(second.getName().name);
         if (find_it == ast.getTreeMap().end()) {
-            throw Error("Not found Rule_name in map");
+            throw Error("Not found Rule_name in map: {}", second.getName().name);
         }
         const auto &members = find_it->second.rule_members;
         return std::visit([&](const auto &f, const auto &s) -> bool {

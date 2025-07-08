@@ -494,14 +494,9 @@ void AST::Tree::constructFollowSet() {
                         throw Error("Not RuleMemberName: {}, {}, name: {}", it->isGroup(), it->isOp(), name);
                     }
                     auto current_n = it->getName().name;
-                    const stdu::vector<std::string> *current;
+                    const stdu::vector<std::string> *current = &it->getName().name;
                     if (corelib::text::isUpper(current_n.back())) {
                         continue;
-                    }
-                    if (!initial_item_set[current_n][0].original_rules.empty()) {
-                        current = &initial_item_set[current_n][0].original_rules;
-                    } else {
-                        current = &it->getName().name;
                     }
 
                     if (name == *current) {

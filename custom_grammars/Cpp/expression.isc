@@ -1,0 +1,466 @@
+expression:
+    @ #assignment (',' @ #assignment)*
+
+    @{assignmentExpr, assignmentExpressions}
+
+    #primary:
+        @ literal+ | THIS | group | idExpression | #lambda
+        {@}
+    ;
+    #group:
+        '(' @ expression ')'
+
+        {@}
+    ;
+    #idExpression:
+        @ unqualifiedId | qualifiedId
+
+        {@}
+    ;
+    #unqualifiedId:
+        @ ID
+        | operatorFunctionId
+        | conversionFunctionId
+        | literalOperatorId
+        | #destructor
+        | templateId
+
+        {@}
+
+        #destructor:
+            '~' @ className | decltypeSpecifier
+
+            {@}
+        ;
+    ;
+
+    #qualifiedId:
+        @ #nestedNameSpecifier 'template'? @ unqualifiedId
+
+        @{name, uid}
+
+        #nestedNameSpecifier:
+            (
+                (
+                    @ theTypeName
+                    | namespaceName
+                    | decltypeSpecifier
+                    | ID
+                    | #templ
+                )
+                '::'
+            )+
+
+            {@}
+
+            #templ:
+                'template' @ simpleTemplateId
+
+                {@}
+            ;
+        ;
+    ;
+    #lambda:
+        @ #introducer @ #declarator? @ compoundStatement
+
+        @{introducer, declarator, stmt}
+        #introducer:
+            '[' @ #capture? ']'
+            {@}
+
+            #capture:
+                @ #captureList | #list
+                {@}
+
+                #list:
+                    @ #captureDefault (',' @ #captureList)?
+
+                    @{def, captureList}
+                ;
+                #captureDefault:
+                    @ AND | ASSIGN
+
+                    {@}
+                ;
+                #captureList:
+                    @ #capture (',' @ #capture)* @'...'?
+
+                    @{capture, captureList, ellipsis}
+                    #capture:
+                        @ #simpleCapture | #initcapture
+
+                        {@}
+                        #simpleCapture:
+                            @ #name | THIS
+
+                            {@}
+                            #name:
+                                @ AND? @ ID
+
+                                @{ref, id}
+                            ;
+                        ;
+
+                        #initcapture:
+                            @ AND? @ ID @ initializer
+
+                            @{ref, id, initializer}
+                        ;
+                    ;
+                ;
+            ;
+        ;
+        #declarator:
+            '(' @ parameterDeclarationClause? ')' @ 'mutable'? @ exceptionSpecification? @ attributeSpecifierSeq? @ trailingReturnType?
+
+            @{parameter, mutable, exceptionSpec, attributes, return_type}
+        ;
+    ;
+    #postfixExpression:
+        @ primary
+        | #functionCall
+        | #typeConstruction
+        | #memberAccess
+        | #postfixIncrementDecrement
+        | #cast
+        | #typeidExpression
+
+        {@}
+
+        #functionCall:
+            @ postfixExpression '(' @ functionCallArguments ')'
+
+            @{postfixExpr, funCallArgs}
+        ;
+        #functionCallArguments:
+            @ expressionList?
+            | bracedInitList
+
+            {@}
+        ;
+        #typeConstruction:
+            @ simpleTypeSpecifier | typeNameSpecifier @ typeConstructionArguments
+
+            @{type, args}
+        ;
+        #typeConstructionArguments:
+            ('(' @ expressionList? ')' ) | @ bracedInitList
+            {@}
+        ;
+        #memberAccess:
+            @ postfixExpression @ DOT | ARROW @ memberAccessTarget
+
+            @{postfix, sep, target}
+        ;
+        #memberAccessTarget:
+            ('template'? @ idExpression)
+            | @ pseudoDestructorName
+
+            {@}
+        ;
+        #postfixIncrementDecrement:
+            @ postfixExpression @ POSTFIX
+
+            @{expr, op}
+        ;
+        #castExpression:
+            @ CAST '<' @ theTypeId '>' '(' @ expression ')'
+
+            @{cast, type, expr}
+        ;
+        #typeidExpression:
+            'typeid'
+            '(' (@ expression | theTypeId) ')'
+
+            {@}
+        ;
+    ;
+    #expressionList:
+        @ initializerList
+
+        {@}
+    ;
+    #pseudoDestructorName:
+        @ #pseudoDestructorName1
+        | #pseudoDestructorName2
+        | #pseudoDestructorName3
+
+        {@}
+
+        #pseudoDestructorName1:
+            @ qualifiedId.nestedNameSpecifier? @ pseudoDestructorCore
+
+            @{specifier, destructorCore}
+        ;
+
+        #pseudoDestructorCore:
+            (@ theTypeName '::')? '~' @ theTypeName
+
+            @{prefix_type, postfix_type}
+        ;
+
+        #pseudoDestructorName2:
+            @ qualifiedId.nestedNameSpecifier 'template' @ simpleTemplateId '::' '~' @ theTypeName
+
+            @{specifier, templateId, type}
+        ;
+
+        #pseudoDestructorName3:
+            '~' @ decltypeSpecifier
+
+            {@}
+        ;
+    ;
+
+    #unaryExpression:
+        @ postfixExpression
+        | #prefixUnaryExpression
+        | #sizeof
+        | #alignof
+        | noExcept
+        | new
+        | delete
+
+        {@}
+
+        #prefixUnaryExpression:
+            (@ POSTFIX | SIZEOF | #UNARYOPERATOR) @ unaryExpression
+
+            @{op, expr}
+
+            #UNARYOPERATOR:
+                @ OR
+                | STAR
+                | AND
+                | PLUS
+                | TILDE
+                | MINUS
+                | NOT
+
+                {@}
+            ;
+        ;
+
+        #sizeof:
+            SIZEOF @ sizeofArgument
+
+            {@}
+        ;
+
+        #sizeofArgument:
+            '(' @ ID | theTypeId ')'
+
+            {@}
+        ;
+
+        #alignof:
+            'alignof' '(' @ theTypeId ')'
+
+            {@}
+        ;
+    ;
+    #new:
+        @ '::'? 'new' @ #placement? @ #typeId | #bracedTypeId @ #initializer?
+
+        @{prefix, placement, typeId, initializer}
+
+        #bracedTypeId:
+            '(' @ theTypeId ')'
+
+            {@}
+        ;
+        #placement:
+            '(' @ expressionList ')'
+
+            {@}
+        ;
+        #typeId:
+            @ typeSpecifierSeq @ declarator?
+
+            {@}
+        ;
+        #declarator:
+            @ #pointerOperatorWithNewDeclarator | #noPointerNewDeclarator
+
+            {@}
+
+            #pointerOperatorWithNewDeclarator:
+                @ pointerOperator @ newDeclarator
+
+                @{pointerOp, decl}
+            ;
+            #noPointerNewDeclarator:
+                @ #noPointerNewDeclaratorParen | #noPointerNewDeclaratorArray
+
+                {@}
+
+                #noPointerNewDeclaratorParen:
+                    '(' @ expression ')' @ attributeSpecifierSeq?
+
+                    @{expr, attrSpecSeq}
+                ;
+
+                #noPointerNewDeclaratorArray:
+                    @ noPointerNewDeclarator '[' @ constant ']' @ attributeSpecifierSeq?
+
+                    @{noPointerNewDeclarator, constExpr, attrSpecSeq}
+                ;
+            ;
+        ;
+        #initializer:
+            @ #parenthesesList | bracedInitList
+
+            {@}
+
+            #parenthesesList:
+                '(' @ expressionList? ')'
+
+                {@}
+            ;
+        ;
+    ;
+    #delete:
+        'delete' (@ '[' ']')? @ cast
+
+        @{braces, castExpr}
+    ;
+    #noExcept:
+        'noexcept' '(' @ expression ')'
+        {@}
+    ;
+    #cast:
+        @ unaryExpression | #parentheses
+
+        {@}
+
+        #parentheses:
+            '(' @ theTypeId ')' @ cast
+
+            @{type, cast}
+        ;
+    ;
+    #pointerMember:
+        @ cast @ DOTSTAR | ARROWSTAR @ cast
+
+        @{first_cast, sep, second_cast}
+    ;
+    #multiplicative:
+        @ pointerMember (@ STAR | DIV | MOD @ pointerMember)*
+        @{pointerMember, operators, pointerMembers}
+    ;
+    #additive:
+        @ multiplicative (@ PLUS | MINUS @ multiplicative)*
+
+        @{multi, operators, multi}
+    ;
+    #shift:
+        @ additive (@ shiftOp @ additive)*
+
+        @{additive, shiftOp, additive}
+
+        #shiftOp:
+            @ GREATER GREATER | @ LESS LESS
+
+            {@}
+        ;
+    ;
+    #relational:
+        @ shift (@ LESS | GREATER | LESSEQUAL | GREATEREQUAL @ shift)*
+
+        @{shift, ops, shifts}
+    ;
+    #equality:
+        @ relational (@ #EQUAL | #NOTEQUAL @ relational)*
+
+        @{rel, ops, rels}
+
+        #EQUAL: '==';
+        #NOTEQUAL: '!=';
+    ;
+    #_and:
+        @ equality ('&' @ equality)*
+
+        @{equality, equalities}
+    ;
+    #exclusiveOr:
+        @ _and ('^' @ _and)*
+
+        @{andExpr, andExpressions}
+    ;
+    #inclusiveOr:
+        @ exclusiveOr ('|' @ exclusiveOr)*
+
+        @{exclusive, exclusives}
+    ;
+    #logicalAnd:
+        @ inclusiveOr ('&&' @ inclusiveOr)*
+
+        @{inclusive, inclusives}
+    ;
+    #logicalOr:
+        @ logicalAnd ('||' @ logicalAnd)*
+
+        @{logicalAnd, logicalAnds}
+    ;
+    #conditional:
+        @ logicalOr ('?' @ expression ':' @ assignment)
+
+        @{logicalOr, first, second}
+    ;
+    #assignment:
+        @ conditional | assign | throw
+
+        {@}
+        #assign:
+            @ logicalOr @ assignmentOp @ initializerClause
+
+            @{logicalOr, assignmentOp, initializerClause}
+        ;
+        #assignmentOp:
+            @ #ASSIGN | #STAR | #DIV | #MOD | #PLUS | #MINUS | #RIGHTSHIFT | #LEFTSHIFT | #AND | #XOR | #OR
+
+            {@}
+
+            #ASSIGN: '=';
+            #STAR: '*=';
+            #DIV: '/=';
+            #MOD: '%=';
+            #PLUS: '+=';
+            #MINUS: '-=';
+            #RIGHTSHIFT: '>>=';
+            #LEFTSHIFT: '<<=';
+            #AND: '&=';
+            #XOR: '^=';
+            #OR: '|=';
+        ;
+    ;
+    #throw:
+        'throw' @ assignment?
+        {@}
+    ;
+    #constant:
+        @ conditional
+
+        {@}
+    ;
+;
+pointerOperator: ID;
+newDeclarator: ID;
+operatorFunctionId: ID;
+theTypeId: ID;
+initializerClause: ID;
+conversionFunctionId: ID;
+literalOperatorId: ID;
+className: ID;
+templateId: ID;
+simpleTemplateId: ID;
+parameterDeclarationClause: ID;
+exceptionSpecification: ID;
+attributeSpecifierSeq: ID;
+trailingReturnType: ID;
+compoundStatement: ID;
+initializerList: ID;
+simpleTypeSpecifier: ID;
+typeNameSpecifier: ID;
+typeSpecifierSeq: ID;
+initializer: ID;
