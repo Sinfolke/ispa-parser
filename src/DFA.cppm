@@ -15,8 +15,8 @@ public:
     };
     struct TransitionValue {
         std::size_t next;
-        bool new_cst_node;
-        bool new_member;
+        bool new_cst_node = false;
+        bool new_member = false;
         std::size_t accept_index = NFA::NO_ACCEPT;
         bool operator==(const TransitionValue &other) const = default;
     private:
@@ -48,7 +48,7 @@ public:
     using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
     using WalkedState = utype::unordered_set<std::size_t>;
 private:
-    const NFA *nfa;
+    const NFA *nfa = nullptr;
     const stdu::vector<NFA> *mergable_nfas = nullptr;
     stdu::vector<MultiState> mstates;
     stdu::vector<SingleState> states;

@@ -237,7 +237,16 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
             unrollMultiTransition(sym, go, seen, walked_state);
         }
     }
-    val = {{current_dfa_state}};
+    // TODO: implement more complex logic to cancell saved input if path without input is chosen
+    // if at least one alternative has new_cst_node or new_member, set them to true
+    bool new_cst_node, new_member;
+    for (const auto &v : val) {
+        if (v.new_cst_node)
+            new_cst_node = true;
+        if (v.new_member)
+            new_member = true;
+    }
+    val = {{current_dfa_state, new_cst_node, new_member}};
 }
 
 void DFA::unrollMultiTransitionPaths() {
@@ -444,7 +453,8 @@ void DFA::build(bool switchToSingleState) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
                 auto &cst_member_map = nfa->getCstMemberMap();
-                auto cst_pair = cst_member_map.empty() ? std::make_pair(false, false) : cst_member_map.at(id.next);
+                auto cst_pair = cst_member_map.empty() ? std::make_pair(false, false) : cst_member_map.at(nfa_index);
+                logger.log("[{}] cst pair: {}", nfa_index, cst_pair);
                 input_symbols[symbol].emplace_back(TransitionValue {id.next, cst_pair.first, cst_pair.second, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
@@ -540,7 +550,7 @@ void DFA::build(bool switchToSingleState) {
                 }
                 std::size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
-                    target_index, data.back().first.accept_index
+                    target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.accept_index
                 );
             }
 
@@ -558,7 +568,7 @@ void DFA::build(bool switchToSingleState) {
 
                 std::size_t target_index = dfa_state_map[conf_closure];
                 mstates[current_dfa_index].transitions[symbol].emplace_back(
-                    target_index, transition->accept_index
+                    target_index, transition->new_cst_node, transition->new_member, transition->accept_index
                 );
                 if (conf->any != NFA::NO_ANY) {
                     mstates[current_dfa_index].any_goto = conf->any;

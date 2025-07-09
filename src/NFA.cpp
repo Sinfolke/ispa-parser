@@ -201,14 +201,14 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
 void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
-    if (addStoreActions)
-        states[start].new_member = true;
     std::size_t inner_start = states.size();
     std::size_t inner_end = states.size() + 1;
     states.emplace_back();
     states.emplace_back();
-    if (addStoreActions)
-        states[inner_start].new_cst_node = true;
+    if (addStoreActions) {
+        states[start].new_member = true;
+        states[inner_end].new_cst_node = true;
+    }
     states[start].epsilon_transitions.insert(inner_start);
     states[inner_end].epsilon_transitions.insert(end);
     // Add transitions for each character from start to end
