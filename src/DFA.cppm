@@ -36,7 +36,7 @@ public:
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(nfa_states, transitions, else_goto, else_goto_accept);
+            return std::tie(nfa_states, transitions, else_goto, any_goto, else_goto_accept);
         }
     };
 

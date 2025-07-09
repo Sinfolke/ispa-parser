@@ -18,8 +18,9 @@ public:
         utype::unordered_map<TransitionKey, TransitionValue> transitions;
         bool new_cst_node = false;
         bool new_member = false;
+        stdu::vector<char> skip_chars;
         std::size_t accept_index = NO_ACCEPT;
-        std::set<std::size_t> epsilon_transitions;
+        std::unordered_set<std::size_t> epsilon_transitions;
         std::size_t any = NO_ANY;
     };
     struct StateRange {

@@ -155,6 +155,8 @@ void DFA::removeDublicateStates() {
                 t.next = old_to_new.at(t.next);
             }
         }
+        s.else_goto = old_to_new.at(s.else_goto);
+        s.any_goto = old_to_new.at(s.any_goto);
     }
 
     // Step 5: Finalize
@@ -214,7 +216,10 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
         const auto &l = lookaheads[i];
         logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
-            mstates[current_dfa_state].else_goto = findEmptyState();
+            const auto else_goto = findEmptyState();
+            if (else_goto == states.size())
+                states.emplace_back();
+            mstates[current_dfa_state].else_goto = else_goto;
             mstates[current_dfa_state].else_goto_accept = val[i].accept_index;
             continue;
         }
@@ -239,7 +244,7 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
     }
     // TODO: implement more complex logic to cancell saved input if path without input is chosen
     // if at least one alternative has new_cst_node or new_member, set them to true
-    bool new_cst_node, new_member;
+    bool new_cst_node = false, new_member = false;
     for (const auto &v : val) {
         if (v.new_cst_node)
             new_cst_node = true;
@@ -277,7 +282,6 @@ void DFA::switchToSingleState() {
         states.back().else_goto_accept = state.else_goto_accept;
         for (auto &t : state.transitions) {
             states.back().transitions[t.first] = std::move(t.second.back());
-            t.second.pop_back();
         }
     }
     mstates.clear();
@@ -401,7 +405,7 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
     }
     // Copy and fixup second DFA states
     for (const auto &state : s) {
-        State new_state = state; // assuming State is your DFA state type
+        auto new_state = state;
         for (auto &[symbol, nexts] : new_state.transitions) {
             for (auto &next : nexts) {
                 next.next += offset;
@@ -409,6 +413,8 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
         }
         if (new_state.else_goto)
             new_state.else_goto += offset;
+        if (new_state.any_goto)
+            new_state.any_goto += offset;
 
         f.emplace_back(std::move(new_state));
     }
@@ -591,12 +597,13 @@ void DFA::build(bool switchToSingleState) {
     if (switchToSingleState) {
         unrollMultiTransitionPaths();
         this->switchToSingleState();
-         removeUnreachableStates();
-         removeSelfLoop();
+        removeUnreachableStates();
+        removeSelfLoop();
     }
 }
 void DFA::buildWMerge() {
     stdu::vector<DFA> dfas;
+    std::size_t i = 0;
     for (const auto &nfa : *mergable_nfas) {
         DFA d(nfa);
         d.build(false);

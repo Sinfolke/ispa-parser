@@ -211,16 +211,33 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
     }
     states[start].epsilon_transitions.insert(inner_start);
     states[inner_end].epsilon_transitions.insert(end);
-    // Add transitions for each character from start to end
-    for (char c : chars) {
-        states[start].transitions[c] = {inner_end};
-    }
-    for (char c : escaped) {
-        states[start].transitions[corelib::text::getEscapedFromChar(c)] = {inner_end};
-    }
-    for (auto [from, to] : csequence.diapasons) {
-        for (char c = from; c <= to; ++c) {
-            states[start].transitions[c] = {inner_end};
+    if (csequence.negative) {
+        constexpr auto max = std::numeric_limits<unsigned char>::max();
+        std::bitset<max + 1> prohibited;
+        for (char c : chars) prohibited.set(static_cast<unsigned char>(c));
+        for (char c : escaped) prohibited.set(static_cast<unsigned char>(corelib::text::getEscapedFromChar(c)));
+        for (auto [from, to] : csequence.diapasons) {
+            for (char c = from; c <= to; ++c)
+                prohibited.set(static_cast<unsigned char>(c));
+        }
+        for (unsigned char c = 0;; ++c) {
+            if (!prohibited.test(c))
+                states[inner_start].transitions[static_cast<char>(c)] = {inner_end};
+            if (c == max)
+                break;
+        }
+    } else {
+        // Add transitions for each character from start to end
+        for (char c : chars) {
+            states[inner_start].transitions[c] = {inner_end};
+        }
+        for (char c : escaped) {
+            states[inner_start].transitions[corelib::text::getEscapedFromChar(c)] = {inner_end};
+        }
+        for (auto [from, to] : csequence.diapasons) {
+            for (char c = from; c <= to; ++c) {
+                states[inner_start].transitions[c] = {inner_end};
+            }
         }
     }
     // Mark accepting state if needed
@@ -283,7 +300,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
         }
     } else if (member.isOp()) {
         const auto &op = member.getOp();
+        auto cached_no_space_skip = no_add_space_skip_next;
         for (const auto &option : op.options) {
+            no_add_space_skip_next = cached_no_space_skip;
             auto fragment = buildStateFragment(option, false, addStoreActions);
             if (fragment.invalid())
                 continue;
@@ -358,7 +377,7 @@ void NFA::addSpaceSkip() {
                 // Check if already handled
                 if (!investigateHasNext(place, c, visited)) {
                     // Add direct self-loop for whitespace char
-                    states[place].transitions[c] = { place };
+                    states[place].skip_chars.push_back(c);
                 }
             }
         } else {

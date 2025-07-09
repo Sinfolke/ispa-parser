@@ -1,0 +1,1024 @@
+name<[expression, new, __rop3]> : [Rule {
+   Name(expression::new::typeId)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::new::bracedTypeId)
+  Data: EmptyDataBlock
+}]name<[expression, shift, shiftOp, __rop1]> : [Rule {
+   Name(GREATER)
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(LESS)
+  Data: EmptyDataBlock
+}]name<[expression, new, initializer, parenthesesList, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::expressionList)
+  Data: EmptyDataBlock
+}]name<[expression, throw, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::assignment)
+  Data: EmptyDataBlock
+}]name<[expression, shift, __grp1]> : [Rule {
+  @  Name(expression::shift::shiftOp)
+  @  Name(expression::additive)
+  Data: EmptyDataBlock
+}]name<[expression, logicalAnd, __grp1]> : [Rule {
+   Name(AUTO_3)
+  @  Name(expression::inclusiveOr)
+  Data: EmptyDataBlock
+}]name<[expression, exclusiveOr, __grp1]> : [Rule {
+   Name(AUTO_4)
+  @  Name(expression::_and)
+  Data: EmptyDataBlock
+}]name<[expression, _and, __grp1]> : [Rule {
+   Name(AUTO_6)
+  @  Name(expression::equality)
+  Data: EmptyDataBlock
+}]name<[expression, relational, __grp1, __rop0]> : [Rule {
+   Name(LESS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(GREATER)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(LESSEQUAL)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(GREATEREQUAL)
+  Data: EmptyDataBlock
+}]name<[expression, additive, __grp1]> : [Rule {
+   Name(expression::additive::__grp1::__rop0)
+  @  Name(expression::multiplicative)
+  Data: EmptyDataBlock
+}]name<[expression, additive, __grp1, __rop0]> : [Rule {
+   Name(PLUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MINUS)
+  Data: EmptyDataBlock
+}]name<[expression, qualifiedId, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AUTO_5)
+  Data: EmptyDataBlock
+}]name<[expression, pointerMember, __rop1]> : [Rule {
+   Name(DOTSTAR)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(ARROWSTAR)
+  Data: EmptyDataBlock
+}]name<[expression, new, declarator, noPointerNewDeclarator, noPointerNewDeclaratorParen, __q3]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(attributeSpecifierSeq)
+  Data: EmptyDataBlock
+}]name<[expression, equality, __grp1, __rop0]> : [Rule {
+   Name(expression::equality::EQUAL)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::equality::NOTEQUAL)
+  Data: EmptyDataBlock
+}]name<[expression, delete, __grp1]> : [Rule {
+  @  Name(AUTO_13)
+   Name(AUTO_14)
+  Data: EmptyDataBlock
+}]name<[expression, pseudoDestructorName, pseudoDestructorCore, __grp0]> : [Rule {
+  @  Name(theTypeName)
+   Name(AUTO_15)
+  Data: EmptyDataBlock
+}]name<[expression, pseudoDestructorName, pseudoDestructorName1, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::qualifiedId::nestedNameSpecifier)
+  Data: EmptyDataBlock
+}]name<[expression, new, typeId, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::new::declarator)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, typeConstructionArguments, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::expressionList)
+  Data: EmptyDataBlock
+}]name<[expression, qualifiedId, nestedNameSpecifier, templ]> : [Rule {
+   Name(AUTO_5)
+  @  Name(simpleTemplateId)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, postfixExpression, typeidExpression, __rop2]> : [Rule {
+   Name(expression)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(theTypeId)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, declarator, __q6]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(trailingReturnType)
+  Data: EmptyDataBlock
+}]name<[literalOperatorId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, declarator, __q5]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(attributeSpecifierSeq)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, declarator, __q3]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AUTO_22)
+  Data: EmptyDataBlock
+}]name<[simpleTypeSpecifier]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, logicalOr, __grp1]> : [Rule {
+   Name(AUTO_23)
+  @  Name(expression::logicalAnd)
+  Data: EmptyDataBlock
+}]name<[initializerClause]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, __q2]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AUTO_24)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, __grp1]> : [Rule {
+   Name(AUTO_10)
+  @  Name(expression::lambda::introducer::capture)
+  Data: EmptyDataBlock
+}]name<[typeSpecifierSeq]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::lambda::introducer::capture)
+  Data: EmptyDataBlock
+}]name<[expression, new, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AUTO_15)
+  Data: EmptyDataBlock
+}]name<[AUTO_1]> : [Rule {
+  @  String (?)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[decltypeSpecifier]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, capture, simpleCapture, name, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AND)
+  Data: EmptyDataBlock
+}]name<[expression, primary, __q0]> : [Rule {
+   Name(literal)
+   Name(expression::primary::__q0::__q0_tail)
+  Data: EmptyDataBlock
+}]name<[CARET]> : [Rule {
+   String (^)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp]> : [Rule {
+   Name(expression::assignment::assignmentOp::ASSIGN)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::assignment::assignmentOp::STAR)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::DIV)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::MOD)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::PLUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::MINUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::RIGHTSHIFT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::LEFTSHIFT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::AND)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::XOR)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::assignment::assignmentOp::OR)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, list, __grp1]> : [Rule {
+   Name(AUTO_10)
+  @  Name(expression::lambda::introducer::capture::captureList)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, functionCallArguments]> : [Rule {
+   Name(expression::expressionList)?;
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(bracedInitList)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, list]> : [Rule {
+  @  Name(expression::lambda::introducer::capture::captureDefault)
+   Name(expression::lambda::introducer::capture::list::__grp1)
+  Data: TemplatedDataBlock(def, captureList)
+}]name<[initializer]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[LESSEQUAL]> : [Rule {
+   String (<=)
+  Data: EmptyDataBlock
+}]name<[AUTO_4]> : [Rule {
+  @  String (^)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, assignment, assignmentOp, STAR]> : [Rule {
+   String (*=)
+  Data: EmptyDataBlock
+}]name<[expression, equality, __grp1]> : [Rule {
+   Name(expression::equality::__grp1::__rop0)
+  @  Name(expression::relational)
+  Data: EmptyDataBlock
+}]name<[expression, primary]> : [Rule {
+   Name(literal)+;
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(THIS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::group)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::idExpression)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::lambda)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture]> : [Rule {
+   Name(expression::lambda::introducer::capture::captureList)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::lambda::introducer::capture::list)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, typeConstruction, __rop0]> : [Rule {
+   Name(simpleTypeSpecifier)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(typeNameSpecifier)
+  Data: EmptyDataBlock
+}]name<[expression, primary, __q0, __q0_tail]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+   Name(literal)
+   Name(expression::primary::__q0::__q0_tail)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assign]> : [Rule {
+  @  Name(expression::logicalOr)
+  @  Name(expression::assignment::assignmentOp)
+  @  Name(initializerClause)
+  Data: TemplatedDataBlock(logicalOr, assignmentOp, initializerClause)
+}]name<[expression, group]> : [Rule {
+   Name(AUTO_8)
+  @  Name(expression)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, idExpression]> : [Rule {
+   Name(expression::unqualifiedId)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::qualifiedId)
+  Data: EmptyDataBlock
+}]name<[expression, unaryExpression, sizeofArgument]> : [Rule {
+   Name(AUTO_8)
+   Name(expression::unaryExpression::sizeofArgument::__rop1)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, lambda, introducer, capture, captureDefault]> : [Rule {
+   Name(AND)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(ASSIGN)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, memberAccess]> : [Rule {
+  @  Name(expression::postfixExpression)
+   Name(expression::postfixExpression::memberAccess::__rop1)
+  @  Name(expression::postfixExpression::memberAccessTarget)
+  Data: TemplatedDataBlock(postfix, sep, target)
+}]name<[expression, qualifiedId, nestedNameSpecifier]> : [Rule {
+   Name(expression::qualifiedId::nestedNameSpecifier::__grp0)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_21]> : [Rule {
+  @  String (>)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_18]> : [Rule {
+  @  String (~)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, unqualifiedId, destructor]> : [Rule {
+   Name(AUTO_18)
+   Name(expression::unqualifiedId::destructor::__rop1)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, postfixExpression, functionCallArguments, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::expressionList)
+  Data: EmptyDataBlock
+}]name<[AUTO_15]> : [Rule {
+  @  String (::)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[ARROWSTAR]> : [Rule {
+   String (->*)
+  Data: EmptyDataBlock
+}]name<[expression, lambda]> : [Rule {
+  @  Name(expression::lambda::introducer)
+  @  Name(expression::lambda::declarator)?;
+  @  Name(compoundStatement)
+  Data: TemplatedDataBlock(introducer, declarator, stmt)
+}]name<[simpleTemplateId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[parameterDeclarationClause]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, pseudoDestructorName, pseudoDestructorName2]> : [Rule {
+  @  Name(expression::qualifiedId::nestedNameSpecifier)
+   Name(AUTO_5)
+  @  Name(simpleTemplateId)
+   Name(AUTO_15)
+   Name(AUTO_18)
+  @  Name(theTypeName)
+  Data: TemplatedDataBlock(specifier, templateId, type)
+}]name<[expression, assignment, assignmentOp, DIV]> : [Rule {
+   String (/=)
+  Data: EmptyDataBlock
+}]name<[expression, constant]> : [Rule {
+  @  Name(expression::conditional)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[pointerOperator]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, capture, initcapture]> : [Rule {
+  @  Name(AND)?;
+  @  Name(ID)
+  @  Name(initializer)
+  Data: TemplatedDataBlock(ref, id, initializer)
+}]name<[expression, lambda, introducer, capture, captureList, capture, simpleCapture, name]> : [Rule {
+  @  Name(AND)?;
+  @  Name(ID)
+  Data: TemplatedDataBlock(ref, id)
+}]name<[expression]> : [Rule {
+  @  Name(expression::assignment)
+   Name(expression::__grp1)
+  Data: TemplatedDataBlock(assignmentExpr, assignmentExpressions)
+}]name<[expression, unaryExpression, prefixUnaryExpression]> : [Rule {
+   Name(expression::unaryExpression::prefixUnaryExpression::__rop0)
+  @  Name(expression::unaryExpression)
+  Data: TemplatedDataBlock(op, expr)
+}]name<[expression, lambda, introducer]> : [Rule {
+   Name(AUTO_13)
+  @  Name(expression::lambda::introducer::capture)?;
+   Name(AUTO_14)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, postfixExpression, typeConstruction]> : [Rule {
+   Name(expression::postfixExpression::typeConstruction::__rop0)
+  @  Name(expression::postfixExpression::typeConstructionArguments)
+  Data: TemplatedDataBlock(type, args)
+}]name<[expression, lambda, introducer, capture, captureList]> : [Rule {
+  @  Name(expression::lambda::introducer::capture)
+   Name(expression::lambda::introducer::capture::captureList::__grp1)
+  @  Name(AUTO_24)?;
+  Data: TemplatedDataBlock(capture, captureList, ellipsis)
+}]name<[AUTO_12]> : [Rule {
+  @  String (delete)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[exceptionSpecification]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, memberAccess, __rop1]> : [Rule {
+   Name(DOT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(ARROW)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, OR]> : [Rule {
+   String (|=)
+  Data: EmptyDataBlock
+}]name<[expression, exclusiveOr]> : [Rule {
+  @  Name(expression::_and)
+   Name(expression::exclusiveOr::__grp1)
+  Data: TemplatedDataBlock(andExpr, andExpressions)
+}]name<[expression, expressionList]> : [Rule {
+  @  Name(initializerList)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, inclusiveOr, __grp1]> : [Rule {
+   Name(AUTO_11)
+  @  Name(expression::exclusiveOr)
+  Data: EmptyDataBlock
+}]name<[expression, pseudoDestructorName, pseudoDestructorName3]> : [Rule {
+   Name(AUTO_18)
+  @  Name(decltypeSpecifier)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, logicalOr]> : [Rule {
+  @  Name(expression::logicalAnd)
+   Name(expression::logicalOr::__grp1)
+  Data: TemplatedDataBlock(logicalAnd, logicalAnds)
+}]name<[expression, postfixExpression, functionCall]> : [Rule {
+  @  Name(expression::postfixExpression)
+   Name(AUTO_8)
+  @  Name(expression::postfixExpression::functionCallArguments)
+   Name(AUTO_9)
+  Data: TemplatedDataBlock(postfixExpr, funCallArgs)
+}]name<[DOTSTAR]> : [Rule {
+   String (.*)
+  Data: EmptyDataBlock
+}]name<[expression, relational]> : [Rule {
+  @  Name(expression::shift)
+   Name(expression::relational::__grp1)
+  Data: TemplatedDataBlock(shift, ops, shifts)
+}]name<[expression, unaryExpression, sizeofArgument, __rop1]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(theTypeId)
+  Data: EmptyDataBlock
+}]name<[expression, new]> : [Rule {
+  @  Name(AUTO_15)?;
+   Name(AUTO_16)
+  @  Name(expression::new::placement)?;
+   Name(expression::new::__rop3)
+  @  Name(expression::new::initializer)?;
+  Data: TemplatedDataBlock(prefix, placement, typeId, initializer)
+}]name<[expression, lambda, declarator]> : [Rule {
+   Name(AUTO_8)
+  @  Name(parameterDeclarationClause)?;
+   Name(AUTO_9)
+  @  Name(AUTO_22)?;
+  @  Name(exceptionSpecification)?;
+  @  Name(attributeSpecifierSeq)?;
+  @  Name(trailingReturnType)?;
+  Data: TemplatedDataBlock(parameter, mutable, exceptionSpec, attributes, return_type)
+}]name<[ALIGNOF]> : [Rule {
+   String (alignof)
+  Data: EmptyDataBlock
+}]name<[AUTO_7]> : [Rule {
+  @  String (alignof)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, qualifiedId]> : [Rule {
+  @  Name(expression::qualifiedId::nestedNameSpecifier)
+   Name(AUTO_5)?;
+  @  Name(expression::unqualifiedId)
+  Data: TemplatedDataBlock(name, uid)
+}]name<[expression, lambda, introducer, capture, captureList, capture, simpleCapture]> : [Rule {
+   Name(expression::lambda::introducer::capture::captureList::capture::simpleCapture::name)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(THIS)
+  Data: EmptyDataBlock
+}]name<[expression, new, bracedTypeId]> : [Rule {
+   Name(AUTO_8)
+  @  Name(theTypeId)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[ARROW]> : [Rule {
+   String (->)
+  Data: EmptyDataBlock
+}]name<[AUTO_17]> : [Rule {
+  @  String (noexcept)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, new, declarator, noPointerNewDeclarator, noPointerNewDeclaratorArray, __q4]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(attributeSpecifierSeq)
+  Data: EmptyDataBlock
+}]name<[expression, unaryExpression, sizeof]> : [Rule {
+   Name(SIZEOF)
+  @  Name(expression::unaryExpression::sizeofArgument)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_10]> : [Rule {
+  @  String (,)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[__WHITESPACE]> : [Rule {
+   NoSpace
+   Cseq([ ], Escaped:[\t\n\r\v\f])+;
+  Data: EmptyDataBlock
+}]name<[LESS]> : [Rule {
+   String (<)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression]> : [Rule {
+   Name(expression::primary)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::postfixExpression::functionCall)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::postfixExpression::typeConstruction)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::postfixExpression::memberAccess)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::postfixExpression::postfixIncrementDecrement)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::cast)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::postfixExpression::typeidExpression)
+  Data: EmptyDataBlock
+}]name<[expression, cast, parentheses]> : [Rule {
+   Name(AUTO_8)
+  @  Name(theTypeId)
+   Name(AUTO_9)
+  @  Name(expression::cast)
+  Data: TemplatedDataBlock(type, cast)
+}]name<[theTypeId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, memberAccessTarget]> : [Rule {
+   Name(AUTO_5)?;
+  @  Name(expression::idExpression)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+  @  Name(expression::pseudoDestructorName)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, ASSIGN]> : [Rule {
+   String (=)
+  Data: EmptyDataBlock
+}]name<[literal]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, unqualifiedId]> : [Rule {
+   Name(ID)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(operatorFunctionId)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(conversionFunctionId)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(literalOperatorId)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::unqualifiedId::destructor)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(templateId)
+  Data: EmptyDataBlock
+}]name<[operatorFunctionId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, multiplicative, __grp1]> : [Rule {
+   Name(expression::multiplicative::__grp1::__rop0)
+  @  Name(expression::pointerMember)
+  Data: EmptyDataBlock
+}]name<[DOT]> : [Rule {
+   String (.)
+  Data: EmptyDataBlock
+}]name<[expression, new, declarator, noPointerNewDeclarator]> : [Rule {
+   Name(expression::new::declarator::noPointerNewDeclarator::noPointerNewDeclaratorParen)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::new::declarator::noPointerNewDeclarator::noPointerNewDeclaratorArray)
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, postfixIncrementDecrement]> : [Rule {
+  @  Name(expression::postfixExpression)
+  @  Name(POSTFIX)
+  Data: TemplatedDataBlock(expr, op)
+}]name<[GREATER]> : [Rule {
+   String (>)
+  Data: EmptyDataBlock
+}]name<[ID]> : [Rule {
+   Cseq([], Diapasons:[a-z A-Z ])
+   Cseq([], Diapasons:[a-z A-Z 0-9 ])*;
+  Data: EmptyDataBlock
+}]name<[expression, postfixExpression, castExpression]> : [Rule {
+  @  Name(CAST)
+   Name(AUTO_20)
+  @  Name(theTypeId)
+   Name(AUTO_21)
+   Name(AUTO_8)
+  @  Name(expression)
+   Name(AUTO_9)
+  Data: TemplatedDataBlock(cast, type, expr)
+}]name<[expression, postfixExpression, typeidExpression]> : [Rule {
+   Name(AUTO_19)
+   Name(AUTO_8)
+   Name(expression::postfixExpression::typeidExpression::__rop2)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, unaryExpression]> : [Rule {
+   Name(expression::postfixExpression)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::unaryExpression::prefixUnaryExpression)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::unaryExpression::sizeof)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::unaryExpression::alignof)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::noExcept)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::new)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::delete)
+  Data: EmptyDataBlock
+}]name<[AUTO_9]> : [Rule {
+  @  String ())
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_23]> : [Rule {
+  @  String (||)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[templateId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[AUTO_13]> : [Rule {
+  @  String ([)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, postfixExpression, typeConstructionArguments]> : [Rule {
+   Name(AUTO_8)
+  @  Name(expression::expressionList)?;
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+  @  Name(bracedInitList)
+  Data: EmptyDataBlock
+}]name<[expression, pseudoDestructorName]> : [Rule {
+   Name(expression::pseudoDestructorName::pseudoDestructorName1)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::pseudoDestructorName::pseudoDestructorName2)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::pseudoDestructorName::pseudoDestructorName3)
+  Data: EmptyDataBlock
+}]name<[expression, new, typeId]> : [Rule {
+  @  Name(typeSpecifierSeq)
+  @  Name(expression::new::declarator)?;
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, pseudoDestructorName, pseudoDestructorName1]> : [Rule {
+  @  Name(expression::qualifiedId::nestedNameSpecifier)?;
+  @  Name(expression::pseudoDestructorName::pseudoDestructorCore)
+  Data: TemplatedDataBlock(specifier, destructorCore)
+}]name<[expression, postfixExpression, memberAccessTarget, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AUTO_5)
+  Data: EmptyDataBlock
+}]name<[expression, new, declarator, noPointerNewDeclarator, noPointerNewDeclaratorArray]> : [Rule {
+  @  Name(expression::new::declarator::noPointerNewDeclarator)
+   Name(AUTO_13)
+  @  Name(expression::constant)
+   Name(AUTO_14)
+  @  Name(attributeSpecifierSeq)?;
+  Data: TemplatedDataBlock(noPointerNewDeclarator, constExpr, attrSpecSeq)
+}]name<[expression, pointerMember]> : [Rule {
+  @  Name(expression::cast)
+   Name(expression::pointerMember::__rop1)
+  @  Name(expression::cast)
+  Data: TemplatedDataBlock(first_cast, sep, second_cast)
+}]name<[expression, pseudoDestructorName, pseudoDestructorCore]> : [Rule {
+   Name(expression::pseudoDestructorName::pseudoDestructorCore::__grp0)
+   Name(AUTO_18)
+  @  Name(theTypeName)
+  Data: TemplatedDataBlock(prefix_type, postfix_type)
+}]name<[AUTO_14]> : [Rule {
+  @  String (])
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, unaryExpression, prefixUnaryExpression, UNARYOPERATOR]> : [Rule {
+  @  Op( Name(OR) |  Name(STAR) |  Name(AND) |  Name(PLUS) |  Name(TILDE) |  Name(MINUS) |  Name(NOT))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, delete]> : [Rule {
+   Name(AUTO_12)
+   Name(expression::delete::__grp1)
+  @  Name(expression::cast)
+  Data: TemplatedDataBlock(braces, castExpr)
+}]name<[expression, new, placement]> : [Rule {
+   Name(AUTO_8)
+  @  Name(expression::expressionList)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[namespaceName]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[AUTO_16]> : [Rule {
+  @  String (new)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, inclusiveOr]> : [Rule {
+  @  Name(expression::exclusiveOr)
+   Name(expression::inclusiveOr::__grp1)
+  Data: TemplatedDataBlock(exclusive, exclusives)
+}]name<[expression, new, declarator, pointerOperatorWithNewDeclarator]> : [Rule {
+  @  Name(pointerOperator)
+  @  Name(newDeclarator)
+  Data: TemplatedDataBlock(pointerOp, decl)
+}]name<[expression, multiplicative]> : [Rule {
+  @  Name(expression::pointerMember)
+   Name(expression::multiplicative::__grp1)
+  Data: TemplatedDataBlock(pointerMember, operators, pointerMembers)
+}]name<[expression, equality]> : [Rule {
+  @  Name(expression::relational)
+   Name(expression::equality::__grp1)
+  Data: TemplatedDataBlock(rel, ops, rels)
+}]name<[expression, new, declarator, noPointerNewDeclarator, noPointerNewDeclaratorParen]> : [Rule {
+   Name(AUTO_8)
+  @  Name(expression)
+   Name(AUTO_9)
+  @  Name(attributeSpecifierSeq)?;
+  Data: TemplatedDataBlock(expr, attrSpecSeq)
+}]name<[AUTO_3]> : [Rule {
+  @  String (&&)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, new, initializer, parenthesesList]> : [Rule {
+   Name(AUTO_8)
+  @  Name(expression::expressionList)?;
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, equality, EQUAL]> : [Rule {
+   String (==)
+  Data: EmptyDataBlock
+}]name<[AUTO_20]> : [Rule {
+  @  String (<)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, unaryExpression, alignof]> : [Rule {
+   Name(AUTO_7)
+   Name(AUTO_8)
+  @  Name(theTypeId)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, additive]> : [Rule {
+  @  Name(expression::multiplicative)
+   Name(expression::additive::__grp1)
+  Data: TemplatedDataBlock(multi, operators, multi)
+}]name<[expression, assignment, assignmentOp, MOD]> : [Rule {
+   String (%=)
+  Data: EmptyDataBlock
+}]name<[expression, equality, NOTEQUAL]> : [Rule {
+   String (!=)
+  Data: EmptyDataBlock
+}]name<[expression, __grp1]> : [Rule {
+   Name(AUTO_10)
+  @  Name(expression::assignment)
+  Data: EmptyDataBlock
+}]name<[NOT]> : [Rule {
+   String (!)
+  Data: EmptyDataBlock
+}]name<[ASSIGN]> : [Rule {
+   String (=)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, RIGHTSHIFT]> : [Rule {
+   String (>>=)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, capture, initcapture, __q0]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(AND)
+  Data: EmptyDataBlock
+}]name<[expression, _and]> : [Rule {
+  @  Name(expression::equality)
+   Name(expression::_and::__grp1)
+  Data: TemplatedDataBlock(equality, equalities)
+}]name<[conversionFunctionId]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[compoundStatement]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[AUTO_5]> : [Rule {
+  @  String (template)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[attributeSpecifierSeq]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, unqualifiedId, destructor, __rop1]> : [Rule {
+   Name(className)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(decltypeSpecifier)
+  Data: EmptyDataBlock
+}]name<[expression, new, __q4]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::new::initializer)
+  Data: EmptyDataBlock
+}]name<[expression, assignment]> : [Rule {
+   Name(expression::conditional)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::assignment::assign)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::throw)
+  Data: EmptyDataBlock
+}]name<[newDeclarator]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, new, __q2]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::new::placement)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, PLUS]> : [Rule {
+   String (+=)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, introducer, capture, captureList, capture]> : [Rule {
+   Name(expression::lambda::introducer::capture::captureList::capture::simpleCapture)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::lambda::introducer::capture::captureList::capture::initcapture)
+  Data: EmptyDataBlock
+}]name<[TILDE]> : [Rule {
+   String (~)
+  Data: EmptyDataBlock
+}]name<[theTypeName]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, logicalAnd]> : [Rule {
+  @  Name(expression::inclusiveOr)
+   Name(expression::logicalAnd::__grp1)
+  Data: TemplatedDataBlock(inclusive, inclusives)
+}]name<[expression, lambda, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(expression::lambda::declarator)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, LEFTSHIFT]> : [Rule {
+   String (<<=)
+  Data: EmptyDataBlock
+}]name<[expression, shift]> : [Rule {
+  @  Name(expression::additive)
+   Name(expression::shift::__grp1)
+  Data: TemplatedDataBlock(additive, shiftOp, additive)
+}]name<[className]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, new, initializer]> : [Rule {
+   Name(expression::new::initializer::parenthesesList)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(bracedInitList)
+  Data: EmptyDataBlock
+}]name<[expression, new, declarator]> : [Rule {
+   Name(expression::new::declarator::pointerOperatorWithNewDeclarator)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::new::declarator::noPointerNewDeclarator)
+  Data: EmptyDataBlock
+}]name<[AUTO_24]> : [Rule {
+  @  String (...)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[typeNameSpecifier]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[AUTO_2]> : [Rule {
+  @  String (:)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, assignment, assignmentOp, XOR]> : [Rule {
+   String (^=)
+  Data: EmptyDataBlock
+}]name<[DIV]> : [Rule {
+   String (/)
+  Data: EmptyDataBlock
+}]name<[expression, assignment, assignmentOp, AND]> : [Rule {
+   String (&=)
+  Data: EmptyDataBlock
+}]name<[expression, throw]> : [Rule {
+   Name(AUTO_0)
+  @  Name(expression::assignment)?;
+  Data: [RegularDataBlock: CllExpr]
+}]name<[trailingReturnType]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[bracedInitList]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, multiplicative, __grp1, __rop0]> : [Rule {
+   Name(STAR)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(DIV)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MOD)
+  Data: EmptyDataBlock
+}]name<[initializerList]> : [Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}]name<[expression, conditional]> : [Rule {
+  @  Name(expression::logicalOr)
+   Name(AUTO_1)
+  @  Name(expression)
+   Name(AUTO_2)
+  @  Name(expression::assignment)
+  Data: TemplatedDataBlock(logicalOr, first, second)
+}]name<[expression, assignment, assignmentOp, MINUS]> : [Rule {
+   String (-=)
+  Data: EmptyDataBlock
+}]name<[expression, cast]> : [Rule {
+   Name(expression::unaryExpression)
+  Data: [RegularDataBlock: CllExpr]
+}, Rule {
+   Name(expression::cast::parentheses)
+  Data: EmptyDataBlock
+}]name<[expression, lambda, declarator, __q4]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(exceptionSpecification)
+  Data: EmptyDataBlock
+}]name<[AND]> : [Rule {
+   String (&)
+  Data: EmptyDataBlock
+}]name<[expression, noExcept]> : [Rule {
+   Name(AUTO_17)
+   Name(AUTO_8)
+  @  Name(expression)
+   Name(AUTO_9)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_22]> : [Rule {
+  @  String (mutable)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, lambda, declarator, __q1]> : [Rule {
+  Data: EmptyDataBlock
+}, Rule {
+  @  Name(parameterDeclarationClause)
+  Data: EmptyDataBlock
+}]name<[OR]> : [Rule {
+   String (|)
+  Data: EmptyDataBlock
+}]name<[MOD]> : [Rule {
+   String (%)
+  Data: EmptyDataBlock
+}]name<[AUTO_11]> : [Rule {
+  @  String (|)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, unaryExpression, prefixUnaryExpression, __rop0]> : [Rule {
+   Name(POSTFIX)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(SIZEOF)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::unaryExpression::prefixUnaryExpression::UNARYOPERATOR)
+  Data: EmptyDataBlock
+}]name<[STAR]> : [Rule {
+   String (*)
+  Data: EmptyDataBlock
+}]name<[MINUS]> : [Rule {
+   String (-)
+  Data: EmptyDataBlock
+}]name<[GREATEREQUAL]> : [Rule {
+   String (>=)
+  Data: EmptyDataBlock
+}]name<[expression, shift, shiftOp]> : [Rule {
+  @  Name(GREATER)
+   Name(expression::shift::shiftOp::__rop1)
+   Name(LESS)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_0]> : [Rule {
+  @  String (throw)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[expression, qualifiedId, nestedNameSpecifier, __grp0]> : [Rule {
+   Name(namespaceName)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(decltypeSpecifier)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(ID)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(expression::qualifiedId::nestedNameSpecifier::templ)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(theTypeName)
+   Name(AUTO_15)
+  Data: EmptyDataBlock
+}]name<[SIZEOF]> : [Rule {
+   String (sizeof)
+  Data: EmptyDataBlock
+}]name<[expression, relational, __grp1]> : [Rule {
+   Name(expression::relational::__grp1::__rop0)
+  @  Name(expression::shift)
+  Data: EmptyDataBlock
+}]name<[PLUS]> : [Rule {
+   String (+)
+  Data: EmptyDataBlock
+}]name<[AUTO_8]> : [Rule {
+  @  String (()
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_19]> : [Rule {
+  @  String (typeid)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_6]> : [Rule {
+  @  String (&)
+  Data: [RegularDataBlock: CllExpr]
+}]
