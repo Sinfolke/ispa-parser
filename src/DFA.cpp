@@ -458,10 +458,7 @@ void DFA::build(bool switchToSingleState) {
         for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                auto &cst_member_map = nfa->getCstMemberMap();
-                auto cst_pair = cst_member_map.empty() ? std::make_pair(false, false) : cst_member_map.at(nfa_index);
-                logger.log("[{}] cst pair: {}", nfa_index, cst_pair);
-                input_symbols[symbol].emplace_back(TransitionValue {id.next, cst_pair.first, cst_pair.second, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
+                input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
         }
         // Early cutoff opportunity

@@ -176,11 +176,12 @@ const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_41 = {
 };
 const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_42 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
@@ -190,6 +191,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_42 = {
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -198,46 +201,46 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_42 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_43 = {
 	ISPA_STD::DFAAPI::CharTransition { '6', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'R', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '8', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '7', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '5', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '4', 2, ::ISPA_STD::DFAAPI::null_state },
@@ -249,12 +252,13 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_43 = {
 	ISPA_STD::DFAAPI::CharTransition { 'W', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'T', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Q', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'O', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 2, ::ISPA_STD::DFAAPI::null_state },
@@ -263,229 +267,166 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_43 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 2, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 2, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '_', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_44 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_44 = {
+	ISPA_STD::DFAAPI::CharTransition { '6', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '_', 2, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_45 = {
 	ISPA_STD::DFAAPI::CharTransition { '[', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 256> Parser::Lexer::dfa_state_45 = {
-	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '$', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ' ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\'', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 130> Parser::Lexer::dfa_state_46 = {
+	ISPA_STD::DFAAPI::CharTransition { 'ã', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '†', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'á', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'â', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ö', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≠', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'É', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '·', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ç', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ﬂ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ä', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Å', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ñ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ü', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'à', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'œ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¢', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'å', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ä', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ç', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'é', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'è', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ê', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ë', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'í', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ì', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'î', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ñ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ó', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ò', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ô', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ö', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '\\', 3, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'ï', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '-', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '_', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ú', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\0', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '2', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'û', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '~', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'õ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ù', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ü', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '°', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '£', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '§', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '•', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¶', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ß', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '®', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '©', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '™', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '´', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¨', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Æ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ø', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∞', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '±', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≤', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≥', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¥', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'µ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∂', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '∑', 1, 1 },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_25, 1, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '!', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '"', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '#', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '%', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '&', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '(', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ')', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '*', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '+', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ',', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '.', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '/', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '0', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '1', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '3', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '4', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '5', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '6', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '7', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '8', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ':', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ';', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '<', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '=', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '>', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '?', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '@', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ä', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ç', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ñ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'G', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Å', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ü', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'É', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'à', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ö', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ä', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'á', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'å', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'O', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'â', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Q', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'é', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'R', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ã', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ê', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ç', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'í', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'è', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'î', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ë', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ñ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ì', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '[', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ò', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '^', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ó', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '`', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ô', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'õ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '†', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ù', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¢', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ü', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '§', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '°', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¶', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '£', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '®', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '•', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '™', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ß', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¨', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '©', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Æ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '´', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∞', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≠', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≤', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ø', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¥', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '±', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'y', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∂', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≥', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '{', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '∏', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'µ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '|', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '}', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∫', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'º', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'π', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∫', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ª', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'º', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Ω', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'æ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ø', 1, 1 },
@@ -504,8 +445,6 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 256> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { 'Ã', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Õ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Œ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'œ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '–', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '—', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '”', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‘', 1, 1 },
@@ -519,9 +458,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 256> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { '‹', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '›', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ﬁ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ﬂ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‡', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '·', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‚', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '„', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‰', 1, 1 },
@@ -543,10 +480,12 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 256> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { 'ı', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˜', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '¯', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ö', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˘', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˙', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ú', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˚', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '–', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'û', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˝', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˛', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '¸', 1, 1 },
@@ -554,206 +493,82 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 256> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { 'Í', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '“', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ˇ', 1, 1 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_46 = {
-	ISPA_STD::DFAAPI::CharTransition { '0', 1, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_47 = {
-	ISPA_STD::DFAAPI::CharTransition { '\\', 4, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTransition { '0', 1, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_48 = {
+	ISPA_STD::DFAAPI::CharTransition { '\\', 4, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_49 = {
 	ISPA_STD::DFAAPI::CharTransition { 's', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 257> Parser::Lexer::dfa_state_49 = {
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '$', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ' ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 131> Parser::Lexer::dfa_state_50 = {
+	ISPA_STD::DFAAPI::CharTransition { 'ê', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ã', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '°', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'œ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¢', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'å', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ö', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'â', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '†', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'á', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'É', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '·', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ç', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≠', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Å', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ﬂ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ä', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ñ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ü', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'à', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ä', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ç', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'é', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'è', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ë', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'í', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ì', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'î', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ñ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ó', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ò', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ô', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'õ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { ']', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '2', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\'', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\\', 2, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'ö', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '\\', 2, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'ï', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\0', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '_', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ú', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '-', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'û', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '~', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ù', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ü', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '£', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '§', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '•', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¶', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ß', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '®', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '©', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '™', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '´', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¨', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Æ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'Ø', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∞', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '±', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≤', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '≥', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '¥', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'µ', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∂', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '∑', 1, 1 },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_25, 1, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '!', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '"', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '#', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '%', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '&', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '(', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ')', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '*', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '+', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ',', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '.', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '/', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '0', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '1', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '3', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '4', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '5', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '6', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '7', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '8', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ':', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { ';', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '<', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '=', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '>', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '?', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '@', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ä', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ç', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ñ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'G', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Å', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ü', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'É', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'à', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ö', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ä', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'á', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'å', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'O', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'â', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Q', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'é', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'R', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ã', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ê', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ç', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'í', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'è', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'î', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ë', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ñ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ì', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '[', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ò', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '^', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ó', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '`', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ô', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'õ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '†', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ù', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¢', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ü', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '§', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '°', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¶', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '£', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '®', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '•', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '™', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ß', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¨', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '©', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Æ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '´', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∞', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≠', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≤', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'Ø', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '¥', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '±', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'y', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∂', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '≥', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '{', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '∏', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'µ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '|', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '}', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '∫', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'º', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'π', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '∫', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ª', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'º', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Ω', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'æ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ø', 1, 1 },
@@ -772,8 +587,6 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 257> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { 'Ã', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Õ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'Œ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'œ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '–', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '—', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '”', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‘', 1, 1 },
@@ -787,9 +600,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 257> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { '‹', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '›', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ﬁ', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ﬂ', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‡', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '·', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‚', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '„', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '‰', 1, 1 },
@@ -811,10 +622,12 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 257> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { 'ı', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˜', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '¯', 1, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'ö', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˘', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˙', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'ú', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˚', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '–', 1, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'û', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˝', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '˛', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '¸', 1, 1 },
@@ -823,18 +636,21 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 257> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { '“', 1, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'ˇ', 1, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_50 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_51 = {
 	ISPA_STD::DFAAPI::CharTransition { '\\', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::dfa_state_51 = {
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::dfa_state_52 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 15, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 18, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 1, 0 },
@@ -843,6 +659,8 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -851,109 +669,105 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 17, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 18, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 20, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 19, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 20, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 21, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 6, 1 },
+	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 21, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 3, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 22, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '&', 4, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_52 = {
-	ISPA_STD::DFAAPI::CharTransition { '&', 3, 0 }
+	ISPA_STD::DFAAPI::CharTransition { '&', 4, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 22, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'v', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'b', 7, 2 },
+	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 3, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_53 = {
-	ISPA_STD::DFAAPI::CharTransition { 'd', 3, 1 }
+	ISPA_STD::DFAAPI::CharTransition { '&', 3, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_54 = {
-	ISPA_STD::DFAAPI::CharTransition { 'j', 12, 5 }
+	ISPA_STD::DFAAPI::CharTransition { 'd', 3, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_55 = {
-	ISPA_STD::DFAAPI::CharTransition { 'm', 3, 1 }
+	ISPA_STD::DFAAPI::CharTransition { 'u', 10, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_56 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 13, 4 }
+	ISPA_STD::DFAAPI::CharTransition { 'o', 13, 2 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_57 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 3 }
+	ISPA_STD::DFAAPI::CharTransition { 'a', 14, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_58 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 14, 2 }
+	ISPA_STD::DFAAPI::CharTransition { 'j', 15, 5 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_59 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 0 }
+	ISPA_STD::DFAAPI::CharTransition { 'm', 3, 1 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_60 = {
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_17, 3, 5 }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_60 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 16, 4 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_61 = {
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_17, 3, 4 }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_61 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 3 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_62 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 17, 2 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_63 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 0 }
+};
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_64 = {
+	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_17, 3, 5 }
+};
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_65 = {
+	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_17, 3, 4 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_66 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 3, 2 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_63 = {
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_67 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 16, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_64 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 11, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_65 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 9, 3 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_66 = {
-	ISPA_STD::DFAAPI::CharTransition { 'b', 6, 5 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_67 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 7, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 19, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_68 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 10, 2 },
+	ISPA_STD::DFAAPI::CharTransition { 't', 12, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_69 = {
-	ISPA_STD::DFAAPI::CharTransition { 'n', 5, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 8, 4 },
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_69 = {
+	ISPA_STD::DFAAPI::CharTransition { 'b', 9, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_70 = {
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_70 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 11, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 5, 1 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_71 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
@@ -963,6 +777,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_70 = {
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -971,101 +787,98 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_70 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 13, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 14, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 17, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 15, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 16, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 18, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 4, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 17, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 18, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_71 = {
-	ISPA_STD::DFAAPI::CharTransition { 'j', 10, 5 }
+	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'v', 7, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 5, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 'b', 6, 2 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_72 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 11, 4 }
+	ISPA_STD::DFAAPI::CharTransition { 'u', 9, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_73 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 10, 4 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_74 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 12, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_74 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 9, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_75 = {
+	ISPA_STD::DFAAPI::CharTransition { 'a', 13, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_75 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 7, 3 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_76 = {
+	ISPA_STD::DFAAPI::CharTransition { 'j', 14, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_76 = {
-	ISPA_STD::DFAAPI::CharTransition { 'b', 4, 5 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_77 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 15, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_77 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 5, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_78 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 8, 2 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_78 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 16, 2 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_79 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 6, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 't', 11, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_80 = {
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_80 = {
+	ISPA_STD::DFAAPI::CharTransition { 'b', 8, 5 },
+	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_81 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 12, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 13, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 't', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'f', 12, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 10, 0 },
@@ -1074,6 +887,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_80 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 10, 0 },
@@ -1088,63 +902,60 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_80 = {
 	ISPA_STD::DFAAPI::CharTransition { 'V', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 10, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 10, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 10, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_81 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_82 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_82 = {
-	ISPA_STD::DFAAPI::CharTransition { 'l', 5, ::ISPA_STD::DFAAPI::null_state }
-};
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_83 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 6, 0 }
+	ISPA_STD::DFAAPI::CharTransition { 'r', 5, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_84 = {
-	ISPA_STD::DFAAPI::CharTransition { 's', 7, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTransition { 'l', 6, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_85 = {
-	ISPA_STD::DFAAPI::CharTransition { 'e', 2, 0 }
+	ISPA_STD::DFAAPI::CharTransition { 'u', 7, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_86 = {
-	ISPA_STD::DFAAPI::CharTransition { 'e', 2, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTransition { 's', 7, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_87 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 9, 0 }
+	ISPA_STD::DFAAPI::CharTransition { 'e', 2, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_88 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 9, 0 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_89 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_89 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_90 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'g', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 11, ::ISPA_STD::DFAAPI::null_state },
@@ -1153,8 +964,10 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_89 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'O', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Q', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 11, ::ISPA_STD::DFAAPI::null_state },
@@ -1172,55 +985,114 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_89 = {
 	ISPA_STD::DFAAPI::CharTransition { '5', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '7', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '8', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '6', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 11, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 11, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<5> Parser::Lexer::dfa_state_90 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_91 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 11, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 11, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_92 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 8, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 3, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'n', 2, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_91 = {
-	ISPA_STD::DFAAPI::CharTransition { '_', 11, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 4, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_92 = {
-	ISPA_STD::DFAAPI::CharTransition { 'i', 8, ::ISPA_STD::DFAAPI::null_state },
+const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_93 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 8, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 6, 0 },
@@ -1229,6 +1101,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_92 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 6, 0 },
@@ -1243,51 +1117,48 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_92 = {
 	ISPA_STD::DFAAPI::CharTransition { 'V', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 6, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_93 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_94 = {
 	ISPA_STD::DFAAPI::CharTransition { 'p', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_94 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_95 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 3, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_95 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_96 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 4, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_96 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_97 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 5, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_97 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_98 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'g', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 7, ::ISPA_STD::DFAAPI::null_state },
@@ -1296,8 +1167,10 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_97 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'O', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Q', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 7, ::ISPA_STD::DFAAPI::null_state },
@@ -1315,49 +1188,113 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_97 = {
 	ISPA_STD::DFAAPI::CharTransition { '5', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '7', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '8', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '6', 7, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 7, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_98 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_99 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 7, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_100 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'f', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_99 = {
-	ISPA_STD::DFAAPI::CharTransition { 'c', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 8, ::ISPA_STD::DFAAPI::null_state },
+const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_101 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 8, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 6, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 6, 0 },
@@ -1366,6 +1303,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_99 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 6, 0 },
@@ -1380,31 +1319,33 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_99 = {
 	ISPA_STD::DFAAPI::CharTransition { 'V', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 6, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 6, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 6, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_100 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_102 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_101 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_103 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 3, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_102 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_104 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 4, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_103 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_105 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 5, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_104 = {
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_106 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<54> Parser::Lexer::dfa_state_105 = {
+const ::ISPA_STD::DFAAPI::CharTableState<58> Parser::Lexer::dfa_state_107 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
@@ -1414,6 +1355,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<54> Parser::Lexer::dfa_state_105 = {
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -1422,91 +1365,91 @@ const ::ISPA_STD::DFAAPI::CharTableState<54> Parser::Lexer::dfa_state_105 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 16, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 17, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 19, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 18, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 19, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 20, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 21, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 20, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 21, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '!', 3, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_106 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 3, 1 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_107 = {
-	ISPA_STD::DFAAPI::CharTransition { 'm', 6, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTransition { '!', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'v', 9, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 7, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 'b', 8, 2 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_108 = {
-	ISPA_STD::DFAAPI::CharTransition { 'e', 3, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTransition { 't', 3, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_109 = {
-	ISPA_STD::DFAAPI::CharTransition { 'j', 13, 5 }
+	ISPA_STD::DFAAPI::CharTransition { 'm', 6, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_110 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 14, 4 }
+	ISPA_STD::DFAAPI::CharTransition { 'e', 3, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_111 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 15, 2 }
+	ISPA_STD::DFAAPI::CharTransition { 'r', 12, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_112 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 12, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_112 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 14, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_113 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 10, 3 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_113 = {
+	ISPA_STD::DFAAPI::CharTransition { 'a', 15, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_114 = {
-	ISPA_STD::DFAAPI::CharTransition { 'b', 7, 5 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_114 = {
+	ISPA_STD::DFAAPI::CharTransition { 'j', 16, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_115 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 4, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'u', 8, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 5, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_115 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 17, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_116 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 11, 2 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_116 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 18, 2 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_117 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 9, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 't', 13, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::dfa_state_118 = {
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_118 = {
+	ISPA_STD::DFAAPI::CharTransition { 'b', 10, 5 },
+	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_119 = {
+	ISPA_STD::DFAAPI::CharTransition { 'u', 11, 1 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 5, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 4, 1 }
+};
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::dfa_state_120 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 14, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 18, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 1, 0 },
@@ -1515,6 +1458,8 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -1523,88 +1468,58 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 57> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 16, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 17, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 20, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 18, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 19, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 21, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 5, 1 },
+	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 20, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 3, 1 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 21, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '|', 4, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_119 = {
-	ISPA_STD::DFAAPI::CharTransition { '|', 3, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_120 = {
-	ISPA_STD::DFAAPI::CharTransition { 'j', 11, 5 }
+	ISPA_STD::DFAAPI::CharTransition { '|', 4, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'v', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 6, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 'b', 7, 2 },
+	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 3, 1 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_121 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 12, 4 }
+	ISPA_STD::DFAAPI::CharTransition { '|', 3, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_122 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 13, 2 }
+	ISPA_STD::DFAAPI::CharTransition { 'r', 11, 4 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_123 = {
-	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 3, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 15, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_124 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 10, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_125 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 8, 3 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_126 = {
-	ISPA_STD::DFAAPI::CharTransition { 'b', 5, 5 },
+const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_123 = {
+	ISPA_STD::DFAAPI::CharTransition { 'b', 9, 5 },
 	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_127 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 6, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_128 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 9, 2 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_129 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 7, 4 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_130 = {
+const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_124 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'T', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 1, 0 },
@@ -1614,6 +1529,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_130 = {
 	ISPA_STD::DFAAPI::CharTransition { 'N', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 1, 0 },
@@ -1622,263 +1539,313 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_130 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 20, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 21, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 24, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 22, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 23, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 25, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'k', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'n', 11, 1 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'i', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 24, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 25, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 }
+	ISPA_STD::DFAAPI::CharTransition { '_', 1, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'v', 14, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'a', 12, 4 },
+	ISPA_STD::DFAAPI::CharTransition { 'b', 13, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_131 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_125 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 5, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_132 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_126 = {
 	ISPA_STD::DFAAPI::CharTransition { 'c', 6, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_133 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_127 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 7, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_134 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_128 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 8, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_135 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_129 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 9, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_136 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_130 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 10, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_137 = {
-	ISPA_STD::DFAAPI::CharTransition { 'j', 17, 5 }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_131 = {
+	ISPA_STD::DFAAPI::CharTransition { 'u', 16, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_138 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 18, 4 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_139 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_132 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 19, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_140 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 16, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_133 = {
+	ISPA_STD::DFAAPI::CharTransition { 'a', 20, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_141 = {
-	ISPA_STD::DFAAPI::CharTransition { 't', 14, 3 },
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_134 = {
+	ISPA_STD::DFAAPI::CharTransition { 'j', 21, 5 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_135 = {
+	ISPA_STD::DFAAPI::CharTransition { 'r', 22, 4 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_136 = {
+	ISPA_STD::DFAAPI::CharTransition { 'o', 23, 2 }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_137 = {
+	ISPA_STD::DFAAPI::CharTransition { 't', 18, 3 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_142 = {
-	ISPA_STD::DFAAPI::CharTransition { 'b', 11, 5 },
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_138 = {
+	ISPA_STD::DFAAPI::CharTransition { 'b', 15, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_143 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 12, 1 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_139 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 't', 2, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'f', 1, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 's', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 8, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 8, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_144 = {
-	ISPA_STD::DFAAPI::CharTransition { 'o', 15, 2 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_140 = {
+	ISPA_STD::DFAAPI::CharTransition { 'a', 3, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_145 = {
-	ISPA_STD::DFAAPI::CharTransition { 'r', 13, 4 },
-	ISPA_STD::DFAAPI::CharTransition { '9', 2, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_141 = {
+	ISPA_STD::DFAAPI::CharTransition { 'l', 5, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_146 = {
-	ISPA_STD::DFAAPI::CharTransition { '_', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 9, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 10, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'c', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'B', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'p', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 's', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'F', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'u', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'H', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'w', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'J', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'x', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'G', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'y', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'L', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'z', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'I', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'K', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'N', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'O', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'Q', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'R', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'S', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'T', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'U', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'X', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'V', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'Y', 7, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'Z', 7, 0 }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_142 = {
+	ISPA_STD::DFAAPI::CharTransition { 'u', 6, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_147 = {
-	ISPA_STD::DFAAPI::CharTransition { 'l', 3, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_143 = {
+	ISPA_STD::DFAAPI::CharTransition { 's', 6, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_148 = {
-	ISPA_STD::DFAAPI::CharTransition { 'u', 4, 0 }
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_144 = {
+	ISPA_STD::DFAAPI::CharTransition { 'e', 7, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_149 = {
-	ISPA_STD::DFAAPI::CharTransition { 's', 5, ::ISPA_STD::DFAAPI::null_state }
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_145 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 9, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_150 = {
-	ISPA_STD::DFAAPI::CharTransition { 'e', 6, 0 }
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_146 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 9, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 9, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_151 = {
-	ISPA_STD::DFAAPI::CharTransition { 'e', 6, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_152 = {
-	ISPA_STD::DFAAPI::CharTransition { '_', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'c', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'e', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'l', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'o', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'B', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'p', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 's', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'F', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'u', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'H', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'w', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'J', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'x', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'G', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'y', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'L', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'z', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'I', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'K', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'O', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'Q', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'S', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'T', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'U', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'V', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'W', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'X', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'Y', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '1', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '2', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '3', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '4', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'N', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '5', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'Z', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'P', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '7', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '8', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '6', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'R', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '9', 8, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_153 = {
-	ISPA_STD::DFAAPI::CharTransition { '_', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 1, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_154 = {
-	ISPA_STD::DFAAPI::CharTransition { '_', 8, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 2, 0 }
-};
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_155 = {
-	ISPA_STD::DFAAPI::CharTransition { 'a', 3, 0 },
+const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_147 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'H', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 5, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'd', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'm', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 3, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 3, 0 },
@@ -1887,6 +1854,8 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_155 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 3, 0 },
@@ -1901,39 +1870,36 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_155 = {
 	ISPA_STD::DFAAPI::CharTransition { 'V', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 3, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 3, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 3, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_156 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_148 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'g', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 4, ::ISPA_STD::DFAAPI::null_state },
@@ -1942,8 +1908,10 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_156 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'O', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Q', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 4, ::ISPA_STD::DFAAPI::null_state },
@@ -1961,56 +1929,122 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_156 = {
 	ISPA_STD::DFAAPI::CharTransition { '5', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '7', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '8', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '6', 4, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 4, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_157 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_149 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 4, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 4, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_150 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_158 = {
+const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_151 = {
 	ISPA_STD::DFAAPI::CharTransition { 'c', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { '_', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'w', 7, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 7, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '_', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'g', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'D', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 's', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 't', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 5, 0 },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'G', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'y', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'L', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'M', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'N', 5, 0 },
@@ -2025,48 +2059,45 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_158 = {
 	ISPA_STD::DFAAPI::CharTransition { 'V', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 5, 0 },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 5, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 5, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_159 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_152 = {
 	ISPA_STD::DFAAPI::CharTransition { 'i', 2, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_160 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_153 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 3, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_161 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_154 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 4, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_162 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_155 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'a', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'b', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'd', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'e', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'f', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'g', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'h', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'i', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'j', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'k', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'n', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'B', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'q', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'D', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'r', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'A', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'F', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 't', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'C', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'v', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'E', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'x', 6, ::ISPA_STD::DFAAPI::null_state },
@@ -2075,8 +2106,10 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_162 = {
 	ISPA_STD::DFAAPI::CharTransition { 'L', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'z', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'I', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'K', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { 'M', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'O', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Q', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'S', 6, ::ISPA_STD::DFAAPI::null_state },
@@ -2094,38 +2127,105 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_162 = {
 	ISPA_STD::DFAAPI::CharTransition { '5', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'P', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '7', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '8', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '6', 6, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::CharTransition { '0', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 6, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_163 = {
+const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_156 = {
+	ISPA_STD::DFAAPI::CharTransition { '_', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\0', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'q', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'D', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'c', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'e', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\v', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\b', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'g', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'd', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'l', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\t', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'm', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'h', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'j', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\a', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'o', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'B', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'p', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\r', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'k', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\f', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 's', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'F', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'u', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'H', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'w', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'J', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'x', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'G', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'y', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'L', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'z', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'I', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'A', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'C', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'E', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'K', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'O', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Q', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'S', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'T', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'U', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'V', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'W', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'X', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Y', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '1', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '2', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '3', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '4', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'N', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '5', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'Z', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'P', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'i', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '\n', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '7', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'M', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '8', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '6', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { 'R', 6, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTransition { '9', 6, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_157 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_164 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_158 = {
 	ISPA_STD::DFAAPI::CharTransition { '{', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 5> Parser::Lexer::dfa_state_165 = {
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 5> Parser::Lexer::dfa_state_159 = {
 	ISPA_STD::DFAAPI::CharTransition { '|', 3, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 1, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 2, 1 },
 	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 4, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 1, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_166 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_160 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 1, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_167 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_161 = {
 	ISPA_STD::DFAAPI::CharTransition { '|', 1, 0 }
 };
-const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_168 = {
+const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_162 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 1, 0 },
 	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 5, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_169 = {
+const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_163 = {
 	ISPA_STD::DFAAPI::CharTransition { '}', 1, 0 }
 };
 const ::ISPA_STD::DFAAPI::CharTable<9> Parser::Lexer::dfa_table_0 = {
@@ -2257,32 +2357,31 @@ const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_21 = {
 const ::ISPA_STD::DFAAPI::CharTable<4> Parser::Lexer::dfa_table_22 = {
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_42.data(), dfa_state_42.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<3> Parser::Lexer::dfa_table_23 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_45.data(), dfa_state_45.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 1, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 5> Parser::Lexer::dfa_table_24 = {
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_45.data(), dfa_state_45.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_46.data(), dfa_state_46.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_46.data(), dfa_state_46.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 1, ::ISPA_STD::DFAAPI::null_state, {dfa_state_47.data(), dfa_state_47.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_47.data(), dfa_state_47.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 1, ::ISPA_STD::DFAAPI::null_state, {dfa_state_48.data(), dfa_state_48.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 1, ::ISPA_STD::DFAAPI::null_state, {dfa_state_49.data(), dfa_state_49.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 3> Parser::Lexer::dfa_table_25 = {
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_49.data(), dfa_state_49.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_50.data(), dfa_state_50.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 1, 1, {dfa_state_50.data(), dfa_state_50.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_51.data(), dfa_state_51.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 23> Parser::Lexer::dfa_table_26 = {
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_51.data(), dfa_state_51.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_52.data(), dfa_state_52.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_52.data(), dfa_state_52.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_53.data(), dfa_state_53.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_54.data(), dfa_state_54.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
@@ -2290,198 +2389,197 @@ const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 23> Parser::Lexer::dfa_ta
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_58.data(), dfa_state_58.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_67.data(), dfa_state_67.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_67.data(), dfa_state_67.size()}},
+	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_68.data(), dfa_state_68.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_69.data(), dfa_state_69.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_70.data(), dfa_state_70.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 19> Parser::Lexer::dfa_table_27 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_70.data(), dfa_state_70.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_71.data(), dfa_state_71.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
+	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_72.data(), dfa_state_72.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_73.data(), dfa_state_73.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_74.data(), dfa_state_74.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_75.data(), dfa_state_75.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_76.data(), dfa_state_76.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_77.data(), dfa_state_77.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_78.data(), dfa_state_78.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_79.data(), dfa_state_79.size()}},
-};
-const ::ISPA_STD::DFAAPI::CharTable<14> Parser::Lexer::dfa_table_28 = {
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_80.data(), dfa_state_80.size()}},
+};
+const ::ISPA_STD::DFAAPI::CharTable<13> Parser::Lexer::dfa_table_28 = {
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_81.data(), dfa_state_81.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_83.data(), dfa_state_83.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_84.data(), dfa_state_84.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_86.data(), dfa_state_86.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_88.data(), dfa_state_88.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 11, ::ISPA_STD::DFAAPI::null_state, {dfa_state_89.data(), dfa_state_89.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_89.data(), dfa_state_89.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_90.data(), dfa_state_90.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_91.data(), dfa_state_91.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_89.data(), dfa_state_89.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 11, ::ISPA_STD::DFAAPI::null_state, {dfa_state_90.data(), dfa_state_90.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_91.data(), dfa_state_91.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_92.data(), dfa_state_92.size()}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<9> Parser::Lexer::dfa_table_29 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_92.data(), dfa_state_92.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_93.data(), dfa_state_93.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_94.data(), dfa_state_94.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_95.data(), dfa_state_95.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_96.data(), dfa_state_96.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 7, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 5, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 7, ::ISPA_STD::DFAAPI::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 5, ::ISPA_STD::DFAAPI::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_100.data(), dfa_state_100.size()}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<9> Parser::Lexer::dfa_table_30 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_100.data(), dfa_state_100.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_101.data(), dfa_state_101.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_102.data(), dfa_state_102.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_103.data(), dfa_state_103.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 7, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 5, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_104.data(), dfa_state_104.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 7, ::ISPA_STD::DFAAPI::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 5, ::ISPA_STD::DFAAPI::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_106.data(), dfa_state_106.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 22> Parser::Lexer::dfa_table_31 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_106.data(), dfa_state_106.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_107.data(), dfa_state_107.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
+	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_108.data(), dfa_state_108.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_109.data(), dfa_state_109.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_110.data(), dfa_state_110.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_111.data(), dfa_state_111.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_112.data(), dfa_state_112.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_113.data(), dfa_state_113.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_114.data(), dfa_state_114.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_116.data(), dfa_state_116.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_117.data(), dfa_state_117.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_118.data(), dfa_state_118.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_119.data(), dfa_state_119.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 22> Parser::Lexer::dfa_table_32 = {
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_118.data(), dfa_state_118.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_120.data(), dfa_state_120.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_119.data(), dfa_state_119.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_120.data(), dfa_state_120.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_121.data(), dfa_state_121.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_122.data(), dfa_state_122.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_56.data(), dfa_state_56.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_58.data(), dfa_state_58.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_123.data(), dfa_state_123.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_67.data(), dfa_state_67.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_68.data(), dfa_state_68.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_123.data(), dfa_state_123.size()}},
+};
+const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 26> Parser::Lexer::dfa_table_33 = {
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_124.data(), dfa_state_124.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_44.data(), dfa_state_44.size()}},
+	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_125.data(), dfa_state_125.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_126.data(), dfa_state_126.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_128.data(), dfa_state_128.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_129.data(), dfa_state_129.size()}},
-};
-const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 26> Parser::Lexer::dfa_table_33 = {
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_130.data(), dfa_state_130.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 3, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_110.data(), dfa_state_110.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_131.data(), dfa_state_131.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_132.data(), dfa_state_132.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_133.data(), dfa_state_133.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_134.data(), dfa_state_134.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_135.data(), dfa_state_135.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_136.data(), dfa_state_136.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_108.data(), dfa_state_108.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_55.data(), dfa_state_55.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_138.data(), dfa_state_138.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_57.data(), dfa_state_57.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_139.data(), dfa_state_139.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_62.data(), dfa_state_62.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_135.data(), dfa_state_135.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_61.data(), dfa_state_61.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_136.data(), dfa_state_136.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_138.data(), dfa_state_138.size()}},
+};
+const ::ISPA_STD::DFAAPI::CharTable<10> Parser::Lexer::dfa_table_34 = {
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_139.data(), dfa_state_139.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_140.data(), dfa_state_140.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_96.data(), dfa_state_96.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_141.data(), dfa_state_141.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_142.data(), dfa_state_142.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_143.data(), dfa_state_143.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_144.data(), dfa_state_144.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_145.data(), dfa_state_145.size()}},
-};
-const ::ISPA_STD::DFAAPI::CharTable<11> Parser::Lexer::dfa_table_34 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_146.data(), dfa_state_146.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_147.data(), dfa_state_147.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_148.data(), dfa_state_148.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_149.data(), dfa_state_149.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 8, ::ISPA_STD::DFAAPI::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 6, ::ISPA_STD::DFAAPI::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 9, ::ISPA_STD::DFAAPI::null_state, {dfa_state_145.data(), dfa_state_145.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 7, ::ISPA_STD::DFAAPI::null_state, {dfa_state_146.data(), dfa_state_146.size()}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<6> Parser::Lexer::dfa_table_35 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_147.data(), dfa_state_147.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 4, ::ISPA_STD::DFAAPI::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_157.data(), dfa_state_157.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 4, ::ISPA_STD::DFAAPI::null_state, {dfa_state_148.data(), dfa_state_148.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 2, ::ISPA_STD::DFAAPI::null_state, {dfa_state_149.data(), dfa_state_149.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_150.data(), dfa_state_150.size()}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<8> Parser::Lexer::dfa_table_36 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_151.data(), dfa_state_151.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_152.data(), dfa_state_152.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 6, ::ISPA_STD::DFAAPI::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 4, ::ISPA_STD::DFAAPI::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 6, ::ISPA_STD::DFAAPI::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 4, ::ISPA_STD::DFAAPI::null_state, {dfa_state_156.data(), dfa_state_156.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_157.data(), dfa_state_157.size()}},
 };
 const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_37 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_164.data(), dfa_state_164.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_158.data(), dfa_state_158.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 6> Parser::Lexer::dfa_table_38 = {
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_166.data(), dfa_state_166.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 1, 0, {dfa_state_167.data(), dfa_state_167.size()}},
-	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_168.data(), dfa_state_168.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 1, 0, {dfa_state_161.data(), dfa_state_161.size()}},
+	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
 	ISPA_STD::DFAAPI::SpanEmptyTableState{},
 };
 const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_39 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_169.data(), dfa_state_169.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
 	ISPA_STD::DFAAPI::SpanCharTableState{ 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
 };
 const ISPA_STD::fcdt_table<::Parser::Tokens> Parser::Lexer::first_character_dispatch_table = {

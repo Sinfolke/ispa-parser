@@ -13,6 +13,8 @@ public:
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
     struct TransitionValue {
         std::size_t next;
+        bool new_cst_node = false;
+        bool new_member = false;
     };
     struct state {
         utype::unordered_map<TransitionKey, TransitionValue> transitions;
@@ -48,7 +50,6 @@ private:
     bool first = true;
     bool isWhitespaceToken = false;
     std::unordered_map<std::size_t, std::size_t> accept_map;
-    std::unordered_map<std::size_t, std::pair<bool, bool>> cst_member_map;;
     void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry, bool addStoreActions);
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
     void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
@@ -60,8 +61,6 @@ private:
     void addSpaceSkip();
     void acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
     void buildAcceptMap();
-    void cstMemberMapVisitState(std::size_t index, bool propagate_new_cst_node, bool propagate_new_member, std::unordered_set<std::size_t>& visited);
-    void buildCstMemberMap();
 public:
     NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken) : tree(&tree), rules(&rules), isWhitespaceToken(isWhitespaceToken) {}
     NFA(const AST::Tree &tree, const AST::RuleMember &member, bool isWhitespaceToken) : tree(&tree), member(&member), isWhitespaceToken(isWhitespaceToken) {}
@@ -71,12 +70,6 @@ public:
     }
     auto &getAcceptMap() const {
         return accept_map;
-    }
-    auto &getCstMemberMap() const {
-        return cst_member_map;
-    }
-    auto &getCstMemberMap() {
-        return cst_member_map;
     }
 };
 // Print a single state
