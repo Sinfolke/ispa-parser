@@ -40,6 +40,8 @@ void LexerConverter::output() {
     dfa_func_table_converter.create();
     out << dfa_converter.get().str();
     out << dfa_func_table_converter.get().str();
+    // print spans tables
+    dfa_spans.output(true, "Lexer");
     // 2. Print First Character Dispatch Table
     out << "const ISPA_STD::fcdt_table<::" << namespace_name << "::Tokens> " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
     const auto &dfa_involved_table = lexer_data.getDispatchNamesInvolve();
@@ -71,8 +73,6 @@ void LexerConverter::output() {
         out << "}, // '" << corelib::text::getEscapedAsStr(c++, false) << "'\n";
     }
     out << "};\n";
-    // print spans tables
-    dfa_spans.output(true, "Lexer");
     // 2. Print makeToken function
     out << "auto ::" << namespace_name << "::Lexer::makeToken(const char* &pos) -> Token {\n";
     out << "\tfcdt_lookup(first_character_dispatch_table, pos);\n";

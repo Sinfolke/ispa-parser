@@ -1022,7 +1022,7 @@ namespace Parser {
 			::Parser::bool_t success_1 = 1;
 			int dfa_lookup_result_2;
 			success_1 = 1;
-			dfa_lookup_result_2 = ISPA_STD::DFA::decide(dfa_span_0, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_0, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_2)
 			{
 				case 0: {
@@ -1174,7 +1174,7 @@ namespace Parser {
 			::Parser::Token _5;
 			::Parser::bool_t success_6 = false;
 			success_1 = 1;
-			dfa_lookup_result_2 = ISPA_STD::DFA::decide(dfa_span_1, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_1, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_2)
 			{
 				case 0: {
@@ -1282,7 +1282,7 @@ namespace Parser {
 			::Parser::bool_t success_1 = 1;
 			int dfa_lookup_result_2;
 			success_1 = 1;
-			dfa_lookup_result_2 = ISPA_STD::DFA::decide(dfa_span_2, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_2, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_2)
 			{
 				case 0: {
@@ -1433,7 +1433,7 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			success_3 = 1;
-			dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_3, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_3, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_4)
 			{
 				case 0: {
@@ -1674,7 +1674,7 @@ namespace Parser {
 			auto begin_5 = pos;
 			do
 			{
-				dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_4, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_4, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_4)
 				{
 					case 0: {
@@ -1701,7 +1701,7 @@ namespace Parser {
 			}
 			skip_spaces(pos);
 			success_7 = 1;
-			dfa_lookup_result_8 = ISPA_STD::DFA::decide(dfa_span_5, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_8 = ISPA_STD::DFA<Tokens>::decide(dfa_span_5, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_8)
 			{
 				case 0: {
@@ -1929,7 +1929,7 @@ namespace Parser {
 			success_6 = false;
 			while (1)
 			{
-				dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_6, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_6, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_4)
 				{
 					case 0: {
@@ -2311,7 +2311,7 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			success_3 = 1;
-			dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_7, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_7, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_4)
 			{
 				case 0: {
@@ -2407,7 +2407,7 @@ namespace Parser {
 			::Parser::bool_t success_1 = 1;
 			int dfa_lookup_result_2;
 			success_1 = 1;
-			dfa_lookup_result_2 = ISPA_STD::DFA::decide(dfa_span_8, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_8, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_2)
 			{
 				case 0: {
@@ -2564,7 +2564,7 @@ namespace Parser {
 			auto begin_5 = pos;
 			do
 			{
-				dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_9, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_9, begin_5, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_4)
 				{
 					case 0: {
@@ -2642,7 +2642,7 @@ namespace Parser {
 			auto begin_22 = pos;
 			do
 			{
-				dfa_lookup_result_21 = ISPA_STD::DFA::decide(dfa_span_10, begin_22, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_21 = ISPA_STD::DFA<Tokens>::decide(dfa_span_10, begin_22, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_21)
 				{
 					case 0: {
@@ -2728,7 +2728,7 @@ namespace Parser {
 			auto begin_28 = pos;
 			do
 			{
-				dfa_lookup_result_6 = ISPA_STD::DFA::decide(dfa_span_11, begin_28, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_6 = ISPA_STD::DFA<Tokens>::decide(dfa_span_11, begin_28, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_6)
 				{
 					case 0: {
@@ -2775,7 +2775,7 @@ namespace Parser {
 					begin_25 += 1;
 					shadow_15.push_back(_13);
 					skip_spaces(begin_25);
-					dfa_lookup_result_18 = ISPA_STD::DFA::decide(dfa_span_12, begin_25, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+					dfa_lookup_result_18 = ISPA_STD::DFA<Tokens>::decide(dfa_span_12, begin_25, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 					switch (dfa_lookup_result_18)
 					{
 						case 0: {
@@ -3003,7 +3003,7 @@ namespace Parser {
 			auto begin_10 = pos;
 			while (1)
 			{
-				dfa_lookup_result_6 = ISPA_STD::DFA::decide(dfa_span_13, begin_10, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_6 = ISPA_STD::DFA<Tokens>::decide(dfa_span_13, begin_10, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_6)
 				{
 					case 0: {
@@ -3095,7 +3095,7 @@ namespace Parser {
 			auto begin_10 = pos;
 			while (1)
 			{
-				dfa_lookup_result_6 = ISPA_STD::DFA::decide(dfa_span_14, begin_10, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_6 = ISPA_STD::DFA<Tokens>::decide(dfa_span_14, begin_10, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_6)
 				{
 					case 0: {
@@ -3281,7 +3281,7 @@ namespace Parser {
 			::Parser::bool_t success_1 = 1;
 			int dfa_lookup_result_2;
 			success_1 = 1;
-			dfa_lookup_result_2 = ISPA_STD::DFA::decide(dfa_span_15, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_15, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_2)
 			{
 				case 0: {
@@ -3419,7 +3419,7 @@ namespace Parser {
 			auto begin_9 = pos;
 			do
 			{
-				dfa_lookup_result_8 = ISPA_STD::DFA::decide(dfa_span_16, begin_9, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+				dfa_lookup_result_8 = ISPA_STD::DFA<Tokens>::decide(dfa_span_16, begin_9, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 				switch (dfa_lookup_result_8)
 				{
 					case 0: {
@@ -3610,7 +3610,7 @@ namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			success_3 = 1;
-			dfa_lookup_result_4 = ISPA_STD::DFA::decide(dfa_span_17, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
+			dfa_lookup_result_4 = ISPA_STD::DFA<Tokens>::decide(dfa_span_17, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
 			switch (dfa_lookup_result_4)
 			{
 				case 0: {

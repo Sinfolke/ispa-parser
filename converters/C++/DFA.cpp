@@ -34,6 +34,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
             table_out << "\tISPA_STD::DFAAPI::Span" << state_type_str;
             if (state_type != DFA::DfaType::NONE) {
                 table_out << "{ "
+                          << number_or_null(state.any_goto) << ", "
                           << number_or_null(state.else_goto) << ", "
                           << number_or_null(state.else_goto_accept)
                           << ", "

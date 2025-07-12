@@ -152,7 +152,7 @@ std::string LLStringConvertions::convert_var_assing_values(const LLIR::var_assig
             const auto &dt = std::any_cast<const LLIR::function_call&>(data);
             if (dt.name == LLIR::internal_functions::dfa_decide)
             {
-                return std::string("ISPA_STD::DFA::decide(dfa_span_") + std::to_string(std::any_cast<std::size_t>(dt.params[0][0].value)) + ", " + current_pos_counter.top() + ", &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE)";
+                return std::string("ISPA_STD::DFA<Tokens>::decide(dfa_span_") + std::to_string(std::any_cast<std::size_t>(dt.params[0][0].value)) + ", " + current_pos_counter.top() + ", &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE)";
             }
             break;
         }

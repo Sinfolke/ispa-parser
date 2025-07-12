@@ -409,7 +409,7 @@ protected:
     template <typename IT>
     static auto find_key(const DFAAPI::SpanCallableTokenState<TOKEN_T> &state, IT &pos) -> std::pair<const DFAAPI::CallableTokenTransition<TOKEN_T>*, Node<TOKEN_T>> {
         for (const auto &t : state.transitions) {
-            auto res = t.symbol();
+            auto res = t.symbol(pos);
             if (res.status) {
                 return std::make_pair(&t, res.node);
             }
@@ -461,7 +461,7 @@ protected:
         DFAAPI::MemberBegin member_begin;
         DFAAPI::CallableTokenDataVector<TOKEN_T> data;
         do {
-            auto [transition, result] = (table[state].transitions, pos);
+            auto [transition, result] = find_key(table[state], pos);
             if (transition != nullptr) {
                 pos++;
                 state = transition->next;
@@ -527,73 +527,111 @@ class AdvancedDFA : DFA<TOKEN_T> {
         }
         return std::make_pair(nullptr, Node<TOKEN_T>{});
     }
-    static auto find_key(const DFAAPI::CharTableTransition &transition, const char* pos) -> const DFAAPI::CharTableTransition* {
-        if (DFA<TOKEN_T>::match(transition.symbol, pos, nullptr)) {
-            return &transition;
+    static auto find_key(const DFAAPI::CharTableTransition &transition, const char* pos) -> std::pair<const DFAAPI::CharTableTransition*, Node<TOKEN_T>> {
+        if (auto res = DFA<TOKEN_T>::match(transition.symbol, pos, nullptr)) {
+            return {&transition, res.node};
         }
         return nullptr;
     }
     static auto find_key(const DFAAPI::CallableTokenTableTransition<TOKEN_T> &transition, const char* pos) -> const DFAAPI::CallableTokenTableTransition<TOKEN_T>* {
-        if (DFA<TOKEN_T>::match(transition.symbol, pos, nullptr)) {
-            return &transition;
+        if (auto res = DFA<TOKEN_T>::match(transition.symbol, pos, nullptr)) {
+            return {&transition, res.node};
         }
         return nullptr;
     }
     static auto find_key(const DFAAPI::MultiTableTransition<TOKEN_T> &transition, const char* pos) -> const DFAAPI::MultiTableTransition<TOKEN_T>* {
-        if (match(transition.symbol, pos, nullptr)) {
-            return &transition;
+        if (auto res = match(transition.symbol, pos, nullptr)) {
+            return {&transition, res.node};
         }
         return nullptr;
     }
     static auto find_key(const DFAAPI::EmptyState &transition, const char* pos) -> std::nullptr_t {
         return nullptr;
     }
+    template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
 protected:
     template<typename Table, typename PanicModeFunc>
     static auto match(const Table &table, const char* pos, PanicModeFunc panic_mode) -> std::size_t {
         std::size_t state = 0;
-        std::size_t accept = std::numeric_limits<std::size_t>::max();
         DFAAPI::MemberBegin member_begin;
         DFAAPI::MultiTableDataVector<TOKEN_T> data;
         bool to_break = false;
         do {
-            std::visit(
-                [&](const auto &t) {
+            std::visit(overload {
+                [&](const DFAAPI::SpanCharTableState &t) {
                     decltype(auto) new_state = find_key(t, pos);
-                    if constexpr (std::is_same_v<decltype(new_state), std::nullptr_t>) {
-                        to_break = true;
-                    } else {
-                        if constexpr (std::is_same_v<std::decay_t<decltype(new_state->symbol)>, char>) {
-                            state = new_state->next;
-                            if (new_state->new_member) {
-                                member_begin.push_back(data.size());
-                            }
-                            if (new_state->new_cst_node) {
-                                data.emplace_back();
-                            }
-                            data.back() += new_state->symbol;
-                        } else {
-                            // guard: even if no new_cst_node, these kind of values are always stored separately
-                            if constexpr (std::is_same_v<decltype(new_state), std::pair<const DFAAPI::CallableTokenTransition<TOKEN_T>*, Node<TOKEN_T>>>) {
-                                if (new_state.first->new_member) {
-                                    member_begin.push_back(data.size());
-                                }
-                                state = new_state.first->next;
-                                data.push_back(new_state.second);
+                    state = new_state->next;
+                    if (new_state->new_member) {
+                        member_begin.push_back(data.size());
+                    }
+                    if (new_state->new_cst_node) {
+                        data.emplace_back();
+                    }
+                    data.back() += new_state->symbol;
+                },
+                [&](const DFAAPI::SpanCallableTokenState<TOKEN_T> &t) {
+                    // guard: even if no new_cst_node, this kind is always stored separately
+                    decltype(auto) new_state = find_key(t, pos);
+                    if (new_state.first->new_member) {
+                        member_begin.push_back(data.size());
+                    }
+                    state = new_state.first->next;
+                    data.push_back(new_state.second);
+                },
+                [&](const DFAAPI::CharTableTransition &t) {
+                    // guard: even if no new_cst_node, this kind is always stored separately
+                    decltype(auto) new_state = find_key(t, pos);
+                    if (new_state->new_member) {
+                        member_begin.push_back(data.size());
+                    }
+                    state = new_state->next;
+                    data.push_back(new_state->symbol);
+                },
+                [&](const DFAAPI::CallableTokenTableTransition<TOKEN_T> &t) {
+                    // guard: even if no new_cst_node, this kind is always stored separately
+                    decltype(auto) new_state = find_key(t, pos);
+                    if (new_state->new_member) {
+                        member_begin.push_back(data.size());
+                    }
+                    state = new_state->next;
+                    data.push_back(new_state->symbol);
+                },
+                [&](const DFAAPI::SpanMultiTableState<TOKEN_T> &t) {
+                    bool matched = false;
+                    for (const auto &option : t.transitions) {
+                        // Each option is:
+                        //   std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>
+                        std::visit([&](const auto &t) {
+                            if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanEmptyTableState>) {
+                                to_break = true;
                             } else {
-                                if (new_state->new_member) {
-                                    member_begin.push_back(data.size());
+                                if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanMultiTableState<TOKEN_T>>) {
+                                    if (AdvancedDFA<TOKEN_T>::match(table, pos, panic_mode))
+                                        matched = true;
+                                } else {
+                                    if (DFA<TOKEN_T>::match(table, pos, panic_mode))
+                                        matched = true;
                                 }
-                                state = new_state->next;
-                                data.push_back(new_state->symbol);
                             }
+
+                        }, option);
+                        if (matched) {
+                            break; // If matched, stop iterating other options
+                        }
+                    }
+
+                    if (!matched) {
+                        // Fallback to else_goto if exists
+                        if (t.else_goto != DFAAPI::null_state) {
+                            state = t.else_goto;
+                        } else {
+                            to_break = true;
                         }
                     }
                 },
-                table.states[state]
-            );
+            }, table[state]);
         } while (!to_break);
-        return accept;
+        return 0; // TODO: return complete node
     }
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;

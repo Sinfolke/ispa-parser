@@ -96,61 +96,34 @@ namespace corelib::text {
             c = std::tolower(c);
         return str; 
     }
-    char getCharFromEscaped(char in) {
-        switch (in)
-        {
-        case '\n': return 'n';  // Newline
-        case '\r': return 'r';  // Carriage return
-        case '\t': return 't';  // Horizontal tab
-        case '\a': return 'a';  // Bell (alert)
-        case '\b': return 'b';  // Backspace
-        case '\f': return 'f';  // Form feed (new page)
-        case '\v': return 'v';  // Vertical tab
-        case '\0': return '0';  // end of string
-        default: return in;
+    // Returns the escaped representation of a character, e.g., '\n' -> "\\n", 'A' -> "A"
+    std::string getEscapedAsStr(char in, bool /*stringContext*/) {
+        switch (in) {
+            case '\n': return "\\n";
+            case '\r': return "\\r";
+            case '\t': return "\\t";
+            case '\a': return "\\a";
+            case '\b': return "\\b";
+            case '\f': return "\\f";
+            case '\v': return "\\v";
+            case '\\': return "\\\\";
+            case '\"': return "\\\"";
+            case '\'': return "\\\'";
+            default:
+                if (std::isprint(static_cast<unsigned char>(in))) {
+                    return std::string(1, in);
+                } else {
+                    std::ostringstream oss;
+                    oss << "\\x" << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                        << (static_cast<unsigned int>(static_cast<unsigned char>(in)));
+                    return oss.str();
+                }
         }
     }
-    std::string getCharFromEscapedAsStr(char in, bool string) {
-        if (in == '"')
-            return string ? "\\\"" : "\"";
-        if (in == '\'')
-            return string ? "'" : "\\'";
-        switch (in)
-        {
-        case '\n': return "n";  // Newline
-        case '\r': return "r";  // Carriage return
-        case '\t': return "t";  // Horizontal tab
-        case '\a': return "a";  // Bell (alert)
-        case '\b': return "b";  // Backspace
-        case '\f': return "f";  // Form feed (new page)
-        case '\v': return "v";  // Vertical tab
-        case '\\': return "\\";   // Backslash
-        case '\0': return "0";  // end of string
-        default: return std::string(1, in);      // Return the character itself if not an escape sequence
-        }
-    }
-    std::string getEscapedAsStr(char in, bool string) {
-        if (in == '"')
-            return string ? "\\\"" : "\"";
-        if (in == '\'')
-            return string ? "'" : "\\'";
-        switch (in)
-        {
-            case '\n': return "\\n";  // Newline
-            case '\r': return "\\r";  // Carriage return
-            case '\t': return "\\t";  // Horizontal tab
-            case '\a': return "\\a";  // Bell (alert)
-            case '\b': return "\\b";  // Backspace
-            case '\f': return "\\f";  // Form feed (new page)
-            case '\v': return "\\v";  // Vertical tab
-            case '\\': return "\\\\";   // Backslash
-            case '\0': return "\\0";  // end of string
-            default: return std::string(1, in);      // Return the character itself if not an escape sequence
-        }
-    }
+
+    // Maps escape code character ('n') to actual character ('\n')
     char getEscapedFromChar(char in) {
-        switch (in)
-        {
+        switch (in) {
             case 'n': return '\n';
             case 'r': return '\r';
             case 't': return '\t';
@@ -158,27 +131,84 @@ namespace corelib::text {
             case 'b': return '\b';
             case 'f': return '\f';
             case 'v': return '\v';
+            case '\\': return '\\';
+            case '\'': return '\'';
+            case '"': return '"';
             case '0': return '\0';
-            default: return in; // return as-is if not an escape code
+            default:
+                return in;
         }
     }
-    char getEscapedFromStr(const std::string& in, bool isStringContext) {
-        if (in == "\\\"") return '\"';
-        if (in == "\\'") return '\'';
-        if (in == "\\\\") return '\\';
 
-        // Non-prefixed cases (used by getCharFromEscapedAsStr with string=false)
-        if (in == "n") return '\n';
-        if (in == "r") return '\r';
-        if (in == "t") return '\t';
-        if (in == "a") return '\a';
-        if (in == "b") return '\b';
-        if (in == "f") return '\f';
-        if (in == "v") return '\v';
-        if (in == "0") return '\0';
+    // Parses escaped string to character, e.g., "\\n" -> '\n', "\\x41" -> 'A'
+    char getEscapedFromStr(const std::string& in, bool /*isStringContext*/) {
+        if (in.empty()) return '\0';
 
-        // Fallback: return first character
-        return in.empty() ? '\0' : in[0];
+        if (in[0] != '\\') {
+            return in[0];
+        }
+
+        if (in.size() == 2) {
+            return getEscapedFromChar(in[1]);
+        }
+
+        if (in.size() >= 4 && in[1] == 'x') {
+            unsigned int value = 0;
+            std::istringstream iss(in.substr(2));
+            iss >> std::hex >> value;
+            return static_cast<char>(value);
+        }
+
+        throw std::runtime_error("Invalid escape sequence: " + in);
+    }
+
+    // Returns the char code representation for escaped printable (e.g., '\n' -> 'n', 'A' -> 'A')
+    // Useful for building tokens for error messages or serialization, not full escape strings
+    char getCharFromEscaped(char in) {
+        switch (in) {
+            case '\n': return 'n';
+            case '\r': return 'r';
+            case '\t': return 't';
+            case '\a': return 'a';
+            case '\b': return 'b';
+            case '\f': return 'f';
+            case '\v': return 'v';
+            case '\0': return '0';
+            case '\\': return '\\';
+            case '\"': return '"';
+            case '\'': return '\'';
+            default:
+                return in;
+        }
+    }
+
+    // Returns the char code representation as a string, e.g., '\n' -> "n", 'A' -> "A"
+    // but does not prepend backslashes, for cases where the context is known
+    std::string getCharFromEscapedAsStr(char in, bool stringContext) {
+        switch (in) {
+            case '\n': return "n";
+            case '\r': return "r";
+            case '\t': return "t";
+            case '\a': return "a";
+            case '\b': return "b";
+            case '\f': return "f";
+            case '\v': return "v";
+            case '\0': return "0";
+            case '\\': return "\\";
+            case '"':
+                return stringContext ? "\\\"" : "\"";
+            case '\'':
+                return stringContext ? "'" : "\\'";
+            default:
+                if (std::isprint(static_cast<unsigned char>(in))) {
+                    return std::string(1, in);
+                } else {
+                    std::ostringstream oss;
+                    oss << "x" << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+                        << (static_cast<unsigned int>(static_cast<unsigned char>(in)));
+                    return oss.str();
+                }
+        }
     }
 
     std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter) {

@@ -41,7 +41,10 @@ void StateArrayBuilder::output() {
                 }
                 out_content << ", ";
                 out_content << transition.second.next << ", "
-                          << number_or_null(transition.second.accept_index) << " }";
+                            << std::boolalpha << transition.second.new_cst_node << ", "
+                            << std::boolalpha << transition.second.new_member << ", "
+                            << number_or_null(transition.second.accept_index)
+                            << " }";
 
                 if (++transition_index != t.size())
                     out_content << ",\n";
