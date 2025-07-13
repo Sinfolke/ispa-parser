@@ -772,7 +772,7 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule.getOp().options;
-    DFA dfa = std::move(DFABuilder(*tree, rule, *fullname, false).get());
+    DFA dfa = std::move(DFABuilder(*tree, rule, nullptr, *fullname, false).get());
     LLIR::variable var = createEmptyVariable("");
     var.type = deduceVarTypeByProd(rule) ;
     if (var.type.type == LLIR::var_types::Rule)

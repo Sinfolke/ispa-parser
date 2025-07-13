@@ -54,7 +54,7 @@
         "If this issue persist you may try to recompile the project by another version (try newer if your's is too old and vise versa)" \
 //#define _ISC_STD_LIB_CPP
 /**
- * @brief For the C++ here are common class declarations and structures
+ * @brief standard library for the ISPA-generated parser.
  * 
 */
 namespace ISPA_STD {

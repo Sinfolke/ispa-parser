@@ -20,9 +20,10 @@ export namespace AST {
         std::string name;
         InitialItemSet initial_item_set;
         UsePlaceTable use_places;
-        utype::unordered_set<stdu::vector<std::string>> nullable;
+        NullableMap nullable;
         First first;
         Follow follow;
+        NameToIndexMap name_to_index;
 
         static auto compute_group_length(const stdu::vector<AST::RuleMember> &group) -> std::size_t;
         void getUsePlacesTable(const stdu::vector<AST::RuleMember> &members, const stdu::vector<std::string> &name);
@@ -86,7 +87,9 @@ export namespace AST {
 
         void printFirstSet(const std::string &fileName);
         void printFollowSet(const std::string &fileName);
-
+        void buildNameToIndexMap();
+        auto getNameToIndexMap();
+        auto getNameToIndexMap() const;
         auto operator[](const stdu::vector<std::string> &name) const -> const Rule& {
             return tree_map.at(name);
         }

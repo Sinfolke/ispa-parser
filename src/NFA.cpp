@@ -6,11 +6,13 @@ import cpuf.printf;
 import logging;
 import constants;
 import AST.API;
+import LLIR.RuleBuilder;
+import DFA;
 import std;
 
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry, bool addStoreActions) {
     states[start].transitions[name] = {end};
-    if (addStoreActions) {
+    if (addStoreActions && !member.prefix.empty()) {
         states[start].transitions[name].new_cst_node = true;
         states[start].transitions[name].new_member = true;
     }
@@ -60,7 +62,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
     states.emplace_back(); // inner end
     std::size_t last = inner_start;
 
-    const auto &prod_rules = tree->operator[](name);
+    const auto &prod_rules = tree[name];
     for (const auto &prod : prod_rules.rule_members) {
         auto fragment = buildStateFragment(prod, false, addStoreActions);
         if (fragment.invalid())
@@ -143,17 +145,29 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     }
 }
 void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
+    constexpr auto NO_NEXT_AFTER = std::numeric_limits<std::size_t>::max();
     std::size_t current = start;
+    std::size_t next_after = NO_NEXT_AFTER;
+    std::size_t inner_end = states.size();
+    states.emplace_back();
     // Construct linear NFA for each character in the string
     for (std::size_t i = 0; i < str.size(); ++i) {
         std::size_t next;
         if (i == str.size() - 1) {
-            next = end; // last char
+            next = inner_end; // last char
         } else {
             next = states.size();
             states.emplace_back();
         }
-        states[current].transitions[str[i]] = {next, !i, !i};
+        auto &t = states[current].transitions[str[i]];
+        t.next = next;
+        if (addStoreActions && !member.prefix.empty()) {
+            t.new_member = !i;
+            t.new_cst_node = !i;
+
+            if (!i)
+                next_after = next;
+        }
         current = next;
     }
     // Mark accepting state if needed
@@ -169,12 +183,21 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
             break;
         case '+':
             // Loop only
-            states[end].epsilon_transitions.insert(start);
+            if (next_after != NO_NEXT_AFTER) {
+                states[inner_end].transitions[str[0]] = {next_after, true, false};
+                states[inner_end].epsilon_transitions.insert(end);
+            } else {
+                states[end].epsilon_transitions.insert(start);
+            }
             break;
         case '*':
-            // Skip and loop
-            states[start].epsilon_transitions.insert(end); // skip
-            states[end].epsilon_transitions.insert(start); // loop
+            states[start].epsilon_transitions.insert(end);
+            if (next_after != NO_NEXT_AFTER) {
+                states[inner_end].transitions[str[0]] = {next_after, true, false};
+                states[inner_end].epsilon_transitions.insert(end);
+            } else {
+                states[end].epsilon_transitions.insert(start);
+            }
             break;
         default:
             break;
@@ -196,8 +219,10 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             if (!prohibited.test(c)) {
                 auto &t = states[start].transitions[corelib::text::getEscapedFromChar(static_cast<char>(c))];
                 t = {end};
-                t.new_cst_node = true;
-                t.new_member = true;
+                if (addStoreActions && !member.prefix.empty()) {
+                    t.new_cst_node = true;
+                    t.new_member = true;
+                }
             }
             if (c == max)
                 break;
@@ -207,21 +232,27 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         for (char c : chars) {
             auto &t = states[start].transitions[c];
             t.next = end;
-            t.new_cst_node = true;
-            t.new_member = true;
+            if (addStoreActions && !member.prefix.empty()) {
+                t.new_cst_node = true;
+                t.new_member = true;
+            }
         }
         for (char c : escaped) {
             auto &t = states[start].transitions[corelib::text::getEscapedFromChar(c)];
             t.next = end;
-            t.new_cst_node = true;
-            t.new_member = true;
+            if (addStoreActions && !member.prefix.empty()) {
+                t.new_cst_node = true;
+                t.new_member = true;
+            }
         }
         for (auto [from, to] : csequence.diapasons) {
             for (char c = from; c <= to; ++c) {
                 auto &t = states[start].transitions[corelib::text::getEscapedFromChar(c)];
                 t.next = end;
-                t.new_cst_node = true;
-                t.new_member = true;
+                if (addStoreActions && !member.prefix.empty()) {
+                    t.new_cst_node = true;
+                    t.new_member = true;
+                }
             }
         }
     }
@@ -419,16 +450,66 @@ void NFA::buildAcceptMap() {
         }
     }
 }
+void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
+    for (const auto &mem : rules) {
+        if (!mem.prefix.empty()) {
+            const auto &name = dtb->getTemplatedDataBlock().names[prefix_index++];
+            if (mem.isGroup()) {
+                templated_data_block.emplace_back(name, std::make_pair(StoreCstNode::CST_GROUP, group_index++));
+                generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+            } else {
+                templated_data_block.emplace_back(name, std::make_pair(StoreCstNode::CST_NODE, index++));
+            }
+        }
+        if (mem.isGroup()) {
+            generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+        }
+    }
+}
+void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, SingleValueDataBlock &single_data_block, bool &isAlreadyConstructed) {
+    if (isAlreadyConstructed)
+        return;
+    for (const auto &mem : rules) {
+        if (!mem.prefix.empty()) {
+            single_data_block = mem.isGroup() ? StoreCstNode::CST_GROUP : StoreCstNode::CST_NODE;
+            isAlreadyConstructed = true;
+            return;
+        }
+        if (mem.isGroup()) {
+            generateSingleDataBlockFromRules(mem.getGroup().values, single_data_block, isAlreadyConstructed);
+            if (isAlreadyConstructed)
+                return;
+        }
+    };
+}
 
 void NFA::build(bool addStoreActions) {
     if (isWhitespaceToken)
         addStoreActions = false;
     if (rules != nullptr) {
         for (auto it = rules->begin(); it != rules->end() - 1; ++it) {
-            buildStateFragment(*it, false, addStoreActions);
+            auto [start, end] = buildStateFragment(*it, false, addStoreActions);
+            if (end != NO_STATE_RANGE)
+                states[end].epsilon_transitions.insert(states.size());
         }
         // register one accept state for the last state in rule sequence
-        buildStateFragment(rules->back(), true, addStoreActions);
+        auto [start, end] = buildStateFragment(rules->back(), true, addStoreActions);
+        if (addStoreActions && dtb != nullptr && end != NO_STATE_RANGE) {
+            states[end].rule_name = name;
+            if (dtb->isTemplatedDataBlock()) {
+                TemplatedDataBlock templated_data_block;
+                std::size_t prefix_index = 0;
+                std::size_t index = 0;
+                std::size_t group_index = 0;
+                generateTemplatedDataBlockFromRules(*rules, templated_data_block, prefix_index, index, group_index);
+                states[end].dtb = templated_data_block;
+            } else {
+                SingleValueDataBlock single_value_data_block;
+                bool isAlreadyConstructed = false;
+                generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
+                states[end].dtb = single_value_data_block;
+            }
+        }
     } else {
         buildStateFragment(*member, true, addStoreActions);
     }
@@ -450,7 +531,13 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
                     os << "\t '" << key << "' -> State ";
                 }
             }, key);
-            os << '(' << target.next << ')' << '\n';
+            os << '(' << target.next << ')';
+            if (target.new_cst_node)
+                os << " [new_cst_node]";
+            if (target.new_member) {
+                os << " [new_member]";
+            }
+            os << '\n';
         }
     }
 
@@ -465,12 +552,13 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
     if (s.accept_index != NFA::NO_ACCEPT) {
         os << "\n\taccept -> " << s.accept_index << "\n";
     }
-    if (s.new_cst_node) {
-        os << "\n\t[new_cst_node]";
+    if (!s.rule_name.empty()) {
+        os << "\tdata: \n";
+        os << "\t\t[name]: " << s.rule_name << "\n";
     }
-    if (s.new_member) {
-        os << "\n\t[new_member]";
-    }
+    // if (!s.dtb.empty()) {
+    //     os << "\t\t" << s.dtb;
+    // }
     return os;
 }
 

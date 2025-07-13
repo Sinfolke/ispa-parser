@@ -585,6 +585,23 @@ void AST::Tree::constructFollowSet() {
         logger.log("");
     } while(hasChanges || prevDependedChanged);
 }
+
+void AST::Tree::buildNameToIndexMap() {
+    std::size_t index = 0;
+    for (const auto &[name, value] : tree_map) {
+        name_to_index[name] = index++;
+    }
+}
+auto AST::Tree::getNameToIndexMap() {
+    if (name_to_index.empty()) {
+        buildNameToIndexMap();
+    }
+    return name_to_index;
+}
+auto AST::Tree::getNameToIndexMap() const {
+    return name_to_index;
+}
+
 auto AST::Tree::getCodeForLexer() -> lexer_code {
     AST::RuleMemberOp options;
     for (const auto &[name, value] : tree_map) {

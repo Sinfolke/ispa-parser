@@ -11,6 +11,20 @@ public:
     static constexpr auto NO_STATE_RANGE = std::numeric_limits<std::size_t>::max();
     static constexpr auto NO_EPSILON = std::numeric_limits<std::size_t>::max();
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
+    enum class StoreCstNode {
+        CST_NODE, CST_GROUP
+    };
+    using TemplatedDataBlock = stdu::vector< // vector of key -> value
+        std::pair< // key -> value
+            std::string, // key name,
+            std::pair<
+                StoreCstNode, //what to store,
+                std::size_t //cst member index | group index
+            >
+        >
+    >;
+    using SingleValueDataBlock = StoreCstNode; // cst node index | group index
+    using DataBlock = std::variant<std::monostate, TemplatedDataBlock, SingleValueDataBlock>;
     struct TransitionValue {
         std::size_t next;
         bool new_cst_node = false;
@@ -18,12 +32,12 @@ public:
     };
     struct state {
         utype::unordered_map<TransitionKey, TransitionValue> transitions;
-        bool new_cst_node = false;
-        bool new_member = false;
         stdu::vector<char> skip_chars;
         std::size_t accept_index = NO_ACCEPT;
         std::unordered_set<std::size_t> epsilon_transitions;
         std::size_t any = NO_ANY;
+        stdu::vector<std::string> rule_name;
+        DataBlock dtb;
     };
     struct StateRange {
         std::size_t start;
@@ -36,9 +50,11 @@ public:
         }
     };
 private:
-    const AST::Tree *tree;
+    AST::Tree &tree;
     const stdu::vector<AST::RuleMember> *rules = nullptr;
     const AST::RuleMember *member = nullptr;
+    const AST::DataBlock *dtb;
+    const stdu::vector<std::string> &name;
     stdu::vector<state> states;
     stdu::vector<std::size_t> add_space_skip_places;
     bool no_add_space_skip_next = false;
@@ -50,6 +66,8 @@ private:
     bool first = true;
     bool isWhitespaceToken = false;
     std::unordered_map<std::size_t, std::size_t> accept_map;
+
+    // data to build data block
     void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry, bool addStoreActions);
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
     void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions);
@@ -61,9 +79,18 @@ private:
     void addSpaceSkip();
     void acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
     void buildAcceptMap();
+    void generateTemplatedDataBlockFromRules(
+        const stdu::vector<AST::RuleMember> &rules,
+        TemplatedDataBlock &templated_data_block,
+        std::size_t &prefix_index,
+        std::size_t &index,
+        std::size_t &group_index
+        );
+    void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, SingleValueDataBlock &single_data_block, bool &isAlreadyConstructed);
 public:
-    NFA(const AST::Tree &tree, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken) : tree(&tree), rules(&rules), isWhitespaceToken(isWhitespaceToken) {}
-    NFA(const AST::Tree &tree, const AST::RuleMember &member, bool isWhitespaceToken) : tree(&tree), member(&member), isWhitespaceToken(isWhitespaceToken) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken) : tree(tree), name(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken) : tree(tree), name(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::Rule &rule, bool isWhitespaceToken) : tree(tree), name(name), rules(&rule.rule_members), dtb(&rule.data_block), isWhitespaceToken(isWhitespaceToken) {}
     void build(bool addStoreActions);
     auto& getStates() const {
         return states;

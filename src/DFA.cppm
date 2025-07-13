@@ -32,11 +32,13 @@ public:
         std::size_t else_goto = 0;
         std::size_t any_goto = 0;
         std::size_t else_goto_accept = NFA::NO_ACCEPT;
+        stdu::vector<std::string> rule_name;
+        NFA::DataBlock dtb;
         bool operator==(const State &other) const = default;
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(nfa_states, transitions, else_goto, any_goto, else_goto_accept);
+            return std::tie(nfa_states, transitions, else_goto, any_goto, else_goto_accept, rule_name, dtb);
         }
     };
 
