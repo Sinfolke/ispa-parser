@@ -25,8 +25,10 @@ export namespace ISPA_STD {
     using ISPA_STD::error;
     using ISPA_STD::ErrorController;
     namespace DFAAPI {
-        using ISPA_STD::DFAAPI::StoreType;
         using ISPA_STD::DFAAPI::null_state;
+        using ISPA_STD::DFAAPI::CharEmptyState;
+        using ISPA_STD::DFAAPI::CallableTokenEmptyState;
+        using ISPA_STD::DFAAPI::MultiTableEmptyState;
         using ISPA_STD::DFAAPI::State;
         using ISPA_STD::DFAAPI::CharTransition;
         using ISPA_STD::DFAAPI::TokenTransition;
@@ -39,12 +41,10 @@ export namespace ISPA_STD {
         using ISPA_STD::DFAAPI::TokenTableState;
         using ISPA_STD::DFAAPI::CallableTokenState;
         using ISPA_STD::DFAAPI::MultiTableState;
-        using ISPA_STD::DFAAPI::EmptyTableState;
         using ISPA_STD::DFAAPI::SpanCharTableState;
         using ISPA_STD::DFAAPI::SpanTokenTableState;
         using ISPA_STD::DFAAPI::SpanCallableTokenState;
         using ISPA_STD::DFAAPI::SpanMultiTableState;
-        using ISPA_STD::DFAAPI::SpanEmptyTableState;
         using ISPA_STD::DFAAPI::CharTable;
         using ISPA_STD::DFAAPI::TokenTable;
         using ISPA_STD::DFAAPI::CallableTokenTable;
