@@ -8,7 +8,7 @@ cll:
         {@}
     ;
     #ASSIGNMENT_OP:
-        OP? @ '='
+        @ OP? '='
 
         {@}
     ;

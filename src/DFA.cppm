@@ -25,6 +25,17 @@ public:
             return std::tie(next, new_cst_node, new_member, accept_index);
         }
     };
+    struct MultiTransitionValue {
+        static constexpr auto invalid_index = std::numeric_limits<std::size_t>::max();
+        TransitionValue value;
+        std::size_t index = invalid_index;
+        bool operator==(const MultiTransitionValue &second) const = default;
+    private:
+        friend struct uhash;
+        auto members() const {
+            return std::tie(value, index);
+        }
+    };
     template<typename Transition>
     struct State {
         utype::unordered_set<std::size_t> nfa_states; // the NFA states this DFA state represents
@@ -43,25 +54,31 @@ public:
     };
 
     using Transitions = utype::unordered_map<NFA::TransitionKey, TransitionValue>;
-    using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<TransitionValue>>;
+    using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<MultiTransitionValue>>;
 
     using MultiState = State<MultiTransitions>;
     using SingleState = State<Transitions>;
     using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
     using WalkedState = utype::unordered_set<std::size_t>;
+    using DfaEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;
+    using DfaIndexToEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;
 private:
     const NFA *nfa = nullptr;
     const stdu::vector<NFA> *mergable_nfas = nullptr;
     stdu::vector<MultiState> mstates;
     stdu::vector<SingleState> states;
+    DfaEmptyStateMap dfa_empty_state_map;
+    DfaIndexToEmptyStateMap dfa_index_to_empty_state_map;
     auto epsilonClosure(const stdu::vector<std::size_t>& state_indices) const -> stdu::vector<std::size_t>;
     auto move(const stdu::vector<std::size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<std::size_t>;
-    auto findEmptyState() const -> std::size_t;
-    bool leadToEmptyState(std::size_t current) const;
+    auto leadToEmptyState(std::size_t current, std::unordered_set<std::size_t> &visited) const -> std::size_t;
+    auto leadToEmptyState(std::size_t current) const -> std::size_t;
+    auto leadToEmptyStateDfa(const std::size_t current, std::unordered_set<std::size_t> &visited) -> std::size_t;
+    auto leadToEmptyStateDfa(const std::size_t current) -> std::size_t;
     bool includesWhitespace(const MultiState &state) const;
     bool isTerminateState(const MultiState &state) const;
     void removeDublicateStates();
-    void unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
+    void unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
     void unrollMultiTransitionPaths();
     void switchToSingleState();
     void accumulateTerminalStates(std::size_t i, std::unordered_set<std::size_t> &terminals, std::unordered_set<std::size_t> &visited);
@@ -69,7 +86,9 @@ private:
     void WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable);
     void removeUnreachableStates();
     void removeSelfLoop();
-    static auto mergeTwoDFA(DFA &first, const DFA &second);
+    void buildDfaIndexToEmptyStateMap(const stdu::vector<DFA> &dfas);
+    void buildDfaEmptyStateMap(const stdu::vector<DFA> &dfas);
+    static auto mergeTwoDFA(DFA &first, const DFA &second, std::size_t index);
     auto mergeDFAS(stdu::vector<DFA> &dfas) -> DFA;
 public:
     DFA(const NFA &nfa) : nfa(&nfa) {}

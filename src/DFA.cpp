@@ -41,32 +41,60 @@ auto DFA::move(const stdu::vector<std::size_t> &states, const NFA::TransitionKey
 
     return { result.begin(), result.end() };
 }
+auto DFA::leadToEmptyState(std::size_t current, std::unordered_set<std::size_t> &visited) const -> std::size_t {
+    if (!visited.insert(current).second) {
+        return true; // already visited => prevent cycles, assume empty
+    }
+    const auto &state = nfa->getStates().at(current);
+    if (!state.transitions.empty())
+        return 0;
+    if (state.epsilon_transitions.empty()) {
+        return current;
+    } else {
+        for (const auto &t : state.epsilon_transitions) {
+            if (!leadToEmptyState(t, visited)) {
+                return 0;
+            }
+        }
+        return current;
+    }
+}
+auto DFA::leadToEmptyState(std::size_t current) const -> std::size_t {
+    std::unordered_set<std::size_t> visited;
+    return leadToEmptyState(current, visited);
+}
 
-auto DFA::findEmptyState() const -> std::size_t {
-    if (mstates.empty()) {
-        for (std::size_t i = 0; i < states.size(); ++i) {
-            if (states[i].transitions.empty())
-                return i;
+auto DFA::leadToEmptyStateDfa(const std::size_t current, std::unordered_set<std::size_t> &visited) -> std::size_t {
+    if (states.empty()) {
+        if (mstates[current].transitions.empty())
+            return current;
+        for (const auto &t : mstates[current].transitions) {
+            for (const auto &n : t.second) {
+                if (!visited.insert(n.value.next).second)
+                    continue;
+                if (auto lead_check = leadToEmptyStateDfa(n.value.next, visited); lead_check != 0) {
+                    return lead_check;
+                }
+            }
         }
     } else {
-        for (std::size_t i = 0; i < mstates.size(); ++i) {
-            if (mstates[i].transitions.empty())
-                return i;
+        if (states[current].transitions.empty())
+            return current;
+        for (const auto &t : states[current].transitions) {
+            if (!visited.insert(t.second.next).second)
+                continue;
+            if (auto lead_check = leadToEmptyStateDfa(t.second.next, visited); lead_check != 0) {
+                return lead_check;
+            }
         }
     }
-    throw Error("Empty state not found");
+    return 0;
 }
-bool DFA::leadToEmptyState(std::size_t current) const {
-    if (!nfa->getStates().at(current).transitions.empty())
-        return false;
-    bool all_lead_o_empty = true;
-    for (const auto &t : nfa->getStates().at(current).epsilon_transitions) {
-        if (!leadToEmptyState(t)) {
-            return false;
-        }
-    }
-    return true;
+auto DFA::leadToEmptyStateDfa(const std::size_t current) -> std::size_t {
+    std::unordered_set<std::size_t> visited;
+    return leadToEmptyStateDfa(current, visited);
 }
+
 bool DFA::includesWhitespace(const MultiState &state) const {
     for (const auto &t : state.transitions) {
         if (t.first == NFA::TransitionKey {constants::whitespace})
@@ -151,7 +179,7 @@ void DFA::removeDublicateStates() {
     for (auto& s : new_states) {
         for (auto& [sym, vec] : s.transitions) {
             for (auto& t : vec) {
-                t.next = old_to_new.at(t.next);
+                t.value.next = old_to_new.at(t.value.next);
             }
         }
         s.else_goto = old_to_new.at(s.else_goto);
@@ -161,7 +189,7 @@ void DFA::removeDublicateStates() {
     // Step 5: Finalize
     mstates = std::move(new_states);
 }
-void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<TransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state) {
+void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state) {
     // step 1: get lookaheads for every transition's goto
     using LookaheadSet = stdu::vector<MultiTransitions>;
     using Lookaheads = stdu::vector<LookaheadSet>;
@@ -169,7 +197,7 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
     std::queue<std::size_t> work;
     std::size_t work_size = 0;
     for (const auto &v: val) {
-        work.push(v.next);
+        work.push(v.value.next);
         work_size++;
     };
     Tlog::Branch b(logger, "DFA/unrollMultiTransition");
@@ -186,10 +214,10 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
         lookaheads.back().emplace_back();
         for (const auto &t : mstates[current].transitions) {
             for (const auto &next : t.second) {
-                if (!walked_state.contains(next.next)) {
+                if (!walked_state.contains(next.value.next)) {
                     // not loop, push
                     lookaheads.back().back()[t.first].push_back(next);
-                    walked_state.insert(next.next);
+                    walked_state.insert(next.value.next);
                 }
             }
         }
@@ -215,9 +243,12 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
         const auto &l = lookaheads[i];
         logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
-            const auto else_goto = findEmptyState();
+            cpuf::printf("dfa_index_to_empty_state_map: {}", dfa_index_to_empty_state_map);
+            cpuf::printf("dfa_empty_state_map: {}", dfa_empty_state_map);
+            cpuf::printf("Accessing index {}", i);
+            const auto else_goto = dfa_index_to_empty_state_map[i];
             mstates[current_dfa_state].else_goto = else_goto;
-            mstates[current_dfa_state].else_goto_accept = val[i].accept_index;
+            mstates[current_dfa_state].else_goto_accept = val[i].value.accept_index;
             continue;
         }
         for (const auto &[sym, go]: l[0]) {
@@ -229,7 +260,7 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
     std::unordered_set<std::size_t> next_indices;
     for (const auto &s : mstates[current_dfa_state].transitions) {
         for (const auto &t : s.second) {
-            next_indices.insert(t.next);
+            next_indices.insert(t.value.next);
         }
     }
     if (!seen[symbol].insert(next_indices).second)
@@ -243,9 +274,9 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<T
     // if at least one alternative has new_cst_node or new_member, set them to true
     bool new_cst_node = false, new_member = false;
     for (const auto &v : val) {
-        if (v.new_cst_node)
+        if (v.value.new_cst_node)
             new_cst_node = true;
-        if (v.new_member)
+        if (v.value.new_member)
             new_member = true;
     }
     val = {{current_dfa_state, new_cst_node, new_member}};
@@ -261,7 +292,7 @@ void DFA::unrollMultiTransitionPaths() {
             if (t.second.size() > 1) {
                 std::unordered_set<std::size_t> next_indices;
                 for (const auto el : t.second) {
-                    next_indices.insert(el.next);
+                    next_indices.insert(el.value.next);
                 }
                 if (!global_seen[t.first].insert(next_indices).second)
                     break;
@@ -278,8 +309,10 @@ void DFA::switchToSingleState() {
         states.back().else_goto = state.else_goto;
         states.back().else_goto_accept = state.else_goto_accept;
         for (auto &t : state.transitions) {
-            states.back().transitions[t.first] = std::move(t.second.back());
+            states.back().transitions[t.first] = std::move(t.second.back().value);
         }
+        states.back().rule_name = state.rule_name;
+        states.back().dtb = state.dtb;
     }
     mstates.clear();
 }
@@ -294,7 +327,7 @@ void DFA::accumulateTerminalStates(std::size_t i, std::unordered_set<std::size_t
     visited.insert(i);
     for (const auto &t : state.transitions) {
         for (const auto &next : t.second) {
-            const auto &id = next.next;
+            const auto &id = next.value.next;
             if (visited.contains(id))
                 continue;
             visited.insert(id);
@@ -322,17 +355,19 @@ void DFA::terminateEarly() {
     if (terminals.empty())
         return;
     // terminate states
-    auto empty_state = findEmptyState();
     for (const auto &id : terminals) {
         for (auto &t : mstates[id].transitions) {
             if (t.first != NFA::TransitionKey {constants::whitespace}) {
                 for (auto &next : t.second) {
-                    next.next = empty_state;
+                    auto empty_state = leadToEmptyStateDfa(next.value.next);
+                    next.value.next = empty_state;
                 }
             }
         }
-        if (mstates[id].else_goto != 0)
+        if (mstates[id].else_goto != 0) {
+            auto empty_state = leadToEmptyStateDfa(id);
             mstates[id].else_goto = empty_state;
+        }
     }
 }
 void DFA::WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable) {
@@ -382,8 +417,6 @@ void DFA::removeUnreachableStates() {
     states = std::move(new_states);
 }
 void DFA::removeSelfLoop() {
-    std::size_t empty_state = findEmptyState();
-
     for (std::size_t i = 0; i < states.size(); ++i) {
         auto &state = states[i];
         if (state.transitions.empty())
@@ -391,17 +424,59 @@ void DFA::removeSelfLoop() {
         if (std::all_of(state.transitions.begin(), state.transitions.end(), [&](auto &next) {
             return next.second.next == i;
         })) {
-            state.else_goto = empty_state;
+            auto empty_state = leadToEmptyStateDfa(i);
+            if (empty_state == 0) {
+                state.else_goto = states.size();
+                states.emplace_back();
+            } else state.else_goto = empty_state;
         }
     }
 }
-auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
+void DFA::buildDfaIndexToEmptyStateMap(const stdu::vector<DFA> &dfas) {
+    std::size_t dfa_count = 0;
+    for (const auto &dfa : dfas) {
+        std::size_t state_count = 0;
+        for (const auto &state : dfa.mstates) {
+            if (state.transitions.empty()) {
+                dfa_index_to_empty_state_map[dfa_count] = state_count;
+                break;
+            }
+            state_count++;
+        }
+        dfa_count++;
+    }
+}
+
+void DFA::buildDfaEmptyStateMap(const stdu::vector<DFA> &dfas) {
+    std::size_t count = 0;
+    for (const auto &dfa : dfas) {
+        std::size_t empty_state = 0;
+        stdu::vector<std::size_t> delayed;
+        for (const auto &state : dfa.mstates) {
+            if (state.transitions.empty()) {
+                empty_state = count;
+                for (const auto id : delayed) {
+                    dfa_empty_state_map[id] = empty_state;
+                }
+            } else {
+                if (empty_state == 0) {
+                    delayed.push_back(count);
+                    count++;
+                    continue;
+                }
+            }
+            dfa_empty_state_map[count] = empty_state;
+            count++;
+        }
+    }
+}
+auto DFA::mergeTwoDFA(DFA &first, const DFA &second, std::size_t index) {
     std::size_t offset = first.getMultiStates().size();
     auto &f = first.getMultiStates();
     const auto &s = second.getMultiStates();
     for (const auto &[symbol, next] : s[0].transitions) {
         for (const auto &n : next) {
-            f[0].transitions[symbol].emplace_back(offset + n.next, n.new_cst_node, n.new_member, n.accept_index);
+            f[0].transitions[symbol].emplace_back(TransitionValue {offset + n.value.next, n.value.new_cst_node, n.value.new_member, n.value.accept_index}, index);
         }
     }
     // Copy and fixup second DFA states
@@ -409,7 +484,7 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
         auto new_state = state;
         for (auto &[symbol, nexts] : new_state.transitions) {
             for (auto &next : nexts) {
-                next.next += offset;
+                next.value.next += offset;
             }
         }
         if (new_state.else_goto)
@@ -424,7 +499,7 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second) {
 auto DFA::mergeDFAS(stdu::vector<DFA> &dfas) -> DFA {
     auto &initial_states = dfas[0];
     for (auto it = dfas.begin() + 1; it != dfas.end(); ++it) {
-        mergeTwoDFA(initial_states, *it);
+        mergeTwoDFA(initial_states, *it, it - dfas.begin());
     }
     return initial_states;
 }
@@ -450,14 +525,17 @@ void DFA::build(bool switchToSingleState) {
 
     constexpr auto NO_EMPTY_STATE = std::numeric_limits<std::size_t>::max();
     std::size_t empty_state = NO_EMPTY_STATE;
+    stdu::vector<std::string>  rule_name;
+    NFA::DataBlock dtb;
+    bool found_valid_dtb = false;
+    stdu::vector<std::size_t> goto_empty_states;
     while (!work.empty()) {
         StateSet current = work.front();
         std::sort(current.begin(), current.end());
         work.pop();
         logger.log("current: {}", current);
         std::size_t current_dfa_index = dfa_state_map[current];
-        stdu::vector<std::string> state_token_name;
-        NFA::DataBlock dtb;
+
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
         utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, std::size_t>>> input_symbols;
         for (std::size_t nfa_index : current) {
@@ -465,12 +543,18 @@ void DFA::build(bool switchToSingleState) {
             for (const auto &[symbol, id] : state.transitions) {
                 input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NO_ANY);
             }
-            if (!state.rule_name.empty()) {
-                state_token_name = state.rule_name;
-            }
-            if (!std::holds_alternative<std::monostate>(state.dtb)) {
+            if (!found_valid_dtb && !state.rule_name.empty()) {
+                rule_name = state.rule_name;
                 dtb = state.dtb;
             }
+        }
+        if (input_symbols.empty()) {
+            // final state
+            mstates[current_dfa_index].rule_name = rule_name;
+            mstates[current_dfa_index].dtb = dtb;
+            empty_state = current_dfa_index;
+            found_valid_dtb = true;
+            continue;
         }
         // Early cutoff opportunity
         // if (input_symbols.size() == 1 || input_symbols.size() == 2 && input_symbols.contains({"__WHITESPACE"})) {
@@ -517,13 +601,7 @@ void DFA::build(bool switchToSingleState) {
         // DFA construction
         for (const auto &[symbol, data] : input_symbols) {
             std::size_t empty_state_accept = 0;
-            bool goto_empty_state = std::any_of(current.begin(), current.end(), [&](auto &el) {
-                if (leadToEmptyState(el)) {
-                    empty_state_accept = nfa->getAcceptMap().at(el);
-                    return true;
-                }
-                return false;
-            });
+
             StateSet closure_set;
 
             if (closure_cache.contains(std::make_pair(current, symbol))) {
@@ -535,7 +613,9 @@ void DFA::build(bool switchToSingleState) {
             }
             logger.log("stdu::vector<std::size_t>: ({}, {})", closure_set, closure_set);
             if (closure_set.empty()) continue;
-
+            bool goto_empty_state = std::any_of(closure_set.begin(), closure_set.end(), [&](auto &el) {
+                return leadToEmptyState(el) != 0;
+            });
             // Separate conflicting stdu::vector<std::size_t> subsets
             stdu::vector<const Conflict*> process_conflict_list;
             for (const auto &closure : conflict_closures) {
@@ -563,15 +643,9 @@ void DFA::build(bool switchToSingleState) {
                     work.push(closure_set);
                 }
                 std::size_t target_index = dfa_state_map[closure_set];
-                mstates[current_dfa_index].transitions[symbol].emplace_back(
-                    target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.accept_index
-                );
-            }
-            if (!state_token_name.empty()) {
-                std::size_t new_index = mstates.size();
-                mstates.emplace_back();
-                mstates[new_index].rule_name = state_token_name;
-                mstates[new_index].dtb = dtb;
+                mstates[current_dfa_index].transitions[symbol].push_back({
+                    {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.accept_index}
+                });
             }
 
             // Add split conflict transitions
@@ -587,29 +661,29 @@ void DFA::build(bool switchToSingleState) {
                 }
 
                 std::size_t target_index = dfa_state_map[conf_closure];
-                mstates[current_dfa_index].transitions[symbol].emplace_back(
-                    target_index, transition->new_cst_node, transition->new_member, transition->accept_index
-                );
+                mstates[current_dfa_index].transitions[symbol].push_back({
+                    {target_index, transition->new_cst_node, transition->new_member, transition->accept_index}
+                });
                 if (conf->any != NFA::NO_ANY) {
                     mstates[current_dfa_index].any_goto = conf->any;
                 }
             }
             if (goto_empty_state) {
-                if (empty_state == NO_EMPTY_STATE) { // only create once
-                    empty_state = mstates.size();
-                    mstates.emplace_back();
-                    mstates[empty_state].rule_name = state_token_name;
-                    mstates[empty_state].dtb = dtb;
-                }
-                mstates[current_dfa_index].else_goto = empty_state;
+                goto_empty_states.push_back(current_dfa_index);
                 mstates[current_dfa_index].else_goto_accept = empty_state_accept;
             }
         }
     }
+    if (empty_state != NO_EMPTY_STATE) {
+        for (const auto id : goto_empty_states) {
+            mstates[id].else_goto = empty_state;
+        }
+    }
+
     // various optimizations
-    removeDublicateStates();
-    terminateEarly();
     if (switchToSingleState) {
+        removeDublicateStates();
+        terminateEarly();
         unrollMultiTransitionPaths();
         this->switchToSingleState();
         removeUnreachableStates();
@@ -618,12 +692,13 @@ void DFA::build(bool switchToSingleState) {
 }
 void DFA::buildWMerge() {
     stdu::vector<DFA> dfas;
-    std::size_t i = 0;
     for (const auto &nfa : *mergable_nfas) {
         DFA d(nfa);
         d.build(false);
-        dfas.push_back(d);
+        dfas.push_back(std::move(d));
     }
+    buildDfaEmptyStateMap(dfas);
+    buildDfaIndexToEmptyStateMap(dfas);
     mstates = std::move(mergeDFAS(dfas)).getMultiStates();
     removeDublicateStates();
     terminateEarly();
@@ -739,14 +814,14 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
                os << "{ ";
             }
             for (const auto &t : target) {
-                os << t.next << " ";
-                if (t.accept_index != NFA::NO_ACCEPT) {
-                    os << "{ accept -> " << t.accept_index << " }";
+                os << t.value.next << " ";
+                if (t.value.accept_index != NFA::NO_ACCEPT) {
+                    os << "{ accept -> " << t.value.accept_index << " }";
                 }
-                if (t.new_cst_node) {
+                if (t.value.new_cst_node) {
                     os << "[new_cst_node] ";
                 }
-                if (t.new_member) {
+                if (t.value.new_member) {
                     os << "[new_member] ";
                 }
                 if (target.size() != 1)

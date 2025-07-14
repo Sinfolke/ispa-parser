@@ -2,9 +2,7 @@
 
 /**
  * C++ ispa std lib 1.1
- * It contains standard declarations and every C++ generated parser would link toward it
- * It is for case you'd use two ISC parsers in one same project.
- * However it won't cancell that parser does not rely on any library
+ * It contains standard declarations and every C++ generated parser would link against it
 */
 #pragma once
 #ifndef _ISPA_STD_LIB_CPP
@@ -20,6 +18,7 @@
 #include <variant>
 #include <optional>
 #include <limits>
+#include <functional>
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -54,7 +53,7 @@
         "If this issue persist you may try to recompile the project by another version (try newer if your's is too old and vise versa)" \
 //#define _ISC_STD_LIB_CPP
 /**
- * @brief standard library for the ISPA-generated parser.
+ * @brief standard library for the ISPA-generated parser. Do not try to use it directly but use instead auto generated API
  * 
 */
 namespace ISPA_STD {
@@ -310,16 +309,30 @@ struct error {
     std::string message;
 };
 namespace DFAAPI {
-    enum class StoreType {
-        NOT_STORE, STORE, STORE_NEW
-    };
+    // constants
     inline constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
+
+    // store types
+    using MemberBegin = std::vector<std::size_t>;
+
+    using CharTableDataVector = std::vector<std::string>;
+    template<typename TOKEN_T> using CallableTokenDataVector = std::vector<Node<TOKEN_T>>;
+    template<typename TOKEN_T> using MultiTableDataVector = std::vector<std::variant<Node<TOKEN_T>>, std::string>;
+
+    // struct forward declarations
     template<typename TOKEN_T> struct SpanMultiTable;
+    template<typename TOKEN_T, typename builderParameterType>
     struct EmptyState;
     template<typename Key> struct Transition;
     template<typename T>   struct SpanState;
     template<std::size_t MAX, typename T> using State = std::array<T, MAX>;
 
+    // empty state declaration
+    template<typename TOKEN_T> using CharEmptyState = EmptyState<TOKEN_T, CharTableDataVector>;
+    template<typename TOKEN_T> using CallableTokenEmptyState = EmptyState<TOKEN_T, CallableTokenDataVector<TOKEN_T>>;
+    template<typename TOKEN_T> using MultiTableEmptyState = EmptyState<TOKEN_T, MultiTableDataVector<TOKEN_T>>;
+
+    // transition types
     using CharTransition = Transition<char>;
     template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
     template<typename TOKEN_T> using CallableTokenTransition = Transition<match_result<TOKEN_T> (*)(const char*)>;
@@ -333,34 +346,39 @@ namespace DFAAPI {
         CharTableTransition,
         CallableTokenTableTransition<TOKEN_T>,
         MultiTableTransition<TOKEN_T>,
-        EmptyState
+        CharEmptyState<TOKEN_T>,
+        CallableTokenEmptyState<TOKEN_T>,
+        MultiTableEmptyState<TOKEN_T>
     >;
     // state types
     template<std::size_t N> using CharTableState = State<N, CharTransition>;
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
     template<typename TOKEN_T, std::size_t N> using CallableTokenState = State<N, CallableTokenTransition<TOKEN_T>>;
     template<typename TOKEN_T, std::size_t N> using MultiTableState = State<N, AnyTransition<TOKEN_T>>;
-    using EmptyTableState = EmptyState;
-
     // span state types
     using SpanCharTableState = SpanState<CharTransition>;
     template<typename TOKEN_T> using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
     template<typename TOKEN_T> using SpanCallableTokenState = SpanState<CallableTokenTransition<TOKEN_T>>;
     template<typename TOKEN_T> using SpanMultiTableState = SpanState<AnyTransition<TOKEN_T>>;
-    using SpanEmptyTableState = EmptyState;
 
-    // non span types
-    template<std::size_t N> using CharTable = std::array<SpanState<CharTransition>, N>;
+    // non-span table types
+    template<typename TOKEN_T, std::size_t N> using CharTable = std::array<SpanState<std::variant<CharTransition, CharEmptyState<TOKEN_T>>>, N>;
     template<typename TOKEN_T, std::size_t N> using TokenTable = std::array<SpanState<TokenTransition<TOKEN_T>>, N>;
-    template<typename TOKEN_T, std::size_t N> using CallableTokenTable = std::array<SpanState<CallableTokenTransition<TOKEN_T>>, N>;
-    template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>, N>;
+    template<typename TOKEN_T, std::size_t N> using CallableTokenTable = std::array<SpanState<std::variant<CallableTokenTransition<TOKEN_T>, CallableTokenEmptyState<TOKEN_T>>>, N>;
+    template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, CharEmptyState<TOKEN_T>, CallableTokenEmptyState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>, N>;
 
-    // span types
-    using SpanCharTable = Span<const SpanState<CharTransition>>;
+    // span table types
+    template<typename TOKEN_T> using SpanCharTable = Span<const SpanState<std::variant<CharTransition, CharEmptyState<TOKEN_T>>>>;
     template<typename TOKEN_T> using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
     template<typename TOKEN_T> using SpanCallableTokenTable = Span<const SpanState<CallableTokenTransition<TOKEN_T>>>;
 
-    struct EmptyState {};
+    // structures
+
+    template<typename TOKEN_T, typename builderParameterType>
+    struct EmptyState {
+        TOKEN_T name;
+        std::function<std::any (const builderParameterType&)> ast_builder;
+    };
     template<typename Key>
     struct Transition {
         Key symbol;
@@ -378,15 +396,8 @@ namespace DFAAPI {
     };
     template<typename TOKEN_T>
     struct SpanMultiTable {
-        Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>> states;
+        Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, CharEmptyState<TOKEN_T>, CallableTokenEmptyState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
-
-    // Decide Types
-    using MemberBegin = std::vector<std::size_t>;
-
-    using CharTableDataVector = std::vector<std::string>;
-    template<typename TOKEN_T> using CallableTokenDataVector = std::vector<Node<TOKEN_T>>;
-    template<typename TOKEN_T> using MultiTableDataVector = std::vector<std::variant<Node<TOKEN_T>>, std::string>;
 }
 template<typename TOKEN_T>
 using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCallableTokenTable<TOKEN_T>, DFAAPI::SpanCharTable, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;
@@ -1289,7 +1300,7 @@ protected:
         dfa_token_cache.clear();
     }
 };
-} // namespace __ISC_STD
+} // namespace ISPA_STD
 
 #undef _ISC_GITHUB
 #undef _ISC_INTERNAL_ERROR_MARK

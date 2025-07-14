@@ -285,8 +285,8 @@ name<[rule, BIN]> : Rule {
    Group(@  Op( Name(PLUS) |  Name(MINUS)), @  Name(cll::expr::term))*;
   Data: TemplatedDataBlock(first, operators, sequence)
 }name<[cll, ASSIGNMENT_OP]> : Rule {
-   Name(cll::OP)?;
-  @  String (=)
+  @  Name(cll::OP)?;
+   String (=)
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, data_block, regular_datablock, key]> : Rule {
   @  Name(ID)

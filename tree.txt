@@ -270,8 +270,8 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(cll::stmt)
   Data: EmptyDataBlock
 }]name<[cll, ASSIGNMENT_OP]> : [Rule {
-   Name(cll::OP)?;
-  @  String (=)
+  @  Name(cll::OP)?;
+   String (=)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, COMPARE_OP]> : [Rule {
   @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))

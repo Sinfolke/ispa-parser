@@ -150,6 +150,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
     std::size_t next_after = NO_NEXT_AFTER;
     std::size_t inner_end = states.size();
     states.emplace_back();
+    states[inner_end].epsilon_transitions.insert(end);
     // Construct linear NFA for each character in the string
     for (std::size_t i = 0; i < str.size(); ++i) {
         std::size_t next;
