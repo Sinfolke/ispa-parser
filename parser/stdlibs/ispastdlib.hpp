@@ -336,8 +336,8 @@ namespace DFAAPI {
     using CharTransition = Transition<char>;
     template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
     template<typename TOKEN_T> using CallableTokenTransition = Transition<match_result<TOKEN_T> (*)(const char*)>;
-    template<typename TOKEN_T> using CharTableTransition = Transition<Span<const SpanState<std::variant<CharTransition, CharEmptyState<TOKEN_T>>>>>;
-    template<typename TOKEN_T> using CallableTokenTableTransition = Transition<Span<const SpanState<std::variant<CallableTokenTransition<TOKEN_T>, CallableTokenEmptyState<TOKEN_T>>>>>;
+    template<typename TOKEN_T> using CharTableTransition = Transition<Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>>;
+    template<typename TOKEN_T> using CallableTokenTableTransition = Transition<Span<const std::variant<SpanState<CallableTokenTransition<TOKEN_T>>, CallableTokenEmptyState<TOKEN_T>>>>;
     template<typename TOKEN_T> using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T>>;
     template<typename TOKEN_T>
     using AnyTransition = std::variant<
@@ -368,9 +368,9 @@ namespace DFAAPI {
     template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>, N>;
 
     // span table types
-    template<typename TOKEN_T> using SpanCharTable = Span<const SpanState<std::variant<CharTransition, CharEmptyState<TOKEN_T>>>>;
+    template<typename TOKEN_T> using SpanCharTable = Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>;
     template<typename TOKEN_T> using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
-    template<typename TOKEN_T> using SpanCallableTokenTable = Span<const SpanState<std::variant<CallableTokenTransition<TOKEN_T>, CallableTokenEmptyState<TOKEN_T>>>>;
+    template<typename TOKEN_T> using SpanCallableTokenTable = Span<const std::variant<SpanState<CallableTokenTransition<TOKEN_T>>, CallableTokenEmptyState<TOKEN_T>>>;
 
     // structures
 

@@ -54,7 +54,6 @@ void StateArrayBuilder::output() {
                     out_content << "\n";
             }
         }
-
         out << "const ::ISPA_STD::DFAAPI::" << type_str
             << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";
     }
