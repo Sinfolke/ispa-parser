@@ -77,7 +77,7 @@ auto DFATypes::getStatesTypeStr(bool isToken, const std::string &namespace_name,
 auto DFATypes::getStateTypeStr(DFA::DfaType table_type, DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return std::string("CharTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
+            return std::string("CharTableState<") + std::to_string(size) + std::string(">");
         case DFA::DfaType::Token:
             return std::string("TokenTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::CallableToken:
@@ -96,7 +96,7 @@ auto DFATypes::getStateTypeStr(const DFA::Transitions &transitions, const utype:
 auto DFATypes::getSpanStateTypeStr(DFA::DfaType table_type, DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return "CharTableState<::" + namespace_name + "::Tokens>";
+            return "CharTableState";
         case DFA::DfaType::Token:
             return "TokenTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -117,9 +117,9 @@ auto DFATypes::getEmptyTypeStr(DFA::DfaType type, const std::string &namespace_n
         case DFA::DfaType::Char:
             return "CharEmptyState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
-            return "CallableTokenTableState<::" + namespace_name + "::Tokens>";
+            return "CallableTokenEmptyState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Multi:
-            return "MultiTableState<::" + namespace_name + "::Tokens>";
+            return "MultiTableEmptyState<::" + namespace_name + "::Tokens>";
         default:
             return "";
     }

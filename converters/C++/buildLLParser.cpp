@@ -41,7 +41,7 @@ extern "C" void buildLLParser(const std::filesystem::path name, const LLIR::IR &
     parser.createTypesNamespace(h_ss, parser.getDataBlockToken(), parser.getDataBlockRules());
     parser.create_get_namespace(h_ss, name.string(), parser.getDataBlockToken(), parser.getDataBlockRules());
     lexer.outputHeader();
-    parser.create_parser_header(h_ss, ir.getDfas().getDFAS(), states_pair);
+    parser.create_parser_header(h_ss, ir.getDfas(), states_pair);
     parser.setIndentLevet(2);
     parser.writeRules(h_ss);
     parser.setIndentLevet(1);

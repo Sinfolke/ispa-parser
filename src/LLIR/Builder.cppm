@@ -11,10 +11,11 @@ namespace LLIR {
     export class Builder {
         stdu::vector<LLIR::Data> data;
         stdu::vector<DFA> dfas;
+        bool isToken;
     public:
         Builder(AST::Tree &tree, int tokensOnly = -1);
-        Builder(AST::Tree &tree, const AST::RuleMember& rule);
-        Builder(AST::Tree &tree, const stdu::vector<AST::RuleMember>& rules);
+        Builder(AST::Tree &tree, bool isToken, const AST::RuleMember& rule);
+        Builder(AST::Tree &tree, bool isToken, const stdu::vector<AST::RuleMember>& rules);
         auto get() -> IR;
         auto getRawData() -> stdu::vector<Data>&;
         auto getRawData() const -> const stdu::vector<Data>&;

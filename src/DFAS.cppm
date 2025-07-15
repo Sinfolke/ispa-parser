@@ -5,7 +5,7 @@ import dstd;
 
 export class DFAS {
 public:
-    using StateSet = stdu::vector<DFA::Transitions>;
+    using StateSet = stdu::vector<DFA::SingleState>;
     using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
     using StateInDfaLocationMap = utype::unordered_map<std::size_t, std::size_t>;
     struct StateSet_t {
@@ -15,9 +15,10 @@ public:
     };
 private:
     stdu::vector<DFA> dfas;
+    bool isToken;
 public:
-    DFAS(const stdu::vector<DFA> &dfas) : dfas(dfas) {};
-    DFAS(stdu::vector<DFA> &&dfas) : dfas(std::move(dfas)) {};
+    DFAS(bool isToken, const stdu::vector<DFA> &dfas) : isToken(isToken), dfas(dfas) {};
+    DFAS(bool isToken, stdu::vector<DFA> &&dfas) : isToken(isToken), dfas(std::move(dfas)) {};
     DFAS() {}
 
     void getStateSet(StateSet_t &state_set) const;

@@ -50,7 +50,7 @@ void LexerBuilder::build() {
         highest_transition_count = std::max(highest_transition_count, builder.get().getMaxTransitionCount());
         dfa_count++;
     }
-    function_ir = std::move(LLIR::IR(functions, function_dfas));
+    function_ir = std::move(LLIR::IR(functions, true, function_dfas));
 }
 
 auto LexerBuilder::getStateSet() const -> DFAS::StateSet_t {

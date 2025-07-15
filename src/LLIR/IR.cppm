@@ -34,8 +34,8 @@ export namespace LLIR {
         std::stack<std::string> current_pos_counter;
         std::size_t indentLevel = 0;
     public:
-        explicit IR(const stdu::vector<Data> &data, stdu::vector<DFA> &dfas) : data(data), dfas(dfas) {}
-        explicit IR(const stdu::vector<Data> &&data, stdu::vector<DFA> &&dfas) : data(std::move(data)), dfas(std::move(dfas)) {}
+        explicit IR(const stdu::vector<Data> &data, bool isToken, stdu::vector<DFA> &dfas) : data(data), dfas(isToken, dfas) {}
+        explicit IR(const stdu::vector<Data> &&data, bool isToken, stdu::vector<DFA> &&dfas) : data(std::move(data)), dfas(isToken, std::move(dfas)) {}
         IR() = default;
         auto getData() const -> const stdu::vector<Data>&;
         auto getDfas() const -> const DFAS&;

@@ -6,6 +6,7 @@ import LLIR.Builder.DataWrapper;
 import corelib;
 import cpuf.printf;
 LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
+    isToken = tokensOnly == 1;
     for (const auto &[name, value] : tree.getTreeMap()) {
         if (tokensOnly != -1) {
             if (corelib::text::isUpper(name.back()) && !tokensOnly)
@@ -19,7 +20,7 @@ LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
 }
 
 auto LLIR::Builder::get() -> IR {
-    return IR(std::move(data), std::move(dfas));
+    return IR(std::move(data), isToken, std::move(dfas));
 }
 auto LLIR::Builder::getRawData() -> stdu::vector<Data> & {
     return data;
