@@ -1,5 +1,5 @@
 #include "Parser.h"
-const ::ISPA_STD::DFAAPI::CharTableState<6> Parser::Lexer::dfa_state_0 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 6> Parser::Lexer::dfa_state_0 = {
 	ISPA_STD::DFAAPI::CharTransition { '\f', 0, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\v', 0, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\n', 0, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -7,37 +7,37 @@ const ::ISPA_STD::DFAAPI::CharTableState<6> Parser::Lexer::dfa_state_0 = {
 	ISPA_STD::DFAAPI::CharTransition { '\r', 0, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\t', 0, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::EmptyTableState Parser::Lexer::dfa_state_1 = {
+const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_state_1 = {
 };
-const ::ISPA_STD::DFAAPI::CharTableState<5> Parser::Lexer::dfa_state_2 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 5> Parser::Lexer::dfa_state_2 = {
 	ISPA_STD::DFAAPI::CharTransition { 'n', 1, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '!', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '<', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '=', 5, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '>', 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_3 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_3 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 3, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_4 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_4 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 2, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_5 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_5 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_6 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_6 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_7 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_7 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_8 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_8 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_9 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_9 = {
 	ISPA_STD::DFAAPI::CharTransition { '#', 1, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_10 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_10 = {
 	ISPA_STD::DFAAPI::CharTransition { '$', 1, true, true, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::dfa_state_11 = {
@@ -49,33 +49,33 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::df
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_13, 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '=', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_12 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_12 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 3, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 5> Parser::Lexer::dfa_state_13 = {
 	ISPA_STD::DFAAPI::CharTransition { '&', 7, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'a', 2, false, false, 1 },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 6, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 6, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_14 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_14 = {
 	ISPA_STD::DFAAPI::CharTransition { 'n', 4, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_15 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_15 = {
 	ISPA_STD::DFAAPI::CharTransition { '&', 5, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_16 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_16 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 5, false, false, 1 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_17 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 6, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_18 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_18 = {
 	ISPA_STD::DFAAPI::CharTransition { '(', 1, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_19 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_19 = {
 	ISPA_STD::DFAAPI::CharTransition { ')', 1, true, true, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::dfa_state_20 = {
@@ -87,7 +87,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::df
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_13, 3, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '=', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_21 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_21 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 2, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 17> Parser::Lexer::dfa_state_22 = {
@@ -109,10 +109,10 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 17> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { '%', 5, false, false, 4 },
 	ISPA_STD::DFAAPI::CharTransition { '=', 6, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_23 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_23 = {
 	ISPA_STD::DFAAPI::CharTransition { '+', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<12> Parser::Lexer::dfa_state_24 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 12> Parser::Lexer::dfa_state_24 = {
 	ISPA_STD::DFAAPI::CharTransition { '5', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { ',', 4, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '2', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -126,7 +126,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<12> Parser::Lexer::dfa_state_24 = {
 	ISPA_STD::DFAAPI::CharTransition { '8', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<10> Parser::Lexer::dfa_state_25 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 10> Parser::Lexer::dfa_state_25 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '5', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '2', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -138,17 +138,17 @@ const ::ISPA_STD::DFAAPI::CharTableState<10> Parser::Lexer::dfa_state_25 = {
 	ISPA_STD::DFAAPI::CharTransition { '6', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_26 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_26 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 6, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_27 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_27 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '+', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_28 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_28 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_29 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_29 = {
 	ISPA_STD::DFAAPI::CharTransition { ',', 1, true, true, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 17> Parser::Lexer::dfa_state_30 = {
@@ -170,18 +170,18 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 17> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { '%', 5, false, false, 4 },
 	ISPA_STD::DFAAPI::CharTransition { '=', 7, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_31 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_31 = {
 	ISPA_STD::DFAAPI::CharTransition { '-', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_32 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_32 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 7, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_33 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_33 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '>', 6, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '-', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_34 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_34 = {
 	ISPA_STD::DFAAPI::CharTransition { '.', 1, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::dfa_state_35 = {
@@ -193,10 +193,10 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 7> Parser::Lexer::df
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_13, 5, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_36 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_36 = {
 	ISPA_STD::DFAAPI::CharTransition { '/', 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<128> Parser::Lexer::dfa_state_37 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 128> Parser::Lexer::dfa_state_37 = {
 	ISPA_STD::DFAAPI::CharTransition { '\xF6', 2, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\xD2', 2, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\xEA', 2, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -326,18 +326,18 @@ const ::ISPA_STD::DFAAPI::CharTableState<128> Parser::Lexer::dfa_state_37 = {
 	ISPA_STD::DFAAPI::CharTransition { '\xAD', 2, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x89', 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_38 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_38 = {
 	ISPA_STD::DFAAPI::CharTransition { '0', 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_39 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_39 = {
 	ISPA_STD::DFAAPI::CharTransition { '1', 2, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '0', 2, true, true, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_40 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_40 = {
 	ISPA_STD::DFAAPI::CharTransition { '1', 2, true, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '0', 2, true, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<22> Parser::Lexer::dfa_state_41 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 22> Parser::Lexer::dfa_state_41 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'C', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '3', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
@@ -361,7 +361,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<22> Parser::Lexer::dfa_state_41 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\f', 4, true, true, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<22> Parser::Lexer::dfa_state_42 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 22> Parser::Lexer::dfa_state_42 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 4, true, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'C', 4, true, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '3', 4, true, false, ::ISPA_STD::DFAAPI::null_state },
@@ -385,66 +385,66 @@ const ::ISPA_STD::DFAAPI::CharTableState<22> Parser::Lexer::dfa_state_42 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 4, true, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\f', 4, true, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_43 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_43 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'b', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_44 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_44 = {
 	ISPA_STD::DFAAPI::CharTransition { ':', 1, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_45 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_45 = {
 	ISPA_STD::DFAAPI::CharTransition { ';', 1, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_46 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 4> Parser::Lexer::dfa_state_46 = {
 	ISPA_STD::DFAAPI::CharTransition { '>', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '<', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '!', 2, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '=', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_47 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_47 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 1, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_48 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_48 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_49 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_49 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 1, false, false, 4 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_50 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_33, 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '=', 1, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_51 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 4> Parser::Lexer::dfa_state_51 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '!', 3, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '<', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '>', 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_52 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_52 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 2, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_53 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_53 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 2, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_54 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_54 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 2, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_55 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 4> Parser::Lexer::dfa_state_55 = {
 	ISPA_STD::DFAAPI::CharTransition { '>', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '<', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '!', 2, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '=', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_56 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_56 = {
 	ISPA_STD::DFAAPI::CharTransition { '=', 1, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_57 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_57 = {
 	ISPA_STD::DFAAPI::CharTransition { '?', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_58 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_58 = {
 	ISPA_STD::DFAAPI::CharTransition { '@', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_59 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 53> Parser::Lexer::dfa_state_59 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'A', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'W', 1, false, false, 0 },
@@ -499,7 +499,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_59 = {
 	ISPA_STD::DFAAPI::CharTransition { 'c', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_60 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_60 = {
 	ISPA_STD::DFAAPI::CharTransition { '6', 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'R', 1, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -564,7 +564,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_60 = {
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '_', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_61 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_61 = {
 	ISPA_STD::DFAAPI::CharTransition { '[', 4, true, true, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 4> Parser::Lexer::dfa_state_62 = {
@@ -573,7 +573,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 4> Parser::Lexer::df
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_25, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { ']', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_63 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_63 = {
 	ISPA_STD::DFAAPI::CharTransition { '^', 3, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { ']', 2, false, false, 0 }
 };
@@ -709,22 +709,22 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 130> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { '\xD2', 9, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '\xFF', 9, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_65 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_65 = {
 	ISPA_STD::DFAAPI::CharTransition { '\\', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_66 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_66 = {
 	ISPA_STD::DFAAPI::CharTransition { 's', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_67 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_67 = {
 	ISPA_STD::DFAAPI::CharTransition { '0', 5, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_68 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_68 = {
 	ISPA_STD::DFAAPI::CharTransition { '-', 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_69 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_25, 8, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<129> Parser::Lexer::dfa_state_70 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 129> Parser::Lexer::dfa_state_70 = {
 	ISPA_STD::DFAAPI::CharTransition { '\xA0', 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x87', 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x8B', 10, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -855,11 +855,11 @@ const ::ISPA_STD::DFAAPI::CharTableState<129> Parser::Lexer::dfa_state_70 = {
 	ISPA_STD::DFAAPI::CharTransition { '\xD2', 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\xFF', 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_71 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_71 = {
 	ISPA_STD::DFAAPI::CharTransition { '\'', 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\\', 12, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_72 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_72 = {
 	ISPA_STD::DFAAPI::CharTransition { '\\', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 131> Parser::Lexer::dfa_state_73 = {
@@ -995,13 +995,13 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 131> Parser::Lexer::
 	ISPA_STD::DFAAPI::CharTransition { '\xD2', 5, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '\xFF', 5, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_74 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_74 = {
 	ISPA_STD::DFAAPI::CharTransition { '-', 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_75 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_25, 4, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_76 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_76 = {
 	ISPA_STD::DFAAPI::CharTransition { '\\', 5, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::dfa_state_77 = {
@@ -1012,7 +1012,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '\t', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 1, false, false, 0 },
@@ -1067,37 +1067,37 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'b', 6, false, false, 2 },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 18, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_78 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_78 = {
 	ISPA_STD::DFAAPI::CharTransition { '&', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_79 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_79 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 4, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_80 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_80 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 9, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_81 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_81 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 12, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_82 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_82 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 13, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_83 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_83 = {
 	ISPA_STD::DFAAPI::CharTransition { 'j', 14, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_84 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_84 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 15, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_85 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_85 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 16, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_86 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_86 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 15, false, false, 3 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_87 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_87 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 17, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_88 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_88 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 15, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_89 = {
@@ -1106,26 +1106,26 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::df
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_90 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_17, 15, true, true, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_91 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_91 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 15, false, false, 2 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_92 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 18, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_93 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_93 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 11, false, false, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_94 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_94 = {
 	ISPA_STD::DFAAPI::CharTransition { 'b', 8, false, false, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_95 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_95 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 10, false, false, 4 },
 	ISPA_STD::DFAAPI::CharTransition { 'n', 3, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_96 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 57> Parser::Lexer::dfa_state_96 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'A', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'W', 1, false, false, 0 },
@@ -1184,34 +1184,34 @@ const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_96 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 3, true, true, 4 },
 	ISPA_STD::DFAAPI::CharTransition { 'b', 4, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_97 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_97 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 7, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_98 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_98 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 8, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_99 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_99 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 10, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_100 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_100 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 11, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_101 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_101 = {
 	ISPA_STD::DFAAPI::CharTransition { 'j', 12, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_102 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_102 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 13, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_103 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_103 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 14, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_104 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_104 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 13, false, false, 3 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_105 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_105 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 15, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_106 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_106 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 13, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_107 = {
@@ -1220,18 +1220,18 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::df
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_108 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_17, 13, true, true, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_109 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_109 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 13, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_110 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_110 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 9, false, false, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_111 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_111 = {
 	ISPA_STD::DFAAPI::CharTransition { 'b', 6, false, false, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_112 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 55> Parser::Lexer::dfa_state_112 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 14, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 14, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'C', 14, false, false, 0 },
@@ -1288,34 +1288,34 @@ const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_112 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 14, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 14, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_113 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_113 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_114 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_114 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 6, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_115 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_115 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_116 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_116 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 8, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_117 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_117 = {
 	ISPA_STD::DFAAPI::CharTransition { 's', 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_118 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_118 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 10, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_119 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_119 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_120 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_120 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 12, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_121 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_121 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 13, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_122 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_122 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 14, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 14, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 14, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -1380,13 +1380,13 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_122 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 14, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<4> Parser::Lexer::dfa_state_123 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 4> Parser::Lexer::dfa_state_123 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 11, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'a', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'n', 3, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_124 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 53> Parser::Lexer::dfa_state_124 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 7, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 7, false, false, 0 },
@@ -1441,19 +1441,19 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_124 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 7, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 7, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_125 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_125 = {
 	ISPA_STD::DFAAPI::CharTransition { 'p', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_126 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_126 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_127 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_127 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_128 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_128 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 5, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_129 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_129 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -1518,12 +1518,12 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_129 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_130 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_130 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'f', 6, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_131 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 53> Parser::Lexer::dfa_state_131 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 6, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'm', 7, true, true, ::ISPA_STD::DFAAPI::null_state },
@@ -1578,19 +1578,19 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_131 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 6, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 6, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_132 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_132 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_133 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_133 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_134 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_134 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_135 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_135 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 5, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_136 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_136 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -1655,11 +1655,11 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_136 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_137 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_137 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<58> Parser::Lexer::dfa_state_138 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 58> Parser::Lexer::dfa_state_138 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'A', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'W', 1, false, false, 0 },
@@ -1719,37 +1719,37 @@ const ::ISPA_STD::DFAAPI::CharTableState<58> Parser::Lexer::dfa_state_138 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 8, true, true, 4 },
 	ISPA_STD::DFAAPI::CharTransition { 'b', 9, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_139 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_139 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_140 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_140 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_141 = {
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_36, 7, true, true, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_36, 7, true, true, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_142 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_142 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 13, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_143 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_143 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 16, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_144 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_144 = {
 	ISPA_STD::DFAAPI::CharTransition { 'j', 17, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_145 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_145 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 18, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_146 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_146 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 19, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_147 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_147 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 18, false, false, 3 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_148 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_148 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 20, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_149 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_149 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 18, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_150 = {
@@ -1758,18 +1758,18 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::df
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_151 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_17, 18, true, true, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_152 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_152 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 18, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_153 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_153 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 14, false, false, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_154 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_154 = {
 	ISPA_STD::DFAAPI::CharTransition { 'b', 11, false, false, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_155 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_155 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 12, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { 'a', 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 3, false, false, 1 }
@@ -1782,7 +1782,7 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'V', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'X', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'U', 1, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'Y', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { '\t', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'l', 1, false, false, 0 },
@@ -1837,40 +1837,40 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 61> Parser::Lexer::d
 	ISPA_STD::DFAAPI::CharTransition { 'b', 7, false, false, 2 },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 19, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_157 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_157 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 4, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_158 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_158 = {
 	ISPA_STD::DFAAPI::CharTransition { '|', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_159 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_159 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 10, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_160 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_160 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 11, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_161 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_161 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 13, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_162 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_162 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 14, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_163 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_163 = {
 	ISPA_STD::DFAAPI::CharTransition { 'j', 15, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_164 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_164 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 16, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_165 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_165 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 17, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_166 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_166 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 16, false, false, 3 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_167 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_167 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 18, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_168 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_168 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 16, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_169 = {
@@ -1879,23 +1879,23 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::df
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_170 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_17, 16, true, true, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_171 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_171 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 16, false, false, 2 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_172 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 19, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_173 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_173 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 12, false, false, 3 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_174 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_174 = {
 	ISPA_STD::DFAAPI::CharTransition { 'b', 9, false, false, 5 },
 	ISPA_STD::DFAAPI::CharTransition { 'r', 4, false, false, 1 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_175 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 57> Parser::Lexer::dfa_state_175 = {
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'A', 1, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'W', 1, false, false, 0 },
@@ -1954,105 +1954,105 @@ const ::ISPA_STD::DFAAPI::CharTableState<57> Parser::Lexer::dfa_state_175 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 29, true, true, 4 },
 	ISPA_STD::DFAAPI::CharTransition { 'b', 30, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_176 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_176 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_177 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_177 = {
 	ISPA_STD::DFAAPI::CharTransition { 'c', 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_178 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_178 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_179 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_179 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_180 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_180 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_181 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_181 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_182 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_182 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_183 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_183 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 12, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'a', 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_184 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_184 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_185 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_185 = {
 	ISPA_STD::DFAAPI::CharTransition { 'k', 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_186 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_186 = {
 	ISPA_STD::DFAAPI::CharTransition { 'i', 15, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_187 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_187 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_188 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_188 = {
 	ISPA_STD::DFAAPI::CharTransition { 'i', 17, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_189 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_189 = {
 	ISPA_STD::DFAAPI::CharTransition { 'x', 18, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_190 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_190 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 19, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_191 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_191 = {
 	ISPA_STD::DFAAPI::CharTransition { 'p', 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_192 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_192 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_193 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_193 = {
 	ISPA_STD::DFAAPI::CharTransition { 'w', 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_194 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_194 = {
 	ISPA_STD::DFAAPI::CharTransition { 'p', 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_195 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_195 = {
 	ISPA_STD::DFAAPI::CharTransition { 'd', 24, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_196 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_196 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 25, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_197 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_197 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 26, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_198 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_198 = {
 	ISPA_STD::DFAAPI::CharTransition { ';', 27, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_199 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_199 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 33, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_200 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_200 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 34, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_201 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_201 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 36, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_202 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_202 = {
 	ISPA_STD::DFAAPI::CharTransition { 'a', 37, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_203 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_203 = {
 	ISPA_STD::DFAAPI::CharTransition { 'j', 38, false, false, 5 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_204 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_204 = {
 	ISPA_STD::DFAAPI::CharTransition { 'm', 39, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_205 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_205 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 40, false, false, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_206 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_206 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 39, false, false, 3 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_207 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_207 = {
 	ISPA_STD::DFAAPI::CharTransition { 'o', 41, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_208 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_208 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 39, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_209 = {
@@ -2061,19 +2061,19 @@ const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::df
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_210 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_17, 39, true, true, 4 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_211 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_211 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 39, false, false, 2 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<3> Parser::Lexer::dfa_state_212 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 3> Parser::Lexer::dfa_state_212 = {
 	ISPA_STD::DFAAPI::CharTransition { 't', 35, false, false, 3 },
 	ISPA_STD::DFAAPI::CharTransition { 'p', 2, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_213 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_213 = {
 	ISPA_STD::DFAAPI::CharTransition { 'b', 32, false, false, 5 },
 	ISPA_STD::DFAAPI::CharTransition { '9', 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_214 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 55> Parser::Lexer::dfa_state_214 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 9, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'c', 9, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'C', 9, false, false, 0 },
@@ -2130,22 +2130,22 @@ const ::ISPA_STD::DFAAPI::CharTableState<55> Parser::Lexer::dfa_state_214 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 9, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 9, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_215 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_215 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_216 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_216 = {
 	ISPA_STD::DFAAPI::CharTransition { 'u', 6, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_217 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_217 = {
 	ISPA_STD::DFAAPI::CharTransition { 's', 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_218 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_218 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 8, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_219 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_219 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_220 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_220 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 9, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 9, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 9, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -2210,7 +2210,7 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_220 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 9, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_221 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 53> Parser::Lexer::dfa_state_221 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 3, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'u', 4, true, true, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'H', 3, false, false, 0 },
@@ -2265,10 +2265,10 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_221 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 3, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_222 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_222 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_223 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_223 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -2333,11 +2333,11 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_223 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_224 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_224 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 's', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_225 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 53> Parser::Lexer::dfa_state_225 = {
 	ISPA_STD::DFAAPI::CharTransition { 'c', 5, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'J', 5, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'w', 6, true, true, ::ISPA_STD::DFAAPI::null_state },
@@ -2392,16 +2392,16 @@ const ::ISPA_STD::DFAAPI::CharTableState<53> Parser::Lexer::dfa_state_225 = {
 	ISPA_STD::DFAAPI::CharTransition { 'A', 5, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'Z', 5, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_226 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_226 = {
 	ISPA_STD::DFAAPI::CharTransition { 'i', 2, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_227 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_227 = {
 	ISPA_STD::DFAAPI::CharTransition { 'l', 3, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_228 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_228 = {
 	ISPA_STD::DFAAPI::CharTransition { 'e', 4, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_229 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 63> Parser::Lexer::dfa_state_229 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '\x00', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'q', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
@@ -2466,475 +2466,475 @@ const ::ISPA_STD::DFAAPI::CharTableState<63> Parser::Lexer::dfa_state_229 = {
 	ISPA_STD::DFAAPI::CharTransition { 'R', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { '9', 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<2> Parser::Lexer::dfa_state_230 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_230 = {
 	ISPA_STD::DFAAPI::CharTransition { '_', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::CharTransition { 'h', 1, false, false, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_231 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_231 = {
 	ISPA_STD::DFAAPI::CharTransition { '{', 1, true, true, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 5> Parser::Lexer::dfa_state_232 = {
 	ISPA_STD::DFAAPI::CharTransition { '|', 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 4, false, false, 0 },
 	ISPA_STD::DFAAPI::CharTransition { 'o', 2, false, false, 1 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_38, 4, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_233 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_233 = {
 	ISPA_STD::DFAAPI::CharTransition { 'r', 3, false, false, 1 }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_234 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_234 = {
 	ISPA_STD::DFAAPI::CharTransition { '|', 3, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::MultiTableState<::Parser::Tokens, 2> Parser::Lexer::dfa_state_235 = {
 	ISPA_STD::DFAAPI::MultiTableTransition<::Parser::Tokens> { dfa_span_26, 4, false, false, 0 },
-	ISPA_STD::DFAAPI::CharTableTransition { dfa_span_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::CharTableTransition<::Parser::Tokens> { dfa_span_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::CharTableState<1> Parser::Lexer::dfa_state_236 = {
+const ::ISPA_STD::DFAAPI::CharTableState<::Parser::Tokens, 1> Parser::Lexer::dfa_state_236 = {
 	ISPA_STD::DFAAPI::CharTransition { '}', 1, true, true, 0 }
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_0 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_0.data(), dfa_state_0.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_0 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_0.data(), dfa_state_0.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<9> Parser::Lexer::dfa_table_1 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_2.data(), dfa_state_2.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_3.data(), dfa_state_3.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_4.data(), dfa_state_4.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_5.data(), dfa_state_5.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 3, {dfa_state_7.data(), dfa_state_7.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 2, {dfa_state_8.data(), dfa_state_8.size()}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 9> Parser::Lexer::dfa_table_1 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_2.data(), dfa_state_2.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_3.data(), dfa_state_3.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_4.data(), dfa_state_4.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_5.data(), dfa_state_5.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_6.data(), dfa_state_6.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 3, {dfa_state_7.data(), dfa_state_7.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 2, {dfa_state_8.data(), dfa_state_8.size()}},
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_2 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_9.data(), dfa_state_9.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_2 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_9.data(), dfa_state_9.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_3 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_10.data(), dfa_state_10.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_3 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_10.data(), dfa_state_10.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 6> Parser::Lexer::dfa_table_4 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_11.data(), dfa_state_11.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 3, 0, {dfa_state_12.data(), dfa_state_12.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 3, 0, {dfa_state_12.data(), dfa_state_12.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 10> Parser::Lexer::dfa_table_5 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_13.data(), dfa_state_13.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_14.data(), dfa_state_14.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_15.data(), dfa_state_15.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_16.data(), dfa_state_16.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_15.data(), dfa_state_15.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_14.data(), dfa_state_14.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_15.data(), dfa_state_15.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_16.data(), dfa_state_16.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_15.data(), dfa_state_15.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_17.data(), dfa_state_17.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_6 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_18.data(), dfa_state_18.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_6 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_18.data(), dfa_state_18.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_7 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_19.data(), dfa_state_19.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_7 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_19.data(), dfa_state_19.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 5> Parser::Lexer::dfa_table_8 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_20.data(), dfa_state_20.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_21.data(), dfa_state_21.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_21.data(), dfa_state_21.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 11> Parser::Lexer::dfa_table_9 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_22.data(), dfa_state_22.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_23.data(), dfa_state_23.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_24.data(), dfa_state_24.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 10, 0, {dfa_state_25.data(), dfa_state_25.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 6, 0, {dfa_state_26.data(), dfa_state_26.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_27.data(), dfa_state_27.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 1, {dfa_state_28.data(), dfa_state_28.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_23.data(), dfa_state_23.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_24.data(), dfa_state_24.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 10, 0, {dfa_state_25.data(), dfa_state_25.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 6, 0, {dfa_state_26.data(), dfa_state_26.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_27.data(), dfa_state_27.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 1, {dfa_state_28.data(), dfa_state_28.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_10 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_29.data(), dfa_state_29.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_10 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_29.data(), dfa_state_29.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 12> Parser::Lexer::dfa_table_11 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_30.data(), dfa_state_30.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_31.data(), dfa_state_31.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_24.data(), dfa_state_24.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 11, 0, {dfa_state_25.data(), dfa_state_25.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 7, 0, {dfa_state_32.data(), dfa_state_32.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_33.data(), dfa_state_33.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_28.data(), dfa_state_28.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_31.data(), dfa_state_31.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_24.data(), dfa_state_24.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 11, 0, {dfa_state_25.data(), dfa_state_25.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 7, 0, {dfa_state_32.data(), dfa_state_32.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_33.data(), dfa_state_33.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_28.data(), dfa_state_28.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_12 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_34.data(), dfa_state_34.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_12 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_34.data(), dfa_state_34.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 8> Parser::Lexer::dfa_table_13 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_35.data(), dfa_state_35.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_36.data(), dfa_state_36.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 7, 0, {dfa_state_37.data(), dfa_state_37.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_5.data(), dfa_state_5.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_36.data(), dfa_state_36.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_36.data(), dfa_state_36.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 7, 0, {dfa_state_37.data(), dfa_state_37.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_5.data(), dfa_state_5.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_36.data(), dfa_state_36.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<8> Parser::Lexer::dfa_table_14 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_38.data(), dfa_state_38.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_39.data(), dfa_state_39.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 6, 0, {dfa_state_40.data(), dfa_state_40.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_41.data(), dfa_state_41.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 7, 0, {dfa_state_42.data(), dfa_state_42.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 8> Parser::Lexer::dfa_table_14 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_38.data(), dfa_state_38.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_39.data(), dfa_state_39.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 6, 0, {dfa_state_40.data(), dfa_state_40.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_41.data(), dfa_state_41.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 7, 0, {dfa_state_42.data(), dfa_state_42.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_43.data(), dfa_state_43.size()}},
+	dfa_state_1,
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_15 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_44.data(), dfa_state_44.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_15 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_44.data(), dfa_state_44.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_16 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_45.data(), dfa_state_45.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_16 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_45.data(), dfa_state_45.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 7> Parser::Lexer::dfa_table_17 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_46.data(), dfa_state_46.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_47.data(), dfa_state_47.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_48.data(), dfa_state_48.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 2, {dfa_state_49.data(), dfa_state_49.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_46.data(), dfa_state_46.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_47.data(), dfa_state_47.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_48.data(), dfa_state_48.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 2, {dfa_state_49.data(), dfa_state_49.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 3, {dfa_state_50.data(), dfa_state_50.size()}},
 };
-const ::ISPA_STD::DFAAPI::CharTable<7> Parser::Lexer::dfa_table_18 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_51.data(), dfa_state_51.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_21.data(), dfa_state_21.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 3, {dfa_state_53.data(), dfa_state_53.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 2, {dfa_state_54.data(), dfa_state_54.size()}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 7> Parser::Lexer::dfa_table_18 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_51.data(), dfa_state_51.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_52.data(), dfa_state_52.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_21.data(), dfa_state_21.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 3, {dfa_state_53.data(), dfa_state_53.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 2, {dfa_state_54.data(), dfa_state_54.size()}},
 };
-const ::ISPA_STD::DFAAPI::CharTable<6> Parser::Lexer::dfa_table_19 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_55.data(), dfa_state_55.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_47.data(), dfa_state_47.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_48.data(), dfa_state_48.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 2, {dfa_state_49.data(), dfa_state_49.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 3, {dfa_state_56.data(), dfa_state_56.size()}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 6> Parser::Lexer::dfa_table_19 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_55.data(), dfa_state_55.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_47.data(), dfa_state_47.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_48.data(), dfa_state_48.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 2, {dfa_state_49.data(), dfa_state_49.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 3, {dfa_state_56.data(), dfa_state_56.size()}},
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_20 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_57.data(), dfa_state_57.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_20 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_57.data(), dfa_state_57.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_21 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_58.data(), dfa_state_58.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_21 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_58.data(), dfa_state_58.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<3> Parser::Lexer::dfa_table_22 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_59.data(), dfa_state_59.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 3> Parser::Lexer::dfa_table_22 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_59.data(), dfa_state_59.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 5> Parser::Lexer::dfa_table_23 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_61.data(), dfa_state_61.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_61.data(), dfa_state_61.size()}},
+	dfa_state_1,
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_62.data(), dfa_state_62.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_63.data(), dfa_state_63.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_63.data(), dfa_state_63.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 14> Parser::Lexer::dfa_table_24 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_64.data(), dfa_state_64.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_67.data(), dfa_state_67.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_68.data(), dfa_state_68.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_65.data(), dfa_state_65.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_66.data(), dfa_state_66.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_67.data(), dfa_state_67.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_68.data(), dfa_state_68.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 8, 0, {dfa_state_69.data(), dfa_state_69.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_70.data(), dfa_state_70.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, ::ISPA_STD::DFAAPI::null_state, {dfa_state_71.data(), dfa_state_71.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_66.data(), dfa_state_66.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_72.data(), dfa_state_72.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_70.data(), dfa_state_70.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, ::ISPA_STD::DFAAPI::null_state, {dfa_state_71.data(), dfa_state_71.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_66.data(), dfa_state_66.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_72.data(), dfa_state_72.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 7> Parser::Lexer::dfa_table_25 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_73.data(), dfa_state_73.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_74.data(), dfa_state_74.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_74.data(), dfa_state_74.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_75.data(), dfa_state_75.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_76.data(), dfa_state_76.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_76.data(), dfa_state_76.size()}},
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 25> Parser::Lexer::dfa_table_26 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_77.data(), dfa_state_77.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_78.data(), dfa_state_78.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_79.data(), dfa_state_79.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_80.data(), dfa_state_80.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_81.data(), dfa_state_81.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_83.data(), dfa_state_83.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 15, 0, {dfa_state_84.data(), dfa_state_84.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 15, 0, {dfa_state_86.data(), dfa_state_86.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 15, 0, {dfa_state_88.data(), dfa_state_88.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_78.data(), dfa_state_78.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_79.data(), dfa_state_79.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_80.data(), dfa_state_80.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_81.data(), dfa_state_81.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_82.data(), dfa_state_82.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_83.data(), dfa_state_83.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_84.data(), dfa_state_84.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_85.data(), dfa_state_85.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_86.data(), dfa_state_86.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_87.data(), dfa_state_87.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_88.data(), dfa_state_88.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_89.data(), dfa_state_89.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_90.data(), dfa_state_90.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 15, 0, {dfa_state_91.data(), dfa_state_91.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 15, 0, {dfa_state_91.data(), dfa_state_91.size()}},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_92.data(), dfa_state_92.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_93.data(), dfa_state_93.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_94.data(), dfa_state_94.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_95.data(), dfa_state_95.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_93.data(), dfa_state_93.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_94.data(), dfa_state_94.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_95.data(), dfa_state_95.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 19> Parser::Lexer::dfa_table_27 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_96.data(), dfa_state_96.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 18, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_100.data(), dfa_state_100.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_101.data(), dfa_state_101.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 13, 0, {dfa_state_102.data(), dfa_state_102.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_103.data(), dfa_state_103.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 13, 0, {dfa_state_104.data(), dfa_state_104.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 13, 0, {dfa_state_106.data(), dfa_state_106.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_96.data(), dfa_state_96.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_97.data(), dfa_state_97.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_98.data(), dfa_state_98.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_99.data(), dfa_state_99.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_100.data(), dfa_state_100.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_101.data(), dfa_state_101.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_102.data(), dfa_state_102.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_103.data(), dfa_state_103.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_104.data(), dfa_state_104.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_106.data(), dfa_state_106.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_107.data(), dfa_state_107.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_108.data(), dfa_state_108.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 13, 0, {dfa_state_109.data(), dfa_state_109.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_110.data(), dfa_state_110.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_111.data(), dfa_state_111.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_109.data(), dfa_state_109.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_110.data(), dfa_state_110.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_111.data(), dfa_state_111.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<17> Parser::Lexer::dfa_table_28 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_112.data(), dfa_state_112.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_113.data(), dfa_state_113.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_114.data(), dfa_state_114.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_116.data(), dfa_state_116.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_117.data(), dfa_state_117.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 10, 0, {dfa_state_118.data(), dfa_state_118.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 10, 0, {dfa_state_119.data(), dfa_state_119.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_120.data(), dfa_state_120.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 13, 0, {dfa_state_121.data(), dfa_state_121.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 16, 0, {dfa_state_122.data(), dfa_state_122.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_123.data(), dfa_state_123.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 17> Parser::Lexer::dfa_table_28 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_112.data(), dfa_state_112.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_113.data(), dfa_state_113.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_114.data(), dfa_state_114.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_115.data(), dfa_state_115.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_116.data(), dfa_state_116.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_117.data(), dfa_state_117.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 10, 0, {dfa_state_118.data(), dfa_state_118.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 10, 0, {dfa_state_119.data(), dfa_state_119.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_120.data(), dfa_state_120.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 13, 0, {dfa_state_121.data(), dfa_state_121.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_122.data(), dfa_state_122.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_123.data(), dfa_state_123.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<10> Parser::Lexer::dfa_table_29 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_124.data(), dfa_state_124.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_125.data(), dfa_state_125.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_126.data(), dfa_state_126.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_128.data(), dfa_state_128.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 9, 0, {dfa_state_129.data(), dfa_state_129.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_130.data(), dfa_state_130.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 10> Parser::Lexer::dfa_table_29 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_124.data(), dfa_state_124.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_125.data(), dfa_state_125.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_126.data(), dfa_state_126.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_128.data(), dfa_state_128.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 9, 0, {dfa_state_129.data(), dfa_state_129.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_130.data(), dfa_state_130.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<9> Parser::Lexer::dfa_table_30 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_131.data(), dfa_state_131.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_132.data(), dfa_state_132.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_133.data(), dfa_state_133.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_134.data(), dfa_state_134.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_135.data(), dfa_state_135.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 8, 0, {dfa_state_136.data(), dfa_state_136.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 9> Parser::Lexer::dfa_table_30 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_131.data(), dfa_state_131.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_132.data(), dfa_state_132.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_133.data(), dfa_state_133.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_134.data(), dfa_state_134.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_135.data(), dfa_state_135.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 8, 0, {dfa_state_136.data(), dfa_state_136.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_137.data(), dfa_state_137.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 25> Parser::Lexer::dfa_table_31 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_138.data(), dfa_state_138.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_4.data(), dfa_state_4.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_139.data(), dfa_state_139.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_140.data(), dfa_state_140.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_138.data(), dfa_state_138.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_4.data(), dfa_state_4.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_139.data(), dfa_state_139.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_140.data(), dfa_state_140.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_141.data(), dfa_state_141.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_142.data(), dfa_state_142.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_143.data(), dfa_state_143.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_144.data(), dfa_state_144.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 18, 0, {dfa_state_145.data(), dfa_state_145.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_146.data(), dfa_state_146.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 18, 0, {dfa_state_147.data(), dfa_state_147.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_148.data(), dfa_state_148.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 18, 0, {dfa_state_149.data(), dfa_state_149.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_142.data(), dfa_state_142.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_105.data(), dfa_state_105.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_143.data(), dfa_state_143.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_144.data(), dfa_state_144.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_145.data(), dfa_state_145.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_146.data(), dfa_state_146.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_147.data(), dfa_state_147.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_148.data(), dfa_state_148.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_149.data(), dfa_state_149.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_150.data(), dfa_state_150.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_151.data(), dfa_state_151.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 18, 0, {dfa_state_152.data(), dfa_state_152.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 18, 0, {dfa_state_152.data(), dfa_state_152.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_153.data(), dfa_state_153.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_154.data(), dfa_state_154.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_155.data(), dfa_state_155.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 25> Parser::Lexer::dfa_table_32 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_156.data(), dfa_state_156.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_157.data(), dfa_state_157.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_158.data(), dfa_state_158.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 16, 0, {dfa_state_164.data(), dfa_state_164.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 16, 0, {dfa_state_166.data(), dfa_state_166.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_167.data(), dfa_state_167.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 16, 0, {dfa_state_168.data(), dfa_state_168.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 24, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_157.data(), dfa_state_157.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_158.data(), dfa_state_158.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_159.data(), dfa_state_159.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_160.data(), dfa_state_160.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_161.data(), dfa_state_161.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_162.data(), dfa_state_162.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_163.data(), dfa_state_163.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_164.data(), dfa_state_164.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_165.data(), dfa_state_165.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_166.data(), dfa_state_166.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_167.data(), dfa_state_167.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_168.data(), dfa_state_168.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_169.data(), dfa_state_169.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_170.data(), dfa_state_170.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 16, 0, {dfa_state_171.data(), dfa_state_171.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 16, 0, {dfa_state_171.data(), dfa_state_171.size()}},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_172.data(), dfa_state_172.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_173.data(), dfa_state_173.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_174.data(), dfa_state_174.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_173.data(), dfa_state_173.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_174.data(), dfa_state_174.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 45> Parser::Lexer::dfa_table_33 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, 0, {dfa_state_175.data(), dfa_state_175.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 44, 0, {dfa_state_60.data(), dfa_state_60.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_177.data(), dfa_state_177.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_178.data(), dfa_state_178.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_179.data(), dfa_state_179.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_180.data(), dfa_state_180.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_181.data(), dfa_state_181.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_182.data(), dfa_state_182.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_183.data(), dfa_state_183.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_184.data(), dfa_state_184.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_185.data(), dfa_state_185.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_186.data(), dfa_state_186.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_187.data(), dfa_state_187.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_188.data(), dfa_state_188.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_189.data(), dfa_state_189.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_190.data(), dfa_state_190.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_191.data(), dfa_state_191.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_192.data(), dfa_state_192.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_193.data(), dfa_state_193.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_194.data(), dfa_state_194.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_196.data(), dfa_state_196.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_197.data(), dfa_state_197.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 27, 0, {dfa_state_198.data(), dfa_state_198.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_199.data(), dfa_state_199.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_200.data(), dfa_state_200.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_201.data(), dfa_state_201.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_202.data(), dfa_state_202.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_203.data(), dfa_state_203.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 39, 0, {dfa_state_204.data(), dfa_state_204.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_205.data(), dfa_state_205.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 39, 0, {dfa_state_206.data(), dfa_state_206.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_207.data(), dfa_state_207.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 39, 0, {dfa_state_208.data(), dfa_state_208.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, 0, {dfa_state_175.data(), dfa_state_175.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 44, 0, {dfa_state_60.data(), dfa_state_60.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_177.data(), dfa_state_177.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_178.data(), dfa_state_178.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_179.data(), dfa_state_179.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_180.data(), dfa_state_180.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_181.data(), dfa_state_181.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_182.data(), dfa_state_182.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_183.data(), dfa_state_183.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_184.data(), dfa_state_184.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_185.data(), dfa_state_185.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_186.data(), dfa_state_186.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_187.data(), dfa_state_187.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_188.data(), dfa_state_188.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_189.data(), dfa_state_189.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_190.data(), dfa_state_190.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_191.data(), dfa_state_191.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_192.data(), dfa_state_192.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_193.data(), dfa_state_193.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_194.data(), dfa_state_194.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_196.data(), dfa_state_196.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_197.data(), dfa_state_197.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 27, 0, {dfa_state_198.data(), dfa_state_198.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_195.data(), dfa_state_195.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_199.data(), dfa_state_199.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_200.data(), dfa_state_200.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_201.data(), dfa_state_201.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_202.data(), dfa_state_202.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_203.data(), dfa_state_203.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_204.data(), dfa_state_204.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_205.data(), dfa_state_205.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_206.data(), dfa_state_206.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_207.data(), dfa_state_207.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_208.data(), dfa_state_208.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_209.data(), dfa_state_209.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_210.data(), dfa_state_210.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 39, 0, {dfa_state_211.data(), dfa_state_211.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_212.data(), dfa_state_212.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_213.data(), dfa_state_213.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 39, 0, {dfa_state_211.data(), dfa_state_211.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_212.data(), dfa_state_212.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_213.data(), dfa_state_213.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<11> Parser::Lexer::dfa_table_34 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_215.data(), dfa_state_215.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_216.data(), dfa_state_216.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_217.data(), dfa_state_217.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 8, 0, {dfa_state_218.data(), dfa_state_218.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 8, 0, {dfa_state_219.data(), dfa_state_219.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 10, 0, {dfa_state_220.data(), dfa_state_220.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 11> Parser::Lexer::dfa_table_34 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_214.data(), dfa_state_214.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_176.data(), dfa_state_176.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_127.data(), dfa_state_127.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_215.data(), dfa_state_215.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_216.data(), dfa_state_216.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_217.data(), dfa_state_217.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 8, 0, {dfa_state_218.data(), dfa_state_218.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 8, 0, {dfa_state_219.data(), dfa_state_219.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 10, 0, {dfa_state_220.data(), dfa_state_220.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<6> Parser::Lexer::dfa_table_35 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_221.data(), dfa_state_221.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 2, 0, {dfa_state_222.data(), dfa_state_222.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 5, 0, {dfa_state_223.data(), dfa_state_223.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_224.data(), dfa_state_224.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 6> Parser::Lexer::dfa_table_35 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_221.data(), dfa_state_221.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 2, 0, {dfa_state_222.data(), dfa_state_222.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 5, 0, {dfa_state_223.data(), dfa_state_223.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_224.data(), dfa_state_224.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<8> Parser::Lexer::dfa_table_36 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_225.data(), dfa_state_225.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_226.data(), dfa_state_226.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_227.data(), dfa_state_227.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 4, 0, {dfa_state_228.data(), dfa_state_228.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 7, 0, {dfa_state_229.data(), dfa_state_229.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_230.data(), dfa_state_230.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 8> Parser::Lexer::dfa_table_36 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_225.data(), dfa_state_225.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_226.data(), dfa_state_226.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_227.data(), dfa_state_227.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_228.data(), dfa_state_228.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 7, 0, {dfa_state_229.data(), dfa_state_229.size()}},
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_230.data(), dfa_state_230.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_37 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_231.data(), dfa_state_231.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_37 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_231.data(), dfa_state_231.size()}},
+	dfa_state_1,
 };
 const ::ISPA_STD::DFAAPI::MultiTable<::Parser::Tokens, 8> Parser::Lexer::dfa_table_38 = {
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_232.data(), dfa_state_232.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 3, 0, {dfa_state_233.data(), dfa_state_233.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_234.data(), dfa_state_234.size()}},
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 3, 0, {dfa_state_233.data(), dfa_state_233.size()}},
+	dfa_state_1,
+	dfa_state_1,
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_234.data(), dfa_state_234.size()}},
 	ISPA_STD::DFAAPI::SpanMultiTableState<::Parser::Tokens>{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {dfa_state_235.data(), dfa_state_235.size()}},
-	ISPA_STD::DFAAPI::SpanEmptyTableState{},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::CharTable<2> Parser::Lexer::dfa_table_39 = {
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 1, 0, {dfa_state_236.data(), dfa_state_236.size()}},
-	ISPA_STD::DFAAPI::SpanCharTableState{ 0, 0, ::ISPA_STD::DFAAPI::null_state, {nullptr, 0}},
+const ::ISPA_STD::DFAAPI::CharTable<::Parser::Tokens, 2> Parser::Lexer::dfa_table_39 = {
+	ISPA_STD::DFAAPI::SpanCharTableState<::Parser::Tokens>{ 0, 1, 0, {dfa_state_236.data(), dfa_state_236.size()}},
+	dfa_state_1,
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_0 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_0 = {
 	dfa_table_0.data(), dfa_table_0.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_1 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_1 = {
 	dfa_table_1.data(), dfa_table_1.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_2 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_2 = {
 	dfa_table_2.data(), dfa_table_2.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_3 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_3 = {
 	dfa_table_3.data(), dfa_table_3.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_4 = {
@@ -2943,10 +2943,10 @@ const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_sp
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_5 = {
 	{ 	dfa_table_5.data(), dfa_table_5.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_6 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_6 = {
 	dfa_table_6.data(), dfa_table_6.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_7 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_7 = {
 	dfa_table_7.data(), dfa_table_7.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_8 = {
@@ -2955,43 +2955,43 @@ const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_sp
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_9 = {
 	{ 	dfa_table_9.data(), dfa_table_9.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_10 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_10 = {
 	dfa_table_10.data(), dfa_table_10.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_11 = {
 	{ 	dfa_table_11.data(), dfa_table_11.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_12 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_12 = {
 	dfa_table_12.data(), dfa_table_12.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_13 = {
 	{ 	dfa_table_13.data(), dfa_table_13.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_14 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_14 = {
 	dfa_table_14.data(), dfa_table_14.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_15 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_15 = {
 	dfa_table_15.data(), dfa_table_15.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_16 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_16 = {
 	dfa_table_16.data(), dfa_table_16.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_17 = {
 	{ 	dfa_table_17.data(), dfa_table_17.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_18 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_18 = {
 	dfa_table_18.data(), dfa_table_18.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_19 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_19 = {
 	dfa_table_19.data(), dfa_table_19.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_20 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_20 = {
 	dfa_table_20.data(), dfa_table_20.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_21 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_21 = {
 	dfa_table_21.data(), dfa_table_21.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_22 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_22 = {
 	dfa_table_22.data(), dfa_table_22.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_23 = {
@@ -3009,13 +3009,13 @@ const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_sp
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_27 = {
 	{ 	dfa_table_27.data(), dfa_table_27.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_28 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_28 = {
 	dfa_table_28.data(), dfa_table_28.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_29 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_29 = {
 	dfa_table_29.data(), dfa_table_29.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_30 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_30 = {
 	dfa_table_30.data(), dfa_table_30.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_31 = {
@@ -3027,22 +3027,22 @@ const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_sp
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_33 = {
 	{ 	dfa_table_33.data(), dfa_table_33.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_34 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_34 = {
 	dfa_table_34.data(), dfa_table_34.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_35 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_35 = {
 	dfa_table_35.data(), dfa_table_35.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_36 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_36 = {
 	dfa_table_36.data(), dfa_table_36.size()
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_37 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_37 = {
 	dfa_table_37.data(), dfa_table_37.size()
 };
 const ::ISPA_STD::DFAAPI::SpanMultiTable<::Parser::Tokens> Parser::Lexer::dfa_span_38 = {
 	{ 	dfa_table_38.data(), dfa_table_38.size() }
 };
-const ::ISPA_STD::DFAAPI::SpanCharTable Parser::Lexer::dfa_span_39 = {
+const ::ISPA_STD::DFAAPI::SpanCharTable<::Parser::Tokens> Parser::Lexer::dfa_span_39 = {
 	dfa_table_39.data(), dfa_table_39.size()
 };
 const ISPA_STD::fcdt_table<::Parser::Tokens> Parser::Lexer::first_character_dispatch_table = {
@@ -4141,2085 +4141,2085 @@ const ::Parser::Types::rule_data_block_regular_datablock_key& Parser::get::rule_
 	return std::any_cast<Types::rule_data_block_regular_datablock_key&>(rule.data());
 }
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_0 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_1 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_2 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_3 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::EmptyTableState Parser::Parser::dfa_state_4 = {
+const ::ISPA_STD::DFAAPI:: Parser::Parser::dfa_state_4 = {
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 12> Parser::Parser::dfa_state_5 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_6 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 4, false, false, 3 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 4, false, false, 3 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_7 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_8 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_9 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 10> Parser::Parser::dfa_state_10 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 3 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 3 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_11 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_12 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_13 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_14 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_15 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 4, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 4, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_16 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_17 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_18 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_19 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_20 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_21 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_22 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_23 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_24 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_25 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 0, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 0, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_26 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_27 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 2 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 2 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_28 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_29 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_30 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_31 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_32 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 1 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 12> Parser::Parser::dfa_state_33 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_34 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_21, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_21, 4, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_35 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_36 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 11, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_37 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_38 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_39 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 41, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_40 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_41 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_42 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 3, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 3, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 1 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_43 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_44 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_45 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_46 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_47 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_48 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_49 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_50 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_51 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_52 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_53 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_54 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_55 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 4, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_56 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_57 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_58 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_59 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_60 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_61 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 3, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 3, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 14> Parser::Parser::dfa_state_62 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 1, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 1, false, false, 3 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 1, false, false, 5 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 1, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 1, false, false, 6 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 1, false, false, 7 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 1, false, false, 9 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 1, false, false, 10 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, 8 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 1, false, false, 10 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 1, false, false, 9 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 1, false, false, 7 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 1, false, false, 6 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 1, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 1, false, false, 5 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 1, false, false, 3 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_63 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_64 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 1, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 1, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 15> Parser::Parser::dfa_state_65 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 48, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 46, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 45, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_15, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_15, 39, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 45, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 46, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 48, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_66 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_67 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_68 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 19> Parser::Parser::dfa_state_69 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 58, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_70 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_71 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 68, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_72 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 17> Parser::Parser::dfa_state_73 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 83, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 81, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 79, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 77, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 75, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 73, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 71, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 69, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 71, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 73, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 75, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 77, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 79, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 81, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 83, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_74 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_75 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_76 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 87, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 85, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 87, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_77 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_78 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 92, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 89, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 89, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 92, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_79 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 94, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 94, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_80 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 98, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 96, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 96, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 98, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_81 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_82 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 19> Parser::Parser::dfa_state_83 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 1> Parser::Parser::dfa_state_84 = {
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_85 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_86 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 100, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 100, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_87 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_88 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_89 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_90 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_91 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_92 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_93 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, 11 }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_94 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 37, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_95 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 12, false, false, 0 }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_96 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_97 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_98 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 47, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_99 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 49, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 19, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_100 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 51, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_101 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 53, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_102 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 55, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_103 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 57, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_104 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 59, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_105 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 61, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_106 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 63, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_107 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 65, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_108 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 67, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
-};
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_109 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
-const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_110 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 70, false, false, ::ISPA_STD::DFAAPI::null_state },
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_94 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_95 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_96 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_97 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_98 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 47, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_99 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 49, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_100 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 51, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_101 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 53, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_102 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 55, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_103 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 57, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_104 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 59, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_105 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 61, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_106 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 63, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_107 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 65, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_108 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 67, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_109 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
+};
+const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_110 = {
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 70, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_111 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 72, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 72, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_112 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 74, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 74, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_113 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_114 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 78, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 78, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_115 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 80, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 80, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_116 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 82, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 82, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_117 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 84, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 84, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_118 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 86, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 86, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_119 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 88, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 88, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 21> Parser::Parser::dfa_state_120 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 90, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 58, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 90, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_121 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 93, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 93, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_122 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 21> Parser::Parser::dfa_state_123 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 97, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 58, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 56, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 4, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 97, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_124 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 99, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 99, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_125 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 101, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 8, false, false, 11 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 101, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_126 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_8, 3, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NAME, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::SPACEMODE, 1, false, false, 3 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::SPACEMODE, 1, false, false, 3 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NAME, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_8, 3, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_127 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_128 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_129 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_8, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_8, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 15> Parser::Parser::dfa_state_130 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 48, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 46, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 11, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 45, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_15, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_15, 39, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 45, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 11, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 46, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 48, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_131 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_132 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_133 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 53, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 51, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 53, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_134 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 6, false, false, 2 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 6, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_135 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 59, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 58, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 55, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 55, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 58, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 59, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_136 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 61, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 18, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 61, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_137 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 66, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 63, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 14, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 63, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 66, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_138 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, 2 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_139 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 8, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 8, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_140 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_141 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 1, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 1, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 14> Parser::Parser::dfa_state_142 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_143 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 68, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 68, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 20> Parser::Parser::dfa_state_144 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 100, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 98, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 96, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 94, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 92, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 88, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 86, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 84, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 82, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 80, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 78, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 74, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 70, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 72, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 70, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 74, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 78, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 80, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 82, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 84, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 86, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 88, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 92, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 94, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 96, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 98, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 100, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_145 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 17> Parser::Parser::dfa_state_146 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 108, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 106, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 102, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 104, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 102, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 106, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 108, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_147 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_148 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_149 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_150 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_151 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_152 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 14> Parser::Parser::dfa_state_153 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 11, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 10, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 9, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 9, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 10, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_17, 11, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_18, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_154 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_155 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_156 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_157 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_158 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_159 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 13> Parser::Parser::dfa_state_160 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 14, false, false, 2 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 14> Parser::Parser::dfa_state_161 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 127, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 125, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 123, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 121, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 119, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 117, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 115, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 111, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 113, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 111, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 115, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 117, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 119, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 121, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 123, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 125, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 127, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 18> Parser::Parser::dfa_state_162 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 155, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 153, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 151, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 149, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 146, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 144, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 142, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 140, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 138, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 136, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 132, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 134, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 128, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 130, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 128, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 134, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 132, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 136, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 138, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 140, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 142, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 144, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 146, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 149, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 151, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 153, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 155, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 14> Parser::Parser::dfa_state_163 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_164 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_165 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 163, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 161, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 159, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 157, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 157, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 159, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 161, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 163, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 8> Parser::Parser::dfa_state_166 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_167 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_168 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 8> Parser::Parser::dfa_state_169 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_170 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 47, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 47, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_171 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 10, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 49, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 49, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 10, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 4 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_172 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 50, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 50, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_173 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 52, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 52, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_174 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 54, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 13> Parser::Parser::dfa_state_175 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 57, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 56, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 56, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 57, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_176 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 60, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, 4 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 16, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 60, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_177 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 62, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 62, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 13> Parser::Parser::dfa_state_178 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 65, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 64, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 65, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_179 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 67, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, 4 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 67, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_180 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 69, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 14, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_7, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 69, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_181 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 71, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 71, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_182 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 73, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 73, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_183 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 75, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 75, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_184 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 77, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 77, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_185 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 79, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 79, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_186 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 81, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 81, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_187 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 83, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 83, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_188 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 85, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 85, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_189 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 87, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 87, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_190 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 90, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 89, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 90, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_191 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 36, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_192 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 93, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 93, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_193 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_194 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 97, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 97, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_195 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 99, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 99, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_196 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 101, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 101, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_197 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 103, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 103, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_198 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 105, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 105, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_199 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 107, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 107, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_200 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 109, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 109, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_201 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_202 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 112, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 112, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_203 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 114, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 114, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_204 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 116, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 116, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_205 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 118, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 118, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_206 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 120, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 120, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_207 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 122, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 122, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_208 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 124, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 124, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_209 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 126, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 126, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_210 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_211 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 129, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 129, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_212 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 131, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 131, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_213 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 133, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 133, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_214 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 135, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 135, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_215 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 137, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 137, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_216 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 139, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 139, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_217 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 141, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 141, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_218 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 143, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 143, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 12> Parser::Parser::dfa_state_219 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 123, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 127, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 125, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 117, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 115, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 121, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 119, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 111, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 113, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 111, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 119, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 121, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 115, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 117, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 125, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 127, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 123, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_220 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 145, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 145, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 19> Parser::Parser::dfa_state_221 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 148, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 98, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 96, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 92, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 147, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 88, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 84, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 86, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 82, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 80, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 78, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 74, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 70, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_HEX, 72, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 70, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_NOSPACE, 76, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::QUESTION_MARK, 74, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 78, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_OP, 80, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_ESCAPED, 82, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 86, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 84, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 88, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_23, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 147, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 92, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_BIN, 96, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 91, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::rule_CSEQUENCE, 98, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 148, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_222 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 95, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 1> Parser::Parser::dfa_state_223 = {
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 101, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_224 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 150, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 150, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_225 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 152, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 152, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_226 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 154, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 110, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 154, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_227 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 156, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 156, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 6> Parser::Parser::dfa_state_228 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 158, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 158, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 6> Parser::Parser::dfa_state_229 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 160, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 160, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 6> Parser::Parser::dfa_state_230 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 162, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::LINEAR_COMMENT, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 162, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_5, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_12, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 27, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_231 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 164, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 164, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 8> Parser::Parser::dfa_state_232 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 2 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 3 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 3 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 3, false, false, 4 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 3, false, false, 2 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_233 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 6 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_234 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 6 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, 6 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, 6 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 6 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_235 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 9> Parser::Parser::dfa_state_236 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 18, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_237 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DOT, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_238 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_239 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_240 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, 5 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, 5 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_241 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, 5 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 3, false, false, 5 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 10> Parser::Parser::dfa_state_242 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 6 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 6 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 6 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_243 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_244 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 3, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_245 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 6 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 6 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_246 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_247 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 1, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_248 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_249 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_250 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_251 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 1, false, false, 2 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 1, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 1, false, false, 2 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_252 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_253 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 1, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_254 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_255 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 2, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_256 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_257 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 5, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_258 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_259 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 11, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_260 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_21, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_21, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_261 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_262 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_263 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 10> Parser::Parser::dfa_state_264 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 41, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 41, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_265 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 11, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 43, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_266 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_267 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_268 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_269 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 19, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_270 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 21, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_271 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 23, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_272 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_273 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_274 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_275 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_276 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 35, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_277 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_278 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_279 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 42, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 7> Parser::Parser::dfa_state_280 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 12, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 44, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 1> Parser::Parser::dfa_state_281 = {
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 12> Parser::Parser::dfa_state_282 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 17, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 18, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 17, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 19, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 21, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 22, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_283 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 3, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 2, false, false, 1 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_284 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_285 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 29, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 8> Parser::Parser::dfa_state_286 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 31, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_287 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 33, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_288 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 37, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 35, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 37, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_289 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 5, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_4, 5, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 8, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_290 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 9, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_291 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 11> Parser::Parser::dfa_state_292 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_0, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::NUMBER, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AT, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::STRING, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 39, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 9, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 8, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 10, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_293 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_294 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 16, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 16, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_295 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_296 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_6, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 15, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 10> Parser::Parser::dfa_state_297 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::PLUS, 11, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MODULO, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::DIVIDE, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MINUS, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_COMPARE_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 12, false, false, 0 }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_298 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_ASSIGNMENT_OP, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 20, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 1> Parser::Parser::dfa_state_299 = {
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 5> Parser::Parser::dfa_state_300 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 24, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 0 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 2, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::BOOLEAN, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_TYPE, 2, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 23, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 24, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 4> Parser::Parser::dfa_state_301 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 14, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 12, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_302 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 26, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_303 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 28, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_304 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_305 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 32, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_306 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_2, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 34, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_307 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 36, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_308 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_14, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 38, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 6> Parser::Parser::dfa_state_309 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 27, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_3, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::cll_LOGICAL_OP, 11, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 40, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_20, 25, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_13, 13, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_310 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 5, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_19, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 30, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_311 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 1 },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 5, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::MULTIPLE, 1, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 6, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_312 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_9, 2, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_9, 2, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_313 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 1 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 1 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 3, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_314 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 3> Parser::Parser::dfa_state_315 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state },
 	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_9, 3, false, false, 1 },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::AUTO_1, 4, false, false, ::ISPA_STD::DFAAPI::null_state }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 1, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTableState<::Parser::Tokens, 2> Parser::Parser::dfa_state_316 = {
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state },
-	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 }
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::ID, 2, false, false, 0 },
+	ISPA_STD::DFAAPI::TokenTransition<::Parser::Tokens> { Tokens::__WHITESPACE, 7, false, false, ::ISPA_STD::DFAAPI::null_state }
 };
 const ::ISPA_STD::DFAAPI::TokenTable<::Parser::Tokens, 36> Parser::Parser::dfa_table_0 = {
 	ISPA_STD::DFAAPI::SpanTokenTableState<::Parser::Tokens>{ 0, 4, 0, {dfa_state_0.data(), dfa_state_0.size()}},

@@ -11,9 +11,9 @@ void StateArrayBuilder::output() {
             : std::to_string(index);
     };
     std::size_t count = 0;
-    for (const auto &t : data.first) {
+    for (const auto &t : data.state_set) {
         auto type = DFA::getStateType(t, dfa_compatible_table, isToken);
-        auto type_str = DFATypes::getStateTypeStr(t, dfa_compatible_table, isToken, namespace_name, t.size());
+        auto type_str = DFATypes::getStateTypeStr(dfas.getDFAS().at(data.state_in_dfa_location_map.at(count)).getType(isToken), type, namespace_name, t.size());
         std::ostringstream out_content;
         std::size_t transition_index = 0;
         if (type != DFA::DfaType::NONE) {
@@ -60,7 +60,10 @@ void StateArrayBuilder::output() {
 
 void StateArrayBuilder::outputHeader() {
     std::size_t count = 0;
-    for (const auto &t : data.first) {
-        out << "\t\tstatic const ISPA_STD::DFAAPI::" << DFATypes::getStateTypeStr(t, dfa_compatible_table, isToken, namespace_name, t.size()) << " dfa_state_" << count++ << ";\n";
+    for (const auto &t : data.state_set) {
+        auto str = DFATypes(dfas.getDFAS().at(data.state_in_dfa_location_map.at(count))).getStateTypeStr(t, dfa_compatible_table, isToken, namespace_name, t.size());
+        if (str == "")
+            continue;
+        out << "\t\tstatic const ISPA_STD::DFAAPI::" << str << " dfa_state_" << count++ << ";\n";
     }
 }

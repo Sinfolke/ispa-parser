@@ -243,9 +243,6 @@ void DFA::unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<M
         const auto &l = lookaheads[i];
         logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
-            cpuf::printf("dfa_index_to_empty_state_map: {}", dfa_index_to_empty_state_map);
-            cpuf::printf("dfa_empty_state_map: {}", dfa_empty_state_map);
-            cpuf::printf("Accessing index {}", i);
             const auto else_goto = dfa_index_to_empty_state_map[i];
             mstates[current_dfa_state].else_goto = else_goto;
             mstates[current_dfa_state].else_goto_accept = val[i].value.accept_index;

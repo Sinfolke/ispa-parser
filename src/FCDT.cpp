@@ -4,10 +4,10 @@ import logging;
 import cpuf.printf;
 import dstd;
 import std;
-void FCDT::skipNospace(stdu::vector<AST::RuleMember>::iterator &it, const stdu::vector<AST::RuleMember>::iterator &end) {
+void FCDT::skipNospace(stdu::vector<AST::RuleMember>::const_iterator &it, const stdu::vector<AST::RuleMember>::const_iterator &end) {
     while (it != end) {
         if (it->isNospace()) {
-            it++;
+            ++it;
             continue;
         }
         break;
@@ -17,8 +17,8 @@ void FCDT::skipNospace(stdu::vector<AST::RuleMember>::iterator &it, const stdu::
 
 auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char> {
     if (mem.isGroup()) {
-        auto it = mem.getGroup().values.begin();
-        skipNospace(it, mem.getGroup().values.end());
+        auto it = mem.getGroup().values.cbegin();
+        skipNospace(it, mem.getGroup().values.cend());
         return determineFirstCharacter(*it);
     }
     if (mem.isOp()) {
@@ -68,8 +68,8 @@ void FCDT::build() {
     for (const auto &rule : ast) {
         if (corelib::text::isLower(rule.first.back()))
             continue;
-        auto it = rule.second.rule_members.begin();
-        skipNospace(it, rule.second.rule_members.end());
+        auto it = rule.second.rule_members.cbegin();
+        skipNospace(it, rule.second.rule_members.cend());
         for (const auto &c : determineFirstCharacter(*it)) {
             table[static_cast<unsigned char>(c)].push_back(rule.first);
         }

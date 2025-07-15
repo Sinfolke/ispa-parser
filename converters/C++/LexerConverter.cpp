@@ -32,8 +32,8 @@ void LexerConverter::addStandardFunctionsLexer() const {
 void LexerConverter::output() {
     // 1. print DFAS
     StateArrayBuilder dfa_states(out, true, state_set, namespace_name, lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), "Lexer");
-    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_table", true);
-    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), state_set.first, state_set.second, namespace_name, "Lexer", "dfa_func_table", true);
+    DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), state_set, namespace_name, "Lexer", "dfa_table", true);
+    DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), state_set, namespace_name, "Lexer", "dfa_func_table", true);
     DFASpans dfa_spans(out, namespace_name, lexer_data.getDFAS());
     dfa_states.output();
     dfa_converter.create();

@@ -53,11 +53,11 @@ void LexerBuilder::build() {
     function_ir = std::move(LLIR::IR(functions, function_dfas));
 }
 
-auto LexerBuilder::getStateSet() const -> std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> {
+auto LexerBuilder::getStateSet() const -> DFAS::StateSet_t {
     utype::unordered_map<DFA::Transitions, std::size_t> state_to_map;
 
     std::size_t dfa_count = 0;
-    auto [state, location_in_set] = dfas.getStateSet();
-    function_ir.getDfas().getStateSet(state, location_in_set);
-    return {state, location_in_set};
+    auto state_set = dfas.getStateSet();
+    function_ir.getDfas().getStateSet(state_set);
+    return state_set;
 }

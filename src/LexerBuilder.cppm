@@ -44,6 +44,6 @@ public:
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
 
-    auto getStateSet() const -> std::pair<DFAS::StateSet, DFAS::StateSetLocationMap>;
+    auto getStateSet() const -> DFAS::StateSet_t;
 
 };

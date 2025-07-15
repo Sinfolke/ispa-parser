@@ -186,9 +186,9 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
 //     }
 // )";
 }
-void LLHeader::createDFAVars(const DFAS &dfas, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair, std::ostringstream &out) const {
+void LLHeader::createDFAVars(const DFAS &dfas, const DFAS::StateSet_t &states_set, std::ostringstream &out) const {
     std::size_t count = 0;
-    StateArrayBuilder builder(out, isToken, states_pair, namespace_name, dfas, nullptr, "Parser");
+    StateArrayBuilder builder(out, isToken, states_set, namespace_name, dfas, nullptr, "Parser");
     DFASpans dfa_spans(out, namespace_name, dfas);
 
     builder.outputHeader();
@@ -257,12 +257,12 @@ void LLHeader::addConstructorsLexer(std::ostringstream &out) const {
 void LLHeader::close_parser_header(std::ostringstream &out) const {
     out << "\t};\n";
 }
-void LLHeader::create_parser_header(std::ostringstream &out, const DFAS &dfas, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair) const {
+void LLHeader::create_parser_header(std::ostringstream &out, const DFAS &dfas, const DFAS::StateSet_t &states_set) const {
     out << "\tclass Parser : public ISPA_STD::LLParser_base<Tokens, Rules> {\n"
         << "\t\tpublic:";
         addStandardFunctionsParser(out);
     out << "\t\tprivate:\n";
-        createDFAVars(dfas, states_pair, out);
+        createDFAVars(dfas, states_set, out);
     out
         << "\t\t\tRule_res getRule(Lexer::lazy_iterator&);\n"
         << "\t\t\tRule_res getRule(Lexer::iterator&);\n"

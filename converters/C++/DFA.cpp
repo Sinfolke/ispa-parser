@@ -21,27 +21,32 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     std::size_t state_count = 0;
 
     for (const auto &state : states) {
-        std::string state_name = "dfa_state_" + std::to_string(location_map.at({count, state_count++}));
+        std::string state_name = "dfa_state_" + std::to_string(state_set.location_in_set.at(std::make_pair(count, state_count++)));
         auto state_type = DFA::getStateType(state.transitions, dfa_compatible_table, isToken);
-        auto state_type_str = DFATypes::getSpanStateTypeStr(state.transitions, dfa_compatible_table, namespace_name, isToken);
-        if (state_type == DFA::DfaType::NONE) {
-            // empty state - initialize with empty type or with SpanEmptyState
-            if (type != DFA::DfaType::Multi) {
-                state_type_str = DFATypes::getSpanStateTypeStr(type, namespace_name);
-                state_type = type;
+        auto state_type_str = DFATypes(dfa).getSpanStateTypeStr(state.transitions, dfa_compatible_table, namespace_name, isToken);
+
+        if (state_type == DFA::DfaType::NONE && type != DFA::DfaType::Token) {
+            table_out << '\t' << state_name << ",\n";
+        } else {
+            if (state_type == DFA::DfaType::NONE) {
+                // empty state - initialize with empty type or with SpanEmptyState
+                if (type != DFA::DfaType::Multi) {
+                    state_type_str = DFATypes(dfa).getSpanStateTypeStr(type, type, namespace_name);
+                    state_type = type;
+                }
             }
-        }
             table_out << "\tISPA_STD::DFAAPI::Span" << state_type_str;
             if (state_type != DFA::DfaType::NONE) {
                 table_out << "{ "
                           << number_or_null(state.any_goto) << ", "
                           << number_or_null(state.else_goto) << ", "
                           << number_or_null(state.else_goto_accept)
-                          << ", "
-                          << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
+                          << ", ";
+                table_out << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
                 table_out << "},\n";
             } else {
                 table_out << "{},\n";
+            }
         }
     }
 

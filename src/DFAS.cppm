@@ -7,6 +7,12 @@ export class DFAS {
 public:
     using StateSet = stdu::vector<DFA::Transitions>;
     using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
+    using StateInDfaLocationMap = utype::unordered_map<std::size_t, std::size_t>;
+    struct StateSet_t {
+        StateSet state_set;
+        StateSetLocationMap location_in_set;
+        StateInDfaLocationMap state_in_dfa_location_map;
+    };
 private:
     stdu::vector<DFA> dfas;
 public:
@@ -14,8 +20,8 @@ public:
     DFAS(stdu::vector<DFA> &&dfas) : dfas(std::move(dfas)) {};
     DFAS() {}
 
-    void getStateSet(StateSet &state_set, StateSetLocationMap &location_in_set) const;
-    auto getStateSet() const -> std::pair<StateSet, StateSetLocationMap>;
+    void getStateSet(StateSet_t &state_set) const;
+    auto getStateSet() const -> StateSet_t;
     auto& getDFAS() const {
         return dfas;
     }

@@ -315,6 +315,11 @@ target_sources(ispa-converter-cpp
 # =============================================
 # Link Dependencies
 # =============================================
+# link libc++ if using clang
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_link_libraries(ispa PRIVATE c++ c++abi m)
+endif()
+
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
 add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
@@ -325,6 +330,7 @@ target_link_libraries(ispa PRIVATE
         #fmt::fmt
         #fmt_m
 )
+
 # =============================================
 # Testing Configuration
 # =============================================

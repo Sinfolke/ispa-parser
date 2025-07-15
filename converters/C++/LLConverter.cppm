@@ -33,7 +33,7 @@ public:
     }
     ~LLConverter() {}
     void convertData(std::ostringstream &out);
-    void addDFATables(std::ostringstream &out, const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &states_pair);
+    void addDFATables(std::ostringstream &out, const DFAS::StateSet_t &states_pair);
     void writeRules(std::ostringstream &out);
     void addHeader(std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);

@@ -263,7 +263,10 @@ class vector {
          */
         explicit iterator_base(const vector<T> &vec, Pointer p) : ptr(p), vec(&vec), modification_count(vec.modification_count) {}
         iterator_base(const iterator_base &it) : ptr(it.ptr), vec(it.vec), modification_count(it.modification_count) {}
-
+        template<typename OtherPointer, typename OtherReference>
+        iterator_base(const iterator_base<OtherPointer, OtherReference> &it)
+        requires std::is_convertible_v<Pointer, OtherPointer>
+            : ptr(it.ptr), vec(it.vec), modification_count(it.modification_count) {}
         reference operator*() const {
             check();
             return *ptr;

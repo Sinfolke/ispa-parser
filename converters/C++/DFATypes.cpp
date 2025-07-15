@@ -6,7 +6,7 @@ import std;
 auto DFATypes::getTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return std::string("CharTable<") + std::to_string(size) + std::string(">");
+            return std::string("CharTable<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::Token:
             return std::string("TokenTable<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::CallableToken:
@@ -24,7 +24,7 @@ auto DFATypes::getTypeStr(bool isToken, const std::string &namespace_name, std::
 auto DFATypes::getSpanTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return "SpanCharTable";
+            return "SpanCharTable<::"  + namespace_name + "::Tokens>";
         case DFA::DfaType::Token:
             return "SpanTokenTable<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -42,7 +42,7 @@ auto DFATypes::getSpanTypeStr(bool isToken, const std::string &namespace_name) c
 auto DFATypes::getTransitionsTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return "CharTableTransition";
+            return "CharTableTransition<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Token:
             return "TokenTransition<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -59,7 +59,7 @@ auto DFATypes::getTransitionsTypeStr(bool isToken, const std::string &namespace_
 auto DFATypes::getTransitionKeyTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return std::string("CharTableTransition");
+            return std::string("CharTableTransition") + namespace_name + "::Tokens>";
         case DFA::DfaType::Token:
             return std::string("TokenTransition<::") + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -74,10 +74,10 @@ auto DFATypes::getTransitionKeyTypeStr(const NFA::TransitionKey &transition_key,
 auto DFATypes::getStatesTypeStr(bool isToken, const std::string &namespace_name, std::size_t count) const -> std::string {
     return getTypeStr(isToken, namespace_name, count) + "State";
 }
-auto DFATypes::getStateTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string {
+auto DFATypes::getStateTypeStr(DFA::DfaType table_type, DFA::DfaType type, const std::string &namespace_name, std::size_t size) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return std::string("CharTableState<") + std::to_string(size) + std::string(">");
+            return std::string("CharTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::Token:
             return std::string("TokenTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::CallableToken:
@@ -85,18 +85,18 @@ auto DFATypes::getStateTypeStr(DFA::DfaType type, const std::string &namespace_n
         case DFA::DfaType::Multi:
             return std::string("MultiTableState<::") + namespace_name + "::Tokens, " + std::to_string(size) + std::string(">");
         case DFA::DfaType::NONE:
-            return "EmptyTableState";
+            return getEmptyTypeStr(table_type, namespace_name);
         default:
             throw Error("Undefined DFA type");
     }
 }
 auto DFATypes::getStateTypeStr(const DFA::Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken, const std::string &namespace_name, std::size_t size) -> std::string {
-    return getStateTypeStr(DFA::getStateType(transitions, dct, isToken), namespace_name, size);
+    return getStateTypeStr(dfa.getType(isToken), DFA::getStateType(transitions, dct, isToken), namespace_name, size);
 }
-auto DFATypes::getSpanStateTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
+auto DFATypes::getSpanStateTypeStr(DFA::DfaType table_type, DFA::DfaType type, const std::string &namespace_name) -> std::string {
     switch (type) {
         case DFA::DfaType::Char:
-            return "CharTableState";
+            return "CharTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Token:
             return "TokenTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
@@ -104,11 +104,23 @@ auto DFATypes::getSpanStateTypeStr(DFA::DfaType type, const std::string &namespa
         case DFA::DfaType::Multi:
             return "MultiTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::NONE:
-            return "EmptyTableState";
+            return getEmptyTypeStr(table_type, namespace_name);
         default:
             throw Error("Undefined DFA type");;
     }
 }
 auto DFATypes::getSpanStateTypeStr(const DFA::Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, const std::string &namespace_name, bool isToken) -> std::string {
-    return getSpanStateTypeStr(DFA::getStateType(transitions, dct, isToken), namespace_name);
+    return getSpanStateTypeStr(dfa.getType(isToken), DFA::getStateType(transitions, dct, isToken), namespace_name);
+}
+auto DFATypes::getEmptyTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string {
+    switch (type) {
+        case DFA::DfaType::Char:
+            return "CharEmptyState<::" + namespace_name + "::Tokens>";
+        case DFA::DfaType::CallableToken:
+            return "CallableTokenTableState<::" + namespace_name + "::Tokens>";
+        case DFA::DfaType::Multi:
+            return "MultiTableState<::" + namespace_name + "::Tokens>";
+        default:
+            return "";
+    }
 }

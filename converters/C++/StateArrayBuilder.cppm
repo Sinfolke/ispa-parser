@@ -6,7 +6,7 @@ import LexerBuilder;
 import std;
 export class StateArrayBuilder {
     std::ostringstream &out;
-    const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &data;
+    const DFAS::StateSet_t &data;
     bool isToken;
     const std::string &namespace_name;
     const DFAS dfas;
@@ -18,7 +18,7 @@ public:
     StateArrayBuilder(
         std::ostringstream &out,
         bool isToken,
-        const std::pair<DFAS::StateSet, DFAS::StateSetLocationMap> &data,
+        const DFAS::StateSet_t &data,
         const std::string &namespace_name,
         const DFAS &dfas,
         const LexerBuilder::DfaCompatibleTable *compatible_table,
