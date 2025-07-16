@@ -7,8 +7,10 @@ void DFAS::getStateSet(StateSet_t &state_set) const {
     for (const auto &dfa : dfas) {
         std::size_t state_count = 0;
         for (const auto &state : dfa.getStates()) {
-            if (!isToken && state.transitions.empty())
+            if (!isToken && state.transitions.empty()) {
+                state_count++;
                 continue;
+            }
             auto type = dfa.getType(isToken);
             auto it = state_to_map.find(std::make_pair(state, type));
             std::size_t index;

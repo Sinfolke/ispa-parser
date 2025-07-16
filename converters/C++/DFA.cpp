@@ -21,7 +21,10 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     std::size_t state_count = 0;
 
     for (const auto &state : states) {
-        std::string state_name = "dfa_state_" + std::to_string(state_set.location_in_set.at(std::make_pair(count, state_count++)));
+        auto find = state_set.location_in_set.find(std::make_pair(count, state_count++));
+        if (find == state_set.location_in_set.end())
+            continue;
+        std::string state_name = "dfa_state_" + std::to_string(find->second);
         auto state_type = DFA::getStateType(state.transitions, dfa_compatible_table, isToken);
         auto state_type_str = DFATypes(dfa).getSpanStateTypeStr(state.transitions, dfa_compatible_table, namespace_name, isToken);
 
