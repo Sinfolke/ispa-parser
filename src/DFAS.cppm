@@ -15,7 +15,7 @@ public:
     };
 private:
     stdu::vector<DFA> dfas;
-    bool isToken;
+    bool isToken = true;
 public:
     DFAS(bool isToken, const stdu::vector<DFA> &dfas) : isToken(isToken), dfas(dfas) {};
     DFAS(bool isToken, stdu::vector<DFA> &&dfas) : isToken(isToken), dfas(std::move(dfas)) {};

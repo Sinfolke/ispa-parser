@@ -17,23 +17,24 @@ public:
         std::size_t next;
         bool new_cst_node = false;
         bool new_member = false;
-        std::size_t accept_index = NFA::NO_ACCEPT;
+        std::size_t new_group = NFA::NULL_STATE;
+        std::size_t group_close = NFA::NULL_STATE;
+        std::size_t accept_index = NFA::NULL_STATE;
         bool operator==(const TransitionValue &other) const = default;
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(next, new_cst_node, new_member, accept_index);
+            return std::tie(next, new_cst_node, new_member, new_group, group_close, accept_index);
         }
     };
     struct MultiTransitionValue {
-        static constexpr auto invalid_index = std::numeric_limits<std::size_t>::max();
         TransitionValue value;
-        std::size_t index = invalid_index;
+        std::size_t dfa_merge_conflict = NFA::NULL_STATE;
         bool operator==(const MultiTransitionValue &second) const = default;
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(value, index);
+            return std::tie(value, dfa_merge_conflict);
         }
     };
     template<typename Transition>
@@ -42,7 +43,7 @@ public:
         Transition transitions;
         std::size_t else_goto = 0;
         std::size_t any_goto = 0;
-        std::size_t else_goto_accept = NFA::NO_ACCEPT;
+        std::size_t else_goto_accept = NFA::NULL_STATE;
         stdu::vector<std::string> rule_name;
         NFA::DataBlock dtb;
         bool operator==(const State &other) const = default;
@@ -69,6 +70,7 @@ private:
     stdu::vector<SingleState> states;
     DfaEmptyStateMap dfa_empty_state_map;
     DfaIndexToEmptyStateMap dfa_index_to_empty_state_map;
+    std::size_t empty_state = NFA::NULL_STATE;
     auto epsilonClosure(const stdu::vector<std::size_t>& state_indices) const -> stdu::vector<std::size_t>;
     auto move(const stdu::vector<std::size_t> &states, const NFA::TransitionKey &symbol) const -> stdu::vector<std::size_t>;
     auto leadToEmptyState(std::size_t current, std::unordered_set<std::size_t> &visited) const -> std::size_t;
@@ -78,7 +80,7 @@ private:
     bool includesWhitespace(const MultiState &state) const;
     bool isTerminateState(const MultiState &state) const;
     void removeDublicateStates();
-    void unrollMultiTransition(const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
+    void unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
     void unrollMultiTransitionPaths();
     void switchToSingleState();
     void accumulateTerminalStates(std::size_t i, std::unordered_set<std::size_t> &terminals, std::unordered_set<std::size_t> &visited);
@@ -86,8 +88,8 @@ private:
     void WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable);
     void removeUnreachableStates();
     void removeSelfLoop();
-    void buildDfaIndexToEmptyStateMap(const stdu::vector<DFA> &dfas);
-    void buildDfaEmptyStateMap(const stdu::vector<DFA> &dfas);
+    void buildDfaIndexToEmptyStateMap(stdu::vector<DFA> &dfas);
+    void buildDfaEmptyStateMap(stdu::vector<DFA> &dfas);
     static auto mergeTwoDFA(DFA &first, const DFA &second, std::size_t index);
     auto mergeDFAS(stdu::vector<DFA> &dfas) -> DFA;
 public:

@@ -34,7 +34,7 @@ LLIR::DataBlockList LLIR::IR::getDataBlocks(bool isToken) const {
         } else {
             if (corelib::text::isUpper(name.back())) continue;
         }
-        list[name] = {data_block};
+        list[name] = data_block;
     }
     return list;
 }

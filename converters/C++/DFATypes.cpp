@@ -124,3 +124,16 @@ auto DFATypes::getEmptyTypeStr(DFA::DfaType type, const std::string &namespace_n
             return "";
     }
 }
+
+auto DFATypes::getDataVectorType(const DFA::DfaType type, const std::string &namespace_name) -> std::string {
+    switch (type) {
+        case DFA::DfaType::Char:
+            return "CharTableDataVector";
+        case DFA::DfaType::CallableToken:
+            return std::string("CallableTokenDataVector<::") + namespace_name + "::Tokens>";
+        case DFA::DfaType::Multi:
+            return std::string("MultiTableDataVector<::") + namespace_name + "::Tokens>";
+        default:
+            throw Error("Undefined Data vector type");
+    }
+}

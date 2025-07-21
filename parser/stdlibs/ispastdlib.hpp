@@ -59,7 +59,7 @@
 namespace ISPA_STD {
 /**
  * @brief An error thrown when you're trying to access some features required with tokens only
- * 
+ *
  */
 class Lexer_No_Tokens_exception : public std::exception {
     public:
@@ -97,7 +97,7 @@ class node_exception : public std::exception {
             mes =
             ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method '";
             mes += method;
-            mes += 
+            mes +=
             "' required it.\n"
             _ISC_INTERNAL_ERROR_MARK "\n"
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
@@ -107,11 +107,11 @@ class node_exception : public std::exception {
             "When they are called but the object is still uninitialised you get this error\n";
         }
         void fill() {
-            mes = 
+            mes =
             ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method required it.\n"
             _ISC_INTERNAL_ERROR_MARK "\n"
             "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
-            "But their methods like line etc. require those properties." 
+            "But their methods like line etc. require those properties."
             "When they are called but the object is still uninitialised you get this error\n"
             ;
         }
@@ -196,8 +196,8 @@ public:
 
     /**
      * @brief Get the end position based on startpos and length
-     * 
-     * @return long long 
+     *
+     * @return long long
      */
     std::size_t endpos() const {
         if (_startpos == std::string::npos || _end == nullptr || _start == nullptr)
@@ -237,7 +237,7 @@ public:
         return _empty;
     }
     /**
-     * get start position 
+     * get start position
      */
     auto startpos() const {
         return _startpos;
@@ -395,6 +395,27 @@ namespace DFAAPI {
     struct SpanMultiTable {
         Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
+}
+namespace DFA_STORE_API {
+    template<typename STORAGE_T, typename DATAVECTOR>
+    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
+        auto start = mb[pos];
+        auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
+        auto offset = end - start;
+        if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
+            storage.assign(dv.begin() + start, dv.begin() + end);
+        } else {
+            if (offset > 1)
+                throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
+            if (offset) {
+                storage = dv[start];
+            }
+        }
+    }
+    template<typename T, typename DV>
+    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DV &dv) {
+        auto start = mb[pos];
+    }
 }
 template<typename TOKEN_T>
 using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCallableTokenTable<TOKEN_T>, DFAAPI::SpanCharTable<TOKEN_T>, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;

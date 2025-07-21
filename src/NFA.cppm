@@ -6,10 +6,7 @@ import dstd;
 
 export class NFA {
 public:
-    static constexpr auto NO_ACCEPT = std::numeric_limits<std::size_t>::max();
-    static constexpr auto NO_ANY = std::numeric_limits<std::size_t>::max();
-    static constexpr auto NO_STATE_RANGE = std::numeric_limits<std::size_t>::max();
-    static constexpr auto NO_EPSILON = std::numeric_limits<std::size_t>::max();
+    static constexpr auto NULL_STATE = std::numeric_limits<std::size_t>::max();
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
     enum class StoreCstNode {
         CST_NODE, CST_GROUP
@@ -29,13 +26,15 @@ public:
         std::size_t next;
         bool new_cst_node = false;
         bool new_member = false;
+        std::size_t new_group = NULL_STATE;
+        std::size_t group_close = NULL_STATE;
     };
     struct state {
         utype::unordered_map<TransitionKey, TransitionValue> transitions;
         stdu::vector<char> skip_chars;
-        std::size_t accept_index = NO_ACCEPT;
+        std::size_t accept_index = NULL_STATE;
         std::unordered_set<std::size_t> epsilon_transitions;
-        std::size_t any = NO_ANY;
+        std::size_t any = NULL_STATE;
         stdu::vector<std::string> rule_name;
         DataBlock dtb;
     };
@@ -43,7 +42,7 @@ public:
         std::size_t start;
         std::size_t end;
         bool valid() const {
-            return start != NO_STATE_RANGE && end != NO_STATE_RANGE;
+            return start != NULL_STATE && end != NULL_STATE;
         }
         bool invalid() const {
             return !valid();
@@ -57,11 +56,13 @@ private:
     const stdu::vector<std::string> &name;
     stdu::vector<state> states;
     stdu::vector<std::size_t> add_space_skip_places;
+    stdu::vector<std::pair<std::size_t, std::size_t>> group_close_propagate;
     bool no_add_space_skip_next = false;
     utype::unordered_set<stdu::vector<std::string>> processing;
     utype::unordered_map<stdu::vector<std::string>, StateRange> fragment_cache;
     std::size_t accept_index = 0;
     std::size_t nested_count = 0;
+    std::size_t group_count = 0;
     bool is_char_table = false;
     bool first = true;
     bool isWhitespaceToken = false;
@@ -79,6 +80,8 @@ private:
     void addSpaceSkip();
     void acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
     void buildAcceptMap();
+    void getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result);
+    auto getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t>;
     void generateTemplatedDataBlockFromRules(
         const stdu::vector<AST::RuleMember> &rules,
         TemplatedDataBlock &templated_data_block,

@@ -810,7 +810,7 @@ void LLIR::OpBuilder::build() {
             } else {
                 ss.cases.back().name = assign {var_assign_values::CHAR, std::get<char>(t.first)};
             }
-            Assert(t.second.accept_index != NFA::NO_ACCEPT, "NO_ACCEPT shouldn't be here");
+            Assert(t.second.accept_index != NFA::NULL_STATE, "NO_ACCEPT shouldn't be here");
             MemberBuilder builder(*this, op[t.second.accept_index]);
             builder.build();
             auto &block = builder.getData();

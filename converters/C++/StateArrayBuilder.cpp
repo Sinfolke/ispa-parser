@@ -1,6 +1,7 @@
 module StateArrayBuilder;
 import corelib;
 import DFATypes;
+import NFA;
 import cpuf.printf;
 import dstd;
 import std;
@@ -14,8 +15,8 @@ void StateArrayBuilder::output() {
     std::size_t count = 0;
     for (const auto &t : data.state_set) {
         auto type = DFA::getStateType(t.transitions, dfa_compatible_table, isToken);
-        cpuf::printf("count {}: {}", count, (int) dfas.getDFAS().at(data.state_in_dfa_location_map.at(count)).getType(isToken));
-        auto type_str = DFATypes::getStateTypeStr(dfas.getDFAS().at(data.state_in_dfa_location_map.at(count)).getType(isToken), type, namespace_name, t.transitions.size());
+        auto dfa_table_type = dfas.getDFAS().at(data.state_in_dfa_location_map.at(count)).getType(isToken);
+        auto type_str = DFATypes::getStateTypeStr(dfa_table_type, type, namespace_name, t.transitions.size());
         std::ostringstream out_content;
         std::size_t transition_index = 0;
         if (type != DFA::DfaType::NONE) {
@@ -53,6 +54,30 @@ void StateArrayBuilder::output() {
                 else
                     out_content << "\n";
             }
+        } else if (!t.rule_name.empty()) {
+            out_content << "::" << namespace_name << "::Tokens::" << corelib::text::join(t.rule_name, "_") << ", [](const ::ISPA_STD::DFAAPI::MemberBegin mb, ::ISPA_STD::DFAAPI::" << DFATypes::getDataVectorType(dfa_table_type, namespace_name) << " dv)\n\t{\n";
+            out_content << "\t\tTypes::" << corelib::text::join(t.rule_name, "_") << " data;\n";
+            if (std::holds_alternative<NFA::TemplatedDataBlock>(t.dtb)) {
+                for (const auto &data : std::get<NFA::TemplatedDataBlock>(t.dtb)) {
+                    out << "\t\t";
+                    if (data.second.first == NFA::StoreCstNode::CST_GROUP) {
+                        out_content << "cst_group_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
+                    } else {
+                        out_content << "cst_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
+                    }
+                    out_content << '\n';
+                }
+            } else if (std::holds_alternative<NFA::SingleValueDataBlock>(t.dtb)) {
+                const auto &data = std::get<NFA::SingleValueDataBlock>(t.dtb);
+                out_content << "\t\t";
+                if (data == NFA::StoreCstNode::CST_GROUP) {
+                    out_content << "cst_group_store(data, 0, mb, dv);";
+                } else {
+                    out_content << "cst_store(data, 0, mb, dv);";
+                }
+                out_content << "\n";
+            }
+            out_content << "\t\treturn std::make_any(data);\n\t}\n";
         }
         out << "const ::ISPA_STD::DFAAPI::" << type_str
             << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";

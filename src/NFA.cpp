@@ -143,6 +143,17 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         default:
             break;
     }
+    // add to transitions group opening
+    if (addStoreActions) {
+        auto propagate_states = getStatesToPropagate(start);
+        for (const auto &s : propagate_states) {
+            auto &state = states[s];
+            for (auto &t : state.transitions) {
+                t.second.new_group = group_count;
+            }
+        }
+        group_close_propagate.emplace_back(end, group_count++);
+    }
 }
 void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
     constexpr auto NO_NEXT_AFTER = std::numeric_limits<std::size_t>::max();
@@ -304,7 +315,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
         if (!add_space_skip_places.empty())
             add_space_skip_places.pop_back();
         no_add_space_skip_next = true;
-        return {NO_STATE_RANGE, NO_STATE_RANGE};
+        return {NULL_STATE, NULL_STATE};
     }
     const std::size_t start = states.size(), end = start + 1;
     states.emplace_back(); // start
@@ -321,7 +332,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
             }
 
             if (!processing.insert(name.name).second)
-                return {NO_STATE_RANGE, NO_STATE_RANGE};
+                return {NULL_STATE, NULL_STATE};
 
             handleNonTermnal(member, name.name, start, end, isEntry, addStoreActions);
 
@@ -333,8 +344,13 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
     } else if (member.isOp()) {
         const auto &op = member.getOp();
         auto cached_no_space_skip = no_add_space_skip_next;
+        auto cached_group_count = group_count;
+        bool was_group = false;
         for (const auto &option : op.options) {
             no_add_space_skip_next = cached_no_space_skip;
+            group_count = cached_group_count;
+            if (option.isGroup())
+                was_group = true;
             auto fragment = buildStateFragment(option, false, addStoreActions);
             if (fragment.invalid())
                 continue;
@@ -344,6 +360,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
             if (isEntry && !isWhitespaceToken) {
                 states[fragment.start].accept_index = accept_index++;
             }
+        }
+        if (was_group && cached_group_count == group_count) {
+            group_count++;
         }
     } else if (member.isGroup()) {
         handleGroup(member, member.getGroup().values, start, end, isEntry, addStoreActions);
@@ -365,6 +384,22 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
         add_space_skip_places.push_back(start);
     no_add_space_skip_next = false;
     return {start, end};
+}
+void NFA::getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result) {
+    const auto &state = states[state_id];
+    if (state.transitions.empty() && state.epsilon_transitions.empty())
+        return;
+    result.insert(state_id);
+    for (const auto &epsilon : state.epsilon_transitions) {
+        if (result.contains(epsilon))
+            continue;
+        getStatesToPropagate(epsilon, result);
+    }
+}
+auto NFA::getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t> {
+    std::unordered_set<std::size_t> result;
+    getStatesToPropagate(id, result);
+    return result;
 }
 auto NFA::investigateHasNext(std::size_t place, char c, std::unordered_set<std::size_t> &visited) -> bool {
     for (const auto &[name, next] : states[place].transitions) {
@@ -427,7 +462,7 @@ void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::
     if (!visited.insert(index).second)
         return;
 
-    if (states[index].accept_index != NO_ACCEPT) {
+    if (states[index].accept_index != NULL_STATE) {
         accept_index = states[index].accept_index;
     }
     accept_map[index] = accept_index;
@@ -443,11 +478,11 @@ void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::
 void NFA::buildAcceptMap() {
     accept_map.clear();
     for (std::size_t i = 0; i < states.size(); ++i) {
-        if (states[i].accept_index != NO_ACCEPT) {
+        if (states[i].accept_index != NULL_STATE) {
             std::unordered_set<std::size_t> local_visited;
             acceptMapVisitState(i, states[i].accept_index, local_visited);
         } else if (!accept_map.contains(i)) {
-            accept_map[i] = NO_ACCEPT;
+            accept_map[i] = NULL_STATE;
         }
     }
 }
@@ -490,12 +525,12 @@ void NFA::build(bool addStoreActions) {
     if (rules != nullptr) {
         for (auto it = rules->begin(); it != rules->end() - 1; ++it) {
             auto [start, end] = buildStateFragment(*it, false, addStoreActions);
-            if (end != NO_STATE_RANGE)
+            if (end != NULL_STATE)
                 states[end].epsilon_transitions.insert(states.size());
         }
         // register one accept state for the last state in rule sequence
         auto [start, end] = buildStateFragment(rules->back(), true, addStoreActions);
-        if (addStoreActions && dtb != nullptr && end != NO_STATE_RANGE) {
+        if (addStoreActions && dtb != nullptr && end != NULL_STATE) {
             states[end].rule_name = name;
             if (dtb->isTemplatedDataBlock()) {
                 TemplatedDataBlock templated_data_block;
@@ -509,6 +544,15 @@ void NFA::build(bool addStoreActions) {
                 bool isAlreadyConstructed = false;
                 generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
                 states[end].dtb = single_value_data_block;
+            }
+        }
+        for (const auto &el : group_close_propagate) {
+            auto propagate_states = getStatesToPropagate(el.first);
+            for (const auto state_id : propagate_states) {
+                auto &state = states[state_id];
+                for (auto &t : state.transitions) {
+                    t.second.group_close = el.second;
+                }
             }
         }
     } else {
@@ -525,7 +569,7 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
         os << "\t(none)\n";
     } else {
         for (const auto& [key, target] : s.transitions) {
-            std::visit([&os, &target](auto &key) {
+            std::visit([&os](auto &key) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(key)>, char>) {
                     os << "\t '" << corelib::text::getEscapedAsStr(key, false) << "' -> State ";
                 } else {
@@ -537,6 +581,12 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
                 os << " [new_cst_node]";
             if (target.new_member) {
                 os << " [new_member]";
+            }
+            if (target.new_group != NFA::NULL_STATE) {
+                os << " [new_group]";
+            }
+            if (target.group_close != NFA::NULL_STATE) {
+                os << " [group_close]";
             }
             os << '\n';
         }
@@ -550,7 +600,7 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
             os << t << ", ";
         }
     }
-    if (s.accept_index != NFA::NO_ACCEPT) {
+    if (s.accept_index != NFA::NULL_STATE) {
         os << "\n\taccept -> " << s.accept_index << "\n";
     }
     if (!s.rule_name.empty()) {

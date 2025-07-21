@@ -11,11 +11,11 @@ public:
     using Table = std::array<stdu::vector<stdu::vector<std::string>>, std::numeric_limits<unsigned char>::max() + 1>;
 private:
     Table table;
-    const AST::Tree &ast;
+    AST::Tree &ast;
     void skipNospace(stdu::vector<AST::RuleMember>::const_iterator &it, const stdu::vector<AST::RuleMember>::const_iterator &end);
     auto determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char>;
 public:
-    FCDT(const AST::Tree &ast) : ast(ast) {}
+    FCDT(AST::Tree &ast) : ast(ast) {}
     void build();
     auto get() -> Table&;
     auto get() const -> const Table&;

@@ -25,4 +25,6 @@ public:
     auto getSpanStateTypeStr(const DFA::Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, const std::string &namespace_name, bool isToken) -> std::string;
 
     static auto getEmptyTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string;
+
+    static auto getDataVectorType(const DFA::DfaType type, const std::string &namespace_name) -> std::string;
 };
