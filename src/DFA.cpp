@@ -378,6 +378,9 @@ void DFA::terminateEarly() {
         if (mstates[id].else_goto != 0) {
             mstates[id].else_goto = dfa_empty_state_map[id];
         }
+        if (mstates[id].any_goto != 0) {
+            mstates[id].any_goto = dfa_empty_state_map[id];
+        }
     }
 }
 void DFA::WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable) {
@@ -423,6 +426,7 @@ void DFA::removeUnreachableStates() {
             trans.next = old_to_new.at(trans.next);
         }
         state.else_goto = old_to_new.at(state.else_goto);
+        state.any_goto = old_to_new.at(state.any_goto);
     }
     states = std::move(new_states);
 }
@@ -635,7 +639,7 @@ void DFA::build(bool switchToSingleState) {
                 }
                 std::size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].push_back({
-                    {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.accept_index}
+                    {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.new_group, data.back().first.group_close, data.back().first.accept_index}
                 });
             }
 
@@ -653,7 +657,7 @@ void DFA::build(bool switchToSingleState) {
 
                 std::size_t target_index = dfa_state_map[conf_closure];
                 mstates[current_dfa_index].transitions[symbol].push_back({
-                    {target_index, transition->new_cst_node, transition->new_member, transition->accept_index}
+                    {target_index, transition->new_cst_node, transition->new_member, transition->new_group, transition->group_close, transition->accept_index}
                 });
                 if (conf->any != NFA::NULL_STATE) {
                     mstates[current_dfa_index].any_goto = conf->any;
@@ -668,6 +672,8 @@ void DFA::build(bool switchToSingleState) {
     if (empty_state == NFA::NULL_STATE) {
         empty_state = mstates.size();
         mstates.emplace_back();
+        mstates[empty_state].rule_name = rule_name;
+        mstates[empty_state].dtb = dtb;
     }
     for (const auto id : goto_empty_states) {
         mstates[id].else_goto = empty_state;

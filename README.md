@@ -32,20 +32,25 @@
 
   Necessary:
 
-    Add proper linking between rules for non-terminal
-
     Add handle of qualifier in matched() function
-
-    Add remove of unused variables (required IR optimization)
-
+    Add remove of unused variables (IR optimization)
     Add insertion of NOT when one rule shadows another
-
     Add automatic generation of recovery by panic mode strategy
-
     ? Add automatic generation of recovery by error production
+    ? Add automatic generation of error by phase level recovery
 
-    ? Add automatic generation of error by phase level recovery 
+    Add handling of OR groups in DFA through conditional assignment
+    Add handling of OR groups in Parser (LLIR) through worst case declaration
+    
+    Conditional Assignment:
+        assign depends on which branch has been choosen. 
+        The elements are not assigned in this branch are assigned with empty value
+    Worst case declaration:
+        Declare as much variables as needed to represent largest option.
+        Assign one by one, leaving the non-captured in this case empty
 
+    Change tree to use std::variant and inheritance instead of std::any and ISPA_STD::Node
+    Change LLIR to use std::optional for values that may not be assigned
 ### Parser syntax
   
   see ```concepts/syntax```
