@@ -63,7 +63,7 @@ auto DFATypes::getTransitionKeyTypeStr(DFA::DfaType type, const std::string &nam
         case DFA::DfaType::Token:
             return std::string("TokenTransition<::") + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
-            return std::string("CallableTokenTableTransition<") + namespace_name + "::Tokens>";
+            return std::string("CallableTokenTableTransition<::") + namespace_name + "::Tokens>";
         default:
             throw Error("Not allowed DFA transition type");
     }

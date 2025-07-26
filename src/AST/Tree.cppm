@@ -13,7 +13,6 @@ export namespace AST {
      * Tree class that holds features could be done on it. Contains tree_map map
      */
     class Tree {
-    private:
         TreeMap tree_map;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
         Use use;

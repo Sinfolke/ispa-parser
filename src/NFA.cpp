@@ -15,6 +15,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
     if (addStoreActions && !member.prefix.empty()) {
         states[start].transitions[name].new_cst_node = true;
         states[start].transitions[name].new_member = true;
+        cst_node_close_propagate.push_back(end);
     }
     if (isEntry && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
@@ -111,6 +112,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
 }
 void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
     std::size_t last = start;
+    store_entire_group = true;
     for (const auto &sub : group) {
         auto fragment = buildStateFragment(sub, false, addStoreActions);
         if (fragment.invalid())
@@ -118,6 +120,7 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         states[last].epsilon_transitions.insert(fragment.start);
         last = fragment.end;
     }
+    store_entire_group = false;
     // Link final fragment to end
     states[last].epsilon_transitions.insert(end);
     if (isEntry && !isWhitespaceToken) {
@@ -173,7 +176,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
         }
         auto &t = states[current].transitions[str[i]];
         t.next = next;
-        if (addStoreActions && !member.prefix.empty()) {
+        if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
             t.new_member = !i;
             t.new_cst_node = !i;
 
@@ -182,6 +185,8 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
         }
         current = next;
     }
+    if (addStoreActions)
+        cst_node_close_propagate.push_back(end);
     // Mark accepting state if needed
     if (isEntry && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
@@ -218,6 +223,8 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
 void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
+    if (addStoreActions)
+        cst_node_close_propagate.push_back(end);
     if (csequence.negative) {
         constexpr auto max = std::numeric_limits<unsigned char>::max();
         std::bitset<max + 1> prohibited;
@@ -231,7 +238,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             if (!prohibited.test(c)) {
                 auto &t = states[start].transitions[corelib::text::getEscapedFromChar(static_cast<char>(c))];
                 t = {end};
-                if (addStoreActions && !member.prefix.empty()) {
+                if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                     t.new_cst_node = true;
                     t.new_member = true;
                 }
@@ -252,7 +259,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         for (char c : escaped) {
             auto &t = states[start].transitions[corelib::text::getEscapedFromChar(c)];
             t.next = end;
-            if (addStoreActions && !member.prefix.empty()) {
+            if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                 t.new_cst_node = true;
                 t.new_member = true;
             }
@@ -261,7 +268,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             for (char c = from; c <= to; ++c) {
                 auto &t = states[start].transitions[corelib::text::getEscapedFromChar(c)];
                 t.next = end;
-                if (addStoreActions && !member.prefix.empty()) {
+                if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                     t.new_cst_node = true;
                     t.new_member = true;
                 }
@@ -367,10 +374,8 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
     } else if (member.isGroup()) {
         handleGroup(member, member.getGroup().values, start, end, isEntry, addStoreActions);
     } else if (member.isString()) {
-        is_char_table = true;
         handleString(member, member.getString().value, start, end, isEntry, addStoreActions);
     } else if (member.isCsequence()) {
-        is_char_table = true;
         handleCsequence(member, member.getCsequence(), start, end, isEntry, addStoreActions);
     } else if (member.isAny()) {
         states[start].any = end;
@@ -539,24 +544,35 @@ void NFA::build(bool addStoreActions) {
                 std::size_t group_index = 0;
                 generateTemplatedDataBlockFromRules(*rules, templated_data_block, prefix_index, index, group_index);
                 states[end].dtb = templated_data_block;
-            } else {
+            } else if (dtb->isRegularDataBlock()) {
                 SingleValueDataBlock single_value_data_block;
                 bool isAlreadyConstructed = false;
                 generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
                 states[end].dtb = single_value_data_block;
-            }
-        }
-        for (const auto &el : group_close_propagate) {
-            auto propagate_states = getStatesToPropagate(el.first);
-            for (const auto state_id : propagate_states) {
-                auto &state = states[state_id];
-                for (auto &t : state.transitions) {
-                    t.second.group_close = el.second;
-                }
+            } else {
+                states[end].dtb = std::monostate {};
             }
         }
     } else {
         buildStateFragment(*member, true, addStoreActions);
+    }
+    for (const auto &el : group_close_propagate) {
+        auto propagate_states = getStatesToPropagate(el.first);
+        for (const auto state_id : propagate_states) {
+            auto &state = states[state_id];
+            for (auto &t : state.transitions) {
+                t.second.group_close = el.second;
+            }
+        }
+    }
+    for (const auto id : cst_node_close_propagate) {
+        auto propagate_states = getStatesToPropagate(id);
+        for (const auto state_id : propagate_states) {
+            auto &state = states[state_id];
+            for (auto &t : state.transitions) {
+                t.second.close_cst_node = true;
+            }
+        }
     }
     if (!isWhitespaceToken) {
         addSpaceSkip();
@@ -581,6 +597,9 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
                 os << " [new_cst_node]";
             if (target.new_member) {
                 os << " [new_member]";
+            }
+            if (target.close_cst_node) {
+                os << " [close_cst_node]";
             }
             if (target.new_group != NFA::NULL_STATE) {
                 os << " [new_group]";

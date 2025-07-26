@@ -314,6 +314,7 @@ namespace DFAAPI {
 
     // store types
     using MemberBegin = std::vector<std::size_t>;
+    using GroupBegin = std::vector<std::pair<std::size_t, std::size_t>>;
 
     using CharTableDataVector = std::vector<std::string>;
     template<typename TOKEN_T> using CallableTokenDataVector = std::vector<Node<TOKEN_T>>;
@@ -374,7 +375,7 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename builderParameterType>
     struct EmptyState {
         TOKEN_T name;
-        std::function<std::any (const MemberBegin &, const builderParameterType&)> ast_builder;
+        std::function<std::any (const MemberBegin &, const GroupBegin &, const builderParameterType&)> ast_builder;
     };
     template<typename Key>
     struct Transition {
@@ -382,6 +383,9 @@ namespace DFAAPI {
         std::size_t next;
         bool new_cst_node;
         bool new_member;
+        bool close_cst_node;
+        std::size_t new_group;
+        std::size_t group_close;
         std::size_t accept;
     };
     template<typename T>
@@ -395,8 +399,7 @@ namespace DFAAPI {
     struct SpanMultiTable {
         Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
-}
-namespace DFA_STORE_API {
+
     template<typename STORAGE_T, typename DATAVECTOR>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
         auto start = mb[pos];
@@ -413,8 +416,38 @@ namespace DFA_STORE_API {
         }
     }
     template<typename T, typename DV>
-    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DV &dv) {
-        auto start = mb[pos];
+    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DV &dv) {
+        if constexpr (!std::is_same_v<T, std::string>)
+            throw std::runtime_error("ISPA internal error: node type error: group can be assigned to a string-only value");
+        auto [start, end] = gb[pos];
+        for (; start != end; ++start)
+            storage += dv[start];
+
+    }
+    inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t &group_begin_index) {
+        if (lowest_open_index >= index)
+            return;
+        auto how_much_to_open = index - lowest_open_index;
+        for (; how_much_to_open > 0; --how_much_to_open) {
+            inclosed_groups.push_back(gb.size());
+            gb.emplace_back(group_begin_index, 0);
+        }
+        lowest_open_index = index + 1;
+    }
+    inline void closeGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t group_end_index) {
+        // Close all groups up to and including the specified closing_group_index
+        while (!inclosed_groups.empty()) {
+            auto current_group = inclosed_groups.back();
+
+            // Close it
+            gb[current_group].second = group_end_index;
+            inclosed_groups.pop_back();
+
+            if (current_group == index) {
+                // Done closing all nested groups within this group
+                break;
+            }
+        }
     }
 }
 template<typename TOKEN_T>
@@ -458,8 +491,13 @@ protected:
     static auto match(const DFAAPI::SpanCharTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
+        DFAAPI::GroupBegin group_begin;
         DFAAPI::CharTableDataVector data;
+
+        std::vector<std::size_t> inclosed_groups;
+        std::size_t lowest_open_index = 0;
         auto start = pos;
+        bool closed = true;
         do {
             const auto &s = std::get<DFAAPI::SpanCharTableState>(table[state]);
             decltype(auto) new_state = find_key(s, pos);
@@ -469,10 +507,22 @@ protected:
                 if (new_state->new_member) {
                     member_begin.push_back(data.size());
                 }
+                if (new_state->group_close != DFAAPI::null_state) {
+                    DFAAPI::closeGroups(group_begin, inclosed_groups, new_state->group_close, data.size());
+                }
+                if (new_state->new_group != DFAAPI::null_state) {
+                    DFAAPI::openGroups(group_begin, inclosed_groups, new_state->new_group, lowest_open_index, data.size());
+                }
+                if (new_state->close_cst_node) {
+                    closed = true;
+                }
                 if (new_state->new_cst_node) {
                     data.emplace_back();
+                    closed = false;
                 }
-                data.back() += new_state->symbol;
+                if (!closed) {
+                    data.back() += new_state->symbol;
+                }
             } else if (s.else_goto != DFAAPI::null_state) {
                 state = s.else_goto;
             } else {
@@ -486,6 +536,9 @@ protected:
                 return {};
             }
         } while (!std::holds_alternative<DFAAPI::CharEmptyState<TOKEN_T>>(table[state]));
+        for (const auto id : inclosed_groups) {
+            group_begin[id].second = data.size();
+        }
         const auto e_state = std::get<DFAAPI::CharEmptyState<TOKEN_T>>(table[state]);
         return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
     }
@@ -493,15 +546,35 @@ protected:
     static auto match(const DFAAPI::SpanCallableTokenTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T>  {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
+        DFAAPI::GroupBegin group_begin;
         DFAAPI::CallableTokenDataVector<TOKEN_T> data;
+
+        std::vector<std::size_t> inclosed_groups;
+        std::size_t lowest_open_index = 0;
         auto start = pos;
+        bool closed = true;
         do {
             const auto &s = std::get<DFAAPI::SpanCallableTokenState<TOKEN_T>>(table[state]);
             auto [transition, result] = find_key(s, pos);
             if (transition != nullptr) {
                 pos++;
                 state = transition->next;
-                data.push_back(result);
+                if (transition->new_member) {
+                    member_begin.push_back(data.size());
+                }
+                if (transition->group_close != DFAAPI::null_state) {
+                    DFAAPI::closeGroups(group_begin, inclosed_groups, transition->group_close, data.size());
+                }
+                if (transition->new_group != DFAAPI::null_state) {
+                    DFAAPI::openGroups(group_begin, inclosed_groups, transition->new_group, lowest_open_index, data.size());
+                }
+                if (transition->close_cst_node)
+                    closed = true;
+                if (transition->new_cst_node)
+                    closed = false;
+
+                if (!closed)
+                    data.push_back(result);
             } else if (s.else_goto != DFAAPI::null_state) {
                 state = s.else_goto;
             } else {
@@ -515,6 +588,9 @@ protected:
                 return {};
             }
         } while (!std::holds_alternative<DFAAPI::CallableTokenEmptyState<TOKEN_T>>(table[state]));
+        for (const auto id : inclosed_groups) {
+            group_begin[id].second = data.size();
+        }
         const auto e_state = std::get<DFAAPI::CallableTokenEmptyState<TOKEN_T>>(table[state]);
         return match_result<TOKEN_T> {true, Node<TOKEN_T> {0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
     }
@@ -576,8 +652,13 @@ protected:
     static auto match(const DFAAPI::SpanMultiTable<TOKEN_T> &table, const char* pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
+        DFAAPI::GroupBegin group_begin;
         DFAAPI::MultiTableDataVector<TOKEN_T> data;
+
+        std::vector<std::size_t> inclosed_groups;
+        std::size_t lowest_open_index;
         auto start = pos;
+        bool closed = true;
         do {
             std::visit(overload {
                 [&](const DFAAPI::SpanCharTableState &t) {
@@ -590,10 +671,20 @@ protected:
                     if (new_state->new_member) {
                         member_begin.push_back(data.size());
                     }
+                    if (new_state->group_close != DFAAPI::null_state) {
+                        DFAAPI::closeGroups(group_begin, inclosed_groups, new_state->group_close, data.size());
+                    }
+                    if (new_state->new_group != DFAAPI::null_state) {
+                        DFAAPI::openGroups(group_begin, inclosed_groups, new_state->new_group, lowest_open_index, data.size());
+                    }
+                    if (new_state->close_cst_node)
+                        closed = true;
                     if (new_state->new_cst_node) {
                         data.emplace_back();
+                        closed = false;
                     }
-                    std::get<std::string>(data.back()) += new_state->symbol;
+                    if (!closed)
+                        std::get<std::string>(data.back()) += new_state->symbol;
                 },
                 [&](const DFAAPI::SpanCallableTokenState<TOKEN_T> &t) {
                     // guard: even if no new_cst_node, this kind is always stored separately
@@ -605,6 +696,16 @@ protected:
                     if (new_state.first->new_member) {
                         member_begin.push_back(data.size());
                     }
+                    if (new_state.first->group_close != DFAAPI::null_state) {
+                        DFAAPI::closeGroups(group_begin, inclosed_groups, new_state.first->group_close, data.size());
+                    }
+                    if (new_state.first->new_group != DFAAPI::null_state) {
+                        DFAAPI::openGroups(group_begin, inclosed_groups, new_state.first->new_group, lowest_open_index, data.size());
+                    }
+                    if (new_state.first->close_cst_node)
+                        closed = true;
+                    if (new_state.first->new_cst_node)
+                        closed = false;
                     state = new_state.first->next;
                     data.push_back(new_state.second);
                 },
@@ -620,10 +721,20 @@ protected:
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
                                     }
+                                    if (t.group_close != DFAAPI::null_state) {
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                    }
+                                    if (t.new_group != DFAAPI::null_state) {
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                    }
+                                    if (t.close_cst_node)
+                                        closed = true;
                                     if (t.new_cst_node) {
                                         data.emplace_back();
+                                        closed = false;
                                     }
-                                    std::get<std::string>(data.back()) += t.symbol;
+                                    if (!closed)
+                                        std::get<std::string>(data.back()) += t.symbol;
                                     matched = true;
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTransition<TOKEN_T>>) {
@@ -631,19 +742,58 @@ protected:
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
                                     }
+                                    if (t.group_close != DFAAPI::null_state) {
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                    }
+                                    if (t.new_group != DFAAPI::null_state) {
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                    }
+                                    if (t.close_cst_node)
+                                        closed = true;
+                                    if (t.new_cst_node)
+                                        closed = false;
                                     state = t.next;
-                                    data.push_back(res.node);
+                                    if (!closed)
+                                        data.push_back(res.node);
                                     matched = true;
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanMultiTableState<TOKEN_T>>) {
+                                if (t.new_member) {
+                                    member_begin.push_back(data.size());
+                                }
+                                if (t.group_close != DFAAPI::null_state) {
+                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                }
+                                if (t.new_group != DFAAPI::null_state) {
+                                    DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                }
+                                if (t.close_cst_node)
+                                    closed = true;
+                                if (t.new_cst_node)
+                                    closed = false;
                                 if (auto res = AdvancedDFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
                                     matched = true;
-                                    data.push_back(res.node);
+                                    if (!closed)
+                                        data.push_back(res.node);
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanCharTableState> || std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTableTransition<TOKEN_T>>) {
+                                if (t.new_member) {
+                                    member_begin.push_back(data.size());
+                                }
+                                if (t.group_close != DFAAPI::null_state) {
+                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                }
+                                if (t.new_group != DFAAPI::null_state) {
+                                    DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                }
+                                if (t.close_cst_node)
+                                    closed = true;
+                                if (t.new_cst_node)
+                                    closed = false;
                                 if (auto res = DFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
                                     matched = true;
-                                    data.push_back(res.node);
+                                    if (!closed)
+                                        data.push_back(res.node);
                                 }
                             }
 
@@ -668,6 +818,9 @@ protected:
                 }
             }, table.states[state]);
         } while (!std::holds_alternative<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]));
+        for (const auto id : inclosed_groups) {
+            group_begin[id].second = data.size();
+        }
         const auto e_state = std::get<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]);
         return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
     }
@@ -847,7 +1000,7 @@ public:
 
     /**
      * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
-     * If you need to iterate through tokens after parsing, first accumulate tokens, then run parsing.
+     * If you need to iterate through tokens after parsing, first accumulate tokens, then run parsing. That implies you must first create lexer class then parser class to do so
      */
     class iterator {
         Lexer_base<TOKEN_T>* owner = nullptr;

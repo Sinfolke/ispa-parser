@@ -43,7 +43,7 @@ public:
     auto& getFunctionsIR() const  { return function_ir; }
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
-
+    auto getDataBlocks() const -> LLIR::DataBlockList;
     auto getStateSet() const -> DFAS::StateSet_t;
 
 };

@@ -24,7 +24,7 @@ void StateArrayBuilder::output() {
                 std::string transition_type;
                 if (std::holds_alternative<stdu::vector<std::string>>(transition.first)) {
                     const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
-                    if (dfa_compatible_table && dfa_compatible_table->contains(symbol)) {
+                    if (dfa_compatible_table && dfa_compatible_table->contains(symbol) && dfa_compatible_table->at(symbol) != LexerBuilder::DFA_NOT_COMPATIBLE) {
                         std::size_t dfa_index = dfa_compatible_table->at(symbol);
                         out_content << "\tISPA_STD::DFAAPI::" << DFATypes(dfas.getDFAS()[dfa_index]).getTransitionsTypeStr(isToken, namespace_name) << " { ";
                         const std::string dfa_table_name = "dfa_span_" + std::to_string(dfa_index);
@@ -46,6 +46,9 @@ void StateArrayBuilder::output() {
                 out_content << transition.second.next << ", "
                             << std::boolalpha << transition.second.new_cst_node << ", "
                             << std::boolalpha << transition.second.new_member << ", "
+                            << std::boolalpha << transition.second.close_cst_node << ", "
+                            << std::boolalpha << number_or_null(transition.second.new_group) << ", "
+                            << std::boolalpha << number_or_null(transition.second.group_close) << ", "
                             << number_or_null(transition.second.accept_index)
                             << " }";
 
@@ -55,29 +58,34 @@ void StateArrayBuilder::output() {
                     out_content << "\n";
             }
         } else if (!t.rule_name.empty()) {
-            out_content << "::" << namespace_name << "::Tokens::" << corelib::text::join(t.rule_name, "_") << ", [](const ::ISPA_STD::DFAAPI::MemberBegin mb, ::ISPA_STD::DFAAPI::" << DFATypes::getDataVectorType(dfa_table_type, namespace_name) << " dv)\n\t{\n";
-            out_content << "\t\tTypes::" << corelib::text::join(t.rule_name, "_") << " data;\n";
-            if (std::holds_alternative<NFA::TemplatedDataBlock>(t.dtb)) {
-                for (const auto &data : std::get<NFA::TemplatedDataBlock>(t.dtb)) {
-                    out << "\t\t";
-                    if (data.second.first == NFA::StoreCstNode::CST_GROUP) {
-                        out_content << "cst_group_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
-                    } else {
-                        out_content << "cst_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
+            out_content << "::" << namespace_name << "::Tokens::" << corelib::text::join(t.rule_name, "_") << ", [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::" << DFATypes::getDataVectorType(dfa_table_type, namespace_name) << " &dv)\n\t{\n";
+            if (std::holds_alternative<std::monostate>(t.dtb)) {
+                out_content << "\t\treturn std::any {};\n";
+            } else {
+                out_content << "\t\tTypes::" << corelib::text::join(t.rule_name, "_") << " data;\n";
+                if (std::holds_alternative<NFA::TemplatedDataBlock>(t.dtb)) {
+                    for (const auto &data : std::get<NFA::TemplatedDataBlock>(t.dtb)) {
+                        out_content << "\t\t::ISPA_STD::DFAAPI::";
+                        if (data.second.first == NFA::StoreCstNode::CST_GROUP) {
+                            out_content << "cst_group_store(data." << data.first << ", " << data.second.second << ", gb, dv);";
+                        } else {
+                            out_content << "cst_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
+                        }
+                        out_content << '\n';
                     }
-                    out_content << '\n';
+                } else if (std::holds_alternative<NFA::SingleValueDataBlock>(t.dtb)) {
+                    const auto &data = std::get<NFA::SingleValueDataBlock>(t.dtb);
+                    out_content << "\t\t::ISPA_STD::DFAAPI::";
+                    if (data == NFA::StoreCstNode::CST_GROUP) {
+                        out_content << "cst_group_store(data, 0, gb, dv);";
+                    } else {
+                        out_content << "cst_store(data, 0, mb, dv);";
+                    }
+                    out_content << "\n";
                 }
-            } else if (std::holds_alternative<NFA::SingleValueDataBlock>(t.dtb)) {
-                const auto &data = std::get<NFA::SingleValueDataBlock>(t.dtb);
-                out_content << "\t\t";
-                if (data == NFA::StoreCstNode::CST_GROUP) {
-                    out_content << "cst_group_store(data, 0, mb, dv);";
-                } else {
-                    out_content << "cst_store(data, 0, mb, dv);";
-                }
-                out_content << "\n";
+                out_content << "\t\treturn std::make_any<Types::" << corelib::text::join(t.rule_name, "_") << ">(data);\n";
             }
-            out_content << "\t\treturn std::make_any(data);\n\t}\n";
+            out_content << "\t}\n";
         }
         out << "const ::ISPA_STD::DFAAPI::" << type_str
             << ' ' << namespace_name << "::" << prefix << "::dfa_state_" << count++ << " = {\n" << out_content.str() << "};\n";

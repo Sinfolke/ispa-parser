@@ -15,6 +15,7 @@ LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
                 continue;
         }
         LLIR::RuleBuilder builder(tree, name, value, dfas);
+        builder.build();
         data.push_back(builder.getData());
     }
 }

@@ -17,6 +17,7 @@ public:
         std::size_t next;
         bool new_cst_node = false;
         bool new_member = false;
+        bool close_cst_node = false;
         std::size_t new_group = NFA::NULL_STATE;
         std::size_t group_close = NFA::NULL_STATE;
         std::size_t accept_index = NFA::NULL_STATE;
@@ -24,7 +25,7 @@ public:
     private:
         friend struct uhash;
         auto members() const {
-            return std::tie(next, new_cst_node, new_member, new_group, group_close, accept_index);
+            return std::tie(next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept_index);
         }
     };
     struct MultiTransitionValue {

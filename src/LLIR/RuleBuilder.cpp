@@ -16,7 +16,7 @@ void LLIR::RuleBuilder::build() {
     builder.build();
     builder.optimizeIR();
     data.members = builder.getData();
-    data.block = createDataBlock(rule->data_block);
+    data.block = createDataBlock(rule->data_block, false);
     data.name = fullname;
 
 }
@@ -29,7 +29,7 @@ LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
     }
     return map;
 }
-LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block) {
+LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block, bool ro) {
     LLIR::DataBlock block;
     if (data_block.empty()) {
         return block;

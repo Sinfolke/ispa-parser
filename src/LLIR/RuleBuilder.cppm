@@ -13,14 +13,13 @@ export namespace LLIR {
     class RuleBuilder : BuilderData {
         LLIR::Data data;
         const AST::Rule *rule;
-        void build();
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
     public:
-        auto createDataBlock(const AST::DataBlock &data_block) -> LLIR::DataBlock;
         RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule, stdu::vector<DFA> &dfas) : BuilderData(ast, &dfas), rule(&rule) {
             fullname = name;
-            build();
         }
+        void build();
+        auto createDataBlock(const AST::DataBlock &data_block, bool ro) -> LLIR::DataBlock;
         auto getData() -> LLIR::Data&;
     };
 }

@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
         if (dumper.shouldDump("IR"))
             IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
         auto build_fun = converter_dlib.load<decltype(&buildLLParser)>("buildLLParser");
-        build_fun(output_path, IR, lexer_data, ast);
+        build_fun(output_path.string(), IR, lexer_data, ast);
     } else {
         throw Error("Unknown algorithm");
     }

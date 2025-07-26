@@ -215,7 +215,7 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         work.pop();
         // substep 2: push lookaheads to latest lookahead set
         lookaheads.back().emplace_back();
-        for (const auto &t : mstates[current].transitions) {
+        for (auto &t : mstates[current].transitions) {
             for (auto &next : t.second) {
                 if (!walked_state.contains(next.value.next)) {
                     // not loop, push
@@ -254,7 +254,6 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
             } else {
                 empty_state = dfa_empty_state_map.at(state_id);
             }
-            //mstates[current_dfa_state].else_goto = val.at(i).dfa_merge_conflict ? dfa_index_to_empty_state_map.at(i) : dfa_empty_state_map.at(state_id);
             mstates[current_dfa_state].else_goto = empty_state;
             mstates[current_dfa_state].else_goto_accept = val.at(i).value.accept_index;
             continue;
@@ -280,18 +279,21 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
     }
     // TODO: implement more complex logic to cancell saved input if path without input is chosen
     // if at least one alternative has new_cst_node or new_member, set them to true
-    bool new_cst_node = false, new_member = false, new_group = false, close_group = false;
+    bool new_cst_node = false, new_member = false, close_cst_node = false;
+    std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE;
     for (const auto &v : val) {
         if (v.value.new_cst_node)
             new_cst_node = true;
         if (v.value.new_member)
             new_member = true;
-        if (v.value.new_group)
-            new_group = true;
-        if (v.value.group_close)
-            close_group = true;
+        if (v.value.close_cst_node)
+            close_cst_node = true;
+        if (v.value.new_group != NFA::NULL_STATE)
+            new_group = v.value.new_group;
+        if (v.value.group_close != NFA::NULL_STATE)
+            close_group = v.value.group_close;
     }
-    val = {{current_dfa_state, new_cst_node, new_member, new_group, close_group}};
+    val = {{current_dfa_state, new_cst_node, new_member, close_cst_node, new_group, close_group}};
 }
 
 void DFA::unrollMultiTransitionPaths() {
@@ -496,7 +498,7 @@ auto DFA::mergeTwoDFA(DFA &first, const DFA &second, std::size_t index) {
     const auto &s = second.getMultiStates();
     for (const auto &[symbol, next] : s[0].transitions) {
         for (const auto &n : next) {
-            f[0].transitions[symbol].emplace_back(TransitionValue {offset + n.value.next, n.value.new_cst_node, n.value.new_member, n.value.new_group, n.value.group_close, n.value.accept_index}, index);
+            f[0].transitions[symbol].emplace_back(TransitionValue {offset + n.value.next, n.value.new_cst_node, n.value.new_member, n.value.close_cst_node, n.value.new_group, n.value.group_close, n.value.accept_index}, index);
         }
     }
     // Copy and fixup second DFA states
@@ -558,7 +560,7 @@ void DFA::build(bool switchToSingleState) {
         for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, id.new_group, id.group_close, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NULL_STATE);
+                input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, id.close_cst_node, id.new_group, id.group_close, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NULL_STATE);
             }
             if (!state.rule_name.empty()) {
                 rule_name = state.rule_name;
@@ -639,7 +641,7 @@ void DFA::build(bool switchToSingleState) {
                 }
                 std::size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].push_back({
-                    {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.new_group, data.back().first.group_close, data.back().first.accept_index}
+                    {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.close_cst_node, data.back().first.new_group, data.back().first.group_close, data.back().first.accept_index}
                 });
             }
 
@@ -657,7 +659,7 @@ void DFA::build(bool switchToSingleState) {
 
                 std::size_t target_index = dfa_state_map[conf_closure];
                 mstates[current_dfa_index].transitions[symbol].push_back({
-                    {target_index, transition->new_cst_node, transition->new_member, transition->new_group, transition->group_close, transition->accept_index}
+                    {target_index, transition->new_cst_node, transition->new_member, transition->close_cst_node, transition->new_group, transition->group_close, transition->accept_index}
                 });
                 if (conf->any != NFA::NULL_STATE) {
                     mstates[current_dfa_index].any_goto = conf->any;
@@ -822,6 +824,9 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
                 if (t.value.new_cst_node) {
                     os << "[new_cst_node] ";
                 }
+                if (t.value.close_cst_node) {
+                    os << "[close_cst_node] ";
+                }
                 if (t.value.new_member) {
                     os << "[new_member] ";
                 }
@@ -866,6 +871,9 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
             }
             if (target.new_cst_node) {
                 os << "[new_cst_node] ";
+            }
+            if (target.close_cst_node) {
+                os << "[close_cst_node] ";
             }
             if (target.new_member) {
                 os << "[new_member] ";

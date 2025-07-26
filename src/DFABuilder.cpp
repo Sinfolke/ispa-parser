@@ -73,7 +73,7 @@ void DFABuilder::log(const NFA &nfa, const DFA &dfa, const stdu::vector<std::str
     };
 }
 DFABuilder::DFABuilder(AST::Tree& ast, const AST::RuleMember &rule, const AST::DataBlock *dtb, const stdu::vector<std::string> &fullname, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
-    NFA nfa(ast, fullname, dtb, rule, fullname == constants::whitespace);
+    NFA nfa(ast, fullname, dtb, rule, fullname == constants::whitespace, corelib::text::isUpper(fullname.back()));
     nfa.build(addStoreActions);
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
@@ -81,7 +81,7 @@ DFABuilder::DFABuilder(AST::Tree& ast, const AST::RuleMember &rule, const AST::D
     dfa = std::move(dfa_tmp);
 }
 DFABuilder::DFABuilder(AST::Tree& ast, const stdu::vector<AST::RuleMember> &rules, const AST::DataBlock *dtb, const stdu::vector<std::string> &fullname, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
-    NFA nfa(ast, fullname, dtb, rules, fullname == constants::whitespace);
+    NFA nfa(ast, fullname, dtb, rules, fullname == constants::whitespace, corelib::text::isUpper(fullname.back()));
     nfa.build(addStoreActions);
     DFA dfa_tmp(nfa);
     dfa_tmp.build();
@@ -91,7 +91,7 @@ DFABuilder::DFABuilder(AST::Tree& ast, const stdu::vector<AST::RuleMember> &rule
 DFABuilder::DFABuilder(AST::Tree &ast, const stdu::vector<stdu::vector<std::string>> &names, bool addStoreActions) : dfa(stdu::vector<DFA::SingleState> {}) {
     stdu::vector<NFA> nfas;
     for (const auto &name : names) {
-        NFA n(ast, name, &ast[name].data_block, ast[name].rule_members, name == constants::whitespace);
+        NFA n(ast, name, &ast[name].data_block, ast[name].rule_members, name == constants::whitespace, corelib::text::isUpper(name.back()));
         n.build(addStoreActions);
         nfas.push_back(n);
         log(n, name);

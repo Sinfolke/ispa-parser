@@ -66,12 +66,10 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
 }
 void FCDT::build() {
     for (const auto &rule : ast) {
-        if (corelib::text::isLower(rule.first.back()))
+        if (corelib::text::isLower(rule.first.back()) || !ast.getUsePlacesTable().contains(rule.first))
             continue;
         const auto &use_places = ast.getUsePlacesTable();
         bool is_used_in_nonterminal = false;
-        if (!use_places.contains(rule.first))
-            continue;
         for (const auto &use_rule : use_places.at(rule.first)) {
             if (corelib::text::isLower(use_rule.back())) {
                 is_used_in_nonterminal = true;
