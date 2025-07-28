@@ -16,9 +16,10 @@ public:
 private:
     stdu::vector<DFA> dfas;
     bool isToken = true;
+    const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct;
 public:
-    DFAS(bool isToken, const stdu::vector<DFA> &dfas) : isToken(isToken), dfas(dfas) {};
-    DFAS(bool isToken, stdu::vector<DFA> &&dfas) : isToken(isToken), dfas(std::move(dfas)) {};
+    DFAS(bool isToken, const stdu::vector<DFA> &dfas, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), dfas(dfas), dct(dct) {};
+    DFAS(bool isToken, stdu::vector<DFA> &&dfas, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), dfas(std::move(dfas)), dct(dct) {};
     DFAS() {}
 
     void getStateSet(StateSet_t &state_set) const;

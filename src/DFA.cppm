@@ -105,7 +105,7 @@ public:
     auto &getMultiStates() const { return mstates; }
     auto getMaxTransitionCount() const -> std::size_t;
 
-    auto getType(bool isToken) const -> DfaType;
+    auto getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
     static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
     static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
 };

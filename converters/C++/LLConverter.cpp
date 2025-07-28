@@ -209,7 +209,7 @@ void LLConverter::convertData(std::ostringstream &out) {
 void LLConverter::addDFATables(std::ostringstream &out, const DFAS::StateSet_t &states_set) {
     StateArrayBuilder states_builder(out, isToken, states_set, namespace_name, ir.getDfas(), nullptr, "Parser");
     DFAConverter tables_builder(ir.getDfas(), nullptr, states_set, namespace_name, "Parser", "dfa_table", false);
-    DFASpans dfa_spans(out, namespace_name, ir.getDfas());
+    DFASpans dfa_spans(out, namespace_name, ir.getDfas(), nullptr);
     tables_builder.create();
     states_builder.output();
     out << tables_builder.get().str();

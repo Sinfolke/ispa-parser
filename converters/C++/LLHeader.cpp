@@ -189,11 +189,11 @@ void LLHeader::createDFATypes(std::ostringstream &out) const {
 void LLHeader::createDFAVars(const DFAS &dfas, const DFAS::StateSet_t &states_set, std::ostringstream &out) const {
     std::size_t count = 0;
     StateArrayBuilder builder(out, isToken, states_set, namespace_name, dfas, nullptr, "Parser");
-    DFASpans dfa_spans(out, namespace_name, dfas);
+    DFASpans dfa_spans(out, namespace_name, dfas, nullptr);
 
     builder.outputHeader();
     for (const auto &dfa : dfas) {
-        out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(false, namespace_name, dfa.getStates().size()) << " dfa_table_" << count++ << ";\n";
+        out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(false, nullptr, namespace_name, dfa.getStates().size()) << " dfa_table_" << count++ << ";\n";
     }
     out << '\n';
     // output spans

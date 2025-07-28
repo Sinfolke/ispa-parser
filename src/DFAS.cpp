@@ -11,7 +11,7 @@ void DFAS::getStateSet(StateSet_t &state_set) const {
                 state_count++;
                 continue;
             }
-            auto type = dfa.getType(isToken);
+            auto type = dfa.getType(isToken, dct);
             auto it = state_to_map.find(std::make_pair(state, type));
             std::size_t index;
             if (it == state_to_map.end()) {

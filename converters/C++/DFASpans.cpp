@@ -8,7 +8,7 @@ import std;
 void DFASpans::output(bool isToken, const std::string &name) const {
     std::size_t count = 0;
     for (const auto &dfa : dfas.getDFAS()) {
-        const auto span_type = dfa.getType(isToken);
+        const auto span_type = dfa.getType(isToken, dct);
         const std::string span_type_str = DFATypes::getSpanTypeStr(span_type, namespace_name);
 
         const std::string table_name = "dfa_table_" + std::to_string(count);
@@ -30,7 +30,7 @@ void DFASpans::output(bool isToken, const std::string &name) const {
 void DFASpans::outputH(bool isToken) const {
     std::size_t count = 0;
     for (const auto &dfa : dfas.getDFAS()) {
-        const std::string span_type = DFATypes::getSpanTypeStr(dfa.getType(isToken), namespace_name);
+        const std::string span_type = DFATypes::getSpanTypeStr(dfa.getType(isToken, dct), namespace_name);
 
         const std::string table_name = "dfa_table_" + std::to_string(count);
 

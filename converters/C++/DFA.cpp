@@ -17,7 +17,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
     std::ostringstream table_out;
 
     const auto &states = dfa.getStates();
-    auto type = dfa.getType(isToken);
+    auto type = dfa.getType(isToken, dfa_compatible_table);
     std::size_t state_count = 0;
 
     for (const auto &state : states) {

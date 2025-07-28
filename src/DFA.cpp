@@ -5,6 +5,7 @@ import corelib;
 import logging;
 import hash;
 import constants;
+import LexerBuilder;
 import std;
 
 auto DFA::epsilonClosure(const stdu::vector<std::size_t>& states) const -> stdu::vector<std::size_t> {
@@ -710,7 +711,7 @@ void DFA::buildWMerge() {
     removeUnreachableStates();
     removeSelfLoop();
 }
-auto DFA::getType(bool isToken) const -> DfaType {
+auto DFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;
     if (mstates.empty()) {
         for (const auto &state : states) {
@@ -723,7 +724,12 @@ auto DFA::getType(bool isToken) const -> DfaType {
                         return dfa_type;
                     }
                 } else {
+                    const auto &sym = std::get<stdu::vector<std::string>>(symbol);
                     if (dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) {
+                        if (isToken && dct && dct->at(sym) != LexerBuilder::DFA_NOT_COMPATIBLE) {
+                            dfa_type = DfaType::Multi;
+                            return dfa_type;
+                        }
                         dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
                     } else {
                         dfa_type = DfaType::Multi;
@@ -743,8 +749,13 @@ auto DFA::getType(bool isToken) const -> DfaType {
                         return dfa_type;
                     }
                 } else {
+                    const auto &sym = std::get<stdu::vector<std::string>>(symbol);
                     if (dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) {
-                        dfa_type = DfaType::Token;
+                        if (isToken && dct && dct->at(sym) != LexerBuilder::DFA_NOT_COMPATIBLE) {
+                            dfa_type = DfaType::Multi;
+                            return dfa_type;
+                        }
+                        dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
                     } else {
                         dfa_type = DfaType::Multi;
                         return dfa_type;
@@ -759,7 +770,7 @@ auto DFA::getTransitionKeyType(const NFA::TransitionKey &transition_key, bool is
     if (std::holds_alternative<char>(transition_key)) {
         return DfaType::Char;
     } else {
-        return isToken ? DfaType::Token : DfaType::CallableToken;
+        return isToken ? DfaType::CallableToken : DfaType::Token;
     }
 }
 auto DFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
@@ -774,9 +785,11 @@ auto DFA::getStateType(const Transitions &transitions, const utype::unordered_ma
             }
         } else {
             auto &sym = std::get<stdu::vector<std::string>>(symbol);
-            if ((dfa_type == DfaType::Token || dfa_type == DfaType::NONE) && ((isToken && dct && !dct->contains(sym)) || !isToken)) {
-                dfa_type = DfaType::Token;
-            } else if (dfa_type != DfaType::Token) {
+            bool is_callable = isToken && dct && !dct->at(sym) == LexerBuilder::DFA_NOT_COMPATIBLE;
+            bool is_not_multi = (isToken && is_callable) || !isToken;
+            if ((dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) && is_not_multi) {
+                dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
+            } else if (dfa_type != DfaType::CallableToken || dfa_type != DfaType::Token) {
                 dfa_type = DfaType::Multi;
                 break;
             }
