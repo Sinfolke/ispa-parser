@@ -311,6 +311,7 @@ struct error {
 namespace DFAAPI {
     // constants
     inline constexpr std::size_t null_state = std::numeric_limits<std::size_t>::max();
+    template<class> inline constexpr bool always_false = false;
 
     // store types
     using MemberBegin = std::vector<std::size_t>;
@@ -400,7 +401,88 @@ namespace DFAAPI {
         Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
 
-    template<typename STORAGE_T, typename DATAVECTOR>
+    // template<typename TOKEN_T, typename STORAGE_T, typename DATAVECTOR>
+    // void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
+    //     auto start = mb[pos];
+    //     auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
+    //     auto offset = end - start;
+    //     if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
+    //         storage.assign(dv.begin() + start, dv.begin() + end);
+    //     } else {
+    //         if (offset > 1)
+    //             throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
+    //         if (offset) {
+    //             if constexpr (std::is_same_v<STORAGE_T, char> || std::is_same_v<STORAGE_T, std::string>) {
+    //                 if constexpr (std::is_same_v<DATAVECTOR, CharTableDataVector>) {
+    //                     const auto &str = dv[start];
+    //                     if constexpr (std::is_same_v<STORAGE_T, char>) {
+    //                         storage = str.empty() ? '\0' : str[0];
+    //                     } else {
+    //                         storage = str;
+    //                     }
+    //                 } else if constexpr (std::is_same_v<DATAVECTOR, CallableTokenDataVector<TOKEN_T>>) {
+    //                     throw std::runtime_error("Ispa internal error: expected string type for CallableToken");
+    //                 } else if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
+    //                     if (!std::holds_alternative<std::string>(dv[start]))
+    //                         throw std::runtime_error("Ispa internal error: expected string type while holding one more token");
+    //                     const auto &str = std::get<std::string>(dv[start]);
+    //                     if constexpr (std::is_same_v<STORAGE_T, char>) {
+    //                         storage = str.empty() ? '\0' : str[0];
+    //                     } else {
+    //                         storage = str;
+    //                     }
+    //                 } else {
+    //                     throw std::runtime_error("Ispa internal error: Undefined data vector type");
+    //                 }
+    //             } else if constexpr (std::is_same_v<STORAGE_T, Node<TOKEN_T>>) {
+    //                 if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
+    //                     if (std::holds_alternative<std::string>(dv[start])) {
+    //                         storage.data() = std::get<std::string>(dv[start]);
+    //                     } else {
+    //                         storage.data() = std::get<Node<TOKEN_T>>(dv[start]);
+    //                     }
+    //                 } else {
+    //                     storage.data() = dv[start];
+    //                 }
+    //             } else {
+    //                 if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
+    //                     if (std::holds_alternative<std::string>(dv[start])) {
+    //                         storage = std::get<std::string>(dv[start]);
+    //                     } else {
+    //                         storage = std::get<Node<TOKEN_T>>(dv[start]);
+    //                     }
+    //                 } else {
+    //                     storage = dv[start];
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    template<typename TOKEN_T, typename STORAGE_T>
+    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
+        auto start = mb[pos];
+        auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
+        auto offset = end - start;
+
+        if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
+            storage.assign(dv.begin() + start, dv.begin() + end);
+        } else {
+            if (offset > 1)
+                throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
+
+            if (offset) {
+                const auto &str = dv[start];
+                if constexpr (std::is_same_v<STORAGE_T, char>) {
+                    storage = str.empty() ? '\0' : str[0];
+                } else if constexpr (std::is_same_v<STORAGE_T, std::string>) {
+                    storage = str;
+                } else {
+                    throw std::runtime_error("ISPA internal error: unsupported storage type for CharTableDataVector");
+                }
+            }
+        }
+    }
+    template<typename TOKEN_T, typename STORAGE_T, typename DATAVECTOR>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
@@ -411,20 +493,99 @@ namespace DFAAPI {
             if (offset > 1)
                 throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
             if (offset) {
-                storage = dv[start];
+                if constexpr (std::is_same_v<STORAGE_T, char> || std::is_same_v<STORAGE_T, std::string>) {
+                    throw std::runtime_error("Ispa internal error: expected string type for CallableToken");
+                } else if constexpr (std::is_same_v<STORAGE_T, Node<TOKEN_T>>) {
+                    storage.data() = dv[start];
+                } else {
+                    storage = dv[start];
+                }
             }
         }
     }
-    template<typename T, typename DV>
-    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DV &dv) {
-        if constexpr (!std::is_same_v<T, std::string>)
-            throw std::runtime_error("ISPA internal error: node type error: group can be assigned to a string-only value");
-        auto [start, end] = gb[pos];
-        for (; start != end; ++start)
-            storage += dv[start];
+    template<typename TOKEN_T, typename STORAGE_T>
+    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const MultiTableDataVector<TOKEN_T> &dv) {
+        auto start = mb[pos];
+        auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
+        auto offset = end - start;
 
+        if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
+            storage.assign(dv.begin() + start, dv.begin() + end);
+        } else {
+            if (offset > 1)
+                throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
+
+            if (offset) {
+                if constexpr (std::is_same_v<STORAGE_T, char> || std::is_same_v<STORAGE_T, std::string>) {
+                    if (!std::holds_alternative<std::string>(dv[start]))
+                        throw std::runtime_error("ISPA internal error: expected string type while holding one more token");
+                    const auto &str = std::get<std::string>(dv[start]);
+                    if constexpr (std::is_same_v<STORAGE_T, char>) {
+                        storage = str.empty() ? '\0' : str[0];
+                    } else {
+                        storage = str;
+                    }
+                } else if constexpr (std::is_same_v<STORAGE_T, Node<TOKEN_T>>) {
+                    if (std::holds_alternative<std::string>(dv[start])) {
+                        storage.data() = std::get<std::string>(dv[start]);
+                    } else {
+                        storage.data() = std::get<Node<TOKEN_T>>(dv[start]);
+                    }
+                } else {
+                    if constexpr (std::is_same_v<STORAGE_T, std::string>) {
+                        if (std::holds_alternative<std::string>(dv[start])) {
+                            storage = std::get<std::string>(dv[start]);
+                        } else {
+                            throw std::runtime_error("Variant does not hold a string for storage assignment");
+                        }
+                    } else if constexpr (std::is_same_v<STORAGE_T, Node<TOKEN_T>>) {
+                        if (std::holds_alternative<Node<TOKEN_T>>(dv[start])) {
+                            storage = std::get<Node<TOKEN_T>>(dv[start]);
+                        } else {
+                            throw std::runtime_error("Variant does not hold a Node<TOKEN_T> for storage assignment");
+                        }
+                    } else if constexpr (std::is_same_v<STORAGE_T, std::vector<Node<TOKEN_T>>>) {
+                        if (std::holds_alternative<Node<TOKEN_T>>(dv[start])) {
+                            storage.push_back(std::get<Node<TOKEN_T>>(dv[start]));
+                        } else {
+                            throw std::runtime_error("Variant does not hold a Node<TOKEN_T> for storage assignment");
+                        }
+                    } else {
+                        static_assert(always_false<STORAGE_T>, "Unsupported type for storage assignment");
+                    }
+                }
+            }
+        }
     }
-    inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t &group_begin_index) {
+
+    template<typename TOKEN_T, typename T, typename DATAVECTOR>
+    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DATAVECTOR &dv) {
+        auto [start, end] = gb[pos];
+        if constexpr (std::is_same_v<T, std::string>) {
+            for (; start != end; ++start) {
+                if constexpr (std::is_same_v<DATAVECTOR, CharTableDataVector>) {
+                    storage += dv[start];
+                } else if constexpr (std::is_same_v<DATAVECTOR, CallableTokenDataVector<TOKEN_T>>) {
+                    throw std::runtime_error("Ispa internal error: group cannot be assigned as complete entity with callable token data vector");
+                } else {
+                    if (!std::holds_alternative<std::string>(dv[start]))
+                        throw std::runtime_error("Ispa internal error: group cannot be assigned as complete entity when one of parts is not a string");
+                    storage += std::get<std::string>(dv[start]);
+                }
+            }
+        } else {
+            // is is std::vector expecting group value sequence
+            if constexpr (std::is_same_v<DATAVECTOR, CallableTokenDataVector<TOKEN_T>>) {
+                storage.assign(dv.begin() + start, dv.begin() + end);
+            } else {
+                for (; start != end; ++start) {
+                    storage.push_back(std::get<Node<TOKEN_T>>(dv[start]));
+                }
+            }
+
+        }
+    }
+    inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t group_begin_index) {
         if (lowest_open_index >= index)
             return;
         auto how_much_to_open = index - lowest_open_index;
@@ -540,7 +701,7 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto e_state = std::get<DFAAPI::CharEmptyState<TOKEN_T>>(table[state]);
-        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
     template<typename IT, typename PanicModeFunc>
     static auto match(const DFAAPI::SpanCallableTokenTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T>  {
@@ -592,7 +753,7 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto e_state = std::get<DFAAPI::CallableTokenEmptyState<TOKEN_T>>(table[state]);
-        return match_result<TOKEN_T> {true, Node<TOKEN_T> {0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> {0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
     template<typename IT, typename PanicModeFunc>
     static auto decide(const DFAAPI::SpanTokenTable<TOKEN_T> &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
@@ -722,10 +883,10 @@ protected:
                                         member_begin.push_back(data.size());
                                     }
                                     if (t.group_close != DFAAPI::null_state) {
-                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
                                     }
                                     if (t.new_group != DFAAPI::null_state) {
-                                        DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
                                     }
                                     if (t.close_cst_node)
                                         closed = true;
@@ -743,10 +904,10 @@ protected:
                                         member_begin.push_back(data.size());
                                     }
                                     if (t.group_close != DFAAPI::null_state) {
-                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
                                     }
                                     if (t.new_group != DFAAPI::null_state) {
-                                        DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
                                     }
                                     if (t.close_cst_node)
                                         closed = true;
@@ -762,10 +923,10 @@ protected:
                                     member_begin.push_back(data.size());
                                 }
                                 if (t.group_close != DFAAPI::null_state) {
-                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
                                 }
                                 if (t.new_group != DFAAPI::null_state) {
-                                    DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                    DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
                                 }
                                 if (t.close_cst_node)
                                     closed = true;
@@ -781,10 +942,10 @@ protected:
                                     member_begin.push_back(data.size());
                                 }
                                 if (t.group_close != DFAAPI::null_state) {
-                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.first->group_close, data.size());
+                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
                                 }
                                 if (t.new_group != DFAAPI::null_state) {
-                                    DFAAPI::openGroups(group_begin, inclosed_groups, t->new_group, lowest_open_index, data.size());
+                                    DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
                                 }
                                 if (t.close_cst_node)
                                     closed = true;
@@ -822,7 +983,7 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto e_state = std::get<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]);
-        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;

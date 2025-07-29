@@ -9,7 +9,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::cll_COMPARE_OP, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::cll_COMPARE_OP data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::cll_COMPARE_OP>(data);
 	}
 };
@@ -32,7 +32,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_5, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_5 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_5>(data);
 	}
 };
@@ -43,7 +43,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_12, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_12 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_12>(data);
 	}
 };
@@ -58,7 +58,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::cll_OP, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::cll_OP data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::cll_OP>(data);
 	}
 };
@@ -77,7 +77,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::cll_ASSIGNMENT_OP, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::cll_ASSIGNMENT_OP data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::cll_ASSIGNMENT_OP>(data);
 	}
 };
@@ -93,7 +93,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::AUTO_23, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::AUTO_23 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_23>(data);
 	}
 };
@@ -101,7 +101,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::cll_LOGICAL_OP, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::cll_LOGICAL_OP data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::cll_LOGICAL_OP>(data);
 	}
 };
@@ -147,7 +147,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_3, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_3 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_3>(data);
 	}
 };
@@ -158,7 +158,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_4, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_4 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_4>(data);
 	}
 };
@@ -193,7 +193,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::AUTO_19, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::AUTO_19 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_19>(data);
 	}
 };
@@ -251,9 +251,9 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::NUMBER, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::NUMBER data;
-		::ISPA_STD::DFAAPI::cst_store(data.sign, 0, mb, dv);
-		::ISPA_STD::DFAAPI::cst_group_store(data.main, 0, gb, dv);
-		::ISPA_STD::DFAAPI::cst_group_store(data.dec, 1, gb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.sign, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data.main, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data.dec, 1, gb, dv);
 		return std::make_any<Types::NUMBER>(data);
 	}
 };
@@ -271,7 +271,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_1, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_1 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_1>(data);
 	}
 };
@@ -295,7 +295,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::AUTO_20, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::AUTO_20 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_20>(data);
 	}
 };
@@ -303,7 +303,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::AUTO_11, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::AUTO_11 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_11>(data);
 	}
 };
@@ -616,7 +616,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::rule_BIN, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::rule_BIN data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::rule_BIN>(data);
 	}
 };
@@ -672,7 +672,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::rule_HEX, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::rule_HEX data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::rule_HEX>(data);
 	}
 };
@@ -687,7 +687,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_6, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_6 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_6>(data);
 	}
 };
@@ -698,7 +698,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_7, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_7 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_7>(data);
 	}
 };
@@ -712,7 +712,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_21, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_21 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_21>(data);
 	}
 };
@@ -935,7 +935,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::ID, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::ID data;
-		::ISPA_STD::DFAAPI::cst_group_store(data, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data, 0, gb, dv);
 		return std::make_any<Types::ID>(data);
 	}
 };
@@ -946,7 +946,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::AUTO_13, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::AUTO_13 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_13>(data);
 	}
 };
@@ -954,8 +954,8 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::rule_CSEQUENCE, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::rule_CSEQUENCE data;
-		::ISPA_STD::DFAAPI::cst_store(data._not, 0, mb, dv);
-		::ISPA_STD::DFAAPI::cst_group_store(data.val, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data._not, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data.val, 0, gb, dv);
 		return std::make_any<Types::rule_CSEQUENCE>(data);
 	}
 };
@@ -976,8 +976,8 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::rule_CSEQUENCE_DIAPASON, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::rule_CSEQUENCE_DIAPASON data;
-		::ISPA_STD::DFAAPI::cst_store(data.from, 0, mb, dv);
-		::ISPA_STD::DFAAPI::cst_store(data.to, 1, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.from, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.to, 1, mb, dv);
 		return std::make_any<Types::rule_CSEQUENCE_DIAPASON>(data);
 	}
 };
@@ -1124,7 +1124,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::rule_CSEQUENCE_SYMBOL, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::rule_CSEQUENCE_SYMBOL data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::rule_CSEQUENCE_SYMBOL>(data);
 	}
 };
@@ -1278,7 +1278,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::STRING, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::STRING data;
-		::ISPA_STD::DFAAPI::cst_group_store(data, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data, 0, gb, dv);
 		return std::make_any<Types::STRING>(data);
 	}
 };
@@ -1300,7 +1300,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_14, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_14 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_14>(data);
 	}
 };
@@ -1499,7 +1499,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::ID, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::ID data;
-		::ISPA_STD::DFAAPI::cst_group_store(data, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data, 0, gb, dv);
 		return std::make_any<Types::ID>(data);
 	}
 };
@@ -1540,7 +1540,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::cll_TYPE, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::cll_TYPE data;
-		::ISPA_STD::DFAAPI::cst_store(data.type, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.type, 0, mb, dv);
 		return std::make_any<Types::cll_TYPE>(data);
 	}
 };
@@ -1568,8 +1568,8 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::cll_TEMPLATE, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::cll_TEMPLATE data;
-		::ISPA_STD::DFAAPI::cst_store(data.first, 0, mb, dv);
-		::ISPA_STD::DFAAPI::cst_store(data.second, 1, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.first, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data.second, 1, mb, dv);
 		return std::make_any<Types::cll_TEMPLATE>(data);
 	}
 };
@@ -1696,7 +1696,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_17, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_17 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_17>(data);
 	}
 };
@@ -1704,7 +1704,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_16, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_16 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_16>(data);
 	}
 };
@@ -1730,7 +1730,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::BOOLEAN, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::BOOLEAN data;
-		::ISPA_STD::DFAAPI::cst_group_store(data, 0, gb, dv);
+		::ISPA_STD::DFAAPI::cst_group_store<Tokens>(data, 0, gb, dv);
 		return std::make_any<Types::BOOLEAN>(data);
 	}
 };
@@ -1744,7 +1744,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_9, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_9 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_9>(data);
 	}
 };
@@ -1955,7 +1955,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_22, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_22 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_22>(data);
 	}
 };
@@ -1963,7 +1963,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_15, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_15 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_15>(data);
 	}
 };
@@ -2173,7 +2173,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_10, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_10 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_10>(data);
 	}
 };
@@ -2386,7 +2386,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::NAME, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::NAME data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::NAME>(data);
 	}
 };
@@ -2757,7 +2757,7 @@ const ::ISPA_STD::DFAAPI::MultiTableEmptyState<::Parser::Tokens> Parser::Lexer::
 ::Parser::Tokens::SPACEMODE, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::MultiTableDataVector<::Parser::Tokens> &dv)
 	{
 		Types::SPACEMODE data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::SPACEMODE>(data);
 	}
 };
@@ -3076,7 +3076,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_8, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_8 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_8>(data);
 	}
 };
@@ -3282,7 +3282,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_18, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_18 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_18>(data);
 	}
 };
@@ -3427,7 +3427,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_0, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_0 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_0>(data);
 	}
 };
@@ -3449,7 +3449,7 @@ const ::ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> Parser::Lexer::dfa_st
 ::Parser::Tokens::AUTO_2, [](const ::ISPA_STD::DFAAPI::MemberBegin &mb, const ::ISPA_STD::DFAAPI::GroupBegin &gb, const ::ISPA_STD::DFAAPI::CharTableDataVector &dv)
 	{
 		Types::AUTO_2 data;
-		::ISPA_STD::DFAAPI::cst_store(data, 0, mb, dv);
+		::ISPA_STD::DFAAPI::cst_store<Tokens>(data, 0, mb, dv);
 		return std::make_any<Types::AUTO_2>(data);
 	}
 };

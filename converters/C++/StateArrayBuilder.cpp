@@ -67,9 +67,9 @@ void StateArrayBuilder::output() {
                     for (const auto &data : std::get<NFA::TemplatedDataBlock>(t.dtb)) {
                         out_content << "\t\t::ISPA_STD::DFAAPI::";
                         if (data.second.first == NFA::StoreCstNode::CST_GROUP) {
-                            out_content << "cst_group_store(data." << data.first << ", " << data.second.second << ", gb, dv);";
+                            out_content << "cst_group_store<Tokens>(data." << data.first << ", " << data.second.second << ", gb, dv);";
                         } else {
-                            out_content << "cst_store(data." << data.first << ", " << data.second.second << ", mb, dv);";
+                            out_content << "cst_store<Tokens>(data." << data.first << ", " << data.second.second << ", mb, dv);";
                         }
                         out_content << '\n';
                     }
@@ -77,9 +77,9 @@ void StateArrayBuilder::output() {
                     const auto &data = std::get<NFA::SingleValueDataBlock>(t.dtb);
                     out_content << "\t\t::ISPA_STD::DFAAPI::";
                     if (data == NFA::StoreCstNode::CST_GROUP) {
-                        out_content << "cst_group_store(data, 0, gb, dv);";
+                        out_content << "cst_group_store<Tokens>(data, 0, gb, dv);";
                     } else {
-                        out_content << "cst_store(data, 0, mb, dv);";
+                        out_content << "cst_store<Tokens>(data, 0, mb, dv);";
                     }
                     out_content << "\n";
                 }

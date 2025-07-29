@@ -62,7 +62,6 @@ void LexerConverter::output() {
             if (used.contains(index) || used_func.contains(name))
                 continue;
             if (index != LexerBuilder::DFA_NOT_COMPATIBLE) {
-                cpuf::printf("[{}] used: {}", static_cast<char>(c), used);
                 used.insert(index);
                 // if (was_dfa)
                 //     throw Error("Several DFA's in one dispatch sequence");
