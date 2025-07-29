@@ -400,64 +400,6 @@ namespace DFAAPI {
     struct SpanMultiTable {
         Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
-
-    // template<typename TOKEN_T, typename STORAGE_T, typename DATAVECTOR>
-    // void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
-    //     auto start = mb[pos];
-    //     auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
-    //     auto offset = end - start;
-    //     if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
-    //         storage.assign(dv.begin() + start, dv.begin() + end);
-    //     } else {
-    //         if (offset > 1)
-    //             throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
-    //         if (offset) {
-    //             if constexpr (std::is_same_v<STORAGE_T, char> || std::is_same_v<STORAGE_T, std::string>) {
-    //                 if constexpr (std::is_same_v<DATAVECTOR, CharTableDataVector>) {
-    //                     const auto &str = dv[start];
-    //                     if constexpr (std::is_same_v<STORAGE_T, char>) {
-    //                         storage = str.empty() ? '\0' : str[0];
-    //                     } else {
-    //                         storage = str;
-    //                     }
-    //                 } else if constexpr (std::is_same_v<DATAVECTOR, CallableTokenDataVector<TOKEN_T>>) {
-    //                     throw std::runtime_error("Ispa internal error: expected string type for CallableToken");
-    //                 } else if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
-    //                     if (!std::holds_alternative<std::string>(dv[start]))
-    //                         throw std::runtime_error("Ispa internal error: expected string type while holding one more token");
-    //                     const auto &str = std::get<std::string>(dv[start]);
-    //                     if constexpr (std::is_same_v<STORAGE_T, char>) {
-    //                         storage = str.empty() ? '\0' : str[0];
-    //                     } else {
-    //                         storage = str;
-    //                     }
-    //                 } else {
-    //                     throw std::runtime_error("Ispa internal error: Undefined data vector type");
-    //                 }
-    //             } else if constexpr (std::is_same_v<STORAGE_T, Node<TOKEN_T>>) {
-    //                 if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
-    //                     if (std::holds_alternative<std::string>(dv[start])) {
-    //                         storage.data() = std::get<std::string>(dv[start]);
-    //                     } else {
-    //                         storage.data() = std::get<Node<TOKEN_T>>(dv[start]);
-    //                     }
-    //                 } else {
-    //                     storage.data() = dv[start];
-    //                 }
-    //             } else {
-    //                 if constexpr (std::is_same_v<DATAVECTOR, MultiTableDataVector<TOKEN_T>>) {
-    //                     if (std::holds_alternative<std::string>(dv[start])) {
-    //                         storage = std::get<std::string>(dv[start]);
-    //                     } else {
-    //                         storage = std::get<Node<TOKEN_T>>(dv[start]);
-    //                     }
-    //                 } else {
-    //                     storage = dv[start];
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
         auto start = mb[pos];
