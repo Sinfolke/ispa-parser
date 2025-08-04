@@ -13,6 +13,7 @@ import DFATypes;
 import DFASpans;
 import dstd;
 import std;
+import cpuf.op;
 import cpuf.printf;
 void LexerConverter::addStandardFunctionsLexer() const {
     h_out << R"(
@@ -73,12 +74,12 @@ void LexerConverter::output() {
             }
             out << ", ";
         }
-        out << "}, // '" << corelib::text::getEscapedAsStr(c++, false) << "'\n";
+        out << "}, // '" << corelib::text::getEscapedAsStr(c++, false) << "', " << names << "\n";
     }
     out << "};\n";
     // 2. Print makeToken function
     out << "auto ::" << namespace_name << "::Lexer::makeToken(const char* &pos) -> Token {\n";
-    out << "\tfcdt_lookup(first_character_dispatch_table, pos);\n";
+    out << "\treturn fcdt_lookup(first_character_dispatch_table, pos);\n";
     out << "}\n";
     // print tokens that are callable functions
     LLConverter converter(lexer_data.getFunctionsIR(), ast, namespace_name);

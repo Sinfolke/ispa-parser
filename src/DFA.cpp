@@ -218,12 +218,9 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         lookaheads.back().emplace_back();
         for (auto &t : mstates[current].transitions) {
             for (auto &next : t.second) {
-                if (!walked_state.contains(next.value.next)) {
-                    // not loop, push
-                    next.dfa_merge_conflict = val[val.size() - 1 - work_size].dfa_merge_conflict;
-                    lookaheads.back().back()[t.first].push_back(next);
-                    walked_state.insert(next.value.next);
-                }
+                // not loop, push
+                next.dfa_merge_conflict = val[val.size() - 1 - work_size].dfa_merge_conflict;
+                lookaheads.back().back()[t.first].push_back(next);
             }
         }
         //lookaheads.back().push_back(states[current].transitions);
@@ -387,7 +384,6 @@ void DFA::terminateEarly() {
     }
 }
 void DFA::WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::size_t> &reachable) {
-    stdu::vector<std::size_t> path;
     const auto &state = states.at(i);
     for (const auto &t : state.transitions) {
         const auto &id = t.second.next;
@@ -397,11 +393,11 @@ void DFA::WalkDfaToGetUnreachableStates(std::size_t i, std::unordered_set<std::s
 
         WalkDfaToGetUnreachableStates(id, reachable);
     }
-    if (state.else_goto != 0 && !reachable.contains(state.else_goto)) {
+    if (state.else_goto && !reachable.contains(state.else_goto)) {
         reachable.insert(state.else_goto);
         WalkDfaToGetUnreachableStates(state.else_goto, reachable);
     }
-    if (state.any_goto != 0 && !reachable.contains(state.else_goto)) {
+    if (state.any_goto && !reachable.contains(state.any_goto)) {
         reachable.insert(state.any_goto);
         WalkDfaToGetUnreachableStates(state.any_goto, reachable);
     }
@@ -561,7 +557,7 @@ void DFA::build(bool switchToSingleState) {
         for (std::size_t nfa_index : current) {
             const auto &state = nfa->getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
-                input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, id.close_cst_node, id.new_group, id.group_close, nfa->getAcceptMap().at(id.next)}, state.any ? state.any : NFA::NULL_STATE);
+                input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, id.close_cst_node, id.new_group, id.group_close, nfa->getAcceptMap().at(id.next)}, state.any);
             }
             if (!state.rule_name.empty()) {
                 rule_name = state.rule_name;
@@ -611,9 +607,13 @@ void DFA::build(bool switchToSingleState) {
             }
             logger.log("stdu::vector<std::size_t>: ({}, {})", closure_set, closure_set);
             if (closure_set.empty()) continue;
-            bool goto_empty_state = std::any_of(closure_set.begin(), closure_set.end(), [&](auto &el) {
-                return leadToEmptyState(el) != 0;
-            });
+            // bool goto_empty_state = std::any_of(closure_set.begin(), closure_set.end(), [&](auto &el) {
+            //     if (auto id = leadToEmptyState(el)) {
+            //         empty_state_accept = nfa->getAcceptMap().at(id);
+            //         return true;
+            //     }
+            //     return false;
+            // });
             // Separate conflicting stdu::vector<std::size_t> subsets
             stdu::vector<const Conflict*> process_conflict_list;
             std::unordered_set<std::size_t> closure_set_us(closure_set.begin(), closure_set.end());
@@ -666,10 +666,10 @@ void DFA::build(bool switchToSingleState) {
                     mstates[current_dfa_index].any_goto = conf->any;
                 }
             }
-            if (goto_empty_state) {
-                goto_empty_states.push_back(current_dfa_index);
-                mstates[current_dfa_index].else_goto_accept = empty_state_accept;
-            }
+            // if (goto_empty_state) {
+            //     goto_empty_states.push_back(current_dfa_index);
+            //     mstates[current_dfa_index].else_goto_accept = empty_state_accept;
+            // }
         }
     }
     if (empty_state == NFA::NULL_STATE) {
@@ -678,9 +678,9 @@ void DFA::build(bool switchToSingleState) {
         mstates[empty_state].rule_name = rule_name;
         mstates[empty_state].dtb = dtb;
     }
-    for (const auto id : goto_empty_states) {
-        mstates[id].else_goto = empty_state;
-    }
+    // for (const auto id : goto_empty_states) {
+    //     mstates[id].else_goto = empty_state;
+    // }
     // various optimizations
     if (switchToSingleState) {
         for (std::size_t i = 0; i < mstates.size(); ++i) {
@@ -690,8 +690,8 @@ void DFA::build(bool switchToSingleState) {
         terminateEarly();
         unrollMultiTransitionPaths();
         this->switchToSingleState();
-        removeUnreachableStates();
         removeSelfLoop();
+        removeUnreachableStates();
     }
 }
 void DFA::buildWMerge() {
@@ -708,8 +708,8 @@ void DFA::buildWMerge() {
     terminateEarly();
     unrollMultiTransitionPaths();
     switchToSingleState();
-    removeUnreachableStates();
     removeSelfLoop();
+    removeUnreachableStates();
 }
 auto DFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;
@@ -785,7 +785,7 @@ auto DFA::getStateType(const Transitions &transitions, const utype::unordered_ma
             }
         } else {
             auto &sym = std::get<stdu::vector<std::string>>(symbol);
-            bool is_callable = isToken && dct && !dct->at(sym) == LexerBuilder::DFA_NOT_COMPATIBLE;
+            bool is_callable = isToken && dct && dct->at(sym) == LexerBuilder::DFA_NOT_COMPATIBLE;
             bool is_not_multi = (isToken && is_callable) || !isToken;
             if ((dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) && is_not_multi) {
                 dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;

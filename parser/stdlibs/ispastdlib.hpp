@@ -1,7 +1,5 @@
-//!ISPA_LIB_MANAGER C++ 1.1 ISC-parser Standard-library Versions iscstdlibcpp{VER}-{SUBVER}.h!\\
-
 /**
- * C++ ispa std lib 1.1
+ * C++ ispa std lib 1.2
  * It contains standard declarations and every C++ generated parser would link against it
 */
 #pragma once
@@ -19,6 +17,7 @@
 #include <optional>
 #include <limits>
 #include <functional>
+#include <algorithm>
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -502,6 +501,8 @@ namespace DFAAPI {
 
     template<typename TOKEN_T, typename T, typename DATAVECTOR>
     void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DATAVECTOR &dv) {
+        if (pos >= gb.size())
+            return;
         auto [start, end] = gb[pos];
         if constexpr (std::is_same_v<T, std::string>) {
             for (; start != end; ++start) {
@@ -567,7 +568,6 @@ protected:
             if (t.symbol == *pos) {
                 return &t;
             }
-
         }
         return nullptr;
     }
@@ -626,13 +626,16 @@ protected:
                 if (!closed) {
                     data.back() += new_state->symbol;
                 }
-            } else if (s.else_goto != DFAAPI::null_state) {
+            } else if (s.any_goto) {
+                state = s.any_goto;
+                ++pos;
+            } else if (s.else_goto) {
                 state = s.else_goto;
             } else {
                 if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
                     if (panic_mode != nullptr) {
                         // TODO: Throw error here
-                        panic_mode();
+                        panic_mode(pos);
                         continue;
                     }
                 }
@@ -660,7 +663,7 @@ protected:
             const auto &s = std::get<DFAAPI::SpanCallableTokenState<TOKEN_T>>(table[state]);
             auto [transition, result] = find_key(s, pos);
             if (transition != nullptr) {
-                pos++;
+                pos += result.length();
                 state = transition->next;
                 if (transition->new_member) {
                     member_begin.push_back(data.size());
@@ -678,13 +681,13 @@ protected:
 
                 if (!closed)
                     data.push_back(result);
-            } else if (s.else_goto != DFAAPI::null_state) {
+            } else if (s.else_goto) {
                 state = s.else_goto;
             } else {
                 if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
                     if (panic_mode != nullptr) {
                         // TODO: Throw error here
-                        panic_mode();
+                        panic_mode(pos);
                         continue;
                     }
                 }
@@ -709,9 +712,9 @@ protected:
                 if (new_state->accept != std::numeric_limits<std::size_t>::max()) {
                     accept = new_state->accept;
                 }
-            } else if (table[state].else_goto != std::numeric_limits<std::size_t>::max()) {
+            } else if (table[state].else_goto) {
                 state = table[state].else_goto;
-                if (table[state].else_goto_accept != std::numeric_limits<std::size_t>::max()) {
+                if (table[state].else_goto_accept != DFAAPI::null_state) {
                     accept = table[state].else_goto_accept;
                 }
             } else {
@@ -767,9 +770,10 @@ protected:
                 [&](const DFAAPI::SpanCharTableState &t) {
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state == nullptr) {
-                        panic_mode();
+                        panic_mode(pos);
                         return;
                     }
+                    pos++;
                     state = new_state->next;
                     if (new_state->new_member) {
                         member_begin.push_back(data.size());
@@ -793,9 +797,10 @@ protected:
                     // guard: even if no new_cst_node, this kind is always stored separately
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state.first == nullptr) {
-                        panic_mode();
+                        panic_mode(pos);
                         return;
                     }
+                    pos += new_state.second.length();
                     if (new_state.first->new_member) {
                         member_begin.push_back(data.size());
                     }
@@ -820,6 +825,7 @@ protected:
                         std::visit([&](const auto &t) {
                             if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTransition>) {
                                 if (*pos == t.symbol) {
+                                    pos++;
                                     state = t.next;
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
@@ -842,6 +848,7 @@ protected:
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTransition<TOKEN_T>>) {
                                 if (auto res = t.symbol(pos); res.status) {
+                                    pos += res.node.length();
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
                                     }
@@ -861,42 +868,44 @@ protected:
                                     matched = true;
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanMultiTableState<TOKEN_T>>) {
-                                if (t.new_member) {
-                                    member_begin.push_back(data.size());
-                                }
-                                if (t.group_close != DFAAPI::null_state) {
-                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
-                                }
-                                if (t.new_group != DFAAPI::null_state) {
-                                    DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
-                                }
-                                if (t.close_cst_node)
-                                    closed = true;
-                                if (t.new_cst_node)
-                                    closed = false;
                                 if (auto res = AdvancedDFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
-                                    matched = true;
+                                    pos += res.node.length();
+                                    if (t.new_member) {
+                                        member_begin.push_back(data.size());
+                                    }
+                                    if (t.group_close != DFAAPI::null_state) {
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
+                                    }
+                                    if (t.new_group != DFAAPI::null_state) {
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
+                                    }
+                                    if (t.close_cst_node)
+                                        closed = true;
+                                    if (t.new_cst_node)
+                                        closed = false;
                                     if (!closed)
                                         data.push_back(res.node);
+                                    matched = true;
                                 }
                             } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanCharTableState> || std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTableTransition<TOKEN_T>>) {
-                                if (t.new_member) {
-                                    member_begin.push_back(data.size());
-                                }
-                                if (t.group_close != DFAAPI::null_state) {
-                                    DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
-                                }
-                                if (t.new_group != DFAAPI::null_state) {
-                                    DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
-                                }
-                                if (t.close_cst_node)
-                                    closed = true;
-                                if (t.new_cst_node)
-                                    closed = false;
                                 if (auto res = DFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
-                                    matched = true;
+                                    pos += res.node.length();
+                                    if (t.new_member) {
+                                        member_begin.push_back(data.size());
+                                    }
+                                    if (t.group_close != DFAAPI::null_state) {
+                                        DFAAPI::closeGroups(group_begin, inclosed_groups, t.group_close, data.size());
+                                    }
+                                    if (t.new_group != DFAAPI::null_state) {
+                                        DFAAPI::openGroups(group_begin, inclosed_groups, t.new_group, lowest_open_index, data.size());
+                                    }
+                                    if (t.close_cst_node)
+                                        closed = true;
+                                    if (t.new_cst_node)
+                                        closed = false;
                                     if (!closed)
                                         data.push_back(res.node);
+                                    matched = true;
                                 }
                             }
 
@@ -908,10 +917,10 @@ protected:
 
                     if (!matched) {
                         // Fallback to else_goto if exists
-                        if (t.else_goto != DFAAPI::null_state) {
+                        if (t.else_goto) {
                             state = t.else_goto;
                         } else {
-                            panic_mode();
+                            panic_mode(pos);
                         }
                     }
                 },
@@ -992,29 +1001,37 @@ protected:
         if (error_controller.count(pos - _in) == 0)
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
-    static void panic_mode() {}
+    static void panic_mode(const char* &pos) {
+        pos++;
+    }
     auto fcdt_lookup(const fcdt_table<TOKEN_T> &fcdt, const char* &pos) -> Node<TOKEN_T> {
         while (*pos != '\0') {
             const auto &option = fcdt[*pos];
+            std::printf("pos: %d, c: %c\n", (int) (pos - _in), *pos);
             if (std::holds_alternative<std::monostate>(option)) {
-                panic_mode();
+                panic_mode(pos);
+                continue;
             }
-            const char* copy = pos;
             if (std::holds_alternative<DFAAPI::SpanCharTable<TOKEN_T>>(option)) {
                 if (auto val = DFA<TOKEN_T>::match(std::get<DFAAPI::SpanCharTable<TOKEN_T>>(option), pos, &Lexer_base<TOKEN_T>::panic_mode); val.status) {
+                    pos += val.node.length();
+                    printf("[chartable] result node length: %zu\n", val.node.length());
                     return val.node;
                 }
             } else if (std::holds_alternative<DFAAPI::SpanCallableTokenTable<TOKEN_T>>(option)) {
                 if (auto val = DFA<TOKEN_T>::match(std::get<DFAAPI::SpanCallableTokenTable<TOKEN_T>>(option), pos, &Lexer_base<TOKEN_T>::panic_mode); val.status) {
+                    pos += val.node.length();
+                    printf("result node length: %zu", val.node.length());
                     return val.node;
                 }
             } else if (std::holds_alternative<DFAAPI::SpanMultiTable<TOKEN_T>>(option)) {
                 if (auto val = AdvancedDFA<TOKEN_T>::match(std::get<DFAAPI::SpanMultiTable<TOKEN_T>>(option), pos, &Lexer_base<TOKEN_T>::panic_mode); val.status) {
+                    pos += val.node.length();
+                    printf("[multitable] result node length: %zu\n", val.node.length());
                     return val.node;
                 }
             }
-            pos = copy;
-            panic_mode();
+            panic_mode(pos);
         }
         // end of input -> return eof token
         return Node<TOKEN_T>{};
