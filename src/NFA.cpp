@@ -236,7 +236,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         }
         for (unsigned char c = std::numeric_limits<char>::min();; ++c) {
             if (!prohibited.test(c)) {
-                auto &t = states[start].transitions[corelib::text::getEscapedFromChar(static_cast<char>(c))];
+                auto &t = states[start].transitions[static_cast<char>(c)];
                 t = {end};
                 if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                     t.new_cst_node = true;
@@ -266,7 +266,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         }
         for (auto [from, to] : csequence.diapasons) {
             for (char c = from; c <= to; ++c) {
-                auto &t = states[start].transitions[corelib::text::getEscapedFromChar(c)];
+                auto &t = states[start].transitions[c];
                 t.next = end;
                 if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                     t.new_cst_node = true;
