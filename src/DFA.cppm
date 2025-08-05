@@ -61,7 +61,7 @@ public:
     using MultiState = State<MultiTransitions>;
     using SingleState = State<Transitions>;
     using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
-    using WalkedState = utype::unordered_set<std::size_t>;
+    using WalkedState = utype::unordered_map<std::size_t, std::size_t>;
     using DfaEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;
     using DfaIndexToEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;
 private:

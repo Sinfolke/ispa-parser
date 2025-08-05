@@ -200,10 +200,43 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
     Lookaheads lookaheads;
     std::queue<std::size_t> work;
     std::size_t work_size = 0;
+    std::size_t current_dfa_state = mstates.size();
+    mstates.emplace_back();
+    bool all_recursive = true;
+
+    // TODO: implement more complex logic to cancell saved input if path without input is chosen
+    // if at least one alternative has new_cst_node or new_member, set them to true
+    bool new_cst_node = false, new_member = false, close_cst_node = false;
+    std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE;
+    for (const auto &v : val) {
+        if (v.value.new_cst_node)
+            new_cst_node = true;
+        if (v.value.new_member)
+            new_member = true;
+        if (v.value.close_cst_node)
+            close_cst_node = true;
+        if (v.value.new_group != NFA::NULL_STATE)
+            new_group = v.value.new_group;
+        if (v.value.group_close != NFA::NULL_STATE)
+            close_group = v.value.group_close;
+    }
+    walked_state[current_dfa_state];
     for (const auto &v: val) {
+        if (all_recursive && !walked_state.contains(v.value.next)) {
+            all_recursive = false;
+        } else {
+            walked_state[v.value.next] = current_dfa_state;
+        }
+        if (!walked_state.contains(v.value.next)) {
+            walked_state[v.value.next] = current_dfa_state;
+        }
         work.push(v.value.next);
         work_size++;
     };
+    if (all_recursive) {
+        val = {{ walked_state.at(std::max_element(val.begin(), val.end(), [](const auto& a, const auto& b) { return a.value.next < b.value.next;})->value.next),  new_cst_node, new_member, close_cst_node, new_group, close_group }};
+        return;
+    }
     Tlog::Branch b(logger, "DFA/unrollMultiTransition");
     while (!work.empty()) {
         // substep 1: for every symbol in val push new lookahead set
@@ -238,8 +271,6 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         // }
     }
     // step 2: based on lookaheads compute new states
-    std::size_t current_dfa_state = mstates.size();
-    mstates.emplace_back();
     dfa_empty_state_map[current_dfa_state] = dfa_empty_state_map[state_id];
     logger.log("Lookaheads size: {}", lookaheads.size());
     for (std::size_t i = 0; i < lookaheads.size(); ++i) {
@@ -262,34 +293,18 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         }
     }
     // find more dublicate states and unroll
-    std::unordered_set<std::size_t> next_indices;
-    for (const auto &s : mstates[current_dfa_state].transitions) {
-        for (const auto &t : s.second) {
-            next_indices.insert(t.value.next);
-        }
-    }
-    if (!seen[symbol].insert(next_indices).second)
-        return;
+    // std::unordered_set<std::size_t> next_indices;
+    // for (const auto &s : mstates[current_dfa_state].transitions) {
+    //     for (const auto &t : s.second) {
+    //         next_indices.insert(t.value.next);
+    //     }
+    // }
+    // if (!seen[symbol].insert(next_indices).second)
+    //     return;
     for (auto &[sym, go]: mstates[current_dfa_state].transitions) {
         if (go.size() > 1) {
             unrollMultiTransition(current_dfa_state, sym, go, seen, walked_state);
         }
-    }
-    // TODO: implement more complex logic to cancell saved input if path without input is chosen
-    // if at least one alternative has new_cst_node or new_member, set them to true
-    bool new_cst_node = false, new_member = false, close_cst_node = false;
-    std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE;
-    for (const auto &v : val) {
-        if (v.value.new_cst_node)
-            new_cst_node = true;
-        if (v.value.new_member)
-            new_member = true;
-        if (v.value.close_cst_node)
-            close_cst_node = true;
-        if (v.value.new_group != NFA::NULL_STATE)
-            new_group = v.value.new_group;
-        if (v.value.group_close != NFA::NULL_STATE)
-            close_group = v.value.group_close;
     }
     val = {{current_dfa_state, new_cst_node, new_member, close_cst_node, new_group, close_group}};
 }
