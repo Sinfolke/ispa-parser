@@ -445,14 +445,27 @@ void DFA::removeUnreachableStates() {
     states = std::move(new_states);
 }
 void DFA::removeSelfLoop() {
-    for (std::size_t i = 0; i < states.size(); ++i) {
-        auto &state = states[i];
-        if (state.transitions.empty())
-            continue;
-        if (std::all_of(state.transitions.begin(), state.transitions.end(), [&](auto &next) {
-            return next.second.next == i;
-        })) {
-            state.else_goto = dfa_empty_state_map[i];
+    if (mstates.empty()) {
+        for (std::size_t i = 0; i < states.size(); ++i) {
+            auto &state = states[i];
+            if (state.transitions.empty() || state.else_goto && state.else_goto != i)
+                continue;
+            if (std::all_of(state.transitions.begin(), state.transitions.end(), [&](auto &next) {
+                return next.second.next == i;
+            })) {
+                state.else_goto = dfa_empty_state_map[i];
+            }
+        }
+    } else {
+        for (std::size_t i = 0; i < mstates.size(); ++i) {
+            auto &state = mstates[i];
+            if (state.transitions.empty() || state.else_goto && state.else_goto != i)
+                continue;
+            if (std::all_of(state.transitions.begin(), state.transitions.end(), [&](auto &next) {
+                return next.second.back().value.next == i;
+            })) {
+                state.else_goto = dfa_empty_state_map[i];
+            }
         }
     }
 }
@@ -697,15 +710,15 @@ void DFA::build(bool switchToSingleState) {
     //     mstates[id].else_goto = empty_state;
     // }
     // various optimizations
+    for (std::size_t i = 0; i < mstates.size(); ++i) {
+        dfa_empty_state_map[i] = empty_state;
+    }
+    removeSelfLoop();
     if (switchToSingleState) {
-        for (std::size_t i = 0; i < mstates.size(); ++i) {
-            dfa_empty_state_map[i] = empty_state;
-        }
         removeDublicateStates();
         terminateEarly();
         unrollMultiTransitionPaths();
         this->switchToSingleState();
-        removeSelfLoop();
         removeUnreachableStates();
     }
 }
@@ -878,6 +891,19 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
             os << " { accept -> " << s.else_goto_accept << " }";
         }
         os << '\n';
+    }
+    if (s.any_goto != 0) {
+        os << "\t[any goto] -> " << s.any_goto;
+        if (s.else_goto_accept != NFA::NULL_STATE) {
+            os << " { accept -> " << s.else_goto_accept << " }";
+        }
+        os << '\n';
+    }
+    if (!s.rule_name.empty()) {
+        os << "\t[rule_name] " << s.rule_name << ":";
+    }
+    if (!std::holds_alternative<std::monostate>(s.dtb)) {
+        os << "\t[dtb]";
     }
     return os;
 }
