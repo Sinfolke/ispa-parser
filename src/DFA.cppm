@@ -47,6 +47,8 @@ public:
         std::size_t else_goto_accept = NFA::NULL_STATE;
         stdu::vector<std::string> rule_name;
         NFA::DataBlock dtb;
+        bool optional = false;
+        bool last = false;
         bool operator==(const State &other) const = default;
     private:
         friend struct uhash;
@@ -78,6 +80,7 @@ private:
     auto leadToEmptyState(std::size_t current) const -> std::size_t;
     auto leadToEmptyStateDfa(const std::size_t current, std::unordered_set<std::size_t> &visited) -> std::size_t;
     auto leadToEmptyStateDfa(const std::size_t current) -> std::size_t;
+    auto canBeEndState(const std::size_t current) -> std::size_t;
     bool includesWhitespace(const MultiState &state) const;
     bool isTerminateState(const MultiState &state) const;
     void removeDublicateStates();

@@ -2,9 +2,11 @@ module AST.Builder;
 import AST.types;
 import AST.Tree;
 import cpuf.printf;
+import corelib;
 import logging;
 import dstd;
 import std;
+#include <cstdio>
 
 void AST::Builder::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
@@ -363,9 +365,33 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
     if (rule_r.val.type() == typeid(Parser::Token)) {
         const auto &token = std::any_cast<const Parser::Token&>(rule_r.val);
         switch (token.name()) {
-            case Parser::Tokens::STRING:
-                member.value = AST::String {Parser::get::STRING(token)};
+            case Parser::Tokens::STRING: {
+                auto str = Parser::get::STRING(token);
+
+                for (std::size_t i = 0; i < str.size(); ) {
+                    if (str[i] == '\\') {
+                        if (i + 1 >= str.size()) {
+                            // lone backslash at end: just remove it or break
+                            str.erase(i, 1);
+                            continue;
+                        }
+
+                        char escaped_char = str[i + 1];
+                        str.erase(i, 1); // erase the backslash
+
+                        if (escaped_char != '\'' && escaped_char != '"') {
+                            str[i] = corelib::text::getEscapedFromChar(escaped_char); // replace escaped char
+                        }
+                        // if escaped_char is '\'' or '"', just leave as-is (backslash removed)
+                        ++i;
+                    } else {
+                        ++i;
+                    }
+                }
+
+                member.value = AST::String {str};
                 break;
+            }
             case Parser::Tokens::rule_OP:
                 if (!in_op) {
                     in_op = true;

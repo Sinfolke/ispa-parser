@@ -10,15 +10,16 @@ import LLIR.RuleBuilder;
 import DFA;
 import std;
 
-void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isEntry, bool addStoreActions) {
+void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions) {
     states[start].transitions[name] = {end};
     if (addStoreActions && !member.prefix.empty()) {
         states[start].transitions[name].new_cst_node = true;
         states[start].transitions[name].new_member = true;
         cst_node_close_propagate.push_back(end);
     }
-    if (isEntry && !isWhitespaceToken) {
+    if (isLastMember && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
+        states[start].last = true;
     }
     // handle quantifier
     switch (member.quantifier) {
@@ -26,6 +27,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             // NUMBER -> end
             // epsilon -> end
             states[start].epsilon_transitions.insert(end);
+            states[start].optional = true;
             break;
         case '+': {
             // NUMBER -> next:
@@ -39,6 +41,8 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
                 states[loop_state].transitions[name].new_cst_node = true;
             }
             states[loop_state].epsilon_transitions.insert(end);
+
+            states[loop_state].optional = true;
             break;
         } case '*': {
             auto loop_state = states.size();
@@ -49,13 +53,16 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
                 states[loop_state].transitions[name].new_cst_node = true;
             }
             states[loop_state].epsilon_transitions.insert(end);
+
+            states[start].optional = true;
+            states[loop_state].optional = true;
             break;
         }
         default:
             break;
     }
 }
-void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
+void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     // NO STORE ACTIONS IN THIS FUNCTION AS IT ONLY MEET FOR DECISTION LOOKUP NOT LEXING
     std::size_t inner_start = states.size();
     std::size_t inner_end = inner_start + 1;
@@ -80,23 +87,28 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             states[start].epsilon_transitions.insert(inner_start);
             states[start].epsilon_transitions.insert(end);
             states[inner_end].epsilon_transitions.insert(end);
+
+            states[start].optional = true;
             break;
         case '+': {
             // loop at end
             states[start].epsilon_transitions.insert(inner_start);
             states[inner_end].epsilon_transitions.insert(inner_start); // loop
             states[inner_end].epsilon_transitions.insert(end);         // or exit
+
+            states[inner_start].optional = true;
             break;
         }
         case '*': {
             // epsilon -> end
             // loop zero or more
-            std::size_t loop_start = inner_start;
-            std::size_t loop_end = inner_end;
             states[start].epsilon_transitions.insert(inner_start);  // enter
             states[start].epsilon_transitions.insert(end);          // or skip
             states[inner_end].epsilon_transitions.insert(inner_start); // loop
             states[inner_end].epsilon_transitions.insert(end);         // or exit
+
+            states[start].optional = true;
+            states[inner_start].optional = true;
             break;
         }
         default:
@@ -106,11 +118,19 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             break;
     }
 
-    if (isEntry && !isWhitespaceToken) {
+    if (isLastMember) {
         states[inner_start].accept_index = accept_index++;
+        states[inner_start].last = true;
+    }
+    if (!states[inner_start].last && !states[inner_start].optional)
+        return;
+    auto states_to_propagate_last = getStatesToPropagate(inner_start);
+    for (const auto s : states_to_propagate_last) {
+        states[s].last = states[inner_start].last;
+        states[s].optional = states[inner_start].optional;
     }
 }
-void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
+void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     std::size_t last = start;
     store_entire_group = true;
     for (const auto &sub : group) {
@@ -123,8 +143,9 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     store_entire_group = false;
     // Link final fragment to end
     states[last].epsilon_transitions.insert(end);
-    if (isEntry && !isWhitespaceToken) {
+    if (isLastMember && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
+        states[start].last = true;
     }
     switch (member.quantifier) {
         case '?':
@@ -157,8 +178,15 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         }
         group_close_propagate.emplace_back(end, group_count++);
     }
+    if (!states[start].last && !states[start].optional)
+        return;
+    auto states_to_propagate_last = getStatesToPropagate(start);
+    for (const auto s : states_to_propagate_last) {
+        states[s].last = states[start].last;
+        states[s].optional = states[start].optional;
+    }
 }
-void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
+void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     constexpr auto NO_NEXT_AFTER = std::numeric_limits<std::size_t>::max();
     std::size_t current = start;
     std::size_t next_after = NO_NEXT_AFTER;
@@ -188,8 +216,9 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
     if (addStoreActions)
         cst_node_close_propagate.push_back(end);
     // Mark accepting state if needed
-    if (isEntry && !isWhitespaceToken) {
+    if (isLastMember && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
+        states[start].last = true;
     }
 
     // Handle quantifiers
@@ -197,6 +226,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
         case '?':
             // Can skip the entire string
             states[start].epsilon_transitions.insert(end);
+            states[start].optional = true;
             break;
         case '+':
             // Loop only
@@ -215,12 +245,20 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
             } else {
                 states[end].epsilon_transitions.insert(start);
             }
+            states[start].optional = true;
             break;
         default:
             break;
     }
+    if (!states[start].last && !states[start].optional)
+        return;
+    auto states_to_propagate_last = getStatesToPropagate(start);
+    for (const auto s : states_to_propagate_last) {
+        states[s].last = states[start].last;
+        states[s].optional = states[start].optional;
+    }
 }
-void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isEntry, bool addStoreActions) {
+void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
     if (addStoreActions)
@@ -276,8 +314,9 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         }
     }
     // Mark accepting state if needed
-    if (isEntry && !isWhitespaceToken) {
+    if (isLastMember && !isWhitespaceToken) {
         states[end].accept_index = accept_index++;
+        states[start].last = true;
     }
     // Quantifier handling
     auto loop_state = states.size();
@@ -285,6 +324,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         case '?':
             // Allow skipping the group
             states[start].epsilon_transitions.insert(end);
+            states[start].optional = true;
             break;
         case '+': {
             // Allow skipping the loop_state only
@@ -298,6 +338,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             }
             // skip to end
             states[loop_state].epsilon_transitions.insert(end);
+            states[loop_state].optional = true;
             break;
         } case '*': {
             // allow skip both start and loop_state
@@ -312,12 +353,15 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             // skip to end
             states[start].epsilon_transitions.insert(end);
             states[loop_state].epsilon_transitions.insert(end);
+
+            states[start].optional = true;
+            states[loop_state].optional = true;
             break;
         } default:
             break;
     }
 }
-auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool addStoreActions) -> StateRange {
+auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, bool addStoreActions) -> StateRange {
     if (member.isNospace()) {
         if (!add_space_skip_places.empty())
             add_space_skip_places.pop_back();
@@ -330,7 +374,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
     if (member.isName()) {
         const auto &name = member.getName();
         if (name.isTerminal()) {
-            handleTerminal(member, name.name, start, end, isEntry, addStoreActions);
+            handleTerminal(member, name.name, start, end, isLastMember, addStoreActions);
         } else {
             // Check cache
             auto it = fragment_cache.find(name.name);
@@ -341,7 +385,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
             if (!processing.insert(name.name).second)
                 return {NULL_STATE, NULL_STATE};
 
-            handleNonTermnal(member, name.name, start, end, isEntry, addStoreActions);
+            handleNonTermnal(member, name.name, start, end, isLastMember, addStoreActions);
 
             processing.erase(name.name);
 
@@ -364,19 +408,26 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isEntry, bool a
             // Link entry to fragment start with epsilon
             states[start].epsilon_transitions.insert(fragment.start);
             states[fragment.end].epsilon_transitions.insert(end);
-            if (isEntry && !isWhitespaceToken) {
+            if (isLastMember && !isWhitespaceToken) {
                 states[fragment.start].accept_index = accept_index++;
+                states[fragment.start].last = true;
+            }
+            if (!states[fragment.start].last)
+                continue;
+            auto states_to_propagate_last = getStatesToPropagate(start);
+            for (const auto s : states_to_propagate_last) {
+                states[s].last = states[start].last;
             }
         }
         if (was_group && cached_group_count == group_count) {
             group_count++;
         }
     } else if (member.isGroup()) {
-        handleGroup(member, member.getGroup().values, start, end, isEntry, addStoreActions);
+        handleGroup(member, member.getGroup().values, start, end, isLastMember, addStoreActions);
     } else if (member.isString()) {
-        handleString(member, member.getString().value, start, end, isEntry, addStoreActions);
+        handleString(member, member.getString().value, start, end, isLastMember, addStoreActions);
     } else if (member.isCsequence()) {
-        handleCsequence(member, member.getCsequence(), start, end, isEntry, addStoreActions);
+        handleCsequence(member, member.getCsequence(), start, end, isLastMember, addStoreActions);
     } else if (member.isAny()) {
         states[start].any = end;
     } else {

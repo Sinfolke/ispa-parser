@@ -96,6 +96,27 @@ auto DFA::leadToEmptyStateDfa(const std::size_t current) -> std::size_t {
     std::unordered_set<std::size_t> visited;
     return leadToEmptyStateDfa(current, visited);
 }
+auto DFA::canBeEndState(const std::size_t current) -> std::size_t {
+    if (states.empty()) {
+        const auto &state = mstates[current];
+        if (state.transitions.empty()) {
+            return current;
+        }
+        if (state.else_goto) {
+            return canBeEndState(state.else_goto);
+        }
+        return NFA::NULL_STATE;
+    } else {
+        const auto &state = states[current];
+        if (state.transitions.empty()) {
+            return current;
+        }
+        if (state.else_goto) {
+            return canBeEndState(state.else_goto);
+        }
+        return NFA::NULL_STATE;
+    }
+}
 
 bool DFA::includesWhitespace(const MultiState &state) const {
     for (const auto &t : state.transitions) {
@@ -202,6 +223,8 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
     std::size_t work_size = 0;
     std::size_t current_dfa_state = mstates.size();
     mstates.emplace_back();
+    mstates[current_dfa_state].optional = mstates[state_id].optional;
+    mstates[current_dfa_state].last = mstates[state_id].last;
     bool all_recursive = true;
 
     // TODO: implement more complex logic to cancell saved input if path without input is chosen
@@ -249,6 +272,12 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         work.pop();
         // substep 2: push lookaheads to latest lookahead set
         lookaheads.back().emplace_back();
+        if (mstates[current].optional) {
+            mstates[current_dfa_state].optional = true;
+        }
+        if (mstates[current].last) {
+            mstates[current_dfa_state].last = true;
+        }
         for (auto &t : mstates[current].transitions) {
             for (auto &next : t.second) {
                 // not loop, push
@@ -288,8 +317,13 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
             continue;
         }
         for (const auto &[sym, go]: l[0]) {
-            mstates[current_dfa_state].transitions[sym].push_back(go.back());
             // should be only one state even though it is an array right now
+            mstates[current_dfa_state].transitions[sym].push_back(go.back());
+            if (mstates[current_dfa_state].optional && mstates[current_dfa_state].last) {
+                if (auto v = canBeEndState(go.back().value.next); v != NFA::NULL_STATE) {
+                    mstates[current_dfa_state].else_goto = v;
+                }
+            }
         }
     }
     // find more dublicate states and unroll
@@ -338,6 +372,8 @@ void DFA::switchToSingleState() {
         for (auto &t : state.transitions) {
             states.back().transitions[t.first] = std::move(t.second.back().value);
         }
+        states.back().optional = state.optional;
+        states.back().last = state.last;
         states.back().rule_name = state.rule_name;
         states.back().dtb = state.dtb;
     }
@@ -668,6 +704,14 @@ void DFA::build(bool switchToSingleState) {
                     mstates.emplace_back();
                     work.push(closure_set);
                 }
+                for (const auto c : current) {
+                    if (nfa->getStates()[c].optional) {
+                        mstates[current_dfa_index].optional = true;
+                    }
+                    if (nfa->getStates()[c].last) {
+                        mstates[current_dfa_index].last = true;
+                    }
+                }
                 std::size_t target_index = dfa_state_map[closure_set];
                 mstates[current_dfa_index].transitions[symbol].push_back({
                     {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.close_cst_node, data.back().first.new_group, data.back().first.group_close, data.back().first.accept_index}
@@ -899,6 +943,12 @@ std::ostream &operator<<(std::ostream &os, const DFA::MultiState &s) {
         }
         os << '\n';
     }
+    if (s.optional) {
+        os << "\t[optional]\n";
+    }
+    if (s.last) {
+        os << "\t[last]\n";
+    }
     if (!s.rule_name.empty()) {
         os << "\t[rule_name] " << s.rule_name << ":";
     }
@@ -954,6 +1004,12 @@ std::ostream &operator<<(std::ostream &os, const DFA::SingleState &s) {
             os << " { accept -> " << s.else_goto_accept << " }";
         }
         os << '\n';
+    }
+    if (s.optional) {
+        os << "\t[optional]\n";
+    }
+    if (s.last) {
+        os << "\t[last]\n";
     }
     if (!s.rule_name.empty()) {
         os << "\t[rule_name] " << s.rule_name << ":";

@@ -30,7 +30,11 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
         return chars;
     }
     if (mem.isString()) {
-        return {mem.getString().value[0]};
+        const auto &str = mem.getString();
+        if (str.value[0] == '\\') {
+            return {corelib::text::getEscapedFromChar(str.value[1])};
+        }
+        return {str.value[0]};
     }
     if (mem.isEscaped()) {
         return {corelib::text::getEscapedFromChar(mem.getEscaped().c)};
@@ -53,7 +57,7 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
     }
     if (mem.isAny()) {
         std::unordered_set<char> chars;
-        for (char c = 0; c < std::numeric_limits<char>::max(); c++) {
+        for (char c = 0; c < std::numeric_limits<unsigned char>::max(); c++) {
             chars.insert(c);
         }
         return chars;

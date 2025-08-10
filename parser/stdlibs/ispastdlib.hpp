@@ -18,6 +18,7 @@
 #include <limits>
 #include <functional>
 #include <algorithm>
+#include <iostream>
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -318,7 +319,7 @@ namespace DFAAPI {
 
     using CharTableDataVector = std::vector<std::string>;
     template<typename TOKEN_T> using CallableTokenDataVector = std::vector<Node<TOKEN_T>>;
-    template<typename TOKEN_T> using MultiTableDataVector = std::vector<std::variant<Node<TOKEN_T>, std::string>>;
+    template<typename TOKEN_T> using MultiTableDataVector = std::vector<std::variant<std::string, Node<TOKEN_T>>>;
 
     // struct forward declarations
     template<typename TOKEN_T> struct SpanMultiTable;
@@ -401,6 +402,8 @@ namespace DFAAPI {
     };
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
+        std::cout << "member begin size: " << mb.size() << ", data vector size: " << dv.size() << ", pos: " << pos;
+        std::flush(std::cout);
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
         auto offset = end - start;
@@ -425,6 +428,7 @@ namespace DFAAPI {
     }
     template<typename TOKEN_T, typename STORAGE_T, typename DATAVECTOR>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const DATAVECTOR &dv) {
+        std::cout << "member begin size: " << mb.size() << ", data vector size: " << dv.size() << ", pos: " << pos;
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
         auto offset = end - start;
@@ -446,6 +450,8 @@ namespace DFAAPI {
     }
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const MultiTableDataVector<TOKEN_T> &dv) {
+        std::cout << "member begin size: " << mb.size() << ", data vector size: " << dv.size() << ", pos: " << pos;
+        std::flush(std::cout);
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
         auto offset = end - start;
@@ -503,6 +509,7 @@ namespace DFAAPI {
     void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DATAVECTOR &dv) {
         if (pos >= gb.size())
             return;
+        std::cout << "T: " << typeid(T).name() << std::endl;
         auto [start, end] = gb[pos];
         if constexpr (std::is_same_v<T, std::string>) {
             for (; start != end; ++start) {
@@ -756,6 +763,7 @@ class AdvancedDFA : DFA<TOKEN_T> {
 protected:
     template<typename PanicModeFunc>
     static auto match(const DFAAPI::SpanMultiTable<TOKEN_T> &table, const char* pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T> {
+        std::flush(std::cout);
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;
@@ -765,12 +773,13 @@ protected:
         std::size_t lowest_open_index;
         auto start = pos;
         bool closed = true;
+        bool failed = false;
         do {
             std::visit(overload {
                 [&](const DFAAPI::SpanCharTableState &t) {
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state == nullptr) {
-                        panic_mode(pos);
+                        failed = true;
                         return;
                     }
                     pos++;
@@ -797,7 +806,7 @@ protected:
                     // guard: even if no new_cst_node, this kind is always stored separately
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state.first == nullptr) {
-                        panic_mode(pos);
+                        failed = true;
                         return;
                     }
                     pos += new_state.second.length();
@@ -920,7 +929,7 @@ protected:
                         if (t.else_goto) {
                             state = t.else_goto;
                         } else {
-                            panic_mode(pos);
+                            failed = true;
                         }
                     }
                 },
@@ -929,11 +938,13 @@ protected:
                     throw std::runtime_error("ISPA_STD: unreachable lambda");
                 }
             }, table.states[state]);
-        } while (!std::holds_alternative<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]));
+        } while (!std::holds_alternative<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]) && !failed);
+        if (failed)
+            return {};
         for (const auto id : inclosed_groups) {
             group_begin[id].second = data.size();
         }
-        const auto e_state = std::get<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]);
+        const auto &e_state = std::get<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]);
         return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
 };
