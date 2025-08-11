@@ -573,6 +573,7 @@ protected:
     static auto find_key(const DFAAPI::SpanCharTableState &state, IT &pos) -> const DFAAPI::CharTransition* {
         for (const auto &t : state.transitions) {
             if (t.symbol == *pos) {
+                printf("lookup for symbol %c successful, remaining input: %s\n", *pos, pos);
                 return &t;
             }
         }
@@ -741,6 +742,7 @@ class AdvancedDFA : DFA<TOKEN_T> {
     static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
         for (const auto &transition : state.transitions) {
             if (*pos == transition.symbol) {
+                printf("lookup for symbol %c successfull, remaining input: %s\n", *pos, pos);
                 return &transition;
             }
         }
@@ -779,6 +781,10 @@ protected:
                 [&](const DFAAPI::SpanCharTableState &t) {
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state == nullptr) {
+                        if (t.else_goto) {
+                            state = t.else_goto;
+                            return;
+                        }
                         failed = true;
                         return;
                     }
@@ -806,6 +812,10 @@ protected:
                     // guard: even if no new_cst_node, this kind is always stored separately
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state.first == nullptr) {
+                        if (t.else_goto) {
+                            state = t.else_goto;
+                            return;
+                        }
                         failed = true;
                         return;
                     }
@@ -939,8 +949,10 @@ protected:
                 }
             }, table.states[state]);
         } while (!std::holds_alternative<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]) && !failed);
-        if (failed)
+        if (failed) {
+            printf("Failed is set: leaving\n");
             return {};
+        }
         for (const auto id : inclosed_groups) {
             group_begin[id].second = data.size();
         }
@@ -1013,7 +1025,8 @@ protected:
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
     static void panic_mode(const char* &pos) {
-        pos++;
+        if (*pos != '\0')
+            ++pos;
     }
     auto fcdt_lookup(const fcdt_table<TOKEN_T> &fcdt, const char* &pos) -> Node<TOKEN_T> {
         while (*pos != '\0') {
