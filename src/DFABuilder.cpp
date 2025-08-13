@@ -5,6 +5,7 @@ import logging;
 import constants;
 import corelib;
 import cpuf.op;
+import cpuf.printf;
 import dstd;
 import std;
 

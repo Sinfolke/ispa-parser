@@ -67,14 +67,14 @@ rule:
         ;
         #DIAPASON:
             ( @ SYMBOL \s0 '-' \s0 @ SYMBOL)
-            @{from, to}
+            @{ from, to }
         ;
     ;
     #NOSPACE:
         '\\s0'
     ;
     #ESCAPED:
-        '\\' \s0 @ . \s0
+        '\\' \s0 @ .
         {@}
     ;
     #HEX:

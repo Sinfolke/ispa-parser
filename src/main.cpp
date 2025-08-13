@@ -132,6 +132,7 @@ int main(int argc, char** argv) {
     output_path.append(ast.getName());
     LexerBuilder lexer_data(ast);
     lexer_data.build();
+    lexer_data.getFCDT().print();
     if (args.algorithm == Args::Algorithm::LR0) {
         LRParser LRIR(ast);
         // LRIR.printTables("tables");

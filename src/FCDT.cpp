@@ -1,9 +1,11 @@
 module fcdt;
 import corelib;
 import logging;
+import Dump;
 import cpuf.printf;
 import dstd;
 import std;
+
 void FCDT::skipNospace(stdu::vector<AST::RuleMember>::const_iterator &it, const stdu::vector<AST::RuleMember>::const_iterator &end) {
     while (it != end) {
         if (it->isNospace()) {
@@ -30,11 +32,7 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
         return chars;
     }
     if (mem.isString()) {
-        const auto &str = mem.getString();
-        if (str.value[0] == '\\') {
-            return {corelib::text::getEscapedFromChar(str.value[1])};
-        }
-        return {str.value[0]};
+        return {mem.getString().value[0]};
     }
     if (mem.isEscaped()) {
         return {corelib::text::getEscapedFromChar(mem.getEscaped().c)};
@@ -90,7 +88,15 @@ void FCDT::build() {
         }
     }
 }
-
+void FCDT::print() {
+    if (!dumper.shouldDump("fcdt"))
+        return;
+    std::ofstream dump_file(dumper.makeDumpPath("fcdt.txt"));
+    unsigned char c = std::numeric_limits<unsigned char>::min();
+    for (const auto &names : table) {
+        dump_file << '\t' << corelib::text::getEscapedAsStr(c++, false) << " - " << names << '\n';
+    }
+}
 
 auto FCDT::get() -> Table& {
     return table;

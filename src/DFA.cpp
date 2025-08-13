@@ -319,7 +319,7 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
         for (const auto &[sym, go]: l[0]) {
             // should be only one state even though it is an array right now
             mstates[current_dfa_state].transitions[sym].push_back(go.back());
-            if (mstates[current_dfa_state].optional && mstates[current_dfa_state].last) {
+            if (mstates[current_dfa_state].optional && mstates[current_dfa_state].last && !mstates[current_dfa_state].else_goto) {
                 if (auto v = canBeEndState(go.back().value.next); v != NFA::NULL_STATE) {
                     mstates[current_dfa_state].else_goto = v;
                 }

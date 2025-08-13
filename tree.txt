@@ -32,16 +32,6 @@ name<[cll, _var, __grp2]> : [Rule {
 }, Rule {
   @  Name(rule::quantifier)
   Data: EmptyDataBlock
-}]name<[cll, function_arguments, __grp1]> : [Rule {
-   Name(AUTO_1)
-  @  Name(cll::expr)
-  Data: EmptyDataBlock
-}]name<[rule, member, __grp0]> : [Rule {
-   Name(rule::value)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(rule::keyvalue)
-  Data: EmptyDataBlock
 }]name<[rule, __q3]> : [Rule {
   Data: EmptyDataBlock
 }, Rule {
@@ -72,6 +62,16 @@ name<[cll, _var, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }, Rule {
    Name(_use)
+  Data: EmptyDataBlock
+}]name<[rule, member, __grp0]> : [Rule {
+   Name(rule::value)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::keyvalue)
+  Data: EmptyDataBlock
+}]name<[cll, function_arguments, __grp1]> : [Rule {
+   Name(AUTO_1)
+  @  Name(cll::expr)
   Data: EmptyDataBlock
 }]name<[cll, expr, compare, __grp1]> : [Rule {
   @  Name(cll::COMPARE_OP)
@@ -106,15 +106,15 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(ID)
   Data: EmptyDataBlock
 }]name<[cll, _variable, __grp2]> : [Rule {
-   Name(AUTO_13)
+   Name(AUTO_12)
   @  Name(cll::expr)
-   Name(AUTO_14)
+   Name(AUTO_13)
   Data: EmptyDataBlock
 }]name<[cll, _variable, __grp0]> : [Rule {
-   Name(AUTO_23)
+   Name(AUTO_21)
   Data: EmptyDataBlock
 }, Rule {
-   Name(AUTO_22)
+   Name(AUTO_20)
   Data: EmptyDataBlock
 }]name<[array, __grp1, __grp0]> : [Rule {
   @  Name(cll::expr)
@@ -149,23 +149,17 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(cll::LOGICAL_OP)
   @  Name(cll::expr::compare)
   Data: EmptyDataBlock
-}]name<[cll, expr, arithmetic, __grp1, __rop0]> : [Rule {
-   Name(PLUS)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(MINUS)
-  Data: EmptyDataBlock
-}]name<[cll, function_decl, __q1, __q1_tail]> : [Rule {
-  Data: EmptyDataBlock
-}, Rule {
-  @  Name(ID)
-   Name(cll::function_decl::__q1::__q1_tail)
-  Data: EmptyDataBlock
 }]name<[moduleImport, __rop1]> : [Rule {
    Name(ID)
   Data: EmptyDataBlock
 }, Rule {
    Name(moduleImport::from)
+  Data: EmptyDataBlock
+}]name<[cll, expr, arithmetic, __grp1, __rop0]> : [Rule {
+   Name(PLUS)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(MINUS)
   Data: EmptyDataBlock
 }]name<[cll, loop_for, __q6]> : [Rule {
   Data: EmptyDataBlock
@@ -181,7 +175,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  String (#)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, loop_while]> : [Rule {
-   Name(AUTO_21)
+   Name(AUTO_19)
   @  Name(cll::expr)
   @  Name(cll::stmt)
   Data: TemplatedDataBlock(expr, stmt)
@@ -221,10 +215,6 @@ name<[cll, _var, __grp2]> : [Rule {
 }, Rule {
    Name(cll)
   Data: EmptyDataBlock
-}]name<[cll, function_decl, __q1]> : [Rule {
-  @  Name(ID)
-   Name(cll::function_decl::__q1::__q1_tail)
-  Data: EmptyDataBlock
 }]name<[NAME]> : [Rule {
    String (name)
   @  Name(ID)
@@ -234,7 +224,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  String (})
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, loop_for]> : [Rule {
-   Name(AUTO_20)
+   Name(AUTO_18)
    Name(AUTO_3)
    Name(cll::loop_for::__grp2)
    Name(AUTO_7)
@@ -244,13 +234,6 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(AUTO_4)
   @  Name(cll::stmt)
   Data: TemplatedDataBlock(decl, cond, end, stmt)
-}]name<[moduleImport]> : [Rule {
-   Name(AUTO_19)
-   Name(moduleImport::__rop1)
-  Data: [RegularDataBlock: CllExpr]
-}]name<[AUTO_4]> : [Rule {
-  @  String ())
-  Data: [RegularDataBlock: CllExpr]
 }]name<[cll, LOGICAL_AND]> : [Rule {
    Op( String (&&) |  String (and))
   Data: EmptyDataBlock
@@ -263,16 +246,47 @@ name<[cll, _var, __grp2]> : [Rule {
 }]name<[cll, TYPE]> : [Rule {
   @  Op( String (var) |  String (num) |  String (bool) |  String (str) |  Group(@  String (arr), @  Name(cll::TEMPLATE)) |  Group(@  String (obj), @  Name(cll::TEMPLATE)))
   Data: TemplatedDataBlock(type, templ)
-}]name<[cll, function_decl, __q3]> : [Rule {
-  Data: EmptyDataBlock
-}, Rule {
+}]name<[cll, _if]> : [Rule {
+   Name(AUTO_16)
+  @  Name(cll::expr)
   @  Name(cll::stmt)
+  Data: TemplatedDataBlock(expr, stmt)
+}]name<[cll, expr, arithmetic]> : [Rule {
+  @  Name(cll::expr::term)
+   Name(cll::expr::arithmetic::__grp1)
+  Data: TemplatedDataBlock(first, operators, sequence)
+}]name<[_use]> : [Rule {
+   Name(AUTO_22)
+  @  Name(_use::unit)
+   Name(_use::__grp2)
+   Name(AUTO_7)
+  Data: TemplatedDataBlock(first, second)
+}]name<[cll, expr, term, __grp1]> : [Rule {
+   Name(cll::expr::term::__grp1::__rop0)
+  @  Name(cll::expr::value)
+  Data: EmptyDataBlock
+}]name<[AUTO_0]> : [Rule {
+  @  String ({)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[rule, OP]> : [Rule {
+   String (|)
+  Data: EmptyDataBlock
+}]name<[LINEAR_COMMENT]> : [Rule {
+   String (//)
+   !Cseq([n])*;
   Data: EmptyDataBlock
 }]name<[cll, COMPARE_OP]> : [Rule {
   @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, ASSIGNMENT_OP]> : [Rule {
   @  Op( String (+=) |  String (-=) |  String (*=) |  String (/=) |  String (%=))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport]> : [Rule {
+   Name(AUTO_15)
+   Name(moduleImport::__rop1)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_4]> : [Rule {
+  @  String ())
   Data: [RegularDataBlock: CllExpr]
 }]name<[_use, __grp2]> : [Rule {
    Name(AUTO_1)
@@ -307,7 +321,7 @@ name<[cll, _var, __grp2]> : [Rule {
    String (/)
   Data: EmptyDataBlock
 }]name<[rule, value]> : [Rule {
-   Name(AUTO_17)
+   Name(AUTO_14)
   @  Name(ID)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, function_call]> : [Rule {
@@ -318,23 +332,8 @@ name<[cll, _var, __grp2]> : [Rule {
    String (.)
   Data: EmptyDataBlock
 }]name<[AUTO_11]> : [Rule {
-  @  String (->)
+  @  String ($)
   Data: [RegularDataBlock: CllExpr]
-}]name<[cll, function_decl]> : [Rule {
-   Name(AUTO_16)
-  @  Name(ID)+;
-  @  Name(cll::function_body_decl)
-  @  Name(cll::stmt)?;
-  Data: TemplatedDataBlock(type, name, stmt)
-}]name<[cll, _if]> : [Rule {
-   Name(AUTO_15)
-  @  Name(cll::expr)
-  @  Name(cll::stmt)
-  Data: TemplatedDataBlock(expr, stmt)
-}]name<[cll, expr, arithmetic]> : [Rule {
-  @  Name(cll::expr::term)
-   Name(cll::expr::arithmetic::__grp1)
-  Data: TemplatedDataBlock(first, operators, sequence)
 }]name<[cll, expr]> : [Rule {
   @  Name(cll::expr::logical)
   Data: [RegularDataBlock: CllExpr]
@@ -358,9 +357,9 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(cll::_variable::__grp3)
   Data: TemplatedDataBlock(pre, name, brace_expression, pos)
 }]name<[array]> : [Rule {
-   Name(AUTO_13)
+   Name(AUTO_12)
    Name(array::__grp1)
-   Name(AUTO_14)
+   Name(AUTO_13)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, loop_for, __grp2]> : [Rule {
    Name(cll::_var)
@@ -393,7 +392,7 @@ name<[cll, _var, __grp2]> : [Rule {
    String (-)
   Data: EmptyDataBlock
 }]name<[cll]> : [Rule {
-   Name(AUTO_12)
+   Name(AUTO_11)
    Name(cll::__rop1)
    Name(AUTO_7)
   Data: [RegularDataBlock: CllExpr]
@@ -410,7 +409,7 @@ name<[cll, _var, __grp2]> : [Rule {
    String (%)
   Data: EmptyDataBlock
 }]name<[moduleDeclaration]> : [Rule {
-   Name(AUTO_10)
+   Name(AUTO_9)
   @  Name(ID)
    Name(moduleDeclaration::__grp2)
    Name(AUTO_7)
@@ -419,30 +418,25 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(cll::expr::arithmetic)
    Name(cll::expr::compare::__grp1)
   Data: TemplatedDataBlock(first, operators, sequence)
-}]name<[moduleImport, from, import_list]> : [Rule {
-  @  Name(ID)
-   Name(moduleImport::from::import_list::__grp1)
-  Data: TemplatedDataBlock(first, sequence)
-}]name<[rule, OP]> : [Rule {
-   String (|)
-  Data: EmptyDataBlock
-}]name<[LINEAR_COMMENT]> : [Rule {
-   String (//)
-   !Cseq([n])*;
-  Data: EmptyDataBlock
-}]name<[_use]> : [Rule {
-   Name(AUTO_8)
-  @  Name(_use::unit)
-   Name(_use::__grp2)
-   Name(AUTO_7)
-  Data: TemplatedDataBlock(first, second)
-}]name<[cll, expr, term, __grp1]> : [Rule {
-   Name(cll::expr::term::__grp1::__rop0)
-  @  Name(cll::expr::value)
-  Data: EmptyDataBlock
-}]name<[AUTO_0]> : [Rule {
-  @  String ({)
+}]name<[rule, HEX]> : [Rule {
+   String (0x)
+  @  Cseq([], Diapasons:[0-9 A-F a-f ])+;
   Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport, from]> : [Rule {
+   Name(moduleImport::from::__rop0)
+   Name(AUTO_8)
+  @  Name(ID)
+  Data: TemplatedDataBlock(what, from)
+}]name<[AUTO_14]> : [Rule {
+  @  String (&)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[cll, function_arguments]> : [Rule {
+  @  Name(cll::expr)
+   Name(cll::function_arguments::__grp1)
+  Data: TemplatedDataBlock(first, second)
+}]name<[cll, LOGICAL_NOT]> : [Rule {
+   Op( String (!) |  String (not))
+  Data: EmptyDataBlock
 }]name<[main]> : [Rule {
    Name(main::__grp0)
   Data: [RegularDataBlock: CllExpr]
@@ -454,14 +448,11 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(rule::nested_rule)*;
    Name(AUTO_7)
   Data: TemplatedDataBlock(name, rule, data_block, nested_rules)
-}]name<[AUTO_21]> : [Rule {
-  @  String (while)
-  Data: [RegularDataBlock: CllExpr]
 }]name<[cll, _variable, __grp3]> : [Rule {
-   Name(AUTO_23)
+   Name(AUTO_21)
   Data: EmptyDataBlock
 }, Rule {
-   Name(AUTO_22)
+   Name(AUTO_20)
   Data: EmptyDataBlock
 }]name<[NUMBER]> : [Rule {
   @  Cseq([+-])?;
@@ -471,6 +462,9 @@ name<[cll, _var, __grp2]> : [Rule {
 }]name<[rule, keyvalue]> : [Rule {
    Name(AT)
    Name(rule::keyvalue::__grp1)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_21]> : [Rule {
+  @  String (--)
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, member]> : [Rule {
    Name(rule::member::__grp0)
@@ -518,10 +512,10 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(AUTO_4)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_9]> : [Rule {
-  @  String (from)
+  @  String (module)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_13]> : [Rule {
-  @  String ([)
+  @  String (])
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, data_block, regular_datablock]> : [Rule {
    Name(AUTO_0)
@@ -548,7 +542,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(rvalue)?;
   Data: TemplatedDataBlock(name, value)
 }]name<[moduleDeclaration, __grp2]> : [Rule {
-   Name(AUTO_11)
+   Name(AUTO_10)
   @  Name(ID)
   Data: EmptyDataBlock
 }]name<[cll, LOGICAL_OR]> : [Rule {
@@ -608,19 +602,19 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(ID)
    Name(cll::_var::__grp2)
   Data: TemplatedDataBlock(type, id, op, value)
-}]name<[BOOLEAN]> : [Rule {
-  d Group( Op( String (true) |  String (false)))
-  Data: [RegularDataBlock: CllExpr]
-}]name<[AUTO_1]> : [Rule {
-  @  String (,)
+}]name<[AUTO_18]> : [Rule {
+  @  String (for)
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, CSEQUENCE, ESCAPE]> : [Rule {
    String (\)
    NoSpace
   @  Any
   Data: [RegularDataBlock: CllExpr]
-}]name<[AUTO_18]> : [Rule {
-  @  String (=)
+}]name<[BOOLEAN]> : [Rule {
+  d Group( Op( String (true) |  String (false)))
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_1]> : [Rule {
+  @  String (,)
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, name]> : [Rule {
   @  Name(AUTO_5)?;
@@ -637,47 +631,22 @@ name<[cll, _var, __grp2]> : [Rule {
    String (0b)
   @  Cseq([01])+;
   Data: [RegularDataBlock: CllExpr]
-}]name<[AUTO_6]> : [Rule {
-  @  String (:)
-  Data: [RegularDataBlock: CllExpr]
-}]name<[cll, LOGICAL_NOT]> : [Rule {
-   Op( String (!) |  String (not))
-  Data: EmptyDataBlock
-}]name<[rule, HEX]> : [Rule {
-   String (0x)
-  @  Cseq([], Diapasons:[0-9 A-F a-f ])+;
-  Data: [RegularDataBlock: CllExpr]
-}]name<[moduleImport, from]> : [Rule {
-   Name(moduleImport::from::__rop0)
-   Name(AUTO_9)
-  @  Name(ID)
-  Data: TemplatedDataBlock(what, from)
-}]name<[AUTO_14]> : [Rule {
-  @  String (])
-  Data: [RegularDataBlock: CllExpr]
-}]name<[cll, function_arguments]> : [Rule {
-  @  Name(cll::expr)
-   Name(cll::function_arguments::__grp1)
-  Data: TemplatedDataBlock(first, second)
 }]name<[AUTO_8]> : [Rule {
-  @  String (use)
+  @  String (from)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, method_call]> : [Rule {
   @  Name(ID)
    Name(DOT)
   @  Name(cll::function_call)
   Data: TemplatedDataBlock(name, body)
-}]name<[AUTO_17]> : [Rule {
-  @  String (&)
-  Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_10]> : [Rule {
-  @  String (module)
+  @  String (->)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_16]> : [Rule {
-  @  String (fn)
+  @  String (if)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_19]> : [Rule {
-  @  String (import)
+  @  String (while)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, expr, value]> : [Rule {
    Name(cll::expr::group)
@@ -694,12 +663,13 @@ name<[cll, _var, __grp2]> : [Rule {
 }, Rule {
    Name(rvalue)
   Data: EmptyDataBlock
-}]name<[AUTO_15]> : [Rule {
-  @  String (if)
-  Data: [RegularDataBlock: CllExpr]
+}]name<[moduleImport, from, import_list]> : [Rule {
+  @  Name(ID)
+   Name(moduleImport::from::import_list::__grp1)
+  Data: TemplatedDataBlock(first, sequence)
 }]name<[rule, data_block, regular_datablock, key]> : [Rule {
   @  Name(ID)
-   Name(AUTO_18)
+   Name(AUTO_17)
   @  Name(cll::expr)
   Data: TemplatedDataBlock(name, dt)
 }]name<[_use, unit, __q1]> : [Rule {
@@ -708,12 +678,18 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(rvalue)
   Data: EmptyDataBlock
 }]name<[AUTO_12]> : [Rule {
-  @  String ($)
+  @  String ([)
   Data: [RegularDataBlock: CllExpr]
 }]name<[__WHITESPACE]> : [Rule {
    NoSpace
    Cseq([ ], Escaped:[\t\n\r\v\f])+;
   Data: EmptyDataBlock
+}]name<[AUTO_15]> : [Rule {
+  @  String (import)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_17]> : [Rule {
+  @  String (=)
+  Data: [RegularDataBlock: CllExpr]
 }]name<[rule, data_block, regular_datablock, __rop1]> : [Rule {
    Name(cll::expr)
   Data: EmptyDataBlock
@@ -724,13 +700,9 @@ name<[cll, _var, __grp2]> : [Rule {
    String (\)
    NoSpace
   @  Any
-   NoSpace
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_20]> : [Rule {
-  @  String (for)
-  Data: [RegularDataBlock: CllExpr]
-}]name<[AUTO_23]> : [Rule {
-  @  String (--)
+  @  String (++)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, LOGICAL_OP]> : [Rule {
   @  Op( Name(cll::LOGICAL_AND) |  Name(cll::LOGICAL_OR))
@@ -739,6 +711,9 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_22]> : [Rule {
-  @  String (++)
+  @  String (use)
+  Data: [RegularDataBlock: CllExpr]
+}]name<[AUTO_6]> : [Rule {
+  @  String (:)
   Data: [RegularDataBlock: CllExpr]
 }]

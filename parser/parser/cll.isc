@@ -70,11 +70,6 @@ cll:
 
         @{name, body}
     ;
-    #function_decl:
-        'fn' @ ID+ @ function_body_decl @ stmt?
-
-        @{type, name, stmt}
-    ;
     #expr:
         @ #logical
         {@}

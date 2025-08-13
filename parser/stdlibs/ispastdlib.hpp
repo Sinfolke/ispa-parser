@@ -573,7 +573,7 @@ protected:
     static auto find_key(const DFAAPI::SpanCharTableState &state, IT &pos) -> const DFAAPI::CharTransition* {
         for (const auto &t : state.transitions) {
             if (t.symbol == *pos) {
-                printf("lookup for symbol %c successful, remaining input: %s\n", *pos, pos);
+                printf("lookup for symbol %c successful, remaining input: \n", *pos, pos);
                 return &t;
             }
         }
@@ -634,9 +634,6 @@ protected:
                 if (!closed) {
                     data.back() += new_state->symbol;
                 }
-            } else if (s.any_goto) {
-                state = s.any_goto;
-                ++pos;
             } else if (s.else_goto) {
                 state = s.else_goto;
             } else {
@@ -742,7 +739,7 @@ class AdvancedDFA : DFA<TOKEN_T> {
     static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
         for (const auto &transition : state.transitions) {
             if (*pos == transition.symbol) {
-                printf("lookup for symbol %c successfull, remaining input: %s\n", *pos, pos);
+                printf("lookup for symbol %c successfull, remaining input: \n", *pos, pos);
                 return &transition;
             }
         }

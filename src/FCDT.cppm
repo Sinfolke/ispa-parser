@@ -17,6 +17,7 @@ private:
 public:
     FCDT(AST::Tree &ast) : ast(ast) {}
     void build();
+    void print();
     auto get() -> Table&;
     auto get() const -> const Table&;
 };

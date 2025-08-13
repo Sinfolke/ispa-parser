@@ -10,7 +10,6 @@ name<[rule, BIN]> : Rule {
    String (\)
    NoSpace
   @  Any
-   NoSpace
   Data: [RegularDataBlock: CllExpr]
 }name<[rule, NOSPACE]> : Rule {
    String (\s0)
@@ -74,16 +73,6 @@ name<[rule, BIN]> : Rule {
 }name<[ID]> : Rule {
   @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
   Data: [RegularDataBlock: CllExpr]
-}name<[_use]> : Rule {
-   String (use)
-  @  Name(_use::unit)
-   Group( String (,), @  Name(_use::unit))*;
-   String (;)
-  Data: TemplatedDataBlock(first, second)
-}name<[LINEAR_COMMENT]> : Rule {
-   String (//)
-   !Cseq([n])*;
-  Data: EmptyDataBlock
 }name<[moduleImport, from, import_list]> : Rule {
   @  Name(ID)
    Group( String (,), @  Name(ID))*;
@@ -188,23 +177,6 @@ name<[rule, BIN]> : Rule {
 }name<[cll, expr]> : Rule {
   @  Name(cll::expr::logical)
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, OP]> : Rule {
-   String (|)
-  Data: EmptyDataBlock
-}name<[cll, _if]> : Rule {
-   String (if)
-  @  Name(cll::expr)
-  @  Name(cll::stmt)
-  Data: TemplatedDataBlock(expr, stmt)
-}name<[cll, LOGICAL_OR]> : Rule {
-   Op( String (||) |  String (or))
-  Data: EmptyDataBlock
-}name<[cll, function_decl]> : Rule {
-   String (fn)
-  @  Name(ID)+;
-  @  Name(cll::function_body_decl)
-  @  Name(cll::stmt)?;
-  Data: TemplatedDataBlock(type, name, stmt)
 }name<[DOT]> : Rule {
    String (.)
   Data: EmptyDataBlock
@@ -240,6 +212,10 @@ name<[rule, BIN]> : Rule {
   @  Name(cll::function_parameters)
    String ())
   Data: [RegularDataBlock: CllExpr]
+}name<[moduleImport]> : Rule {
+   String (import)
+  @  Op( Name(ID) |  Name(moduleImport::from))
+  Data: [RegularDataBlock: CllExpr]
 }name<[cll, COMPARE_OP]> : Rule {
   @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))
   Data: [RegularDataBlock: CllExpr]
@@ -256,6 +232,17 @@ name<[rule, BIN]> : Rule {
   @  Name(cll::function_arguments)
    String ())
   Data: [RegularDataBlock: CllExpr]
+}name<[rule, OP]> : Rule {
+   String (|)
+  Data: EmptyDataBlock
+}name<[cll, LOGICAL_OR]> : Rule {
+   Op( String (||) |  String (or))
+  Data: EmptyDataBlock
+}name<[cll, _if]> : Rule {
+   String (if)
+  @  Name(cll::expr)
+  @  Name(cll::stmt)
+  Data: TemplatedDataBlock(expr, stmt)
 }name<[rule, data_block, regular_datablock, key]> : Rule {
   @  Name(ID)
    String (=)
@@ -277,10 +264,6 @@ name<[rule, BIN]> : Rule {
 }name<[cll, LOGICAL_AND]> : Rule {
    Op( String (&&) |  String (and))
   Data: EmptyDataBlock
-}name<[moduleImport]> : Rule {
-   String (import)
-  @  Op( Name(ID) |  Name(moduleImport::from))
-  Data: [RegularDataBlock: CllExpr]
 }name<[cll, LOGICAL_OP]> : Rule {
   @  Op( Name(cll::LOGICAL_AND) |  Name(cll::LOGICAL_OR))
   Data: [RegularDataBlock: CllExpr]
@@ -314,6 +297,16 @@ name<[rule, BIN]> : Rule {
    Group( String ([), @  Name(cll::expr),  String (]))?;
   @  Group( Op( String (++) |  String (--)))?;
   Data: TemplatedDataBlock(pre, name, brace_expression, pos)
+}name<[_use]> : Rule {
+   String (use)
+  @  Name(_use::unit)
+   Group( String (,), @  Name(_use::unit))*;
+   String (;)
+  Data: TemplatedDataBlock(first, second)
+}name<[LINEAR_COMMENT]> : Rule {
+   String (//)
+   !Cseq([n])*;
+  Data: EmptyDataBlock
 }name<[cll, ASSIGNMENT_OP]> : Rule {
   @  Op( String (+=) |  String (-=) |  String (*=) |  String (/=) |  String (%=))
   Data: [RegularDataBlock: CllExpr]

@@ -429,7 +429,10 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
     } else if (member.isCsequence()) {
         handleCsequence(member, member.getCsequence(), start, end, isLastMember, addStoreActions);
     } else if (member.isAny()) {
-        states[start].any = end;
+        for (unsigned char c = std::numeric_limits<unsigned char>::min(); c != std::numeric_limits<unsigned char>::max(); c++) {
+            states[start].transitions[static_cast<char>(c)] = {end, true, true};
+        }
+        states[start].transitions[static_cast<char>(std::numeric_limits<unsigned char>::max())] = {end, true, true};
     } else {
         std::visit([](auto &m) {
             throw Error("Undefined member: {}", typeid(m).name());
