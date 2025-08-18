@@ -67,7 +67,7 @@ rule:
         ;
         #DIAPASON:
             ( @ SYMBOL \s0 '-' \s0 @ SYMBOL)
-            @{ from, to }
+            @{ begin, end }
         ;
     ;
     #NOSPACE:

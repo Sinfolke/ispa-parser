@@ -3,6 +3,7 @@ export module Tlog.oss;
 import std;
 import std.compat;
 import cpuf.op;
+
 export namespace Tlog {
     class Oss {
         std::ofstream of;
@@ -59,9 +60,9 @@ export namespace Tlog {
             return format_str(std::string(str));
         }
     public:
-        Oss(std::filesystem::path path) {
+        Oss(std::filesystem::path path, bool append) {
             std::filesystem::create_directories(path.parent_path());
-            of.open(path);
+            of.open(path, append ? std::ios_base::app : std::ios_base::out);
             if (!of.is_open()) {
                 throw std::runtime_error("Open branch " + path.string() + "failed");
             }

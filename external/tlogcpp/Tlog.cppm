@@ -4,6 +4,7 @@ import Tlog.oss;
 import cpuf.op;
 import std;
 import std.compat;
+
 export namespace Tlog {
     struct Branch_data {
         std::filesystem::path path;
@@ -89,16 +90,16 @@ export namespace Tlog {
         explicit Logger(const std::filesystem::path path) : base_path(path) {}
         Logger() : base_path("./") {}
 
-        void createBranch(const std::string& name, const std::string& path) {
+        void createBranch(const std::string& name, const std::string& path, bool append = true) {
             if (branches.count(name) != 0)
                 throw std::runtime_error("Branch '" + name + "' already exists");
             exclude_if_found(name);
             auto final_path = getFormattedPath(name);
-            branches.insert_or_assign(name, Branch_data{final_path, Oss(final_path)});
+            branches.insert_or_assign(name, Branch_data{final_path, Oss(final_path, append)});
         }
-        void pushBranch(std::string path) {
+        void pushBranch(std::string path, bool append = true) {
             auto final_path = getFormattedPath(path);
-            branches_stack.emplace_back(final_path, Oss(final_path));
+            branches_stack.emplace_back(final_path, Oss(final_path, append));
         }
         void popBranch() {
             if (branches_stack.empty())
@@ -138,6 +139,9 @@ export namespace Tlog {
         void decreaseIndentLevel(std::string branch) {
             branches.at(branch).oss.decreaseIndentLevel();
         }
+        void clearLogDirectory() {
+            std::filesystem::remove_all(base_path);
+        }
         void record_location(std::source_location loc = std::source_location::current()) {
             file = get_relative_source_path(loc.file_name());
             line = loc.line();
@@ -175,9 +179,9 @@ export namespace Tlog {
     class Branch {
         Logger *logger = nullptr;
     public:
-        Branch(Logger &logger, std::string path, std::source_location loc = std::source_location::current()) : logger(&logger) {
+        Branch(Logger &logger, std::string path, bool append = true, std::source_location loc = std::source_location::current()) : logger(&logger) {
             logger.set_location(loc.file_name(), loc.line());
-            this->logger->pushBranch(path);
+            this->logger->pushBranch(path, append);
         }
         Branch() = default;
         ~Branch() {
@@ -185,9 +189,9 @@ export namespace Tlog {
                 return;
             logger->popBranch();
         }
-        void open(Logger &logger, std::string path, std::source_location loc = std::source_location::current()) {
+        void open(Logger &logger, std::string path, bool append = true, std::source_location loc = std::source_location::current()) {
             this->logger = &logger;
-            this->logger->pushBranch(path);
+            this->logger->pushBranch(path, append);
         }
         void close() {
             if (logger == nullptr)

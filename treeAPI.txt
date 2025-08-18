@@ -157,7 +157,7 @@ name<[rule, BIN]> : Rule {
   Data: TemplatedDataBlock(key, value, keys, values)
 }name<[rule, CSEQUENCE, DIAPASON]> : Rule {
    Group(@  Name(rule::CSEQUENCE::SYMBOL),  NoSpace,  String (-),  NoSpace, @  Name(rule::CSEQUENCE::SYMBOL))
-  Data: TemplatedDataBlock(from, to)
+  Data: TemplatedDataBlock(begin, end)
 }name<[cll, _var]> : Rule {
   @  Name(cll::TYPE)?;
   @  Name(ID)

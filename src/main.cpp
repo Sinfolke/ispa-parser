@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
     dumper.setArgsPointer(&args);
     dumper.setDumpDirectory(args.dump_dir);
     dumper.initDumpDirectory();
+    logger.clearLogDirectory();
     if (args.version) {
         cpuf::printf("%$\n", PROGRAM_VERSION);
         return 0;

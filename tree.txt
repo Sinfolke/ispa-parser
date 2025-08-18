@@ -590,7 +590,7 @@ name<[cll, _var, __grp2]> : [Rule {
    String (-)
    NoSpace
   @  Name(rule::CSEQUENCE::SYMBOL)
-  Data: TemplatedDataBlock(from, to)
+  Data: TemplatedDataBlock(begin, end)
 }]name<[rule, CSEQUENCE, SYMBOL]> : [Rule {
   @  Op( String (\) |  !Cseq([]]))
   Data: [RegularDataBlock: CllExpr]

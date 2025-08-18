@@ -56,7 +56,7 @@ private:
     const stdu::vector<AST::RuleMember> *rules = nullptr;
     const AST::RuleMember *member = nullptr;
     const AST::DataBlock *dtb;
-    const stdu::vector<std::string> &name;
+    const stdu::vector<std::string> &name_;
     stdu::vector<state> states;
     stdu::vector<std::size_t> add_space_skip_places;
     stdu::vector<std::pair<std::size_t, std::size_t>> group_close_propagate;
@@ -96,15 +96,21 @@ private:
         );
     void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, SingleValueDataBlock &single_data_block, bool &isAlreadyConstructed);
 public:
-    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table) : tree(tree), name(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
-    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken, bool is_char_table) : tree(tree), name(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
-    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::Rule &rule, bool isWhitespaceToken, bool is_char_table) : tree(tree), name(name), rules(&rule.rule_members), dtb(&rule.data_block), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::Rule &rule, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), rules(&rule.rule_members), dtb(&rule.data_block), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
     void build(bool addStoreActions);
     auto& getStates() const {
         return states;
     }
     auto &getAcceptMap() const {
         return accept_map;
+    }
+    auto &isCharNfa() const {
+        return is_char_table;
+    }
+    auto &name() const {
+        return name_;
     }
 };
 // Print a single state

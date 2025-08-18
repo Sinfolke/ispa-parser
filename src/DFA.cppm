@@ -21,6 +21,8 @@ public:
         std::size_t new_group = NFA::NULL_STATE;
         std::size_t group_close = NFA::NULL_STATE;
         std::size_t accept_index = NFA::NULL_STATE;
+        bool optional = false;
+        bool last = false;
         bool operator==(const TransitionValue &other) const = default;
     private:
         friend struct uhash;
@@ -47,8 +49,6 @@ public:
         std::size_t else_goto_accept = NFA::NULL_STATE;
         stdu::vector<std::string> rule_name;
         NFA::DataBlock dtb;
-        bool optional = false;
-        bool last = false;
         bool operator==(const State &other) const = default;
     private:
         friend struct uhash;
@@ -111,6 +111,8 @@ public:
     auto getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
     static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
     static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
+
+    auto getNames() const -> std::string;
 };
 
 // Print a single state
