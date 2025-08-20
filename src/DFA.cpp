@@ -128,7 +128,7 @@ bool DFA::includesWhitespace(const MultiState &state) const {
 bool DFA::isTerminateState(const MultiState &state) const {
     if (state.else_goto)
         return false;
-    if (nfa)
+    if (nfa && nfa->isCharNfa() || mergable_nfas)
         return false;
     if (state.transitions.size() != 1)
         return false;
@@ -214,6 +214,7 @@ void DFA::removeDublicateStates() {
 }
 void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state) {
     // step 1: get lookaheads for every transition's goto
+    Tlog::Branch b(logger, "DFA/unrollMultiTransition");
     using LookaheadSet = stdu::vector<MultiTransitions>;
     using Lookaheads = stdu::vector<std::pair<LookaheadSet, std::size_t>>;
     Lookaheads lookaheads;
@@ -259,9 +260,9 @@ void DFA::unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &
     if (all_recursive) {
         mstates.pop_back();
         val = {{ walked_state.at(std::max_element(val.begin(), val.end(), [](const auto& a, const auto& b) { return a.value.next < b.value.next;})->value.next),  new_cst_node, new_member, close_cst_node, new_group, close_group, optional, last }};
+        b.log("preventing recursion: val = {}", val.back().value.next);
         return;
     }
-    Tlog::Branch b(logger, "DFA/unrollMultiTransition");
     while (!work.empty()) {
         // substep 1: for every symbol in val push new lookahead set
         if (work.size() == work_size) {
