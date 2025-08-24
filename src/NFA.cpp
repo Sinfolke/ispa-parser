@@ -589,6 +589,9 @@ void NFA::build(bool addStoreActions) {
         }
         // register one accept state for the last state in rule sequence
         auto [start, end] = buildStateFragment(rules->back(), true, addStoreActions);
+        if (states.empty()) {
+            throw Error("NFA cannot be empty");
+        }
         if (addStoreActions && dtb != nullptr && end != NULL_STATE) {
             states[end].rule_name = name_;
             if (dtb->isTemplatedDataBlock()) {

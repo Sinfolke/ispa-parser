@@ -273,7 +273,7 @@ name<[cll, _var, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[LINEAR_COMMENT]> : [Rule {
    String (//)
-   !Cseq([n])*;
+   !Cseq([], Escaped:[\n])*;
   Data: EmptyDataBlock
 }]name<[cll, COMPARE_OP]> : [Rule {
   @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))
@@ -592,7 +592,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(rule::CSEQUENCE::SYMBOL)
   Data: TemplatedDataBlock(begin, end)
 }]name<[rule, CSEQUENCE, SYMBOL]> : [Rule {
-  @  Op( String (\) |  !Cseq([]]))
+  @  !Cseq([]])
   Data: [RegularDataBlock: CllExpr]
 }]name<[AT]> : [Rule {
    String (@)

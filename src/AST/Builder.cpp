@@ -6,7 +6,6 @@ import corelib;
 import logging;
 import dstd;
 import std;
-#include <cstdio>
 
 void AST::Builder::constructor(const Parser::Rule &mod) {
     // pass through tree to get name, spacemode, use and TreeMap
@@ -431,9 +430,15 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
                     case Parser::Tokens::rule_CSEQUENCE_SYMBOL:
                         newCsequence.characters.push_back(Parser::get::rule_CSEQUENCE_SYMBOL(data)[0]);
                         break;
-                    case Parser::Tokens::rule_CSEQUENCE_ESCAPE:
-                        newCsequence.characters.push_back(Parser::get::rule_CSEQUENCE_ESCAPE(data));
+                    case Parser::Tokens::rule_CSEQUENCE_ESCAPE: {
+                        const auto &c = Parser::get::rule_CSEQUENCE_ESCAPE(data);
+                        if (c == ']') {
+                            newCsequence.characters.push_back(c);
+                        } else {
+                            newCsequence.escaped.push_back(c);
+                        }
                         break;
+                    }
                     case Parser::Tokens::rule_CSEQUENCE_DIAPASON:
                     {
                         const auto &diapason = Parser::get::rule_CSEQUENCE_DIAPASON(data);

@@ -19,6 +19,7 @@
 #include <functional>
 #include <algorithm>
 #include <iostream>
+#include <unordered_set>
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -141,17 +142,15 @@ class Span {
         Span(T (&arr)[N]) // from raw array
             : data_(arr), size_(N) {}
 
-        pointer data() const { return data_; }
-        size_type size() const { return size_; }
-        bool empty() const { return size_ == 0; }
-
+        [[nodiscard]] pointer data() const { return data_; }
+        [[nodiscard]] size_type size() const { return size_; }
+        [[nodiscard]] bool empty() const { return size_ == 0; }
         reference operator[](size_type index) {
             return data_[index];
         }
         const_reference operator[](size_type index) const {
             return data_[index];
         }
-
         reference at(size_type index) const {
             if (index >= size_) throw std::out_of_range("Span::at");
             return data_[index];
@@ -573,7 +572,7 @@ protected:
     static auto find_key(const DFAAPI::SpanCharTableState &state, IT &pos) -> const DFAAPI::CharTransition* {
         for (const auto &t : state.transitions) {
             if (t.symbol == *pos) {
-                printf("lookup for symbol %c successful, remaining input: \n", *pos, pos);
+                printf("lookup for symbol %c successful\n", *pos);
                 return &t;
             }
         }
@@ -610,6 +609,8 @@ protected:
         auto start = pos;
         bool closed = true;
         do {
+            //printf("table.size: %zu, state: %zu\n", table.size(), state);
+            fflush(stdout);
             const auto &s = std::get<DFAAPI::SpanCharTableState>(table[state]);
             decltype(auto) new_state = find_key(s, pos);
             if (new_state != nullptr) {
@@ -739,7 +740,7 @@ class AdvancedDFA : DFA<TOKEN_T> {
     static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
         for (const auto &transition : state.transitions) {
             if (*pos == transition.symbol) {
-                printf("lookup for symbol %c successfull, remaining input: \n", *pos, pos);
+                printf("lookup for symbol %c successfull\n", *pos);
                 return &transition;
             }
         }
@@ -883,8 +884,8 @@ protected:
                                         data.push_back(res.node);
                                     matched = true;
                                 }
-                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanMultiTableState<TOKEN_T>>) {
-                                if (auto res = AdvancedDFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
+                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::MultiTableTransition<TOKEN_T>>) {
+                                if (auto res = AdvancedDFA<TOKEN_T>::match(t.symbol, pos, nullptr); res.status) {
                                     pos += res.node.length();
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
@@ -903,8 +904,10 @@ protected:
                                         data.push_back(res.node);
                                     matched = true;
                                 }
-                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::SpanCharTableState> || std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTableTransition<TOKEN_T>>) {
-                                if (auto res = DFA<TOKEN_T>::match(t.symbol, pos, panic_mode); res.status) {
+                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTableTransition<TOKEN_T>> || std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CallableTokenTableTransition<TOKEN_T>>) {
+                                printf("t.symbol size: %zu, pos: %c\n", t.symbol.size(), *pos);
+                                if (auto res = DFA<TOKEN_T>::match(t.symbol, pos, nullptr); res.status) {
+                                    printf("Successfull match\n");
                                     pos += res.node.length();
                                     if (t.new_member) {
                                         member_begin.push_back(data.size());
@@ -922,7 +925,11 @@ protected:
                                     if (!closed)
                                         data.push_back(res.node);
                                     matched = true;
+                                } else {
+                                    printf("Not matched\n");
                                 }
+                            } else {
+                                throw std::runtime_error("Undefined multitable type");
                             }
 
                         }, option);

@@ -39,13 +39,13 @@ void LexerConverter::output() {
     DFAConverter dfa_converter(lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable(), state_set, namespace_name, "Lexer", "dfa_table", true);
     DFAConverter dfa_func_table_converter(lexer_data.getFunctionsIR().getDfas(), &lexer_data.getDfaCompatibleTable(), state_set, namespace_name, "Lexer", "dfa_func_table", true);
     DFASpans dfa_spans(out, namespace_name, lexer_data.getDFAS(), &lexer_data.getDfaCompatibleTable());
+    dfa_spans.output(true, "Lexer");
     dfa_states.output();
     dfa_converter.create();
     dfa_func_table_converter.create();
     out << dfa_converter.get().str();
     out << dfa_func_table_converter.get().str();
     // print spans tables
-    dfa_spans.output(true, "Lexer");
     // 2. Print First Character Dispatch Table
     out << "const ISPA_STD::fcdt_table<::" << namespace_name << "::Tokens> " << namespace_name << "::Lexer::first_character_dispatch_table = {\n";
     const auto &dfa_involved_table = lexer_data.getDispatchNamesInvolve();

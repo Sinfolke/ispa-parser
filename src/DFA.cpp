@@ -599,9 +599,8 @@ auto DFA::mergeDFAS(stdu::vector<DFA> &dfas) -> DFA {
     return initial_states;
 }
 
-void DFA::build(bool switchToSingleState) {
+void DFA::build(bool optimize) {
     using StateSet = stdu::vector<std::size_t>;
-    if (nfa->getStates().empty()) return;
     Tlog::Branch b(logger, "DFA.log");
 
     utype::unordered_map<StateSet, std::size_t> dfa_state_map;  // DFA state ID per NFA state set
@@ -748,6 +747,9 @@ void DFA::build(bool switchToSingleState) {
             // }
         }
     }
+    if (mstates.empty()) {
+        throw Error("DFA cannot be empty");
+    }
     if (empty_state == NFA::NULL_STATE) {
         empty_state = mstates.size();
         mstates.emplace_back();
@@ -762,11 +764,11 @@ void DFA::build(bool switchToSingleState) {
         dfa_empty_state_map[i] = empty_state;
     }
     removeSelfLoop();
-    if (switchToSingleState) {
+    if (optimize) {
         removeDublicateStates();
         terminateEarly();
         unrollMultiTransitionPaths();
-        this->switchToSingleState();
+        switchToSingleState();
         removeUnreachableStates();
     }
 }

@@ -47,8 +47,6 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
                           << ", ";
                 table_out << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
                 table_out << "},\n";
-            } else {
-                table_out << "{},\n";
             }
         }
     }

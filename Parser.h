@@ -212,7 +212,7 @@ namespace Parser {
 		using ID = ::Parser::str_t;
 		using AUTO_22 = ::Parser::str_t;
 		using STRING = ::Parser::str_t;
-		using rule_CSEQUENCE_SYMBOL = ::Parser::str_t;
+		using rule_CSEQUENCE_SYMBOL = char;
 		using AUTO_21 = ::Parser::str_t;
 		using AUTO_8 = ::Parser::str_t;
 		using AUTO_6 = char;
@@ -645,7 +645,7 @@ namespace Parser {
 		static const ISPA_STD::DFAAPI::CharTableState<1> dfa_state_111;
 		static const ISPA_STD::DFAAPI::CharTableState<256> dfa_state_112;
 		static const ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> dfa_state_113;
-		static const ISPA_STD::DFAAPI::CharTableState<129> dfa_state_114;
+		static const ISPA_STD::DFAAPI::CharTableState<128> dfa_state_114;
 		static const ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> dfa_state_115;
 		static const ISPA_STD::DFAAPI::CharTableState<1> dfa_state_116;
 		static const ISPA_STD::DFAAPI::CharEmptyState<::Parser::Tokens> dfa_state_117;

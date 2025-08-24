@@ -100,7 +100,7 @@ public:
     DFA(const NFA &nfa) : nfa(&nfa) {}
     DFA(const stdu::vector<NFA> &mergable_nfa) : mergable_nfas(&mergable_nfa) {}
     DFA(const stdu::vector<SingleState> &already_build_states) : states(already_build_states) {}
-    void build(bool switchToSingleState = true);
+    void build(bool optimize = true);
     void buildWMerge();
     auto &getStates() { return states; }
     auto &getMultiStates() { return mstates; }
