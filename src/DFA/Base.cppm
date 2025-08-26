@@ -1,0 +1,29 @@
+export module DFA.Base;
+
+import DFA.API;
+import std;
+
+namespace DFA {
+    export class Base {
+    protected:
+        DfaEmptyStateMap dfa_empty_state_map_;
+        DfaIndexToEmptyStateMap dfa_index_to_empty_state_map_;
+        std::size_t empty_state;
+        bool merged = false;
+    public:
+        Base() = default;
+        Base(std::size_t empty_state) : empty_state(empty_state) {}
+        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), merged(true) {};
+        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, std::size_t empty_state)
+        : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), empty_state(empty_state), merged(true) {}
+        auto &getEmptyStateMap()        const { return dfa_empty_state_map_; }
+        auto &getEmptyStateMap()              { return dfa_empty_state_map_; }
+        auto &getIndexToEmptyStateMap() const { return dfa_index_to_empty_state_map_; }
+        auto &getIndexToEmptyStateMap()       { return dfa_index_to_empty_state_map_; }
+
+        auto getEmptyState(std::size_t stateIndex) -> std::size_t;
+        auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
+        auto isMerged() -> bool;
+        virtual auto clear() -> void = 0;
+    };
+}
