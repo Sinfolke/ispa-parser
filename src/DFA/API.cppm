@@ -1,7 +1,12 @@
 export module DFA.API;
 
 import NFA;
+import AST.API;
+import AST.Tree;
+import AST.Pass;
+import NFA;
 import hash;
+import boost;
 import dstd;
 import std;
 
@@ -53,11 +58,22 @@ export namespace DFA {
         }
     };
 
+    class Comparator {
+        const AST::Tree &tree;
+        auto compareNameWithCharacter(const stdu::vector<std::string> &name, const char c) const -> bool;
+        auto compareNameWithName(const stdu::vector<std::string> &first_name, const stdu::vector<std::string> &second_name) const -> bool;
+    public:
+        Comparator(const AST::Tree &tree) : tree(tree) {}
+
+        auto operator()(const NFA::TransitionKey &a, const NFA::TransitionKey &b) const -> bool;
+        auto operator()(const std::pair<NFA::TransitionKey, TransitionValue> &a, const std::pair<NFA::TransitionKey, TransitionValue> &b) const -> bool;
+    };
     using Transitions = utype::unordered_map<NFA::TransitionKey, TransitionValue>;
     using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<MultiTransitionValue>>;
-
+    using SortedTransitions = boost::container::flat_map<NFA::TransitionKey, TransitionValue>;
     using MultiState = State<MultiTransitions>;
     using SingleState = State<Transitions>;
+    using SortedState = State<SortedTransitions>;
     using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
     using WalkedState = utype::unordered_map<std::size_t, std::size_t>;
     using DfaEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;

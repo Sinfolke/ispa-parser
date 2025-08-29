@@ -52,16 +52,16 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(rule::data_block::templated_datablock::__grp2::__grp1)
   Data: EmptyDataBlock
 }]name<[main, __grp0]> : [Rule {
-   Name(rule)
-  Data: EmptyDataBlock
-}, Rule {
    Name(NAME)
   Data: EmptyDataBlock
 }, Rule {
-   Name(SPACEMODE)
+   Name(_use)
   Data: EmptyDataBlock
 }, Rule {
-   Name(_use)
+   Name(rule)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(SPACEMODE)
   Data: EmptyDataBlock
 }]name<[rule, member, __grp0]> : [Rule {
    Name(rule::value)
@@ -84,19 +84,19 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(cll::stmt::__q1)
   Data: EmptyDataBlock
 }]name<[cll, __rop1]> : [Rule {
+   Name(cll::loop_while)
+  Data: EmptyDataBlock
+}, Rule {
    Name(cll::_var)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::loop_for)
   Data: EmptyDataBlock
 }, Rule {
    Name(cll::_if)
   Data: EmptyDataBlock
 }, Rule {
    Name(cll::expr)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(cll::loop_while)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(cll::loop_for)
   Data: EmptyDataBlock
 }]name<[array, __grp1]> : [Rule {
    Name(array::__grp1::__grp0)
@@ -156,10 +156,10 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(moduleImport::from)
   Data: EmptyDataBlock
 }]name<[cll, expr, arithmetic, __grp1, __rop0]> : [Rule {
-   Name(PLUS)
+   Name(MINUS)
   Data: EmptyDataBlock
 }, Rule {
-   Name(MINUS)
+   Name(PLUS)
   Data: EmptyDataBlock
 }]name<[cll, loop_for, __q6]> : [Rule {
   Data: EmptyDataBlock
@@ -180,16 +180,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(cll::stmt)
   Data: TemplatedDataBlock(expr, stmt)
 }]name<[rule, member, __rop1]> : [Rule {
-   Name(rule::name)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(rule::group)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(rule::CSEQUENCE)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(STRING)
+   Name(rule::NOSPACE)
   Data: EmptyDataBlock
 }, Rule {
    Name(rule::HEX)
@@ -198,22 +189,31 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(rule::BIN)
   Data: EmptyDataBlock
 }, Rule {
-   Name(rule::NOSPACE)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(rule::ESCAPED)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(DOT)
+   Name(LINEAR_COMMENT)
   Data: EmptyDataBlock
 }, Rule {
    Name(rule::OP)
   Data: EmptyDataBlock
 }, Rule {
-   Name(LINEAR_COMMENT)
+   Name(rule::ESCAPED)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::CSEQUENCE)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(DOT)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::group)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(STRING)
   Data: EmptyDataBlock
 }, Rule {
    Name(cll)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(rule::name)
   Data: EmptyDataBlock
 }]name<[NAME]> : [Rule {
    String (name)
@@ -235,7 +235,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(cll::stmt)
   Data: TemplatedDataBlock(decl, cond, end, stmt)
 }]name<[cll, LOGICAL_AND]> : [Rule {
-   Op( String (&&) |  String (and))
+   Op( String (and) |  String (&&))
   Data: EmptyDataBlock
 }]name<[cll, TEMPLATE]> : [Rule {
    String (<)
@@ -244,7 +244,7 @@ name<[cll, _var, __grp2]> : [Rule {
    String (>)
   Data: TemplatedDataBlock(first, second)
 }]name<[cll, TYPE]> : [Rule {
-  @  Op( String (var) |  String (num) |  String (bool) |  String (str) |  Group(@  String (arr), @  Name(cll::TEMPLATE)) |  Group(@  String (obj), @  Name(cll::TEMPLATE)))
+  @  Op( String (bool) |  String (var) |  String (str) |  Group(@  String (obj), @  Name(cll::TEMPLATE)) |  String (num) |  Group(@  String (arr), @  Name(cll::TEMPLATE)))
   Data: TemplatedDataBlock(type, templ)
 }]name<[cll, _if]> : [Rule {
    Name(AUTO_16)
@@ -276,10 +276,10 @@ name<[cll, _var, __grp2]> : [Rule {
    !Cseq([], Escaped:[\n])*;
   Data: EmptyDataBlock
 }]name<[cll, COMPARE_OP]> : [Rule {
-  @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))
+  @  Op( String (>=) |  String (==) |  String (<=) |  String (!=) |  String (>) |  String (<))
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, ASSIGNMENT_OP]> : [Rule {
-  @  Op( String (+=) |  String (-=) |  String (*=) |  String (/=) |  String (%=))
+  @  Op( String (/=) |  String (-=) |  String (+=) |  String (*=) |  String (%=))
   Data: [RegularDataBlock: CllExpr]
 }]name<[moduleImport]> : [Rule {
    Name(AUTO_15)
@@ -293,10 +293,10 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Name(_use::unit)
   Data: EmptyDataBlock
 }]name<[rule, data_block]> : [Rule {
-   Name(rule::data_block::templated_datablock)
+   Name(rule::data_block::regular_datablock)
   Data: [RegularDataBlock: CllExpr]
 }, Rule {
-   Name(rule::data_block::regular_datablock)
+   Name(rule::data_block::templated_datablock)
   Data: EmptyDataBlock
 }]name<[STRING]> : [Rule {
    String (')
@@ -435,7 +435,7 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(cll::function_arguments::__grp1)
   Data: TemplatedDataBlock(first, second)
 }]name<[cll, LOGICAL_NOT]> : [Rule {
-   Op( String (!) |  String (not))
+   Op( String (not) |  String (!))
   Data: EmptyDataBlock
 }]name<[main]> : [Rule {
    Name(main::__grp0)
@@ -464,7 +464,7 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(rule::keyvalue::__grp1)
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_21]> : [Rule {
-  @  String (--)
+  @  String (++)
   Data: [RegularDataBlock: CllExpr]
 }]name<[rule, member]> : [Rule {
    Name(rule::member::__grp0)
@@ -475,7 +475,13 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(BOOLEAN)
   Data: [RegularDataBlock: CllExpr]
 }, Rule {
-   Name(NUMBER)
+   Name(object)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(array)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(AT)
   Data: EmptyDataBlock
 }, Rule {
    Name(STRING)
@@ -484,18 +490,12 @@ name<[cll, _var, __grp2]> : [Rule {
    Name(ID)
   Data: EmptyDataBlock
 }, Rule {
-   Name(AT)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(array)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(object)
+   Name(NUMBER)
   Data: EmptyDataBlock
 }]name<[rule, CSEQUENCE]> : [Rule {
    String ([)
   @  String (^)?;
-  @  Group( Op( Name(rule::CSEQUENCE::DIAPASON) |  Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::SYMBOL)))*;
+  @  Group( Op( Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::DIAPASON) |  Name(rule::CSEQUENCE::SYMBOL)))*;
    String (])
   Data: TemplatedDataBlock(_not, val)
 }]name<[AUTO_3]> : [Rule {
@@ -572,14 +572,14 @@ name<[cll, _var, __grp2]> : [Rule {
   Data: EmptyDataBlock
 }]name<[SPACEMODE]> : [Rule {
    String (spacemode)
-  @  Op( String (mixed) |  String (skipped) |  String (allowed))
+  @  Op( String (skipped) |  String (allowed) |  String (mixed))
    String (;)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, expr, term, __grp1, __rop0]> : [Rule {
-   Name(MULTIPLE)
+   Name(DIVIDE)
   Data: EmptyDataBlock
 }, Rule {
-   Name(DIVIDE)
+   Name(MULTIPLE)
   Data: EmptyDataBlock
 }, Rule {
    Name(MODULO)
@@ -611,7 +611,7 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Any
   Data: [RegularDataBlock: CllExpr]
 }]name<[BOOLEAN]> : [Rule {
-  d Group( Op( String (true) |  String (false)))
+  d Group( Op( String (false) |  String (true)))
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_1]> : [Rule {
   @  String (,)
@@ -649,16 +649,16 @@ name<[cll, _var, __grp2]> : [Rule {
   @  String (while)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, expr, value]> : [Rule {
-   Name(cll::expr::group)
+   Name(cll::_variable)
   Data: [RegularDataBlock: CllExpr]
 }, Rule {
-   Name(cll::_variable)
-  Data: EmptyDataBlock
-}, Rule {
-   Name(cll::function_call)
+   Name(cll::expr::group)
   Data: EmptyDataBlock
 }, Rule {
    Name(cll::method_call)
+  Data: EmptyDataBlock
+}, Rule {
+   Name(cll::function_call)
   Data: EmptyDataBlock
 }, Rule {
    Name(rvalue)
@@ -702,10 +702,10 @@ name<[cll, _var, __grp2]> : [Rule {
   @  Any
   Data: [RegularDataBlock: CllExpr]
 }]name<[AUTO_20]> : [Rule {
-  @  String (++)
+  @  String (--)
   Data: [RegularDataBlock: CllExpr]
 }]name<[cll, LOGICAL_OP]> : [Rule {
-  @  Op( Name(cll::LOGICAL_AND) |  Name(cll::LOGICAL_OR))
+  @  Op( Name(cll::LOGICAL_OR) |  Name(cll::LOGICAL_AND))
   Data: [RegularDataBlock: CllExpr]
 }]name<[ID]> : [Rule {
   @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)

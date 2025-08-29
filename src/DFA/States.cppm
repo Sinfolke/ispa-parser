@@ -1,4 +1,4 @@
-export module DFA.states;
+export module DFA.States;
 
 import DFA.API;
 import NFA;

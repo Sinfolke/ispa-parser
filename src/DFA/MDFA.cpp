@@ -1,6 +1,6 @@
 module DFA.MDFA;
 
-import DFA.states;
+import DFA.States;
 import DFA.closure;
 
 import hash;
@@ -152,10 +152,17 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
         states[empty_state].rule_name = rule_name;
         states[empty_state].dtb = dtb;
     }
+    return states;
 }
 
 auto DFA::MDFA::clear() -> void {
     states.clear();
 }
 
+auto DFA::MDFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
+    return getStateType(states, transitions, dct, isToken);
+}
+auto DFA::MDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
+    return getType(states, isToken, dct, false);
+}
 

@@ -1,4 +1,4 @@
-module DFA.states;
+module DFA.States;
 import constants;
 import std;
 
@@ -106,3 +106,4 @@ auto DFA::States<State>::clear() -> void {
 }
 template class DFA::States<DFA::SingleState>;
 template class DFA::States<DFA::MultiState>;
+template class DFA::States<DFA::SortedState>;

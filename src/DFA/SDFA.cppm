@@ -2,7 +2,7 @@ export module DFA.SDFA;
 
 import NFA;
 import DFA.API;
-import DFA.states;
+import DFA.States;
 import DFA.MDFA;
 import DFA.Base;
 import dstd;
@@ -27,5 +27,8 @@ export namespace DFA {
         auto &get()             { return states; }
 
         auto clear() -> void override;
+
+        auto getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
+        static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
     };
 }

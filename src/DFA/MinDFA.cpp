@@ -176,3 +176,32 @@ void DFA::MinDFA::removeSelfLoop(SDFA &sdfa) {
         }
     }
 }
+void DFA::MinDFA::removeDublicateStates() {
+    removeDublicateStates(sdfa);
+}
+void DFA::MinDFA::removeSelfLoop() {
+    removeSelfLoop(sdfa);
+}
+void DFA::MinDFA::removeUnreachableStates() {
+    removeUnreachableStates(sdfa);
+}
+void DFA::MinDFA::terminateEarly() {
+    terminateEarly(sdfa);
+}
+
+void DFA::MinDFA::minimize(SDFA &sdfa) {
+    removeDublicateStates(sdfa);
+    terminateEarly(sdfa);
+    removeSelfLoop(sdfa);
+    removeUnreachableStates(sdfa);
+}
+void DFA::MinDFA::minimize() {
+    minimize(sdfa);
+}
+
+auto DFA::MinDFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
+    return getStateType(states, transitions, dct, isToken);
+}
+auto DFA::MinDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
+    return getType(states, isToken, dct);
+}

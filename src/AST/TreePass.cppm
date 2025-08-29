@@ -32,7 +32,7 @@ export namespace AST {
         void constructor() {
             removeEmptyRule();
             inlineSingleGroups();
-            //sortByPriority();
+            sortByPriority();
             literalsToToken();
             addSpaceToken();
         }

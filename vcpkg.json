@@ -2,6 +2,7 @@
   "name": "ispa-parser-generator",
   "version": "0.1.0",
   "dependencies": [
-    "boost-dynamic-bitset"
+    "boost-dynamic-bitset",
+    "boost-container"
   ]
 }

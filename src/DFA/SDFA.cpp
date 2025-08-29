@@ -169,7 +169,15 @@ auto DFA::SDFA::build() -> const States<SingleState>& {
         states[index].dtb = std::move(state.dtb);
     }
     mdfa.clear();
+    return states;
 }
 auto DFA::SDFA::clear() -> void {
     states.clear();
+}
+
+auto DFA::SDFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
+    return getStateType(states, transitions, dct, isToken);
+}
+auto DFA::SDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
+    return getType(states, isToken, dct);
 }
