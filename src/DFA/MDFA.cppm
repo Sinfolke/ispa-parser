@@ -4,6 +4,8 @@ import NFA;
 import DFA.API;
 import DFA.States;
 import DFA.Base;
+import hash;
+import dstd;
 import std;
 
 export namespace DFA {
@@ -26,6 +28,5 @@ export namespace DFA {
         auto clear() -> void override;
 
         auto getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
-        static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
     };
 }

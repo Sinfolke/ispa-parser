@@ -30,8 +30,8 @@ export namespace DFA {
         auto size() const -> std::size_t;
         auto clear() -> void;
 
-        auto begin() { return states.begin(); }
-        auto end()   { return states.end();   }
+        auto begin() const { return states.begin(); }
+        auto end()   const { return states.end();   }
 
         auto &operator[](const std::size_t index) { return states.at(index); }
     };

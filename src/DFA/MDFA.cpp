@@ -109,7 +109,7 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 }
             }
             closure_set.get().assign(closure_set_us.begin(), closure_set_us.end());
-            std::sort(closure_set.begin(), closure_set.end());
+            std::sort(closure_set.get().begin(), closure_set.get().end());
 
             // Add main (non-conflict) stdu::vector<std::size_t> if any
             if (!closure_set.empty()) {
@@ -158,11 +158,7 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
 auto DFA::MDFA::clear() -> void {
     states.clear();
 }
-
-auto DFA::MDFA::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
-    return getStateType(states, transitions, dct, isToken);
-}
 auto DFA::MDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
-    return getType(states, isToken, dct, false);
+    return Base::getType(states, isToken, dct);
 }
 

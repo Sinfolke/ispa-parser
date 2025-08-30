@@ -40,8 +40,7 @@ auto DFA::Base::getTransitionKeyType(const NFA::TransitionKey &transition_key, b
         return isToken ? DfaType::CallableToken : DfaType::Token;
     }
 }
-template<typename StateType>
-auto DFA::Base::getStateType(const States<StateType> &states, const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
+auto DFA::Base::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
     DfaType dfa_type = DfaType::NONE;
     for (const auto &[symbol, next] : transitions) {
         if (std::holds_alternative<char>(symbol)) {
@@ -80,3 +79,7 @@ auto DFA::Base::getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t {
 auto DFA::Base::isMerged() -> bool {
     return merged;
 }
+
+template auto DFA::Base::getType(const States<SingleState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
+template auto DFA::Base::getType(const States<MultiState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
+template auto DFA::Base::getType(const States<SortedState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;

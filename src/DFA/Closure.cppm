@@ -27,6 +27,7 @@ export namespace DFA {
         auto rbegin() const { return closure.rbegin(); }
         auto rend() const { return closure.rend(); }
 
+        auto get()       { return closure; };
         auto get() const { return closure; };
         auto empty() const { return closure.empty(); };
 
