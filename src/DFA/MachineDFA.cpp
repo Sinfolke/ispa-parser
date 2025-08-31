@@ -2,43 +2,65 @@ module DFA.MachineDFA;
 import std;
 
 auto DFA::MachineDFA::build() -> States<SortedState> {
-    for (std::size_t i = 0; i < sorted_dfa.get().size(); i++) {
-        const auto &state = sorted_dfa.get().get()[i];
-        auto type = sorted_dfa.getType(false, nullptr);
+    // move to current class
+    for (auto &state : sorted_dfa.get()) {
+        auto new_state_id = states.makeNew();
+        states[new_state_id] = std::move(state);
+    }
+    auto states_size = states.size();
+    for (std::size_t i = 0; i < states_size; i++) {
+        const auto &state = states[i];
+        auto type = getType(false, nullptr);
         auto initial_else_goto = state.else_goto;
         if (type == DfaType::Multi) {
             // found multitable - partition using else_goto
 
             // find where to begin to partition transitions
-            std::size_t type = NULL_STATE;
+            std::size_t partition_type = NULL_STATE;
             std::size_t begin = 0;
             for (const auto &[symbol, next] : state.transitions) {
-                if (type == NULL_STATE) {
-                    type = symbol.index();
-                } else if (symbol.index() != type) {
+                if (partition_type == NULL_STATE) {
+                    partition_type = symbol.index();
+                } else if (symbol.index() != partition_type) {
                     break;
                 }
                 begin++;
             }
-            auto partitioned_state = sorted_dfa.get().makeNew();
-            type = NULL_STATE;
+            auto partitioned_state = states.makeNew();
+            partition_type = NULL_STATE;
             for (std::size_t j = begin; j < state.transitions.size(); j++) {
                 const auto &[symbol, value] = state.transitions.sequence()[j];
-                if (type == NULL_STATE) {
-                    type = symbol.index();
-                } else if (type != symbol.index()) {
+                if (partition_type == NULL_STATE) {
+                    partition_type = symbol.index();
+                } else if (partition_type != symbol.index()) {
                     auto prev = partitioned_state;
-                    partitioned_state = sorted_dfa.get().makeNew();
-                    sorted_dfa.get()[prev].else_goto = partitioned_state;
+                    partitioned_state = states.makeNew();
+                    states[prev].else_goto = partitioned_state;
                 }
-                sorted_dfa.get()[partitioned_state].transitions.emplace(symbol, value);
+                states[partitioned_state].transitions.emplace(symbol, value);
             }
+            states[partitioned_state].else_goto = initial_else_goto;
         }
     }
-    // move to current class
-    for (auto &state : sorted_dfa.get()) {
-        auto new_state_id = states.makeNew();
-        states[new_state_id] = std::move(state);
+    // add all characters to transition & unroll else_goto in character states
+    for (auto &state : states) {
+        bool notCharTable = false;
+        for (const auto &[symbol, value] : state.transitions) {
+            if (!std::holds_alternative<char>(symbol)) {
+                notCharTable = true;
+                break;
+            }
+        }
+        if (notCharTable)
+            break;
+
+        for (unsigned char uc = 0; uc < std::numeric_limits<unsigned char>::max() - 1; uc++) {
+            auto c = static_cast<char>(uc);
+            if (state.transitions.contains(c)) {
+                continue;
+            }
+            state.transitions.emplace(c, state.else_goto);
+        }
     }
     return states;
 }
