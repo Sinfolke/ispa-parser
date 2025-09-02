@@ -67,3 +67,7 @@ auto DFA::MachineDFA::build() -> States<SortedState> {
 auto DFA::MachineDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     return Base::getType(states, isToken, dct);
 }
+auto DFA::MachineDFA::clear() -> void {
+    states.clear();
+}
+

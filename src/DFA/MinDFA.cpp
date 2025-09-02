@@ -201,3 +201,7 @@ void DFA::MinDFA::minimize() {
 auto DFA::MinDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     return Base::getType(states, isToken, dct);
 }
+auto DFA::MinDFA::clear() -> void {
+    states.clear();
+}
+

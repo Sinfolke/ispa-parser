@@ -25,7 +25,7 @@ export namespace DFA {
         auto &get()                     const { return states; }
         auto &get()                           { return states; }
 
-        auto clear() -> void override;
+        auto clear() -> void;
 
         auto getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
     };

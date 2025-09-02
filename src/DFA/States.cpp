@@ -93,6 +93,11 @@ auto DFA::States<State>::makeNew() -> std::size_t {
     return states.size() - 1;
 }
 template<typename State>
+auto DFA::States<State>::constructNewFrom(const State &state) -> std::size_t {
+    states.emplace_back(state);
+    return states.size() - 1;
+}
+template<typename State>
 auto DFA::States<State>::empty() const -> bool {
     return states.empty();
 }

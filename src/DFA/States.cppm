@@ -26,6 +26,7 @@ export namespace DFA {
         auto &get()       { return states; }
 
         auto makeNew() -> std::size_t;
+        auto constructNewFrom(const State &state) -> std::size_t;
         auto empty() const -> bool;
         auto size() const -> std::size_t;
         auto clear() -> void;
@@ -34,5 +35,6 @@ export namespace DFA {
         auto end()   const { return states.end();   }
 
         auto &operator[](const std::size_t index) { return states.at(index); }
+        auto &operator[](const std::size_t index) const { return states.at(index); }
     };
 }

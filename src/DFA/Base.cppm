@@ -33,8 +33,6 @@ namespace DFA {
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
 
-        virtual auto clear() -> void = 0;
-
         static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
         static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
 
