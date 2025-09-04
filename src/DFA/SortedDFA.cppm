@@ -18,10 +18,10 @@ export namespace DFA {
         States<SortedState> states;
     public:
         void sort();
-        SortedDFA(const AST::Tree &ast, MinDFA &min_dfa) : ast(ast), states(nullptr), min_dfa(min_dfa) {};
+        SortedDFA(const AST::Tree &ast, MinDFA &min_dfa) : ast(ast), states(nullptr), min_dfa(min_dfa), Base(min_dfa.getEmptyState()) {};
         SortedDFA(const AST::Tree &ast, MinDFA &min_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
         : ast(ast), states(nullptr), min_dfa(min_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
-        SortedDFA(const AST::Tree &ast, const NFA &nfa, MinDFA &min_dfa) : ast(ast), states(&nfa), min_dfa(min_dfa) {};
+        SortedDFA(const AST::Tree &ast, const NFA &nfa, MinDFA &min_dfa) : ast(ast), states(&nfa), min_dfa(min_dfa), Base(min_dfa.getEmptyState()) {};
         SortedDFA(const AST::Tree &ast, const NFA &nfa, MinDFA &min_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
         : ast(ast), states(&nfa), min_dfa(min_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
 

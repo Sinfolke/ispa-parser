@@ -1,6 +1,6 @@
 module LexerConverter;
 import Converter.DFA;
-import DFA;
+import DFA.API;
 import LLConverter;
 import LexerBuilder;
 import StateArrayBuilder;
@@ -95,14 +95,14 @@ void LexerConverter::outputHeader() {
     h_out << "\t\tprivate:\n"
           << "\t\t\tToken makeToken(const char*& pos);\n";
     dfa_states.outputHeader();
-    for (std::size_t i = 0; i < lexer_data.getDFAS().getDFAS().size(); ++i) {
-        const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, &lexer_data.getDfaCompatibleTable(), namespace_name, dfa.getStates().size()) << " dfa_table_" << i << ";\n";
+    for (std::size_t i = 0; i < lexer_data.getDFAS().get().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().get().at(i);
+        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, &lexer_data.getDfaCompatibleTable(), namespace_name, dfa.get().size()) << " dfa_table_" << i << ";\n";
     }
     dfa_spans.outputH(true);
-    for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().getDFAS().size(); ++i) {
-        const auto &dfa = lexer_data.getDFAS().getDFAS().at(i);
-        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, &lexer_data.getDfaCompatibleTable(), namespace_name, dfa.getStates().size()) << " dfa_func_table_" << i << ";\n";
+    for (std::size_t i = 0; i < lexer_data.getFunctionsIR().getDfas().get().size(); ++i) {
+        const auto &dfa = lexer_data.getDFAS().get().at(i);
+        h_out << "\t\tstatic const ::ISPA_STD::DFAAPI::" << DFATypes(dfa).getTypeStr(true, &lexer_data.getDfaCompatibleTable(), namespace_name, dfa.get().size()) << " dfa_func_table_" << i << ";\n";
     }
     // add first character dispatch table
     h_out << "\t\tstatic const ISPA_STD::fcdt_table<Tokens> first_character_dispatch_table;\n";

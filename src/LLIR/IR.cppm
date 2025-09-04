@@ -1,9 +1,8 @@
 export module LLIR;
 import hash;
 import dstd;
-import DFA;
 import LLIR.API;
-import DFAS;
+import DFA.Collection;
 import std;
 
 export namespace LLIR {
@@ -29,16 +28,16 @@ export namespace LLIR {
         void convertData(const LLIR::Data &data, std::ostream& out);
         void printIR(std::ostream& out);
         stdu::vector<Data> data;
-        DFAS dfas;
+        DFA::Collection dfa_collection;
         // output functions
         std::stack<std::string> current_pos_counter;
         std::size_t indentLevel = 0;
     public:
-        explicit IR(const stdu::vector<Data> &data, bool isToken, stdu::vector<DFA> &dfas) : data(data), dfas(isToken, dfas, nullptr) {}
-        explicit IR(const stdu::vector<Data> &&data, bool isToken, stdu::vector<DFA> &&dfas) : data(std::move(data)), dfas(isToken, std::move(dfas), nullptr) {}
+        explicit IR(const stdu::vector<Data> &data, bool isToken, DFA::Collection &dfa_collection) : data(data), dfa_collection(dfa_collection) {}
+        explicit IR(const stdu::vector<Data> &&data, bool isToken, DFA::Collection &&dfa_collection) : data(std::move(data)), dfa_collection(dfa_collection) {}
         IR() = default;
         auto getData() const -> const stdu::vector<Data>&;
-        auto getDfas() const -> const DFAS&;
+        auto getDfas() const -> const DFA::Collection&;
         auto operator[](std::size_t pos) const -> const Data&;
         auto begin() -> stdu::vector<Data>::iterator;
         auto end() -> stdu::vector<Data>::iterator;

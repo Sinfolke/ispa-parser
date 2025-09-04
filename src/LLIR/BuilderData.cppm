@@ -2,7 +2,7 @@ export module LLIR.Builder.Data;
 import LLIR.API;
 import AST.Tree;
 import AST.API;
-import DFA;
+import DFA.Collection;
 import dstd;
 import std;
 
@@ -23,7 +23,7 @@ namespace LLIR {
         SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
         AST::Tree *tree;
-        stdu::vector<DFA> *dfas = nullptr;
-        BuilderData(AST::Tree &tree, stdu::vector<DFA> *dfas) : tree(&tree), dfas(dfas) {}
+        DFA::Collection *dfas = nullptr;
+        BuilderData(AST::Tree &tree, DFA::Collection *dfas) : tree(&tree), dfas(dfas) {}
     };
 }

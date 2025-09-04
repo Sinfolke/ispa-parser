@@ -2,6 +2,8 @@ module StateArrayBuilder;
 import corelib;
 import DFATypes;
 import NFA;
+import DFA.API;
+import DFA.Base;
 import cpuf.printf;
 import dstd;
 import std;
@@ -14,8 +16,8 @@ void StateArrayBuilder::output() {
     };
     std::size_t count = 0;
     for (const auto &t : data.state_set) {
-        auto type = DFA::getStateType(t.transitions, dfa_compatible_table, isToken);
-        auto dfa_table_type = dfas.getDFAS().at(data.state_in_dfa_location_map.at(count)).getType(isToken, dfa_compatible_table);
+        auto type = DFA::Base::getStateType(t.transitions, dfa_compatible_table, isToken);
+        auto dfa_table_type = dfas.get().at(data.state_in_dfa_location_map.at(count)).getType(isToken, dfa_compatible_table);
         auto type_str = DFATypes::getStateTypeStr(dfa_table_type, type, namespace_name, t.transitions.size());
         std::ostringstream out_content;
         std::size_t transition_index = 0;
@@ -26,7 +28,7 @@ void StateArrayBuilder::output() {
                     const auto &symbol = std::get<stdu::vector<std::string>>(transition.first);
                     if (dfa_compatible_table && dfa_compatible_table->contains(symbol) && dfa_compatible_table->at(symbol) != LexerBuilder::DFA_NOT_COMPATIBLE) {
                         std::size_t dfa_index = dfa_compatible_table->at(symbol);
-                        out_content << "\tISPA_STD::DFAAPI::" << DFATypes(dfas.getDFAS()[dfa_index]).getTransitionsTypeStr(isToken, dfa_compatible_table, namespace_name) << " { ";
+                        out_content << "\tISPA_STD::DFAAPI::" << DFATypes(dfas.get()[dfa_index]).getTransitionsTypeStr(isToken, dfa_compatible_table, namespace_name) << " { ";
                         const std::string dfa_table_name = "dfa_span_" + std::to_string(dfa_index);
                         out_content << dfa_table_name;
                     } else {
@@ -95,7 +97,7 @@ void StateArrayBuilder::output() {
 void StateArrayBuilder::outputHeader() {
     std::size_t count = 0;
     for (const auto &t : data.state_set) {
-        auto str = DFATypes(dfas.getDFAS().at(data.state_in_dfa_location_map.at(count))).getStateTypeStr(t.transitions, dfa_compatible_table, isToken, namespace_name, t.transitions.size());
+        auto str = DFATypes(dfas.get().at(data.state_in_dfa_location_map.at(count))).getStateTypeStr(t.transitions, dfa_compatible_table, isToken, namespace_name, t.transitions.size());
         if (str == "")
             continue;
         out << "\t\tstatic const ISPA_STD::DFAAPI::" << str << " dfa_state_" << count++ << ";\n";

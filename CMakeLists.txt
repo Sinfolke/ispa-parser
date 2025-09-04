@@ -243,7 +243,7 @@ target_sources(ispa_modules
 )
 target_include_directories(ispa_modules PRIVATE ${INCLUDE_DIRS})
 target_include_directories(ispa_modules PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(ispa_modules PRIVATE cxx_std_module)
+target_link_libraries(ispa_modules PUBLIC cxx_std_module)
 # =============================================
 # Main Executable
 # =============================================

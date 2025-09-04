@@ -8,8 +8,7 @@ import cpuf.op;
 import cpuf.printf;
 import Dump;
 import NFA;
-import DFA;
-import DFABuilder;
+import DFA.functionality;
 import constants;
 import std;
 // helper functions
@@ -772,7 +771,9 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule.getOp().options;
-    DFA dfa = std::move(DFABuilder(*tree, rule, nullptr, *fullname, false).get());
+    NFA nfa(*tree, *fullname, nullptr, op, *fullname == constants::whitespace, false);
+    nfa.build(false);
+    auto dfa = DFA::build(*tree, nfa);
     LLIR::variable var = createEmptyVariable("");
     var.type = deduceVarTypeByProd(rule) ;
     if (var.type.type == LLIR::var_types::Rule)
@@ -789,11 +790,11 @@ void LLIR::OpBuilder::build() {
     svar.value = {var_assign_values::NUMBER, 1};
     push({types::VARIABLE, var});
     push({types::VARIABLE, svar});
-    if (dfa.getStates().size() == 2) { // first state plus end state
+    if (dfa.get().size() == 2) { // first state plus end state
         // optimize to single switch instead of DFA lookup
         switch_statement ss;
         ss.expression = stdu::vector<expr>{ {LLIR::condition_types::CURRENT_TOKEN} };
-        auto state = dfa.getStates()[0];
+        auto state = dfa.get()[0];
         push({types::SKIP_SPACES, *isToken});
         for (const auto &t : state.transitions) {
             if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == constants::whitespace)
@@ -822,8 +823,8 @@ void LLIR::OpBuilder::build() {
         }
         push({types::SWITCH, ss});
     } else {
-        auto dfa_index = dfas->size();
-        dfas->push_back(std::move(dfa));
+        auto dfa_index = dfas->get().size();
+        dfas->get().push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
         dfa_call_result.type.type = LLIR::var_types::INT;
         push({types::VARIABLE, dfa_call_result});

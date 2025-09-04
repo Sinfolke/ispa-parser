@@ -10,7 +10,7 @@ import LLIR;
 import LLHeader;
 import LexerBuilder;
 import buildLLParser;
-import DFAS;
+import DFA.Collection;
 import fcdt;
 import std;
 export class LLConverter : public LLConverter_base, public LLHeader {
@@ -33,7 +33,7 @@ public:
     }
     ~LLConverter() {}
     void convertData(std::ostringstream &out);
-    void addDFATables(std::ostringstream &out, const DFAS::StateSet_t &states_pair);
+    void addDFATables(std::ostringstream &out, const DFA::Collection::StateSet_t &states_pair);
     void writeRules(std::ostringstream &out);
     void addHeader(std::ostringstream &out);
     void addStandardFunctionsLexer(std::ostringstream &out);

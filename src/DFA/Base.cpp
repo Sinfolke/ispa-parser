@@ -40,6 +40,7 @@ auto DFA::Base::getTransitionKeyType(const NFA::TransitionKey &transition_key, b
         return isToken ? DfaType::CallableToken : DfaType::Token;
     }
 }
+template<typename Transitions>
 auto DFA::Base::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType {
     DfaType dfa_type = DfaType::NONE;
     for (const auto &[symbol, next] : transitions) {
@@ -71,6 +72,11 @@ auto DFA::Base::getEmptyState(std::size_t stateIndex) -> std::size_t {
         return empty_state;
     throw Error("Dfa has no empty state registered");
 }
+auto DFA::Base::getEmptyState() -> std::size_t {
+    if (empty_state == NULL_STATE)
+        throw Error("Dfa has no empty state registered");
+    return empty_state;
+}
 auto DFA::Base::getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t {
     if (!dfa_index_to_empty_state_map_.empty())
         return dfa_index_to_empty_state_map_.at(dfaIndex);
@@ -79,7 +85,9 @@ auto DFA::Base::getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t {
 auto DFA::Base::isMerged() -> bool {
     return merged;
 }
-
+template auto DFA::Base::getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
+template auto DFA::Base::getStateType(const MultiTransitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
+template auto DFA::Base::getStateType(const SortedTransitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
 template auto DFA::Base::getType(const States<SingleState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
 template auto DFA::Base::getType(const States<MultiState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
 template auto DFA::Base::getType(const States<SortedState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;

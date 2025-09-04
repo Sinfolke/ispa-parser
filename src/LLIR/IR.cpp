@@ -47,8 +47,8 @@ LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() const {
 auto LLIR::IR::getData() const -> const stdu::vector<Data> & {
     return data;
 }
-auto LLIR::IR::getDfas() const -> const DFAS & {
-    return dfas;
+auto LLIR::IR::getDfas() const -> const DFA::Collection & {
+    return dfa_collection;
 }
 
 auto LLIR::IR::operator[](std::size_t index) const -> const Data& {

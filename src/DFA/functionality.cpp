@@ -99,25 +99,26 @@ auto DFA::mergeDFAS(stdu::vector<MDFA> &dfas) -> MDFA {
     return initial_states;
 }
 auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> MachineDFA {
-    MDFA mdfa(nfa);
-    SDFA sdfa(mdfa);
-    MinDFA min_dfa(sdfa);
-    SortedDFA sorted_dfa(ast, min_dfa);
-    MachineDFA machine_dfa(ast, sorted_dfa);
+    MDFA mdfa(nfa); mdfa.build();
+    SDFA sdfa(mdfa); sdfa.build();
+    MinDFA min_dfa(sdfa); min_dfa.minimize();
+    SortedDFA sorted_dfa(ast, min_dfa); sorted_dfa.sort();
+    MachineDFA machine_dfa(ast, sorted_dfa); machine_dfa.build();
     return machine_dfa;
 }
 auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> MachineDFA {
     stdu::vector<MDFA> dfas;
     for (const auto &nfa : nfa_collection) {
-        dfas.push_back(MDFA (nfa));
+        MDFA mdfa(nfa); mdfa.build();
+        dfas.push_back(mdfa);
     }
     // construct tables
     auto dfa_index_to_empty_state_map = buildDfaIndexToEmptyStateMap(dfas);
     auto dfa_empty_state_map = buildDfaEmptyStateMap(dfas);
     auto dfa = mergeDFAS(dfas);
-    SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map);
-    MinDFA min_dfa(sdfa, dfa_empty_state_map, dfa_index_to_empty_state_map);
-    SortedDFA sorted_dfa(ast, min_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map);
-    MachineDFA machine_dfa(ast, sorted_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map);
+    SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sdfa.build();
+    MinDFA min_dfa(sdfa, dfa_empty_state_map, dfa_index_to_empty_state_map); min_dfa.minimize();
+    SortedDFA sorted_dfa(ast, min_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sorted_dfa.sort();
+    MachineDFA machine_dfa(ast, sorted_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); machine_dfa.build();
     return machine_dfa;
 }

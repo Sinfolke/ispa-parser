@@ -1,4 +1,6 @@
 module DFA.API;
+import AST.API;
+import AST.Pass;
 import logging;
 import std;
 

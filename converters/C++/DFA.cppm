@@ -1,25 +1,25 @@
 export module Converter.DFA;
-import DFA;
 import LexerBuilder;
-import DFAS;
+import DFA.Collection;
+import DFA.MachineDFA;
 import dstd;
 import std;
 
 export class DFAConverter {
-    const DFAS &dfas;
+    const DFA::Collection &dfas;
     const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;
-    const DFAS::StateSet_t &state_set;
+    const DFA::Collection::StateSet_t &state_set;
     const std::string &namespace_name;
     const std::string prefix;
     const std::string name;
     std::ostringstream out;
     bool isToken;
-    void createDFATable(const DFA& dfa, std::size_t count);
+    void createDFATable(const DFA::MachineDFA& dfa, std::size_t count);
 public:
     DFAConverter(
-        const DFAS &dfa,
+        const DFA::Collection &dfa,
         const LexerBuilder::DfaCompatibleTable *dfa_compatible_table,
-        const DFAS::StateSet_t &state_set,
+        const DFA::Collection::StateSet_t &state_set,
         const std::string &namespace_name,
         const std::string &prefix,
         const std::string &name,

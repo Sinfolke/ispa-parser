@@ -3,14 +3,14 @@ import LLIR.API;
 import LLIR;
 import AST.Tree;
 import AST.API;
-import DFA;
+import DFA.Collection;
 import dstd;
 import std;
 
 namespace LLIR {
     export class Builder {
         stdu::vector<LLIR::Data> data;
-        stdu::vector<DFA> dfas;
+        DFA::Collection dfas;
         bool isToken;
     public:
         Builder(AST::Tree &tree, int tokensOnly = -1);

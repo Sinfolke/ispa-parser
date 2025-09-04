@@ -36,6 +36,7 @@ auto DFA::MachineDFA::build() -> States<SortedState> {
                     auto prev = partitioned_state;
                     partitioned_state = states.makeNew();
                     states[prev].else_goto = partitioned_state;
+                    partition_type = symbol.index();
                 }
                 states[partitioned_state].transitions.emplace(symbol, value);
             }
@@ -44,23 +45,24 @@ auto DFA::MachineDFA::build() -> States<SortedState> {
     }
     // add all characters to transition & unroll else_goto in character states
     for (auto &state : states) {
-        bool notCharTable = false;
+        bool notCharState = false;
         for (const auto &[symbol, value] : state.transitions) {
             if (!std::holds_alternative<char>(symbol)) {
-                notCharTable = true;
+                notCharState = true;
                 break;
             }
         }
-        if (notCharTable)
-            break;
+        if (notCharState)
+            continue;
 
         for (unsigned char uc = 0; uc < std::numeric_limits<unsigned char>::max() - 1; uc++) {
             auto c = static_cast<char>(uc);
             if (state.transitions.contains(c)) {
                 continue;
             }
-            state.transitions.emplace(c, state.else_goto);
+            state.transitions.emplace(c, state.else_goto ? state.else_goto : NULL_STATE);
         }
+        state.else_goto = 0;
     }
     return states;
 }

@@ -3,11 +3,11 @@ import Converter;
 import AST.API;
 import AST.Tree;
 import LexerBuilder;
-import DFAS;
+import DFA.Collection;
 import std;
 export class LexerConverter : LexerConverter_base  {
     std::vector<std::size_t> token_type;
-    DFAS::StateSet_t state_set;
+    DFA::Collection::StateSet_t state_set;
     void addStandardFunctionsLexer() const;
     void printTransitionsSeparately() const;
     void addDFASpansCpp() const;

@@ -18,8 +18,6 @@ import LLIR.Builder;
 import LLIR;
 import hash;
 import AST.Builder;
-import NFA;
-import DFA;
 import fcdt;
 import LexerBuilder;
 import Converter;

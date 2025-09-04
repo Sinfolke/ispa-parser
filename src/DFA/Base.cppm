@@ -12,7 +12,7 @@ namespace DFA {
     protected:
         DfaEmptyStateMap dfa_empty_state_map_;
         DfaIndexToEmptyStateMap dfa_index_to_empty_state_map_;
-        std::size_t empty_state;
+        std::size_t empty_state = NULL_STATE;
         bool merged = false;
 
         template<typename StateType>
@@ -30,10 +30,12 @@ namespace DFA {
         auto &getIndexToEmptyStateMap()       { return dfa_index_to_empty_state_map_; }
 
         auto getEmptyState(std::size_t stateIndex) -> std::size_t;
+        auto getEmptyState() -> std::size_t;
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
 
         static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
+        template<typename Transitions>
         static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
 
     };

@@ -14,7 +14,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
     std::size_t work_size = 0;
     std::size_t current_dfa_state = mdfa.get().makeNew();
     bool all_recursive = true;
-    // TODO: implement more complex logic to cancell saved input if path without input is chosen
+    // TODO: implement more complex logic to cancel saved input if path without input is chosen
     // if at least one alternative has new_cst_node or new_member, set them to true
     bool new_cst_node = false, new_member = false, close_cst_node = false, optional = false, last = false;
     std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE;
@@ -68,7 +68,6 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
         for (auto &t : mdfa.get()[current].transitions) {
             for (auto &next : t.second) {
                 // not loop, push
-                b.log("next: {}, dfa_merge_conflict: {}, val[{}].dfa_merge_conflict: {}", next.value.next, next.dfa_merge_conflict, val_id, val[val_id].dfa_merge_conflict);
                 next.dfa_merge_conflict = val[val_id].dfa_merge_conflict;
                 lookaheads.back().first.back()[t.first].push_back(next);
             }
@@ -96,7 +95,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
         logger.log("l[0].size(): {}", l[0].size());
         if (l[0].empty()) {
             std::size_t empty_state;
-            if (auto merge_conf = val.at(val_id).dfa_merge_conflict; merge_conf != NFA::NULL_STATE) {
+            if (auto merge_conf = val.at(val_id).dfa_merge_conflict; merge_conf != NULL_STATE) {
                 empty_state = getEmptyStateByDfaId(merge_conf);
                 b.log("using dfa_index_to_empty_state_map: {} ({})", empty_state, merge_conf);
             } else {
@@ -113,7 +112,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
             if (std::any_of(mdfa.get()[current_dfa_state].transitions.begin(), mdfa.get()[current_dfa_state].transitions.end(), [&](const auto &key_value_pair) {
                 return key_value_pair.second.back().value.optional && key_value_pair.second.back().value.last;
             })) {
-                if (auto v = mdfa.get().canBeEndState(go.back().value.next); v != NFA::NULL_STATE) {
+                if (auto v = mdfa.get().canBeEndState(go.back().value.next); v != NULL_STATE) {
                     mdfa.get()[current_dfa_state].else_goto = v;
                 }
             }

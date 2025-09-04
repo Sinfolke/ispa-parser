@@ -5,7 +5,10 @@ import LLIR.Builder.Data;
 import LLIR.Builder.DataWrapper;
 import LLIR.Rule.MemberBuilder;
 import LLIR.RuleBuilder;
-import DFABuilder;
+import NFA;
+import constants;
+import DFA.API;
+import DFA.functionality;
 import cpuf.printf;
 import std;
 
@@ -29,7 +32,7 @@ void accumulateNestedNames(stdu::vector<AST::RuleMember> members, stdu::vector<s
 void LexerBuilder::build() {
     fcdt.build();
     utype::unordered_set<stdu::vector<stdu::vector<std::string>>> build;
-    stdu::vector<DFA> function_dfas;
+    DFA::Collection function_dfas;
     stdu::vector<LLIR::Data> functions;
     std::size_t dfa_count = 0;
     for (const auto &mem : fcdt.get()) {
@@ -69,8 +72,9 @@ void LexerBuilder::build() {
             for (const auto &nested_name : names) {
                 if (isDfaCompatible(ast[nested_name].rule_members)) {
                     dfa_compatible_table[nested_name] = dfa_count++;
-                    DFABuilder builder(ast, ast[nested_name].rule_members, &ast[nested_name].data_block, nested_name, true);
-                    dfas.getDFAS().push_back(builder.get());
+                    NFA nfa(ast, nested_name, &ast[nested_name].data_block, ast[nested_name].rule_members, nested_name == constants::whitespace, true);
+                    nfa.build(true);
+                    dfas.get().push_back(DFA::build(ast, nfa));
                 } else {
                     dfa_compatible_table[nested_name] = DFA_NOT_COMPATIBLE;
                     LLIR::RuleBuilder builder(ast, nested_name, ast[nested_name], function_dfas);
@@ -80,12 +84,18 @@ void LexerBuilder::build() {
             }
         }
         if (was_dfa) {
-            DFABuilder builder(ast, new_mem, true);
-            auto &DFAS = dfas.getDFAS();
+            stdu::vector<NFA> nfas;
+            for (const auto &name : new_mem) {
+                NFA nfa(ast, name, &ast[name].data_block, ast[name].rule_members, name == constants::whitespace, true);
+                nfa.build(true);
+                nfas.push_back(nfa);
+            }
+            auto merged_dfa = DFA::build(ast, nfas);
+            auto &DFAS = dfas.get();
             if (fcdt_dfa_index == DFAS.size() - 1) {
-                DFAS.push_back(builder.get());
+                DFAS.push_back(merged_dfa);
             } else {
-                DFAS.insert(DFAS.begin() + fcdt_dfa_index, builder.get());
+                DFAS.insert(DFAS.begin() + fcdt_dfa_index, merged_dfa);
             }
         }
         dispatch_names_involve.emplace(new_mem, involved_symbols);
@@ -98,13 +108,13 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
         if (corelib::text::isLower(name.back()))
             continue;
         // token here
-        stdu::vector<DFA> dfas; LLIR::RuleBuilder builder(ast, name, rule, dfas); builder.build();
+        DFA::Collection dfas; LLIR::RuleBuilder builder(ast, name, rule, dfas); builder.build();
         list[name] = builder.getData().block;
     }
     return list;
 }
 
-auto LexerBuilder::getStateSet() const -> DFAS::StateSet_t {
+auto LexerBuilder::getStateSet() const -> DFA::Collection::StateSet_t {
     utype::unordered_map<DFA::Transitions, std::size_t> state_to_map;
 
     auto state_set = dfas.getStateSet();

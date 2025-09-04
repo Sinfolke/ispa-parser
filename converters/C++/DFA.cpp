@@ -1,5 +1,7 @@
 module Converter.DFA;
-import DFA;
+import DFA.API;
+import DFA.Base;
+import DFA.MachineDFA;
 import corelib;
 import logging;
 import cpuf.printf;
@@ -7,7 +9,7 @@ import DFATypes;
 import dstd;
 import std;
 
-void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
+void DFAConverter::createDFATable(const DFA::MachineDFA &dfa, std::size_t count) {
     auto number_or_null = [this](std::size_t index) {
         return index == std::numeric_limits<std::size_t>::max()
             ? "::ISPA_STD::DFAAPI::null_state"
@@ -16,7 +18,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
 
     std::ostringstream table_out;
 
-    const auto &states = dfa.getStates();
+    const auto &states = dfa.get();
     auto type = dfa.getType(isToken, dfa_compatible_table);
     std::size_t state_count = 0;
 
@@ -25,7 +27,7 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
         if (find == state_set.location_in_set.end())
             continue;
         std::string state_name = "dfa_state_" + std::to_string(find->second);
-        auto state_type = DFA::getStateType(state.transitions, dfa_compatible_table, isToken);
+        auto state_type = DFA::Base::getStateType(state.transitions, dfa_compatible_table, isToken);
         auto state_type_str = DFATypes(dfa).getSpanStateTypeStr(state.transitions, dfa_compatible_table, namespace_name, isToken);
 
         if (state_type == DFA::DfaType::NONE && type != DFA::DfaType::Token) {
@@ -42,7 +44,6 @@ void DFAConverter::createDFATable(const DFA &dfa, std::size_t count) {
             if (state_type != DFA::DfaType::NONE) {
                 table_out << "{ "
                           << state.else_goto << ", "
-                          << state.any_goto << ", "
                           << number_or_null(state.else_goto_accept)
                           << ", ";
                 table_out << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");

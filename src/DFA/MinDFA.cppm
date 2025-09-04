@@ -29,9 +29,9 @@ export namespace DFA {
         static void removeSelfLoop(SDFA &sdfa);
         static void minimize(SDFA &sdfa);
         void minimize();
-        MinDFA(SDFA &sdfa) : sdfa(sdfa), states(nullptr) {};
+        MinDFA(SDFA &sdfa) : sdfa(sdfa), states(nullptr), Base(sdfa.getEmptyState()) {};
         MinDFA(SDFA &sdfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : sdfa(sdfa), states(nullptr), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
-        MinDFA(const NFA &nfa, SDFA &sdfa) : sdfa(sdfa), states(&nfa) {};
+        MinDFA(const NFA &nfa, SDFA &sdfa) : sdfa(sdfa), states(&nfa), Base(sdfa.getEmptyState()) {};
         MinDFA(const NFA &nfa, SDFA &sdfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : sdfa(sdfa), states(&nfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
 
         auto &get() { return states; }

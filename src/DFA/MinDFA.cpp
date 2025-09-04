@@ -2,6 +2,7 @@ module DFA.MinDFA;
 
 import DFA.API;
 import NFA;
+import cpuf.printf;
 import constants;
 import hash;
 import logging;
@@ -44,13 +45,13 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
     };
 
     // Step 2: Build new_states and old_to_new mapping
-    stdu::vector<SingleState> new_states;
+    States<SingleState> new_states(nullptr);
     std::unordered_map<std::size_t, std::size_t> old_to_new;
 
     for (std::size_t i = 0; i < sdfa.get().size(); ++i) {
         if (!remove_states.contains(i)) {
-            std::size_t new_index = new_states.size();
-            new_states.push_back(sdfa.get()[i]);
+            std::size_t new_index = new_states.makeNew();
+            new_states[new_index] = sdfa.get()[i];
             old_to_new[i] = new_index;
         }
     }
@@ -77,7 +78,7 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
         el.second = old_to_new.at(el.second);
     }
     // Step 5: Finalize
-    sdfa.get().get() = std::move(new_states);
+    sdfa.get() = std::move(new_states);
 }
 void DFA::MinDFA::accumulateTerminalStates(SDFA &sdfa, std::size_t i, std::unordered_set<std::size_t> &terminals, std::unordered_set<std::size_t> &visited) {
     stdu::vector<std::size_t> path;
@@ -95,7 +96,7 @@ void DFA::MinDFA::accumulateTerminalStates(SDFA &sdfa, std::size_t i, std::unord
         visited.insert(id);
         accumulateTerminalStates(sdfa, id, terminals, visited);
     }
-    if (state.else_goto != 0 && visited.contains(state.else_goto)) {
+    if (state.else_goto && visited.contains(state.else_goto)) {
         if (visited.contains(state.else_goto))
             return;
         visited.insert(state.else_goto);
@@ -104,8 +105,9 @@ void DFA::MinDFA::accumulateTerminalStates(SDFA &sdfa, std::size_t i, std::unord
 
 }
 void DFA::MinDFA::terminateEarly(SDFA &sdfa) {
-    if (sdfa.isMerged())
+    if (sdfa.isMerged()) {
         return; // merged DFA is meant for character DFA only -> never terminate early
+    }
     std::unordered_set<std::size_t> terminals;
     std::unordered_set<std::size_t> visited;
     accumulateTerminalStates(sdfa, 0, terminals, visited);
@@ -118,7 +120,7 @@ void DFA::MinDFA::terminateEarly(SDFA &sdfa) {
                 t.next = sdfa.getEmptyState(id);
             }
         }
-        if (sdfa.get()[id].else_goto != 0) {
+        if (sdfa.get()[id].else_goto) {
             sdfa.get()[id].else_goto = sdfa.getEmptyState(id);
         }
     }
@@ -160,7 +162,8 @@ void DFA::MinDFA::removeUnreachableStates(SDFA &sdfa) {
         for (auto& [symbol, trans] : state.transitions) {
             trans.next = old_to_new.at(trans.next);
         }
-        state.else_goto = old_to_new.at(state.else_goto);
+        if (state.else_goto)
+            state.else_goto = old_to_new.at(state.else_goto);
     }
     sdfa.get().get() = std::move(new_states);
 }

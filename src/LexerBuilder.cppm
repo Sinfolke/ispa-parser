@@ -2,11 +2,10 @@ export module LexerBuilder;
 import hash;
 import AST.API;
 import AST.Tree;
-import DFA;
 import LLIR.API;
 import LLIR;
 import fcdt;
-import DFAS;
+import DFA.Collection;
 import dstd;
 import std;
 export class LexerBuilder {
@@ -19,7 +18,7 @@ public:
 
 private:
     AST::Tree &ast;
-    DFAS dfas;
+    DFA::Collection dfas;
     LLIR::IR function_ir;
     FCDT fcdt;
     DfaCompatibleTable dfa_compatible_table;
@@ -44,6 +43,6 @@ public:
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
     auto getDataBlocks() const -> LLIR::DataBlockList;
-    auto getStateSet() const -> DFAS::StateSet_t;
+    auto getStateSet() const -> DFA::Collection::StateSet_t;
 
 };

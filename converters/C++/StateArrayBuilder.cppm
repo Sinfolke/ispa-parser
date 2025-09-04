@@ -1,15 +1,15 @@
 export module StateArrayBuilder;
-import DFA;
-import DFAS;
-import LexerBuilder;
 
+import DFA.Collection;
+import LexerBuilder;
 import std;
+
 export class StateArrayBuilder {
     std::ostringstream &out;
-    const DFAS::StateSet_t &data;
+    const DFA::Collection::StateSet_t &data;
     bool isToken;
     const std::string &namespace_name;
-    const DFAS dfas;
+    const DFA::Collection dfas;
     const LexerBuilder::DfaCompatibleTable *dfa_compatible_table;
     const std::string &prefix;
 public:
@@ -18,9 +18,9 @@ public:
     StateArrayBuilder(
         std::ostringstream &out,
         bool isToken,
-        const DFAS::StateSet_t &data,
+        const DFA::Collection::StateSet_t &data,
         const std::string &namespace_name,
-        const DFAS &dfas,
+        const DFA::Collection &dfas,
         const LexerBuilder::DfaCompatibleTable *compatible_table,
         const std::string &prefix
         )

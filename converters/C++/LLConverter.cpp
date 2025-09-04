@@ -206,7 +206,7 @@ void LLConverter::convertData(std::ostringstream &out) {
 
     }
 }
-void LLConverter::addDFATables(std::ostringstream &out, const DFAS::StateSet_t &states_set) {
+void LLConverter::addDFATables(std::ostringstream &out, const DFA::Collection::StateSet_t &states_set) {
     std::string parser_str = "Parser";
     std::string dfa_table_str = "dfa_table";
     StateArrayBuilder states_builder(out, isToken, states_set, namespace_name, ir.getDfas(), nullptr, parser_str);

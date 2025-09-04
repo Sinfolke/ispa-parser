@@ -12,7 +12,7 @@ export namespace DFA {
         const stdu::vector<std::size_t> &current;
         const NFA::TransitionKey *symbol = nullptr;
         stdu::vector<std::size_t> closure;
-        void epsilonClosure();
+        void epsilonClosure(const stdu::vector<std::size_t> &source);
         void move();
         friend struct ::uhash;
         auto members() {
@@ -24,6 +24,8 @@ export namespace DFA {
 
         auto begin() const { return closure.begin(); }
         auto end() const { return closure.end(); }
+        auto cbegin() { return closure.cbegin(); }
+        auto cend() { return closure.cend(); }
         auto rbegin() const { return closure.rbegin(); }
         auto rend() const { return closure.rend(); }
 

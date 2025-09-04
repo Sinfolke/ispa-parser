@@ -3,7 +3,6 @@ import LLIR.API;
 import LLIR;
 import LRParser;
 import AST.Tree;
-import DFA;
 import fcdt;
 import LexerBuilder;
 import dstd;

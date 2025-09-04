@@ -1,5 +1,4 @@
 export module LLInternalData;
-import DFA;
 import dstd;
 import std;
 

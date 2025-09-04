@@ -7,7 +7,6 @@ import logging;
 import constants;
 import AST.API;
 import LLIR.RuleBuilder;
-import DFA;
 import std;
 
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions) {

@@ -23,14 +23,14 @@ export namespace DFA {
     public:
         Collection(bool isToken, const stdu::vector<MachineDFA> &collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(collection), dct(dct) {};
         Collection(bool isToken, stdu::vector<MachineDFA> &&collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(std::move(collection)), dct(dct) {};
-        Collection() = default;
+        Collection() {};
 
         void getStateSet(StateSet_t &state_set) const;
         auto getStateSet() const -> StateSet_t;
-        auto& getDFAS() const {
+        auto& get() const {
             return collection;
         }
-        auto& getDFAS() {
+        auto& get() {
             return collection;
         }
         auto begin() const {

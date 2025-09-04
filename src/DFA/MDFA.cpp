@@ -16,13 +16,11 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
     std::unordered_map<std::size_t, Closure> closure_index_cache;
     std::queue<Closure> work;
 
-    // 1. Start state stdu::vector<std::size_t>
-    StateSet start_set = {0}; // Assuming 0 is NFA start state
+    // 1. Start state
+    StateSet start_set = {0}; // 0 is NFA start state
     Closure start_closure(nfa, start_set);
 
-    std::size_t dfa_start_index = 0;
-    dfa_state_map[start_closure] = dfa_start_index;
-    states.makeNew(); // for DFA state 0
+    dfa_state_map[start_closure] = states.makeNew();
     work.push(start_closure);
 
     stdu::vector<std::string>  rule_name;
@@ -30,10 +28,9 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
     stdu::vector<std::size_t> goto_empty_states;
     while (!work.empty()) {
         Closure current = work.front();
-        std::sort(current.get().begin(), current.get().end());
         work.pop();
         logger.log("current: {}", current);
-        std::size_t current_dfa_index = dfa_state_map[current];
+        std::size_t current_dfa_index = dfa_state_map.at(current);
 
         // Collect all symbols from the current NFA states (ignore epsilon transitions)
         utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, std::size_t>>> input_symbols;
@@ -98,8 +95,8 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
             std::unordered_set<std::size_t> closure_set_us(closure_set.begin(), closure_set.end());
             for (const auto &closure : conflict_closures) {
                 const auto &conf_set = *closure.closure;
-                bool is_subset = std::all_of(conf_set.get().begin(), conf_set.get().end(), [&](std::size_t s) {
-                    return closure_set_us.count(s);
+                bool is_subset = std::all_of(conf_set.begin(), conf_set.end(), [&](std::size_t s) {
+                    return closure_set_us.contains(s);
                 });
                 if (is_subset) {
                     for (std::size_t s : conf_set.get()) {
@@ -109,15 +106,15 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 }
             }
             closure_set.get().assign(closure_set_us.begin(), closure_set_us.end());
-            std::sort(closure_set.get().begin(), closure_set.get().end());
+            std::sort(closure_set.begin(), closure_set.end());
 
             // Add main (non-conflict) stdu::vector<std::size_t> if any
             if (!closure_set.empty()) {
                 if (!dfa_state_map.contains(closure_set)) {
-                    dfa_state_map[closure_set] = states.makeNew();
+                    dfa_state_map.emplace(closure_set, states.makeNew());
                     work.push(closure_set);
                 }
-                std::size_t target_index = dfa_state_map[closure_set];
+                std::size_t target_index = dfa_state_map.at(closure_set);
                 states[current_dfa_index].transitions[symbol].push_back({
                     {target_index, data.back().first.new_cst_node, data.back().first.new_member, data.back().first.close_cst_node, data.back().first.new_group, data.back().first.group_close, data.back().first.accept_index, data.back().first.optional, data.back().first.last}
                 });
@@ -127,16 +124,17 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
             for (const auto *conf : process_conflict_list) {
                 const auto &conf_closure = *conf->closure;
                 const auto *transition = conf->value;
+                if (!conf_closure.empty()) {
+                    if (!dfa_state_map.contains(conf_closure)) {
+                        dfa_state_map.emplace(conf_closure, states.makeNew());
+                        work.push(conf_closure);
+                    }
 
-                if (!dfa_state_map.count(conf_closure)) {
-                    dfa_state_map[conf_closure] = states.makeNew();
-                    work.push(conf_closure);
+                    std::size_t target_index = dfa_state_map.at(conf_closure);
+                    states[current_dfa_index].transitions[symbol].push_back({
+                        {target_index, transition->new_cst_node, transition->new_member, transition->close_cst_node, transition->new_group, transition->group_close, transition->accept_index, transition->optional, transition->last}
+                    });
                 }
-
-                std::size_t target_index = dfa_state_map[conf_closure];
-                states[current_dfa_index].transitions[symbol].push_back({
-                    {target_index, transition->new_cst_node, transition->new_member, transition->close_cst_node, transition->new_group, transition->group_close, transition->accept_index, transition->optional, transition->last}
-                });
             }
             // if (goto_empty_state) {
             //     goto_empty_states.push_back(current_dfa_index);
@@ -147,7 +145,7 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
     if (states.empty()) {
         throw Error("DFA cannot be empty");
     }
-    if (empty_state == NFA::NULL_STATE) {
+    if (empty_state == NULL_STATE) {
         empty_state = states.makeNew();
         states[empty_state].rule_name = rule_name;
         states[empty_state].dtb = dtb;
