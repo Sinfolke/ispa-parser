@@ -1,7 +1,6 @@
 export module Parser;
 import ispastdlibcpp;
 import std;
-import std.compat;
 #ifndef PARSER_OBJ_TYPE
 #define PARSER_OBJ_TYPE std::unordered_map
 #endif
@@ -39,9 +38,9 @@ export namespace Parser {
 	using Rule_res = ISPA_STD::match_result<Rules>;
 	using Token = ISPA_STD::Node<Tokens>;
 	using Token_res = ISPA_STD::match_result<Tokens>;
-	using TokenFlow = ISPA_STD::TokenFlow<Tokens>;
-	using RuleSeq = ISPA_STD::Seq<Rules>;
-	using TokenSeq = ISPA_STD::Seq<Tokens>;
+	using TokenFlow = ::ISPA_STD::template TokenFlow<Tokens>;
+	using RuleSeq = ISPA_STD::template Seq<Rules>;
+	using TokenSeq = ISPA_STD::template Seq<Tokens>;
 	constexpr const char* TokensToString(Tokens token) {
 		switch (token) {
 			case Tokens::NONE: return "NONE";

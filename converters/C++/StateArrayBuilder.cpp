@@ -45,12 +45,12 @@ void StateArrayBuilder::output() {
                     out_content << "'" << corelib::text::getEscapedAsStr(ch, false) << "'";
                 }
                 out_content << ", ";
-                out_content << transition.second.next << ", "
+                out_content << number_or_null(transition.second.next) << ", "
                             << std::boolalpha << transition.second.new_cst_node << ", "
                             << std::boolalpha << transition.second.new_member << ", "
                             << std::boolalpha << transition.second.close_cst_node << ", "
-                            << std::boolalpha << number_or_null(transition.second.new_group) << ", "
-                            << std::boolalpha << number_or_null(transition.second.group_close) << ", "
+                            << number_or_null(transition.second.new_group) << ", "
+                            << number_or_null(transition.second.group_close) << ", "
                             << number_or_null(transition.second.accept_index)
                             << " }";
 

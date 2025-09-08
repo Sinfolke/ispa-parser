@@ -1,4 +1,5 @@
 #include <lib.h>
+#include <vector>
 #include <iostream>
 #ifndef __ROOT_DIR__
 #error "__ROOT_DIR__ must be defined"

@@ -58,8 +58,7 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
 
     // Step 3: Map duplicates to their representative’s new index
     for (const auto& [dup, orig] : remove_states) {
-        std::size_t rep = find_representative(orig);
-        old_to_new[dup] = old_to_new.at(rep);
+        old_to_new[dup] = old_to_new.at(find_representative(orig));
     }
 
     // Step 4: Update transitions
@@ -76,6 +75,9 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
     }
     for (auto &el : sdfa.getIndexToEmptyStateMap()) {
         el.second = old_to_new.at(el.second);
+    }
+    if (!sdfa.isMerged()) {
+        sdfa.getEmptyState() = old_to_new.at(sdfa.getEmptyState());
     }
     // Step 5: Finalize
     sdfa.get() = std::move(new_states);
@@ -119,9 +121,6 @@ void DFA::MinDFA::terminateEarly(SDFA &sdfa) {
             if (symbol != NFA::TransitionKey {constants::whitespace}) {
                 t.next = sdfa.getEmptyState(id);
             }
-        }
-        if (sdfa.get()[id].else_goto) {
-            sdfa.get()[id].else_goto = sdfa.getEmptyState(id);
         }
     }
 }
@@ -200,6 +199,9 @@ void DFA::MinDFA::minimize(SDFA &sdfa) {
 }
 void DFA::MinDFA::minimize() {
     minimize(sdfa);
+    // move it here
+    for (auto &state : sdfa.get())
+        states[states.makeNew()] = std::move(state);
 }
 auto DFA::MinDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     return Base::getType(states, isToken, dct);

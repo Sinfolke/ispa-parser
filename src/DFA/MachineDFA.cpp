@@ -1,12 +1,16 @@
 module DFA.MachineDFA;
+import logging;
 import std;
 
 auto DFA::MachineDFA::build() -> States<SortedState> {
     // move to current class
+    Assert(!sorted_dfa.get().empty(), "Empty sorted DFA");
     for (auto &state : sorted_dfa.get()) {
         auto new_state_id = states.makeNew();
         states[new_state_id] = std::move(state);
     }
+    if (!sorted_dfa.isMerged())
+        return states;
     auto states_size = states.size();
     for (std::size_t i = 0; i < states_size; i++) {
         const auto &state = states[i];

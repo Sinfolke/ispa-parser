@@ -30,7 +30,7 @@ namespace DFA {
         auto &getIndexToEmptyStateMap()       { return dfa_index_to_empty_state_map_; }
 
         auto getEmptyState(std::size_t stateIndex) -> std::size_t;
-        auto getEmptyState() -> std::size_t;
+        auto getEmptyState() -> std::size_t&;
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
 

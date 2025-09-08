@@ -1,6 +1,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 int putCmd(std::string executable, const std::vector<std::string> &cmd) {
 #ifdef _WIN32
     auto res = executable;

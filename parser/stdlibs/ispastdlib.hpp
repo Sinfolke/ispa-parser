@@ -391,7 +391,6 @@ namespace DFAAPI {
     template<typename T>
     struct SpanState {
         std::size_t else_goto;
-        std::size_t any_goto;
         std::size_t else_goto_accept;
         Span<const T> transitions;
     };

@@ -33,19 +33,16 @@ void DFAConverter::createDFATable(const DFA::MachineDFA &dfa, std::size_t count)
         if (state_type == DFA::DfaType::NONE && type != DFA::DfaType::Token) {
             table_out << '\t' << state_name << ",\n";
         } else {
-            if (state_type == DFA::DfaType::NONE) {
+            if (state_type == DFA::DfaType::NONE && type != DFA::DfaType::Multi) {
                 // empty state - initialize with empty type or with SpanEmptyState
-                if (type != DFA::DfaType::Multi) {
-                    state_type_str = DFATypes(dfa).getSpanStateTypeStr(type, type, namespace_name);
-                    state_type = type;
-                }
+                state_type_str = DFATypes(dfa).getSpanStateTypeStr(type, type, namespace_name);
+                state_type = type;
             }
             table_out << "\tISPA_STD::DFAAPI::Span" << state_type_str;
             if (state_type != DFA::DfaType::NONE) {
                 table_out << "{ "
                           << state.else_goto << ", "
-                          << number_or_null(state.else_goto_accept)
-                          << ", ";
+                          << number_or_null(state.else_goto_accept) << ", ";
                 table_out << (state.transitions.empty() ? "{nullptr, 0}" : "{" + state_name + ".data(), " + state_name + ".size()}");
                 table_out << "},\n";
             }

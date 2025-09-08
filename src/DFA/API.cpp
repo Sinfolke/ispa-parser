@@ -25,7 +25,7 @@ auto DFA::Comparator::operator()(const NFA::TransitionKey &a, const NFA::Transit
         return compareNameWithCharacter(std::get<stdu::vector<std::string>>(b), std::get<char>(a));
     }
     if (std::holds_alternative<stdu::vector<std::string>>(a) && std::holds_alternative<stdu::vector<std::string>>(b)) {
-        compareNameWithName(std::get<stdu::vector<std::string>>(a), std::get<stdu::vector<std::string>>(b));
+        return compareNameWithName(std::get<stdu::vector<std::string>>(a), std::get<stdu::vector<std::string>>(b));
     }
     throw Error("Undefined transition Key sort condition");
 }

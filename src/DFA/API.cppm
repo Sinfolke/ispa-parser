@@ -42,7 +42,7 @@ export namespace DFA {
     };
     template<typename Transition>
     struct State {
-        utype::unordered_set<std::size_t> nfa_states; // the NFA states this DFA state represents
+        std::unordered_set<std::size_t> nfa_states; // the NFA states this DFA state represents
         Transition transitions;
         std::size_t else_goto = 0;
         std::size_t else_goto_accept = NULL_STATE;

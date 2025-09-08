@@ -7,6 +7,8 @@ import std;
 template<typename StateType>
 auto DFA::Base::getType(const States<StateType> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
     DfaType dfa_type = DfaType::NONE;
+    if (states.empty())
+        throw Error("Get type of empty states");
     for (const auto &state : states) {
         for (const auto &[symbol, next] : state.transitions) {
             if (std::holds_alternative<char>(symbol)) {
@@ -72,7 +74,7 @@ auto DFA::Base::getEmptyState(std::size_t stateIndex) -> std::size_t {
         return empty_state;
     throw Error("Dfa has no empty state registered");
 }
-auto DFA::Base::getEmptyState() -> std::size_t {
+auto DFA::Base::getEmptyState() -> std::size_t& {
     if (empty_state == NULL_STATE)
         throw Error("Dfa has no empty state registered");
     return empty_state;

@@ -44,8 +44,19 @@ function(precompile_std target)
         if(NOT DEFINED STDCXX_MODULE_PATH OR NOT EXISTS "${STDCXX_MODULE_PATH}")
             message(STATUS "Searching for std.cppm module...")
             file(GLOB_RECURSE STDCXX_MODULE_LIST
+                    # installed via package manager
+                    "/usr/include/c++/v1/std.cppm"
+                    "/usr/local/include/c++/v1/std.cppm"
+                    "/lib/clang/*/include/c++/v1/std.cppm"
+                    # installed after manual build
+                    "/usr/lib/clang/**/std.cppm"
+                    "/usr/local/clang/**/std.cppm"
+                    # installed via libc
+                    "/usr/lib/llvm-*/**/std.cppm"
+                    # fallback if installed else way
                     "/lib/**/std.cppm"
                     "/usr/**/std.cppm"
+                    "/opt/**/std.cppm"
             )
             if(STDCXX_MODULE_LIST)
                 list(GET STDCXX_MODULE_LIST 0 STDCXX_MODULE_PATH)
@@ -152,7 +163,7 @@ include(FetchContent)
 # Conan-generated toolchain
 
 # FIND LIBRARIES
-#find_package(Boost REQUIRED)
+find_package(Boost REQUIRED)
 
 # =============================================
 # Global Configuration
@@ -242,8 +253,8 @@ target_sources(ispa_modules
         ${ISPA_MODULES}
 )
 target_include_directories(ispa_modules PRIVATE ${INCLUDE_DIRS})
-target_include_directories(ispa_modules PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(ispa_modules PUBLIC cxx_std_module)
+#target_include_directories(ispa_modules PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(ispa_modules PUBLIC cxx_std_module Boost::boost)
 # =============================================
 # Main Executable
 # =============================================

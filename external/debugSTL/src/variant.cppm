@@ -76,23 +76,23 @@ decltype(auto) visit_impl(Visitor &visitor,  Heads&&... heads);
 template<typename Visitor, typename Variant, typename ...Variants, typename ...Heads>
 requires AllIsVariant<Variant, Variants...> && NoneIsVariant<Heads...> && (sizeof ...(Heads) > 0)
 decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... variants, Heads&& ...heads);
-template<typename Visitor, typename Variant, typename ...Variants, typename ...Heads>
-requires AllIsVariant<Variant, Variants...> && (sizeof ...(Heads) == 0)
+template<typename Visitor, typename Variant, typename ...Variants>
+requires AllIsVariant<Variant, Variants...>
 decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... variants);
 
 
-template<typename Visitor, typename T, typename ... Ts, typename ...Variants, typename ...Heads>
-decltype(auto) visit_impl_vu(Visitor &visitor, const VariantUnion<T, Ts...> &u, std::size_t idx, Variants&&... variants, Heads&& ...heads) {
+template<typename Visitor, typename T, typename ... Ts, typename ...Args>
+decltype(auto) visit_impl_vu(Visitor &visitor, const VariantUnion<T, Ts...> &u, std::size_t idx, Args&&... args) {
     if constexpr (sizeof ...(Ts) != 0) {
         if (idx == 0) {
-            return visit_impl(visitor, std::forward<Variants>(variants)..., std::forward<Heads>(heads)..., u.head);
+            return visit_impl(visitor, std::forward<Args>(args)..., u.head);
         } else {
-            return visit_impl_vu(visitor, u.tail, idx - 1, std::forward<Variants>(variants)..., std::forward<Heads>(heads)...);
+            return visit_impl_vu(visitor, u.tail, idx - 1, std::forward<Args>(args)...);
         }
     } else {
         if (idx != 0)
             throw std::bad_variant_access();
-        return visit_impl(visitor, std::forward<Variants>(variants)..., std::forward<Heads>(heads)..., u.head);
+        return visit_impl(visitor, std::forward<Args>(args)..., u.head);
     }
 }
 template<typename Visitor, typename... Heads>
@@ -105,8 +105,8 @@ requires AllIsVariant<Variant, Variants...> && NoneIsVariant<Heads...> && (sizeo
 decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... variants, Heads&& ...heads) {
     return visit_impl_vu(visitor, variant.getRawData(), variant.index(), variants..., heads...);
 }
-template<typename Visitor, typename Variant, typename ...Variants, typename ...Heads>
-requires AllIsVariant<Variant, Variants...> && (sizeof ...(Heads) == 0)
+template<typename Visitor, typename Variant, typename ...Variants>
+requires AllIsVariant<Variant, Variants...>
 decltype(auto) visit_impl(Visitor &visitor, Variant &variant, Variants&&... variants) {
     return visit_impl_vu(visitor, variant.getRawData(), variant.index(), variants...);
 }
