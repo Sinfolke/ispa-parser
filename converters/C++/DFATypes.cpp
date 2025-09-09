@@ -122,10 +122,12 @@ auto DFATypes::getEmptyTypeStr(DFA::DfaType type, const std::string &namespace_n
             return "CharEmptyState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::CallableToken:
             return "CallableTokenEmptyState<::" + namespace_name + "::Tokens>";
+        case DFA::DfaType::Token:
+            return "SpanTokenTableState<::" + namespace_name + "::Tokens>";
         case DFA::DfaType::Multi:
             return "MultiTableEmptyState<::" + namespace_name + "::Tokens>";
         default:
-            return "";
+            throw Error("Undefined type to get empty type str");
     }
 }
 
