@@ -1,7 +1,7 @@
 module Converter.DFA;
 import DFA.API;
 import DFA.Base;
-import DFA.MachineDFA;
+import DFA.CharMachineDFA;
 import corelib;
 import logging;
 import cpuf.printf;
@@ -9,7 +9,7 @@ import DFATypes;
 import dstd;
 import std;
 
-void DFAConverter::createDFATable(const DFA::MachineDFA &dfa, std::size_t count) {
+void DFAConverter::createDFATable(const DFA::CharMachineDFA &dfa, std::size_t count) {
     auto number_or_null = [this](std::size_t index) {
         return index == std::numeric_limits<std::size_t>::max()
             ? "::ISPA_STD::DFAAPI::null_state"

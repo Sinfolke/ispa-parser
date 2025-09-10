@@ -567,14 +567,9 @@ using fcdt_table = std::array<fcdt_variant<TOKEN_T>, std::numeric_limits<unsigne
 template<typename TOKEN_T>
 class DFA {
 protected:
-    template <typename IT>
-    static auto find_key(const DFAAPI::SpanCharTableState &state, IT &pos) -> const DFAAPI::CharTransition* {
-        for (const auto &t : state.transitions) {
-            if (t.symbol == *pos) {
-                printf("lookup for symbol %c successful\n", *pos);
-                return &t;
-            }
-        }
+    static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
+        if (const auto &t = state.transitions[*pos]; t.next != DFAAPI::null_state)
+            return &t;
         return nullptr;
     }
     template <typename IT>

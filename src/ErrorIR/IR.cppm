@@ -4,6 +4,7 @@ import AST.API;
 import LLIR.API;
 import AST.Tree;
 import DFA.Collection;
+import DFA.TokenMachineDFA;
 import dstd;
 import std;
 
@@ -38,7 +39,7 @@ export namespace ErrorIR {
         const AST::RuleMember *member;
         stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> follow;
         AST::Tree *tree;
-        DFA::Collection *dfas;
+        DFA::Collection<DFA::TokenMachineDFA> *dfas;
 
         // variables used for lower to LLIR
         std::size_t variable_count;
@@ -53,7 +54,7 @@ export namespace ErrorIR {
             AST::Tree *tree,
             const AST::RuleMember &member,
             const stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &follow,
-            DFA::Collection *dfas,
+            DFA::Collection<DFA::TokenMachineDFA> *dfas,
             bool isFirst
             )
         : tree(tree), member(&member), follow(follow), dfas(dfas), isFirst(isFirst) { lower(); }

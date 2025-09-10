@@ -11,7 +11,7 @@ import cpuf.printf;
 import constants;
 import std;
 
-auto AST::Tree::getTerminals() -> stdu::vector<stdu::vector<std::string>> {
+auto AST::Tree::getTerminals() const -> stdu::vector<stdu::vector<std::string>> {
     stdu::vector<stdu::vector<std::string>> set;
     for (const auto &[name, value] : tree_map) {
         if (corelib::text::isUpper(name.back()))
@@ -19,7 +19,7 @@ auto AST::Tree::getTerminals() -> stdu::vector<stdu::vector<std::string>> {
     }
     return set;
 }
-auto AST::Tree::getNonTerminals() -> stdu::vector<stdu::vector<std::string>> {
+auto AST::Tree::getNonTerminals() const -> stdu::vector<stdu::vector<std::string>> {
     stdu::vector<stdu::vector<std::string>> set;
     for (const auto &[name, value] : tree_map) {
         if (corelib::text::isLower(name.back()))

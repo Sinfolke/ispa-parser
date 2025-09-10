@@ -6,6 +6,7 @@ import LLIR.API;
 import LLIR;
 import fcdt;
 import DFA.Collection;
+import DFA.CharMachineDFA;
 import dstd;
 import std;
 export class LexerBuilder {
@@ -18,7 +19,7 @@ public:
 
 private:
     AST::Tree &ast;
-    DFA::Collection dfas;
+    DFA::Collection<DFA::CharMachineDFA> dfas;
     LLIR::IR function_ir;
     FCDT fcdt;
     DfaCompatibleTable dfa_compatible_table;
@@ -43,6 +44,6 @@ public:
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
     auto getDataBlocks() const -> LLIR::DataBlockList;
-    auto getStateSet() const -> DFA::Collection::StateSet_t;
+    auto getStateSet() const -> DFA::Collection<DFA::CharMachineDFA>::StateSet_t;
 
 };

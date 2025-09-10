@@ -1,11 +1,12 @@
 export module DFA.Collection;
 
 import DFA.API;
-import DFA.MachineDFA;
+import DFA.CharMachineDFA;
 import hash;
 import dstd;
 import std;
 export namespace DFA {
+    template<typename DfaTable>
     class Collection {
     public:
         using StateSet = stdu::vector<SortedState>;
@@ -17,12 +18,12 @@ export namespace DFA {
             StateInDfaLocationMap state_in_dfa_location_map;
         };
     private:
-        stdu::vector<MachineDFA> collection;
+        stdu::vector<DfaTable> collection;
         bool isToken = true;
         const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct;
     public:
-        Collection(bool isToken, const stdu::vector<MachineDFA> &collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(collection), dct(dct) {};
-        Collection(bool isToken, stdu::vector<MachineDFA> &&collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(std::move(collection)), dct(dct) {};
+        Collection(bool isToken, const stdu::vector<DfaTable> &collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(collection), dct(dct) {};
+        Collection(bool isToken, stdu::vector<DfaTable> &&collection, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) : isToken(isToken), collection(std::move(collection)), dct(dct) {};
         Collection() {};
 
         void getStateSet(StateSet_t &state_set) const;

@@ -5,7 +5,7 @@ import DFA.MDFA;
 import DFA.SDFA;
 import DFA.MinDFA;
 import DFA.SortedDFA;
-import DFA.MachineDFA;
+import DFA.CharMachineDFA;
 import std;
 
 auto DFA::buildDfaIndexToEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaIndexToEmptyStateMap {
@@ -98,15 +98,15 @@ auto DFA::mergeDFAS(stdu::vector<MDFA> &dfas) -> MDFA {
     }
     return initial_states;
 }
-auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> MachineDFA {
+auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> CharMachineDFA {
     MDFA mdfa(nfa); mdfa.build();
     SDFA sdfa(mdfa); sdfa.build();
     MinDFA min_dfa(sdfa); min_dfa.minimize();
     SortedDFA sorted_dfa(ast, min_dfa); sorted_dfa.sort();
-    MachineDFA machine_dfa(ast, sorted_dfa); machine_dfa.build();
+    CharMachineDFA machine_dfa(ast, sorted_dfa); machine_dfa.build();
     return machine_dfa;
 }
-auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> MachineDFA {
+auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> CharMachineDFA {
     stdu::vector<MDFA> dfas;
     for (const auto &nfa : nfa_collection) {
         MDFA mdfa(nfa); mdfa.build();
@@ -119,6 +119,6 @@ auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -
     SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sdfa.build();
     MinDFA min_dfa(sdfa, dfa_empty_state_map, dfa_index_to_empty_state_map); min_dfa.minimize();
     SortedDFA sorted_dfa(ast, min_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sorted_dfa.sort();
-    MachineDFA machine_dfa(ast, sorted_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); machine_dfa.build();
+    CharMachineDFA machine_dfa(ast, sorted_dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); machine_dfa.build();
     return machine_dfa;
 }

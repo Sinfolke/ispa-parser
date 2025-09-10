@@ -81,8 +81,8 @@ export namespace AST {
         auto getRawFollowSet() -> Follow& { return follow; };
         auto getCodeForLexer() -> lexer_code;
         auto getInitialItemSet() -> InitialItemSet&;
-        auto getTerminals() -> stdu::vector<stdu::vector<std::string>>;
-        auto getNonTerminals() -> stdu::vector<stdu::vector<std::string>>;
+        auto getTerminals() const -> stdu::vector<stdu::vector<std::string>>;
+        auto getNonTerminals() const -> stdu::vector<stdu::vector<std::string>>;
 
         void printFirstSet(const std::string &fileName);
         void printFollowSet(const std::string &fileName);

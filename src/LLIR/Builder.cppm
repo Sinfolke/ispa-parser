@@ -4,13 +4,14 @@ import LLIR;
 import AST.Tree;
 import AST.API;
 import DFA.Collection;
+import DFA.TokenMachineDFA;
 import dstd;
 import std;
 
 namespace LLIR {
     export class Builder {
         stdu::vector<LLIR::Data> data;
-        DFA::Collection dfas;
+        DFA::Collection<DFA::TokenMachineDFA> dfas;
         bool isToken;
     public:
         Builder(AST::Tree &tree, int tokensOnly = -1);

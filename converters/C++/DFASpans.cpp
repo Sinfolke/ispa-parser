@@ -4,8 +4,8 @@ import DFATypes;
 import DFA.API;
 import std;
 
-
-void DFASpans::output(bool isToken, const std::string &name) const {
+template<typename CollectionDfaType>
+void DFASpans<CollectionDfaType>::output(bool isToken, const std::string &name) const {
     std::size_t count = 0;
     for (const auto &dfa : dfas.get()) {
         const auto span_type = dfa.getType(isToken, dct);
@@ -27,7 +27,8 @@ void DFASpans::output(bool isToken, const std::string &name) const {
         ++count;
     }
 }
-void DFASpans::outputH(bool isToken) const {
+template<typename CollectionDfaType>
+void DFASpans<CollectionDfaType>::outputH(bool isToken) const {
     std::size_t count = 0;
     for (const auto &dfa : dfas.get()) {
         const std::string span_type = DFATypes::getSpanTypeStr(dfa.getType(isToken, dct), namespace_name);

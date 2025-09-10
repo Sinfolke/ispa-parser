@@ -1,7 +1,7 @@
 export module Converter.DFA;
 import LexerBuilder;
 import DFA.Collection;
-import DFA.MachineDFA;
+import DFA.CharMachineDFA;
 import dstd;
 import std;
 
@@ -14,7 +14,7 @@ export class DFAConverter {
     const std::string name;
     std::ostringstream out;
     bool isToken;
-    void createDFATable(const DFA::MachineDFA& dfa, std::size_t count);
+    void createDFATable(const DFA::CharMachineDFA& dfa, std::size_t count);
 public:
     DFAConverter(
         const DFA::Collection &dfa,

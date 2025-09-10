@@ -21,6 +21,7 @@ export namespace DFA {
         std::size_t new_group = NULL_STATE;
         std::size_t group_close = NULL_STATE;
         std::size_t accept_index = NULL_STATE;
+        bool consume = true;
         bool optional = false;
         bool last = false;
         bool operator==(const TransitionValue &other) const = default;
@@ -66,11 +67,15 @@ export namespace DFA {
         auto operator()(const NFA::TransitionKey &a, const NFA::TransitionKey &b) const -> bool;
         auto operator()(const std::pair<NFA::TransitionKey, TransitionValue> &a, const std::pair<NFA::TransitionKey, TransitionValue> &b) const -> bool;
     };
+    using FullCharTable = std::array<TransitionValue, std::numeric_limits<unsigned char>::max() + 1>;
+
     using Transitions = utype::unordered_map<NFA::TransitionKey, TransitionValue>;
     using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<MultiTransitionValue>>;
     using SortedTransitions = boost::container::flat_map<NFA::TransitionKey, TransitionValue>;
     using MultiState = State<MultiTransitions>;
     using SingleState = State<Transitions>;
+    using CharMachineStateVariant = std::variant<FullCharTable, SortedTransitions>;
+    using CharMachineState = State<CharMachineStateVariant>;
     using SortedState = State<SortedTransitions>;
     using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
     using WalkedState = utype::unordered_map<std::size_t, std::size_t>;

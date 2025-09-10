@@ -1,15 +1,15 @@
 export module DFATypes;
 import NFA;
 import DFA.API;
-import DFA.MachineDFA;
+import DFA.CharMachineDFA;
 import hash;
 import dstd;
 import std;
 
 export class DFATypes {
-    const DFA::MachineDFA &dfa;
+    const DFA::CharMachineDFA &dfa;
 public:
-    DFATypes(const DFA::MachineDFA &dfa) : dfa(dfa) {}
+    DFATypes(const DFA::CharMachineDFA &dfa) : dfa(dfa) {}
     static auto getTypeStr(DFA::DfaType type, const std::string &namespace_name, std::size_t count) -> std::string;
     static auto getSpanTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string;
     static auto getTransitionsTypeStr(DFA::DfaType type, const std::string &namespace_name) -> std::string;
