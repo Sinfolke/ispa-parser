@@ -23,8 +23,8 @@ namespace LLIR {
         stdu::vector<LLIR::variable> unnamed_datablock_units;
         SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
-        AST::Tree *tree;
-        DFA::Collection<DFA::TokenMachineDFA> *dfas = nullptr;
-        BuilderData(AST::Tree &tree, DFA::Collection<DFA::TokenMachineDFA> *dfas) : tree(&tree), dfas(dfas) {}
+        AST::Tree &tree;
+        DFA::Collection<DFA::TokenMachineDFA> &dfas;
+        BuilderData(AST::Tree &tree, DFA::Collection<DFA::TokenMachineDFA> &dfas) : tree(tree), dfas(dfas) {}
     };
 }

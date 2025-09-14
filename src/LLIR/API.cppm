@@ -39,12 +39,19 @@ export namespace LLIR {
     enum class ExpressionElement {
         GroupOpen, GroupClose, And, Or, Not, Equal, NotEqual,
         Higher, Lower, HigherOrEqual, LowerOrEqual,
-        Add, Multiply, Divide, Modulo,
+        Add, Minus, Multiply, Divide, Modulo,
         PlusPlus, MinusMinus
     };
     enum class OperatorType {
-        Assign, Add,
+        Assign, Add, Minus, Multiply, Divide, Modulo
     };
+    enum class RValueType {
+        Undef, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult, Any
+    };
+    enum class ArrayMethods {
+        Push, Pop
+    };
+    enum class ObjectMethods {};
     struct StatementsLevel {
         template<typename T>
         static auto createStatements(T&& v) {
@@ -100,8 +107,12 @@ export namespace LLIR {
         bool dereference = true;
         bool sequence = false;
     };
-    struct FunctionCall : ExpressionValueLevel {
+    struct FunctionCall : RValueLevel {
         std::string name;
+        stdu::vector<Expression> args;
+    };
+    struct ArrayMethodCall : RValueLevel {
+        ArrayMethods method;
         stdu::vector<Expression> args;
     };
     struct Symbol : RValueLevel {
@@ -111,10 +122,55 @@ export namespace LLIR {
     // a symbol having storage reserved
     struct StorageSymbol : RValueLevel {
         stdu::vector<ExpressionValue> what;
-        stdu::vector<std::variant<FunctionCall, std::string>> path;
+        stdu::vector<std::variant<FunctionCall, ArrayMethodCall, std::string>> path;
     };
-    struct RValue : ExpressionValueLevel {
-        std::variant<Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol> value;
+    struct Token : RValueLevel {};
+    struct Rule : RValueLevel {};
+    struct TokenResult {};
+    struct RuleResult {};
+    class RValue : public ExpressionValueLevel {
+        stdu::vector<RValue> template_parameters;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult> value;
+        bool _empty;
+        void set_by_index(std::size_t index) {
+            // generate a table of lambdas for each index
+            static constexpr auto table = []<std::size_t... Is>(std::index_sequence<Is...>) {
+                return std::array {
+                    +[](decltype(value) &v) { v.emplace<Is>(); }...
+                };
+            }(std::make_index_sequence<std::variant_size_v<decltype(value)>>{});
+
+            if (index < table.size())
+                table[index](value);
+            else
+                throw std::out_of_range("invalid variant index");
+        }
+    public:
+        RValue() : _empty(true) {}
+        template<typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(template_parameters), List>
+        RValue(RValueType type, List templates = {}) : _empty(true), template_parameters(templates){ set_by_index(static_cast<std::size_t>(type)); }
+        template<typename T, typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
+        RValue(const T &value, List templates = {}) : value(value), template_parameters(templates), _empty(false) {}
+        template<typename T, typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
+        RValue(T &&value, List templates = {}) : value(std::move(value)), template_parameters(templates), _empty(false) {}
+
+        void clear() {
+            _empty = true;
+            value = std::monostate {};
+        }
+        template<typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(template_parameters), List>
+        void set(RValueType type, List templates = {}) { _empty = value.index() != static_cast<std::size_t>(type) && type != RValueType::Any; template_parameters = templates; set_by_index(static_cast<std::size_t>(type)); }
+        template<typename T, typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
+        void set(const T &value, List templates = {}) {_empty = false; template_parameters = templates; this->value = value; }
+        template<typename T, typename List = decltype(template_parameters)>
+        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
+        void set(T &&value, List templates = {})  {_empty = false; template_parameters = templates; this->value = std::move(value); }
+
 
         bool isChar()    const { return std::holds_alternative<Char>(value); }
         bool isInt()     const { return std::holds_alternative<Int>(value); }
@@ -125,6 +181,12 @@ export namespace LLIR {
         bool isMap()     const { return std::holds_alternative<Map>(value); }
         bool isSymbol()  const { return std::holds_alternative<Symbol>(value); }
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
+        bool isToken()  const { return std::holds_alternative<Token>(value); }
+        bool isRule()  const { return std::holds_alternative<Rule>(value); }
+        bool isTokenResult()  const { return std::holds_alternative<TokenResult>(value); }
+        bool isRuleResult()  const { return std::holds_alternative<RuleResult>(value); }
+        bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
+        bool empty() const { return _empty; }
 
         Char&           getChar()    { return std::get<Char>(value); }
         Int&            getInt()     { return std::get<Int>(value); }
@@ -135,6 +197,10 @@ export namespace LLIR {
         Map&            getMap()     { return std::get<Map>(value); }
         Symbol&         getSymbol()  { return std::get<Symbol>(value); }
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
+        Token&          getToken()  { return std::get<Token>(value); }
+        Rule&           getRule()  { return std::get<Rule>(value); }
+        TokenResult&    getTokenResult()  { return std::get<TokenResult>(value); }
+        RuleResult&     getRuleResult()  { return std::get<RuleResult>(value); }
 
         const Char&           getChar()   const { return std::get<Char>(value); }
         const Int&            getInt()    const { return std::get<Int>(value); }
@@ -145,6 +211,14 @@ export namespace LLIR {
         const Map&            getMap()    const { return std::get<Map>(value); }
         const Symbol&         getSymbol() const { return std::get<Symbol>(value); }
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
+        const Token&          getToken()  const { return std::get<Token>(value); }
+        const Rule&           getRule()  const { return std::get<Rule>(value); }
+        const TokenResult&    getTokenResult()  const { return std::get<TokenResult>(value); }
+        const RuleResult&     getRuleResult()  const { return std::get<RuleResult>(value); }
+
+        RValueType type() const { return static_cast<RValueType>(value.index()); }
+        auto templateParameters() const  { return template_parameters; }
+        auto get() const { return value; }
     };
     struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
         using vector::vector;
@@ -164,8 +238,8 @@ export namespace LLIR {
     struct Variable : ExpressionValueLevel {
         std::string name;
         RValue value;
-        Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
-        Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
+        // Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
+        // Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
         auto empty() { return name.empty(); }
     };
     // possibly will be removed *
@@ -258,16 +332,29 @@ export namespace LLIR {
     struct Statements : stdu::vector<Statement> {
         using vector::vector;
     };
-    // for if, while, do-while
+    // made for if, while, do-while
     struct ConditionalElement : StatementLevel {
         Expression expr;
         Statements stmt;
     };
     struct If : ConditionalElement {
         Statements else_stmt;
+
+        If(const Expression &e, const Statements &s, const Statements &else_stmt) : ConditionalElement {.expr = e, .stmt = s}, else_stmt(else_stmt) {}
+        If(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
+        If(const Expression &e) : ConditionalElement {.expr = e} {}
+        If() {}
     };
-    struct While : ConditionalElement {};
-    struct DoWhile : ConditionalElement {};
+    struct While : ConditionalElement {
+        While(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
+        While(const Expression &e) : ConditionalElement {.expr = e} {}
+        While() {}
+    };
+    struct DoWhile : ConditionalElement {
+        DoWhile(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
+        DoWhile(const Expression &e) : ConditionalElement {.expr = e} {}
+        DoWhile() {}
+    };
     struct Switch : StatementLevel {
         Expression expression;
         stdu::vector<std::pair<std::string, Statements>> cases;
@@ -421,11 +508,11 @@ export namespace LLIR {
         const regular_data_block &getRegularDataBlock() const;
         const inclosed_map &getInclosedMap() const;
     };
-    struct ConvertionResult {
-        variable svar;
-        variable uvar;
-        variable var;
-        variable shadow_var;
+    struct ExportsAfterBuild {
+        Variable svar;
+        Variable uvar;
+        Variable var;
+        Variable shadow_var;
         char quantifier;
     };
     struct var_group {

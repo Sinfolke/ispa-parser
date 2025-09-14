@@ -24,37 +24,37 @@ export namespace LLIR {
         static auto increasePos() -> Expression;
 
         // cll helper functions
-        static auto CllTypeToIR(const AST::CllType &type) -> var_type;
-        static auto CllOpToIR(const char op) -> var_assign_types;
-        static auto CllOpToExpr(const char op) -> expr;
-        static auto CllCompareOpToExpr(const AST::CllCompareOp &op) -> expr;
-        static auto CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> condition_types;
-        static auto CllAssignmentOpToIR(const char op) -> var_assign_types;
+        static auto CllTypeToIR(const AST::CllType &type) -> RValue;
+        static auto CllOpToIR(char op) -> OperatorType;
+        static auto CllOpToExpr(char op) -> ExpressionElement;
+        static auto CllCompareOpToExpr(const AST::CllCompareOp &op) -> ExpressionElement;
+        static auto CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> ExpressionElement;
+        static auto CllAssignmentOpToIR(char op) -> OperatorType;
 
         // helper functions to create structures
-        auto assignSvar(const variable &svar, var_assign_values value) -> LLIR::member;
+        auto assignSvar(const variable &svar, var_assign_values value) -> Statement;
         auto getBuilderData() -> BuilderDataWrapper;
     protected:
         Statements statements;
-        stdu::vector<LLIR::ConvertionResult> return_vars;
+        stdu::vector<LLIR::ExportsAfterBuild> return_vars;
         // helper functions
         auto generateVariableName() -> std::string;
         auto createSuccessVariable() -> Variable;
         auto addPostLoopCheck(const AST::RuleMember &rule, const Variable &var, bool addError = true) -> void;
         auto handle_plus_qualifier(const AST::RuleMember &rule, ConditionalElement loop, const Variable &uvar, const Variable &var, Variable &shadow_var, bool addError = true) -> void;
         auto add_shadow_variable(Statements &block, const Variable &var) -> Variable;
-        virtual auto pushBasedOnQualifier(const AST::RuleMember &rule, Expression &expr, Statements &block, Variable &uvar, const Variable &var, const Variable &svar, char quantifier, bool add_shadow_var) -> Variable;
+        virtual auto pushBasedOnQualifier(const AST::RuleMember &rule, Expression &expr, Statements &stmt, Variable &uvar, const Variable &var, const Variable &svar, char quantifier, bool add_shadow_var) -> Variable;
         void pushConvResult(const AST::RuleMember &rule, const Variable &var, const Variable &uvar, const Variable &svar, const Variable &shadow_var, char quantifier);
 
         // error handling functions
         auto getNextTerminal(stdu::vector<AST::RuleMember> symbols, std::size_t pos) ->  std::set<stdu::vector<std::string>>;
-        auto getLookaheadTerminals(const AST::RuleMember& symbols, const stdu::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
         auto getErrorName(const AST::RuleMember &rule) -> std::string;
+        auto getLookaheadTerminals(const AST::RuleMember& symbols, const stdu::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
 
         // deduce type functions
-        auto deduceUvarType(const Variable &var, const Variable &shadow_var) -> RValue;
-        auto deduceVarTypeByProd(const AST::RuleMember &mem) -> RValue;
-        auto deduceTypeFromRvalue(const AST::rvalue &value) -> RValue;
+        static auto deduceUvarType(const Variable &var, const Variable &shadow_var) -> RValueType;
+        static auto deduceVarTypeByProd(const AST::RuleMember &mem) -> RValueType;
+        static auto deduceTypeFromRvalue(const AST::rvalue &value) -> RValueType;
 
         // raise vars on top functions
         void getVariablesToTable(Statements &data, Statements& table, std::string &var_name, bool retain_value, bool recursive);
@@ -69,7 +69,7 @@ export namespace LLIR {
 
         virtual auto getData() const -> const Statements&;
         virtual auto getData() -> Statements&;
-        virtual auto getReturnVars() const -> const stdu::vector<LLIR::ConvertionResult>&;
+        virtual auto getReturnVars() const -> const stdu::vector<LLIR::ExportsAfterBuild>&;
         void optimizeIR();
 
         BuilderBase(BuilderDataWrapper& data) : BuilderDataWrapper(data), BuilderUtility(nullptr) {
