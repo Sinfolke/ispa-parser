@@ -15,21 +15,21 @@ import std;
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
     const AST::RuleMember &rule,
-    LLIR::variable &shadow_var,
-    LLIR::variable &uvar, const
-    LLIR::variable &var,
+    Variable &shadow_var,
+    Variable &uvar,
+    const Variable &var,
     char quantifier
     ) {
-
     if (!uvar.name.empty()) {
-        uvar.type = deduceUvarType(var, shadow_var);
-        push({LLIR::types::VARIABLE, uvar});
+        uvar.value = deduceUvarType(var, shadow_var);
+        statements.push_back(uvar);
     }
     if (quantifier == '*' || quantifier == '+') {
-        LLIR::condition loop = { { { LLIR::condition_types::NUMBER, (long long) 1 } }, {} };
-        loop.block = builder.getData();
+        While loop;
+        loop.expr = Bool::createExpression(true);
+        loop.stmt = builder.getData();
         builder.getData().clear();
-        processExitStatements(loop.block);
+        processExitStatements(loop.stmt);
         // raiseVarsTop(data, loop.block, true, false, false);
         // raiseVarsTop(data, loop.else_block, true, false, false);
         if (quantifier == '+') {
@@ -38,34 +38,36 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
             push({LLIR::types::WHILE, loop});
         }
     } else if (quantifier == '?') {
-        LLIR::condition loop = { { {LLIR::condition_types::NUMBER, (long long) 0} } };
-        loop.block = builder.getData();
+        While loop;
+        loop.expr = Bool::createExpression(true);
+        loop.stmt = builder.getData();
         builder.getData().clear();
-        processExitStatements(loop.block);
+        processExitStatements(loop.stmt);
         push({ LLIR::types::DOWHILE, loop });
     }
 }
 
 auto LLIR::NameBuilder::pushBasedOnQualifier(
     const AST::RuleMember &rule,
-    stdu::vector<LLIR::expr> &expr,
-    stdu::vector<LLIR::member> &block,
-    LLIR::variable &uvar,
-    const LLIR::variable &var,
-    const LLIR::variable &svar,
-    const LLIR::member &call,
+    Expression &expr,
+    Statements &block,
+    Variable &uvar,
+    const Variable &var,
+    const Variable &svar,
+    const Statement &call,
     char quantifier,
     bool add_shadow_var
-) -> LLIR::variable {
+) -> Variable {
        //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
-    LLIR::variable shadow_variable;
+    Variable shadow_variable;
 
     if (*insideLoop|| quantifier == '+' || quantifier == '*') {
         shadow_variable = add_shadow_variable(block, var);
         add_shadow_var = false;
     }
     if (!uvar.name.empty()) {
-        uvar.type = deduceUvarType(var, shadow_variable);
+        uvar = deduceUvarType(var, shadow_variable);
+        statements.push_back(uvar);
         push({LLIR::types::VARIABLE, uvar});
     }
     switch (quantifier) {
@@ -88,26 +90,26 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
         {
             // add the negative into condition
             block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            expr.insert(expr.begin(), {LLIR::condition_types::NOT});
-            expr.insert(expr.begin() + 1, {LLIR::condition_types::GROUP_OPEN});
-            expr.push_back({LLIR::condition_types::GROUP_CLOSE});
+            expr.insert(expr.begin(), ExpressionValue { .value = LLIR::ExpressionElement::NOT });
+            expr.insert(expr.begin() + 1, ExpressionValue { .value = LLIR::ExpressionElement::GROUP_OPEN });
+            expr.push_back(ExpressionValue { .value = LLIR::ExpressionElement::GROUP_CLOSE });
             // add exit statement
-            stdu::vector<LLIR::member> blk;
-            if (/* *has_symbol_follow */false) {
-                ErrorIR::IR error(tree, rule, *symbol_follow, dfas, isFirst);
-                blk = {error.lowerToLLIR(*variable_count)};
-            } else {
-                blk = {{LLIR::types::EXIT}};
-                if (!isFirst) {
-                    blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
-                }
-            }
+            Statements blk;
+            // if (/* *has_symbol_follow */false) {
+            //     ErrorIR::IR error(tree, rule, *symbol_follow, dfas, isFirst);
+            //     blk = {error.lowerToLLIR(*variable_count)};
+            // } else {
+            blk = Return::createStatements(Return {});
+                // if (!isFirst) {
+                //     blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
+                // }
+            // }
 
-            if (!isFirst) {
-                blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
-            }
-            push({LLIR::types::IF, LLIR::condition{expr, blk}});
-            add(block);
+            // if (!isFirst) {
+            //     blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
+            // }
+            statements.push_back(If::createStatement(If {expr, blk}));
+            statements.insert(statements.end(), block.begin(), block.end());
             break;
         }
     }
@@ -143,10 +145,10 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     } else throw Error("Undefined rule");
     builder->build();
     return_vars.insert(return_vars.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
-    data.insert(data.end(), builder->getData().begin(), builder->getData().end());
+    statements.insert(statements.end(), builder->getData().begin(), builder->getData().end());
     *isFirst = false;
     if (*addSpaceSkip)
-        push({LLIR::types::SKIP_SPACES, *isToken});
+        statements.push_back(SkipSpaces::createStatement(SkipSpaces {.isToken = *isToken}));
 }
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
@@ -188,7 +190,7 @@ void LLIR::GroupBuilder::build() {
         var.type.templ = {{var.type.type}};
         var.type.type = LLIR::var_types::ARRAY;
     }
-    stdu::vector<LLIR::member> var_members;
+    Statements var_members;
     switch (var.type.type == LLIR::var_types::ARRAY ? var.type.templ[0].type : var.type.type) {
         case LLIR::var_types::STRING:
             // it is a string so add all values
@@ -287,7 +289,7 @@ void LLIR::GroupBuilder::build() {
     // } else {
         pushBasedOnQuantifier(builder, rule, shadow_var, uvar, var, quantifier);
         for (const auto &svar : used_vars) {
-            raiseVarsTop(data, data, svar, true, false, true);
+            raiseVarsTop(statements, statements, svar, true, false, true);
         }
     // }
     add(svar_cond);

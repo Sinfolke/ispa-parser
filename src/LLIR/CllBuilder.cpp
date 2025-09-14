@@ -164,7 +164,7 @@ void LLIR::CllBuilder::build() {
     }
 
     builder->build();
-    data.insert(data.end(), builder->getData().begin(), builder->getData().end());
+    statements.insert(statements.end(), builder->getData().begin(), builder->getData().end());
 }
 void LLIR::CllVarBuilder::build() {
     // get data section

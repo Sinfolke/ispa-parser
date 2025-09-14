@@ -2,16 +2,20 @@ module LLIR.Builder.Utility;
 import LLIR;
 import std;
 
-void LLIR::BuilderUtility::setUtilityPointer(LLIR::Nodes *data) {
-    this->data = data;
+void LLIR::BuilderUtility::setUtilityPointer(Statements *data) {
+    this->statements = data;
 }
 void LLIR::BuilderUtility::removePrevSpaceSkip() {
-    if (!data->empty()) {
+    if (!statements->empty()) {
         // remove previous skip of spaces if it does exists
-        for (std::size_t i = data->size(); i > 0; i++) {
-            if (data->operator[](i).type == LLIR::types::SKIP_SPACES) {
-                data->erase(data->begin() + i);
-                break;
+        for (std::size_t i = statements->size(); i > 0; i++) {
+            const auto &element = statements->operator[](i);
+            if (element.isExpression()) {
+                const auto &expression = element.getExpression();
+                if (expression.size() == 1 && expression.back().isSkipSpaces()) {
+                    statements->erase(statements->begin() + i);
+                    break;
+                }
             }
         }
     }
