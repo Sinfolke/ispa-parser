@@ -1,5 +1,7 @@
 export module Converter.Writer;
 
+import Converter.Indentation;
+import eosio.rope;
 import cpuf.printf;
 import std;
 
@@ -7,64 +9,77 @@ template<typename T>
 concept StringType = std::is_same_v<std::remove_reference_t<T>, const char*> || std::is_same_v<std::remove_reference_t<T>, std::string>;
 
 export namespace Converter {
+    struct LineData {
+        std::size_t position;
+        Indentation indentation;
+    };
     class Writer {
         std::size_t indentation = 0;
         std::size_t line = 0;
-        std::ostringstream data;
-        std::unordered_map<std::size_t, std::size_t> indentation_memory;
+        eosio::rope data;
+        std::unordered_map<std::size_t, LineData> indentation_memory;
 
-        auto fill_indentation_memory(const char* format, std::size_t custom_ident = 0) -> void {
+        auto fill_indentation_memory(std::size_t position, std::size_t line, const char* format, Indentation indent) -> void {
             bool was_line = false;
-            std::size_t current_indent = 0;
-
+            Indentation current_indent;
             for (; *format != '\0'; ++format) {
                 unsigned char c = static_cast<unsigned char>(*format);
 
-                if (!was_line && std::isspace(c) && c != '\n') {
-                    current_indent++;
+                if (!was_line && c != '\n') {
+                    indent += c;
                     continue;
                 }
                 if (c == '\n') {
-                    indentation_memory[line++] = custom_ident + current_indent;
-                    current_indent = 0;
+                    if (indentation_memory.contains(line)) {
+                        std::optional<std::size_t> highest_line;
+                        auto value = indent + current_indent;
+                        for (auto &[key, map_value] : indentation_memory) {
+                            if (key < line)
+                                continue;
+                            std::swap(value, map_value);
+                            highest_line = key;
+                        }
+                        indentation_memory[highest_line.value_or(0)] = {position, value};
+                    } else {
+                        indentation_memory[line] = {position, indent + current_indent};
+                    }
+                    current_indent.clear();
                     was_line = false;
+                    this->line++;
+
                     continue;
                 }
                 was_line = true;
             }
 
             // Handle last line if it didn’t end with newline
-            if (was_line || current_indent > 0) {
-                indentation_memory[line] = custom_ident + current_indent;
+            if (was_line || !current_indent.empty()) {
+                indentation_memory[line] = current_indent + indent;
             }
         }
-    protected:
+    public:
         /*
          * Output the formatted text
          */
         template<StringType StringType, typename ...Args>
-        auto write(StringType format, Args&&... args) -> void {
+        auto write(std::size_t line, std::size_t indentation_offset, StringType format, Args&&... args) -> void {
             fill_indentation_memory(format);
-            data << std::string(indentation, '\t') << cpuf::sprintf(format, std::forward<Args>(args)...);
-        }
-        template<StringType StringType, typename ...Args>
-        auto write(std::size_t indentation, StringType format, Args&&... args) -> void {
-            fill_indentation_memory(format, indentation);
-            data << std::string(this->indentation + indentation, '\t') << cpuf::sprintf(format, std::forward<Args>(args)...);
+            data.append()
+            auto current_pos = data.tellp();
+            data.seekp(indentation_memory[line].position);
+            data << std::string(indentation + indentation_offset, '\t') << cpuf::sprintf(format, std::forward<Args>(args)...);
+            data.seekp(current_pos);
         }
         /*
          * Output the formatted line
          */
         template<StringType StringType, typename ...Args>
-        auto writeln(StringType format, Args&&... args)  -> void {
-            fill_indentation_memory(format);
-            write(format, std::forward<Args>(args)...) << '\n';
-        }
-        template<StringType StringType, typename ...Args>
-        auto writeln(std::size_t indentation, StringType format, Args&&... args) -> void {
-            fill_indentation_memory(format, indentation);
-            write(indentation, format, std::forward<Args>(args)...) << '\n';
-        }
+        auto writeln(std::size_t line, std::size_t indentation_offset, StringType format, Args&&... args)  -> void {
+            write(line, indentation_offset, format, std::forward<Args>(args)...);
+            auto current_pos = data.tellp();
+            data.seekp(indentation_memory[line].position);
+            data << '\n';
+            data.seekp(current_pos);        }
         /* indentation level up */
         auto levelUp() -> void {
             indentation++;
@@ -73,8 +88,6 @@ export namespace Converter {
         auto levelDown() -> void {
             indentation--;
         }
-
-    public:
 
     };
 }
