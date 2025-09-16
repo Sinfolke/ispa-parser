@@ -23,10 +23,10 @@ LLIR::Builder::Builder(AST::Tree &tree, int tokensOnly) {
 auto LLIR::Builder::get() -> IR {
     return IR(std::move(data), isToken, std::move(dfas));
 }
-auto LLIR::Builder::getRawData() -> stdu::vector<Data> & {
+auto LLIR::Builder::getRawData() -> stdu::vector<Production> & {
     return data;
 }
-auto LLIR::Builder::getRawData() const -> const stdu::vector<Data> & {
+auto LLIR::Builder::getRawData() const -> const stdu::vector<Production> & {
     return data;
 }
 

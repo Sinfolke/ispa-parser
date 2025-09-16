@@ -12,7 +12,7 @@ auto LLIR::BuilderBase::getData() const -> const Statements & {
     return statements;
 }
 auto LLIR::BuilderBase::getReturnVars() const -> const stdu::vector<LLIR::ExportsAfterBuild> & {
-    return return_vars;
+    return exports_list;
 }
 auto LLIR::BuilderBase::createEmptyVariable(const std::string &name) -> Variable {
     return Variable {.name = name};
@@ -66,11 +66,11 @@ auto LLIR::BuilderBase::createAssignUvarBlock(const Variable &uvar, const Variab
         :
             Statement {};
 }
-void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, LLIR::ConditionalElement loop, const Variable &uvar, const Variable &var, Variable &shadow_var, bool addError) {
+void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, ConditionalElement loop, const Variable &uvar, const Variable &var, Variable &shadow_var, bool addError) {
     auto postCheckVar = createSuccessVariable();
     loop.stmt.push_back(VariableAssignment::createStatement(VariableAssignment {.name = postCheckVar.name, .value = Bool::createRValue(true)}));
-    push({LLIR::types::VARIABLE, postCheckVar});
-    push({LLIR::types::WHILE, loop});
+    statements.push_back(Variable::createStatement(postCheckVar));
+    statements.push_back(While::createStatement(loop));
     addPostLoopCheck(rule, postCheckVar, addError);
 }
 void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Variable &var, bool addError) {
@@ -83,8 +83,8 @@ void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Vari
     post_loop_condition.stmt = std::move(stmt);
     statements.push_back(If::createStatement(post_loop_condition));
 }
-auto LLIR::BuilderBase::createDefaultBlock(const Variable &var, const Variable &svar) -> Statements {
-    if (var.value.isChar()) {
+auto LLIR::BuilderBase::createDefaultStatements(const Variable &var, const Variable &svar) -> Statements {
+    if (var.type.type == ValueType::Char) {
         return VariableAssignment::createStatements(VariableAssignment {.name = var.name, .value = Pos::createExpression(Pos {.dereference = true})});
     } else {
         return {
@@ -94,44 +94,45 @@ auto LLIR::BuilderBase::createDefaultBlock(const Variable &var, const Variable &
         };
     }
 }
-auto LLIR::BuilderBase::createDefaultBlock(const Variable &svar) -> Statements {
+auto LLIR::BuilderBase::createDefaultStatements(const Variable &svar) -> Statements {
     return {
         VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(true)}),
         Expression::createStatement(increasePos())
     };
 }
-auto LLIR::BuilderBase::createDefaultBlock() -> Statements {
+auto LLIR::BuilderBase::createDefaultStatements() -> Statements {
     return Expression::createStatements(increasePos());
 }
-auto LLIR::BuilderBase::createDefaultCall(Statements &block, Variable var, const std::string &name, Expression &expr) -> Statement  { // var must be copy
+auto LLIR::BuilderBase::createDefaultCall(Statements &block, const Variable &var, const std::string &name, Expression &expr) -> Statement  { // var must be copy
     FunctionCall function_call = {.name = name, .args = {Pos::createExpression(Pos {.sequence = true}) }};
     VariableAssignment assignment = {
         .name = var.name,
         .value = FunctionCall::createExpression(function_call)
     };
-    expr =StorageSymbol::createExpression(StorageSymbol {.what = Symbol::createExpression(Symbol {.path = {var.name }}), {{"status"}}});;
+    expr = StorageSymbol::createExpression(StorageSymbol {.what = Symbol::createExpression(Symbol {.path = {var.name }}), {{"status"}}});;
     return VariableAssignment::createStatement(assignment);
 }
 auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &var) -> Variable {
     Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
-    if (var.value.isTokenResult()) {
-        shadow_var.value.set(RValueType::Token);
-    } else if (var.value.isRuleResult()) {
-        shadow_var.value.set(RValueType::Rule);
+    if (var.type.type == ValueType::TokenResult) {
+        shadow_var.type.type = ValueType::Token;
+    } else if (var.type.type == ValueType::RuleResult) {
+        shadow_var.type.type = ValueType::Rule;
     }
-    shadow_var.value.set(RValueType::Array, {shadow_var.value.type()});
+    shadow_var.type.template_parameters = {{shadow_var.type.type}};
+    shadow_var.type.type = ValueType::Array;
     statements.push_back(Variable::createStatement(shadow_var));
     statements.push_back(
         StorageSymbol::createStatement(StorageSymbol {
                 .what = Symbol::createExpression(Symbol {
-                    .name = shadow_var.name
+                    .path = shadow_var.name
                 }),
                 .path = {
                     ArrayMethodCall {
                         .method = ArrayMethods::Push,
                         .args = {
                             Symbol::createExpression(Symbol {
-                                .name = var.name
+                                .path = var.name
                             })
                         }
                     }
@@ -159,7 +160,7 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
     }
 
     if (!uvar.name.empty()) {
-        uvar.value.set(deduceUvarType(var, shadow_variable));
+        uvar.type = deduceUvarType(var, shadow_variable);
         statements.push_back(Variable::createStatement(uvar));
     }
     switch (quantifier) {
@@ -198,7 +199,7 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variab
         }
     };
     const auto v_or_empty = [this](const Variable &var) -> Variable {
-        if (!var.name.empty() && !var.value.isUndef()) {
+        if (!var.name.empty() && var.type.type != ValueType::Undef) {
             return var;
         }
         return {};
@@ -214,16 +215,36 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variab
             key_vars.emplace_back(rule.prefix.name, uvar);
         }
     }
-    return_vars.push_back(ExportsAfterBuild {v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
+    exports_list.push_back(ExportsAfterBuild {v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
+}
+void LLIR::BuilderBase::undoRuleResult(ValueType &type) {
+    if (type == ValueType::RuleResult)
+        type = ValueType::Rule;
+    if (type == ValueType::TokenResult)
+        type = ValueType::Token;
+}
+
+auto LLIR::BuilderBase::getPrefixAsExpressionValue(const std::optional<char> &prefix) -> ExpressionValue {
+    if (prefix.has_value()) {
+        if (prefix.value() == '+')
+            return ExpressionValue { .value = ExpressionElement::PlusPlus };
+        else
+            return ExpressionValue { .value = ExpressionElement::MinusMinus };
+    }
+    return ExpressionValue {};
+}
+void LLIR::BuilderBase::pushVariablePrefix(Expression &expr, const std::optional<char> &prefix) {
+    if (prefix.has_value())
+        expr.push_back(getPrefixAsExpressionValue(prefix));
 }
 
 
-bool LLIR::BuilderBase::compare_templ(const stdu::vector<LLIR::var_type>& templ1, const stdu::vector<LLIR::var_type>& templ2) {
+bool LLIR::BuilderBase::compare_templ(const stdu::vector<Type>& templ1, const stdu::vector<Type>& templ2) {
     if (templ1.size() != templ2.size()) return false;
 
     for (std::size_t i = 0; i < templ1.size(); ++i) {
         if (templ1[i].type != templ2[i].type) return false;
-        if (!compare_templ(templ1[i].templ, templ2[i].templ)) return false;  // Recursively compare nested `templ`
+        if (!compare_templ(templ1[i].template_parameters, templ2[i].template_parameters)) return false;
     }
     return true;
 }
@@ -231,24 +252,24 @@ auto LLIR::BuilderBase::increasePos() -> Expression {
     return {Pos::createExpressionValue(Pos{}), ExpressionValue {.value = ExpressionElement::PlusPlus}};
 }
 
-auto LLIR::BuilderBase::CllTypeToIR(const AST::CllType &type) -> RValue {
+auto LLIR::BuilderBase::CllTypeToIR(const AST::CllType &type) -> Type {
     if (type.type == "var")
-        return {RValueType::Any, {}};
+        return {ValueType::Any, {}};
     if (type.type == "str")
-        return {RValueType::String, {}};
+        return {ValueType::String, {}};
     if (type.type == "bool")
-        return {RValueType::Bool, {}};
+        return {ValueType::Bool, {}};
     if (type.type == "num")
-        return {RValueType::Int, {}};
+        return {ValueType::Int, {}};
     if (type.type == "arr") {
-        RValueType tp = RValueType::Array;
-        RValue _template = CllTypeToIR(type.templ[0]);
+        ValueType tp = ValueType::Array;
+        Type _template = CllTypeToIR(type.templ[0]);
         return {tp, {_template}};
     }
     if (type.type == "obj") {
-        RValueType tp = RValueType::Map;
-        RValue _template1 = CllTypeToIR(type.templ[0]);
-        RValue _template2 = CllTypeToIR(type.templ[1]);
+        ValueType tp = ValueType::Map;
+        Type _template1 = CllTypeToIR(type.templ[0]);
+        Type _template2 = CllTypeToIR(type.templ[1]);
         return {tp, {_template1, _template2}};
     }
     throw Error("Undefined type");
@@ -543,25 +564,25 @@ auto LLIR::BuilderBase::getLookaheadTerminals(const AST::RuleMember& symbol, con
 }
 
 
-auto LLIR::BuilderBase::deduceUvarType(const Variable &var, const Variable &shadow_var) -> RValueType {
-    return shadow_var.name.empty() ? var.value.type() : shadow_var.value.type();
+auto LLIR::BuilderBase::deduceUvarType(const Variable &var, const Variable &shadow_var) -> Type {
+    return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
-auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> RValueType {
-    RValueType type = RValueType::Undef;
+auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> ValueType {
+    ValueType type = ValueType::Undef;
     if (mem.isGroup()) {
         const auto &val = mem.getGroup().values;
         if (val.size() == 1) {
             type = deduceVarTypeByProd(val[0]);
         } else {
             for (auto i = 0; i < val.size(); i++) {
-                if (deduceVarTypeByProd(val[i]) != RValueType::String) {
-                    return RValueType::Undef;
+                if (deduceVarTypeByProd(val[i]) != ValueType::String) {
+                    return ValueType::Undef;
                 }
             }
-            type = RValueType::String;
+            type = ValueType::String;
         }
     } else if (mem.isOp()) {
-        std::optional<RValueType> first_type;
+        std::optional<ValueType> first_type;
         char prev_quantifier = '\0';
         for (const auto &el : mem.getOp().options) {
             auto t = deduceVarTypeByProd(el);
@@ -571,13 +592,13 @@ auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> RValu
                 first_type = t;
                 prev_quantifier = el.quantifier;
             } else if (t != *first_type || prev_quantifier != el.quantifier) {
-                return RValueType::Any;
+                return ValueType::Any;
             }
         }
         type = first_type.value_or(LLIR::var_types::UNDEFINED);
     } else if (mem.isName()) {
-        type = corelib::text::isUpper(mem.getName().name.back()) ? RValueType::Token : RValueType::Rule;
-    } else type = RValueType::String;
+        type = corelib::text::isUpper(mem.getName().name.back()) ? ValueType::Token : ValueType::Rule;
+    } else type = ValueType::String;
     return type;
 }
 

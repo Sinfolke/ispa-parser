@@ -7,26 +7,26 @@ import dstd;
 import std;
 export namespace LLIR {
     class CllBuilder : public BuilderBase {
-        const AST::Cll *cll;
+        const AST::Cll &cll;
     public:
-        void build();
-        CllBuilder(BuilderDataWrapper &data, const AST::Cll &rule) : BuilderBase(data), cll(&rule) {}
+        void build() override;
+        CllBuilder(BuilderDataWrapper &data, const AST::Cll &rule) : BuilderBase(data), cll(rule) {}
     };
 
     class CllVarBuilder : public BuilderBase {
-        const AST::CllVar *var;
+        const AST::CllVar &var;
     public:
         void build() override;
-        CllVarBuilder(BuilderDataWrapper &data, const AST::CllVar &rule) : BuilderBase(data), var(&rule) {}
+        CllVarBuilder(BuilderDataWrapper &data, const AST::CllVar &rule) : BuilderBase(data), var(rule) {}
     };
     class CllIfBuilder : public BuilderBase {
-        const AST::CllIf *cond;
+        const AST::CllIf &cond;
     public:
         void build() override;
-        CllIfBuilder(BuilderDataWrapper &data, const AST::CllIf &rule) : BuilderBase(data), cond(&rule) {}
+        CllIfBuilder(BuilderDataWrapper &data, const AST::CllIf &rule) : BuilderBase(data), cond(rule) {}
     };
     class CllExprBuilder : BuilderDataWrapper {
-        const AST::CllExpr *expr;
+        const AST::CllExpr &expr;
         Expression result;
         auto CllExprGroupToIR(const AST::CllExpr &group) -> Expression;
         auto CllExprValueToIR(const AST::CllExprValue &value) -> Expression;
@@ -34,32 +34,35 @@ export namespace LLIR {
         auto CllExprAdditionToIR(const AST::CllExprAddition &addition) -> Expression;
         auto CllExprCompareToIR(const AST::CllExprCompare &compare) -> Expression;
         auto CllExprLogicalToIR(const AST::CllExprLogical &logical) -> Expression;
-        auto deduceTypeFromExprValue(const AST::CllExprValue &value) -> LLIR::var_type;
-        auto deduceTypeFromExprTerm(const AST::CllExprTerm &term) -> LLIR::var_type;
-        auto deduceTypeFromExprAddition(const AST::CllExprAddition &addition) -> LLIR::var_type;
-        auto deduceTypeFromExprCompare(const AST::CllExprCompare &compare) -> LLIR::var_type;
-        auto deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> LLIR::var_type;
+        auto deduceTypeFromExprValue(const AST::CllExprValue &value) -> Type;
+        auto deduceTypeFromExprTerm(const AST::CllExprTerm &term) -> Type;
+        auto deduceTypeFromExprAddition(const AST::CllExprAddition &addition) -> Type;
+        auto deduceTypeFromExprCompare(const AST::CllExprCompare &compare) -> Type;
+        auto deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> Type;
     public:
-        CllExprBuilder(BuilderDataWrapper &bd, const AST::CllExpr &expr) : BuilderDataWrapper(bd), expr(&expr) {}
+        CllExprBuilder(BuilderDataWrapper &bd, const AST::CllExpr &expr) : BuilderDataWrapper(bd), expr(expr) {}
         void build();
-        auto get() -> Expression;
-        auto deduceType() -> LLIR::var_type;
+        auto get() const -> const Expression&;
+        auto get() -> Expression&;
+        auto deduceType() -> Type;
     };
     class CllFunctionBuilder : public BuilderDataWrapper {
-        const AST::CllFunctionCall *call;
-        function_call result;
+        const AST::CllFunctionCall &call;
+        FunctionCall result;
         auto FunctionBodyCallToIR(const AST::CllFunctionBodyCall &body) -> stdu::vector<Expression>;
     public:
         void build();
-        auto get() -> function_call;
-        CllFunctionBuilder(BuilderDataWrapper bd, const AST::CllFunctionCall &call) : BuilderDataWrapper(bd), call(&call) {}
+        auto get() const -> const FunctionCall&;
+        auto get() -> FunctionCall&;
+        CllFunctionBuilder(BuilderDataWrapper bd, const AST::CllFunctionCall &call) : BuilderDataWrapper(bd), call(call) {}
     };
     class CllMethodCallBuilder : public BuilderDataWrapper {
-        const AST::CllMethodCall *call;
-        method_call result;
+        const AST::CllMethodCall &call;
+        StorageSymbol result;
     public:
         void build();
-        auto get() -> method_call;
-        CllMethodCallBuilder(BuilderDataWrapper &bd, const AST::CllMethodCall &call) : BuilderDataWrapper(bd), call(&call) {}
+        auto get() const  -> const StorageSymbol&;
+        auto get() -> StorageSymbol&;
+        CllMethodCallBuilder(BuilderDataWrapper &bd, const AST::CllMethodCall &call) : BuilderDataWrapper(bd), call(call) {}
     };
 };

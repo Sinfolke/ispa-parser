@@ -9,22 +9,15 @@ import std;
 
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
-        stdu::vector<AST::RuleMember> rules;
-        bool *addSpaceSkipFirst = nullptr;
+        const stdu::vector<AST::RuleMember> *rules = nullptr;
+        const AST::RuleMember *rule = nullptr;
+        bool addSpaceSkipFirst;
         void buildMember(const AST::RuleMember &member);
     public:
         void build() override;
-        MemberBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule, bool has_symbol_follow = true) : BuilderBase(data), rules(stdu::vector<AST::RuleMember> {rule}) {
-            *this->has_symbol_follow = has_symbol_follow;
-        }
-        MemberBuilder(BuilderDataWrapper &data, const stdu::vector<AST::RuleMember> &rules, bool has_symbol_follow = true) : BuilderBase(data), rules(rules) {
-            *this->has_symbol_follow = has_symbol_follow;
-        }
-        MemberBuilder(BuilderDataWrapper &data, const stdu::vector<AST::RuleMember> &rules, bool has_symbol_follow, bool &addSpaceSkipFirst) :
-            BuilderBase(data), rules(rules), addSpaceSkipFirst(&addSpaceSkipFirst) {
-            *this->has_symbol_follow = has_symbol_follow;
-        }
-
+        MemberBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
+        MemberBuilder(BuilderDataWrapper &data, const stdu::vector<AST::RuleMember> &rules) : BuilderBase(data), rules(&rules) {}
+        auto getAddSpaceSkipFirst() const -> bool { return addSpaceSkipFirst; }
     };
 
     class GroupBuilder : public BuilderBase {
@@ -32,9 +25,9 @@ export namespace LLIR {
         void pushBasedOnQuantifier(
             MemberBuilder &builder,
             const AST::RuleMember &rule,
-            LLIR::variable &shadow_var,
-            LLIR::variable &uvar,
-            const LLIR::variable &var,
+            Variable &shadow_var,
+            Variable &uvar,
+            const Variable &var,
             char quantifier
         );
     public:
@@ -74,15 +67,15 @@ export namespace LLIR {
         const AST::RuleMember &rule;
         auto pushBasedOnQualifier(
             const AST::RuleMember &rule,
-            stdu::vector<LLIR::expr> &expr,
-            stdu::vector<LLIR::member> &block,
-            LLIR::variable &uvar,
-            const LLIR::variable &var,
-            const LLIR::variable &svar,
-            const LLIR::member &call,
+            Expression &expr,
+            Statements &stmt,
+            Variable &uvar,
+            const Variable &var,
+            const Variable &svar,
+            const Statement &call,
             char quantifier,
             bool add_shadow_var = false
-        ) -> LLIR::variable;
+        ) -> Variable;
 
     public:
         void build() override;
@@ -114,9 +107,9 @@ export namespace LLIR {
         auto createBlock(
             const stdu::vector<AST::RuleMember> &rules,
             std::size_t index,
-            LLIR::variable &var,
-            LLIR::variable &svar
-        ) -> stdu::vector<LLIR::member>;
+            Variable &var,
+            Variable &svar
+        ) -> Statements;
     public:
         void build() override;
         OpBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}

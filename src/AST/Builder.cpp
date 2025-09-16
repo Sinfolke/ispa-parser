@@ -150,8 +150,8 @@ AST::CllFunctionCall AST::Builder::createCllFunctionCall(const Parser::Rule &rul
     return new_function_call;
 }
 
-AST::CllVariable AST::Builder::createCllVariable(const Parser::Rule &rule) {
-    AST::CllVariable newVar;
+AST::CllVariableMention AST::Builder::createCllVariable(const Parser::Rule &rule) {
+    AST::CllVariableMention newVar;
     const auto &var = Parser::get::cll__variable(rule);
     newVar.name = Parser::get::ID(var.name);
     if (!var.brace_expression.empty())
@@ -185,7 +185,7 @@ AST::CllExprValue AST::Builder::createCllExprValue(const Parser::Rule &logical) 
         result.value = std::make_shared<AST::CllExprGroup>(AST::CllExprGroup {createCllExpr(Parser::get::cll_expr(data))});
         break;
     case Parser::Rules::cll__variable:
-        result.value = std::make_shared<AST::CllVariable>(createCllVariable(data));
+        result.value = std::make_shared<AST::CllVariableMention>(createCllVariable(data));
         break;
     case Parser::Rules::cll_function_call:
         result.value = createCllFunctionCall(data);
@@ -287,7 +287,8 @@ AST::CllVar AST::Builder::createCllVar(const Parser::Rule &var) {
     newVar.name = Parser::get::ID(data.id);
     newVar.type = createCllType(data.type);
     newVar.op = Parser::get::cll_ASSIGNMENT_OP(data.op);
-    newVar.value = createCllExpr(data.value);
+    if (!data.value.empty())
+        newVar.value = createCllExpr(data.value);
     return newVar;
 }
 AST::Cll AST::Builder::convertCll(const Parser::Rule &cll) {

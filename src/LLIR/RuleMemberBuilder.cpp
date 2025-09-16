@@ -21,8 +21,8 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
     char quantifier
     ) {
     if (!uvar.name.empty()) {
-        uvar.value = deduceUvarType(var, shadow_var);
-        statements.push_back(uvar);
+        uvar.type = deduceUvarType(var, shadow_var);
+        statements.push_back(Variable::createExpression(uvar));
     }
     if (quantifier == '*' || quantifier == '+') {
         While loop;
@@ -50,7 +50,7 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
 auto LLIR::NameBuilder::pushBasedOnQualifier(
     const AST::RuleMember &rule,
     Expression &expr,
-    Statements &block,
+    Statements &stmt,
     Variable &uvar,
     const Variable &var,
     const Variable &svar,
@@ -61,38 +61,37 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
        //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     Variable shadow_variable;
 
-    if (*insideLoop|| quantifier == '+' || quantifier == '*') {
-        shadow_variable = add_shadow_variable(block, var);
+    if (insideLoop || quantifier == '+' || quantifier == '*') {
+        shadow_variable = add_shadow_variable(stmt, var);
         add_shadow_var = false;
     }
     if (!uvar.name.empty()) {
-        uvar = deduceUvarType(var, shadow_variable);
-        statements.push_back(uvar);
-        push({LLIR::types::VARIABLE, uvar});
+        uvar.type = deduceUvarType(var, shadow_variable);
+        statements.push_back(Variable::createStatement(uvar));
     }
     switch (quantifier) {
         case '+':
-            block.push_back(call);
-            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            handle_plus_qualifier(rule, LLIR::condition {expr, block}, uvar, var, shadow_variable);
+            stmt.push_back(call);
+            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            handle_plus_qualifier(rule, ConditionalElement {.expr = expr, .stmt = stmt}, uvar, var, shadow_variable);
             break;
         case '*': {
-            block.push_back(call);
-            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            push({LLIR::types::WHILE, LLIR::condition{expr, block}});
+            stmt.push_back(call);
+            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            statements.push_back(While::createStatement(While {.expr = expr, .stmt = stmt}));
             break;
         }
         case '?':
-            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            push({LLIR::types::IF, LLIR::condition{expr, block}});
+            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            statements.push_back(If::createStatement(If {.expr = expr, .stmt = stmt}));
             break;
         default:
         {
             // add the negative into condition
-            block.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            expr.insert(expr.begin(), ExpressionValue { .value = LLIR::ExpressionElement::NOT });
-            expr.insert(expr.begin() + 1, ExpressionValue { .value = LLIR::ExpressionElement::GROUP_OPEN });
-            expr.push_back(ExpressionValue { .value = LLIR::ExpressionElement::GROUP_CLOSE });
+            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            expr.insert(expr.begin(), ExpressionValue { .value = LLIR::ExpressionElement::Not });
+            expr.insert(expr.begin() + 1, ExpressionValue { .value = LLIR::ExpressionElement::GroupOpen });
+            expr.push_back(ExpressionValue { .value = LLIR::ExpressionElement::GroupClose });
             // add exit statement
             Statements blk;
             // if (/* *has_symbol_follow */false) {
@@ -109,14 +108,14 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             //     blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
             // }
             statements.push_back(If::createStatement(If {expr, blk}));
-            statements.insert(statements.end(), block.begin(), block.end());
+            statements.insert(statements.end(), stmt.begin(), stmt.end());
             break;
         }
     }
     return shadow_variable;
 }
 void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
-    *addSpaceSkip = true;
+    addSpaceSkip = true;
     std::unique_ptr<BuilderBase> builder;
     if (member.isGroup()) {
         builder = std::make_unique<GroupBuilder>(*this, member);
@@ -124,10 +123,10 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
         builder = std::make_unique<CsequenceBuilder>(*this, member);
     } else if (member.isString()) {
         builder = std::make_unique<StringBuilder>(*this, member);
-    } else if (member.isHex()) {
-        builder = std::make_unique<HexBuilder>(*this, member);
-    } else if (member.isBin()) {
-        builder = std::make_unique<BinBuilder>(*this, member);
+    // } else if (member.isHex()) {
+    //     builder = std::make_unique<HexBuilder>(*this, member);
+    // } else if (member.isBin()) {
+    //     builder = std::make_unique<BinBuilder>(*this, member);
     } else if (member.isName()) {
         builder = std::make_unique<NameBuilder>(*this, member);
     } else if (member.isEscaped()) {
@@ -144,23 +143,32 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
         throw Error("Empty rule");
     } else throw Error("Undefined rule");
     builder->build();
-    return_vars.insert(return_vars.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
+    exports_list.insert(exports_list.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
     statements.insert(statements.end(), builder->getData().begin(), builder->getData().end());
-    *isFirst = false;
-    if (*addSpaceSkip)
-        statements.push_back(SkipSpaces::createStatement(SkipSpaces {.isToken = *isToken}));
+    isFirst = false;
+    if (addSpaceSkip)
+        statements.push_back(SkipSpaces::createStatement(SkipSpaces {.isToken = isToken}));
 }
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     std::size_t pos = 0;
-    for (const auto &mem : rules) {
+    if (rules == nullptr) {
+        buildMember(*rule);
+        if (isFirst) {
+            addSpaceSkipFirst = addSpaceSkip;
+        }
+        isFirst = false;
+        pos++;
+        return;
+    }
+    for (const auto &mem : *rules) {
         // if (mem.isName() && *has_symbol_follow) {
         //     *symbol_follow = getLookaheadTerminals(mem, *fullname);
         //     symbol_follow->emplace_back(stdu::vector<std::string>{}, getNextTerminal(rules, pos));
         // }
         buildMember(mem);
-        if (isFirst && addSpaceSkipFirst != nullptr) {
-            *addSpaceSkipFirst = *addSpaceSkip;
+        if (isFirst) {
+            addSpaceSkipFirst = addSpaceSkip;
         }
         isFirst = false;
         pos++;
@@ -170,63 +178,50 @@ void LLIR::GroupBuilder::build() {
     auto var = createEmptyVariable(generateVariableName());
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto svar = createSuccessVariable();
-    auto prev_insideLoop = *insideLoop;
+    auto prev_insideLoop = insideLoop;
     const auto &quantifier = rule.quantifier;
     const auto &group = rule.getGroup().values;
     if (quantifier == '*' || quantifier == '+')
-        *insideLoop = true;
-    bool addSpaceSkipFirst = false;
-    MemberBuilder builder(*this, group, false, addSpaceSkipFirst);
+        insideLoop = true;
+    MemberBuilder builder(*this, group);
     builder.build();
-    return_vars.insert(return_vars.end(), builder.getReturnVars().begin(), builder.getReturnVars().end());
-    *insideLoop = prev_insideLoop;
+    auto addSpaceSkipFirst = builder.getAddSpaceSkipFirst();
+    exports_list.insert(exports_list.end(), builder.getReturnVars().begin(), builder.getReturnVars().end());
+    insideLoop = prev_insideLoop;
     // remove the previous space skip if there was \s0
     if (addSpaceSkipFirst) {
         removePrevSpaceSkip();
     }
 
     var.type = {deduceVarTypeByProd(rule)};
-    if ((quantifier == '*' || quantifier == '+') && var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING) {
-        var.type.templ = {{var.type.type}};
-        var.type.type = LLIR::var_types::ARRAY;
+    if ((quantifier == '*' || quantifier == '+') && var.type.type != ValueType::Undef && var.type.type != ValueType::String) {
+        var.type.template_parameters = {{var.type.type}};
+        var.type.type = ValueType::Array;
     }
-    Statements var_members;
-    switch (var.type.type == LLIR::var_types::ARRAY ? var.type.templ[0].type : var.type.type) {
-        case LLIR::var_types::STRING:
+    Statements fetch_var_statements;
+    switch (var.type.type == ValueType::Array ? var.type.template_parameters[0].type : var.type.type) {
+        case ValueType::String:
             // it is a string so add all values
             for (const auto &v : builder.getReturnVars()) {
                 if (v.var.name.empty())
                     continue;
-                var_members.push_back(
-                    {
-                        LLIR::types::ASSIGN_VARIABLE,
-                        LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::assign { LLIR::var_assign_values::VAR_REFER, LLIR::var_refer {.var = v.var} }}
-                    }
-                );
+                fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {.path = v.var.name})}));
             }
             break;
         case LLIR::var_types::Token:
         case LLIR::var_types::Rule:
             // it is token so perform a single assign
-            var_members.push_back( LLIR::member
-                {
-                    LLIR::types::ASSIGN_VARIABLE,
-                    LLIR::variable_assign {var.name, LLIR::var_assign_types::ASSIGN, LLIR::assign { LLIR::var_assign_values::VAR_REFER,  LLIR::var_refer {.var = builder.getReturnVars()[0].var}}}
-                }
-            );
+            fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {.path = builder.getReturnVars()[0].var.name})}));
 
             var.type = builder.getReturnVars()[0].var.type;
-            if (var.type.type == LLIR::var_types::Rule_result)
-                var.type.type = LLIR::var_types::Rule;
-            else if (var.type.type == LLIR::var_types::Token_result)
-                var.type.type = LLIR::var_types::Token;
+            undoRuleResult(var.type.type);
             break;
         default:
-            var.type = {LLIR::var_types::UNDEFINED};
+            var.type = {ValueType::Undef};
             break;
     }
-    std::string begin_var_name = "begin" + generateVariableName();
-    stdu::vector<LLIR::expr> svar_expr = {};
+    std::string pos_counter_name = "begin" + generateVariableName();
+    If group_success_condition = {};
     stdu::vector<std::string> used_vars;
     //cpuf::printf("success_vars.size(): %d\n", success_vars.size());
     if (!builder.getReturnVars().empty()) {
@@ -235,9 +230,9 @@ void LLIR::GroupBuilder::build() {
             if (el.quantifier == '*' || el.quantifier == '?' || el.svar.name.empty())
                 continue;
             if (!first)
-                svar_expr.push_back({LLIR::condition_types::AND});
+                group_success_condition.expr.push_back(ExpressionValue {.value = ExpressionElement::And});
             used_vars.push_back(el.svar.name);
-            svar_expr.push_back({LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = el.svar}});
+            group_success_condition.expr.push_back(Symbol::createExpressionValue(Symbol {.path = el.svar.name}));
             first = false;
         }
     }
@@ -247,52 +242,35 @@ void LLIR::GroupBuilder::build() {
     //     svar_expr.push_back({LLIR::condition_types::VARIABLE, node_ret[i].svar});
     // }
 
-    if (!builder.getData().empty() && builder.getData().back().type == LLIR::types::SKIP_SPACES) {
-        builder.pop();
+    if (!builder.getData().empty() && builder.getData().back().isExpression()) {
+        const auto &expr = builder.getData().back().getExpression();
+        if (expr.size() == 1 && expr.back().isSkipSpaces())
+            builder.pop();
     }
-    builder.add(var_members);
-    LLIR::variable shadow_var;
-    if ((*insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != LLIR::var_types::UNDEFINED && var.type.type != LLIR::var_types::STRING)) {
+    statements.insert(statements.end(), fetch_var_statements.begin(), fetch_var_statements.end());
+    Variable shadow_var;
+    if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != ValueType::Undef && var.type.type != ValueType::String)) {
         shadow_var = add_shadow_variable(builder.getData(), var);
     }
-    stdu::vector<LLIR::member> svar_cond;
-    if (svar_expr.empty()) {
-        svar_cond = {
-            {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}},
-            createAssignUvarBlock(uvar, var, shadow_var),
-            {LLIR::types::POP_POS_COUNTER}
-        };
+    group_success_condition.stmt = {
+        VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(true)}),
+        createAssignUvarBlock(uvar, var, shadow_var),
+        PopPosCounter::createStatement(PopPosCounter {})
+    };
+    if (var.type.type != ValueType::Undef) {
+        statements.push_back(Variable::createStatement(var));
+    }
+    statements.push_back(Variable::createStatement(svar));
+    statements.push_back(PushPosCounter::createStatement(PushPosCounter {.name = pos_counter_name}));
+    pushBasedOnQuantifier(builder, rule, shadow_var, uvar, var, quantifier);
+    for (const auto &svar : used_vars) {
+        raiseVarsTop(statements, statements, svar, true, false, true);
+    }
+    if (group_success_condition.expr.empty()) {
+        statements.insert(statements.end(), group_success_condition.stmt.begin(), group_success_condition.stmt.end());
     } else {
-        svar_cond = {{
-            LLIR::types::IF,
-            LLIR::condition {
-                svar_expr,
-                {
-                    {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::True}},
-                    createAssignUvarBlock(uvar, var, shadow_var),
-                    {LLIR::types::POP_POS_COUNTER}
-                }
-            }
-        }};
+        statements.push_back(If::createStatement(group_success_condition));
     }
-    if (var.type.type != LLIR::var_types::UNDEFINED) {
-        push({LLIR::types::VARIABLE, var});
-    }
-    push({LLIR::types::VARIABLE, svar});
-    push({LLIR::types::PUSH_POS_COUNTER, begin_var_name});
-    // maybe implement later
-    // if (!variable.empty() && variable.name == Parser::Rules::method_call)
-    // {
-    //     LLIR::method_call method_call = TreeMethodCallToLLIR::(std::any_cast<Parser::Rule>(variable.data));
-    //     add(values);
-    //     push({LLIR::types::METHOD_CALL, method_call});
-    // } else {
-        pushBasedOnQuantifier(builder, rule, shadow_var, uvar, var, quantifier);
-        for (const auto &svar : used_vars) {
-            raiseVarsTop(statements, statements, svar, true, false, true);
-        }
-    // }
-    add(svar_cond);
     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 }
 void LLIR::CsequenceBuilder::build() {
@@ -302,68 +280,63 @@ void LLIR::CsequenceBuilder::build() {
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    stdu::vector<LLIR::expr> expr;
+    Expression expr;
 
     if (csequence.negative) {
         expr = {
-            {LLIR::condition_types::NOT},
-            {LLIR::condition_types::GROUP_OPEN}
+            ExpressionValue {.value = ExpressionElement::Not},
+            ExpressionValue {.value = ExpressionElement::GroupOpen}
         };
     }
 
     bool first = true;
     std::size_t count = 0;
-    for (const auto c : csequence.characters) {
+    auto push_comparasion_with_character_to_expression = [&](Char c) {
         if (!first)
-            expr.push_back({LLIR::condition_types::OR});
-        expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::EQUAL},
-            {LLIR::condition_types::CHARACTER, c}
-        });
+            expr.push_back(ExpressionValue { .value = ExpressionElement::Or });
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
+        expr.push_back(ExpressionValue { .value = ExpressionElement::Equal });
+        expr.push_back(Char::createExpressionValue(c));
+    };
+    for (const auto c : csequence.characters) {
+        push_comparasion_with_character_to_expression(Char {.value = c});
         first = false;
     }
     for (const auto c : csequence.escaped) {
-        if (!first)
-            expr.push_back({LLIR::condition_types::OR});
-        expr.insert(expr.end(), {
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::EQUAL},
-            {LLIR::condition_types::ESCAPED_CHARACTER, c}
-        });
+        push_comparasion_with_character_to_expression(Char {.value = c, .escaped = true});
         first = false;
     }
     for (const auto &[from, to] : csequence.diapasons) {
         if (!first)
-            expr.push_back({LLIR::condition_types::OR});
-        expr.insert(expr.end(), {
-            {LLIR::condition_types::GROUP_OPEN},
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::HIGHER_OR_EQUAL},
-            {LLIR::condition_types::CHARACTER, from},
-            {LLIR::condition_types::AND},
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::LOWER_OR_EQUAL},
-            {LLIR::condition_types::CHARACTER, to},
-            {LLIR::condition_types::GROUP_CLOSE}
-        });
+            expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = from}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = to}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
         first = false;
     }
     if (csequence.negative) {
-        if (rule.quantifier == '+' || rule.quantifier == '*')
-            expr.insert(expr.end(), {
-                {LLIR::condition_types::AND}, {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0}, {LLIR::condition_types::NOT_EQUAL}, {LLIR::condition_types::ESCAPED_CHARACTER, '0'},
-            });
-        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
+        if (rule.quantifier == '+' || rule.quantifier == '*') {
+            expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+            expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
+            expr.push_back(ExpressionValue {.value = ExpressionElement::NotEqual});
+            expr.push_back(Char::createExpressionValue(Char {.value = '0', .escaped = true}));
+        }
+        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
     }
     if (rule.quantifier == '\0')
-        var.type = {LLIR::var_types::CHAR};
+        var.type = { ValueType::Char };
     else
-        var.type = {LLIR::var_types::STRING};
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    auto block = createDefaultBlock(var, svar);
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+        var.type = {ValueType::String};
+    statements.push_back(Variable::createStatement(var));
+    statements.push_back(Variable::createStatement(svar));
+    auto stmt = createDefaultStatements(var, svar);
+    auto shadow_var = pushBasedOnQualifier(rule, expr, stmt, uvar, var, svar, rule.quantifier, false);
     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 }
 void LLIR::StringBuilder::build() {
@@ -372,124 +345,156 @@ void LLIR::StringBuilder::build() {
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    stdu::vector<LLIR::expr> expr;
+    Expression expr;
     if (value.size() == 0)
         return;
     if (str.count_strlen() == 1) {
         // micro optimization - compare as single character for single character strings
         expr = {
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::EQUAL},
-            value[0] == '\\' ? LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, value[1]} :  LLIR::expr {LLIR::condition_types::CHARACTER, value[0]}
+            Pos::createExpressionValue(Pos {.dereference = true}),
+            ExpressionValue {.value = ExpressionElement::Equal},
+            value[0] == '\\' ? Char::createExpressionValue(Char {.value = value[1]}) : Char::createExpressionValue(Char {.value = value[1], .escaped = true})
         };
-        var.type.type = LLIR::var_types::CHAR;
+        var.type.type = ValueType::Char;
     } else {
         expr = {
-            {LLIR::condition_types::STRNCMP, LLIR::strncmp{true, value}}
+            StringCompare::createExpressionValue(StringCompare {.str = String { .value = value }, .is_string = true})
         };
-        var.type = {LLIR::var_types::STRING};
+        var.type = {ValueType::Char};
     }
     if (corelib::text::isAllAlpha(value)) {
-        // it is keyword, add conditional check that it is not start of ID
-        expr.insert(expr.end(), {
-            {LLIR::condition_types::AND},
-            {LLIR::condition_types::NOT},
-            {LLIR::condition_types::GROUP_OPEN},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'a'},
-                {LLIR::condition_types::AND},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'z'},
-                {LLIR::condition_types::OR},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'A'},
-                {LLIR::condition_types::AND},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, 'Z'},
-                {LLIR::condition_types::OR},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::HIGHER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, '0'},
-                {LLIR::condition_types::AND},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::LOWER_OR_EQUAL}, {LLIR::condition_types::CHARACTER, '9'},
-                {LLIR::condition_types::OR},
-                {LLIR::condition_types::CURRENT_CHARACTER, str.count_strlen()}, {LLIR::condition_types::EQUAL}, {LLIR::condition_types::CHARACTER, '_'},
-            {LLIR::condition_types::GROUP_CLOSE},
-        });
+        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(ExpressionValue {.value = ExpressionElement::Not});
+        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+
+        // current >= 'a'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = 'a', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+
+        // current <= 'z'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = 'z', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+
+        // current >= 'A'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = 'A', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+
+        // current <= 'Z'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = 'Z', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+
+        // current >= '0'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = '0', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+
+        // current <= '9'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(Char::createExpressionValue(Char {.value = '9', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+
+        // current == '_'
+        expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
+        expr.push_back(ExpressionValue {.value = ExpressionElement::Equal});
+        expr.push_back(Char::createExpressionValue(Char {.value = '_', .escaped = true}));
+
+        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
     }
-    stdu::vector<LLIR::member> block = createDefaultBlock(var, svar);
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
+    Statements block = createDefaultStatements(var, svar);
+    statements.push_back(Variable::createStatement(var));
+    statements.push_back(Variable::createStatement(svar));
     pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
     pushConvResult(rule, var, uvar, svar, {}, rule.quantifier);
 }
-void LLIR::HexBuilder::build() {
-    //cpuf::printf("hex\n");
-    auto data = rule.getHex().hex_chars;
-    stdu::vector<LLIR::expr> expr = {};
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
-    auto var = createEmptyVariable(generateVariableName());
-    auto svar = createSuccessVariable();
-    var.type = {LLIR::var_types::STRING};
-    stdu::vector<LLIR::member> block = createDefaultBlock(var, svar);
-    bool is_first = true, is_negative = false;
-    if (rule.quantifier == '\0') {
-        expr.push_back({LLIR::condition_types::NOT});
-        expr.push_back({LLIR::condition_types::GROUP_OPEN});
-        is_negative = true;
-    }
-    if (data.size() % 2 != 0)
-        data.insert(data.begin(), '0');
-    for (std::size_t i = 0; i < data.size(); i += 2) {
-        std::string hex(data.data() + i, 2);
-        if (!is_first)
-            expr.push_back({LLIR::condition_types::AND});
-        is_first = false;
-        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
-        expr.push_back({LLIR::condition_types::EQUAL});
-        expr.push_back({LLIR::condition_types::HEX, hex});
-    }
-    if (is_negative) {
-        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
-    }
-    //cpuf::printf("hex_open\n");
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
-    pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
-}
-void LLIR::BinBuilder::build() {
-    //cpuf::printf("hex\n");
-    auto data = rule.getBin().bin_chars;
-    stdu::vector<LLIR::expr> expr = {};
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
-    auto var = createEmptyVariable(generateVariableName());
-    auto svar = createSuccessVariable();
-    stdu::vector<LLIR::member> block = {
-        {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
-        {LLIR::types::INCREASE_POS_COUNTER},
-    };
-    bool is_first = true, is_negative = false;
-    if (rule.quantifier == '\0') {
-        expr.push_back({LLIR::condition_types::NOT});
-        expr.push_back({LLIR::condition_types::GROUP_OPEN});
-        is_negative = true;
-    }
-    while (data.size() % 8 != 0)
-        data.insert(data.begin(), '0');
-    for (std::size_t i = 0; i < data.size(); i += 8) {
-        std::string bin(data.data() + i, 8);
-        auto as_hex = hex::from_binary(bin);
-        as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
-        if (!is_first)
-            expr.push_back({LLIR::condition_types::AND});
-        is_first = false;
-        expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
-        expr.push_back({LLIR::condition_types::EQUAL});
-        expr.push_back({LLIR::condition_types::HEX, as_hex});
-    }
-    if (is_negative) {
-        expr.push_back({LLIR::condition_types::GROUP_CLOSE});
-    }
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
-    pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
-}
+// void LLIR::HexBuilder::build() {
+//     //cpuf::printf("hex\n");
+//     auto data = rule.getHex().hex_chars;
+//     Expression expr = {};
+//     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+//     auto var = createEmptyVariable(generateVariableName());
+//     auto svar = createSuccessVariable();
+//     var.type = {ValueType::String};
+//     Statements block = createDefaultStatements(var, svar);
+//     bool is_first = true, is_negative = false;
+//     if (rule.quantifier == '\0') {
+//         expr.push_back(ExpressionValue {.value = ExpressionElement::Not});
+//         expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+//         is_negative = true;
+//     }
+//     if (data.size() % 2 != 0)
+//         data.insert(data.begin(), '0');
+//     for (std::size_t i = 0; i < data.size(); i += 2) {
+//         std::string hex(data.data() + i, 2);
+//         if (!is_first)
+//             expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+//         is_first = false;
+//         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = i}));
+//         expr.push_back(ExpressionValue {.value = ExpressionElement::Equal});
+//         expr.push_back(Hex::createExpressionValue(Hex {.hex = hex}));
+//     }
+//     if (is_negative) {
+//         expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+//     }
+//     //cpuf::printf("hex_open\n");
+//     statements.push_back(Variable::createStatement(var));
+//     statements.push_back(Variable::createStatement(svar));
+//     auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+//     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
+// }
+// void LLIR::BinBuilder::build() {
+//     //cpuf::printf("hex\n");
+//     auto data = rule.getBin().bin_chars;
+//     Expression expr = {};
+//     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+//     auto var = createEmptyVariable(generateVariableName());
+//     auto svar = createSuccessVariable();
+//     Statements block = {
+//         {LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var.name, LLIR::var_assign_types::ADD, LLIR::var_assign_values::CURRENT_POS_SEQUENCE}},
+//         {LLIR::types::INCREASE_POS_COUNTER},
+//     };
+//     bool is_first = true, is_negative = false;
+//     if (rule.quantifier == '\0') {
+//         expr.push_back({LLIR::condition_types::NOT});
+//         expr.push_back({LLIR::condition_types::GROUP_OPEN});
+//         is_negative = true;
+//     }
+//     while (data.size() % 8 != 0)
+//         data.insert(data.begin(), '0');
+//     for (std::size_t i = 0; i < data.size(); i += 8) {
+//         std::string bin(data.data() + i, 8);
+//         auto as_hex = hex::from_binary(bin);
+//         as_hex.erase(as_hex.begin(), as_hex.begin() + 2);
+//         if (!is_first)
+//             expr.push_back({LLIR::condition_types::AND});
+//         is_first = false;
+//         expr.push_back({LLIR::condition_types::CURRENT_CHARACTER, i});
+//         expr.push_back({LLIR::condition_types::EQUAL});
+//         expr.push_back({LLIR::condition_types::HEX, as_hex});
+//     }
+//     if (is_negative) {
+//         expr.push_back({LLIR::condition_types::GROUP_CLOSE});
+//     }
+//     push({LLIR::types::VARIABLE, var});
+//     push({LLIR::types::VARIABLE, svar});
+//     auto shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, false);
+//     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
+// }
 void LLIR::NameBuilder::build() {
     //cpuf::printf("Rule_other");
     auto name = rule.getName().name;
@@ -497,133 +502,121 @@ void LLIR::NameBuilder::build() {
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto var = createEmptyVariable(generateVariableName());
     auto svar = createSuccessVariable();
-    LLIR::variable shadow_var;
+    Variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
     // if (*has_symbol_follow) {
     //     symbol_follow->back().first = name;
     // }
-    if (!*isToken && isCallingToken) {
-        var.type.type = LLIR::var_types::Token;
+    if (!isToken && isCallingToken) {
+        var.type.type = ValueType::Token;
     } else {
-        var.type = isCallingToken ? LLIR::var_type {LLIR::var_types::Token_result} : LLIR::var_type {LLIR::var_types::Rule_result};
+        var.type.type = isCallingToken ? ValueType::TokenResult : ValueType::RuleResult;
     }
-    auto block = createDefaultBlock(var, svar);
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    if (*isToken) {
+    auto statements = createDefaultStatements(var, svar);
+    statements.push_back(Variable::createStatement(var));
+    statements.push_back(Variable::createStatement(svar));
+    if (isToken) {
         // if (!isCallingToken)
         //     throw Error("Cannot call rule from token");
-        // remove variable assignemnt
-        block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
-        block.back().value = var.name;
-        var.property_access = {"node"};
-        block.erase(block.begin());
-        stdu::vector<LLIR::expr> expr;
-        auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
-        push(call);
-        shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, call, rule.quantifier, true);
-
+        // remove variable assigment
+        statements.back() = CounterIncreamentByLength::createStatement(CounterIncreamentByLength {.name = var.name});
+        statements.erase(statements.begin());
+        Expression expr;
+        auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
+        statements.push_back(call);
+        shadow_var = pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, call, rule.quantifier, true);
     } else {
         if (isCallingToken) {
-            block[0] = {
-                LLIR::types::ASSIGN_VARIABLE,
-                LLIR::variable_assign {
-                    var.name,
-                    LLIR::var_assign_types::ASSIGN,
-                    LLIR::var_assign_values::CURRENT_TOKEN
-                }
+            statements[0] = VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Pos::createExpression(Pos {.dereference = true})});
+            decltype(Symbol::path) symbol_path;
+            std::transform(name.begin(), name.end(), std::back_inserter(symbol_path),
+               [](const std::string &member){ return std::variant<FunctionCall, std::string> { member }; });
+            Expression expr = {
+                Pos::createExpressionValue(Pos {.dereference = true}),
+                ExpressionValue { .value = ExpressionElement::Equal },
+                Symbol::createExpressionValue(Symbol {.path = symbol_path})
             };
-            stdu::vector<LLIR::expr> expr = {
-                {LLIR::condition_types::CURRENT_TOKEN, LLIR::current_token {LLIR::condition_types::EQUAL, corelib::text::join(name, "_")}},
-            };
-            shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, block, uvar, var, svar, rule.quantifier, true);
+            shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, rule.quantifier, true);
         } else {
-            block.back().type = LLIR::types::INCREASE_POS_COUNTER_BY_TOKEN_LENGTH;
-            block.back().value = var.name;
-            var.property_access = {"node"};
-            block.erase(block.begin()); // remove variable assignment
-            stdu::vector<LLIR::expr> expr;
-            auto call = createDefaultCall(block, var, corelib::text::join(name, "_"), expr);
-            push(call);
-            shadow_var = pushBasedOnQualifier(rule, expr, block, uvar, var, svar, call, rule.quantifier);
-
+            statements.back() = CounterIncreamentByLength::createStatement(CounterIncreamentByLength {.name = var.name});
+            statements.erase(statements.begin()); // remove variable assignment
+            Expression expr;
+            auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
+            statements.push_back(call);
+            shadow_var = pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, call, rule.quantifier);
         }
 
     }
     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 }
 void LLIR::NospaceBuilder::build() {
-    *addSpaceSkip = false;
+    addSpaceSkip = false;
     removePrevSpaceSkip();
 }
-void LLIR::EscapedBuilder::build() {
-    //cpuf::printf("Rule_escaped\n");
-    const auto &escaped_c = rule.getEscaped();
-
-    stdu::vector<LLIR::expr> expression;
-    switch (escaped_c.c) {
-        case 's':
-            // do not add skip of spaces
-            *addSpaceSkip = false;
-            removePrevSpaceSkip();
-            //cpuf::printf("ON_EXPRESSION\n");
-            expression = {
-                {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-                {LLIR::condition_types::NOT_EQUAL},
-                {LLIR::condition_types::CHARACTER, ' '}
-            };
-            break;
-        default:
-            throw Error("Undefined char");
-
-    }
-    //cpuf::printf("escaped_open\n");
-    auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
-    auto var = createEmptyVariable(generateVariableName());
-    auto svar = createSuccessVariable();
-    var.type = {LLIR::var_types::CHAR};
-    stdu::vector<LLIR::member> block = {{LLIR::types::EXIT}};
-    if (!isFirst) {
-        block.insert(block.begin(), {LLIR::types::ERR, getErrorName(rule)});
-    }
-    auto block_after = createDefaultBlock(var, svar);
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    auto shadow_var = pushBasedOnQualifier(rule, expression, block, uvar, var, svar, rule.quantifier, true);
-    push({LLIR::types::IF, LLIR::condition{expression, block}});
-    add(block_after);
-    //cpuf::printf("escaped_close\n");
-    pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
-}
+// void LLIR::EscapedBuilder::build() {
+//     //cpuf::printf("Rule_escaped\n");
+//     const auto &escaped_c = rule.getEscaped();
+//
+//     Expression expression;
+//     switch (escaped_c.c) {
+//         case 's':
+//             // do not add skip of spaces
+//             addSpaceSkip = false;
+//             removePrevSpaceSkip();
+//             //cpuf::printf("ON_EXPRESSION\n")
+//             expression = {
+//                 Pos::createExpressionValue(Pos {.dereference = true}),
+//                 ExpressionValue {.value = ExpressionElement::NotEqual},
+//                 Char::createExpressionValue(Char {.value = ' '})
+//             };
+//             expression = {
+//                 {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
+//                 {LLIR::condition_types::NOT_EQUAL},
+//                 {LLIR::condition_types::CHARACTER, ' '}
+//             };
+//             break;
+//         default:
+//             throw Error("Undefined char");
+//
+//     }
+//     //cpuf::printf("escaped_open\n");
+//     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
+//     auto var = createEmptyVariable(generateVariableName());
+//     auto svar = createSuccessVariable();
+//     var.type = {LLIR::var_types::CHAR};
+//     Statements block = {{LLIR::types::EXIT}};
+//     if (!isFirst) {
+//         block.insert(block.begin(), {LLIR::types::ERR, getErrorName(rule)});
+//     }
+//     auto block_after = createDefaultStatements(var, svar);
+//     push({LLIR::types::VARIABLE, var});
+//     push({LLIR::types::VARIABLE, svar});
+//     auto shadow_var = pushBasedOnQualifier(rule, expression, block, uvar, var, svar, rule.quantifier, true);
+//     push({LLIR::types::IF, LLIR::condition{expression, block}});
+//     add(block_after);
+//     //cpuf::printf("escaped_close\n");
+//     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
+// }
 void LLIR::AnyBuilder::build() {
     //cpuf::printf("Rule_any\n");
     auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
-    var.type = {isToken ? LLIR::var_types::CHAR : LLIR::var_types::Token};
-    stdu::vector<LLIR::expr> expression;
-    stdu::vector<LLIR::member> block = {{LLIR::types::EXIT}};
+    var.type = {isToken ? ValueType::Char : ValueType::Token};
+    Statements stmt = Return::createStatements(Return {});;
     if (!isFirst) {
         auto rm = AST::RuleMember {.value = AST::RuleMemberAny() };
-        block.insert(block.begin(), LLIR::member {LLIR::types::ERR, getErrorName(rm)});
+        stmt.insert(stmt.begin(), ReportError::createStatement(ReportError {.message = getErrorName(rm)}));;
     }
-    stdu::vector<LLIR::member> block_after = createDefaultBlock(var, svar);
-    if (isToken) {
-        expression = {
-            {LLIR::condition_types::CURRENT_CHARACTER, (std::size_t) 0},
-            {LLIR::condition_types::EQUAL},
-            isToken ?
-            LLIR::expr {LLIR::condition_types::ESCAPED_CHARACTER, '0'}
-            :
-            LLIR::expr {LLIR::condition_types::CURRENT_TOKEN, "NONE"}
-        };
-    } else {
-
-    }
-
-    push({LLIR::types::VARIABLE, var});
-    push({LLIR::types::VARIABLE, svar});
-    push({LLIR::types::IF, LLIR::condition{expression, block}});
-    add(block_after);
+    Statements stmt_after = createDefaultStatements(var, svar);
+    Expression expression = {
+        Pos::createExpressionValue(Pos {.dereference = true}),
+        ExpressionValue { .value = ExpressionElement::Equal },
+        isToken ? Char::createExpressionValue(Char {.value = '0', .escaped = true}) : Symbol::createExpressionValue(Symbol {.path = {"Tokens", "NONE"}}),
+    };
+    statements.push_back(Variable::createStatement(var));
+    statements.push_back(Variable::createStatement(svar));
+    statements.push_back(If::createStatement(If {.expr = expression, .stmt = stmt}));;
+    statements.insert(statements.end(), stmt_after.begin(), stmt_after.end());
     pushConvResult(rule, var, {}, svar, {}, rule.quantifier);
 }
 /*
@@ -631,15 +624,15 @@ void LLIR::AnyBuilder::build() {
  * But may come back later
  */
 
-// auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, std::size_t index, LLIR::variable &var, LLIR::variable &svar) -> stdu::vector<LLIR::member> {
+// auto LLIR::OpBuilder::createBlock(const stdu::vector<AST::RuleMember> &rules, std::size_t index, LLIR::variable &var, LLIR::variable &svar) -> Statements {
 //     //[[assume(rules.size() >= 2)]];
 //     if (index >= rules.size()) {
 //         return {{LLIR::types::EXIT}};
 //     }
 //
 //     LLIR::ConvertionResult success_var;
-//     stdu::vector<stdu::vector<LLIR::member>> blocks;
-//     stdu::vector<stdu::vector<LLIR::expr>> conditions;
+//     stdu::vector<Statements> blocks;
+//     stdu::vector<Expression> conditions;
 //     auto rule = rules[index++];
 //     std::unique_ptr<LLIR::MemberBuilder> builder = nullptr;
 //     if (rule.isGroup()) {
@@ -664,7 +657,7 @@ void LLIR::AnyBuilder::build() {
 //     if (rule.isGroup()) {
 //         builder->getData().back().type = LLIR::types::RESET_POS_COUNTER; // remove space skip
 //         auto cond = LLIR::condition {
-//             stdu::vector<LLIR::expr> {
+//             Expression {
 //                 {LLIR::condition_types::NOT}, {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.svar}}
 //             },
 //             createBlock(rules, index, var, svar),
@@ -708,7 +701,7 @@ void LLIR::AnyBuilder::build() {
 //                 }
 //                 // push into else block an assignment to variable
 //                 if (var.type.type == LLIR::var_types::ARRAY) {
-//                     val.else_block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { var.name, {LLIR::function_call {"push", {stdu::vector<stdu::vector<LLIR::expr>> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.var}}}}}}}}});
+//                     val.else_block.push_back({LLIR::types::METHOD_CALL, LLIR::method_call { var.name, {LLIR::function_call {"push", {stdu::vector<Expression> {{LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = success_var.var}}}}}}}}});
 //                 } else {
 //                     auto v = !success_var.shadow_var.name.empty() && var.type.type != LLIR::var_types::STRING ? success_var.shadow_var : success_var.var;
 //                     auto assign_type = v.type.type == LLIR::var_types::STRING ? LLIR::var_assign_types::ADD : LLIR::var_assign_types::ASSIGN;
@@ -773,15 +766,15 @@ void LLIR::AnyBuilder::build() {
 // }
 void LLIR::OpBuilder::build() {
     const auto &op = rule.getOp().options;
-    NFA nfa(*tree, *fullname, nullptr, op, *fullname == constants::whitespace, false);
+    NFA nfa(tree, fullname, nullptr, op, fullname == constants::whitespace, false);
     nfa.build(false);
-    auto dfa = DFA::build(*tree, nfa);
-    LLIR::variable var = createEmptyVariable("");
-    var.type = deduceVarTypeByProd(rule) ;
-    if (var.type.type == LLIR::var_types::Rule)
-        var.type.type = LLIR::var_types::Rule_result;
-    if (var.type.type == LLIR::var_types::Rule_result || var.type.type == LLIR::var_types::Token_result)
-        var.property_access = {"node"};
+    auto dfa = DFA::build(tree, nfa);
+    auto var = createEmptyVariable("");
+    var.type.type = deduceVarTypeByProd(rule) ;
+    if (var.type.type == ValueType::Rule)
+        var.type.type = ValueType::RuleResult;
+    // if (var.type.type == ValueType::RuleResult || var.type.type == ValueType::TokenResult)
+    //     var.property_access = {"node"};
 
     if (rule.prefix.name.empty()) {
         var.name = generateVariableName();
@@ -789,15 +782,14 @@ void LLIR::OpBuilder::build() {
         var.name = rule.prefix.name;
     }
     auto svar = createSuccessVariable();
-    svar.value = {var_assign_values::NUMBER, 1};
-    push({types::VARIABLE, var});
-    push({types::VARIABLE, svar});
+    svar.value = Bool::createExpression(Bool {.value = true});;
+    statements.push_back(Variable::createStatement(var));
+    statements.push_back(Variable::createStatement(svar));
     if (dfa.get().size() == 2) { // first state plus end state
         // optimize to single switch instead of DFA lookup
-        switch_statement ss;
-        ss.expression = stdu::vector<expr>{ {LLIR::condition_types::CURRENT_TOKEN} };
+        Switch ss { .expression = Pos::createExpression(Pos {.dereference = true}) };
         auto state = dfa.get()[0];
-        push({types::SKIP_SPACES, *isToken});
+        statements.push_back(SkipSpaces::createStatement(SkipSpaces {.isToken = isToken}));
         for (const auto &t : state.transitions) {
             if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == constants::whitespace)
                 continue;
@@ -809,24 +801,26 @@ void LLIR::OpBuilder::build() {
             }
             ss.cases.emplace_back();
             if (std::holds_alternative<stdu::vector<std::string>>(t.first)) {
-                ss.cases.back().name = assign {var_assign_values::TOKEN_NAME, std::get<stdu::vector<std::string>>(t.first)};
+                ss.cases.back().first = Symbol::createRValue(Symbol {.path = {"Tokens", corelib::text::join(std::get<stdu::vector<std::string>>(t.first), "_")}});
             } else {
-                ss.cases.back().name = assign {var_assign_values::CHAR, std::get<char>(t.first)};
+                ss.cases.back().first = Char::createRValue(Char {.value = std::get<char>(t.first)});
             }
             Assert(t.second.accept_index != NFA::NULL_STATE, "NO_ACCEPT shouldn't be here");
             MemberBuilder builder(*this, op[t.second.accept_index]);
             builder.build();
-            auto &block = builder.getData();
-            block.emplace_back(LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {
-                var.name, var_assign_types::ASSIGN,
-                assign {var_assign_values::VAR_REFER, var_refer {.var = builder.getReturnVars().back().uvar}}
-            });
-            ss.cases.back().block = builder.getData();
+            auto &ss_case = ss.cases.back();
+            ss_case.second = builder.getData();
+            ss_case.second.emplace_back(VariableAssignment::createStatement(VariableAssignment {
+                .name = var.name,
+                .value = Symbol::createExpression(Symbol {
+                    .path = {builder.getReturnVars().back().uvar}
+                })
+            }));
         }
-        push({types::SWITCH, ss});
+        statements.push_back(Switch::createStatement(ss));
     } else {
-        auto dfa_index = dfas->get().size();
-        dfas->get().push_back(std::move(dfa));
+        auto dfa_index = dfas.get().size();
+        dfas.get().push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
         dfa_call_result.type.type = LLIR::var_types::INT;
         push({types::VARIABLE, dfa_call_result});

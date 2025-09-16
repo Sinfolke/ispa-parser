@@ -5,16 +5,16 @@ import logging;
 import cpuf.printf;
 import std;
 
-auto LLIR::IR::begin() -> ::stdu::vector<Data>::iterator {
+auto LLIR::IR::begin() -> ::stdu::vector<Production>::iterator {
     return data.begin();
 }
-auto LLIR::IR::end() -> stdu::vector<Data>::iterator {
+auto LLIR::IR::end() -> stdu::vector<Production>::iterator {
     return data.end();
 }
-auto LLIR::IR::cbegin() -> stdu::vector<Data>::const_iterator {
+auto LLIR::IR::cbegin() -> stdu::vector<Production>::const_iterator {
     return data.cbegin();
 }
-auto LLIR::IR::cend() -> stdu::vector<Data>::const_iterator {
+auto LLIR::IR::cend() -> stdu::vector<Production>::const_iterator {
     return data.cend();
 }
 auto LLIR::IR::size() -> std::size_t {
@@ -44,14 +44,14 @@ LLIR::DataBlockList LLIR::IR::getDataBlocksTerminals() const {
 LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() const {
     return getDataBlocks(false);
 }
-auto LLIR::IR::getData() const -> const stdu::vector<Data> & {
+auto LLIR::IR::getData() const -> const stdu::vector<Production> & {
     return data;
 }
 auto LLIR::IR::getDfas() const -> const DFA::Collection & {
     return dfa_collection;
 }
 
-auto LLIR::IR::operator[](std::size_t index) const -> const Data& {
+auto LLIR::IR::operator[](std::size_t index) const -> const Production& {
     return data[index];
 }
 
@@ -455,7 +455,7 @@ void LLIR::IR::convertMembers(const LLIR::Nodes &members, std::ostream& out) {
     for (const auto &mem : members)
         convertMember(mem, out);
 }
-void LLIR::IR::convertData(const LLIR::Data &data, std::ostream& out) {
+void LLIR::IR::convertData(const LLIR::Production &data, std::ostream& out) {
     if (corelib::text::isUpper(data.name.back())) {
         // token
         out << "Rule(" << corelib::text::join(data.name, "_") << ") {";

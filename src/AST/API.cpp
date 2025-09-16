@@ -124,7 +124,7 @@ namespace AST {
         return std::holds_alternative<std::shared_ptr<CllExprGroup>>(value);
     }
     bool CllExprValue::isVariable() const {
-        return std::holds_alternative<std::shared_ptr<CllVariable>>(value);
+        return std::holds_alternative<std::shared_ptr<CllVariableMention>>(value);
     }
     bool CllExprValue::isFunctionCall() const {
         return std::holds_alternative<CllFunctionCall>(value);
@@ -138,8 +138,8 @@ namespace AST {
     CllExprGroup& CllExprValue::getGroup() {
         return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
-    CllVariable& CllExprValue::getVariable() {
-        return *std::get<std::shared_ptr<CllVariable>>(value);
+    CllVariableMention& CllExprValue::getVariable() {
+        return *std::get<std::shared_ptr<CllVariableMention>>(value);
     }
     CllFunctionCall& CllExprValue::getFunctionCall() {
         return std::get<CllFunctionCall>(value);
@@ -154,8 +154,8 @@ namespace AST {
         return *std::get<std::shared_ptr<CllExprGroup>>(value);
     }
 
-    const CllVariable& CllExprValue::getVariable() const {
-        return *std::get<std::shared_ptr<CllVariable>>(value);
+    const CllVariableMention& CllExprValue::getVariable() const {
+        return *std::get<std::shared_ptr<CllVariableMention>>(value);
     }
 
     const CllFunctionCall& CllExprValue::getFunctionCall() const {
@@ -519,7 +519,7 @@ namespace AST {
         }, lhs.value, rhs.value);
     }
 
-    bool operator==(const CllVariable &lhs, const CllVariable &rhs) {
+    bool operator==(const CllVariableMention &lhs, const CllVariableMention &rhs) {
         return lhs.pre_increament == rhs.pre_increament &&
                lhs.post_increament == rhs.post_increament &&
                lhs.name == rhs.name &&

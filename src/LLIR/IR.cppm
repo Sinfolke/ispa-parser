@@ -26,24 +26,24 @@ export namespace LLIR {
         void convertSwitch(const switch_statement &statement, std::ostream& out);
         void convertMember(const member& mem, std::ostream& out);
         void convertMembers(const LLIR::Nodes &members, std::ostream& out);
-        void convertData(const LLIR::Data &data, std::ostream& out);
+        void convertData(const LLIR::Production &data, std::ostream& out);
         void printIR(std::ostream& out);
-        stdu::vector<Data> data;
+        stdu::vector<Production> data;
         DFA::Collection<DFA::TokenMachineDFA> dfa_collection;
         // output functions
         std::stack<std::string> current_pos_counter;
         std::size_t indentLevel = 0;
     public:
-        explicit IR(const stdu::vector<Data> &data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &dfa_collection) : data(data), dfa_collection(dfa_collection) {}
-        explicit IR(const stdu::vector<Data> &&data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &&dfa_collection) : data(std::move(data)), dfa_collection(dfa_collection) {}
+        explicit IR(const stdu::vector<Production> &data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &dfa_collection) : data(data), dfa_collection(dfa_collection) {}
+        explicit IR(const stdu::vector<Production> &&data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &&dfa_collection) : data(std::move(data)), dfa_collection(dfa_collection) {}
         IR() = default;
-        auto getData() const -> const stdu::vector<Data>&;
+        auto getData() const -> const stdu::vector<Production>&;
         auto getDfas() const -> const DFA::Collection<DFA::TokenMachineDFA>&;
-        auto operator[](std::size_t pos) const -> const Data&;
-        auto begin() -> stdu::vector<Data>::iterator;
-        auto end() -> stdu::vector<Data>::iterator;
-        auto cbegin() -> stdu::vector<Data>::const_iterator;
-        auto cend() -> stdu::vector<Data>::const_iterator;
+        auto operator[](std::size_t pos) const -> const Production&;
+        auto begin() -> stdu::vector<Production>::iterator;
+        auto end() -> stdu::vector<Production>::iterator;
+        auto cbegin() -> stdu::vector<Production>::const_iterator;
+        auto cend() -> stdu::vector<Production>::const_iterator;
         auto size() -> std::size_t;
         auto empty() -> bool;
         auto clear() -> void;

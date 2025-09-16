@@ -18,7 +18,7 @@ export namespace AST {
     struct CllExprValue;
     struct CllExprLogical;
     struct CllExprLogicalPart;
-    struct CllVariable;
+    struct CllVariableMention;
     struct rvalue;
     struct RuleMember;
     using CllFunctionBodyCall = CllFunctionArguments;
@@ -198,19 +198,19 @@ export namespace AST {
     };
 
     struct CllExprValue {
-        std::variant<std::shared_ptr<CllExprGroup>, std::shared_ptr<CllVariable>, CllFunctionCall, CllMethodCall, rvalue> value;
+        std::variant<std::shared_ptr<CllExprGroup>, std::shared_ptr<CllVariableMention>, CllFunctionCall, CllMethodCall, rvalue> value;
         bool isGroup() const;
         bool isVariable() const;
         bool isFunctionCall() const;
         bool isMethodCall() const;
         bool isrvalue() const;
         CllExprGroup &getGroup();
-        CllVariable &getVariable();
+        CllVariableMention &getVariable();
         CllFunctionCall &getFunctionCall();
         CllMethodCall &getMethodCall();
         rvalue &getrvalue();
         const CllExprGroup &getGroup() const;
-        const CllVariable &getVariable() const;
+        const CllVariableMention &getVariable() const;
         const CllFunctionCall &getFunctionCall() const;
         const CllMethodCall &getMethodCall() const;
         const rvalue &getrvalue() const;
@@ -279,7 +279,7 @@ export namespace AST {
         friend struct ::uhash;
     };
 
-    struct CllVariable {
+    struct CllVariableMention {
         std::optional<char> pre_increament;
         std::optional<char> post_increament;
         std::string name;
@@ -305,7 +305,7 @@ export namespace AST {
         CllType type;
         std::string name;
         char op = '\0';
-        CllExpr value;
+        std::optional<CllExpr> value;
     private:
         auto members() const  {
             return std::tie(type, name, op, value);
@@ -579,7 +579,7 @@ export namespace AST {
     bool operator==(const CllExprCompare &lhs, const CllExprCompare &rhs);
     bool operator==(const CllExprLogical &lhs, const CllExprLogical &rhs);
     bool operator==(const CllExpr &lhs, const CllExpr &rhs);
-    bool operator==(const CllVariable &lhs, const CllVariable &rhs);
+    bool operator==(const CllVariableMention &lhs, const CllVariableMention &rhs);
     bool operator==(const CllIf &lhs, const CllIf &rhs);
     bool operator==(const CllVar &lhs, const CllVar &rhs);
     bool operator==(const CllLoopWhile &lhs, const CllLoopWhile &rhs);

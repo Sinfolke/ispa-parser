@@ -37,7 +37,7 @@ export namespace AST {
         AST::rvalue createRvalue(const Parser::Rule &rule);
         AST::CllFunctionArguments createCllFunctionArguments(const Parser::Rule &rule);
         AST::CllFunctionCall createCllFunctionCall(const Parser::Rule &rule);
-        AST::CllVariable createCllVariable(const Parser::Rule &rule);
+        AST::CllVariableMention createCllVariable(const Parser::Rule &rule);
         AST::CllCompareOp createCllCompareOp(const Parser::Token &token);
         AST::CllLogicalOp createCllLogicalOp(const Parser::Token &token);
         AST::CllExprValue createCllExprValue(const Parser::Rule &value);

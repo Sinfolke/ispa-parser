@@ -24,23 +24,13 @@ export namespace LLIR {
         bool &has_symbol_follow;
         AST::Tree &tree;
         DFA::Collection<DFA::TokenMachineDFA> &dfas;
-        auto initializationCheck() -> bool;
-        explicit BuilderDataWrapper(LLIR::BuilderData &data)
-            : variable_count(data.variable_count),
-        isToken(data.isToken),
-        insideLoop(data.insideLoop),
-        addSpaceSkip(data.addSpaceSkip),
-        isFirst(data.isFirst),
-        tokensOnly(data.tokensOnly),
-        fullname(data.fullname),
-        vars(data.vars),
-        key_vars(data.key_vars),
-        unnamed_datablock_units(data.unnamed_datablock_units),
-        symbol_follow(data.symbol_follow),
-        has_symbol_follow(data.has_symbol_follow),
-        tree(data.tree),
-        dfas(data.dfas)
-        {}
+        BuilderDataWrapper(LLIR::BuilderData &data) : BuilderDataWrapper(
+            data.variable_count, data.isToken, data.insideLoop,
+            data.addSpaceSkip, data.isFirst, data.tokensOnly,
+            data.fullname, data.vars, data.key_vars,
+            data.unnamed_datablock_units,data.symbol_follow, data.has_symbol_follow,
+            data.tree, data.dfas
+        ) {}
         BuilderDataWrapper(
             std::size_t &variable_count,
             bool &isToken,

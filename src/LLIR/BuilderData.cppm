@@ -18,9 +18,9 @@ namespace LLIR {
         bool isFirst = true;
         int tokensOnly = -1;
         stdu::vector<std::string> fullname;
-        stdu::vector<LLIR::variable> vars;
-        stdu::vector<std::pair<std::string, LLIR::variable>> key_vars;
-        stdu::vector<LLIR::variable> unnamed_datablock_units;
+        stdu::vector<Variable> vars;
+        stdu::vector<std::pair<std::string, Variable>> key_vars;
+        stdu::vector<Variable> unnamed_datablock_units;
         SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
         AST::Tree &tree;

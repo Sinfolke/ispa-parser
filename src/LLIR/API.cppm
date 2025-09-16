@@ -10,7 +10,6 @@ export namespace LLIR {
     struct Expression;
     struct Statement;
     struct Statements;
-    struct MethodCall;
 }
 // Promotion trait
 template<typename T>
@@ -37,7 +36,8 @@ auto promote_or_construct(T&& value) {
 
 export namespace LLIR {
     enum class ExpressionElement {
-        GroupOpen, GroupClose, And, Or, Not, Equal, NotEqual,
+        GroupOpen, GroupClose, SquareBraceOpen, SquareBraceClose,
+        And, Or, Not, Equal, NotEqual,
         Higher, Lower, HigherOrEqual, LowerOrEqual,
         Add, Minus, Multiply, Divide, Modulo,
         PlusPlus, MinusMinus
@@ -45,7 +45,7 @@ export namespace LLIR {
     enum class OperatorType {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
-    enum class RValueType {
+    enum class ValueType {
         Undef, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult, Any
     };
     enum class ArrayMethods {
@@ -84,6 +84,7 @@ export namespace LLIR {
     };
     struct Char : RValueLevel {
         char value;
+        bool escaped = false;
     };
     struct Int : RValueLevel {
         long long value;
@@ -101,9 +102,20 @@ export namespace LLIR {
         stdu::vector<stdu::vector<ExpressionValue>> values;
     };
     struct Map : RValueLevel {
-        stdu::vector<std::pair<std::variant<Int, String>, RValue>> values;
+        stdu::vector<std::variant<Int, String>> keys;
+        stdu::vector<RValue> values;
+        template<typename T>
+        requires std::is_convertible_v<std::variant<Int, String>, T>
+        auto areKeysJustT() -> bool {
+            for (const auto &key : keys) {
+                if (!std::holds_alternative<T>(key))
+                    return false;
+            }
+            return true;
+        };
     };
     struct Pos : RValueLevel {
+        std::size_t offset;
         bool dereference = true;
         bool sequence = false;
     };
@@ -116,7 +128,6 @@ export namespace LLIR {
         stdu::vector<Expression> args;
     };
     struct Symbol : RValueLevel {
-        std::string name;
         stdu::vector<std::variant<FunctionCall, std::string>> path;
     };
     // a symbol having storage reserved
@@ -128,10 +139,12 @@ export namespace LLIR {
     struct Rule : RValueLevel {};
     struct TokenResult {};
     struct RuleResult {};
+    struct Type {
+        ValueType type;
+        stdu::vector<Type> template_parameters;
+    };
     class RValue : public ExpressionValueLevel {
-        stdu::vector<RValue> template_parameters;
         std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult> value;
-        bool _empty;
         void set_by_index(std::size_t index) {
             // generate a table of lambdas for each index
             static constexpr auto table = []<std::size_t... Is>(std::index_sequence<Is...>) {
@@ -146,30 +159,17 @@ export namespace LLIR {
                 throw std::out_of_range("invalid variant index");
         }
     public:
-        RValue() : _empty(true) {}
-        template<typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(template_parameters), List>
-        RValue(RValueType type, List templates = {}) : _empty(true), template_parameters(templates){ set_by_index(static_cast<std::size_t>(type)); }
-        template<typename T, typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
-        RValue(const T &value, List templates = {}) : value(value), template_parameters(templates), _empty(false) {}
-        template<typename T, typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
-        RValue(T &&value, List templates = {}) : value(std::move(value)), template_parameters(templates), _empty(false) {}
+        RValue() {}
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T> && (!std::is_same_v<T, std::monostate>)
+        RValue(T &&value) : value(std::move(value)) {}
 
         void clear() {
-            _empty = true;
             value = std::monostate {};
         }
-        template<typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(template_parameters), List>
-        void set(RValueType type, List templates = {}) { _empty = value.index() != static_cast<std::size_t>(type) && type != RValueType::Any; template_parameters = templates; set_by_index(static_cast<std::size_t>(type)); }
-        template<typename T, typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
-        void set(const T &value, List templates = {}) {_empty = false; template_parameters = templates; this->value = value; }
-        template<typename T, typename List = decltype(template_parameters)>
-        requires std::is_constructible_v<decltype(value), T> && !std::is_same_v<T, std::monostate> && std::is_constructible_v<decltype(template_parameters), List>
-        void set(T &&value, List templates = {})  {_empty = false; template_parameters = templates; this->value = std::move(value); }
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T> && (!std::is_same_v<T, std::monostate>)
+        void set(T &&value)  {this->value = std::move(value); }
 
 
         bool isChar()    const { return std::holds_alternative<Char>(value); }
@@ -186,7 +186,7 @@ export namespace LLIR {
         bool isTokenResult()  const { return std::holds_alternative<TokenResult>(value); }
         bool isRuleResult()  const { return std::holds_alternative<RuleResult>(value); }
         bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
-        bool empty() const { return _empty; }
+        bool empty() const { return std::holds_alternative<std::monostate>(value); }
 
         Char&           getChar()    { return std::get<Char>(value); }
         Int&            getInt()     { return std::get<Int>(value); }
@@ -216,8 +216,7 @@ export namespace LLIR {
         const TokenResult&    getTokenResult()  const { return std::get<TokenResult>(value); }
         const RuleResult&     getRuleResult()  const { return std::get<RuleResult>(value); }
 
-        RValueType type() const { return static_cast<RValueType>(value.index()); }
-        auto templateParameters() const  { return template_parameters; }
+        ValueType type() const { return static_cast<ValueType>(value.index()); }
         auto get() const { return value; }
     };
     struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
@@ -230,6 +229,13 @@ export namespace LLIR {
     struct Return : ExpressionValueLevel {
         Expression value;
     };
+    struct StringCompare : ExpressionValueLevel {
+        String str;
+        bool is_string;
+    };
+    struct Hex : ExpressionValueLevel {
+        std::string hex;
+    };
     struct VariableAssignment : ExpressionValueLevel {
         std::string name;
         OperatorType type = OperatorType::Assign;
@@ -237,16 +243,21 @@ export namespace LLIR {
     };
     struct Variable : ExpressionValueLevel {
         std::string name;
-        RValue value;
+        Type type;
+        Expression value;
         // Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
         // Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
         auto empty() { return name.empty(); }
     };
     // possibly will be removed *
     struct CounterIncreament : ExpressionValueLevel {};
-    struct CounterIncreamentByLength : ExpressionValueLevel {};
+    struct CounterIncreamentByLength : ExpressionValueLevel {
+        std::string name;
+    };
     struct ResetPosCounter : ExpressionValueLevel {};
-    struct PushPosCounter : ExpressionValueLevel {};
+    struct PushPosCounter : ExpressionValueLevel {
+        std::string name;
+    };
     struct PopPosCounter : ExpressionValueLevel {};
     //                         *
     struct SkipSpaces : ExpressionValueLevel {
@@ -261,10 +272,11 @@ export namespace LLIR {
     };
     struct ExpressionValue : ExpressionLevel {
         std::variant<
+            std::monostate,
             RValue,
             ExpressionElement,
             FunctionCall,
-            MethodCall,
+            StringCompare,
             Return,
             Break,
             Continue,
@@ -279,10 +291,11 @@ export namespace LLIR {
         > value;
 
         // ======= isXXX functions =======
+        bool empty() const { return std::holds_alternative<std::monostate>(value); }
         bool isRvalue() const { return std::holds_alternative<RValue>(value); }
         bool isExpressionElement() const { return std::holds_alternative<ExpressionElement>(value); }
         bool isFunctionCall() const { return std::holds_alternative<FunctionCall>(value); }
-        bool isMethodCall() const { return std::holds_alternative<MethodCall>(value); }
+        bool isStringCompare() const { return std::holds_alternative<StringCompare>(value); }
         bool isReturn() const { return std::holds_alternative<Return>(value); }
         bool isBreak() const { return std::holds_alternative<Break>(value); }
         bool isContinue() const { return std::holds_alternative<Continue>(value); }
@@ -299,7 +312,7 @@ export namespace LLIR {
         RValue& getRvalue() { return std::get<RValue>(value); }
         ExpressionElement& getExpressionElement() { return std::get<ExpressionElement>(value); }
         FunctionCall& getFunctionCall() { return std::get<FunctionCall>(value); }
-        MethodCall& getMethodCall() { return std::get<MethodCall>(value); }
+        StringCompare& getStringCompare() { return std::get<StringCompare>(value); }
         Return& getReturn() { return std::get<Return>(value); }
         Break& getBreak() { return std::get<Break>(value); }
         Continue& getContinue() { return std::get<Continue>(value); }
@@ -316,7 +329,7 @@ export namespace LLIR {
         const RValue& getRvalue() const { return std::get<RValue>(value); }
         const ExpressionElement& getExpressionElement() const { return std::get<ExpressionElement>(value); }
         const FunctionCall& getFunctionCall() const { return std::get<FunctionCall>(value); }
-        const MethodCall& getMethodCall() const { return std::get<MethodCall>(value); }
+        const StringCompare& getStringCompare() const { return std::get<StringCompare>(value); }
         const Return& getReturn() const { return std::get<Return>(value); }
         const Break& getBreak() const { return std::get<Break>(value); }
         const Continue& getContinue() const { return std::get<Continue>(value); }
@@ -357,7 +370,7 @@ export namespace LLIR {
     };
     struct Switch : StatementLevel {
         Expression expression;
-        stdu::vector<std::pair<std::string, Statements>> cases;
+        stdu::vector<std::pair<RValue, Statements>> cases;
     };
     struct Statement : StatementsLevel {
         std::variant<Variable, If, While, DoWhile, Switch, Expression> value;
@@ -496,8 +509,8 @@ export namespace LLIR {
         stdu::vector<expr> expression;
         stdu::vector<unit> cases;
     };
-    using inclosed_map = std::unordered_map<std::string, std::pair<stdu::vector<expr>, var_type>>;
-    using regular_data_block = std::pair<stdu::vector<expr>, var_type>;
+    using inclosed_map = std::unordered_map<std::string, std::pair<Expression, Type>>;
+    using regular_data_block = std::pair<Expression, Type>;
     struct DataBlock {
         std::variant<std::monostate, regular_data_block, inclosed_map> value;
         bool is_inclosed_map() const;
@@ -520,10 +533,10 @@ export namespace LLIR {
         std::size_t begin;
         std::size_t end;
     };
-    struct Data {
+    struct Production {
         DataBlock block;
         stdu::vector<std::string> name;
-        stdu::vector<member> members;
+        Statements members;
     };
     using DataBlockList = utype::unordered_map<stdu::vector<std::string>, DataBlock>;
     using Nodes = stdu::vector<member>;

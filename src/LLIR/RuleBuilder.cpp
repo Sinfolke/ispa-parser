@@ -6,7 +6,7 @@ import logging;
 import cpuf.printf;
 import std;
 
-auto LLIR::RuleBuilder::getData() -> LLIR::Data& {
+auto LLIR::RuleBuilder::getData() -> LLIR::Production& {
     return data;
 }
 
@@ -23,16 +23,16 @@ void LLIR::RuleBuilder::build() {
 
 
 LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
-    LLIR::inclosed_map map;
+    inclosed_map map;
     for (const auto &[name, variable] : key_vars) {
-        map.try_emplace(name, stdu::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = variable}}}, variable.type);
+        map.try_emplace(name, Symbol::createExpression(Symbol {.path = variable.name}));
     }
     return map;
 }
 LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block, bool ro) {
-    LLIR::DataBlock block;
+    LLIR::DataBlock stmt;
     if (data_block.empty()) {
-        return block;
+        return stmt;
     }
     if (data_block.isRegularDataBlock()) {
         if (data_block.isWithKeys()) {
@@ -44,19 +44,19 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
                 CllExprBuilder expr_builder(bd, expr);
                 initial_map.try_emplace(name, expr_builder.get(), expr_builder.deduceType());
             }
-            block.value = initial_map;
+            stmt.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
             auto type = expr_builder.deduceType();
-            if (type.type == LLIR::var_types::Rule_result) {
-                type.type = LLIR::var_types::Rule;
-            } else if (type.type == LLIR::var_types::Token_result) {
-                type.type = LLIR::var_types::Token;
+            if (type.type == ValueType::RuleResult) {
+                type.type = ValueType::Rule;
+            } else if (type.type == ValueType::TokenResult) {
+                type.type = ValueType::Token;
             }
             expr_builder.build();
-            block.value = std::make_pair(expr_builder.get(), type);
+            stmt.value = std::make_pair(expr_builder.get(), type);
         }
     } else {
         // templated data block
@@ -67,15 +67,15 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
                 throw Error("More keys than values: {}", name);
             }
             auto type = unnamed_datablock_units.front().type;
-            if (type.type == LLIR::var_types::Rule_result) {
-                type.type = LLIR::var_types::Rule;
-            } else if (type.type == LLIR::var_types::Token_result) {
-                type.type = LLIR::var_types::Token;
+            if (type.type == ValueType::RuleResult) {
+                type.type = ValueType::Rule;
+            } else if (type.type == ValueType::TokenResult) {
+                type.type = ValueType::Token;
             }
-            initial_map.try_emplace(name, stdu::vector<LLIR::expr> {LLIR::expr {LLIR::condition_types::VARIABLE, LLIR::var_refer {.var = unnamed_datablock_units.front()}}}, type);
+            initial_map.try_emplace(name, Symbol::createExpression(Symbol {.path = unnamed_datablock_units.front().name}));
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
-        block.value = initial_map;
+        stmt.value = initial_map;
     }
-    return block;
+    return stmt;
 }

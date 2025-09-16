@@ -33,7 +33,7 @@ void LexerBuilder::build() {
     fcdt.build();
     utype::unordered_set<stdu::vector<stdu::vector<std::string>>> build;
     DFA::Collection function_dfas;
-    stdu::vector<LLIR::Data> functions;
+    stdu::vector<LLIR::Production> functions;
     std::size_t dfa_count = 0;
     for (const auto &mem : fcdt.get()) {
         // mem should be copy

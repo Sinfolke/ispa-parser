@@ -1,66 +1,66 @@
 module LLIR.CllBuilder;
 import LLIR;
 import LLIR.Rule.MemberBuilder;
-import LLIR.RvalueBuilder;
+import LLIR.RValueBuilder;
 import logging;
 import cpuf.printf;
+import dstd;
 import std;
 // get functions
-auto LLIR::CllExprBuilder::get() -> Expression {
+auto LLIR::CllExprBuilder::get() const -> const Expression& {
     return result;
 }
 
-auto LLIR::CllFunctionBuilder::get() -> function_call {
+auto LLIR::CllFunctionBuilder::get() const -> const FunctionCall& {
     return result;
 }
-auto LLIR::CllMethodCallBuilder::get() -> method_call {
+auto LLIR::CllMethodCallBuilder::get() const -> const StorageSymbol& {
     return result;
 }
 
 auto LLIR::CllExprBuilder::CllExprGroupToIR(const AST::CllExpr &group) -> Expression {
-    stdu::vector<LLIR::expr> expr;
+    Expression expr;
     auto expression = CllExprLogicalToIR(group.value);
-    expr.push_back({LLIR::condition_types::GROUP_OPEN});
+    expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
     expr.insert(expr.end(), expression.begin(), expression.end());
-    expr.push_back({LLIR::condition_types::GROUP_CLOSE});
+    expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
     return expr;
 }
 auto LLIR::CllExprBuilder::CllExprValueToIR(const AST::CllExprValue &value) -> Expression {
-    stdu::vector<LLIR::expr> expr;
+    Expression expr;
     if (value.isGroup()) {
         expr = CllExprGroupToIR(value.getGroup().expr);
     } else if (value.isMethodCall()) {
         CllMethodCallBuilder builder(*this, value.getMethodCall());
         builder.build();
-        expr.push_back({LLIR::condition_types::METHOD_CALL, builder.get()});
+        expr = StorageSymbol::createExpression(std::move(builder.get()));
     } else if (value.isFunctionCall()) {
         CllFunctionBuilder builder(*this, value.getFunctionCall());
         builder.build();
-        expr.push_back({LLIR::condition_types::FUNCTION_CALL, builder.get()});
+        expr = FunctionCall::createExpression(std::move(builder.get()));
     } else if (value.isVariable()) {
-        LLIR::var_refer refer;
         const auto &v = value.getVariable();
-        refer.var = { .name = v.name };
-        refer.pre_increament = v.pre_increament;
-        refer.post_increament = v.post_increament;
+        Symbol variable_mention;
+        BuilderBase::pushVariablePrefix(expr, v.pre_increament);
+        expr.push_back(Symbol::createExpressionValue(Symbol {.path = v.name}));
         if (v.braceExpression.has_value()) {
-            CllExprBuilder builder(*this, v.braceExpression.value());
-            builder.build();
-            refer.brace_expression = builder.get();
+            expr.push_back(ExpressionValue {.value = ExpressionElement::SquareBraceOpen});
+            CllExprBuilder brace_expr(*this, v.braceExpression.value());
+            expr.insert(expr.end(), brace_expr.get().begin(), brace_expr.get().end());
         }
-        expr.push_back({LLIR::condition_types::VARIABLE, refer});
+        BuilderBase::pushVariablePrefix(expr, v.post_increament);
     } else if (value.isrvalue()) {
-        RvalueBuilder builder(*this, value.getrvalue());
+        RValueBuilder builder(*this, value.getrvalue());
         builder.build();
-        expr.push_back({LLIR::condition_types::RVALUE, builder.get()});
-    } else throw Error("Undefined expression");
+        expr = RValue::createExpression(builder.get());
+    } else throw Error("Undefined expression member in AST");
     return expr;
 }
 auto LLIR::CllExprBuilder::CllExprTermToIR(const AST::CllExprTerm &term) -> Expression {
     // if (rule.name == Parser::Rules::cll_function_call)
-    stdu::vector<LLIR::expr> cond = CllExprValueToIR(term.value);
+    auto cond = CllExprValueToIR(term.value);
     for (int i = 0; i < term.rights.size(); i++) {
-        cond.push_back(BuilderBase::CllOpToExpr(term.rights[i].first));
+        cond.push_back(ExpressionValue {.value = BuilderBase::CllOpToExpr(term.rights[i].first) });
         auto res = CllExprValueToIR(term.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
@@ -68,33 +68,33 @@ auto LLIR::CllExprBuilder::CllExprTermToIR(const AST::CllExprTerm &term) -> Expr
 }
 auto LLIR::CllExprBuilder::CllExprAdditionToIR(const AST::CllExprAddition &addition) -> Expression {
     // if (rule.name == Parser::Rules::cll_function_call)
-    stdu::vector<LLIR::expr> cond = CllExprTermToIR(addition.value);
+    Expression cond = CllExprTermToIR(addition.value);
     for (int i = 0; i < addition.rights.size(); i++) {
-        cond.push_back(BuilderBase::CllOpToExpr(addition.rights[i].first));
+        cond.push_back(ExpressionValue {.value = BuilderBase::CllOpToExpr(addition.rights[i].first) });
         auto res = CllExprTermToIR(addition.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
     return cond;
 }
 auto LLIR::CllExprBuilder::CllExprCompareToIR(const AST::CllExprCompare &compare) -> Expression {
-    stdu::vector<LLIR::expr> cond = CllExprAdditionToIR(compare.value);
+    Expression cond = CllExprAdditionToIR(compare.value);
     for (int i = 0; i < compare.rights.size(); i++) {
-        cond.push_back(BuilderBase::CllCompareOpToExpr(compare.rights[i].first));
+        cond.push_back(ExpressionValue {.value = BuilderBase::CllCompareOpToExpr(compare.rights[i].first) });
         auto res = CllExprAdditionToIR(compare.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
     return cond;
 }
 auto LLIR::CllExprBuilder::CllExprLogicalToIR(const AST::CllExprLogical &logical) -> Expression {
-    stdu::vector<LLIR::expr> cond = CllExprCompareToIR(logical.value);
+    Expression cond = CllExprCompareToIR(logical.value);
     for (int i = 0; i < logical.rights.size(); i++) {
-        cond.push_back({BuilderBase::CllLogicalOpToIR(logical.rights[i].first)});
+        cond.push_back(ExpressionValue {.value = BuilderBase::CllLogicalOpToIR(logical.rights[i].first)});
         auto res = CllExprCompareToIR(logical.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
     return cond;
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &value) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &value) -> Type {
     if (value.isFunctionCall()) {
         // todo - get function call type
     } else if (value.isGroup()) {
@@ -102,42 +102,43 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &valu
     } else if (value.isMethodCall()) {
         // todo - get method call type
     } else if (value.isVariable()) {
-        auto find_it = std::find_if(vars->begin(), vars->end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
-        if (find_it == vars->end())
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
+        if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr: {}",  value.getVariable().name);
-        if (find_it->type.type == LLIR::var_types::Rule_result)
-            return {LLIR::var_types::Rule};
-        if (find_it->type.type == LLIR::var_types::Token_result)
-            return {LLIR::var_types::Token};
+        BuilderBase::undoRuleResult(find_it->type.type);
+        if (find_it->type.type == ValueType::RuleResult)
+            return {ValueType::Rule};
+        if (find_it->type.type == ValueType::TokenResult)
+            return {ValueType::Token};
         return find_it->type;
     } else if (value.isrvalue()) {
-        RvalueBuilder rvalue(*this, value.getrvalue());
-        return (rvalue.deduceType());
+        RValueBuilder rvalue(*this, value.getrvalue());
+        return rvalue.deduceType();
     } else
         throw Error("Undefined expr value member");
     return {};
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprTerm(const AST::CllExprTerm &term) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprTerm(const AST::CllExprTerm &term) -> Type {
     // type is explicitly based on value. We may not check others in addition
     return deduceTypeFromExprValue(term.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprAddition(const AST::CllExprAddition &addition) -> LLIR::var_type{
+auto LLIR::CllExprBuilder::deduceTypeFromExprAddition(const AST::CllExprAddition &addition) -> Type {
     // same as with term
     return deduceTypeFromExprTerm(addition.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprCompare(const AST::CllExprCompare &compare) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprCompare(const AST::CllExprCompare &compare) -> Type {
     // if any comparasion exists it is boolean
     if (compare.rights.size() != 0)
-        return {LLIR::var_types::BOOLEAN};
+        return {ValueType::Bool};
     return deduceTypeFromExprAddition(compare.value);
 }
-auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> Type {
     // if &&/|| exists it is always boolean
     if (logical.rights.size() != 0)
-        return {LLIR::var_types::BOOLEAN};
+        return {ValueType::Bool};
     return deduceTypeFromExprCompare(logical.value);
 }
-auto LLIR::CllExprBuilder::deduceType() -> LLIR::var_type {
+auto LLIR::CllExprBuilder::deduceType() -> Type {
     return deduceTypeFromExprLogical(expr->value);
 }
 auto LLIR::CllFunctionBuilder::FunctionBodyCallToIR(const AST::CllFunctionBodyCall &body) -> stdu::vector<Expression> {
@@ -152,13 +153,13 @@ auto LLIR::CllFunctionBuilder::FunctionBodyCallToIR(const AST::CllFunctionBodyCa
 
 
 void LLIR::CllBuilder::build() {
-    *addSpaceSkip = false;
-    std::unique_ptr<LLIR::BuilderBase> builder = nullptr;
+    addSpaceSkip = false;
+    std::unique_ptr<BuilderBase> builder = nullptr;
 
-    if (cll->isVar()) {
-        builder = std::make_unique<CllVarBuilder>(*this, cll->getVar());
-    } else if (cll->isIf()) {
-        builder = std::make_unique<CllIfBuilder>(*this, cll->getIf());
+    if (cll.isVar()) {
+        builder = std::make_unique<CllVarBuilder>(*this, cll.getVar());
+    } else if (cll.isIf()) {
+        builder = std::make_unique<CllIfBuilder>(*this, cll.getIf());
     } else {
         throw Error("Undefined cll entry");
     }
@@ -168,45 +169,40 @@ void LLIR::CllBuilder::build() {
 }
 void LLIR::CllVarBuilder::build() {
     // get data section
-    LLIR::var_type ir_type;
-    LLIR::var_assign_types assign_types;
-    LLIR::assign assign;
-    if (!var->type.type.empty())
-        ir_type = CllTypeToIR(var->type);
-    if (var->op != '\0') {
-        assign_types = CllOpToIR(var->op);
-        CllExprBuilder builder(*this, var->value);
-        builder.build();
-        assign = {LLIR::var_assign_values::EXPR, builder.get()};
+    Variable variable {.name = var.name};
+    if (var.type.type.empty()) {
+        variable.type = CllTypeToIR(var.type);
+        if (var.value.has_value()) {
+            CllExprBuilder builder(*this, var.value.value());
+            builder.build();
+            variable.value = builder.get();
+        }
     }
-    if (!var->type.type.empty()) {
-        LLIR::variable v = {var->name, ir_type, assign};
-        push({LLIR::types::VARIABLE, v});
-        vars->push_back(v);
-    } else {
-        push({LLIR::types::ASSIGN_VARIABLE, LLIR::variable_assign {var->name, assign_types, assign}});
-    }
+    statements.push_back(var.type.type.empty() ?
+        VariableAssignment::createStatement(VariableAssignment {.name = std::move(variable.name), .value = std::move(variable.value)})
+            :
+        Variable::createStatement(variable)
+    );
 }
 void LLIR::CllIfBuilder::build() {
-    MemberBuilder rules_builder(*this, cond->stmt);
-    CllExprBuilder expr_builder(*this, cond->expr);
+    MemberBuilder rules_builder(*this, cond.stmt);
+    CllExprBuilder expr_builder(*this, cond.expr);
     rules_builder.build();
     expr_builder.build();
-    LLIR::condition condition;
-    condition.expression = expr_builder.get();
-    condition.block = rules_builder.getData();
+    statements.push_back(If {.expr = std::move(expr_builder.get()), .stmt = std::move(rules_builder.getData())});
 }
 
 void LLIR::CllExprBuilder::build() {
-    result = CllExprLogicalToIR(expr->value);
+    result = CllExprLogicalToIR(expr.value);
 }
 void LLIR::CllFunctionBuilder::build() {
-    result.name = call->name;
-    result.params = FunctionBodyCallToIR(call->body);
+    result.name = call.name;
+    result.args = FunctionBodyCallToIR(call.body);
 }
 void LLIR::CllMethodCallBuilder::build() {
-    result.var_name = call->name;
+    StorageSymbol symbol;
+    symbol.what = call.name;
     CllFunctionBuilder fun(*this, call->body);
     fun.build();
-    result.calls = {fun.get()};
+    result.path = {fun.get()};
 }

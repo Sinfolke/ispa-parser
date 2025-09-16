@@ -98,12 +98,11 @@ auto DFA::mergeDFAS(stdu::vector<MDFA> &dfas) -> MDFA {
     }
     return initial_states;
 }
-auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> CharMachineDFA {
+auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> TokenMachineDFA {
     MDFA mdfa(nfa); mdfa.build();
     SDFA sdfa(mdfa); sdfa.build();
     MinDFA min_dfa(sdfa); min_dfa.minimize();
-    SortedDFA sorted_dfa(ast, min_dfa); sorted_dfa.sort();
-    CharMachineDFA machine_dfa(ast, sorted_dfa); machine_dfa.build();
+    TokenMachineDFA machine_dfa(ast, min_dfa); machine_dfa.build();
     return machine_dfa;
 }
 auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> CharMachineDFA {

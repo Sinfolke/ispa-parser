@@ -12,15 +12,15 @@ import std;
 
 export namespace LLIR {
     class RuleBuilder : BuilderData {
-        LLIR::Data data;
+        Production data;
         const AST::Rule *rule;
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
     public:
-        RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule, DFA::Collection<DFA::TokenMachineDFA> &dfas) : BuilderData(ast, &dfas), rule(&rule) {
+        RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule, DFA::Collection<DFA::TokenMachineDFA> &dfas) : BuilderData(ast, dfas), rule(&rule) {
             fullname = name;
         }
         void build();
         auto createDataBlock(const AST::DataBlock &data_block, bool ro) -> LLIR::DataBlock;
-        auto getData() -> LLIR::Data&;
+        auto getData() -> Production&;
     };
 }

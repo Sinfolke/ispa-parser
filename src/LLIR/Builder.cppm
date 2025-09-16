@@ -10,7 +10,7 @@ import std;
 
 namespace LLIR {
     export class Builder {
-        stdu::vector<LLIR::Data> data;
+        stdu::vector<LLIR::Production> data;
         DFA::Collection<DFA::TokenMachineDFA> dfas;
         bool isToken;
     public:
@@ -18,7 +18,7 @@ namespace LLIR {
         Builder(AST::Tree &tree, bool isToken, const AST::RuleMember& rule);
         Builder(AST::Tree &tree, bool isToken, const stdu::vector<AST::RuleMember>& rules);
         auto get() -> IR;
-        auto getRawData() -> stdu::vector<Data>&;
-        auto getRawData() const -> const stdu::vector<Data>&;
+        auto getRawData() -> stdu::vector<Production>&;
+        auto getRawData() const -> const stdu::vector<Production>&;
     };
 }
