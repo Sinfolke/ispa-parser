@@ -23,6 +23,7 @@ export namespace DFA {
         void partitionState(std::size_t state_id);
     public:
         using StatesType = decltype(states);
+        using StateType = SingleState;
         TokenMachineDFA(const AST::Tree &ast, MinDFA &min_dfa) : ast(ast), states(nullptr), sdfa(min_dfa), Base(min_dfa.getEmptyState()) {};
         TokenMachineDFA(const AST::Tree &ast, MinDFA &min_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
         : ast(ast), states(nullptr), sdfa(min_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};

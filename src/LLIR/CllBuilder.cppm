@@ -42,8 +42,8 @@ export namespace LLIR {
     public:
         CllExprBuilder(BuilderDataWrapper &bd, const AST::CllExpr &expr) : BuilderDataWrapper(bd), expr(expr) {}
         void build();
-        auto get() const -> const Expression&;
-        auto get() -> Expression&;
+        auto get() const -> const Expression& { return result; };
+        auto get() -> Expression& { return result; };
         auto deduceType() -> Type;
     };
     class CllFunctionBuilder : public BuilderDataWrapper {
@@ -52,8 +52,8 @@ export namespace LLIR {
         auto FunctionBodyCallToIR(const AST::CllFunctionBodyCall &body) -> stdu::vector<Expression>;
     public:
         void build();
-        auto get() const -> const FunctionCall&;
-        auto get() -> FunctionCall&;
+        auto get() const -> const FunctionCall& { return result; };
+        auto get() -> FunctionCall& { return result; };
         CllFunctionBuilder(BuilderDataWrapper bd, const AST::CllFunctionCall &call) : BuilderDataWrapper(bd), call(call) {}
     };
     class CllMethodCallBuilder : public BuilderDataWrapper {
@@ -61,8 +61,8 @@ export namespace LLIR {
         StorageSymbol result;
     public:
         void build();
-        auto get() const  -> const StorageSymbol&;
-        auto get() -> StorageSymbol&;
+        auto get() const  -> const StorageSymbol& { return result; };
+        auto get() -> StorageSymbol& { return result; };
         CllMethodCallBuilder(BuilderDataWrapper &bd, const AST::CllMethodCall &call) : BuilderDataWrapper(bd), call(call) {}
     };
 };

@@ -1,5 +1,5 @@
 module LLIR.Builder.Utility;
-import LLIR;
+import LLIR.IR;
 import std;
 
 void LLIR::BuilderUtility::removePrevSpaceSkip() {

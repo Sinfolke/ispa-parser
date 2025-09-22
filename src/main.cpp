@@ -15,13 +15,11 @@ import LRParser;
 import ELRParser;
 import LALRParser;
 import LLIR.Builder;
-import LLIR;
+import LLIR.IR;
 import hash;
 import AST.Builder;
 import fcdt;
 import LexerBuilder;
-import Converter;
-import buildLLParser;
 import dstd;
 import std;
 
@@ -132,42 +130,42 @@ int main(int argc, char** argv) {
     LexerBuilder lexer_data(ast);
     lexer_data.build();
     lexer_data.getFCDT().print();
-    if (args.algorithm == Args::Algorithm::LR0) {
-        LRParser LRIR(ast);
-        // LRIR.printTables("tables");
-        LRIR.printCanonicalCollection("canonical_collection.txt");
-        // LRIR.printFirstSet("first_set.txt");
-        // LRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
-        converter->output(output_path);
-    } else if (args.algorithm == Args::Algorithm::LALR) {
-        LALRParser LALRIR(ast);
-        // LALRIR.printTables("tables");
-        // LALRIR.printCanonicalCollection("canonical_collection.txt");
-        // LALRIR.printFirstSet("first_set.txt");
-        // LALRIR.printFollowSet("follow_set.txt");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
-        converter->output(output_path);
-    } else if (args.algorithm == Args::Algorithm::ELR) {
-        ELRParser ELRIR(ast);
-        ELRIR.printTables("tables");
-        ELRIR.printCanonicalCollection("canonical_collection.txt");
-        ELRIR.printNfa("nfa");
-        ELRIR.printDfa("dfa");
-        auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
-        auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
-        converter->output(output_path);
-    } else if (args.algorithm == Args::Algorithm::LL) {
-        LLIR::Builder builder(ast, false);
-        auto IR = builder.get();
-        if (dumper.shouldDump("IR"))
-            IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
-        auto build_fun = converter_dlib.load<decltype(&buildLLParser)>("buildLLParser");
-        build_fun(output_path.string(), IR, lexer_data, ast);
-    } else {
-        throw Error("Unknown algorithm");
-    }
+    // if (args.algorithm == Args::Algorithm::LR0) {
+    //     LRParser LRIR(ast);
+    //     // LRIR.printTables("tables");
+    //     LRIR.printCanonicalCollection("canonical_collection.txt");
+    //     // LRIR.printFirstSet("first_set.txt");
+    //     // LRIR.printFollowSet("follow_set.txt");
+    //     auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
+    //     auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LRIR, ast));
+    //     converter->output(output_path);
+    // } else if (args.algorithm == Args::Algorithm::LALR) {
+    //     LALRParser LALRIR(ast);
+    //     // LALRIR.printTables("tables");
+    //     // LALRIR.printCanonicalCollection("canonical_collection.txt");
+    //     // LALRIR.printFirstSet("first_set.txt");
+    //     // LALRIR.printFollowSet("follow_set.txt");
+    //     auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
+    //     auto converter = std::unique_ptr<LRConverter_base>(converter_fun(LALRIR, ast));
+    //     converter->output(output_path);
+    // } else if (args.algorithm == Args::Algorithm::ELR) {
+    //     ELRParser ELRIR(ast);
+    //     ELRIR.printTables("tables");
+    //     ELRIR.printCanonicalCollection("canonical_collection.txt");
+    //     ELRIR.printNfa("nfa");
+    //     ELRIR.printDfa("dfa");
+    //     auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
+    //     auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
+    //     converter->output(output_path);
+    // } else if (args.algorithm == Args::Algorithm::LL) {
+    //     LLIR::Builder builder(ast, false);
+    //     auto IR = builder.get();
+    //     if (dumper.shouldDump("IR"))
+    //         IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
+    //     auto build_fun = converter_dlib.load<decltype(&buildLLParser)>("buildLLParser");
+    //     build_fun(output_path.string(), IR, lexer_data, ast);
+    // } else {
+    //     throw Error("Unknown algorithm");
+    // }
     return 0;
 }

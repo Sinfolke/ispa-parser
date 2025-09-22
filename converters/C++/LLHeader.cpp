@@ -1,6 +1,6 @@
 module LLHeader;
 import Converter;
-import LLIR;
+import LLIR.IR;
 import logging;
 import corelib;
 import DFATypes;

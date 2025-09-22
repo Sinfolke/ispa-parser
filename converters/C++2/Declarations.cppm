@@ -11,7 +11,7 @@ namespace Cpp {
         // types
         virtual auto createFixedStruct(const std::string &name, const stdu::vector<std::string> &keys) -> void;
         virtual auto createTypeAlias(const std::string &name, const Type type) -> void;
-        virtual auto createEnum(const std::string &name, const stdu::vector<std::string> names) -> void;
+        virtual auto createEnum(const std::string &name, const stdu::vector<std::string> &names) -> void;
 
         using Converter::Declarations::Declarations;
         virtual ~Declarations() = default;

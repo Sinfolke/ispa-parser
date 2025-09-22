@@ -7,7 +7,7 @@ import StateArrayBuilder;
 import hash;
 import corelib;
 import logging;
-import LLIR;
+import LLIR.IR;
 import AST.Tree;
 import DFATypes;
 import DFASpans;

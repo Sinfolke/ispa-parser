@@ -1,6 +1,6 @@
 export module Converter;
 import LLIR.API;
-import LLIR;
+import LLIR.IR;
 import LRParser;
 import AST.Tree;
 import fcdt;

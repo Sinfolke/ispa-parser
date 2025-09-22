@@ -6,7 +6,7 @@ import logging;
 import dstd;
 import AST.Tree;
 import LLIR.API;
-import LLIR;
+import LLIR.IR;
 import LLHeader;
 import LexerBuilder;
 import buildLLParser;

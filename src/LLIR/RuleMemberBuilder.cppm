@@ -49,19 +49,19 @@ export namespace LLIR {
         StringBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
-    class HexBuilder : public BuilderBase {
-        const AST::RuleMember &rule;
-    public:
-        void build() override;
-        HexBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    };
-
-    class BinBuilder : public BuilderBase {
-        const AST::RuleMember &rule;
-    public:
-        void build() override;
-        BinBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    };
+    // class HexBuilder : public BuilderBase {
+    //     const AST::RuleMember &rule;
+    // public:
+    //     void build() override;
+    //     HexBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
+    // };
+    //
+    // class BinBuilder : public BuilderBase {
+    //     const AST::RuleMember &rule;
+    // public:
+    //     void build() override;
+    //     BinBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
+    // };
 
     class NameBuilder : public BuilderBase {
         const AST::RuleMember &rule;
@@ -88,12 +88,12 @@ export namespace LLIR {
         NospaceBuilder(BuilderDataWrapper &data) : BuilderBase(data) {}
     };
 
-    class EscapedBuilder : public BuilderBase {
-        const AST::RuleMember &rule;
-    public:
-        void build() override;
-        EscapedBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    };
+    // class EscapedBuilder : public BuilderBase {
+    //     const AST::RuleMember &rule;
+    // public:
+    //     void build() override;
+    //     EscapedBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
+    // };
 
     class AnyBuilder : public BuilderBase {
         const AST::RuleMember &rule;

@@ -142,26 +142,12 @@ endfunction()
 # =============================================
 
 include(FetchContent)
-
-# Try to find system-installed fmt
-#find_package(fmt QUIET)
-# If not found, fetch it
-#message(STATUS "fmt not found, using FetchContent to download it")
-#FetchContent_Declare(fmt
-#        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-#        GIT_TAG master
-#)
-#FetchContent_MakeAvailable(fmt)
-
-# get spdlog library
-
-#if(NOT TARGET spdlog)
-#    # Stand-alone build
-#    find_package(spdlog REQUIRED)
-#endif()
-
-# Conan-generated toolchain
-
+FetchContent_Declare(
+        RopeString
+        GIT_REPOSITORY https://github.com/Sinfolke/Rope-String
+        GIT_TAG main
+)
+FetchContent_MakeAvailable(RopeString)
 # FIND LIBRARIES
 find_package(Boost REQUIRED)
 
@@ -254,7 +240,7 @@ target_sources(ispa_modules
 )
 target_include_directories(ispa_modules PRIVATE ${INCLUDE_DIRS})
 #target_include_directories(ispa_modules PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(ispa_modules PUBLIC cxx_std_module Boost::boost)
+target_link_libraries(ispa_modules PUBLIC cxx_std_module Boost::boost Rope)
 # =============================================
 # Main Executable
 # =============================================
@@ -283,25 +269,26 @@ target_include_directories(ispa-converter INTERFACE ${INCLUDE_DIRS})
 #if(WIN32)
 #    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
 #endif()
-get_file_range(CPP_CONVERTER_SOURCES
-        ${CONVERTERS_DIR}/C++/*.cpp
-)
-add_library(ispa-converter-cpp SHARED
-        ${CPP_CONVERTER_SOURCES}
-)
-target_link_libraries(ispa-converter-cpp PRIVATE
-        ispa-converter
-)
-target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
-get_file_range(CPP_CONVERTER_MODULES
-        ${CONVERTERS_DIR}/C++/*.cppm
-)
-target_sources(ispa-converter-cpp
-        PUBLIC
-        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-        ${CPP_CONVERTER_MODULES}
-        ${CONVERTERS_DIR}/Converter.cppm
-)
+
+#get_file_range(CPP_CONVERTER_SOURCES
+#        ${CONVERTERS_DIR}/C++/*.cpp
+#)
+#add_library(ispa-converter-cpp SHARED
+#        ${CPP_CONVERTER_SOURCES}
+#)
+#target_link_libraries(ispa-converter-cpp PRIVATE
+#        ispa-converter
+#)
+#target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
+#get_file_range(CPP_CONVERTER_MODULES
+#        ${CONVERTERS_DIR}/C++2/*.cppm
+#)
+#target_sources(ispa-converter-cpp
+#        PUBLIC
+#        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+#        ${CPP_CONVERTER_MODULES}
+#        ${CONVERTERS_DIR}/Converter.cppm
+#)
 # export modules from main executable to shared library
 #add_raw_module(ispa-converter-cpp ispa_modules
 #        corelib
@@ -333,14 +320,14 @@ endif()
 
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
-add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
-target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
-#target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
-target_link_libraries(ispa PRIVATE
-    ispa-converter-cpp
-        #fmt::fmt
-        #fmt_m
-)
+#add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
+#target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
+##target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
+#target_link_libraries(ispa PRIVATE
+#    ispa-converter-cpp
+#        #fmt::fmt
+#        #fmt_m
+#)
 
 # =============================================
 # Testing Configuration

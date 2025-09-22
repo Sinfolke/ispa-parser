@@ -1,29 +1,18 @@
 module LLIR.CllBuilder;
-import LLIR;
+import LLIR.IR;
 import LLIR.Rule.MemberBuilder;
 import LLIR.RValueBuilder;
 import logging;
 import cpuf.printf;
 import dstd;
 import std;
-// get functions
-auto LLIR::CllExprBuilder::get() const -> const Expression& {
-    return result;
-}
-
-auto LLIR::CllFunctionBuilder::get() const -> const FunctionCall& {
-    return result;
-}
-auto LLIR::CllMethodCallBuilder::get() const -> const StorageSymbol& {
-    return result;
-}
 
 auto LLIR::CllExprBuilder::CllExprGroupToIR(const AST::CllExpr &group) -> Expression {
     Expression expr;
     auto expression = CllExprLogicalToIR(group.value);
-    expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+    expr.push_back(ExpressionValue { ExpressionElement::GroupOpen });
     expr.insert(expr.end(), expression.begin(), expression.end());
-    expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+    expr.push_back(ExpressionValue { ExpressionElement::GroupClose });
     return expr;
 }
 auto LLIR::CllExprBuilder::CllExprValueToIR(const AST::CllExprValue &value) -> Expression {
@@ -42,9 +31,9 @@ auto LLIR::CllExprBuilder::CllExprValueToIR(const AST::CllExprValue &value) -> E
         const auto &v = value.getVariable();
         Symbol variable_mention;
         BuilderBase::pushVariablePrefix(expr, v.pre_increament);
-        expr.push_back(Symbol::createExpressionValue(Symbol {.path = v.name}));
+        expr.push_back(Symbol::createExpressionValue(Symbol {v.name}));
         if (v.braceExpression.has_value()) {
-            expr.push_back(ExpressionValue {.value = ExpressionElement::SquareBraceOpen});
+            expr.push_back(ExpressionValue { ExpressionElement::SquareBraceOpen });
             CllExprBuilder brace_expr(*this, v.braceExpression.value());
             expr.insert(expr.end(), brace_expr.get().begin(), brace_expr.get().end());
         }
@@ -60,7 +49,7 @@ auto LLIR::CllExprBuilder::CllExprTermToIR(const AST::CllExprTerm &term) -> Expr
     // if (rule.name == Parser::Rules::cll_function_call)
     auto cond = CllExprValueToIR(term.value);
     for (int i = 0; i < term.rights.size(); i++) {
-        cond.push_back(ExpressionValue {.value = BuilderBase::CllOpToExpr(term.rights[i].first) });
+        cond.push_back(ExpressionValue { BuilderBase::CllOpToExpr(term.rights[i].first) });
         auto res = CllExprValueToIR(term.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
@@ -70,7 +59,7 @@ auto LLIR::CllExprBuilder::CllExprAdditionToIR(const AST::CllExprAddition &addit
     // if (rule.name == Parser::Rules::cll_function_call)
     Expression cond = CllExprTermToIR(addition.value);
     for (int i = 0; i < addition.rights.size(); i++) {
-        cond.push_back(ExpressionValue {.value = BuilderBase::CllOpToExpr(addition.rights[i].first) });
+        cond.push_back(ExpressionValue { BuilderBase::CllOpToExpr(addition.rights[i].first) });
         auto res = CllExprTermToIR(addition.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
@@ -79,7 +68,7 @@ auto LLIR::CllExprBuilder::CllExprAdditionToIR(const AST::CllExprAddition &addit
 auto LLIR::CllExprBuilder::CllExprCompareToIR(const AST::CllExprCompare &compare) -> Expression {
     Expression cond = CllExprAdditionToIR(compare.value);
     for (int i = 0; i < compare.rights.size(); i++) {
-        cond.push_back(ExpressionValue {.value = BuilderBase::CllCompareOpToExpr(compare.rights[i].first) });
+        cond.push_back(ExpressionValue { BuilderBase::CllCompareOpToExpr(compare.rights[i].first) });
         auto res = CllExprAdditionToIR(compare.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
@@ -88,7 +77,7 @@ auto LLIR::CllExprBuilder::CllExprCompareToIR(const AST::CllExprCompare &compare
 auto LLIR::CllExprBuilder::CllExprLogicalToIR(const AST::CllExprLogical &logical) -> Expression {
     Expression cond = CllExprCompareToIR(logical.value);
     for (int i = 0; i < logical.rights.size(); i++) {
-        cond.push_back(ExpressionValue {.value = BuilderBase::CllLogicalOpToIR(logical.rights[i].first)});
+        cond.push_back(ExpressionValue { BuilderBase::CllLogicalOpToIR(logical.rights[i].first)});
         auto res = CllExprCompareToIR(logical.rights[i].second);
         cond.insert(cond.end(), res.begin(), res.end());
     }
@@ -102,7 +91,7 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &valu
     } else if (value.isMethodCall()) {
         // todo - get method call type
     } else if (value.isVariable()) {
-        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::variable &var) { return var.name == value.getVariable().name; });
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LLIR::Variable &var) { return var.name == value.getVariable().name; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr: {}",  value.getVariable().name);
         BuilderBase::undoRuleResult(find_it->type.type);
@@ -139,7 +128,7 @@ auto LLIR::CllExprBuilder::deduceTypeFromExprLogical(const AST::CllExprLogical &
     return deduceTypeFromExprCompare(logical.value);
 }
 auto LLIR::CllExprBuilder::deduceType() -> Type {
-    return deduceTypeFromExprLogical(expr->value);
+    return deduceTypeFromExprLogical(expr.value);
 }
 auto LLIR::CllFunctionBuilder::FunctionBodyCallToIR(const AST::CllFunctionBodyCall &body) -> stdu::vector<Expression> {
     stdu::vector<Expression> newExpr;
@@ -189,7 +178,7 @@ void LLIR::CllIfBuilder::build() {
     CllExprBuilder expr_builder(*this, cond.expr);
     rules_builder.build();
     expr_builder.build();
-    statements.push_back(If {.expr = std::move(expr_builder.get()), .stmt = std::move(rules_builder.getData())});
+    statements.push_back(If::createStatement(If {std::move(expr_builder.get()), std::move(rules_builder.getData())}));
 }
 
 void LLIR::CllExprBuilder::build() {
@@ -201,8 +190,8 @@ void LLIR::CllFunctionBuilder::build() {
 }
 void LLIR::CllMethodCallBuilder::build() {
     StorageSymbol symbol;
-    symbol.what = call.name;
-    CllFunctionBuilder fun(*this, call->body);
+    symbol.what = Symbol::createExpression(Symbol {call.name});
+    CllFunctionBuilder fun(*this, call.body);
     fun.build();
     result.path = {fun.get()};
 }

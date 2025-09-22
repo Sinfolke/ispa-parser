@@ -3,7 +3,7 @@ import hash;
 import AST.API;
 import AST.Tree;
 import LLIR.API;
-import LLIR;
+import LLIR.IR;
 import fcdt;
 import DFA.Collection;
 import DFA.CharMachineDFA;

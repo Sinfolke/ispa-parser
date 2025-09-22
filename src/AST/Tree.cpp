@@ -602,47 +602,6 @@ auto AST::Tree::getNameToIndexMap() const {
     return name_to_index;
 }
 
-auto AST::Tree::getCodeForLexer() -> lexer_code {
-    AST::RuleMemberOp options;
-    for (const auto &[name, value] : tree_map) {
-        if (corelib::text::isLower(name.back()))
-            continue;
-        auto find_it = use_places.find(name);
-        if (find_it != use_places.end() && name != constants::whitespace) {
-            bool to_add = false;
-            for (const auto &use_name : find_it->second) {
-                if (corelib::text::isLower(use_name.back())) {
-                    to_add = true;
-                    break;
-                }
-            }
-            if (to_add) {
-                // add this token
-                options.options.push_back(AST::RuleMember { .value = AST::RuleMemberName { name } });
-            }
-        } else if (name == stdu::vector<std::string> { "__WHITESPACE" }) {
-            options.options.push_back(AST::RuleMember { .value = AST::RuleMemberName { name } });
-        } else {
-            cpuf::printf("Not found %s in use_places\n", name.back());
-        }
-        // if not found, do not add this means the token is never used
-    }
-    TreePass::sortByPriority(*this, options);
-    AST::RuleMember resultRule = { .value = options };
-    // get lexer code
-    // // TODO: add proper handling for lexer
-    // LLIR::BuilderData bd(*this, nullptr);
-    // LLIR::BuilderDataWrapper wrapper(bd);
-    // bd.fullname = {""};
-    // LLIR::MemberBuilder code(wrapper, resultRule);
-    // code.build();
-    // const auto &return_vars = code.getReturnVars();
-    // code.pop(); // remove space skip
-    // if (return_vars.empty())
-    //     throw Error("Empty success var\n");
-    return lexer_code {{}, {}};
-}
-
 void AST::Tree::formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set) {
     for (auto &el : set) {
         oss << corelib::text::join(el.first, "_") << ": " << '{';

@@ -9,11 +9,11 @@ export namespace DFA {
     template<typename DfaTable>
     class Collection {
     public:
-        using StateSet = stdu::vector<SortedState>;
+        using StateSet = DfaTable::StatesType;
         using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
         using StateInDfaLocationMap = utype::unordered_map<std::size_t, std::size_t>;
         struct StateSet_t {
-            StateSet state_set;
+            StateSet state_set {nullptr};
             StateSetLocationMap location_in_set;
             StateInDfaLocationMap state_in_dfa_location_map;
         };

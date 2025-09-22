@@ -1,6 +1,6 @@
 module AST.Pass;
 import corelib;
-import LLIR;
+import LLIR.IR;
 import AST.Tree;
 import AST.API;
 import cpuf.printf;

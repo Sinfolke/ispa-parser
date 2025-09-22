@@ -1,5 +1,4 @@
 module LLIR.Rule.MemberBuilder;
-import ErrorIR;
 import LLIR.CllBuilder;
 import logging;
 import corelib;
@@ -22,11 +21,11 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
     ) {
     if (!uvar.name.empty()) {
         uvar.type = deduceUvarType(var, shadow_var);
-        statements.push_back(Variable::createExpression(uvar));
+        statements.push_back(Variable::createStatement(uvar));
     }
     if (quantifier == '*' || quantifier == '+') {
         While loop;
-        loop.expr = Bool::createExpression(true);
+        loop.expr = Bool::createExpression(Bool { .value = true });
         loop.stmt = builder.getData();
         builder.getData().clear();
         processExitStatements(loop.stmt);
@@ -35,15 +34,15 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
         if (quantifier == '+') {
             handle_plus_qualifier(rule, loop, uvar, var, shadow_var);
         } else {
-            push({LLIR::types::WHILE, loop});
+            statements.push_back(While::createStatement(loop));
         }
     } else if (quantifier == '?') {
         While loop;
-        loop.expr = Bool::createExpression(true);
+        loop.expr = Bool::createExpression(Bool { .value = true });
         loop.stmt = builder.getData();
         builder.getData().clear();
         processExitStatements(loop.stmt);
-        push({ LLIR::types::DOWHILE, loop });
+        statements.push_back(DoWhile::createStatement(loop));
     }
 }
 
@@ -72,26 +71,26 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
     switch (quantifier) {
         case '+':
             stmt.push_back(call);
-            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+            createAssignUvarBlock(stmt, uvar, var, shadow_variable);
             handle_plus_qualifier(rule, ConditionalElement {.expr = expr, .stmt = stmt}, uvar, var, shadow_variable);
             break;
         case '*': {
             stmt.push_back(call);
-            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            statements.push_back(While::createStatement(While {.expr = expr, .stmt = stmt}));
+            createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            statements.push_back(While::createStatement(While {expr, stmt}));
             break;
         }
         case '?':
-            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            statements.push_back(If::createStatement(If {.expr = expr, .stmt = stmt}));
+            createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            statements.push_back(If::createStatement(If {expr, stmt}));
             break;
         default:
         {
             // add the negative into condition
-            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            expr.insert(expr.begin(), ExpressionValue { .value = LLIR::ExpressionElement::Not });
-            expr.insert(expr.begin() + 1, ExpressionValue { .value = LLIR::ExpressionElement::GroupOpen });
-            expr.push_back(ExpressionValue { .value = LLIR::ExpressionElement::GroupClose });
+            createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            expr.insert(expr.begin(), ExpressionValue { LLIR::ExpressionElement::Not });
+            expr.insert(expr.begin() + 1, ExpressionValue { LLIR::ExpressionElement::GroupOpen });
+            expr.push_back(ExpressionValue { ExpressionElement::GroupClose });
             // add exit statement
             Statements blk;
             // if (/* *has_symbol_follow */false) {
@@ -129,8 +128,8 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     //     builder = std::make_unique<BinBuilder>(*this, member);
     } else if (member.isName()) {
         builder = std::make_unique<NameBuilder>(*this, member);
-    } else if (member.isEscaped()) {
-        builder = std::make_unique<EscapedBuilder>(*this, member);
+    // } else if (member.isEscaped()) {
+    //     builder = std::make_unique<EscapedBuilder>(*this, member);
     } else if (member.isNospace()) {
         builder = std::make_unique<NospaceBuilder>(*this);
     } else if (member.isOp()) {
@@ -199,19 +198,19 @@ void LLIR::GroupBuilder::build() {
         var.type.type = ValueType::Array;
     }
     Statements fetch_var_statements;
-    switch (var.type.type == ValueType::Array ? var.type.template_parameters[0].type : var.type.type) {
+    switch (var.type.type == ValueType::Array ? std::get<Type>(var.type.template_parameters[0]).type : var.type.type) {
         case ValueType::String:
             // it is a string so add all values
             for (const auto &v : builder.getReturnVars()) {
                 if (v.var.name.empty())
                     continue;
-                fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {.path = v.var.name})}));
+                fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol { v.var.name })}));
             }
             break;
-        case LLIR::var_types::Token:
-        case LLIR::var_types::Rule:
+        case ValueType::Token:
+        case ValueType::Rule:
             // it is token so perform a single assign
-            fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {.path = builder.getReturnVars()[0].var.name})}));
+            fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {builder.getReturnVars()[0].var.name})}));
 
             var.type = builder.getReturnVars()[0].var.type;
             undoRuleResult(var.type.type);
@@ -230,9 +229,9 @@ void LLIR::GroupBuilder::build() {
             if (el.quantifier == '*' || el.quantifier == '?' || el.svar.name.empty())
                 continue;
             if (!first)
-                group_success_condition.expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+                group_success_condition.expr.push_back(ExpressionValue {ExpressionElement::And});
             used_vars.push_back(el.svar.name);
-            group_success_condition.expr.push_back(Symbol::createExpressionValue(Symbol {.path = el.svar.name}));
+            group_success_condition.expr.push_back(Symbol::createExpressionValue(Symbol { el.svar.name}));
             first = false;
         }
     }
@@ -253,10 +252,10 @@ void LLIR::GroupBuilder::build() {
         shadow_var = add_shadow_variable(builder.getData(), var);
     }
     group_success_condition.stmt = {
-        VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(true)}),
-        createAssignUvarBlock(uvar, var, shadow_var),
-        PopPosCounter::createStatement(PopPosCounter {})
+        VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(Bool { .value = true })}),
     };
+    createAssignUvarBlock(group_success_condition.stmt, uvar, var, shadow_var);
+    group_success_condition.stmt.push_back(PopPosCounter::createStatement(PopPosCounter {}));
     if (var.type.type != ValueType::Undef) {
         statements.push_back(Variable::createStatement(var));
     }
@@ -284,8 +283,8 @@ void LLIR::CsequenceBuilder::build() {
 
     if (csequence.negative) {
         expr = {
-            ExpressionValue {.value = ExpressionElement::Not},
-            ExpressionValue {.value = ExpressionElement::GroupOpen}
+            ExpressionValue { ExpressionElement::Not},
+            ExpressionValue { ExpressionElement::GroupOpen}
         };
     }
 
@@ -293,9 +292,9 @@ void LLIR::CsequenceBuilder::build() {
     std::size_t count = 0;
     auto push_comparasion_with_character_to_expression = [&](Char c) {
         if (!first)
-            expr.push_back(ExpressionValue { .value = ExpressionElement::Or });
+            expr.push_back(ExpressionValue { ExpressionElement::Or });
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
-        expr.push_back(ExpressionValue { .value = ExpressionElement::Equal });
+        expr.push_back(ExpressionValue { ExpressionElement::Equal });
         expr.push_back(Char::createExpressionValue(c));
     };
     for (const auto c : csequence.characters) {
@@ -308,26 +307,26 @@ void LLIR::CsequenceBuilder::build() {
     }
     for (const auto &[from, to] : csequence.diapasons) {
         if (!first)
-            expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
-        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+            expr.push_back(ExpressionValue { ExpressionElement::Or});
+        expr.push_back(ExpressionValue { ExpressionElement::GroupOpen});
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::HigherOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = from}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(ExpressionValue { ExpressionElement::And});
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::LowerOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = to}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+        expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
         first = false;
     }
     if (csequence.negative) {
         if (rule.quantifier == '+' || rule.quantifier == '*') {
-            expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+            expr.push_back(ExpressionValue { ExpressionElement::LowerOrEqual});
             expr.push_back(Pos::createExpressionValue(Pos {.dereference = true}));
-            expr.push_back(ExpressionValue {.value = ExpressionElement::NotEqual});
+            expr.push_back(ExpressionValue { ExpressionElement::NotEqual});
             expr.push_back(Char::createExpressionValue(Char {.value = '0', .escaped = true}));
         }
-        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+        expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
     }
     if (rule.quantifier == '\0')
         var.type = { ValueType::Char };
@@ -352,7 +351,7 @@ void LLIR::StringBuilder::build() {
         // micro optimization - compare as single character for single character strings
         expr = {
             Pos::createExpressionValue(Pos {.dereference = true}),
-            ExpressionValue {.value = ExpressionElement::Equal},
+            ExpressionValue { ExpressionElement::Equal},
             value[0] == '\\' ? Char::createExpressionValue(Char {.value = value[1]}) : Char::createExpressionValue(Char {.value = value[1], .escaped = true})
         };
         var.type.type = ValueType::Char;
@@ -363,58 +362,58 @@ void LLIR::StringBuilder::build() {
         var.type = {ValueType::Char};
     }
     if (corelib::text::isAllAlpha(value)) {
-        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
-        expr.push_back(ExpressionValue {.value = ExpressionElement::Not});
-        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+        expr.push_back(ExpressionValue { ExpressionElement::And});
+        expr.push_back(ExpressionValue { ExpressionElement::Not});
+        expr.push_back(ExpressionValue { ExpressionElement::GroupOpen});
 
         // current >= 'a'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::HigherOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = 'a', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(ExpressionValue { ExpressionElement::And});
 
         // current <= 'z'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::LowerOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = 'z', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+        expr.push_back(ExpressionValue { ExpressionElement::Or});
 
         // current >= 'A'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::HigherOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = 'A', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(ExpressionValue { ExpressionElement::And});
 
         // current <= 'Z'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::LowerOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = 'Z', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+        expr.push_back(ExpressionValue { ExpressionElement::Or});
 
         // current >= '0'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::HigherOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::HigherOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = '0', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+        expr.push_back(ExpressionValue { ExpressionElement::And});
 
         // current <= '9'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::LowerOrEqual});
+        expr.push_back(ExpressionValue { ExpressionElement::LowerOrEqual});
         expr.push_back(Char::createExpressionValue(Char {.value = '9', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::Or});
+        expr.push_back(ExpressionValue { ExpressionElement::Or});
 
         // current == '_'
         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = str.count_strlen()}));
-        expr.push_back(ExpressionValue {.value = ExpressionElement::Equal});
+        expr.push_back(ExpressionValue { ExpressionElement::Equal});
         expr.push_back(Char::createExpressionValue(Char {.value = '_', .escaped = true}));
 
-        expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+        expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
     }
     Statements block = createDefaultStatements(var, svar);
     statements.push_back(Variable::createStatement(var));
@@ -433,8 +432,8 @@ void LLIR::StringBuilder::build() {
 //     Statements block = createDefaultStatements(var, svar);
 //     bool is_first = true, is_negative = false;
 //     if (rule.quantifier == '\0') {
-//         expr.push_back(ExpressionValue {.value = ExpressionElement::Not});
-//         expr.push_back(ExpressionValue {.value = ExpressionElement::GroupOpen});
+//         expr.push_back(ExpressionValue { ExpressionElement::Not});
+//         expr.push_back(ExpressionValue { ExpressionElement::GroupOpen});
 //         is_negative = true;
 //     }
 //     if (data.size() % 2 != 0)
@@ -442,14 +441,14 @@ void LLIR::StringBuilder::build() {
 //     for (std::size_t i = 0; i < data.size(); i += 2) {
 //         std::string hex(data.data() + i, 2);
 //         if (!is_first)
-//             expr.push_back(ExpressionValue {.value = ExpressionElement::And});
+//             expr.push_back(ExpressionValue { ExpressionElement::And});
 //         is_first = false;
 //         expr.push_back(Pos::createExpressionValue(Pos {.dereference = true, .offset = i}));
-//         expr.push_back(ExpressionValue {.value = ExpressionElement::Equal});
+//         expr.push_back(ExpressionValue { ExpressionElement::Equal});
 //         expr.push_back(Hex::createExpressionValue(Hex {.hex = hex}));
 //     }
 //     if (is_negative) {
-//         expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+//         expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
 //     }
 //     //cpuf::printf("hex_open\n");
 //     statements.push_back(Variable::createStatement(var));
@@ -533,8 +532,8 @@ void LLIR::NameBuilder::build() {
                [](const std::string &member){ return std::variant<FunctionCall, std::string> { member }; });
             Expression expr = {
                 Pos::createExpressionValue(Pos {.dereference = true}),
-                ExpressionValue { .value = ExpressionElement::Equal },
-                Symbol::createExpressionValue(Symbol {.path = symbol_path})
+                ExpressionValue { ExpressionElement::Equal },
+                Symbol::createExpressionValue(Symbol {symbol_path})
             };
             shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, rule.quantifier, true);
         } else {
@@ -566,7 +565,7 @@ void LLIR::NospaceBuilder::build() {
 //             //cpuf::printf("ON_EXPRESSION\n")
 //             expression = {
 //                 Pos::createExpressionValue(Pos {.dereference = true}),
-//                 ExpressionValue {.value = ExpressionElement::NotEqual},
+//                 ExpressionValue { ExpressionElement::NotEqual},
 //                 Char::createExpressionValue(Char {.value = ' '})
 //             };
 //             expression = {
@@ -610,12 +609,12 @@ void LLIR::AnyBuilder::build() {
     Statements stmt_after = createDefaultStatements(var, svar);
     Expression expression = {
         Pos::createExpressionValue(Pos {.dereference = true}),
-        ExpressionValue { .value = ExpressionElement::Equal },
-        isToken ? Char::createExpressionValue(Char {.value = '0', .escaped = true}) : Symbol::createExpressionValue(Symbol {.path = {"Tokens", "NONE"}}),
+        ExpressionValue { ExpressionElement::Equal },
+        isToken ? Char::createExpressionValue(Char {.value = '0', .escaped = true}) : Symbol::createExpressionValue(Symbol {{"Tokens", "NONE"}}),
     };
     statements.push_back(Variable::createStatement(var));
     statements.push_back(Variable::createStatement(svar));
-    statements.push_back(If::createStatement(If {.expr = expression, .stmt = stmt}));;
+    statements.push_back(If::createStatement(If {expression, stmt}));;
     statements.insert(statements.end(), stmt_after.begin(), stmt_after.end());
     pushConvResult(rule, var, {}, svar, {}, rule.quantifier);
 }
@@ -801,7 +800,7 @@ void LLIR::OpBuilder::build() {
             }
             ss.cases.emplace_back();
             if (std::holds_alternative<stdu::vector<std::string>>(t.first)) {
-                ss.cases.back().first = Symbol::createRValue(Symbol {.path = {"Tokens", corelib::text::join(std::get<stdu::vector<std::string>>(t.first), "_")}});
+                ss.cases.back().first = Symbol::createRValue(Symbol {{"Tokens", corelib::text::join(std::get<stdu::vector<std::string>>(t.first), "_")}});
             } else {
                 ss.cases.back().first = Char::createRValue(Char {.value = std::get<char>(t.first)});
             }
@@ -813,7 +812,7 @@ void LLIR::OpBuilder::build() {
             ss_case.second.emplace_back(VariableAssignment::createStatement(VariableAssignment {
                 .name = var.name,
                 .value = Symbol::createExpression(Symbol {
-                    .path = {builder.getReturnVars().back().uvar}
+                    builder.getReturnVars().back().uvar.name
                 })
             }));
         }
@@ -822,47 +821,40 @@ void LLIR::OpBuilder::build() {
         auto dfa_index = dfas.get().size();
         dfas.get().push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
-        dfa_call_result.type.type = LLIR::var_types::INT;
-        push({types::VARIABLE, dfa_call_result});
-        push({types::ASSIGN_VARIABLE, LLIR::variable_assign { dfa_call_result.name, var_assign_types::ASSIGN, LLIR::assign {
-            var_assign_values::INTERNAL_FUNCTION_CALL, LLIR::function_call {
-                        internal_functions::dfa_decide, {
-                            {
-                                LLIR::expr { condition_types::DFA, dfa_index }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        switch_statement ss;
-        ss.expression = {LLIR::expr {condition_types::VARIABLE, var_refer {.var = dfa_call_result}}};
+        dfa_call_result.type.type = ValueType::Int;
+        statements.push_back(Variable::createStatement(dfa_call_result));
+        statements.push_back(DfaLookup::createStatement(DfaLookup {.dfa_count = dfa_index, .output_name = dfa_call_result.name}));
+        Switch ss {.expression = Symbol::createExpression(Symbol { dfa_call_result.name }) };
         for (int i = 0; i < op.size(); ++i) {
             ss.cases.emplace_back();
             auto &cs = ss.cases.back();
-            cs.name = {LLIR::var_assign_values::NUMBER, i};
+            cs.first = Int::createRValue(Int {.value = i});
             if (op[i].isName() && op[i].getName().isTerminal()) {
                 // insert variable assignment
                 //cs.block.push_back(assignSvar(svar, var_assign_values::True));
-                cs.block.emplace_back(types::ASSIGN_VARIABLE, LLIR::variable_assign {
-                    var.name, var_assign_types::ASSIGN, LLIR::assign {var_assign_values::CURRENT_TOKEN}
-                });
+                cs.second.emplace_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Pos::createExpression(Pos {.dereference = true})}));
             } else if (op[i].isName() && op[i].getName().isNonterminal()) {
                 const auto &nonterminal = op[i].getName().name;
-                cs.block.emplace_back(types::ASSIGN_VARIABLE, LLIR::variable_assign {
-                    var.name, var_assign_types::ASSIGN, LLIR::assign {
-                        var_assign_values::FUNCTION_CALL, LLIR::function_call {
-                            corelib::text::join(nonterminal, "_"), stdu::vector<stdu::vector<expr>>{ {{condition_types::TOKEN_SEQUENCE}} }
-                        }
+                cs.second.emplace_back(VariableAssignment::createStatement(
+                    VariableAssignment {
+                        .name = var.name,
+                        .value = FunctionCall::createExpression(
+                            FunctionCall {
+                                .name = corelib::text::join(nonterminal, "_"),
+                                .args = {
+                                    Pos::createExpression(Pos {.sequence = true})
+                                }
+                            }
+                        )
                     }
-                });
+                ));
             } else {
                 MemberBuilder builder(*this, op[i]);
                 builder.build();
-                cs.block = std::move(builder.getData());
+                cs.second = std::move(builder.getData());
             }
         }
-        push({types::SWITCH, ss});
+        statements.push_back(Switch::createStatement(ss));
     }
     pushConvResult(rule,  var, var, svar, {}, rule.quantifier);
 }

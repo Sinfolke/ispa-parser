@@ -3,7 +3,7 @@ import LexerConverter;
 import LexerBuilder;
 import LLConverter;
 import LLHeader;
-import LLIR;
+import LLIR.IR;
 import StateArrayBuilder;
 import AST.Tree;
 extern "C" void buildLLParser(const std::string &name, const LLIR::IR &ir, const LexerBuilder &lexer_data, AST::Tree& ast) {

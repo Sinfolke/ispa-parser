@@ -1,6 +1,6 @@
 module;
 module LLConverter;
-import LLIR;
+import LLIR.IR;
 import Converter.DFA;
 import StateArrayBuilder;
 import LexerConverter;

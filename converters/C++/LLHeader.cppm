@@ -3,7 +3,7 @@ import dstd;
 import LLStringConvertions;
 import buildLLParser;
 import LLIR.API;
-import LLIR;
+import LLIR.IR;
 import LexerBuilder;
 import AST.Tree;
 import DFA.Collection;

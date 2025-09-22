@@ -1,6 +1,6 @@
 export module LLIR.Builder;
 import LLIR.API;
-import LLIR;
+import LLIR.IR;
 import AST.Tree;
 import AST.API;
 import DFA.Collection;

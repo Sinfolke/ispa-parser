@@ -79,7 +79,7 @@ export namespace AST {
         };
         auto getRawFirstSet()-> First& { return first; };
         auto getRawFollowSet() -> Follow& { return follow; };
-        auto getCodeForLexer() -> lexer_code;
+        auto getCodeForLexer() -> void;
         auto getInitialItemSet() -> InitialItemSet&;
         auto getTerminals() const -> stdu::vector<stdu::vector<std::string>>;
         auto getNonTerminals() const -> stdu::vector<stdu::vector<std::string>>;

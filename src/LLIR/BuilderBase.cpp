@@ -1,7 +1,7 @@
 module LLIR.Builder.Base;
 import logging;
 import corelib;
-import LLIR;
+import LLIR.IR;
 import cpuf.printf;
 import std;
 
@@ -45,8 +45,8 @@ auto LLIR::BuilderBase::generateVariableName(std::size_t &variable_count) -> std
 }
 auto LLIR::BuilderBase::createSuccessVariable(std::size_t &variable_count) -> Variable {
     Variable var = createEmptyVariable("success" + generateVariableName(variable_count));
-    var.value = Bool::createRValue(false);
-    return Variable {.name = "success" + generateVariableName(variable_count), .value = Bool::createRValue(false)};
+    var.value = Bool::createExpression(Bool {.value = false});
+    return Variable {.name = "success" + generateVariableName(variable_count), .value = Bool::createExpression(Bool { .value = false })};
 }
 auto LLIR::BuilderBase::generateVariableName() -> std::string {
     return generateVariableName(variable_count);
@@ -54,21 +54,20 @@ auto LLIR::BuilderBase::generateVariableName() -> std::string {
 auto LLIR::BuilderBase::createSuccessVariable() -> Variable {
     return createSuccessVariable(variable_count);
 }
-auto LLIR::BuilderBase::createAssignUvarBlock(const Variable &uvar, const Variable &var, const Variable &shadow_var) -> Statement {
-    return !uvar.name.empty()
-        ?
-            VariableAssignment::createStatement(VariableAssignment {
+auto LLIR::BuilderBase::createAssignUvarBlock(Statements &statements, const Variable &uvar, const Variable &var, const Variable &shadow_var) -> void {
+    if (!uvar.name.empty()) {
+        statements.push_back(            VariableAssignment::createStatement(VariableAssignment {
                 .name = uvar.name,
                 .value = Symbol::createExpression(Symbol {
-                    .path = {shadow_var.name.empty() ? var.name : shadow_var.name }
+                    shadow_var.name.empty() ? var.name : shadow_var.name
                 })
             })
-        :
-            Statement {};
+        );
+    }
 }
 void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, ConditionalElement loop, const Variable &uvar, const Variable &var, Variable &shadow_var, bool addError) {
     auto postCheckVar = createSuccessVariable();
-    loop.stmt.push_back(VariableAssignment::createStatement(VariableAssignment {.name = postCheckVar.name, .value = Bool::createRValue(true)}));
+    loop.stmt.push_back(VariableAssignment::createStatement(VariableAssignment {.name = postCheckVar.name, .value = Bool::createExpression(Bool {.value = true} )}));
     statements.push_back(Variable::createStatement(postCheckVar));
     statements.push_back(While::createStatement(loop));
     addPostLoopCheck(rule, postCheckVar, addError);
@@ -76,10 +75,10 @@ void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, Condi
 void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Variable &var, bool addError) {
     auto stmt = Return::createStatements(Return {});
     if (addError && !isFirst) {
-        stmt.insert(stmt.begin(), ReportError { .message = getErrorName(rule) });
+        stmt.insert(stmt.begin(), ReportError::createExpression(ReportError { .message = getErrorName(rule) }));
     }
     If post_loop_condition;
-    post_loop_condition.expr = { { .value =  { ExpressionElement::Not, Symbol::createExpressionValue(Symbol { .path = { var.name }}) } } };
+    post_loop_condition.expr = { { { ExpressionElement::Not, Symbol::createExpressionValue(Symbol { var.name }) } } };
     post_loop_condition.stmt = std::move(stmt);
     statements.push_back(If::createStatement(post_loop_condition));
 }
@@ -89,14 +88,14 @@ auto LLIR::BuilderBase::createDefaultStatements(const Variable &var, const Varia
     } else {
         return {
             VariableAssignment::createStatement(VariableAssignment { .name = var.name, .type = OperatorType::Add, .value = Pos::createExpression(Pos {.sequence = true}) }),
-            VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(true)}),
+            VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(Bool {.value = true })}),
             Expression::createStatement(increasePos())
         };
     }
 }
 auto LLIR::BuilderBase::createDefaultStatements(const Variable &svar) -> Statements {
     return {
-        VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(true)}),
+        VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(Bool {.value = true})}),
         Expression::createStatement(increasePos())
     };
 }
@@ -109,7 +108,7 @@ auto LLIR::BuilderBase::createDefaultCall(Statements &block, const Variable &var
         .name = var.name,
         .value = FunctionCall::createExpression(function_call)
     };
-    expr = StorageSymbol::createExpression(StorageSymbol {.what = Symbol::createExpression(Symbol {.path = {var.name }}), {{"status"}}});;
+    expr = StorageSymbol::createExpression(StorageSymbol {.what = Symbol::createExpression(Symbol {var.name }), .path = {{"status"}}});;
     return VariableAssignment::createStatement(assignment);
 }
 auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &var) -> Variable {
@@ -125,14 +124,14 @@ auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &v
     statements.push_back(
         StorageSymbol::createStatement(StorageSymbol {
                 .what = Symbol::createExpression(Symbol {
-                    .path = shadow_var.name
+                    shadow_var.name
                 }),
                 .path = {
                     ArrayMethodCall {
                         .method = ArrayMethods::Push,
                         .args = {
                             Symbol::createExpression(Symbol {
-                                .path = var.name
+                                var.name
                             })
                         }
                     }
@@ -176,10 +175,10 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
             break;
         default:
             // add the negative into condition
-            stmt.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
-            expr.insert(expr.begin(), ExpressionValue { .value = ExpressionElement::Not });
-            expr.insert(expr.begin() + 1, ExpressionValue { .value = ExpressionElement::GroupOpen });
-            expr.push_back(ExpressionValue {.value = ExpressionElement::GroupClose});
+            createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            expr.insert(expr.begin(), ExpressionValue { ExpressionElement::Not });
+            expr.insert(expr.begin() + 1, ExpressionValue { ExpressionElement::GroupOpen });
+            expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
             // add exit statement
             Statements blk = Return::createStatements(Return {});
             if (!isFirst) {
@@ -189,7 +188,7 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
             statements.insert(statements.end(), stmt.begin(), stmt.end());
             break;
     }
-    statements.push_back(createAssignUvarBlock(uvar, var, shadow_variable));
+    createAssignUvarBlock(statements, uvar, var, shadow_variable);
     return shadow_variable;
 }
 void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variable &var, const Variable &uvar, const Variable &svar, const Variable &shadow_var, char quantifier) {
@@ -227,9 +226,9 @@ void LLIR::BuilderBase::undoRuleResult(ValueType &type) {
 auto LLIR::BuilderBase::getPrefixAsExpressionValue(const std::optional<char> &prefix) -> ExpressionValue {
     if (prefix.has_value()) {
         if (prefix.value() == '+')
-            return ExpressionValue { .value = ExpressionElement::PlusPlus };
+            return ExpressionValue { ExpressionElement::PlusPlus };
         else
-            return ExpressionValue { .value = ExpressionElement::MinusMinus };
+            return ExpressionValue { ExpressionElement::MinusMinus };
     }
     return ExpressionValue {};
 }
@@ -237,40 +236,29 @@ void LLIR::BuilderBase::pushVariablePrefix(Expression &expr, const std::optional
     if (prefix.has_value())
         expr.push_back(getPrefixAsExpressionValue(prefix));
 }
-
-
-bool LLIR::BuilderBase::compare_templ(const stdu::vector<Type>& templ1, const stdu::vector<Type>& templ2) {
-    if (templ1.size() != templ2.size()) return false;
-
-    for (std::size_t i = 0; i < templ1.size(); ++i) {
-        if (templ1[i].type != templ2[i].type) return false;
-        if (!compare_templ(templ1[i].template_parameters, templ2[i].template_parameters)) return false;
-    }
-    return true;
-}
 auto LLIR::BuilderBase::increasePos() -> Expression {
-    return {Pos::createExpressionValue(Pos{}), ExpressionValue {.value = ExpressionElement::PlusPlus}};
+    return {Pos::createExpressionValue(Pos{}), ExpressionValue { ExpressionElement::PlusPlus}};
 }
 
 auto LLIR::BuilderBase::CllTypeToIR(const AST::CllType &type) -> Type {
     if (type.type == "var")
-        return {ValueType::Any, {}};
+        return ValueType::Any;
     if (type.type == "str")
-        return {ValueType::String, {}};
+        return ValueType::String;
     if (type.type == "bool")
-        return {ValueType::Bool, {}};
+        return ValueType::Bool;
     if (type.type == "num")
-        return {ValueType::Int, {}};
+        return ValueType::Int;
     if (type.type == "arr") {
         ValueType tp = ValueType::Array;
         Type _template = CllTypeToIR(type.templ[0]);
-        return {tp, {_template}};
+        return {tp, _template};
     }
     if (type.type == "obj") {
         ValueType tp = ValueType::Map;
         Type _template1 = CllTypeToIR(type.templ[0]);
         Type _template2 = CllTypeToIR(type.templ[1]);
-        return {tp, {_template1, _template2}};
+        return {tp, _template1, _template2};
     }
     throw Error("Undefined type");
 }
@@ -346,8 +334,8 @@ auto LLIR::BuilderBase::CllAssignmentOpToIR(const char op) -> OperatorType {
     }
     return CllOpToIR(op);
 }
-auto LLIR::BuilderBase::assignSvar(const variable &svar, var_assign_values value) -> Statement {
-    return VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(true)});
+auto LLIR::BuilderBase::assignSvar(const Variable &svar, bool value) -> Statement {
+    return VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(Bool { .value = value })});
 }
 
 
@@ -595,7 +583,7 @@ auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> Value
                 return ValueType::Any;
             }
         }
-        type = first_type.value_or(LLIR::var_types::UNDEFINED);
+        type = first_type.value_or(ValueType::Undef);
     } else if (mem.isName()) {
         type = corelib::text::isUpper(mem.getName().name.back()) ? ValueType::Token : ValueType::Rule;
     } else type = ValueType::String;

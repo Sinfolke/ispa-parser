@@ -9,9 +9,9 @@ auto DFA::Base::getType(const States<StateType> &states, bool isToken, const uty
     DfaType dfa_type = DfaType::NONE;
     if (states.empty())
         throw Error("Get type of empty states");
-    for (const auto &state : states) {
-        for (const auto &[symbol, next] : state.transitions) {
-            if (std::holds_alternative<char>(symbol)) {
+    if constexpr (std::is_same_v<StateType, CharMachineState>) {
+        for (const auto &state : states) {
+            if (std::holds_alternative<FullCharTable>(state.transitions)) {
                 if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
                     dfa_type = DfaType::Char;
                 } else {
@@ -19,12 +19,7 @@ auto DFA::Base::getType(const States<StateType> &states, bool isToken, const uty
                     return dfa_type;
                 }
             } else {
-                const auto &sym = std::get<stdu::vector<std::string>>(symbol);
-                if (dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) {
-                    if (isToken && dct && dct->at(sym) != LexerBuilder::DFA_NOT_COMPATIBLE) {
-                        dfa_type = DfaType::Multi;
-                        return dfa_type;
-                    }
+                if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
                     dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
                 } else {
                     dfa_type = DfaType::Multi;
@@ -32,7 +27,33 @@ auto DFA::Base::getType(const States<StateType> &states, bool isToken, const uty
                 }
             }
         }
+    } else {
+        for (const auto &state : states) {
+            for (const auto &[symbol, next] : state.transitions) {
+                if (std::holds_alternative<char>(symbol)) {
+                    if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
+                        dfa_type = DfaType::Char;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        return dfa_type;
+                    }
+                } else {
+                    const auto &sym = std::get<stdu::vector<std::string>>(symbol);
+                    if (dfa_type == DfaType::Token || dfa_type == DfaType::CallableToken || dfa_type == DfaType::NONE) {
+                        if (isToken && dct && dct->at(sym) != LexerBuilder::DFA_NOT_COMPATIBLE) {
+                            dfa_type = DfaType::Multi;
+                            return dfa_type;
+                        }
+                        dfa_type = isToken ? DfaType::CallableToken : DfaType::Token;
+                    } else {
+                        dfa_type = DfaType::Multi;
+                        return dfa_type;
+                    }
+                }
+            }
+        }
     }
+
     return dfa_type;
 }
 auto DFA::Base::getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType {
@@ -93,3 +114,4 @@ template auto DFA::Base::getStateType(const SortedTransitions &transitions, cons
 template auto DFA::Base::getType(const States<SingleState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
 template auto DFA::Base::getType(const States<MultiState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
 template auto DFA::Base::getType(const States<SortedState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
+template auto DFA::Base::getType(const States<CharMachineState> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;

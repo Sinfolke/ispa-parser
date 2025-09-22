@@ -1,6 +1,6 @@
 
 export module buildLLParser;
-import LLIR;
+import LLIR.IR;
 import LexerBuilder;
 import AST.Tree;
 import std;

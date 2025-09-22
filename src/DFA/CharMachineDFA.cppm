@@ -18,6 +18,7 @@ export namespace DFA {
         void partitionState(std::size_t state_id);
     public:
         using StatesType = decltype(states);
+        using StateType = CharMachineState;
         CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa) : ast(ast), states(nullptr), sorted_dfa(sorted_dfa), Base(sorted_dfa.getEmptyState()) {};
         CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
         : ast(ast), states(nullptr), sorted_dfa(sorted_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};

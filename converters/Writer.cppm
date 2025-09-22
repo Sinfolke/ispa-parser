@@ -1,8 +1,11 @@
 export module Converter.Writer;
 
 import Converter.Indentation;
-import eosio.rope;
+import Converter.NameManager;
+import Rope.String;
 import cpuf.printf;
+
+import dstd;
 import std;
 
 template<typename T>
@@ -16,9 +19,9 @@ export namespace Converter {
     class Writer {
         std::size_t indentation = 0;
         std::size_t line = 0;
-        eosio::rope data;
+        Rope::String data;
         std::unordered_map<std::size_t, LineData> indentation_memory;
-
+        NameManager name_manager;
         auto fill_indentation_memory(std::size_t position, std::size_t line, const char* format, Indentation indent) -> void {
             bool was_line = false;
             Indentation current_indent;
@@ -64,11 +67,8 @@ export namespace Converter {
         template<StringType StringType, typename ...Args>
         auto write(std::size_t line, std::size_t indentation_offset, StringType format, Args&&... args) -> void {
             fill_indentation_memory(format);
-            data.append()
-            auto current_pos = data.tellp();
-            data.seekp(indentation_memory[line].position);
-            data << std::string(indentation + indentation_offset, '\t') << cpuf::sprintf(format, std::forward<Args>(args)...);
-            data.seekp(current_pos);
+            auto sprintf_result = cpuf::sprintf(format, std::forward<Args>(args)...);
+            data.insert(indentation_offset[line], sprintf_result.begin(), sprintf_result.end());
         }
         /*
          * Output the formatted line
@@ -76,10 +76,28 @@ export namespace Converter {
         template<StringType StringType, typename ...Args>
         auto writeln(std::size_t line, std::size_t indentation_offset, StringType format, Args&&... args)  -> void {
             write(line, indentation_offset, format, std::forward<Args>(args)...);
-            auto current_pos = data.tellp();
-            data.seekp(indentation_memory[line].position);
-            data << '\n';
-            data.seekp(current_pos);        }
+            write(line, indentation_offset, "\n");
+        }
+        template<typename StringType, typename ...Args>
+        auto writeSymbol(const std::string &name, StringType format, Args&& ...args) {
+            std::size_t begin = line;
+            write(line, 0, format, std::forward<Args>(args)...);
+            auto *assign_name = name_manager.getNameInRange(begin, line);
+            stdu::vector<std::string> new_name;
+            if (assign_name) {
+                new_name = *assign_name;
+            }
+            new_name.push_back(name);
+            name_manager.update(new_name, NameManager::NameData {begin, line});
+            return new_name;
+        }
+        template<typename StringType, typename ...Args>
+        auto writeToSymbol(const stdu::vector<std::string> &sym, StringType &format, Args&& ...args) {
+            auto symbol_line = name_manager.getLineBySymbol(sym);
+            auto line_before_change = line;
+            write(symbol_line, 0, format, std::forward<Args>(args)...);
+            name_manager.increase(sym, line - line_before_change);
+        }
         /* indentation level up */
         auto levelUp() -> void {
             indentation++;
@@ -88,6 +106,7 @@ export namespace Converter {
         auto levelDown() -> void {
             indentation--;
         }
-
+        auto nameManager() { return name_manager; }
+        auto getLine() { return line; }
     };
 }

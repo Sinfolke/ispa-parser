@@ -25,7 +25,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
             type = {ValueType::Token};
         else type = find_it->type;
     } else if (value.isAt()) {
-        if (unnamed_datablock_units->empty())
+        if (unnamed_datablock_units.empty())
             throw Error("no more data accamulated with @");
         const auto &t = unnamed_datablock_units.front().type;
         if (t.type == ValueType::RuleResult)
@@ -40,7 +40,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
                 types = CllExprBuilder(*this, el).deduceType();
             } else {
                 auto newType = CllExprBuilder(*this, el).deduceType();
-                if (newType.type != types.type || !compare_templ(newType.template_parameters, types)) {
+                if (newType != types) {
                     type.type = ValueType::Any;
                     break;
                 }
@@ -58,7 +58,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
                 types = CllExprBuilder(*this, value).deduceType();
             } else {
                 auto newType = CllExprBuilder(*this, value).deduceType();
-                if (newType.type != types.type || !compare_templ(newType.template_parameters, types.template_parameters)) {
+                if (newType != types) {
                     type.type = ValueType::Any;
                     break;
                 }
@@ -81,12 +81,12 @@ void LLIR::RValueBuilder::build() {
     } else if (value.isNumber()) {
         data.set(Float {.value = value.getNumber().getFullNumber()});
     } else if (value.isID()) {
-        auto find_it = std::find_if(vars.begin(), vars.end(), [&](const LLIR::variable &var) { return var.name == value.getID().value; });
+        auto find_it = std::find_if(vars.begin(), vars.end(), [&](const LLIR::Variable &var) { return var.name == value.getID().value; });
         if (find_it == vars.end())
             throw Error("Not found variable to convert into expr");
-        data.set(Symbol {.path = find_it->name});
+        data.set(Symbol {find_it->name});
     } else if (value.isAt()) {
-        data.set(Symbol {.path = unnamed_datablock_units.front().name});
+        data.set(Symbol {unnamed_datablock_units.front().name});
         unnamed_datablock_units.erase(unnamed_datablock_units.end() - 1);
     } else if (value.isArray()) {
         Array array;
@@ -101,7 +101,8 @@ void LLIR::RValueBuilder::build() {
         for (const auto &[key, value] : value.getObject().value) {
             CllExprBuilder builder(*this, value);
             builder.build();
-            map.values.emplace_back(key, std::move(builder.get()));
+            map.keys.push_back(String { .value = key });
+            map.values.push_back(std::move(builder.get()));
         }
         data.set(map);
     } else throw Error("Undefined rvalue");

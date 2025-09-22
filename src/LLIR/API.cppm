@@ -5,35 +5,60 @@ import std;
 
 // forward declarations
 export namespace LLIR {
-    struct RValue;
+    class RValue;
     struct ExpressionValue;
     struct Expression;
     struct Statement;
     struct Statements;
+    struct Declaration;
+    struct Declarations;
+    struct ConditionalElement;
 }
-// Promotion trait
+// Default: no promotion
 template<typename T>
 struct promote_to {
-    using type = T; // default: no promotion
+    using type = void;
+    static constexpr bool can_promote = false;
 };
 
-// Specializations for your hierarchy
-template<> struct promote_to<LLIR::RValue> { using type = LLIR::ExpressionValue; };
-template<> struct promote_to<LLIR::ExpressionValue> { using type = LLIR::Expression; };
-template<> struct promote_to<LLIR::Expression> { using type = LLIR::Statement; };
-template<> struct promote_to<LLIR::Statement> { using type = LLIR::Statements; };
+// Specializations
+template<> struct promote_to<LLIR::RValue> {
+    using type = LLIR::ExpressionValue;
+    static constexpr bool can_promote = true;
+};
+template<> struct promote_to<LLIR::ExpressionValue> {
+    using type = LLIR::Expression;
+    static constexpr bool can_promote = true;
+};
+template<> struct promote_to<LLIR::Expression> {
+    using type = LLIR::Statement;
+    static constexpr bool can_promote = true;
+};
+template<> struct promote_to<LLIR::Statement> {
+    using type = LLIR::Statements;
+    static constexpr bool can_promote = true;
+};
+template<> struct promote_to<LLIR::Statements> {
+    using type = LLIR::Declaration;
+    static constexpr bool can_promote = true;
+};
+template<> struct promote_to<LLIR::Declaration> {
+    using type = LLIR::Declarations;
+    static constexpr bool can_promote = true;
+};
 
-template<typename Target, typename T>
-auto promote_or_construct(T&& value) {
-    if constexpr (std::is_constructible_v<Target, T>) {
-        return Target{ std::forward<T>(value) };
+// Recursive promotion or construction
+template<typename whatToConstruct, typename fromWhatToConstruct>
+auto promote_or_construct(fromWhatToConstruct&& value) -> whatToConstruct {
+    if constexpr (std::is_constructible_v<whatToConstruct, fromWhatToConstruct>) {
+        return whatToConstruct{ std::forward<fromWhatToConstruct>(value) };
+    } else if constexpr (requires { typename std::decay_t<fromWhatToConstruct>::promote_to; }) {
+        using P = typename std::decay_t<fromWhatToConstruct>::promote_to;
+        return promote_or_construct<whatToConstruct>(P{std::forward<fromWhatToConstruct>(value)});
     } else {
-        using Next = typename promote_to<T>::type;
-        static_assert(!std::is_same_v<Next, T>, "Type is not constructible");
-        return promote_or_construct<Target>(Next{ std::forward<T>(value) });
+        return void {};
     }
 }
-
 export namespace LLIR {
     enum class ExpressionElement {
         GroupOpen, GroupClose, SquareBraceOpen, SquareBraceClose,
@@ -46,105 +71,231 @@ export namespace LLIR {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult, Any
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult, Any
     };
     enum class ArrayMethods {
         Push, Pop
     };
+    enum class Visibility {
+        Private, Public
+    };
+    enum class Inherit {
+        Lexer, Parser
+    };
     enum class ObjectMethods {};
-    struct StatementsLevel {
+    struct DeclarationsLevel {
+        using promote_to = Declarations;
+        template<typename T>
+        static auto createDeclarations(T&& v) {
+            return promote_or_construct<LLIR::Declarations>(std::forward<T>(v));
+        }
+    };
+    struct DeclarationLevel : DeclarationsLevel {
+        using promote_to = Declaration;
+        template<typename T>
+        static auto createDeclaration(T&& v) {
+            return promote_or_construct<LLIR::Declaration>(std::forward<T>(v));
+        }
+    };
+    struct StatementsLevel : DeclarationLevel {
+        using promote_to = Statements;
         template<typename T>
         static auto createStatements(T&& v) {
             return promote_or_construct<LLIR::Statements>(std::forward<T>(v));
         }
     };
     struct StatementLevel : StatementsLevel {
+        using promote_to = Statement;
         template<typename T>
         static auto createStatement(T&& v) {
             return promote_or_construct<LLIR::Statement>(std::forward<T>(v));
         }
     };
     struct ExpressionLevel : StatementLevel {
+        using promote_to = Expression;
         template<typename T>
         static auto createExpression(T&& v) {
             return promote_or_construct<LLIR::Expression>(std::forward<T>(v));
         }
     };
     struct ExpressionValueLevel : ExpressionLevel {
+        using promote_to = ExpressionValue;
         template<typename T>
+        requires std::is_constructible_v<ExpressionValue, std::decay_t<T>>
         static auto createExpressionValue(T&& v) {
             return promote_or_construct<LLIR::ExpressionValue>(std::forward<T>(v));
         }
     };
     struct RValueLevel : ExpressionValueLevel {
+        using promote_to = RValue;
         template<typename T>
         static auto createRValue(T&& v) {
             return promote_or_construct<LLIR::RValue>(std::forward<T>(v));
         }
     };
+    struct Declarations : stdu::vector<Declaration> {
+        using vector::vector;
+    };
+    struct Statements : stdu::vector<Statement> {
+        using vector::vector;
+    };
+    struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
+        using vector::vector;
+    };
     struct Char : RValueLevel {
         char value;
         bool escaped = false;
+
+        bool operator==(const Char& c) const {
+            return value == c.value && escaped == c.escaped;
+        }
+        bool operator!=(const Char& c) const {
+            return !(*this == c);
+        }
     };
+
     struct Int : RValueLevel {
         long long value;
+
+        bool operator==(const Int& other) const { return value == other.value; }
+        bool operator!=(const Int& other) const { return !(*this == other); }
     };
+
     struct Bool : RValueLevel {
         bool value;
+
+        bool operator==(const Bool& other) const { return value == other.value; }
+        bool operator!=(const Bool& other) const { return !(*this == other); }
     };
+
     struct Float : RValueLevel {
         double value;
+
+        bool operator==(const Float& other) const { return value == other.value; }
+        bool operator!=(const Float& other) const { return !(*this == other); }
     };
+
     struct String : RValueLevel {
         std::string value;
+
+        bool operator==(const String& other) const { return value == other.value; }
+        bool operator!=(const String& other) const { return !(*this == other); }
     };
+
     struct Array : RValueLevel {
-        stdu::vector<stdu::vector<ExpressionValue>> values;
+        stdu::vector<Expression> values;
+
+        bool operator==(const Array& other) const { return values == other.values; }
+        bool operator!=(const Array& other) const { return !(*this == other); }
     };
+
+    struct FixedSizeArray : Array {
+        std::size_t size;
+
+        bool operator==(const FixedSizeArray& other) const {
+            return size == other.size && static_cast<const Array&>(*this) == static_cast<const Array&>(other);
+        }
+        bool operator!=(const FixedSizeArray& other) const { return !(*this == other); }
+    };
+
     struct Map : RValueLevel {
         stdu::vector<std::variant<Int, String>> keys;
-        stdu::vector<RValue> values;
-        template<typename T>
-        requires std::is_convertible_v<std::variant<Int, String>, T>
-        auto areKeysJustT() -> bool {
-            for (const auto &key : keys) {
-                if (!std::holds_alternative<T>(key))
-                    return false;
-            }
-            return true;
-        };
+        stdu::vector<Expression> values;
+
+        bool operator==(const Map& other) const {
+            return keys == other.keys && values == other.values;
+        }
+        bool operator!=(const Map& other) const { return !(*this == other); }
     };
+
     struct Pos : RValueLevel {
-        std::size_t offset;
         bool dereference = true;
         bool sequence = false;
+        std::size_t offset;
+
+        bool operator==(const Pos& other) const {
+            return offset == other.offset &&
+                   dereference == other.dereference &&
+                   sequence == other.sequence;
+        }
+        bool operator!=(const Pos& other) const { return !(*this == other); }
     };
+
     struct FunctionCall : RValueLevel {
         std::string name;
         stdu::vector<Expression> args;
+
+        bool operator==(const FunctionCall& other) const {
+            return name == other.name && args == other.args;
+        }
+        bool operator!=(const FunctionCall& other) const { return !(*this == other); }
     };
+
     struct ArrayMethodCall : RValueLevel {
         ArrayMethods method;
         stdu::vector<Expression> args;
+
+        bool operator==(const ArrayMethodCall& other) const {
+            return method == other.method && args == other.args;
+        }
+        bool operator!=(const ArrayMethodCall& other) const { return !(*this == other); }
     };
+
     struct Symbol : RValueLevel {
-        stdu::vector<std::variant<FunctionCall, std::string>> path;
+        using PathPart = std::variant<FunctionCall, std::string>;
+        stdu::vector<PathPart> path;
+
+        template<typename... Args>
+        requires (std::constructible_from<PathPart, Args> && ...)
+        Symbol(Args&&... args) {
+            (path.emplace_back(std::forward<Args>(args)), ...);
+        }
+        Symbol(const stdu::vector<PathPart> &path) : path(std::move(path)) {}
+        bool operator==(const Symbol& other) const { return path == other.path; }
+        bool operator!=(const Symbol& other) const { return !(*this == other); }
     };
-    // a symbol having storage reserved
+
     struct StorageSymbol : RValueLevel {
         stdu::vector<ExpressionValue> what;
         stdu::vector<std::variant<FunctionCall, ArrayMethodCall, std::string>> path;
+
+        bool operator==(const StorageSymbol& other) const {
+            return what == other.what && path == other.path;
+        }
+        bool operator!=(const StorageSymbol& other) const { return !(*this == other); }
     };
-    struct Token : RValueLevel {};
-    struct Rule : RValueLevel {};
-    struct TokenResult {};
-    struct RuleResult {};
-    struct Type {
-        ValueType type;
-        stdu::vector<Type> template_parameters;
+
+    struct Inheritance : RValueLevel {
+        Symbol name;
+        stdu::vector<Expression> args;
+
+        bool operator==(const Inheritance& other) const {
+            return name == other.name && args == other.args;
+        }
+        bool operator!=(const Inheritance& other) const { return !(*this == other); }
+    };
+
+    struct Token : RValueLevel {
+        bool operator==(const Token&) const { return true; }
+        bool operator!=(const Token&) const { return false; }
+    };
+
+    struct Rule : RValueLevel {
+        bool operator==(const Rule&) const { return true; }
+        bool operator!=(const Rule&) const { return false; }
+    };
+
+    struct TokenResult {
+        bool operator==(const TokenResult&) const { return true; }
+        bool operator!=(const TokenResult&) const { return false; }
+    };
+
+    struct RuleResult {
+        bool operator==(const RuleResult&) const { return true; }
+        bool operator!=(const RuleResult&) const { return false; }
     };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Pos, Symbol, StorageSymbol, Token, Rule, TokenResult, RuleResult> value;
         void set_by_index(std::size_t index) {
             // generate a table of lambdas for each index
             static constexpr auto table = []<std::size_t... Is>(std::index_sequence<Is...>) {
@@ -159,19 +310,29 @@ export namespace LLIR {
                 throw std::out_of_range("invalid variant index");
         }
     public:
+        using promote_to = ExpressionValue;
         RValue() {}
         template<typename T>
-        requires std::is_constructible_v<decltype(value), T> && (!std::is_same_v<T, std::monostate>)
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
+        RValue(const T &value) : value(std::move(value)) {}
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         RValue(T &&value) : value(std::move(value)) {}
 
         void clear() {
             value = std::monostate {};
         }
         template<typename T>
-        requires std::is_constructible_v<decltype(value), T> && (!std::is_same_v<T, std::monostate>)
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         void set(T &&value)  {this->value = std::move(value); }
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
+        void set(const T &value)  {this->value = std::move(value); }
 
-
+        bool operator==(const RValue& other) const {
+            return value == other.value;
+        }
+        bool operator!=(const RValue& other) const { return !(*this == other); }
         bool isChar()    const { return std::holds_alternative<Char>(value); }
         bool isInt()     const { return std::holds_alternative<Int>(value); }
         bool isBool()    const { return std::holds_alternative<Bool>(value); }
@@ -218,56 +379,221 @@ export namespace LLIR {
 
         ValueType type() const { return static_cast<ValueType>(value.index()); }
         auto get() const { return value; }
+
+        // equality
+        bool operator==(const RValue& rhs) {
+            return value == rhs.value;
+        }
+
+        bool operator!=(const RValue& rhs) {
+            return value != rhs.value;
+        }
+
     };
-    struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
-        using vector::vector;
+    struct Type {
+        ValueType type;
+        stdu::vector<std::variant<Type, RValue>> template_parameters;
+        template<typename ...Templates>
+        Type(ValueType vtype, Templates&& ...templates) {
+            type = vtype;
+            (template_parameters.push_back(templates), ...);
+        }
+        Type() = default;
+        bool operator==(const Type& other) const {
+            if (type != other.type)
+                return false;
+            const auto templ1 = template_parameters;
+            const auto templ2 = other.template_parameters;
+            if (templ1.size() != templ2.size()) return false;
+
+            for (std::size_t i = 0; i < templ1.size(); ++i) {
+                if (templ1[i].index() != templ2[i].index()) return false;
+                if (std::holds_alternative<Type>(templ1[i])) {
+                    const auto &first = std::get<Type>(templ1[i]);
+                    const auto &second = std::get<Type>(templ2[i]);
+                    return first == second;
+                } else {
+                    const auto &first = std::get<RValue>(templ1[i]);
+                    const auto &second = std::get<RValue>(templ2[i]);
+                    return first == second;
+                }
+            }
+            return true;
+        }
+        bool operator!=(const Type &other) const {
+            return !(*this == other);
+        }
     };
-    struct Break : ExpressionValueLevel {
-    };
-    struct Continue : ExpressionValueLevel {
-    };
-    struct Return : ExpressionValueLevel {
-        Expression value;
-    };
-    struct StringCompare : ExpressionValueLevel {
-        String str;
-        bool is_string;
-    };
-    struct Hex : ExpressionValueLevel {
-        std::string hex;
-    };
-    struct VariableAssignment : ExpressionValueLevel {
+
+    struct Class : DeclarationLevel {
         std::string name;
-        OperatorType type = OperatorType::Assign;
-        Expression value;
+        stdu::vector<std::pair<Declarations, Visibility>> data;
+        Inherit inherit;
+        bool operator==(const Class& other) const {
+            return name == other.name && data == other.data && inherit == other.inherit;
+        }
+        bool operator!=(const Class& other) const {
+            return !(*this == other);
+        }
+    };
+    struct Struct : DeclarationLevel {
+        std::string name;
+        stdu::vector<std::pair<Declarations, Visibility>> data;
+        bool operator==(const Struct& other) const {
+            return name == other.name && data == other.data;
+        }
+    };
+    struct Namespace : DeclarationLevel {
+        std::string name;
+        Declarations declarations;
+        bool operator==(const Namespace& other) const {
+            return name == other.name && declarations == other.declarations;
+        }
+        bool operator!=(const Namespace& other) const {
+            return !(*this == other);
+        }
+    };
+    struct Function : DeclarationLevel {
+        std::string name;
+        Statements statements;
+        bool operator==(const Function& other) const {
+            return name == other.name && statements == other.statements;
+        }
+        bool operator!=(const Function& other) const {
+            return !(*this == other);
+        }
+    };
+    struct TypeAlias : DeclarationLevel {
+        std::string name;
+        Type type;
+        bool operator==(const TypeAlias& other) const {
+            return name == other.name && type == other.type;
+        }
+        bool operator!=(const TypeAlias& other) const {
+            return !(*this == other);
+        }
     };
     struct Variable : ExpressionValueLevel {
         std::string name;
         Type type;
         Expression value;
+        bool operator==(const Variable& other) const {
+            return name == other.name && type == other.type && value == other.value;
+        }
+        bool operator!=(const Variable& other) const {
+            return !(*this == other);
+        }
         // Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
         // Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
         auto empty() { return name.empty(); }
     };
+    struct Declaration : DeclarationsLevel {
+        using promote_to = Declarations;
+        std::variant<Class, Struct, Namespace, Function, TypeAlias, Variable> value;
+
+        Declaration() {};
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T>
+        Declaration(T value) : value(value) {}
+
+        bool operator==(const Declaration& other) const {
+            return value == other.value;
+        }
+        bool operator!=(const Declaration& other) const {
+            return value != other.value;
+        }
+        // Is functions
+        bool isClass() const { return std::holds_alternative<Class>(value); }
+        bool isStruct() const { return std::holds_alternative<Struct>(value); }
+        bool isNamespace() const { return std::holds_alternative<Namespace>(value); }
+        bool isFunction() const { return std::holds_alternative<Function>(value); }
+        bool isTypeAlias() const { return std::holds_alternative<TypeAlias>(value); }
+
+        // Get functions
+        auto& getClass() { return std::get<Class>(value); }
+        const auto& getClass() const { return std::get<Class>(value); }
+
+        auto& getStruct() { return std::get<Struct>(value); }
+        const auto& getStruct() const { return std::get<Struct>(value); }
+
+        auto& getNamespace() { return std::get<Namespace>(value); }
+        const auto& getNamespace() const { return std::get<Namespace>(value); }
+
+        auto& getFunction() { return std::get<Function>(value); }
+        const auto& getFunction() const { return std::get<Function>(value); }
+
+        auto& getTypeAlias() { return std::get<TypeAlias>(value); }
+        const auto& getTypeAlias() const { return std::get<TypeAlias>(value); }
+    };
+    struct Break : ExpressionValueLevel {
+        bool operator==(const Break&) const { return true; }
+        bool operator!=(const Break&) const { return false; }
+    };
+    struct Continue : ExpressionValueLevel {
+        bool operator==(const Continue&) const { return true; }
+        bool operator!=(const Continue&) const { return false; }
+    };
+    struct Return : ExpressionValueLevel {
+        Expression value;
+        bool operator==(const Return& ret) const { return value == ret.value; }
+        bool operator!=(const Return& ret) const { return !(*this == ret); }
+    };
+    struct StringCompare : ExpressionValueLevel {
+        bool operator==(const StringCompare& s) const { return str == s.str && is_string == s.is_string;  }
+        bool operator!=(const StringCompare& s) const { return !(*this == s); }
+        String str;
+        bool is_string;
+    };
+    struct Hex : ExpressionValueLevel {
+        bool operator==(const Hex& h) const { return hex == h.hex; }
+        bool operator!=(const Hex& h) const { return !(*this == h); }
+        std::string hex;
+    };
+    struct VariableAssignment : ExpressionValueLevel {
+        bool operator==(const VariableAssignment& v) const { return name == v.name && type == v.type && value == v.value; }
+        bool operator!=(const VariableAssignment& v) const { return !(*this == v); }
+        std::string name;
+        OperatorType type = OperatorType::Assign;
+        Expression value;
+    };
     // possibly will be removed *
-    struct CounterIncreament : ExpressionValueLevel {};
+    struct CounterIncreament : ExpressionValueLevel {
+        bool operator==(const CounterIncreament& c) const { return true; }
+        bool operator!=(const CounterIncreament& c) const { return !(*this == c); }
+    };
     struct CounterIncreamentByLength : ExpressionValueLevel {
+        bool operator==(const CounterIncreamentByLength& n) const { return name == n.name; }
+        bool operator!=(const CounterIncreamentByLength& n) const { return !(*this == n); }
         std::string name;
     };
-    struct ResetPosCounter : ExpressionValueLevel {};
+    struct ResetPosCounter : ExpressionValueLevel {
+        bool operator==(const ResetPosCounter& c) const { return true; }
+        bool operator!=(const ResetPosCounter& c) const { return !(*this == c); }
+    };
     struct PushPosCounter : ExpressionValueLevel {
+        bool operator==(const PushPosCounter& c) const { return name == c.name; }
+        bool operator!=(const PushPosCounter& c) const { return !(*this == c); }
         std::string name;
     };
-    struct PopPosCounter : ExpressionValueLevel {};
+    struct PopPosCounter : ExpressionValueLevel {
+        bool operator==(const PopPosCounter& c) const { return true; }
+        bool operator!=(const PopPosCounter& c) const { return !(*this == c); }
+    };
     //                         *
     struct SkipSpaces : ExpressionValueLevel {
+        bool operator==(const SkipSpaces& s) const { return isToken == s.isToken; }
+        bool operator!=(const SkipSpaces& s) const { return !(*this == s); }
         bool isToken;
     };
     struct DfaLookup : ExpressionValueLevel {
-        std::string output_name;
+        bool operator==(const DfaLookup &d) const { return output_name == d.output_name && dfa_count == d.dfa_count; }
+        bool operator!=(const DfaLookup &d) const { return !(*this == d); }
         std::size_t dfa_count;
+        std::string output_name;
     };
     struct ReportError : ExpressionValueLevel {
+        bool operator==(const ReportError& e) const { return message == e.message; }
+        bool operator!=(const ReportError& e) const { return !(*this == e); }
         std::string message;
     };
     struct ExpressionValue : ExpressionLevel {
@@ -287,8 +613,22 @@ export namespace LLIR {
             PushPosCounter,
             PopPosCounter,
             SkipSpaces,
-            DfaLookup
+            DfaLookup,
+            ReportError
         > value;
+        ExpressionValue() {};
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T>
+        ExpressionValue(const T &t) : value(t) {}
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T>
+        ExpressionValue(T &&t) : value(t) {}
+        bool operator==(const ExpressionValue& other) const {
+            return value == other.value;
+        }
+        bool operator!=(const ExpressionValue& other) const {
+            return !(*this == other);
+        }
 
         // ======= isXXX functions =======
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
@@ -342,38 +682,58 @@ export namespace LLIR {
         const SkipSpaces& getSkipSpaces() const { return std::get<SkipSpaces>(value); }
         const DfaLookup& getDfaLookup() const { return std::get<DfaLookup>(value); }
     };
-    struct Statements : stdu::vector<Statement> {
-        using vector::vector;
-    };
     // made for if, while, do-while
-    struct ConditionalElement : StatementLevel {
+    struct ConditionalElement {
+        bool operator==(const ConditionalElement& other) const {
+            return expr == other.expr && stmt == other.stmt;
+        }
+        bool operator!=(const ConditionalElement& other) const {
+            return !(*this == other);
+        }
         Expression expr;
         Statements stmt;
     };
-    struct If : ConditionalElement {
+    struct If : ConditionalElement, StatementLevel {
         Statements else_stmt;
-
+        bool operator==(const If& other) const {
+            return static_cast<ConditionalElement>(*this) == other && else_stmt == other.else_stmt;
+        }
+        bool operator!=(const If& other) const {
+            return !(*this == other);
+        }
         If(const Expression &e, const Statements &s, const Statements &else_stmt) : ConditionalElement {.expr = e, .stmt = s}, else_stmt(else_stmt) {}
         If(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
         If(const Expression &e) : ConditionalElement {.expr = e} {}
-        If() {}
+        If(Expression &&e, Statements &&s, Statements &&else_stmt) : ConditionalElement {.expr = std::move(e), .stmt = std::move(s)}, else_stmt(else_stmt) {}
+        If(Expression &&e, Statements &&s) : ConditionalElement {.expr = std::move(e), .stmt = std::move(s)} {}
+        If(Expression &&e) : ConditionalElement {.expr = std::move(e)} {}
+        If() {};
     };
-    struct While : ConditionalElement {
+    struct While : ConditionalElement, StatementLevel {
         While(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
         While(const Expression &e) : ConditionalElement {.expr = e} {}
         While() {}
     };
-    struct DoWhile : ConditionalElement {
+    struct DoWhile : ConditionalElement, StatementLevel {
         DoWhile(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
         DoWhile(const Expression &e) : ConditionalElement {.expr = e} {}
         DoWhile() {}
     };
     struct Switch : StatementLevel {
+        bool operator==(const Switch& other) const { return expression == other.expression && cases == other.cases; }
+        bool operator!=(const Switch& other) const { return !(*this == other); }
         Expression expression;
         stdu::vector<std::pair<RValue, Statements>> cases;
     };
     struct Statement : StatementsLevel {
         std::variant<Variable, If, While, DoWhile, Switch, Expression> value;
+
+        template<typename T>
+        requires std::is_constructible_v<decltype(value), T>
+        Statement(T value) : value(value) {}
+        Statement(const ConditionalElement &value) : value(While {value.expr, value.stmt}) {}
+        bool operator==(const Statement& other) const { return value == other.value; }
+        bool operator!=(const Statement& other) const { return !(*this == other); }
 
         // ======= isXXX functions =======
         bool isVariable() const { return std::holds_alternative<Variable>(value); }
@@ -402,113 +762,6 @@ export namespace LLIR {
 
         static auto createStatements(const RValue &value) -> stdu::vector<Statement>;
     };
-
-    enum class types {
-        NONE, VARIABLE, IF, WHILE, DOWHILE,
-        METHOD_CALL, FUNCTION_CALL, INTERNAL_CALL, EXIT, BREAK_LOOP, CONTINUE_LOOP,
-        ASSIGN_VARIABLE, INCREASE_POS_COUNTER, INCREASE_POS_COUNTER_BY_TOKEN_LENGTH, RESET_POS_COUNTER,
-        SKIP_SPACES, DATA_BLOCK, PUSH_POS_COUNTER, POP_POS_COUNTER, ERR, JUMP, JUMP_FROM_VARIABLE, SWITCH, DFA_LOOKUP, EMPTY
-    };
-    enum class condition_types {
-        GROUP_OPEN, GROUP_CLOSE, AND, OR, NOT, EQUAL, NOT_EQUAL,
-        HIGHER, LOWER, HIGHER_OR_EQUAL, LOWER_OR_EQUAL,
-        LEFT_BITWISE, RIGHT_BITWISE, BITWISE_AND, BITWISE_OR, BITWISE_ANDR,
-        ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO,
-        CHARACTER, ESCAPED_CHARACTER, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_NAME, TOKEN, TOKEN_SEQUENCE, NUMBER, HEX, BIN, STRING, STRNCMP,
-        VARIABLE, SUCCESS_CHECK, RVALUE, METHOD_CALL, FUNCTION_CALL, DFA
-    };
-    enum class var_types {
-        UNDEFINED, STRING, BOOLEAN, NUMBER, INT, ARRAY, OBJECT, FUNCTION, ANY, Rule, Token, Rule_result, Token_result, CHAR
-    };
-    enum class var_assign_values {
-        NONE, True, False, NUMBER, BOOLEAN, STRING, ARRAY, OBJECT, VAR_REFER, ACCESSOR,
-        UCHAR, CHAR, USHORT, SHORT, UINT, INT, ULONG, LONG, ULONGLONG, LONGLONG, CURRENT_POS,
-        CURRENT_POS_COUNTER, CURRENT_POS_SEQUENCE, CURRENT_CHARACTER, CURRENT_TOKEN, TOKEN_SEQUENCE, TOKEN_NAME, FUNCTION_CALL, INTERNAL_FUNCTION_CALL, EXPR, INCLOSED_MAP
-    };
-    enum class var_assign_types {
-        ADD, SUBSTR, MULTIPLY, DIVIDE, MODULO, BITWISE_AND, BITWISE_OR, BITWISE_ANDR, BITWISE_RIGHTSHFT, BITWISE_LEFTSHIFT, ASSIGN,
-        ASSIGN_ADD, ASSIGN_SUBSTR, ASSIGN_MULTIPLY, ASSIGN_DIVIDE, ASSIGN_MODULO,
-        ASSIGN_BITWISE_AND, ASSIGN_BITWISE_OR, ASSIGN_BITWISE_ANDR, ASSIGN_BITWISE_RIGHTSHFT, ASSIGN_BITWISE_LEFTSHIFT
-    };
-    struct var_type {
-        var_types type = var_types::UNDEFINED;
-        stdu::vector<var_type> templ = {};
-        std::size_t operator()(const stdu::vector<std::string>& key) const {
-            std::size_t h = 0;
-            std::hash<std::string> hasher;
-            for (const auto& s : key) {
-                h ^= hasher(s) + 0x9e3779b9 + (h << 6) + (h >> 2);
-            }
-            return h;
-        }
-    };
-    struct member {
-        types type = types::NONE;
-        std::any value = {};
-    };
-    struct assign {
-        var_assign_values kind;
-        std::any data;
-    };
-    struct property {
-        std::string obj;
-        stdu::vector<std::string> properties;
-    };
-    struct current_token {
-        condition_types op;
-        std::string name;
-    };
-    struct expr {
-        condition_types id;
-        std::any value = {};
-    };
-
-    struct variable {
-        std::string name;
-        var_type type = {var_types::UNDEFINED};
-        assign value = {var_assign_values::NONE};
-        stdu::vector<std::string> property_access = {};
-    };
-    struct var_refer {
-        std::optional<char> pre_increament;
-        std::optional<char> post_increament;
-        variable var;
-        stdu::vector<expr> brace_expression;
-    };
-    using array = stdu::vector<stdu::vector<expr>>;
-    using object = std::unordered_map<std::string, stdu::vector<expr>>;
-    struct function_call {
-        std::string name;
-        stdu::vector<stdu::vector<expr>> params;
-    };
-    struct method_call {
-        std::string var_name;
-        stdu::vector<function_call> calls;
-    };
-    struct condition {
-        stdu::vector<expr> expression;
-        stdu::vector<member> block;
-        stdu::vector<member> else_block = {};
-    };
-
-    struct variable_assign {
-        std::string name;
-        var_assign_types assign_type = var_assign_types::ASSIGN;
-        assign value = {var_assign_values::NONE};
-    };
-    struct strncmp {
-        bool is_string;
-        variable value;
-        std::size_t begin = 0;
-    };
-    struct switch_statement {
-        struct unit {
-            assign name;
-            stdu::vector<member> block;
-        };
-        stdu::vector<expr> expression;
-        stdu::vector<unit> cases;
-    };
     using inclosed_map = std::unordered_map<std::string, std::pair<Expression, Type>>;
     using regular_data_block = std::pair<Expression, Type>;
     struct DataBlock {
@@ -528,16 +781,10 @@ export namespace LLIR {
         Variable shadow_var;
         char quantifier;
     };
-    struct var_group {
-        variable var;
-        std::size_t begin;
-        std::size_t end;
-    };
     struct Production {
         DataBlock block;
         stdu::vector<std::string> name;
         Statements members;
     };
     using DataBlockList = utype::unordered_map<stdu::vector<std::string>, DataBlock>;
-    using Nodes = stdu::vector<member>;
 }

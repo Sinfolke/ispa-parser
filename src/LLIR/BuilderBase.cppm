@@ -16,12 +16,11 @@ export namespace LLIR {
         static auto processExitStatements(Statements &values) -> void;
         static auto generateVariableName(std::size_t &variable_count) -> std::string;
         static auto createSuccessVariable(std::size_t &variable_count) -> Variable;
-        static auto createAssignUvarBlock(const Variable &uvar, const Variable &var, const Variable &shadow_var) -> Statement;
+        static auto createAssignUvarBlock(Statements &statements, const Variable &uvar, const Variable &var, const Variable &shadow_var) -> void;
         static auto createDefaultStatements(const Variable &var, const Variable &svar) -> Statements;
         static auto createDefaultStatements(const Variable &svar) -> Statements;
         static auto createDefaultStatements() -> Statements;
         static auto createDefaultCall(Statements &block, const Variable &var, const std::string &name, LLIR::Expression &expr) -> Statement;
-        static auto compare_templ(const stdu::vector<Type>& templ1, const stdu::vector<Type>& templ2) -> bool;
         static auto increasePos() -> Expression;
         static auto getPrefixAsExpressionValue(const std::optional<char> &prefix) -> ExpressionValue;
         static void pushVariablePrefix(Expression &expr, const std::optional<char> &prefix);
@@ -36,7 +35,7 @@ export namespace LLIR {
         static auto CllAssignmentOpToIR(char op) -> OperatorType;
 
         // helper functions to create structures
-        auto assignSvar(const variable &svar, var_assign_values value) -> Statement;
+        auto assignSvar(const Variable &svar, bool value) -> Statement;
         auto getBuilderData() -> BuilderDataWrapper;
     protected:
         Statements statements;
@@ -67,7 +66,7 @@ export namespace LLIR {
         virtual void build() = 0;
         // interaction functions
         // void push(LLIR::member mem);
-        void pop();
+        void pop() { statements.pop_back(); };
         // void add(LLIR::Nodes block);
 
         virtual auto getData() const -> const Statements&;

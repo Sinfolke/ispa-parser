@@ -1,7 +1,7 @@
 module LLIR.RuleBuilder;
 import LLIR.Rule.MemberBuilder;
 import LLIR.CllBuilder;
-import LLIR;
+import LLIR.IR;
 import logging;
 import cpuf.printf;
 import std;
@@ -25,7 +25,7 @@ void LLIR::RuleBuilder::build() {
 LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
     inclosed_map map;
     for (const auto &[name, variable] : key_vars) {
-        map.try_emplace(name, Symbol::createExpression(Symbol {.path = variable.name}));
+        map.try_emplace(name, std::make_pair(Symbol::createExpression(Symbol {variable.name}), variable.type));
     }
     return map;
 }
@@ -72,7 +72,8 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
             } else if (type.type == ValueType::TokenResult) {
                 type.type = ValueType::Token;
             }
-            initial_map.try_emplace(name, Symbol::createExpression(Symbol {.path = unnamed_datablock_units.front().name}));
+            const auto v = unnamed_datablock_units.front();
+            initial_map.try_emplace(name, std::make_pair(Symbol::createExpression(Symbol {v.name}), v.type));
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
         stmt.value = initial_map;

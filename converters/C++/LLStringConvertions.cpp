@@ -1,6 +1,6 @@
 module;
 module LLStringConvertions;
-import LLIR;
+import LLIR.IR;
 import std;
 
 static std::size_t count_strlen(const char* str) {
