@@ -15,5 +15,11 @@ export namespace LangRepresentation {
 
         auto push(const LangAPI::Declaration &declaration) -> void { data.push_back(declaration); };
         auto push(LangAPI::Declaration &&declaration) -> void { data.push_back(std::move(declaration)); };
+
+        template<typename First, typename ...Args>
+        auto push(const First &first, Args&& ...args) -> void {
+            data.push_back(First::createDeclaration(first));
+            (data.push_back(Args::createDeclaration(std::forward<Args>(args))), ...);
+        };
     };
 }

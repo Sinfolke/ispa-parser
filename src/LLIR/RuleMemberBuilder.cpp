@@ -184,15 +184,14 @@ void LLIR::GroupBuilder::build() {
         insideLoop = true;
     MemberBuilder builder(*this, group);
     builder.build();
-    auto addSpaceSkipFirst = builder.getAddSpaceSkipFirst();
     exports_list.insert(exports_list.end(), builder.getReturnVars().begin(), builder.getReturnVars().end());
     insideLoop = prev_insideLoop;
     // remove the previous space skip if there was \s0
-    if (addSpaceSkipFirst) {
+    if (builder.getAddSpaceSkipFirst()) {
         removePrevSpaceSkip();
     }
 
-    var.type = {deduceVarTypeByProd(rule)};
+    var.type = {deduceVarTypeByRuleMember(rule)};
     if ((quantifier == '*' || quantifier == '+') && var.type != LangAPI::ValueType::Undef && var.type != LangAPI::ValueType::String) {
         var.type.template_parameters = {{var.type}};
         var.type.type = LangAPI::ValueType::Array;
@@ -770,11 +769,8 @@ void LLIR::OpBuilder::build() {
     nfa.build(false);
     auto dfa = DFA::build(tree, nfa);
     auto var = createEmptyVariable("");
-    var.type.type = deduceVarTypeByProd(rule) ;
-    if (var.type == LangAPI::ValueType::Rule)
-        var.type.type = LangAPI::ValueType::RuleResult;
-    // if (var.type.type == LangAPI::ValueType::RuleResult || var.type.type == LangAPI::ValueType::TokenResult)
-    //     var.property_access = {"node"};
+    var.type = deduceVarTypeByRuleMember(rule) ;
+    undoRuleResult(var.type.getValueType());
 
     if (rule.prefix.name.empty()) {
         var.name = generateVariableName();

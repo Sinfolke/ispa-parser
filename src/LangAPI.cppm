@@ -83,6 +83,12 @@ export namespace LangAPI {
         Lexer, Parser
     };
     enum class ObjectMethods {};
+    enum class Language {
+        Cpp
+    };
+    enum class StdlibExports {
+        Rule, Token, Node
+    };
     struct DeclarationsLevel {
         using promote_to = Declarations;
         template<typename T>
@@ -264,7 +270,20 @@ export namespace LangAPI {
         }
         bool operator!=(const StorageSymbol& other) const { return !(*this == other); }
     };
+    struct IspalibSymbol {
+        static constexpr const char* Node = "Node";
 
+        stdu::vector<const char*> path;
+        template<typename... Args>
+        requires (std::constructible_from<const char*, Args> && ...)
+        IspalibSymbol(Args&&... args) {
+            (path.emplace_back(std::forward<Args>(args)), ...);
+        }
+        IspalibSymbol(const stdu::vector<const char*> &path) : path(std::move(path)) {}
+
+        bool operator==(const IspalibSymbol& other) const { return path == other.path; }
+        bool operator!=(const IspalibSymbol& other) const { return !(*this == other); }
+    };
     struct Inheritance : RValueLevel {
         Symbol name;
         stdu::vector<Expression> args;
@@ -381,10 +400,10 @@ export namespace LangAPI {
 
     };
     struct Type {
-        std::variant<ValueType, Symbol> type;
+        std::variant<ValueType, Symbol, IspalibSymbol> type;
         stdu::vector<std::variant<Type, RValue>> template_parameters;
         template<typename TypeOrPath, typename ...Templates>
-        requires (std::is_same_v<std::decay_t<TypeOrPath>, ValueType> || std::is_same_v<std::decay_t<TypeOrPath>, Symbol>)
+        requires (std::is_same_v<std::decay_t<TypeOrPath>, ValueType> || std::is_same_v<std::decay_t<TypeOrPath>, Symbol> || std::is_same_v<std::decay_t<TypeOrPath>, IspalibSymbol>)
         Type(TypeOrPath vtype, Templates&& ...templates) {
             type = vtype;
             (template_parameters.push_back(templates), ...);
@@ -396,11 +415,20 @@ export namespace LangAPI {
         bool isSymbol() const {
             return std::holds_alternative<Symbol>(type);
         }
+        bool isStdlibSymbol() const {
+            return std::holds_alternative<IspalibSymbol>(type);
+        }
         auto &getValueType() {
             return std::get<ValueType>(type);
         }
         auto &getSymbol() {
             return std::get<Symbol>(type);
+        }
+        auto &getStdlibSymbol() {
+            return std::get<IspalibSymbol>(type);
+        }
+        const auto &getStdlibSymbol() const {
+            return std::get<IspalibSymbol>(type);
         }
         auto &getValueType() const {
             return std::get<ValueType>(type);
@@ -476,9 +504,10 @@ export namespace LangAPI {
     };
     struct Function : DeclarationLevel {
         std::string name;
+        stdu::vector<std::pair<Type, std::string>> parameters;
         Statements statements;
         bool operator==(const Function& other) const {
-            return name == other.name && statements == other.statements;
+            return name == other.name && parameters == other.parameters && statements == other.statements;
         }
         bool operator!=(const Function& other) const {
             return !(*this == other);
@@ -491,6 +520,21 @@ export namespace LangAPI {
             return name == other.name && type == other.type;
         }
         bool operator!=(const TypeAlias& other) const {
+            return !(*this == other);
+        }
+    };
+    struct Enum : DeclarationLevel {
+        std::string name;
+        stdu::vector<std::string> value;
+
+        template<typename ...Args>
+        Enum(std::string name, std::string first_value, Args&& ...args) : value(std::vector<std::string>{first_value, std::forward<Args>(args)...}) {}
+        Enum(std::string name, stdu::vector<std::string> value) : value(std::move(value)) {}
+        Enum(std::string name) {}
+        bool operator==(const Enum& other) const {
+            return value == other.value;
+        }
+        bool operator!=(const Enum& other) const {
             return !(*this == other);
         }
     };
@@ -510,7 +554,7 @@ export namespace LangAPI {
     };
     struct Declaration : DeclarationsLevel {
         using promote_to = Declarations;
-        std::variant<Class, Struct, Namespace, Function, TypeAlias, Variable> value;
+        std::variant<Class, Struct, Namespace, Function, TypeAlias, Enum, Variable> value;
 
         Declaration() {};
         template<typename T>
@@ -529,6 +573,8 @@ export namespace LangAPI {
         bool isNamespace() const { return std::holds_alternative<Namespace>(value); }
         bool isFunction() const { return std::holds_alternative<Function>(value); }
         bool isTypeAlias() const { return std::holds_alternative<TypeAlias>(value); }
+        bool isEnum() const { return std::holds_alternative<Enum>(value); }
+        bool isVariable() const { return std::holds_alternative<Variable>(value); }
 
         // Get functions
         auto& getClass() { return std::get<Class>(value); }
@@ -545,6 +591,12 @@ export namespace LangAPI {
 
         auto& getTypeAlias() { return std::get<TypeAlias>(value); }
         const auto& getTypeAlias() const { return std::get<TypeAlias>(value); }
+
+        auto& getEnum() { return std::get<Enum>(value); }
+        const auto& getEnum() const { return std::get<Enum>(value); }
+
+        auto& getVariable() { return std::get<Variable>(value); }
+        const auto& getVariable() const { return std::get<Variable>(value); }
     };
     struct Break : ExpressionValueLevel {
         bool operator==(const Break&) const { return true; }

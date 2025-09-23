@@ -555,35 +555,37 @@ auto LLIR::BuilderBase::getLookaheadTerminals(const AST::RuleMember& symbol, con
 auto LLIR::BuilderBase::deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type {
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
-auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> LangAPI::ValueType {
-    LangAPI::ValueType type = LangAPI::ValueType::Undef;
+auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type {
+    LangAPI::Type type = LangAPI::ValueType::Undef;
     if (mem.isGroup()) {
         const auto &val = mem.getGroup().values;
         if (val.size() == 1) {
-            type = deduceVarTypeByProd(val[0]);
+            type = deduceVarTypeByRuleMember(val[0]);
         } else {
             for (auto i = 0; i < val.size(); i++) {
-                if (deduceVarTypeByProd(val[i]) != LangAPI::ValueType::String) {
+                if (deduceVarTypeByRuleMember(val[i]) != LangAPI::ValueType::String) {
                     return LangAPI::ValueType::Undef;
                 }
             }
             type = LangAPI::ValueType::String;
         }
     } else if (mem.isOp()) {
-        std::optional<LangAPI::ValueType> first_type;
+        std::optional<LangAPI::Type> first_type;
         char prev_quantifier = '\0';
         for (const auto &el : mem.getOp().options) {
-            auto t = deduceVarTypeByProd(el);
+            auto t = deduceVarTypeByRuleMember(el);
             // if (t == LLIR::var_types::UNDEFINED)
             //     return {LLIR::var_types::UNDEFINED};
             if (!first_type) {
                 first_type = t;
                 prev_quantifier = el.quantifier;
-            } else if (t != *first_type || prev_quantifier != el.quantifier) {
+            } else if (t != *first_type || prev_quantifier != el.quantifier && type.getValueType() != LangAPI::ValueType::Variant) {
+                type = {LangAPI::ValueType::Variant, first_type.value()};
                 return LangAPI::ValueType::Any;
+            } else {
+                type.template_parameters.push_back(t);
             }
         }
-        type = first_type.value_or(LangAPI::ValueType::Undef);
     } else if (mem.isName()) {
         type = corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule;
     } else type = LangAPI::ValueType::String;

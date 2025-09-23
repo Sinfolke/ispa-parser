@@ -26,23 +26,12 @@ auto LLIR::IR::empty() -> bool {
 auto LLIR::IR::clear() -> void {
     data.clear();
 }
-LLIR::DataBlockList LLIR::IR::getDataBlocks(bool isToken) const {
+LLIR::DataBlockList LLIR::IR::getDataBlocks() const {
     LLIR::DataBlockList list;
     for (const auto &[data_block, name, members] : data) {
-        if (isToken) {
-            if (corelib::text::isLower(name.back())) continue;
-        } else {
-            if (corelib::text::isUpper(name.back())) continue;
-        }
         list[name] = data_block;
     }
     return list;
-}
-LLIR::DataBlockList LLIR::IR::getDataBlocksTerminals() const {
-    return getDataBlocks(true);
-}
-LLIR::DataBlockList LLIR::IR::getDataBlocksNonTerminals() const {
-    return getDataBlocks(false);
 }
 auto LLIR::IR::getData() const -> const stdu::vector<Production> & {
     return data;
