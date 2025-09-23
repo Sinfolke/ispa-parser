@@ -14,13 +14,6 @@ import DFA.TokenMachineDFA;
 import cpuf.printf;
 import std;
 
-bool LexerBuilder::isDfaCompatible(const stdu::vector<AST::RuleMember> &member) {
-    for (const auto &mem : member) {
-        if (mem.isCll())
-            return false;
-    }
-    return true;
-}
 void accumulateNestedNames(stdu::vector<AST::RuleMember> members, stdu::vector<stdu::vector<std::string>> &names) {
     for (const auto &mem : members) {
         if (mem.isGroup())

@@ -50,9 +50,9 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
             auto type = expr_builder.deduceType();
-            if (type.type == ValueType::RuleResult) {
+            if (type == ValueType::RuleResult) {
                 type.type = ValueType::Rule;
-            } else if (type.type == ValueType::TokenResult) {
+            } else if (type == ValueType::TokenResult) {
                 type.type = ValueType::Token;
             }
             expr_builder.build();
@@ -67,9 +67,9 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
                 throw Error("More keys than values: {}", name);
             }
             auto type = unnamed_datablock_units.front().type;
-            if (type.type == ValueType::RuleResult) {
+            if (type == ValueType::RuleResult) {
                 type.type = ValueType::Rule;
-            } else if (type.type == ValueType::TokenResult) {
+            } else if (type == ValueType::TokenResult) {
                 type.type = ValueType::Token;
             }
             const auto v = unnamed_datablock_units.front();

@@ -19,24 +19,24 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
         auto find_it = std::find_if(vars.begin(), vars.end(), [&](const Variable &var) { return var.name == value.getID().value; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
-        if (find_it->type.type == ValueType::RuleResult)
+        if (find_it->type == ValueType::RuleResult)
             type = {ValueType::Rule};
-        else if (find_it->type.type == ValueType::TokenResult)
+        else if (find_it->type == ValueType::TokenResult)
             type = {ValueType::Token};
         else type = find_it->type;
     } else if (value.isAt()) {
         if (unnamed_datablock_units.empty())
             throw Error("no more data accamulated with @");
         const auto &t = unnamed_datablock_units.front().type;
-        if (t.type == ValueType::RuleResult)
+        if (t == ValueType::RuleResult)
             type = {ValueType::Rule};
-        else if (t.type == ValueType::TokenResult)
+        else if (t == ValueType::TokenResult)
             type = {ValueType::Token};
         else type = t;
     } else if (value.isArray()) {
         Type types;
         for (const auto &el : value.getArray().value) {
-            if (types.type == ValueType::Undef) {
+            if (types == ValueType::Undef) {
                 types = CllExprBuilder(*this, el).deduceType();
             } else {
                 auto newType = CllExprBuilder(*this, el).deduceType();
@@ -46,7 +46,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
                 }
             }
         }
-        if (types.type != ValueType::Any) {
+        if (types != ValueType::Any) {
             type.template_parameters = {types};
             type.type = ValueType::Array;
         }
@@ -54,7 +54,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
         // todo: add handle key of different types (int or string)
         Type types = {ValueType::Undef};
         for (const auto &[key, value] : value.getObject().value) {
-            if (types.type == ValueType::Undef) {
+            if (types == ValueType::Undef) {
                 types = CllExprBuilder(*this, value).deduceType();
             } else {
                 auto newType = CllExprBuilder(*this, value).deduceType();
@@ -64,7 +64,7 @@ auto LLIR::RValueBuilder::deduceType() -> Type {
                 }
             }
         }
-        if (types.type != ValueType::Any) {
+        if (types != ValueType::Any) {
             type.template_parameters = {types};
             type.type = ValueType::Map;
         }

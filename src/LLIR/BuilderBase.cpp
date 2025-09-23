@@ -56,7 +56,7 @@ auto LLIR::BuilderBase::createSuccessVariable() -> Variable {
 }
 auto LLIR::BuilderBase::createAssignUvarBlock(Statements &statements, const Variable &uvar, const Variable &var, const Variable &shadow_var) -> void {
     if (!uvar.name.empty()) {
-        statements.push_back(            VariableAssignment::createStatement(VariableAssignment {
+        statements.push_back(VariableAssignment::createStatement(VariableAssignment {
                 .name = uvar.name,
                 .value = Symbol::createExpression(Symbol {
                     shadow_var.name.empty() ? var.name : shadow_var.name
@@ -83,7 +83,7 @@ void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Vari
     statements.push_back(If::createStatement(post_loop_condition));
 }
 auto LLIR::BuilderBase::createDefaultStatements(const Variable &var, const Variable &svar) -> Statements {
-    if (var.type.type == ValueType::Char) {
+    if (var.type == ValueType::Char) {
         return VariableAssignment::createStatements(VariableAssignment {.name = var.name, .value = Pos::createExpression(Pos {.dereference = true})});
     } else {
         return {
@@ -113,12 +113,12 @@ auto LLIR::BuilderBase::createDefaultCall(Statements &block, const Variable &var
 }
 auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &var) -> Variable {
     Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
-    if (var.type.type == ValueType::TokenResult) {
+    if (var.type == ValueType::TokenResult) {
         shadow_var.type.type = ValueType::Token;
-    } else if (var.type.type == ValueType::RuleResult) {
+    } else if (var.type == ValueType::RuleResult) {
         shadow_var.type.type = ValueType::Rule;
     }
-    shadow_var.type.template_parameters = {{shadow_var.type.type}};
+    shadow_var.type.template_parameters = {{shadow_var.type}};
     shadow_var.type.type = ValueType::Array;
     statements.push_back(Variable::createStatement(shadow_var));
     statements.push_back(
@@ -198,7 +198,7 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variab
         }
     };
     const auto v_or_empty = [this](const Variable &var) -> Variable {
-        if (!var.name.empty() && var.type.type != ValueType::Undef) {
+        if (!var.name.empty() && var.type != ValueType::Undef) {
             return var;
         }
         return {};

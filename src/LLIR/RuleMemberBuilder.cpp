@@ -193,12 +193,12 @@ void LLIR::GroupBuilder::build() {
     }
 
     var.type = {deduceVarTypeByProd(rule)};
-    if ((quantifier == '*' || quantifier == '+') && var.type.type != ValueType::Undef && var.type.type != ValueType::String) {
-        var.type.template_parameters = {{var.type.type}};
+    if ((quantifier == '*' || quantifier == '+') && var.type != ValueType::Undef && var.type != ValueType::String) {
+        var.type.template_parameters = {{var.type}};
         var.type.type = ValueType::Array;
     }
     Statements fetch_var_statements;
-    switch (var.type.type == ValueType::Array ? std::get<Type>(var.type.template_parameters[0]).type : var.type.type) {
+    switch (var.type == ValueType::Array ? std::get<Type>(var.type.template_parameters[0]).getValueType() : var.type.getValueType()) {
         case ValueType::String:
             // it is a string so add all values
             for (const auto &v : builder.getReturnVars()) {
@@ -213,7 +213,8 @@ void LLIR::GroupBuilder::build() {
             fetch_var_statements.push_back(VariableAssignment::createStatement(VariableAssignment {.name = var.name, .value = Symbol::createExpression(Symbol {builder.getReturnVars()[0].var.name})}));
 
             var.type = builder.getReturnVars()[0].var.type;
-            undoRuleResult(var.type.type);
+            if (var.type.isValueType())
+                undoRuleResult(var.type.getValueType());
             break;
         default:
             var.type = {ValueType::Undef};
@@ -248,7 +249,7 @@ void LLIR::GroupBuilder::build() {
     }
     statements.insert(statements.end(), fetch_var_statements.begin(), fetch_var_statements.end());
     Variable shadow_var;
-    if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type.type != ValueType::Undef && var.type.type != ValueType::String)) {
+    if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type != ValueType::Undef && var.type != ValueType::String)) {
         shadow_var = add_shadow_variable(builder.getData(), var);
     }
     group_success_condition.stmt = {
@@ -256,7 +257,7 @@ void LLIR::GroupBuilder::build() {
     };
     createAssignUvarBlock(group_success_condition.stmt, uvar, var, shadow_var);
     group_success_condition.stmt.push_back(PopPosCounter::createStatement(PopPosCounter {}));
-    if (var.type.type != ValueType::Undef) {
+    if (var.type != ValueType::Undef) {
         statements.push_back(Variable::createStatement(var));
     }
     statements.push_back(Variable::createStatement(svar));
@@ -770,7 +771,7 @@ void LLIR::OpBuilder::build() {
     auto dfa = DFA::build(tree, nfa);
     auto var = createEmptyVariable("");
     var.type.type = deduceVarTypeByProd(rule) ;
-    if (var.type.type == ValueType::Rule)
+    if (var.type == ValueType::Rule)
         var.type.type = ValueType::RuleResult;
     // if (var.type.type == ValueType::RuleResult || var.type.type == ValueType::TokenResult)
     //     var.property_access = {"node"};

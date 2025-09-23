@@ -27,7 +27,6 @@ private:
     std::vector<std::size_t> token_type;
     std::size_t highest_states_count = 0;
     std::size_t highest_transition_count = 0;
-    bool isDfaCompatible(const stdu::vector<AST::RuleMember> &member);
 public:
     LexerBuilder(AST::Tree &ast) : ast(ast), fcdt(ast) {};
     void build();
