@@ -25,7 +25,7 @@ void LLIR::RuleBuilder::build() {
 LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
     inclosed_map map;
     for (const auto &[name, variable] : key_vars) {
-        map.try_emplace(name, std::make_pair(Symbol::createExpression(Symbol {variable.name}), variable.type));
+        map.try_emplace(name, std::make_pair(LangAPI::Symbol::createExpression(LangAPI::Symbol {variable.name}), variable.type));
     }
     return map;
 }
@@ -50,10 +50,10 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
             auto type = expr_builder.deduceType();
-            if (type == ValueType::RuleResult) {
-                type.type = ValueType::Rule;
-            } else if (type == ValueType::TokenResult) {
-                type.type = ValueType::Token;
+            if (type == LangAPI::ValueType::RuleResult) {
+                type.type = LangAPI::ValueType::Rule;
+            } else if (type == LangAPI::ValueType::TokenResult) {
+                type.type = LangAPI::ValueType::Token;
             }
             expr_builder.build();
             stmt.value = std::make_pair(expr_builder.get(), type);
@@ -67,13 +67,13 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
                 throw Error("More keys than values: {}", name);
             }
             auto type = unnamed_datablock_units.front().type;
-            if (type == ValueType::RuleResult) {
-                type.type = ValueType::Rule;
-            } else if (type == ValueType::TokenResult) {
-                type.type = ValueType::Token;
+            if (type == LangAPI::ValueType::RuleResult) {
+                type.type = LangAPI::ValueType::Rule;
+            } else if (type == LangAPI::ValueType::TokenResult) {
+                type.type = LangAPI::ValueType::Token;
             }
             const auto v = unnamed_datablock_units.front();
-            initial_map.try_emplace(name, std::make_pair(Symbol::createExpression(Symbol {v.name}), v.type));
+            initial_map.try_emplace(name, std::make_pair(LangAPI::Symbol::createExpression(LangAPI::Symbol {v.name}), v.type));
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
         stmt.value = initial_map;

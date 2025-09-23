@@ -1,5 +1,5 @@
 export module Converter;
-import LLIR.API;
+import LangAPI;
 import LLIR.IR;
 import LRParser;
 import AST.Tree;
@@ -24,12 +24,12 @@ export class LLConverter_base {
         // data
         stdu::vector<stdu::vector<std::string>> tokens;
         stdu::vector<stdu::vector<std::string>> rules;
-        LLIR::DataBlockList data_block_tokens;
-        LLIR::DataBlockList data_block_rules;
-        const LLIR::IR &ir;
+        LangAPI::DataBlockList data_block_tokens;
+        LangAPI::DataBlockList data_block_rules;
+        const LangAPI::IR &ir;
         const AST::Tree &tree;
     public:
-        LLConverter_base(const LLIR::IR &ir, AST::Tree &tree)
+        LLConverter_base(const LangAPI::IR &ir, AST::Tree &tree)
         : tree(tree), ir(ir) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
@@ -56,8 +56,8 @@ export class LRConverter_base {
     protected:
         // data
         const LRParser* data;
-        LLIR::Nodes lexer_code;
-        LLIR::variable return_var;
+        LangAPI::Nodes lexer_code;
+        LangAPI::variable return_var;
         const LexerBuilder &lexer_data;
         AST::Tree &tree;
     public:

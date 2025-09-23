@@ -1,10 +1,10 @@
-export module LLIR.API;
+export module LangAPI;
 import hash;
 import dstd;
 import std;
 
 // forward declarations
-export namespace LLIR {
+export namespace LangAPI {
     class RValue;
     struct ExpressionValue;
     struct Expression;
@@ -22,28 +22,28 @@ struct promote_to {
 };
 
 // Specializations
-template<> struct promote_to<LLIR::RValue> {
-    using type = LLIR::ExpressionValue;
+template<> struct promote_to<LangAPI::RValue> {
+    using type = LangAPI::ExpressionValue;
     static constexpr bool can_promote = true;
 };
-template<> struct promote_to<LLIR::ExpressionValue> {
-    using type = LLIR::Expression;
+template<> struct promote_to<LangAPI::ExpressionValue> {
+    using type = LangAPI::Expression;
     static constexpr bool can_promote = true;
 };
-template<> struct promote_to<LLIR::Expression> {
-    using type = LLIR::Statement;
+template<> struct promote_to<LangAPI::Expression> {
+    using type = LangAPI::Statement;
     static constexpr bool can_promote = true;
 };
-template<> struct promote_to<LLIR::Statement> {
-    using type = LLIR::Statements;
+template<> struct promote_to<LangAPI::Statement> {
+    using type = LangAPI::Statements;
     static constexpr bool can_promote = true;
 };
-template<> struct promote_to<LLIR::Statements> {
-    using type = LLIR::Declaration;
+template<> struct promote_to<LangAPI::Statements> {
+    using type = LangAPI::Declaration;
     static constexpr bool can_promote = true;
 };
-template<> struct promote_to<LLIR::Declaration> {
-    using type = LLIR::Declarations;
+template<> struct promote_to<LangAPI::Declaration> {
+    using type = LangAPI::Declarations;
     static constexpr bool can_promote = true;
 };
 
@@ -59,7 +59,7 @@ auto promote_or_construct(fromWhatToConstruct&& value) -> whatToConstruct {
         return void {};
     }
 }
-export namespace LLIR {
+export namespace LangAPI {
     enum class ExpressionElement {
         GroupOpen, GroupClose, SquareBraceOpen, SquareBraceClose,
         And, Or, Not, Equal, NotEqual,
@@ -71,7 +71,7 @@ export namespace LLIR {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Any
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Any
     };
     enum class ArrayMethods {
         Push, Pop
@@ -87,35 +87,35 @@ export namespace LLIR {
         using promote_to = Declarations;
         template<typename T>
         static auto createDeclarations(T&& v) {
-            return promote_or_construct<LLIR::Declarations>(std::forward<T>(v));
+            return promote_or_construct<Declarations>(std::forward<T>(v));
         }
     };
     struct DeclarationLevel : DeclarationsLevel {
         using promote_to = Declaration;
         template<typename T>
         static auto createDeclaration(T&& v) {
-            return promote_or_construct<LLIR::Declaration>(std::forward<T>(v));
+            return promote_or_construct<Declaration>(std::forward<T>(v));
         }
     };
     struct StatementsLevel : DeclarationLevel {
         using promote_to = Statements;
         template<typename T>
         static auto createStatements(T&& v) {
-            return promote_or_construct<LLIR::Statements>(std::forward<T>(v));
+            return promote_or_construct<Statements>(std::forward<T>(v));
         }
     };
     struct StatementLevel : StatementsLevel {
         using promote_to = Statement;
         template<typename T>
         static auto createStatement(T&& v) {
-            return promote_or_construct<LLIR::Statement>(std::forward<T>(v));
+            return promote_or_construct<Statement>(std::forward<T>(v));
         }
     };
     struct ExpressionLevel : StatementLevel {
         using promote_to = Expression;
         template<typename T>
         static auto createExpression(T&& v) {
-            return promote_or_construct<LLIR::Expression>(std::forward<T>(v));
+            return promote_or_construct<Expression>(std::forward<T>(v));
         }
     };
     struct ExpressionValueLevel : ExpressionLevel {
@@ -123,14 +123,14 @@ export namespace LLIR {
         template<typename T>
         requires std::is_constructible_v<ExpressionValue, std::decay_t<T>>
         static auto createExpressionValue(T&& v) {
-            return promote_or_construct<LLIR::ExpressionValue>(std::forward<T>(v));
+            return promote_or_construct<ExpressionValue>(std::forward<T>(v));
         }
     };
     struct RValueLevel : ExpressionValueLevel {
         using promote_to = RValue;
         template<typename T>
         static auto createRValue(T&& v) {
-            return promote_or_construct<LLIR::RValue>(std::forward<T>(v));
+            return promote_or_construct<RValue>(std::forward<T>(v));
         }
     };
     struct Declarations : stdu::vector<Declaration> {
@@ -783,29 +783,4 @@ export namespace LLIR {
 
         static auto createStatements(const RValue &value) -> stdu::vector<Statement>;
     };
-    using inclosed_map = std::unordered_map<std::string, std::pair<Expression, Type>>;
-    using regular_data_block = std::pair<Expression, Type>;
-    struct DataBlock {
-        std::variant<std::monostate, regular_data_block, inclosed_map> value;
-        bool is_inclosed_map() const { return std::holds_alternative<inclosed_map>(value); };
-        bool is_raw_expr() const { return std::holds_alternative<regular_data_block>(value); };
-        bool empty() const { return std::holds_alternative<std::monostate>(value); };
-        regular_data_block &getRegularDataBlock() { return std::get<regular_data_block>(value); };
-        inclosed_map &getInclosedMap() { return std::get<inclosed_map>(value); };
-        const regular_data_block &getRegularDataBlock() const { return std::get<regular_data_block>(value); };
-        const inclosed_map &getInclosedMap() const { return std::get<inclosed_map>(value); };
-    };
-    struct ExportsAfterBuild {
-        Variable svar;
-        Variable uvar;
-        Variable var;
-        Variable shadow_var;
-        char quantifier;
-    };
-    struct Production {
-        DataBlock block;
-        stdu::vector<std::string> name;
-        Statements members;
-    };
-    using DataBlockList = utype::unordered_map<stdu::vector<std::string>, DataBlock>;
 }

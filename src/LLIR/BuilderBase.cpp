@@ -5,24 +5,24 @@ import LLIR.IR;
 import cpuf.printf;
 import std;
 
-auto LLIR::BuilderBase::getData() -> Statements & {
+auto LLIR::BuilderBase::getData() -> LangAPI::Statements & {
     return statements;
 }
-auto LLIR::BuilderBase::getData() const -> const Statements & {
+auto LLIR::BuilderBase::getData() const -> const LangAPI::Statements & {
     return statements;
 }
 auto LLIR::BuilderBase::getReturnVars() const -> const stdu::vector<LLIR::ExportsAfterBuild> & {
     return exports_list;
 }
-auto LLIR::BuilderBase::createEmptyVariable(const std::string &name) -> Variable {
-    return Variable {.name = name};
+auto LLIR::BuilderBase::createEmptyVariable(const std::string &name) -> LangAPI::Variable {
+    return LangAPI::Variable {.name = name};
 }
-void LLIR::BuilderBase::processExitStatements(Statements &values) {
+void LLIR::BuilderBase::processExitStatements(LangAPI::Statements &values) {
     for (auto &el : values) {
         if (el.isExpression()) {
             auto &expr = el.getExpression();
             if (expr.size() == 1 && expr.back().isReturn()) {
-                expr = Break::createExpression(Break {});
+                expr = LangAPI::Break::createExpression(LangAPI::Break {});
                 continue;
             }
         }
@@ -43,94 +43,94 @@ void LLIR::BuilderBase::processExitStatements(Statements &values) {
 auto LLIR::BuilderBase::generateVariableName(std::size_t &variable_count) -> std::string {
     return std::string("_") + std::to_string(variable_count++);
 }
-auto LLIR::BuilderBase::createSuccessVariable(std::size_t &variable_count) -> Variable {
-    Variable var = createEmptyVariable("success" + generateVariableName(variable_count));
-    var.value = Bool::createExpression(Bool {.value = false});
-    return Variable {.name = "success" + generateVariableName(variable_count), .value = Bool::createExpression(Bool { .value = false })};
+auto LLIR::BuilderBase::createSuccessVariable(std::size_t &variable_count) -> LangAPI::Variable {
+    LangAPI::Variable var = createEmptyVariable("success" + generateVariableName(variable_count));
+    var.value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = false});
+    return LangAPI::Variable {.name = "success" + generateVariableName(variable_count), .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = false })};
 }
 auto LLIR::BuilderBase::generateVariableName() -> std::string {
     return generateVariableName(variable_count);
 }
-auto LLIR::BuilderBase::createSuccessVariable() -> Variable {
+auto LLIR::BuilderBase::createSuccessVariable() -> LangAPI::Variable {
     return createSuccessVariable(variable_count);
 }
-auto LLIR::BuilderBase::createAssignUvarBlock(Statements &statements, const Variable &uvar, const Variable &var, const Variable &shadow_var) -> void {
+auto LLIR::BuilderBase::createAssignUvarBlock(LangAPI::Statements &statements, const LangAPI::Variable &uvar, const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> void {
     if (!uvar.name.empty()) {
-        statements.push_back(VariableAssignment::createStatement(VariableAssignment {
+        statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
                 .name = uvar.name,
-                .value = Symbol::createExpression(Symbol {
+                .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {
                     shadow_var.name.empty() ? var.name : shadow_var.name
                 })
             })
         );
     }
 }
-void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, ConditionalElement loop, const Variable &uvar, const Variable &var, Variable &shadow_var, bool addError) {
+void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, LangAPI::ConditionalElement loop, const LangAPI::Variable &uvar, const LangAPI::Variable &var, LangAPI::Variable &shadow_var, bool addError) {
     auto postCheckVar = createSuccessVariable();
-    loop.stmt.push_back(VariableAssignment::createStatement(VariableAssignment {.name = postCheckVar.name, .value = Bool::createExpression(Bool {.value = true} )}));
-    statements.push_back(Variable::createStatement(postCheckVar));
-    statements.push_back(While::createStatement(loop));
+    loop.stmt.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = postCheckVar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true} )}));
+    statements.push_back(LangAPI::Variable::createStatement(postCheckVar));
+    statements.push_back(LangAPI::While::createStatement(loop));
     addPostLoopCheck(rule, postCheckVar, addError);
 }
-void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Variable &var, bool addError) {
-    auto stmt = Return::createStatements(Return {});
+void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const LangAPI::Variable &var, bool addError) {
+    auto stmt = LangAPI::Return::createStatements(LangAPI::Return {});
     if (addError && !isFirst) {
-        stmt.insert(stmt.begin(), ReportError::createExpression(ReportError { .message = getErrorName(rule) }));
+        stmt.insert(stmt.begin(), LangAPI::ReportError::createExpression(LangAPI::ReportError { .message = getErrorName(rule) }));
     }
-    If post_loop_condition;
-    post_loop_condition.expr = { { { ExpressionElement::Not, Symbol::createExpressionValue(Symbol { var.name }) } } };
+    LangAPI::If post_loop_condition;
+    post_loop_condition.expr = { { { LangAPI::ExpressionElement::Not, LangAPI::Symbol::createExpressionValue(LangAPI::Symbol { var.name }) } } };
     post_loop_condition.stmt = std::move(stmt);
-    statements.push_back(If::createStatement(post_loop_condition));
+    statements.push_back(LangAPI::If::createStatement(post_loop_condition));
 }
-auto LLIR::BuilderBase::createDefaultStatements(const Variable &var, const Variable &svar) -> Statements {
-    if (var.type == ValueType::Char) {
-        return VariableAssignment::createStatements(VariableAssignment {.name = var.name, .value = Pos::createExpression(Pos {.dereference = true})});
+auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, const LangAPI::Variable &svar) -> LangAPI::Statements {
+    if (var.type == LangAPI::ValueType::Char) {
+        return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
     } else {
         return {
-            VariableAssignment::createStatement(VariableAssignment { .name = var.name, .type = OperatorType::Add, .value = Pos::createExpression(Pos {.sequence = true}) }),
-            VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(Bool {.value = true })}),
-            Expression::createStatement(increasePos())
+            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = var.name, .type = LangAPI::OperatorType::Add, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.sequence = true}) }),
+            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
+            LangAPI::Expression::createStatement(increasePos())
         };
     }
 }
-auto LLIR::BuilderBase::createDefaultStatements(const Variable &svar) -> Statements {
+auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &svar) -> LangAPI::Statements {
     return {
-        VariableAssignment::createStatement(VariableAssignment { .name = svar.name, .value = Bool::createExpression(Bool {.value = true})}),
-        Expression::createStatement(increasePos())
+        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true})}),
+        LangAPI::Expression::createStatement(increasePos())
     };
 }
-auto LLIR::BuilderBase::createDefaultStatements() -> Statements {
-    return Expression::createStatements(increasePos());
+auto LLIR::BuilderBase::createDefaultStatements() -> LangAPI::Statements {
+    return LangAPI::Expression::createStatements(increasePos());
 }
-auto LLIR::BuilderBase::createDefaultCall(Statements &block, const Variable &var, const std::string &name, Expression &expr) -> Statement  { // var must be copy
-    FunctionCall function_call = {.name = name, .args = {Pos::createExpression(Pos {.sequence = true}) }};
-    VariableAssignment assignment = {
+auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const LangAPI::Variable &var, const std::string &name, LangAPI::Expression &expr) -> LangAPI::Statement  { // var must be copy
+    LangAPI::FunctionCall function_call = {.name = name, .args = {LangAPI::Pos::createExpression(LangAPI::Pos {.sequence = true}) }};
+    LangAPI::VariableAssignment assignment = {
         .name = var.name,
-        .value = FunctionCall::createExpression(function_call)
+        .value = LangAPI::FunctionCall::createExpression(function_call)
     };
-    expr = StorageSymbol::createExpression(StorageSymbol {.what = Symbol::createExpression(Symbol {var.name }), .path = {{"status"}}});;
-    return VariableAssignment::createStatement(assignment);
+    expr = LangAPI::StorageSymbol::createExpression(LangAPI::StorageSymbol {.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {var.name }), .path = {{"status"}}});;
+    return LangAPI::VariableAssignment::createStatement(assignment);
 }
-auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &var) -> Variable {
-    Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
-    if (var.type == ValueType::TokenResult) {
-        shadow_var.type.type = ValueType::Token;
-    } else if (var.type == ValueType::RuleResult) {
-        shadow_var.type.type = ValueType::Rule;
+auto LLIR::BuilderBase::add_shadow_variable(LangAPI::Statements &block, const LangAPI::Variable &var) -> LangAPI::Variable {
+    LangAPI::Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
+    if (var.type == LangAPI::ValueType::TokenResult) {
+        shadow_var.type.type = LangAPI::ValueType::Token;
+    } else if (var.type == LangAPI::ValueType::RuleResult) {
+        shadow_var.type.type = LangAPI::ValueType::Rule;
     }
     shadow_var.type.template_parameters = {{shadow_var.type}};
-    shadow_var.type.type = ValueType::Array;
-    statements.push_back(Variable::createStatement(shadow_var));
+    shadow_var.type.type = LangAPI::ValueType::Array;
+    statements.push_back(LangAPI::Variable::createStatement(shadow_var));
     statements.push_back(
-        StorageSymbol::createStatement(StorageSymbol {
-                .what = Symbol::createExpression(Symbol {
+        LangAPI::StorageSymbol::createStatement(LangAPI::StorageSymbol {
+                .what = LangAPI::Symbol::createExpression(LangAPI::Symbol {
                     shadow_var.name
                 }),
                 .path = {
-                    ArrayMethodCall {
-                        .method = ArrayMethods::Push,
+                    LangAPI::ArrayMethodCall {
+                        .method = LangAPI::ArrayMethods::Push,
                         .args = {
-                            Symbol::createExpression(Symbol {
+                            LangAPI::Symbol::createExpression(LangAPI::Symbol {
                                 var.name
                             })
                         }
@@ -143,16 +143,16 @@ auto LLIR::BuilderBase::add_shadow_variable(Statements &block, const Variable &v
 
 auto LLIR::BuilderBase::pushBasedOnQualifier(
     const AST::RuleMember &rule,
-    Expression &expr,
-    Statements &stmt,
-    Variable &uvar,
-    const Variable &var,
-    const Variable &svar,
+    LangAPI::Expression &expr,
+    LangAPI::Statements &stmt,
+    LangAPI::Variable &uvar,
+    const LangAPI::Variable &var,
+    const LangAPI::Variable &svar,
     char quantifier,
     bool add_shadow_var
-) -> Variable {
+) -> LangAPI::Variable {
     //block.push_back({LLIR::types::ASSIGN_VARIABLE, Variable_assign {svar.name, LLIR::var_assign_types::ASSIGN, LLIR::var_assign_values::_TRUE}});
-    Variable shadow_variable;
+    LangAPI::Variable shadow_variable;
     if ((insideLoop || quantifier == '+' || quantifier == '*') && add_shadow_var) {
        shadow_variable = add_shadow_variable(stmt, var);
        add_shadow_var = false;
@@ -160,45 +160,45 @@ auto LLIR::BuilderBase::pushBasedOnQualifier(
 
     if (!uvar.name.empty()) {
         uvar.type = deduceUvarType(var, shadow_variable);
-        statements.push_back(Variable::createStatement(uvar));
+        statements.push_back(LangAPI::Variable::createStatement(uvar));
     }
     switch (quantifier) {
         case '+':
-            handle_plus_qualifier(rule, ConditionalElement {.expr = expr, .stmt = stmt}, uvar, var, shadow_variable);
+            handle_plus_qualifier(rule, LangAPI::ConditionalElement {.expr = expr, .stmt = stmt}, uvar, var, shadow_variable);
             break;
         case '*': {
-            statements.push_back(While::createStatement(While {expr, stmt}));
+            statements.push_back(LangAPI::While::createStatement(LangAPI::While {expr, stmt}));
             break;
         }
         case '?':
-            statements.push_back(If::createStatement(If {expr, stmt}));
+            statements.push_back(LangAPI::If::createStatement(LangAPI::If {expr, stmt}));
             break;
         default:
             // add the negative into condition
             createAssignUvarBlock(stmt, uvar, var, shadow_variable);
-            expr.insert(expr.begin(), ExpressionValue { ExpressionElement::Not });
-            expr.insert(expr.begin() + 1, ExpressionValue { ExpressionElement::GroupOpen });
-            expr.push_back(ExpressionValue { ExpressionElement::GroupClose});
+            expr.insert(expr.begin(), LangAPI::ExpressionValue { LangAPI::ExpressionElement::Not });
+            expr.insert(expr.begin() + 1, LangAPI::ExpressionValue { LangAPI::ExpressionElement::GroupOpen });
+            expr.push_back(LangAPI::ExpressionValue { LangAPI::ExpressionElement::GroupClose});
             // add exit statement
-            Statements blk = Return::createStatements(Return {});
+            LangAPI::Statements blk = LangAPI::Return::createStatements(LangAPI::Return {});
             if (!isFirst) {
-                blk.insert(blk.begin(), ReportError::createStatement( ReportError { .message = getErrorName(rule)}));
+                blk.insert(blk.begin(), LangAPI::ReportError::createStatement( LangAPI::ReportError { .message = getErrorName(rule)}));
             }
-            statements.push_back(If::createStatement(If {expr, blk}));
+            statements.push_back(LangAPI::If::createStatement(LangAPI::If {expr, blk}));
             statements.insert(statements.end(), stmt.begin(), stmt.end());
             break;
     }
     createAssignUvarBlock(statements, uvar, var, shadow_variable);
     return shadow_variable;
 }
-void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variable &var, const Variable &uvar, const Variable &svar, const Variable &shadow_var, char quantifier) {
-    const auto insert_var = [this](const Variable &var) {
+void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const LangAPI::Variable &var, const LangAPI::Variable &uvar, const LangAPI::Variable &svar, const LangAPI::Variable &shadow_var, char quantifier) {
+    const auto insert_var = [this](const LangAPI::Variable &var) {
         if (!var.name.empty()) {
             vars.push_back(var);
         }
     };
-    const auto v_or_empty = [this](const Variable &var) -> Variable {
-        if (!var.name.empty() && var.type != ValueType::Undef) {
+    const auto v_or_empty = [this](const LangAPI::Variable &var) -> LangAPI::Variable {
+        if (!var.name.empty() && var.type != LangAPI::ValueType::Undef) {
             return var;
         }
         return {};
@@ -216,126 +216,126 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const Variab
     }
     exports_list.push_back(ExportsAfterBuild {v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
 }
-void LLIR::BuilderBase::undoRuleResult(ValueType &type) {
-    if (type == ValueType::RuleResult)
-        type = ValueType::Rule;
-    if (type == ValueType::TokenResult)
-        type = ValueType::Token;
+void LLIR::BuilderBase::undoRuleResult(LangAPI::ValueType &type) {
+    if (type == LangAPI::ValueType::RuleResult)
+        type = LangAPI::ValueType::Rule;
+    if (type == LangAPI::ValueType::TokenResult)
+        type = LangAPI::ValueType::Token;
 }
 
-auto LLIR::BuilderBase::getPrefixAsExpressionValue(const std::optional<char> &prefix) -> ExpressionValue {
+auto LLIR::BuilderBase::getPrefixAsExpressionValue(const std::optional<char> &prefix) -> LangAPI::ExpressionValue {
     if (prefix.has_value()) {
         if (prefix.value() == '+')
-            return ExpressionValue { ExpressionElement::PlusPlus };
+            return LangAPI::ExpressionValue { LangAPI::ExpressionElement::PlusPlus };
         else
-            return ExpressionValue { ExpressionElement::MinusMinus };
+            return LangAPI::ExpressionValue { LangAPI::ExpressionElement::MinusMinus };
     }
-    return ExpressionValue {};
+    return LangAPI::ExpressionValue {};
 }
-void LLIR::BuilderBase::pushVariablePrefix(Expression &expr, const std::optional<char> &prefix) {
+void LLIR::BuilderBase::pushVariablePrefix(LangAPI::Expression &expr, const std::optional<char> &prefix) {
     if (prefix.has_value())
         expr.push_back(getPrefixAsExpressionValue(prefix));
 }
-auto LLIR::BuilderBase::increasePos() -> Expression {
-    return {Pos::createExpressionValue(Pos{}), ExpressionValue { ExpressionElement::PlusPlus}};
+auto LLIR::BuilderBase::increasePos() -> LangAPI::Expression {
+    return {LangAPI::Pos::createExpressionValue(LangAPI::Pos{}), LangAPI::ExpressionValue { LangAPI::ExpressionElement::PlusPlus}};
 }
 
-auto LLIR::BuilderBase::CllTypeToIR(const AST::CllType &type) -> Type {
+auto LLIR::BuilderBase::CllTypeToIR(const AST::CllType &type) -> LangAPI::Type {
     if (type.type == "var")
-        return ValueType::Any;
+        return LangAPI::ValueType::Any;
     if (type.type == "str")
-        return ValueType::String;
+        return LangAPI::ValueType::String;
     if (type.type == "bool")
-        return ValueType::Bool;
+        return LangAPI::ValueType::Bool;
     if (type.type == "num")
-        return ValueType::Int;
+        return LangAPI::ValueType::Int;
     if (type.type == "arr") {
-        ValueType tp = ValueType::Array;
-        Type _template = CllTypeToIR(type.templ[0]);
+        LangAPI::ValueType tp = LangAPI::ValueType::Array;
+        LangAPI::Type _template = CllTypeToIR(type.templ[0]);
         return {tp, _template};
     }
     if (type.type == "obj") {
-        ValueType tp = ValueType::Map;
-        Type _template1 = CllTypeToIR(type.templ[0]);
-        Type _template2 = CllTypeToIR(type.templ[1]);
+        LangAPI::ValueType tp = LangAPI::ValueType::Map;
+        LangAPI::Type _template1 = CllTypeToIR(type.templ[0]);
+        LangAPI::Type _template2 = CllTypeToIR(type.templ[1]);
         return {tp, _template1, _template2};
     }
     throw Error("Undefined type");
 }
-auto LLIR::BuilderBase::CllOpToIR(const char op) -> OperatorType {
+auto LLIR::BuilderBase::CllOpToIR(const char op) -> LangAPI::OperatorType {
     // all other is single character so can use switch
     switch (op) {
         case '+':
-            return OperatorType::Add;
+            return LangAPI::OperatorType::Add;
         case '-':
-            return OperatorType::Minus;
+            return LangAPI::OperatorType::Minus;
         case '*':
-            return OperatorType::Multiply;
+            return LangAPI::OperatorType::Multiply;
         case '/':
-            return OperatorType::Divide;
+            return LangAPI::OperatorType::Divide;
         case '%':
-            return OperatorType::Modulo;
+            return LangAPI::OperatorType::Modulo;
         default:
             throw Error("Undefined operator");
     }
 }
-auto LLIR::BuilderBase::CllOpToExpr(const char op) -> ExpressionElement {
+auto LLIR::BuilderBase::CllOpToExpr(const char op) -> LangAPI::ExpressionElement {
     switch (op) {
         case '+':
-            return ExpressionElement::Add;
+            return LangAPI::ExpressionElement::Add;
         case '-':
-            return ExpressionElement::Minus;
+            return LangAPI::ExpressionElement::Minus;
         case '*':
-            return ExpressionElement::Multiply;
+            return LangAPI::ExpressionElement::Multiply;
         case '/':
-            return ExpressionElement::Divide;
+            return LangAPI::ExpressionElement::Divide;
         case '%':
-            return ExpressionElement::Modulo;
+            return LangAPI::ExpressionElement::Modulo;
         default:
             throw Error("Undefined operator");
     }
 }
-auto LLIR::BuilderBase::CllCompareOpToExpr(const AST::CllCompareOp &op) -> ExpressionElement {
+auto LLIR::BuilderBase::CllCompareOpToExpr(const AST::CllCompareOp &op) -> LangAPI::ExpressionElement {
     if (op.op == "==")
-        return ExpressionElement::Equal;
+        return LangAPI::ExpressionElement::Equal;
     if (op.op == "!=")
-        return ExpressionElement::NotEqual;
+        return LangAPI::ExpressionElement::NotEqual;
     if (op.op == ">")
-        return ExpressionElement::Higher;
+        return LangAPI::ExpressionElement::Higher;
     if (op.op == "<")
-        return ExpressionElement::Lower;
+        return LangAPI::ExpressionElement::Lower;
     if (op.op == ">=")
-        return ExpressionElement::HigherOrEqual;
+        return LangAPI::ExpressionElement::HigherOrEqual;
     if (op.op == "<=")
-        return ExpressionElement::LowerOrEqual;
+        return LangAPI::ExpressionElement::LowerOrEqual;
     throw Error("undefined compare operator");
 }
-auto LLIR::BuilderBase::CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> ExpressionElement {
+auto LLIR::BuilderBase::CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> LangAPI::ExpressionElement {
     if (lop.isAnd)
-        return ExpressionElement::And;
-    return ExpressionElement::Or;
+        return LangAPI::ExpressionElement::And;
+    return LangAPI::ExpressionElement::Or;
 }
-auto LLIR::BuilderBase::CllAssignmentOpToIR(const char op) -> OperatorType {
+auto LLIR::BuilderBase::CllAssignmentOpToIR(const char op) -> LangAPI::OperatorType {
     if (op == '\0')
-        return OperatorType::Assign;
+        return LangAPI::OperatorType::Assign;
     switch (op) {
         case '+':
-            return OperatorType::Add;
+            return LangAPI::OperatorType::Add;
         case '-':
-            return OperatorType::Minus;
+            return LangAPI::OperatorType::Minus;
         case '*':
-            return OperatorType::Multiply;
+            return LangAPI::OperatorType::Multiply;
         case '/':
-            return OperatorType::Divide;
+            return LangAPI::OperatorType::Divide;
         case '%':
-            return OperatorType::Modulo;
+            return LangAPI::OperatorType::Modulo;
         default:
             throw Error("Undefined operator");
     }
     return CllOpToIR(op);
 }
-auto LLIR::BuilderBase::assignSvar(const Variable &svar, bool value) -> Statement {
-    return VariableAssignment::createStatement(VariableAssignment {.name = svar.name, .value = Bool::createExpression(Bool { .value = value })});
+auto LLIR::BuilderBase::assignSvar(const LangAPI::Variable &svar, bool value) -> LangAPI::Statement {
+    return LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = value })});
 }
 
 
@@ -373,7 +373,7 @@ auto LLIR::BuilderBase::getNextTerminal(stdu::vector<AST::RuleMember> symbols, s
             }
         }
 
-        // If this is not optional, break after processing it
+        // LangAPI::If this is not optional, break after processing it
         if (sym.quantifier != '?' && sym.quantifier != '*') {
             break;
         }
@@ -552,25 +552,25 @@ auto LLIR::BuilderBase::getLookaheadTerminals(const AST::RuleMember& symbol, con
 }
 
 
-auto LLIR::BuilderBase::deduceUvarType(const Variable &var, const Variable &shadow_var) -> Type {
+auto LLIR::BuilderBase::deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type {
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
-auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> ValueType {
-    ValueType type = ValueType::Undef;
+auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> LangAPI::ValueType {
+    LangAPI::ValueType type = LangAPI::ValueType::Undef;
     if (mem.isGroup()) {
         const auto &val = mem.getGroup().values;
         if (val.size() == 1) {
             type = deduceVarTypeByProd(val[0]);
         } else {
             for (auto i = 0; i < val.size(); i++) {
-                if (deduceVarTypeByProd(val[i]) != ValueType::String) {
-                    return ValueType::Undef;
+                if (deduceVarTypeByProd(val[i]) != LangAPI::ValueType::String) {
+                    return LangAPI::ValueType::Undef;
                 }
             }
-            type = ValueType::String;
+            type = LangAPI::ValueType::String;
         }
     } else if (mem.isOp()) {
-        std::optional<ValueType> first_type;
+        std::optional<LangAPI::ValueType> first_type;
         char prev_quantifier = '\0';
         for (const auto &el : mem.getOp().options) {
             auto t = deduceVarTypeByProd(el);
@@ -580,17 +580,17 @@ auto LLIR::BuilderBase::deduceVarTypeByProd(const AST::RuleMember &mem) -> Value
                 first_type = t;
                 prev_quantifier = el.quantifier;
             } else if (t != *first_type || prev_quantifier != el.quantifier) {
-                return ValueType::Any;
+                return LangAPI::ValueType::Any;
             }
         }
-        type = first_type.value_or(ValueType::Undef);
+        type = first_type.value_or(LangAPI::ValueType::Undef);
     } else if (mem.isName()) {
-        type = corelib::text::isUpper(mem.getName().name.back()) ? ValueType::Token : ValueType::Rule;
-    } else type = ValueType::String;
+        type = corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule;
+    } else type = LangAPI::ValueType::String;
     return type;
 }
 
-void LLIR::BuilderBase::getVariablesToTable(Statements& data, Statements& table, std::string& var_name, bool retain_value, bool recursive) {
+void LLIR::BuilderBase::getVariablesToTable(LangAPI::Statements& data, LangAPI::Statements& table, std::string& var_name, bool retain_value, bool recursive) {
     for (std::size_t i = 0; i < data.size(); /* manual increment */) {
         if (data[i].isVariable()) {
             auto variable = data[i].getVariable();
@@ -601,7 +601,7 @@ void LLIR::BuilderBase::getVariablesToTable(Statements& data, Statements& table,
 
             // Optionally retain value
             if (!variable.value.empty() && retain_value) {
-                data.insert(data.begin() + i, VariableAssignment::createStatement(VariableAssignment {.name = variable.name, .value = RValue::createExpression(variable.value) }));
+                data.insert(data.begin() + i, LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = variable.name, .value = LangAPI::RValue::createExpression(variable.value) }));
                 ++i; // skip over inserted assignment
             }
 
@@ -624,7 +624,7 @@ void LLIR::BuilderBase::getVariablesToTable(Statements& data, Statements& table,
 }
 
 
-void LLIR::BuilderBase::insertVariablesOnTop(Statements &insertPlace, Statements& table) {
+void LLIR::BuilderBase::insertVariablesOnTop(LangAPI::Statements &insertPlace, LangAPI::Statements& table) {
     std::size_t i = 0;
     // cpuf::printf("Raise vars on top : table size %$\n", table.size());
     for (auto& el : table) {
@@ -632,8 +632,8 @@ void LLIR::BuilderBase::insertVariablesOnTop(Statements &insertPlace, Statements
     }
 }
 
-void LLIR::BuilderBase::raiseVarsTop(Statements &insertPlace, Statements &readPlace, std::string var_name, bool all_rule, bool retain_value, bool recursive) {
-    Statements table;
+void LLIR::BuilderBase::raiseVarsTop(LangAPI::Statements &insertPlace, LangAPI::Statements &readPlace, std::string var_name, bool all_rule, bool retain_value, bool recursive) {
+    LangAPI::Statements table;
     getVariablesToTable(readPlace, table, var_name, retain_value, recursive);
     insertVariablesOnTop(insertPlace, table);
 }

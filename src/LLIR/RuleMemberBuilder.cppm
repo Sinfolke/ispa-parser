@@ -3,7 +3,7 @@ export module LLIR.Rule.MemberBuilder;
 import LLIR.Builder.Base;
 import LLIR.Builder.DataWrapper;
 import AST.API;
-import LLIR.API;
+import LangAPI;
 import dstd;
 import std;
 
@@ -25,9 +25,9 @@ export namespace LLIR {
         void pushBasedOnQuantifier(
             MemberBuilder &builder,
             const AST::RuleMember &rule,
-            Variable &shadow_var,
-            Variable &uvar,
-            const Variable &var,
+            LangAPI::Variable &shadow_var,
+            LangAPI::Variable &uvar,
+            const LangAPI::Variable &var,
             char quantifier
         );
     public:
@@ -67,15 +67,15 @@ export namespace LLIR {
         const AST::RuleMember &rule;
         auto pushBasedOnQualifier(
             const AST::RuleMember &rule,
-            Expression &expr,
-            Statements &stmt,
-            Variable &uvar,
-            const Variable &var,
-            const Variable &svar,
-            const Statement &call,
+            LangAPI::Expression &expr,
+            LangAPI::Statements &stmt,
+            LangAPI::Variable &uvar,
+            const LangAPI::Variable &var,
+            const LangAPI::Variable &svar,
+            const LangAPI::Statement &call,
             char quantifier,
             bool add_shadow_var = false
-        ) -> Variable;
+        ) -> LangAPI::Variable;
 
     public:
         void build() override;
@@ -107,9 +107,9 @@ export namespace LLIR {
         auto createBlock(
             const stdu::vector<AST::RuleMember> &rules,
             std::size_t index,
-            Variable &var,
-            Variable &svar
-        ) -> Statements;
+            LangAPI::Variable &var,
+            LangAPI::Variable &svar
+        ) -> LangAPI::Statements;
     public:
         void build() override;
         OpBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}

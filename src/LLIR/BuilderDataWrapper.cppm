@@ -1,5 +1,5 @@
 export module LLIR.Builder.DataWrapper;
-import LLIR.API;
+import LangAPI;
 import LLIR.Builder.Data;
 import AST.Tree;
 import DFA.Collection;
@@ -17,9 +17,9 @@ export namespace LLIR {
         bool &isFirst;
         int &tokensOnly;
         stdu::vector<std::string> &fullname;
-        stdu::vector<Variable> &vars;
-        stdu::vector<std::pair<std::string, Variable>> &key_vars;
-        stdu::vector<Variable> &unnamed_datablock_units;
+        stdu::vector<LangAPI::Variable> &vars;
+        stdu::vector<std::pair<std::string, LangAPI::Variable>> &key_vars;
+        stdu::vector<LangAPI::Variable> &unnamed_datablock_units;
         BuilderData::SymbolFollow &symbol_follow;
         bool &has_symbol_follow;
         AST::Tree &tree;
@@ -39,9 +39,9 @@ export namespace LLIR {
             bool &isFirst,
             int &tokensOnly,
             stdu::vector<std::string> &fullname,
-            stdu::vector<Variable> &vars,
-            stdu::vector<std::pair<std::string, Variable>> &key_vars,
-            stdu::vector<Variable> &unnamed_datablock_units,
+            stdu::vector<LangAPI::Variable> &vars,
+            stdu::vector<std::pair<std::string, LangAPI::Variable>> &key_vars,
+            stdu::vector<LangAPI::Variable> &unnamed_datablock_units,
             stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &symbol_follow,
             bool &has_symbol_follow,
             AST::Tree &tree,

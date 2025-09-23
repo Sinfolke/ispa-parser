@@ -1,6 +1,6 @@
 
 export module constants;
-import LLIR.API;
+import LangAPI;
 import std;
 
 export namespace constants {
@@ -18,11 +18,11 @@ export namespace constants {
                 return "::ISPA_STD";
         }
     }
-    constexpr auto stdlib_get_type(Language language, StdlibExports what_path_to_get) -> LLIR::Type  {
+    constexpr auto stdlib_get_type(Language language, StdlibExports what_path_to_get) -> LangAPI::Type  {
         switch (language) {
             default:
-                return LLIR::Type {
-                    LLIR::Symbol {
+                return LangAPI::Type {
+                    LangAPI::Symbol {
                         constants::stdlib_path(language), "Node"
                     },
                     "Rules"

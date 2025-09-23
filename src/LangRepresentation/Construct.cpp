@@ -4,10 +4,10 @@ import constants;
 import std;
 
 namespace LangRepresentation {
-    auto constructTypes(Holder &holder, constants::Language lang) -> LLIR::Declarations {
+    auto constructTypes(Holder &holder, constants::Language lang) -> LangAPI::Declarations {
         holder.push(
-            LLIR::TypeAlias::createDeclaration(
-                LLIR::TypeAlias {
+            LangAPI::TypeAlias::createDeclaration(
+                LangAPI::TypeAlias {
                     .name = "Rule",
                     .type = constants::stdlib_get_type(lang, constants::StdlibExports::Rule)
                 }

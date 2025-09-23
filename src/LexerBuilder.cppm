@@ -2,6 +2,7 @@ export module LexerBuilder;
 import hash;
 import AST.API;
 import AST.Tree;
+import LangAPI;
 import LLIR.API;
 import LLIR.IR;
 import fcdt;

@@ -1,6 +1,7 @@
 export module LLIR.IR;
 import hash;
 import dstd;
+import LangAPI;
 import LLIR.API;
 import DFA.Collection;
 import DFA.TokenMachineDFA;

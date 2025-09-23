@@ -166,7 +166,7 @@ void LRConverter::addparseFromFunctions(std::ostringstream &out, bool hasDFA) co
 }
 void LRConverter::outputIR(std::ostringstream &out, std::string &filename) {
     addIncludesCpp(out, filename);
-    LLIR::Builder tokens_ir(tree, true);
+    LangAPI::Builder tokens_ir(tree, true);
     auto IR = tokens_ir.get();
     LLConverter converter(IR, tree, namespace_name);
     data_block_tokens = converter.getDataBlockToken();

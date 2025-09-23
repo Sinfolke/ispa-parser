@@ -1,11 +1,11 @@
 export module LLIR.Builder.Utility;
-import LLIR.API;
+import LangAPI;
 export namespace LLIR {
     class BuilderUtility {
-        Statements &statements;
+        LangAPI::Statements &statements;
     public:
         void removePrevSpaceSkip();
 
-        BuilderUtility(Statements &statements) : statements(statements) {}
+        BuilderUtility(LangAPI::Statements &statements) : statements(statements) {}
     };
 }

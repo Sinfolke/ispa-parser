@@ -1,6 +1,7 @@
 export module LLIR.RuleBuilder;
 import LLIR.Builder.DataWrapper;
 import LLIR.Builder.Base;
+import LangAPI;
 import LLIR.API;
 import AST.API;
 import AST.Tree;

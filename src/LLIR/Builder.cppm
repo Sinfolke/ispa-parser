@@ -1,4 +1,5 @@
 export module LLIR.Builder;
+import LangAPI;
 import LLIR.API;
 import LLIR.IR;
 import AST.Tree;
@@ -10,7 +11,7 @@ import std;
 
 namespace LLIR {
     export class Builder {
-        stdu::vector<LLIR::Production> data;
+        stdu::vector<Production> data;
         DFA::Collection<DFA::TokenMachineDFA> dfas;
         bool isToken;
     public:

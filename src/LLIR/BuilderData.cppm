@@ -1,5 +1,5 @@
 export module LLIR.Builder.Data;
-import LLIR.API;
+import LangAPI;
 import AST.Tree;
 import AST.API;
 import DFA.TokenMachineDFA;
@@ -18,9 +18,9 @@ namespace LLIR {
         bool isFirst = true;
         int tokensOnly = -1;
         stdu::vector<std::string> fullname;
-        stdu::vector<Variable> vars;
-        stdu::vector<std::pair<std::string, Variable>> key_vars;
-        stdu::vector<Variable> unnamed_datablock_units;
+        stdu::vector<LangAPI::Variable> vars;
+        stdu::vector<std::pair<std::string, LangAPI::Variable>> key_vars;
+        stdu::vector<LangAPI::Variable> unnamed_datablock_units;
         SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
         AST::Tree &tree;
