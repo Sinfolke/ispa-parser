@@ -192,7 +192,8 @@ void LLIR::GroupBuilder::build() {
         removePrevSpaceSkip();
     }
 
-    var.type = {deduceVarTypeByRuleMember(rule)};
+    var.type = deduceVarTypeByRuleMember(rule);
+    uvar.type = var.type;
     if ((quantifier == '*' || quantifier == '+') && var.type != LangAPI::ValueType::Undef && var.type != LangAPI::ValueType::String) {
         var.type.template_parameters = {{var.type}};
         var.type.type = LangAPI::ValueType::Array;
@@ -209,6 +210,7 @@ void LLIR::GroupBuilder::build() {
             break;
         case LangAPI::ValueType::Token:
         case LangAPI::ValueType::Rule:
+        case LangAPI::ValueType::Variant:
             // it is token so perform a single assign
             fetch_var_statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {builder.getReturnVars()[0].var.name})}));
 

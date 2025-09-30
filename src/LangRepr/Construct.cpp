@@ -73,6 +73,7 @@ namespace LangRepr {
         // --- Collect deps ---
         utype::unordered_map<Name, utype::unordered_set<Name>> deps;
         utype::unordered_map<Name, std::size_t> usage_count;
+        utype::unordered_set<Name> to_forward_declare;
         for (const Name &n : order) {
             const Node *node = root.find(n);
             if (!node) { deps[n] = {}; continue; }
@@ -80,18 +81,21 @@ namespace LangRepr {
             utype::unordered_set<Name> used;
             if (node->data.is_regular_data_block()) {
                 auto dt = node->data.getRegularDataBlock().second;
-                auto s = collectReferencedNames(dt);
+                auto [s, _to_forward_declare] = collectReferencedNames(dt);
                 for (const auto &[name, count] : s) {
                     usage_count[name] += count;
                     used.insert(name);
                 }
+                to_forward_declare.insert(_to_forward_declare.begin(), _to_forward_declare.end());
             } else if (node->data.is_inclosed_map()) {
                 for (const auto &p : node->data.getInclosedMap()) {
-                    auto s = collectReferencedNames(p.second.second);
+                    auto [s, _to_forward_declare] = collectReferencedNames(p.second.second);
                     for (const auto &[name, count] : s) {
                         usage_count[name] += count;
                         used.insert(name);
-                    }                }
+                    }
+                    to_forward_declare.insert(_to_forward_declare.begin(), _to_forward_declare.end());
+                }
             }
             // remove self-dependency if any
             used.erase(n);
@@ -215,6 +219,9 @@ namespace LangRepr {
         LangAPI::Namespace flatTypesNamespace {.name = "FlatTypes"};
         LangAPI::Namespace typesNamespace { .name = "Types" };
         for (const auto &dep : dependent) {
+            flatTypesNamespace.declarations.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(LangAPI::ForwardDeclaredClass {.name = corelib::text::join(dep, "_")}));
+        }
+        for (const auto &dep : to_forward_declare) {
             flatTypesNamespace.declarations.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(LangAPI::ForwardDeclaredClass {.name = corelib::text::join(dep, "_")}));
         }
         // output types to flatTypes namespace

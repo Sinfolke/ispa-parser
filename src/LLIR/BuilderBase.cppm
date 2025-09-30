@@ -56,7 +56,7 @@ export namespace LLIR {
 
         // deduce type functions
         static auto deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type;
-        static auto deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type;
+        auto deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type;
 
         // raise vars on top functions
         void getVariablesToTable(LangAPI::Statements &data, LangAPI::Statements& table, std::string &var_name, bool retain_value, bool recursive);

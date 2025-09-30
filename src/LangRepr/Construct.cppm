@@ -114,10 +114,10 @@ export namespace LangRepr {
             ChildT children;
             LLIR::DataBlock data;
         };
-        auto collectReferencedNames(const LangAPI::Type &type) -> utype::unordered_map<Name, std::size_t> {
+        auto collectReferencedNames(const LangAPI::Type &type) -> std::pair<utype::unordered_map<Name, std::size_t>, utype::unordered_set<Name>> {
             utype::unordered_map<Name, std::size_t> out;
-
-            std::function<void(const LangAPI::Type&)> walk = [&](const LangAPI::Type &t) {
+            utype::unordered_set<Name> to_forward_declare;
+            std::function<void(const LangAPI::Type&, bool)> walk = [&](const LangAPI::Type &t, bool inside_array = false) {
                 if (t.isSymbol()) {
                     const auto &sym = t.getSymbol();
                     Name n;
@@ -128,17 +128,21 @@ export namespace LangRepr {
                     }
                     if (!n.empty()) ++out[n];
                 } else if (t.isValueType() && t.getValueType() == LangAPI::ValueType::Array) {
-                    return;
+                    for (const auto &param : t.template_parameters) {
+                        if (std::holds_alternative<LangAPI::Type>(param)) {
+                            walk(std::get<LangAPI::Type>(param), true);
+                        }
+                    }
                 } else {
                     for (const auto &param : t.template_parameters) {
                         if (std::holds_alternative<LangAPI::Type>(param)) {
-                            walk(std::get<LangAPI::Type>(param));
+                            walk(std::get<LangAPI::Type>(param), false);
                         }
                     }
                 }
             };
-            walk(type);
-            return out;
+            walk(type, false);
+            return std::make_pair(out, to_forward_declare);
         }
     public:
         Construct(LexerBuilder &&lexer_builder, LLIR::IR &&ir, LangAPI::Language lang, const std::string &namespace_name)

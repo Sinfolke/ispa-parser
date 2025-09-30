@@ -110,14 +110,20 @@ namespace Parser {
 		cll_function_parameters,
 	};
 	namespace FlatTypes {
-		struct cll_TYPE;
-		struct cll_function_call;
+		struct cll__var;
+		struct cll_expr_arithmetic;
 		struct rule;
-		struct rule_nested_rule;
-		struct main;
 		struct cll_expr;
-		struct rvalue;
+		struct cll_TYPE;
+		struct cll_expr_term;
+		struct _use_unit;
 		struct rule_member;
+		struct main;
+		struct rvalue;
+		struct cll_function_call;
+		struct cll_stmt;
+		struct cll_expr_compare;
+		struct cll_expr_value;
 		struct AUTO_2 {
 			char value;
 		};
@@ -149,10 +155,6 @@ namespace Parser {
 		struct MODULO {
 		};
 		struct cll_LOGICAL_NOT {
-		};
-		struct rule_CSEQUENCE {
-			char _not;
-			Undef val;
 		};
 		struct NUMBER {
 			std::string sign;
@@ -259,15 +261,6 @@ namespace Parser {
 		struct AUTO_6 {
 			char value;
 		};
-		struct array {
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> value;
-		};
-		struct rule_group {
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<rule_member>>> value;
-		};
-		struct cll_stmt {
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<rule_member>>> value;
-		};
 		struct cll_LOGICAL_OP {
 			std::variant<::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
 		};
@@ -315,102 +308,87 @@ namespace Parser {
 			std::variant<::ISPA_STD::Node<Rules, moduleImport_from_import_list>, ::ISPA_STD::Node<Tokens, MULTIPLE>> what;
 			::ISPA_STD::Node<Tokens, ID> from;
 		};
+		struct rule_CSEQUENCE {
+			char _not;
+			std::vector<std::variant<::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_DIAPASON>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_ESCAPE>>> val;
+		};
 		struct moduleImport {
 			std::variant<::ISPA_STD::Node<Rules, moduleImport_from>, ::ISPA_STD::Node<Tokens, ID>> value;
 		};
-		struct rule_data_block_regular_datablock_key {
-			::ISPA_STD::Node<Tokens, ID> name;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> dt;
-		};
 		struct cll_TEMPLATE {
 			::ISPA_STD::MatchResult<Tokens, std::shared_ptr<cll_TYPE>> first;
-			std::vector<::ISPA_STD::Node<Tokens, std::shared_ptr<cll_TYPE>>> second;
+			std::vector<::ISPA_STD::MatchResult<Tokens, std::shared_ptr<cll_TYPE>>> second;
 		};
-		struct cll__var {
-			::ISPA_STD::Node<Tokens, std::shared_ptr<cll_TYPE>> type;
-			::ISPA_STD::Node<Tokens, ID> id;
-			::ISPA_STD::Node<Tokens, cll_ASSIGNMENT_OP> op;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
-		};
-		struct cll__variable {
-			Undef pre;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> brace_expression;
-			Undef pos;
-			::ISPA_STD::Node<Tokens, ID> name;
-		};
-		struct object {
-			std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
-			std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> values;
-		};
-		struct cll_function_arguments {
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> first;
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> second;
-		};
-		struct cll_loop_for {
-			Undef decl;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> end;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> cond;
-			::ISPA_STD::MatchResult<Rules, cll_stmt> stmt;
-		};
-		struct _use_unit {
-			::ISPA_STD::Node<Tokens, ID> name;
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<rvalue>> value;
-		};
-		struct cll_expr_group {
-			::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>> value;
-		};
-		struct cll_loop_while {
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
-			::ISPA_STD::MatchResult<Rules, cll_stmt> stmt;
-		};
-		struct cll__if {
-			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
-			::ISPA_STD::MatchResult<Rules, cll_stmt> stmt;
+		struct _use {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>> first;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>>> second;
 		};
 		struct cll_method_call {
 			::ISPA_STD::Node<Tokens, ID> name;
 			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_function_call>> body;
 		};
+		struct cll_expr_group {
+			::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>> value;
+		};
+		struct rule_data_block_regular_datablock_key {
+			::ISPA_STD::Node<Tokens, ID> name;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> dt;
+		};
+		struct rule_nested_rule {
+			::ISPA_STD::Node<Rules, std::shared_ptr<rule>> value;
+		};
+		struct cll__variable {
+			std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pre;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> brace_expression;
+			std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pos;
+			::ISPA_STD::Node<Tokens, ID> name;
+		};
+		struct cll_loop_while {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct array {
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> value;
+		};
+		struct cll_loop_for {
+			std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> decl;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> end;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> cond;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct object {
+			std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
+			std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> values;
+		};
+		struct cll_expr_logical {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_compare>> left;
+			std::vector<::ISPA_STD::Node<Tokens, cll_LOGICAL_OP>> op;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_compare>>> right;
+		};
+		struct rule_group {
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> value;
+		};
+		struct cll__if {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct cll_function_arguments {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> first;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> second;
+		};
 		struct rule_data_block_regular_datablock {
 			std::variant<::ISPA_STD::Node<Rules, rule_data_block_regular_datablock_key>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> value;
+		};
+		struct cll {
+			std::variant<::ISPA_STD::Node<Rules, cll__if>, ::ISPA_STD::Node<Rules, cll_loop_for>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>, ::ISPA_STD::Node<Rules, cll_loop_while>> value;
 		};
 		struct cll_function_body_call {
 			::ISPA_STD::Node<Rules, cll_function_arguments> value;
 		};
-		struct _use {
-			::ISPA_STD::MatchResult<Rules, _use_unit> first;
-			std::vector<::ISPA_STD::Node<Rules, _use_unit>> second;
-		};
-		struct cll {
-			std::variant<::ISPA_STD::Node<Rules, cll__if>, ::ISPA_STD::Node<Rules, cll_loop_for>, ::ISPA_STD::Node<Rules, cll__var>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>, ::ISPA_STD::Node<Rules, cll_loop_while>> value;
-		};
-		struct cll_expr_value {
-			std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rvalue>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_function_call>>, ::ISPA_STD::Node<Rules, cll_method_call>, ::ISPA_STD::Node<Rules, cll_expr_group>, ::ISPA_STD::Node<Rules, cll__variable>> value;
-		};
 		struct rule_data_block {
 			std::variant<::ISPA_STD::Node<Rules, rule_data_block_templated_datablock>, ::ISPA_STD::Node<Rules, rule_data_block_regular_datablock>> value;
-		};
-		struct cll_expr_term {
-			::ISPA_STD::MatchResult<Rules, cll_expr_value> first;
-			std::variant<::ISPA_STD::Node<Tokens, MODULO>, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, DIVIDE>> operators;
-			std::vector<::ISPA_STD::Node<Rules, cll_expr_value>> sequence;
-		};
-		struct cll_expr_arithmetic {
-			::ISPA_STD::MatchResult<Rules, cll_expr_term> first;
-			std::variant<::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, MINUS>> operators;
-			std::vector<::ISPA_STD::Node<Rules, cll_expr_term>> sequence;
-		};
-		struct cll_expr_compare {
-			::ISPA_STD::MatchResult<Rules, cll_expr_arithmetic> first;
-			std::vector<::ISPA_STD::Node<Tokens, cll_COMPARE_OP>> operators;
-			std::vector<::ISPA_STD::Node<Rules, cll_expr_arithmetic>> sequence;
-		};
-		struct cll_expr_logical {
-			::ISPA_STD::MatchResult<Rules, cll_expr_compare> left;
-			std::vector<::ISPA_STD::Node<Tokens, cll_LOGICAL_OP>> op;
-			std::vector<::ISPA_STD::Node<Rules, cll_expr_compare>> right;
 		};
 		struct cll_TYPE {
 			char type;
@@ -423,25 +401,53 @@ namespace Parser {
 		struct cll_expr {
 			::ISPA_STD::Node<Rules, cll_expr_logical> value;
 		};
-		struct rule_nested_rule {
-			::ISPA_STD::Node<Rules, std::shared_ptr<rule>> value;
+		struct cll_expr_term {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_value>> first;
+			std::variant<::ISPA_STD::Node<Tokens, MODULO>, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, DIVIDE>> operators;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_value>>> sequence;
+		};
+		struct cll__var {
+			::ISPA_STD::Node<Tokens, std::shared_ptr<cll_TYPE>> type;
+			::ISPA_STD::Node<Tokens, ID> id;
+			::ISPA_STD::Node<Tokens, cll_ASSIGNMENT_OP> op;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
 		};
 		struct rvalue {
 			std::variant<::ISPA_STD::Node<Tokens, ID>, ::ISPA_STD::Node<Tokens, BOOLEAN>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, AT>, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Rules, object>, ::ISPA_STD::Node<Rules, array>> value;
 		};
+		struct _use_unit {
+			::ISPA_STD::Node<Tokens, ID> name;
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<rvalue>> value;
+		};
+		struct cll_expr_arithmetic {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_term>> first;
+			std::variant<::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, MINUS>> operators;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_term>>> sequence;
+		};
 		struct rule {
 			::ISPA_STD::Node<Tokens, ID> name;
 			::ISPA_STD::MatchResult<Rules, rule_data_block> data_block;
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<rule_member>>> rule;
-			std::vector<::ISPA_STD::Node<Rules, std::shared_ptr<rule_nested_rule>>> nested_rules;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> rule;
+			std::vector<::ISPA_STD::MatchResult<Rules, rule_nested_rule>> nested_rules;
 		};
 		struct main {
 			std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rule>>, ::ISPA_STD::Node<Rules, _use>, ::ISPA_STD::Node<Tokens, NAME>, ::ISPA_STD::Node<Tokens, SPACEMODE>> value;
 		};
 		struct rule_member {
-			Undef prefix;
+			std::variant<::ISPA_STD::Node<Rules, rule_value>, ::ISPA_STD::Node<Rules, rule_keyvalue>> prefix;
 			::ISPA_STD::MatchResult<Rules, rule_quantifier> quantifier;
 			std::variant<::ISPA_STD::Node<Rules, rule_name>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, rule_HEX>, ::ISPA_STD::Node<Tokens, DOT>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE>, ::ISPA_STD::Node<Tokens, rule_BIN>, ::ISPA_STD::Node<Tokens, rule_OP>, ::ISPA_STD::Node<Rules, cll>, ::ISPA_STD::Node<Tokens, rule_ESCAPED>, ::ISPA_STD::Node<Rules, rule_group>, ::ISPA_STD::Node<Tokens, LINEAR_COMMENT>, ::ISPA_STD::Node<Tokens, rule_NOSPACE>> val;
+		};
+		struct cll_expr_value {
+			std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rvalue>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_function_call>>, ::ISPA_STD::Node<Rules, cll_method_call>, ::ISPA_STD::Node<Rules, cll_expr_group>, ::ISPA_STD::Node<Rules, cll__variable>> value;
+		};
+		struct cll_stmt {
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> value;
+		};
+		struct cll_expr_compare {
+			::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_arithmetic>> first;
+			std::vector<::ISPA_STD::Node<Tokens, cll_COMPARE_OP>> operators;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_arithmetic>>> sequence;
 		};
 	}
 	namespace Types {

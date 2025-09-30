@@ -114,9 +114,8 @@ auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const Lang
 }
 auto LLIR::BuilderBase::add_shadow_variable(LangAPI::Statements &block, const LangAPI::Variable &var) -> LangAPI::Variable {
     LangAPI::Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
-    shadow_var.type = var.type;
     undoRuleResult(shadow_var.type.getValueType());
-    shadow_var.type.template_parameters = {{shadow_var.type}};
+    shadow_var.type.template_parameters = {{var.type}};
     shadow_var.type.type = LangAPI::ValueType::Array;
     statements.push_back(LangAPI::Variable::createStatement(shadow_var));
     statements.push_back(
@@ -209,7 +208,7 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const LangAP
         if (rule.prefix.name.empty()) {
             unnamed_datablock_units.push_back(uvar.name.empty() ? (shadow_var.name.empty() ? var : shadow_var) : uvar);
         } else {
-            key_vars.emplace_back(rule.prefix.name, uvar);
+            key_vars.emplace_back(rule.prefix.name, uvar.name.empty() ? (shadow_var.name.empty() ? var : shadow_var) : uvar);
         }
     }
     exports_list.push_back(ExportsAfterBuild {v_or_empty(svar), v_or_empty(uvar), v_or_empty(var), v_or_empty(shadow_var), quantifier});
