@@ -151,6 +151,7 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
 auto LLIR::MemberBuilder::build() -> void {
     bool isFirst = true;
     std::size_t pos = 0;
+    isToken = corelib::text::isUpper(fullname.back());
     if (rules == nullptr) {
         buildMember(*rule);
         if (isFirst) {
@@ -495,7 +496,7 @@ void LLIR::StringBuilder::build() {
 //     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 // }
 void LLIR::NameBuilder::build() {
-    //cpuf::printf("Rule_other");
+    // cpuf::printf("Rule_other");
     auto name = rule.getName().name;
     //cpuf::printf(", name: %s\n", name_str);
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
@@ -507,11 +508,15 @@ void LLIR::NameBuilder::build() {
     //     symbol_follow->back().first = name;
     // }
     if (!isToken && isCallingToken) {
-        var.type.type = LangAPI::ValueType::Token;
+        var.type = { LangAPI::ValueType::Token, LangAPI::Type {LangAPI::Symbol { name } } };
     } else {
-        var.type.type = isCallingToken ? LangAPI::ValueType::TokenResult : LangAPI::ValueType::RuleResult;
+        var.type =  { isCallingToken ? LangAPI::ValueType::TokenResult : LangAPI::ValueType::RuleResult, LangAPI::Type {LangAPI::Symbol { name } } };
     }
+    uvar.type = var.type;
+    shadow_var.type.type = LangAPI::ValueType::Array;
+    shadow_var.type.template_parameters = {var.type};
     auto statements = createDefaultStatements(var, svar);
+    std::size_t variable_index_in_statements = statements.size();
     statements.push_back(LangAPI::Variable::createStatement(var));
     statements.push_back(LangAPI::Variable::createStatement(svar));
     if (isToken) {
@@ -519,7 +524,7 @@ void LLIR::NameBuilder::build() {
         //     throw Error("Cannot call rule from token");
         // remove variable assigment
         statements.back() = LangAPI::CounterIncreamentByLength::createStatement(LangAPI::CounterIncreamentByLength {.name = var.name});
-        statements.erase(statements.begin());
+        statements.erase(statements.begin() + variable_index_in_statements);
         LangAPI::Expression expr;
         auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
         statements.push_back(call);
@@ -527,18 +532,17 @@ void LLIR::NameBuilder::build() {
     } else {
         if (isCallingToken) {
             statements[0] = LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
-            decltype(LangAPI::Symbol::path) symbol_path;
-            std::transform(name.begin(), name.end(), std::back_inserter(symbol_path),
-               [](const std::string &member){ return std::variant<LangAPI::FunctionCall, std::string> { member }; });
+            LangAPI::Symbol compare_sym = {name};
+            compare_sym.path.insert(compare_sym.path.begin(), "Tokens");
             LangAPI::Expression expr = {
                 LangAPI::Pos::createExpressionValue(LangAPI::Pos {.dereference = true}),
                 LangAPI::ExpressionValue { LangAPI::ExpressionElement::Equal },
-                LangAPI::Symbol::createExpressionValue(LangAPI::Symbol {symbol_path})
+                LangAPI::Symbol::createExpressionValue(compare_sym)
             };
             shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, rule.quantifier, true);
         } else {
             statements.back() = LangAPI::CounterIncreamentByLength::createStatement(LangAPI::CounterIncreamentByLength {.name = var.name});
-            statements.erase(statements.begin()); // remove variable assignment
+            statements.erase(statements.begin() + variable_index_in_statements); // remove variable assignment
             LangAPI::Expression expr;
             auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
             statements.push_back(call);
@@ -598,9 +602,11 @@ void LLIR::NospaceBuilder::build() {
 // }
 void LLIR::AnyBuilder::build() {
     //cpuf::printf("Rule_any\n");
+    if (!isToken)
+        throw Error("AnyBuilder invoked on non-terminal: {}", fullname);
     auto var = rule.prefix.name.empty() ? createEmptyVariable(generateVariableName()) : createEmptyVariable(rule.prefix.name);
     auto svar = createSuccessVariable();
-    var.type = {isToken ? LangAPI::ValueType::Char : LangAPI::ValueType::Token};
+    var.type = {LangAPI::ValueType::Char};
     LangAPI::Statements stmt = LangAPI::Return::createStatements(LangAPI::Return {});;
     if (!isFirst) {
         auto rm = AST::RuleMember {.value = AST::RuleMemberAny() };

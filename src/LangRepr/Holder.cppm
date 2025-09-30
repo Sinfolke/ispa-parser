@@ -1,8 +1,8 @@
-export module LangRepresentation.Holder;
+export module LangRepr.Holder;
 
 import LangAPI;
 import std;
-export namespace LangRepresentation {
+export namespace LangRepr {
     class Holder {
         LangAPI::Declarations data;
     public:

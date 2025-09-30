@@ -1,26 +1,35 @@
 export module Converter.Declarations;
 
 import Converter.Writer;
-import Converter.Type;
+import LangAPI;
+import Rope.String;
 import dstd;
 import std;
 export namespace Converter {
     class Declarations {
     protected:
-        std::unordered_map<std::string, std::size_t> names;
-        Writer &writer;
+        Writer &output;
+
     public:
         // declarations
+        virtual auto openFile(const std::string &namespace_name) -> void = 0;
+        virtual auto closeFile(const std::string &namespace_name) -> void = 0;
+        virtual auto initImports() -> void = 0;
         virtual auto createNamespace(const std::string &name) -> void = 0;
-        virtual auto createClass(const std::string &name) -> void = 0;
-        virtual auto createFunction(const std::string &name) -> void = 0;
+        virtual auto closeNamespace() -> void = 0;
+        virtual auto createClass(const LangAPI::Class &the_class) -> void = 0;
+        virtual auto closeClass() -> void = 0;
+        virtual auto setVisibility(LangAPI::Visibility visibility) -> void = 0;
+        virtual auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void = 0;
+        virtual auto closeFunction() -> void = 0;
 
         // types
-        virtual auto createFixedStruct(const std::string &name, const stdu::vector<std::string> &keys) -> void = 0;
-        virtual auto createTypeAlias(const std::string &name, const Type type) -> void = 0;
+        virtual auto createTypeAlias(const std::string &name, const LangAPI::Type type) -> void = 0;
         virtual auto createEnum(const std::string &name, const stdu::vector<std::string> &names) -> void = 0;
+        virtual auto closeEnum() -> void = 0;
 
-        Declarations(Writer &writer) : writer(writer) {}
+        virtual auto createVariable(const LangAPI::Variable &v) -> void = 0;
+        Declarations(Writer &output) : output(output) {}
         virtual ~Declarations() = default;
     };
 }

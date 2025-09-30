@@ -18,10 +18,10 @@ export namespace DFA {
         States<SingleState> states;
         void unrollMultiTransition(std::size_t state_id, const NFA::TransitionKey &symbol, stdu::vector<MultiTransitionValue> &val, SeenSymbol &seen, WalkedState &walked_state);
     public:
-        SDFA(MDFA &mdfa) : states(nullptr), mdfa(mdfa), Base(mdfa.getEmptyState()) {}
-        SDFA(MDFA &mdfa, DfaEmptyStateMap &empty_state_map, DfaIndexToEmptyStateMap &index_state_map) : states(nullptr), mdfa(mdfa), Base(empty_state_map, index_state_map){}
-        SDFA(NFA &nfa, MDFA &mdfa) : states(&nfa), mdfa(mdfa), Base(mdfa.getEmptyState()) {}
-        SDFA(NFA &nfa, MDFA &mdfa, DfaEmptyStateMap &empty_state_map, DfaIndexToEmptyStateMap &index_state_map) : states(&nfa), mdfa(mdfa), Base(empty_state_map, index_state_map) {}
+        SDFA(MDFA &mdfa_) : states(nullptr), mdfa(mdfa_), Base(mdfa_.getEmptyState()) {}
+        SDFA(MDFA &mdfa_, DfaEmptyStateMap &empty_state_map, DfaIndexToEmptyStateMap &index_state_map) : states(nullptr), mdfa(mdfa_), Base(empty_state_map, index_state_map){}
+        SDFA(NFA &nfa, MDFA &mdfa_) : states(&nfa), mdfa(mdfa_), Base(mdfa_.getEmptyState()) {}
+        SDFA(NFA &nfa, MDFA &mdfa_, DfaEmptyStateMap &empty_state_map, DfaIndexToEmptyStateMap &index_state_map) : states(&nfa), mdfa(mdfa_), Base(empty_state_map, index_state_map) {}
         auto build() -> const States<SingleState>&;
 
         auto &get() const       { return states; }

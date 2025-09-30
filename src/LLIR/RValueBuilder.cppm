@@ -11,6 +11,7 @@ export namespace LLIR {
         void build() override;
         auto get() -> LangAPI::RValue;
         auto deduceType() -> LangAPI::Type;
+        auto isBuild() -> bool { return !data.empty(); }
         RValueBuilder(BuilderDataWrapper &data, const AST::rvalue &value) : BuilderBase(data), value(value)  {}
     };
 }

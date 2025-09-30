@@ -1,7 +1,8 @@
 export module LLIR.CllBuilder;
-import LLIR.Builder.Base;
 import AST.API;
+import LLIR.Builder.Base;
 import LLIR.Builder.DataWrapper;
+import LLIR.RValueBuilder;
 import LangAPI;
 import dstd;
 import std;
@@ -28,6 +29,7 @@ export namespace LLIR {
     class CllExprBuilder : BuilderDataWrapper {
         const AST::CllExpr &expr;
         LangAPI::Expression result;
+        std::unique_ptr<RValueBuilder> rvalueBuilder = nullptr;
         auto CllExprGroupToIR(const AST::CllExpr &group) -> LangAPI::Expression;
         auto CllExprValueToIR(const AST::CllExprValue &value) -> LangAPI::Expression;
         auto CllExprTermToIR(const AST::CllExprTerm &term) -> LangAPI::Expression;

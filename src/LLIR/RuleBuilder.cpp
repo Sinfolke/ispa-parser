@@ -16,9 +16,8 @@ void LLIR::RuleBuilder::build() {
     builder.build();
     builder.optimizeIR();
     data.members = builder.getData();
-    data.block = createDataBlock(rule->data_block, false);
+    data.block = createDataBlock(rule->data_block);
     data.name = fullname;
-
 }
 
 
@@ -29,34 +28,34 @@ LLIR::inclosed_map LLIR::RuleBuilder::getInclosedMapFromKeyValueBinding() {
     }
     return map;
 }
-LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block, bool ro) {
-    LLIR::DataBlock stmt;
+LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_block) {
+    LLIR::DataBlock dtb;
     if (data_block.empty()) {
-        return stmt;
+        return dtb;
     }
     if (data_block.isRegularDataBlock()) {
         if (data_block.isWithKeys()) {
             LLIR::inclosed_map initial_map = getInclosedMapFromKeyValueBinding();
             const auto &key_based_data_block = data_block.getRegDataBlockWKeys();
             for (const auto &[name, expr] : key_based_data_block.value) {
-                std::flush(std::cout);
                 BuilderDataWrapper bd(*this);
                 CllExprBuilder expr_builder(bd, expr);
+                expr_builder.build();
                 initial_map.try_emplace(name, expr_builder.get(), expr_builder.deduceType());
             }
-            stmt.value = initial_map;
+            dtb.value = initial_map;
         } else {
             Assert(key_vars.empty(), "Key variable in expression-only data block");
             BuilderDataWrapper bd(*this);
             CllExprBuilder expr_builder(bd, data_block.getRegDataBlock());
+            expr_builder.build();
             auto type = expr_builder.deduceType();
             if (type == LangAPI::ValueType::RuleResult) {
                 type.type = LangAPI::ValueType::Rule;
             } else if (type == LangAPI::ValueType::TokenResult) {
                 type.type = LangAPI::ValueType::Token;
             }
-            expr_builder.build();
-            stmt.value = std::make_pair(expr_builder.get(), type);
+            dtb.value = std::make_pair(expr_builder.get(), type);
         }
     } else {
         // templated data block
@@ -76,7 +75,7 @@ LLIR::DataBlock LLIR::RuleBuilder::createDataBlock(const AST::DataBlock &data_bl
             initial_map.try_emplace(name, std::make_pair(LangAPI::Symbol::createExpression(LangAPI::Symbol {v.name}), v.type));
             unnamed_datablock_units.erase(unnamed_datablock_units.begin());
         }
-        stmt.value = initial_map;
+        dtb.value = initial_map;
     }
-    return stmt;
+    return dtb;
 }

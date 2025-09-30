@@ -21,7 +21,7 @@ export namespace LLIR {
             fullname = name;
         }
         void build();
-        auto createDataBlock(const AST::DataBlock &data_block, bool ro) -> LLIR::DataBlock;
+        auto createDataBlock(const AST::DataBlock &data_block) -> LLIR::DataBlock;
         auto getData() -> Production&;
     };
 }

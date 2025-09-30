@@ -42,9 +42,9 @@ namespace Parser {
 		NONE, cll_expr_value, cll_function_arguments, cll_method_call, moduleImport_from, cll_function_parameters, rule_quantifier, rule_data_block_templated_datablock, rule_data_block_regular_datablock, cll_function_body_decl, rule_group, rule_name, rule_keyvalue, rule_member, rule, _use_unit, main, moduleImport_from_import_list, cll_expr_compare, moduleDeclaration, cll_stmt, cll, cll_expr_group, rvalue, array, cll__variable, object, cll__var, cll_expr_logical, cll_expr_term, cll_expr, cll_function_call, rule_value, rule_data_block, moduleImport, rule_nested_rule, cll_function_body_call, cll_expr_arithmetic, cll__if, rule_data_block_regular_datablock_key, cll_loop_for, cll_loop_while, _use
 	};
 	using Rule = ISPA_STD::Node<Rules>;
-	using Rule_res = ISPA_STD::match_result<Rules>;
+	using Rule_res = ISPA_STD::MatchResult<Rules>;
 	using Token = ISPA_STD::Node<Tokens>;
-	using Token_res = ISPA_STD::match_result<Tokens>;
+	using Token_res = ISPA_STD::MatchResult<Tokens>;
 	using TokenFlow = ISPA_STD::TokenFlow<Tokens>;
 	using RuleSeq = ISPA_STD::Seq<Rules>;
 	using TokenSeq = ISPA_STD::Seq<Tokens>;

@@ -1,19 +1,32 @@
 export module Cpp.Declarations;
 
 import Converter.Declarations;
-namespace Cpp {
-    export class Declarations : Converter::Declarations {
+import Converter.Writer;
+import LangAPI;
+import Rope.String;
+import dstd;
+export namespace Cpp {
+    class Declarations : Converter::Declarations {
     public:
-        virtual auto createNamespace(const std::string &name) -> void;
-        virtual auto createClass(const std::string &name) -> void;
-        virtual auto createFunction(const std::string &name) -> void;
+        // declarations
+        auto openFile(const std::string &namespace_name) -> void;
+        auto closeFile(const std::string &namespace_name) -> void;
+        auto initImports() -> void;
+        auto createNamespace(const std::string &name) -> void override;
+        auto closeNamespace() -> void override;
+        auto createClass(const LangAPI::Class &the_class) -> void override;
+        auto closeClass() -> void override;
+        auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void override;
+        auto setVisibility(LangAPI::Visibility visibility) -> void override;
+        auto closeFunction() -> void override;
 
         // types
-        virtual auto createFixedStruct(const std::string &name, const stdu::vector<std::string> &keys) -> void;
-        virtual auto createTypeAlias(const std::string &name, const Type type) -> void;
-        virtual auto createEnum(const std::string &name, const stdu::vector<std::string> &names) -> void;
+        auto createTypeAlias(const std::string &name, const LangAPI::Type type) -> void override;
+        auto createEnum(const std::string &name, const stdu::vector<std::string> &names) -> void override;
+        auto closeEnum() -> void override;
 
-        using Converter::Declarations::Declarations;
-        virtual ~Declarations() = default;
+        auto createVariable(const LangAPI::Variable &v) -> void override;
+        Declarations(Converter::Writer &output) : Converter::Declarations(output) {}
+        ~Declarations() = default;
     };
 }

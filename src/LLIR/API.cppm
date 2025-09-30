@@ -10,7 +10,7 @@ export namespace LLIR {
     struct DataBlock {
         std::variant<std::monostate, regular_data_block, inclosed_map> value;
         bool is_inclosed_map() const { return std::holds_alternative<inclosed_map>(value); };
-        bool is_raw_expr() const { return std::holds_alternative<regular_data_block>(value); };
+        bool is_regular_data_block() const { return std::holds_alternative<regular_data_block>(value); };
         bool empty() const { return std::holds_alternative<std::monostate>(value); };
         regular_data_block &getRegularDataBlock() { return std::get<regular_data_block>(value); };
         inclosed_map &getInclosedMap() { return std::get<inclosed_map>(value); };

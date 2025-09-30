@@ -140,7 +140,10 @@ endfunction()
 # =============================================
 # Fetch libraries
 # =============================================
-
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-stdlib=libc++)
+    add_link_options(-stdlib=libc++)
+endif()
 include(FetchContent)
 FetchContent_Declare(
         RopeString
@@ -161,6 +164,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        add_compile_options(-g)
 #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-sanitize-address-use-odr-indicator")
 #        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
     endif()
@@ -202,10 +206,6 @@ set(CLANG_MODULE_CACHE_DIR "${CMAKE_BINARY_DIR}/clang-modules")
 set(MODULE_COMPILATION
         -fmodules-cache-path=${CLANG_MODULE_CACHE_DIR}
 )
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-stdlib=libc++)
-    add_link_options(-stdlib=libc++)
-endif()
 # =============================================
 # Project Definitions
 # =============================================
@@ -265,30 +265,32 @@ target_link_libraries(ispa
 # =============================================
 add_library(ispa-converter INTERFACE)
 target_include_directories(ispa-converter INTERFACE ${INCLUDE_DIRS})
-#
-#if(WIN32)
-#    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
-#endif()
+if(WIN32)
+    file(GLOB_RECURSE CONVERTER_SRC ${SRC_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp)
+endif()
 
-#get_file_range(CPP_CONVERTER_SOURCES
-#        ${CONVERTERS_DIR}/C++/*.cpp
-#)
-#add_library(ispa-converter-cpp SHARED
-#        ${CPP_CONVERTER_SOURCES}
-#)
-#target_link_libraries(ispa-converter-cpp PRIVATE
-#        ispa-converter
-#)
-#target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
-#get_file_range(CPP_CONVERTER_MODULES
-#        ${CONVERTERS_DIR}/C++2/*.cppm
-#)
-#target_sources(ispa-converter-cpp
-#        PUBLIC
-#        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-#        ${CPP_CONVERTER_MODULES}
-#        ${CONVERTERS_DIR}/Converter.cppm
-#)
+get_file_range(CPP_CONVERTER_SOURCES
+        ${CONVERTERS_DIR}/C++2/*.cpp
+)
+add_library(ispa-converter-cpp SHARED
+        ${CPP_CONVERTER_SOURCES}
+)
+target_compile_options(ispa-converter-cpp PRIVATE "-stdlib=libc++")
+target_link_libraries(ispa-converter-cpp PRIVATE
+        ispa-converter
+)
+target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
+get_file_range(CPP_CONVERTER_MODULES
+        ${CONVERTERS_DIR}/C++2/*.cppm
+)
+target_sources(ispa_modules
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${CPP_CONVERTER_MODULES}
+        ${CONVERTERS_DIR}/Declarations.cppm
+        ${CONVERTERS_DIR}/Statement.cppm
+        ${CONVERTERS_DIR}/Writer.cppm
+)
 # export modules from main executable to shared library
 #add_raw_module(ispa-converter-cpp ispa_modules
 #        corelib
@@ -320,14 +322,14 @@ endif()
 
 add_dependencies(ispa_modules cxx_std_module)
 add_dependencies(ispa ispa_modules cxx_std_module)
-#add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
-#target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
-##target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
-#target_link_libraries(ispa PRIVATE
-#    ispa-converter-cpp
-#        #fmt::fmt
-#        #fmt_m
-#)
+add_dependencies(ispa-converter-cpp ispa_modules cxx_std_module)
+target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
+#target_link_libraries(ispa_modules PRIVATE fmt_m fmt::fmt)
+target_link_libraries(ispa PRIVATE
+    ispa-converter-cpp
+        #fmt::fmt
+        #fmt_m
+)
 
 # =============================================
 # Testing Configuration

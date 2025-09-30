@@ -1,4 +1,5 @@
 export module Converter.Indentation;
+import std;
 export namespace Converter {
     constexpr std::size_t spacesInTab = 5;
     class Indentation {

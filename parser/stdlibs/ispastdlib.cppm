@@ -7,7 +7,7 @@
  * However it won't cancell that parser does not rely on any library
 */
 module;
-#include "ispastdlib.hpp"
+#include "old/ispastdlib.hpp"
 export module ispastdlibcpp;
 import std;
 

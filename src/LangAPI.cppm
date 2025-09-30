@@ -56,7 +56,7 @@ auto promote_or_construct(fromWhatToConstruct&& value) -> whatToConstruct {
         using P = typename std::decay_t<fromWhatToConstruct>::promote_to;
         return promote_or_construct<whatToConstruct>(P{std::forward<fromWhatToConstruct>(value)});
     } else {
-        return void {};
+        return {};
     }
 }
 export namespace LangAPI {
@@ -73,21 +73,25 @@ export namespace LangAPI {
     enum class ValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Any
     };
+    enum class RValueType {
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance
+    };
+    enum class ExpressionValueType {
+        Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
+        ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError
+    };
     enum class ArrayMethods {
         Push, Pop
     };
     enum class Visibility {
         Private, Public
     };
-    enum class Inherit {
-        Lexer, Parser
-    };
     enum class ObjectMethods {};
     enum class Language {
         Cpp
     };
     enum class StdlibExports {
-        Rule, Token, Node
+        Node, MatchResult, Lexer, Parser
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -142,12 +146,16 @@ export namespace LangAPI {
     struct Declarations : stdu::vector<Declaration> {
         using vector::vector;
     };
-    struct Statements : stdu::vector<Statement> {
+    struct Statements : stdu::vector<Statement>, DeclarationLevel {
         using vector::vector;
     };
     struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
         using vector::vector;
     };
+
+    // forward declarations
+    struct Type;
+
     struct Char : RValueLevel {
         char value;
         bool escaped = false;
@@ -158,6 +166,11 @@ export namespace LangAPI {
         bool operator!=(const Char& c) const {
             return !(*this == c);
         }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value, escaped);
+        }
     };
 
     struct Int : RValueLevel {
@@ -165,6 +178,12 @@ export namespace LangAPI {
 
         bool operator==(const Int& other) const { return value == other.value; }
         bool operator!=(const Int& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
 
     struct Bool : RValueLevel {
@@ -172,6 +191,12 @@ export namespace LangAPI {
 
         bool operator==(const Bool& other) const { return value == other.value; }
         bool operator!=(const Bool& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
 
     struct Float : RValueLevel {
@@ -179,6 +204,12 @@ export namespace LangAPI {
 
         bool operator==(const Float& other) const { return value == other.value; }
         bool operator!=(const Float& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
 
     struct String : RValueLevel {
@@ -186,32 +217,44 @@ export namespace LangAPI {
 
         bool operator==(const String& other) const { return value == other.value; }
         bool operator!=(const String& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
 
     struct Array : RValueLevel {
         stdu::vector<Expression> values;
-
+        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
         bool operator==(const Array& other) const { return values == other.values; }
         bool operator!=(const Array& other) const { return !(*this == other); }
-    };
 
-    struct FixedSizeArray : Array {
-        std::size_t size;
-
-        bool operator==(const FixedSizeArray& other) const {
-            return size == other.size && static_cast<const Array&>(*this) == static_cast<const Array&>(other);
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(values, template_parameters);
         }
-        bool operator!=(const FixedSizeArray& other) const { return !(*this == other); }
     };
+
+    struct FixedSizeArray : Array {};
 
     struct Map : RValueLevel {
         stdu::vector<std::variant<Int, String>> keys;
         stdu::vector<Expression> values;
+        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
 
         bool operator==(const Map& other) const {
             return keys == other.keys && values == other.values;
         }
         bool operator!=(const Map& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(keys, values, template_parameters);
+        }
     };
 
     struct Pos : RValueLevel {
@@ -225,6 +268,12 @@ export namespace LangAPI {
                    sequence == other.sequence;
         }
         bool operator!=(const Pos& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(dereference, sequence, offset);
+        }
     };
 
     struct FunctionCall : RValueLevel {
@@ -235,6 +284,12 @@ export namespace LangAPI {
             return name == other.name && args == other.args;
         }
         bool operator!=(const FunctionCall& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, args);
+        }
     };
 
     struct ArrayMethodCall : RValueLevel {
@@ -245,6 +300,12 @@ export namespace LangAPI {
             return method == other.method && args == other.args;
         }
         bool operator!=(const ArrayMethodCall& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(method, args);
+        }
     };
 
     struct Symbol : RValueLevel {
@@ -256,33 +317,50 @@ export namespace LangAPI {
         Symbol(Args&&... args) {
             (path.emplace_back(std::forward<Args>(args)), ...);
         }
-        Symbol(const stdu::vector<PathPart> &path) : path(std::move(path)) {}
+        template<std::ranges::input_range R>
+        requires std::constructible_from<PathPart, std::ranges::range_value_t<R>>
+        Symbol(const R& el) {
+            for (auto &e : el) {
+                path.emplace_back(e);
+            }
+        }
+        Symbol(const stdu::vector<PathPart> &path) : path(path) {}
+        Symbol(stdu::vector<PathPart> &&path) : path(std::move(path)) {}
         bool operator==(const Symbol& other) const { return path == other.path; }
         bool operator!=(const Symbol& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(path);
+        }
     };
 
     struct StorageSymbol : RValueLevel {
-        stdu::vector<ExpressionValue> what;
+        Expression what;
         stdu::vector<std::variant<FunctionCall, ArrayMethodCall, std::string>> path;
 
         bool operator==(const StorageSymbol& other) const {
             return what == other.what && path == other.path;
         }
         bool operator!=(const StorageSymbol& other) const { return !(*this == other); }
-    };
-    struct IspalibSymbol {
-        static constexpr const char* Node = "Node";
 
-        stdu::vector<const char*> path;
-        template<typename... Args>
-        requires (std::constructible_from<const char*, Args> && ...)
-        IspalibSymbol(Args&&... args) {
-            (path.emplace_back(std::forward<Args>(args)), ...);
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(what, path);
         }
-        IspalibSymbol(const stdu::vector<const char*> &path) : path(std::move(path)) {}
+    };
+    struct IspaLibSymbol {
+        StdlibExports exports;
+        bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
+        bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
 
-        bool operator==(const IspalibSymbol& other) const { return path == other.path; }
-        bool operator!=(const IspalibSymbol& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(exports);
+        }
     };
     struct Inheritance : RValueLevel {
         Symbol name;
@@ -292,6 +370,12 @@ export namespace LangAPI {
             return name == other.name && args == other.args;
         }
         bool operator!=(const Inheritance& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, args);
+        }
     };
 
     struct Token : RValueLevel {
@@ -314,7 +398,11 @@ export namespace LangAPI {
         bool operator!=(const RuleResult&) const { return false; }
     };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Pos, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Pos, Symbol, StorageSymbol, Inheritance> value;
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     public:
         using promote_to = ExpressionValue;
         RValue() {}
@@ -346,13 +434,10 @@ export namespace LangAPI {
         bool isString()  const { return std::holds_alternative<String>(value); }
         bool isArray()   const { return std::holds_alternative<Array>(value); }
         bool isMap()     const { return std::holds_alternative<Map>(value); }
+        bool isPos()     const { return std::holds_alternative<Pos>(value); }
         bool isSymbol()  const { return std::holds_alternative<Symbol>(value); }
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
         bool isInheritance()  const { return std::holds_alternative<Inheritance>(value); }
-        bool isToken()  const { return std::holds_alternative<Token>(value); }
-        bool isRule()  const { return std::holds_alternative<Rule>(value); }
-        bool isTokenResult()  const { return std::holds_alternative<TokenResult>(value); }
-        bool isRuleResult()  const { return std::holds_alternative<RuleResult>(value); }
         bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
 
@@ -363,13 +448,10 @@ export namespace LangAPI {
         String&         getString()  { return std::get<String>(value); }
         Array&          getArray()   { return std::get<Array>(value); }
         Map&            getMap()     { return std::get<Map>(value); }
+        Pos&            getPos()     { return std::get<Pos>(value); }
         Symbol&         getSymbol()  { return std::get<Symbol>(value); }
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
         Inheritance&  getInheritance()  { return std::get<Inheritance>(value); }
-        Token&          getToken()  { return std::get<Token>(value); }
-        Rule&           getRule()  { return std::get<Rule>(value); }
-        TokenResult&    getTokenResult()  { return std::get<TokenResult>(value); }
-        RuleResult&     getRuleResult()  { return std::get<RuleResult>(value); }
 
         const Char&           getChar()   const { return std::get<Char>(value); }
         const Int&            getInt()    const { return std::get<Int>(value); }
@@ -378,15 +460,12 @@ export namespace LangAPI {
         const String&         getString() const { return std::get<String>(value); }
         const Array&          getArray()  const { return std::get<Array>(value); }
         const Map&            getMap()    const { return std::get<Map>(value); }
+        const Pos&            getPos()    const { return std::get<Pos>(value); }
         const Symbol&         getSymbol() const { return std::get<Symbol>(value); }
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
         const Inheritance&  getInheritance() const  { return std::get<Inheritance>(value); }
-        const Token&          getToken()  const { return std::get<Token>(value); }
-        const Rule&           getRule()  const { return std::get<Rule>(value); }
-        const TokenResult&    getTokenResult()  const { return std::get<TokenResult>(value); }
-        const RuleResult&     getRuleResult()  const { return std::get<RuleResult>(value); }
 
-        ValueType type() const { return static_cast<ValueType>(value.index()); }
+        RValueType type() const { return static_cast<RValueType>(value.index()); }
         auto get() const { return value; }
 
         // equality
@@ -400,10 +479,10 @@ export namespace LangAPI {
 
     };
     struct Type {
-        std::variant<ValueType, Symbol, IspalibSymbol> type;
+        std::variant<ValueType, Symbol, IspaLibSymbol> type;
         stdu::vector<std::variant<Type, RValue>> template_parameters;
         template<typename TypeOrPath, typename ...Templates>
-        requires (std::is_same_v<std::decay_t<TypeOrPath>, ValueType> || std::is_same_v<std::decay_t<TypeOrPath>, Symbol> || std::is_same_v<std::decay_t<TypeOrPath>, IspalibSymbol>)
+        requires (std::is_same_v<std::decay_t<TypeOrPath>, ValueType> || std::is_same_v<std::decay_t<TypeOrPath>, Symbol> || std::is_same_v<std::decay_t<TypeOrPath>, IspaLibSymbol>)
         Type(TypeOrPath vtype, Templates&& ...templates) {
             type = vtype;
             (template_parameters.push_back(templates), ...);
@@ -415,8 +494,8 @@ export namespace LangAPI {
         bool isSymbol() const {
             return std::holds_alternative<Symbol>(type);
         }
-        bool isStdlibSymbol() const {
-            return std::holds_alternative<IspalibSymbol>(type);
+        bool isIspaLibSymbol() const {
+            return std::holds_alternative<IspaLibSymbol>(type);
         }
         auto &getValueType() {
             return std::get<ValueType>(type);
@@ -424,11 +503,11 @@ export namespace LangAPI {
         auto &getSymbol() {
             return std::get<Symbol>(type);
         }
-        auto &getStdlibSymbol() {
-            return std::get<IspalibSymbol>(type);
+        auto &getIspaLibSymbol() {
+            return std::get<IspaLibSymbol>(type);
         }
-        const auto &getStdlibSymbol() const {
-            return std::get<IspalibSymbol>(type);
+        const auto &getIspaLibSymbol() const {
+            return std::get<IspaLibSymbol>(type);
         }
         auto &getValueType() const {
             return std::get<ValueType>(type);
@@ -472,24 +551,51 @@ export namespace LangAPI {
         bool operator!=(const Type &other) const {
             return !(*this == other);
         }
+        friend std::ostream& operator<<(std::ostream& os, const Type& obj) {
+            if (obj.isSymbol()) {
+                for (const auto &t : obj.getSymbol().path) {
+                    if (std::holds_alternative<std::string>(t)) {
+                        os << std::get<std::string>(t);
+                    } else {
+                        os << "[rvalue]";
+                    }
+                }
+            } else if (obj.isValueType()) {
+                os << '[' << static_cast<std::size_t>(obj.getValueType()) << ']';
+            }
+            if (!obj.template_parameters.empty()) {
+                os << "<";
+                for (const auto &t : obj.template_parameters) {
+                    if (std::holds_alternative<Type>(t)) {
+                        os << std::get<Type>(t) << ",";
+                    } else os << "[rvalue]";
+                }
+                os << ">";
+            }
+            return os;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(type, template_parameters);
+        }
     };
 
     struct Class : DeclarationLevel {
         std::string name;
-        stdu::vector<std::pair<Declarations, Visibility>> data;
-        Inherit inherit;
+        stdu::vector<std::pair<std::shared_ptr<Declaration>, Visibility>> data;
+        stdu::vector<std::pair<Visibility, std::variant<Symbol, IspaLibSymbol>>> inherit_members;
+        Visibility default_visibility = Visibility::Public;
         bool operator==(const Class& other) const {
-            return name == other.name && data == other.data && inherit == other.inherit;
+            return name == other.name && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility;
         }
         bool operator!=(const Class& other) const {
             return !(*this == other);
         }
-    };
-    struct Struct : DeclarationLevel {
-        std::string name;
-        stdu::vector<std::pair<Declarations, Visibility>> data;
-        bool operator==(const Struct& other) const {
-            return name == other.name && data == other.data;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, data, inherit_members, default_visibility);
         }
     };
     struct Namespace : DeclarationLevel {
@@ -500,6 +606,11 @@ export namespace LangAPI {
         }
         bool operator!=(const Namespace& other) const {
             return !(*this == other);
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name,declarations);
         }
     };
     struct Function : DeclarationLevel {
@@ -512,6 +623,11 @@ export namespace LangAPI {
         bool operator!=(const Function& other) const {
             return !(*this == other);
         }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, parameters, statements);
+        }
     };
     struct TypeAlias : DeclarationLevel {
         std::string name;
@@ -522,20 +638,30 @@ export namespace LangAPI {
         bool operator!=(const TypeAlias& other) const {
             return !(*this == other);
         }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, type);
+        }
     };
     struct Enum : DeclarationLevel {
         std::string name;
         stdu::vector<std::string> value;
 
         template<typename ...Args>
-        Enum(std::string name, std::string first_value, Args&& ...args) : value(std::vector<std::string>{first_value, std::forward<Args>(args)...}) {}
-        Enum(std::string name, stdu::vector<std::string> value) : value(std::move(value)) {}
-        Enum(std::string name) {}
+        Enum(std::string name, std::string first_value, Args&& ...args) : name(name), value(std::vector<std::string>{first_value, std::forward<Args>(args)...}) {}
+        Enum(std::string name, stdu::vector<std::string> value) : name(name), value(std::move(value)) {}
+        Enum(std::string name) : name(name) {}
         bool operator==(const Enum& other) const {
             return value == other.value;
         }
         bool operator!=(const Enum& other) const {
             return !(*this == other);
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, value);
         }
     };
     struct Variable : ExpressionValueLevel {
@@ -551,10 +677,16 @@ export namespace LangAPI {
         // Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
         // Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
         auto empty() { return name.empty(); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, type, value);
+        }
     };
     struct Declaration : DeclarationsLevel {
         using promote_to = Declarations;
-        std::variant<Class, Struct, Namespace, Function, TypeAlias, Enum, Variable> value;
+        std::variant<Class, Namespace, Function, TypeAlias, Enum, Variable> value;
 
         Declaration() {};
         template<typename T>
@@ -569,7 +701,6 @@ export namespace LangAPI {
         }
         // Is functions
         bool isClass() const { return std::holds_alternative<Class>(value); }
-        bool isStruct() const { return std::holds_alternative<Struct>(value); }
         bool isNamespace() const { return std::holds_alternative<Namespace>(value); }
         bool isFunction() const { return std::holds_alternative<Function>(value); }
         bool isTypeAlias() const { return std::holds_alternative<TypeAlias>(value); }
@@ -579,9 +710,6 @@ export namespace LangAPI {
         // Get functions
         auto& getClass() { return std::get<Class>(value); }
         const auto& getClass() const { return std::get<Class>(value); }
-
-        auto& getStruct() { return std::get<Struct>(value); }
-        const auto& getStruct() const { return std::get<Struct>(value); }
 
         auto& getNamespace() { return std::get<Namespace>(value); }
         const auto& getNamespace() const { return std::get<Namespace>(value); }
@@ -597,30 +725,63 @@ export namespace LangAPI {
 
         auto& getVariable() { return std::get<Variable>(value); }
         const auto& getVariable() const { return std::get<Variable>(value); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
     struct Break : ExpressionValueLevel {
         bool operator==(const Break&) const { return true; }
         bool operator!=(const Break&) const { return false; }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
     };
     struct Continue : ExpressionValueLevel {
         bool operator==(const Continue&) const { return true; }
         bool operator!=(const Continue&) const { return false; }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
     };
     struct Return : ExpressionValueLevel {
         Expression value;
         bool operator==(const Return& ret) const { return value == ret.value; }
         bool operator!=(const Return& ret) const { return !(*this == ret); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
     struct StringCompare : ExpressionValueLevel {
         bool operator==(const StringCompare& s) const { return str == s.str && is_string == s.is_string;  }
         bool operator!=(const StringCompare& s) const { return !(*this == s); }
         String str;
         bool is_string;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(str, is_string);
+        }
     };
     struct Hex : ExpressionValueLevel {
         bool operator==(const Hex& h) const { return hex == h.hex; }
         bool operator!=(const Hex& h) const { return !(*this == h); }
         std::string hex;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(hex);
+        }
     };
     struct VariableAssignment : ExpressionValueLevel {
         bool operator==(const VariableAssignment& v) const { return name == v.name && type == v.type && value == v.value; }
@@ -628,46 +789,93 @@ export namespace LangAPI {
         std::string name;
         OperatorType type = OperatorType::Assign;
         Expression value;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, type, value);
+        }
     };
     // possibly will be removed *
     struct CounterIncreament : ExpressionValueLevel {
         bool operator==(const CounterIncreament& c) const { return true; }
         bool operator!=(const CounterIncreament& c) const { return !(*this == c); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
     };
     struct CounterIncreamentByLength : ExpressionValueLevel {
         bool operator==(const CounterIncreamentByLength& n) const { return name == n.name; }
         bool operator!=(const CounterIncreamentByLength& n) const { return !(*this == n); }
         std::string name;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name);
+        }
     };
     struct ResetPosCounter : ExpressionValueLevel {
         bool operator==(const ResetPosCounter& c) const { return true; }
         bool operator!=(const ResetPosCounter& c) const { return !(*this == c); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
     };
     struct PushPosCounter : ExpressionValueLevel {
         bool operator==(const PushPosCounter& c) const { return name == c.name; }
         bool operator!=(const PushPosCounter& c) const { return !(*this == c); }
         std::string name;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name);
+        }
     };
     struct PopPosCounter : ExpressionValueLevel {
         bool operator==(const PopPosCounter& c) const { return true; }
         bool operator!=(const PopPosCounter& c) const { return !(*this == c); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
     };
     //                         *
     struct SkipSpaces : ExpressionValueLevel {
         bool operator==(const SkipSpaces& s) const { return isToken == s.isToken; }
         bool operator!=(const SkipSpaces& s) const { return !(*this == s); }
         bool isToken;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(isToken);
+        }
     };
     struct DfaLookup : ExpressionValueLevel {
         bool operator==(const DfaLookup &d) const { return output_name == d.output_name && dfa_count == d.dfa_count; }
         bool operator!=(const DfaLookup &d) const { return !(*this == d); }
         std::size_t dfa_count;
         std::string output_name;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(dfa_count, output_name);
+        }
     };
     struct ReportError : ExpressionValueLevel {
         bool operator==(const ReportError& e) const { return message == e.message; }
         bool operator!=(const ReportError& e) const { return !(*this == e); }
         std::string message;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(message);
+        }
     };
     struct ExpressionValue : ExpressionLevel {
         std::variant<
@@ -722,7 +930,7 @@ export namespace LangAPI {
         bool isDfaLookup() const { return std::holds_alternative<DfaLookup>(value); }
 
         // ======= getXXX functions =======
-        RValue& getRvalue() { return std::get<RValue>(value); }
+        RValue& getRValue() { return std::get<RValue>(value); }
         ExpressionElement& getExpressionElement() { return std::get<ExpressionElement>(value); }
         FunctionCall& getFunctionCall() { return std::get<FunctionCall>(value); }
         StringCompare& getStringCompare() { return std::get<StringCompare>(value); }
@@ -739,7 +947,7 @@ export namespace LangAPI {
         DfaLookup& getDfaLookup() { return std::get<DfaLookup>(value); }
 
         // const versions
-        const RValue& getRvalue() const { return std::get<RValue>(value); }
+        const RValue& getRValue() const { return std::get<RValue>(value); }
         const ExpressionElement& getExpressionElement() const { return std::get<ExpressionElement>(value); }
         const FunctionCall& getFunctionCall() const { return std::get<FunctionCall>(value); }
         const StringCompare& getStringCompare() const { return std::get<StringCompare>(value); }
@@ -754,6 +962,14 @@ export namespace LangAPI {
         const PopPosCounter& getPopPosCounter() const { return std::get<PopPosCounter>(value); }
         const SkipSpaces& getSkipSpaces() const { return std::get<SkipSpaces>(value); }
         const DfaLookup& getDfaLookup() const { return std::get<DfaLookup>(value); }
+
+        auto type() const { return static_cast<ExpressionValueType>(value.index()); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
     // made for if, while, do-while
     struct ConditionalElement {
@@ -765,6 +981,12 @@ export namespace LangAPI {
         }
         Expression expr;
         Statements stmt;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(expr, stmt);
+        }
     };
     struct If : ConditionalElement, StatementLevel {
         Statements else_stmt;
@@ -781,6 +1003,12 @@ export namespace LangAPI {
         If(Expression &&e, Statements &&s) : ConditionalElement {.expr = std::move(e), .stmt = std::move(s)} {}
         If(Expression &&e) : ConditionalElement {.expr = std::move(e)} {}
         If() {};
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(else_stmt);
+        }
     };
     struct While : ConditionalElement, StatementLevel {
         While(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
@@ -797,6 +1025,12 @@ export namespace LangAPI {
         bool operator!=(const Switch& other) const { return !(*this == other); }
         Expression expression;
         stdu::vector<std::pair<RValue, Statements>> cases;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(expression, cases);
+        }
     };
     struct Statement : StatementsLevel {
         std::variant<Variable, If, While, DoWhile, Switch, Expression> value;
@@ -834,5 +1068,11 @@ export namespace LangAPI {
         const Expression& getExpression() const { return std::get<Expression>(value); }
 
         static auto createStatements(const RValue &value) -> stdu::vector<Statement>;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
     };
 }

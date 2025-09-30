@@ -19,12 +19,12 @@ export namespace DFA {
     public:
         using StatesType = decltype(states);
         using StateType = CharMachineState;
-        CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa) : ast(ast), states(nullptr), sorted_dfa(sorted_dfa), Base(sorted_dfa.getEmptyState()) {};
-        CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
-        : ast(ast), states(nullptr), sorted_dfa(sorted_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
-        CharMachineDFA(const AST::Tree &ast, const NFA &nfa, SortedDFA &sorted_dfa) : ast(ast), states(&nfa), sorted_dfa(sorted_dfa), Base(sorted_dfa.getEmptyState()) {};
-        CharMachineDFA(const AST::Tree &ast, const NFA &nfa, SortedDFA &sorted_dfa, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
-        : ast(ast), states(&nfa), sorted_dfa(sorted_dfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
+        CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa_) : Base(sorted_dfa_.getEmptyState()), ast(ast), states(nullptr), sorted_dfa(sorted_dfa_) {};
+        CharMachineDFA(const AST::Tree &ast, SortedDFA &sorted_dfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
+        : ast(ast), states(nullptr), sorted_dfa(sorted_dfa_), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
+        CharMachineDFA(const AST::Tree &ast, const NFA &nfa, SortedDFA &sorted_dfa_) : Base(sorted_dfa_.getEmptyState()), ast(ast), states(&nfa), sorted_dfa(sorted_dfa_) {};
+        CharMachineDFA(const AST::Tree &ast, const NFA &nfa, SortedDFA &sorted_dfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map)
+        : ast(ast), states(&nfa), sorted_dfa(sorted_dfa_), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
 
         auto build() -> const States<CharMachineState>&;
         auto &get()       { return states; }

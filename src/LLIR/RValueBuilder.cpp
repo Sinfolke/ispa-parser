@@ -1,7 +1,11 @@
 module LLIR.RValueBuilder;
-import std;
 import logging;
 import LLIR.CllBuilder;
+
+import cpuf.printf;
+
+import hash;
+import dstd;
 import std;
 
 auto LLIR::RValueBuilder::get() -> LangAPI::RValue {
@@ -20,20 +24,17 @@ auto LLIR::RValueBuilder::deduceType() -> LangAPI::Type {
         auto find_it = std::find_if(vars.begin(), vars.end(), [&](const LangAPI::Variable &var) { return var.name == value.getID().value; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr");
-        if (find_it->type == LangAPI::ValueType::RuleResult)
-            type = {LangAPI::ValueType::Rule};
-        else if (find_it->type == LangAPI::ValueType::TokenResult)
-            type = {LangAPI::ValueType::Token};
-        else type = find_it->type;
+        type = find_it->type;
+        undoRuleResult(type.getValueType());
     } else if (value.isAt()) {
         if (unnamed_datablock_units.empty())
             throw Error("no more data accamulated with @");
         const auto &t = unnamed_datablock_units.front().type;
+        type = t;
         if (t == LangAPI::ValueType::RuleResult)
-            type = {LangAPI::ValueType::Rule};
+            type.type = LangAPI::ValueType::Rule;
         else if (t == LangAPI::ValueType::TokenResult)
-            type = {LangAPI::ValueType::Token};
-        else type = t;
+            type.type = LangAPI::ValueType::Token;
     } else if (value.isArray()) {
         LangAPI::Type types;
         for (const auto &el : value.getArray().value) {
@@ -88,23 +89,49 @@ void LLIR::RValueBuilder::build() {
         data.set(LangAPI::Symbol {find_it->name});
     } else if (value.isAt()) {
         data.set(LangAPI::Symbol {unnamed_datablock_units.front().name});
-        unnamed_datablock_units.erase(unnamed_datablock_units.end() - 1);
     } else if (value.isArray()) {
         LangAPI::Array array;
+        LangAPI::Type type;
+        utype::unordered_set<LangAPI::Type> variant_types;
         for (const auto el : value.getArray().value) {
             CllExprBuilder builder(*this, el);
             builder.build();
+            auto t = builder.deduceType();
+            if (type == LangAPI::ValueType::Undef) {
+                type = t;
+            } else if (type == LangAPI::ValueType::Variant) {
+                variant_types.insert(t);
+            } else if (type != t) {
+                variant_types = {type, t};
+                type.type = LangAPI::ValueType::Variant;
+            }
             array.values.push_back(builder.get());
         }
+        type.template_parameters = decltype(LangAPI::Type::template_parameters) {variant_types.begin(), variant_types.end()};
+        array.template_parameters.push_back(std::make_shared<LangAPI::Type>(type));
         data.set(array);
     } else if (value.isObject()) {
         LangAPI::Map map;
+        LangAPI::Type key_type = LangAPI::ValueType::String;
+        LangAPI::Type value_type = LangAPI::ValueType::Undef;
+        utype::unordered_set<LangAPI::Type> value_variant_types;
         for (const auto &[key, value] : value.getObject().value) {
             CllExprBuilder builder(*this, value);
             builder.build();
+            auto t = builder.deduceType();
+            if (value_type == LangAPI::ValueType::Undef) {
+                value_type = t;
+            } else if (value_type == LangAPI::ValueType::Variant) {
+                value_variant_types.insert(t);
+            } else if (value_type != t) {
+                value_type.template_parameters = {value_type, t};
+                value_type.type = LangAPI::ValueType::Variant;
+            }
             map.keys.push_back(LangAPI::String { .value = key });
             map.values.push_back(std::move(builder.get()));
         }
+        value_type.template_parameters = decltype(LangAPI::Type::template_parameters) {value_variant_types.begin(), value_variant_types.end()};
+        map.template_parameters = { std::make_shared<LangAPI::Type>(key_type), std::make_shared<LangAPI::Type>(value_type) };
         data.set(map);
     } else throw Error("Undefined rvalue");
 }

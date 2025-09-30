@@ -2,6 +2,7 @@ module LLIR.Builder.Base;
 import logging;
 import corelib;
 import LLIR.IR;
+import hash;
 import cpuf.printf;
 import std;
 
@@ -113,11 +114,8 @@ auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const Lang
 }
 auto LLIR::BuilderBase::add_shadow_variable(LangAPI::Statements &block, const LangAPI::Variable &var) -> LangAPI::Variable {
     LangAPI::Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
-    if (var.type == LangAPI::ValueType::TokenResult) {
-        shadow_var.type.type = LangAPI::ValueType::Token;
-    } else if (var.type == LangAPI::ValueType::RuleResult) {
-        shadow_var.type.type = LangAPI::ValueType::Rule;
-    }
+    shadow_var.type = var.type;
+    undoRuleResult(shadow_var.type.getValueType());
     shadow_var.type.template_parameters = {{shadow_var.type}};
     shadow_var.type.type = LangAPI::ValueType::Array;
     statements.push_back(LangAPI::Variable::createStatement(shadow_var));
@@ -571,23 +569,22 @@ auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) ->
         }
     } else if (mem.isOp()) {
         std::optional<LangAPI::Type> first_type;
+        utype::unordered_set<LangAPI::Type> meeted_types;
         char prev_quantifier = '\0';
+
         for (const auto &el : mem.getOp().options) {
             auto t = deduceVarTypeByRuleMember(el);
-            // if (t == LLIR::var_types::UNDEFINED)
-            //     return {LLIR::var_types::UNDEFINED};
-            if (!first_type) {
-                first_type = t;
-                prev_quantifier = el.quantifier;
-            } else if (t != *first_type || prev_quantifier != el.quantifier && type.getValueType() != LangAPI::ValueType::Variant) {
-                type = {LangAPI::ValueType::Variant, first_type.value()};
-                return LangAPI::ValueType::Any;
-            } else {
-                type.template_parameters.push_back(t);
-            }
+            meeted_types.insert(t);
+        }
+        if (meeted_types.size() == 1) {
+            return *meeted_types.begin();
+        }
+        type = LangAPI::ValueType::Variant;
+        for (const auto &mt : meeted_types) {
+            type.template_parameters.push_back(mt);
         }
     } else if (mem.isName()) {
-        type = corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule;
+        type = { corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule, LangAPI::Type { LangAPI::Symbol {mem.getName().name} }};
     } else type = LangAPI::ValueType::String;
     return type;
 }
@@ -616,12 +613,12 @@ void LLIR::BuilderBase::getVariablesToTable(LangAPI::Statements& data, LangAPI::
             auto &condition = data[i].getIf();
             getVariablesToTable(condition.stmt, table, var_name, retain_value, recursive);
             getVariablesToTable(condition.else_stmt, table, var_name, retain_value, recursive);
+            ++i;
         } else if ((data[i].isWhile() || data[i].isDoWhile()) && recursive) {
             auto &loop = data[i].getWhileOrDoWhile();
             getVariablesToTable(loop.stmt, table, var_name, retain_value, recursive);
-        } else {
             ++i;
-        }
+        } else ++i;
     }
 }
 

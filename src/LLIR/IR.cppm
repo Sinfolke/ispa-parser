@@ -12,9 +12,6 @@ export namespace LLIR {
     protected:
         stdu::vector<Production> data;
         DFA::Collection<DFA::TokenMachineDFA> dfa_collection;
-        // output functions
-        std::stack<std::string> current_pos_counter;
-        std::size_t indentLevel = 0;
     public:
         explicit IR(const stdu::vector<Production> &data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &dfa_collection) : data(data), dfa_collection(dfa_collection) {}
         explicit IR(const stdu::vector<Production> &&data, bool isToken, DFA::Collection<DFA::TokenMachineDFA> &&dfa_collection) : data(std::move(data)), dfa_collection(dfa_collection) {}
@@ -30,9 +27,5 @@ export namespace LLIR {
         auto size() -> std::size_t;
         auto empty() -> bool;
         auto clear() -> void;
-
-        // print function
-        void outputIRToFile(std::string filename);
-        void outputIRToConsole();
     };
 }

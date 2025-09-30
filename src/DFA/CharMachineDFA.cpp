@@ -9,7 +9,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     auto states_size = sorted_states.size();
     for (std::size_t i = 0; i < states_size; i++) {
         const auto &state = sorted_states[i];
-        auto type = getType(false, nullptr);
+        auto type = sorted_dfa.getType(false, nullptr);
         auto initial_else_goto = state.else_goto;
         if (type == DfaType::Multi) {
             // found multitable - partition using else_goto
@@ -45,18 +45,22 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     // add all characters to transition & unroll else_goto in character states
     for (auto &state : sorted_states) {
         FullCharTable char_table;
+        if (state.transitions.empty()) {
+            states.emplace_back(state.nfa_states, std::variant<FullCharTable, SortedTransitions> {}, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
+            continue;
+        }
         if (std::holds_alternative<char>(state.transitions.begin()->first)) {
             // a state is always either char or advanced in this stage
             for (unsigned char uc = 0; uc < std::numeric_limits<unsigned char>::max() - 1; uc++) {
                 auto c = static_cast<char>(uc);
+                TransitionValue transition;
                 if (state.transitions.contains(c)) {
-                    continue;
+                    transition = state.transitions.at(c);
                 }
-                auto &transition = state.transitions.at(c);
                 if (state.else_goto) {
                     transition.next = state.else_goto;
                     transition.accept_index = state.else_goto_accept;
-                }
+                } else transition.next = NULL_STATE;
                 char_table[c] = transition;
             }
             state.else_goto = 0;

@@ -16,6 +16,8 @@ import ELRParser;
 import LALRParser;
 import LLIR.Builder;
 import LLIR.IR;
+import LangRepr.Construct;
+import LangRepr.Converter;
 import hash;
 import AST.Builder;
 import fcdt;
@@ -120,7 +122,7 @@ int main(int argc, char** argv) {
         ast.printFirstSet(dumper.makeDumpPath("first"));
     if (dumper.shouldDump("follow"))
         ast.printFollowSet(dumper.makeDumpPath("follow"));
-    dlib converter_dlib(std::string("libispa-converter-") + args.language);  // get dynamically library for convertion
+    dlib converter_dlib(std::string("libispa-converter-") + args.language_str);  // get dynamically library for convertion
     std::string opath;
     if (!args.output.empty()) {
         opath = args.output;
@@ -157,13 +159,15 @@ int main(int argc, char** argv) {
     //     auto converter_fun = converter_dlib.loadfun<LRConverter_base*, LRParser&, AST::Tree&>("getLRConverter");
     //     auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
     //     converter->output(output_path);
-    // } else if (args.algorithm == Args::Algorithm::LL) {
-    //     LLIR::Builder builder(ast, false);
-    //     auto IR = builder.get();
-    //     if (dumper.shouldDump("IR"))
-    //         IR.outputIRToFile(dumper.makeDumpPath("output_ir.txt"));
-    //     auto build_fun = converter_dlib.load<decltype(&buildLLParser)>("buildLLParser");
-    //     build_fun(output_path.string(), IR, lexer_data, ast);
+    if (args.algorithm == Args::Algorithm::LL) {
+        LLIR::Builder builder(ast, false);
+        auto IR = builder.get();
+        auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), args.language, ast.getName());
+        LangRepr::Converter converter(repr, args.language_str, ast.getName());
+        converter.build();
+        std::ofstream out("Parser_new.h");
+        out << converter.get().get();
+    }
     // } else {
     //     throw Error("Unknown algorithm");
     // }

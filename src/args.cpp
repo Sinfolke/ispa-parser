@@ -13,7 +13,7 @@ Args parse_args(int argc, char** argv) {
     app.add_flag("-v,--version",  args.version, "Print version");
     app.add_option("-d,--dir", args.dir, "Directory where input modules files are located")->expected(1);
     app.add_option("-o", args.output, "Directory where to output generated files");
-    app.add_option("-l,--lang", args.language, "Set build language")->required();
+    app.add_option("-l,--lang", args.language_str, "Set build language")->required();
     app.add_option("-a,--algorithm", algorithm, "Set one of algorithms: LL, LR(0), LR(1), LALR, LR(*)");
     app.add_option("--debug", args.debug, "Output debug logs into Logs directory");
     app.add_option("--dump", args.dump, "Dump certain parts of program")->expected(0, -1);
@@ -40,6 +40,10 @@ Args parse_args(int argc, char** argv) {
     }
 
     // Map algorithm string to enum
+    if (!args.language_str.empty()) {
+        if (args.language_str == "cpp") args.language = LangAPI::Language::Cpp;
+        else throw Error("Unknown language {}", args.language_str);
+    }
     if (!algorithm.empty()) {
         if (algorithm == "LL") args.algorithm = Args::Algorithm::LL;
         else if (algorithm == "LR(0)" || algorithm == "LR0") args.algorithm = Args::Algorithm::LR0;

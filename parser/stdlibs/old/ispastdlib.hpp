@@ -177,31 +177,22 @@ public:
         return message.c_str();
     }
 };
-template<class EnumT, class DataStorageType, class = std::enable_if_t<std::is_class_v<DataStorageType>>>
-class Node : public DataStorageType {
+template<typename NODE_T>
+class Node {
     std::size_t _startpos = std::string::npos;
     std::size_t _length = 0;
     std::size_t _line = 0;
     std::size_t _column = 0;
     const char* _start = nullptr;
     const char* _end = nullptr;
-    EnumT _name = EnumT::NONE;
-    bool _empty = false;
+    NODE_T _name = NODE_T::NONE;
+    std::any _data = {};
+    bool _empty = true;
 public:
-    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name)
-        : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name) {}
-    template<class  ...Args, class = std::enable_if_t<std::is_constructible_v<DataStorageType, Args...>>>
-    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, Args&& ...args)
-        : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), DataStorageType(std::forward<Args>(args)...) {}
-    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, DataStorageType data)
-        : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), DataStorageType(data) {}
-    Node() : _empty(true) {}
+    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _empty(false) {}
+    Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, NODE_T name, std::any data) : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
+    Node() {}
 
-    Node(const Node&) = default;
-    Node(Node&&) noexcept = default;
-
-    Node& operator=(const Node&) = default;
-    Node& operator=(Node&&) noexcept = default;
     /**
      * @brief Get the end position based on startpos and length
      *
@@ -220,30 +211,96 @@ public:
         _length = 0;
         _start = nullptr;
         _end = nullptr;
-        _name = EnumT::NONE;
+        _name = NODE_T::NONE;
+        _data = {};
         _empty = true;
     }
-    auto empty() const { return _empty; }
-    auto startpos() const { return _startpos; }
-    auto line() const { return _line; }
-    auto column() const{ return _column; }
-    auto length() const { return _length; }
-    auto start() const { return _start; }
-    auto end() const { return _end; }
-    auto name() const { return _name; }
-    auto& data() { return static_cast<DataStorageType&>(*this); }
-    const auto& data() const { return static_cast<const DataStorageType&>(*this); }
+    Node<NODE_T>& operator=(const Node<NODE_T>& other) {
+        if (this == &other)  // Protect against self-assignment
+            return *this;
+        _startpos = other._startpos;
+        _line = other._line;
+        _column = other._column;
+        _length = other._length;
+        _start = other._start;
+        _end = other._end;
+        _name = other._name;
+        _data = other._data;
+        _empty = other._empty;
+        return *this;
+    }
+    /**
+     * whether node is empty
+     */
+    auto empty() const {
+        return _empty;
+    }
+    /**
+     * get start position
+     */
+    auto startpos() const {
+        return _startpos;
+    }
+    /**
+     * get line
+     */
+    auto line() const {
+        return _line;
+    }
+    /**
+     * get column
+     */
+    auto column() const {
+        return _column;
+    }
+    /**
+     * get length of the node
+     */
+    std::size_t length() const {
+        return _length;
+    }
+    /**
+     * Get start pointer of string. Note it might be not be valid until now
+     */
+    auto start() const {
+        return _start;
+    }
+    /**
+     * Get end pointer of string. Note it might be not be valid until now
+     */
+    auto end() const {
+        return _end;
+    }
+    /**
+     * Get name enum of this node
+     */
+    auto name() const {
+        return _name;
+    }
+    /**
+     * get data of this node
+     */
+    auto &data() {
+        return _data;
+    }
+    /**
+     * get data of this node
+     */
+    const auto &data() const {
+        return _data;
+    }
+
 };
-template<class EnumT, class DataStorageType>
-struct MatchResult {
+template<class RESULT_T>
+struct match_result {
     bool status = false;
-    Node<EnumT, DataStorageType> node = {};
+    Node<RESULT_T> node = {};
 };
 
-template<class TOKEN_T, class DataStorageType>
-using TokenFlow = std::vector<Node<TOKEN_T, DataStorageType>>;
-template<class RULE_T, class DataStorageType>
-using Seq = std::vector<Node<RULE_T, DataStorageType>>;
+template<class TOKEN_T>
+using TokenFlow = std::vector<Node<TOKEN_T>>;
+template<class RULE_T>
+using Seq = std::vector<Node<RULE_T>>;
 struct error {
     std::size_t pos;
     std::size_t line;
@@ -279,7 +336,7 @@ namespace DFAAPI {
     // transition types
     using CharTransition = Transition<char>;
     template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
-    template<typename TOKEN_T> using CallableTokenTransition = Transition<MatchResult<TOKEN_T> (*)(const char*)>;
+    template<typename TOKEN_T> using CallableTokenTransition = Transition<match_result<TOKEN_T> (*)(const char*)>;
     template<typename TOKEN_T> using CharTableTransition = Transition<Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>>;
     template<typename TOKEN_T> using CallableTokenTableTransition = Transition<Span<const std::variant<SpanState<CallableTokenTransition<TOKEN_T>>, CallableTokenEmptyState<TOKEN_T>>>>;
     template<typename TOKEN_T> using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T>>;
@@ -503,7 +560,7 @@ namespace DFAAPI {
     }
 }
 template<typename TOKEN_T>
-using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCallableTokenTable<TOKEN_T>, DFAAPI::SpanCharTable<TOKEN_T>, DFAAPI::SpanMultiTable<TOKEN_T>, MatchResult<TOKEN_T> (*) (const char*)>;
+using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCallableTokenTable<TOKEN_T>, DFAAPI::SpanCharTable<TOKEN_T>, DFAAPI::SpanMultiTable<TOKEN_T>, match_result<TOKEN_T> (*) (const char*)>;
 template<typename TOKEN_T>
 using fcdt_table = std::array<fcdt_variant<TOKEN_T>, std::numeric_limits<unsigned char>::max() + 1>;
 
@@ -535,7 +592,7 @@ protected:
         return nullptr;
     }
     template<typename IT, typename PanicModeFunc>
-    static auto match(const DFAAPI::SpanCharTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T> {
+    static auto match(const DFAAPI::SpanCharTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;
@@ -589,10 +646,10 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto e_state = std::get<DFAAPI::CharEmptyState<TOKEN_T>>(table[state]);
-        return MatchResult<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
     template<typename IT, typename PanicModeFunc>
-    static auto match(const DFAAPI::SpanCallableTokenTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T>  {
+    static auto match(const DFAAPI::SpanCallableTokenTable<TOKEN_T> table, IT pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T>  {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;
@@ -641,7 +698,7 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto e_state = std::get<DFAAPI::CallableTokenEmptyState<TOKEN_T>>(table[state]);
-        return MatchResult<TOKEN_T> {true, Node<TOKEN_T> {0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> {0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
     template<typename IT, typename PanicModeFunc>
     static auto decide(const DFAAPI::SpanTokenTable<TOKEN_T> &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
@@ -699,7 +756,7 @@ class AdvancedDFA : DFA<TOKEN_T> {
     };
 protected:
     template<typename PanicModeFunc>
-    static auto match(const DFAAPI::SpanMultiTable<TOKEN_T> &table, const char* pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T> {
+    static auto match(const DFAAPI::SpanMultiTable<TOKEN_T> &table, const char* pos, PanicModeFunc panic_mode) -> match_result<TOKEN_T> {
         std::flush(std::cout);
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
@@ -898,7 +955,7 @@ protected:
             group_begin[id].second = data.size();
         }
         const auto &e_state = std::get<DFAAPI::MultiTableEmptyState<TOKEN_T>>(table.states[state]);
-        return MatchResult<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
+        return match_result<TOKEN_T> {true, Node<TOKEN_T> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
     }
 };
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
@@ -1340,8 +1397,8 @@ protected:
     }
     static void PANIC_MODE() {}
 public:
-    virtual MatchResult<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
-    virtual MatchResult<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
+    virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
+    virtual match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
     virtual void parseFromTokens() = 0;
     virtual void lazyParse() = 0;
     // Constructors
@@ -1417,10 +1474,10 @@ protected:
         std::size_t next_state = goto_entry.value();
         stack.push_back({rule_name, next_state});
     }
-    MatchResult<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) {
         return {};
     }
-    MatchResult<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {
+    match_result<RULE_T> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) {
         return {};
     }
     virtual std::string TokensToString(TOKEN_T token) = 0;

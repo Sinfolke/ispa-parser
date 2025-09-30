@@ -36,12 +36,15 @@ auto LLIR::CllExprBuilder::CllExprValueToIR(const AST::CllExprValue &value) -> L
             expr.push_back(LangAPI::ExpressionValue { LangAPI::ExpressionElement::SquareBraceOpen });
             CllExprBuilder brace_expr(*this, v.braceExpression.value());
             expr.insert(expr.end(), brace_expr.get().begin(), brace_expr.get().end());
+            expr.push_back(LangAPI::ExpressionValue { LangAPI::ExpressionElement::SquareBraceClose });
         }
         BuilderBase::pushVariablePrefix(expr, v.post_increament);
     } else if (value.isrvalue()) {
-        RValueBuilder builder(*this, value.getrvalue());
-        builder.build();
-        expr = LangAPI::RValue::createExpression(builder.get());
+        if (rvalueBuilder == nullptr) {
+            rvalueBuilder = std::make_unique<RValueBuilder>(RValueBuilder(*this, value.getrvalue()));
+            rvalueBuilder->build();
+        }
+        expr = LangAPI::RValue::createExpression(rvalueBuilder->get());
     } else throw Error("Undefined expression member in AST");
     return expr;
 }
@@ -86,24 +89,28 @@ auto LLIR::CllExprBuilder::CllExprLogicalToIR(const AST::CllExprLogical &logical
 auto LLIR::CllExprBuilder::deduceTypeFromExprValue(const AST::CllExprValue &value) -> LangAPI::Type {
     if (value.isFunctionCall()) {
         // todo - get function call type
+        throw Error("Not implemented");
     } else if (value.isGroup()) {
-        return CllExprBuilder(*this, value.getGroup().expr).deduceType();
+        CllExprBuilder builder(*this, value.getGroup().expr);
+        builder.build();
+        return builder.deduceType();
     } else if (value.isMethodCall()) {
         // todo - get method call type
+        throw Error("Not implemented");
     } else if (value.isVariable()) {
         auto find_it = std::find_if(vars.begin(), vars.end(), [&value](const LangAPI::Variable &var) { return var.name == value.getVariable().name; });
         if (find_it == vars.end())
             throw Error("Not found variable to deduce type from expr: {}",  value.getVariable().name);
-        if (find_it->type.isValueType())
-            BuilderBase::undoRuleResult(find_it->type.getValueType());
-        if (find_it->type == LangAPI::ValueType::RuleResult)
-            return {LangAPI::ValueType::Rule};
-        if (find_it->type == LangAPI::ValueType::TokenResult)
-            return {LangAPI::ValueType::Token};
-        return find_it->type;
+        auto type = find_it->type;
+        if (type.isValueType())
+            BuilderBase::undoRuleResult(type.getValueType());
+        return type;
     } else if (value.isrvalue()) {
-        RValueBuilder rvalue(*this, value.getrvalue());
-        return rvalue.deduceType();
+        if (rvalueBuilder == nullptr) {
+            rvalueBuilder = std::make_unique<RValueBuilder>(RValueBuilder(*this, value.getrvalue()));
+            rvalueBuilder->build();
+        }
+        return rvalueBuilder->deduceType();
     } else
         throw Error("Undefined expr value member");
     return {};

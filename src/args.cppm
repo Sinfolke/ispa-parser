@@ -1,5 +1,6 @@
 export module args;
 import CLI;
+import LangAPI;
 import dstd;
 import std;
 import cpuf.printf;
@@ -8,7 +9,8 @@ export struct Args {
         LL, LR0, LR1, LALR, ELR
     };
     Algorithm algorithm = Algorithm::LL;
-    std::string language;
+    LangAPI::Language language;
+    std::string language_str;
     std::vector<std::string> dir;
     std::vector<std::string> files;
     // debug set to true by default in debug builds
