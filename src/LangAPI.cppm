@@ -71,7 +71,7 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Any
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Box, Any
     };
     enum class RValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance
@@ -580,7 +580,16 @@ export namespace LangAPI {
             return std::tie(type, template_parameters);
         }
     };
-
+    struct ForwardDeclaredClass : DeclarationLevel {
+        std::string name;
+        bool isStruct = true;
+        auto operator==(const ForwardDeclaredClass& other) const {
+            return name == other.name;
+        }
+        auto operator!=(const ForwardDeclaredClass& other) const {
+            return !(*this == other);
+        }
+    };
     struct Class : DeclarationLevel {
         std::string name;
         stdu::vector<std::pair<std::shared_ptr<Declaration>, Visibility>> data;
@@ -686,7 +695,7 @@ export namespace LangAPI {
     };
     struct Declaration : DeclarationsLevel {
         using promote_to = Declarations;
-        std::variant<Class, Namespace, Function, TypeAlias, Enum, Variable> value;
+        std::variant<Class, ForwardDeclaredClass, Namespace, Function, TypeAlias, Enum, Variable> value;
 
         Declaration() {};
         template<typename T>
@@ -701,6 +710,7 @@ export namespace LangAPI {
         }
         // Is functions
         bool isClass() const { return std::holds_alternative<Class>(value); }
+        bool isForwardDeclaredClass() const { return std::holds_alternative<ForwardDeclaredClass>(value); }
         bool isNamespace() const { return std::holds_alternative<Namespace>(value); }
         bool isFunction() const { return std::holds_alternative<Function>(value); }
         bool isTypeAlias() const { return std::holds_alternative<TypeAlias>(value); }
@@ -710,6 +720,9 @@ export namespace LangAPI {
         // Get functions
         auto& getClass() { return std::get<Class>(value); }
         const auto& getClass() const { return std::get<Class>(value); }
+
+        auto& getForwardDeclaredClass() { return std::get<ForwardDeclaredClass>(value); }
+        const auto& getForwardDeclaredClass() const { return std::get<ForwardDeclaredClass>(value); }
 
         auto& getNamespace() { return std::get<Namespace>(value); }
         const auto& getNamespace() const { return std::get<Namespace>(value); }

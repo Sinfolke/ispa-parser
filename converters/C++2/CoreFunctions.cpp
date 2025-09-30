@@ -32,8 +32,8 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return std::string("::ISPA_STD::MatchResult<Rules, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Variant:
                 return std::string("std::variant<") + convertTemplates(type.template_parameters) + ">";
-            case LangAPI::ValueType::Any:
-                return "std::any";
+            case LangAPI::ValueType::Box:
+                return std::string("std::shared_ptr<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
                 return "Undef";;
                 throw Error("Type is undefined");

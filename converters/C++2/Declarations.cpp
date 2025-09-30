@@ -33,6 +33,7 @@ namespace Cpp {
         output.writeln("}");
     }
     auto Declarations::createClass(const LangAPI::Class &the_class) -> void {
+        Core::prev_visibility = the_class.default_visibility;
         if (the_class.default_visibility == LangAPI::Visibility::Public) {
             output.write("struct {}", the_class.name);
         } else {
@@ -42,11 +43,13 @@ namespace Cpp {
             output.dwrite(" : ");
         }
         for (const auto &inherit : the_class.inherit_members) {
-            if (inherit.first == LangAPI::Visibility::Public) {
-                output.dwrite("public");
-            } else {
-                output.dwrite("private");
-            }
+            if (inherit.first != the_class.default_visibility) {
+                if (inherit.first == LangAPI::Visibility::Public) {
+                    output.dwrite("public");
+                } else {
+                    output.dwrite("private");
+                }
+            } else output.pop_back(); // remove space
             if (std::holds_alternative<LangAPI::Symbol>(inherit.second))
                 output.dwrite(" {}", Core::convertSymbol(std::get<LangAPI::Symbol>(inherit.second)));
             else
@@ -61,6 +64,9 @@ namespace Cpp {
     auto Declarations::closeClass() -> void {
         output.decreaseIndentation();
         output.writeln("};");
+    }
+    auto Declarations::createForwardDeclarationClass(const LangAPI::ForwardDeclaredClass forward_declared_class) -> void {
+        output.writeln("{} {};", forward_declared_class.isStruct ? "struct" : "class", forward_declared_class.name);
     }
     auto Declarations::setVisibility(const LangAPI::Visibility visibility) -> void {
         if (Core::prev_visibility != visibility) {

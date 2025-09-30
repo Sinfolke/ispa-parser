@@ -69,9 +69,10 @@ namespace LangRepr {
         auto parser_data_blocks = ir.getDataBlocks();
         buildDtb(lexer_data_blocks);
         buildDtb(parser_data_blocks);
-        // 2. Sort Function
-        // --- Collect deps as you already do (deps: node -> set<dependency>) ---
+        // 2. Sort
+        // --- Collect deps ---
         utype::unordered_map<Name, utype::unordered_set<Name>> deps;
+        utype::unordered_map<Name, std::size_t> usage_count;
         for (const Name &n : order) {
             const Node *node = root.find(n);
             if (!node) { deps[n] = {}; continue; }
@@ -80,12 +81,17 @@ namespace LangRepr {
             if (node->data.is_regular_data_block()) {
                 auto dt = node->data.getRegularDataBlock().second;
                 auto s = collectReferencedNames(dt);
-                used.insert(s.begin(), s.end());
+                for (const auto &[name, count] : s) {
+                    usage_count[name] += count;
+                    used.insert(name);
+                }
             } else if (node->data.is_inclosed_map()) {
                 for (const auto &p : node->data.getInclosedMap()) {
                     auto s = collectReferencedNames(p.second.second);
-                    used.insert(s.begin(), s.end());
-                }
+                    for (const auto &[name, count] : s) {
+                        usage_count[name] += count;
+                        used.insert(name);
+                    }                }
             }
             // remove self-dependency if any
             used.erase(n);
@@ -134,6 +140,7 @@ namespace LangRepr {
 
         // cycles: nodes with indeg > 0
         utype::unordered_set<Name> cycled;
+        utype::unordered_set<Name> dependent;
         if (sorted.size() != order.size()) {
             cycled.reserve(order.size() - sorted.size());
             for (const Name &n : order) {
@@ -142,7 +149,62 @@ namespace LangRepr {
             // Report or handle cycles: emit forward declarations for `remaining`
             cpuf::printf("Types sorting: cycle detected among {} items: {}", cycled.size(), cycled);
             // append remaining preserving original order (or compute SCCs and handle)
-            for (const Name &n : cycled) sorted.push_back(n);
+            utype::unordered_set<Name> independent;
+            for (const Name &n : cycled) {
+                if (usage_count[n] == 1) {
+                    independent.insert(n);
+                } else {
+                    dependent.insert(n);
+                }
+            }
+            stdu::vector<Name> sorted_final;
+
+            // 3a: Add all acyclic nodes in original Kahn order
+            for (const Name &n : sorted) {
+                if (!cycled.contains(n)) {
+                    sorted_final.push_back(n);
+                }
+            }
+
+            // 3b: Topologically sort independents among themselves
+            utype::unordered_map<Name, std::size_t> indeg2;
+            for (const Name &n : independent) {
+                indeg2[n] = 0;
+            }
+
+            // Count dependencies **only on other independent nodes** (acyclic already sorted)
+            for (const auto& [u, adj] : deps) {
+                if (!independent.contains(u)) continue;
+                for (const Name &v : adj) {
+                    if (independent.contains(v)) ++indeg2[u]; // increment **for u**, not v
+                }
+            }
+
+            // Kahn for independents
+            std::deque<Name> q2;
+            for (const Name &n : independent) {
+                if (indeg2[n] == 0) q2.push_back(n);
+            }
+
+            while (!q2.empty()) {
+                Name v = q2.front(); q2.pop_front();
+                sorted_final.push_back(v);
+
+                // Decrement indegree for independent nodes that depend on v
+                for (const Name &dep : rev_deps[v]) {
+                    if (!independent.contains(dep)) continue;
+                    --indeg2[dep];
+                    if (indeg2[dep] == 0) q2.push_back(dep);
+                }
+            }
+
+            // 3c: Append dependents in original input order
+            for (const Name &n : order) {
+                if (dependent.contains(n)) sorted_final.push_back(n);
+            }
+
+            // Replace original sorted
+            sorted = std::move(sorted_final);
         }
 
         // `sorted` now contains dependency-first order for acyclic parts,
@@ -152,9 +214,11 @@ namespace LangRepr {
         // 3. Wrap everything into `Types` and FlatTypes namespace
         LangAPI::Namespace flatTypesNamespace {.name = "FlatTypes"};
         LangAPI::Namespace typesNamespace { .name = "Types" };
-
+        for (const auto &dep : dependent) {
+            flatTypesNamespace.declarations.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(LangAPI::ForwardDeclaredClass {.name = corelib::text::join(dep, "_")}));
+        }
         // output types to flatTypes namespace
-        std::function<void(LangAPI::Type &)> adjustType = [&](LangAPI::Type &t) {
+        auto switchToFlatType = [&](LangAPI::Type &t) {
             if (t.isSymbol()) {
                 std::string path;
                 for (const auto &part : t.getSymbol().path) {
@@ -166,13 +230,43 @@ namespace LangRepr {
                 t.type = LangAPI::Symbol {path};
             }
         };
-        std::function<void(LangAPI::Type &)> adjustTypeRecursively = [&](LangAPI::Type &t) {
-            if (auto vt = t.getValueType(); vt == LangAPI::ValueType::Token || vt == LangAPI::ValueType::Rule || vt == LangAPI::ValueType::TokenResult || vt == LangAPI::ValueType::RuleResult) {
-                adjustType(std::get<LangAPI::Type>(t.template_parameters[0]));
+        std::function<void(LangAPI::Type &)> switchToFlatTypeRecursively = [&](LangAPI::Type &t) {
+            if (auto vt = t.getValueType(); vt == LangAPI::ValueType::Token || vt == LangAPI::ValueType::Rule || vt == LangAPI::ValueType::TokenResult || vt == LangAPI::ValueType::RuleResult || vt == LangAPI::ValueType::Box) {
+                switchToFlatType(std::get<LangAPI::Type>(t.template_parameters[0]));
             } else {
                 for (auto &templ : t.template_parameters) {
                     if (std::holds_alternative<LangAPI::Type>(templ)) {
-                        adjustTypeRecursively(std::get<LangAPI::Type>(templ));
+                        switchToFlatTypeRecursively(std::get<LangAPI::Type>(templ));
+                    }
+                }
+            }
+        };
+
+        std::function<void(LangAPI::Type &)> makeDependentTypeBox = [&](LangAPI::Type &t) {
+            if (t.isSymbol()) {
+                Name actual_name;
+                for (const auto &part : t.getSymbol().path) {
+                    if (!std::holds_alternative<std::string>(part))
+                        return;
+                    actual_name.push_back(std::get<std::string>(part));
+                }
+                if (!dependent.contains(actual_name))
+                    return;
+                t.template_parameters = {LangAPI::Type {LangAPI::Symbol {corelib::text::join(actual_name, "_")}}};
+                t.type = LangAPI::ValueType::Box;
+            } else if (t.isValueType()) {
+                if (t.getValueType() == LangAPI::ValueType::Box) {
+                    makeDependentTypeBox(std::get<LangAPI::Type>(t.template_parameters[0]));
+                }
+            }
+        };
+        std::function<void(LangAPI::Type &)> makeDependentTypeBoxRecursively = [&](LangAPI::Type &t) {
+            if (auto vt = t.getValueType(); vt == LangAPI::ValueType::Token || vt == LangAPI::ValueType::Rule || vt == LangAPI::ValueType::TokenResult || vt == LangAPI::ValueType::RuleResult || vt == LangAPI::ValueType::Box) {
+                makeDependentTypeBox(std::get<LangAPI::Type>(t.template_parameters[0]));
+            } else {
+                for (auto &templ : t.template_parameters) {
+                    if (std::holds_alternative<LangAPI::Type>(templ)) {
+                        makeDependentTypeBoxRecursively(std::get<LangAPI::Type>(templ));
                     }
                 }
             }
@@ -184,7 +278,8 @@ namespace LangRepr {
             c.name = corelib::text::join(fullName, "_");
             if (old->data.is_regular_data_block()) {
                 auto type = old->data.getRegularDataBlock().second;
-                adjustTypeRecursively(type);
+                makeDependentTypeBoxRecursively(type);
+                switchToFlatTypeRecursively(type);
                 c.data.push_back(
                     std::make_pair(
                         std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(LangAPI::Variable {.name = "value", .type = type})),
@@ -194,10 +289,8 @@ namespace LangRepr {
             } else if (old->data.is_inclosed_map()) {
                 for (const auto &[name, type] : old->data.getInclosedMap()) {
                     auto t = type.second;
-                    adjustTypeRecursively(t);
-                    if (auto vt = t.getValueType(); vt == LangAPI::ValueType::Token || vt == LangAPI::ValueType::Rule || vt == LangAPI::ValueType::TokenResult || vt == LangAPI::ValueType::RuleResult) {
-                        adjustType(std::get<LangAPI::Type>(t.template_parameters[0]));
-                    }
+                    makeDependentTypeBoxRecursively(t);
+                    switchToFlatTypeRecursively(t);
                     c.data.push_back((std::make_pair(std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(LangAPI::Variable {.name = name, .type = t})), LangAPI::Visibility::Public)));
                 }
             }
@@ -286,23 +379,17 @@ namespace LangRepr {
             LangAPI::Class s;
             s.name = name;
             s.inherit_members = {std::make_pair(LangAPI::Visibility::Public, LangAPI::Symbol {"FlatTypes", corelib::text::join(fullname, "_")})};
-            for (const auto &child_pair : node.children) {
-                auto new_full_name = fullname;
-                new_full_name.push_back(child_pair.first);
-                child_output_order.push_back(std::make_pair(new_full_name, child_pair.second.get()));
-            }
-            std::sort(child_output_order.begin(), child_output_order.end(), [&](const auto &a, const auto &b) {
-                return std::find(sorted.begin(), sorted.end(), a.first) < std::find(sorted.begin(), sorted.end(), b.first);
-            });
-            for (const auto& [childName, childNode] : child_output_order) {
-                auto nested = build(*childNode, childName.back(), fullname);
+            for (const auto& [childName, childNode] : node.children) {
+                fullname.push_back(childName);
+                auto nested = build(*childNode, childName, fullname);
+                fullname.pop_back();
                 s.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(nested)), LangAPI::Visibility::Public));
             }
             return LangAPI::Class::createDeclaration(std::move(s));
         };
         // Build top-level children of root
         for (const auto& [name, node] : new_tree.children) {
-            stdu::vector<std::string> fullname = {name};
+            Name fullname = {name};
             auto topDecls = build(*node, name, fullname);
             typesNamespace.declarations.push_back(std::move(topDecls));
         }
@@ -312,7 +399,7 @@ namespace LangRepr {
 
     auto Construct::construct() -> Holder& {
         constructTokensAndRulesEnum();
-        constructTokensAndRulesEnumToString();
+        //constructTokensAndRulesEnumToString();
         constructTypesNamespace();
         LangAPI::Namespace ns;
         ns.name = namespace_name;

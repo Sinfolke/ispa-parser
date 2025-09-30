@@ -29,8 +29,9 @@ export namespace LangRepr {
                     buildDeclaration(*declaration);
                 }
                 decls->closeClass();
-            }
-            else if (decl.isVariable()) {
+            } else if (decl.isForwardDeclaredClass()) {
+                decls->createForwardDeclarationClass(decl.getForwardDeclaredClass());
+            } else if (decl.isVariable()) {
                 const auto &var_decl = decl.getVariable();
                 decls->createVariable(var_decl);
             } else if (decl.isTypeAlias()) {

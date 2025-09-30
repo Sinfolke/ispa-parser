@@ -114,8 +114,8 @@ export namespace LangRepr {
             ChildT children;
             LLIR::DataBlock data;
         };
-        utype::unordered_set<Name> collectReferencedNames(const LangAPI::Type &type) {
-            utype::unordered_set<Name> out;
+        auto collectReferencedNames(const LangAPI::Type &type) -> utype::unordered_map<Name, std::size_t> {
+            utype::unordered_map<Name, std::size_t> out;
 
             std::function<void(const LangAPI::Type&)> walk = [&](const LangAPI::Type &t) {
                 if (t.isSymbol()) {
@@ -126,7 +126,9 @@ export namespace LangRepr {
                         if (!std::holds_alternative<std::string>(part)) return; // skip function-based paths
                         n.push_back(std::get<std::string>(part));
                     }
-                    if (!n.empty()) out.insert(n);
+                    if (!n.empty()) ++out[n];
+                } else if (t.isValueType() && t.getValueType() == LangAPI::ValueType::Array) {
+                    return;
                 } else {
                     for (const auto &param : t.template_parameters) {
                         if (std::holds_alternative<LangAPI::Type>(param)) {

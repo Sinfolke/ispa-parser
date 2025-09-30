@@ -19,6 +19,7 @@ export namespace Converter {
         virtual auto closeNamespace() -> void = 0;
         virtual auto createClass(const LangAPI::Class &the_class) -> void = 0;
         virtual auto closeClass() -> void = 0;
+        virtual auto createForwardDeclarationClass(LangAPI::ForwardDeclaredClass forward_declared_class) -> void = 0;
         virtual auto setVisibility(LangAPI::Visibility visibility) -> void = 0;
         virtual auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void = 0;
         virtual auto closeFunction() -> void = 0;
