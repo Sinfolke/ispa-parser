@@ -45,16 +45,19 @@ void LexerBuilder::build() {
         for (const auto &name : mem) {
             if (!was_dfa) {
                 involved_symbols[name] = dfa_count;
+                name_to_dfa[name] = dfa_count;
                 fcdt_dfa_index = dfa_count++;
                 was_dfa = true;
             } else {
                 involved_symbols[name] = fcdt_dfa_index;
+                name_to_dfa[name] = fcdt_dfa_index;
             }
             stdu::vector<stdu::vector<std::string>> names;
             accumulateNestedNames(ast[name].rule_members, names);
             // build DFA for each nested member
             for (const auto &nested_name : names) {
                 dfa_count++;
+                name_to_dfa[nested_name] = dfa_count;
                 NFA nfa(ast, nested_name, &ast[nested_name].data_block, ast[nested_name].rule_members, nested_name == constants::whitespace, true);
                 nfa.build(true);
                 stdu::vector<NFA> nfas {nfa};

@@ -1,12 +1,16 @@
 module LangRepr.Construct;
 
 import LLIR.API;
+import DFA.API;
 
 import constants;
 import corelib;
 import cpuf.printf;
 import logging;
 import hash;
+import DFA.Collection;
+import DFA.CharMachineDFA;
+import DFA.Base;
 
 import dstd;
 import std;
@@ -151,7 +155,7 @@ namespace LangRepr {
                 if (indeg[n] > 0) cycled.insert(n);
             }
             // Report or handle cycles: emit forward declarations for `remaining`
-            cpuf::printf("Types sorting: cycle detected among {} items: {}", cycled.size(), cycled);
+            // cpuf::printf("Types sorting: cycle detected among {} items: {}", cycled.size(), cycled);
             // append remaining preserving original order (or compute SCCs and handle)
             utype::unordered_set<Name> independent;
             for (const Name &n : cycled) {
@@ -403,11 +407,115 @@ namespace LangRepr {
         holder.push(flatTypesNamespace);
         holder.push(typesNamespace);
     }
+    auto Construct::constructLexer() -> void {
+        LangAPI::Class lexer {
+            .name = "Lexer",
+            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, LangAPI::IspaLibSymbol {LangAPI::StdlibExports::Lexer})},
+            .default_visibility = LangAPI::Visibility::Private
+        };
+        const auto &dfas = lexer_builder.getDFAS().get();
+        std::size_t count = 0;
+        auto states = lexer_builder.getDFAS().getStateSet();
+        // construct states
+        for (const auto &state : states.state_set) {
+            auto type = DFA::Base::getStateType(state.transitions);
+            auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
+            LangAPI::IspaLibSymbol s;
+            switch (type) {
+                case DFA::DfaType::Char:
+                    s.exports = LangAPI::StdlibExports::DfaCharTransition;
+                    break;
+                case DFA::DfaType::Token:
+                    s.exports = LangAPI::StdlibExports::DfaTokenTransition;
+                    break;
+                case DFA::DfaType::Multi:
+                    s.exports = LangAPI::StdlibExports::DfaMultiTransition;
+                    break;
+                default:
+                    switch (dfa.getType()) {
+                        case DFA::DfaType::Char:
+                            s.exports = LangAPI::StdlibExports::DFA_CHAR_EMPTY_STATE;
+                            break;
+                        case DFA::DfaType::Multi:
+                            s.exports = LangAPI::StdlibExports::DFA_MULTI_EMPTY_STATE;
+                            break;
+                        default:
+                            break;
+                    };
+            }
+            int transition_size = 0;
+            if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
+                transition_size = std::get<DFA::FullCharTable>(state.transitions).size();
+            } else {
+                transition_size = std::get<DFA::SortedTransitions>(state.transitions).size();
+            }
+            stdu::vector<LangAPI::Expression> transitions;
+            if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
+                const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
+                unsigned char c = std::numeric_limits<unsigned char>::min();
+                for (const auto &transition : char_transitions) {
+                    transitions.push_back(
+                        LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
+                            .symbol = static_cast<char>(c),
+                            .next = transition.next,
+                            .new_cst_node = transition.new_cst_node,
+                            .new_member = transition.new_member,
+                            .close_cst_node = transition.close_cst_node,
+                            .new_group = transition.new_group,
+                            .group_close = transition.group_close,
+                            .accept = transition.accept_index
+                        })
+                    );
+                    c++;
+                }
+            } else {
+                const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
+                for (const auto &[symbol, transition] : sorted_transitions) {
+                    decltype(LangAPI::IspaLibDfaTransition::symbol) assign_symbol;
+                    if (std::holds_alternative<stdu::vector<std::string>>(symbol))
+                        assign_symbol = lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(symbol));
+                    else
+                        assign_symbol = std::get<char>(symbol);
+                    transitions.push_back(
+                        LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
+                            .symbol = assign_symbol,
+                            .next = transition.next,
+                            .new_cst_node = transition.new_cst_node,
+                            .new_member = transition.new_member,
+                            .close_cst_node = transition.close_cst_node,
+                            .new_group = transition.new_group,
+                            .group_close = transition.group_close,
+                            .accept = transition.accept_index
+                        })
+                    );
+                }
+            }
+            lexer.data.push_back(
+                std::make_pair(
+                    std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
+                        .name = std::string("dfa_state_") + std::to_string(count++),
+                        .type = {LangAPI::ValueType::FixedSizeArray, s, LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size} )},
+                        .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray { .values = transitions, .template_parameters = {std::make_shared<LangAPI::Type>(s), LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size})} })
+                    })),
+                    LangAPI::Visibility::Private
+                )
+            );
+        }
+        holder.push(lexer);
+        // construct DFA tables
+        for (const auto &dfa : lexer_builder.getDFAS().get()) {
+            stdu::vector<LangAPI::Expression> transitions;
+            for (const auto &state : dfa.get()) {
+                if (state.)
+            }
+        }
+    }
 
     auto Construct::construct() -> Holder& {
         constructTokensAndRulesEnum();
         //constructTokensAndRulesEnumToString();
         constructTypesNamespace();
+        constructLexer();
         LangAPI::Namespace ns;
         ns.name = namespace_name;
         ns.declarations = std::move(holder.get());

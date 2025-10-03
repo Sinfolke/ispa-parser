@@ -9,7 +9,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     auto states_size = sorted_states.size();
     for (std::size_t i = 0; i < states_size; i++) {
         const auto &state = sorted_states[i];
-        auto type = sorted_dfa.getType(false, nullptr);
+        auto type = sorted_dfa.getType();
         auto initial_else_goto = state.else_goto;
         if (type == DfaType::Multi) {
             // found multitable - partition using else_goto
@@ -56,14 +56,11 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
                 TransitionValue transition;
                 if (state.transitions.contains(c)) {
                     transition = state.transitions.at(c);
+                } else {
+                    transition.next = NULL_STATE;
                 }
-                if (state.else_goto) {
-                    transition.next = state.else_goto;
-                    transition.accept_index = state.else_goto_accept;
-                } else transition.next = NULL_STATE;
                 char_table[c] = transition;
             }
-            state.else_goto = 0;
             states.emplace_back(state.nfa_states, char_table, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         } else {
             states.emplace_back(state.nfa_states, state.transitions, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
@@ -72,8 +69,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
 
     return this->states;
 }
-auto DFA::CharMachineDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
-    return Base::getType(states, isToken, dct);
+auto DFA::CharMachineDFA::getType() const -> DfaType {
+    return Base::getType(states);
 }
 auto DFA::CharMachineDFA::clear() -> void {
     states.clear();

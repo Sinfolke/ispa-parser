@@ -31,6 +31,9 @@ export namespace DFA {
         auto& get() const {
             return collection;
         }
+        auto getDct() const {
+            return dct;
+        }
         auto& get() {
             return collection;
         }

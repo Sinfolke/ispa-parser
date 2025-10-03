@@ -3,6 +3,8 @@ module Cpp.CoreFunctions;
 import corelib;
 import logging;
 
+import dstd;
+
 auto Core::convertType(const LangAPI::Type &type) -> std::string {
     if (type.isValueType()) {
         switch (type.getValueType()) {
@@ -71,6 +73,14 @@ auto Core::convertTemplates(const decltype(LangAPI::Array::template_parameters) 
     }
     return res.substr(0, res.size() - 2);
 }
+auto Core::convertTemplates(const decltype(LangAPI::IspaLibSymbol::template_parameters) &template_parameters) -> std::string {
+    std::string res;
+    for (const auto &param : template_parameters) {
+        res += convertType(param);
+        res += ", ";
+    }
+    return res.substr(0, res.size() - 2);
+}
 
 auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     std::string res;
@@ -118,9 +128,17 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Node:
             return "::ISPA_STD::Node<Tokens>";
         case LangAPI::StdlibExports::Lexer:
-            return "::ISPA_STD::Lexer<Tokens>";
+            return "::ISPA_STD::Lexer_base<Tokens>";
         case LangAPI::StdlibExports::Parser:
-            return "::ISPA_STD::Parser<Tokens, Rules>";
+            return "::ISPA_STD::Parser_base<Tokens, Rules>";
+        case LangAPI::StdlibExports::DfaCharTransition:
+            return "::ISPA_STD::DFAAPI::CharTransition";
+        case LangAPI::StdlibExports::DfaTokenTransition:
+            return "::ISPA_STD::DFAAPI::TokenTransition<Tokens>";
+        case LangAPI::StdlibExports::DfaCharTableTransition:
+            return "::ISPA_STD::DFAAPI::CharTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaMultiTransition:
+            return "::ISPA_STD::DFAAPI::MultiTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         default:
             throw Error("Unknown IspaLibSymbol exports");
     }
@@ -276,6 +294,17 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             res += "}";
             return res;
         }
+        case LangAPI::RValueType::FixedSizeArray: {
+            const auto &array = rvalue.getFixedSizeArray();
+            std::string res = std::string("std::array<") + convertTemplates(array.template_parameters) + "> {";
+            for (const auto &el : array.values) {
+                res += convertExpression(el) + ", ";
+            }
+            res.pop_back();
+            res.pop_back();
+            res += "}";
+            return res;
+        }
         case LangAPI::RValueType::Map: {
             std::string res = "std::unordered_map<" + convertTemplates(rvalue.getMap().template_parameters) + ">{";
             for (std::size_t i = 0; i < rvalue.getMap().keys.size(); i++) {
@@ -300,6 +329,33 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::Inheritance:
             // TODO: Make inheritance
             return "";
+        case LangAPI::RValueType::IspaLibDfaTransition: {
+            const auto &transition = rvalue.getIspaLibDfaTransition();
+            auto number_or_null = [](std::size_t number) -> std::string {
+                return number != std::numeric_limits<std::size_t>::max() ? std::to_string(number) : "ISPA_STD::DFAAPI::null_state";
+            };
+            std::ostringstream out_content;
+            out_content << "{ ";
+            if (std::holds_alternative<char>(transition.symbol)) {
+                out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
+            } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
+                out_content << "&dfa_span_" << std::to_string(std::get<std::size_t>(transition.symbol));
+            } else {
+                out_content << "Tokens::" << corelib::text::join(std::get<stdu::vector<std::string>>(transition.symbol), "_");
+            }
+            out_content << ", ";
+            out_content << number_or_null(transition.next) << ", "
+            << std::boolalpha << transition.new_cst_node << ", "
+            << std::boolalpha << transition.new_member << ", "
+            << std::boolalpha << transition.close_cst_node << ", "
+            << number_or_null(transition.new_group) << ", "
+            << number_or_null(transition.group_close) << ", "
+            << number_or_null(transition.accept)
+            << " }";
+            return out_content.str();
+        }
+        case LangAPI::RValueType::Reference:
+            return convertRValue(*rvalue.getReference().value) + "&";
         default:
             throw Error("Unknown RValue type");
     }

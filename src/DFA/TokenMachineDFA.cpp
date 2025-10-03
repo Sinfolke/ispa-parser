@@ -21,8 +21,8 @@ auto DFA::TokenMachineDFA::build() -> const States<SingleState> & {
     return states;
 }
 
-auto DFA::TokenMachineDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
-    return Base::getType(states, isToken, dct);
+auto DFA::TokenMachineDFA::getType() const -> DfaType {
+    return Base::getType(states);
 }
 auto DFA::TokenMachineDFA::clear() -> void {
     states.clear();

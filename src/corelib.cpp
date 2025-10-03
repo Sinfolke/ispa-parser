@@ -99,6 +99,7 @@ namespace corelib::text {
     // Returns the escaped representation of a character, e.g., '\n' -> "\\n", 'A' -> "A"
     std::string getEscapedAsStr(char in, bool /*stringContext*/) {
         switch (in) {
+            case '\0': return "\\0";
             case '\n': return "\\n";
             case '\r': return "\\r";
             case '\t': return "\\t";

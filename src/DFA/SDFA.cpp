@@ -173,6 +173,6 @@ auto DFA::SDFA::build() -> const States<SingleState>& {
 auto DFA::SDFA::clear() -> void {
     states.clear();
 }
-auto DFA::SDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
-    return Base::getType(states, isToken, dct);
+auto DFA::SDFA::getType() const -> DfaType {
+    return Base::getType(states);
 }

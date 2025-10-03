@@ -11,7 +11,7 @@ import std;
 export namespace DFA {
     inline constexpr auto NULL_STATE = std::numeric_limits<std::size_t>::max();
     enum class DfaType {
-        Char, Token, CallableToken, Multi, NONE
+        Char, Token, Multi, NONE
     };
     struct TransitionValue {
         std::size_t next;

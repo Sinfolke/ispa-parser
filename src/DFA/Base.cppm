@@ -16,7 +16,7 @@ namespace DFA {
         bool merged = false;
 
         template<typename StateType>
-        auto getType(const States<StateType> &states, bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType;
+        auto getType(const States<StateType> &states) const -> DfaType;
     public:
         Base() = default;
         Base(std::size_t empty_state) : empty_state(empty_state) {}
@@ -34,9 +34,9 @@ namespace DFA {
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
 
-        static auto getTransitionKeyType(const NFA::TransitionKey &transition_key, bool isToken) -> DfaType;
+        static auto getTransitionKeyType(const NFA::TransitionKey &transition_key) -> DfaType;
         template<typename Transitions>
-        static auto getStateType(const Transitions &transitions, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct, bool isToken) -> DfaType;
+        static auto getStateType(const Transitions &transitions) -> DfaType;
 
     };
 }

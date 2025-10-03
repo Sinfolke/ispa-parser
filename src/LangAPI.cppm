@@ -74,7 +74,7 @@ export namespace LangAPI {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Box, Any
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference
     };
     enum class ExpressionValueType {
         Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
@@ -91,7 +91,7 @@ export namespace LangAPI {
         Cpp
     };
     enum class StdlibExports {
-        Node, MatchResult, Lexer, Parser
+        Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition, DfaMultiTransition, DFA_CHAR_EMPTY_STATE, DFA_MULTI_EMPTY_STATE
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -238,7 +238,18 @@ export namespace LangAPI {
         }
     };
 
-    struct FixedSizeArray : Array {};
+    struct FixedSizeArray : RValueLevel {
+        stdu::vector<Expression> values;
+        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
+        bool operator==(const FixedSizeArray& other) const { return values == other.values; }
+        bool operator!=(const FixedSizeArray& other) const { return !(*this == other); }
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(values);
+        }
+    };
 
     struct Map : RValueLevel {
         stdu::vector<std::variant<Int, String>> keys;
@@ -353,6 +364,7 @@ export namespace LangAPI {
     };
     struct IspaLibSymbol {
         StdlibExports exports;
+        stdu::vector<Type> template_parameters;
         bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
         bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
 
@@ -397,8 +409,48 @@ export namespace LangAPI {
         bool operator==(const RuleResult&) const { return true; }
         bool operator!=(const RuleResult&) const { return false; }
     };
+    struct IspaLibDfaTransition : RValueLevel {
+        std::variant<stdu::vector<std::string>, std::size_t, char> symbol;
+        std::size_t next;
+        bool new_cst_node;
+        bool new_member;
+        bool close_cst_node;
+        std::size_t new_group;
+        std::size_t group_close;
+        std::size_t accept;
+
+        auto operator==(const IspaLibDfaTransition& other) const {
+            return  symbol == other.symbol &&
+                    next == other.next &&
+                    new_cst_node == other.new_cst_node &&
+                    new_member == other.new_member &&
+                    close_cst_node == other.close_cst_node &&
+                    new_group == other.new_group &&
+                    group_close == other.group_close &&
+                    accept == other.accept;
+        }
+        auto operator!=(const IspaLibDfaTransition& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(symbol, next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept);
+        }
+    };
+    struct Reference {
+        std::shared_ptr<RValue> value;
+
+        auto operator==(const Reference& other) const {
+            return value == other.value;
+        }
+        auto operator!=(const Reference& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
+    };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, Map, Pos, Symbol, StorageSymbol, Inheritance> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -433,11 +485,14 @@ export namespace LangAPI {
         bool isFloat()   const { return std::holds_alternative<Float>(value); }
         bool isString()  const { return std::holds_alternative<String>(value); }
         bool isArray()   const { return std::holds_alternative<Array>(value); }
+        bool isFixedSizeArray()   const { return std::holds_alternative<FixedSizeArray>(value); }
         bool isMap()     const { return std::holds_alternative<Map>(value); }
         bool isPos()     const { return std::holds_alternative<Pos>(value); }
         bool isSymbol()  const { return std::holds_alternative<Symbol>(value); }
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
         bool isInheritance()  const { return std::holds_alternative<Inheritance>(value); }
+        bool isIspaLibDfaTransition()  const { return std::holds_alternative<IspaLibDfaTransition>(value); }
+        bool isReference()  const { return std::holds_alternative<Reference>(value); }
         bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
 
@@ -447,11 +502,14 @@ export namespace LangAPI {
         Float&          getFloat()   { return std::get<Float>(value); }
         String&         getString()  { return std::get<String>(value); }
         Array&          getArray()   { return std::get<Array>(value); }
+        FixedSizeArray& getFixedSizeArray()   { return std::get<FixedSizeArray>(value); }
         Map&            getMap()     { return std::get<Map>(value); }
         Pos&            getPos()     { return std::get<Pos>(value); }
         Symbol&         getSymbol()  { return std::get<Symbol>(value); }
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
         Inheritance&  getInheritance()  { return std::get<Inheritance>(value); }
+        IspaLibDfaTransition&  getIspaLibDfaTransition()  { return std::get<IspaLibDfaTransition>(value); }
+        Reference&  getReference()  { return std::get<Reference>(value); }
 
         const Char&           getChar()   const { return std::get<Char>(value); }
         const Int&            getInt()    const { return std::get<Int>(value); }
@@ -459,13 +517,16 @@ export namespace LangAPI {
         const Float&          getFloat()  const { return std::get<Float>(value); }
         const String&         getString() const { return std::get<String>(value); }
         const Array&          getArray()  const { return std::get<Array>(value); }
+        const FixedSizeArray& getFixedSizeArray() const { return std::get<FixedSizeArray>(value); }
         const Map&            getMap()    const { return std::get<Map>(value); }
         const Pos&            getPos()    const { return std::get<Pos>(value); }
         const Symbol&         getSymbol() const { return std::get<Symbol>(value); }
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
         const Inheritance&  getInheritance() const  { return std::get<Inheritance>(value); }
+        const IspaLibDfaTransition&  getIspaLibDfaTransition() const  { return std::get<IspaLibDfaTransition>(value); }
+        const Reference&  getReference() const  { return std::get<Reference>(value); }
 
-        RValueType type() const { return static_cast<RValueType>(value.index()); }
+        auto type() const -> RValueType { return static_cast<RValueType>(value.index()); }
         auto get() const { return value; }
 
         // equality

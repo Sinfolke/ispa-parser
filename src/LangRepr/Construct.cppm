@@ -23,8 +23,10 @@ export namespace LangRepr {
         auto constructTokensAndRulesEnum() -> void;
         auto constructTokensAndRulesEnumToString() -> void;
         auto constructTypesNamespace() -> void;
+        auto constructLexer() -> void;
+        auto constructParser() -> void;
         using Name = stdu::vector<std::string>;
-                class Node {
+        class Node {
         public:
             using ChildT = std::unordered_map<std::string, std::unique_ptr<Node>>;
         private:

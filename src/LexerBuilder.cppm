@@ -25,6 +25,7 @@ private:
     FCDT fcdt;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
+    NameToDfaMap name_to_dfa;
     std::vector<std::size_t> token_type;
     std::size_t highest_states_count = 0;
     std::size_t highest_transition_count = 0;
@@ -40,6 +41,7 @@ public:
     auto& getFCDT() const { return fcdt; }
     auto& getDfaCompatibleTable() const { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() const { return dispatch_names_involve; }
+    auto& getNameToDFAIndex() const { return name_to_dfa; }
     auto& getFunctionsIR() const  { return function_ir; }
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }

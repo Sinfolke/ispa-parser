@@ -12,6 +12,7 @@ export namespace Core {
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Array::template_parameters) &template_parameters) -> std::string;
+    auto convertTemplates(const decltype(LangAPI::IspaLibSymbol::template_parameters) &template_parameters) -> std::string;
     auto convertSymbol(const LangAPI::Symbol &symbol) -> std::string;
     auto convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::string;
     auto convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::string;

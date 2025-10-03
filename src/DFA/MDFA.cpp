@@ -156,7 +156,7 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
 auto DFA::MDFA::clear() -> void {
     states.clear();
 }
-auto DFA::MDFA::getType(bool isToken, const utype::unordered_map<stdu::vector<std::string>, std::size_t> *dct) const -> DfaType {
-    return Base::getType(states, isToken, dct);
+auto DFA::MDFA::getType() const -> DfaType {
+    return Base::getType(states);
 }
 
