@@ -68,16 +68,21 @@ auto DFA::Base::getStateType(const Transitions &transitions) -> DfaType {
                     break;
                 }
             } else {
-                if (dfa_type != DfaType::Token) {
-                    dfa_type = DfaType::Multi;
-                    break;
-                }
+                dfa_type = DfaType::Multi;
+                break;
             }
         }
-    } else return DfaType::Char;
+    } else if constexpr (std::is_same_v<Transitions, CharMachineStateVariant>) {
+        if (std::holds_alternative<FullCharTable>(transitions)) {
+            return DfaType::Char;
+        } else {
+            return DfaType::Multi;
+        }
+    } return DfaType::Char;
     return dfa_type;
 }
-auto DFA::Base::getEmptyState(std::size_t stateIndex) -> std::size_t {
+
+auto DFA::Base::getEmptyState(std::size_t stateIndex) const -> std::size_t {
     if (!dfa_empty_state_map_.empty())
         return dfa_empty_state_map_.at(stateIndex);
     if (empty_state != NULL_STATE)

@@ -71,10 +71,10 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Variant, Box, Any
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference, Span
     };
     enum class ExpressionValueType {
         Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
@@ -436,7 +436,22 @@ export namespace LangAPI {
             return std::tie(symbol, next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept);
         }
     };
-    struct Reference {
+    struct IspaLibDfaState : RValueLevel {
+        std::size_t state_id;
+        std::size_t else_goto;
+        std::size_t else_goto_accept;
+
+        auto operator==(const IspaLibDfaState& other) const {
+            return state_id == other.state_id && else_goto == other.else_goto && else_goto_accept == other.else_goto_accept;
+        }
+        auto operator!=(const IspaLibDfaState& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(state_id, else_goto, else_goto_accept);
+        }
+    };
+    struct Reference : RValueLevel {
         std::shared_ptr<RValue> value;
 
         auto operator==(const Reference& other) const {
@@ -449,8 +464,21 @@ export namespace LangAPI {
             return std::tie(value);
         }
     };
+    struct Span : RValueLevel {
+        Symbol sym;
+
+        auto operator==(const Span& other) const {
+            return sym == other.sym;
+        }
+        auto operator!=(const Span& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(sym);
+        }
+    };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference, Span> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -492,7 +520,9 @@ export namespace LangAPI {
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
         bool isInheritance()  const { return std::holds_alternative<Inheritance>(value); }
         bool isIspaLibDfaTransition()  const { return std::holds_alternative<IspaLibDfaTransition>(value); }
+        // bool isIspaLibDfaState()  const { return std::holds_alternative<IspaLibDfaState>(value); }
         bool isReference()  const { return std::holds_alternative<Reference>(value); }
+        bool isSpan()  const { return std::holds_alternative<Span>(value); }
         bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
 
@@ -509,7 +539,9 @@ export namespace LangAPI {
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
         Inheritance&  getInheritance()  { return std::get<Inheritance>(value); }
         IspaLibDfaTransition&  getIspaLibDfaTransition()  { return std::get<IspaLibDfaTransition>(value); }
+        // IspaLibDfaState&  getIspaLibDfaState()  { return std::get<IspaLibDfaState>(value); }
         Reference&  getReference()  { return std::get<Reference>(value); }
+        Span&  getSpan()  { return std::get<Span>(value); }
 
         const Char&           getChar()   const { return std::get<Char>(value); }
         const Int&            getInt()    const { return std::get<Int>(value); }
@@ -524,7 +556,9 @@ export namespace LangAPI {
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
         const Inheritance&  getInheritance() const  { return std::get<Inheritance>(value); }
         const IspaLibDfaTransition&  getIspaLibDfaTransition() const  { return std::get<IspaLibDfaTransition>(value); }
+        // const IspaLibDfaState&  getIspaLibDfaState() const  { return std::get<IspaLibDfaState>(value); }
         const Reference&  getReference() const  { return std::get<Reference>(value); }
+        const Span&  getSpan() const  { return std::get<Span>(value); }
 
         auto type() const -> RValueType { return static_cast<RValueType>(value.index()); }
         auto get() const { return value; }

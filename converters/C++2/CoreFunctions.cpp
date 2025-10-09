@@ -36,8 +36,9 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return std::string("std::variant<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Box:
                 return std::string("std::shared_ptr<") + convertTemplates(type.template_parameters) + ">";
+            case LangAPI::ValueType::Span:
+                return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
-                return "Undef";;
                 throw Error("Type is undefined");
             default:
                 throw Error("Unknown type");
@@ -355,8 +356,10 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             return out_content.str();
         }
         case LangAPI::RValueType::Reference:
-            return convertRValue(*rvalue.getReference().value) + "&";
+            return "&" + convertRValue(*rvalue.getReference().value);
+        case LangAPI::RValueType::Span:
+            return "::ISPA_STD::Span { " + convertSymbol(rvalue.getSpan().sym) + ".data(), " + convertSymbol(rvalue.getSpan().sym) + ".size() }";
         default:
-            throw Error("Unknown RValue type");
+            throw Error("Unknown RValue type: {}", (int) rvalue.type());
     }
 }

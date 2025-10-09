@@ -12,10 +12,12 @@ export namespace DFA {
         using StateSet = DfaTable::StatesType;
         using StateSetLocationMap = utype::unordered_map<std::pair<std::size_t, std::size_t>, std::size_t>;
         using StateInDfaLocationMap = utype::unordered_map<std::size_t, std::size_t>;
+        using StateToType = utype::unordered_map<std::size_t, std::pair<DfaType, stdu::vector<std::string>>>;
         struct StateSet_t {
             StateSet state_set {nullptr};
             StateSetLocationMap location_in_set;
             StateInDfaLocationMap state_in_dfa_location_map;
+            StateToType state_to_type;
         };
     private:
         stdu::vector<DfaTable> collection;

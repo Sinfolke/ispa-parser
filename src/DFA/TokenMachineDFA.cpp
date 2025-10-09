@@ -5,10 +5,9 @@ auto DFA::TokenMachineDFA::build() -> const States<SingleState> & {
     auto terminals = ast.getTerminals();
 
     for (auto &state : sdfa.get()) {
-        auto next_state_for_non_existing = state.else_goto ? state.else_goto : NULL_STATE;
         for (const auto &terminal : terminals) {
             if (!state.transitions.contains(terminal)) {
-                state.transitions.emplace(terminal, TransitionValue {next_state_for_non_existing, false, false, false, NULL_STATE, NULL_STATE, NULL_STATE, false, false, false});
+                state.transitions.emplace(terminal, TransitionValue {NULL_STATE, false, false, false, NULL_STATE, NULL_STATE, NULL_STATE, false, false, false});
             }
         }
     }

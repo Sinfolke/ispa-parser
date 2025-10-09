@@ -417,6 +417,7 @@ namespace LangRepr {
         std::size_t count = 0;
         auto states = lexer_builder.getDFAS().getStateSet();
         // construct states
+        stdu::vector<std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
         for (const auto &state : states.state_set) {
             auto type = DFA::Base::getStateType(state.transitions);
             auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
@@ -449,6 +450,7 @@ namespace LangRepr {
             } else {
                 transition_size = std::get<DFA::SortedTransitions>(state.transitions).size();
             }
+            state_exports_cache.emplace_back(s, transition_size);
             stdu::vector<LangAPI::Expression> transitions;
             if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
                 const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
@@ -501,14 +503,34 @@ namespace LangRepr {
                 )
             );
         }
-        holder.push(lexer);
         // construct DFA tables
-        for (const auto &dfa : lexer_builder.getDFAS().get()) {
-            stdu::vector<LangAPI::Expression> transitions;
-            for (const auto &state : dfa.get()) {
-                if (state.)
+        for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
+            const auto &dfa = dfas.at(dfa_count);
+            stdu::vector<LangAPI::Expression> dfa_table_states;
+            LangAPI::IspaLibSymbol dfa_type;
+            for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
+                const auto &state = states.location_in_set.at(std::make_pair(dfa_count, state_count));
+                const auto &[type, size] = state_exports_cache.at(state);
+                if (dfa_type.exports != LangAPI::StdlibExports::DfaMultiTransition) {
+                    dfa_type = type;
+                }
+                dfa_table_states.push_back(
+                    LangAPI::Span::createExpression(
+                        LangAPI::Span {
+                            .sym = LangAPI::Symbol {"dfa_state_span_" + std::to_string(state)}
+                        }
+                    )
+                );
             }
+            LangAPI::Type t = {LangAPI::ValueType::Span, dfa_type};
+            LangAPI::Variable dfa_table_var {
+                .name = "dfa_table_" + std::to_string(dfa_count),
+                .type = {LangAPI::ValueType::FixedSizeArray, t, LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<int>(dfa.get().size())}) },
+                .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray { .values = dfa_table_states, .template_parameters = { std::make_shared<LangAPI::Type>(t) } })
+            };
+            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
         }
+        holder.push(lexer);
     }
 
     auto Construct::construct() -> Holder& {

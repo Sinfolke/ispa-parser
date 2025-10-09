@@ -164,6 +164,16 @@ void DFA::MinDFA::removeUnreachableStates(SDFA &sdfa) {
         if (state.else_goto)
             state.else_goto = old_to_new.at(state.else_goto);
     }
+    for (auto &el : sdfa.getEmptyStateMap()) {
+        if (old_to_new.contains(el.second)) {
+            el.second = old_to_new.at(el.second);
+        }
+    }
+    for (auto &el : sdfa.getIndexToEmptyStateMap()) {
+        if (old_to_new.contains(el.second)) {
+            el.second = old_to_new.at(el.second);
+        }
+    }
     sdfa.get().get() = std::move(new_states);
 }
 void DFA::MinDFA::removeSelfLoop(SDFA &sdfa) {

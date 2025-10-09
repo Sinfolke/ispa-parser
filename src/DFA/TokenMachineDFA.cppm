@@ -15,7 +15,7 @@ import dstd;
 import std;
 
 export namespace DFA {
-    class TokenMachineDFA : Base {
+    class TokenMachineDFA : public Base {
         const AST::Tree &ast;
         MinDFA &sdfa;
         States<SingleState> states;

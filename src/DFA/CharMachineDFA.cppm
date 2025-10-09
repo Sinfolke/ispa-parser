@@ -10,7 +10,7 @@ import hash;
 import dstd;
 import std;
 export namespace DFA {
-    class CharMachineDFA : Base {
+    class CharMachineDFA : public Base {
         const AST::Tree &ast;
         SortedDFA &sorted_dfa;
         States<CharMachineState> states;

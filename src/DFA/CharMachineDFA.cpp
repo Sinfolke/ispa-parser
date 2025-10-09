@@ -36,6 +36,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
                     partitioned_state = sorted_states.makeNew();
                     sorted_states[prev].else_goto = partitioned_state;
                     partition_type = symbol.index();
+                    getEmptyStateMap()[partitioned_state] = getEmptyStateMap()[prev];
+                    getIndexToEmptyStateMap()[partitioned_state] = getIndexToEmptyStateMap()[prev];
                 }
                 sorted_states[partitioned_state].transitions.emplace(symbol, value);
             }
@@ -66,7 +68,6 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             states.emplace_back(state.nfa_states, state.transitions, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         }
     }
-
     return this->states;
 }
 auto DFA::CharMachineDFA::getType() const -> DfaType {

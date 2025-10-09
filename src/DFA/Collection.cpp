@@ -1,11 +1,14 @@
 module DFA.Collection;
 import DFA.TokenMachineDFA;
 import DFA.CharMachineDFA;
+import DFA.Base;
+import LangAPI;
 import std;
+import cpuf.printf;
 
 template<typename DfaTable>
 void DFA::Collection<DfaTable>::getStateSet(StateSet_t &state_set) const {
-    utype::unordered_map<std::pair<typename DfaTable::StateType, DfaType>, std::size_t> state_to_map;
+    utype::unordered_map<typename DfaTable::StateType, std::size_t> state_to_map;
     std::size_t dfa_count = 0;
     for (const auto &dfa : collection) {
         std::size_t state_count = 0;
@@ -28,13 +31,14 @@ void DFA::Collection<DfaTable>::getStateSet(StateSet_t &state_set) const {
                     }
                 }
             }
-            auto type = dfa.getType();
-            auto it = state_to_map.find(std::make_pair(state, type));
+            auto it = state_to_map.find(state);
             std::size_t index;
             if (it == state_to_map.end()) {
                 index = state_set.state_set.size();
                 state_set.state_set.get().push_back(state);
-                state_to_map.emplace(std::make_pair(state, type), index);
+                state_to_map.emplace(state, index);
+                cpuf::printf("dfa.size(): {}, dfa.emptyState({}): {}", dfa.get().size(), state_count, dfa.getEmptyState(state_count));
+                state_set.state_to_type.emplace(index, std::make_pair(Base::getStateType(state.transitions), dfa.get()[dfa.getEmptyState(state_count)].rule_name));
             } else {
                 index = it->second;
             }
