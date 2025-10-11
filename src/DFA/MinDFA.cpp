@@ -212,6 +212,13 @@ void DFA::MinDFA::minimize() {
     // move it here
     for (auto &state : sdfa.get())
         states[states.makeNew()] = std::move(state);
+    dfa_empty_state_map_ = sdfa.getEmptyStateMap();
+    dfa_index_to_empty_state_map_ = sdfa.getIndexToEmptyStateMap();
+    for (const auto &el : getEmptyStateMap()) {
+        if (el.first < sdfa.get().size() && el.second >= sdfa.get().size()) {
+            cpuf::printf("SDFA Failed check: el.first {}, e.second {}", el.first, el.second);
+        }
+    };
 }
 auto DFA::MinDFA::getType() const -> DfaType {
     return Base::getType(states);

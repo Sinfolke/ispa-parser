@@ -31,6 +31,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
                 const auto &[symbol, value] = state.transitions.sequence()[j];
                 if (partition_type == NULL_STATE) {
                     partition_type = symbol.index();
+                    getEmptyStateMap()[partitioned_state] = getEmptyStateMap()[i];
+                    getIndexToEmptyStateMap()[partitioned_state] = getIndexToEmptyStateMap()[i];
                 } else if (partition_type != symbol.index()) {
                     auto prev = partitioned_state;
                     partitioned_state = sorted_states.makeNew();

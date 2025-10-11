@@ -89,6 +89,8 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
     // step 2: based on lookaheads compute new states
     if (!dfa_empty_state_map_.empty())
         dfa_empty_state_map_[current_dfa_state] = dfa_empty_state_map_[state_id];
+    if (!dfa_index_to_empty_state_map_.empty())
+        dfa_index_to_empty_state_map_[current_dfa_state] = dfa_index_to_empty_state_map_[state_id];
     logger.log("Lookaheads size: {}", lookaheads.size());
     for (std::size_t i = 0; i < lookaheads.size(); ++i) {
         const auto &[l, val_id] = lookaheads[i];
@@ -155,7 +157,6 @@ auto DFA::SDFA::build() -> const States<SingleState>& {
             }
         }
     }
-
     // switch to single state
     for (auto &state : mdfa.get()) {
         auto index = states.makeNew();

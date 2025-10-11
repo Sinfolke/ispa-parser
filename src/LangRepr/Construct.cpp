@@ -417,10 +417,10 @@ namespace LangRepr {
         std::size_t count = 0;
         auto states = lexer_builder.getDFAS().getStateSet();
         // construct states
-        stdu::vector<std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
+        utype::unordered_map<std::size_t, std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
         for (const auto &state : states.state_set) {
-            auto type = DFA::Base::getStateType(state.transitions);
             auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
+            auto [type, tn] = states.state_to_type.at(count);
             LangAPI::IspaLibSymbol s;
             switch (type) {
                 case DFA::DfaType::Char:
@@ -429,9 +429,13 @@ namespace LangRepr {
                 case DFA::DfaType::Token:
                     s.exports = LangAPI::StdlibExports::DfaTokenTransition;
                     break;
-                case DFA::DfaType::Multi:
+                case DFA::DfaType::Multi: {
                     s.exports = LangAPI::StdlibExports::DfaMultiTransition;
+                    LangAPI::Symbol sym = tn;
+                    sym.path.insert(sym.path.begin(), "FlatTypes");
+                    s.template_parameters = {LangAPI::Type {sym}};
                     break;
+                }
                 default:
                     switch (dfa.getType()) {
                         case DFA::DfaType::Char:
@@ -450,7 +454,7 @@ namespace LangRepr {
             } else {
                 transition_size = std::get<DFA::SortedTransitions>(state.transitions).size();
             }
-            state_exports_cache.emplace_back(s, transition_size);
+            state_exports_cache.emplace(count, std::make_pair(s, transition_size));
             stdu::vector<LangAPI::Expression> transitions;
             if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
                 const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
@@ -495,29 +499,32 @@ namespace LangRepr {
             lexer.data.push_back(
                 std::make_pair(
                     std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
-                        .name = std::string("dfa_state_") + std::to_string(count++),
+                        .name = std::string("dfa_state_") + std::to_string(count),
                         .type = {LangAPI::ValueType::FixedSizeArray, s, LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size} )},
                         .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray { .values = transitions, .template_parameters = {std::make_shared<LangAPI::Type>(s), LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size})} })
                     })),
                     LangAPI::Visibility::Private
                 )
             );
+            ++count;
         }
         // construct DFA tables
         for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
             const auto &dfa = dfas.at(dfa_count);
             stdu::vector<LangAPI::Expression> dfa_table_states;
-            LangAPI::IspaLibSymbol dfa_type;
+            LangAPI::IspaLibSymbol dfa_type = {LangAPI::StdlibExports::DfaCharTransition};
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
                 const auto &state = states.location_in_set.at(std::make_pair(dfa_count, state_count));
                 const auto &[type, size] = state_exports_cache.at(state);
                 if (dfa_type.exports != LangAPI::StdlibExports::DfaMultiTransition) {
                     dfa_type = type;
+                } else {
+                    dfa_type.template_parameters.insert(dfa_type.template_parameters.end(), type.template_parameters.begin(), type.template_parameters.end());
                 }
                 dfa_table_states.push_back(
                     LangAPI::Span::createExpression(
                         LangAPI::Span {
-                            .sym = LangAPI::Symbol {"dfa_state_span_" + std::to_string(state)}
+                            .sym = LangAPI::Symbol {"dfa_state_" + std::to_string(state)}
                         }
                     )
                 );
