@@ -432,7 +432,7 @@ namespace LangRepr {
                 case DFA::DfaType::Multi: {
                     s.exports = LangAPI::StdlibExports::DfaMultiTransition;
                     LangAPI::Symbol sym = tn;
-                    sym.path.insert(sym.path.begin(), "FlatTypes");
+                    sym.path.insert(sym.path.begin(), "Types");
                     s.template_parameters = {LangAPI::Type {sym}};
                     break;
                 }
@@ -518,7 +518,7 @@ namespace LangRepr {
                 const auto &[type, size] = state_exports_cache.at(state);
                 if (dfa_type.exports != LangAPI::StdlibExports::DfaMultiTransition) {
                     dfa_type = type;
-                } else {
+                } else if (dfa_type != type) {
                     dfa_type.template_parameters.insert(dfa_type.template_parameters.end(), type.template_parameters.begin(), type.template_parameters.end());
                 }
                 dfa_table_states.push_back(

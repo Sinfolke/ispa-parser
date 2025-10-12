@@ -297,13 +297,13 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         }
         case LangAPI::RValueType::FixedSizeArray: {
             const auto &array = rvalue.getFixedSizeArray();
-            std::string res = std::string("std::array<") + convertTemplates(array.template_parameters) + "> {";
+            std::string res = std::string("std::array<") + convertTemplates(array.template_parameters) + "> {{";
             for (const auto &el : array.values) {
                 res += convertExpression(el) + ", ";
             }
             res.pop_back();
             res.pop_back();
-            res += "}";
+            res += "}}";
             return res;
         }
         case LangAPI::RValueType::Map: {
@@ -340,7 +340,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             if (std::holds_alternative<char>(transition.symbol)) {
                 out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
             } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
-                out_content << "&dfa_span_" << std::to_string(std::get<std::size_t>(transition.symbol));
+                out_content << "dfa_table_" << std::to_string(std::get<std::size_t>(transition.symbol));
             } else {
                 out_content << "Tokens::" << corelib::text::join(std::get<stdu::vector<std::string>>(transition.symbol), "_");
             }

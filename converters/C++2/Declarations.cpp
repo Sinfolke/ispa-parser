@@ -18,9 +18,12 @@ namespace Cpp {
     auto Declarations::initImports() -> void {
         output.writeln("#include <string>");
         output.writeln("#include <vector>");
+        output.writeln("#include <unordered_map>");
         output.writeln("#include <array>");
         output.writeln("#include <string>");
         output.writeln("#include <variant>");
+        output.writeln("#include <optional>");
+        output.writeln("#include <memory>");
         output.writeln("#include <ispastdlib.hpp>");
     }
 
