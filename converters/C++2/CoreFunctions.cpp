@@ -74,14 +74,6 @@ auto Core::convertTemplates(const decltype(LangAPI::Array::template_parameters) 
     }
     return res.substr(0, res.size() - 2);
 }
-auto Core::convertTemplates(const decltype(LangAPI::IspaLibSymbol::template_parameters) &template_parameters) -> std::string {
-    std::string res;
-    for (const auto &param : template_parameters) {
-        res += convertType(param);
-        res += ", ";
-    }
-    return res.substr(0, res.size() - 2);
-}
 
 auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     std::string res;
@@ -134,14 +126,24 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::Parser_base<Tokens, Rules>";
         case LangAPI::StdlibExports::DfaCharTransition:
             return "::ISPA_STD::DFAAPI::CharTransition";
-        case LangAPI::StdlibExports::DfaTokenTransition:
-            return "::ISPA_STD::DFAAPI::TokenTransition<Tokens>";
         case LangAPI::StdlibExports::DfaCharTableTransition:
             return "::ISPA_STD::DFAAPI::CharTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaTokenTransition:
+            return "::ISPA_STD::DFAAPI::TokenTransition<Tokens>";
         case LangAPI::StdlibExports::DfaMultiTransition:
             return "::ISPA_STD::DFAAPI::MultiTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaCharState:
+            return "::ISPA_STD::DFAAPI::CharTableState<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaTokenState:
+            return "::ISPA_STD::DFAAPI::TokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaMultiTableState:
+            return "::ISPA_STD::DFAAPI::MultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaCharEmptyState:
+            return "::ISPA_STD::DFAAPI::CharEmptyState<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaMultiTableEmptyState:
+            return "::ISPA_STD::DFAAPI::MultiTableEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         default:
-            throw Error("Unknown IspaLibSymbol exports");
+            throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
 }
 
@@ -286,18 +288,27 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::String:
             return std::string("\"") + rvalue.getString().value + "\"";
         case LangAPI::RValueType::Array: {
-            std::string res = "std::vector<" + convertTemplates(rvalue.getArray().template_parameters) + ">{";
+            const auto &array = rvalue.getArray();
+            std::string res;
+            if (!array.template_parameters.empty()) {
+                res += "std::vector<" + convertTemplates(rvalue.getArray().template_parameters) + "> ";
+            }
+            res += "{{";
             for (const auto &el : rvalue.getArray().values) {
                 res += convertExpression(el) + ", ";
             }
             res.pop_back();
             res.pop_back();
-            res += "}";
+            res += "}}";
             return res;
         }
         case LangAPI::RValueType::FixedSizeArray: {
             const auto &array = rvalue.getFixedSizeArray();
-            std::string res = std::string("std::array<") + convertTemplates(array.template_parameters) + "> {{";
+            std::string res;
+            if (!array.template_parameters.empty()) {
+                res += std::string("std::array<") + convertTemplates(array.template_parameters) + "> ";
+            }
+            res += "{{";
             for (const auto &el : array.values) {
                 res += convertExpression(el) + ", ";
             }
@@ -307,7 +318,12 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             return res;
         }
         case LangAPI::RValueType::Map: {
-            std::string res = "std::unordered_map<" + convertTemplates(rvalue.getMap().template_parameters) + ">{";
+            const auto &map = rvalue.getMap();
+            std::string res;
+            if (!map.template_parameters.empty()) {
+               res += "std::unordered_map<" + convertTemplates(rvalue.getMap().template_parameters) + "> ";
+            }
+            res +=  "{";
             for (std::size_t i = 0; i < rvalue.getMap().keys.size(); i++) {
                 if (std::holds_alternative<LangAPI::String>(rvalue.getMap().keys[i])) {
                     res += std::string("\"") + std::get<LangAPI::String>(rvalue.getMap().keys[i]).value + "\", ";
@@ -358,7 +374,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::Reference:
             return "&" + convertRValue(*rvalue.getReference().value);
         case LangAPI::RValueType::Span:
-            return "::ISPA_STD::Span { " + convertSymbol(rvalue.getSpan().sym) + ".data(), " + convertSymbol(rvalue.getSpan().sym) + ".size() }";
+            return "::ISPA_STD::Span<" + convertType(*rvalue.getSpan().type) + "> { " + convertSymbol(rvalue.getSpan().sym) + ".data(), " + convertSymbol(rvalue.getSpan().sym) + ".size() }";
         default:
             throw Error("Unknown RValue type: {}", (int) rvalue.type());
     }

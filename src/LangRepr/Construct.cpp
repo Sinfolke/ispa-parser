@@ -424,13 +424,13 @@ namespace LangRepr {
             LangAPI::IspaLibSymbol s;
             switch (type) {
                 case DFA::DfaType::Char:
-                    s.exports = LangAPI::StdlibExports::DfaCharTransition;
+                    s.exports = LangAPI::StdlibExports::DfaCharState;
                     break;
                 case DFA::DfaType::Token:
-                    s.exports = LangAPI::StdlibExports::DfaTokenTransition;
+                    s.exports = LangAPI::StdlibExports::DfaTokenState;
                     break;
                 case DFA::DfaType::Multi: {
-                    s.exports = LangAPI::StdlibExports::DfaMultiTransition;
+                    s.exports = LangAPI::StdlibExports::DfaMultiTableState;
                     LangAPI::Symbol sym = tn;
                     sym.path.insert(sym.path.begin(), "Types");
                     s.template_parameters = {LangAPI::Type {sym}};
@@ -439,10 +439,10 @@ namespace LangRepr {
                 default:
                     switch (dfa.getType()) {
                         case DFA::DfaType::Char:
-                            s.exports = LangAPI::StdlibExports::DFA_CHAR_EMPTY_STATE;
+                            s.exports = LangAPI::StdlibExports::DfaCharEmptyState;
                             break;
                         case DFA::DfaType::Multi:
-                            s.exports = LangAPI::StdlibExports::DFA_MULTI_EMPTY_STATE;
+                            s.exports = LangAPI::StdlibExports::DfaMultiTableEmptyState;
                             break;
                         default:
                             break;
@@ -454,6 +454,7 @@ namespace LangRepr {
             } else {
                 transition_size = std::get<DFA::SortedTransitions>(state.transitions).size();
             }
+            s.template_parameters.insert(s.template_parameters.begin(),LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size}));
             state_exports_cache.emplace(count, std::make_pair(s, transition_size));
             stdu::vector<LangAPI::Expression> transitions;
             if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
@@ -500,8 +501,8 @@ namespace LangRepr {
                 std::make_pair(
                     std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
                         .name = std::string("dfa_state_") + std::to_string(count),
-                        .type = {LangAPI::ValueType::FixedSizeArray, s, LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size} )},
-                        .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray { .values = transitions, .template_parameters = {std::make_shared<LangAPI::Type>(s), LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size})} })
+                        .type =s,
+                        .value = LangAPI::Array::createExpression(LangAPI::Array { .values = transitions})
                     })),
                     LangAPI::Visibility::Private
                 )
@@ -524,12 +525,18 @@ namespace LangRepr {
                 dfa_table_states.push_back(
                     LangAPI::Span::createExpression(
                         LangAPI::Span {
+                            .type = std::make_shared<LangAPI::Type>(type),
                             .sym = LangAPI::Symbol {"dfa_state_" + std::to_string(state)}
                         }
                     )
                 );
             }
-            LangAPI::Type t = {LangAPI::ValueType::Span, dfa_type};
+            LangAPI::Type t = {
+                LangAPI::IspaLibSymbol {
+                    .exports = static_cast<LangAPI::StdlibExports>(static_cast<int>(dfa_type.exports)),
+                    .template_parameters = {dfa_type}
+                }
+            };
             LangAPI::Variable dfa_table_var {
                 .name = "dfa_table_" + std::to_string(dfa_count),
                 .type = {LangAPI::ValueType::FixedSizeArray, t, LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<int>(dfa.get().size())}) },

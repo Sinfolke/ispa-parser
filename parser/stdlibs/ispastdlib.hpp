@@ -317,8 +317,8 @@ namespace DFAAPI {
     >;
     // state types
     template<std::size_t N> using CharTableState = State<N, CharTransition>;
-    template<std::size_t N, typename TOKEN_T> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
-    template<std::size_t N, typename TOKEN_T, typename ...NODES> using MultiTableState = State<N, AnyTransition<TOKEN_T, NODES...>>;
+    template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
+    template<typename TOKEN_T, std::size_t N, typename ...NODES> using MultiTableState = State<N, AnyTransition<TOKEN_T, NODES...>>;
     // span state types
     using SpanCharTableState = SpanState<CharTransition>;
     template<typename TOKEN_T> using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;

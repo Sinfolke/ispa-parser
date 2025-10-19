@@ -9,7 +9,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     auto states_size = sorted_states.size();
     for (std::size_t i = 0; i < states_size; i++) {
         const auto &state = sorted_states[i];
-        auto type = sorted_dfa.getType();
+        auto type = sorted_dfa.getStateType(state.transitions);
         auto initial_else_goto = state.else_goto;
         if (type == DfaType::Multi) {
             // found multitable - partition using else_goto

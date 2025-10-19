@@ -91,7 +91,8 @@ export namespace LangAPI {
         Cpp
     };
     enum class StdlibExports {
-        Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition, DfaMultiTransition, DFA_CHAR_EMPTY_STATE, DFA_MULTI_EMPTY_STATE
+        Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
+        DfaMultiTransition, DfaCharState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -250,7 +251,6 @@ export namespace LangAPI {
             return std::tie(values);
         }
     };
-
     struct Map : RValueLevel {
         stdu::vector<std::variant<Int, String>> keys;
         stdu::vector<Expression> values;
@@ -364,7 +364,7 @@ export namespace LangAPI {
     };
     struct IspaLibSymbol {
         StdlibExports exports;
-        stdu::vector<Type> template_parameters;
+        stdu::vector<std::variant<Type, RValue>> template_parameters;
         bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
         bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
 
@@ -437,18 +437,16 @@ export namespace LangAPI {
         }
     };
     struct IspaLibDfaState : RValueLevel {
-        std::size_t state_id;
-        std::size_t else_goto;
-        std::size_t else_goto_accept;
+        stdu::vector<IspaLibDfaTransition> transitions;
 
         auto operator==(const IspaLibDfaState& other) const {
-            return state_id == other.state_id && else_goto == other.else_goto && else_goto_accept == other.else_goto_accept;
+            return transitions == other.transitions;
         }
         auto operator!=(const IspaLibDfaState& other) const { return !(*this == other); }
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(state_id, else_goto, else_goto_accept);
+            return std::tie(transitions);
         }
     };
     struct Reference : RValueLevel {
@@ -465,6 +463,7 @@ export namespace LangAPI {
         }
     };
     struct Span : RValueLevel {
+        std::shared_ptr<Type> type;
         Symbol sym;
 
         auto operator==(const Span& other) const {
