@@ -93,6 +93,7 @@ export namespace LangAPI {
     enum class StdlibExports {
         Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
         DfaMultiTransition, DfaCharState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
+        DfaCharTable, DfaTokenTable, DfaMultiTable
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -579,7 +580,7 @@ export namespace LangAPI {
         requires (std::is_same_v<std::decay_t<TypeOrPath>, ValueType> || std::is_same_v<std::decay_t<TypeOrPath>, Symbol> || std::is_same_v<std::decay_t<TypeOrPath>, IspaLibSymbol>)
         Type(TypeOrPath vtype, Templates&& ...templates) {
             type = vtype;
-            (template_parameters.push_back(templates), ...);
+            (push(templates), ...);
         }
         Type() = default;
         bool isValueType() const {
@@ -672,6 +673,18 @@ export namespace LangAPI {
         friend struct ::uhash;
         auto members() const {
             return std::tie(type, template_parameters);
+        }
+        template<typename T>
+        requires std::ranges::range<T>
+        void push(const T &el) {
+            for (const auto &e : el) {
+                template_parameters.push_back(e);
+            }
+        }
+        template<typename T>
+        requires (!std::ranges::range<std::remove_cvref_t<T>>)
+        void push(T &&el) {
+            template_parameters.push_back(el);
         }
     };
     struct ForwardDeclaredClass : DeclarationLevel {

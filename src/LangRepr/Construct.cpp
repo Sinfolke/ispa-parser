@@ -501,7 +501,7 @@ namespace LangRepr {
                 std::make_pair(
                     std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
                         .name = std::string("dfa_state_") + std::to_string(count),
-                        .type =s,
+                        .type = s,
                         .value = LangAPI::Array::createExpression(LangAPI::Array { .values = transitions})
                     })),
                     LangAPI::Visibility::Private
@@ -513,14 +513,12 @@ namespace LangRepr {
         for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
             const auto &dfa = dfas.at(dfa_count);
             stdu::vector<LangAPI::Expression> dfa_table_states;
-            LangAPI::IspaLibSymbol dfa_type = {LangAPI::StdlibExports::DfaCharTransition};
+            utype::unordered_set<LangAPI::Type> multitables;
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
                 const auto &state = states.location_in_set.at(std::make_pair(dfa_count, state_count));
                 const auto &[type, size] = state_exports_cache.at(state);
-                if (dfa_type.exports != LangAPI::StdlibExports::DfaMultiTransition) {
-                    dfa_type = type;
-                } else if (dfa_type != type) {
-                    dfa_type.template_parameters.insert(dfa_type.template_parameters.end(), type.template_parameters.begin(), type.template_parameters.end());
+                if (type.exports == LangAPI::StdlibExports::DfaMultiTableState) {
+                    multitables.insert(type);
                 }
                 dfa_table_states.push_back(
                     LangAPI::Span::createExpression(
@@ -531,16 +529,12 @@ namespace LangRepr {
                     )
                 );
             }
-            LangAPI::Type t = {
-                LangAPI::IspaLibSymbol {
-                    .exports = static_cast<LangAPI::StdlibExports>(static_cast<int>(dfa_type.exports)),
-                    .template_parameters = {dfa_type}
-                }
-            };
+            std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> multitables_vector{multitables.begin(), multitables.end()};
+            multitables_vector.insert(multitables_vector.begin(), LangAPI::RValue { LangAPI::Int{.value = static_cast<long long>(dfa_table_states.size())}});
             LangAPI::Variable dfa_table_var {
                 .name = "dfa_table_" + std::to_string(dfa_count),
-                .type = {LangAPI::ValueType::FixedSizeArray, t, LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<int>(dfa.get().size())}) },
-                .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray { .values = dfa_table_states, .template_parameters = { std::make_shared<LangAPI::Type>(t) } })
+                .type = LangAPI::Type {LangAPI::IspaLibSymbol {multitables.empty() ? LangAPI::StdlibExports::DfaCharTable : LangAPI::StdlibExports::DfaMultiTable,   multitables.empty() ? std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> {{LangAPI::RValue {LangAPI::Int {.value = std::numeric_limits<unsigned char>::max() + 1}}}} : multitables_vector}},
+                .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states })
             };
             lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
         }

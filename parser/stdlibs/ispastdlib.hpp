@@ -309,25 +309,25 @@ namespace DFAAPI {
     template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
     template<typename TOKEN_T> using CharTableTransition = Transition<Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>>;
     template<typename TOKEN_T, typename ...NODES> using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T, NODES...>>;
-    template<typename TOKEN_T, typename ...NODES>
+    template<typename TOKEN_T, typename ...MULTITABLES>
     using AnyTransition = std::variant<
         CharTransition,
         CharTableTransition<TOKEN_T>,
-        MultiTableTransition<TOKEN_T, NODES...>
+        MULTITABLES...
     >;
     // state types
     template<std::size_t N> using CharTableState = State<N, CharTransition>;
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
-    template<typename TOKEN_T, std::size_t N, typename ...NODES> using MultiTableState = State<N, AnyTransition<TOKEN_T, NODES...>>;
+    template<typename TOKEN_T, std::size_t N, typename ...MULTITABLES> using MultiTableState = State<N, AnyTransition<TOKEN_T, MULTITABLES...>>;
     // span state types
     using SpanCharTableState = SpanState<CharTransition>;
     template<typename TOKEN_T> using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
     template<typename TOKEN_T, typename ...NODES> using SpanMultiTableState = SpanState<AnyTransition<TOKEN_T, NODES...>>;
 
     // non-span table types
-    template<std::size_t N, typename TOKEN_T> using CharTable = std::array<std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>, N>;
-    template<std::size_t N, typename TOKEN_T> using TokenTable = std::array<SpanState<TokenTransition<TOKEN_T>>, N>;
-    template<std::size_t N, typename TOKEN_T, typename ...NODES> using MultiTable = std::array<std::variant<SpanCharTableState, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T, NODES...>>, N>;
+    template<typename TOKEN_T, std::size_t N> using CharTable = std::array<std::variant<SpanCharTableState, CharEmptyState<TOKEN_T>>, N>;
+    template<typename TOKEN_T, std::size_t N> using TokenTable = std::array<SpanTokenTableState<TOKEN_T>, N>;
+    template<typename TOKEN_T, std::size_t N, typename ...MULTITABLES> using MultiTable = std::array<std::variant<SpanCharTableState, MultiTableEmptyState<TOKEN_T, MULTITABLES...>>, N>;
 
     // span table types
     template<typename TOKEN_T> using SpanCharTable = Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>;

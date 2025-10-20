@@ -142,6 +142,12 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::CharEmptyState<" + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaMultiTableEmptyState:
             return "::ISPA_STD::DFAAPI::MultiTableEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaCharTable:
+            return "::ISPA_STD::DFAAPI::CharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaTokenTable:
+            return "::ISPA_STD::DFAAPI::TokenTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaMultiTable:
+            return "::ISPA_STD::DFAAPI::MultiTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -356,7 +362,8 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             if (std::holds_alternative<char>(transition.symbol)) {
                 out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
             } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
-                out_content << "dfa_table_" << std::to_string(std::get<std::size_t>(transition.symbol));
+                const auto sym = std::to_string(std::get<std::size_t>(transition.symbol));
+                out_content << "::ISPA_STD::Span {dfa_table_" + sym + ".data(), dfa_table_" + sym + ".size()}";
             } else {
                 out_content << "Tokens::" << corelib::text::join(std::get<stdu::vector<std::string>>(transition.symbol), "_");
             }
