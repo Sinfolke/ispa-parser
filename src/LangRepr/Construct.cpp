@@ -433,7 +433,7 @@ namespace LangRepr {
                     s.exports = LangAPI::StdlibExports::DfaMultiTableState;
                     LangAPI::Symbol sym = tn;
                     sym.path.insert(sym.path.begin(), "Types");
-                    s.template_parameters = {LangAPI::Type {sym}};
+                    s.template_parameters = {LangAPI::Type {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaMultiTransition, .template_parameters = {LangAPI::Type {sym}}}}};
                     break;
                 }
                 default:
@@ -470,7 +470,8 @@ namespace LangRepr {
                             .close_cst_node = transition.close_cst_node,
                             .new_group = transition.new_group,
                             .group_close = transition.group_close,
-                            .accept = transition.accept_index
+                            .accept = transition.accept_index,
+                            .transition_type = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCharTransition}
                         })
                     );
                     c++;
@@ -479,10 +480,14 @@ namespace LangRepr {
                 const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
                 for (const auto &[symbol, transition] : sorted_transitions) {
                     decltype(LangAPI::IspaLibDfaTransition::symbol) assign_symbol;
-                    if (std::holds_alternative<stdu::vector<std::string>>(symbol))
+                    bool is_referring_char_table = true;
+                    if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
                         assign_symbol = lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(symbol));
-                    else
+                        is_referring_char_table = lexer_builder.getDFAS().get().at(lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(symbol))).getType() == DFA::DfaType::Char;
+                    } else {
                         assign_symbol = std::get<char>(symbol);
+                    }
+                    auto new_s = std::get<LangAPI::Type>(s.template_parameters[1]);
                     transitions.push_back(
                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
                             .symbol = assign_symbol,
@@ -492,7 +497,9 @@ namespace LangRepr {
                             .close_cst_node = transition.close_cst_node,
                             .new_group = transition.new_group,
                             .group_close = transition.group_close,
-                            .accept = transition.accept_index
+                            .accept = transition.accept_index,
+                            .transition_type = new_s.getIspaLibSymbol(),
+                            .is_refferring_char_table = is_referring_char_table
                         })
                     );
                 }

@@ -1,6 +1,7 @@
 module DFA.CharMachineDFA;
 import logging;
 import std;
+import cpuf.printf;
 
 auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     // move to current class
@@ -8,42 +9,44 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     auto &states = this->states.get();
     auto states_size = sorted_states.size();
     for (std::size_t i = 0; i < states_size; i++) {
-        const auto &state = sorted_states[i];
-        auto type = sorted_dfa.getStateType(state.transitions);
-        auto initial_else_goto = state.else_goto;
-        if (type == DfaType::Multi) {
-            // found multitable - partition using else_goto
+        auto type = sorted_dfa.getStateType(sorted_states[i].transitions);
+        auto initial_else_goto = sorted_states[i].else_goto;
+        if (type == DfaType::Multi && !sorted_states[i].transitions.empty()) {
+            // Copy maps from the original state
 
-            // find where to begin to partition transitions
-            std::size_t partition_type = NULL_STATE;
-            std::size_t begin = 0;
-            for (const auto &[symbol, next] : state.transitions) {
-                if (partition_type == NULL_STATE) {
-                    partition_type = symbol.index();
-                } else if (symbol.index() != partition_type) {
-                    break;
-                }
-                begin++;
+            std::size_t current_type = sorted_states[i].transitions.begin()->first.index();
+            std::size_t partitioned_state = i;
+            SortedState *current_partition = nullptr;
+            std::size_t erase_from = sorted_states[i].transitions.size();
+            for (std::size_t j = 0; j < sorted_states[i].transitions.size(); ++j) {
+                const auto &[symbol, value] = sorted_states[i].transitions[j];
+                if (symbol.index() != current_type) {
+                    // Start a new partition
+                    auto new_state = sorted_states.makeNew();
+                    if (current_partition == nullptr) {
+                        sorted_states[i].else_goto = new_state;
+                        erase_from = j;
+                    } else {
+                        current_partition->else_goto = new_state;
+                    }
+
+                    getEmptyStateMap()[new_state] = getEmptyStateMap()[partitioned_state];
+                    getIndexToEmptyStateMap()[new_state] = getIndexToEmptyStateMap()[partitioned_state];
+
+                    current_type = symbol.index();
+                    current_partition = &sorted_states[new_state];
+                    partitioned_state = new_state;
+                } else if (current_partition == nullptr)
+                    continue;
+
+                current_partition->transitions.emplace_back(symbol, value);
             }
-            auto partitioned_state = sorted_states.makeNew();
-            partition_type = NULL_STATE;
-            for (std::size_t j = begin; j < state.transitions.size(); j++) {
-                const auto &[symbol, value] = state.transitions.sequence()[j];
-                if (partition_type == NULL_STATE) {
-                    partition_type = symbol.index();
-                    getEmptyStateMap()[partitioned_state] = getEmptyStateMap()[i];
-                    getIndexToEmptyStateMap()[partitioned_state] = getIndexToEmptyStateMap()[i];
-                } else if (partition_type != symbol.index()) {
-                    auto prev = partitioned_state;
-                    partitioned_state = sorted_states.makeNew();
-                    sorted_states[prev].else_goto = partitioned_state;
-                    partition_type = symbol.index();
-                    getEmptyStateMap()[partitioned_state] = getEmptyStateMap()[prev];
-                    getIndexToEmptyStateMap()[partitioned_state] = getIndexToEmptyStateMap()[prev];
-                }
-                sorted_states[partitioned_state].transitions.emplace(symbol, value);
+
+            // Connect the last partition to the original else_goto
+            if (current_partition != nullptr) {
+                current_partition->else_goto = initial_else_goto;
+                sorted_states[i].transitions.erase(sorted_states[i].transitions.begin() + erase_from, sorted_states[i].transitions.end());
             }
-            sorted_states[partitioned_state].else_goto = initial_else_goto;
         }
     }
     // add all characters to transition & unroll else_goto in character states
@@ -58,8 +61,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             for (unsigned char uc = 0; uc < std::numeric_limits<unsigned char>::max() - 1; uc++) {
                 auto c = static_cast<char>(uc);
                 TransitionValue transition;
-                if (state.transitions.contains(c)) {
-                    transition = state.transitions.at(c);
+                if (auto it = std::find_if(state.transitions.begin(), state.transitions.end(), [&](const auto &v) { return std::holds_alternative<char>(v.first) && std::get<char>(v.first) == c; }); it != state.transitions.end()) {
+                    transition = it->second;
                 } else {
                     transition.next = NULL_STATE;
                 }

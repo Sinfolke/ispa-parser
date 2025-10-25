@@ -57,29 +57,16 @@ auto DFA::Base::getTransitionKeyType(const NFA::TransitionKey &transition_key) -
 }
 template<typename Transitions>
 auto DFA::Base::getStateType(const Transitions &transitions) -> DfaType {
-    DfaType dfa_type = DfaType::NONE;
     if constexpr (std::is_same_v<Transitions, SortedTransitions>) {
         for (const auto &[symbol, next] : transitions) {
-            if (std::holds_alternative<char>(symbol)) {
-                if (dfa_type == DfaType::Char || dfa_type == DfaType::NONE) {
-                    dfa_type = DfaType::Char;
-                } else {
-                    dfa_type = DfaType::Multi;
-                    break;
-                }
-            } else {
-                dfa_type = DfaType::Multi;
-                break;
+            if (!std::holds_alternative<char>(symbol)) {
+                return DfaType::Multi;
             }
         }
     } else if constexpr (std::is_same_v<Transitions, CharMachineStateVariant>) {
-        if (std::holds_alternative<FullCharTable>(transitions)) {
-            return DfaType::Char;
-        } else {
-            return DfaType::Multi;
-        }
-    } return DfaType::Char;
-    return dfa_type;
+        return std::holds_alternative<FullCharTable>(transitions) ? DfaType::Char : DfaType::Multi;
+    }
+    return DfaType::Char;
 }
 
 auto DFA::Base::getEmptyState(std::size_t stateIndex) const -> std::size_t {

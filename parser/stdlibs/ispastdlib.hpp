@@ -141,6 +141,14 @@ class Span {
         template<std::size_t N>
         Span(T (&arr)[N]) // from raw array
             : data_(arr), size_(N) {}
+        // Robust converting constructor (like std::span)
+        template<typename U,
+                 typename = std::enable_if_t<
+                     std::is_convertible_v<U (*)[], T (*)[]>
+                 >
+        >
+        Span(const Span<U>& other) noexcept
+            : data_(other.data()), size_(other.size()) {}
 
         [[nodiscard]] pointer data() const { return data_; }
         [[nodiscard]] size_type size() const { return size_; }
@@ -355,7 +363,7 @@ namespace DFAAPI {
     struct SpanState {
         std::size_t else_goto;
         std::size_t else_goto_accept;
-        Span<const T> transitions;
+        Span<T> transitions;
     };
     template<typename TOKEN_T, typename ...NODES>
     struct SpanMultiTable {
@@ -365,12 +373,7 @@ namespace DFAAPI {
             MultiTableEmptyState<TOKEN_T, NODES...>
         >;
 
-        Span<const state_variant_t> states;
-
-        template<typename T,
-                 std::enable_if_t<std::is_constructible_v<Span<const state_variant_t>, T>, int> = 0>
-        explicit SpanMultiTable(T&& t)
-            : states(std::forward<T>(t)) {}
+        Span<state_variant_t> states;
     };
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {

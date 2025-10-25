@@ -419,6 +419,8 @@ export namespace LangAPI {
         std::size_t new_group;
         std::size_t group_close;
         std::size_t accept;
+        IspaLibSymbol transition_type;
+        bool is_refferring_char_table = true;
 
         auto operator==(const IspaLibDfaTransition& other) const {
             return  symbol == other.symbol &&

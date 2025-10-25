@@ -71,7 +71,7 @@ export namespace DFA {
 
     using Transitions = utype::unordered_map<NFA::TransitionKey, TransitionValue>;
     using MultiTransitions = utype::unordered_map<NFA::TransitionKey, stdu::vector<MultiTransitionValue>>;
-    using SortedTransitions = boost::container::flat_map<NFA::TransitionKey, TransitionValue>;
+    using SortedTransitions = stdu::vector<std::pair<NFA::TransitionKey, TransitionValue>>;
     using MultiState = State<MultiTransitions>;
     using SingleState = State<Transitions>;
     using CharMachineStateVariant = std::variant<FullCharTable, SortedTransitions>;

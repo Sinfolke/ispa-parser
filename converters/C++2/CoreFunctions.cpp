@@ -358,7 +358,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 return number != std::numeric_limits<std::size_t>::max() ? std::to_string(number) : "ISPA_STD::DFAAPI::null_state";
             };
             std::ostringstream out_content;
-            out_content << "{ ";
+            out_content << convertIspaLibSymbol(transition.transition_type) << "{ ";
             if (std::holds_alternative<char>(transition.symbol)) {
                 out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
             } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
