@@ -533,7 +533,8 @@ namespace LangRepr {
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
                 const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
                 auto [type, size] = state_exports_cache.at(state_id);
-                if (type.exports == LangAPI::StdlibExports::DfaMultiTableState) {
+                const auto &state = states.state_set.get().at(state_id);
+                if (type.exports == LangAPI::StdlibExports::DfaMultiTableState && std::holds_alternative<DFA::SortedTransitions>(state.transitions) && !std::get<DFA::SortedTransitions>(state.transitions).empty()) {
                     type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
                     type.template_parameters.erase(type.template_parameters.begin());
                     cpuf::printf("Got multitable at {}, {}, state_id: {}", dfa_count, state_count, state_id);
@@ -557,7 +558,7 @@ namespace LangRepr {
             multitables_vector.insert(multitables_vector.begin(), LangAPI::RValue { LangAPI::Int{.value = static_cast<long long>(dfa_table_states.size())}});
             LangAPI::Variable dfa_table_var {
                 .name = "dfa_table_" + std::to_string(dfa_count),
-                .type = LangAPI::Type {LangAPI::IspaLibSymbol {multitables.empty() ? LangAPI::StdlibExports::DfaCharTable : LangAPI::StdlibExports::DfaMultiTable,   multitables.empty() ? std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> {{LangAPI::RValue {LangAPI::Int {.value = std::numeric_limits<unsigned char>::max() + 1}}}} : multitables_vector}},
+                .type = LangAPI::Type {LangAPI::IspaLibSymbol {multitables.empty() ? LangAPI::StdlibExports::DfaCharTable : LangAPI::StdlibExports::DfaMultiTable,   multitables.empty() ? std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> {{LangAPI::RValue {LangAPI::Int {.value = (long long) dfa.get().size()}}}} : multitables_vector}},
                 .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states })
             };
             lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
