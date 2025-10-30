@@ -419,7 +419,7 @@ namespace LangRepr {
         // construct states
         utype::unordered_map<std::size_t, std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
         for (const auto &state : states.state_set) {
-            auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
+            const auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
             auto [type, tn] = states.state_to_type.at(count);
             LangAPI::IspaLibSymbol s;
             switch (type) {
@@ -457,6 +457,7 @@ namespace LangRepr {
             s.template_parameters.insert(s.template_parameters.begin(),LangAPI::Int::createRValue(LangAPI::Int {.value = transition_size}));
             state_exports_cache.emplace(count, std::make_pair(s, transition_size));
             stdu::vector<LangAPI::Expression> transitions;
+            bool empty = false;
             if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
                 const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
                 unsigned char c = std::numeric_limits<unsigned char>::min();
@@ -478,6 +479,7 @@ namespace LangRepr {
                 }
             } else {
                 const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
+                empty = sorted_transitions.empty();
                 for (const auto &[symbol, transition] : sorted_transitions) {
                     decltype(LangAPI::IspaLibDfaTransition::symbol) assign_symbol;
                     bool is_referring_char_table = true;
@@ -488,6 +490,9 @@ namespace LangRepr {
                         assign_symbol = std::get<char>(symbol);
                     }
                     auto new_s = std::get<LangAPI::Type>(s.template_parameters[1]);
+                    if (is_referring_char_table) {
+                        new_s = LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaCharTableTransition};
+                    }
                     transitions.push_back(
                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
                             .symbol = assign_symbol,
@@ -504,38 +509,50 @@ namespace LangRepr {
                     );
                 }
             }
-            lexer.data.push_back(
-                std::make_pair(
-                    std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
-                        .name = std::string("dfa_state_") + std::to_string(count),
-                        .type = s,
-                        .value = LangAPI::Array::createExpression(LangAPI::Array { .values = transitions})
-                    })),
-                    LangAPI::Visibility::Private
-                )
-            );
+            if (!empty) {
+                lexer.data.push_back(
+                    std::make_pair(
+                        std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
+                            .name = std::string("dfa_state_") + std::to_string(count),
+                            .type = s,
+                            .value = LangAPI::Array::createExpression(LangAPI::Array { .values = transitions})
+                        })),
+                        LangAPI::Visibility::Private
+                    )
+                );
+            }
             ++count;
         }
         // construct DFA tables
+        cpuf::printf("dfas.size(): {}", dfas.size());
         for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
             const auto &dfa = dfas.at(dfa_count);
             stdu::vector<LangAPI::Expression> dfa_table_states;
             utype::unordered_set<LangAPI::Type> multitables;
+            bool multitable = false;
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
-                const auto &state = states.location_in_set.at(std::make_pair(dfa_count, state_count));
-                const auto &[type, size] = state_exports_cache.at(state);
+                const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
+                auto [type, size] = state_exports_cache.at(state_id);
                 if (type.exports == LangAPI::StdlibExports::DfaMultiTableState) {
+                    type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
+                    type.template_parameters.erase(type.template_parameters.begin());
+                    cpuf::printf("Got multitable at {}, {}, state_id: {}", dfa_count, state_count, state_id);
+                    multitable = true;
                     multitables.insert(type);
                 }
                 dfa_table_states.push_back(
                     LangAPI::Span::createExpression(
                         LangAPI::Span {
                             .type = std::make_shared<LangAPI::Type>(type),
-                            .sym = LangAPI::Symbol {"dfa_state_" + std::to_string(state)}
+                            .sym = LangAPI::Symbol {"dfa_state_" + std::to_string(state_id)}
                         }
                     )
                 );
             }
+            if (!multitable) {
+                cpuf::printf("Got char table at {}", dfa_count);
+            }
+            cpuf::printf("Dfa table type: {}", (int) dfa.getType());
             std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> multitables_vector{multitables.begin(), multitables.end()};
             multitables_vector.insert(multitables_vector.begin(), LangAPI::RValue { LangAPI::Int{.value = static_cast<long long>(dfa_table_states.size())}});
             LangAPI::Variable dfa_table_var {
@@ -544,6 +561,9 @@ namespace LangRepr {
                 .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states })
             };
             lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
+        }
+        for (const auto &table : lexer_builder.getDFAS()) {
+            cpuf::printf("type: {}", (int) table.getType());
         }
         holder.push(lexer);
     }

@@ -14,7 +14,7 @@ export namespace DFA {
         Char, Token, Multi, NONE
     };
     struct TransitionValue {
-        std::size_t next;
+        std::size_t next = NULL_STATE;
         bool new_cst_node = false;
         bool new_member = false;
         bool close_cst_node = false;

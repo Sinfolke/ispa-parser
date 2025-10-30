@@ -93,6 +93,7 @@ export namespace LangAPI {
     enum class StdlibExports {
         Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
         DfaMultiTransition, DfaCharState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
+        DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
         DfaCharTable, DfaTokenTable, DfaMultiTable
     };
     struct DeclarationsLevel {

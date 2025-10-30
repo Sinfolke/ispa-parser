@@ -50,10 +50,12 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         }
     }
     // add all characters to transition & unroll else_goto in character states
+    bool has_multi_state = false;
     for (auto &state : sorted_states) {
         FullCharTable char_table;
         if (state.transitions.empty()) {
-            states.emplace_back(state.nfa_states, std::variant<FullCharTable, SortedTransitions> {}, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
+            states.emplace_back(state.nfa_states, std::variant<FullCharTable, SortedTransitions> {SortedTransitions {}}, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
+            cpuf::printf("State empty");
             continue;
         }
         if (std::holds_alternative<char>(state.transitions.begin()->first)) {
@@ -61,7 +63,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             for (unsigned char uc = 0; uc < std::numeric_limits<unsigned char>::max() - 1; uc++) {
                 auto c = static_cast<char>(uc);
                 TransitionValue transition;
-                if (auto it = std::find_if(state.transitions.begin(), state.transitions.end(), [&](const auto &v) { return std::holds_alternative<char>(v.first) && std::get<char>(v.first) == c; }); it != state.transitions.end()) {
+                if (auto it = std::find_if(state.transitions.begin(), state.transitions.end(), [&](const auto &v) { return std::get<char>(v.first) == c; }); it != state.transitions.end()) {
                     transition = it->second;
                 } else {
                     transition.next = NULL_STATE;
@@ -70,9 +72,11 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             }
             states.emplace_back(state.nfa_states, char_table, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         } else {
+            has_multi_state = true;
             states.emplace_back(state.nfa_states, state.transitions, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         }
     }
+    cpuf::printf("has multi state: {}", has_multi_state);
     return this->states;
 }
 auto DFA::CharMachineDFA::getType() const -> DfaType {
