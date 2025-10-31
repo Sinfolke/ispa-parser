@@ -349,12 +349,12 @@ namespace DFAAPI {
         MultiTableTransition<TOKEN_T>
     >;
     // state types
-    template<std::size_t N> using CharTableState = State<N, CharTransition>;
+    template<std::size_t N> using CharState = State<N, CharTransition>;
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
     template<typename TOKEN_T, std::size_t N> using CallableTokenState = State<N, CallableTokenTransition<TOKEN_T>>;
     template<typename TOKEN_T, std::size_t N> using MultiTableState = State<N, AnyTransition<TOKEN_T>>;
     // span state types
-    using SpanCharTableState = SpanState<CharTransition>;
+    using SpanCharState = SpanState<CharTransition>;
     template<typename TOKEN_T> using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
     template<typename TOKEN_T> using SpanCallableTokenState = SpanState<CallableTokenTransition<TOKEN_T>>;
     template<typename TOKEN_T> using SpanMultiTableState = SpanState<AnyTransition<TOKEN_T>>;
@@ -363,7 +363,7 @@ namespace DFAAPI {
     template<typename TOKEN_T, std::size_t N> using CharTable = std::array<std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>, N>;
     template<typename TOKEN_T, std::size_t N> using TokenTable = std::array<SpanState<TokenTransition<TOKEN_T>>, N>;
     template<typename TOKEN_T, std::size_t N> using CallableTokenTable = std::array<std::variant<SpanState<CallableTokenTransition<TOKEN_T>>, CallableTokenEmptyState<TOKEN_T>>, N>;
-    template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>, N>;
+    template<typename TOKEN_T, std::size_t N> using MultiTable = std::array<std::variant<SpanCharState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>, N>;
 
     // span table types
     template<typename TOKEN_T> using SpanCharTable = Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>;
@@ -396,7 +396,7 @@ namespace DFAAPI {
     };
     template<typename TOKEN_T>
     struct SpanMultiTable {
-        Span<const std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
+        Span<const std::variant<SpanCharState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T>>> states;
     };
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
@@ -567,7 +567,7 @@ using fcdt_table = std::array<fcdt_variant<TOKEN_T>, std::numeric_limits<unsigne
 template<typename TOKEN_T>
 class DFA {
 protected:
-    static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
+    static auto find_key(const DFAAPI::SpanCharState &state, const char* pos) -> const DFAAPI::CharTransition* {
         if (const auto &t = state.transitions[*pos]; t.next != DFAAPI::null_state)
             return &t;
         return nullptr;
@@ -605,7 +605,7 @@ protected:
         do {
             //printf("table.size: %zu, state: %zu\n", table.size(), state);
             fflush(stdout);
-            const auto &s = std::get<DFAAPI::SpanCharTableState>(table[state]);
+            const auto &s = std::get<DFAAPI::SpanCharState>(table[state]);
             decltype(auto) new_state = find_key(s, pos);
             if (new_state != nullptr) {
                 pos++;
@@ -731,7 +731,7 @@ protected:
 };
 template<typename TOKEN_T>
 class AdvancedDFA : DFA<TOKEN_T> {
-    static auto find_key(const DFAAPI::SpanCharTableState &state, const char* pos) -> const DFAAPI::CharTransition* {
+    static auto find_key(const DFAAPI::SpanCharState &state, const char* pos) -> const DFAAPI::CharTransition* {
         for (const auto &transition : state.transitions) {
             if (*pos == transition.symbol) {
                 printf("lookup for symbol %c successfull\n", *pos);
@@ -770,7 +770,7 @@ protected:
         bool failed = false;
         do {
             std::visit(overload {
-                [&](const DFAAPI::SpanCharTableState &t) {
+                [&](const DFAAPI::SpanCharState &t) {
                     decltype(auto) new_state = find_key(t, pos);
                     if (new_state == nullptr) {
                         if (t.else_goto) {

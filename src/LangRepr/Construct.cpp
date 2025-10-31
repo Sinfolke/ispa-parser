@@ -482,16 +482,19 @@ namespace LangRepr {
                 empty = sorted_transitions.empty();
                 for (const auto &[symbol, transition] : sorted_transitions) {
                     decltype(LangAPI::IspaLibDfaTransition::symbol) assign_symbol;
-                    bool is_referring_char_table = true;
+                    bool is_referring_char_table = false;
                     if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
                         assign_symbol = lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(symbol));
                         is_referring_char_table = lexer_builder.getDFAS().get().at(lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(symbol))).getType() == DFA::DfaType::Char;
+
                     } else {
                         assign_symbol = std::get<char>(symbol);
                     }
                     auto new_s = std::get<LangAPI::Type>(s.template_parameters[1]);
                     if (is_referring_char_table) {
                         new_s = LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaCharTableTransition};
+                        s.template_parameters.clear();
+                        s.exports = LangAPI::StdlibExports::DfaCharTableState;
                     }
                     transitions.push_back(
                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
@@ -540,15 +543,29 @@ namespace LangRepr {
                     cpuf::printf("Got multitable at {}, {}, state_id: {}", dfa_count, state_count, state_id);
                     multitable = true;
                     multitables.insert(type);
+                } else {
+                    type.exports = LangAPI::StdlibExports::DfaSpanCharTableState;
+                    type.template_parameters.clear();
                 }
-                dfa_table_states.push_back(
-                    LangAPI::Span::createExpression(
-                        LangAPI::Span {
-                            .type = std::make_shared<LangAPI::Type>(type),
-                            .sym = LangAPI::Symbol {"dfa_state_" + std::to_string(state_id)}
-                        }
-                    )
-                );
+                if (type.exports == LangAPI::StdlibExports::DfaSpanCharTableState) {
+                    dfa_table_states.push_back(LangAPI::IspaLibDfaSpanCharState::createExpression(LangAPI::IspaLibDfaSpanCharState {.else_goto = state.else_goto, .else_goto_accept = state.else_goto_accept, .state_id = state_id}));
+                } else {
+                    dfa_table_states.push_back(LangAPI::IspaLibDfaSpanMultiTableState::createExpression(LangAPI::IspaLibDfaSpanMultiTableState {
+                        .else_goto = state.else_goto, .else_goto_accept = state.else_goto_accept, .state_id = state_id,
+
+                        .mutli_table_transitions = std::accumulate(
+                            type.template_parameters.begin(),
+                            type.template_parameters.end(),
+                            std::vector<LangAPI::IspaLibSymbol>{},
+                            [](auto acc, const std::variant<LangAPI::Type, LangAPI::RValue>& t) {
+                                const auto &tp = std::get<LangAPI::Type>(t);
+                                if (tp.isIspaLibSymbol()) {
+                                    acc.push_back(tp.getIspaLibSymbol());
+                                }
+                                return acc;
+                            })
+                    }));
+                }
             }
             if (!multitable) {
                 cpuf::printf("Got char table at {}", dfa_count);

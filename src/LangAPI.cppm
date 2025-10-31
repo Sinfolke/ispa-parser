@@ -74,7 +74,7 @@ export namespace LangAPI {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference, Span
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, Reference, Span
     };
     enum class ExpressionValueType {
         Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
@@ -92,7 +92,7 @@ export namespace LangAPI {
     };
     enum class StdlibExports {
         Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
-        DfaMultiTransition, DfaCharState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
+        DfaMultiTransition, DfaCharState, DfaCharTableState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
         DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
         DfaCharTable, DfaTokenTable, DfaMultiTable
     };
@@ -421,7 +421,7 @@ export namespace LangAPI {
         std::size_t group_close;
         std::size_t accept;
         IspaLibSymbol transition_type;
-        bool is_refferring_char_table = true;
+        bool is_refferring_char_table = false;
 
         auto operator==(const IspaLibDfaTransition& other) const {
             return  symbol == other.symbol &&
@@ -453,6 +453,35 @@ export namespace LangAPI {
             return std::tie(transitions);
         }
     };
+    struct IspaLibDfaSpanCharState : RValueLevel {
+        std::size_t else_goto = std::numeric_limits<std::size_t>::max();
+        std::size_t else_goto_accept = std::numeric_limits<std::size_t>::max();
+        std::size_t state_id;
+        auto operator==(const IspaLibDfaSpanCharState& other) const {
+            return else_goto == other.else_goto && else_goto_accept == other.else_goto_accept && state_id == other.state_id;
+        }
+        auto operator!=(const IspaLibDfaSpanCharState& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(else_goto, else_goto_accept, state_id);
+        }
+    };
+    struct IspaLibDfaSpanMultiTableState : RValueLevel {
+        std::size_t else_goto = std::numeric_limits<std::size_t>::max();
+        std::size_t else_goto_accept = std::numeric_limits<std::size_t>::max();
+        std::size_t state_id;
+        stdu::vector<IspaLibSymbol> mutli_table_transitions;
+        auto operator==(const IspaLibDfaSpanMultiTableState& other) const {
+            return else_goto == other.else_goto && else_goto_accept == other.else_goto_accept && state_id == other.state_id && mutli_table_transitions == other.mutli_table_transitions;
+        }
+        auto operator!=(const IspaLibDfaSpanMultiTableState& other) const { return !(*this == other); }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(else_goto, else_goto_accept, state_id, mutli_table_transitions);
+        }
+    };
     struct Reference : RValueLevel {
         std::shared_ptr<RValue> value;
 
@@ -481,7 +510,7 @@ export namespace LangAPI {
         }
     };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, Reference, Span> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, Reference, Span> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -523,6 +552,8 @@ export namespace LangAPI {
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
         bool isInheritance()  const { return std::holds_alternative<Inheritance>(value); }
         bool isIspaLibDfaTransition()  const { return std::holds_alternative<IspaLibDfaTransition>(value); }
+        bool isIspaLibDfaSpanState()  const { return std::holds_alternative<IspaLibDfaSpanCharState>(value); }
+        bool isIspaLibDfaSpanMultiTableState()  const { return std::holds_alternative<IspaLibDfaSpanMultiTableState>(value); }
         // bool isIspaLibDfaState()  const { return std::holds_alternative<IspaLibDfaState>(value); }
         bool isReference()  const { return std::holds_alternative<Reference>(value); }
         bool isSpan()  const { return std::holds_alternative<Span>(value); }
@@ -542,6 +573,8 @@ export namespace LangAPI {
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
         Inheritance&  getInheritance()  { return std::get<Inheritance>(value); }
         IspaLibDfaTransition&  getIspaLibDfaTransition()  { return std::get<IspaLibDfaTransition>(value); }
+        IspaLibDfaSpanCharState&  getIspaLibDfaSpanState()  { return std::get<IspaLibDfaSpanCharState>(value); }
+        IspaLibDfaSpanMultiTableState&  getIspaLibDfaMultiTableState()  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
         // IspaLibDfaState&  getIspaLibDfaState()  { return std::get<IspaLibDfaState>(value); }
         Reference&  getReference()  { return std::get<Reference>(value); }
         Span&  getSpan()  { return std::get<Span>(value); }
@@ -559,6 +592,8 @@ export namespace LangAPI {
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
         const Inheritance&  getInheritance() const  { return std::get<Inheritance>(value); }
         const IspaLibDfaTransition&  getIspaLibDfaTransition() const  { return std::get<IspaLibDfaTransition>(value); }
+        const IspaLibDfaSpanCharState&  getIspaLibDfaSpanCharState() const  { return std::get<IspaLibDfaSpanCharState>(value); }
+        const IspaLibDfaSpanMultiTableState&  getIspaLibDfaSpanMultiTableState() const  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
         // const IspaLibDfaState&  getIspaLibDfaState() const  { return std::get<IspaLibDfaState>(value); }
         const Reference&  getReference() const  { return std::get<Reference>(value); }
         const Span&  getSpan() const  { return std::get<Span>(value); }

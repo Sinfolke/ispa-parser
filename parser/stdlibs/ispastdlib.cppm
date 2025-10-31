@@ -37,11 +37,11 @@ export namespace ISPA_STD {
         using ISPA_STD::DFAAPI::CallableTokenTableTransition;
         using ISPA_STD::DFAAPI::MultiTableTransition;
         using ISPA_STD::DFAAPI::AnyTransition;
-        using ISPA_STD::DFAAPI::CharTableState;
+        using ISPA_STD::DFAAPI::CharState;
         using ISPA_STD::DFAAPI::TokenTableState;
         using ISPA_STD::DFAAPI::CallableTokenState;
         using ISPA_STD::DFAAPI::MultiTableState;
-        using ISPA_STD::DFAAPI::SpanCharTableState;
+        using ISPA_STD::DFAAPI::SpanCharState;
         using ISPA_STD::DFAAPI::SpanTokenTableState;
         using ISPA_STD::DFAAPI::SpanCallableTokenState;
         using ISPA_STD::DFAAPI::SpanMultiTableState;
