@@ -418,6 +418,8 @@ namespace LangRepr {
         auto states = lexer_builder.getDFAS().getStateSet();
         // construct states
         utype::unordered_map<std::size_t, std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
+        // Tracks which DFA tables are referenced by MultiTable transitions and their node type sets
+        utype::unordered_map<std::size_t, utype::unordered_set<LangAPI::Type>> referenced_by_multitable;
         for (const auto &state : states.state_set) {
             const auto &dfa = dfas.at(states.state_in_dfa_location_map.at(count));
             auto [type, tn] = states.state_to_type.at(count);
@@ -495,6 +497,17 @@ namespace LangRepr {
                         new_s = LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaCharTableTransition};
                         s.template_parameters.clear();
                         s.exports = LangAPI::StdlibExports::DfaCharTableState;
+                    } else if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
+                        // Symbol refers to another DFA table which must be generated as MultiTable since this transition is MultiTable
+                        const auto referred_dfa_index = std::get<std::size_t>(assign_symbol);
+                        // Collect node types from the MultiTable transition type so that the referenced table knows it must be MultiTable with these nodes
+                        if (new_s.isIspaLibSymbol() && new_s.getIspaLibSymbol().exports == LangAPI::StdlibExports::DfaMultiTransition) {
+                            for (const auto &tp : new_s.getIspaLibSymbol().template_parameters) {
+                                if (std::holds_alternative<LangAPI::Type>(tp)) {
+                                    referenced_by_multitable[referred_dfa_index].insert(std::get<LangAPI::Type>(tp));
+                                }
+                            }
+                        }
                     }
                     transitions.push_back(
                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
@@ -533,16 +546,45 @@ namespace LangRepr {
             stdu::vector<LangAPI::Expression> dfa_table_states;
             utype::unordered_set<LangAPI::Type> multitables;
             bool multitable = false;
+            const bool forced_multitable = referenced_by_multitable.count(dfa_count) != 0;
+            if (forced_multitable) {
+                cpuf::printf("Force multitable for dfa #%{} due to external references count: %{}", dfa_count, referenced_by_multitable.at(dfa_count).size());
+            }
+            // Precompute node types required by external MultiTable transitions referencing this table
+            stdu::vector<LangAPI::Type> forced_nodes;
+            if (forced_multitable) {
+                multitable = true;
+                for (const auto &tp : referenced_by_multitable.at(dfa_count)) forced_nodes.push_back(tp);
+            }
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
                 const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
                 auto [type, size] = state_exports_cache.at(state_id);
                 const auto &state = states.state_set.get().at(state_id);
+                // If this table is forced to be multitable due to external references, mark every state as SpanMultiTableState
+                if (forced_multitable) {
+                    type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
+                    type.template_parameters.clear();
+                    for (const auto &tp : forced_nodes) type.template_parameters.push_back(tp);
+                    multitable = true;
+                }
                 if (type.exports == LangAPI::StdlibExports::DfaMultiTableState && std::holds_alternative<DFA::SortedTransitions>(state.transitions) && !std::get<DFA::SortedTransitions>(state.transitions).empty()) {
                     type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
                     type.template_parameters.erase(type.template_parameters.begin());
                     cpuf::printf("Got multitable at {}, {}, state_id: {}", dfa_count, state_count, state_id);
                     multitable = true;
-                    multitables.insert(type);
+                    // Collect node types from this state's multitable transitions into table-level node set
+                    for (const auto &tparam : type.template_parameters) {
+                        if (std::holds_alternative<LangAPI::Type>(tparam)) {
+                            const auto &mt = std::get<LangAPI::Type>(tparam);
+                            if (mt.isIspaLibSymbol() && mt.getIspaLibSymbol().exports == LangAPI::StdlibExports::DfaMultiTransition) {
+                                for (const auto &nt : mt.getIspaLibSymbol().template_parameters) {
+                                    if (std::holds_alternative<LangAPI::Type>(nt)) {
+                                        multitables.insert(std::get<LangAPI::Type>(nt));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } else {
                     type.exports = LangAPI::StdlibExports::DfaSpanCharTableState;
                     type.template_parameters.clear();
@@ -571,6 +613,13 @@ namespace LangRepr {
                 cpuf::printf("Got char table at {}", dfa_count);
             }
             cpuf::printf("Dfa table type: {}", (int) dfa.getType());
+            // If this DFA table is referenced by MultiTable transitions elsewhere, force MultiTable kind and merge required node types
+            if (referenced_by_multitable.count(dfa_count)) {
+                multitable = true;
+                for (const auto &tp : referenced_by_multitable.at(dfa_count)) {
+                    multitables.insert(tp);
+                }
+            }
             std::vector<std::variant<LangAPI::Type, LangAPI::RValue>> multitables_vector{multitables.begin(), multitables.end()};
             multitables_vector.insert(multitables_vector.begin(), LangAPI::RValue { LangAPI::Int{.value = static_cast<long long>(dfa_table_states.size())}});
             LangAPI::Variable dfa_table_var {

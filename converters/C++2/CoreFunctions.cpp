@@ -371,7 +371,17 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
             } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
                 const auto sym = std::to_string(std::get<std::size_t>(transition.symbol));
-                out_content << "::ISPA_STD::Span {dfa_table_" + sym + ".data(), dfa_table_" + sym + ".size()}";
+                // When referring to another DFA table as a symbol, the expected key type depends on transition kind:
+                // - CharTableTransition expects Span<const variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>> → plain ::ISPA_STD::Span{...}
+                // - MultiTableTransition expects DFAAPI::SpanMultiTable<Tokens, Nodes...> → wrap span into SpanMultiTable
+                if (transition.is_refferring_char_table) {
+                    out_content << "::ISPA_STD::Span {dfa_table_" + sym + ".data(), dfa_table_" + sym + ".size()}";
+                } else {
+                    // Build SpanMultiTable type using transition.transition_type template parameters (the node types)
+                    out_content << "::ISPA_STD::DFAAPI::SpanMultiTable<Tokens, "
+                                << convertTemplates(transition.transition_type.template_parameters)
+                                << ">{ ::ISPA_STD::Span {dfa_table_" << sym << ".data(), dfa_table_" << sym << ".size()} }";
+                }
             } else {
                 out_content << "Tokens::" << corelib::text::join(std::get<stdu::vector<std::string>>(transition.symbol), "_");
             }

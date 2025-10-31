@@ -337,7 +337,8 @@ namespace DFAAPI {
     // non-span table types
     template<typename TOKEN_T, std::size_t N> using CharTable = std::array<std::variant<SpanCharState, CharEmptyState<TOKEN_T>>, N>;
     template<typename TOKEN_T, std::size_t N> using TokenTable = std::array<SpanTokenTableState<TOKEN_T>, N>;
-    template<typename TOKEN_T, std::size_t N, typename ...MULTITABLES> using MultiTable = std::array<std::variant<SpanCharState, MultiTableEmptyState<TOKEN_T, MULTITABLES...>>, N>;
+    // Include SpanMultiTableState in the element variant so that Span<MultiTable<...>> matches SpanMultiTable<...>::state_variant_t
+    template<typename TOKEN_T, std::size_t N, typename ...MULTITABLES> using MultiTable = std::array<std::variant<SpanCharState, SpanMultiTableState<TOKEN_T>, MultiTableEmptyState<TOKEN_T, MULTITABLES...>>, N>;
 
     // span table types
     template<typename TOKEN_T> using SpanCharTable = Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>>;
