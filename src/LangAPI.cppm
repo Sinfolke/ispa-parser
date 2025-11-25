@@ -169,6 +169,10 @@ export namespace LangAPI {
         bool operator!=(const Char& c) const {
             return !(*this == c);
         }
+        bool operator<(const Char& a) const {
+            if (value != a.value) return value < a.value;
+            else return escaped < a.escaped;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -181,6 +185,7 @@ export namespace LangAPI {
 
         bool operator==(const Int& other) const { return value == other.value; }
         bool operator!=(const Int& other) const { return !(*this == other); }
+        bool operator<(const Int& other) const { return value < other.value; }
 
     private:
         friend struct ::uhash;
@@ -194,7 +199,7 @@ export namespace LangAPI {
 
         bool operator==(const Bool& other) const { return value == other.value; }
         bool operator!=(const Bool& other) const { return !(*this == other); }
-
+        bool operator<(const Bool& other) const { return value < other.value; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -207,7 +212,7 @@ export namespace LangAPI {
 
         bool operator==(const Float& other) const { return value == other.value; }
         bool operator!=(const Float& other) const { return !(*this == other); }
-
+        bool operator<(const Float& other) const { return value < other.value; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -220,7 +225,7 @@ export namespace LangAPI {
 
         bool operator==(const String& other) const { return value == other.value; }
         bool operator!=(const String& other) const { return !(*this == other); }
-
+        bool operator<(const String& other) const { return value < other.value; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -233,7 +238,7 @@ export namespace LangAPI {
         stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
         bool operator==(const Array& other) const { return values == other.values; }
         bool operator!=(const Array& other) const { return !(*this == other); }
-
+        bool operator<(const Array& other) const { return values < other.values; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -243,10 +248,26 @@ export namespace LangAPI {
 
     struct FixedSizeArray : RValueLevel {
         stdu::vector<Expression> values;
-        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
         bool operator==(const FixedSizeArray& other) const { return values == other.values; }
         bool operator!=(const FixedSizeArray& other) const { return !(*this == other); }
-
+        bool operator<(const FixedSizeArray& other) const {
+            if (values != other.values) return values < other.values;
+            else if (template_parameters.size() != other.template_parameters.size()) return template_parameters.size() < other.template_parameters.size();
+            else for (std::size_t i = 0; i < template_parameters.size(); ++i) {
+                if (template_parameters[i].index() != other.template_parameters[i].index()) return template_parameters[i].index() < other.template_parameters[i].index();
+                else if (std::holds_alternative<std::shared_ptr<Type>>(template_parameters[i])) {
+                    if (const auto &a = std::get<std::shared_ptr<Type>>(template_parameters[i]), &b = std::get<std::shared_ptr<Type>>(other.template_parameters[i]); a != b) {
+                        return a < b;
+                    };
+                } else if (std::holds_alternative<std::shared_ptr<RValue>>(template_parameters[i])) {
+                    if (const auto &a = std::get<std::shared_ptr<RValue>>(template_parameters[i]), &b = std::get<std::shared_ptr<RValue>>(other.template_parameters[i]); a != b) {
+                        return a < b;
+                    }
+                }
+            }
+            return false;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -256,13 +277,17 @@ export namespace LangAPI {
     struct Map : RValueLevel {
         stdu::vector<std::variant<Int, String>> keys;
         stdu::vector<Expression> values;
-        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
 
         bool operator==(const Map& other) const {
             return keys == other.keys && values == other.values;
         }
         bool operator!=(const Map& other) const { return !(*this == other); }
-
+        bool operator<(const Map& other) const {
+            if (keys != other.keys) return keys < other.keys;
+            else if (values != other.values) return values < other.values;
+            else return template_parameters < other.template_parameters;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -281,7 +306,7 @@ export namespace LangAPI {
                    sequence == other.sequence;
         }
         bool operator!=(const Pos& other) const { return !(*this == other); }
-
+        bool operator<(const Pos& other) const { return offset < other.offset; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -297,7 +322,10 @@ export namespace LangAPI {
             return name == other.name && args == other.args;
         }
         bool operator!=(const FunctionCall& other) const { return !(*this == other); }
-
+        bool operator<(const FunctionCall& other) const {
+            if (name != other.name) return name < other.name;
+            else return args < other.args;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -313,7 +341,10 @@ export namespace LangAPI {
             return method == other.method && args == other.args;
         }
         bool operator!=(const ArrayMethodCall& other) const { return !(*this == other); }
-
+        bool operator<(const ArrayMethodCall& other) const {
+            if (method != other.method) return method < other.method;
+            else return args < other.args;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -341,7 +372,7 @@ export namespace LangAPI {
         Symbol(stdu::vector<PathPart> &&path) : path(std::move(path)) {}
         bool operator==(const Symbol& other) const { return path == other.path; }
         bool operator!=(const Symbol& other) const { return !(*this == other); }
-
+        bool operator<(const Symbol& other) const { return path < other.path; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -357,7 +388,10 @@ export namespace LangAPI {
             return what == other.what && path == other.path;
         }
         bool operator!=(const StorageSymbol& other) const { return !(*this == other); }
-
+        bool operator<(const StorageSymbol& other) const {
+            if (what != other.what) return what < other.what;
+            else return path < other.path;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -366,10 +400,13 @@ export namespace LangAPI {
     };
     struct IspaLibSymbol {
         StdlibExports exports;
-        stdu::vector<std::variant<Type, RValue>> template_parameters;
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
         bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
         bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
-
+        bool operator<(const IspaLibSymbol& other) const {
+            if (exports != other.exports) return exports < other.exports;
+            else return template_parameters < other.template_parameters;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -384,7 +421,10 @@ export namespace LangAPI {
             return name == other.name && args == other.args;
         }
         bool operator!=(const Inheritance& other) const { return !(*this == other); }
-
+        bool operator<(const Inheritance& other) const {
+            if (name != other.name) return name < other.name;
+            else return args < other.args;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -395,21 +435,25 @@ export namespace LangAPI {
     struct Token : RValueLevel {
         bool operator==(const Token&) const { return true; }
         bool operator!=(const Token&) const { return false; }
+        bool operator<(const Token&) const { return false; }
     };
 
     struct Rule : RValueLevel {
         bool operator==(const Rule&) const { return true; }
         bool operator!=(const Rule&) const { return false; }
+        bool operator<(const Rule&) const { return false; }
     };
 
     struct TokenResult {
         bool operator==(const TokenResult&) const { return true; }
         bool operator!=(const TokenResult&) const { return false; }
+        bool operator<(const TokenResult&) const { return false; }
     };
 
     struct RuleResult {
         bool operator==(const RuleResult&) const { return true; }
         bool operator!=(const RuleResult&) const { return false; }
+        bool operator<(const RuleResult&) const { return false; }
     };
     struct IspaLibDfaTransition : RValueLevel {
         std::variant<stdu::vector<std::string>, std::size_t, char> symbol;
@@ -434,6 +478,17 @@ export namespace LangAPI {
                     accept == other.accept;
         }
         auto operator!=(const IspaLibDfaTransition& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaTransition& other) const {
+            if (symbol != other.symbol) return symbol < other.symbol;
+            else if (next != other.next) return next < other.next;
+            else if (new_cst_node != other.new_cst_node) return new_cst_node < other.new_cst_node;
+            else if (new_member != other.new_member) return new_member < other.new_member;
+            else if (close_cst_node != other.close_cst_node) return close_cst_node < other.close_cst_node;
+            else if (new_group != other.new_group) return new_group < other.new_group;
+            else if (group_close != other.group_close) return group_close < other.group_close;
+            else if (accept != other.accept) return accept < other.accept;
+            else return transition_type < other.transition_type;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -447,6 +502,7 @@ export namespace LangAPI {
             return transitions == other.transitions;
         }
         auto operator!=(const IspaLibDfaState& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaState& other) const { return transitions < other.transitions;}
     private:
         friend struct ::uhash;
         auto members() const {
@@ -461,6 +517,11 @@ export namespace LangAPI {
             return else_goto == other.else_goto && else_goto_accept == other.else_goto_accept && state_id == other.state_id;
         }
         auto operator!=(const IspaLibDfaSpanCharState& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaSpanCharState& other) const {
+            if (else_goto != other.else_goto) return else_goto < other.else_goto;
+            else if (else_goto_accept != other.else_goto_accept) return else_goto_accept < other.else_goto_accept;
+            else return state_id < other.state_id;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -476,6 +537,12 @@ export namespace LangAPI {
             return else_goto == other.else_goto && else_goto_accept == other.else_goto_accept && state_id == other.state_id && mutli_table_transitions == other.mutli_table_transitions;
         }
         auto operator!=(const IspaLibDfaSpanMultiTableState& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaSpanMultiTableState& other) const {
+            if (else_goto != other.else_goto) return else_goto < other.else_goto;
+            else if (else_goto_accept != other.else_goto_accept) return else_goto_accept < other.else_goto_accept;
+            else if (state_id != other.state_id) return state_id < other.state_id;
+            else return mutli_table_transitions < other.mutli_table_transitions;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -489,6 +556,7 @@ export namespace LangAPI {
             return value == other.value;
         }
         auto operator!=(const Reference& other) const { return !(*this == other); }
+        auto operator<(const Reference& other) const { return value < other.value; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -503,6 +571,10 @@ export namespace LangAPI {
             return sym == other.sym;
         }
         auto operator!=(const Span& other) const { return !(*this == other); }
+        auto operator<(const Span& other) const {
+            if (type != other.type) return type < other.type;
+            else return sym < other.sym;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -609,7 +681,17 @@ export namespace LangAPI {
         bool operator!=(const RValue& rhs) {
             return value != rhs.value;
         }
-
+        bool operator<(const RValue& rhs) const {
+            return std::visit([&](const auto &v1, const auto &v2) {
+                if constexpr (std::is_same_v<std::decay_t<decltype(v1)>, std::monostate>) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(v2)>, std::monostate>) {
+                        return false;
+                    } else return true;
+                } else if constexpr (std::is_same_v<std::decay_t<decltype(v2)>, std::monostate>) return false;
+                else if constexpr (std::is_same_v<std::decay_t<decltype(v1)>, std::decay_t<decltype(v2)>>) return v1 < v2;
+                else return value.index() < rhs.value.index();
+            }, value, rhs.value);
+        }
     };
     struct Type {
         std::variant<ValueType, Symbol, IspaLibSymbol> type;
@@ -684,6 +766,10 @@ export namespace LangAPI {
         bool operator!=(const Type &other) const {
             return !(*this == other);
         }
+        bool operator<(const Type &other) const {
+            if (type != other.type) return type < other.type;
+            else return template_parameters < other.template_parameters;
+        }
         friend std::ostream& operator<<(std::ostream& os, const Type& obj) {
             if (obj.isSymbol()) {
                 for (const auto &t : obj.getSymbol().path) {
@@ -734,6 +820,9 @@ export namespace LangAPI {
         auto operator!=(const ForwardDeclaredClass& other) const {
             return !(*this == other);
         }
+        auto operator<(const ForwardDeclaredClass& other) const {
+            return name < other.name;
+        }
     };
     struct Class : DeclarationLevel {
         std::string name;
@@ -745,6 +834,12 @@ export namespace LangAPI {
         }
         bool operator!=(const Class& other) const {
             return !(*this == other);
+        }
+        bool operator<(const Class& other) const {
+            if (name != other.name) return name < other.name;
+            else if (data != other.data) return data < other.data;
+            else if (inherit_members != other.inherit_members) return inherit_members < other.inherit_members;
+            else return default_visibility < other.default_visibility;
         }
     private:
         friend struct ::uhash;
@@ -760,6 +855,10 @@ export namespace LangAPI {
         }
         bool operator!=(const Namespace& other) const {
             return !(*this == other);
+        }
+        bool operator<(const Namespace& other) const {
+            if (name != other.name) return name < other.name;
+            else return declarations < other.declarations;
         }
     private:
         friend struct ::uhash;
@@ -777,6 +876,11 @@ export namespace LangAPI {
         bool operator!=(const Function& other) const {
             return !(*this == other);
         }
+        bool operator<(const Function& other) const {
+            if (name != other.name) return name < other.name;
+            else if (parameters != other.parameters) return parameters < other.parameters;
+            else return statements < other.statements;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -791,6 +895,10 @@ export namespace LangAPI {
         }
         bool operator!=(const TypeAlias& other) const {
             return !(*this == other);
+        }
+        bool operator<(const TypeAlias& other) const {
+            if (name != other.name) return name < other.name;
+            else return type < other.type;
         }
     private:
         friend struct ::uhash;
@@ -812,6 +920,10 @@ export namespace LangAPI {
         bool operator!=(const Enum& other) const {
             return !(*this == other);
         }
+        bool operator<(const Enum& other) const {
+            if (name != other.name) return name < other.name;
+            else return value < other.value;
+        }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -827,6 +939,11 @@ export namespace LangAPI {
         }
         bool operator!=(const Variable& other) const {
             return !(*this == other);
+        }
+        bool operator<(const Variable& other) const {
+            if (name != other.name) return name < other.name;
+            else if (type != other.type) return type < other.type;
+            else return value < other.value;
         }
         // Variable(const std::string &&n, const RValue &&v) : name(std::move(n)), value(std::move(v)) {}
         // Variable(const std::string &n, const RValue &v) : name(n), value(v)) {}
@@ -852,6 +969,9 @@ export namespace LangAPI {
         }
         bool operator!=(const Declaration& other) const {
             return value != other.value;
+        }
+        bool operator<(const Declaration& other) const {
+            return value < other.value;
         }
         // Is functions
         bool isClass() const { return std::holds_alternative<Class>(value); }
@@ -892,6 +1012,7 @@ export namespace LangAPI {
     struct Break : ExpressionValueLevel {
         bool operator==(const Break&) const { return true; }
         bool operator!=(const Break&) const { return false; }
+        bool operator<(const Break&) const { return false; }
 
     private:
         friend struct ::uhash;
@@ -902,6 +1023,7 @@ export namespace LangAPI {
     struct Continue : ExpressionValueLevel {
         bool operator==(const Continue&) const { return true; }
         bool operator!=(const Continue&) const { return false; }
+        bool operator<(const Continue&) const { return false; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -912,6 +1034,7 @@ export namespace LangAPI {
         Expression value;
         bool operator==(const Return& ret) const { return value == ret.value; }
         bool operator!=(const Return& ret) const { return !(*this == ret); }
+        bool operator<(const Return& other) const { return value < other.value; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -921,6 +1044,10 @@ export namespace LangAPI {
     struct StringCompare : ExpressionValueLevel {
         bool operator==(const StringCompare& s) const { return str == s.str && is_string == s.is_string;  }
         bool operator!=(const StringCompare& s) const { return !(*this == s); }
+        bool operator<(const StringCompare& other) const {
+            if (str != other.str) return str < other.str;
+            else return is_string < other.is_string;
+        }
         String str;
         bool is_string;
 
@@ -933,6 +1060,7 @@ export namespace LangAPI {
     struct Hex : ExpressionValueLevel {
         bool operator==(const Hex& h) const { return hex == h.hex; }
         bool operator!=(const Hex& h) const { return !(*this == h); }
+        bool operator<(const Hex& other) const { return hex < other.hex; }
         std::string hex;
 
     private:
@@ -944,6 +1072,11 @@ export namespace LangAPI {
     struct VariableAssignment : ExpressionValueLevel {
         bool operator==(const VariableAssignment& v) const { return name == v.name && type == v.type && value == v.value; }
         bool operator!=(const VariableAssignment& v) const { return !(*this == v); }
+        bool operator<(const VariableAssignment& other) const {
+            if (name != other.name) return name < other.name;
+            else if (type != other.type) return type < other.type;
+            else return value < other.value;
+        }
         std::string name;
         OperatorType type = OperatorType::Assign;
         Expression value;
@@ -958,6 +1091,7 @@ export namespace LangAPI {
     struct CounterIncreament : ExpressionValueLevel {
         bool operator==(const CounterIncreament& c) const { return true; }
         bool operator!=(const CounterIncreament& c) const { return !(*this == c); }
+        bool operator<(const CounterIncreament& other) const { return false; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -967,6 +1101,7 @@ export namespace LangAPI {
     struct CounterIncreamentByLength : ExpressionValueLevel {
         bool operator==(const CounterIncreamentByLength& n) const { return name == n.name; }
         bool operator!=(const CounterIncreamentByLength& n) const { return !(*this == n); }
+        bool operator<(const CounterIncreamentByLength& other) const { return name < other.name; }
         std::string name;
     private:
         friend struct ::uhash;
@@ -977,6 +1112,7 @@ export namespace LangAPI {
     struct ResetPosCounter : ExpressionValueLevel {
         bool operator==(const ResetPosCounter& c) const { return true; }
         bool operator!=(const ResetPosCounter& c) const { return !(*this == c); }
+        bool operator<(const ResetPosCounter& c) const { return !(*this == c); }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -986,6 +1122,7 @@ export namespace LangAPI {
     struct PushPosCounter : ExpressionValueLevel {
         bool operator==(const PushPosCounter& c) const { return name == c.name; }
         bool operator!=(const PushPosCounter& c) const { return !(*this == c); }
+        bool operator<(const PushPosCounter& other) const { return name < other.name; }
         std::string name;
     private:
         friend struct ::uhash;
@@ -996,6 +1133,7 @@ export namespace LangAPI {
     struct PopPosCounter : ExpressionValueLevel {
         bool operator==(const PopPosCounter& c) const { return true; }
         bool operator!=(const PopPosCounter& c) const { return !(*this == c); }
+        bool operator<(const PopPosCounter& c) const { return false; }
     private:
         friend struct ::uhash;
         auto members() const {
@@ -1006,6 +1144,7 @@ export namespace LangAPI {
     struct SkipSpaces : ExpressionValueLevel {
         bool operator==(const SkipSpaces& s) const { return isToken == s.isToken; }
         bool operator!=(const SkipSpaces& s) const { return !(*this == s); }
+        bool operator<(const SkipSpaces& other) const { return isToken < other.isToken; }
         bool isToken;
     private:
         friend struct ::uhash;
@@ -1016,6 +1155,10 @@ export namespace LangAPI {
     struct DfaLookup : ExpressionValueLevel {
         bool operator==(const DfaLookup &d) const { return output_name == d.output_name && dfa_count == d.dfa_count; }
         bool operator!=(const DfaLookup &d) const { return !(*this == d); }
+        bool operator<(const DfaLookup &other) const {
+            if (output_name != other.output_name) return output_name < other.output_name;
+            else return dfa_count < other.dfa_count;
+        }
         std::size_t dfa_count;
         std::string output_name;
     private:
@@ -1027,6 +1170,7 @@ export namespace LangAPI {
     struct ReportError : ExpressionValueLevel {
         bool operator==(const ReportError& e) const { return message == e.message; }
         bool operator!=(const ReportError& e) const { return !(*this == e); }
+        bool operator<(const ReportError& other) const { return message < other.message; }
         std::string message;
 
     private:
@@ -1068,7 +1212,17 @@ export namespace LangAPI {
         bool operator!=(const ExpressionValue& other) const {
             return !(*this == other);
         }
-
+        bool operator<(const ExpressionValue& other) const {
+            return std::visit([&](const auto &v1, const auto &v2) {
+                if constexpr (std::is_same_v<std::decay_t<decltype(v1)>, std::monostate>) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(v2)>, std::monostate>) {
+                        return false;
+                    } else return true;
+                } else if constexpr (std::is_same_v<std::decay_t<decltype(v2)>, std::monostate>) return false;
+                else if constexpr (std::is_same_v<std::decay_t<decltype(v1)>, std::decay_t<decltype(v2)>>) return v1 < v2;
+                else return value.index() < other.value.index();
+            }, value, other.value);
+        }
         // ======= isXXX functions =======
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
         bool isRvalue() const { return std::holds_alternative<RValue>(value); }
@@ -1137,6 +1291,10 @@ export namespace LangAPI {
         bool operator!=(const ConditionalElement& other) const {
             return !(*this == other);
         }
+        bool operator<(const ConditionalElement& other) const {
+            if (expr != other.expr) return expr < other.expr;
+            else return stmt < other.stmt;
+        }
         Expression expr;
         Statements stmt;
 
@@ -1153,6 +1311,9 @@ export namespace LangAPI {
         }
         bool operator!=(const If& other) const {
             return !(*this == other);
+        }
+        bool operator<(const If& other) const {
+            return else_stmt < other.else_stmt;
         }
         If(const Expression &e, const Statements &s, const Statements &else_stmt) : ConditionalElement {.expr = e, .stmt = s}, else_stmt(else_stmt) {}
         If(const Expression &e, const Statements &s) : ConditionalElement {.expr = e, .stmt = s} {}
@@ -1181,6 +1342,10 @@ export namespace LangAPI {
     struct Switch : StatementLevel {
         bool operator==(const Switch& other) const { return expression == other.expression && cases == other.cases; }
         bool operator!=(const Switch& other) const { return !(*this == other); }
+        bool operator<(const Switch& other) const {
+            if (expression != other.expression) return expression < other.expression;
+            else return cases < other.cases;
+        }
         Expression expression;
         stdu::vector<std::pair<RValue, Statements>> cases;
 
@@ -1199,7 +1364,7 @@ export namespace LangAPI {
         Statement(const ConditionalElement &value) : value(While {value.expr, value.stmt}) {}
         bool operator==(const Statement& other) const { return value == other.value; }
         bool operator!=(const Statement& other) const { return !(*this == other); }
-
+        bool operator<(const Statement& other) const { return value < other.value; }
         // ======= isXXX functions =======
         bool isVariable() const { return std::holds_alternative<Variable>(value); }
         bool isIf() const { return std::holds_alternative<If>(value); }

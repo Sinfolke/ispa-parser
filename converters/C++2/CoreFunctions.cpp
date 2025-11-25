@@ -62,6 +62,19 @@ auto Core::convertTemplates(const decltype(LangAPI::Type::template_parameters) &
     }
     return res.substr(0, res.size() - 2);
 }
+auto Core::convertTemplates(const stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> &template_parameters) -> std::string {
+    std::string res;
+    for (const auto &param : template_parameters) {
+        if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(param)) {
+            res += convertType(*std::get<std::shared_ptr<LangAPI::Type>>(param));
+        } else {
+            res += convertRValue(*std::get<std::shared_ptr<LangAPI::RValue>>(param));
+        }
+        res += ", ";
+    }
+    return res.substr(0, res.size() - 2);
+}
+
 auto Core::convertTemplates(const decltype(LangAPI::Array::template_parameters) &template_parameters) -> std::string {
     std::string res;
     for (const auto &param : template_parameters) {
@@ -153,7 +166,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::DfaSpanMultiTableState:
             return "::ISPA_STD::DFAAPI::SpanMultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaSpanCharTableState:
-            return "::ISPA_STD::DFAAPI::SpanCharTableState";
+            return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens>";
         case LangAPI::StdlibExports::DfaSpanTokenTableState:
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         default:
@@ -307,13 +320,19 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             if (!array.template_parameters.empty()) {
                 res += "std::vector<" + convertTemplates(rvalue.getArray().template_parameters) + "> ";
             }
-            res += "{{";
-            for (const auto &el : rvalue.getArray().values) {
-                res += convertExpression(el) + ", ";
+            if (array.values.empty()) {
+                // For empty arrays (including std::array with N=0), emit a simple empty initializer
+                res += "{}";
+            } else {
+                res += "{{";
+                for (const auto &el : rvalue.getArray().values) {
+                    res += convertExpression(el) + ", ";
+                }
+                // Remove the trailing comma+space and close braces
+                res.pop_back();
+                res.pop_back();
+                res += "}}";
             }
-            res.pop_back();
-            res.pop_back();
-            res += "}}";
             return res;
         }
         case LangAPI::RValueType::FixedSizeArray: {
@@ -322,13 +341,19 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             if (!array.template_parameters.empty()) {
                 res += std::string("std::array<") + convertTemplates(array.template_parameters) + "> ";
             }
-            res += "{{";
-            for (const auto &el : array.values) {
-                res += convertExpression(el) + ", ";
+            if (array.values.empty()) {
+                // For empty std::array initializers print just {}
+                res += "{}";
+            } else {
+                res += "{{";
+                for (const auto &el : array.values) {
+                    res += convertExpression(el) + ", ";
+                }
+                // Remove the trailing comma+space and close braces
+                res.pop_back();
+                res.pop_back();
+                res += "}}";
             }
-            res.pop_back();
-            res.pop_back();
-            res += "}}";
             return res;
         }
         case LangAPI::RValueType::Map: {
@@ -366,7 +391,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 return number != std::numeric_limits<std::size_t>::max() ? std::to_string(number) : "ISPA_STD::DFAAPI::null_state";
             };
             std::ostringstream out_content;
-            out_content << (transition.is_refferring_char_table ? "::ISPA_STD::CharTableTransition" : convertIspaLibSymbol(transition.transition_type)) << "{ ";
+            out_content << (transition.is_refferring_char_table ? "::ISPA_STD::DFAAPI::CharTableTransition<Tokens>" : convertIspaLibSymbol(transition.transition_type)) << "{ ";
             if (std::holds_alternative<char>(transition.symbol)) {
                 out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
             } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
@@ -375,7 +400,8 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 // - CharTableTransition expects Span<const variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>> → plain ::ISPA_STD::Span{...}
                 // - MultiTableTransition expects DFAAPI::SpanMultiTable<Tokens, Nodes...> → wrap span into SpanMultiTable
                 if (transition.is_refferring_char_table) {
-                    out_content << "::ISPA_STD::Span {dfa_table_" + sym + ".data(), dfa_table_" + sym + ".size()}";
+                    // Key type for CharTableTransition is SpanCharTable<Tokens>
+                    out_content << "::ISPA_STD::DFAAPI::SpanCharTable<Tokens> {dfa_table_" + sym + ".data(), dfa_table_" + sym + ".size()}";
                 } else {
                     // Build SpanMultiTable type using transition.transition_type template parameters (the node types)
                     out_content << "::ISPA_STD::DFAAPI::SpanMultiTable<Tokens, "
@@ -403,7 +429,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             };
             std::ostringstream out_content;
             out_content << "::ISPA_STD::DFAAPI::SpanCharState {" << number_or_null(state.else_goto) << ", " << number_or_null(state.else_goto_accept) << ", "
-                        << "::ISPA_STD::Span<CharTransition> {dfa_state_" << state.state_id << ".data(), dfa_state_" << state.state_id << ".size()}}";
+                        << "::ISPA_STD::Span<::ISPA_STD::DFAAPI::CharTransition> {dfa_state_" << state.state_id << ".data(), dfa_state_" << state.state_id << ".size()}}";
             return out_content.str();
         }
         case LangAPI::RValueType::IspaLibDfaSpanMultiTableState: {
@@ -412,7 +438,13 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 return number != std::numeric_limits<std::size_t>::max() ? std::to_string(number) : "ISPA_STD::DFAAPI::null_state";
             };
             std::ostringstream out_content;
-            out_content << "::ISPA_STD::DFAAPI::SpanCharMultiTableState {" << number_or_null(state.else_goto) << ", " << number_or_null(state.else_goto_accept) << ", "
+            // Build template argument list: <Tokens[, MultiTableTransition<Tokens, ...> ...]>
+            std::string tmpl = "<Tokens";
+            for (const auto &sym : state.mutli_table_transitions) {
+                tmpl += ", " + convertIspaLibSymbol(sym);
+            }
+            tmpl += ">";
+            out_content << "::ISPA_STD::DFAAPI::SpanMultiTableState" << tmpl << " {" << number_or_null(state.else_goto) << ", " << number_or_null(state.else_goto_accept) << ", "
                         << "{dfa_state_" << state.state_id << ".data(), dfa_state_" << state.state_id << ".size()}}";
             return out_content.str();
         }

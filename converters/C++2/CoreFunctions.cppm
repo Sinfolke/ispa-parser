@@ -2,6 +2,7 @@ export module Cpp.CoreFunctions;
 
 import LangAPI;
 import Rope.String;
+import dstd;
 import std;
 
 export namespace Core {
@@ -12,6 +13,7 @@ export namespace Core {
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Array::template_parameters) &template_parameters) -> std::string;
+    auto convertTemplates(const stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> &template_parameters) -> std::string;
     auto convertSymbol(const LangAPI::Symbol &symbol) -> std::string;
     auto convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::string;
     auto convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::string;
