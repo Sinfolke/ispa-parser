@@ -3,6 +3,7 @@ export module LangRepr.Converter;
 import LangRepr.Holder;
 import LangAPI;
 import Converter.Declarations;
+import Converter.Statement;
 import Converter.Writer;
 import Rope.String;
 import cpuf.dlib;
@@ -15,6 +16,7 @@ export namespace LangRepr {
         const std::string &lang;
         const std::string &namespace_name;
         std::unique_ptr<::Converter::Declarations, void(*)(::Converter::Declarations*)> decls;
+        std::unique_ptr<::Converter::Statement, void(*)(::Converter::Statement*)> stmts;
         void buildDeclaration(const LangAPI::Declaration &decl) {
             if (decl.isNamespace()) {
                 const auto &namespace_decl = decl.getNamespace();
@@ -43,7 +45,16 @@ export namespace LangRepr {
                 decls->closeEnum();
             } else if (decl.isFunction()) {
                 const auto &func_decl = decl.getFunction();
+                if (lang == "cpp") {
+                    if (!func_decl.template_parameters.empty()) {
+                        decls->openTemplateParameters();
+                        for (const auto &t : func_decl.template_parameters) decls->createTemplateParameter(t);
+                        decls->closeTemplateParameters();
+                    }
+                }
                 decls->createFunction(func_decl.name, func_decl.parameters);
+                buildStatements(func_decl.statements);
+                decls->closeFunction();
             }
         }
         void buildDeclarations(const LangAPI::Declarations &declarations) {
@@ -51,13 +62,52 @@ export namespace LangRepr {
                 buildDeclaration(declaration);
             }
         }
+        auto buildStatement(const LangAPI::Statement &stmt) -> void {
+            if (stmt.isIf()) {
+                stmts->createIf(stmt.getIf().expr);
+                buildStatements(stmt.getIf().stmt);
+                stmts->closeIf();
+            } else if (stmt.isWhile()) {
+                stmts->createWhile(stmt.getWhile().expr);
+                buildStatements(stmt.getWhile().stmt);
+                stmts->closeWhile();
+            } else if (stmt.isDoWhile()) {
+                const auto dowhile = stmt.getDoWhile();
+                stmts->openDoWhile();
+                buildStatements(dowhile.stmt);
+                stmts->closeDoWhile(dowhile.expr);
+            } else if (stmt.isSwitch()) {
+                const auto switch_statement = stmt.getSwitch();
+                stmts->createSwitch(switch_statement.expression);
+                for (const auto &case_statement : switch_statement.cases) {
+                    stmts->createCase(case_statement.first);
+                    buildStatements(case_statement.second);
+                    stmts->closeCase();
+                }
+                stmts->closeSwitch();
+            } else if (stmt.isExpression()) {
+                stmts->createExpression(stmt.getExpression());
+            } else if (stmt.isVariable()) {
+                stmts->createVariable(stmt.getVariable());
+            }
+        }
+        auto buildStatements(const LangAPI::Statements &statements) -> void {
+            for (const auto &statement : statements) {
+                buildStatement(statement);
+            }
+        }
     public:
         Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name) :
-        converter_lib("libispa-converter-" + lang), holder(holder), lang(lang), decls(nullptr, nullptr), namespace_name(namespace_name) {
+        converter_lib("libispa-converter-" + lang), holder(holder), lang(lang), decls(nullptr, nullptr), stmts(nullptr, nullptr), namespace_name(namespace_name) {
             decls = std::unique_ptr<::Converter::Declarations, void(*)(::Converter::Declarations*)>
                 (
                     converter_lib.loadfun<::Converter::Declarations*, ::Converter::Writer*>(std::string("create_") + lang + "_declarations")(&output),
                     converter_lib.loadfun<void, ::Converter::Declarations*>(std::string("delete_") + lang + "_declarations")
+                );
+            stmts = std::unique_ptr<::Converter::Statement, void(*)(::Converter::Statement*)>
+                (
+                    converter_lib.loadfun<::Converter::Statement*, ::Converter::Writer*>(std::string("create_") + lang + "_statement")(&output),
+                    converter_lib.loadfun<void, ::Converter::Statement*>(std::string("delete_") + lang + "_statement")
                 );
         }
         auto build() -> void {

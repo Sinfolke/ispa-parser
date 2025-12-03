@@ -94,7 +94,7 @@ export namespace LangAPI {
         Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
         DfaMultiTransition, DfaCharState, DfaCharTableState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
         DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
-        DfaCharTable, DfaTokenTable, DfaMultiTable
+        DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -297,20 +297,17 @@ export namespace LangAPI {
 
     struct Pos : RValueLevel {
         bool dereference = true;
-        bool sequence = false;
         std::size_t offset;
 
         bool operator==(const Pos& other) const {
-            return offset == other.offset &&
-                   dereference == other.dereference &&
-                   sequence == other.sequence;
+            return offset == other.offset && dereference == other.dereference;
         }
         bool operator!=(const Pos& other) const { return !(*this == other); }
         bool operator<(const Pos& other) const { return offset < other.offset; }
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(dereference, sequence, offset);
+            return std::tie(dereference, offset);
         }
     };
 
@@ -870,6 +867,7 @@ export namespace LangAPI {
         std::string name;
         stdu::vector<std::pair<Type, std::string>> parameters;
         Statements statements;
+        stdu::vector<std::string> template_parameters;
         bool operator==(const Function& other) const {
             return name == other.name && parameters == other.parameters && statements == other.statements;
         }

@@ -20,6 +20,9 @@ export namespace Cpp {
         auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void override;
         auto setVisibility(LangAPI::Visibility visibility) -> void override;
         auto closeFunction() -> void override;
+        auto openTemplateParameters() -> void override;
+        auto createTemplateParameter(const std::string &name) -> void override;
+        auto closeTemplateParameters() -> void override;
 
         // types
         auto createTypeAlias(const std::string &name, const LangAPI::Type type) -> void override;

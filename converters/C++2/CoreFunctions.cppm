@@ -9,6 +9,7 @@ export namespace Core {
     constexpr const char* base_pointer = "pos";
     std::vector<std::string> counter = { base_pointer };
     LangAPI::Visibility prev_visibility = LangAPI::Visibility::Private;
+    bool first_template_parameter = true;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;

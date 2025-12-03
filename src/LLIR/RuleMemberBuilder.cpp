@@ -59,9 +59,9 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
 ) -> LangAPI::Variable {
        //block.push_back({IR::types::ASSIGN_VARIABLE, IR::variable_assign {svar.name, IR::var_assign_types::ASSIGN, IR::var_assign_values::_TRUE}});
     LangAPI::Variable shadow_variable;
-
+    LangAPI::Statements shadow_var_assign_block;
     if (insideLoop || quantifier == '+' || quantifier == '*') {
-        shadow_variable = add_shadow_variable(stmt, var);
+        shadow_variable = add_shadow_variable(stmt, shadow_var_assign_block, var);
         add_shadow_var = false;
     }
     if (!uvar.name.empty()) {
@@ -72,16 +72,19 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
         case '+':
             stmt.push_back(call);
             createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            stmt.insert(stmt.end(), shadow_var_assign_block.begin(), shadow_var_assign_block.end());
             handle_plus_qualifier(rule, LangAPI::ConditionalElement {.expr = expr, .stmt = stmt}, uvar, var, shadow_variable);
             break;
         case '*': {
             stmt.push_back(call);
             createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            stmt.insert(stmt.end(), shadow_var_assign_block.begin(), shadow_var_assign_block.end());
             statements.push_back(LangAPI::While::createStatement(LangAPI::While {expr, stmt}));
             break;
         }
         case '?':
             createAssignUvarBlock(stmt, uvar, var, shadow_variable);
+            stmt.insert(stmt.end(), shadow_var_assign_block.begin(), shadow_var_assign_block.end());
             statements.push_back(LangAPI::If::createStatement(LangAPI::If {expr, stmt}));
             break;
         default:
@@ -106,8 +109,11 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             // if (!isFirst) {
             //     blk.insert(blk.begin(), {LLIR::types::ERR, getErrorName(rule)});
             // }
-            statements.push_back(LangAPI::If::createStatement(LangAPI::If {expr, blk}));
             statements.insert(statements.end(), stmt.begin(), stmt.end());
+            statements.push_back(LangAPI::If::createStatement(LangAPI::If {expr, blk}));
+            auto ending_block = createDefaultStatements(var, svar);
+            statements.insert(statements.end(), ending_block.begin(), ending_block.end());
+            statements.insert(statements.end(), shadow_var_assign_block.begin(), shadow_var_assign_block.end());
             break;
         }
     }
@@ -251,8 +257,9 @@ void LLIR::GroupBuilder::build() {
     }
     statements.insert(statements.end(), fetch_var_statements.begin(), fetch_var_statements.end());
     LangAPI::Variable shadow_var;
+    LangAPI::Statements shadow_var_assign_block;
     if ((insideLoop || quantifier == '*' || quantifier == '+') && (var.type != LangAPI::ValueType::Undef && var.type != LangAPI::ValueType::String)) {
-        shadow_var = add_shadow_variable(builder.getData(), var);
+        shadow_var = add_shadow_variable(builder.getData(), shadow_var_assign_block, var);
     }
     group_success_condition.stmt = {
         LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true })}),
@@ -268,6 +275,7 @@ void LLIR::GroupBuilder::build() {
     for (const auto &svar : used_vars) {
         raiseVarsTop(statements, statements, svar, true, false, true);
     }
+    group_success_condition.stmt.insert(group_success_condition.stmt.end(), shadow_var_assign_block.begin(), shadow_var_assign_block.end());
     if (group_success_condition.expr.empty()) {
         statements.insert(statements.end(), group_success_condition.stmt.begin(), group_success_condition.stmt.end());
     } else {
@@ -517,40 +525,24 @@ void LLIR::NameBuilder::build() {
     uvar.type = var.type;
     shadow_var.type.type = LangAPI::ValueType::Array;
     shadow_var.type.template_parameters = {var.type};
-    auto statements = createDefaultStatements(var, svar);
+    LangAPI::Statements statements;
     std::size_t variable_index_in_statements = statements.size();
     statements.push_back(LangAPI::Variable::createStatement(var));
     statements.push_back(LangAPI::Variable::createStatement(svar));
-    if (isToken) {
-        // if (!isCallingToken)
-        //     throw Error("Cannot call rule from token");
-        // remove variable assigment
-        statements.back() = LangAPI::CounterIncreamentByLength::createStatement(LangAPI::CounterIncreamentByLength {.name = var.name});
-        statements.erase(statements.begin() + variable_index_in_statements);
+    if (isCallingToken) {
+        LangAPI::Symbol compare_sym = {name};
+        compare_sym.path.insert(compare_sym.path.begin(), "Tokens");
+        LangAPI::Expression expr = {
+            LangAPI::Pos::createExpressionValue(LangAPI::Pos {.dereference = true}),
+            LangAPI::ExpressionValue { LangAPI::ExpressionElement::Equal },
+            LangAPI::Symbol::createExpressionValue(compare_sym)
+        };
+        shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, rule.quantifier, true);
+    } else {
         LangAPI::Expression expr;
         auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
         statements.push_back(call);
-        shadow_var = pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, call, rule.quantifier, true);
-    } else {
-        if (isCallingToken) {
-            statements[0] = LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
-            LangAPI::Symbol compare_sym = {name};
-            compare_sym.path.insert(compare_sym.path.begin(), "Tokens");
-            LangAPI::Expression expr = {
-                LangAPI::Pos::createExpressionValue(LangAPI::Pos {.dereference = true}),
-                LangAPI::ExpressionValue { LangAPI::ExpressionElement::Equal },
-                LangAPI::Symbol::createExpressionValue(compare_sym)
-            };
-            shadow_var = BuilderBase::pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, rule.quantifier, true);
-        } else {
-            statements.back() = LangAPI::CounterIncreamentByLength::createStatement(LangAPI::CounterIncreamentByLength {.name = var.name});
-            statements.erase(statements.begin() + variable_index_in_statements); // remove variable assignment
-            LangAPI::Expression expr;
-            auto call = createDefaultCall(statements, var, corelib::text::join(name, "_"), expr);
-            statements.push_back(call);
-            shadow_var = pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, call, rule.quantifier);
-        }
-
+        shadow_var = pushBasedOnQualifier(rule, expr, statements, uvar, var, svar, call, rule.quantifier);
     }
     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 }
@@ -847,7 +839,7 @@ void LLIR::OpBuilder::build() {
                             LangAPI::FunctionCall {
                                 .name = corelib::text::join(nonterminal, "_"),
                                 .args = {
-                                    LangAPI::Pos::createExpression(LangAPI::Pos {.sequence = true})
+                                    LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false})
                                 }
                             }
                         )

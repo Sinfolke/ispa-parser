@@ -46,7 +46,7 @@ export namespace LLIR {
         auto createSuccessVariable() -> LangAPI::Variable;
         auto addPostLoopCheck(const AST::RuleMember &rule, const LangAPI::Variable &var, bool addError = true) -> void;
         auto handle_plus_qualifier(const AST::RuleMember &rule, LangAPI::ConditionalElement loop, const LangAPI::Variable &uvar, const LangAPI::Variable &var, LangAPI::Variable &shadow_var, bool addError = true) -> void;
-        auto add_shadow_variable(LangAPI::Statements &block, const LangAPI::Variable &var) -> LangAPI::Variable;
+        auto add_shadow_variable(LangAPI::Statements &block, LangAPI::Statements &statements, const LangAPI::Variable &var) -> LangAPI::Variable;
         virtual auto pushBasedOnQualifier(const AST::RuleMember &rule, LangAPI::Expression &expr, LangAPI::Statements &stmt, LangAPI::Variable &uvar, const LangAPI::Variable &var, const LangAPI::Variable &svar, char quantifier, bool add_shadow_var) -> LangAPI::Variable;
         void pushConvResult(const AST::RuleMember &rule, const LangAPI::Variable &var, const LangAPI::Variable &uvar, const LangAPI::Variable &svar, const LangAPI::Variable &shadow_var, char quantifier);
         // error handling functions

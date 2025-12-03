@@ -18,6 +18,7 @@ void LLIR::RuleBuilder::build() {
     data.members = builder.getData();
     data.block = createDataBlock(rule->data_block);
     data.name = fullname;
+    reset();
 }
 
 

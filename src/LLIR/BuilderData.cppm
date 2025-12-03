@@ -26,5 +26,19 @@ namespace LLIR {
         AST::Tree &tree;
         DFA::Collection<DFA::TokenMachineDFA> &dfas;
         BuilderData(AST::Tree &tree, DFA::Collection<DFA::TokenMachineDFA> &dfas) : tree(tree), dfas(dfas) {}
+        auto reset() -> void {
+            variable_count = 0;
+            isToken = false;
+            insideLoop = false;
+            addSpaceSkip = false;
+            isFirst = true;
+            tokensOnly = -1;
+            fullname.clear();
+            vars.clear();
+            key_vars.clear();
+            unnamed_datablock_units.clear();
+            symbol_follow.clear();
+            has_symbol_follow = true;
+        }
     };
 }

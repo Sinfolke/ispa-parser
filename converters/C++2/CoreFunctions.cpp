@@ -39,7 +39,8 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
             case LangAPI::ValueType::Span:
                 return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
-                throw Error("Type is undefined");
+                return "Undef";
+                // throw Error("Type is undefined");
             default:
                 throw Error("Unknown type");
         }
@@ -94,7 +95,8 @@ auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
         if (std::holds_alternative<std::string>(part)) {
             res += std::get<std::string>(part);
         } else {
-            res = convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
+            // Append function call as a symbol path segment (do not overwrite the accumulated path)
+            res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
         }
         res += "::";
     }
@@ -119,12 +121,16 @@ auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::st
                     break;
             }
             res += "(";
+            bool first = true;
             for (const auto &param : method_call.args) {
-                res += convertExpression(param) + ", ";
+                if (!first) res += ", ";
+                res += convertExpression(param);
+                first = false;
             }
             res += ")";
         } else {
-            res = convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
+            // Append function call to the current storage symbol chain
+            res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
         }
     }
     return res;
@@ -169,80 +175,104 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens>";
         case LangAPI::StdlibExports::DfaSpanTokenTableState:
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::ParserFunctionParameter:
+            return "Iterator";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
 }
 
 auto Core::convertExpression(const LangAPI::Expression &expression) -> std::string {
+    std::ostringstream out;
     for (const auto &expr : expression) {
         switch (expr.type()) {
             case LangAPI::ExpressionValueType::Empty:
-                return "";
+                break;
             case LangAPI::ExpressionValueType::RValue:
-                return convertRValue(expr.getRValue());
+                out << convertRValue(expr.getRValue());
+                break;
             case LangAPI::ExpressionValueType::ExpressionElement:
-                return convertExpressionElement(expr.getExpressionElement());
+                out << convertExpressionElement(expr.getExpressionElement());
+                break;
             case LangAPI::ExpressionValueType::FunctionCall:
-                return convertFunctionCall(expr.getFunctionCall());
+                out << convertFunctionCall(expr.getFunctionCall());
+                break;
             case LangAPI::ExpressionValueType::StringCompare: {
                 auto compare = expr.getStringCompare();
-                return std::string("strncmp(") + counter.back() + ", " + (compare.is_string ? std::string("\"") + compare.str.value + "\""  : std::string("'") + compare.str.value + "'");
+                out << "strncmp(" << counter.back() << ", " << (compare.is_string ? std::string("\"") + compare.str.value + "\""  : std::string("'") + compare.str.value + "'");
+                break;
             }
             case LangAPI::ExpressionValueType::Return:
-                return std::string("return ") + convertExpression(expr.getReturn().value) + ';';
+                out << "return " << convertExpression(expr.getReturn().value);
+                break;
             case LangAPI::ExpressionValueType::Break:
-                return "break;";
+                out << "break";
+                break;
             case LangAPI::ExpressionValueType::Continue:
-                return "continue;";
+                out << "continue";
+                break;
             case LangAPI::ExpressionValueType::VariableAssignment: {
                 const auto &var = expr.getVariableAssignment();
                 std::string type;
                 switch (var.type) {
                     case LangAPI::OperatorType::Assign:
                         type = "=";
+                        break;
                     case LangAPI::OperatorType::Add:
                         type = "+=";
+                        break;
                     case LangAPI::OperatorType::Minus:
                         type = "-=";
+                        break;
                     case LangAPI::OperatorType::Multiply:
                         type = "*=";
+                        break;
                     case LangAPI::OperatorType::Divide:
                         type = "/=";
+                        break;
                     case LangAPI::OperatorType::Modulo:
                         type = "%=";
+                        break;
                 }
-                return var.name + " " + type + " " + convertExpression(var.value) + ';';
+                out << var.name << " " << type << " " << convertExpression(var.value);
+                break;
             }
             case LangAPI::ExpressionValueType::CounterIncreament:
-                return std::string("++") + counter.back();
+                out << std::string("++") + counter.back();
+                break;
             case LangAPI::ExpressionValueType::CounterIncreamentByLength:
-                return counter.back() + " += " + expr.getCounterIncreamentByLength().name + ".token.length();";
-            // case LangAPI::ExpressionValueType::ResetPosCounter: {
-            //
-            // }
+                out << counter.back() + " += " + expr.getCounterIncreamentByLength().name + ".token.length()";
+                break;
+            case LangAPI::ExpressionValueType::ResetPosCounter:
+                counter.pop_back();
+                break;
             case LangAPI::ExpressionValueType::PushPosCounter: {
                 const auto &a = expr.getPushPosCounter();
-                std::string str("auto " + a.name + " = " + counter.back() + ";");
-                counter.push_back(a.name);
-                return str;
+                out << "auto " << a.name << " = " << counter.back();
+                counter.push_back(a.name);;
+                break;
             }
             case LangAPI::ExpressionValueType::PopPosCounter: {
-                std::string str(counter[counter.size() - 2] + " = " + counter.back() + ";");
+                out << counter[counter.size() - 2] + " = " << counter.back();
                 counter.pop_back();
-                return str;
+                break;
             }
             case LangAPI::ExpressionValueType::SkipSpaces:
-                return "skip_spaces(" + counter.back() + ")";
+                out << "skip_spaces(" << counter.back() << ")";
+                break;
             case LangAPI::ExpressionValueType::DfaLookup: {
                 const auto &lookup = expr.getDfaLookup();
-                return lookup.output_name + " = ISPA_STD::DFA<Tokens>::decide(dfa_span_"  + std::to_string(lookup.dfa_count) + ", pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);";
+                out << lookup.output_name << " = ISPA_STD::DFA<Tokens>::decide(dfa_span_"  << std::to_string(lookup.dfa_count) << ", pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE)";
+                break;
             }
+            case LangAPI::ExpressionValueType::ReportError:
+                out << "[Error]";
+                break;
             default:
                 throw Error("Unknown expression type");
         }
     }
-    return ""; // empty expression
+    return out.str();
 }
 auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const char * {
     switch (element) {
@@ -255,33 +285,33 @@ auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const
         case LangAPI::ExpressionElement::SquareBraceClose:
             return "]";
         case LangAPI::ExpressionElement::And:
-            return "&&";
+            return " && ";
         case LangAPI::ExpressionElement::Or:
-            return "||";
+            return " || ";
         case LangAPI::ExpressionElement::Not:
             return "!";
         case LangAPI::ExpressionElement::Equal:
-            return "==";
+            return " == ";
         case LangAPI::ExpressionElement::NotEqual:
-            return "!=";
+            return " != ";
         case LangAPI::ExpressionElement::Higher:
-            return ">";
+            return " > ";
         case LangAPI::ExpressionElement::Lower:
-            return "<";
+            return " < ";
         case LangAPI::ExpressionElement::HigherOrEqual:
-            return ">=";
+            return " >= ";
         case LangAPI::ExpressionElement::LowerOrEqual:
-            return "<=";
+            return " <= ";
         case LangAPI::ExpressionElement::Add:
-            return "+";
+            return " + ";
         case LangAPI::ExpressionElement::Minus:
-            return "-";
+            return " - ";
         case LangAPI::ExpressionElement::Multiply:
-            return "*";
+            return " * ";
         case LangAPI::ExpressionElement::Divide:
-            return "/";
+            return " / ";
         case LangAPI::ExpressionElement::Modulo:
-            return "%";
+            return " % ";
         case LangAPI::ExpressionElement::PlusPlus:
             return "++";
         case LangAPI::ExpressionElement::MinusMinus:
@@ -292,11 +322,12 @@ auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const
 }
 auto Core::convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string {
     std::string str = call.name + "(";
+    bool first = true;
     for (const auto &param : call.args) {
-        str += convertExpression(param) + ", ";
+        if (!first) str += ", ";
+        str += convertExpression(param);
+        first = false;
     }
-    str.pop_back();
-    str.pop_back();
     str += ")";
     return str;
 }
@@ -376,8 +407,14 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             res += " }";
             return res;
         }
-        case LangAPI::RValueType::Pos:
-            return counter.back();
+        case LangAPI::RValueType::Pos: {
+            const auto &counter_data = rvalue.getPos();
+            std::string res;
+            if (counter_data.dereference) res += "*";
+            if (counter_data.offset != 0) res += "(" + counter.back() + " + " + std::to_string(counter_data.offset) + ")";
+            else                          res += counter.back();
+            return res;
+        }
         case LangAPI::RValueType::Symbol:
             return convertSymbol(rvalue.getSymbol());
         case LangAPI::RValueType::StorageSymbol:

@@ -90,16 +90,33 @@ namespace Cpp {
     }
 
     auto Declarations::createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void {
-        output.write("auto {} (", name);
+        output.write("auto {}(", name);
         for (const auto &p : parameters) {
-            output.write("{} {}, ", Core::convertType(p.first), p.second);
+            output.dwrite("{} {}, ", Core::convertType(p.first), p.second);
         }
         output.pop_back();
         output.pop_back();
-        output.write(")\n{\n");
+        output.dwriteln(") -> ::ISPA_STD::Node<Rules, FlatTypes::{}>", name);
+        output.writeln("{");
+        output.increaseIndentation();
     }
     auto Declarations::closeFunction() -> void {
+        output.decreaseIndentation();
         output.write("}\n");
+    }
+    auto Declarations::openTemplateParameters() -> void {
+        output.write("template<");
+    }
+    auto Declarations::createTemplateParameter(const std::string &name) -> void {
+        if (!Core::first_template_parameter) {
+            output.dwrite(", ");
+            Core::first_template_parameter = false;
+        }
+        output.dwrite("typename {}", name);
+    }
+    auto Declarations::closeTemplateParameters() -> void {
+        output.dwriteln(">");
+        Core::first_template_parameter = true;
     }
     auto Declarations::createTypeAlias(const std::string &name, const LangAPI::Type type) -> void {
         output.writeln("using {} = {};", name, Core::convertType(type));

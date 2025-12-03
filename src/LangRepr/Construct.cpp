@@ -787,68 +787,114 @@ namespace LangRepr {
             // because referenced_by_multitable holds Types (node types), not MultiTransition signatures.
             // Table parameter construction below uses referenced_by_multitable to build params deterministically.
         }
-		// Build deterministic template parameter list for MultiTable: use precomputed referenced_by_multitable order when available
-		std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> table_params;
-		if (referenced_by_multitable.contains(dfa_count)) {
-			for (const auto &tp : referenced_by_multitable.at(dfa_count)) table_params.push_back(std::make_shared<std::decay_t<decltype(tp)>>(tp));
-		} else {
-			for (const auto &tp : multitables) {
-				// 1. Convert the vector of IspaLibSymbol (tp) into a vector of shared_ptr<Type> variants
-				std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
-				for (const auto& symbol : tp) {
-					// Since IspaLibSymbol can implicitly convert to LangAPI::Type, we wrap that type in a shared_ptr.
-					nested_params.push_back(std::make_shared<LangAPI::Type>(symbol));
-				}
+          // Build deterministic template parameter list for MultiTable: use precomputed referenced_by_multitable order when available
+          std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> table_params;
+          if (referenced_by_multitable.contains(dfa_count)) {
+              // referenced_by_multitable holds node Types; wrap each node-pack into DfaMultiTransition<Tokens, nodes...>
+              const auto &nodes = referenced_by_multitable.at(dfa_count);
+              if (!nodes.empty()) {
+                  // Build nested params from node list
+                  std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
+                  nested_params.reserve(nodes.size());
+                  for (const auto &node_ty : nodes) {
+                      nested_params.push_back(std::make_shared<LangAPI::Type>(node_ty));
+                  }
+                  LangAPI::Type multi_type {
+                      LangAPI::IspaLibSymbol {
+                          .exports = LangAPI::StdlibExports::DfaMultiTransition,
+                          .template_parameters = nested_params
+                      }
+                  };
+                  table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
+              }
+          } else {
+              for (const auto &tp : multitables) {
+                  // 1. Convert the vector of IspaLibSymbol (tp) into a vector of shared_ptr<Type> variants
+                  std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
+                  for (const auto& symbol : tp) {
+                      // Since IspaLibSymbol can implicitly convert to LangAPI::Type, we wrap that type in a shared_ptr.
+					        nested_params.push_back(std::make_shared<LangAPI::Type>(symbol));
+				        }
 
-				// 2. Construct the outer LangAPI::Type (DfaMultiTransition<...>)
-				LangAPI::Type multi_type {
-					LangAPI::IspaLibSymbol {
-						.exports = LangAPI::StdlibExports::DfaMultiTransition,
-						.template_parameters = nested_params // Use the correctly wrapped parameters
-					}
-				};
+				        // 2. Construct the outer LangAPI::Type (DfaMultiTransition<...>)
+				        LangAPI::Type multi_type {
+					        LangAPI::IspaLibSymbol {
+						        .exports = LangAPI::StdlibExports::DfaMultiTransition,
+						        .template_parameters = nested_params // Use the correctly wrapped parameters
+					        }
+				        };
 
-				// 3. Wrap the outer type in a shared_ptr and push it to table_params
-				table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
-			}
-		}
-		// Prepend the table size for the non-span table typedefs
-		// Define the correct parameters for the DfaCharTable case, using shared_ptr/variant:
-		auto char_table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
-			std::make_shared<LangAPI::RValue>(
-				LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
-			)
-		};
+				        // 3. Wrap the outer type in a shared_ptr and push it to table_params
+				        table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
+			        }
+		        }
+          // Prepend the table size for the table typedefs
+          // Define the correct parameters for the DfaCharTable case, using shared_ptr/variant:
+          auto char_table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
+              std::make_shared<LangAPI::RValue>(
+                  LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
+              )
+          };
 
-  // Prepend table size as shared_ptr<RValue> holding Int, matching table_params' value_type
-  table_params.insert(
-      table_params.begin(),
-      std::make_shared<LangAPI::RValue>(
-          LangAPI::Int::createRValue(LangAPI::Int{ .value = static_cast<long long>(dfa_table_states.size()) })
-      )
-  );
-		LangAPI::Variable dfa_table_var {
-			.name = "dfa_table_" + std::to_string(dfa_count),
-			.type = LangAPI::Type {
-				LangAPI::IspaLibSymbol {
-					table_params.size() == 1 ? LangAPI::StdlibExports::DfaCharTable : LangAPI::StdlibExports::DfaMultiTable,
-					table_params.size() == 1 ? char_table_params : table_params
-				}
-			},
-			.value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states })
-		};
-		lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
-	}
-	for (const auto &table : lexer_builder.getDFAS()) {
-		cpuf::printf("type: {}", (int) table.getType());
-	}
-	holder.push(lexer);
-}
+          // Prepend table size as shared_ptr<RValue> holding Int, matching table_params' value_type
+          table_params.insert(
+              table_params.begin(),
+              std::make_shared<LangAPI::RValue>(
+                  LangAPI::Int::createRValue(LangAPI::Int{ .value = static_cast<long long>(dfa_table_states.size()) })
+              )
+          );
+          // Decide table kind based on computed multitable flag, not by parameter count
+                LangAPI::Variable dfa_table_var {
+                    .name = "dfa_table_" + std::to_string(dfa_count),
+                    .type = LangAPI::Type {
+                        LangAPI::IspaLibSymbol {
+                            multitable ? LangAPI::StdlibExports::DfaMultiTable : LangAPI::StdlibExports::DfaCharTable,
+                            multitable ? table_params : char_table_params
+                        }
+                    },
+                    .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states })
+                };
+		        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
+	        }
+	        for (const auto &table : lexer_builder.getDFAS()) {
+		        cpuf::printf("type: {}", (int) table.getType());
+	        }
+	        holder.push(lexer);
+        }
+    auto Construct::constructParser() -> void {
+        LangAPI::Class parser {
+            .name = "Parser",
+            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, LangAPI::IspaLibSymbol {LangAPI::StdlibExports::Parser})},
+            .default_visibility = LangAPI::Visibility::Private
+        };
+        // construct DFAs
+        for (const auto &dfa : ir.getDfas()) {
+
+        }
+        for (const auto &fun_data : ir.getData()) {
+            parser.data.push_back(
+                std::make_pair(
+                    std::make_shared<LangAPI::Declaration>(
+                        LangAPI::Function::createDeclaration(LangAPI::Function {
+                            .name = corelib::text::join(fun_data.name, "_"),
+                            .parameters = {std::make_pair(LangAPI::Type {LangAPI::IspaLibSymbol {LangAPI::StdlibExports::ParserFunctionParameter} }, "pos")},
+                            .statements =  fun_data.members,
+                            .template_parameters = {"Iterator"}
+                        })
+                    ),
+                    LangAPI::Visibility::Public
+                )
+            );
+        }
+        holder.push(parser);
+    }
+
     auto Construct::construct() -> Holder& {
         constructTokensAndRulesEnum();
         //constructTokensAndRulesEnumToString();
         constructTypesNamespace();
         constructLexer();
+        constructParser();
         LangAPI::Namespace ns;
         ns.name = namespace_name;
         ns.declarations = std::move(holder.get());

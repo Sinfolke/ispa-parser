@@ -23,6 +23,9 @@ export namespace Converter {
         virtual auto setVisibility(LangAPI::Visibility visibility) -> void = 0;
         virtual auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void = 0;
         virtual auto closeFunction() -> void = 0;
+        virtual auto openTemplateParameters() -> void = 0;
+        virtual auto createTemplateParameter(const std::string &name) -> void = 0;
+        virtual auto closeTemplateParameters() -> void = 0;
 
         // types
         virtual auto createTypeAlias(const std::string &name, const LangAPI::Type type) -> void = 0;
