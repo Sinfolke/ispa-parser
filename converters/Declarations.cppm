@@ -21,7 +21,7 @@ export namespace Converter {
         virtual auto closeClass() -> void = 0;
         virtual auto createForwardDeclarationClass(LangAPI::ForwardDeclaredClass forward_declared_class) -> void = 0;
         virtual auto setVisibility(LangAPI::Visibility visibility) -> void = 0;
-        virtual auto createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void = 0;
+        virtual auto createFunction(const LangAPI::Type& type, const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void = 0;
         virtual auto closeFunction() -> void = 0;
         virtual auto openTemplateParameters() -> void = 0;
         virtual auto createTemplateParameter(const std::string &name) -> void = 0;
@@ -35,5 +35,8 @@ export namespace Converter {
         virtual auto createVariable(const LangAPI::Variable &v) -> void = 0;
         Declarations(Writer &output) : output(output) {}
         virtual ~Declarations() = default;
+
+        auto &getWriter() const  { return output; }
+        auto &getWriter() { return output; }
     };
 }

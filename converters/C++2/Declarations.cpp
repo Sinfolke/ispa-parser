@@ -1,11 +1,16 @@
 module Cpp.Declarations;
 import Cpp.CoreFunctions;
 import Cpp.Statement;
+import Cpp.CoreFunctions;
 import corelib;
 import logging;
 import std;
 
 namespace Cpp {
+    Declarations::Declarations(Converter::Writer &output) :  Converter::Declarations(output) {
+        Core::writer = &output;
+        Core::declarations_converter = this;
+    }
     auto Declarations::openFile(const std::string &namespace_name) -> void {
         output.writeln("#ifndef {}_H", corelib::text::ToUpper(namespace_name));
         output.writeln("#define {}_H", corelib::text::ToUpper(namespace_name));
@@ -89,14 +94,14 @@ namespace Cpp {
         }
     }
 
-    auto Declarations::createFunction(const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void {
+    auto Declarations::createFunction(const LangAPI::Type& type, const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void {
         output.write("auto {}(", name);
         for (const auto &p : parameters) {
             output.dwrite("{} {}, ", Core::convertType(p.first), p.second);
         }
         output.pop_back();
         output.pop_back();
-        output.dwriteln(") -> ::ISPA_STD::Node<Rules, FlatTypes::{}>", name);
+        output.dwriteln(") -> {}", Core::convertType(type));
         output.writeln("{");
         output.increaseIndentation();
     }

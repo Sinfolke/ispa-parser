@@ -52,7 +52,7 @@ export namespace LangRepr {
                         decls->closeTemplateParameters();
                     }
                 }
-                decls->createFunction(func_decl.name, func_decl.parameters);
+                decls->createFunction(func_decl.type, func_decl.name, func_decl.parameters);
                 buildStatements(func_decl.statements);
                 decls->closeFunction();
             }

@@ -19,6 +19,8 @@ auto DFA::Base::getType(const States<StateType> &states) const -> DfaType {
                     return dfa_type;
                 }
             } else {
+                if (std::get<SortedTransitions>(state.transitions).empty())
+                    continue;
                 if (dfa_type == DfaType::Token || dfa_type == DfaType::NONE) {
                     dfa_type = DfaType::Token;
                 } else {

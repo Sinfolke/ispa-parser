@@ -74,11 +74,11 @@ export namespace LangAPI {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, Reference, Span
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span
     };
     enum class ExpressionValueType {
         Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
-        ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError
+        ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError, Lambda
     };
     enum class ArrayMethods {
         Push, Pop
@@ -94,7 +94,9 @@ export namespace LangAPI {
         Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
         DfaMultiTransition, DfaCharState, DfaCharTableState, DfaTokenState, DfaMultiTableState, DfaCharEmptyState, DfaMultiTableEmptyState,
         DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
-        DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter
+        DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter,
+        DfaEmptyStateGroupBegin, DfaEmptyStateMemberBegin,
+        DfaCharTableEmptyStateLambdaParameter, DfaMultiTableEmptyStateLambdaParameter, DfaSpanCharTableEmptyStateLambdaParameter
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -158,6 +160,7 @@ export namespace LangAPI {
 
     // forward declarations
     struct Type;
+    struct Lambda;
 
     struct Char : RValueLevel {
         char value;
@@ -546,6 +549,23 @@ export namespace LangAPI {
             return std::tie(else_goto, else_goto_accept, state_id, mutli_table_transitions);
         }
     };
+    struct IspaLibDfaEmptyState : RValueLevel {
+        stdu::vector<std::string> token_name;
+        std::shared_ptr<Lambda> construction_lambda;
+        auto operator==(const IspaLibDfaEmptyState& other) const {
+            return token_name == other.token_name && construction_lambda == other.construction_lambda;
+        }
+        auto operator!=(const IspaLibDfaEmptyState& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaEmptyState& other) const {
+            if (token_name != other.token_name) return token_name < other.token_name;
+            else return construction_lambda < other.construction_lambda;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(token_name, construction_lambda);
+        }
+    };
     struct Reference : RValueLevel {
         std::shared_ptr<RValue> value;
 
@@ -579,7 +599,7 @@ export namespace LangAPI {
         }
     };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, Reference, Span> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -623,6 +643,7 @@ export namespace LangAPI {
         bool isIspaLibDfaTransition()  const { return std::holds_alternative<IspaLibDfaTransition>(value); }
         bool isIspaLibDfaSpanState()  const { return std::holds_alternative<IspaLibDfaSpanCharState>(value); }
         bool isIspaLibDfaSpanMultiTableState()  const { return std::holds_alternative<IspaLibDfaSpanMultiTableState>(value); }
+        bool isIspaLibDfaEmptyState()  const { return std::holds_alternative<IspaLibDfaEmptyState>(value); }
         // bool isIspaLibDfaState()  const { return std::holds_alternative<IspaLibDfaState>(value); }
         bool isReference()  const { return std::holds_alternative<Reference>(value); }
         bool isSpan()  const { return std::holds_alternative<Span>(value); }
@@ -644,6 +665,7 @@ export namespace LangAPI {
         IspaLibDfaTransition&  getIspaLibDfaTransition()  { return std::get<IspaLibDfaTransition>(value); }
         IspaLibDfaSpanCharState&  getIspaLibDfaSpanState()  { return std::get<IspaLibDfaSpanCharState>(value); }
         IspaLibDfaSpanMultiTableState&  getIspaLibDfaMultiTableState()  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
+        IspaLibDfaEmptyState&  getIspaLibDfaEmptyState()  { return std::get<IspaLibDfaEmptyState>(value); }
         // IspaLibDfaState&  getIspaLibDfaState()  { return std::get<IspaLibDfaState>(value); }
         Reference&  getReference()  { return std::get<Reference>(value); }
         Span&  getSpan()  { return std::get<Span>(value); }
@@ -663,6 +685,7 @@ export namespace LangAPI {
         const IspaLibDfaTransition&  getIspaLibDfaTransition() const  { return std::get<IspaLibDfaTransition>(value); }
         const IspaLibDfaSpanCharState&  getIspaLibDfaSpanCharState() const  { return std::get<IspaLibDfaSpanCharState>(value); }
         const IspaLibDfaSpanMultiTableState&  getIspaLibDfaSpanMultiTableState() const  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
+        const IspaLibDfaEmptyState&  getIspaLibDfaEmptyState() const  { return std::get<IspaLibDfaEmptyState>(value); }
         // const IspaLibDfaState&  getIspaLibDfaState() const  { return std::get<IspaLibDfaState>(value); }
         const Reference&  getReference() const  { return std::get<Reference>(value); }
         const Span&  getSpan() const  { return std::get<Span>(value); }
@@ -864,25 +887,28 @@ export namespace LangAPI {
         }
     };
     struct Function : DeclarationLevel {
+        Type type;
         std::string name;
         stdu::vector<std::pair<Type, std::string>> parameters;
         Statements statements;
         stdu::vector<std::string> template_parameters;
         bool operator==(const Function& other) const {
-            return name == other.name && parameters == other.parameters && statements == other.statements;
+            return type == other.type && name == other.name && parameters == other.parameters && statements == other.statements;
         }
         bool operator!=(const Function& other) const {
             return !(*this == other);
         }
         bool operator<(const Function& other) const {
+            if (type != other.type) return type < other.type;
             if (name != other.name) return name < other.name;
             else if (parameters != other.parameters) return parameters < other.parameters;
-            else return statements < other.statements;
+            else if (statements != other.statements) return statements < other.statements;
+            else return template_parameters < other.template_parameters;
         }
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(name, parameters, statements);
+            return std::tie(type, name, parameters, statements, template_parameters);
         }
     };
     struct TypeAlias : DeclarationLevel {
@@ -1177,6 +1203,21 @@ export namespace LangAPI {
             return std::tie(message);
         }
     };
+    struct Lambda : ExpressionValueLevel {
+        decltype(Function::parameters) parameters;
+        Statements statements;
+        bool operator==(const Lambda& other) const { return parameters == other.parameters && statements == other.statements; }
+        bool operator!=(const Lambda& other) const { return !(*this == other); }
+        bool operator<(const Lambda& other) const {
+            if (parameters != other.parameters) return parameters < other.parameters;
+            else return statements < other.statements;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(parameters, statements);
+        }
+    };
     struct ExpressionValue : ExpressionLevel {
         std::variant<
             std::monostate,
@@ -1195,7 +1236,8 @@ export namespace LangAPI {
             PopPosCounter,
             SkipSpaces,
             DfaLookup,
-            ReportError
+            ReportError,
+            Lambda
         > value;
         ExpressionValue() {};
         template<typename T>
@@ -1238,6 +1280,7 @@ export namespace LangAPI {
         bool isPopPosCounter() const { return std::holds_alternative<PopPosCounter>(value); }
         bool isSkipSpaces() const { return std::holds_alternative<SkipSpaces>(value); }
         bool isDfaLookup() const { return std::holds_alternative<DfaLookup>(value); }
+        bool isLambda() const { return std::holds_alternative<Lambda>(value); }
 
         // ======= getXXX functions =======
         RValue& getRValue() { return std::get<RValue>(value); }
@@ -1255,6 +1298,7 @@ export namespace LangAPI {
         PopPosCounter& getPopPosCounter() { return std::get<PopPosCounter>(value); }
         SkipSpaces& getSkipSpaces() { return std::get<SkipSpaces>(value); }
         DfaLookup& getDfaLookup() { return std::get<DfaLookup>(value); }
+        Lambda& getLambda() { return std::get<Lambda>(value); }
 
         // const versions
         const RValue& getRValue() const { return std::get<RValue>(value); }
@@ -1272,6 +1316,7 @@ export namespace LangAPI {
         const PopPosCounter& getPopPosCounter() const { return std::get<PopPosCounter>(value); }
         const SkipSpaces& getSkipSpaces() const { return std::get<SkipSpaces>(value); }
         const DfaLookup& getDfaLookup() const { return std::get<DfaLookup>(value); }
+        const Lambda& getLambda() const { return std::get<Lambda>(value); }
 
         auto type() const { return static_cast<ExpressionValueType>(value.index()); }
 

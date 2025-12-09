@@ -1,7 +1,13 @@
 module Cpp.Statement;
 
 import Cpp.CoreFunctions;
+import Converter.Statement;
 import std;
+Cpp::Statement::Statement(Converter::Writer &output) : Converter::Statement(output) {
+    Core::writer = &output;
+    Core::stmts_converter = this;
+}
+
 auto Cpp::Statement::createVariable(const LangAPI::Variable &v) -> void {
     output.write("{} {}", Core::convertType(v.type), v.name);
     if (!v.value.empty()) {

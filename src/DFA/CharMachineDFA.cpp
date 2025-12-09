@@ -55,7 +55,6 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         FullCharTable char_table;
         if (state.transitions.empty()) {
             states.emplace_back(state.nfa_states, std::variant<FullCharTable, SortedTransitions> {SortedTransitions {}}, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
-            cpuf::printf("State empty");
             continue;
         }
         if (std::holds_alternative<char>(state.transitions.begin()->first)) {
@@ -76,7 +75,6 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             states.emplace_back(state.nfa_states, state.transitions, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         }
     }
-    cpuf::printf("has multi state: {}", has_multi_state);
     return this->states;
 }
 auto DFA::CharMachineDFA::getType() const -> DfaType {

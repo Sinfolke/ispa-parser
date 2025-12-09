@@ -2,6 +2,8 @@ module Cpp.CoreFunctions;
 
 import corelib;
 import logging;
+import Cpp.Statement;
+import Cpp.Declarations;
 
 import dstd;
 
@@ -138,7 +140,7 @@ auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::st
 auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::string {
     switch (symbol.exports) {
         case LangAPI::StdlibExports::Node:
-            return "::ISPA_STD::Node<Tokens>";
+            return std::string("::ISPA_STD::Node<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
             return "::ISPA_STD::Lexer_base<Tokens>";
         case LangAPI::StdlibExports::Parser:
@@ -160,7 +162,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::DfaMultiTableState:
             return "::ISPA_STD::DFAAPI::MultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaCharEmptyState:
-            return "::ISPA_STD::DFAAPI::CharEmptyState<" + convertTemplates(symbol.template_parameters) + ">";
+            return "::ISPA_STD::DFAAPI::CharEmptyState";
         case LangAPI::StdlibExports::DfaMultiTableEmptyState:
             return "::ISPA_STD::DFAAPI::MultiTableEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaCharTable:
@@ -177,6 +179,14 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::ParserFunctionParameter:
             return "Iterator";
+        case LangAPI::StdlibExports::DfaCharTableEmptyStateLambdaParameter:
+            return "::ISPA_STD::DFAAPI::CharTableDataVector";
+        case LangAPI::StdlibExports::DfaMultiTableEmptyStateLambdaParameter:
+            return "::ISPA_STD::DFAAPI::MultiTableDataVector<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaEmptyStateGroupBegin:
+            return "::ISPA_STD::DFAAPI::GroupBegin";
+        case LangAPI::StdlibExports::DfaEmptyStateMemberBegin:
+            return "::ISPA_STD::DFAAPI::MemberBegin";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -268,6 +278,9 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
             case LangAPI::ExpressionValueType::ReportError:
                 out << "[Error]";
                 break;
+            case LangAPI::ExpressionValueType::Lambda:
+                out << convertLambda(expr.getLambda());
+                break;
             default:
                 throw Error("Unknown expression type");
         }
@@ -319,6 +332,62 @@ auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const
         default:
             throw Error("Unknown expression element");
     }
+}
+auto Core::buildStatement(const LangAPI::Statement &stmt) -> void {
+    if (stmt.isIf()) {
+        stmts_converter->createIf(stmt.getIf().expr);
+        buildStatements(stmt.getIf().stmt);
+        stmts_converter->closeIf();
+    } else if (stmt.isWhile()) {
+        stmts_converter->createWhile(stmt.getWhile().expr);
+        buildStatements(stmt.getWhile().stmt);
+        stmts_converter->closeWhile();
+    } else if (stmt.isDoWhile()) {
+        const auto dowhile = stmt.getDoWhile();
+        stmts_converter->openDoWhile();
+        buildStatements(dowhile.stmt);
+        stmts_converter->closeDoWhile(dowhile.expr);
+    } else if (stmt.isSwitch()) {
+        const auto switch_statement = stmt.getSwitch();
+        stmts_converter->createSwitch(switch_statement.expression);
+        for (const auto &case_statement : switch_statement.cases) {
+            stmts_converter->createCase(case_statement.first);
+            buildStatements(case_statement.second);
+            stmts_converter->closeCase();
+        }
+        stmts_converter->closeSwitch();
+    } else if (stmt.isExpression()) {
+        stmts_converter->createExpression(stmt.getExpression());
+    } else if (stmt.isVariable()) {
+        stmts_converter->createVariable(stmt.getVariable());
+    }
+}
+auto Core::buildStatements(const LangAPI::Statements &statements) -> void {
+    for (const auto &stmt : statements) {
+        buildStatement(stmt);
+    }
+}
+auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
+    // use lower level interaction to writer to output lambda in correct place with correct indentation
+    std::ostringstream out;
+    out << "(";
+    bool first = true;
+    for (const auto &p : lambda.parameters) {
+        if (!first) {
+            out << ", ";
+        }
+        out << convertType(p.first) << ' ' << p.second;
+        first = false;
+    }
+    out << ") {\n";
+    auto prev_writer = stmts_converter->getWriter();
+    stmts_converter->getWriter().increaseIndentation();
+    buildStatements(lambda.statements);
+    declarations_converter->closeFunction();
+    const auto text = stmts_converter->getWriter().get().erase(0, prev_writer.get().size());
+    out << text;
+    stmts_converter->getWriter() = prev_writer;
+    return out.str();
 }
 auto Core::convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string {
     std::string str = call.name + "(";
@@ -484,6 +553,10 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             out_content << "::ISPA_STD::DFAAPI::SpanMultiTableState" << tmpl << " {" << number_or_null(state.else_goto) << ", " << number_or_null(state.else_goto_accept) << ", "
                         << "{dfa_state_" << state.state_id << ".data(), dfa_state_" << state.state_id << ".size()}}";
             return out_content.str();
+        }
+        case LangAPI::RValueType::IspaLibDfaEmptyState: {
+            const auto &state = rvalue.getIspaLibDfaEmptyState();
+            return "{ Tokens::" + corelib::text::join(state.token_name, "_") + ", " + convertLambda(*state.construction_lambda) + " }";
         }
         case LangAPI::RValueType::Reference:
             return "&" + convertRValue(*rvalue.getReference().value);

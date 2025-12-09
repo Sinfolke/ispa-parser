@@ -2,6 +2,9 @@ export module Cpp.CoreFunctions;
 
 import LangAPI;
 import Rope.String;
+import Cpp.Statement;
+import Cpp.Declarations;
+import Converter.Writer;
 import dstd;
 import std;
 
@@ -10,6 +13,9 @@ export namespace Core {
     std::vector<std::string> counter = { base_pointer };
     LangAPI::Visibility prev_visibility = LangAPI::Visibility::Private;
     bool first_template_parameter = true;
+    Cpp::Statement *stmts_converter;
+    Cpp::Declarations *declarations_converter;
+    Converter::Writer *writer;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;
@@ -22,6 +28,9 @@ export namespace Core {
     // expression
     auto convertExpression(const LangAPI::Expression &expression) -> std::string;
     auto convertExpressionElement(LangAPI::ExpressionElement element) -> const char *;
+    auto buildStatement(const LangAPI::Statement &stmt) -> void;
+    auto buildStatements(const LangAPI::Statements &statements) -> void;
+    auto convertLambda(const LangAPI::Lambda &lambda) -> std::string;
     auto convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string;
     // rvalue
     auto convertRValue(const LangAPI::RValue &rvalue) -> std::string;

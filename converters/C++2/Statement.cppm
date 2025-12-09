@@ -7,10 +7,9 @@ import Rope.String;
 import std;
 
 export namespace Cpp {
-    class Statement : ::Converter::Statement {
-        Converter::Writer &output;
+    class Statement : public ::Converter::Statement {
     public:
-        Statement(Converter::Writer &output) : output(output) {}
+        Statement(Converter::Writer &output);
 
         auto createIf(const LangAPI::Expression &expression)-> void override;
         auto closeIf() -> void override;
