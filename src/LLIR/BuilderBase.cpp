@@ -115,31 +115,34 @@ auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const Lang
         .name = var.name,
         .value = LangAPI::FunctionCall::createExpression(function_call)
     };
-    expr = LangAPI::StorageSymbol::createExpression(LangAPI::StorageSymbol {.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {var.name }), .path = {{"status"}}});
+    LangAPI::StorageSymbol sym;
+    sym.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {var.name });
+    sym.path = {{"status"}};
+    expr = LangAPI::StorageSymbol::createExpression(sym);
     return LangAPI::VariableAssignment::createStatement(assignment);
 }
 auto LLIR::BuilderBase::add_shadow_variable(LangAPI::Statements &block, LangAPI::Statements &statements, const LangAPI::Variable &var) -> LangAPI::Variable {
     LangAPI::Variable shadow_var = createEmptyVariable("shadow" + generateVariableName());
+    LangAPI::StorageSymbol sym;
+    sym.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {
+        shadow_var.name
+    });
+    sym.path = {
+        LangAPI::ArrayMethodCall {
+            .method = LangAPI::ArrayMethods::Push,
+            .args = {
+                LangAPI::Symbol::createExpression(LangAPI::Symbol {
+                    var.name
+                })
+            }
+        }
+    };
     undoRuleResult(shadow_var.type.getValueType());
     shadow_var.type.template_parameters = {{var.type}};
     shadow_var.type.type = LangAPI::ValueType::Array;
     statements.push_back(LangAPI::Variable::createStatement(shadow_var));
     statements.push_back(
-        LangAPI::StorageSymbol::createStatement(LangAPI::StorageSymbol {
-                .what = LangAPI::Symbol::createExpression(LangAPI::Symbol {
-                    shadow_var.name
-                }),
-                .path = {
-                    LangAPI::ArrayMethodCall {
-                        .method = LangAPI::ArrayMethods::Push,
-                        .args = {
-                            LangAPI::Symbol::createExpression(LangAPI::Symbol {
-                                var.name
-                            })
-                        }
-                    }
-                }
-        })
+        LangAPI::StorageSymbol::createStatement(sym)
     );
     return shadow_var;
 }

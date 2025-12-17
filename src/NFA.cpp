@@ -580,6 +580,7 @@ void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &
 void NFA::build(bool addStoreActions) {
     if (isWhitespaceToken)
         addStoreActions = false;
+    std::size_t last_state;
     if (rules != nullptr) {
         for (auto it = rules->begin(); it != rules->end() - 1; ++it) {
             auto [start, end] = buildStateFragment(*it, false, addStoreActions);
@@ -591,26 +592,30 @@ void NFA::build(bool addStoreActions) {
         if (states.empty()) {
             throw Error("NFA cannot be empty");
         }
-        if (addStoreActions && dtb != nullptr && end != NULL_STATE) {
-            states[end].rule_name = name_;
-            if (dtb->isTemplatedDataBlock()) {
-                TemplatedDataBlock templated_data_block;
-                std::size_t prefix_index = 0;
-                std::size_t index = 0;
-                std::size_t group_index = 0;
-                generateTemplatedDataBlockFromRules(*rules, templated_data_block, prefix_index, index, group_index);
-                states[end].dtb = templated_data_block;
-            } else if (dtb->isRegularDataBlock()) {
-                SingleValueDataBlock single_value_data_block;
-                bool isAlreadyConstructed = false;
-                generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
-                states[end].dtb = single_value_data_block;
-            } else {
-                states[end].dtb = std::monostate {};
-            }
-        }
+        last_state = end;
     } else {
-        buildStateFragment(*member, true, addStoreActions);
+        last_state = buildStateFragment(*member, true, addStoreActions).end;
+    }
+    if (addStoreActions) {
+        if (dtb == nullptr)
+            nfadtb = std::monostate {};
+        else if (dtb->isTemplatedDataBlock()) {
+            TemplatedDataBlock templated_data_block;
+            std::size_t prefix_index = 0;
+            std::size_t index = 0;
+            std::size_t group_index = 0;
+            generateTemplatedDataBlockFromRules(*rules, templated_data_block, prefix_index, index, group_index);
+            nfadtb = templated_data_block;
+        } else if (dtb->isRegularDataBlock()) {
+            SingleValueDataBlock single_value_data_block;
+            bool isAlreadyConstructed = false;
+            generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
+            nfadtb = single_value_data_block;
+        } else {
+            nfadtb = std::monostate {};
+        }
+        states[last_state].rule_name = name_;
+        states[last_state].dtb = nfadtb;
     }
     for (const auto &el : group_close_propagate) {
         auto propagate_states = getStatesToPropagate(el.first);

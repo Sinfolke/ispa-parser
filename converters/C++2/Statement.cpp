@@ -2,6 +2,7 @@ module Cpp.Statement;
 
 import Cpp.CoreFunctions;
 import Converter.Statement;
+import corelib;
 import std;
 Cpp::Statement::Statement(Converter::Writer &output) : Converter::Statement(output) {
     Core::writer = &output;

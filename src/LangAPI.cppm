@@ -77,7 +77,7 @@ export namespace LangAPI {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span
     };
     enum class ExpressionValueType {
-        Empty, RValue, ExpressionElement, FunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
+        Empty, RValue, ExpressionElement, FunctionCall, IspaLibFunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
         ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError, Lambda
     };
     enum class ArrayMethods {
@@ -96,7 +96,8 @@ export namespace LangAPI {
         DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
         DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter,
         DfaEmptyStateGroupBegin, DfaEmptyStateMemberBegin,
-        DfaCharTableEmptyStateLambdaParameter, DfaMultiTableEmptyStateLambdaParameter, DfaSpanCharTableEmptyStateLambdaParameter
+        DfaCharTableEmptyStateLambdaParameter, DfaMultiTableEmptyStateLambdaParameter, DfaSpanCharTableEmptyStateLambdaParameter,
+        DfaCstStore, DfaCstGroupStore
     };
     struct DeclarationsLevel {
         using promote_to = Declarations;
@@ -161,6 +162,7 @@ export namespace LangAPI {
     // forward declarations
     struct Type;
     struct Lambda;
+    struct IspaLibSymbol;
 
     struct Char : RValueLevel {
         char value;
@@ -313,26 +315,6 @@ export namespace LangAPI {
             return std::tie(dereference, offset);
         }
     };
-
-    struct FunctionCall : RValueLevel {
-        std::string name;
-        stdu::vector<Expression> args;
-
-        bool operator==(const FunctionCall& other) const {
-            return name == other.name && args == other.args;
-        }
-        bool operator!=(const FunctionCall& other) const { return !(*this == other); }
-        bool operator<(const FunctionCall& other) const {
-            if (name != other.name) return name < other.name;
-            else return args < other.args;
-        }
-    private:
-        friend struct ::uhash;
-        auto members() const {
-            return std::tie(name, args);
-        }
-    };
-
     struct ArrayMethodCall : RValueLevel {
         ArrayMethods method;
         stdu::vector<Expression> args;
@@ -351,7 +333,24 @@ export namespace LangAPI {
             return std::tie(method, args);
         }
     };
+    struct FunctionCall : ExpressionValueLevel {
+        std::string name;
+        stdu::vector<Expression> args;
 
+        bool operator==(const FunctionCall& other) const {
+            return name == other.name && args == other.args;
+        }
+        bool operator!=(const FunctionCall& other) const { return !(*this == other); }
+        bool operator<(const FunctionCall& other) const {
+            if (name != other.name) return name < other.name;
+            else return args < other.args;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(name, args);
+        }
+    };
     struct Symbol : RValueLevel {
         using PathPart = std::variant<FunctionCall, std::string>;
         stdu::vector<PathPart> path;
@@ -381,8 +380,25 @@ export namespace LangAPI {
     };
 
     struct StorageSymbol : RValueLevel {
+        using PathPart = std::variant<FunctionCall, ArrayMethodCall, std::string>;
         Expression what;
-        stdu::vector<std::variant<FunctionCall, ArrayMethodCall, std::string>> path;
+        stdu::vector<PathPart> path;
+
+
+        template<typename... Args>
+        requires (std::constructible_from<PathPart, Args> && ...)
+        StorageSymbol(Args&&... args) {
+            (path.emplace_back(std::forward<Args>(args)), ...);
+        }
+        template<std::ranges::input_range R>
+        requires std::constructible_from<PathPart, std::ranges::range_value_t<R>>
+        StorageSymbol(const R& el) {
+            for (auto &e : el) {
+                path.emplace_back(e);
+            }
+        }
+        StorageSymbol(const stdu::vector<PathPart> &path) : path(path) {}
+        StorageSymbol(stdu::vector<PathPart> &&path) : path(std::move(path)) {}
 
         bool operator==(const StorageSymbol& other) const {
             return what == other.what && path == other.path;
@@ -411,6 +427,24 @@ export namespace LangAPI {
         friend struct ::uhash;
         auto members() const {
             return std::tie(exports);
+        }
+    };
+    struct IspaLibFunctionCall : ExpressionValueLevel {
+        IspaLibSymbol symbol;
+        stdu::vector<Expression> args;
+
+        bool operator==(const IspaLibFunctionCall& other) const {
+            return symbol == other.symbol && args == other.args;
+        }
+        bool operator!=(const IspaLibFunctionCall& other) const { return !(*this == other); }
+        bool operator<(const IspaLibFunctionCall& other) const {
+            if (symbol != other.symbol) return symbol < other.symbol;
+            else return args < other.args;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(symbol, args);
         }
     };
     struct Inheritance : RValueLevel {
@@ -958,6 +992,7 @@ export namespace LangAPI {
         std::string name;
         Type type;
         Expression value;
+        bool is_static = false;
         bool operator==(const Variable& other) const {
             return name == other.name && type == other.type && value == other.value;
         }
@@ -1224,6 +1259,7 @@ export namespace LangAPI {
             RValue,
             ExpressionElement,
             FunctionCall,
+            IspaLibFunctionCall,
             StringCompare,
             Return,
             Break,
@@ -1268,6 +1304,7 @@ export namespace LangAPI {
         bool isRvalue() const { return std::holds_alternative<RValue>(value); }
         bool isExpressionElement() const { return std::holds_alternative<ExpressionElement>(value); }
         bool isFunctionCall() const { return std::holds_alternative<FunctionCall>(value); }
+        bool isIspaLibFunctionCall() const { return std::holds_alternative<IspaLibFunctionCall>(value); }
         bool isStringCompare() const { return std::holds_alternative<StringCompare>(value); }
         bool isReturn() const { return std::holds_alternative<Return>(value); }
         bool isBreak() const { return std::holds_alternative<Break>(value); }
@@ -1286,6 +1323,7 @@ export namespace LangAPI {
         RValue& getRValue() { return std::get<RValue>(value); }
         ExpressionElement& getExpressionElement() { return std::get<ExpressionElement>(value); }
         FunctionCall& getFunctionCall() { return std::get<FunctionCall>(value); }
+        IspaLibFunctionCall& getIspaLibFunctionCall() { return std::get<IspaLibFunctionCall>(value); }
         StringCompare& getStringCompare() { return std::get<StringCompare>(value); }
         Return& getReturn() { return std::get<Return>(value); }
         Break& getBreak() { return std::get<Break>(value); }
@@ -1304,6 +1342,7 @@ export namespace LangAPI {
         const RValue& getRValue() const { return std::get<RValue>(value); }
         const ExpressionElement& getExpressionElement() const { return std::get<ExpressionElement>(value); }
         const FunctionCall& getFunctionCall() const { return std::get<FunctionCall>(value); }
+        const IspaLibFunctionCall& getIspaLibFunctionCall() const { return std::get<IspaLibFunctionCall>(value); }
         const StringCompare& getStringCompare() const { return std::get<StringCompare>(value); }
         const Return& getReturn() const { return std::get<Return>(value); }
         const Break& getBreak() const { return std::get<Break>(value); }

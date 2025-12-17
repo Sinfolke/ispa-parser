@@ -290,6 +290,7 @@ target_sources(ispa_modules
         ${CONVERTERS_DIR}/Declarations.cppm
         ${CONVERTERS_DIR}/Statement.cppm
         ${CONVERTERS_DIR}/Writer.cppm
+        ${CONVERTERS_DIR}/Init.cppm
 )
 # export modules from main executable to shared library
 #add_raw_module(ispa-converter-cpp ispa_modules

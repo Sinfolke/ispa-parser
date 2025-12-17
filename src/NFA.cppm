@@ -57,6 +57,7 @@ private:
     const AST::RuleMember *member = nullptr;
     const AST::DataBlock *dtb;
     const stdu::vector<std::string> &name_;
+    DataBlock nfadtb;
     stdu::vector<state> states;
     stdu::vector<std::size_t> add_space_skip_places;
     stdu::vector<std::pair<std::size_t, std::size_t>> group_close_propagate;
@@ -109,8 +110,11 @@ public:
     auto &isCharNfa() const {
         return is_char_table;
     }
-    auto &name() const {
+    auto &getName() const {
         return name_;
+    }
+    auto &getDtb() const {
+        return nfadtb;
     }
 };
 // Print a single state

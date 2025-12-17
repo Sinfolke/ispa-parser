@@ -68,10 +68,13 @@ namespace Cpp {
         }
         output.dwriteln(" {");
         output.increaseIndentation();
+        Core::symbol_path.push_back(the_class.name);
     }
     auto Declarations::closeClass() -> void {
         output.decreaseIndentation();
         output.writeln("};");
+        Core::symbol_path.pop_back();
+        Core::templated = false;
     }
     auto Declarations::createForwardDeclarationClass(const LangAPI::ForwardDeclaredClass forward_declared_class) -> void {
         output.writeln("{} {};", forward_declared_class.isStruct ? "struct" : "class", forward_declared_class.name);
@@ -101,16 +104,20 @@ namespace Cpp {
         }
         output.pop_back();
         output.pop_back();
-        output.dwriteln(") -> {}", Core::convertType(type));
+        output.dwrite(")\n");
         output.writeln("{");
         output.increaseIndentation();
+        Core::symbol_path.push_back(name);
     }
     auto Declarations::closeFunction() -> void {
         output.decreaseIndentation();
         output.write("}\n");
+        Core::symbol_path.pop_back();
+        Core::templated = false;
     }
     auto Declarations::openTemplateParameters() -> void {
         output.write("template<");
+        Core::templated = true;
     }
     auto Declarations::createTemplateParameter(const std::string &name) -> void {
         if (!Core::first_template_parameter) {
@@ -138,10 +145,16 @@ namespace Cpp {
         output.writeln("};");
     }
     auto Declarations::createVariable(const LangAPI::Variable &v) -> void {
-        Statement(output).createVariable(v);
+        output.write("{} {} {}", v.is_static ? "static" : "", Core::convertType(v.type), v.name);
+        if (!v.value.empty()) {
+            if (v.is_static) {
+                Core::cpp_file << corelib::text::join(Core::symbol_path, "::") << "::" << v.name << " = " << Core::convertExpression(v.value) << ";\n";
+            } else {
+                output.dwrite(" = {}", Core::convertExpression(v.value));
+            }
+        }
+        output.dwriteln(";");
     }
-
-
 }
 extern "C" Cpp::Declarations* create_cpp_declarations(Converter::Writer *output) {
     return new Cpp::Declarations(*output);

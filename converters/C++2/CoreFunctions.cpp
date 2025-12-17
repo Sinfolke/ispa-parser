@@ -162,7 +162,9 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::DfaMultiTableState:
             return "::ISPA_STD::DFAAPI::MultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaCharEmptyState:
-            return "::ISPA_STD::DFAAPI::CharEmptyState";
+            // CharEmptyState requires <Tokens, ReturnType>
+            // ReturnType is provided via template_parameters
+            return "::ISPA_STD::DFAAPI::CharEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaMultiTableEmptyState:
             return "::ISPA_STD::DFAAPI::MultiTableEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaCharTable:
@@ -174,7 +176,8 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::DfaSpanMultiTableState:
             return "::ISPA_STD::DFAAPI::SpanMultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaSpanCharTableState:
-            return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens>";
+            // SpanCharTableState<Tokens, ReturnType>
+            return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaSpanTokenTableState:
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::ParserFunctionParameter:
@@ -187,6 +190,10 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::GroupBegin";
         case LangAPI::StdlibExports::DfaEmptyStateMemberBegin:
             return "::ISPA_STD::DFAAPI::MemberBegin";
+        case LangAPI::StdlibExports::DfaCstStore:
+            return "::ISPA_STD::DFAAPI::cst_store";
+        case LangAPI::StdlibExports::DfaCstGroupStore:
+            return "::ISPA_STD::DFAAPI::cst_group_store";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -280,6 +287,9 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                 break;
             case LangAPI::ExpressionValueType::Lambda:
                 out << convertLambda(expr.getLambda());
+                break;
+            case LangAPI::ExpressionValueType::IspaLibFunctionCall:
+                out << convertIspaLibFunctionCall(expr.getIspaLibFunctionCall());
                 break;
             default:
                 throw Error("Unknown expression type");
@@ -383,6 +393,7 @@ auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
     auto prev_writer = stmts_converter->getWriter();
     stmts_converter->getWriter().increaseIndentation();
     buildStatements(lambda.statements);
+    Core::symbol_path.push_back("");
     declarations_converter->closeFunction();
     const auto text = stmts_converter->getWriter().get().erase(0, prev_writer.get().size());
     out << text;
@@ -399,6 +410,18 @@ auto Core::convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string
     }
     str += ")";
     return str;
+}
+auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string {
+    std::ostringstream out;
+    out << convertIspaLibSymbol(call.symbol) << "(";
+    bool first = true;
+    for (const auto &param : call.args) {
+        if (!first) out << ", ";
+        out << convertExpression(param);
+        first = false;
+    }
+    out << ")";
+    return out.str();
 }
 auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
     switch (rvalue.type()) {

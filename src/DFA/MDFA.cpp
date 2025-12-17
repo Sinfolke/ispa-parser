@@ -23,8 +23,8 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
     dfa_state_map[start_closure] = states.makeNew();
     work.push(start_closure);
 
-    stdu::vector<std::string>  rule_name;
-    NFA::DataBlock dtb;
+    stdu::vector<std::string>  rule_name = nfa.getName();
+    NFA::DataBlock dtb = nfa.getDtb();;
     stdu::vector<std::size_t> goto_empty_states;
     while (!work.empty()) {
         Closure current = work.front();
@@ -38,10 +38,6 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
             const auto &state = nfa.getStates().at(nfa_index);
             for (const auto &[symbol, id] : state.transitions) {
                 input_symbols[symbol].emplace_back(TransitionValue {id.next, id.new_cst_node, id.new_member, id.close_cst_node, id.new_group, id.group_close, nfa.getAcceptMap().at(id.next), state.optional, state.last}, state.any);
-            }
-            if (!state.rule_name.empty()) {
-                rule_name = state.rule_name;
-                dtb = state.dtb;
             }
         }
         if (input_symbols.empty()) {

@@ -16,6 +16,10 @@ export namespace Core {
     Cpp::Statement *stmts_converter;
     Cpp::Declarations *declarations_converter;
     Converter::Writer *writer;
+    std::string name;
+    stdu::vector<std::string> symbol_path;
+    std::ofstream cpp_file;
+    bool templated = false;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;
@@ -32,6 +36,7 @@ export namespace Core {
     auto buildStatements(const LangAPI::Statements &statements) -> void;
     auto convertLambda(const LangAPI::Lambda &lambda) -> std::string;
     auto convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string;
+    auto convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string;
     // rvalue
     auto convertRValue(const LangAPI::RValue &rvalue) -> std::string;
 }
