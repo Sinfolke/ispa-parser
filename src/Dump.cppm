@@ -11,7 +11,7 @@ public:
         return args->dump_all || args->dump.contains(s);
     }
     auto makeDumpPath(const std::string &s) const {
-        return args->dump_dir + "/" + s;
+        return args->dump_dir + "/" + s + ".txt";
     }
     void initDumpDirectory() const;
     void setArgsPointer(const Args *args) {

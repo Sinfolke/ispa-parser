@@ -33,5 +33,7 @@ export namespace DFA {
         auto getType() const -> DfaType;
 
         auto clear() -> void;
+
     };
+    auto operator<<(std::ostream &os, const CharMachineDFA &dfa) -> std::ostream&;
 }

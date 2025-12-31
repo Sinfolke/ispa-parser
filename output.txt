@@ -1,0 +1,1178 @@
+file parser/parser/cll.isc
+file parser/parser/literals.isc
+file parser/parser/manual_tokens.isc
+file parser/parser/modules.isc
+file parser/parser/parser.isc
+file parser/parser/rule.isc
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_5, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_5, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_11, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_11, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MODULO, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MODULO, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MODULO, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_14, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_14, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_14, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_14, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_OR, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_OR, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_OR, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_OR, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_AND, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_AND, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_AND, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_AND, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, LOGICAL_AND, }
+INFO: tn_path for idx %zu is not empty
+
+path: {STRING, }
+INFO: tn_path for idx %zu is not empty
+
+path: {STRING, }
+INFO: tn_path for idx %zu is not empty
+
+path: {STRING, }
+INFO: tn_path for idx %zu is not empty
+
+path: {STRING, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_3, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_3, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_4, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_4, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MULTIPLE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MULTIPLE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MULTIPLE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_21, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_21, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {PLUS, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_21, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_21, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_1, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_1, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_20, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_20, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_10, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NUMBER, }
+INFO: tn_path for idx %zu is not empty
+
+path: {MINUS, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, ASSIGNMENT_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_20, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_20, }
+INFO: tn_path for idx %zu is not empty
+
+path: {DOT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {DOT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {DIVIDE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {DIVIDE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {LINEAR_COMMENT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {LINEAR_COMMENT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {LINEAR_COMMENT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {DIVIDE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, BIN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, BIN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, BIN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, BIN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, HEX, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, HEX, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, HEX, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, BIN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_6, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_6, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_7, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_7, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, COMPARE_OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_17, }
+INFO: tn_path for idx %zu is not empty
+
+path: {QUESTION_MARK, }
+INFO: tn_path for idx %zu is not empty
+
+path: {QUESTION_MARK, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AT, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_12, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, ESCAPE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, ESCAPE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, ESCAPE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, DIAPASON, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, DIAPASON, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, DIAPASON, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, DIAPASON, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, SYMBOL, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, CSEQUENCE, SYMBOL, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, ESCAPED, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, ESCAPED, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, NOSPACE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, ESCAPED, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, ESCAPED, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_13, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_13, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, TYPE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, TEMPLATE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, TEMPLATE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, TEMPLATE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {cll, TEMPLATE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_8, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_8, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_18, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_16, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_16, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_15, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_15, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_15, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_15, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_16, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_16, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_16, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_9, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NAME, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NAME, }
+INFO: tn_path for idx %zu is not empty
+
+path: {NAME, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {SPACEMODE, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {BOOLEAN, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_22, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_22, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_22, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_22, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_22, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {ID, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_19, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_0, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_0, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {rule, OP, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_2, }
+INFO: tn_path for idx %zu is not empty
+
+path: {AUTO_2, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {cll, COMPARE_OP, }
+path: {AUTO_5, }
+path: {AUTO_5, }
+path: {AUTO_11, }
+path: {AUTO_11, }
+path: {MODULO, }
+path: {MODULO, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {MODULO, }
+path: {AUTO_14, }
+path: {AUTO_14, }
+path: {cll, LOGICAL_OP, }
+path: {AUTO_14, }
+path: {AUTO_14, }
+path: {cll, LOGICAL_OR, }
+path: {cll, LOGICAL_OR, }
+path: {cll, LOGICAL_OR, }
+path: {cll, LOGICAL_OR, }
+path: {cll, LOGICAL_AND, }
+path: {cll, LOGICAL_AND, }
+path: {cll, LOGICAL_AND, }
+path: {cll, LOGICAL_AND, }
+path: {cll, LOGICAL_AND, }
+path: {STRING, }
+path: {STRING, }
+path: {STRING, }
+path: {STRING, }
+path: {AUTO_3, }
+path: {AUTO_3, }
+path: {AUTO_4, }
+path: {AUTO_4, }
+path: {MULTIPLE, }
+path: {MULTIPLE, }
+path: {cll, ASSIGNMENT_OP, }
+path: {MULTIPLE, }
+path: {AUTO_21, }
+path: {AUTO_21, }
+path: {NUMBER, }
+path: {NUMBER, }
+path: {NUMBER, }
+path: {NUMBER, }
+path: {PLUS, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {AUTO_21, }
+path: {AUTO_21, }
+path: {AUTO_1, }
+path: {AUTO_1, }
+path: {AUTO_20, }
+path: {AUTO_20, }
+path: {AUTO_10, }
+path: {NUMBER, }
+path: {NUMBER, }
+path: {NUMBER, }
+path: {MINUS, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {cll, ASSIGNMENT_OP, }
+path: {AUTO_20, }
+path: {AUTO_20, }
+path: {DOT, }
+path: {DOT, }
+path: {DIVIDE, }
+path: {DIVIDE, }
+path: {LINEAR_COMMENT, }
+path: {LINEAR_COMMENT, }
+path: {LINEAR_COMMENT, }
+path: {DIVIDE, }
+path: {rule, BIN, }
+path: {rule, BIN, }
+path: {rule, BIN, }
+path: {rule, BIN, }
+path: {rule, HEX, }
+path: {rule, HEX, }
+path: {rule, HEX, }
+path: {rule, BIN, }
+path: {AUTO_6, }
+path: {AUTO_6, }
+path: {AUTO_7, }
+path: {AUTO_7, }
+path: {AUTO_17, }
+path: {AUTO_17, }
+path: {cll, COMPARE_OP, }
+path: {AUTO_17, }
+path: {AUTO_17, }
+path: {AUTO_17, }
+path: {AUTO_17, }
+path: {AUTO_17, }
+path: {QUESTION_MARK, }
+path: {QUESTION_MARK, }
+path: {AT, }
+path: {AT, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {AUTO_12, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, }
+path: {rule, CSEQUENCE, ESCAPE, }
+path: {rule, CSEQUENCE, ESCAPE, }
+path: {rule, CSEQUENCE, ESCAPE, }
+path: {rule, CSEQUENCE, DIAPASON, }
+path: {rule, CSEQUENCE, DIAPASON, }
+path: {rule, CSEQUENCE, DIAPASON, }
+path: {rule, CSEQUENCE, DIAPASON, }
+path: {rule, CSEQUENCE, SYMBOL, }
+path: {rule, CSEQUENCE, SYMBOL, }
+path: {rule, ESCAPED, }
+path: {rule, ESCAPED, }
+path: {rule, NOSPACE, }
+path: {rule, ESCAPED, }
+path: {rule, ESCAPED, }
+path: {AUTO_13, }
+path: {AUTO_13, }
+path: {ID, }
+path: {cll, TYPE, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {cll, TEMPLATE, }
+path: {cll, TEMPLATE, }
+path: {cll, TEMPLATE, }
+path: {cll, TEMPLATE, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_8, }
+path: {AUTO_8, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_18, }
+path: {AUTO_16, }
+path: {AUTO_16, }
+path: {AUTO_15, }
+path: {AUTO_15, }
+path: {AUTO_15, }
+path: {AUTO_15, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_16, }
+path: {AUTO_16, }
+path: {AUTO_16, }
+path: {AUTO_9, }
+path: {AUTO_9, }
+path: {AUTO_9, }
+path: {AUTO_9, }
+path: {AUTO_9, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_9, }
+path: {AUTO_9, }
+path: {ID, }
+path: {NAME, }
+path: {NAME, }
+path: {NAME, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {SPACEMODE, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {ID, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {BOOLEAN, }
+path: {AUTO_22, }
+path: {AUTO_22, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_22, }
+path: {AUTO_22, }
+path: {AUTO_22, }
+path: {AUTO_19, }
+path: {AUTO_19, }
+path: {AUTO_19, }
+path: {AUTO_19, }
+path: {ID, }
+path: {ID, }
+path: {AUTO_19, }
+path: {AUTO_19, }
+path: {AUTO_0, }
+path: {AUTO_0, }
+path: {rule, OP, }
+path: {rule, OP, }
+path: {rule, OP, }
+path: {rule, OP, }
+path: {AUTO_2, }
+path: {AUTO_2, }

@@ -70,9 +70,11 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
             s.else_goto = old_to_new.at(s.else_goto);
         }
     }
+    DfaEmptyStateMap new_empty_state_map;
     for (auto &el : sdfa.getEmptyStateMap()) {
-        el.second = old_to_new.at(el.second);
+        new_empty_state_map[old_to_new.at(el.first)] = old_to_new.at(el.second);
     }
+    sdfa.getEmptyStateMap() = std::move(new_empty_state_map);
     for (auto &el : sdfa.getIndexToEmptyStateMap()) {
         el.second = old_to_new.at(el.second);
     }
@@ -125,6 +127,8 @@ void DFA::MinDFA::terminateEarly(SDFA &sdfa) {
     }
 }
 void DFA::MinDFA::WalkDfaToGetUnreachableStates(SDFA &sdfa, std::size_t i, std::unordered_set<std::size_t> &reachable) {
+    if (!reachable.contains(i))
+        reachable.insert(i);
     const auto &state = sdfa.get()[i];
     for (const auto &t : state.transitions) {
         const auto &id = t.second.next;
@@ -137,6 +141,13 @@ void DFA::MinDFA::WalkDfaToGetUnreachableStates(SDFA &sdfa, std::size_t i, std::
     if (state.else_goto && !reachable.contains(state.else_goto)) {
         reachable.insert(state.else_goto);
         WalkDfaToGetUnreachableStates(sdfa, state.else_goto, reachable);
+    }
+    if (sdfa.getEmptyStateMap().contains(i)) {
+        auto empty = sdfa.getEmptyStateMap().at(i);
+        if (!reachable.contains(empty)) {
+            reachable.insert(empty);
+            WalkDfaToGetUnreachableStates(sdfa, empty, reachable);
+        }
     }
 }
 void DFA::MinDFA::removeUnreachableStates(SDFA &sdfa) {
@@ -164,16 +175,20 @@ void DFA::MinDFA::removeUnreachableStates(SDFA &sdfa) {
         if (state.else_goto)
             state.else_goto = old_to_new.at(state.else_goto);
     }
+    DfaEmptyStateMap new_empty_state_map;
     for (auto &el : sdfa.getEmptyStateMap()) {
-        if (old_to_new.contains(el.second)) {
-            el.second = old_to_new.at(el.second);
+        if (old_to_new.contains(el.first)) {
+            new_empty_state_map[old_to_new.at(el.first)] = old_to_new.at(el.second);
         }
     }
+    sdfa.getEmptyStateMap() = std::move(new_empty_state_map);
+    DfaIndexToEmptyStateMap new_index_to_empty_state_map;
     for (auto &el : sdfa.getIndexToEmptyStateMap()) {
         if (old_to_new.contains(el.second)) {
-            el.second = old_to_new.at(el.second);
+            new_index_to_empty_state_map[el.first] = old_to_new.at(el.second);
         }
     }
+    sdfa.getIndexToEmptyStateMap() = std::move(new_index_to_empty_state_map);
     sdfa.get().get() = std::move(new_states);
 }
 void DFA::MinDFA::removeSelfLoop(SDFA &sdfa) {

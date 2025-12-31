@@ -37,14 +37,15 @@ auto DFA::buildDfaIndexToEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaIndexToEm
     return dfa_index_to_empty_state_map;
 }
 
-auto DFA::buildDfaEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaEmptyStateMap {
+auto DFA::buildDfaEmptyStateMap(stdu::vector<MDFA> &dfas, const stdu::vector<NFA> &nfas) -> DfaEmptyStateMap {
     DfaEmptyStateMap dfa_empty_state_map;
     std::size_t count = 0;
+    std::size_t dfa_count = 0;
     for (auto &dfa : dfas) {
         std::size_t empty_state = NFA::NULL_STATE;
         stdu::vector<std::size_t> delayed;
         for (const auto &state : dfa.get()) {
-            if (state.transitions.empty() && !state.rule_name.empty()) {
+            if (state.transitions.empty() && !state.rule_name.empty() && !state.else_goto) {
                 empty_state = count;
                 for (const auto id : delayed) {
                     dfa_empty_state_map[id] = empty_state;
@@ -64,6 +65,7 @@ auto DFA::buildDfaEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaEmptyStateMap {
                 dfa_empty_state_map[id] = empty_state;
             }
         }
+        dfa_count++;
     }
     return dfa_empty_state_map;
 }
@@ -112,8 +114,8 @@ auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -
         dfas.push_back(mdfa);
     }
     // construct tables
+    auto dfa_empty_state_map = buildDfaEmptyStateMap(dfas, nfa_collection);
     auto dfa_index_to_empty_state_map = buildDfaIndexToEmptyStateMap(dfas);
-    auto dfa_empty_state_map = buildDfaEmptyStateMap(dfas);
     auto dfa = mergeDFAS(dfas);
     SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sdfa.build();
     MinDFA min_dfa(sdfa, sdfa.getEmptyStateMap(), sdfa.getIndexToEmptyStateMap()); min_dfa.minimize();

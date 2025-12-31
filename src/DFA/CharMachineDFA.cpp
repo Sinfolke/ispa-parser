@@ -1,5 +1,6 @@
 module DFA.CharMachineDFA;
 import logging;
+import corelib;
 import std;
 import cpuf.printf;
 
@@ -23,6 +24,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
                 if (symbol.index() != current_type) {
                     // Start a new partition
                     auto new_state = sorted_states.makeNew();
+                    sorted_states[new_state].rule_name = sorted_states[i].rule_name;
+                    sorted_states[new_state].dtb = sorted_states[i].dtb;
                     if (current_partition == nullptr) {
                         sorted_states[i].else_goto = new_state;
                         erase_from = j;
@@ -82,5 +85,45 @@ auto DFA::CharMachineDFA::getType() const -> DfaType {
 }
 auto DFA::CharMachineDFA::clear() -> void {
     states.clear();
+}
+auto DFA::operator<<(std::ostream &os, const CharMachineDFA &dfa) -> std::ostream & {
+    std::size_t i = 0;
+    for (const auto &state : dfa.get()) {
+        os << i++ << ": \n";
+        if (!state.rule_name.empty())
+            os << "\t[rule_name] = " << corelib::text::join(state.rule_name, "::") << "\n";
+        if (!std::holds_alternative<std::monostate>(state.dtb)) {
+            os << "\t[dtb] = {";
+            if (std::holds_alternative<NFA::SingleValueDataBlock>(state.dtb)) {
+                os << (std::get<NFA::SingleValueDataBlock>(state.dtb) == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << "}\n";
+            } else {
+                os << '\n';
+                for (const auto &[name, data] : std::get<NFA::TemplatedDataBlock>(state.dtb)) {
+                    os << "\t\t" << name << ": {" << (data.first == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << ", " << data.second << "}\n";
+                }
+                os << "\t}\n";
+            }
+        }
+        if (std::holds_alternative<FullCharTable>(state.transitions)) {
+            unsigned char c = 0;
+            for (const auto &transition : std::get<FullCharTable>(state.transitions)) {
+                if (transition.next != NULL_STATE) {
+                    os << "\t" << static_cast<char>(c) << " -> " << transition.next << '\n';
+                }
+                c++;
+            }
+        } else {
+            for (const auto &[name, transition] : std::get<SortedTransitions>(state.transitions)) {
+                if (std::holds_alternative<char>(name)) {
+                    os << "\t" << std::get<char>(name) << " -> " << transition.next << '\n';
+                } else {
+                    os << "\t" << corelib::text::join(std::get<stdu::vector<std::string>>(name), "::") << " -> " << transition.next << '\n';
+                }
+            }
+        }
+        os << "\t[else_goto] = " << (state.else_goto == 0 ? std::string("[no]") : std::to_string(state.else_goto)) << '\n';
+        os << "\t[else_goto_accept] = " << (state.else_goto_accept == NULL_STATE ? std::string("NULLSTATE") : std::to_string(state.else_goto_accept)) << '\n';
+    }
+    return os;
 }
 

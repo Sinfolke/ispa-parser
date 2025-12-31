@@ -16,15 +16,19 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
     std::unordered_map<std::size_t, Closure> closure_index_cache;
     std::queue<Closure> work;
 
+    stdu::vector<std::string> rule_name = nfa.getName();
+    NFA::DataBlock dtb = nfa.getDtb();
+
     // 1. Start state
     StateSet start_set = {0}; // 0 is NFA start state
     Closure start_closure(nfa, start_set);
 
-    dfa_state_map[start_closure] = states.makeNew();
+    auto start_idx = states.makeNew();
+    states[start_idx].rule_name = rule_name;
+    states[start_idx].dtb = dtb;
+    dfa_state_map[start_closure] = start_idx;
     work.push(start_closure);
 
-    stdu::vector<std::string>  rule_name = nfa.getName();
-    NFA::DataBlock dtb = nfa.getDtb();;
     stdu::vector<std::size_t> goto_empty_states;
     while (!work.empty()) {
         Closure current = work.front();
@@ -107,7 +111,10 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
             // Add main (non-conflict) stdu::vector<std::size_t> if any
             if (!closure_set.empty()) {
                 if (!dfa_state_map.contains(closure_set)) {
-                    dfa_state_map.emplace(closure_set, states.makeNew());
+                    auto new_idx = states.makeNew();
+                    states[new_idx].rule_name = rule_name;
+                    states[new_idx].dtb = dtb;
+                    dfa_state_map.emplace(closure_set, new_idx);
                     work.push(closure_set);
                 }
                 std::size_t target_index = dfa_state_map.at(closure_set);
@@ -122,7 +129,10 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 const auto *transition = conf->value;
                 if (!conf_closure.empty()) {
                     if (!dfa_state_map.contains(conf_closure)) {
-                        dfa_state_map.emplace(conf_closure, states.makeNew());
+                        auto new_idx = states.makeNew();
+                        states[new_idx].rule_name = rule_name;
+                        states[new_idx].dtb = dtb;
+                        dfa_state_map.emplace(conf_closure, new_idx);
                         work.push(conf_closure);
                     }
 

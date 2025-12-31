@@ -13,6 +13,8 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
     std::queue<std::pair<std::size_t, std::size_t>> work;
     std::size_t work_size = 0;
     std::size_t current_dfa_state = mdfa.get().makeNew();
+    mdfa.get()[current_dfa_state].rule_name = mdfa.get()[state_id].rule_name;
+    mdfa.get()[current_dfa_state].dtb = mdfa.get()[state_id].dtb;
     bool all_recursive = true;
     // TODO: implement more complex logic to cancel saved input if path without input is chosen
     // if at least one alternative has new_cst_node or new_member, set them to true

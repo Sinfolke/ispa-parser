@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     }
     treeAPIO.close();
     /*
-        LEXICAL CHECKS SHALL GO ABOVE
+        LEXICAL CHECKS SHOULD GO ABOVE
         TREE CHANGES BELOW
     */
     AST::TreePass pass(ast);
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
         ast.printFirstSet(dumper.makeDumpPath("first"));
     if (dumper.shouldDump("follow"))
         ast.printFollowSet(dumper.makeDumpPath("follow"));
-    dlib converter_dlib(std::string("libispa-converter-") + args.language_str);  // get dynamically library for convertion
+    dlib converter_dlib(std::string("libispa-converter-") + args.language_str);  // get dynamically library for conversion
     std::string opath;
     if (!args.output.empty()) {
         opath = args.output;
@@ -132,6 +132,13 @@ int main(int argc, char** argv) {
     LexerBuilder lexer_data(ast);
     lexer_data.build();
     lexer_data.getFCDT().print();
+    std::ofstream dumpDFAFile(dumper.makeDumpPath("DFA"));
+    if (!dumpDFAFile.is_open())
+        throw Error("failed to open DFA for dump");
+    for (const auto &dfa : lexer_data.getDFAS()) {
+        dumpDFAFile << dfa;
+    }
+    dumpDFAFile.close();
     // if (args.algorithm == Args::Algorithm::LR0) {
     //     LRParser LRIR(ast);
     //     // LRIR.printTables("tables");
