@@ -1,5 +1,4 @@
 module DFA.SortedDFA;
-import boost;
 import std;
 
 void DFA::SortedDFA::sort() {

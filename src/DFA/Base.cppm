@@ -1,5 +1,6 @@
 export module DFA.Base;
 
+import LangAPI;
 import NFA;
 import DFA.API;
 import DFA.States;

@@ -127,3 +127,16 @@ auto DFA::operator<<(std::ostream &os, const CharMachineDFA &dfa) -> std::ostrea
     return os;
 }
 
+auto DFA::CharMachineDFA::availableTypes() const -> stdu::vector<LangAPI::Type> {
+    stdu::vector<LangAPI::Type> names;
+    utype::unordered_set<stdu::vector<std::string>> dedublication;
+    for (const auto &state : states) {
+        if (!state.rule_name.empty() && !dedublication.contains(state.rule_name)) {
+            LangAPI::Symbol s = state.rule_name;
+            ;s.path.insert(s.path.begin(), "Types");
+            names.push_back(LangAPI::Type {s});
+            dedublication.insert(state.rule_name);
+        }
+    }
+    return names;
+}

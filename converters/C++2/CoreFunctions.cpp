@@ -47,7 +47,9 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 throw Error("Unknown type");
         }
     } else if (type.isSymbol()) {
-        return convertSymbol(type.getSymbol());
+        auto sym = convertSymbol(type.getSymbol());
+        if (sym == "std::any") return "Tokens";
+        return sym;
     } else if (type.isIspaLibSymbol()) {
         return convertIspaLibSymbol(type.getIspaLibSymbol());
     } else throw Error("unknown variant type in Type::type");
@@ -144,7 +146,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Lexer:
             return "::ISPA_STD::Lexer_base<Tokens>";
         case LangAPI::StdlibExports::Parser:
-            return "::ISPA_STD::Parser_base<Tokens, Rules>";
+            return "::ISPA_STD::LLParser_base<Tokens, Rules>";
         case LangAPI::StdlibExports::DfaCharTransition:
             return "::ISPA_STD::DFAAPI::CharTransition";
         case LangAPI::StdlibExports::DfaCharTableTransition:

@@ -1339,6 +1339,7 @@ public:
             this->lexer = &lexer;
     }
     LLParser_base(const char* text) : text(text) {}
+    virtual ~LLParser_base() {}
     // Parsing methods
     MainNode& parse(Lexer_base<TOKEN_T>& lexer) {
         if (lexer.hasTokens()) {

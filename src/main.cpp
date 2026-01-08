@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
     if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
     for (const auto file : args.files) {
-        cpuf::printf("file: %$\n", file);
+        cpuf::printf("file: {}\n", file);
         std::string fileContent;
         try {
             fileContent = corelib::file::readFile(std::string(file));

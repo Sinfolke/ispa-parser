@@ -3,7 +3,6 @@ export module DFA.API;
 import NFA;
 import AST.Tree;
 import hash;
-import boost;
 import logging;
 import dstd;
 import std;

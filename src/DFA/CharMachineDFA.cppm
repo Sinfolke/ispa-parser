@@ -1,6 +1,7 @@
 export module DFA.CharMachineDFA;
 
 import NFA;
+import LangAPI;
 import DFA.API;
 import DFA.Base;
 import DFA.SortedDFA;
@@ -9,6 +10,7 @@ import AST.Tree;
 import hash;
 import dstd;
 import std;
+
 export namespace DFA {
     class CharMachineDFA : public Base {
         const AST::Tree &ast;
@@ -33,6 +35,8 @@ export namespace DFA {
         auto getType() const -> DfaType;
 
         auto clear() -> void;
+
+        auto availableTypes() const -> stdu::vector<LangAPI::Type>;
 
     };
     auto operator<<(std::ostream &os, const CharMachineDFA &dfa) -> std::ostream&;
