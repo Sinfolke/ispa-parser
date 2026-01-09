@@ -144,9 +144,9 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Node:
             return std::string("::ISPA_STD::Node<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
-            return "::ISPA_STD::Lexer_base<Tokens>";
+            return std::string("::ISPA_STD::Lexer_base<Tokens") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
         case LangAPI::StdlibExports::Parser:
-            return "::ISPA_STD::LLParser_base<Tokens, Rules>";
+            return std::string("::ISPA_STD::LLParser_base<Tokens, Rules") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
         case LangAPI::StdlibExports::DfaCharTransition:
             return "::ISPA_STD::DFAAPI::CharTransition";
         case LangAPI::StdlibExports::DfaCharTableTransition:

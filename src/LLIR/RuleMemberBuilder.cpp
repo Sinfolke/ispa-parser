@@ -517,18 +517,23 @@ void LLIR::NameBuilder::build() {
     // if (*has_symbol_follow) {
     //     symbol_follow->back().first = name;
     // }
+    LangAPI::Symbol type_name {name};
     if (!isToken && isCallingToken) {
-        var.type = { LangAPI::ValueType::Token, LangAPI::Type {LangAPI::Symbol { name } } };
+        var.type = { LangAPI::ValueType::Token, LangAPI::Type {type_name} };
     } else {
-        var.type =  { isCallingToken ? LangAPI::ValueType::TokenResult : LangAPI::ValueType::RuleResult, LangAPI::Type {LangAPI::Symbol { name } } };
+        var.type =  { isCallingToken ? LangAPI::ValueType::TokenResult : LangAPI::ValueType::RuleResult, LangAPI::Type { type_name } };
     }
     uvar.type = var.type;
     shadow_var.type.type = LangAPI::ValueType::Array;
     shadow_var.type.template_parameters = {var.type};
     LangAPI::Statements statements;
     std::size_t variable_index_in_statements = statements.size();
+    if (!var.type.template_parameters.empty()) {
+        var.type.template_parameters.insert(var.type.template_parameters.begin(), LangAPI::Type {LangAPI::Symbol {"Types"}});
+    }
     statements.push_back(LangAPI::Variable::createStatement(var));
     statements.push_back(LangAPI::Variable::createStatement(svar));
+    var.type.template_parameters.erase(var.type.template_parameters.begin());
     if (isCallingToken) {
         LangAPI::Symbol compare_sym = {name};
         compare_sym.path.insert(compare_sym.path.begin(), "Tokens");

@@ -212,7 +212,8 @@ namespace LangRepr {
             // Replace original sorted
             sorted = std::move(sorted_final);
         }
-
+        auto needs_box = dependent;
+        needs_box.insert(to_forward_declare.begin(), to_forward_declare.end());
         // `sorted` now contains dependency-first order for acyclic parts,
         // followed by any cyclical group(s) (which you must handle specially).
         // Use `sorted` for emission.
@@ -230,10 +231,13 @@ namespace LangRepr {
         auto switchToFlatType = [&](LangAPI::Type &t) {
             if (t.isSymbol()) {
                 std::string path;
+                std::size_t count = 0;
                 for (const auto &part : t.getSymbol().path) {
                     if (std::holds_alternative<std::string>(part)) {
-                        path += std::get<std::string>(part) + "_";
+                        const auto &part_str = std::get<std::string>(part);
+                        path += part_str + "_";
                     }
+                    count++;
                 }
                 path.pop_back();
                 t.type = LangAPI::Symbol {path};
@@ -254,17 +258,24 @@ namespace LangRepr {
         std::function<void(LangAPI::Type &)> makeDependentTypeBox = [&](LangAPI::Type &t) {
             if (t.isSymbol()) {
                 Name actual_name;
+                const auto &first = t.getSymbol().path[0];
+                if (std::holds_alternative<std::string>(first) && std::get<std::string>(first) == "Types")
+                    t.getSymbol().path.erase(t.getSymbol().path.begin());
                 for (const auto &part : t.getSymbol().path) {
                     if (!std::holds_alternative<std::string>(part))
                         return;
                     actual_name.push_back(std::get<std::string>(part));
                 }
-                if (!dependent.contains(actual_name))
+                for (const auto &name : needs_box) {
+                    cpuf::printf("{} == {}: {}", actual_name, name, actual_name == name);
+                }
+                if (!needs_box.contains(actual_name))
                     return;
                 t.template_parameters = {LangAPI::Type {LangAPI::Symbol {corelib::text::join(actual_name, "_")}}};
                 t.type = LangAPI::ValueType::Box;
             } else if (t.isValueType()) {
-                if (t.getValueType() == LangAPI::ValueType::Box) {
+                const auto &vtype = t.getValueType();
+                if (vtype == LangAPI::ValueType::Box || vtype == LangAPI::ValueType::Token || vtype == LangAPI::ValueType::Rule || vtype == LangAPI::ValueType::RuleResult || vtype == LangAPI::ValueType::TokenResult) {
                     makeDependentTypeBox(std::get<LangAPI::Type>(t.template_parameters[0]));
                 }
             }
@@ -406,9 +417,27 @@ namespace LangRepr {
         holder.push(typesNamespace);
     }
     auto Construct::constructLexer() -> void {
+        LangAPI::IspaLibSymbol lexer_symbol {LangAPI::StdlibExports::Lexer};
+        // We include all rule and token types for consistency between Lexer and Parser
+        // MainNode first
+        LangAPI::Symbol main_tn = {"Types", "main"};
+        lexer_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(main_tn));
+
+        for (const auto &dtb : ir.getDataBlocks()) {
+            if (dtb.first == stdu::vector<std::string>{"main"}) continue;
+            LangAPI::Symbol tn = dtb.first;
+            tn.path.insert(tn.path.begin(), "Types");
+            lexer_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(tn));
+        }
+        for (const auto &dtb : lexer_builder.getDataBlocks()) {
+            LangAPI::Symbol tn = dtb.first;
+            tn.path.insert(tn.path.begin(), "Types");
+            lexer_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(tn));
+        }
+
         LangAPI::Class lexer {
             .name = "Lexer",
-            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, LangAPI::IspaLibSymbol {LangAPI::StdlibExports::Lexer})},
+            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, lexer_symbol)},
             .default_visibility = LangAPI::Visibility::Private
         };
 
@@ -1049,9 +1078,29 @@ namespace LangRepr {
 	    holder.push(lexer);
     }
     auto Construct::constructParser() -> void {
+        LangAPI::IspaLibSymbol parser_symbol {LangAPI::StdlibExports::Parser};
+        // MainNode first
+        LangAPI::Symbol main_tn = {"main"};
+        main_tn.path.insert(main_tn.path.begin(), "Types");
+        parser_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(main_tn));
+
+        // Then all other rules
+        for (const auto &dtb : ir.getDataBlocks()) {
+            if (dtb.first == stdu::vector<std::string>{"main"}) continue;
+            LangAPI::Symbol tn = dtb.first;
+            tn.path.insert(tn.path.begin(), "Types");
+            parser_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(tn));
+        }
+        // And also all token types (Lexer_base needs them in LLParser_base)
+        for (const auto &dtb : lexer_builder.getDataBlocks()) {
+            LangAPI::Symbol tn = dtb.first;
+            tn.path.insert(tn.path.begin(), "Types");
+            parser_symbol.template_parameters.push_back(std::make_shared<LangAPI::Type>(tn));
+        }
+
         LangAPI::Class parser {
             .name = "Parser",
-            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, LangAPI::IspaLibSymbol {LangAPI::StdlibExports::Parser})},
+            .inherit_members = {std::make_pair(LangAPI::Visibility::Public, parser_symbol)},
             .default_visibility = LangAPI::Visibility::Private
         };
         // construct DFAs
